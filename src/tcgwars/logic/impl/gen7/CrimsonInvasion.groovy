@@ -159,8 +159,7 @@ public enum CrimsonInvasion implements CardInfo {
 	WISHFUL_BATON_121 ("Wishful Baton", 121, Rarity.SECRET, [POKEMON_TOOL, TRAINER]),
 	COUNTER_ENERGY_122 ("Counter Energy", 122, Rarity.SECRET, [SPECIAL_ENERGY, ENERGY]),
 	WARP_ENERGY_123 ("Warp Energy", 123, Rarity.SECRET, [SPECIAL_ENERGY, ENERGY]),
-	WATER_ENERGY_124 ("Water Energy", 124, Rarity.SECRET, [BASIC_ENERGY, ENERGY]),
-;
+	WATER_ENERGY_124 ("Water Energy", 124, Rarity.SECRET, [BASIC_ENERGY, ENERGY]);
 	
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 	
