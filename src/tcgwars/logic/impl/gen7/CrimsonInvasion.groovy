@@ -419,11 +419,7 @@ public enum CrimsonInvasion implements CardInfo {
 					text "This Pokémon's attacks do 80 more damage to your opponent's [G] Pokémon (before applying Weakness and Resistance)."
 					delayedA {
              			after PROCESS_ATTACK_EFFECTS, {
-<<<<<<< HEAD
                 			if(self.active && ef.defending.types.contains(G)){
-=======
-                			if(self.active && ef.defending.types.contains(G){
->>>>>>> e765d7d... crimson invasion
                   				it.dmg += hp(80)
              			   }
               			}
@@ -937,11 +933,7 @@ public enum CrimsonInvasion implements CardInfo {
 					attackRequirement {
 					gxCheck()}
 					onAttack {
-<<<<<<< HEAD
 						gxPerform()
-=======
-						gcPerform()
->>>>>>> e765d7d... crimson invasion
 						damage 100
 						 delayed {
 							before PLAY_FROM_HAND {
@@ -1134,10 +1126,8 @@ public enum CrimsonInvasion implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-<<<<<<< HEAD
-						deleyad{
+						delayed{
 							before PLAY_FROM_HAND {
-<<<<<<< HEAD
     			            	if(ef.cardToPlay.cardTypes.is(POKEMON)) {
     			            		if(ef.cardToPlay.hasModernAbility()) {
                     					wcu "Bell of Silence: Can't play Pokémon that has an Ability"
@@ -1149,9 +1139,6 @@ public enum CrimsonInvasion implements CardInfo {
                 			after SWITCH, defending, {unregister()}
                 			after EVOLVE, defending, {unregister()}
                 		}
-=======
->>>>>>> e765d7d... crimson invasion
-=======
     			    	if(ef.cardToPlay.cardTypes.is(POKEMON)) {
     			      	if(ef.cardToPlay.hasModernAbility()) {
                 		wcu "Bell of Silence: Can't play Pokémon that has an Ability"
@@ -2320,18 +2307,28 @@ public enum CrimsonInvasion implements CardInfo {
 			return itemCard (this) {
 				text "You can play this card only if you have more Prize cards remaining than your opponent.\nSwitch 1 of your opponent's Benched Pokémon with their Active Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
 				onPlay {
+					def pcs = opp.bench.select("Switch")
+					sw opp.active, pcs
 				}
 				playRequirement{
+					assert my.prizeAsList.size() > opp.prizeAsList.size()
 				}
 			};
 			case DASHING_POUCH_92:
 			return pokemonTool (this) {
 				text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to discards Energy for its Retreat Cost, put that Energy into your hand instead of the discard pile.\nYou may play as many Item cards as you like during your turn (before your attack)."
 				onPlay {reason->
+					eff = delayed {
+						before (RETREAT,self) {
+							if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.cards.filterByType(ENERGY)) {
+								bc "dashing pouch activates"
+								self.cards.filterByType(ENERGY).moveTo(my.hand)
+							}
+						}
+					}
 				}
 				onRemoveFromPlay {
-				}
-				allowAttach {to->
+					eff.unregister()
 				}
 			};
 			case DEVOURED_FIELD_93:
@@ -2356,17 +2353,27 @@ public enum CrimsonInvasion implements CardInfo {
 			case FIGHTING_MEMORY_94:
 			return pokemonTool (this) {
 				text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [F] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
+				def eff
 				onPlay {reason->
+					eff=getter GET_TYPE, self {h ->
+						if(h.effect.target.name == "Silvally-GX")
+							h.object = FIGHTING
+					}
 				}
 				onRemoveFromPlay {
-				}
-				allowAttach {to->
+					eff.unregister()
 				}
 			};
 			case GLADION_95:
 			return supporter (this) {
 				text "Look at your face-down Prize cards and put 1 of them into your hand. Then, shuffle this Gladion into your remaining Prize cards and put them back face down. If you didn't play this Gladion from your hand, it does nothing.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					delayed {
+						before PLAY_FROM_HAND{
+							my.prizeAsList.select(hidden: false, "Prize to replace with Gladion").moveTo(my.hand)
+							this.moveTo(my.prizeAsList)
+						}
+					}
 				}
 				playRequirement{
 				}
@@ -2375,26 +2382,43 @@ public enum CrimsonInvasion implements CardInfo {
 			return supporter (this) {
 				text "Put 2 in any combination of Supporter and Stadium cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					my.deck.search(cardTypeFilter(SUPPORTER)).select().moveTo(hand)
+					my.deck.search(cardTypeFilter(STADIUM)).select().moveTo(hand)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert deck
 				}
 			};
 			case PEEKING_RED_CARD_97:
 			return itemCard (this) {
 				text "Your opponent reveals their hand. You may have your opponent count the cards in their hand, shuffle those cards into their deck, then draw that many cards.\nYou may play as many Item cards as you like during your turn (before your attack)."
 				onPlay {
+					opp.hand.showToMe("Opponent's hand")
+					if(confirm("Replace opponent hand?")){
+						def nbc = opp.hand.size()
+						opp.hand.moveTo(opp.deck)
+						shuffleDeck(null, TargetPlayer.OPPONENT)
+						opp.deck.subList(0, nbc).moveTo(opp.prizeAsList)
+					}
+
 				}
 				playRequirement{
+					assert opp.hand
 				}
 			};
 			case PSYCHIC_MEMORY_98:
 			return pokemonTool (this) {
 				text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [P] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
+				def eff
 				onPlay {reason->
+					eff=getter GET_TYPE, self {h ->
+						if(h.effect.target.name == "Silvally-GX")
+							h.object = PSYCHIC
+					}
 				}
 				onRemoveFromPlay {
-				}
-				allowAttach {to->
+					eff.unregister()
 				}
 			};
 			case SEA_OF_NOTHINGNESS_99:
