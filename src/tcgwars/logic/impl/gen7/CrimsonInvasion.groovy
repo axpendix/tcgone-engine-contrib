@@ -35,7 +35,7 @@ import tcgwars.logic.util.*;
  * @author axpendix@hotmail.com
  */
 public enum CrimsonInvasion implements CardInfo {
-	
+
 	WEEDLE_1 ("Weedle", 1, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
 	KAKUNA_2 ("Kakuna", 2, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
 	BEEDRILL_3 ("Beedrill", 3, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
@@ -160,9 +160,9 @@ public enum CrimsonInvasion implements CardInfo {
 	COUNTER_ENERGY_122 ("Counter Energy", 122, Rarity.SECRET, [SPECIAL_ENERGY, ENERGY]),
 	WARP_ENERGY_123 ("Warp Energy", 123, Rarity.SECRET, [SPECIAL_ENERGY, ENERGY]),
 	WATER_ENERGY_124 ("Water Energy", 124, Rarity.SECRET, [BASIC_ENERGY, ENERGY]);
-	
+
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
-	
+
 	protected CardTypeSet cardTypes;
 	protected String name;
 	protected Rarity rarity;
@@ -224,7 +224,7 @@ public enum CrimsonInvasion implements CardInfo {
 						apply POISONED
 					}
 				}
-				
+
 			};
 			case KAKUNA_2:
 			return evolution (this, from:"Weedle", hp:HP080, type:GRASS, retreatCost:2) {
@@ -235,17 +235,17 @@ public enum CrimsonInvasion implements CardInfo {
 					attackRequirement {
 							assert bench.notFull
 							assert deck.notEmpty
+					}
+					onAttack {
+						int count = Math.min(3, my.bench.freeBenchCount)
+						deck.search (max: count,  {it.name=="Kakuna"}).each {
+							deck.remove(it)
+							benchPCS(it)
 						}
-						onAttack {
-							int count = Math.min(3, my.bench.freeBenchCount)
-							deck.search (max: count,  {it.name=="Kakuna"}).each {
-								deck.remove(it)
-								benchPCS(it)
-							}
-							shuffleDeck()
-						}
+						shuffleDeck()
+					}
 				}
-				
+
 			};
 			case BEEDRILL_3:
 			return evolution (this, from:"Kakuna", hp:HP120, type:GRASS, retreatCost:0) {
@@ -256,11 +256,10 @@ public enum CrimsonInvasion implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						if(self.lastEvolved == bg.turnCount){ 
+						if(self.lastEvolved == bg.turnCount){
 							apply POISONED
 							apply PARALYZED
 						}
-						
 					}
 				}
 				move "Sharp Sting", {
@@ -271,7 +270,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case EXEGGCUTE_4:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -292,7 +291,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case CACNEA_5:
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
@@ -302,13 +301,12 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						
 						damage 10
-						if(self.cards.energyCount(D)>0)
+						if(self.cards.energyCount(D))
 							damage 30
 					}
 				}
-				
+
 			};
 			case CACTURNE_6:
 			return evolution (this, from:"Cacnea", hp:HP110, type:GRASS, retreatCost:2) {
@@ -335,7 +333,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case KARRABLAST_7:
 			return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
@@ -363,7 +361,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case SHELMET_8:
 			return basic (this, hp:HP060, type:GRASS, retreatCost:3) {
@@ -377,7 +375,7 @@ public enum CrimsonInvasion implements CardInfo {
 						heal 10, self
 					}
 				}
-				
+
 			};
 			case ACCELGOR_9:
 			return evolution (this, from:"Shelmet", hp:HP090, type:GRASS, retreatCost:1) {
@@ -399,7 +397,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case SKIDDO_10:
 			return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
@@ -412,7 +410,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case GOGOAT_11:
 			return evolution (this, from:"Skiddo", hp:HP120, type:GRASS, retreatCost:2) {
@@ -421,7 +419,11 @@ public enum CrimsonInvasion implements CardInfo {
 					text "This Pokémon's attacks do 80 more damage to your opponent's [G] Pokémon (before applying Weakness and Resistance)."
 					delayedA {
              			after PROCESS_ATTACK_EFFECTS, {
+<<<<<<< HEAD
+                			if(self.active && ef.defending.types.contains(G)){
+=======
                 			if(self.active && ef.defending.types.contains(G){
+>>>>>>> e765d7d... crimson invasion
                   				it.dmg += hp(80)
              			   }
               			}
@@ -435,7 +437,7 @@ public enum CrimsonInvasion implements CardInfo {
 						heal 20, self
 					}
 				}
-				
+
 			};
 			case ALOLAN_MAROWAK_12:
 			return evolution (this, from:"Cubone", hp:HP100, type:FIRE, retreatCost:2) {
@@ -445,7 +447,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost -
 					attackRequirement {}
 					onAttack {
-						//TODO : 
+						//TODO :
 					}
 				}
 				move "Burning Bonemerang", {
@@ -459,7 +461,7 @@ public enum CrimsonInvasion implements CardInfo {
 						}
 					}
 				}
-				
+
 			};
 			case NUMEL_13:
 			return basic (this, hp:HP080, type:FIRE, retreatCost:3) {
@@ -472,7 +474,7 @@ public enum CrimsonInvasion implements CardInfo {
 						flipUntilTails{damage 30}
 					}
 				}
-				
+
 			};
 			case CAMERUPT_14:
 			return evolution (this, from:"Numel", hp:HP140, type:FIRE, retreatCost:4) {
@@ -494,7 +496,7 @@ public enum CrimsonInvasion implements CardInfo {
 						applyAfterDamage BURNED
 					}
 				}
-				
+
 			};
 			case STARYU_15:
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -507,7 +509,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case STARMIE_16:
 			return evolution (this, from:"Staryu", hp:HP090, type:WATER, retreatCost:1) {
@@ -530,7 +532,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case MAGIKARP_17:
 			return basic (this, hp:HP030, type:WATER, retreatCost:1) {
@@ -540,7 +542,7 @@ public enum CrimsonInvasion implements CardInfo {
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
 							if(!self.active){
-								bc "Submerge reduces damage"
+								bc "Submerge prevent all damage"
 								it.dmg=hp(0)
 							}
 						}
@@ -561,7 +563,7 @@ public enum CrimsonInvasion implements CardInfo {
 						shuffleDeck(null, self.owner.toTargetPlayer())
 					}
 				}
-				
+
 			};
 			case GYARADOS_GX_18:
 			return evolution (this, from:"Magikarp", hp:HP240, type:WATER, retreatCost:4) {
@@ -600,7 +602,7 @@ public enum CrimsonInvasion implements CardInfo {
 						}
 					}
 				}
-				
+
 			};
 			case SWINUB_19:
 			return basic (this, hp:HP060, type:WATER, retreatCost:3) {
@@ -613,7 +615,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case PILOSWINE_20:
 			return evolution (this, from:"Swinub", hp:HP100, type:WATER, retreatCost:4) {
@@ -632,10 +634,10 @@ public enum CrimsonInvasion implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						apply ASLEEP, self
-						heal 90, self		
+						heal 90, self
 					}
 				}
-				
+
 			};
 			case MAMOSWINE_21:
 			return evolution (this, from:"Piloswine", hp:HP180, type:WATER, retreatCost:4) {
@@ -660,7 +662,7 @@ public enum CrimsonInvasion implements CardInfo {
 						//TODO : add damages with the damges counter put on the pokemon
 					}
 				}
-				
+
 			};
 			case REMORAID_22:
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -673,7 +675,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case OCTILLERY_23:
 			return evolution (this, from:"Remoraid", hp:HP100, type:WATER, retreatCost:2) {
@@ -701,10 +703,10 @@ public enum CrimsonInvasion implements CardInfo {
 						if(list && confirm ("You may discard a Special Energy from this Pokémon. If you do, this attack does 60 more damage.")){
 								list.select().discard()
 								damage 60
-							}
+						}
 					}
 				}
-				
+
 			};
 			case CORPHISH_24:
 			return basic (this, hp:HP070, type:WATER, retreatCost:2) {
@@ -717,7 +719,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case CRAWDAUNT_25:
 			return evolution (this, from:"Corphish", hp:HP110, type:WATER, retreatCost:2) {
@@ -732,7 +734,7 @@ public enum CrimsonInvasion implements CardInfo {
 						discardDefendingEnergy()
 					}
 				}
-				
+
 			};
 			case FEEBAS_26:
 			return basic (this, hp:HP030, type:WATER, retreatCost:1) {
@@ -746,7 +748,7 @@ public enum CrimsonInvasion implements CardInfo {
 						flip {preventAllEffectsNextTurn()}
 					}
 				}
-				
+
 			};
 			case MILOTIC_27:
 			return evolution (this, from:"Feebas", hp:HP120, type:WATER, retreatCost:2) {
@@ -770,7 +772,7 @@ public enum CrimsonInvasion implements CardInfo {
 						opp.bench.each {damage 10, it}
 					}
 				}
-				
+
 			};
 			case REGICE_28:
 			return basic (this, hp:HP130, type:WATER, retreatCost:3) {
@@ -793,7 +795,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case SHELLOS_29:
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -814,7 +816,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case PIKACHU_30:
 			return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
@@ -823,7 +825,7 @@ public enum CrimsonInvasion implements CardInfo {
 				move "Pika Draw", {
 					text "Draw a card."
 					energyCost C
-					attackRequirement 
+					attackRequirement
 					{
 						assert deck.notEmpty
 					}
@@ -840,7 +842,7 @@ public enum CrimsonInvasion implements CardInfo {
 						flip {damage 20}
 					}
 				}
-				
+
 			};
 			case ALOLAN_RAICHU_31:
 			return evolution (this, from:"Pikachu", hp:HP110, type:LIGHTNING, retreatCost:2) {
@@ -861,7 +863,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 70 + 20*defending.cards.energyCount(C)
 					}
 				}
-				
+
 			};
 			case ALOLAN_GEODUDE_32:
 			return basic (this, hp:HP060, type:LIGHTNING, retreatCost:2) {
@@ -883,7 +885,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case ALOLAN_GRAVELER_33:
 			return evolution (this, from:"Geodude", hp:HP100, type:LIGHTNING, retreatCost:3) {
@@ -906,7 +908,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 100, self
 					}
 				}
-				
+
 			};
 			case ALOLAN_GOLEM_GX_34:
 			return evolution (this, from:"Alolan Graveler", hp:HP250, type:LIGHTNING, retreatCost:4) {
@@ -935,18 +937,22 @@ public enum CrimsonInvasion implements CardInfo {
 					attackRequirement {
 					gxCheck()}
 					onAttack {
+<<<<<<< HEAD
+						gxPerform()
+=======
 						gcPerform()
+>>>>>>> e765d7d... crimson invasion
 						damage 100
 						 delayed {
 							before PLAY_FROM_HAND {
 								wcu "Heavy Rock GX prevent you playing this card"
-								prevent()	
+								prevent()
 							}
 							unregisterAfter 2
 						}
 					}
 				}
-				
+
 			};
 			case EMOLGA_35:
 			return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
@@ -973,7 +979,7 @@ public enum CrimsonInvasion implements CardInfo {
 						}
 					}
 				}
-				
+
 			};
 			case GASTLY_36:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -987,7 +993,7 @@ public enum CrimsonInvasion implements CardInfo {
 						directDamage 10,  opp.all.select()
 					}
 				}
-				
+
 			};
 			case HAUNTER_37:
 			return evolution (this, from:"Gastly", hp:HP070, type:PSYCHIC, retreatCost:1) {
@@ -1002,10 +1008,10 @@ public enum CrimsonInvasion implements CardInfo {
 					onAttack {
 						opp.all.findAll{it.numberOfDamageCounters}.each {
 							directDamage 20, it
-						}	
+						}
 					}
 				}
-				
+
 			};
 			case GENGAR_38:
 			return evolution (this, from:"Haunter", hp:HP130, type:PSYCHIC, retreatCost:0) {
@@ -1028,7 +1034,7 @@ public enum CrimsonInvasion implements CardInfo {
 						apply CONFUSED
 					}
 				}
-				
+
 			};
 			case MISDREAVUS_39:
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
@@ -1042,7 +1048,7 @@ public enum CrimsonInvasion implements CardInfo {
 						apply CONFUSED
 					}
 				}
-				
+
 			};
 			case MISMAGIUS_40:
 			return evolution (this, from:"Misdreavus", hp:HP110, type:PSYCHIC, retreatCost:1) {
@@ -1058,13 +1064,13 @@ public enum CrimsonInvasion implements CardInfo {
 							before PLAY_ENERGY{
 								if (ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY)){
 									wcu "Chaos Wheel prevents playing this card"
-									prevent()	
+									prevent()
 								}
 							}
 							before PLAY_TRAINER{
 								if (ef.cardToPlay.cardTypes.is(STADIUM) || ef.cardToPlay.cardTypes.is(POKEMON_TOOL)){
 									wcu "Chaos Wheel prevents playing this card"
-									prevent()	
+									prevent()
 								}
 							}
 						}
@@ -1078,7 +1084,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 20 * opp.hand.size()
 					}
 				}
-				
+
 			};
 			case SPOINK_41:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -1091,7 +1097,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case GRUMPIG_42:
 			return evolution (this, from:"Spoink", hp:HP120, type:PSYCHIC, retreatCost:2) {
@@ -1105,7 +1111,7 @@ public enum CrimsonInvasion implements CardInfo {
 								bc "Own Tempo prevents from being Confused."
 								prevent()
 							}
-						} 
+						}
 					}
 				}
 				move "Psych Up", {
@@ -1117,7 +1123,7 @@ public enum CrimsonInvasion implements CardInfo {
 						increasedBaseDamageNextTurn("Psych Up", hp(60))
 					}
 				}
-				
+
 			};
 			case CHIMECHO_43:
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
@@ -1128,9 +1134,39 @@ public enum CrimsonInvasion implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+<<<<<<< HEAD
+						deleyad{
+							before PLAY_FROM_HAND {
+<<<<<<< HEAD
+    			            	if(ef.cardToPlay.cardTypes.is(POKEMON)) {
+    			            		if(ef.cardToPlay.hasModernAbility()) {
+                    					wcu "Bell of Silence: Can't play Pokémon that has an Ability"
+                    					prevent()
+                 					 }
+                 				 }
+                			}
+                			unregisterAfter 2
+                			after SWITCH, defending, {unregister()}
+                			after EVOLVE, defending, {unregister()}
+                		}
+=======
+>>>>>>> e765d7d... crimson invasion
+=======
+    			    	if(ef.cardToPlay.cardTypes.is(POKEMON)) {
+    			      	if(ef.cardToPlay.hasModernAbility()) {
+                		wcu "Bell of Silence: Can't play Pokémon that has an Ability"
+                  		prevent()
+                 	}
+                }
+              }
+              unregisterAfter 2
+              after SWITCH, defending, {unregister()}
+              after EVOLVE, defending, {unregister()}
+        		}
+>>>>>>> 549a784... Crimson Invasion WIP 3
 					}
 				}
-				
+
 			};
 			case PUMPKABOO_44:
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
@@ -1139,12 +1175,14 @@ public enum CrimsonInvasion implements CardInfo {
 				move "Astonish", {
 					text "Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck."
 					energyCost P
-					attackRequirement {}
+					attackRequirement {
+						assert opp.hand
+					}
 					onAttack {
-						damage 0
+						astonish()
 					}
 				}
-				
+
 			};
 			case GOURGEIST_45:
 			return evolution (this, from:"Pumpkaboo", hp:HP120, type:PSYCHIC, retreatCost:3) {
@@ -1155,7 +1193,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply CONFUSED
 					}
 				}
 				move "Pumpkin Bomb", {
@@ -1163,10 +1201,17 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						def tar = my.all.findAll({it.cards.hasType(POKEMON_TOOL)})
+						if(tar){
+							tar.select(min:0, max:tar.size()).each {
+								it.discard()
+                                damage 40
+              }
+						}
 					}
 				}
-				
+
 			};
 			case SALANDIT_46:
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
@@ -1176,10 +1221,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply BURNED
 					}
 				}
-				
+
 			};
 			case SALAZZLE_47:
 			return evolution (this, from:"Salandit", hp:HP110, type:PSYCHIC, retreatCost:1) {
@@ -1187,9 +1232,12 @@ public enum CrimsonInvasion implements CardInfo {
 				move "Nasty Plot", {
 					text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
 					energyCost P
-					attackRequirement {}
+					attackRequirement {
+					assert deck.notEmpty
+					}
 					onAttack {
-						damage 0
+						deck.select(count: 2).moveTo(hidden: true, hand)
+						shuffleDeck()
 					}
 				}
 				move "Severe Poison", {
@@ -1197,10 +1245,11 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply POISONED
+						extraPoison 3
 					}
 				}
-				
+
 			};
 			case ORANGURU_48:
 			return basic (this, hp:HP110, type:PSYCHIC, retreatCost:2) {
@@ -1210,7 +1259,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						my.discard.search(count:3).moveTo(hand)
 					}
 				}
 				move "Zen Headbutt", {
@@ -1218,17 +1267,24 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
 					}
 				}
-				
+
 			};
 			case NIHILEGO_GX_49:
 			return basic (this, hp:HP180, type:PSYCHIC, retreatCost:2) {
 				weakness PSYCHIC
 				bwAbility "Empty Light", {
 					text "When you play this Pokémon from your hand onto your Bench during your turn, you may leave both Active Pokémon Confused and Poisoned."
-					actionA {
+					onActivate {reason ->
+						if(reason == PLAY_FROM_HAND && self.benched && confirm("Use Empty Light?")){
+							powerUsed()
+							apply CONFUSED
+							apply POISONED
+							apply CONFUSED, self
+							apply POISONED, self
+						}
 					}
 				}
 				move "Lock Up", {
@@ -1236,18 +1292,22 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost P, P, P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 120
+						cantRetreat defending
 					}
 				}
 				move "Symbiont GX", {
 					text "Add the top 2 cards of your opponent's deck to their Prize cards. (You can't use more than 1 GX attack in a game.)"
 					energyCost P, P, P
-					attackRequirement {}
+					attackRequirement {
+						gxCheck()
+					}
 					onAttack {
-						damage 0
+						gxPerform()
+						opp.deck.subList(0, 2).moveTo(opp.prizeAsList)
 					}
 				}
-				
+
 			};
 			case MANKEY_50:
 			return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
@@ -1257,10 +1317,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 3,{damage 10}
 					}
 				}
-				
+
 			};
 			case PRIMEAPE_51:
 			return evolution (this, from:"Mankey", hp:HP090, type:FIGHTING, retreatCost:1) {
@@ -1270,7 +1330,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Lucha Fight", {
@@ -1278,10 +1338,23 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 90
+						delayed{
+							before APPLY_ATTACK_DAMAGES {
+								if(ef.attacker.owner != self.owner) {
+              		bg.dm().each{
+                		if(it.to == self && it.dmg.notNoEffect && it.dmg.value) {
+	                   	bc "Lucha Fight +30"
+                   			it.dmg += hp(30)
+              			}
+               		}
+           			}
+							}
+						unregisterAfter 2
+						}
 					}
 				}
-				
+
 			};
 			case CUBONE_52:
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
@@ -1291,7 +1364,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {apply PARALYZED}
 					}
 				}
 				move "Headbutt", {
@@ -1299,17 +1372,27 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
-				
+
 			};
 			case REGIROCK_53:
 			return basic (this, hp:HP130, type:FIGHTING, retreatCost:3) {
 				weakness GRASS
 				bwAbility "Rock Peak Growl", {
 					text "Your Registeel's attacks do 10 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
-					actionA {
+					delayedA {
+						after PROCESS_ATTACK_EFFECTS, {
+            	if(ef.attacker.owner == self.owner && (ef.attacker.name=="Registeel")){
+              	bg.dm().each {
+                	if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                  	bc "Rock Peak Growl +10"
+                    it.dmg += hp(1)
+                  }
+                }
+              }
+						}
 					}
 				}
 				move "Tough Swing", {
@@ -1317,10 +1400,11 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 110
+						dontApplyResistance()
 					}
 				}
-				
+
 			};
 			case GASTRODON_54:
 			return evolution (this, from:"Shellos", hp:HP120, type:FIGHTING, retreatCost:3) {
@@ -1330,7 +1414,8 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						apply CONFUSED
 					}
 				}
 				move "Earthquake", {
@@ -1338,10 +1423,13 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 120
+						my.bench.each{
+							damage 10, it
+						}
 					}
 				}
-				
+
 			};
 			case STUFFUL_55:
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
@@ -1351,28 +1439,40 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
-				
+
 			};
 			case BEWEAR_56:
 			return evolution (this, from:"Stufful", hp:HP130, type:FIGHTING, retreatCost:3) {
 				weakness PSYCHIC
 				bwAbility "Fluffy", {
 					text "This Pokémon takes 30 less damage from the attacks of your opponent's non-[R] Pokémon (after applying Weakness and Resistance)."
-					actionA {
-					}
+					delayedA {
+          	before APPLY_ATTACK_DAMAGES, {
+            	if(ef.attacker.owner != self.owner && !(ef.attacker.types.contains(R))) {
+              	bg.dm().each{
+                	if(it.to == self && it.dmg.notNoEffect && it.dmg.value) {
+                   	bc "Fluffy -30"
+                    it.dmg -= hp(30)
+                  }
+               	}
+              }
+            }
+        	}
 				}
 				move "Cross-Cut", {
 					text "60+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 60 more damage."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						if(opp.active.cardTypes.is(EVOLUTION))
+							damage 60
 					}
 				}
-				
+
 			};
 			case BUZZWOLE_GX_57:
 			return basic (this, hp:HP190, type:FIGHTING, retreatCost:2) {
@@ -1382,7 +1482,8 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						damage 30, opp.bench.select()
 					}
 				}
 				move "Knuckle Impact", {
@@ -1390,18 +1491,20 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost F, F, F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 160
+						cantAttackNextTurn self
 					}
 				}
 				move "Absorption GX", {
 					text "40× damage. This attack does 40 damage for each of your remaining Prize cards. (You can't use more than 1 GX attack in a game.)"
 					energyCost F, F, F
-					attackRequirement {}
+					attackRequirement {gxCheck()}
 					onAttack {
-						damage 0
+						gxPerform()
+						damage 40 * my.prizeAsList.size()
 					}
 				}
-				
+
 			};
 			case HOUNDOUR_58:
 			return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
@@ -1412,7 +1515,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Darkness Fang", {
@@ -1420,10 +1523,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
-				
+
 			};
 			case HOUNDOOM_59:
 			return evolution (this, from:"Houndour", hp:HP110, type:DARKNESS, retreatCost:1) {
@@ -1434,7 +1537,8 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						apply BURNED
 					}
 				}
 				move "Puncturing Fangs", {
@@ -1442,10 +1546,11 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 90
+						dontApplyResistance()
 					}
 				}
-				
+
 			};
 			case DEINO_60:
 			return basic (this, hp:HP070, type:DARKNESS, retreatCost:2) {
@@ -1456,7 +1561,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Surprise Attack", {
@@ -1464,10 +1569,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 60}
 					}
 				}
-				
+
 			};
 			case ZWEILOUS_61:
 			return evolution (this, from:"Deino", hp:HP090, type:DARKNESS, retreatCost:2) {
@@ -1478,7 +1583,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Double Hit", {
@@ -1486,10 +1591,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2, {damage 60}
 					}
 				}
-				
+
 			};
 			case HYDREIGON_62:
 			return evolution (this, from:"Zweilous", hp:HP160, type:DARKNESS, retreatCost:2) {
@@ -1498,6 +1603,10 @@ public enum CrimsonInvasion implements CardInfo {
 				bwAbility "Weed Out", {
 					text "Once during your turn (before your attack), you may choose 3 of your Benched Pokémon. Then, discard your other Benched Pokémon."
 					actionA {
+						assert (my.bench.size()>3)
+						checkLastTurn()
+						powerUsed()
+						my.bench.select(count: my.bench.size()-3).discard()
 					}
 				}
 				move "Dark Destruction", {
@@ -1505,10 +1614,15 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 120
+						def tar = self.cards.filterByType(ENERGY).select()
+						if(tar){
+							tar.discard()
+							discardDefendingEnergy()
+						}
 					}
 				}
-				
+
 			};
 			case GUZZLORD_GX_63:
 			return basic (this, hp:HP210, type:DARKNESS, retreatCost:4) {
@@ -1519,7 +1633,12 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def list = my.deck.subList(0,5).findAll(cardTypeFilter(ENERGY))
+						def num = list.size()
+						if(num){
+							list.each{attachEnergy(self, it)}
+						}
+						my.deck.subList(0,5-num).discard()
 					}
 				}
 				move "Tyrannical Hole", {
@@ -1527,18 +1646,27 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost D, D, D, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 180
 					}
 				}
 				move "Glutton GX", {
 					text "100 damage. If your opponent's Pokémon is Knocked Out by damage from this attack, take 2 more Prize cards. (You can't use more than 1 GX attack in a game.)"
 					energyCost D, D, D, D, D
-					attackRequirement {}
+					attackRequirement {gxCheck()}
 					onAttack {
-						damage 0
+						damage 100
+						delayed {
+							def pcs = defending
+							after KNOCKOUT, pcs, {
+									bg.em().run(new TakePrize(self.owner, pcs))
+									bg.em().run(new TakePrize(self.owner, pcs))
+								}
+							}
+							unregisterAfter 1
+						}
 					}
 				}
-				
+
 			};
 			case MAWILE_64:
 			return basic (this, hp:HP080, type:METAL, retreatCost:1) {
@@ -1547,9 +1675,12 @@ public enum CrimsonInvasion implements CardInfo {
 				move "Call for Family", {
 					text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+					assert deck.notEmpty
+					}
 					onAttack {
-						damage 0
+						my.deck.search (max: 2, cardTypeFilter(BASIC)).moveTo(bench)
+						shuffleDeck()
 					}
 				}
 				move "Crunch", {
@@ -1557,10 +1688,11 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flip {discardDefendingEnergy()}
 					}
 				}
-				
+
 			};
 			case ARON_65:
 			return basic (this, hp:HP060, type:METAL, retreatCost:1) {
@@ -1571,7 +1703,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost M
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Metal Claw", {
@@ -1579,10 +1711,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
-				
+
 			};
 			case LAIRON_66:
 			return evolution (this, from:"Aron", hp:HP100, type:METAL, retreatCost:3) {
@@ -1593,7 +1725,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost M
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Hammer In", {
@@ -1601,10 +1733,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost M, M, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 80
 					}
 				}
-				
+
 			};
 			case AGGRON_67:
 			return evolution (this, from:"Lairon", hp:HP170, type:METAL, retreatCost:4) {
@@ -1615,7 +1747,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						my.bench.each{
+							damage it.numberOfDamageCounters
+						}
 					}
 				}
 				move "Buster Swing", {
@@ -1623,10 +1758,11 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost M, M, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 120
+						dontApplyResistance()
 					}
 				}
-				
+
 			};
 			case REGISTEEL_68:
 			return basic (this, hp:HP130, type:METAL, retreatCost:3) {
@@ -1637,7 +1773,8 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost M
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						attachEnergyFrom(my.discard, my.bench)
 					}
 				}
 				move "Iron Fist", {
@@ -1645,10 +1782,12 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 90
+						if(deck.search ("Regice", {it.name=="Regice"}))
+							heal 30, self
 					}
 				}
-				
+
 			};
 			case ESCAVALIER_69:
 			return evolution (this, from:"Karrablast", hp:HP120, type:METAL, retreatCost:2) {
@@ -1659,7 +1798,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost M
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 3,{damage 30}
 					}
 				}
 				move "Iron Tackle", {
@@ -1667,10 +1806,11 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 130
+						directDamage 30, self
 					}
 				}
-				
+
 			};
 			case KARTANA_GX_70:
 			return basic (this, hp:HP170, type:METAL, retreatCost:1) {
@@ -1678,7 +1818,11 @@ public enum CrimsonInvasion implements CardInfo {
 				resistance PSYCHIC, MINUS20
 				bwAbility "Slice Off", {
 					text "When you play this Pokémon from your hand onto your Bench during your turn, you may discard a Special Energy from your opponent's Pokémon."
-					actionA {
+					onActivate {reason ->
+						if(reason == PLAY_FROM_HAND && self.benched && confirm("Use Empty Light?")){
+							powerUsed()
+							discardDefendingSpecialEnergy()
+						}
 					}
 				}
 				move "Gale Blade", {
@@ -1686,18 +1830,24 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
+						assert bench.notEmpty
+						if(confirm("shuffle this Pokémon and all cards attached to it into your deck?")){
+							shuffleDeck(self.cards)
+							removePCS(self)
+						}
 					}
 				}
 				move "Blade GX", {
 					text "Take a Prize card. (You can't use more than 1 GX attack in a game.)"
 					energyCost M
-					attackRequirement {}
+					attackRequirement {gxCheck()}
 					onAttack {
-						damage 0
+						gxPerform()
+						TakePrize()
 					}
 				}
-				
+
 			};
 			case JIGGLYPUFF_71:
 			return basic (this, hp:HP060, type:FAIRY, retreatCost:1) {
@@ -1708,7 +1858,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Double Slap", {
@@ -1716,10 +1866,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost Y, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2,{damage 20}
 					}
 				}
-				
+
 			};
 			case WIGGLYTUFF_72:
 			return evolution (this, from:"Jigglypuff", hp:HP120, type:FAIRY, retreatCost:2) {
@@ -1730,7 +1880,8 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						apply ASLEEP
 					}
 				}
 				move "Punishing Slap", {
@@ -1738,10 +1889,12 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost Y, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						if(opp.all.findAll {it.cards.energyCount(D)})
+							damage 60
 					}
 				}
-				
+
 			};
 			case XERNEAS_73:
 			return basic (this, hp:HP130, type:FAIRY, retreatCost:2) {
@@ -1752,7 +1905,8 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						deck.search(cardTypeFilter(SUPPORTER)).moveTo(hand)
+						shuffleDeck()
 					}
 				}
 				move "Bright Horns", {
@@ -1760,10 +1914,11 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost Y, Y, Y
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 130
+						cantAttackNextTurn()
 					}
 				}
-				
+
 			};
 			case ALOLAN_EXEGGUTOR_GX_74:
 			return evolution (this, from:"Exeggcute", hp:HP220, type:DRAGON, retreatCost:3) {
@@ -1773,7 +1928,8 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def tar = opp.all.select()
+						damage 20 * self.energyCount(C), tar
 					}
 				}
 				move "Dragon Hammer", {
@@ -1781,18 +1937,28 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost G, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 120
+						apply CONFUSED
 					}
 				}
 				move "Tower-Go-Round GX", {
 					text "180 damage. Move any number of Energy from your Pokémon to your other Pokémon in any way you like. (You can't use more than 1 GX attack in a game.)"
 					energyCost G, C, C, C
-					attackRequirement {}
+					attackRequirement {gxCheck()}
 					onAttack {
-						damage 0
+						gxPerform()
+						damage 180
+						while(1){
+							def pl=(my.all.findAll {it.cards.filterByEnergyType(C) && it!=self})
+							if(!pl) break;
+							def tar=pl.select("Target for energy (cancel to stop)", false)
+							if(!tar) break;
+							def card=src.cards.select("Card to move").first()
+							energySwitch(self, tar, card)
+						}
 					}
 				}
-				
+
 			};
 			case JANGMO_O_75:
 			return basic (this, hp:HP060, type:DRAGON, retreatCost:1) {
@@ -1802,7 +1968,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Gentle Slap", {
@@ -1810,10 +1976,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost L, F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
-				
+
 			};
 			case HAKAMO_O_76:
 			return evolution (this, from:"Jangmo-o", hp:HP090, type:DRAGON, retreatCost:1) {
@@ -1823,7 +1989,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						whirlwind()
 					}
 				}
 				move "Dragon Claw", {
@@ -1831,10 +1997,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost L, F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
-				
+
 			};
 			case KOMMO_O_77:
 			return evolution (this, from:"Hakamo-o", hp:HP160, type:DRAGON, retreatCost:2) {
@@ -1844,7 +2010,9 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						if(my.bench.size() < opp.bench.size())
+							damage 90
 					}
 				}
 				move "Clanging Scales", {
@@ -1852,17 +2020,22 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost L, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 130
+						increaseDamageNextTurn(hp(30),thisMove)
 					}
 				}
-				
+
 			};
 			case MILTANK_78:
 			return basic (this, hp:HP100, type:COLORLESS, retreatCost:2) {
 				weakness FIGHTING
 				bwAbility "Moo Moo Ale", {
 					text "As long as this Pokémon is your Active Pokémon, whenever you attach an Energy card from your hand to 1 of your Pokémon, heal 90 damage from that Pokémon."
-					actionA {
+					delayedA {
+						after PLAY_FROM_HAND{
+							if(ef.cardToPlay.cardTypes.is(ENERGY) && bg.currentTurn == self.owner)
+							 	heal 90, ef.target
+						}
 					}
 				}
 				move "Sitdown Splash", {
@@ -1870,10 +2043,11 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						flip {damage 30}
 					}
 				}
-				
+
 			};
 			case SWABLU_79:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -1884,10 +2058,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
-				
+
 			};
 			case ALTARIA_80:
 			return evolution (this, from:"Swablu", hp:HP090, type:COLORLESS, retreatCost:1) {
@@ -1898,7 +2072,13 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {
+							deck.search ({it.asPokemonCard().types.contains(N)}).each {
+								deck.remove(it)
+								benchPCS(it)
+							}
+
+						}
 					}
 				}
 				move "Cotton Guard", {
@@ -1906,10 +2086,11 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						decreasedBaseDamageNextTurn(hp(30),thisMove)
 					}
 				}
-				
+
 			};
 			case STARLY_81:
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
@@ -1920,7 +2101,8 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						opp.hand.showToMe("Opponent's hand")
+            opp.hand.shuffle()
 					}
 				}
 				move "Flap", {
@@ -1928,10 +2110,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
-				
+
 			};
 			case STARAVIA_82:
 			return evolution (this, from:"Starly", hp:HP080, type:COLORLESS, retreatCost:1) {
@@ -1942,7 +2124,7 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Wing Attack", {
@@ -1950,10 +2132,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
 					}
 				}
-				
+
 			};
 			case STARAPTOR_83:
 			return evolution (this, from:"Staravia", hp:HP140, type:COLORLESS, retreatCost:1) {
@@ -1964,7 +2146,8 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						cantRetreat defending
 					}
 				}
 				move "Sky Hunting", {
@@ -1972,28 +2155,44 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 120
+						afterDamage{
+							delayed{
+								before KNOCKOUT, {
+									if(my.bench && ef.pokemonToBeKnockedOut.owner==self.owner.opposite){
+											sw self, my.bench.select("Select the Pokémon to switch with Staraptor")
+									}
+								}
+							}
+						}
 					}
 				}
-				
+
 			};
 			case REGIGIGAS_84:
 			return basic (this, hp:HP180, type:COLORLESS, retreatCost:4) {
 				weakness FIGHTING
 				bwAbility "Seal of Antiquity", {
 					text "This Pokémon can't attack unless Regirock, Regice, and Registeel are on your Bench."
-					actionA {
+					delayedA {
 					}
 				}
 				move "Giant Stomp", {
 					text "160 damage. Discard any Stadium card in play."
 					energyCost C, C, C, C, C
-					attackRequirement {}
+					attackRequirement {
+						assert my.bench.findAll{it.name=='Regirock'}
+						assert my.bench.findAll{it.name=='Regice'}
+						assert my.bench.findAll{it.name=='Registeel'}
+					}
 					onAttack {
-						damage 0
+						damage 160
+						afterDamage{
+							discard bg.stadiumInfoStruct.stadiumCard
+						}
 					}
 				}
-				
+
 			};
 			case MINCCINO_85:
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
@@ -2003,10 +2202,11 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {apply PARALYZED}
 					}
 				}
-				
+
 			};
 			case CINCCINO_86:
 			return evolution (this, from:"Minccino", hp:HP090, type:COLORLESS, retreatCost:1) {
@@ -2016,10 +2216,16 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def tar = my.discard.select(count : 2)
+						if(oppConfirm("allow your opponent to put those cards in their hand?")){
+							tar.moveTo(my.hand)
+						}
+						else{
+							damage 80
+						}
 					}
 				}
-				
+
 			};
 			case BUNNELBY_87:
 			return basic (this, hp:HP070, type:COLORLESS, retreatCost:2) {
@@ -2029,10 +2235,10 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
-				
+
 			};
 			case DIGGERSBY_88:
 			return evolution (this, from:"Bunnelby", hp:HP130, type:COLORLESS, retreatCost:3) {
@@ -2042,7 +2248,8 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						flip {preventAllEffectsNextTurn()}
 					}
 				}
 				move "Hammer Arm", {
@@ -2050,10 +2257,11 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 90
+						opp.deck.first().discard()
 					}
 				}
-				
+
 			};
 			case TYPE:_NULL_89:
 			return basic (this, hp:HP110, type:COLORLESS, retreatCost:2) {
@@ -2063,7 +2271,8 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						decreasedBaseDamageNextTurn(hp(30), thisMove)
 					}
 				}
 				move "Slashing Claw", {
@@ -2071,17 +2280,20 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
 					}
 				}
-				
+
 			};
 			case SILVALLY_GX_90:
 			return evolution (this, from:"Type: Null", hp:HP210, type:COLORLESS, retreatCost:2) {
 				weakness FIGHTING
 				bwAbility "Gyro Unit", {
 					text "Your Basic Pokémon in play have no Retreat Cost."
-					actionA {
+					getterA (GET_RETREAT_COST) {h->
+						if(h.effect.target.owner == self.owner && h.effect.target.cardTypes.is(BASIC)) {
+							h.object = 0
+						}
 					}
 				}
 				move "Turbo Drive", {
@@ -2089,18 +2301,20 @@ public enum CrimsonInvasion implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 120
+						attachEnergyFrom(type: BASIC_ENERGY, my.discard, my.bench)
 					}
 				}
 				move "Rebel GX", {
 					text "50× damage. This attack does 50 damage for each of your opponent's Benched Pokémon. (You can't use more than 1 GX attack in a game.)"
 					energyCost C, C, C
-					attackRequirement {}
+					attackRequirement {gxCheck()}
 					onAttack {
-						damage 0
+						gxPerform()
+						damage 50*opp.bench.size()
 					}
 				}
-				
+
 			};
 			case COUNTER_CATCHER_91:
 			return itemCard (this) {
@@ -2124,8 +2338,19 @@ public enum CrimsonInvasion implements CardInfo {
 			return stadium (this) {
 				text "The attacks of [D] Pokémon and [N] Pokémon (both yours and your opponent's) do 10 more damage to the opponent's Active Pokémon (before applying Weakness and Resistance).\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
 				onPlay {
+					eff = delayed {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each{
+								if((it.from.types.contains(D) || it.from.types.contains(N)) & it.dmg.value && it.notNoEffect && it.from.owner != it.to.owner){
+									bc "Devoured Field +10"
+									it.dmg += hp(10)
+								}
+							}
+						}
+					}
 				}
 				onRemoveFromPlay{
+					eff.unregister()
 				}
 			};
 			case FIGHTING_MEMORY_94:
@@ -2220,7 +2445,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case ALOLAN_GOLEM_GX_102:
 			return copy (ALOLAN_GOLEM_GX_34, this)
@@ -2251,7 +2476,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case NIHILEGO_GX_103:
 			return copy (NIHILEGO_GX_49, this)
@@ -2278,7 +2503,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case BUZZWOLE_GX_104:
 			return copy (BUZZWOLE_GX_57, this)
@@ -2308,7 +2533,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case GUZZLORD_GX_105:
 			return copy (GUZZLORD_GX_63, this)
@@ -2339,7 +2564,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case KARTANA_GX_106:
 			return copy (KARTANA_GX_70, this)
@@ -2367,7 +2592,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case ALOLAN_EXEGGUTOR_GX_107:
 			return copy (ALOLAN_EXEGGUTOR_GX_74, this)
@@ -2397,7 +2622,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case SILVALLY_GX_108:
 			return copy (SILVALLY_GX_90, this)
@@ -2424,7 +2649,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case GLADION_109:
 			return copy (GLADION_95, this)
@@ -2479,7 +2704,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ALOLAN_GOLEM_GX_113:
 			return copy (ALOLAN_GOLEM_GX_34, this)
@@ -2510,7 +2735,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case NIHILEGO_GX_114:
 			return copy (NIHILEGO_GX_49, this)
@@ -2537,7 +2762,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case BUZZWOLE_GX_115:
 			return copy (BUZZWOLE_GX_57, this)
@@ -2567,7 +2792,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case GUZZLORD_GX_116:
 			return copy (GUZZLORD_GX_63, this)
@@ -2598,7 +2823,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case KARTANA_GX_117:
 			return copy (KARTANA_GX_70, this)
@@ -2626,7 +2851,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case ALOLAN_EXEGGUTOR_GX_118:
 			return copy (ALOLAN_EXEGGUTOR_GX_74, this)
@@ -2656,7 +2881,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case SILVALLY_GX_119:
 			return copy (SILVALLY_GX_90, this)
@@ -2683,7 +2908,7 @@ public enum CrimsonInvasion implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			}*/;
 			case COUNTER_CATCHER_120:
 			return copy (COUNTER_CATCHER_91, this)
@@ -2736,5 +2961,5 @@ public enum CrimsonInvasion implements CardInfo {
 			return null;
 		}
 	}
-	
+
 }
