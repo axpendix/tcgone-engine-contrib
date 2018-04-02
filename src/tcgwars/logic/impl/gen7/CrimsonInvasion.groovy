@@ -1629,15 +1629,17 @@ public enum CrimsonInvasion implements CardInfo {
         move "Glutton GX", {
           text "100 damage. If your opponent's Pokémon is Knocked Out by damage from this attack, take 2 more Prize cards. (You can't use more than 1 GX attack in a game.)"
           energyCost D, D, D, D, D
-          attackRequirement {gxCheck()}
+          attackRequirement {
+            gxCheck()
+          }
           onAttack {
             damage 100
+            gxPerform()
             delayed {
               def pcs = defending
               after KNOCKOUT, pcs, {
-                  bg.em().run(new TakePrize(self.owner, pcs))
-                  bg.em().run(new TakePrize(self.owner, pcs))
-                }
+                bg.em().run(new TakePrize(self.owner, pcs))
+                bg.em().run(new TakePrize(self.owner, pcs))
               }
               unregisterAfter 1
             }
@@ -1653,7 +1655,7 @@ public enum CrimsonInvasion implements CardInfo {
           text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-          assert deck.notEmpty
+            assert deck.notEmpty
           }
           onAttack {
             my.deck.search (max: 2, cardTypeFilter(BASIC)).moveTo(bench)
