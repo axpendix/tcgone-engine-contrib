@@ -418,12 +418,13 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Sap Sipper", {
           text "This Pokémon's attacks do 80 more damage to your opponent's [G] Pokémon (before applying Weakness and Resistance)."
           delayedA {
-                   after PROCESS_ATTACK_EFFECTS, {
-                      if(self.active && ef.defending.types.contains(G)){
-                          it.dmg += hp(80)
-                      }
-                    }
+            after PROCESS_ATTACK_EFFECTS, {
+              if(self.active && ef.defending.types.contains(G)){
+                  it.dmg += hp(80)
+              }
+            }
           }
+        }
         move "Horn Leech", {
           text "80 damage. Heal 20 damage from this Pokémon."
           energyCost G, C, C
