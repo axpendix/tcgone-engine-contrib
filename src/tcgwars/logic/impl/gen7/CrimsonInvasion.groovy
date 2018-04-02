@@ -345,7 +345,7 @@ public enum CrimsonInvasion implements CardInfo {
             checkLastTurn()
             powerUsed()
             my.hand.findAll{it.name=='Shelmet'}.select().first().discard()
-            def sel=self.owner.pbg.deck.select(min:0, "Shell On",
+            def sel=self.owner.pbg.deck.search(min:0, "Shell On : search a pokemon evolving from Karrablast",
                         {it.cardTypes.is(EVOLUTION) && it.predecessor==self.name}, self.owner)
             if(sel){
               evolve(self, sel.first(), OTHER)
@@ -444,7 +444,11 @@ public enum CrimsonInvasion implements CardInfo {
           energyCost -
           attackRequirement {}
           onAttack {
-            //TODO :
+            //TODO : more efecient way?
+            opp.active.cards.filterByType(ENERGY).each{
+                if(my.discard.findAll(cardTypeFilter(FIRE)))
+                  my.discard.findAll(cardTypeFilter(FIRE))).select().moveTo(discard,my.all.select())
+            }
           }
         }
         move "Burning Bonemerang", {
@@ -481,7 +485,7 @@ public enum CrimsonInvasion implements CardInfo {
           energyCost R, C, C
           attackRequirement {}
           onAttack {
-            flipUntilTails{damage 30}
+            flipUntilTails{damage 80}
           }
         }
         move "Searing Flame", {
@@ -538,9 +542,11 @@ public enum CrimsonInvasion implements CardInfo {
           text "As long as this Pokémon is on your Bench, prevent all damage done to this Pokémon by attacks (both yours and your opponent's)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              if(!self.active){
-                bc "Submerge prevent all damage"
-                it.dmg=hp(0)
+              bg.dm().each{
+                if(!self.active){
+                  bc "Submerge prevent all damage"
+                  it.dmg=hp(0)
+                }
               }
             }
           }
@@ -595,7 +601,8 @@ public enum CrimsonInvasion implements CardInfo {
             gxPerform()
             opp.all.each{
               //TODO : check if the pokemon has energy attached?
-              it.cards.filterByType(ENERGY).select("Discard").discard()
+              if(it.cards.filterByType(ENERGY))
+                it.cards.filterByType(ENERGY).select("Discard").discard()
             }
           }
         }
@@ -657,6 +664,15 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             damage 90
             //TODO : add damages with the damges counter put on the pokemon
+            def dcc = 0
+            while(dcc < 9){
+              if(confirm("Add a damage counter to Mamoswine for 10 more damage (up to 9, you have already $dcc)"))
+                dcc += 1
+            }
+            if(dcc){
+              damage 10*dcc
+              damage 10*dcc,self
+            }
           }
         }
 
@@ -757,7 +773,7 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             def tar = opp.bench.findAll {it.numberOfDamageCounters}.select()
             tar.cards.moveTo(opp.deck)
-                  removePCS(tar) //what is removePCS?
+            removePCS(tar) //what is removePCS?
           }
         }
         move "Ocean Cyclone", {
@@ -1014,8 +1030,9 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Gnawing Curse", {
           text "Whenever your opponent attaches an Energy card from their hand to 1 of their Pokémon, put 2 damage counters on that Pokémon."
           delayedA {
-            after ATTACH_ENERGY, {
-              //TODO : put damage to the pokemon with energy attached
+            after PLAY_FROM_HAND, {
+              if(ef.reason == ATTACH_ENERGY)
+                directDamage 20, ef.to
             }
           }
         }
@@ -1099,11 +1116,12 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Own Tempo", {
           text "This Pokémon can't be Confused."
           delayedA {
-            before APPLY_SPECIAL_CONDITION, {
+            after APPLY_SPECIAL_CONDITION, {
               if(self.active){
-                //TODO : check get confusion
-                bc "Own Tempo prevents from being Confused."
-                prevent()
+                if(self.isSPC(CONFUSED)){
+                  bc "Own Tempo prevents from being Confused."
+                  clearSpecialCondition(self, SRC_ABILITY, [CONFUSED])
+                }
               }
             }
           }
