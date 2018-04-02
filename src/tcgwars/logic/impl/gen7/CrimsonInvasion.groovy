@@ -848,10 +848,11 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Surge Surfer", {
           text "If there is any Stadium card in play, this Pokémon has no Retreat Cost."
           getterA (GET_RETREAT_COST, self) {h->
-                    if(bg.stadiumInfoStruct) {
-                      h.object = 0
-                  }
+            if(bg.stadiumInfoStruct) {
+              h.object = 0
+            }
           }
+        }
         move "Psychic", {
           text "70+ damage. This attack does 20 more damage times the amount of Energy attached to your opponent's Active Pokémon."
           energyCost C, C, C
