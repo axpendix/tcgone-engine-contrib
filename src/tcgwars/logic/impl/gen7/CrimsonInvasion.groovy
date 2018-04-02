@@ -418,8 +418,8 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Sap Sipper", {
           text "This Pokémon's attacks do 80 more damage to your opponent's [G] Pokémon (before applying Weakness and Resistance)."
           delayedA {
-            after PROCESS_ATTACK_EFFECTS, {
-              if(self.active && ef.defending.types.contains(G)){
+            before PROCESS_ATTACK_EFFECTS, {
+              if(self.active && opp.active.types.contains(G)){
                   it.dmg += hp(80)
               }
             }
@@ -700,7 +700,6 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             delayed{
               before APPLY_ATTACK_DAMAGES{
-                //TODO : remove all effects of the attack if prevent does not work
                 flip {prevent()} //is prevent working on attack?
               }
             }
@@ -793,9 +792,27 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Iceberg Shield", {
           text "If you have Regirock in play, prevent all effects of attacks, including damage, done to this Pokémon by your opponent's Stage 2 Pokémon."
           delayedA {
-            before APPLY_ATTACK_DAMAGES, {
-              if(self.owner.pbg.all.findAll {it.name=="Regirock"} && opp.active.cardTypes.is(STAGE2)) {
-                prevent() //is prevent working?
+            if(self.owner.pbg.all.findAll {it.name=="Regirock"}) {
+                before null, self, Source.ATTACK, {
+          				if (opp.active.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+          					bc "Safeguard prevents effect"
+          					prevent()
+          				}
+          			}
+          			before APPLY_ATTACK_DAMAGES, {
+          				bg.dm().each {
+          					if(it.to == self && it.notNoEffect && opp.active.is(STAGE2) ){
+          						it.dmg = hp(0)
+          						bc "Safeguard prevents damage"
+          					}
+          				}
+          			}
+          			after ENERGY_SWITCH, {
+          				def efs = (ef as EnergySwitch)
+          				if(opp.active.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+          					discard efs.card
+          				}
+          			}
               }
             }
           }
