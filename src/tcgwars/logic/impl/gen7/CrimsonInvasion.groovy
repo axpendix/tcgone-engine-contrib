@@ -419,8 +419,10 @@ public enum CrimsonInvasion implements CardInfo {
           text "This Pokémon's attacks do 80 more damage to your opponent's [G] Pokémon (before applying Weakness and Resistance)."
           delayedA {
             before PROCESS_ATTACK_EFFECTS, {
-              if(self.active && opp.active.types.contains(G)){
-                  it.dmg += hp(80)
+              bg.dmg.each{
+                if(ef.attacker.owner == self.owner && opp.active.types.contains(G)){
+                    it.dmg += hp(80)
+                }
               }
             }
           }
@@ -653,7 +655,7 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             damage 60
             flip 2,{
-              damage 20
+              damage 30
             }
           }
         }
@@ -698,11 +700,7 @@ public enum CrimsonInvasion implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            delayed{
-              before APPLY_ATTACK_DAMAGES{
-                flip {prevent()} //is prevent working on attack?
-              }
-            }
+            sandAttack()
           }
         }
         move "Special Artillery", {
@@ -1090,13 +1088,13 @@ public enum CrimsonInvasion implements CardInfo {
             damage 30
             delayed{
               before PLAY_ENERGY{
-                if (ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY)){
+                if (ef.reason == PLAY_FROM_HAND && ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY)){
                   wcu "Chaos Wheel prevents playing this card"
                   prevent()
                 }
               }
               before PLAY_TRAINER{
-                if (ef.cardToPlay.cardTypes.is(STADIUM) || ef.cardToPlay.cardTypes.is(POKEMON_TOOL)){
+                if (ef.reason == PLAY_FROM_HAND && ef.cardToPlay.cardTypes.is(STADIUM) || ef.cardToPlay.cardTypes.is(POKEMON_TOOL)){
                   wcu "Chaos Wheel prevents playing this card"
                   prevent()
                 }
@@ -1173,8 +1171,6 @@ public enum CrimsonInvasion implements CardInfo {
                 }
               }
               unregisterAfter 2
-              after SWITCH, defending, {unregister()}
-              after EVOLVE, defending, {unregister()}
             }
           }
         }
@@ -1217,7 +1213,7 @@ public enum CrimsonInvasion implements CardInfo {
             def tar = my.all.findAll({it.cards.hasType(POKEMON_TOOL)})
             if(tar){
               tar.select(min:0, max:tar.size()).each {
-                it.discard()
+                it.find(cardTypeFilter(POKEMON_TOOL)).discard()
                 damage 40
               }
             }
@@ -1248,7 +1244,7 @@ public enum CrimsonInvasion implements CardInfo {
             assert deck.notEmpty
           }
           onAttack {
-            deck.select(count: 2).moveTo(hidden: true, hand)
+            deck.select(max: 2).moveTo(hidden: true, hand)
             shuffleDeck()
           }
         }
@@ -1269,9 +1265,11 @@ public enum CrimsonInvasion implements CardInfo {
         move "Fixer of the Forest", {
           text "Put 3 Pokémon Tool cards from your discard pile into your hand."
           energyCost P
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard.find(cardTypeFilter(POKEMON_TOOL))
+          }
           onAttack {
-            my.discard.search(count:3).moveTo(hand)
+            my.discard.search(count:3,"Search for 3 pokemon tool",cardTypeFilter(POKEMON_TOOL)).moveTo(hand)
           }
         }
         move "Zen Headbutt", {
@@ -1363,6 +1361,8 @@ public enum CrimsonInvasion implements CardInfo {
                 }
               }
               unregisterAfter 2
+              after EVOLVE,defending, {unregister()}
+              after SWITCH,defending, {unregister()}
             }
           }
         }
@@ -1835,7 +1835,10 @@ public enum CrimsonInvasion implements CardInfo {
           onActivate {reason ->
             if(reason == PLAY_FROM_HAND && self.benched && confirm("Use Empty Light?")){
               powerUsed()
-              discardDefendingSpecialEnergy()
+              def tar = opp.all.findAll({it.cards.filterByType(SPECIAL_ENERGY)})
+              if(tar){
+                tar.select().cards.filterByType(SPECIAL_ENERGY).select().discard()
+              }
             }
           }
         }
@@ -1929,7 +1932,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 130
-            cantAttackNextTurn()
+            cantUseAttack thisMove, self
           }
         }
 
@@ -2189,16 +2192,19 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Seal of Antiquity", {
           text "This Pokémon can't attack unless Regirock, Regice, and Registeel are on your Bench."
           delayedA {
+            before CHECK_ATTACK_REQUIREMENTS{
+              if(ef.attacker == self && !(my.bench.findAll({it.name=="Regirock"}) && my.bench.findAll({it.name=="Regice"}) && my.bench.findAll({it.name=="Registeel"})))
+              {
+                wcu "Seal of Antiquity prevent Regigigas from attacking"
+                prevent()
+              }
+            }
           }
         }
         move "Giant Stomp", {
           text "160 damage. Discard any Stadium card in play."
           energyCost C, C, C, C, C
-          attackRequirement {
-            assert my.bench.findAll{it.name=='Regirock'}
-            assert my.bench.findAll{it.name=='Regice'}
-            assert my.bench.findAll{it.name=='Registeel'}
-          }
+          attackRequirement {}
           onAttack {
             damage 160
             afterDamage{
@@ -2228,7 +2234,9 @@ public enum CrimsonInvasion implements CardInfo {
         move "Amazing Plea", {
           text "Choose 2 cards from your discard pile. Then, ask your opponent if you may put them into your hand. If no, this attack does 80 damage to your opponent's Active Pokémon."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard
+          }
           onAttack {
             def tar = my.discard.select(count : 2)
             if(oppConfirm("allow your opponent to put those cards in their hand?")){
@@ -2382,7 +2390,7 @@ public enum CrimsonInvasion implements CardInfo {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [F] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
         def eff
         onPlay {reason->
-          eff=getter GET_TYPE, self {h ->
+          eff=getter GET_POKEMON_TYPE, self {h ->
             if(h.effect.target.name == "Silvally-GX")
               h.object = FIGHTING
           }
@@ -2409,8 +2417,8 @@ public enum CrimsonInvasion implements CardInfo {
       return supporter (this) {
         text "Put 2 in any combination of Supporter and Stadium cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          my.deck.search(cardTypeFilter(SUPPORTER)).select().moveTo(hand)
-          my.deck.search(cardTypeFilter(STADIUM)).select().moveTo(hand)
+          my.deck.search(cardTypeFilter(SUPPORTER)).moveTo(hand)
+          my.deck.search(cardTypeFilter(STADIUM)).moveTo(hand)
           shuffleDeck()
         }
         playRequirement{
@@ -2452,6 +2460,7 @@ public enum CrimsonInvasion implements CardInfo {
       return stadium (this) {
         text "Special Conditions are not removed when Pokémon (both yours and your opponent's) evolve or devolve.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
         onPlay {
+          //TODO : not remove special condition upon (d)evolving
         }
         onRemoveFromPlay{
         }
@@ -2460,6 +2469,7 @@ public enum CrimsonInvasion implements CardInfo {
       return specialEnergy (this) {
         text "null"
         onPlay {reason->
+          //TODO : add 2 rainbow energy when high on prizes
         }
         onRemoveFromPlay {
         }
@@ -2724,12 +2734,15 @@ public enum CrimsonInvasion implements CardInfo {
       return supporter (this) {
         text "Search your deck for up to 2 Pokémon-GX, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
+          my.deck.search(max : 2, "Search your deck for up to 2 Pokémon-GX", cardTypeFilter(POKEMON_GX)).moveTo(my.hand)
         }
         playRequirement{
+          assert my.deck
         }
       };
       case GYARADOS_GX_112:
-      return evolution (this, from:"Magikarp", hp:HP240, type:WATER, retreatCost:4) {
+      return copy (GYARADOS_GX_18, this)
+      /*evolution (this, from:"Magikarp", hp:HP240, type:WATER, retreatCost:4) {
         weakness LIGHTNING
         move "Waterfall", {
           text "70 damage."
@@ -2756,7 +2769,7 @@ public enum CrimsonInvasion implements CardInfo {
           }
         }
 
-      };
+      }*/;
       case ALOLAN_GOLEM_GX_113:
       return copy (ALOLAN_GOLEM_GX_34, this)
       /*evolution (this, from:"Alolan Graveler", hp:HP250, type:LIGHTNING, retreatCost:4) {
