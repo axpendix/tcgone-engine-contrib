@@ -806,7 +806,6 @@ public enum UltraPrism implements CardInfo {
         weakness METAL
         move "Fury Swipes", {
           text "10× damage. Flip 3 coins. This attack does 10 damage for each heads."
-          energyCost -
           attackRequirement {}
           onAttack {
             flip 3,{damage 10}
@@ -819,7 +818,6 @@ public enum UltraPrism implements CardInfo {
         weakness METAL
         move "Spike Armor", {
           text "30 damage. During your opponent’s next turn, if this Pokémon is damaged by an attack (even if this Pokémon is Knocked Out), put 6 damage counters on the Attacking Pokémon."
-          energyCost -
           attackRequirement {}
           onAttack {
             damage 30
@@ -850,7 +848,6 @@ public enum UltraPrism implements CardInfo {
         weakness METAL
         move "Roar", {
           text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
-          energyCost -
           attackRequirement {}
           onAttack {
             whirlwind()
@@ -1934,7 +1931,6 @@ public enum UltraPrism implements CardInfo {
         resistance PSYCHIC, MINUS20
         move "Iron Head", {
           text "10× damage. Flip a coin until you get tails. This attack does 10 damage for each heads."
-          energyCost -
           attackRequirement {}
           onAttack {
             flipUntilTails{damage 10}
@@ -1948,7 +1944,6 @@ public enum UltraPrism implements CardInfo {
         resistance PSYCHIC, MINUS20
         move "Gold Rush", {
           text "30× damage. Discard any number of [M] Energy cards from your hand. This attack does 30 damage for each card you discarded in this way."
-          energyCost -
           attackRequirement {
             assert my.hand.filterByEnergyType(M)
           }
@@ -2296,7 +2291,6 @@ public enum UltraPrism implements CardInfo {
         weakness FAIRY
         move "Exeggutor’s Paradise", {
           text "For each of your Benched Exeggcute, search your deck for an Alolan Exeggutor or Alolan Exeggutor-GX and put it onto that Exeggcute to evolve it. Then, shuffle your deck."
-          energyCost -
           attackRequirement {}
           onAttack {
             damage 0

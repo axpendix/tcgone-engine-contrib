@@ -900,7 +900,6 @@ public enum CrimsonInvasion implements CardInfo {
         resistance METAL, MINUS20
         move "Defense Curl", {
           text "Flip a coin. If heads, prevent all damage done to this Pokémon by attacks during your opponent's next turn."
-          energyCost -
           attackRequirement {}
           onAttack {
             flip{preventAllEffectsNextTurn()}
