@@ -1094,7 +1094,7 @@ public enum CrimsonInvasion implements CardInfo {
                 }
               }
               before PLAY_TRAINER{
-                if (ef.reason == PLAY_FROM_HAND && ef.cardToPlay.cardTypes.is(STADIUM) || ef.cardToPlay.cardTypes.is(POKEMON_TOOL)){
+                if (ef.reason == PLAY_FROM_HAND && (ef.cardToPlay.cardTypes.is(STADIUM) || ef.cardToPlay.cardTypes.is(POKEMON_TOOL))){
                   wcu "Chaos Wheel prevents playing this card"
                   prevent()
                 }
@@ -2447,7 +2447,7 @@ public enum CrimsonInvasion implements CardInfo {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [P] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
         def eff
         onPlay {reason->
-          eff=getter GET_TYPE, self {h ->
+          eff=getter GET_POKEMON_TYPE, self {h ->
             if(h.effect.target.name == "Silvally-GX")
               h.object = PSYCHIC
           }
@@ -3007,7 +3007,7 @@ public enum CrimsonInvasion implements CardInfo {
         }
       }*/;
       case WARP_ENERGY_123:
-      return copy (COUNTER_ENERGY_100, this)
+      return copy (Aquapolis.WARP_ENERGY_147, this)
       /*specialEnergy (this) {
         text "null"
         onPlay {reason->
