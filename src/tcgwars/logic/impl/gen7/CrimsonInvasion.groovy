@@ -833,7 +833,7 @@ public enum CrimsonInvasion implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            heal 30
+            heal 30, self
           }
         }
         move "Mud-Slap", {
@@ -964,12 +964,13 @@ public enum CrimsonInvasion implements CardInfo {
           text "100 damage. Your opponent can't play any cards from their hand during their next turn. (You can't use more than 1 GX attack in a game.)"
           energyCost L, L, C, C
           attackRequirement {
-          gxCheck()}
+            gxCheck()
+          }
           onAttack {
             gxPerform()
             damage 100
              delayed {
-              before PLAY_FROM_HAND {
+              before PLAY_FROM_HAND, {
                 wcu "Heavy Rock GX prevent you playing this card"
                 prevent()
               }
@@ -1087,13 +1088,13 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             damage 30
             delayed{
-              before PLAY_ENERGY{
+              before PLAY_ENERGY, {
                 if (ef.reason == PLAY_FROM_HAND && ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY)){
                   wcu "Chaos Wheel prevents playing this card"
                   prevent()
                 }
               }
-              before PLAY_TRAINER{
+              before PLAY_TRAINER, {
                 if (ef.reason == PLAY_FROM_HAND && (ef.cardToPlay.cardTypes.is(STADIUM) || ef.cardToPlay.cardTypes.is(POKEMON_TOOL))){
                   wcu "Chaos Wheel prevents playing this card"
                   prevent()
@@ -1162,7 +1163,7 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             damage 10
             delayed {
-              before PLAY_FROM_HAND {
+              before PLAY_FROM_HAND, {
                 if(ef.cardToPlay.cardTypes.is(POKEMON)) {
                   if(ef.cardToPlay.hasModernAbility()) {
                       wcu "Bell of Silence: Can't play Pokémon that has an Ability"
@@ -1350,7 +1351,7 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             damage 90
             delayed{
-              before APPLY_ATTACK_DAMAGES {
+              before APPLY_ATTACK_DAMAGES, {
                 if(ef.attacker.owner != self.owner) {
                   bg.dm().each{
                     if(it.to == self && it.dmg.notNoEffect && it.dmg.value) {
@@ -2192,7 +2193,7 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Seal of Antiquity", {
           text "This Pokémon can't attack unless Regirock, Regice, and Registeel are on your Bench."
           delayedA {
-            before CHECK_ATTACK_REQUIREMENTS{
+            before CHECK_ATTACK_REQUIREMENTS, {
               if(ef.attacker == self && !(my.bench.findAll({it.name=="Regirock"}) && my.bench.findAll({it.name=="Regice"}) && my.bench.findAll({it.name=="Registeel"})))
               {
                 wcu "Seal of Antiquity prevent Regigigas from attacking"
@@ -2354,7 +2355,7 @@ public enum CrimsonInvasion implements CardInfo {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to discards Energy for its Retreat Cost, put that Energy into your hand instead of the discard pile.\nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {reason->
           eff = delayed {
-            before (RETREAT,self) {
+            before (RETREAT,self), {
               if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.cards.filterByType(ENERGY)) {
                 bc "dashing pouch activates"
                 self.cards.filterByType(ENERGY).moveTo(my.hand)
@@ -2404,7 +2405,7 @@ public enum CrimsonInvasion implements CardInfo {
         text "Look at your face-down Prize cards and put 1 of them into your hand. Then, shuffle this Gladion into your remaining Prize cards and put them back face down. If you didn't play this Gladion from your hand, it does nothing.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
           delayed {
-            before PLAY_FROM_HAND{
+            before PLAY_FROM_HAND, {
               my.prizeAsList.select(hidden: false, "Prize to replace with Gladion").moveTo(my.hand)
               this.moveTo(my.prizeAsList)
             }
