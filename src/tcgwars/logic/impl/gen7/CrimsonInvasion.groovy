@@ -1243,7 +1243,7 @@ public enum CrimsonInvasion implements CardInfo {
             assert deck.notEmpty
           }
           onAttack {
-            deck.select(max: 2).moveTo(hidden: true, hand)
+            deck.search(max: 2).moveTo(hidden: true, hand)
             shuffleDeck()
           }
         }
@@ -2478,257 +2478,25 @@ public enum CrimsonInvasion implements CardInfo {
         }
       };
       case GYARADOS_GX_101:
-      return copy (GYARADOS_GX_18, this)
-      /*evolution (this, from:"Magikarp", hp:HP240, type:WATER, retreatCost:4) {
-        weakness LIGHTNING
-        move "Waterfall", {
-          text "70 damage."
-          energyCost W, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Draconic Disaster", {
-          text "100+ damage. If there is any Stadium card in play, this attack does 100 more damage. Then, discard that Stadium card."
-          energyCost W, C, C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Dread Storm GX", {
-          text "Discard an Energy from each of your opponent's Pokémon. (You can't use more than 1 GX attack in a game.)"
-          energyCost W
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (GYARADOS_GX_18, this);
       case ALOLAN_GOLEM_GX_102:
-      return copy (ALOLAN_GOLEM_GX_34, this)
-      /*evolution (this, from:"Alolan Graveler", hp:HP250, type:LIGHTNING, retreatCost:4) {
-        weakness FIGHTING
-        resistance METAL, MINUS20
-        move "Hammer In", {
-          text "80 damage."
-          energyCost L, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Super Electromagnetic Tackle", {
-          text "200 damage. This Pokémon does 50 damage to itself."
-          energyCost L, L, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Heavy Rock GX", {
-          text "100 damage. Your opponent can't play any cards from their hand during their next turn. (You can't use more than 1 GX attack in a game.)"
-          energyCost L, L, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (ALOLAN_GOLEM_GX_34, this);
       case NIHILEGO_GX_103:
-      return copy (NIHILEGO_GX_49, this)
-      /*basic (this, hp:HP180, type:PSYCHIC, retreatCost:2) {
-        weakness PSYCHIC
-        bwAbility "Empty Light", {
-          text "When you play this Pokémon from your hand onto your Bench during your turn, you may leave both Active Pokémon Confused and Poisoned."
-          actionA {
-          }
-        }
-        move "Lock Up", {
-          text "120 damage. The Defending Pokémon can't retreat during your opponent's next turn."
-          energyCost P, P, P
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Symbiont GX", {
-          text "Add the top 2 cards of your opponent's deck to their Prize cards. (You can't use more than 1 GX attack in a game.)"
-          energyCost P, P, P
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (NIHILEGO_GX_49, this);
       case BUZZWOLE_GX_104:
-      return copy (BUZZWOLE_GX_57, this)
-      /*basic (this, hp:HP190, type:FIGHTING, retreatCost:2) {
-        weakness PSYCHIC
-        move "Jet Punch", {
-          text "30 damage. This attack does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
-          energyCost F
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Knuckle Impact", {
-          text "160 damage. This Pokémon can't attack during your next turn."
-          energyCost F, F, F
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Absorption GX", {
-          text "40× damage. This attack does 40 damage for each of your remaining Prize cards. (You can't use more than 1 GX attack in a game.)"
-          energyCost F, F, F
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (BUZZWOLE_GX_57, this);
       case GUZZLORD_GX_105:
-      return copy (GUZZLORD_GX_63, this)
-      /*basic (this, hp:HP210, type:DARKNESS, retreatCost:4) {
-        weakness FIGHTING
-        resistance PSYCHIC, MINUS20
-        move "Eat Sloppily", {
-          text "Discard the top 5 cards of your deck. If any of those cards are Energy cards, attach them to this Pokémon."
-          energyCost D
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Tyrannical Hole", {
-          text "180 damage."
-          energyCost D, D, D, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Glutton GX", {
-          text "100 damage. If your opponent's Pokémon is Knocked Out by damage from this attack, take 2 more Prize cards. (You can't use more than 1 GX attack in a game.)"
-          energyCost D, D, D, D, D
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (GUZZLORD_GX_63, this);
       case KARTANA_GX_106:
-      return copy (KARTANA_GX_70, this)
-      /*basic (this, hp:HP170, type:METAL, retreatCost:1) {
-        weakness FIRE
-        resistance PSYCHIC, MINUS20
-        bwAbility "Slice Off", {
-          text "When you play this Pokémon from your hand onto your Bench during your turn, you may discard a Special Energy from your opponent's Pokémon."
-          actionA {
-          }
-        }
-        move "Gale Blade", {
-          text "70 damage. You may shuffle this Pokémon and all cards attached to it into your deck."
-          energyCost M, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Blade GX", {
-          text "Take a Prize card. (You can't use more than 1 GX attack in a game.)"
-          energyCost M
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (KARTANA_GX_70, this);
       case ALOLAN_EXEGGUTOR_GX_107:
-      return copy (ALOLAN_EXEGGUTOR_GX_74, this)
-      /*evolution (this, from:"Exeggcute", hp:HP220, type:DRAGON, retreatCost:3) {
-        weakness FAIRY
-        move "Tropical Head", {
-          text "This attack does 20 damage times the amount of Energy attached to this Pokémon to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
-          energyCost G
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Dragon Hammer", {
-          text "120 damage. Your opponent's Active Pokémon is now Confused."
-          energyCost G, C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Tower-Go-Round GX", {
-          text "180 damage. Move any number of Energy from your Pokémon to your other Pokémon in any way you like. (You can't use more than 1 GX attack in a game.)"
-          energyCost G, C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (ALOLAN_EXEGGUTOR_GX_74, this);
       case SILVALLY_GX_108:
-      return copy (SILVALLY_GX_90, this)
-      /*evolution (this, from:"Type: Null", hp:HP210, type:COLORLESS, retreatCost:2) {
-        weakness FIGHTING
-        bwAbility "Gyro Unit", {
-          text "Your Basic Pokémon in play have no Retreat Cost."
-          actionA {
-          }
-        }
-        move "Turbo Drive", {
-          text "120 damage. Attach a basic Energy card from your discard pile to 1 of your Benched Pokémon."
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Rebel GX", {
-          text "50× damage. This attack does 50 damage for each of your opponent's Benched Pokémon. (You can't use more than 1 GX attack in a game.)"
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (SILVALLY_GX_90, this);
       case GLADION_109:
-      return copy (GLADION_95, this)
-      /*supporter (this) {
-        text "Look at your face-down Prize cards and put 1 of them into your hand. Then, shuffle this Gladion into your remaining Prize cards and put them back face down. If you didn't play this Gladion from your hand, it does nothing.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      }*/;
+      return copy (GLADION_95, this);
       case LUSAMINE_110:
-      return copy (LUSAMINE_96, this)
-      /*supporter (this) {
-        text "Put 2 in any combination of Supporter and Stadium cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      }*/;
+      return copy (LUSAMINE_96, this);
       case OLIVIA_111:
       return supporter (this) {
         text "Search your deck for up to 2 Pokémon-GX, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2740,248 +2508,23 @@ public enum CrimsonInvasion implements CardInfo {
         }
       };
       case GYARADOS_GX_112:
-      return copy (GYARADOS_GX_18, this)
-      /*evolution (this, from:"Magikarp", hp:HP240, type:WATER, retreatCost:4) {
-        weakness LIGHTNING
-        move "Waterfall", {
-          text "70 damage."
-          energyCost W, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Dragonic Disaster", {
-          text "100+ damage. If there is any Stadium card in play, this attack does 100 more damage. Then, discard that Stadium card."
-          energyCost W, C, C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Dread Storm GX", {
-          text "Discard an Energy from each of your opponent's Pokémon. (You can't use more than 1 GX attack in a game.)"
-          energyCost W
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (GYARADOS_GX_18, this);
       case ALOLAN_GOLEM_GX_113:
-      return copy (ALOLAN_GOLEM_GX_34, this)
-      /*evolution (this, from:"Alolan Graveler", hp:HP250, type:LIGHTNING, retreatCost:4) {
-        weakness FIGHTING
-        resistance METAL, MINUS20
-        move "Hammer In", {
-          text "80 damage."
-          energyCost L, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Super Electromagnetic Tackle", {
-          text "200 damage. This Pokémon does 50 damage to itself."
-          energyCost L, L, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Heavy Rock GX", {
-          text "100 damage. Your opponent can't play any cards from their hand during their next turn. (You can't use more than 1 GX attack in a game.)"
-          energyCost L, L, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (ALOLAN_GOLEM_GX_34, this);
       case NIHILEGO_GX_114:
-      return copy (NIHILEGO_GX_49, this)
-      /*basic (this, hp:HP180, type:PSYCHIC, retreatCost:2) {
-        weakness PSYCHIC
-        bwAbility "Empty Light", {
-          text "When you play this Pokémon from your hand onto your Bench during your turn, you may leave both Active Pokémon Confused and Poisoned."
-          actionA {
-          }
-        }
-        move "Lock Up", {
-          text "120 damage. The Defending Pokémon can't retreat during your opponent's next turn."
-          energyCost P, P, P
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Symbiont GX", {
-          text "Add the top 2 cards of your opponent's deck to their Prize cards. (You can't use more than 1 GX attack in a game.)"
-          energyCost P, P, P
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (NIHILEGO_GX_49, this);
       case BUZZWOLE_GX_115:
-      return copy (BUZZWOLE_GX_57, this)
-      /*basic (this, hp:HP190, type:FIGHTING, retreatCost:2) {
-        weakness PSYCHIC
-        move "Jet Punch", {
-          text "30 damage. This attack does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
-          energyCost F
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Knuckle Impact", {
-          text "160 damage. This Pokémon can't attack during your next turn."
-          energyCost F, F, F
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Absorption GX", {
-          text "40× damage. This attack does 40 damage for each of your remaining Prize cards. (You can't use more than 1 GX attack in a game.)"
-          energyCost F, F, F
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (BUZZWOLE_GX_57, this);
       case GUZZLORD_GX_116:
-      return copy (GUZZLORD_GX_63, this)
-      /*basic (this, hp:HP210, type:DARKNESS, retreatCost:4) {
-        weakness FIGHTING
-        resistance PSYCHIC, MINUS20
-        move "Eat Sloppily", {
-          text "Discard the top 5 cards of your deck. If any of those cards are Energy cards, attach them to this Pokémon."
-          energyCost D
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Tyrannical Hole", {
-          text "180 damage."
-          energyCost D, D, D, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Glutton GX", {
-          text "100 damage. If your opponent's Pokémon is Knocked Out by damage from this attack, take 2 more Prize cards. (You can't use more than 1 GX attack in a game.)"
-          energyCost D, D, D, D, D
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (GUZZLORD_GX_63, this);
       case KARTANA_GX_117:
-      return copy (KARTANA_GX_70, this)
-      /*basic (this, hp:HP170, type:METAL, retreatCost:1) {
-        weakness FIRE
-        resistance PSYCHIC, MINUS20
-        bwAbility "Slice Off", {
-          text "When you play this Pokémon from your hand onto your Bench during your turn, you may discard a Special Energy from your opponent's Pokémon."
-          actionA {
-          }
-        }
-        move "Gale Blade", {
-          text "70 damage. You may shuffle this Pokémon and all cards attached to it into your deck."
-          energyCost M, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Blade GX", {
-          text "Take a Prize card. (You can't use more than 1 GX attack in a game.)"
-          energyCost M
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (KARTANA_GX_70, this);
       case ALOLAN_EXEGGUTOR_GX_118:
-      return copy (ALOLAN_EXEGGUTOR_GX_74, this)
-      /*evolution (this, from:"Exeggcute", hp:HP220, type:DRAGON, retreatCost:3) {
-        weakness FAIRY
-        move "Tropical Head", {
-          text "This attack does 20 damage times the amount of Energy attached to this Pokémon to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
-          energyCost G
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Dragon Hammer", {
-          text "120 damage. Your opponent's Active Pokémon is now Confused."
-          energyCost G, C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Tower-Go-Round GX", {
-          text "180 damage. Move any number of Energy from your Pokémon to your other Pokémon in any way you like. (You can't use more than 1 GX attack in a game.)"
-          energyCost G, C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (ALOLAN_EXEGGUTOR_GX_74, this);
       case SILVALLY_GX_119:
-      return copy (SILVALLY_GX_90, this)
-      /*evolution (this, from:"Type: Null", hp:HP210, type:COLORLESS, retreatCost:2) {
-        weakness FIGHTING
-        bwAbility "Gyro Unit", {
-          text "Your Basic Pokémon in play have no Retreat Cost."
-          actionA {
-          }
-        }
-        move "Turbo Drive", {
-          text "120 damage. Attach a basic Energy card from your discard pile to 1 of your Benched Pokémon."
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Rebel GX", {
-          text "50× damage. This attack does 50 damage for each of your opponent's Benched Pokémon. (You can't use more than 1 GX attack in a game.)"
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (SILVALLY_GX_90, this);
       case COUNTER_CATCHER_120:
-      return copy (COUNTER_CATCHER_91, this)
-      /*itemCard (this) {
-        text "You can play this card only if you have more Prize cards remaining than your opponent.\nSwitch 1 of your opponent's Benched Pokémon with their Active Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      }*/;
+      return copy (COUNTER_CATCHER_91, this);
       case WISHFUL_BATON_121:
       return pokemonTool (this) {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to is your Active Pokémon and is Knocked Out by damage from an opponent's attack, move up to 3 basic Energy cards from that Pokémon to 1 of your Benched Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2993,31 +2536,9 @@ public enum CrimsonInvasion implements CardInfo {
         }
       };
       case COUNTER_ENERGY_122:
-      return copy (COUNTER_ENERGY_100, this)
-      /*specialEnergy (this) {
-        text "null"
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      }*/;
+      return copy (COUNTER_ENERGY_100, this);
       case WARP_ENERGY_123:
-      return copy (Aquapolis.WARP_ENERGY_147, this)
-      /*specialEnergy (this) {
-        text "null"
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      }*/;
+      return copy (Aquapolis.WARP_ENERGY_147, this);
       case WATER_ENERGY_124:
       return basicEnergy (this, W);
         default:

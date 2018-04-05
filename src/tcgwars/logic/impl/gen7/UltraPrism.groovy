@@ -1962,9 +1962,11 @@ public enum UltraPrism implements CardInfo {
         move "Searching Magnet", {
           text "Search your deck for up to 3 [M] Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert deck
+          }
           onAttack {
-            damage 0
+            my.deck.search(max : 3, "Search for 3 metal energy",energyFilter(M)).moveTo(my.hand)
           }
         }
         move "Tackle", {
@@ -1972,7 +1974,7 @@ public enum UltraPrism implements CardInfo {
           energyCost M
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 10
           }
         }
 
@@ -1983,7 +1985,15 @@ public enum UltraPrism implements CardInfo {
         resistance PSYCHIC, MINUS20
         bwAbility "Solid Unit", {
           text "As long as this Pokémon is on your Bench, prevent all damage done to this Pokémon by attacks (both yours and your opponent’s)."
-          actionA {
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each{
+                if(!self.active){
+                  bc "Solid Unit prevent all damage"
+                  it.dmg=hp(0)
+                }
+              }
+            }
           }
         }
         move "Ram", {
@@ -1991,7 +2001,7 @@ public enum UltraPrism implements CardInfo {
           energyCost M, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 20
           }
         }
 
@@ -2005,7 +2015,7 @@ public enum UltraPrism implements CardInfo {
           energyCost M
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 20
           }
         }
         move "Zap Cannon", {
@@ -2013,7 +2023,8 @@ public enum UltraPrism implements CardInfo {
           energyCost M, M, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 80
+            cantUseAttack thisMove, self
           }
         }
 
@@ -2025,6 +2036,8 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Magnetic Circuit", {
           text "As often as you like during your turn (before your attack), you may attach a [M] Energy card from your hand to 1 of your Pokémon."
           actionA {
+            assert my.hand.findAll{it.cardTypes.is(M)}
+            my.hand.findAll{it.cardTypes.is(M)}.select().moveTo(my.all.select())
           }
         }
         move "Zap Cannon", {
@@ -2032,7 +2045,8 @@ public enum UltraPrism implements CardInfo {
           energyCost M, M, M, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 130
+            cantUseAttack thisMove, self
           }
         }
 
@@ -2046,7 +2060,8 @@ public enum UltraPrism implements CardInfo {
           energyCost M, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 50
+            damage 10, self
           }
         }
         move "Confront", {
@@ -2054,7 +2069,7 @@ public enum UltraPrism implements CardInfo {
           energyCost M, M, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 80
           }
         }
 
@@ -2065,7 +2080,14 @@ public enum UltraPrism implements CardInfo {
         resistance PSYCHIC, MINUS20
         bwAbility "Earthen Shield", {
           text "Prevent all damage done to your [M] Pokémon by attacks from your opponent’s Pokémon that have any Special Energy attached to them."
-          actionA {
+          delayedA {
+            before PROCESS_ATTACK_EFFECTS, {
+              bg.dmg.each{
+                if(ef.target.types.contains(M)){
+                    it.dmg = hp(0)
+                }
+              }
+            }
           }
         }
         move "Push Down", {
@@ -2073,7 +2095,9 @@ public enum UltraPrism implements CardInfo {
           energyCost M, M, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 110
+            if(confirm("Your opponent switch their pokemon with 1 of their bench?")
+              whirlwind()
           }
         }
 
@@ -2087,7 +2111,7 @@ public enum UltraPrism implements CardInfo {
           energyCost M
           attackRequirement {}
           onAttack {
-            damage 0
+            apply ASLEEP
           }
         }
         move "Spinning Attack", {
@@ -2095,7 +2119,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 20
           }
         }
 
@@ -2109,7 +2133,8 @@ public enum UltraPrism implements CardInfo {
           energyCost M
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 20
+            flip {apply PARALYZED}
           }
         }
         move "Psychic Resonance", {
@@ -2117,7 +2142,9 @@ public enum UltraPrism implements CardInfo {
           energyCost M, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 60
+            if(opp.all.findAll{it.types.contains(P)})
+              damage 60
           }
         }
 
@@ -2131,7 +2158,8 @@ public enum UltraPrism implements CardInfo {
           energyCost M, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 30
+            decreasedBaseDamageNextTurn(hp(30),thisMove)
           }
         }
         move "Boiling Impact", {
@@ -2139,7 +2167,8 @@ public enum UltraPrism implements CardInfo {
           energyCost M, M, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 130
+            discardSelfEnergy(C,C)
           }
         }
 
@@ -2148,20 +2177,16 @@ public enum UltraPrism implements CardInfo {
       return basic (this, hp:HP160, type:METAL, retreatCost:3) {
         weakness FIRE
         resistance PSYCHIC, MINUS20
-//        move "(Prism Star) Rule", {
-//          text "You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead."
-//          energyCost ♢
-//          attackRequirement {}
-//          onAttack {
-//            damage 0
-//          }
-//        }
         move "Radiant Star", {
           text "For each of your opponent’s Pokémon in play, attach a [M] Energy card from your discard pile to your Pokémon in any way you like."
           energyCost M
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard
+          }
           onAttack {
-            damage 0
+            opp.all.each{
+              attachEnergyFrom(type: METAL, my.discard, my.all.select)
+            }
           }
         }
         move "Corona Impact", {
@@ -2169,7 +2194,8 @@ public enum UltraPrism implements CardInfo {
           energyCost M, M, M, M
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 160
+            CantAttackNextTurn()
           }
         }
 
@@ -2183,7 +2209,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 60
           }
         }
         move "Meteor Tempest", {
@@ -2191,15 +2217,20 @@ public enum UltraPrism implements CardInfo {
           energyCost M, M, M, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 220
+            discardSelfEnergy(C,C,C)
           }
         }
         move "Sun’s Eclipse GX", {
           text "250 damage. You can use this attack only if you have more Prize cards remaining than your opponent. (You can’t use more than 1 GX attack in a game.)"
           energyCost M, M, M
-          attackRequirement {}
+          attackRequirement {
+            gxCheck()
+            assert my.prizeAsList.size() > opp.prizeAsList.size()
+          }
           onAttack {
-            damage 0
+            gxPerform()
+            damage 250
           }
         }
 
@@ -2211,6 +2242,10 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Change Clothes", {
           text "Once your turn (before your attack), you may put a Pokémon Tool card attached to 1 of your Pokémon into your hand."
           actionA {
+            def tar = my.all.findAll{it.cards.filterByType(POKEMON_TOOL)}
+            if(tar){
+              tar.select().cards.filterByType(POKEMON_TOOL).moveTo(my.hand)
+            }
           }
         }
         move "Rolling Attack", {
@@ -2218,7 +2253,7 @@ public enum UltraPrism implements CardInfo {
           energyCost M, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 60
           }
         }
 
@@ -2232,7 +2267,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 0
+            apply ASLEEP
           }
         }
         move "Ram", {
@@ -2240,7 +2275,7 @@ public enum UltraPrism implements CardInfo {
           energyCost Y
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 10
           }
         }
 
@@ -2252,6 +2287,9 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Illuminate", {
           text "Once during your turn (before your attack), you may search your deck for a [Y] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
           actionA {
+            assert my.deck
+            my.deck.search(count: 1, "search for a fairy pokemon", {it.types.contains(Y)}.moveTo(my.hand)
+            shuffleDeck()
           }
         }
         move "Flickering Spores", {
@@ -2259,7 +2297,8 @@ public enum UltraPrism implements CardInfo {
           energyCost Y, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 30
+            apply ASLEEP
           }
         }
 
@@ -2273,15 +2312,28 @@ public enum UltraPrism implements CardInfo {
           energyCost Y
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 20*opp.active.cards.energyCount(C)
           }
         }
         move "Magical Swap", {
           text "Move any number of damage counters on your opponent’s Pokémon to their other Pokémon in any way you like."
           energyCost Y, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench
+          }
           onAttack {
-            damage 0
+            while(1){
+              if(confirm("move a damage counter on your opponent’s Pokémon to their other Pokémon (you can move as many as you want in any way you like)"))
+              {
+                def src = opp.all.select()
+                def tar = opp.all.findAll({it != src}).select()
+                directDamage 10,tar
+                RemoveDamageCounter(src,thisMove,hp(10))
+              }
+              else{
+                break
+              }
+            }
           }
         }
 
@@ -2293,7 +2345,13 @@ public enum UltraPrism implements CardInfo {
           text "For each of your Benched Exeggcute, search your deck for an Alolan Exeggutor or Alolan Exeggutor-GX and put it onto that Exeggcute to evolve it. Then, shuffle your deck."
           attackRequirement {}
           onAttack {
-            damage 0
+            my.bench.each{
+              if(it.name=="Exeggcute"){
+                def names=my.all.collect{it.name}
+                my.deck.search("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
+              }
+            }
+            shuffleDeck()
           }
         }
         move "Draco Meteor Barrage", {
@@ -2301,7 +2359,7 @@ public enum UltraPrism implements CardInfo {
           energyCost G, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            flip self.cards.energyCount(C),{damage 80}
           }
         }
 
@@ -2314,7 +2372,9 @@ public enum UltraPrism implements CardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-            damage 0
+            def names=my.all.collect{it.name}
+            my.deck.search("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
+            shuffleDeck()
           }
         }
 
@@ -2324,7 +2384,10 @@ public enum UltraPrism implements CardInfo {
         weakness FAIRY
         bwAbility "Rock Hiding", {
           text "If this Pokémon has any [F] Energy attached to it, it has no Retreat Cost."
-          actionA {
+          getterA (GET_RETREAT_COST, self) {h->
+            if(bg.cards.energyCount(F)) {
+              h.object = 0
+            }
           }
         }
         move "Gnaw", {
@@ -2332,7 +2395,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 20
           }
         }
 
@@ -2344,16 +2407,18 @@ public enum UltraPrism implements CardInfo {
           text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
           energyCost F
           attackRequirement {}
-          onAttack {
-            damage 0
-          }
+            onAttack {
+              def names=my.all.collect{it.name}
+              my.deck.search("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
+              shuffleDeck()
+            }
         }
         move "Slash", {
           text "40 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 40
           }
         }
 
@@ -2366,7 +2431,8 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            def tar = opp.all.select()
+            damage 50,tar
           }
         }
         move "Royal Blades", {
@@ -2374,7 +2440,8 @@ public enum UltraPrism implements CardInfo {
           energyCost F, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 100
+            //TODO: check if Cynthia has been played
           }
         }
 
@@ -2385,9 +2452,12 @@ public enum UltraPrism implements CardInfo {
         move "Overclock", {
           text "Draw cards until you have 6 cards in your hand."
           energyCost M
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck
+            assert my.hand.size()<6
+          }
           onAttack {
-            damage 0
+            draw (6-my.hand.size())
           }
         }
         move "Shred", {
@@ -2395,7 +2465,7 @@ public enum UltraPrism implements CardInfo {
           energyCost M, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            shredDamage 80
           }
         }
         move "Timeless GX", {
@@ -2403,7 +2473,15 @@ public enum UltraPrism implements CardInfo {
           energyCost M, M, M, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 150
+            //TODO : skip turns
+            delayed{
+              before null, {
+                  wcu "Timeless GX makes you skip turn"
+                  prevent()
+              }
+              unregisterAfter 1
+            }
           }
         }
 
@@ -2416,7 +2494,15 @@ public enum UltraPrism implements CardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            damage 0
+            while(1){
+              if(confirm("Move an Energy from your Benched Pokémon to this Pokémon (you can move as many as you want)"))
+              {
+                moveEnergy(my.bench,self)
+              }
+              else{
+                break
+              }
+            }
           }
         }
         move "Hydro Pressure", {
@@ -2424,7 +2510,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 60+20*self.energyCount(W)
           }
         }
         move "Zero Vanish GX", {
@@ -2432,7 +2518,12 @@ public enum UltraPrism implements CardInfo {
           energyCost W, W, W, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 150
+            afterDamage{
+              opp.all.each{
+                it.cards.filterByType(ENERGY).moveTo(opp.deck)
+              }
+            }
           }
         }
 
@@ -2445,7 +2536,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            draw 3
           }
         }
         move "Slam", {
@@ -2453,7 +2544,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            flip 2, {damage 50}
           }
         }
 
@@ -2466,7 +2557,8 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 50
+            flipUntilTails {damage 50}
           }
         }
         move "Rolling Tackle", {
@@ -2474,7 +2566,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 110
           }
         }
 
@@ -2487,7 +2579,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 20
           }
         }
 
@@ -2498,9 +2590,15 @@ public enum UltraPrism implements CardInfo {
         move "Palette of Friends", {
           text "10× damage. This attack does 10 damage for each different type of Pokémon on your Bench."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.notEmpty
+          }
           onAttack {
-            damage 0
+            //TODO : less hardcoding? does it work properly?
+            for(Type t1:Type.values()){
+              if(my.bench.findAll{it.types.contains(t1)})
+                damage 10
+            }
           }
         }
 
@@ -2513,7 +2611,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 0
+            sandAttack()
           }
         }
         move "Skip", {
@@ -2521,7 +2619,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 10
           }
         }
 
@@ -2534,7 +2632,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 0
+            flip 2, {damage 40}
           }
         }
         move "Happy Turn", {
@@ -2542,7 +2640,12 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 60
+            if(confirm("Shuffle this Pokémon and all cards attached to it into your deck?"))
+            {
+              shuffleDeck(self.cards)
+              removePCS(self)
+            }
           }
         }
 
@@ -2555,7 +2658,8 @@ public enum UltraPrism implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 10
+            decreasedBaseDamageNextTurn(hp(40),thisMove)
           }
         }
 
@@ -2568,7 +2672,12 @@ public enum UltraPrism implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 20
+            if(bg.stadiumInfoStruct.stadiumCard)
+            {
+              discard bg.stadiumInfoStruct.stadiumCard
+              preventAllEffectsNextTurn()
+            }
           }
         }
         move "Toss Aside", {
@@ -2576,7 +2685,9 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 60
+            if(opp.hand.size()>3)
+              opp.hand.select(hidden: true,count : opp.hand.size() -3).discard()
           }
         }
 
@@ -2587,7 +2698,17 @@ public enum UltraPrism implements CardInfo {
         resistance FIGHTING, MINUS20
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-          actionA {
+          //TODO : check if this is working
+          getterA (GET_MOVE_LIST,self) {h->
+            if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
+              def list=[]
+  						for(move in h.object){
+  							def copy=move.shallowCopy()
+  							copy.energyCost = []
+  							list.add(copy)
+  						}
+  						h.object=list
+            }
           }
         }
         move "Spinning Fan", {
@@ -2595,7 +2716,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            opp.all.each{damage 20, it}
           }
         }
 
@@ -2607,17 +2728,26 @@ public enum UltraPrism implements CardInfo {
         move "Call for Family", {
           text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert bench.notFull
+            assert deck.notEmpty
+          }
           onAttack {
-            damage 0
+            int count = bench.freeBenchCount>=2?2:1
+            deck.search(max: count, cardTypeFilter(BASIC)).each{
+              deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
           }
         }
+
         move "Glide", {
           text "20 damage."
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 20
           }
         }
 
@@ -2630,7 +2760,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 0
+            opp.hand.showToMe("Opponent's hand")
           }
         }
         move "Take Down", {
@@ -2638,7 +2768,8 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 30
+            damage 10, self
           }
         }
 
@@ -2651,7 +2782,11 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 20
+            opp.hand.showToMe("Opponent's hand")
+            if(opp.hand.findAll(filterByType(POKEMON))){
+              damage 80
+            }
           }
         }
         move "Whap Down", {
@@ -2659,7 +2794,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 70
           }
         }
 
@@ -2670,9 +2805,12 @@ public enum UltraPrism implements CardInfo {
         move "Resource Management", {
           text "Put 3 cards from your discard pile on the bottom of your deck in any order."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard.notEmpty
+          }
           onAttack {
-            damage 0
+            //TODO : how to put the cards at the bottom?
+            my.discard.search(count : 3).moveTo(my.deck)
           }
         }
         move "Profound Knowledge", {
@@ -2680,7 +2818,8 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 60
+            apply CONFUSED
           }
         }
 
@@ -2693,7 +2832,9 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 30
+            if(opp.active.numberOfDamageCounters)
+              damage 30
           }
         }
         move "Headbang", {
@@ -2701,37 +2842,14 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 70
           }
         }
 
       };
       case SILVALLY_GX_116:
-      return evolution (this, from:"Type: Null", hp:HP210, type:COLORLESS, retreatCost:2) {
-        weakness FIGHTING
-        bwAbility "Gyro Unit", {
-          text "Your Basic Pokémon in play have no Retreat Cost."
-          actionA {
-          }
-        }
-        move "Turbo Drive", {
-          text "120 damage. Attach a basic Energy card from your discard pile to 1 of your Benched Pokémon."
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Rebel GX", {
-          text "50× damage. This attack does 50 damage for each of your opponent’s Benched Pokémon. (You can’t use more than 1 GX attack in a game.)"
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
+      return Return copy (CrimsonInvasion.SYLVALLY_GX_90,this);
 
-      };
       case DRAMPA_117:
       return basic (this, hp:HP130, type:COLORLESS, retreatCost:3) {
         weakness FIGHTING
@@ -2740,7 +2858,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 20+10*self.numberOfDamageCounters
           }
         }
         move "Dragon Pulse", {
@@ -2748,7 +2866,8 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 100
+            def list = my.deck.subList(0, 2).discard()
           }
         }
 
@@ -2916,58 +3035,11 @@ public enum UltraPrism implements CardInfo {
         }
       };
       case UNIT_ENERGY_GRW_137:
-      return copy (SUPER_BOOST_ENERGY_PRISM_STAR_136, this)
-      /*specialEnergy (this) {
-        text "null"
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      }*/;
+      return copy (SUPER_BOOST_ENERGY_PRISM_STAR_136, this);
       case UNIT_ENERGY_LPM_138:
-      return copy (SUPER_BOOST_ENERGY_PRISM_STAR_136, this)
-      /*specialEnergy (this) {
-        text "null"
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      }*/;
+      return copy (SUPER_BOOST_ENERGY_PRISM_STAR_136, this);
       case LEAFEON_GX_139:
-      return copy (LEAFEON_GX_13, this)
-      /*evolution (this, from:"Eevee", hp:HP200, type:GRASS, retreatCost:2) {
-        weakness FIRE
-        bwAbility "Breath of the Leaves", {
-          text "If this Pokémon is your Active Pokémon, once during your turn (before your attack), you may heal 50 damage from 1 of your Pokémon that has any Energy attached to it."
-          actionA {
-          }
-        }
-        move "Solar Beam", {
-          text "110 damage."
-          energyCost G, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Grand Bloom GX", {
-          text "For each of your Benched Basic Pokémon, search your deck for a card that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck. (You can’t use more than 1 GX attack in a game.)"
-          energyCost G
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (LEAFEON_GX_13, this);
       case PHEROMOSA_GX_140:
       return basic (this, hp:HP170, type:GRASS, retreatCost:1) {
         weakness FIRE
@@ -2998,32 +3070,7 @@ public enum UltraPrism implements CardInfo {
 
       };
       case GLACEON_GX_141:
-      return copy (GLACEON_GX_39, this)
-      /*evolution (this, from:"Eevee", hp:HP200, type:WATER, retreatCost:2) {
-        weakness METAL
-        bwAbility "Freezing Gaze", {
-          text "As long as this Pokémon is your Active Pokémon, your opponent’s Pokémon-GX and Pokémon-EX in play, in their hand, and in their discard pile have no Abilities, except for Freezing Gaze."
-          actionA {
-          }
-        }
-        move "Frost Bullet", {
-          text "90 damage. This attack does 30 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
-          energyCost W, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Polar Spear GX", {
-          text "50× damage. This attack does 50 damage for each damage counter on your opponent’s Active Pokémon. (You can’t use more than 1 GX attack in a game.)"
-          energyCost W, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (GLACEON_GX_39, this);
       case XURKITREE_GX_142:
       return basic (this, hp:HP180, type:LIGHTNING, retreatCost:2) {
         weakness FIGHTING
@@ -3052,33 +3099,7 @@ public enum UltraPrism implements CardInfo {
 
       };
       case DAWN_WINGS_NECROZMA_GX_143:
-      return copy (DAWN_WINGS_NECROZMA_GX_63, this)
-      /*basic (this, hp:HP180, type:PSYCHIC, retreatCost:2) {
-        weakness DARKNESS
-        resistance FIGHTING, MINUS20
-        bwAbility "Invasion", {
-          text "Once during your turn (before your attack), if this Pokémon is on your Bench, you may switch it with your Active Pokémon."
-          actionA {
-          }
-        }
-        move "Dark Flash", {
-          text "120 damage. This attack’s damage isn’t affected by Resistance."
-          energyCost P, P, P
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Moon’s Eclipse GX", {
-          text "180 damage. You can use this attack only if you have more Prize cards remaining than your opponent. Prevent all effects of attacks, including damage, done to this Pokémon during your opponent’s next turn. (You can’t use more than 1 GX attack in a game.)"
-          energyCost P, P, P
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (DAWN_WINGS_NECROZMA_GX_63, this);
       case CELESTEELA_GX_144:
       return basic (this, hp:HP200, type:METAL, retreatCost:4) {
         weakness LIGHTNING
@@ -3110,114 +3131,7 @@ public enum UltraPrism implements CardInfo {
 
       };
       case DUSK_MANE_NECROZMA_GX_145:
-      return copy (DUSK_MANE_NECROZMA_GX_90, this)
-      /*basic (this, hp:HP190, type:METAL, retreatCost:3) {
-        weakness FIRE
-        resistance PSYCHIC, MINUS20
-        move "Claw Slash", {
-          text "60 damage."
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Meteor Tempest", {
-          text "220 damage. Discard 3 Energy from this Pokémon."
-          energyCost M, M, M, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Sun’s Eclipse GX", {
-          text "250 damage. You can use this attack only if you have more Prize cards remaining than your opponent. (You can’t use more than 1 GX attack in a game.)"
-          energyCost M, M, M
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
-      case DIALGA_GX_146:
-      return copy (DIALGA_GX_100, this)
-      /*basic (this, hp:HP180, type:DRAGON, retreatCost:3) {
-        weakness FAIRY
-        move "Overclock", {
-          text "Draw cards until you have 6 cards in your hand."
-          energyCost M
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Shred", {
-          text "80 damage. This attack’s damage isn’t affected by any effects on your opponent’s Active Pokémon."
-          energyCost M, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Timeless GX", {
-          text "150 damage. Take another turn after this one. (Skip the between-turns step.) (You can’t use more than 1 GX attack in a game.)"
-          energyCost M, M, M, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
-      case PALKIA_GX_147:
-      return copy (PALKIA_GX_101, this)
-      /*basic (this, hp:HP180, type:DRAGON, retreatCost:3) {
-        weakness FAIRY
-        move "Spatial Control", {
-          text "Move any number of Energy from your Benched Pokémon to this Pokémon."
-          energyCost W
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Hydro Pressure", {
-          text "60+ damage. This attack does 20 more damage times the amount of [W] Energy attached to this Pokémon."
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Zero Vanish GX", {
-          text "150 damage. Shuffle all Energy from each of your opponent’s Pokémon into their deck. (You can’t use more than 1 GX attack in a game.)"
-          energyCost W, W, W, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
-      case CYNTHIA_148:
-      return copy (CYNTHIA_119, this)
-      /*supporter (this) {
-        text "Shuffle your hand into your deck. Then, draw 6 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      }*/;
-      case GARDENIA_149:
-      return copy (GARDENIA_124, this)
-      /*supporter (this) {
-        text "Heal 80 damage from 1 of your Pokémon that has any [G] Energy attached to it.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      }*/;
+      return copy (DUSK_MANE_NECROZMA_GX_90, this);
       case LANA_150:
       return supporter (this) {
         text "Heal 50 damage from each of your Pokémon that has any [W] Energy attached to it.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -3227,23 +3141,9 @@ public enum UltraPrism implements CardInfo {
         }
       };
       case LILLIE_151:
-      return copy (LILLIE_125, this)
-      /*supporter (this) {
-        text "Draw cards until you have 6 cards in your hand. If it’s your first turn, draw cards until you have 8 cards in your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      }*/;
+      return copy (LILLIE_125, this);
       case LOOKER_152:
-      return copy (LOOKER_126, this)
-      /*supporter (this) {
-        text "Draw 3 cards from the bottom of your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      }*/;
+      return copy (LOOKER_126, this);
       case LUSAMINE_153:
       return supporter (this) {
         text "Put 2 in any combination of Supporter and Stadium cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -3253,294 +3153,25 @@ public enum UltraPrism implements CardInfo {
         }
       };
       case MARS_154:
-      return copy (MARS_128, this)
-      /*supporter (this) {
-        text "Draw 2 cards. If you do, discard a random card from your opponent’s hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      }*/;
+      return copy (MARS_128, this);
       case POKEMON_FAN_CLUB_155:
-      return copy (POKEMON_FAN_CLUB_133, this)
-      /*supporter (this) {
-        text "Search your deck for up to 2 Basic Pokémon, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      }*/;
+      return copy (POKEMON_FAN_CLUB_133, this);
       case VOLKNER_156:
-      return copy (VOLKNER_135, this)
-      /*supporter (this) {
-        text "Search your deck for an Item card and a [L] Energy card, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      }*/;
+      return copy (VOLKNER_135, this);
       case LEAFEON_GX_157:
-      return copy (LEAFEON_GX_13, this)
-      /*evolution (this, from:"Eevee", hp:HP200, type:GRASS, retreatCost:2) {
-        weakness FIRE
-        bwAbility "Breath of the Leaves", {
-          text "If this Pokémon is your Active Pokémon, once during your turn (before your attack), you may heal 50 damage from 1 of your Pokémon that has any Energy attached to it."
-          actionA {
-          }
-        }
-        move "Solar Beam", {
-          text "110 damage."
-          energyCost G, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Grand Bloom GX", {
-          text "For each of your Benched Basic Pokémon, search your deck for a card that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck. (You can’t use more than 1 GX attack in a game.)"
-          energyCost G
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (LEAFEON_GX_13, this);
       case PHEROMOSA_GX_158:
-      return copy (PHEROMOSA_GX_140, this)
-      /*basic (this, hp:HP170, type:GRASS, retreatCost:1) {
-        weakness FIRE
-        move "Fast Raid", {
-          text "30 damage. If you go first, you can use this attack on your first turn."
-          energyCost G
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Cruel Spike", {
-          text "60 damage. Your opponent’s Active Pokémon is now Confused."
-          energyCost G, G
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Beauty GX", {
-          text "50× damage. This attack does 50 damage for each Prize card your opponent has taken. (You can’t use more than 1 GX attack in a game.)"
-          energyCost G, G
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (PHEROMOSA_GX_140, this);
       case GLACEON_GX_159:
-      return copy (GLACEON_GX_39, this)
-      /*evolution (this, from:"Eevee", hp:HP200, type:WATER, retreatCost:2) {
-        weakness METAL
-        bwAbility "Freezing Gaze", {
-          text "As long as this Pokémon is your Active Pokémon, your opponent’s Pokémon-GX and Pokémon-EX in play, in their hand, and in their discard pile have no Abilities, except for Freezing Gaze."
-          actionA {
-          }
-        }
-        move "Frost Bullet", {
-          text "90 damage. This attack does 30 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
-          energyCost W, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Polar Spear GX", {
-          text "50× damage. This attack does 50 damage for each damage counter on your opponent’s Active Pokémon. (You can’t use more than 1 GX attack in a game.)"
-          energyCost W, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (GLACEON_GX_39, this);
       case XURKITREE_GX_160:
-      return copy (XURKITREE_GX_142, this)
-      /*basic (this, hp:HP180, type:LIGHTNING, retreatCost:2) {
-        weakness FIGHTING
-        resistance METAL, MINUS20
-        bwAbility "Flashing Heal", {
-          text "Prevent all damage done to this Pokémon by attacks from your opponent’s Pokémon that have any Special Energy attached to them."
-          actionA {
-          }
-        }
-        move "Rumbling Wires", {
-          text "100 damage. Discard the top card of your opponent’s deck."
-          energyCost L, L, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Lighting GX", {
-          text "Your opponent reveals their hand. Add a card you find there to their Prize cards face down. (You can’t use more than 1 GX attack in a game.)"
-          energyCost L
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
-      case DAWN_WINGS_NECROZMA_GX_161:
-      return copy (DAWN_WINGS_NECROZMA_GX_63, this)
-      /*basic (this, hp:HP180, type:PSYCHIC, retreatCost:2) {
-        weakness DARKNESS
-        resistance FIGHTING, MINUS20
-        bwAbility "Invasion", {
-          text "Once during your turn (before your attack), if this Pokémon is on your Bench, you may switch it with your Active Pokémon."
-          actionA {
-          }
-        }
-        move "Dark Flash", {
-          text "120 damage. This attack’s damage isn’t affected by Resistance."
-          energyCost P, P, P
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Moon’s Eclipse GX", {
-          text "180 damage. You can use this attack only if you have more Prize cards remaining than your opponent. Prevent all effects of attacks, including damage, done to this Pokémon during your opponent’s next turn. (You can’t use more than 1 GX attack in a game.)"
-          energyCost P, P, P
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (XURKITREE_GX_142, this);
       case CELESTEELA_GX_162:
-      return copy (CELESTEELA_GX_144, this)
-      /*basic (this, hp:HP200, type:METAL, retreatCost:4) {
-        weakness LIGHTNING
-        resistance FIGHTING, MINUS20
-        move "Rocket Fall", {
-          text "30+ damage. This attack does 30 more damage for each [C] in your opponent’s Active Pokémon’s Retreat Cost."
-          energyCost M, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Moon Press", {
-          text "130 damage."
-          energyCost M, C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Blaster GX", {
-          text "180 damage. Turn all your Prize cards face up. (Those Prize cards remain face up for the rest of the game.) (You can’t use more than 1 GX attack in a game.)"
-          energyCost M, C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (CELESTEELA_GX_144, this);
       case DUSK_MANE_NECROZMA_GX_163:
-      return copy (DUSK_MANE_NECROZMA_GX_90, this)
-      /*basic (this, hp:HP190, type:METAL, retreatCost:3) {
-        weakness FIRE
-        resistance PSYCHIC, MINUS20
-        move "Claw Slash", {
-          text "60 damage."
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Meteor Tempest", {
-          text "220 damage. Discard 3 Energy from this Pokémon."
-          energyCost M, M, M, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Sun’s Eclipse GX", {
-          text "250 damage. You can use this attack only if you have more Prize cards remaining than your opponent. (You can’t use more than 1 GX attack in a game.)"
-          energyCost M, M, M
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
-      case DIALGA_GX_164:
-      return copy (DIALGA_GX_100, this)
-      /*basic (this, hp:HP180, type:DRAGON, retreatCost:3) {
-        weakness FAIRY
-        move "Overclock", {
-          text "Draw cards until you have 6 cards in your hand."
-          energyCost M
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Shred", {
-          text "80 damage. This attack’s damage isn’t affected by any effects on your opponent’s Active Pokémon."
-          energyCost M, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Timeless GX", {
-          text "150 damage. Take another turn after this one. (Skip the between-turns step.) (You can’t use more than 1 GX attack in a game.)"
-          energyCost M, M, M, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (DUSK_MANE_NECROZMA_GX_90, this);
       case PALKIA_GX_165:
-      return copy (PALKIA_GX_101, this)
-      /*basic (this, hp:HP180, type:DRAGON, retreatCost:3) {
-        weakness FAIRY
-        move "Spatial Control", {
-          text "Move any number of Energy from your Benched Pokémon to this Pokémon."
-          energyCost W
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Hydro Pressure", {
-          text "60+ damage. This attack does 20 more damage times the amount of [W] Energy attached to this Pokémon."
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Zero Vanish GX", {
-          text "150 damage. Shuffle all Energy from each of your opponent’s Pokémon into their deck. (You can’t use more than 1 GX attack in a game.)"
-          energyCost W, W, W, C, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (PALKIA_GX_101, this);
       case CRUSHING_HAMMER_166:
       return itemCard (this) {
         text "Flip a coin. If heads, discard an Energy from 1 of your opponent’s Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3550,23 +3181,9 @@ public enum UltraPrism implements CardInfo {
         }
       };
       case ESCAPE_BOARD_167:
-      return copy (ESCAPE_BOARD_122, this)
-      /*itemCard (this) {
-        text "The Retreat Cost of the Pokémon this card is attached to is [C] less, and it can retreat even if it’s Asleep or Paralyzed.\nYou may play as many Item cards as you like during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      }*/;
+      return copy (ESCAPE_BOARD_122, this);
       case MISSING_CLOVER_168:
-      return copy (MISSING_CLOVER_129, this)
-      /*itemCard (this) {
-        text "You may play 4 Missing Clover cards at once.\nYou may play as many Item cards as you like during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      }*/;
+      return copy (MISSING_CLOVER_129, this);
       case PEEKING_RED_CARD_169:
       return itemCard (this) {
         text "Your opponent reveals their hand. You may have your opponent count the cards in their hand, shuffle those cards into their deck, then draw that many cards.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3576,87 +3193,13 @@ public enum UltraPrism implements CardInfo {
         }
       };
       case UNIT_ENERGY_GRW_170:
-      return copy (SUPER_BOOST_ENERGY_PRISM_STAR_136, this)
-      /*specialEnergy (this) {
-        text "null"
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      }*/;
+      return copy (SUPER_BOOST_ENERGY_PRISM_STAR_136, this);
       case UNIT_ENERGY_LPM_171:
-      return copy (SUPER_BOOST_ENERGY_PRISM_STAR_136, this)
-      /*specialEnergy (this) {
-        text "null"
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      }*/;
+      return copy (SUPER_BOOST_ENERGY_PRISM_STAR_136, this);
       case LUNALA_GX_172:
-      return copy (SunMoonPromos.LUNALA_GX_SM17, this)
-      /*evolution (this, from:"Cosmoem", hp:HP250, type:PSYCHIC, retreatCost:2) {
-        weakness DARKNESS
-        resistance FIGHTING, MINUS20
-        bwAbility "Psychic Transfer", {
-          text "As often as you like during your turn (before your attack), you may move a [P] Energy from 1 of your Pokémon to another of your Pokémon."
-          actionA {
-          }
-        }
-        move "Moongeist Beam", {
-          text "120 damage. The Defending Pokémon can’t be healed during your next turn."
-          energyCost P, P, P, P
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Lunar Fall GX", {
-          text "Knock Out 1 of your opponent’s Basic Pokémon that isn’t a Pokémon-GX. (You can’t use more than 1 GX attack per game)."
-          energyCost P, P, P
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (SunMoonPromos.LUNALA_GX_SM17, this);
       case SOLGALEO_GX_173:
-      return copy (SunMoonPromos.SOLGALEO_GX_SM16, this)
-      /*evolution (this, from:"Cosmoem", hp:HP250, type:METAL, retreatCost:3) {
-        weakness FIRE
-        resistance PSYCHIC, MINUS20
-        bwAbility "Ultra Road", {
-          text "Once during your turn (before your attack), you may switch your Active Pokémon with one of your Benched Pokémon."
-          actionA {
-          }
-        }
-        move "Sunsteel Strike", {
-          text "230 damage. Discard all Energy from this Pokémon."
-          energyCost M, M, C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-        move "Sol Burst GX", {
-          text "Search your deck for up to 5 Energy cards and attach them to your Pokémon in any way you like. (You can’t use more than 1 GX attack in a game.)"
-          energyCost M
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (SunMoonPromos.SOLGALEO_GX_SM16, this);
         default:
       return null;
     }
