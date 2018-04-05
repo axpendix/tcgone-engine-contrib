@@ -443,7 +443,6 @@ public enum CrimsonInvasion implements CardInfo {
         weakness WATER
         move "Dance of Flames", {
           text "For each Energy attached to your opponent's Pokémon, attach a [R] Energy card from your discard pile to your Pokémon in any way you like."
-          energyCost -
           attackRequirement {}
           onAttack {
             //TODO : more efecient way?
