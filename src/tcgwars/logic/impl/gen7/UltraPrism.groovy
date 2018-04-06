@@ -336,11 +336,12 @@ public enum UltraPrism implements CardInfo {
           text "Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon. The new Active Pokémon is now Poisoned."
           energyCost G
           attackRequirement {
-            assert opp.bench.notEmpty //Is this right?
+            assert opp.bench.notEmpty
           }
           onAttack {
-            //TODO: SWTICH BENCH AND ACTIVE
             afterDamage {
+              def pcs = opp.bench.select("Switch")
+              sw opp.active, pcs
               apply POISONED
             }
           }
@@ -351,7 +352,14 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 100
-            //TODO: MOVE ALL ENERGY
+            while(1){
+              def pl=(my.all.findAll {it.cards.filterByEnergyType(G) && it!=self})
+              if(!pl) break;
+              def tar=pl.select("Target for energy (cancel to stop)", false)
+              if(!tar) break;
+              def card=src.cards.select("Card to move").first()
+              energySwitch(self, tar, card)
+            }
           }
         }
 
@@ -464,7 +472,9 @@ public enum UltraPrism implements CardInfo {
         weakness FIRE
         bwAbility "Weather Guard", {
           text "Your [G] Pokémon have no Weakness."
-          actionA { //TODO: Add delayed effect which removes weakness
+          getterA GET_WEAKNESSES {h->
+            if(h.effect.target.types.contains(G)){
+							h.object = []
           }
         }
         move "Seed Bomb", {
@@ -504,9 +514,18 @@ public enum UltraPrism implements CardInfo {
         weakness FIRE
         bwAbility "Breath of the Leaves", {
           text "If this Pokémon is your Active Pokémon, once during your turn (before your attack), you may heal 50 damage from 1 of your Pokémon that has any Energy attached to it."
-          actionA { //TODO: allow user to heal pokemon if this pokemon is active.
-            //This should be an action
-            //Use Ribombee SM, Lana, and something that works only if active for reference
+          actionA {
+            checkLastTurn() // check whether it has already been used this turn
+						assert self.active
+						def tar = my.all.findAll{it.numberOfDamageCounters && it.cards.energyCount(C)}
+						assert tar
+
+						// power is going through
+						powerUsed()
+
+						// now do the main effect:
+						heal 50, tar.select()
+
           }
         }
         move "Solar Beam", {
@@ -521,12 +540,23 @@ public enum UltraPrism implements CardInfo {
           text "For each of your Benched Basic Pokémon, search your deck for a card that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck. (You can’t use more than 1 GX attack in a game.)"
           energyCost G
           attackRequirement {
-            gxCheck() //TODO: Can a GX attack be used for no effect?
-            //assert my.bench.notEmpty : "This is your only pokemon"
+            gxCheck() //TODO:
+            assert my.bench.notEmpty : "This is your only pokemon"
           }
           onAttack {
             gxPerform()
-            //TODO: Loop over each benched Pokemon and do the equivalent of using Wally
+            my.bench.each{
+              if(it.cardTypes.is(BASIC)){
+                def tar = it
+                det nam = it.name
+                def sel=self.owner.pbg.deck.search(count:1, "search for a card that evolve for $nam",
+                            {it.cardTypes.is(EVOLUTION) && it.predecessor==tar.name}, tar.owner)
+                if(sel){
+                  evolve(self, sel.first(), OTHER)
+                }
+              }
+            }
+            shuffleDeck(null, self.owner.toTargetPlayer())
           }
         }
 
@@ -536,8 +566,16 @@ public enum UltraPrism implements CardInfo {
         weakness FIRE
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-          actionA {
-            //TODO: Implement Rotom ability.
+          getterA (GET_MOVE_LIST,self), {h->
+            if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
+              def list=[]
+  						for(move in h.object){
+  							def copy=move.shallowCopy()
+  							copy.energyCost = []
+  							list.add(copy)
+  						}
+  						h.object=list
+            }
           }
         }
         move "Special Mow", {
@@ -557,9 +595,61 @@ public enum UltraPrism implements CardInfo {
         move "Coax", {
           text "Search your deck for up to 3 Basic Pokémon of different types and put them onto your Bench. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            my.bench.notFull
+          }
           onAttack {
-            //TODO: Implement Shaymin's Type-based call for family Attack
+            def tar1 = my.deck.search (count : 1,cardTypeFilter(BASIC))
+            //TODO : not hardcode dual type case (aka. contains for list of types)
+            if(tar1){
+              def typ1 = tar1.first().types
+              tar1.moveTo(my.bench)
+              if(my.bench.notFull){
+                if(typ1.size() == 2)
+                {
+                  def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1[0]) && !it.types.contains(typ1[1])})
+                  if(tar2){
+                    def typ2 = tar2.first().types
+                    tar2.moveTo(my.bench)
+                    if(my.bench.notFull){
+                      if(typ1.size() == 2){
+                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1[0]) && !it.types.contains(typ1[1]) && !it.types.contains(typ2[0]) && !it.types.contains(typ2[1])})
+                        if(tar3){
+                          tar3.moveTo(my.bench)
+                        }
+                      }
+                      else{
+                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1[0]) && !it.types.contains(typ1[1]) && !it.types.contains(typ2[0])})
+                        if(tar3){
+                          tar3.moveTo(my.bench)
+                        }
+                      }
+                    }
+                  }
+                }
+                else{
+                  def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1[0])})
+                  if(tar2){
+                    def typ2 = tar2.first().types
+                    tar2.moveTo(my.bench)
+                    if(my.bench.notFull){
+                      if(typ1.size() == 2){
+                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1[0]) && !it.types.contains(typ2[0]) && !it.types.contains(typ2[1])})
+                        if(tar3){
+                          tar3.moveTo(my.bench)
+                        }
+                      }
+                      else{
+                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1[0]) && !it.types.contains(typ2[0])})
+                        if(tar3){
+                          tar3.moveTo(my.bench)
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
         move "Soothing Scent", {
@@ -592,8 +682,16 @@ public enum UltraPrism implements CardInfo {
         weakness FIRE
         bwAbility "Water Bubble", {
           text "Prevent all damage done to this Pokémon by attacks from your opponent’s [R] Pokémon."
-          actionA { //TODO: Use Hoopa SHL's Delated Effect ability to implement type-based block
-          }
+          delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each {
+								if(it.to == self && it.from.types.contains(R) && it.dmg.value && it.notNoEffect) {
+									bc "Water Bubble prevents damage from Fire Pokémon"
+									it.dmg = hp(0)
+								}
+							}
+						}
+					}
         }
         move "Aqua Edge", {
           text "70 damage."
@@ -634,8 +732,14 @@ public enum UltraPrism implements CardInfo {
         weakness WATER
         bwAbility "Incandescent Body", {
           text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Burned."
-          actionA {
-            //TODO: Use a delayed effect like Turtonator GX's First attack to implement Magma Armor
+          damage 20
+          delayedA (priority: LAST) {
+            before APPLY_ATTACK_DAMAGES, {
+              if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
+                bc "Incandescent Body burn attacker"
+                apply BURNED, opp.active
+              }
+            }
           }
         }
         move "Fire Blaster", {
@@ -697,8 +801,19 @@ public enum UltraPrism implements CardInfo {
         weakness WATER
         bwAbility "Flaming Fighter", {
           text "Put 6 damage counters instead of 2 on your opponent’s Burned Pokémon between turns."
-          actionA { //TODO: Delayed Effect which changes burn effect
-                //See Seviper (if implemented) for reference
+          delayedA{
+            def eff
+            register {
+              eff = before BETWEEN_TURNS, {
+                if(opp.active.isSPC(BURNED)){
+									bc "Flaming Fighter increase burn damage"
+									opp.active.damage += hp(40)
+								}
+							}
+            }
+            unregister {
+              eff.unregister()
+            }
           }
         }
         move "Burst Punch", {
@@ -717,7 +832,16 @@ public enum UltraPrism implements CardInfo {
         weakness WATER
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-          actionA { //TODO: Rotom
+          getterA (GET_MOVE_LIST,self), {h->
+            if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
+              def list=[]
+  						for(move in h.object){
+  							def copy=move.shallowCopy()
+  							copy.energyCost = []
+  							list.add(copy)
+  						}
+  						h.object=list
+            }
           }
         }
         move "Heat Blast", {
@@ -996,7 +1120,13 @@ public enum UltraPrism implements CardInfo {
         weakness METAL
         bwAbility "Blessings of the Frost", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may attach a [W] Energy card from your discard pile to 1 of your Pokémon."
-          actionA { //TODO: Copy Aqua patch for Abomasnow
+          onActivate {reason ->
+            if(reason == PLAY_FROM_HAND && self.benched && confirm("Blessings of the Frost")){
+              powerUsed()
+              def tar = my.discard.search(energyFilter(M))
+              if(tar)
+                tar.moveTo(my.all.select())
+            }
           }
         }
         move "Hypno Hammer", {
@@ -1015,9 +1145,21 @@ public enum UltraPrism implements CardInfo {
         weakness METAL
         bwAbility "Freezing Gaze", {
           text "As long as this Pokémon is your Active Pokémon, your opponent’s Pokémon-GX and Pokémon-EX in play, in their hand, and in their discard pile have no Abilities, except for Freezing Gaze."
-          actionA { //TODO: Implement Glaceon GX's ability with a delayed effect
-            //Use something that relies off the active spot
-            //Also use Alolan Muk's ability for reference
+          onActivate {
+            effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
+              if (self.active && (h.effect.target.pokemonEX || h.effect.target.pokemonGX) && h.effect.ability instanceof BwAbility) {
+                h.object=true
+              }
+            }
+            effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+              if (self.active && ((h.effect.target as Card).cardTypes.is(POKEMON_EX) || (h.effect.target as Card).cardTypes.is(POKEMON_GX))) {
+                h.object=true
+              }
+            }
+          }
+          onDeactivate {
+            effect1.unregister()
+            effect2.unregister()
           }
         }
         move "Frost Bullet", {
@@ -1045,7 +1187,16 @@ public enum UltraPrism implements CardInfo {
         weakness GRASS
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-          actionA { //TODO: Rotom
+          getterA (GET_MOVE_LIST,self), {h->
+            if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
+              def list=[]
+  						for(move in h.object){
+  							def copy=move.shallowCopy()
+  							copy.energyCost = []
+  							list.add(copy)
+  						}
+  						h.object=list
+            }
           }
         }
         move "Wash Arrow", {
@@ -1065,8 +1216,16 @@ public enum UltraPrism implements CardInfo {
         weakness METAL
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-          actionA {
-            //TODO: Rotom
+          getterA (GET_MOVE_LIST,self), {h->
+            if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
+              def list=[]
+  						for(move in h.object){
+  							def copy=move.shallowCopy()
+  							copy.energyCost = []
+  							list.add(copy)
+  						}
+  						h.object=list
+            }
           }
         }
         move "Frost Crush", {
@@ -1088,10 +1247,11 @@ public enum UltraPrism implements CardInfo {
           text "Shuffle 5 [W] Energy cards from your discard pile into your deck."
           energyCost W
           attackRequirement {
-            //TODO: Require the existence of energy cards in the discard pile
+            assert my.discard.findAll(cardTypeFilter(FIRE))
           }
           onAttack {
-            //TODO: use the equivalent of rescue stretcher on W energy for attack
+            my.discard.findAll(cardTypeFilter(FIRE)).select(count: 5).moveTo(my.deck)
+            shuffleDeck()
           }
         }
         move "Water Pulse", {
@@ -1247,10 +1407,19 @@ public enum UltraPrism implements CardInfo {
           energyCost L
           attackRequirement {
             assert my.bench
+            assert my.deck
           }
           onAttack {
-            //TODO: Implement Snuggly Generator
-            //Loop over each benched Pokemon and check if it has a certain attack.
+            def cnt=0
+            my.bench.each{
+              it.moves.each{
+                if(it.name=="Nuzzle")
+                  cnt+=1
+              }
+            }
+            my.deck.search(max:cnt,"Search for $cnt Lightning Energy",cardTypeFilter(LIGHTNING)).each{
+              attachEnergy(self,it)
+            }
           }
         }
         move "Nuzzle", {
@@ -1269,8 +1438,16 @@ public enum UltraPrism implements CardInfo {
         resistance METAL, MINUS20
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-          actionA {
-            //TODO: Rotom
+          getterA (GET_MOVE_LIST,self), {h->
+            if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
+              def list=[]
+  						for(move in h.object){
+  							def copy=move.shallowCopy()
+  							copy.energyCost = []
+  							list.add(copy)
+  						}
+  						h.object=list
+            }
           }
         }
         move "Plasma Slice", {
@@ -1315,8 +1492,11 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            //TODO: Implement Damage transport
-            //Use an effect reminiscent of rotom from fates collide
+            my.all.each{
+              def dmcm = min(4,it.numberOfDamageCounters)
+              it.damages-=hp(dmcm)
+              opp.active.damages+=hp(dmcm)
+            }
           }
         }
         move "Wind Wheel", {
@@ -1352,7 +1532,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             if(defending.basic){
-              //TODO: prevent defending pokemon from attacking
+              CantAttackNextTurn opp.active
             }
           }
         }
@@ -1427,7 +1607,10 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            //TODO: Implement revenge attack
+            damage 50
+            //TODO: check the type of the koed pokemon
+            if(my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1) damage 90
+
           }
         }
 
@@ -1438,20 +1621,15 @@ public enum UltraPrism implements CardInfo {
         resistance FIGHTING, MINUS20
         bwAbility "Chaotic Star", {
           text "When you play this Pokémon from your hand onto your Bench during your turn, you may attach 2 [P] Energy cards from your hand to it."
-          actionA {
-            //TODO: Implement Chaotic Star
-            //Use an ability that activates on an action from hand
-            //Combine it with a selection from the hand, as well as attachment of energy
-          }
+          onActivate {r->
+						if(r==PLAY_FROM_HAND && confirm('Use Chaotic Star?')){
+              my.hand.search(max:2,"Search for 2 Psychic Energy",cardTypeFilter(PSYCHIC)).each{
+                attachEnergy(self,it)
+              }
+						}
+					}
         }
-//        move "(Prism Star) Rule", {
-//          text "You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead."
-//          energyCost ♢
-//          attackRequirement {}
-//          onAttack {
-//            damage 0
-//          }
-//        }
+
         move "Crisis Dive", {
           text "160 damage. Discard 2 Energy from this Pokémon."
           energyCost P, P, P, P
@@ -1504,39 +1682,19 @@ public enum UltraPrism implements CardInfo {
 
       };
       case COSMOEM_61:
-      return copy (SunMoon.COSMOEM_65, this)
-      /*evolution (this, from:"Cosmog", hp:HP090, type:PSYCHIC, retreatCost:3) {
-        weakness PSYCHIC
-        move "Teleport", {
-          text "Switch this Pokémon with 1 of your Benched Pokémon."
-          energyCost C
-          attackRequirement {}
-          onAttack {
-            damage 0
-          }
-        }
-
-      }*/;
+      return copy (SunMoon.COSMOEM_65, this);
       case LUNALA_PRISM_STAR_62:
       return basic (this, hp:HP160, type:PSYCHIC, retreatCost:3) {
         weakness DARKNESS
         resistance FIGHTING, MINUS20
-//        move "(Prism Star) Rule", {
-//          text "You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead."
-//          energyCost ♢
-//          attackRequirement {}
-//          onAttack {
-//            damage 0
-//          }
-//        }
         move "Full Moon Star", {
           text "For each of your opponent’s Pokémon in play, attach a [P] Energy card from your discard pile to your Pokémon in any way you like."
           energyCost P
           attackRequirement {}
           onAttack {
-            //TODO: Implement Full Moon Star
-            //Count opponent's bench size
-            //Use a for loop; prompt and attack on each iteration if there are energy left
+            my.deck.search(max:opp.all.size,"Search for $cnt Psychic Energy",cardTypeFilter(PSYCHIC)).each{
+              attachEnergy(self,it)
+            }
           }
         }
         move "Psystorm", {
@@ -1578,7 +1736,7 @@ public enum UltraPrism implements CardInfo {
           energyCost P, P, P
           attackRequirement {
             gxCheck()
-            //TODO: Compare Prize Card Count
+            assert my.prizeAsList.size() > opp.prizeAsList.size()
           }
           onAttack {
             damage 180
@@ -1660,9 +1818,14 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Precognitive Aura", {
           text "Once during your turn (before your attack), if you have Garchomp in play, you may search your deck for a card and put it into your hand. Then, shuffle your deck."
           actionA {
-            //TODO: Precognitive Aura
-            //Use the same search as Tapu Lele's Wonder tag but with less filters
-            //How does one check for Garchomp existing?
+            checkLastTurn()
+						assert self.deck
+						powerUsed()
+            //TODO : Garchomp EX/GX check?
+            if(my.bench.findAll({it.name.contains("Garchomp")})){
+              my.deck.search(count:1).moveTo(my.hand)
+              shuffleDeck()
+            }
           }
         }
         move "Missile Jab", {
@@ -1686,7 +1849,8 @@ public enum UltraPrism implements CardInfo {
           onAttack {
             damage 50
             //TODO: Eleventh Hour Tackle
-            //How do I check the number of cards in a deck to apply extra damage
+            if(my.deck.size()<4)
+              damage 130
           }
         }
 
@@ -1721,10 +1885,10 @@ public enum UltraPrism implements CardInfo {
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
-                if (self.benched && it.from.owner == self.owner && /*Check if passiman here &&*/ it.to.active && it.to.evolution && it.to.owner != self.owner && it.dmg.value) {
+                if (self.benched && it.from.owner == self.owner && my.active.name=="Passimian" && it.to.active && it.to.evolution && it.to.owner != self.owner && it.dmg.value) {
                   //TODO: Compare by name to boost passiman damage
                   it.dmg += hp(30)
-                  bc "Power Huddle +10"
+                  bc "Power Huddle +30"
                 }
               }
             }
@@ -1787,7 +1951,8 @@ public enum UltraPrism implements CardInfo {
           text "You can use this attack only if you go second, and only on your first turn. Discard an Energy from 1 of your opponent’s Pokémon."
           energyCost C
           attackRequirement {
-            //TODO: Add Second Turn requirement and personal First Turn requirement
+            //TODO : is second turn 1 or 2?
+            assert bg.turnCount==2
           }
           onAttack {
             def tar = opp.all.findAll {it.cards.energyCount(C)}
@@ -1828,9 +1993,7 @@ public enum UltraPrism implements CardInfo {
           energyCost D
           attackRequirement {}
           onAttack {
-            //TODO: Evil Admonition.
-            //This should be a loop much like that used to total # of energy on all opponent's pokemon
-            //How do you check for an ability?
+            opp.all.each {if(it.hasModernAbility()) damage 50}
           }
         }
 
@@ -1882,19 +2045,14 @@ public enum UltraPrism implements CardInfo {
         resistance PSYCHIC, MINUS20
         bwAbility "Nightmare Star", {
           text "When you play this Pokémon from your hand onto your Bench during your turn, you may attach 2 [D] Energy cards from your hand to it."
-          actionA {
-            //TODO: Nightmare Star
-            //Copy Chaotic Star but with [D] Energy
-          }
-        }
-//        move "(Prism Star) Rule", {
-//          text "You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead."
-//          energyCost ♢
-//          attackRequirement {}
-//          onAttack {
-//            damage 0
-//          }
-//        }
+          onActivate {r->
+            if(r==PLAY_FROM_HAND && confirm('Use Chaotic Star?')){
+              my.hand.search(max:2,"Search for 2 Dark Energy",cardTypeFilter(DARK)).each{
+                attachEnergy(self,it)
+              }
+            }
+          }        }
+
         move "Abyssal Sleep", {
           text "120 damage. Your opponent’s Active Pokémon is now Asleep. Your opponent flips 2 coins instead of 1 between turns. If either of them is tails, that Pokémon is still Asleep."
           energyCost D, D, D, D
