@@ -2327,8 +2327,8 @@ public enum UltraPrism implements CardInfo {
               {
                 def src = opp.all.select()
                 def tar = opp.all.findAll({it != src}).select()
-                directDamage 10,tar
-                RemoveDamageCounter(src,thisMove,hp(10))
+                src.damage-=hp(10)
+                tar.damage+=hp(10)
               }
               else{
                 break
@@ -2384,7 +2384,7 @@ public enum UltraPrism implements CardInfo {
         weakness FAIRY
         bwAbility "Rock Hiding", {
           text "If this Pokémon has any [F] Energy attached to it, it has no Retreat Cost."
-          getterA (GET_RETREAT_COST, self) {h->
+          getterA (GET_RETREAT_COST, self), {h->
             if(bg.cards.energyCount(F)) {
               h.object = 0
             }
@@ -2699,7 +2699,7 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
           //TODO : check if this is working
-          getterA (GET_MOVE_LIST,self) {h->
+          getterA (GET_MOVE_LIST,self), {h->
             if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
               def list=[]
   						for(move in h.object){
@@ -2876,100 +2876,148 @@ public enum UltraPrism implements CardInfo {
       return pokemonTool (this) {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nThe Regirock, Regice, Registeel, or Regigigas this card is attached to takes 30 less damage from your opponent’s attacks (after applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {reason->
+          eff = delayed{
+            before (APPLY_ATTACK_DAMAGES,self), {
+              bg.dm().each{
+                if(self.name=="Regirock" || self.name=="Regice"  || self.name=="Registeel"  || self.name=="Regigigas" ){
+                  bc "Submerge prevent all damage"
+                  it.dmg-=hp(30)
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case CYNTHIA_119:
       return supporter (this) {
         text "Shuffle your hand into your deck. Then, draw 6 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
+          my.hand.moveTo(hidden:true, my.deck)
+          shuffleDeck()
+          draw 6
         }
         playRequirement{
+          assert my.deck.notEmpty && (my.hand.size() != 0)
         }
       };
       case CYRUS_PRISM_STAR_120:
       return supporter (this) {
         text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nYou can’t play this card if you don’t have any [W] or [M] Pokémon in play.\nYour opponent chooses 2 Benched Pokémon and shuffles the others, and all cards attached to them, into their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
+          if(opp.bench.size()>2){
+            opp.bench.oppSelect(count : opp.bench.size()-2, "Select the cards you will shuffle back in your deck").each{
+              it.cards.moveTo(opp.deck)
+              removePCS(it)
+            }
+          }
         }
         playRequirement{
+          assert my.all.findAll{it.types.contains(W) || it.types.contains(M)}
         }
       };
       case ELECTRIC_MEMORY_121:
       return pokemonTool (this) {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a Lightning Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
+        def eff
         onPlay {reason->
+          eff=getter GET_POKEMON_TYPE, self, {h ->
+            if(h.effect.target.name == "Silvally-GX")
+              h.object = ELECTRIC
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case ESCAPE_BOARD_122:
-      return itemCard (this) {
+      return pokemonTool (this) {
         text "The Retreat Cost of the Pokémon this card is attached to is [C] less, and it can retreat even if it’s Asleep or Paralyzed.\nYou may play as many Item cards as you like during your turn (before your attack)."
-        onPlay {
+        def eff
+        onPlay {reason->
+          eff=delayed (RETREAT,self), {h ->
+          //TODO: add effect
+
+          }
         }
-        playRequirement{
+        onRemoveFromPlay {
+          eff.unregister()
         }
       };
       case FIRE_MEMORY_123:
       return pokemonTool (this) {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [R] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
+        def eff
         onPlay {reason->
+          eff=getter GET_POKEMON_TYPE, self, {h ->
+            if(h.effect.target.name == "Silvally-GX")
+              h.object = FIRE
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case GARDENIA_124:
       return supporter (this) {
         text "Heal 80 damage from 1 of your Pokémon that has any [G] Energy attached to it.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
+          heal 80, my.all.findAll({it.cards.energyCount(H)}).select()
         }
         playRequirement{
+          assert my.all.findAll({it.cards.energyCount(H)})
         }
       };
       case LILLIE_125:
-      return supporter (this) {
-        text "Draw cards until you have 6 cards in your hand. If it’s your first turn, draw cards until you have 8 cards in your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(SunMoon.LILLIE_122,this);
       case LOOKER_126:
       return supporter (this) {
         text "Draw 3 cards from the bottom of your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
+          my.deck.subList(my.deck.size()-3,my.deck.size())
         }
         playRequirement{
+          assert my.deck.size()>2
         }
       };
       case LOOKER_WHISTLE_127:
       return itemCard (this) {
         text "Search your deck for up to 2 cards named Looker, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {
+          my.deck.search(max:2, "Search your deck for up to 2 cards named Looker", {it.name == "Looker"}).moveTo(my.hand)
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck
         }
       };
       case MARS_128:
       return supporter (this) {
         text "Draw 2 cards. If you do, discard a random card from your opponent’s hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
+          draw 2
+          astonish()
         }
         playRequirement{
+          assert my.deck
         }
       };
       case MISSING_CLOVER_129:
       return itemCard (this) {
-        text "You may play 4 Missing Clover cards at once.\nYou may play as many Item cards as you like during your turn (before your attack)."
+        text "You may play 4 Missing Clover cards at once. \n-If you played 1 card, look at the top card of your deck \n if you played 4 cards, take a prize card \nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {
+          if(my.hand.findAll({it.name=="Missing Clover"}).size()==3)
+            {
+              if(confirm("Use your 4 Missing Clover and take a prize card?")){
+                  TakePrize()
+                  my.hand.findAll({it.name=="Missing Clover"}).discard()
+              }
+            }
+          else{
+              my.deck.subList(0,1).showToMe("Top card")
+          }
         }
         playRequirement{
         }
@@ -2977,39 +3025,50 @@ public enum UltraPrism implements CardInfo {
       case MT__CORONET_130:
       return stadium (this) {
         text "Once during each player’s turn, that player may put 2 [M] Energy cards from their discard pile into their hand.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+        def eff
         onPlay {
+          eff=action{
+            checkLastTurn()
+            assert my.discard
+            powerUsed()
+            my.discard.search(max:2,"Search for 2 Metal Energy card to put into your hand",basicEnergyFilter(M)).moveTo(my.hand)
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case ORDER_PAD_131:
       return itemCard (this) {
         text "Flip a coin. If heads, search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {
+          flip{
+            my.deck.search(filterByType(ITEM)).moveTo(my.hand)
+            shuffleDeck()
+          }
         }
         playRequirement{
+          assert my.deck.notEmpty
         }
       };
       case PAL_PAD_132:
       return itemCard (this) {
         text "Shuffle 2 Supporter cards from your discard pile into your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {
+          my.discard.search(count:2,"Search for 2 Supporter cards to shuffle into your deck",filterByType(SUPPORTER)).moveTo(my.deck)
+          shuffleDeck()
         }
         playRequirement{
+          assert my.discard
         }
       };
       case POKEMON_FAN_CLUB_133:
-      return supporter (this) {
-        text "Search your deck for up to 2 Basic Pokémon, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(Aquapolis.POKEMON_FAN_CLUB_130,this);
       case UNIDENTIFIED_FOSSIL_134:
       return itemCard (this) {
         text "Play this card as if it were a 60-HP [C] Basic Pokémon. At any time during your turn (before your attack), you may discard this card from play.\nThis card can’t retreat.\nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {
+          //TODO : copy old fossil card?
         }
         playRequirement{
         }
@@ -3018,8 +3077,12 @@ public enum UltraPrism implements CardInfo {
       return supporter (this) {
         text "Search your deck for an Item card and a [L] Energy card, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
+          my.deck.search(cardTypeFilter(ITEM)).moveTo(my.hand)
+          my.deck.search(basicEnergyFilter(L)).moveTo(my.hand)
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck.notEmpty
         }
       };
       case SUPER_BOOST_ENERGY_PRISM_STAR_136:
@@ -3048,7 +3111,8 @@ public enum UltraPrism implements CardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            damage 0
+            //TODO : allow action first turn
+            damage 30
           }
         }
         move "Cruel Spike", {
@@ -3056,7 +3120,8 @@ public enum UltraPrism implements CardInfo {
           energyCost G, G
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 60
+            apply CONFUSED
           }
         }
         move "Beauty GX", {
@@ -3064,7 +3129,7 @@ public enum UltraPrism implements CardInfo {
           energyCost G, G
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 50*(6-opp.prizeAsList.size())
           }
         }
 
@@ -3077,23 +3142,36 @@ public enum UltraPrism implements CardInfo {
         resistance METAL, MINUS20
         bwAbility "Flashing Heal", {
           text "Prevent all damage done to this Pokémon by attacks from your opponent’s Pokémon that have any Special Energy attached to them."
-          actionA {
-          }
+          delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each {
+								if(it.to == self && it.from.cards.filterByType(SPECIAL_ENERGY) && it.dmg.value && it.notNoEffect) {
+									bc "Flashing Heal prevents damage"
+									it.dmg = hp(0)
+								}
+							}
+						}
+					}
         }
         move "Rumbling Wires", {
           text "100 damage. Discard the top card of your opponent’s deck."
           energyCost L, L, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.deck
+          }
           onAttack {
-            damage 0
+            damage 100
+            opp.deck.subList(0,1).discard()
           }
         }
         move "Lighting GX", {
           text "Your opponent reveals their hand. Add a card you find there to their Prize cards face down. (You can’t use more than 1 GX attack in a game.)"
           energyCost L
-          attackRequirement {}
+          attackRequirement {
+            assert opp.hand.notEmpty
+          }
           onAttack {
-            damage 0
+            damage opp.hand.select().moveTo(opp.prizeAsList)
           }
         }
 
@@ -3109,7 +3187,7 @@ public enum UltraPrism implements CardInfo {
           energyCost M, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 30+30*opp.active.retreatCost
           }
         }
         move "Moon Press", {
@@ -3117,7 +3195,7 @@ public enum UltraPrism implements CardInfo {
           energyCost M, C, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 130
           }
         }
         move "Blaster GX", {
@@ -3125,7 +3203,8 @@ public enum UltraPrism implements CardInfo {
           energyCost M, C, C, C
           attackRequirement {}
           onAttack {
-            damage 0
+            damage 180
+            //TODO : reveal prizes
           }
         }
 
@@ -3136,6 +3215,10 @@ public enum UltraPrism implements CardInfo {
       return supporter (this) {
         text "Heal 50 damage from each of your Pokémon that has any [W] Energy attached to it.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
+          my.all.each{
+            if(it.cards.energyCount(W))
+              heal 50, it
+          }
         }
         playRequirement{
         }
@@ -3145,13 +3228,7 @@ public enum UltraPrism implements CardInfo {
       case LOOKER_152:
       return copy (LOOKER_126, this);
       case LUSAMINE_153:
-      return supporter (this) {
-        text "Put 2 in any combination of Supporter and Stadium cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy (CrimsonInvasion.LUSAMINE_96,this);
       case MARS_154:
       return copy (MARS_128, this);
       case POKEMON_FAN_CLUB_155:
@@ -3173,25 +3250,13 @@ public enum UltraPrism implements CardInfo {
       case PALKIA_GX_165:
       return copy (PALKIA_GX_101, this);
       case CRUSHING_HAMMER_166:
-      return itemCard (this) {
-        text "Flip a coin. If heads, discard an Energy from 1 of your opponent’s Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy (SunMoon.CRUSHING_HAMMER_115, this);
       case ESCAPE_BOARD_167:
       return copy (ESCAPE_BOARD_122, this);
       case MISSING_CLOVER_168:
       return copy (MISSING_CLOVER_129, this);
       case PEEKING_RED_CARD_169:
-      return itemCard (this) {
-        text "Your opponent reveals their hand. You may have your opponent count the cards in their hand, shuffle those cards into their deck, then draw that many cards.\nYou may play as many Item cards as you like during your turn (before your attack)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy (CrimsonInvasion.PEEKING_RED_CARD_97,this);
       case UNIT_ENERGY_GRW_170:
       return copy (SUPER_BOOST_ENERGY_PRISM_STAR_136, this);
       case UNIT_ENERGY_LPM_171:

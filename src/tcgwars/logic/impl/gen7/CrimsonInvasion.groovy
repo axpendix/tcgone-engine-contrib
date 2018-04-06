@@ -877,7 +877,7 @@ public enum CrimsonInvasion implements CardInfo {
         resistance METAL, MINUS20
         bwAbility "Surge Surfer", {
           text "If there is any Stadium card in play, this Pokémon has no Retreat Cost."
-          getterA (GET_RETREAT_COST, self) {h->
+          getterA (GET_RETREAT_COST, self), {h->
             if(bg.stadiumInfoStruct) {
               h.object = 0
             }
@@ -2311,7 +2311,7 @@ public enum CrimsonInvasion implements CardInfo {
         weakness FIGHTING
         bwAbility "Gyro Unit", {
           text "Your Basic Pokémon in play have no Retreat Cost."
-          getterA (GET_RETREAT_COST) {h->
+          getterA (GET_RETREAT_COST), {h->
             if(h.effect.target.owner == self.owner && h.effect.target.cardTypes.is(BASIC)) {
               h.object = 0
             }
@@ -2389,7 +2389,7 @@ public enum CrimsonInvasion implements CardInfo {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [F] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
         def eff
         onPlay {reason->
-          eff=getter GET_POKEMON_TYPE, self {h ->
+          eff=getter GET_POKEMON_TYPE, self, {h ->
             if(h.effect.target.name == "Silvally-GX")
               h.object = FIGHTING
           }
@@ -2446,7 +2446,7 @@ public enum CrimsonInvasion implements CardInfo {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [P] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
         def eff
         onPlay {reason->
-          eff=getter GET_POKEMON_TYPE, self {h ->
+          eff=getter GET_POKEMON_TYPE, self, {h ->
             if(h.effect.target.name == "Silvally-GX")
               h.object = PSYCHIC
           }
@@ -2526,15 +2526,7 @@ public enum CrimsonInvasion implements CardInfo {
       case COUNTER_CATCHER_120:
       return copy (COUNTER_CATCHER_91, this);
       case WISHFUL_BATON_121:
-      return pokemonTool (this) {
-        text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to is your Active Pokémon and is Knocked Out by damage from an opponent's attack, move up to 3 basic Energy cards from that Pokémon to 1 of your Benched Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(BurningShadows.WISHFUL_BATON_128, this)
       case COUNTER_ENERGY_122:
       return copy (COUNTER_ENERGY_100, this);
       case WARP_ENERGY_123:
