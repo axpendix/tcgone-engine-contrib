@@ -507,7 +507,7 @@ public enum ShiningLegends implements CardInfo {
 						energyCost R, C
 						onAttack {
 							damage 50
-							if(defending.numberOfDamageCounters) damage 80
+							if(my.bench.find{it.numberOfDamageCounters}) damage 80
 						}
 					}
 					move "Flare Blitz", {
