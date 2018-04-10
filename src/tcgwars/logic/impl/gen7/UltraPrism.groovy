@@ -2243,7 +2243,7 @@ public enum UltraPrism implements CardInfo {
           text "Prevent all damage done to your [M] Pokémon by attacks from your opponent’s Pokémon that have any Special Energy attached to them."
           delayedA {
             before PROCESS_ATTACK_EFFECTS, {
-              bg.dmg.each{
+              bg.dm().each{
                 if(ef.target.types.contains(M)){
                     it.dmg = hp(0)
                 }

@@ -420,7 +420,7 @@ public enum CrimsonInvasion implements CardInfo {
           text "This Pokémon's attacks do 80 more damage to your opponent's [G] Pokémon (before applying Weakness and Resistance)."
           delayedA {
             before PROCESS_ATTACK_EFFECTS, {
-              bg.dmg.each{
+              bg.dm().each{
                 if(ef.attacker.owner == self.owner && opp.active.types.contains(G)){
                     it.dmg += hp(80)
                 }
@@ -670,6 +670,9 @@ public enum CrimsonInvasion implements CardInfo {
             while(dcc < 9){
               if(confirm("Add a damage counter to Mamoswine for 10 more damage (up to 9, you have already $dcc)"))
                 dcc += 1
+              else{
+                break
+              }
             }
             if(dcc){
               damage 10*dcc
