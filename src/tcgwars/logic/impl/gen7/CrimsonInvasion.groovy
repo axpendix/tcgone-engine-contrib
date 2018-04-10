@@ -32,6 +32,7 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
+ * @author itrezad@gmail.com
  * @author axpendix@hotmail.com
  */
 public enum CrimsonInvasion implements CardInfo {
@@ -448,7 +449,7 @@ public enum CrimsonInvasion implements CardInfo {
             //TODO : more efecient way?
             opp.active.cards.filterByType(ENERGY).each{
                 if(my.discard.findAll(cardTypeFilter(FIRE)))
-                  my.discard.findAll(cardTypeFilter(FIRE))).select().moveTo(discard,my.all.select())
+                  my.discard.findAll(cardTypeFilter(FIRE)).select().moveTo(discard,my.all.select())
             }
           }
         }
@@ -790,26 +791,25 @@ public enum CrimsonInvasion implements CardInfo {
           text "If you have Regirock in play, prevent all effects of attacks, including damage, done to this Pokémon by your opponent's Stage 2 Pokémon."
           delayedA {
             if(self.owner.pbg.all.findAll {it.name=="Regirock"}) {
-                before null, self, Source.ATTACK, {
-          				if (opp.active.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-          					bc "Safeguard prevents effect"
-          					prevent()
-          				}
-          			}
-          			before APPLY_ATTACK_DAMAGES, {
-          				bg.dm().each {
-          					if(it.to == self && it.notNoEffect && opp.active.is(STAGE2) ){
-          						it.dmg = hp(0)
-          						bc "Safeguard prevents damage"
-          					}
-          				}
-          			}
-          			after ENERGY_SWITCH, {
-          				def efs = (ef as EnergySwitch)
-          				if(opp.active.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
-          					discard efs.card
-          				}
-          			}
+              before null, self, Source.ATTACK, {
+                if (opp.active.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  bc "Safeguard prevents effect"
+                  prevent()
+                }
+              }
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if(it.to == self && it.notNoEffect && opp.active.is(STAGE2) ){
+                    it.dmg = hp(0)
+                    bc "Safeguard prevents damage"
+                  }
+                }
+              }
+              after ENERGY_SWITCH, {
+                def efs = (ef as EnergySwitch)
+                if(opp.active.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                  discard efs.card
+                }
               }
             }
           }
@@ -877,7 +877,7 @@ public enum CrimsonInvasion implements CardInfo {
         resistance METAL, MINUS20
         bwAbility "Surge Surfer", {
           text "If there is any Stadium card in play, this Pokémon has no Retreat Cost."
-          getterA (GET_RETREAT_COST, self), {h->
+          getterA GET_RETREAT_COST, self, {h->
             if(bg.stadiumInfoStruct) {
               h.object = 0
             }
@@ -2311,7 +2311,7 @@ public enum CrimsonInvasion implements CardInfo {
         weakness FIGHTING
         bwAbility "Gyro Unit", {
           text "Your Basic Pokémon in play have no Retreat Cost."
-          getterA (GET_RETREAT_COST), {h->
+          getterA GET_RETREAT_COST, {h->
             if(h.effect.target.owner == self.owner && h.effect.target.cardTypes.is(BASIC)) {
               h.object = 0
             }
@@ -2353,7 +2353,7 @@ public enum CrimsonInvasion implements CardInfo {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to discards Energy for its Retreat Cost, put that Energy into your hand instead of the discard pile.\nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {reason->
           eff = delayed {
-            before (RETREAT,self), {
+            before RETREAT, self, {
               if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.cards.filterByType(ENERGY)) {
                 bc "dashing pouch activates"
                 self.cards.filterByType(ENERGY).moveTo(my.hand)

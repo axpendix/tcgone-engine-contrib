@@ -32,6 +32,8 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
+ * @author itrezad@gmail.com
+ * @author thebellis618@gmail.com
  * @author axpendix@hotmail.com
  */
 public enum UltraPrism implements CardInfo {
@@ -472,9 +474,10 @@ public enum UltraPrism implements CardInfo {
         weakness FIRE
         bwAbility "Weather Guard", {
           text "Your [G] Pokémon have no Weakness."
-          getterA GET_WEAKNESSES {h->
-            if(h.effect.target.types.contains(G)){
-							h.object = []
+          getterA GET_WEAKNESSES, { h ->
+            if (h.effect.target.types.contains(G)) {
+              h.object = []
+            }
           }
         }
         move "Seed Bomb", {
@@ -566,7 +569,7 @@ public enum UltraPrism implements CardInfo {
         weakness FIRE
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-          getterA (GET_MOVE_LIST,self), {h->
+          getterA GET_MOVE_LIST, self, {h->
             if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
               def list=[]
   						for(move in h.object){
@@ -832,7 +835,7 @@ public enum UltraPrism implements CardInfo {
         weakness WATER
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-          getterA (GET_MOVE_LIST,self), {h->
+          getterA GET_MOVE_LIST, self, {h->
             if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
               def list=[]
   						for(move in h.object){
@@ -1187,7 +1190,7 @@ public enum UltraPrism implements CardInfo {
         weakness GRASS
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-          getterA (GET_MOVE_LIST,self), {h->
+          getterA GET_MOVE_LIST, self, {h->
             if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
               def list=[]
   						for(move in h.object){
@@ -1216,7 +1219,7 @@ public enum UltraPrism implements CardInfo {
         weakness METAL
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-          getterA (GET_MOVE_LIST,self), {h->
+          getterA GET_MOVE_LIST, self, {h->
             if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
               def list=[]
   						for(move in h.object){
@@ -1438,7 +1441,7 @@ public enum UltraPrism implements CardInfo {
         resistance METAL, MINUS20
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-          getterA (GET_MOVE_LIST,self), {h->
+          getterA GET_MOVE_LIST, self, {h->
             if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
               def list=[]
   						for(move in h.object){
@@ -1529,11 +1532,11 @@ public enum UltraPrism implements CardInfo {
         move "Terrify", {
           text "If the Defending Pokémon is a Basic Pokémon, it can’t attack during your opponent’s next turn."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert defending.basic
+          }
           onAttack {
-            if(defending.basic){
-              CantAttackNextTurn opp.active
-            }
+            cantAttackNextTurn defending
           }
         }
 
@@ -2254,7 +2257,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 110
-            if(confirm("Your opponent switch their pokemon with 1 of their bench?")
+            if(confirm("Your opponent switch their pokemon with 1 of their bench?"))
               whirlwind()
           }
         }
@@ -2446,7 +2449,7 @@ public enum UltraPrism implements CardInfo {
           text "Once during your turn (before your attack), you may search your deck for a [Y] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
           actionA {
             assert my.deck
-            my.deck.search(count: 1, "search for a fairy pokemon", {it.types.contains(Y)}.moveTo(my.hand)
+            my.deck.search(count: 1, "search for a fairy pokemon", {it.types.contains(Y)}).moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -2542,7 +2545,7 @@ public enum UltraPrism implements CardInfo {
         weakness FAIRY
         bwAbility "Rock Hiding", {
           text "If this Pokémon has any [F] Energy attached to it, it has no Retreat Cost."
-          getterA (GET_RETREAT_COST, self), {h->
+          getterA GET_RETREAT_COST, self, {h->
             if(bg.cards.energyCount(F)) {
               h.object = 0
             }
@@ -2857,7 +2860,7 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
           //TODO : check if this is working
-          getterA (GET_MOVE_LIST,self), {h->
+          getterA GET_MOVE_LIST, self, {h->
             if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
               def list=[]
   						for(move in h.object){
@@ -3006,7 +3009,7 @@ public enum UltraPrism implements CardInfo {
 
       };
       case SILVALLY_GX_116:
-      return Return copy (CrimsonInvasion.SYLVALLY_GX_90,this);
+      return copy (CrimsonInvasion.SYLVALLY_GX_90, this);
 
       case DRAMPA_117:
       return basic (this, hp:HP130, type:COLORLESS, retreatCost:3) {
@@ -3035,7 +3038,7 @@ public enum UltraPrism implements CardInfo {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nThe Regirock, Regice, Registeel, or Regigigas this card is attached to takes 30 less damage from your opponent’s attacks (after applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {reason->
           eff = delayed{
-            before (APPLY_ATTACK_DAMAGES,self), {
+            before APPLY_ATTACK_DAMAGES, self, {
               bg.dm().each{
                 if(self.name=="Regirock" || self.name=="Regice"  || self.name=="Registeel"  || self.name=="Regigigas" ){
                   bc "Submerge prevent all damage"
@@ -3095,7 +3098,7 @@ public enum UltraPrism implements CardInfo {
         text "The Retreat Cost of the Pokémon this card is attached to is [C] less, and it can retreat even if it’s Asleep or Paralyzed.\nYou may play as many Item cards as you like during your turn (before your attack)."
         def eff
         onPlay {reason->
-          eff=delayed (RETREAT,self), {h ->
+          eff=delayed RETREAT, self, {h ->
           //TODO: add effect
 
           }
