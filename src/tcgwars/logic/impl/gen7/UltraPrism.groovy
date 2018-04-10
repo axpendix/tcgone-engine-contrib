@@ -2772,7 +2772,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            sandAttack()
+            sandAttack(thisMove)
           }
         }
         move "Skip", {

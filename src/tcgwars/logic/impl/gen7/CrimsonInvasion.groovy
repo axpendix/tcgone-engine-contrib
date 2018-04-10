@@ -345,7 +345,7 @@ public enum CrimsonInvasion implements CardInfo {
             assert my.hand.find{it.name=='Shelmet'}
             checkLastTurn()
             powerUsed()
-            my.hand.findAll{it.name=='Shelmet'}.select().first().discard()
+            my.hand.findAll{it.name=='Shelmet'}.select().discard()
             def sel=self.owner.pbg.deck.search(min:0, "Shell On : search a pokemon evolving from Karrablast",
                         {it.cardTypes.is(EVOLUTION) && it.predecessor==self.name}, self.owner)
             if(sel){
@@ -419,9 +419,10 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Sap Sipper", {
           text "This Pokémon's attacks do 80 more damage to your opponent's [G] Pokémon (before applying Weakness and Resistance)."
           delayedA {
-            before PROCESS_ATTACK_EFFECTS, {
+            before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if(ef.attacker.owner == self.owner && opp.active.types.contains(G)){
+                if(ef.attacker == self && ef.target.owner == self.owner.opposite && ef.target.types.contains(G) && it.dmg.value){
+                    bc "Sap Sipper +80"
                     it.dmg += hp(80)
                 }
               }
@@ -448,8 +449,8 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             //TODO : more efecient way?
             opp.active.cards.filterByType(ENERGY).each{
-                if(my.discard.findAll(cardTypeFilter(FIRE)))
-                  my.discard.findAll(cardTypeFilter(FIRE)).select().moveTo(discard,my.all.select())
+                if(my.discard.findAll(energyFilter(FIRE)))
+                  my.discard.findAll(energyFilter(FIRE)).select().moveTo(discard,my.all.select())
             }
           }
         }
@@ -703,7 +704,7 @@ public enum CrimsonInvasion implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            sandAttack()
+            sandAttack(thisMove)
           }
         }
         move "Special Artillery", {
@@ -793,16 +794,16 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Iceberg Shield", {
           text "If you have Regirock in play, prevent all effects of attacks, including damage, done to this Pokémon by your opponent's Stage 2 Pokémon."
           delayedA {
-            if(self.owner.pbg.all.findAll {it.name=="Regirock"}) {
+            if(my.all.findAll{it.name=="Regirock"}) {
               before null, self, Source.ATTACK, {
-                if (opp.active.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                if (it.from.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "Safeguard prevents effect"
                   prevent()
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.notNoEffect && opp.active.is(STAGE2) ){
+                  if(it.to == self && it.notNoEffect && it.from.is(STAGE2) ){
                     it.dmg = hp(0)
                     bc "Safeguard prevents damage"
                   }
@@ -810,7 +811,7 @@ public enum CrimsonInvasion implements CardInfo {
               }
               after ENERGY_SWITCH, {
                 def efs = (ef as EnergySwitch)
-                if(opp.active.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                if(it.from.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                   discard efs.card
                 }
               }
@@ -2282,7 +2283,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 90
-            opp.deck.first().discard()
+            opp.deck.subList(0,1).discard()
           }
         }
 
