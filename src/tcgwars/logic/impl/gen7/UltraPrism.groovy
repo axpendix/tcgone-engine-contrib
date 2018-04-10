@@ -150,7 +150,7 @@ public enum UltraPrism implements CardInfo {
   YUNGOOS_112 ("Yungoos", 112, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   GUMSHOOS_113 ("Gumshoos", 113, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
   ORANGURU_114 ("Oranguru", 114, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-  UNKNOWN____115 ("Type: Null", 115, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  TYPE__NULL_115 ("Type: Null", 115, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
   SILVALLY_GX_116 ("Silvally-GX", 116, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
   DRAMPA_117 ("Drampa", 117, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
   ANCIENT_CRYSTAL_118 ("Ancient Crystal", 118, Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER]),
@@ -2982,7 +2982,7 @@ public enum UltraPrism implements CardInfo {
         }
 
       };
-      case TYPE:_NULL_115:
+      case TYPE__NULL_115:
       return basic (this, hp:HP110, type:COLORLESS, retreatCost:2) {
         weakness FIGHTING
         move "Merciless Strike", {
