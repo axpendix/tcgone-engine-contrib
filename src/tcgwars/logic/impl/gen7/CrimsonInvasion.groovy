@@ -346,8 +346,8 @@ public enum CrimsonInvasion implements CardInfo {
             checkLastTurn()
             powerUsed()
             my.hand.findAll{it.name=='Shelmet'}.select().discard()
-            def sel=self.owner.pbg.deck.search(min:0, "Shell On : search a pokemon evolving from Karrablast",
-                        {it.cardTypes.is(EVOLUTION) && it.predecessor==self.name}, self.owner)
+            def sel=self.owner.pbg.deck.search(count:1, "Shell On : search a pokemon evolving from Karrablast",
+                        {it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
             if(sel){
               evolve(self, sel.first(), OTHER)
             }
@@ -450,7 +450,7 @@ public enum CrimsonInvasion implements CardInfo {
             //TODO : more efecient way?
             opp.active.cards.filterByType(ENERGY).each{
                 if(my.discard.findAll(energyFilter(FIRE)))
-                  my.discard.findAll(energyFilter(FIRE)).select().moveTo(discard,my.all.select())
+                  my.discard.findAll(energyFilter(FIRE)).select().moveTo(my.all.select())
             }
           }
         }
@@ -794,29 +794,28 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Iceberg Shield", {
           text "If you have Regirock in play, prevent all effects of attacks, including damage, done to this Pokémon by your opponent's Stage 2 Pokémon."
           delayedA {
-            if(my.all.findAll{it.name=="Regirock"}) {
-              before null, self, Source.ATTACK, {
-                if (it.from.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                  bc "Safeguard prevents effect"
-                  prevent()
-                }
+            before null, self, Source.ATTACK, {
+              if (my.all.findAll{it.name=="Regirock"} && it.from.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                bc "Safeguard prevents effect"
+                prevent()
               }
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.from.is(STAGE2) ){
-                    it.dmg = hp(0)
-                    bc "Safeguard prevents damage"
-                  }
-                }
-              }
-              after ENERGY_SWITCH, {
-                def efs = (ef as EnergySwitch)
-                if(it.from.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
-                  discard efs.card
+            }
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if(my.all.findAll{it.name=="Regirock"} && it.to == self && it.notNoEffect && it.from.is(STAGE2) ){
+                  it.dmg = hp(0)
+                  bc "Safeguard prevents damage"
                 }
               }
             }
+            after ENERGY_SWITCH, {
+              def efs = (ef as EnergySwitch)
+              if(my.all.findAll{it.name=="Regirock"} && it.from.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                discard efs.card
+              }
+            }
           }
+
         }
         move "Frost Smash", {
           text "70 damage."
@@ -1113,7 +1112,7 @@ public enum CrimsonInvasion implements CardInfo {
             damage 30
             delayed{
               before ATTACH_ENERGY, {
-                if (ef.reason == PLAY_FROM_HAND && ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY)){
+                if (ef.reason == PLAY_FROM_HAND && ef.card instanceof SpecialEnergyCard){
                   wcu "Chaos Wheel prevents playing this card"
                   prevent()
                 }
@@ -1188,7 +1187,8 @@ public enum CrimsonInvasion implements CardInfo {
             damage 10
             delayed {
               before PLAY_BASIC_POKEMON, {
-                if(ef.cardToPlay.hasModernAbility()) {
+                def tar = (ef.cardToPlay as Pokemon)
+                if(tar.hasModernAbility()) {
                     wcu "Bell of Silence: Can't play Pokémon that has an Ability"
                     prevent()
                 }
@@ -1235,7 +1235,7 @@ public enum CrimsonInvasion implements CardInfo {
             damage 10
             def tar = my.all.findAll{it.cards.hasType(POKEMON_TOOL)}
             if(tar){
-              tar.select(min:0, max:tar.size(),cardTypeFilter(POKEMON_TOOL)).each {
+              my.all.select(min:0, max:tar.size(),{it.cards.hasType(POKEMON_TOOL)}).each {
                 it.find(cardTypeFilter(POKEMON_TOOL)).discard()
                 damage 40
               }
@@ -1292,7 +1292,7 @@ public enum CrimsonInvasion implements CardInfo {
             assert my.discard.find(cardTypeFilter(POKEMON_TOOL))
           }
           onAttack {
-            my.discard.search(count:3,"Search for 3 pokemon tool",cardTypeFilter(POKEMON_TOOL)).moveTo(hand)
+            my.discard.findAll(cardTypeFilter(POKEMON_TOOL)).select(count:3,"Search for 3 pokemon tool").moveTo(hand)
           }
         }
         move "Zen Headbutt", {
@@ -1337,7 +1337,8 @@ public enum CrimsonInvasion implements CardInfo {
           }
           onAttack {
             gxPerform()
-            opp.deck.subList(0, 2).moveTo(opp.prizeAsList)
+            opp.prizeAsList.add(opp.deck.subList(0, 2))
+            opp.deck.remove(opp.deck.subList(0, 2))
           }
         }
 
@@ -1376,7 +1377,7 @@ public enum CrimsonInvasion implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if(ef.attacker.owner == self.owner.opposite) {
                   bg.dm().each{
-                    if(it.to == self && it.dmg.notNoEffect && it.dmg.value) {
+                    if(it.to == self && it.notNoEffect && it.dmg.value) {
                        bc "Lucha Fight +30"
                        it.dmg += hp(30)
                     }
@@ -1488,7 +1489,7 @@ public enum CrimsonInvasion implements CardInfo {
             before APPLY_ATTACK_DAMAGES, {
               if(ef.attacker.owner == self.owner.opposite && !(ef.attacker.types.contains(R))) {
                 bg.dm().each{
-                  if(it.to == self && it.dmg.notNoEffect && it.dmg.value) {
+                  if(it.to == self && it.notNoEffect && it.dmg.value) {
                      bc "Fluffy -30"
                     it.dmg -= hp(30)
                   }
