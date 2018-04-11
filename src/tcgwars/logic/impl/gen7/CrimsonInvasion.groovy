@@ -795,23 +795,29 @@ public enum CrimsonInvasion implements CardInfo {
           text "If you have Regirock in play, prevent all effects of attacks, including damage, done to this Pokémon by your opponent's Stage 2 Pokémon."
           delayedA {
             before null, self, Source.ATTACK, {
-              if (my.all.findAll{it.name=="Regirock"} && it.from.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                bc "Safeguard prevents effect"
-                prevent()
+              if(my.all.findAll{it.name=="Regirock"}){
+                if (it.from.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  bc "Safeguard prevents effect"
+                  prevent()
+                }
               }
             }
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if(my.all.findAll{it.name=="Regirock"} && it.to == self && it.notNoEffect && it.from.is(STAGE2) ){
-                  it.dmg = hp(0)
-                  bc "Safeguard prevents damage"
+              if(my.all.findAll{it.name=="Regirock"}){
+                bg.dm().each {
+                  if(it.to == self && it.dmg.value && it.notNoEffect && it.from.cardTypes.is(STAGE2) ){
+                    it.dmg = hp(0)
+                    bc "Safeguard prevents damage"
+                  }
                 }
               }
             }
             after ENERGY_SWITCH, {
               def efs = (ef as EnergySwitch)
-              if(my.all.findAll{it.name=="Regirock"} && it.from.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
-                discard efs.card
+              if(my.all.findAll{it.name=="Regirock"}){
+                if(it.from.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                  discard efs.card
+                }
               }
             }
           }
@@ -1071,7 +1077,7 @@ public enum CrimsonInvasion implements CardInfo {
           delayedA {
             after ATTACH_ENERGY, {
               if(ef.reason == PLAY_FROM_HAND)
-                directDamage 20, ef.target
+                directDamage 20, ef.cardToPlay.topPokemonCard
             }
           }
         }
@@ -1187,7 +1193,7 @@ public enum CrimsonInvasion implements CardInfo {
             damage 10
             delayed {
               before PLAY_BASIC_POKEMON, {
-                def tar = (ef.cardToPlay as Card)
+                def tar = ef.cardToPlay.topPokemonCard
                 if(tar.hasModernAbility()) {
                     wcu "Bell of Silence: Can't play Pokémon that has an Ability"
                     prevent()
@@ -1233,9 +1239,9 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            def tar = my.all.findAll{it.cards.hasType(POKEMON_TOOL)}
+            def tar = my.all.findAll{it.cards.filterByType(POKEMON_TOOL)}
             if(tar){
-              my.all.select(min:0, max:tar.size(),{it.cards.hasType(POKEMON_TOOL)}).each {
+              my.all.select(min:0, max:tar.size(),{it.cards.filterByType(POKEMON_TOOL)}).each {
                 it.find(cardTypeFilter(POKEMON_TOOL)).discard()
                 damage 40
               }
