@@ -919,7 +919,7 @@ public enum CrimsonInvasion implements CardInfo {
 
       };
       case ALOLAN_GRAVELER_33:
-      return evolution (this, from:"Geodude", hp:HP100, type:LIGHTNING, retreatCost:3) {
+      return evolution (this, from:"Alolan Geodude", hp:HP100, type:LIGHTNING, retreatCost:3) {
         weakness FIGHTING
         resistance METAL, MINUS20
         move "Corkscrew Punch", {
@@ -972,7 +972,23 @@ public enum CrimsonInvasion implements CardInfo {
             gxPerform()
             damage 100
              delayed {
-              before PLAY_FROM_HAND, {
+              before PLAY_TRAINER, {
+                if(ef.reason == PLAY_FROM_HAND)
+                wcu "Heavy Rock GX prevent you playing this card"
+                prevent()
+              }
+              before ATTACH_ENERGY, {
+                if(ef.reason == PLAY_FROM_HAND)
+                wcu "Heavy Rock GX prevent you playing this card"
+                prevent()
+              }
+              before EVOLVE, {
+                if(ef.reason == PLAY_FROM_HAND)
+                wcu "Heavy Rock GX prevent you playing this card"
+                prevent()
+              }
+              before PLAY_BASIC_POKEMON, {
+                if(ef.reason == PLAY_FROM_HAND)
                 wcu "Heavy Rock GX prevent you playing this card"
                 prevent()
               }
@@ -1002,8 +1018,8 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            if(my.bench.findAll(cardTypeFilter(LIGHTNING))) {
-              sw self, my.bench.findAll(cardTypeFilter(LIGHTNING)).select()
+            if(my.bench.findAll(energyFilter(LIGHTNING))) {
+              sw self, my.bench.findAll(energyFilter(LIGHTNING)).select()
             }
           }
         }
@@ -1048,8 +1064,8 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Gnawing Curse", {
           text "Whenever your opponent attaches an Energy card from their hand to 1 of their Pokémon, put 2 damage counters on that Pokémon."
           delayedA {
-            after PLAY_FROM_HAND, {
-              if(ef.reason == ATTACH_ENERGY)
+            after ATTACH_ENERGY, {
+              if(ef.reason == PLAY_FROM_HAND)
                 directDamage 20, ef.to
             }
           }
@@ -1295,8 +1311,8 @@ public enum CrimsonInvasion implements CardInfo {
               powerUsed()
               apply CONFUSED
               apply POISONED
-              apply CONFUSED, self
-              apply POISONED, self
+              apply CONFUSED, my.active
+              apply POISONED, my.active
             }
           }
         }
@@ -1354,7 +1370,7 @@ public enum CrimsonInvasion implements CardInfo {
             damage 90
             delayed{
               before APPLY_ATTACK_DAMAGES, {
-                if(ef.attacker.owner != self.owner) {
+                if(ef.attacker.owner == self.owner.opposite) {
                   bg.dm().each{
                     if(it.to == self && it.dmg.notNoEffect && it.dmg.value) {
                        bc "Lucha Fight +30"
@@ -1466,7 +1482,7 @@ public enum CrimsonInvasion implements CardInfo {
           text "This Pokémon takes 30 less damage from the attacks of your opponent's non-[R] Pokémon (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              if(ef.attacker.owner != self.owner && !(ef.attacker.types.contains(R))) {
+              if(ef.attacker.owner == self.owner.opposite && !(ef.attacker.types.contains(R))) {
                 bg.dm().each{
                   if(it.to == self && it.dmg.notNoEffect && it.dmg.value) {
                      bc "Fluffy -30"
@@ -2405,12 +2421,10 @@ public enum CrimsonInvasion implements CardInfo {
       case GLADION_95:
       return supporter (this) {
         text "Look at your face-down Prize cards and put 1 of them into your hand. Then, shuffle this Gladion into your remaining Prize cards and put them back face down. If you didn't play this Gladion from your hand, it does nothing.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-          delayed {
-            before PLAY_FROM_HAND, {
-              my.prizeAsList.select(hidden: false, "Prize to replace with Gladion").moveTo(my.hand)
-              this.moveTo(my.prizeAsList)
-            }
+        onPlay {reason->
+          if(reason==PLAY_FROM_HAND){
+            my.prizeAsList.select(hidden: false, "Prize to replace with Gladion").moveTo(my.hand)
+            this.moveTo(my.prizeAsList)
           }
         }
         playRequirement{
