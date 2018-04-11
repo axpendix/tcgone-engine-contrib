@@ -421,7 +421,7 @@ public enum CrimsonInvasion implements CardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if(ef.attacker == self && ef.target.owner == self.owner.opposite && ef.target.types.contains(G) && it.dmg.value){
+                if(it.from == self && it.to.owner == self.owner.opposite && it.to.types.contains(G) && it.dmg.value){
                     bc "Sap Sipper +80"
                     it.dmg += hp(80)
                 }
@@ -973,24 +973,29 @@ public enum CrimsonInvasion implements CardInfo {
             damage 100
              delayed {
               before PLAY_TRAINER, {
-                if(ef.reason == PLAY_FROM_HAND)
-                wcu "Heavy Rock GX prevent you playing this card"
-                prevent()
+                if(bg.currentTurn == self.owner.opposite)
+                {
+                  wcu "Heavy Rock GX prevent you playing this card"
+                  prevent()
+                }
               }
               before ATTACH_ENERGY, {
-                if(ef.reason == PLAY_FROM_HAND)
-                wcu "Heavy Rock GX prevent you playing this card"
-                prevent()
+                if(ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite){
+                  wcu "Heavy Rock GX prevent you playing this card"
+                  prevent()
+                }
               }
-              before EVOLVE, {
-                if(ef.reason == PLAY_FROM_HAND)
-                wcu "Heavy Rock GX prevent you playing this card"
-                prevent()
+              before EVOLVE_STANDARD, {
+                if(bg.currentTurn == self.owner.opposite){
+                  wcu "Heavy Rock GX prevent you playing this card"
+                  prevent()
+                }
               }
               before PLAY_BASIC_POKEMON, {
-                if(ef.reason == PLAY_FROM_HAND)
-                wcu "Heavy Rock GX prevent you playing this card"
-                prevent()
+                if(bg.currentTurn == self.owner.opposite){
+                  wcu "Heavy Rock GX prevent you playing this card"
+                  prevent()
+                }
               }
               unregisterAfter 2
             }
@@ -1006,7 +1011,7 @@ public enum CrimsonInvasion implements CardInfo {
           text "Put 3 basic Energy cards from your discard pile into your hand."
           energyCost C
           attackRequirement {
-          assert my.discard.find(cardTypeFilter(BASIC_ENERGY))
+            assert my.discard.find(cardTypeFilter(BASIC_ENERGY))
           }
           onAttack {
             my.discard.findAll(cardTypeFilter(BASIC_ENERGY)).select(count:3).moveTo(my.hand)
@@ -1018,8 +1023,8 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            if(my.bench.findAll(energyFilter(LIGHTNING))) {
-              sw self, my.bench.findAll(energyFilter(LIGHTNING)).select()
+            if(my.bench.findAll({it.types.contains(L)}) {
+              sw self, my.bench.findAll({it.types.contains(L)}).select()
             }
           }
         }
@@ -1066,7 +1071,7 @@ public enum CrimsonInvasion implements CardInfo {
           delayedA {
             after ATTACH_ENERGY, {
               if(ef.reason == PLAY_FROM_HAND)
-                directDamage 20, ef.to
+                directDamage 20, ef.target
             }
           }
         }
