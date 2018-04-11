@@ -1023,8 +1023,9 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            if(my.bench.findAll({it.types.contains(L)}) {
-              sw self, my.bench.findAll({it.types.contains(L)}).select()
+            if(my.bench.findAll{it.types.contains(L)}) {
+              def tar = my.bench.findAll{it.types.contains(L)}
+              sw self, tar.select()
             }
           }
         }
@@ -1111,14 +1112,14 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             damage 30
             delayed{
-              before PLAY_ENERGY, {
+              before ATTACH_ENERGY, {
                 if (ef.reason == PLAY_FROM_HAND && ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY)){
                   wcu "Chaos Wheel prevents playing this card"
                   prevent()
                 }
               }
               before PLAY_TRAINER, {
-                if (ef.reason == PLAY_FROM_HAND && (ef.cardToPlay.cardTypes.is(STADIUM) || ef.cardToPlay.cardTypes.is(POKEMON_TOOL))){
+                if (ef.cardToPlay.cardTypes.is(STADIUM) || ef.cardToPlay.cardTypes.is(POKEMON_TOOL)){
                   wcu "Chaos Wheel prevents playing this card"
                   prevent()
                 }
@@ -1186,12 +1187,10 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             damage 10
             delayed {
-              before PLAY_FROM_HAND, {
-                if(ef.cardToPlay.cardTypes.is(POKEMON)) {
-                  if(ef.cardToPlay.hasModernAbility()) {
-                      wcu "Bell of Silence: Can't play Pokémon that has an Ability"
-                      prevent()
-                  }
+              before PLAY_BASIC_POKEMON, {
+                if(ef.cardToPlay.hasModernAbility()) {
+                    wcu "Bell of Silence: Can't play Pokémon that has an Ability"
+                    prevent()
                 }
               }
               unregisterAfter 2
@@ -1234,9 +1233,9 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            def tar = my.all.findAll({it.cards.hasType(POKEMON_TOOL)})
+            def tar = my.all.findAll{it.cards.hasType(POKEMON_TOOL)}
             if(tar){
-              tar.select(min:0, max:tar.size()).each {
+              tar.select(min:0, max:tar.size(),cardTypeFilter(POKEMON_TOOL)).each {
                 it.find(cardTypeFilter(POKEMON_TOOL)).discard()
                 damage 40
               }
@@ -1268,7 +1267,7 @@ public enum CrimsonInvasion implements CardInfo {
             assert deck.notEmpty
           }
           onAttack {
-            deck.search(max: 2).moveTo(hidden: true, hand)
+            deck.select(max: 2).moveTo(hidden: true, hand)
             shuffleDeck()
           }
         }
