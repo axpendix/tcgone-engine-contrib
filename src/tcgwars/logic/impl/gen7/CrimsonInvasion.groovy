@@ -1187,7 +1187,7 @@ public enum CrimsonInvasion implements CardInfo {
             damage 10
             delayed {
               before PLAY_BASIC_POKEMON, {
-                def tar = (ef.cardToPlay as Pokemon)
+                def tar = (ef.cardToPlay as Card)
                 if(tar.hasModernAbility()) {
                     wcu "Bell of Silence: Can't play Pokémon that has an Ability"
                     prevent()
