@@ -795,28 +795,26 @@ public enum CrimsonInvasion implements CardInfo {
           text "If you have Regirock in play, prevent all effects of attacks, including damage, done to this Pokémon by your opponent's Stage 2 Pokémon."
           delayedA {
             before null, self, Source.ATTACK, {
-              if(my.all.find{it.name=="Regirock"}){
-                if (it.from.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+              if(self.owner.pbg.all.findAll{it.name=="Regirock"}){
+                if (self.owner.opposite.pbg.active.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "Safeguard prevents effect"
                   prevent()
                 }
               }
             }
             before APPLY_ATTACK_DAMAGES, {
-              bc "Ability activation"
-              if(my.all.find{it.name=="Regirock"}){
-                bc "Regirock in play"
+              if(self.owner.pbg.all.findAll{it.name=="Regirock"}){
                 bg.dm().each {
-                  //if(it.to == self && it.dmg.value && it.notNoEffect && it.from.cardTypes.is(STAGE2)){
+                  if(it.to == self && it.dmg.value && it.notNoEffect && it.from.cardTypes.is(STAGE2)){
                     it.dmg = hp(0)
                     bc "Safeguard prevents damage"
-                  //}
+                  }
                 }
               }
             }
             after ENERGY_SWITCH, {
               def efs = (ef as EnergySwitch)
-              if(my.all.find{it.name=="Regirock"}){
+              if(self.owner.pbg.all.findAll{it.name=="Regirock"}){
                 if(it.from.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                   discard efs.card
                 }
