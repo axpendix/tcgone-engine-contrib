@@ -2075,18 +2075,17 @@ public enum CrimsonInvasion implements CardInfo {
             damage 130
             delayed{
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {if(it.to==self && it.dmg.value){
+                bg.dm().each {if(it.to==self && it.dmg.value)}{
                   bc "+30 to kommo-o (Clanging Scales)"
                   it.dmg+=hp(30)
                 }
+                unregisterAfter 2
+                after SWITCH, self, {unregister()}
+                after EVOLVE, self, {unregister()}
               }
-              unregisterAfter 2
-              after SWITCH, self, {unregister()}
-              after EVOLVE, self, {unregister()}
             }
           }
         }
-
       };
       case MILTANK_78:
       return basic (this, hp:HP100, type:COLORLESS, retreatCost:2) {
