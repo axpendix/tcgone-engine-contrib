@@ -806,7 +806,7 @@ public enum CrimsonInvasion implements CardInfo {
               if(self.owner.pbg.all.findAll{it.name=="Regirock"}){
                 bc "Regirock is in play"
                 bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.from.is(STAGE2)){
+                  if(it.to == self && it.notNoEffect && it.from.cardTypes.is(STAGE2)){
                     it.dmg = hp(0)
                     bc "Safeguard prevents damage"
                   }
@@ -816,7 +816,7 @@ public enum CrimsonInvasion implements CardInfo {
             after ENERGY_SWITCH, {
               def efs = (ef as EnergySwitch)
               if(self.owner.pbg.all.findAll{it.name=="Regirock"}){
-                if(it.from.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                if(it.from.cardTypes.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                   discard efs.card
                 }
               }
