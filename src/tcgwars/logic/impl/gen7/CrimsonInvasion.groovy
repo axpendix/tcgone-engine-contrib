@@ -804,8 +804,9 @@ public enum CrimsonInvasion implements CardInfo {
             }
             before APPLY_ATTACK_DAMAGES, {
               if(self.owner.pbg.all.findAll{it.name=="Regirock"}){
+                bc "Regirock is in play"
                 bg.dm().each {
-                  if(it.to == self && it.dmg.value && it.notNoEffect && it.from.is(STAGE2)){
+                  if(it.to == self && it.notNoEffect && it.from.is(STAGE2)){
                     it.dmg = hp(0)
                     bc "Safeguard prevents damage"
                   }
