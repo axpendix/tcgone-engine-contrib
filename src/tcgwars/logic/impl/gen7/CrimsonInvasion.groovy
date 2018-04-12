@@ -1510,8 +1510,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            if(defending.evolution)
-              damage 60
+            if(defending.evolution) damage 60
           }
         }
 
@@ -1651,7 +1650,9 @@ public enum CrimsonInvasion implements CardInfo {
             def num = 0
             while(my.bench.size()>3){
               num = my.bench.size()-3
-              my.bench.select("select a pokemon to discard ($num remaining to discard)").discard()
+              def tar = my.bench.select("select a pokemon to discard ($num remaining to discard)")
+              shuffleDeck(tar.cards)
+              removePCS(tar)
             }
           }
         }
@@ -1728,7 +1729,11 @@ public enum CrimsonInvasion implements CardInfo {
             assert deck.notEmpty
           }
           onAttack {
-            my.deck.search(max: 2,"search for up to 2 Basic Pokémon", cardTypeFilter(BASIC)).moveTo(my.bench)
+            int count = bench.freeBenchCount>=2?2:1
+            deck.search (max: count, cardTypeFilter(BASIC)).each {
+              deck.remove(it)
+              benchPCS(it)
+            }
             shuffleDeck()
           }
         }
@@ -2001,12 +2006,15 @@ public enum CrimsonInvasion implements CardInfo {
             gxPerform()
             damage 180
             while(1){
-              def pl=(my.all.findAll {it.cards.filterByEnergyType(C)})
+              def pl=(my.all.findAll {it.cards.energyCount(C)})
               if(!pl) break;
+              def src =pl.select("source for energy (cancel to stop)", false)
+              if(!src) break;
+              def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
+
               def tar=pl.select("Target for energy (cancel to stop)", false)
               if(!tar) break;
-              def card=src.cards.select("Card to move").first()
-              energySwitch(self, tar, card)
+              energySwitch(src, tar, card)
             }
           }
         }
