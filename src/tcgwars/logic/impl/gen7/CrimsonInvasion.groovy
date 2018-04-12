@@ -805,7 +805,7 @@ public enum CrimsonInvasion implements CardInfo {
             before APPLY_ATTACK_DAMAGES, {
               if(my.all.findAll{it.name=="Regirock"}){
                 bg.dm().each {
-                  if(it.to == self && it.dmg.value && it.notNoEffect && it.from.cardTypes.is(STAGE2) ){
+                  if(it.to == self && it.dmg.value && it.notNoEffect && it.from.cardTypes.is(STAGE2)){
                     it.dmg = hp(0)
                     bc "Safeguard prevents damage"
                   }
@@ -1510,7 +1510,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            if(opp.active.cardTypes.is(EVOLUTION))
+            if(defending.evolution)
               damage 60
           }
         }
@@ -1648,7 +1648,11 @@ public enum CrimsonInvasion implements CardInfo {
             assert (my.bench.size()>3)
             checkLastTurn()
             powerUsed()
-            my.bench.select(count: my.bench.size()-3).discard()
+            def num = 0
+            while(my.bench.size()>3){
+              num = my.bench.size()-3
+              my.bench.select("select a pokemon to discard ($num remaining to discard)").discard()
+            }
           }
         }
         move "Dark Destruction", {
@@ -1676,6 +1680,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             def list = my.deck.subList(0,5).findAll(cardTypeFilter(ENERGY))
+            //TODO : show the 5 top card before discard
             def num = list.size()
             if(num){
               list.each{attachEnergy(self, it)}
@@ -1723,7 +1728,7 @@ public enum CrimsonInvasion implements CardInfo {
             assert deck.notEmpty
           }
           onAttack {
-            my.deck.search (max: 2, cardTypeFilter(BASIC)).moveTo(bench)
+            my.deck.search(max: 2,"search for up to 2 Basic Pokémon", cardTypeFilter(BASIC)).moveTo(my.bench)
             shuffleDeck()
           }
         }
@@ -1793,7 +1798,7 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             damage 10
             my.bench.each{
-              damage it.numberOfDamageCounters
+              damage it.numberOfDamageCounters*10
             }
           }
         }
@@ -1827,7 +1832,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 90
-            if(deck.search ("Regice", {it.name=="Regice"}))
+            if(my.bench.find({it.name=="Regice"}))
               heal 30, self
           }
         }
@@ -1891,7 +1896,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {gxCheck()}
           onAttack {
             gxPerform()
-            TakePrize()
+            bg.em().run(new TakePrize(self.owner,self))
           }
         }
 
@@ -1976,7 +1981,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             def tar = opp.all.select()
-            damage 20 * self.energyCount(C), tar
+            damage 20 * self.cards.energyCount(C), tar
           }
         }
         move "Dragon Hammer", {
@@ -1996,7 +2001,7 @@ public enum CrimsonInvasion implements CardInfo {
             gxPerform()
             damage 180
             while(1){
-              def pl=(my.all.findAll {it.cards.filterByEnergyType(C) && it!=self})
+              def pl=(my.all.findAll {it.cards.filterByEnergyType(C)})
               if(!pl) break;
               def tar=pl.select("Target for energy (cancel to stop)", false)
               if(!tar) break;
@@ -2068,7 +2073,17 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 130
-            increaseDamageNextTurn(hp(30),thisMove)
+            delayed{
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {if(it.to==self && it.dmg.value){
+                  bc "+30 to kommo-o (Clanging Scales)"
+                  it.dmg+=hp(30)
+                }
+              }
+              unregisterAfter 2
+              after SWITCH, self, {unregister()}
+              after EVOLVE, self, {unregister()}
+            }
           }
         }
 
