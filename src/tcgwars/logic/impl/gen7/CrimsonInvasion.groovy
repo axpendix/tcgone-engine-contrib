@@ -795,7 +795,7 @@ public enum CrimsonInvasion implements CardInfo {
           text "If you have Regirock in play, prevent all effects of attacks, including damage, done to this Pokémon by your opponent's Stage 2 Pokémon."
           delayedA {
             before null, self, Source.ATTACK, {
-              if(my.all.findAll{it.name=="Regirock"}){
+              if(my.all.find{it.name=="Regirock"}){
                 if (it.from.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "Safeguard prevents effect"
                   prevent()
@@ -803,18 +803,20 @@ public enum CrimsonInvasion implements CardInfo {
               }
             }
             before APPLY_ATTACK_DAMAGES, {
-              if(my.all.findAll{it.name=="Regirock"}){
+              bc "Ability activation"
+              if(my.all.find{it.name=="Regirock"}){
+                bc "Regirock in play"
                 bg.dm().each {
-                  if(it.to == self && it.dmg.value && it.notNoEffect && it.from.cardTypes.is(STAGE2)){
+                  //if(it.to == self && it.dmg.value && it.notNoEffect && it.from.cardTypes.is(STAGE2)){
                     it.dmg = hp(0)
                     bc "Safeguard prevents damage"
-                  }
+                  //}
                 }
               }
             }
             after ENERGY_SWITCH, {
               def efs = (ef as EnergySwitch)
-              if(my.all.findAll{it.name=="Regirock"}){
+              if(my.all.find{it.name=="Regirock"}){
                 if(it.from.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                   discard efs.card
                 }
@@ -1727,6 +1729,7 @@ public enum CrimsonInvasion implements CardInfo {
           energyCost C
           attackRequirement {
             assert deck.notEmpty
+            assert my.bench.notFull
           }
           onAttack {
             int count = bench.freeBenchCount>=2?2:1
@@ -2082,10 +2085,12 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             damage 130
             delayed{
-              after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {if(it.to==self && it.dmg.value)}{
-                  bc "+30 to kommo-o (Clanging Scales)"
-                  it.dmg+=hp(30)
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each{
+                  if(it.to==self && it.dmg.value){
+                    bc "+30 to kommo-o (Clanging Scales)"
+                    it.dmg+=hp(30)
+                  }
                 }
                 unregisterAfter 2
                 after SWITCH, self, {unregister()}
