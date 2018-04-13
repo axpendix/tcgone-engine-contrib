@@ -2475,7 +2475,9 @@ public enum CrimsonInvasion implements CardInfo {
             def ind = my.prizeAsList.indexOf(tar.first())
             bc "index : $ind"
             tar.moveTo(my.hand)
-            my.prize[ind] = my.hand.remove(thisCard)
+            def thisCardAsList = new CardList(thisCard)
+            my.prize[ind] = thisCard
+            my.hand.removeAll(thisCardAsList)
           }
         }
         playRequirement{
