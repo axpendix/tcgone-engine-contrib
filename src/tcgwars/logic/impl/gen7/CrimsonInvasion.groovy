@@ -1352,9 +1352,11 @@ public enum CrimsonInvasion implements CardInfo {
           }
           onAttack {
             gxPerform()
+            def newPrizelist = new CardList(opp.prizeAsList);
             def cnt = opp.prizeAsList.size()
-            opp.prize[cnt] = opp.deck.remove(0)
-            opp.prize[cnt+1] = opp.deck.remove(0)
+            newPrizelist.add(opp.deck.remove(0))
+            newPrizelist.add(opp.deck.remove(0))
+            opp.prize= newPrizelist.toArray()
           }
         }
 
@@ -2471,6 +2473,7 @@ public enum CrimsonInvasion implements CardInfo {
           if(my.hand.find{it == thisCard}){
             def tar = my.prizeAsList.select(hidden: false, "Prize to replace with Gladion")
             def ind = my.prizeAsList.indexOf(tar)
+            bc "index : $ind"
             tar.moveTo(my.hand)
             my.prize[ind] = my.hand.remove(thisCard)
           }
