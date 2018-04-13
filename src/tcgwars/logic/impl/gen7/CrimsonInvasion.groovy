@@ -1242,7 +1242,7 @@ public enum CrimsonInvasion implements CardInfo {
             damage 10
             def tar = my.all.findAll{it.cards.filterByType(POKEMON_TOOL)}
             if(tar){
-              my.all.select(min:0, max:tar.size(),{it.cards.filterByType(POKEMON_TOOL)}).each {
+              tar.select(max:tar.size(),"Select the tools to discard").each {
                 it.cards.find(cardTypeFilter(POKEMON_TOOL)).discard()
                 damage 40
               }
@@ -2523,8 +2523,8 @@ public enum CrimsonInvasion implements CardInfo {
         }
       };
       case COUNTER_ENERGY_100:
-      return specialEnergy (this) {
-        text "null"
+      return specialEnergy (this, [[C]]) {
+        text "This card provides [C] Energy.\nIf you have more Prize cards remaining than your opponent, and if this card is attached to a Pokémon that isn't a Pokémon-GX or Pokémon-EX, this card provides every type of Energy but provides only 2 Energy at a time"
         onPlay {reason->
               }
               onRemoveFromPlay {
