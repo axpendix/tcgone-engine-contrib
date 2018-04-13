@@ -1242,9 +1242,13 @@ public enum CrimsonInvasion implements CardInfo {
             damage 10
             def tar = my.all.findAll{it.cards.filterByType(POKEMON_TOOL)}
             if(tar){
-              tar.select(max:tar.size(),"Select the tools to discard").each {
-                it.cards.find(cardTypeFilter(POKEMON_TOOL)).discard()
-                damage 40
+              tar.each {
+                it.showToMe("Pokemon with tool")
+                it.cards.filterByType(POKEMON_TOOL).showToMe("tool to discard")
+                if(confirm("discard this tool for 40 more damages?")){
+                  it.cards.filterByType(POKEMON_TOOL).discard()
+                  damage 40
+                }
               }
             }
           }
@@ -2105,7 +2109,7 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Moo Moo Ale", {
           text "As long as this Pokémon is your Active Pokémon, whenever you attach an Energy card from your hand to 1 of your Pokémon, heal 90 damage from that Pokémon."
           delayedA {
-            after ATTACH_ENERGY{
+            after ATTACH_ENERGY,{
               if(ef.reason == PLAY_FROM_HAND && ef.cardToPlay.cardTypes.is(ENERGY) && bg.currentTurn == self.owner)
                  heal 90, ef.resolvedTarget
             }
@@ -2489,7 +2493,7 @@ public enum CrimsonInvasion implements CardInfo {
             opp.hand.moveTo(opp.deck)
             shuffleDeck(null, TargetPlayer.OPPONENT)
             opp.deck.subList(0, nbc).each{
-              moveCard(it,my.hand)
+              moveCard(it,opp.hand)
             }
           }
 
@@ -2532,7 +2536,7 @@ public enum CrimsonInvasion implements CardInfo {
               onMove {to->
               }
               getEnergyTypesOverride{
-                  if(self.owner.pbg.prizeAsList.size() < self.owner.opposite.pbg.prizeAsList.size())
+                  if(self.owner.pbg.prizeAsList.size() > self.owner.opposite.pbg.prizeAsList.size())
                       return  [[W,W],[G,W],[D,W],[M,W],[F,W],[R,W],[P,W],[L,W],[Y,W],[W,G],[G,G],[D,G],[M,G],[F,G],[R,G],[P,G],[L,G],[Y,G],[W,D],[G,D],[D,D],[M,D],[F,D],[R,D],[P,D],[L,D],[Y,D],[W,M],[G,M],[D,M],[M,M],[F,M],[R,M],[P,M],[L,M],[Y,M],[W,F],[G,F],[D,F],[M,F],[F,F],[R,F],[P,F],[L,F],[Y,F],[W,R],[G,R],[D,R],[M,R],[F,R],[R,R],[P,R],[L,R],[Y,R],[W,P],[G,P],[D,P],[M,P],[F,P],[R,P],[P,P],[L,P],[Y,P],[W,L],[G,L],[D,L],[M,L],[F,L],[R,L],[P,L],[L,L],[Y,L],[W,Y],[G,Y],[D,Y],[M,Y],[F,Y],[R,Y],[P,Y],[L,Y],[Y,Y]]
                   else
                       return [[C]]
