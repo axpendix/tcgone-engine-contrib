@@ -1352,8 +1352,10 @@ public enum CrimsonInvasion implements CardInfo {
           }
           onAttack {
             gxPerform()
-            opp.prizeAsList.add(opp.deck.subList(0, 2))
-            opp.deck.remove(opp.deck.subList(0, 2))
+            opp.prizeAsList.add(opp.deck.get(0))
+            opp.prizeAsList.add(opp.deck.get(1))
+            opp.deck.remove(opp.deck.get(1))
+            opp.deck.remove(opp.deck.get(0))
           }
         }
 
