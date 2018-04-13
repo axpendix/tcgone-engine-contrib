@@ -1242,13 +1242,12 @@ public enum CrimsonInvasion implements CardInfo {
             damage 10
             def tar = my.all.findAll{it.cards.filterByType(POKEMON_TOOL)}
             if(tar){
-              def poktool = new CardList();
+
               tar.each {
-                poktool.removeAll()
-                poktool.add(it)
-                poktool.add(it.cards.filterByType(POKEMON_TOOL))
+                def poktool = new CardList(it);
+                poktool.add(it.cards.filterByType(POKEMON_TOOL).first())
                 poktool.showToMe("Pokemon with tool")
-                
+
                 if(confirm("discard this tool for 40 more damages?")){
 
                   it.cards.filterByType(POKEMON_TOOL).discard()
@@ -2115,7 +2114,7 @@ public enum CrimsonInvasion implements CardInfo {
           text "As long as this Pokémon is your Active Pokémon, whenever you attach an Energy card from your hand to 1 of your Pokémon, heal 90 damage from that Pokémon."
           delayedA {
             after ATTACH_ENERGY,{
-              if(ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner && ef.resolvedTarget.owner == self.owner)
+              if(self.active && ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner && ef.resolvedTarget.owner == self.owner)
                  heal 90, ef.resolvedTarget
             }
           }
