@@ -2432,6 +2432,7 @@ public enum CrimsonInvasion implements CardInfo {
       case DEVOURED_FIELD_93:
       return stadium (this) {
         text "The attacks of [D] Pokémon and [N] Pokémon (both yours and your opponent's) do 10 more damage to the opponent's Active Pokémon (before applying Weakness and Resistance).\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
+        def eff 
         onPlay {
           eff = delayed {
             before APPLY_ATTACK_DAMAGES, {
