@@ -2418,7 +2418,7 @@ public enum CrimsonInvasion implements CardInfo {
         onPlay {reason->
           eff = delayed {
             before RETREAT, self, {
-              if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.cards.filterByType(ENERGY)) {
+              if(self.active && self.owner.pbg.bench.notEmpty && self.cards.cards.energyCount(C)) {
                 bc "dashing pouch activates"
                 self.cards.filterByType(ENERGY).moveTo(my.hand)
               }
@@ -2435,9 +2435,9 @@ public enum CrimsonInvasion implements CardInfo {
         def eff
         onPlay {
           eff = delayed {
-            before APPLY_ATTACK_DAMAGES, {
+            before APPLY_ATTACK_DAMAGES, defending {
               bg.dm().each{
-                if((it.from.types.contains(D) || it.from.types.contains(N)) & it.dmg.value && it.notNoEffect && it.from.owner != it.to.owner){
+                if((it.from.types.contains(D) || it.from.types.contains(N)) & it.dmg.value && it.notNoEffect && it.from.owner == it.to.owner.opposite){
                   bc "Devoured Field +10"
                   it.dmg += hp(10)
                 }
