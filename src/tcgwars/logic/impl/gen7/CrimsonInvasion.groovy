@@ -2237,6 +2237,9 @@ public enum CrimsonInvasion implements CardInfo {
                       sw self, tar
                   }
                 }
+                unregisterAfter 3
+                after SWITCH,self, {unregister()}
+                after EVOLVE,self, {unregister()}
               }
             }
           }
@@ -2265,7 +2268,7 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             damage 160
             afterDamage{
-              if(bg.stadiumInfoStruct.stadiumCard)
+              if(bg.stadiumInfoStruct)
                 discard bg.stadiumInfoStruct.stadiumCard
             }
           }
@@ -2296,7 +2299,8 @@ public enum CrimsonInvasion implements CardInfo {
             assert my.discard
           }
           onAttack {
-            def tar = my.discard.select(count : min(2,my.discard.size()))
+            def tar = my.discard.select(count : Math.min(2,my.discard.size()))
+            tar.showToOpponent("Cards selected")
             if(oppConfirm("allow your opponent to put those cards in their hand?")){
               tar.moveTo(my.hand)
             }
@@ -2371,7 +2375,7 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Gyro Unit", {
           text "Your Basic Pokémon in play have no Retreat Cost."
           getterA GET_RETREAT_COST, {h->
-            if(h.effect.target.owner == self.owner && h.effect.target.cardTypes.is(BASIC)) {
+            if(h.effect.target.owner == self.owner && h.effect.target.topPokemonCard.cardTypes.is(BASIC)) {
               h.object = 0
             }
           }
@@ -2410,6 +2414,7 @@ public enum CrimsonInvasion implements CardInfo {
       case DASHING_POUCH_92:
       return pokemonTool (this) {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to discards Energy for its Retreat Cost, put that Energy into your hand instead of the discard pile.\nYou may play as many Item cards as you like during your turn (before your attack)."
+        def eff
         onPlay {reason->
           eff = delayed {
             before RETREAT, self, {
