@@ -2471,7 +2471,7 @@ public enum CrimsonInvasion implements CardInfo {
           if(my.hand.find{it == thisCard}){
             def tar = my.prizeAsList.select(hidden: false, "Prize to replace with Gladion")
             def ind = my.prizeAsList.indexOf(tar)
-            tar.move(my.hand)
+            tar.moveTo(my.hand)
             prize[ind] = my.hand.remove(thisCard)
           }
         }
