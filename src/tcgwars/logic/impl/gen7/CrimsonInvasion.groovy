@@ -2468,7 +2468,7 @@ public enum CrimsonInvasion implements CardInfo {
       return supporter (this) {
         text "Look at your face-down Prize cards and put 1 of them into your hand. Then, shuffle this Gladion into your remaining Prize cards and put them back face down. If you didn't play this Gladion from your hand, it does nothing.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          if(my.hand.find(thisCard)){
+          if(my.hand.find{it == thisCard}){
             def tar = my.prizeAsList.select(hidden: false, "Prize to replace with Gladion")
             def ind = my.prizeAsList.indexOf(tar)
             tar.move(my.hand)
