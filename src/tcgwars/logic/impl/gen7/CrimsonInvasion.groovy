@@ -2459,7 +2459,7 @@ public enum CrimsonInvasion implements CardInfo {
       return supporter (this) {
         text "Look at your face-down Prize cards and put 1 of them into your hand. Then, shuffle this Gladion into your remaining Prize cards and put them back face down. If you didn't play this Gladion from your hand, it does nothing.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          after PLAY_TRAINER{
+          after PLAY_TRAINER,{
             my.prizeAsList.select(hidden: false, "Prize to replace with Gladion").moveTo(my.hand)
             this.moveTo(my.prizeAsList)
           }
@@ -2489,7 +2489,7 @@ public enum CrimsonInvasion implements CardInfo {
             opp.hand.moveTo(opp.deck)
             shuffleDeck(null, TargetPlayer.OPPONENT)
             opp.deck.subList(0, nbc).each{
-              it.moveTo(opp.hand)
+              moveCard(it,my.hand)
             }
           }
 
@@ -2559,15 +2559,7 @@ public enum CrimsonInvasion implements CardInfo {
       case LUSAMINE_110:
       return copy (LUSAMINE_96, this);
       case OLIVIA_111:
-      return supporter (this) {
-        text "Search your deck for up to 2 Pokémon-GX, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-          my.deck.search(max : 2, "Search your deck for up to 2 Pokémon-GX", cardTypeFilter(POKEMON_GX)).moveTo(my.hand)
-        }
-        playRequirement{
-          assert my.deck
-        }
-      };
+      return copy (BurningShadows.OLIVIA_119, this);
       case GYARADOS_GX_112:
       return copy (GYARADOS_GX_18, this);
       case ALOLAN_GOLEM_GX_113:
