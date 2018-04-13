@@ -1078,7 +1078,7 @@ public enum CrimsonInvasion implements CardInfo {
           delayedA {
             after ATTACH_ENERGY, {
               if(ef.reason == PLAY_FROM_HAND)
-                directDamage 20, ef.cardToPlay.topPokemonCard
+                directDamage 20, ef.resolvedTarget
             }
           }
         }
@@ -2458,8 +2458,8 @@ public enum CrimsonInvasion implements CardInfo {
       case GLADION_95:
       return supporter (this) {
         text "Look at your face-down Prize cards and put 1 of them into your hand. Then, shuffle this Gladion into your remaining Prize cards and put them back face down. If you didn't play this Gladion from your hand, it does nothing.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {reason->
-          if(reason==PLAY_FROM_HAND){
+        onPlay {
+          after PLAY_TRAINER{
             my.prizeAsList.select(hidden: false, "Prize to replace with Gladion").moveTo(my.hand)
             this.moveTo(my.prizeAsList)
           }
@@ -2471,8 +2471,8 @@ public enum CrimsonInvasion implements CardInfo {
       return supporter (this) {
         text "Put 2 in any combination of Supporter and Stadium cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          my.deck.search(cardTypeFilter(SUPPORTER)).moveTo(hand)
-          my.deck.search(cardTypeFilter(STADIUM)).moveTo(hand)
+          my.deck.search(count :1,"Search your deck for 1 supporter", cardTypeFilter(SUPPORTER)).moveTo(hand)
+          my.deck.search(count :1,"Search your deck for 1 stadium",cardTypeFilter(STADIUM)).moveTo(hand)
           shuffleDeck()
         }
         playRequirement{
@@ -2488,7 +2488,9 @@ public enum CrimsonInvasion implements CardInfo {
             def nbc = opp.hand.size()
             opp.hand.moveTo(opp.deck)
             shuffleDeck(null, TargetPlayer.OPPONENT)
-            opp.deck.subList(0, nbc).moveTo(opp.prizeAsList)
+            opp.deck.subList(0, nbc).each{
+              it.moveTo(opp.hand)
+            }
           }
 
         }
