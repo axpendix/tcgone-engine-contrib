@@ -1244,7 +1244,7 @@ public enum CrimsonInvasion implements CardInfo {
             if(tar){
 
               tar.each {
-                def poktool = new CardList(it);
+                def poktool = new CardList(it.cards.filterByType(POKEMON_TOOL).first());
                 poktool.add(it.cards.filterByType(POKEMON_TOOL).first())
                 poktool.showToMe("Pokemon with tool")
 
