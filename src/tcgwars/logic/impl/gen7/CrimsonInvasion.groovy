@@ -774,7 +774,7 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             def tar = opp.bench.findAll {it.numberOfDamageCounters}.select()
             tar.cards.moveTo(opp.deck)
-            removePCS(tar) //what is removePCS?
+            removePCS(tar)
           }
         }
         move "Ocean Cyclone", {
@@ -2107,7 +2107,7 @@ public enum CrimsonInvasion implements CardInfo {
           delayedA {
             after ATTACH_ENERGY{
               if(ef.reason == PLAY_FROM_HAND && ef.cardToPlay.cardTypes.is(ENERGY) && bg.currentTurn == self.owner)
-                 heal 90, ef.target
+                 heal 90, ef.resolvedTarget
             }
           }
         }
@@ -2414,19 +2414,10 @@ public enum CrimsonInvasion implements CardInfo {
       case DASHING_POUCH_92:
       return pokemonTool (this) {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to discards Energy for its Retreat Cost, put that Energy into your hand instead of the discard pile.\nYou may play as many Item cards as you like during your turn (before your attack)."
-        def eff
-        onPlay {reason->
-          eff = delayed {
-            before SWITCH, self, {
-              if(self.active && self.owner.pbg.bench.notEmpty && self.cards.energyCount(C)) {
-                bc "dashing pouch activates"
-                self.cards.filterByType(ENERGY).moveTo(my.hand)
-              }
-            }
-          }
+        onPlay {
+          //TODO : implement this tool
         }
         onRemoveFromPlay {
-          eff.unregister()
         }
       };
       case DEVOURED_FIELD_93:
@@ -2456,7 +2447,8 @@ public enum CrimsonInvasion implements CardInfo {
         onPlay {reason->
           eff=getter GET_POKEMON_TYPE, self, {h ->
             if(h.effect.target.name == "Silvally-GX")
-              h.object = FIGHTING
+            h.object.removeAll()
+            h.object.add(FIGHTING)
           }
         }
         onRemoveFromPlay {
@@ -2511,7 +2503,8 @@ public enum CrimsonInvasion implements CardInfo {
         onPlay {reason->
           eff=getter GET_POKEMON_TYPE, self, {h ->
             if(h.effect.target.name == "Silvally-GX")
-              h.object = PSYCHIC
+              h.object.removeAll()
+              h.object.add(PSYCHIC)
           }
         }
         onRemoveFromPlay {
@@ -2522,7 +2515,7 @@ public enum CrimsonInvasion implements CardInfo {
       return stadium (this) {
         text "Special Conditions are not removed when Pokémon (both yours and your opponent's) evolve or devolve.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
         onPlay {
-          //TODO : not remove special condition upon (d)evolving
+          //TODO : implement this stadium
         }
         onRemoveFromPlay{
         }
@@ -2531,15 +2524,18 @@ public enum CrimsonInvasion implements CardInfo {
       return specialEnergy (this) {
         text "null"
         onPlay {reason->
-          //TODO : add 2 rainbow energy when high on prizes
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+              }
+              onRemoveFromPlay {
+              }
+              onMove {to->
+              }
+              getEnergyTypesOverride{
+                  if(self.owner.pbg.prizeAsList.size() < self.owner.opposite.pbg.prizeAsList.size())
+                      return  [[W,W],[G,W],[D,W],[M,W],[F,W],[R,W],[P,W],[L,W],[Y,W],[W,G],[G,G],[D,G],[M,G],[F,G],[R,G],[P,G],[L,G],[Y,G],[W,D],[G,D],[D,D],[M,D],[F,D],[R,D],[P,D],[L,D],[Y,D],[W,M],[G,M],[D,M],[M,M],[F,M],[R,M],[P,M],[L,M],[Y,M],[W,F],[G,F],[D,F],[M,F],[F,F],[R,F],[P,F],[L,F],[Y,F],[W,R],[G,R],[D,R],[M,R],[F,R],[R,R],[P,R],[L,R],[Y,R],[W,P],[G,P],[D,P],[M,P],[F,P],[R,P],[P,P],[L,P],[Y,P],[W,L],[G,L],[D,L],[M,L],[F,L],[R,L],[P,L],[L,L],[Y,L],[W,Y],[G,Y],[D,Y],[M,Y],[F,Y],[R,Y],[P,Y],[L,Y],[Y,Y]]
+                  else
+                      return [[C]]
+              }
+          };
       case GYARADOS_GX_101:
       return copy (GYARADOS_GX_18, this);
       case ALOLAN_GOLEM_GX_102:
