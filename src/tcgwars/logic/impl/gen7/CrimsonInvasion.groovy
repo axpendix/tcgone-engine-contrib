@@ -1353,10 +1353,8 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             gxPerform()
             def cnt = opp.prizeAsList.size()
-            opp.prize[cnt] = opp.deck.get(0)
-            opp.prize[cnt+1] = opp.deck.get(1)
-            opp.deck.remove(opp.deck.get(1))
-            opp.deck.remove(opp.deck.get(0))
+            opp.prize[cnt] = opp.deck.remove(0)
+            opp.prize[cnt+1] = opp.deck.remove(0)
           }
         }
 
@@ -2471,8 +2469,10 @@ public enum CrimsonInvasion implements CardInfo {
         text "Look at your face-down Prize cards and put 1 of them into your hand. Then, shuffle this Gladion into your remaining Prize cards and put them back face down. If you didn't play this Gladion from your hand, it does nothing.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
           after PLAY_TRAINER,{
-            my.prizeAsList.select(hidden: false, "Prize to replace with Gladion").moveTo(my.hand)
-            this.moveTo(my.prizeAsList)
+            def tar = my.prizeAsList.select(hidden: false, "Prize to replace with Gladion")
+            def ind = my.prizeAsList.indexOf(tar)
+            tar.move(my.hand)
+            prize[ind] = my.hand.remove(this)
           }
         }
         playRequirement{
