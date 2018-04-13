@@ -806,7 +806,7 @@ public enum CrimsonInvasion implements CardInfo {
               if(self.owner.pbg.all.findAll{it.name=="Regirock"}){
                 bc "Regirock is in play"
                 bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.from.cardTypes.is(STAGE2)){
+                  if(it.to == self && it.notNoEffect && it.from.topPokemonCard.cardTypes.is(STAGE2)){
                     it.dmg = hp(0)
                     bc "Safeguard prevents damage"
                   }
@@ -816,7 +816,7 @@ public enum CrimsonInvasion implements CardInfo {
             after ENERGY_SWITCH, {
               def efs = (ef as EnergySwitch)
               if(self.owner.pbg.all.findAll{it.name=="Regirock"}){
-                if(it.from.cardTypes.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                if(it.from.topPokemonCard.cardTypes.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                   discard efs.card
                 }
               }
@@ -2105,8 +2105,8 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Moo Moo Ale", {
           text "As long as this Pokémon is your Active Pokémon, whenever you attach an Energy card from your hand to 1 of your Pokémon, heal 90 damage from that Pokémon."
           delayedA {
-            after PLAY_FROM_HAND{
-              if(ef.cardToPlay.cardTypes.is(ENERGY) && bg.currentTurn == self.owner)
+            after ATTACH_ENERGY{
+              if(ef.reason == PLAY_FROM_HAND && ef.cardToPlay.cardTypes.is(ENERGY) && bg.currentTurn == self.owner)
                  heal 90, ef.target
             }
           }
@@ -2160,7 +2160,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            decreasedBaseDamageNextTurn(hp(30),thisMove)
+            reduceDamageNextTurn(hp(30), thisMove)
           }
         }
 
@@ -2233,7 +2233,8 @@ public enum CrimsonInvasion implements CardInfo {
               delayed{
                 before KNOCKOUT, {
                   if(my.bench && ef.pokemonToBeKnockedOut.owner==self.owner.opposite){
-                      sw self, my.bench.select("Select the Pokémon to switch with Staraptor")
+                      def tar = my.bench.select("Select the Pokémon to switch with Staraptor")
+                      sw self, tar
                   }
                 }
               }
@@ -2249,7 +2250,7 @@ public enum CrimsonInvasion implements CardInfo {
           text "This Pokémon can't attack unless Regirock, Regice, and Registeel are on your Bench."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if(ef.attacker == self && !(my.bench.findAll({it.name=="Regirock"}) && my.bench.findAll({it.name=="Regice"}) && my.bench.findAll({it.name=="Registeel"})))
+              if(ef.attacker == self && !(self.owner.pbg.bench.findAll({it.name=="Regirock"}) && self.owner.pbg.bench.findAll({it.name=="Regice"}) && self.owner.pbg.bench.findAll({it.name=="Registeel"})))
               {
                 wcu "Seal of Antiquity prevent Regigigas from attacking"
                 prevent()
@@ -2264,7 +2265,8 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             damage 160
             afterDamage{
-              discard bg.stadiumInfoStruct.stadiumCard
+              if(bg.stadiumInfoStruct.stadiumCard)
+                discard bg.stadiumInfoStruct.stadiumCard
             }
           }
         }
@@ -2294,7 +2296,7 @@ public enum CrimsonInvasion implements CardInfo {
             assert my.discard
           }
           onAttack {
-            def tar = my.discard.select(count : 2)
+            def tar = my.discard.select(count : min(2,my.discard.size()))
             if(oppConfirm("allow your opponent to put those cards in their hand?")){
               tar.moveTo(my.hand)
             }
@@ -2350,7 +2352,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            decreasedBaseDamageNextTurn(hp(30), thisMove)
+            reduceDamageNextTurn(hp(30), thisMove)
           }
         }
         move "Slashing Claw", {
