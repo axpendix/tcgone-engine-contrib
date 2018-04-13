@@ -1077,7 +1077,7 @@ public enum CrimsonInvasion implements CardInfo {
           text "Whenever your opponent attaches an Energy card from their hand to 1 of their Pokémon, put 2 damage counters on that Pokémon."
           delayedA {
             after ATTACH_ENERGY, {
-              if(ef.reason == PLAY_FROM_HAND)
+              if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite)
                 directDamage 20, ef.resolvedTarget
             }
           }
@@ -1243,7 +1243,7 @@ public enum CrimsonInvasion implements CardInfo {
             def tar = my.all.findAll{it.cards.filterByType(POKEMON_TOOL)}
             if(tar){
               my.all.select(min:0, max:tar.size(),{it.cards.filterByType(POKEMON_TOOL)}).each {
-                it.find(cardTypeFilter(POKEMON_TOOL)).discard()
+                it.cards.find(cardTypeFilter(POKEMON_TOOL)).discard()
                 damage 40
               }
             }
