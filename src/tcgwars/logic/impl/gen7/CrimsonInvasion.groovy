@@ -2421,7 +2421,6 @@ public enum CrimsonInvasion implements CardInfo {
               if(self.active && self.owner.pbg.bench.notEmpty && self.cards.energyCount(C)) {
                 bc "dashing pouch activates"
                 self.cards.filterByType(ENERGY).moveTo(my.hand)
-                }
               }
             }
           }
