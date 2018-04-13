@@ -2415,13 +2415,20 @@ public enum CrimsonInvasion implements CardInfo {
       return pokemonTool (this) {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to discards Energy for its Retreat Cost, put that Energy into your hand instead of the discard pile.\nYou may play as many Item cards as you like during your turn (before your attack)."
         def eff
+        def efftemp
         onPlay {reason->
           eff = delayed {
             before RETREAT, self, {
               if(self.active && self.owner.pbg.bench.notEmpty && self.cards.energyCount(C)) {
                 bc "dashing pouch activates"
                 self.cards.filterByType(ENERGY).moveTo(my.hand)
+                efftemp = getter GET_RETREAT_COST, {h->
+                  if(h.effect.target.owner == self.owner) {
+                    h.object = 0
+                  }
+                }
               }
+            after SWITCH, self, {efftemp.unregister()}
             }
           }
         }
@@ -2435,7 +2442,7 @@ public enum CrimsonInvasion implements CardInfo {
         def eff
         onPlay {
           eff = delayed {
-            before APPLY_ATTACK_DAMAGES {
+            before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
                 if((it.from.types.contains(D) || it.from.types.contains(N)) & it.dmg.value && it.notNoEffect && it.from.owner == it.to.owner.opposite && it.to.active){
                   bc "Devoured Field +10"
