@@ -50,7 +50,7 @@ public enum UltraPrism implements CardInfo {
   CHERUBI_10 ("Cherubi", 10, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   CHERRIM_11 ("Cherrim", 11, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
   CARNIVINE_12 ("Carnivine", 12, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  LEAFEON_GX_13 ("Leafeon-GX", 13, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  LEAFEON_GX_13 ("Leafeon-GX", 13, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _GRASS_]),
   MOW_ROTOM_14 ("Mow Rotom", 14, Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
   SHAYMIN_15 ("Shaymin", 15, Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
   DEWPIDER_16 ("Dewpider", 16, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
@@ -76,7 +76,7 @@ public enum UltraPrism implements CardInfo {
   FLOATZEL_36 ("Floatzel", 36, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
   SNOVER_37 ("Snover", 37, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   ABOMASNOW_38 ("Abomasnow", 38, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  GLACEON_GX_39 ("Glaceon-GX", 39, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  GLACEON_GX_39 ("Glaceon-GX", 39, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _WATER_]),
   WASH_ROTOM_40 ("Wash Rotom", 40, Rarity.RARE, [BASIC, POKEMON, _WATER_]),
   FROST_ROTOM_41 ("Frost Rotom", 41, Rarity.RARE, [BASIC, POKEMON, _WATER_]),
   MANAPHY_42 ("Manaphy", 42, Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
@@ -100,7 +100,7 @@ public enum UltraPrism implements CardInfo {
   COSMOG_60 ("Cosmog", 60, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
   COSMOEM_61 ("Cosmoem", 61, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
   LUNALA_PRISM_STAR_62 ("Lunala Prism Star", 62, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
-  DAWN_WINGS_NECROZMA_GX_63 ("Dawn Wings Necrozma-GX", 63, Rarity.ULTRARARE, [BASIC, POKEMON, _PSYCHIC_]),
+  DAWN_WINGS_NECROZMA_GX_63 ("Dawn Wings Necrozma-GX", 63, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _PSYCHIC_]),
   CRANIDOS_64 ("Cranidos", 64, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
   RAMPARDOS_65 ("Rampardos", 65, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
   RIOLU_66 ("Riolu", 66, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
@@ -127,7 +127,7 @@ public enum UltraPrism implements CardInfo {
   BRONZONG_87 ("Bronzong", 87, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
   HEATRAN_88 ("Heatran", 88, Rarity.HOLORARE, [BASIC, POKEMON, _METAL_]),
   SOLGALEO_PRISM_STAR_89 ("Solgaleo Prism Star", 89, Rarity.HOLORARE, [BASIC, POKEMON, _METAL_]),
-  DUSK_MANE_NECROZMA_GX_90 ("Dusk Mane Necrozma-GX", 90, Rarity.ULTRARARE, [BASIC, POKEMON, _METAL_]),
+  DUSK_MANE_NECROZMA_GX_90 ("Dusk Mane Necrozma-GX", 90, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _METAL_]),
   MAGEARNA_91 ("Magearna", 91, Rarity.RARE, [BASIC, POKEMON, _METAL_]),
   MORELULL_92 ("Morelull", 92, Rarity.COMMON, [BASIC, POKEMON, _FAIRY_]),
   SHIINOTIC_93 ("Shiinotic", 93, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FAIRY_]),
@@ -137,8 +137,8 @@ public enum UltraPrism implements CardInfo {
   GIBLE_97 ("Gible", 97, Rarity.COMMON, [BASIC, POKEMON, _DRAGON_]),
   GABITE_98 ("Gabite", 98, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DRAGON_]),
   GARCHOMP_99 ("Garchomp", 99, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _DRAGON_]),
-  DIALGA_GX_100 ("Dialga-GX", 100, Rarity.ULTRARARE, [BASIC, POKEMON, _DRAGON_]),
-  PALKIA_GX_101 ("Palkia-GX", 101, Rarity.ULTRARARE, [BASIC, POKEMON, _DRAGON_]),
+  DIALGA_GX_100 ("Dialga-GX", 100, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _DRAGON_]),
+  PALKIA_GX_101 ("Palkia-GX", 101, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _DRAGON_]),
   LICKITUNG_102 ("Lickitung", 102, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   LICKILICKY_103 ("Lickilicky", 103, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
   EEVEE_104 ("Eevee", 104, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
@@ -153,7 +153,7 @@ public enum UltraPrism implements CardInfo {
   GUMSHOOS_113 ("Gumshoos", 113, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
   ORANGURU_114 ("Oranguru", 114, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
   TYPE__NULL_115 ("Type: Null", 115, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-  SILVALLY_GX_116 ("Silvally-GX", 116, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  SILVALLY_GX_116 ("Silvally-GX", 116, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _COLORLESS_]),
   DRAMPA_117 ("Drampa", 117, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
   ANCIENT_CRYSTAL_118 ("Ancient Crystal", 118, Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER]),
   CYNTHIA_119 ("Cynthia", 119, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
@@ -176,15 +176,15 @@ public enum UltraPrism implements CardInfo {
   SUPER_BOOST_ENERGY_PRISM_STAR_136 ("Super Boost Energy Prism Star", 136, Rarity.HOLORARE, [SPECIAL_ENERGY, ENERGY]),
   UNIT_ENERGY_GRW_137 ("Unit Energy GRW", 137, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   UNIT_ENERGY_LPM_138 ("Unit Energy LPM", 138, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  LEAFEON_GX_139 ("Leafeon-GX", 139, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  PHEROMOSA_GX_140 ("Pheromosa-GX", 140, Rarity.ULTRARARE, [BASIC, POKEMON, _GRASS_]),
-  GLACEON_GX_141 ("Glaceon-GX", 141, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  XURKITREE_GX_142 ("Xurkitree-GX", 142, Rarity.ULTRARARE, [BASIC, POKEMON, _LIGHTNING_]),
-  DAWN_WINGS_NECROZMA_GX_143 ("Dawn Wings Necrozma-GX", 143, Rarity.ULTRARARE, [BASIC, POKEMON, _PSYCHIC_]),
-  CELESTEELA_GX_144 ("Celesteela-GX", 144, Rarity.ULTRARARE, [BASIC, POKEMON, _METAL_]),
-  DUSK_MANE_NECROZMA_GX_145 ("Dusk Mane Necrozma-GX", 145, Rarity.ULTRARARE, [BASIC, POKEMON, _METAL_]),
-  DIALGA_GX_146 ("Dialga-GX", 146, Rarity.ULTRARARE, [BASIC, POKEMON, _DRAGON_]),
-  PALKIA_GX_147 ("Palkia-GX", 147, Rarity.ULTRARARE, [BASIC, POKEMON, _DRAGON_]),
+  LEAFEON_GX_139 ("Leafeon-GX", 139, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _GRASS_]),
+  PHEROMOSA_GX_140 ("Pheromosa-GX", 140, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _GRASS_]),
+  GLACEON_GX_141 ("Glaceon-GX", 141, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _WATER_]),
+  XURKITREE_GX_142 ("Xurkitree-GX", 142, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _LIGHTNING_]),
+  DAWN_WINGS_NECROZMA_GX_143 ("Dawn Wings Necrozma-GX", 143, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _PSYCHIC_]),
+  CELESTEELA_GX_144 ("Celesteela-GX", 144, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _METAL_]),
+  DUSK_MANE_NECROZMA_GX_145 ("Dusk Mane Necrozma-GX", 145, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _METAL_]),
+  DIALGA_GX_146 ("Dialga-GX", 146, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _DRAGON_]),
+  PALKIA_GX_147 ("Palkia-GX", 147, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _DRAGON_]),
   CYNTHIA_148 ("Cynthia", 148, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
   GARDENIA_149 ("Gardenia", 149, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
   LANA_150 ("Lana", 150, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
@@ -194,23 +194,23 @@ public enum UltraPrism implements CardInfo {
   MARS_154 ("Mars", 154, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
   POKEMON_FAN_CLUB_155 ("Pokémon Fan Club", 155, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
   VOLKNER_156 ("Volkner", 156, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
-  LEAFEON_GX_157 ("Leafeon-GX", 157, Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  PHEROMOSA_GX_158 ("Pheromosa-GX", 158, Rarity.SECRET, [BASIC, POKEMON, _GRASS_]),
-  GLACEON_GX_159 ("Glaceon-GX", 159, Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  XURKITREE_GX_160 ("Xurkitree-GX", 160, Rarity.SECRET, [BASIC, POKEMON, _LIGHTNING_]),
-  DAWN_WINGS_NECROZMA_GX_161 ("Dawn Wings Necrozma-GX", 161, Rarity.SECRET, [BASIC, POKEMON, _PSYCHIC_]),
-  CELESTEELA_GX_162 ("Celesteela-GX", 162, Rarity.SECRET, [BASIC, POKEMON, _METAL_]),
-  DUSK_MANE_NECROZMA_GX_163 ("Dusk Mane Necrozma-GX", 163, Rarity.SECRET, [BASIC, POKEMON, _METAL_]),
-  DIALGA_GX_164 ("Dialga-GX", 164, Rarity.SECRET, [BASIC, POKEMON, _DRAGON_]),
-  PALKIA_GX_165 ("Palkia-GX", 165, Rarity.SECRET, [BASIC, POKEMON, _DRAGON_]),
+  LEAFEON_GX_157 ("Leafeon-GX", 157, Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _GRASS_]),
+  PHEROMOSA_GX_158 ("Pheromosa-GX", 158, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _GRASS_]),
+  GLACEON_GX_159 ("Glaceon-GX", 159, Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _WATER_]),
+  XURKITREE_GX_160 ("Xurkitree-GX", 160, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _LIGHTNING_]),
+  DAWN_WINGS_NECROZMA_GX_161 ("Dawn Wings Necrozma-GX", 161, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _PSYCHIC_]),
+  CELESTEELA_GX_162 ("Celesteela-GX", 162, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _METAL_]),
+  DUSK_MANE_NECROZMA_GX_163 ("Dusk Mane Necrozma-GX", 163, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _METAL_]),
+  DIALGA_GX_164 ("Dialga-GX", 164, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _DRAGON_]),
+  PALKIA_GX_165 ("Palkia-GX", 165, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _DRAGON_]),
   CRUSHING_HAMMER_166 ("Crushing Hammer", 166, Rarity.SECRET, [ITEM, TRAINER]),
   ESCAPE_BOARD_167 ("Escape Board", 167, Rarity.SECRET, [ITEM, TRAINER]),
   MISSING_CLOVER_168 ("Missing Clover", 168, Rarity.SECRET, [ITEM, TRAINER]),
   PEEKING_RED_CARD_169 ("Peeking Red Card", 169, Rarity.SECRET, [ITEM, TRAINER]),
   UNIT_ENERGY_GRW_170 ("Unit Energy GRW", 170, Rarity.SECRET, [SPECIAL_ENERGY, ENERGY]),
   UNIT_ENERGY_LPM_171 ("Unit Energy LPM", 171, Rarity.SECRET, [SPECIAL_ENERGY, ENERGY]),
-  LUNALA_GX_172 ("Lunala-GX", 172, Rarity.SECRET, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
-  SOLGALEO_GX_173 ("Solgaleo-GX", 173, Rarity.SECRET, [STAGE2, EVOLUTION, POKEMON, _METAL_]);
+  LUNALA_GX_172 ("Lunala-GX", 172, Rarity.SECRET, [STAGE2, EVOLUTION, POKEMON, POKEMON_GX, _PSYCHIC_]),
+  SOLGALEO_GX_173 ("Solgaleo-GX", 173, Rarity.SECRET, [STAGE2, EVOLUTION, POKEMON, POKEMON_GX, _METAL_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -355,7 +355,7 @@ public enum UltraPrism implements CardInfo {
           onAttack {
             damage 100
             while(1){
-              def pl=(my.all.findAll {it.cards.filterByEnergyType(G) && it!=self})
+              def pl=(my.all.findAll {it.cards.energyCount(G) && it!=self})
               if(!pl) break;
               def tar=pl.select("Target for energy (cancel to stop)", false)
               if(!tar) break;
@@ -373,10 +373,10 @@ public enum UltraPrism implements CardInfo {
           text "Search your deck for a [G] Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck."
           energyCost G
           attackRequirement {
-            assert deck
+            assert my.deck
           }
           onAttack {
-            deck.search (basicEnergyFilter(G)).each {attachEnergy(my.all.select(),it)}
+            my.deck.search(count : 1, "Search for a [G] Energy card" ,basicEnergyFilter(G)).each {attachEnergy(my.all.select(),it)}
             shuffleDeck()
           }
         }
@@ -451,7 +451,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 180
-            my.bench.each {damage 30, it}
+            my.bench.each {damage 20, it}
           }
         }
 
@@ -464,7 +464,7 @@ public enum UltraPrism implements CardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            flip {damage 20}
+            flip {damage 30}
           }
         }
 
@@ -475,8 +475,8 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Weather Guard", {
           text "Your [G] Pokémon have no Weakness."
           getterA GET_WEAKNESSES, { h ->
-            if (h.effect.target.types.contains(G)) {
-              h.object = []
+            if (h.effect.target.types.contains(G) && h.effect.target.owner == self.owner) {
+              h.object.removeAll()
             }
           }
         }
@@ -499,7 +499,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            healAfterDamage(40, self)
+            healAfterDamage(20, self)
           }
         }
         move "Loom Over", {
@@ -543,20 +543,19 @@ public enum UltraPrism implements CardInfo {
           text "For each of your Benched Basic Pokémon, search your deck for a card that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck. (You can’t use more than 1 GX attack in a game.)"
           energyCost G
           attackRequirement {
-            gxCheck() //TODO:
+            gxCheck()
             assert my.bench.notEmpty : "This is your only pokemon"
+            assert my.deck.notEmpty :
           }
           onAttack {
             gxPerform()
-            my.bench.each{
-              if(it.cardTypes.is(BASIC)){
-                def tar = it
-                det nam = it.name
-                def sel=self.owner.pbg.deck.search(count:1, "search for a card that evolve for $nam",
-                            {it.cardTypes.is(EVOLUTION) && it.predecessor==tar.name}, tar.owner)
-                if(sel){
-                  evolve(self, sel.first(), OTHER)
-                }
+            my.bench.findAll{it.basic}.each{
+              def tar = it
+              det nam = it.name
+              def sel=self.owner.pbg.deck.search(count:1, "search for a card that evolve for $nam",
+                          {it.cardTypes.is(EVOLUTION) && it.predecessor==tar.name})
+              if(sel){
+                evolve(self, sel.first(), OTHER)
               }
             }
             shuffleDeck(null, self.owner.toTargetPlayer())
@@ -586,7 +585,7 @@ public enum UltraPrism implements CardInfo {
           energyCost G, C, C
           attackRequirement {}
           onAttack {
-            damage 120
+            damage 60
             discardDefendingSpecialEnergy(delegate)
           }
         }
@@ -610,19 +609,19 @@ public enum UltraPrism implements CardInfo {
               if(my.bench.notFull){
                 if(typ1.size() == 2)
                 {
-                  def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1[0]) && !it.types.contains(typ1[1])})
+                  def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ1.get(1))})
                   if(tar2){
                     def typ2 = tar2.first().types
                     tar2.moveTo(my.bench)
                     if(my.bench.notFull){
                       if(typ1.size() == 2){
-                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1[0]) && !it.types.contains(typ1[1]) && !it.types.contains(typ2[0]) && !it.types.contains(typ2[1])})
+                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ1.get(1)) && !it.types.contains(typ2.get(0)) && !it.types.contains(typ2.get(1))})
                         if(tar3){
                           tar3.moveTo(my.bench)
                         }
                       }
                       else{
-                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1[0]) && !it.types.contains(typ1[1]) && !it.types.contains(typ2[0])})
+                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ1.get(1)) && !it.types.contains(typ2.get(0))})
                         if(tar3){
                           tar3.moveTo(my.bench)
                         }
@@ -631,19 +630,19 @@ public enum UltraPrism implements CardInfo {
                   }
                 }
                 else{
-                  def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1[0])})
+                  def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0))})
                   if(tar2){
                     def typ2 = tar2.first().types
                     tar2.moveTo(my.bench)
                     if(my.bench.notFull){
                       if(typ1.size() == 2){
-                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1[0]) && !it.types.contains(typ2[0]) && !it.types.contains(typ2[1])})
+                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ2.get(0)) && !it.types.contains(typ2.get(1))})
                         if(tar3){
                           tar3.moveTo(my.bench)
                         }
                       }
                       else{
-                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1[0]) && !it.types.contains(typ2[0])})
+                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ2.get(0))})
                         if(tar3){
                           tar3.moveTo(my.bench)
                         }

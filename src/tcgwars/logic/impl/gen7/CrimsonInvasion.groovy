@@ -258,8 +258,8 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             damage 10
             if(self.lastEvolved == bg.turnCount){
-              apply POISONED
-              apply PARALYZED
+              applyAfterDamage POISONED
+              applyAfterDamage PARALYZED
             }
           }
         }
@@ -1088,7 +1088,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 70
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
 
@@ -1469,7 +1469,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
         move "Earthquake", {
@@ -1591,7 +1591,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
         move "Puncturing Fangs", {
@@ -1951,7 +1951,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
         move "Punishing Slap", {
@@ -2008,7 +2008,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 120
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
         move "Tower-Go-Round GX", {
@@ -2295,7 +2295,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            flip {apply PARALYZED}
+            flip {applyAfterDamage PARALYZED}
           }
         }
 
@@ -2473,7 +2473,6 @@ public enum CrimsonInvasion implements CardInfo {
           if(my.hand.find{it == thisCard}){
             def tar = my.prizeAsList.select(hidden: false, "Prize to replace with Gladion")
             def ind = my.prizeAsList.indexOf(tar.first())
-            bc "index : $ind"
             tar.moveTo(my.hand)
             def thisCardAsList = new CardList(thisCard)
             my.prize[ind] = thisCard
