@@ -545,7 +545,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {
             gxCheck()
             assert my.bench.notEmpty : "This is your only pokemon"
-            assert my.deck.notEmpty :
+            assert my.deck.notEmpty
           }
           onAttack {
             gxPerform()
@@ -806,6 +806,7 @@ public enum UltraPrism implements CardInfo {
           delayedA{
             def eff
             register {
+              //TODO : implement it properly and change burn
               eff = before BETWEEN_TURNS, {
                 if(opp.active.isSPC(BURNED)){
 									bc "Flaming Fighter increase burn damage"
