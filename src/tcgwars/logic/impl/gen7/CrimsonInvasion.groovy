@@ -667,13 +667,13 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             damage 90
             if(confirm("Add a damage counter to Mamoswine for 10 more damage (up to 9, you have already $dcc)"))
+            {
               def num = makeChoice([1..9])
               damage 10*num
               directDamage 10*num, self
             }
           }
         }
-
       };
       case REMORAID_22:
       return basic (this, hp:HP060, type:WATER, retreatCost:1) {
