@@ -668,7 +668,7 @@ public enum CrimsonInvasion implements CardInfo {
             damage 90
             if(confirm("Add damage counters to Mamoswine for 10 more damage with each damage counter put that way?"))
             {
-              def num = choose([1..9])
+              def num = choose([1,2,3,4,5,6,7,8,9])
               damage 10*num
               directDamage 10*num, self
             }
