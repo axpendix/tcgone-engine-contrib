@@ -666,7 +666,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 90
-            if(confirm("Add a damage counter to Mamoswine for 10 more damage (up to 9, you have already $dcc)"))
+            if(confirm("Add damage counters to Mamoswine for 10 more damage with each damage counter put that way?"))
             {
               def num = makeChoice([1..9])
               damage 10*num
