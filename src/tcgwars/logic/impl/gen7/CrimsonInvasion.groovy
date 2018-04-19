@@ -2418,9 +2418,10 @@ public enum CrimsonInvasion implements CardInfo {
       return pokemonTool (this) {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to discards Energy for its Retreat Cost, put that Energy into your hand instead of the discard pile.\nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {
-          //TODO : implement this tool
+          bg.em().storeObject("dashing_pouch_"+self.hashCode(), 1)
         }
         onRemoveFromPlay {
+          bg.em().storeObject("dashing_pouch_"+self.hashCode(), null)
         }
       };
       case DEVOURED_FIELD_93:
@@ -2523,10 +2524,29 @@ public enum CrimsonInvasion implements CardInfo {
       case SEA_OF_NOTHINGNESS_99:
       return stadium (this) {
         text "Special Conditions are not removed when Pokémon (both yours and your opponent's) evolve or devolve.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
+        def eff
         onPlay {
           //TODO : implement this stadium
+          eff = delayed {
+            before ASLEEP_SPC, null, null, EVOLVE, {
+              prevent()
+            }
+            before CONFUSED_SPC, null, null, EVOLVE, {
+              prevent()
+            }
+            before PARALYZED_SPC, null, null, EVOLVE, {
+              prevent()
+            }
+            before BURNED_SPC, null, null, EVOLVE, {
+              prevent()
+            }
+            before POISONED_SPC, null, null, EVOLVE, {
+              prevent()
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case COUNTER_ENERGY_100:
