@@ -355,16 +355,17 @@ public enum UltraPrism implements CardInfo {
           onAttack {
             damage 100
             while(1){
-              def pl=(my.all.findAll {it.cards.energyCount(G) && it!=self})
+              def pl=(my.all.findAll {it.cards.energyCount(G)})
               if(!pl) break;
+              def src =pl.select("source for energy (cancel to stop)", false)
+              if(!src) break;
+              def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
               def tar=pl.select("Target for energy (cancel to stop)", false)
               if(!tar) break;
-              def card=src.cards.select("Card to move").first()
-              energySwitch(self, tar, card)
+              energySwitch(src, tar, card)
             }
           }
         }
-
       };
       case TURTWIG_6:
       return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
@@ -476,7 +477,10 @@ public enum UltraPrism implements CardInfo {
           text "Your [G] Pokémon have no Weakness."
           getterA GET_WEAKNESSES, { h ->
             if (h.effect.target.types.contains(G) && h.effect.target.owner == self.owner) {
-              h.object.removeAll()
+              def list = h.object as List<Weakness>
+              if(list) {
+                list.removeAll()
+              }
             }
           }
         }
@@ -551,7 +555,7 @@ public enum UltraPrism implements CardInfo {
             gxPerform()
             my.bench.findAll{it.basic}.each{
               def tar = it
-              det nam = it.name
+              def nam = it.name
               def sel=self.owner.pbg.deck.search(count:1, "search for a card that evolve for $nam",
                           {it.cardTypes.is(EVOLUTION) && it.predecessor==tar.name})
               if(sel){
@@ -568,12 +572,12 @@ public enum UltraPrism implements CardInfo {
         weakness FIRE
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-          getterA GET_MOVE_LIST, self, {h->
+          getterA GET_MOVE_LIST, NORMAL,self, {h->
             if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
               def list=[]
   						for(move in h.object){
   							def copy=move.shallowCopy()
-  							copy.energyCost = []
+  							copy.energyCost.removeAll()
   							list.add(copy)
   						}
   						h.object=list
@@ -605,25 +609,29 @@ public enum UltraPrism implements CardInfo {
             //TODO : not hardcode dual type case (aka. contains for list of types)
             if(tar1){
               def typ1 = tar1.first().types
-              tar1.moveTo(my.bench)
+              my.deck.remove(tar1)
+              benchPCS(tar1)
               if(my.bench.notFull){
                 if(typ1.size() == 2)
                 {
                   def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ1.get(1))})
                   if(tar2){
                     def typ2 = tar2.first().types
-                    tar2.moveTo(my.bench)
+                    my.deck.remove(tar2)
+      							benchPCS(tar2)
                     if(my.bench.notFull){
                       if(typ1.size() == 2){
                         def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ1.get(1)) && !it.types.contains(typ2.get(0)) && !it.types.contains(typ2.get(1))})
                         if(tar3){
-                          tar3.moveTo(my.bench)
+                          my.deck.remove(tar3)
+            							benchPCS(tar3)
                         }
                       }
                       else{
                         def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ1.get(1)) && !it.types.contains(typ2.get(0))})
                         if(tar3){
-                          tar3.moveTo(my.bench)
+                          my.deck.remove(tar3)
+            							benchPCS(tar3)
                         }
                       }
                     }
@@ -633,18 +641,21 @@ public enum UltraPrism implements CardInfo {
                   def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0))})
                   if(tar2){
                     def typ2 = tar2.first().types
-                    tar2.moveTo(my.bench)
+                    my.deck.remove(tar2)
+      							benchPCS(tar2)
                     if(my.bench.notFull){
                       if(typ1.size() == 2){
                         def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ2.get(0)) && !it.types.contains(typ2.get(1))})
                         if(tar3){
-                          tar3.moveTo(my.bench)
+                          my.deck.remove(tar3)
+            							benchPCS(tar3)
                         }
                       }
                       else{
                         def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ2.get(0))})
                         if(tar3){
-                          tar3.moveTo(my.bench)
+                          my.deck.remove(tar3)
+            							benchPCS(tar3)
                         }
                       }
                     }
@@ -739,7 +750,7 @@ public enum UltraPrism implements CardInfo {
             before APPLY_ATTACK_DAMAGES, {
               if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
                 bc "Incandescent Body burn attacker"
-                apply BURNED, opp.active
+                apply BURNED, it.from
               }
             }
           }
@@ -803,20 +814,18 @@ public enum UltraPrism implements CardInfo {
         weakness WATER
         bwAbility "Flaming Fighter", {
           text "Put 6 damage counters instead of 2 on your opponent’s Burned Pokémon between turns."
-          delayedA{
-            def eff
-            register {
-              //TODO : implement it properly and change burn
-              eff = before BETWEEN_TURNS, {
-                if(opp.active.isSPC(BURNED)){
-									bc "Flaming Fighter increase burn damage"
-									opp.active.damage += hp(40)
-								}
+          def eff
+          onActivate{
+            //TODO : implement it properly and change burn
+            eff = before BETWEEN_TURNS, {
+              if(opp.active.isSPC(BURNED)){
+								bc "Flaming Fighter increase burn damage"
+								opp.active.damage += hp(40)
 							}
             }
-            unregister {
-              eff.unregister()
-            }
+          }
+          onDeactivate {
+            eff.unregister()
           }
         }
         move "Burst Punch", {
