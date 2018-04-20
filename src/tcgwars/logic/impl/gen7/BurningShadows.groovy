@@ -2004,7 +2004,7 @@ public enum BurningShadows implements CardInfo {
 					text "During your next turn, this Pokémon's Slash attack's base damage is 80."
 					energyCost C
 					onAttack {
-						IncreasedBaseDamageNextTurn("Slash", hp(60))
+						increasedBaseDamageNextTurn("Slash", hp(60))
 					}
 				}
 				move "Slash", {
