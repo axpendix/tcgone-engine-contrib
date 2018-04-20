@@ -571,7 +571,8 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
           getterA GET_MOVE_LIST, NORMAL,self, {h->
-            def toolReq =  (my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8)
+            def toolReq = (my.discard.filterByType(POKEMON_TOOL).size()>8)
+            bc "$toolReq"
             def list=[]
   					for(move in h.object){
   						def copy=move.shallowCopy()
@@ -607,13 +608,14 @@ public enum UltraPrism implements CardInfo {
             def tar1 = my.deck.search (count : 1,cardTypeFilter(BASIC))
             //TODO : not hardcode dual type case (aka. contains for list of types)
             if(tar1){
-              def typ1 = tar1.first().types
+              def typ1 = (tar1.first().types as List<Type>)
               my.deck.remove(tar1.first())
               benchPCS(tar1.first())
               if(my.bench.notFull){
                 if(typ1.size() != 1)
                 {
-                  def tar2 = my.deck.search (count : 1,{it.topPokemonCard.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0))) && !(it.types.contains(typ1.get(1)))})
+                  bc
+                  def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0))) && !(it.types.contains(typ1.get(1)))})
                   if(tar2){
                     def typ2 = tar2.first().types
                     my.deck.remove(tar2.first())
@@ -844,15 +846,15 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
           getterA GET_MOVE_LIST, self, {h->
-            if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
+            //if(my.discard.findAll(filterByType(POKEMON_TOOL)).size()>8) {
               def list=[]
   						for(move in h.object){
   							def copy=move.shallowCopy()
-  							copy.energyCost = []
+  							copy.energyCost.retainAll()
   							list.add(copy)
   						}
   						h.object=list
-            }
+          //  }
           }
         }
         move "Heat Blast", {
