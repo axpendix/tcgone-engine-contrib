@@ -608,13 +608,11 @@ public enum UltraPrism implements CardInfo {
             //TODO : not hardcode dual type case (aka. contains for list of types)
             if(tar1){
               def typ1 = (tar1.first().types as List<Type>)
-              bc "$typ1"
               my.deck.remove(tar1.first())
               benchPCS(tar1.first())
               if(my.bench.notFull){
                 if(typ1.size() != 1)
                 {
-                  bc "more than 1 type"
                   def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0))) && !(it.types.contains(typ1.get(1)))})
                   if(tar2){
                     def typ2 = tar2.first().types
@@ -639,10 +637,6 @@ public enum UltraPrism implements CardInfo {
                   }
                 }
                 else{
-                  def testType = typ1.get(0)
-                  bc "more than 1 type : $testType"
-                  def sel = my.deck.findAll{it.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0)))}
-                  bc "$sel"
                   def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0)))})
                   if(tar2){
                     def typ2 = tar2.first().types
