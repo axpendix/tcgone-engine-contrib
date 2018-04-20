@@ -1135,7 +1135,7 @@ public enum UltraPrism implements CardInfo {
           onActivate {reason ->
             if(reason == PLAY_FROM_HAND && confirm("Blessings of the Frost")){
               powerUsed()
-              def tar = my.discard.search(count:1, energyFilter(W))
+              def tar = my.discard.search(count:1, basicEnergyFilter(W))
               if(tar)
                 tar.moveTo(my.all.select())
             }
@@ -1408,7 +1408,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             discardAllSelfEnergy(L) //Should this come before or after the damage step?
-            damage 50, opp.all.select()
+            damage 150, opp.all.select()
           }
         }
 
@@ -1428,12 +1428,11 @@ public enum UltraPrism implements CardInfo {
             def cnt=0
             my.bench.each{
               it.topPokemonCard.moves.each{
-                if(it.name=="Nuzzle")
-                  cnt+=1
+                if(it.name=="Nuzzle"){
+                  my.deck.search("Search for a Lightning Energy",basicEnergyFilter(LIGHTNING))
+                  attachEnergy(self,it)
+                }
               }
-            }
-            my.deck.search(max:cnt,"Search for $cnt Lightning Energy",cardTypeFilter(LIGHTNING)).each{
-              attachEnergy(self,it)
             }
           }
         }
