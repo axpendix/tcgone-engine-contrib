@@ -1427,10 +1427,10 @@ public enum UltraPrism implements CardInfo {
           onAttack {
             def cnt=0
             my.bench.each{
+              def tar = it
               it.topPokemonCard.moves.each{
                 if(it.name=="Nuzzle"){
-                  my.deck.search("Search for a Lightning Energy",basicEnergyFilter(LIGHTNING))
-                  attachEnergy(self,it)
+                  attachEnergyFrom(type:L,my.deck,tar)
                 }
               }
             }
