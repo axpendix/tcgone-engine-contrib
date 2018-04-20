@@ -2017,7 +2017,7 @@ public enum CrimsonInvasion implements CardInfo {
               if(!src) break;
               def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
 
-              def tar=pl.select("Target for energy (cancel to stop)", false)
+              def tar=my.all.select("Target for energy (cancel to stop)", false)
               if(!tar) break;
               energySwitch(src, tar, card)
             }
@@ -2451,8 +2451,10 @@ public enum CrimsonInvasion implements CardInfo {
         onPlay {reason->
           eff=getter GET_POKEMON_TYPE, self, {h ->
             if(h.effect.target.name == "Silvally-GX")
-            h.object.removeAll()
-            h.object.add(FIGHTING)
+            {
+              h.object.removeAll()
+              h.object.add(FIGHTING)
+            }
           }
         }
         onRemoveFromPlay {
@@ -2513,8 +2515,10 @@ public enum CrimsonInvasion implements CardInfo {
         onPlay {reason->
           eff=getter GET_POKEMON_TYPE, self, {h ->
             if(h.effect.target.name == "Silvally-GX")
+            {
               h.object.removeAll()
               h.object.add(PSYCHIC)
+            }
           }
         }
         onRemoveFromPlay {
