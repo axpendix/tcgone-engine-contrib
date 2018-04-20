@@ -2452,7 +2452,7 @@ public enum CrimsonInvasion implements CardInfo {
           eff=getter GET_POKEMON_TYPE, self, {h ->
             if(h.effect.target.name == "Silvally-GX")
             {
-              h.object.removeAll()
+              h.object.retainAll()
               h.object.add(FIGHTING)
             }
           }
@@ -2516,7 +2516,7 @@ public enum CrimsonInvasion implements CardInfo {
           eff=getter GET_POKEMON_TYPE, self, {h ->
             if(h.effect.target.name == "Silvally-GX")
             {
-              h.object.removeAll()
+              h.object.retainAll()
               h.object.add(PSYCHIC)
             }
           }
