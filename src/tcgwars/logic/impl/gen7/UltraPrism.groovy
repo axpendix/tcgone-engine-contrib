@@ -1133,9 +1133,9 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Blessings of the Frost", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may attach a [W] Energy card from your discard pile to 1 of your Pokémon."
           onActivate {reason ->
-            if(reason == PLAY_FROM_HAND && self.benched && confirm("Blessings of the Frost")){
+            if(reason == PLAY_FROM_HAND && confirm("Blessings of the Frost")){
               powerUsed()
-              def tar = my.discard.search(energyFilter(M))
+              def tar = my.discard.search(count:1, energyFilter(W))
               if(tar)
                 tar.moveTo(my.all.select())
             }
@@ -1157,6 +1157,8 @@ public enum UltraPrism implements CardInfo {
         weakness METAL
         bwAbility "Freezing Gaze", {
           text "As long as this Pokémon is your Active Pokémon, your opponent’s Pokémon-GX and Pokémon-EX in play, in their hand, and in their discard pile have no Abilities, except for Freezing Gaze."
+          def effect1
+          def effect2
           onActivate {
             effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
               if (self.active && (h.effect.target.pokemonEX || h.effect.target.pokemonGX) && h.effect.ability instanceof BwAbility) {
@@ -1261,10 +1263,10 @@ public enum UltraPrism implements CardInfo {
           text "Shuffle 5 [W] Energy cards from your discard pile into your deck."
           energyCost W
           attackRequirement {
-            assert my.discard.findAll(cardTypeFilter(FIRE))
+            assert my.discard.filterByEnergyType(WATER)
           }
           onAttack {
-            my.discard.findAll(cardTypeFilter(FIRE)).select(count: 5).moveTo(my.deck)
+            my.discard.filterByEnergyType(WATER).select(count: 5).moveTo(my.deck)
             shuffleDeck()
           }
         }
@@ -1312,7 +1314,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            if(defending.types.contains(F)) applyAfterDamage ASLEEP
+            if(defending.types.contains(M)) applyAfterDamage PARALYZED
           }
         }
         move "Volt Knuckle", {
@@ -1331,10 +1333,9 @@ public enum UltraPrism implements CardInfo {
         resistance METAL, MINUS20
         bwAbility "Evolutionary Advantage", {
           text "If you go second, this Pokémon can evolve during your first turn."
-          actionA {
-            //TODO: Implement Shinx Evolution ability
-            //Use a delayed effect which checks if it is the second turn and allows instant
-            //evolution
+          getterA IS_EVOLUTION_BLOCKED { h ->
+            if(bg.turnCount == turnCount && h.effect.target == self)
+              h.object = false
           }
         }
         move "Static Shock", {
@@ -1426,7 +1427,7 @@ public enum UltraPrism implements CardInfo {
           onAttack {
             def cnt=0
             my.bench.each{
-              it.moves.each{
+              it.topPokemonCard.moves.each{
                 if(it.name=="Nuzzle")
                   cnt+=1
               }
@@ -3184,7 +3185,7 @@ public enum UltraPrism implements CardInfo {
           if(my.hand.findAll({it.name=="Missing Clover"}).size()==3)
             {
               if(confirm("Use your 4 Missing Clover and take a prize card?")){
-                  TakePrize()
+                  bg.em().run(new TakePrize(self.owner,self))
                   my.hand.findAll({it.name=="Missing Clover"}).discard()
               }
             }
