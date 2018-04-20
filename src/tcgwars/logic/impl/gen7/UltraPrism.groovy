@@ -360,7 +360,7 @@ public enum UltraPrism implements CardInfo {
               def src =pl.select("source for energy (cancel to stop)", false)
               if(!src) break;
               def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
-              def tar=pl.select("Target for energy (cancel to stop)", false)
+              def tar=my.all.select("Target for energy (cancel to stop)", false)
               if(!tar) break;
               energySwitch(src, tar, card)
             }
@@ -478,9 +478,7 @@ public enum UltraPrism implements CardInfo {
           getterA GET_WEAKNESSES, { h ->
             if (h.effect.target.types.contains(G) && h.effect.target.owner == self.owner) {
               def list = h.object as List<Weakness>
-              if(list) {
-                list.removeAll()
-              }
+              list.retainAll()
             }
           }
         }
@@ -559,7 +557,7 @@ public enum UltraPrism implements CardInfo {
               def sel=self.owner.pbg.deck.search(count:1, "search for a card that evolve for $nam",
                           {it.cardTypes.is(EVOLUTION) && it.predecessor==tar.name})
               if(sel){
-                evolve(self, sel.first(), OTHER)
+                evolve(it, sel.first(), OTHER)
               }
             }
             shuffleDeck(null, self.owner.toTargetPlayer())
@@ -577,7 +575,7 @@ public enum UltraPrism implements CardInfo {
               def list=[]
   						for(move in h.object){
   							def copy=move.shallowCopy()
-  							copy.energyCost.removeAll()
+  							copy.energyCost.retainAll()
   							list.add(copy)
   						}
   						h.object=list
@@ -609,29 +607,29 @@ public enum UltraPrism implements CardInfo {
             //TODO : not hardcode dual type case (aka. contains for list of types)
             if(tar1){
               def typ1 = tar1.first().types
-              my.deck.remove(tar1)
-              benchPCS(tar1)
+              my.deck.remove(tar1.first())
+              benchPCS(tar1.first())
               if(my.bench.notFull){
                 if(typ1.size() == 2)
                 {
                   def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ1.get(1))})
                   if(tar2){
                     def typ2 = tar2.first().types
-                    my.deck.remove(tar2)
-      							benchPCS(tar2)
+                    my.deck.remove(tar2.first())
+      							benchPCS(tar2.first())
                     if(my.bench.notFull){
                       if(typ1.size() == 2){
                         def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ1.get(1)) && !it.types.contains(typ2.get(0)) && !it.types.contains(typ2.get(1))})
                         if(tar3){
-                          my.deck.remove(tar3)
-            							benchPCS(tar3)
+                          my.deck.remove(tar3.first())
+            							benchPCS(tar3.first())
                         }
                       }
                       else{
                         def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ1.get(1)) && !it.types.contains(typ2.get(0))})
                         if(tar3){
-                          my.deck.remove(tar3)
-            							benchPCS(tar3)
+                          my.deck.remove(tar3.first())
+            							benchPCS(tar3.first())
                         }
                       }
                     }
@@ -641,21 +639,21 @@ public enum UltraPrism implements CardInfo {
                   def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0))})
                   if(tar2){
                     def typ2 = tar2.first().types
-                    my.deck.remove(tar2)
-      							benchPCS(tar2)
+                    my.deck.remove(tar2.first())
+      							benchPCS(tar2.first())
                     if(my.bench.notFull){
                       if(typ1.size() == 2){
                         def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ2.get(0)) && !it.types.contains(typ2.get(1))})
                         if(tar3){
-                          my.deck.remove(tar3)
-            							benchPCS(tar3)
+                          my.deck.remove(tar3.first())
+            							benchPCS(tar3.first())
                         }
                       }
                       else{
                         def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !it.types.contains(typ1.get(0)) && !it.types.contains(typ2.get(0))})
                         if(tar3){
-                          my.deck.remove(tar3)
-            							benchPCS(tar3)
+                          my.deck.remove(tar3.first())
+            							benchPCS(tar3.first())
                         }
                       }
                     }
@@ -750,7 +748,7 @@ public enum UltraPrism implements CardInfo {
             before APPLY_ATTACK_DAMAGES, {
               if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
                 bc "Incandescent Body burn attacker"
-                apply BURNED, it.from
+                bg.dm().each{apply BURNED, it.from}
               }
             }
           }
