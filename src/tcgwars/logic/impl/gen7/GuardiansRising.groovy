@@ -1624,12 +1624,10 @@ public enum GuardiansRising implements CardInfo {
 					energyCost P
 					attackRequirement {
 						gxCheck()
-						my.bench.findAll {it.numberOfDamageCounters}
+						assert my.bench.findAll {it.numberOfDamageCounters}
 					}
 					onAttack {
-						if(my.bench.findAll {it.numberOfDamageCounters}){
-							healAll my.bench.findAll {it.numberOfDamageCounters}.select("Fully heal")
-						}
+						healAll my.bench.findAll {it.numberOfDamageCounters}.select("Fully heal")
 						if(my.bench.findAll {it.numberOfDamageCounters}){
 							healAll my.bench.findAll {it.numberOfDamageCounters}.select("Fully heal")
 						}
