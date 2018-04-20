@@ -1135,9 +1135,7 @@ public enum UltraPrism implements CardInfo {
           onActivate {reason ->
             if(reason == PLAY_FROM_HAND && confirm("Blessings of the Frost")){
               powerUsed()
-              def tar = my.discard.select(basicEnergyFilter(W))
-              if(tar)
-                tar.moveTo(my.all.select())
+              attachEnergyFrom(type:W,my.discard,my.all.select())
             }
           }
         }
