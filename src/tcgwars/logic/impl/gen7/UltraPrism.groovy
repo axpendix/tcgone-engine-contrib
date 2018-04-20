@@ -614,7 +614,7 @@ public enum UltraPrism implements CardInfo {
               if(my.bench.notFull){
                 if(typ1.size() != 1)
                 {
-                  bc
+                  bc "more than 1 type"
                   def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0))) && !(it.types.contains(typ1.get(1)))})
                   if(tar2){
                     def typ2 = tar2.first().types
@@ -639,21 +639,25 @@ public enum UltraPrism implements CardInfo {
                   }
                 }
                 else{
-                  def tar2 = my.deck.search (count : 1,{it.topPokemonCard.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0)))})
+                  def testType = typ1.get(0)
+                  bc "more than 1 type : $testType"
+                  def sel = my.deck.findAll{it.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0)))}
+                  bc "$sel"
+                  def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0)))})
                   if(tar2){
                     def typ2 = tar2.first().types
                     my.deck.remove(tar2.first())
       							benchPCS(tar2.first())
                     if(my.bench.notFull){
                       if(typ2.size() != 1){
-                        def tar3 = my.deck.search (count : 1,{it.topPokemonCard.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0))) && !(it.types.contains(typ2.get(0))) && !(it.types.contains(typ2.get(1)))})
+                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0))) && !(it.types.contains(typ2.get(0))) && !(it.types.contains(typ2.get(1)))})
                         if(tar3){
                           my.deck.remove(tar3.first())
             							benchPCS(tar3.first())
                         }
                       }
                       else{
-                        def tar3 = my.deck.search (count : 1,{it.topPokemonCard.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0))) && !(it.types.contains(typ2.get(0)))})
+                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0))) && !(it.types.contains(typ2.get(0)))})
                         if(tar3){
                           my.deck.remove(tar3.first())
             							benchPCS(tar3.first())
