@@ -1627,7 +1627,9 @@ public enum GuardiansRising implements CardInfo {
 						my.bench.findAll {it.numberOfDamageCounters}
 					}
 					onAttack {
-						healAll my.bench.findAll {it.numberOfDamageCounters}.select("Fully heal")
+						if(my.bench.findAll {it.numberOfDamageCounters}){
+							healAll my.bench.findAll {it.numberOfDamageCounters}.select("Fully heal")
+						}
 						if(my.bench.findAll {it.numberOfDamageCounters}){
 							healAll my.bench.findAll {it.numberOfDamageCounters}.select("Fully heal")
 						}
