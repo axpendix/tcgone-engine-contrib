@@ -1,4 +1,4 @@
-package tcgwars.logic.card.set;
+package tcgwars.logic.impl.gen1;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -31,6 +31,9 @@ import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
+/**
+ * @author axpendix@hotmail.com
+ */
 public enum Fossil implements CardInfo {
 	
 	AERODACTYL_1 ("Aerodactyl", 1, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
@@ -48,56 +51,57 @@ public enum Fossil implements CardInfo {
 	MUK_13 ("Muk", 13, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
 	RAICHU_14 ("Raichu", 14, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
 	ZAPDOS_15 ("Zapdos", 15, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-	AERODACTYL_16 ("Aerodactyl", 16, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-	ARTICUNO_17 ("Articuno", 17, Rarity.RARE, [BASIC, POKEMON, _WATER_]),
-	DITTO_18 ("Ditto", 18, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-	DRAGONITE_19 ("Dragonite", 19, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
-	GENGAR_20 ("Gengar", 20, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
-	HAUNTER_21 ("Haunter", 21, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-	HITMONLEE_22 ("Hitmonlee", 22, Rarity.RARE, [BASIC, POKEMON, _FIGHTING_]),
-	HYPNO_23 ("Hypno", 23, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-	KABUTOPS_24 ("Kabutops", 24, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-	LAPRAS_25 ("Lapras", 25, Rarity.RARE, [BASIC, POKEMON, _WATER_]),
-	MAGNETON_26 ("Magneton", 26, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-	MOLTRES_27 ("Moltres", 27, Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
-	MUK_28 ("Muk", 28, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	RAICHU_29 ("Raichu", 29, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-	ZAPDOS_30 ("Zapdos", 30, Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
-	ARBOK_31 ("Arbok", 31, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	CLOYSTER_32 ("Cloyster", 32, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	GASTLY_33 ("Gastly", 33, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
-	GOLBAT_34 ("Golbat", 34, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	GOLDUCK_35 ("Golduck", 35, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	GOLEM_36 ("Golem", 36, Rarity.UNCOMMON, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-	GRAVELER_37 ("Graveler", 37, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-	KINGLER_38 ("Kingler", 38, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	MAGMAR_39 ("Magmar", 39, Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
-	OMASTAR_40 ("Omastar", 40, Rarity.UNCOMMON, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-	SANDSLASH_41 ("Sandslash", 41, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-	SEADRA_42 ("Seadra", 42, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	SLOWBRO_43 ("Slowbro", 43, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-	TENTACRUEL_44 ("Tentacruel", 44, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	WEEZING_45 ("Weezing", 45, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	EKANS_46 ("Ekans", 46, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	GEODUDE_47 ("Geodude", 47, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-	GRIMER_48 ("Grimer", 48, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	HORSEA_49 ("Horsea", 49, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-	KABUTO_50 ("Kabuto", 50, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-	KRABBY_51 ("Krabby", 51, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-	OMANYTE_52 ("Omanyte", 52, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	PSYDUCK_53 ("Psyduck", 53, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-	SHELLDER_54 ("Shellder", 54, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-	SLOWPOKE_55 ("Slowpoke", 55, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-	TENTACOOL_56 ("Tentacool", 56, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-	ZUBAT_57 ("Zubat", 57, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	MR__FUJI_58 ("Mr. Fuji", 58, Rarity.UNCOMMON, [TRAINER]),
-	ENERGY_SEARCH_59 ("Energy Search", 59, Rarity.COMMON, [TRAINER]),
-	GAMBLER_60 ("Gambler", 60, Rarity.COMMON, [TRAINER]),
-	RECYCLE_61 ("Recycle", 61, Rarity.COMMON, [TRAINER]),
-	MYSTERIOUS_FOSSIL_62 ("Mysterious Fossil", 62, Rarity.COMMON, [TRAINER]),
-;
+
+	AERODACTYL ("Aerodactyl", 16, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	ARTICUNO ("Articuno", 17, Rarity.RARE, [BASIC, POKEMON, _WATER_]),
+	DITTO ("Ditto", 18, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+	DRAGONITE ("Dragonite", 19, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
+	GENGAR ("Gengar", 20, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
+	HAUNTER ("Haunter", 21, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	HITMONLEE ("Hitmonlee", 22, Rarity.RARE, [BASIC, POKEMON, _FIGHTING_]),
+	HYPNO ("Hypno", 23, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	KABUTOPS ("Kabutops", 24, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+	LAPRAS ("Lapras", 25, Rarity.RARE, [BASIC, POKEMON, _WATER_]),
+	MAGNETON ("Magneton", 26, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+	MOLTRES ("Moltres", 27, Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
+	MUK ("Muk", 28, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	RAICHU ("Raichu", 29, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+	ZAPDOS ("Zapdos", 30, Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
+	ARBOK ("Arbok", 31, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	CLOYSTER ("Cloyster", 32, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	GASTLY ("Gastly", 33, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	GOLBAT ("Golbat", 34, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	GOLDUCK ("Golduck", 35, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	GOLEM ("Golem", 36, Rarity.UNCOMMON, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+	GRAVELER ("Graveler", 37, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	KINGLER ("Kingler", 38, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	MAGMAR ("Magmar", 39, Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
+	OMASTAR ("Omastar", 40, Rarity.UNCOMMON, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+	SANDSLASH ("Sandslash", 41, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	SEADRA ("Seadra", 42, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	SLOWBRO ("Slowbro", 43, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	TENTACRUEL ("Tentacruel", 44, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	WEEZING ("Weezing", 45, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	EKANS ("Ekans", 46, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	GEODUDE ("Geodude", 47, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	GRIMER ("Grimer", 48, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	HORSEA ("Horsea", 49, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	KABUTO ("Kabuto", 50, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	KRABBY ("Krabby", 51, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	OMANYTE ("Omanyte", 52, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	PSYDUCK ("Psyduck", 53, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	SHELLDER ("Shellder", 54, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	SLOWPOKE ("Slowpoke", 55, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	TENTACOOL ("Tentacool", 56, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	ZUBAT ("Zubat", 57, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+
+	MR_FUJI ("Mr. Fuji", 58, Rarity.UNCOMMON, [TRAINER]),
+	ENERGY_SEARCH ("Energy Search", 59, Rarity.COMMON, [TRAINER]),
+	GAMBLER ("Gambler", 60, Rarity.COMMON, [TRAINER]),
+	RECYCLE ("Recycle", 61, Rarity.COMMON, [TRAINER]),
+	MYSTERIOUS_FOSSIL ("Mysterious Fossil", 62, Rarity.COMMON, [TRAINER]);
 	
-	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
 	
 	protected CardTypeSet cardTypes;
 	protected String name;
@@ -443,7 +447,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case ARTICUNO_17:
+			case ARTICUNO:
 			return copy (ARTICUNO_2, this)
 			/*basic (this, hp:HP070, type:WATER, retreatCost:2) {
 				resistance FIGHTING, MINUS30
@@ -465,7 +469,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			}*/;
-			case DITTO_18:
+			case DITTO:
 			return copy (DITTO_3, this)
 			/*basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness FIGHTING
@@ -477,7 +481,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			}*/;
-			case DRAGONITE_19:
+			case DRAGONITE:
 			return copy (DRAGONITE_4, this)
 			/*evolution (this, from:"Dragonair", hp:HP100, type:COLORLESS, retreatCost:1) {
 				resistance FIGHTING, MINUS30
@@ -496,7 +500,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			}*/;
-			case GENGAR_20:
+			case GENGAR:
 			return copy (GENGAR_5, this)
 			/*evolution (this, from:"Haunter", hp:HP080, type:PSYCHIC, retreatCost:1) {
 				resistance FIGHTING, MINUS30
@@ -515,7 +519,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			}*/;
-			case HAUNTER_21:
+			case HAUNTER:
 			return copy (HAUNTER_6, this)
 			/*evolution (this, from:"Gastly", hp:HP050, type:PSYCHIC, retreatCost:0) {
 				resistance FIGHTING, MINUS30
@@ -534,7 +538,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			}*/;
-			case HITMONLEE_22:
+			case HITMONLEE:
 			return copy (HITMONLEE_7, this)
 			/*basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
 				weakness PSYCHIC
@@ -556,7 +560,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			}*/;
-			case HYPNO_23:
+			case HYPNO:
 			return copy (HYPNO_8, this)
 			/*evolution (this, from:"Drowzee", hp:HP090, type:PSYCHIC, retreatCost:2) {
 				weakness PSYCHIC
@@ -578,7 +582,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			}*/;
-			case KABUTOPS_24:
+			case KABUTOPS:
 			return copy (KABUTOPS_9, this)
 			/*evolution (this, from:"Kabuto", hp:HP060, type:FIGHTING, retreatCost:1) {
 				weakness GRASS
@@ -600,7 +604,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			}*/;
-			case LAPRAS_25:
+			case LAPRAS:
 			return copy (LAPRAS_10, this)
 			/*basic (this, hp:HP080, type:WATER, retreatCost:2) {
 				weakness LIGHTNING
@@ -622,7 +626,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			}*/;
-			case MAGNETON_26:
+			case MAGNETON:
 			return copy (MAGNETON_11, this)
 			/*evolution (this, from:"Magnemite", hp:HP080, type:LIGHTNING, retreatCost:2) {
 				weakness FIGHTING
@@ -644,7 +648,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			}*/;
-			case MOLTRES_27:
+			case MOLTRES:
 			return copy (MOLTRES_12, this)
 			/*basic (this, hp:HP070, type:FIRE, retreatCost:2) {
 				resistance FIGHTING, MINUS30
@@ -666,7 +670,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			}*/;
-			case MUK_28:
+			case MUK:
 			return copy (MUK_13, this)
 			/*evolution (this, from:"Grimer", hp:HP070, type:GRASS, retreatCost:2) {
 				weakness PSYCHIC
@@ -685,7 +689,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			}*/;
-			case RAICHU_29:
+			case RAICHU:
 			return copy (RAICHU_14, this)
 			/*evolution (this, from:"Pikachu", hp:HP090, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
@@ -699,7 +703,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			}*/;
-			case ZAPDOS_30:
+			case ZAPDOS:
 			return copy (ZAPDOS_15, this)
 			/*basic (this, hp:HP080, type:LIGHTNING, retreatCost:2) {
 				resistance FIGHTING, MINUS30
@@ -713,7 +717,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			}*/;
-			case ARBOK_31:
+			case ARBOK:
 			return evolution (this, from:"Ekans", hp:HP060, type:GRASS, retreatCost:2) {
 				weakness PSYCHIC
 				move "Terror Strike", {
@@ -734,7 +738,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case CLOYSTER_32:
+			case CLOYSTER:
 			return evolution (this, from:"Shellder", hp:HP050, type:WATER, retreatCost:2) {
 				weakness LIGHTNING
 				move "Clamp", {
@@ -755,7 +759,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case GASTLY_33:
+			case GASTLY:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:0) {
 				resistance FIGHTING, MINUS30
 				move "Lick", {
@@ -776,7 +780,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case GOLBAT_34:
+			case GOLBAT:
 			return evolution (this, from:"Zubat", hp:HP060, type:GRASS, retreatCost:0) {
 				weakness PSYCHIC
 				resistance FIGHTING, MINUS30
@@ -798,7 +802,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case GOLDUCK_35:
+			case GOLDUCK:
 			return evolution (this, from:"Psyduck", hp:HP070, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Psyshock", {
@@ -819,7 +823,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case GOLEM_36:
+			case GOLEM:
 			return evolution (this, from:"Graveler", hp:HP080, type:FIGHTING, retreatCost:4) {
 				weakness GRASS
 				move "Avalanche", {
@@ -840,7 +844,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case GRAVELER_37:
+			case GRAVELER:
 			return evolution (this, from:"Geodude", hp:HP060, type:FIGHTING, retreatCost:2) {
 				weakness GRASS
 				move "Harden", {
@@ -861,7 +865,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case KINGLER_38:
+			case KINGLER:
 			return evolution (this, from:"Krabby", hp:HP060, type:WATER, retreatCost:3) {
 				weakness LIGHTNING
 				move "Flail", {
@@ -882,7 +886,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case MAGMAR_39:
+			case MAGMAR:
 			return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
 				weakness WATER
 				move "Smokescreen", {
@@ -903,7 +907,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case OMASTAR_40:
+			case OMASTAR:
 			return evolution (this, from:"Omanyte", hp:HP070, type:WATER, retreatCost:1) {
 				weakness GRASS
 				move "Water Gun", {
@@ -924,7 +928,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case SANDSLASH_41:
+			case SANDSLASH:
 			return evolution (this, from:"Sandshrew", hp:HP070, type:FIGHTING, retreatCost:1) {
 				weakness GRASS
 				resistance LIGHTNING, MINUS30
@@ -946,7 +950,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case SEADRA_42:
+			case SEADRA:
 			return evolution (this, from:"Horsea", hp:HP060, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Water Gun", {
@@ -967,7 +971,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case SLOWBRO_43:
+			case SLOWBRO:
 			return evolution (this, from:"Slowbro", hp:HP060, type:PSYCHIC, retreatCost:1) {
 				weakness PSYCHIC
 				pokemonPower "Strange Behavior", {
@@ -985,7 +989,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case TENTACRUEL_44:
+			case TENTACRUEL:
 			return evolution (this, from:"Tentacool", hp:HP060, type:WATER, retreatCost:0) {
 				weakness LIGHTNING
 				move "Supersonic", {
@@ -1006,7 +1010,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case WEEZING_45:
+			case WEEZING:
 			return evolution (this, from:"Koffing", hp:HP060, type:GRASS, retreatCost:1) {
 				weakness PSYCHIC
 				move "Smog", {
@@ -1027,7 +1031,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case EKANS_46:
+			case EKANS:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness PSYCHIC
 				move "Spit Poison", {
@@ -1048,7 +1052,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case GEODUDE_47:
+			case GEODUDE:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
 				weakness GRASS
 				move "Stone Barrage", {
@@ -1061,7 +1065,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case GRIMER_48:
+			case GRIMER:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness PSYCHIC
 				move "Nasty Good", {
@@ -1082,7 +1086,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case HORSEA_49:
+			case HORSEA:
 			return basic (this, hp:HP040, type:WATER, retreatCost:0) {
 				weakness LIGHTNING
 				move "Smokescreen", {
@@ -1095,7 +1099,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case KABUTO_50:
+			case KABUTO:
 			return evolution (this, from:"Mysterious Fossil", hp:HP030, type:FIGHTING, retreatCost:1) {
 				weakness GRASS
 				pokemonPower "Kabuto Armor", {
@@ -1113,7 +1117,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case KRABBY_51:
+			case KRABBY:
 			return basic (this, hp:HP050, type:WATER, retreatCost:2) {
 				move "Call for Family", {
 					text "Search your deck for a Basic Pokémon named Krabby and put it onto your Bench. Shuffle your deck afterward. (You can’t use this attack if your Bench if full.)"
@@ -1133,7 +1137,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case OMANYTE_52:
+			case OMANYTE:
 			return evolution (this, from:"Mysterious Fossil", hp:HP040, type:WATER, retreatCost:1) {
 				weakness GRASS
 				pokemonPower "Clairvoyance", {
@@ -1151,7 +1155,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case PSYDUCK_53:
+			case PSYDUCK:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Headache", {
@@ -1172,7 +1176,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case SHELLDER_54:
+			case SHELLDER:
 			return basic (this, hp:HP030, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Supersonic", {
@@ -1193,7 +1197,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case SLOWPOKE_55:
+			case SLOWPOKE:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness PSYCHIC
 				move "Spacing Out", {
@@ -1214,7 +1218,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case TENTACOOL_56:
+			case TENTACOOL:
 			return basic (this, hp:HP030, type:WATER, retreatCost:0) {
 				weakness LIGHTNING
 				pokemonPower "Cowardice", {
@@ -1232,7 +1236,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case ZUBAT_57:
+			case ZUBAT:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:0) {
 				weakness PSYCHIC
 				resistance FIGHTING, MINUS30
@@ -1254,7 +1258,7 @@ public enum Fossil implements CardInfo {
 				}
 				
 			};
-			case MR__FUJI_58:
+			case MR_FUJI:
 			return basicTrainer (this) {
 				text "Choose a Pokémon on your Bench. Shuffle it any any cards attached to it into your deck."
 				onPlay {
@@ -1262,7 +1266,7 @@ public enum Fossil implements CardInfo {
 				playRequirement{
 				}
 			};
-			case ENERGY_SEARCH_59:
+			case ENERGY_SEARCH:
 			return basicTrainer (this) {
 				text "Search your deck for a basic Energy card and put it into your hand. Shuffle your deck afterward."
 				onPlay {
@@ -1270,7 +1274,7 @@ public enum Fossil implements CardInfo {
 				playRequirement{
 				}
 			};
-			case GAMBLER_60:
+			case GAMBLER:
 			return basicTrainer (this) {
 				text "Shuffle your hand into your deck. Flip a coin. If heads, draw 8 cards. If tails, draw 1 card."
 				onPlay {
@@ -1278,7 +1282,7 @@ public enum Fossil implements CardInfo {
 				playRequirement{
 				}
 			};
-			case RECYCLE_61:
+			case RECYCLE:
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, put a card in your discard pile on top of your deck."
 				onPlay {
@@ -1286,7 +1290,7 @@ public enum Fossil implements CardInfo {
 				playRequirement{
 				}
 			};
-			case MYSTERIOUS_FOSSIL_62:
+			case MYSTERIOUS_FOSSIL:
 			return basicTrainer (this) {
 				text "Play Mysterious Fossil as if it were a Basic Pokémon. While in play, Mysterious Fossil counts as a Pokémon (instead of a Trainer card). Mysterious Fossil has no attacks, can’t retreat, and can’t be Asleep, Confused, Paralyzed, or Poisoned. If Mysterious Fossil is Knocked Out, it doesn’t count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn, before your attack, you may discard Mysterious Fossil from play."
 				onPlay {

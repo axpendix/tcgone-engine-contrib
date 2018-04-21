@@ -1,4 +1,4 @@
-package tcgwars.logic.card.set;
+package tcgwars.logic.impl.gen1;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -31,6 +31,9 @@ import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
+/**
+ * @author axpendix@hotmail.com
+ */
 public enum TeamRocket implements CardInfo {
 	
 	DARK_ALAKAZAM_1 ("Dark Alakazam", 1, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
@@ -47,78 +50,78 @@ public enum TeamRocket implements CardInfo {
 	DARK_SLOWBRO_12 ("Dark Slowbro", 12, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
 	DARK_VILEPLUME_13 ("Dark Vileplume", 13, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
 	DARK_WEEZING_14 ("Dark Weezing", 14, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	HERE_COMES_TEAM_ROCKET__15 ("Here Comes Team Rocket!", 15, Rarity.HOLORARE, [TRAINER]),
-	ROCKET_S_SNEAK_ATTACK_16 ("Rocket's Sneak Attack", 16, Rarity.HOLORARE, [TRAINER]),
+	HERE_COMES_TEAM_ROCKET_15 ("Here Comes Team Rocket!", 15, Rarity.HOLORARE, [TRAINER]),
+	ROCKETS_SNEAK_ATTACK_16 ("Rocket's Sneak Attack", 16, Rarity.HOLORARE, [TRAINER]),
 	RAINBOW_ENERGY_17 ("Rainbow Energy", 17, Rarity.HOLORARE, [SPECIAL_ENERGY, ENERGY]),
-	DARK_ALAKAZAM_18 ("Dark Alakazam", 18, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
-	DARK_ARBOK_19 ("Dark Arbok", 19, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	DARK_BLASTOISE_20 ("Dark Blastoise", 20, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-	DARK_CHARIZARD_21 ("Dark Charizard", 21, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
-	DARK_DRAGONITE_22 ("Dark Dragonite", 22, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
-	DARK_DUGTRIO_23 ("Dark Dugtrio", 23, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-	DARK_GOLBAT_24 ("Dark Golbat", 24, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	DARK_GYARADOS_25 ("Dark Gyarados", 25, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	DARK_HYPNO_26 ("Dark Hypno", 26, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-	DARK_MACHAMP_27 ("Dark Machamp", 27, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-	DARK_MAGNETON_28 ("Dark Magneton", 28, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-	DARK_SLOWBRO_29 ("Dark Slowbro", 29, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-	DARK_VILEPLUME_30 ("Dark Vileplume", 30, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-	DARK_WEEZING_31 ("Dark Weezing", 31, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	DARK_CHARMELEON_32 ("Dark Charmeleon", 32, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-	DARK_DRAGONAIR_33 ("Dark Dragonair", 33, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	DARK_ELECTRODE_34 ("Dark Electrode", 34, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-	DARK_FLAREON_35 ("Dark Flareon", 35, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-	DARK_GLOOM_36 ("Dark Gloom", 36, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	DARK_GOLDUCK_37 ("Dark Golduck", 37, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	DARK_JOLTEON_38 ("Dark Jolteon", 38, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-	DARK_KADABRA_39 ("Dark Kadabra", 39, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-	DARK_MACHOKE_40 ("Dark Machoke", 40, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-	DARK_MUK_41 ("Dark Muk", 41, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	DARK_PERSIAN_42 ("Dark Persian", 42, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	DARK_PRIMEAPE_43 ("Dark Primeape", 43, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-	DARK_RAPIDASH_44 ("Dark Rapidash", 44, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-	DARK_VAPOREON_45 ("Dark Vaporeon", 45, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	DARK_WARTORTLE_46 ("Dark Wartortle", 46, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	MAGIKARP_47 ("Magikarp", 47, Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
-	PORYGON_48 ("Porygon", 48, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-	ABRA_49 ("Abra", 49, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-	CHARMANDER_50 ("Charmander", 50, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-	DARK_RATICATE_51 ("Dark Raticate", 51, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	DIGLETT_52 ("Diglett", 52, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-	DRATINI_53 ("Dratini", 53, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-	DROWZEE_54 ("Drowzee", 54, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-	EEVEE_55 ("Eevee", 55, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-	EKANS_56 ("Ekans", 56, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	GRIMER_57 ("Grimer", 57, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	KOFFING_58 ("Koffing", 58, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	MACHOP_59 ("Machop", 59, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-	MAGNEMITE_60 ("Magnemite", 60, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-	MANKEY_61 ("Mankey", 61, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-	MEOWTH_62 ("Meowth", 62, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-	ODDISH_63 ("Oddish", 63, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	PONYTA_64 ("Ponyta", 64, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-	PSYDUCK_65 ("Psyduck", 65, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-	RATTATA_66 ("Rattata", 66, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-	SLOWPOKE_67 ("Slowpoke", 67, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-	SQUIRTLE_68 ("Squirtle", 68, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-	VOLTORB_69 ("Voltorb", 69, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-	ZUBAT_70 ("Zubat", 70, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	HERE_COMES_TEAM_ROCKET__71 ("Here Comes Team Rocket!", 71, Rarity.RARE, [TRAINER]),
-	ROCKET_S_SNEAK_ATTACK_72 ("Rocket's Sneak Attack", 72, Rarity.RARE, [TRAINER]),
-	THE_BOSS_S_WAY_73 ("The Boss's Way", 73, Rarity.UNCOMMON, [TRAINER]),
-	CHALLENGE__74 ("Challenge!", 74, Rarity.UNCOMMON, [TRAINER]),
-	DIGGER_75 ("Digger", 75, Rarity.UNCOMMON, [TRAINER]),
-	IMPOSTER_OAK_S_REVENGE_76 ("Imposter Oak's Revenge", 76, Rarity.UNCOMMON, [TRAINER]),
-	NIGHTLY_GARBAGE_RUN_77 ("Nightly Garbage Run", 77, Rarity.UNCOMMON, [TRAINER]),
-	GOOP_GAS_ATTACK_78 ("Goop Gas Attack", 78, Rarity.COMMON, [TRAINER]),
-	SLEEP__79 ("Sleep!", 79, Rarity.COMMON, [TRAINER]),
-	RAINBOW_ENERGY_80 ("Rainbow Energy", 80, Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
-	FULL_HEAL_ENERGY_81 ("Full Heal Energy", 81, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-	POTION_ENERGY_82 ("Potion Energy", 82, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-	DARK_RAICHU_83 ("Dark Raichu", 83, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-;
+
+	DARK_ALAKAZAM ("Dark Alakazam", 18, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
+	DARK_ARBOK ("Dark Arbok", 19, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	DARK_BLASTOISE ("Dark Blastoise", 20, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+	DARK_CHARIZARD ("Dark Charizard", 21, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
+	DARK_DRAGONITE ("Dark Dragonite", 22, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
+	DARK_DUGTRIO ("Dark Dugtrio", 23, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	DARK_GOLBAT ("Dark Golbat", 24, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	DARK_GYARADOS ("Dark Gyarados", 25, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	DARK_HYPNO ("Dark Hypno", 26, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	DARK_MACHAMP ("Dark Machamp", 27, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+	DARK_MAGNETON ("Dark Magneton", 28, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+	DARK_SLOWBRO ("Dark Slowbro", 29, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	DARK_VILEPLUME ("Dark Vileplume", 30, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+	DARK_WEEZING ("Dark Weezing", 31, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	DARK_CHARMELEON ("Dark Charmeleon", 32, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+	DARK_DRAGONAIR ("Dark Dragonair", 33, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	DARK_ELECTRODE ("Dark Electrode", 34, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+	DARK_FLAREON ("Dark Flareon", 35, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+	DARK_GLOOM ("Dark Gloom", 36, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	DARK_GOLDUCK ("Dark Golduck", 37, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	DARK_JOLTEON ("Dark Jolteon", 38, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+	DARK_KADABRA ("Dark Kadabra", 39, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	DARK_MACHOKE ("Dark Machoke", 40, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	DARK_MUK ("Dark Muk", 41, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	DARK_PERSIAN ("Dark Persian", 42, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	DARK_PRIMEAPE ("Dark Primeape", 43, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	DARK_RAPIDASH ("Dark Rapidash", 44, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+	DARK_VAPOREON ("Dark Vaporeon", 45, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	DARK_WARTORTLE ("Dark Wartortle", 46, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	MAGIKARP ("Magikarp", 47, Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
+	PORYGON ("Porygon", 48, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+	ABRA ("Abra", 49, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	CHARMANDER ("Charmander", 50, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+	DARK_RATICATE ("Dark Raticate", 51, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	DIGLETT ("Diglett", 52, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	DRATINI ("Dratini", 53, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+	DROWZEE ("Drowzee", 54, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	EEVEE ("Eevee", 55, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+	EKANS ("Ekans", 56, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	GRIMER ("Grimer", 57, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	KOFFING ("Koffing", 58, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	MACHOP ("Machop", 59, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	MAGNEMITE ("Magnemite", 60, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	MANKEY ("Mankey", 61, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	MEOWTH ("Meowth", 62, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+	ODDISH ("Oddish", 63, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	PONYTA ("Ponyta", 64, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+	PSYDUCK ("Psyduck", 65, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	RATTATA ("Rattata", 66, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+	SLOWPOKE ("Slowpoke", 67, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	SQUIRTLE ("Squirtle", 68, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	VOLTORB ("Voltorb", 69, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	ZUBAT ("Zubat", 70, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	HERE_COMES_TEAM_ROCKET ("Here Comes Team Rocket!", 71, Rarity.RARE, [TRAINER]),
+	ROCKETS_SNEAK_ATTACK ("Rocket's Sneak Attack", 72, Rarity.RARE, [TRAINER]),
+	THE_BOSSS_WAY ("The Boss's Way", 73, Rarity.UNCOMMON, [TRAINER]),
+	CHALLENGE ("Challenge!", 74, Rarity.UNCOMMON, [TRAINER]),
+	DIGGER ("Digger", 75, Rarity.UNCOMMON, [TRAINER]),
+	IMPOSTER_OAKS_REVENGE ("Imposter Oak's Revenge", 76, Rarity.UNCOMMON, [TRAINER]),
+	NIGHTLY_GARBAGE_RUN ("Nightly Garbage Run", 77, Rarity.UNCOMMON, [TRAINER]),
+	GOOP_GAS_ATTACK ("Goop Gas Attack", 78, Rarity.COMMON, [TRAINER]),
+	SLEEP ("Sleep!", 79, Rarity.COMMON, [TRAINER]),
+	RAINBOW_ENERGY ("Rainbow Energy", 80, Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
+	FULL_HEAL_ENERGY ("Full Heal Energy", 81, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
+	POTION_ENERGY ("Potion Energy", 82, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
+	DARK_RAICHU ("Dark Raichu", 83, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]);
 	
-	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
 	
 	protected CardTypeSet cardTypes;
 	protected String name;
@@ -450,7 +453,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case HERE_COMES_TEAM_ROCKET__15:
+			case HERE_COMES_TEAM_ROCKET_15:
 			return basicTrainer (this) {
 				text "Each player plays with his or her Prize cards face up for the rest of the game."
 				onPlay {
@@ -458,7 +461,7 @@ public enum TeamRocket implements CardInfo {
 				playRequirement{
 				}
 			};
-			case ROCKET_S_SNEAK_ATTACK_16:
+			case ROCKETS_SNEAK_ATTACK_16:
 			return basicTrainer (this) {
 				text "Look at your opponent’s hand. If he or she has any Trainer cards, choose 1 of them. Your opponent shuffles that card into his or her deck."
 				onPlay {
@@ -478,299 +481,35 @@ public enum TeamRocket implements CardInfo {
 				allowAttach {to->
 				}
 			};
-			case DARK_ALAKAZAM_18:
+			case DARK_ALAKAZAM:
 			return copy (DARK_ALAKAZAM_1, this)
-			/*evolution (this, from:"Dark Kadabra", hp:HP060, type:PSYCHIC, retreatCost:3) {
-				weakness PSYCHIC
-				move "Teleport Blast", {
-					text "30 damage. You may switch Dark Alakazam with 1 of your Benched Pokémon. (Do the damage before switching the Pokémon.)"
-					energyCost P, P, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Mind Shock", {
-					text "40 damage. Don’t apply Weakness and Resistance for this attack. (Any other effects that would happen after applying Weakness and Resistance still happen.)"
-					energyCost P, P, P
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case DARK_ARBOK_19:
+			case DARK_ARBOK:
 			return copy (DARK_ARBOK_2, this)
-			/*evolution (this, from:"Ekans", hp:HP060, type:GRASS, retreatCost:2) {
-				weakness PSYCHIC
-				move "Stare", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon. Don’t apply Weakness and Resistance for this attack. (Any other effects that would happen after applying Weakness and Resistance still happen.) If that Pokémon has a Pokémon Power, that power stops working until the end of your opponent’s next turn."
-					energyCost G, G
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Poison Vapor", {
-					text "10 damage. The Defending Pokémon is now Poisoned. This attack does 10 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
-					energyCost G, G, G
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case DARK_BLASTOISE_20:
+			case DARK_BLASTOISE:
 			return copy (DARK_BLASTOISE_3, this)
-			/*evolution (this, from:"Dark Wartortle", hp:HP070, type:WATER, retreatCost:2) {
-				weakness LIGHTNING
-				move "Hydrocannon", {
-					text "30+ damage. Does 30 damage plus 20 more damage for each [W] Energy attached to Dark Blastoise but not used to pay for this attack. You can’t add more than 40 damage in this way."
-					energyCost W, W
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Rocket Tackle", {
-					text "40 damage. Dark Blastoise does 10 damage to itself. Flip a coin. If heads, prevent all damage done to Dark Blastoise during your opponent’s next turn. (Any other effects of attacks still happen.)"
-					energyCost W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case DARK_CHARIZARD_21:
+			case DARK_CHARIZARD:
 			return copy (DARK_CHARIZARD_4, this)
-			/*evolution (this, from:"Dark Charmeleon", hp:HP080, type:FIRE, retreatCost:3) {
-				weakness WATER
-				resistance FIGHTING, MINUS30
-				move "Nail Flick", {
-					text "10 damage."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Continuous Fireball", {
-					text "50× damage. Flip a number of coins equal to the number for [R] Energy cards attached to Dark Charizard. This attack does 50 damage times the number of heads. Discard a number of [R] Energy cards attached to Dark Charizard equal to the number of heads."
-					energyCost R, R
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case DARK_DRAGONITE_22:
+			case DARK_DRAGONITE:
 			return copy (DARK_DRAGONITE_5, this)
-			/*evolution (this, from:"Dark Dragonair", hp:HP070, type:COLORLESS, retreatCost:2) {
-				resistance FIGHTING, MINUS30
-				pokemonPower "Summon Minions", {
-					text "When you play Dark Dragonite from your hand, search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
-					actionA {
-					}
-				}
-				move "Giant Tail", {
-					text "70 damage. Flip a coin. If tails, this attack does nothing."
-					energyCost C, C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case DARK_DUGTRIO_23:
+			case DARK_DUGTRIO:
 			return copy (DARK_DUGTRIO_6, this)
-			/*evolution (this, from:"Diglett", hp:HP050, type:FIGHTING, retreatCost:2) {
-				weakness GRASS
-				resistance LIGHTNING, MINUS30
-				pokemonPower "Sinkhole", {
-					text "Whenever your opponent’s Active Pokémon retreats, your opponent flips a coin. If tails, this power does 20 damage to that Pokémon. (Don’t apply Weakness and Resistance.) This power stops working while Dark Dugtrio is Asleep, Confused, or Paralyzed."
-					actionA {
-					}
-				}
-				move "Knock Down", {
-					text "20+ damage. You opponent flips a coin. If tails, this attack does 20 damage plus 20 more damage. If heads, this attack does 20 damage."
-					energyCost F, F
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case DARK_GOLBAT_24:
+			case DARK_GOLBAT:
 			return copy (DARK_GOLBAT_7, this)
-			/*evolution (this, from:"Zubat", hp:HP050, type:GRASS, retreatCost:0) {
-				weakness PSYCHIC
-				resistance FIGHTING, MINUS30
-				pokemonPower "Sneak Attack", {
-					text "When you play Dark Golbat from your hand, you may choose 1 of your opponent’s Pokémon. If you do, Dark Golbat does 10 damage to that Pokémon. Apply Weakness and Resistance."
-					actionA {
-					}
-				}
-				move "Flitter", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. Don’t apply Weakness and Resistance for this attack. (Any other effects that would happen after applying Weakness and Resistance still happen.)"
-					energyCost G, G
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case DARK_GYARADOS_25:
+			case DARK_GYARADOS:
 			return copy (DARK_GYARADOS_8, this)
-			/*evolution (this, from:"Magikarp", hp:HP070, type:WATER, retreatCost:2) {
-				weakness GRASS
-				resistance FIGHTING, MINUS30
-				pokemonPower "Final Beam", {
-					text "When Dark Gyarados is Knocked Out by an attack, flip a coin. If heads, this power does 20 damage for each [W] Energy attached to Dark Gyarados to the Pokémon that Knocked Out Dark Gyarados. Apply Weakness and Resistance. This power doesn’t work if Dark Gyarados is Asleep, Confused, or Paralyzed."
-					actionA {
-					}
-				}
-				move "Ice Beam", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost W, W, W
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case DARK_HYPNO_26:
+			case DARK_HYPNO:
 			return copy (DARK_HYPNO_9, this)
-			/*evolution (this, from:"Drowzee", hp:HP060, type:PSYCHIC, retreatCost:2) {
-				weakness PSYCHIC
-				move "Psypunch", {
-					text "20 damage."
-					energyCost P
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Bench Manipulation", {
-					text "20× damage. You opponent flips a number of coins equal to the number of Pokémon on his or her Bench. This attack does 20 damage times the number of tails. Don’t apply Weakness and Resistance for this attack. (Any other effects that would happen after applying Weakness and Resistance still happen.)"
-					energyCost P, P, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case DARK_MACHAMP_27:
+			case DARK_MACHAMP:
 			return copy (DARK_MACHAMP_10, this)
-			/*evolution (this, from:"Dark Machoke", hp:HP070, type:FIGHTING, retreatCost:3) {
-				weakness PSYCHIC
-				move "Mega Punch", {
-					text "30 damage."
-					energyCost F, F
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Fling", {
-					text "Your opponent shuffles his or her Active Pokémon and all cards attached to it into his or her deck. This attack can’t be used if your opponent has no Benched Pokémon."
-					energyCost F, F, F, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case DARK_MAGNETON_28:
+			case DARK_MAGNETON:
 			return copy (DARK_MAGNETON_11, this)
-			/*evolution (this, from:"Magnemite", hp:HP060, type:LIGHTNING, retreatCost:2) {
-				weakness FIGHTING
-				move "Sonicboom", {
-					text "20 damage. Don’t apply Weakness and Resistance for this attack. (Any other effects that would happen after applying Weakness and Resistance still happen.)"
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Magnetic Lines", {
-					text "30 damage. If the Defending Pokémon has any basic Energy cards attached to it, choose 1 of them. If your opponent have any Benched Pokémon, choose 1 of them and attach that Energy card to it."
-					energyCost L, L
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case DARK_SLOWBRO_29:
-			return evolution (this, from:"Slowpoke", hp:HP060, type:PSYCHIC, retreatCost:null) {
-				weakness PSYCHIC
-				pokemonPower "Real In", {
-					text "When you play Dark Slowbro from your hand, choose up to 3 Basic Pokémon and/or Evolution cards from you discard pile and put them into your hand."
-					actionA {
-					}
-				}
-				move "Fickle Attack", {
-					text "40 damage. Flip a coin. If tails, this attack does nothing."
-					energyCost P, P
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			};
-			case DARK_VILEPLUME_30:
-			return evolution (this, from:"Dark Gloom", hp:HP060, type:GRASS, retreatCost:2) {
-				weakness FIGHTING
-				pokemonPower "Hay Fever", {
-					text "No Trainer cards can be played. This power stops working while Dark Vileplume is Asleep, Confused, or Paralyzed."
-					actionA {
-					}
-				}
-				move "Petal Whirlwind", {
-					text "30× damage. Flip a coins. This attack does 30 damage times the number of heads. If you get 2 or more heads, Dark Vileplume is now Confused (after doing damage)."
-					energyCost G, G, G
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			};
-			case DARK_WEEZING_31:
+			case DARK_SLOWBRO:
+			return copy (DARK_SLOWBRO_12, this)
+			case DARK_VILEPLUME:
+			return copy (DARK_VILEPLUME_13, this)
+			case DARK_WEEZING:
 			return copy (DARK_WEEZING_14, this)
-			/*evolution (this, from:"Koffing", hp:HP060, type:GRASS, retreatCost:1) {
-				weakness PSYCHIC
-				move "Mass Explosion", {
-					text "20× damage. Does 20 damage times the number of Koffings, Weezings, and Dark Weezings in play. (Apply Weakness and Resistance.) Then, this attack does 20 damage to each Koffing, Weezing, and Dark Weezing (even your own). Don’t apply Weakness and Resistance."
-					energyCost G, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Stun Gas", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned. If tails, the Defending Pokémon is now Paralyzed."
-					energyCost G, G, G
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case DARK_CHARMELEON_32:
+			case DARK_CHARMELEON:
 			return evolution (this, from:"Charmander", hp:HP050, type:FIRE, retreatCost:2) {
 				weakness WATER
 				move "Tail Slap", {
@@ -791,7 +530,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_DRAGONAIR_33:
+			case DARK_DRAGONAIR:
 			return evolution (this, from:"Dratini", hp:HP060, type:COLORLESS, retreatCost:2) {
 				resistance PSYCHIC, MINUS30
 				pokemonPower "Evolutionairy Light", {
@@ -809,7 +548,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_ELECTRODE_34:
+			case DARK_ELECTRODE:
 			return evolution (this, from:"Voltorb", hp:HP060, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
 				move "Rolling Tackle", {
@@ -830,7 +569,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_FLAREON_35:
+			case DARK_FLAREON:
 			return evolution (this, from:"Eevee", hp:HP050, type:FIRE, retreatCost:1) {
 				weakness WATER
 				move "Rage", {
@@ -851,7 +590,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_GLOOM_36:
+			case DARK_GLOOM:
 			return evolution (this, from:"Oddish", hp:HP050, type:GRASS, retreatCost:2) {
 				weakness FIRE
 				pokemonPower "Pollen Stench", {
@@ -869,7 +608,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_GOLDUCK_37:
+			case DARK_GOLDUCK:
 			return evolution (this, from:"Psyduck", hp:HP060, type:WATER, retreatCost:2) {
 				weakness LIGHTNING
 				move "Third Eye", {
@@ -890,7 +629,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_JOLTEON_38:
+			case DARK_JOLTEON:
 			return evolution (this, from:"Eevee", hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
 				move "Lightning Flash", {
@@ -911,7 +650,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_KADABRA_39:
+			case DARK_KADABRA:
 			return evolution (this, from:"Abra", hp:HP050, type:PSYCHIC, retreatCost:2) {
 				weakness PSYCHIC
 				pokemonPower "Matter Exchange", {
@@ -929,7 +668,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_MACHOKE_40:
+			case DARK_MACHOKE:
 			return evolution (this, from:"Machop", hp:HP060, type:FIGHTING, retreatCost:2) {
 				weakness PSYCHIC
 				move "Drag Off", {
@@ -950,7 +689,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_MUK_41:
+			case DARK_MUK:
 			return evolution (this, from:"Grimer", hp:HP060, type:GRASS, retreatCost:2) {
 				weakness PSYCHIC
 				pokemonPower "Sticky Goo", {
@@ -968,7 +707,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_PERSIAN_42:
+			case DARK_PERSIAN:
 			return evolution (this, from:"Meowth", hp:HP060, type:COLORLESS, retreatCost:0) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -990,7 +729,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_PRIMEAPE_43:
+			case DARK_PRIMEAPE:
 			return evolution (this, from:"Mankey", hp:HP060, type:FIGHTING, retreatCost:1) {
 				weakness PSYCHIC
 				pokemonPower "Frenzy", {
@@ -1008,7 +747,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_RAPIDASH_44:
+			case DARK_RAPIDASH:
 			return evolution (this, from:"Ponyta", hp:HP060, type:FIRE, retreatCost:0) {
 				weakness WATER
 				move "Rear Kick", {
@@ -1029,7 +768,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_VAPOREON_45:
+			case DARK_VAPOREON:
 			return evolution (this, from:"Eevee", hp:HP060, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Bite", {
@@ -1050,7 +789,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_WARTORTLE_46:
+			case DARK_WARTORTLE:
 			return evolution (this, from:"Squirtle", hp:HP060, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Doubleslap", {
@@ -1071,7 +810,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case MAGIKARP_47:
+			case MAGIKARP:
 			return basic (this, hp:HP030, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Flop", {
@@ -1092,7 +831,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case PORYGON_48:
+			case PORYGON:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:0) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -1114,7 +853,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case ABRA_49:
+			case ABRA:
 			return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
 				weakness PSYCHIC
 				move "Vanish", {
@@ -1135,7 +874,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case CHARMANDER_50:
+			case CHARMANDER:
 			return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
 				weakness WATER
 				pokemonPower "Gather Fire", {
@@ -1153,7 +892,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DARK_RATICATE_51:
+			case DARK_RATICATE:
 			return evolution (this, from:"Rattata", hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -1175,7 +914,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DIGLETT_52:
+			case DIGLETT:
 			return basic (this, hp:HP040, type:FIGHTING, retreatCost:0) {
 				weakness GRASS
 				resistance LIGHTNING, MINUS30
@@ -1197,7 +936,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DRATINI_53:
+			case DRATINI:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
 				resistance PSYCHIC, MINUS30
 				move "Wrap", {
@@ -1210,7 +949,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case DROWZEE_54:
+			case DROWZEE:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness PSYCHIC
 				pokemonPower "Long-Distance Hypnosis", {
@@ -1228,7 +967,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case EEVEE_55:
+			case EEVEE:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -1250,7 +989,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case EKANS_56:
+			case EKANS:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness PSYCHIC
 				move "Bite", {
@@ -1271,7 +1010,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case GRIMER_57:
+			case GRIMER:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness PSYCHIC
 				move "Poison Gas", {
@@ -1292,7 +1031,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case KOFFING_58:
+			case KOFFING:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness PSYCHIC
 				move "Tackle", {
@@ -1313,7 +1052,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case MACHOP_59:
+			case MACHOP:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
 				weakness PSYCHIC
 				move "Punch", {
@@ -1334,7 +1073,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case MAGNEMITE_60:
+			case MAGNEMITE:
 			return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
 				move "Tackle", {
@@ -1355,7 +1094,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case MANKEY_61:
+			case MANKEY:
 			return basic (this, hp:HP040, type:FIGHTING, retreatCost:0) {
 				weakness PSYCHIC
 				move "Mischief", {
@@ -1376,7 +1115,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case MEOWTH_62:
+			case MEOWTH:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -1390,7 +1129,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case ODDISH_63:
+			case ODDISH:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Sleep Powder", {
@@ -1411,7 +1150,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case PONYTA_64:
+			case PONYTA:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
 				weakness WATER
 				move "Ember", {
@@ -1424,7 +1163,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case PSYDUCK_65:
+			case PSYDUCK:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Dizziness", {
@@ -1445,7 +1184,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case RATTATA_66:
+			case RATTATA:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:0) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -1464,7 +1203,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case SLOWPOKE_67:
+			case SLOWPOKE:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness PSYCHIC
 				move "Afternoon Nap", {
@@ -1485,7 +1224,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case SQUIRTLE_68:
+			case SQUIRTLE:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Shell Attack", {
@@ -1498,7 +1237,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case VOLTORB_69:
+			case VOLTORB:
 			return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
 				move "Speed Ball", {
@@ -1511,7 +1250,7 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case ZUBAT_70:
+			case ZUBAT:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:0) {
 				weakness PSYCHIC
 				resistance FIGHTING, MINUS30
@@ -1533,25 +1272,11 @@ public enum TeamRocket implements CardInfo {
 				}
 				
 			};
-			case HERE_COMES_TEAM_ROCKET__71:
-			return copy (HERE_COMES_TEAM_ROCKET__15, this)
-			/*basicTrainer (this) {
-				text "Each player plays with his or her Prize cards face up for the rest of the game."
-				onPlay {
-				}
-				playRequirement{
-				}
-			}*/;
-			case ROCKET_S_SNEAK_ATTACK_72:
-			return copy (ROCKET_S_SNEAK_ATTACK_16, this)
-			/*basicTrainer (this) {
-				text "Look at your opponent’s hand. If he or she has any Trainer cards, choose 1 of them. Your opponent shuffles that card into his or her deck."
-				onPlay {
-				}
-				playRequirement{
-				}
-			}*/;
-			case THE_BOSS_S_WAY_73:
+			case HERE_COMES_TEAM_ROCKET:
+			return copy (HERE_COMES_TEAM_ROCKET_15, this)
+			case ROCKETS_SNEAK_ATTACK:
+			return copy (ROCKETS_SNEAK_ATTACK_16, this)
+			case THE_BOSSS_WAY:
 			return basicTrainer (this) {
 				text "Search your deck for an Evolution card with Dark in its name. Show it to your opponent and put it into your hand. Shuffle your deck afterward."
 				onPlay {
@@ -1559,7 +1284,7 @@ public enum TeamRocket implements CardInfo {
 				playRequirement{
 				}
 			};
-			case CHALLENGE__74:
+			case CHALLENGE:
 			return basicTrainer (this) {
 				text "Ask your opponent if he or she accepts your challenge. If your opponent declines (or if both Benches are full), draw 2 cards. If you opponent accepts, each of you searches your decks for any number of Basic Pokémon cards and puts them face down onto your Benches. (A player can’t do this if his or her Bench is full.) When you both have finished, shuffle your decks and turn those cards face up."
 				onPlay {
@@ -1567,7 +1292,7 @@ public enum TeamRocket implements CardInfo {
 				playRequirement{
 				}
 			};
-			case DIGGER_75:
+			case DIGGER:
 			return basicTrainer (this) {
 				text "Flip a coin. If tails, do 10 damage to your Active Pokémon. If heads, your opponent flips a coin. If tails, your opponent does 10 damage to his or her Active Pokémon. If heads, you flip a coin. Keep doing this until a player gets tails."
 				onPlay {
@@ -1575,7 +1300,7 @@ public enum TeamRocket implements CardInfo {
 				playRequirement{
 				}
 			};
-			case IMPOSTER_OAK_S_REVENGE_76:
+			case IMPOSTER_OAKS_REVENGE:
 			return basicTrainer (this) {
 				text "Discard a card from your hand in order to play this card. Your opponent shuffles his or her hand into his or her deck, then draws 4 cards."
 				onPlay {
@@ -1583,7 +1308,7 @@ public enum TeamRocket implements CardInfo {
 				playRequirement{
 				}
 			};
-			case NIGHTLY_GARBAGE_RUN_77:
+			case NIGHTLY_GARBAGE_RUN:
 			return basicTrainer (this) {
 				text "Choose up to 3 Basic Pokémon cards, Evolution cards, and/or basic Energy cards from your discard pile. Show them to your opponent and shuffle them into your deck."
 				onPlay {
@@ -1591,7 +1316,7 @@ public enum TeamRocket implements CardInfo {
 				playRequirement{
 				}
 			};
-			case GOOP_GAS_ATTACK_78:
+			case GOOP_GAS_ATTACK:
 			return basicTrainer (this) {
 				text "All Pokémon Powers stop working until the end of your opponent’s next turn."
 				onPlay {
@@ -1599,7 +1324,7 @@ public enum TeamRocket implements CardInfo {
 				playRequirement{
 				}
 			};
-			case SLEEP__79:
+			case SLEEP:
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, the Defending Pokémon is now Asleep."
 				onPlay {
@@ -1607,20 +1332,9 @@ public enum TeamRocket implements CardInfo {
 				playRequirement{
 				}
 			};
-			case RAINBOW_ENERGY_80:
+			case RAINBOW_ENERGY:
 			return copy (RAINBOW_ENERGY_17, this)
-			/*specialEnergy (this, [[C]]) {
-				text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy counts as every type of basic Energy but only provides 1 Energy at a time. (Doesn’t count as a basic Energy card when not in play.) When you attach this card from your hand to 1 of your Pokémon, it does 10 damage to that Pokémon. (Don’t apply Weakness and Resistance.)"
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
-			}*/;
-			case FULL_HEAL_ENERGY_81:
+			case FULL_HEAL_ENERGY:
 			return specialEnergy (this, [[C]]) {
 				text "If you play this card from your hand, the Pokémon you attach it to is no long Asleep, Confused, Paralyzed, or Poisoned.\nFull Heal Energy provides [C] energy. (Doesn’t count as a basic Energy card.)"
 				onPlay {reason->
@@ -1632,7 +1346,7 @@ public enum TeamRocket implements CardInfo {
 				allowAttach {to->
 				}
 			};
-			case POTION_ENERGY_82:
+			case POTION_ENERGY:
 			return specialEnergy (this, [[C]]) {
 				text "If you play this card from your hand, remove 1 damage counter from the Pokémon you attach it to, if it has any.\nPotion Energy provides [C] energy. (Doesn’t count as a basic Energy card.)"
 				onPlay {reason->
@@ -1644,7 +1358,7 @@ public enum TeamRocket implements CardInfo {
 				allowAttach {to->
 				}
 			};
-			case DARK_RAICHU_83:
+			case DARK_RAICHU:
 			return evolution (this, from:"Pikachu", hp:HP070, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
 				move "Surprise Thunder", {

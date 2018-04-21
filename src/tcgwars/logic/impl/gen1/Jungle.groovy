@@ -1,4 +1,4 @@
-package tcgwars.logic.card.set;
+package tcgwars.logic.impl.gen1;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -31,6 +31,9 @@ import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
+/**
+ * @author axpendix@hotmail.com
+ */
 public enum Jungle implements CardInfo {
 	
 	CLEFABLE_1 ("Clefable", 1, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
@@ -38,7 +41,7 @@ public enum Jungle implements CardInfo {
 	FLAREON_3 ("Flareon", 3, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
 	JOLTEON_4 ("Jolteon", 4, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
 	KANGASKHAN_5 ("Kangaskhan", 5, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-	MR__MIME_6 ("Mr. Mime", 6, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
+	MR_MIME_6 ("Mr. Mime", 6, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
 	NIDOQUEEN_7 ("Nidoqueen", 7, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
 	PIDGEOT_8 ("Pidgeot", 8, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
 	PINSIR_9 ("Pinsir", 9, Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
@@ -49,57 +52,57 @@ public enum Jungle implements CardInfo {
 	VICTREEBEL_14 ("Victreebel", 14, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
 	VILEPLUME_15 ("Vileplume", 15, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
 	WIGGLYTUFF_16 ("Wigglytuff", 16, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	CLEFABLE_17 ("Clefable", 17, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	ELECTRODE_18 ("Electrode", 18, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-	FLAREON_19 ("Flareon", 19, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-	JOLTEON_20 ("Jolteon", 20, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-	KANGASKHAN_21 ("Kangaskhan", 21, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-	MR__MIME_22 ("Mr. Mime", 22, Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
-	NIDOQUEEN_23 ("Nidoqueen", 23, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-	PIDGEOT_24 ("Pidgeot", 24, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
-	PINSIR_25 ("Pinsir", 25, Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
-	SCYTHER_26 ("Scyther", 26, Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
-	SNORLAX_27 ("Snorlax", 27, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-	VAPOREON_28 ("Vaporeon", 28, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	VENOMOTH_29 ("Venomoth", 29, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	VICTREEBEL_30 ("Victreebel", 30, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	VILEPLUME_31 ("Vileplume", 31, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-	WIGGLYTUFF_32 ("Wigglytuff", 32, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	BUTTERFREE_33 ("Butterfree", 33, Rarity.UNCOMMON, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-	DODRIO_34 ("Dodrio", 34, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	EXEGGUTOR_35 ("Exeggutor", 35, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	FEAROW_36 ("Fearow", 36, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	GLOOM_37 ("Gloom", 37, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	LICKITUNG_38 ("Lickitung", 38, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-	MAROWAK_39 ("Marowak", 39, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-	NIDORINA_40 ("Nidorina", 40, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	PARASECT_41 ("Parasect", 41, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	PERSIAN_42 ("Persian", 42, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	PRIMEAPE_43 ("Primeape", 43, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-	RAPIDASH_44 ("Rapidash", 44, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-	RHYDON_45 ("Rhydon", 45, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-	SEAKING_46 ("Seaking", 46, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	TAUROS_47 ("Tauros", 47, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-	WEEPINBELL_48 ("Weepinbell", 48, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	BELLSPROUT_49 ("Bellsprout", 49, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	CUBONE_50 ("Cubone", 50, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-	EEVEE_51 ("Eevee", 51, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-	EXEGGCUTE_52 ("Exeggcute", 52, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	GOLDEEN_53 ("Goldeen", 53, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-	JIGGLYPUFF_54 ("Jigglypuff", 54, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-	MANKEY_55 ("Mankey", 55, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-	MEOWTH_56 ("Meowth", 56, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-	NIDORAN_FEMALE_57 ("Nidoran Female", 57, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	ODDISH_58 ("Oddish", 58, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	PARAS_59 ("Paras", 59, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	PIKACHU_60 ("Pikachu", 60, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-	RHYHORN_61 ("Rhyhorn", 61, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-	SPEAROW_62 ("Spearow", 62, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-	VENONAT_63 ("Venonat", 63, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	POKE_BALL_64 ("Poké Ball", 64, Rarity.COMMON, [TRAINER]),
-;
+
+	CLEFABLE ("Clefable", 17, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	ELECTRODE ("Electrode", 18, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+	FLAREON ("Flareon", 19, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+	JOLTEON ("Jolteon", 20, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+	KANGASKHAN ("Kangaskhan", 21, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+	MR_MIME ("Mr. Mime", 22, Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
+	NIDOQUEEN ("Nidoqueen", 23, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+	PIDGEOT ("Pidgeot", 24, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
+	PINSIR ("Pinsir", 25, Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
+	SCYTHER ("Scyther", 26, Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
+	SNORLAX ("Snorlax", 27, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+	VAPOREON ("Vaporeon", 28, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	VENOMOTH ("Venomoth", 29, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	VICTREEBEL ("Victreebel", 30, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	VILEPLUME ("Vileplume", 31, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+	WIGGLYTUFF ("Wigglytuff", 32, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	BUTTERFREE ("Butterfree", 33, Rarity.UNCOMMON, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+	DODRIO ("Dodrio", 34, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	EXEGGUTOR ("Exeggutor", 35, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	FEAROW ("Fearow", 36, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	GLOOM ("Gloom", 37, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	LICKITUNG ("Lickitung", 38, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+	MAROWAK ("Marowak", 39, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	NIDORINA ("Nidorina", 40, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	PARASECT ("Parasect", 41, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	PERSIAN ("Persian", 42, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	PRIMEAPE ("Primeape", 43, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	RAPIDASH ("Rapidash", 44, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+	RHYDON ("Rhydon", 45, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	SEAKING ("Seaking", 46, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	TAUROS ("Tauros", 47, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+	WEEPINBELL ("Weepinbell", 48, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	BELLSPROUT ("Bellsprout", 49, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	CUBONE ("Cubone", 50, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	EEVEE ("Eevee", 51, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+	EXEGGCUTE ("Exeggcute", 52, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	GOLDEEN ("Goldeen", 53, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	JIGGLYPUFF ("Jigglypuff", 54, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+	MANKEY ("Mankey", 55, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	MEOWTH ("Meowth", 56, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+	NIDORAN_FEMALE ("Nidoran ♀", 57, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	ODDISH ("Oddish", 58, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	PARAS ("Paras", 59, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	PIKACHU ("Pikachu", 60, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	RHYHORN ("Rhyhorn", 61, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	SPEAROW ("Spearow", 62, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+	VENONAT ("Venonat", 63, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	POKE_BALL ("Poké Ball", 64, Rarity.COMMON, [TRAINER]);
 	
-	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
 	
 	protected CardTypeSet cardTypes;
 	protected String name;
@@ -258,7 +261,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case MR__MIME_6:
+			case MR_MIME_6:
 			return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
 				weakness PSYCHIC
 				pokemonPower "Invisible Wall", {
@@ -482,353 +485,39 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case CLEFABLE_17:
+			case CLEFABLE:
 			return copy (CLEFABLE_1, this)
-			/*evolution (this, from:"Clefairy", hp:HP070, type:COLORLESS, retreatCost:2) {
-				weakness FIGHTING
-				resistance PSYCHIC, MINUS30
-				move "Metronome", {
-					text "Choose 1 of the Defending Pokémon’s attacks. Metronome copies that attack except for its Energy costs and anything else required in order to use that attack, such as discarding Energy cards. (No matter what type the Defending Pokémon is, Clefable’s type is still Colorless.)"
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Minimize", {
-					text "All damage done by attacks to Clefable during your opponent’s next turn is reduced by 20 (after applying Weakness and Resistance)."
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case ELECTRODE_18:
+			case ELECTRODE:
 			return copy (ELECTRODE_2, this)
-			/*evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:1) {
-				weakness FIGHTING
-				move "Tackle", {
-					text "20 damage."
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Chain Lightning", {
-					text "20 damage. If the Defending Pokémon isn’t Colorless, this attack does 10 damage to each Benched Pokémon of the same type as the Defending Pokémon (including your own)."
-					energyCost L, L, L
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case FLAREON_19:
+			case FLAREON:
 			return copy (FLAREON_3, this)
-			/*evolution (this, from:"Eevee", hp:HP070, type:FIRE, retreatCost:1) {
-				weakness WATER
-				move "Quick Attack", {
-					text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage; if tails, this attack does 10 damage."
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Flamethrower", {
-					text "60 damage. Discard 1 [R] Energy card attached to Flareon in order to use this attack."
-					energyCost R, R, C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case JOLTEON_20:
+			case JOLTEON:
 			return copy (JOLTEON_4, this)
-			/*evolution (this, from:"Eevee", hp:HP070, type:LIGHTNING, retreatCost:1) {
-				weakness FIGHTING
-				move "Quick Attack", {
-					text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage; if tails, this attack does 10 damage."
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Pin Missile", {
-					text "20× damage. Flip 4 coins. This attack does 20 damage times the number of heads."
-					energyCost L, L, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case KANGASKHAN_21:
-			return basic (this, hp:HP090, type:COLORLESS, retreatCost:null) {
-				weakness FIGHTING
-				resistance PSYCHIC, MINUS30
-				move "Fetch", {
-					text "Draw a card."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Comet Punch", {
-					text "20× damage. Flip 4 coins. This attack does 20 damage times the number of heads."
-					energyCost C, C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			};
-			case MR__MIME_22:
-			return copy (MR__MIME_6, this)
-			/*basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
-				weakness PSYCHIC
-				pokemonPower "Invisible Wall", {
-					text "Whenever an attack (including your own) does 30 or more damage to Mr. Mime (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.) This power can’t be used if Mr. Mime is Asleep, Confused, or Paralyzed."
-					actionA {
-					}
-				}
-				move "Meditate", {
-					text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on the Defending Pokémon."
-					energyCost P, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case NIDOQUEEN_23:
+			case KANGASKHAN:
+			return copy(KANGASKHAN_5, this)
+			case MR_MIME:
+			return copy (MR_MIME_6, this)
+			case NIDOQUEEN:
 			return copy (NIDOQUEEN_7, this)
-			/*evolution (this, from:"Nidorina", hp:HP090, type:GRASS, retreatCost:3) {
-				weakness PSYCHIC
-				move "Boyfriends", {
-					text "20+ damage. Does 20 damage plus 20 more damage for each Nidoking you have in play."
-					energyCost G, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Mega Punch", {
-					text "50 damage."
-					energyCost G, G, C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case PIDGEOT_24:
+			case PIDGEOT:
 			return copy (PIDGEOT_8, this)
-			/*evolution (this, from:"Pidgeotto", hp:HP080, type:COLORLESS, retreatCost:0) {
-				weakness LIGHTNING
-				resistance FIGHTING, MINUS30
-				move "Wing Attack", {
-					text "20 damage."
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Hurricane", {
-					text "30 damage. Unless this attack Knocks Out the Defending Pokémon, return the Defending Pokémon and all cards attached to it to your opponent’s hand."
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case PINSIR_25:
+			case PINSIR:
 			return copy (PINSIR_9, this)
-			/*basic (this, hp:HP060, type:GRASS, retreatCost:1) {
-				weakness FIRE
-				move "Irongrip", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost G, G
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Guillotine", {
-					text "50 damage."
-					energyCost G, G, C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case SCYTHER_26:
+			case SCYTHER:
 			return copy (SCYTHER_10, this)
-			/*basic (this, hp:HP070, type:GRASS, retreatCost:0) {
-				weakness FIRE
-				resistance FIGHTING, MINUS30
-				move "Swords Dance", {
-					text "During your next turn, Scyther’s Slash attack’s base damage is 60 instead of 30."
-					energyCost G
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Slash", {
-					text "30 damage."
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case SNORLAX_27:
+			case SNORLAX:
 			return copy (SNORLAX_11, this)
-			/*basic (this, hp:HP090, type:COLORLESS, retreatCost:4) {
-				weakness FIGHTING
-				resistance PSYCHIC, MINUS30
-				pokemonPower "Thick Skinned", {
-					text "Snorlax can’t become Asleep, Confused, Paralyzed, or Poisoned. This power can’t be used if Snorlax is already Asleep, Confused, or Paralyzed."
-					actionA {
-					}
-				}
-				move "Body Slam", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost C, C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case VAPOREON_28:
+			case VAPOREON:
 			return copy (VAPOREON_12, this)
-			/*evolution (this, from:"Eevee", hp:HP080, type:WATER, retreatCost:1) {
-				weakness LIGHTNING
-				move "Quick Attack", {
-					text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage; if tails, this attack does 10 damage."
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Water Gun", {
-					text "30+ damage. Does 30 damage plus 10 more damage for each [W] Energy attached to Vaporeon but not used to pay for this attack’s Energy cost. Extra [W] Energy after the 2nd doesn’t count."
-					energyCost W, W, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case VENOMOTH_29:
+			case VENOMOTH:
 			return copy (VENOMOTH_13, this)
-			/*evolution (this, from:"Venonat", hp:HP070, type:GRASS, retreatCost:0) {
-				weakness FIRE
-				resistance FIGHTING, MINUS30
-				pokemonPower "Shift", {
-					text "Once during your turn (before your attack), you may change the type of Venomoth to the type of any other Pokémon in play other than Colorless. This power can’t be used if Venomoth is Asleep, Confused, or Paralyzed."
-					actionA {
-					}
-				}
-				move "Venom Powder", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused and Poisoned."
-					energyCost G, G
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case VICTREEBEL_30:
+			case VICTREEBEL:
 			return copy (VICTREEBEL_14, this)
-			/*evolution (this, from:"Weepinbell", hp:HP080, type:GRASS, retreatCost:2) {
-				weakness FIRE
-				move "Lure", {
-					text "If your opponent has any Benched Pokémon, choose 1 of them and switch it with his or her Active Pokémon."
-					energyCost G
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Acid", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon can’t retreat during your next turn."
-					energyCost G, G
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case VILEPLUME_31:
+			case VILEPLUME:
 			return copy (VILEPLUME_15, this)
-			/*evolution (this, from:"Gloom", hp:HP080, type:GRASS, retreatCost:2) {
-				weakness FIRE
-				pokemonPower "Heal", {
-					text "Once during your turn (before your attack), you may flip a coin. If heads, remove 1 damage counter from 1 of your Pokémon. This power can’t be used if Vileplume is Asleep, Confused, or Paralyzed."
-					actionA {
-					}
-				}
-				move "Petal Dance", {
-					text "40× damage. Flip 3 coins. This attack does 40 damage times the number of heads. Vileplume is now Confused (after doing damage)."
-					energyCost G, G, G
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case WIGGLYTUFF_32:
+			case WIGGLYTUFF:
 			return copy (WIGGLYTUFF_16, this)
-			/*evolution (this, from:"Jigglypuff", hp:HP080, type:COLORLESS, retreatCost:2) {
-				weakness FIGHTING
-				resistance PSYCHIC, MINUS30
-				move "Lullaby", {
-					text "The Defending Pokémon is now Asleep."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				move "Do the Wave", {
-					text "10+ damage. Does 10 damage plus 10 more damage for each of your Benched Pokémon."
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
-				}
-				
-			}*/;
-			case BUTTERFREE_33:
+			case BUTTERFREE:
 			return evolution (this, from:"Metapod", hp:HP070, type:GRASS, retreatCost:0) {
 				weakness FIRE
 				resistance FIGHTING, MINUS30
@@ -850,7 +539,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case DODRIO_34:
+			case DODRIO:
 			return evolution (this, from:"Doduo", hp:HP070, type:COLORLESS, retreatCost:0) {
 				weakness LIGHTNING
 				resistance FIGHTING, MINUS30
@@ -869,7 +558,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case EXEGGUTOR_35:
+			case EXEGGUTOR:
 			return evolution (this, from:"Exeggcute", hp:HP080, type:GRASS, retreatCost:3) {
 				weakness FIRE
 				move "Teleport", {
@@ -890,7 +579,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case FEAROW_36:
+			case FEAROW:
 			return evolution (this, from:"Spearow", hp:HP070, type:COLORLESS, retreatCost:0) {
 				weakness LIGHTNING
 				resistance FIGHTING, MINUS30
@@ -912,7 +601,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case GLOOM_37:
+			case GLOOM:
 			return evolution (this, from:"Oddish", hp:HP060, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Poisonpowder", {
@@ -933,7 +622,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case LICKITUNG_38:
+			case LICKITUNG:
 			return basic (this, hp:HP090, type:COLORLESS, retreatCost:3) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -955,7 +644,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case MAROWAK_39:
+			case MAROWAK:
 			return evolution (this, from:"Cubone", hp:HP060, type:FIGHTING, retreatCost:1) {
 				weakness GRASS
 				resistance LIGHTNING, MINUS30
@@ -977,8 +666,8 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case NIDORINA_40:
-			return evolution (this, from:"Nidoran Female", hp:HP070, type:GRASS, retreatCost:1) {
+			case NIDORINA:
+			return evolution (this, from:"Nidoran ♀", hp:HP070, type:GRASS, retreatCost:1) {
 				weakness PSYCHIC
 				move "Supersonic", {
 					text "Flip a coin. If heads, the Defending Pokémon is now Confused."
@@ -998,7 +687,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case PARASECT_41:
+			case PARASECT:
 			return evolution (this, from:"Paras", hp:HP060, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Spore", {
@@ -1019,7 +708,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case PERSIAN_42:
+			case PERSIAN:
 			return evolution (this, from:"Meowth", hp:HP070, type:COLORLESS, retreatCost:0) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -1041,7 +730,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case PRIMEAPE_43:
+			case PRIMEAPE:
 			return evolution (this, from:"Mankey", hp:HP070, type:FIGHTING, retreatCost:1) {
 				weakness PSYCHIC
 				move "Fury Swipes", {
@@ -1062,7 +751,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case RAPIDASH_44:
+			case RAPIDASH:
 			return evolution (this, from:"Ponyta", hp:HP070, type:FIRE, retreatCost:0) {
 				weakness WATER
 				move "Stomp", {
@@ -1083,7 +772,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case RHYDON_45:
+			case RHYDON:
 			return evolution (this, from:"Rhyhorn", hp:HP100, type:FIGHTING, retreatCost:3) {
 				weakness GRASS
 				resistance LIGHTNING, MINUS30
@@ -1105,7 +794,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case SEAKING_46:
+			case SEAKING:
 			return evolution (this, from:"Goldeen", hp:HP070, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Horn Attack", {
@@ -1126,7 +815,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case TAUROS_47:
+			case TAUROS:
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:2) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -1148,7 +837,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case WEEPINBELL_48:
+			case WEEPINBELL:
 			return evolution (this, from:"Bellsprout", hp:HP070, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Poisonpowder", {
@@ -1169,7 +858,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case BELLSPROUT_49:
+			case BELLSPROUT:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Vine Whip", {
@@ -1190,7 +879,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case CUBONE_50:
+			case CUBONE:
 			return basic (this, hp:HP040, type:FIGHTING, retreatCost:1) {
 				weakness GRASS
 				resistance LIGHTNING, MINUS30
@@ -1212,7 +901,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case EEVEE_51:
+			case EEVEE:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -1234,7 +923,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case EXEGGCUTE_52:
+			case EXEGGCUTE:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Hypnosis", {
@@ -1255,7 +944,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case GOLDEEN_53:
+			case GOLDEEN:
 			return basic (this, hp:HP040, type:WATER, retreatCost:0) {
 				weakness LIGHTNING
 				move "Horn Attack", {
@@ -1268,7 +957,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case JIGGLYPUFF_54:
+			case JIGGLYPUFF:
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -1290,7 +979,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case MANKEY_55:
+			case MANKEY:
 			return basic (this, hp:HP030, type:FIGHTING, retreatCost:0) {
 				weakness PSYCHIC
 				pokemonPower "Peek", {
@@ -1308,7 +997,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case MEOWTH_56:
+			case MEOWTH:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -1322,7 +1011,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case NIDORAN_FEMALE_57:
+			case NIDORAN_FEMALE:
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
 				weakness PSYCHIC
 				move "Fury Swipes", {
@@ -1343,7 +1032,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case ODDISH_58:
+			case ODDISH:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Stun Spore", {
@@ -1364,7 +1053,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case PARAS_59:
+			case PARAS:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Scratch", {
@@ -1385,7 +1074,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case PIKACHU_60:
+			case PIKACHU:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
 				move "Spark", {
@@ -1398,7 +1087,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case RHYHORN_61:
+			case RHYHORN:
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:3) {
 				weakness GRASS
 				resistance LIGHTNING, MINUS30
@@ -1420,7 +1109,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case SPEAROW_62:
+			case SPEAROW:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:0) {
 				weakness LIGHTNING
 				resistance FIGHTING, MINUS30
@@ -1442,7 +1131,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case VENONAT_63:
+			case VENONAT:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Stun Spore", {
@@ -1463,7 +1152,7 @@ public enum Jungle implements CardInfo {
 				}
 				
 			};
-			case POKE_BALL_64:
+			case POKE_BALL:
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, you may search your deck for any Basic Pokémon or Evolution card. Show that card to your opponent, then put it into your hand. Shuffle your deck afterward."
 				onPlay {

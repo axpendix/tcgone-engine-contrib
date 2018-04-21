@@ -31,113 +31,115 @@ import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
+/**
+ * @author axpendix@hotmail.com
+ */
 public enum BaseSet implements CardInfo {
 	
-	ALAKAZAM_1 ("Alakazam", 1, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
-	BLASTOISE_2 ("Blastoise", 2, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-	CHANSEY_3 ("Chansey", 3, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-	CHARIZARD_4 ("Charizard", 4, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
-	CLEFAIRY_5 ("Clefairy", 5, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-	GYARADOS_6 ("Gyarados", 6, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	HITMONCHAN_7 ("Hitmonchan", 7, Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
-	MACHAMP_8 ("Machamp", 8, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-	MAGNETON_9 ("Magneton", 9, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-	MEWTWO_10 ("Mewtwo", 10, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
-	NIDOKING_11 ("Nidoking", 11, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-	NINETALES_12 ("Ninetales", 12, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-	POLIWRATH_13 ("Poliwrath", 13, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	RAICHU_14 ("Raichu", 14, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-	VENUSAUR_15 ("Venusaur", 15, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-	ZAPDOS_16 ("Zapdos", 16, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-	BEEDRILL_17 ("Beedrill", 17, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-	DRAGONAIR_18 ("Dragonair", 18, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	DUGTRIO_19 ("Dugtrio", 19, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-	ELECTABUZZ_20 ("Electabuzz", 20, Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
-	ELECTRODE_21 ("Electrode", 21, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-	PIDGEOTTO_22 ("Pidgeotto", 22, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	ARCANINE_23 ("Arcanine", 23, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-	CHARMELEON_24 ("Charmeleon", 24, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-	DEWGONG_25 ("Dewgong", 25, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	DRATINI_26 ("Dratini", 26, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-	FARFETCH_D_27 ("Farfetch'd", 27, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-	GROWLITHE_28 ("Growlithe", 28, Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
-	HAUNTER_29 ("Haunter", 29, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-	IVYSAUR_30 ("Ivysaur", 30, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	JYNX_31 ("Jynx", 31, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
-	KADABRA_32 ("Kadabra", 32, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-	KAKUNA_33 ("Kakuna", 33, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	MACHOKE_34 ("Machoke", 34, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-	MAGIKARP_35 ("Magikarp", 35, Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
-	MAGMAR_36 ("Magmar", 36, Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
-	NIDORINO_37 ("Nidorino", 37, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	POLIWHIRL_38 ("Poliwhirl", 38, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	PORYGON_39 ("Porygon", 39, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-	RATICATE_40 ("Raticate", 40, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	SEEL_41 ("Seel", 41, Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
-	WARTORTLE_42 ("Wartortle", 42, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	ABRA_43 ("Abra", 43, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-	BULBASAUR_44 ("Bulbasaur", 44, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	CATERPIE_45 ("Caterpie", 45, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	CHARMANDER_46 ("Charmander", 46, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-	DIGLETT_47 ("Diglett", 47, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-	DODUO_48 ("Doduo", 48, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-	DROWZEE_49 ("Drowzee", 49, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-	GASTLY_50 ("Gastly", 50, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-	KOFFING_51 ("Koffing", 51, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	MACHOP_52 ("Machop", 52, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-	MAGNEMITE_53 ("Magnemite", 53, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-	METAPOD_54 ("Metapod", 54, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	NIDORAN_MALE_55 ("Nidoran Male", 55, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	ONIX_56 ("Onix", 56, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-	PIDGEY_57 ("Pidgey", 57, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-	PIKACHU_58 ("Pikachu", 58, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-	POLIWAG_59 ("Poliwag", 59, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-	PONYTA_60 ("Ponyta", 60, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-	RATTATA_61 ("Rattata", 61, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-	SANDSHREW_62 ("Sandshrew", 62, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-	SQUIRTLE_63 ("Squirtle", 63, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-	STARMIE_64 ("Starmie", 64, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	STARYU_65 ("Staryu", 65, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-	TANGELA_66 ("Tangela", 66, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	VOLTORB_67 ("Voltorb", 67, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-	VULPIX_68 ("Vulpix", 68, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-	WEEDLE_69 ("Weedle", 69, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	CLEFAIRY_DOLL_70 ("Clefairy Doll", 70, Rarity.RARE, [TRAINER]),
-	COMPUTER_SEARCH_71 ("Computer Search", 71, Rarity.RARE, [TRAINER]),
-	DEVOLUTION_SPRAY_72 ("Devolution Spray", 72, Rarity.RARE, [TRAINER]),
-	IMPOSTOR_PROFESSOR_OAK_73 ("Impostor Professor Oak", 73, Rarity.RARE, [TRAINER]),
-	ITEM_FINDER_74 ("Item Finder", 74, Rarity.RARE, [TRAINER]),
-	LASS_75 ("Lass", 75, Rarity.RARE, [TRAINER]),
-	POKEMON_BREEDER_76 ("Pokémon Breeder", 76, Rarity.RARE, [TRAINER]),
-	POKEMON_TRADER_77 ("Pokémon Trader", 77, Rarity.RARE, [TRAINER]),
-	SCOOP_UP_78 ("Scoop Up", 78, Rarity.RARE, [TRAINER]),
-	SUPER_ENERGY_REMOVAL_79 ("Super Energy Removal", 79, Rarity.RARE, [TRAINER]),
-	DEFENDER_80 ("Defender", 80, Rarity.UNCOMMON, [TRAINER]),
-	ENERGY_RETRIEVAL_81 ("Energy Retrieval", 81, Rarity.UNCOMMON, [TRAINER]),
-	FULL_HEAL_82 ("Full Heal", 82, Rarity.UNCOMMON, [TRAINER]),
-	MAINTENANCE_83 ("Maintenance", 83, Rarity.UNCOMMON, [TRAINER]),
-	PLUSPOWER_84 ("PlusPower", 84, Rarity.UNCOMMON, [TRAINER]),
-	POKEMON_CENTER_85 ("Pokémon Center", 85, Rarity.UNCOMMON, [TRAINER]),
-	POKEMON_FLUTE_86 ("Pokémon Flute", 86, Rarity.UNCOMMON, [TRAINER]),
-	POKEDEX_87 ("Pokédex", 87, Rarity.UNCOMMON, [TRAINER]),
-	PROFESSOR_OAK_88 ("Professor Oak", 88, Rarity.UNCOMMON, [TRAINER]),
-	REVIVE_89 ("Revive", 89, Rarity.UNCOMMON, [TRAINER]),
-	SUPER_POTION_90 ("Super Potion", 90, Rarity.UNCOMMON, [TRAINER]),
-	BILL_91 ("Bill", 91, Rarity.COMMON, [TRAINER]),
-	ENERGY_REMOVAL_92 ("Energy Removal", 92, Rarity.COMMON, [TRAINER]),
-	GUST_OF_WIND_93 ("Gust of Wind", 93, Rarity.COMMON, [TRAINER]),
-	POTION_94 ("Potion", 94, Rarity.COMMON, [TRAINER]),
-	SWITCH_95 ("Switch", 95, Rarity.COMMON, [TRAINER]),
-	DOUBLE_COLORLESS_ENERGY_96 ("Double Colorless Energy", 96, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-	FIGHTING_ENERGY_97 ("Fighting Energy", 97, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
-	FIRE_ENERGY_98 ("Fire Energy", 98, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
-	GRASS_ENERGY_99 ("Grass Energy", 99, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
-	LIGHTNING_ENERGY_100 ("Lightning Energy", 100, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
-	PSYCHIC_ENERGY_101 ("Psychic Energy", 101, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
-	WATER_ENERGY_102 ("Water Energy", 102, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
-;
+	ALAKAZAM ("Alakazam", 1, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
+	BLASTOISE ("Blastoise", 2, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+	CHANSEY ("Chansey", 3, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+	CHARIZARD ("Charizard", 4, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
+	CLEFAIRY ("Clefairy", 5, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+	GYARADOS ("Gyarados", 6, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	HITMONCHAN ("Hitmonchan", 7, Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
+	MACHAMP ("Machamp", 8, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+	MAGNETON ("Magneton", 9, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+	MEWTWO ("Mewtwo", 10, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
+	NIDOKING ("Nidoking", 11, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+	NINETALES ("Ninetales", 12, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+	POLIWRATH ("Poliwrath", 13, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	RAICHU ("Raichu", 14, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+	VENUSAUR ("Venusaur", 15, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+	ZAPDOS ("Zapdos", 16, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
+	BEEDRILL ("Beedrill", 17, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+	DRAGONAIR ("Dragonair", 18, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	DUGTRIO ("Dugtrio", 19, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	ELECTABUZZ ("Electabuzz", 20, Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
+	ELECTRODE ("Electrode", 21, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+	PIDGEOTTO ("Pidgeotto", 22, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	ARCANINE ("Arcanine", 23, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+	CHARMELEON ("Charmeleon", 24, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+	DEWGONG ("Dewgong", 25, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	DRATINI ("Dratini", 26, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+	FARFETCH_D ("Farfetch'd", 27, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+	GROWLITHE ("Growlithe", 28, Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
+	HAUNTER ("Haunter", 29, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	IVYSAUR ("Ivysaur", 30, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	JYNX ("Jynx", 31, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	KADABRA ("Kadabra", 32, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	KAKUNA ("Kakuna", 33, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	MACHOKE ("Machoke", 34, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	MAGIKARP ("Magikarp", 35, Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
+	MAGMAR ("Magmar", 36, Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
+	NIDORINO ("Nidorino", 37, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	POLIWHIRL ("Poliwhirl", 38, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	PORYGON ("Porygon", 39, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+	RATICATE ("Raticate", 40, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	SEEL ("Seel", 41, Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
+	WARTORTLE ("Wartortle", 42, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	ABRA ("Abra", 43, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	BULBASAUR ("Bulbasaur", 44, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	CATERPIE ("Caterpie", 45, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	CHARMANDER ("Charmander", 46, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+	DIGLETT ("Diglett", 47, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	DODUO ("Doduo", 48, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+	DROWZEE ("Drowzee", 49, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	GASTLY ("Gastly", 50, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	KOFFING ("Koffing", 51, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	MACHOP ("Machop", 52, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	MAGNEMITE ("Magnemite", 53, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	METAPOD ("Metapod", 54, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	NIDORAN_MALE ("Nidoran ♂", 55, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	ONIX ("Onix", 56, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	PIDGEY ("Pidgey", 57, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+	PIKACHU ("Pikachu", 58, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	POLIWAG ("Poliwag", 59, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	PONYTA ("Ponyta", 60, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+	RATTATA ("Rattata", 61, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+	SANDSHREW ("Sandshrew", 62, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	SQUIRTLE ("Squirtle", 63, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	STARMIE ("Starmie", 64, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	STARYU ("Staryu", 65, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	TANGELA ("Tangela", 66, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	VOLTORB ("Voltorb", 67, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	VULPIX ("Vulpix", 68, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+	WEEDLE ("Weedle", 69, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	CLEFAIRY_DOLL ("Clefairy Doll", 70, Rarity.RARE, [TRAINER]),
+	COMPUTER_SEARCH ("Computer Search", 71, Rarity.RARE, [TRAINER]),
+	DEVOLUTION_SPRAY ("Devolution Spray", 72, Rarity.RARE, [TRAINER]),
+	IMPOSTOR_PROFESSOR_OAK ("Impostor Professor Oak", 73, Rarity.RARE, [TRAINER]),
+	ITEM_FINDER ("Item Finder", 74, Rarity.RARE, [TRAINER]),
+	LASS ("Lass", 75, Rarity.RARE, [TRAINER]),
+	POKEMON_BREEDER ("Pokémon Breeder", 76, Rarity.RARE, [TRAINER]),
+	POKEMON_TRADER ("Pokémon Trader", 77, Rarity.RARE, [TRAINER]),
+	SCOOP_UP ("Scoop Up", 78, Rarity.RARE, [TRAINER]),
+	SUPER_ENERGY_REMOVAL ("Super Energy Removal", 79, Rarity.RARE, [TRAINER]),
+	DEFENDER ("Defender", 80, Rarity.UNCOMMON, [TRAINER]),
+	ENERGY_RETRIEVAL ("Energy Retrieval", 81, Rarity.UNCOMMON, [TRAINER]),
+	FULL_HEAL ("Full Heal", 82, Rarity.UNCOMMON, [TRAINER]),
+	MAINTENANCE ("Maintenance", 83, Rarity.UNCOMMON, [TRAINER]),
+	PLUSPOWER ("PlusPower", 84, Rarity.UNCOMMON, [TRAINER]),
+	POKEMON_CENTER ("Pokémon Center", 85, Rarity.UNCOMMON, [TRAINER]),
+	POKEMON_FLUTE ("Pokémon Flute", 86, Rarity.UNCOMMON, [TRAINER]),
+	POKEDEX ("Pokédex", 87, Rarity.UNCOMMON, [TRAINER]),
+	PROFESSOR_OAK ("Professor Oak", 88, Rarity.UNCOMMON, [TRAINER]),
+	REVIVE ("Revive", 89, Rarity.UNCOMMON, [TRAINER]),
+	SUPER_POTION ("Super Potion", 90, Rarity.UNCOMMON, [TRAINER]),
+	BILL ("Bill", 91, Rarity.COMMON, [TRAINER]),
+	ENERGY_REMOVAL ("Energy Removal", 92, Rarity.COMMON, [TRAINER]),
+	GUST_OF_WIND ("Gust of Wind", 93, Rarity.COMMON, [TRAINER]),
+	POTION ("Potion", 94, Rarity.COMMON, [TRAINER]),
+	SWITCH ("Switch", 95, Rarity.COMMON, [TRAINER]),
+	DOUBLE_COLORLESS_ENERGY ("Double Colorless Energy", 96, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
+	FIGHTING_ENERGY ("Fighting Energy", 97, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+	FIRE_ENERGY ("Fire Energy", 98, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+	GRASS_ENERGY ("Grass Energy", 99, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+	LIGHTNING_ENERGY ("Lightning Energy", 100, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+	PSYCHIC_ENERGY ("Psychic Energy", 101, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+	WATER_ENERGY ("Water Energy", 102, Rarity.COMMON, [BASIC_ENERGY, ENERGY]);
 	
-	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
 	
 	protected CardTypeSet cardTypes;
 	protected String name;
@@ -189,7 +191,7 @@ public enum BaseSet implements CardInfo {
 	@Override
 	public Card getImplementation() {
 		switch (this) {
-			case ALAKAZAM_1:
+			case ALAKAZAM:
 			return evolution (this, from:"Kadabra", hp:HP080, type:PSYCHIC, retreatCost:3) {
 				weakness PSYCHIC
 				pokemonPower "Damage Swap", {
@@ -207,7 +209,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case BLASTOISE_2:
+			case BLASTOISE:
 			return evolution (this, from:"Wartortle", hp:HP100, type:WATER, retreatCost:3) {
 				weakness LIGHTNING
 				pokemonPower "Rain Dance", {
@@ -225,7 +227,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case CHANSEY_3:
+			case CHANSEY:
 			return basic (this, hp:HP120, type:COLORLESS, retreatCost:1) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -247,7 +249,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case CHARIZARD_4:
+			case CHARIZARD:
 			return evolution (this, from:"Charmeleon", hp:HP120, type:FIRE, retreatCost:3) {
 				weakness WATER
 				resistance FIGHTING, MINUS30
@@ -266,7 +268,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case CLEFAIRY_5:
+			case CLEFAIRY:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -288,7 +290,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case GYARADOS_6:
+			case GYARADOS:
 			return evolution (this, from:"Magikarp", hp:HP100, type:WATER, retreatCost:3) {
 				weakness GRASS
 				resistance FIGHTING, MINUS30
@@ -310,7 +312,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case HITMONCHAN_7:
+			case HITMONCHAN:
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
 				weakness PSYCHIC
 				move "Jab", {
@@ -331,7 +333,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case MACHAMP_8:
+			case MACHAMP:
 			return evolution (this, from:"Machoke", hp:HP100, type:FIGHTING, retreatCost:3) {
 				weakness PSYCHIC
 				pokemonPower "Strikes Back", {
@@ -349,7 +351,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case MAGNETON_9:
+			case MAGNETON:
 			return evolution (this, from:"Magnemite", hp:HP060, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
 				move "Thunder Wave", {
@@ -370,7 +372,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case MEWTWO_10:
+			case MEWTWO:
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:3) {
 				weakness PSYCHIC
 				move "Psychic", {
@@ -391,7 +393,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case NIDOKING_11:
+			case NIDOKING:
 			return evolution (this, from:"Nidorino", hp:HP090, type:GRASS, retreatCost:3) {
 				weakness PSYCHIC
 				move "Thrash", {
@@ -412,7 +414,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case NINETALES_12:
+			case NINETALES:
 			return evolution (this, from:"Vulpix", hp:HP080, type:FIRE, retreatCost:1) {
 				weakness WATER
 				move "Lure", {
@@ -433,7 +435,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case POLIWRATH_13:
+			case POLIWRATH:
 			return evolution (this, from:"Poliwhirl", hp:HP090, type:WATER, retreatCost:3) {
 				weakness GRASS
 				move "Water Gun", {
@@ -454,7 +456,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case RAICHU_14:
+			case RAICHU:
 			return evolution (this, from:"Pikachu", hp:HP080, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
 				move "Agility", {
@@ -475,7 +477,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case VENUSAUR_15:
+			case VENUSAUR:
 			return evolution (this, from:"Ivysaur", hp:HP100, type:GRASS, retreatCost:2) {
 				weakness FIRE
 				pokemonPower "Energy Trans", {
@@ -493,7 +495,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case ZAPDOS_16:
+			case ZAPDOS:
 			return basic (this, hp:HP090, type:LIGHTNING, retreatCost:3) {
 				resistance FIGHTING, MINUS30
 				move "Thunder", {
@@ -514,7 +516,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case BEEDRILL_17:
+			case BEEDRILL:
 			return evolution (this, from:"Kakuna", hp:HP080, type:GRASS, retreatCost:0) {
 				weakness FIRE
 				resistance FIGHTING, MINUS30
@@ -536,7 +538,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case DRAGONAIR_18:
+			case DRAGONAIR:
 			return evolution (this, from:"Dratini", hp:HP080, type:COLORLESS, retreatCost:2) {
 				resistance PSYCHIC, MINUS30
 				move "Slam", {
@@ -557,7 +559,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case DUGTRIO_19:
+			case DUGTRIO:
 			return evolution (this, from:"Diglett", hp:HP070, type:FIGHTING, retreatCost:2) {
 				weakness GRASS
 				resistance LIGHTNING, MINUS30
@@ -579,7 +581,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case ELECTABUZZ_20:
+			case ELECTABUZZ:
 			return basic (this, hp:HP070, type:LIGHTNING, retreatCost:2) {
 				weakness FIGHTING
 				move "Thundershock", {
@@ -600,7 +602,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case ELECTRODE_21:
+			case ELECTRODE:
 			return evolution (this, from:"Voltorb", hp:HP080, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
 				pokemonPower "Buzzap", {
@@ -618,7 +620,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case PIDGEOTTO_22:
+			case PIDGEOTTO:
 			return evolution (this, from:"Pidgey", hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness LIGHTNING
 				resistance FIGHTING, MINUS30
@@ -640,7 +642,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case ARCANINE_23:
+			case ARCANINE:
 			return evolution (this, from:"Growlithe", hp:HP100, type:FIRE, retreatCost:3) {
 				weakness WATER
 				move "Flamethrower", {
@@ -661,7 +663,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case CHARMELEON_24:
+			case CHARMELEON:
 			return evolution (this, from:"Charmander", hp:HP080, type:FIRE, retreatCost:1) {
 				weakness WATER
 				move "Slash", {
@@ -682,7 +684,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case DEWGONG_25:
+			case DEWGONG:
 			return evolution (this, from:"Seel", hp:HP080, type:WATER, retreatCost:3) {
 				weakness LIGHTNING
 				move "Aurora Beam", {
@@ -703,7 +705,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case DRATINI_26:
+			case DRATINI:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
 				resistance PSYCHIC, MINUS30
 				move "Pound", {
@@ -716,7 +718,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case FARFETCH_D_27:
+			case FARFETCH_D:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness LIGHTNING
 				resistance FIGHTING, MINUS30
@@ -738,7 +740,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case GROWLITHE_28:
+			case GROWLITHE:
 			return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
 				weakness WATER
 				move "Flare", {
@@ -751,7 +753,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case HAUNTER_29:
+			case HAUNTER:
 			return evolution (this, from:"Gastly", hp:HP060, type:PSYCHIC, retreatCost:1) {
 				resistance FIGHTING, MINUS30
 				move "Hypnosis", {
@@ -772,7 +774,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case IVYSAUR_30:
+			case IVYSAUR:
 			return evolution (this, from:"Bulbasaur", hp:HP060, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Vine Whip", {
@@ -793,7 +795,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case JYNX_31:
+			case JYNX:
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
 				weakness PSYCHIC
 				move "Doubleslap", {
@@ -814,7 +816,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case KADABRA_32:
+			case KADABRA:
 			return evolution (this, from:"Abra", hp:HP060, type:PSYCHIC, retreatCost:3) {
 				weakness PSYCHIC
 				move "Recover", {
@@ -835,7 +837,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case KAKUNA_33:
+			case KAKUNA:
 			return evolution (this, from:"Weedle", hp:HP080, type:GRASS, retreatCost:2) {
 				weakness FIRE
 				move "Stiffen", {
@@ -856,7 +858,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case MACHOKE_34:
+			case MACHOKE:
 			return evolution (this, from:"Machoke", hp:HP080, type:FIGHTING, retreatCost:3) {
 				weakness PSYCHIC
 				move "Karate Chop", {
@@ -877,7 +879,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case MAGIKARP_35:
+			case MAGIKARP:
 			return basic (this, hp:HP030, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Tackle", {
@@ -898,7 +900,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case MAGMAR_36:
+			case MAGMAR:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:2) {
 				weakness WATER
 				move "Fire Punch", {
@@ -919,8 +921,8 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case NIDORINO_37:
-			return evolution (this, from:"Nidoran Male", hp:HP060, type:GRASS, retreatCost:1) {
+			case NIDORINO:
+			return evolution (this, from:"Nidoran ♂", hp:HP060, type:GRASS, retreatCost:1) {
 				weakness PSYCHIC
 				move "Double Kick", {
 					text "30× damage. Flip 2 coins. This attack does 30 damage times the number of heads."
@@ -940,7 +942,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case POLIWHIRL_38:
+			case POLIWHIRL:
 			return evolution (this, from:"Poliwag", hp:HP060, type:WATER, retreatCost:1) {
 				weakness GRASS
 				move "Amnesia", {
@@ -961,7 +963,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case PORYGON_39:
+			case PORYGON:
 			return basic (this, hp:HP030, type:COLORLESS, retreatCost:1) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -983,7 +985,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case RATICATE_40:
+			case RATICATE:
 			return evolution (this, from:"Rattata", hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -1005,7 +1007,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case SEEL_41:
+			case SEEL:
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Headbutt", {
@@ -1018,7 +1020,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case WARTORTLE_42:
+			case WARTORTLE:
 			return evolution (this, from:"Squirtle", hp:HP070, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Withdraw", {
@@ -1039,7 +1041,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case ABRA_43:
+			case ABRA:
 			return basic (this, hp:HP030, type:PSYCHIC, retreatCost:0) {
 				weakness PSYCHIC
 				move "Psyshock", {
@@ -1052,7 +1054,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case BULBASAUR_44:
+			case BULBASAUR:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Leech Seed", {
@@ -1065,7 +1067,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case CATERPIE_45:
+			case CATERPIE:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "String Shot", {
@@ -1078,7 +1080,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case CHARMANDER_46:
+			case CHARMANDER:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
 				weakness WATER
 				move "Scratch", {
@@ -1099,7 +1101,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case DIGLETT_47:
+			case DIGLETT:
 			return basic (this, hp:HP030, type:FIGHTING, retreatCost:0) {
 				weakness GRASS
 				resistance LIGHTNING, MINUS30
@@ -1121,7 +1123,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case DODUO_48:
+			case DODUO:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:0) {
 				weakness LIGHTNING
 				resistance FIGHTING, MINUS30
@@ -1135,7 +1137,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case DROWZEE_49:
+			case DROWZEE:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness PSYCHIC
 				move "Pound", {
@@ -1156,7 +1158,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case GASTLY_50:
+			case GASTLY:
 			return basic (this, hp:HP030, type:PSYCHIC, retreatCost:0) {
 				resistance FIGHTING, MINUS30
 				move "Sleeping Gas", {
@@ -1177,7 +1179,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case KOFFING_51:
+			case KOFFING:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness PSYCHIC
 				move "Foul Gas", {
@@ -1190,7 +1192,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case MACHOP_52:
+			case MACHOP:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
 				weakness PSYCHIC
 				move "Low Kick", {
@@ -1203,7 +1205,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case MAGNEMITE_53:
+			case MAGNEMITE:
 			return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
 				move "Thunder Wave", {
@@ -1224,7 +1226,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case METAPOD_54:
+			case METAPOD:
 			return evolution (this, from:"Caterpie", hp:HP070, type:GRASS, retreatCost:2) {
 				weakness FIRE
 				move "Stiffen", {
@@ -1245,7 +1247,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case NIDORAN_MALE_55:
+			case NIDORAN_MALE:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness PSYCHIC
 				move "Horn Hazard", {
@@ -1258,7 +1260,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case ONIX_56:
+			case ONIX:
 			return basic (this, hp:HP090, type:FIGHTING, retreatCost:3) {
 				weakness GRASS
 				move "Rock Throw", {
@@ -1279,7 +1281,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case PIDGEY_57:
+			case PIDGEY:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
 				weakness LIGHTNING
 				resistance FIGHTING, MINUS30
@@ -1293,7 +1295,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case PIKACHU_58:
+			case PIKACHU:
 			return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
 				move "Gnaw", {
@@ -1314,7 +1316,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case POLIWAG_59:
+			case POLIWAG:
 			return basic (this, hp:HP040, type:WATER, retreatCost:1) {
 				weakness GRASS
 				move "Water Gun", {
@@ -1327,7 +1329,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case PONYTA_60:
+			case PONYTA:
 			return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
 				weakness WATER
 				move "Smash Kick", {
@@ -1348,7 +1350,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case RATTATA_61:
+			case RATTATA:
 			return basic (this, hp:HP030, type:COLORLESS, retreatCost:0) {
 				weakness FIGHTING
 				resistance PSYCHIC, MINUS30
@@ -1362,7 +1364,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case SANDSHREW_62:
+			case SANDSHREW:
 			return basic (this, hp:HP040, type:FIGHTING, retreatCost:1) {
 				weakness GRASS
 				resistance LIGHTNING, MINUS30
@@ -1376,7 +1378,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case SQUIRTLE_63:
+			case SQUIRTLE:
 			return basic (this, hp:HP040, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Bubble", {
@@ -1397,7 +1399,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case STARMIE_64:
+			case STARMIE:
 			return evolution (this, from:"Staryu", hp:HP060, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Recover", {
@@ -1418,7 +1420,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case STARYU_65:
+			case STARYU:
 			return basic (this, hp:HP040, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Slap", {
@@ -1431,7 +1433,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case TANGELA_66:
+			case TANGELA:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:2) {
 				weakness FIRE
 				move "Bind", {
@@ -1452,7 +1454,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case VOLTORB_67:
+			case VOLTORB:
 			return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
 				move "Tackle", {
@@ -1465,7 +1467,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case VULPIX_68:
+			case VULPIX:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
 				weakness WATER
 				move "Confuse Ray", {
@@ -1478,7 +1480,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case WEEDLE_69:
+			case WEEDLE:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Poison Sting", {
@@ -1491,7 +1493,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case CLEFAIRY_DOLL_70:
+			case CLEFAIRY_DOLL:
 			return basicTrainer (this) {
 				text "Play Clefairy Doll as if it were a Basic Pokémon. While in play, Clefairy Doll counts a a Pokémon (instead of a Trainer card). Clefairy Doll has no attacks, can’t retreat, and can’t be Asleep, Confused, Paralyzed, or Poisoned. If Clefairy Doll is Knocked Out, it doesn’t count as a Knocked Out Pokémon. At any time during your turn before your attack, you may discard Clefairy Doll."
 				onPlay {
@@ -1499,7 +1501,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case COMPUTER_SEARCH_71:
+			case COMPUTER_SEARCH:
 			return basicTrainer (this) {
 				text "Discard 2 of the other cards from you hand in order to search your deck for any card and put it into your hand. Shuffle your deck afterward."
 				onPlay {
@@ -1507,7 +1509,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case DEVOLUTION_SPRAY_72:
+			case DEVOLUTION_SPRAY:
 			return basicTrainer (this) {
 				text "Choose 1 of your own Pokémon in play and a Stage of Evolution. Discard all Evolution cards of that Stage or higher attached to that Pokémon. That Pokémon is no longer Asleep, Confused, Paralyzed, Poisoned, or anything else that might be the result of an attack (just as if you had evolved it)."
 				onPlay {
@@ -1515,7 +1517,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case IMPOSTOR_PROFESSOR_OAK_73:
+			case IMPOSTOR_PROFESSOR_OAK:
 			return basicTrainer (this) {
 				text "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards."
 				onPlay {
@@ -1523,7 +1525,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case ITEM_FINDER_74:
+			case ITEM_FINDER:
 			return basicTrainer (this) {
 				text "Discard 2 of the other cards from your hand in order to put a Trainer card from your discard pile into your hand."
 				onPlay {
@@ -1531,7 +1533,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case LASS_75:
+			case LASS:
 			return basicTrainer (this) {
 				text "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks."
 				onPlay {
@@ -1539,7 +1541,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case POKEMON_BREEDER_76:
+			case POKEMON_BREEDER:
 			return basicTrainer (this) {
 				text "Put a Stage 2 Evolution card from your hand on the matching Basic Pokémon. You can only play this card when you would be allowed to evolve that Pokémon anyway."
 				onPlay {
@@ -1547,7 +1549,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case POKEMON_TRADER_77:
+			case POKEMON_TRADER:
 			return basicTrainer (this) {
 				text "Trade 1 of the Basic Pokémon or Evolution cards in your hand for 1 of the Basic Pokémon or Evolution cards from your deck. Show both cards to your opponent. Shuffle your deck afterward."
 				onPlay {
@@ -1555,7 +1557,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case SCOOP_UP_78:
+			case SCOOP_UP:
 			return basicTrainer (this) {
 				text "Choose 1 of your Pokémon in play and return its Basic Pokémon card to your hand. (Discard all cards attached to that card.)"
 				onPlay {
@@ -1563,7 +1565,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case SUPER_ENERGY_REMOVAL_79:
+			case SUPER_ENERGY_REMOVAL:
 			return basicTrainer (this) {
 				text "Discard 1 Energy card attached to 1 of your Pokémon in order to choose 1 of your opponent’s Pokémon and up to 2 Energy cards attached to it. Discard those Energy cards."
 				onPlay {
@@ -1571,7 +1573,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case DEFENDER_80:
+			case DEFENDER:
 			return basicTrainer (this) {
 				text "Attach Defender to 1 of your Pokémon. At the end of your opponent’s next turn, discard Defender. Damage done to that Pokémon by attacks is reduced by 20 (after applying Weakness and Resistance)."
 				onPlay {
@@ -1579,7 +1581,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case ENERGY_RETRIEVAL_81:
+			case ENERGY_RETRIEVAL:
 			return basicTrainer (this) {
 				text "Trade 1 of the other cards in your hand for up to 2 basic Energy cards from your discard pile."
 				onPlay {
@@ -1587,7 +1589,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case FULL_HEAL_82:
+			case FULL_HEAL:
 			return basicTrainer (this) {
 				text "Your Active Pokémon is no longer Asleep, Confused, Paralyzed, or Poisoned."
 				onPlay {
@@ -1595,7 +1597,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case MAINTENANCE_83:
+			case MAINTENANCE:
 			return basicTrainer (this) {
 				text "Shuffle 2 of the other cards from your hand into your deck in order to draw a card."
 				onPlay {
@@ -1603,7 +1605,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case PLUSPOWER_84:
+			case PLUSPOWER:
 			return basicTrainer (this) {
 				text "Attach PlusPower to your Active Pokémon. At the end of your turn, discard PlusPower. If this Pokémon’s attack does damage to the Defending Pokémon (after applying Weakness and Resistance), the attack does 10 more damage to the Defending Pokémon."
 				onPlay {
@@ -1611,7 +1613,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case POKEMON_CENTER_85:
+			case POKEMON_CENTER:
 			return basicTrainer (this) {
 				text "Remove all damage counters from all of your own Pokémon with damage counters on them, then discard all Energy cards attached to those Pokémon."
 				onPlay {
@@ -1619,7 +1621,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case POKEMON_FLUTE_86:
+			case POKEMON_FLUTE:
 			return basicTrainer (this) {
 				text "Choose 1 Basic Pokémon card from your opponent’s discard pile and put it onto his or her Bench. (You can’t play Pokémon Flute if your opponent’s Bench is full.)"
 				onPlay {
@@ -1627,7 +1629,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case POKEDEX_87:
+			case POKEDEX:
 			return basicTrainer (this) {
 				text "Look at up to 5 cards from the top of your deck and rearrange them as you like."
 				onPlay {
@@ -1635,7 +1637,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case PROFESSOR_OAK_88:
+			case PROFESSOR_OAK:
 			return basicTrainer (this) {
 				text "Discard your hand, then draw 7 cards."
 				onPlay {
@@ -1643,7 +1645,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case REVIVE_89:
+			case REVIVE:
 			return basicTrainer (this) {
 				text "Put 1 Basic Pokémon card from your discard pile onto your Bench. Put damage counters on that Pokémon equal to half its HP (rounded down to the nearest 10). (You can’t play Revive if your Bench is full.)"
 				onPlay {
@@ -1651,7 +1653,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case SUPER_POTION_90:
+			case SUPER_POTION:
 			return basicTrainer (this) {
 				text "Discard 1 Energy card attached to your own Pokémon in order to remove up to 4 damage counters from that Pokémon."
 				onPlay {
@@ -1659,7 +1661,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case BILL_91:
+			case BILL:
 			return basicTrainer (this) {
 				text "Draw 2 cards."
 				onPlay {
@@ -1667,7 +1669,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case ENERGY_REMOVAL_92:
+			case ENERGY_REMOVAL:
 			return basicTrainer (this) {
 				text "Choose 1 Energy card attached to 1 of your opponent’s Pokémon and discard it."
 				onPlay {
@@ -1675,7 +1677,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case GUST_OF_WIND_93:
+			case GUST_OF_WIND:
 			return basicTrainer (this) {
 				text "Choose 1 of your opponent’s Benched Pokémon and switch it with his or her Active Pokémon."
 				onPlay {
@@ -1683,7 +1685,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case POTION_94:
+			case POTION:
 			return basicTrainer (this) {
 				text "Remove up to 2 damage counters from 1 of your Pokémon."
 				onPlay {
@@ -1691,7 +1693,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case SWITCH_95:
+			case SWITCH:
 			return basicTrainer (this) {
 				text "Switch 1 of your own Benched Pokémon with your Active Pokémon."
 				onPlay {
@@ -1699,7 +1701,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case DOUBLE_COLORLESS_ENERGY_96:
+			case DOUBLE_COLORLESS_ENERGY:
 			return specialEnergy (this) {
 				text "Provides [C][C] energy. Doesn’t count as a basic Energy card."
 				onPlay {reason->
@@ -1711,17 +1713,17 @@ public enum BaseSet implements CardInfo {
 				allowAttach {to->
 				}
 			};
-			case FIGHTING_ENERGY_97:
+			case FIGHTING_ENERGY:
 			return basicEnergy (this, FIGHTING);
-			case FIRE_ENERGY_98:
+			case FIRE_ENERGY:
 			return basicEnergy (this, FIRE);
-			case GRASS_ENERGY_99:
+			case GRASS_ENERGY:
 			return basicEnergy (this, GRASS);
-			case LIGHTNING_ENERGY_100:
+			case LIGHTNING_ENERGY:
 			return basicEnergy (this, LIGHTNING);
-			case PSYCHIC_ENERGY_101:
+			case PSYCHIC_ENERGY:
 			return basicEnergy (this, PSYCHIC);
-			case WATER_ENERGY_102:
+			case WATER_ENERGY:
 			return basicEnergy (this, WATER);
 				default:
 			return null;
