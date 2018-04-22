@@ -544,7 +544,7 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Submerge", {
           text "As long as this Pokémon is on your Bench, prevent all damage done to this Pokémon by attacks (both yours and your opponent's)."
           delayedA {
-            before APPLY_ATTACK_DAMAGES, self, {
+            before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
                 if(!self.active && it.to == self){
                   bc "Submerge prevent all damage"
