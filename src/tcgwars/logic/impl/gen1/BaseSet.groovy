@@ -295,6 +295,19 @@ public enum BaseSet implements CardInfo {
 				pokemonPower "Damage Swap", {
 					text "As often as you like during your turn (before your attack), you may move 1 damage counter from 1 of your Pokémon to another as long as you don’t Knock Out that Pokémon. This power can’t be used if Alakazam is Asleep, Confused, or Paralyzed."
 					actionA {
+						assert !(self.specialConditions)
+						
+						assert my.all.find({it.numberOfDamageCounters>0})
+						assert my.all.find{it.numberOfDamageCounters < (it.fullHp - 10)/10}
+						
+						def src=my.all.findAll {it.numberOfDamageCounters>0}.select("Source for damage counter")
+						def tar=my.all.findAll {it.numberOfDamageCounters < (it.fullHp - 10)/10}
+						tar.remove(src)
+						tar=tar.select("Target for damage counter")
+						src.damage-=hp(10)
+						tar.damage+=hp(10)
+						bc "Swapped a damage counter from $src to $tar"
+						checkFaint()
 					}
 				}
 				move "Confuse Ray", {
@@ -302,7 +315,8 @@ public enum BaseSet implements CardInfo {
 					energyCost P, P, P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flip{applyAfterDamage(CONFUSED)}
 					}
 				}
 				
@@ -311,8 +325,14 @@ public enum BaseSet implements CardInfo {
 			return evolution (this, from:"Wartortle", hp:HP100, type:WATER, retreatCost:3) {
 				weakness LIGHTNING
 				pokemonPower "Rain Dance", {
-					text "As often as you like during your turn (before your attack), you may attack 1 [W] Energy card to 1 of your [W] Pokémon. (This doesn’t use up your 1 Energy card attachment for the turn.) This power can’t be used if Blastoise is Asleep, Confused, or Paralyzed."
+					text "As often as you like during your turn (before your attack), you may attach 1 [W] Energy card to 1 of your [W] Pokémon. (This doesn’t use up your 1 Energy card attachment for the turn.) This power can’t be used if Blastoise is Asleep, Confused, or Paralyzed."
 					actionA {
+						assert !(self.specialConditions)
+						
+						assert my.hand.find{it.cardTypes.is(W)}
+						assert my.all.find{it.types.contains(W)}
+						
+						my.hand.findAll{it.cardTypes.is(W)}.select().moveTo(my.all.findAll{it.types.contains(W)}.select())
 					}
 				}
 				move "Hydro Pump", {
@@ -320,7 +340,8 @@ public enum BaseSet implements CardInfo {
 					energyCost W, W, W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						extraEnergyDamage(2,hp(10),W,thisMove)
 					}
 				}
 				
@@ -334,7 +355,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{preventAllDamageNextTurn()}
 					}
 				}
 				move "Double-edge", {
@@ -342,7 +363,8 @@ public enum BaseSet implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 80
+						damage 80, self
 					}
 				}
 				
@@ -351,9 +373,20 @@ public enum BaseSet implements CardInfo {
 			return evolution (this, from:"Charmeleon", hp:HP120, type:FIRE, retreatCost:3) {
 				weakness WATER
 				resistance FIGHTING, MINUS30
+				//Please just import something like EVO's charizard to implement this effect c:
 				pokemonPower "Energy Burn", {
 					text "As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into [R] Energy for the rest of the turn. This power can’t be used if Charizard is Asleep, Confused, or Paralyzed."
 					actionA {
+						assert !(self.specialConditions)
+						//TODO: Assert if energy is attached to this pokemon
+						//TODO: Make an action trigger a getter effect
+						getterA GET_ENERGY_TYPES, { holder->
+							if(holder.effect.target.owner == self.owner
+									&& holder.effect.card == self //TODO: Probably not the right syntax for this ccheck
+									&& holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
+								holder.object = [[R]] as Set //TODO: Make sure this turns each ENERGY into Fire energy (Not just each card)
+							}
+						}
 					}
 				}
 				move "Fire Spin", {
@@ -361,7 +394,8 @@ public enum BaseSet implements CardInfo {
 					energyCost R, R, R, R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 100
+						discardSelfEnergy(C,C) //Does this need to be moved to specify requirement of the attack?
 					}
 				}
 				
@@ -375,7 +409,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{applyAfterDamage(ASLEEP)}
 					}
 				}
 				move "Metronome", {
@@ -383,7 +417,16 @@ public enum BaseSet implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def moveList = []
+						def labelList = []
+						
+						moveList.addAll(defending.topPokemonCard.moves);
+						labelList.addAll(defending.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
+						
+						def move=choose(moveList, labelList)
+						def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+						attack (move as Move)
+						bef.unregisterItself(bg().em())
 					}
 				}
 				
@@ -397,7 +440,7 @@ public enum BaseSet implements CardInfo {
 					energyCost W, W, W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
 				move "Bubblebeam", {
@@ -405,7 +448,8 @@ public enum BaseSet implements CardInfo {
 					energyCost W, W, W, W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
 				
@@ -418,7 +462,7 @@ public enum BaseSet implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Special Punch", {
@@ -426,7 +470,7 @@ public enum BaseSet implements CardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
 				
@@ -436,7 +480,13 @@ public enum BaseSet implements CardInfo {
 				weakness PSYCHIC
 				pokemonPower "Strikes Back", {
 					text "Whenever your opponent’s attack damages Machamp <em>(even if Machamp is Knocked Out)</em>, this power does 10 damage to the attacking Pokémon. (Don’t apply Weakness and Resistance.) This power can’t be used if Machamp is Asleep, Confused, or Paralyzed when your opponent attacks."
-					actionA {
+					delayedA {
+						before (APPLY_ATTACK_DAMAGES,self) {
+							if(bg.currentTurn == self.owner.opposite && !(self.specialConditions) && bg.dm().find({it.to==self && it.dmg.value})){
+									bc "Strikes Back activates"
+									directDamage(10, ef.attacker as PokemonCardSet)
+							}
+						}
 					}
 				}
 				move "Seismic Toss", {
@@ -444,7 +494,7 @@ public enum BaseSet implements CardInfo {
 					energyCost F, F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
 					}
 				}
 				
@@ -457,7 +507,8 @@ public enum BaseSet implements CardInfo {
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
 				move "Selfdestruct", {
@@ -465,7 +516,10 @@ public enum BaseSet implements CardInfo {
 					energyCost L, L, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 80
+						opp.bench.each({ damage 20, it})
+						my.bench.each({ damage 20, it})
+						damage 80, self
 					}
 				}
 				
@@ -478,7 +532,7 @@ public enum BaseSet implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10+(10*opp.active.cards.energyCount(C))
 					}
 				}
 				move "Barrier", {
@@ -486,7 +540,8 @@ public enum BaseSet implements CardInfo {
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						discardSelfEnergy(P) //Does this need to be moved to specify requirement of the attack?
+						preventAllEffectsNextTurn()
 					}
 				}
 				
@@ -499,7 +554,8 @@ public enum BaseSet implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flip 1, {damage 10}, {damage 10, self}
 					}
 				}
 				move "Toxic", {
@@ -507,7 +563,9 @@ public enum BaseSet implements CardInfo {
 					energyCost G, G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						apply POISONED
+						extraPoison 1
 					}
 				}
 				
@@ -518,9 +576,14 @@ public enum BaseSet implements CardInfo {
 				move "Lure", {
 					text "If your opponent has any Benched Pokémon, choose 1 of them and switch it with his or her Active Pokémon."
 					energyCost C, C
-					attackRequirement {}
+					attackRequirement {
+						assert opp.bench
+					}
 					onAttack {
-						damage 0
+						def pcs = opp.bench.select("New active")
+						targeted (pcs, ATTACK) { //TODO: Check the syntax of this targeted block
+							sw opp.active, pcs
+						}
 					}
 				}
 				move "Fire Blast", {
@@ -528,7 +591,8 @@ public enum BaseSet implements CardInfo {
 					energyCost R, R, R, R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						discardSelfEnergy(R) //Does this need to be moved to specify requirement of the attack?
+						damage 80
 					}
 				}
 				
@@ -541,7 +605,8 @@ public enum BaseSet implements CardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30 + 
+						extraEnergyDamage(2,hp(10),W,thisMove)
 					}
 				}
 				move "Whirlpool", {
@@ -549,7 +614,8 @@ public enum BaseSet implements CardInfo {
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						afterDamage{discardDefendingEnergy()}
 					}
 				}
 				
@@ -562,7 +628,8 @@ public enum BaseSet implements CardInfo {
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip{preventAllEffectsNextTurn()}	
 					}
 				}
 				move "Thunder", {
@@ -570,7 +637,8 @@ public enum BaseSet implements CardInfo {
 					energyCost L, L, L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						flip 1, {}, {damage 30, self}
 					}
 				}
 				
@@ -580,15 +648,26 @@ public enum BaseSet implements CardInfo {
 				weakness FIRE
 				pokemonPower "Energy Trans", {
 					text "As often as you like during your turn (before you attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one. This power can’t be used if Venusaur is Asleep, Confused, or Paralyzed."
-					actionA {
-					}
+						actionA {
+							assert !(self.specialConditions)							
+							assert my.all.findAll {it.cards.energyCount(G)>0}
+							assert my.all.size()>=2
+							
+							powerUsed()
+							def src=my.all.findAll {it.cards.energyCount(G)>0}.select("Source for [G]")
+							def card=src.cards.filterByEnergyType(G).select("Card to move").first()
+							def tar=my.all
+							tar.remove(src)
+							tar=tar.select("Target for [G]")
+							energySwitch(src, tar, card)
+						}
 				}
 				move "Solarbeam", {
 					text "60 damage."
 					energyCost G, G, G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
 					}
 				}
 				
@@ -601,7 +680,8 @@ public enum BaseSet implements CardInfo {
 					energyCost L, L, L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						flip 1, {}, {damage 30, self}
 					}
 				}
 				move "Thunderbolt", {
@@ -609,7 +689,8 @@ public enum BaseSet implements CardInfo {
 					energyCost L, L, L, L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 100
+						discardAllSelfEnergy null
 					}
 				}
 				
@@ -623,7 +704,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2, {damage 30}
 					}
 				}
 				move "Poison Sting", {
@@ -631,7 +712,8 @@ public enum BaseSet implements CardInfo {
 					energyCost G, G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						flip{applyAfterDamage(POISONED)}
 					}
 				}
 				
@@ -644,7 +726,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2, {damage 30}
 					}
 				}
 				move "Hyper Beam", {
@@ -652,7 +734,8 @@ public enum BaseSet implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						discardDefendingEnergy()
 					}
 				}
 				
@@ -666,7 +749,7 @@ public enum BaseSet implements CardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
 				move "Earthquake", {
@@ -674,7 +757,8 @@ public enum BaseSet implements CardInfo {
 					energyCost F, F, F, F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
+						my.bench.each({ damage 10, it})
 					}
 				}
 				
@@ -687,7 +771,8 @@ public enum BaseSet implements CardInfo {
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
 				move "Thunderpunch", {
@@ -695,12 +780,13 @@ public enum BaseSet implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flip 1, {damage 10}, {damage 10, self}
 					}
 				}
 				
 			};
-			case ELECTRODE:
+			case ELECTRODE://TODO: PLEASE IMPORT THIS NIGHTMARE FROM EVOLUTIONS
 			return evolution (this, from:"Voltorb", hp:HP080, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
 				pokemonPower "Buzzap", {
@@ -713,7 +799,8 @@ public enum BaseSet implements CardInfo {
 					energyCost L, L, L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						flip 1, {}, {damage 10, self}
 					}
 				}
 				
@@ -722,20 +809,37 @@ public enum BaseSet implements CardInfo {
 			return evolution (this, from:"Pidgey", hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness LIGHTNING
 				resistance FIGHTING, MINUS30
+				def turnCount=-1
+				HP lastDamage=null
+				customAbility {
+					delayed (priority: LAST) {
+						before APPLY_ATTACK_DAMAGES, {
+							if(bg().currentTurn==self.owner.opposite) {
+								turnCount=bg.turnCount
+								lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
+							}
+						}
+					}
+				}
+				
 				move "Whirlwind", {
 					text "20 damage. If your opponent has any Benched Pokémon, he or she chooses 1 of them and switches it with the Defending Pokémon. (Do the damage before switching the Pokémon.)"
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						whirlwind()
 					}
 				}
+				
 				move "Mirror Move", {
 					text "If Pidgeotto was attacked last turn, do the final result of that attack on Pidgeotto to the Defending Pokémon."
 					energyCost C, C, C
-					attackRequirement {}
+					attackRequirement {
+						assert lastDamage && turnCount+1==bg.turnCount
+					}
 					onAttack {
-						damage 0
+						damage lastDamage.value
 					}
 				}
 				
@@ -748,7 +852,8 @@ public enum BaseSet implements CardInfo {
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						discardSelfEnergy(R)
 					}
 				}
 				move "Take Down", {
@@ -756,7 +861,8 @@ public enum BaseSet implements CardInfo {
 					energyCost R, R, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 80
+						damage 30, self
 					}
 				}
 				
@@ -769,7 +875,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Flamethrower", {
@@ -777,7 +883,8 @@ public enum BaseSet implements CardInfo {
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						discardSelfEnergy(R)
 					}
 				}
 				
@@ -790,7 +897,7 @@ public enum BaseSet implements CardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
 				move "Ice Beam", {
@@ -798,7 +905,8 @@ public enum BaseSet implements CardInfo {
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
 				
@@ -811,7 +919,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				
@@ -825,7 +933,8 @@ public enum BaseSet implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{damage 30}
+						//TODO
 					}
 				}
 				move "Pot Smash", {
@@ -833,7 +942,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				
@@ -846,7 +955,7 @@ public enum BaseSet implements CardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -859,7 +968,7 @@ public enum BaseSet implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						applyAfterDamage(ASLEEP)
 					}
 				}
 				move "Dream Eater", {
