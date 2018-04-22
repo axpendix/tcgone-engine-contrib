@@ -120,7 +120,63 @@ public enum TeamRocket implements CardInfo {
 	FULL_HEAL_ENERGY ("Full Heal Energy", 81, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
 	POTION_ENERGY ("Potion Energy", 82, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
 	DARK_RAICHU ("Dark Raichu", 83, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]);
-	
+
+	public static SimpleDeck devastation() {
+		SimpleDeck deck = new SimpleDeck("Devastation Theme Deck");
+		deck.setFormat(GameFormat.CLASSIC_SERIES);
+		Map<CardInfo, Integer> map = new HashMap<>();
+		map.put(BaseSet.WEEDLE, 3);
+		map.put(ODDISH, 3);
+		map.put(DARK_GLOOM, 1);
+		map.put(KOFFING, 4);
+		map.put(DARK_WEEZING, 1);
+		map.put(BaseSet.TANGELA, 3);
+		map.put(BaseSet.SQUIRTLE, 3);
+		map.put(BaseSet.WARTORTLE, 1);
+		map.put(DARK_WARTORTLE, 1);
+		map.put(BaseSet.MAGIKARP, 1);
+		map.put(DARK_VAPOREON, 1);
+		map.put(EEVEE, 3);
+		map.put(BaseSet.FULL_HEAL, 1);
+		map.put(BaseSet.GUST_OF_WIND, 1);
+		map.put(IMPOSTER_OAKS_REVENGE, 1);
+		map.put(BaseSet.POTION, 2);
+		map.put(BaseSet.SUPER_POTION, 1);
+		map.put(BaseSet.GRASS_ENERGY, 18);
+		map.put(BaseSet.WATER_ENERGY, 10);
+		deck.setMap(map);
+		return deck;
+	}
+
+	public static SimpleDeck trouble() {
+		SimpleDeck deck = new SimpleDeck("Trouble Theme Deck");
+		deck.setFormat(GameFormat.CLASSIC_SERIES);
+		Map<CardInfo, Integer> map = new HashMap<>();
+		map.put(BaseSet.ABRA, 2);
+		map.put(ABRA, 2);
+		map.put(BaseSet.KADABRA, 2);
+		map.put(DARK_KADABRA, 2);
+		map.put(DROWZEE, 3);
+		map.put(BaseSet.GASTLY, 2);
+		map.put(BaseSet.HAUNTER, 1);
+		map.put(BaseSet.JYNX, 1);
+		map.put(EKANS, 4);
+		map.put(DARK_ARBOK, 1);
+		map.put(BaseSet.WEEDLE, 2);
+		map.put(BaseSet.FARFETCHD, 2);
+		map.put(MEOWTH, 2);
+		map.put(BaseSet.BILL, 1);
+		map.put(BaseSet.GUST_OF_WIND, 1);
+		map.put(BaseSet.POTION, 2);
+		map.put(THE_BOSSS_WAY, 1);
+		map.put(BaseSet.SWITCH, 1);
+		map.put(BaseSet.PSYCHIC_ENERGY, 18);
+		map.put(BaseSet.GRASS_ENERGY, 10);
+		map.put(FULL_HEAL_ENERGY, 1);
+		deck.setMap(map);
+		return deck;
+	}
+
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
 	
 	protected CardTypeSet cardTypes;

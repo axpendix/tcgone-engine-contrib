@@ -100,7 +100,56 @@ public enum Fossil implements CardInfo {
 	GAMBLER ("Gambler", 60, Rarity.COMMON, [TRAINER]),
 	RECYCLE ("Recycle", 61, Rarity.COMMON, [TRAINER]),
 	MYSTERIOUS_FOSSIL ("Mysterious Fossil", 62, Rarity.COMMON, [TRAINER]);
-	
+
+	static SimpleDeck lockdown() {
+		SimpleDeck deck = new SimpleDeck("LockDown Theme Deck");
+		deck.setFormat(GameFormat.CLASSIC_SERIES);
+		Map<CardInfo, Integer> map = new HashMap<>();
+		map.put(BaseSet.VULPIX, 3);
+		map.put(BaseSet.PONYTA, 3);
+		map.put(MAGMAR, 2);
+		map.put(KRABBY, 4);
+		map.put(KINGLER, 2);
+		map.put(HORSEA, 4);
+		map.put(SEADRA, 2);
+		map.put(LAPRAS, 1);
+		map.put(BaseSet.BILL, 2);
+		map.put(ENERGY_SEARCH, 1);
+		map.put(BaseSet.FULL_HEAL, 1);
+		map.put(GAMBLER, 1);
+		map.put(BaseSet.POTION, 2);
+		map.put(BaseSet.SUPER_POTION, 2);
+		map.put(BaseSet.SWITCH, 2);
+		map.put(BaseSet.FIRE_ENERGY, 14);
+		map.put(BaseSet.WATER_ENERGY, 14);
+		deck.setMap(map);
+		return deck;
+	}
+
+	static SimpleDeck bodyguard() {
+		SimpleDeck deck = new SimpleDeck("BodyGuard Theme Deck");
+		deck.setFormat(GameFormat.CLASSIC_SERIES);
+		Map<CardInfo, Integer> map = new HashMap<>();
+		map.put(BaseSet.BULBASAUR, 2);
+		map.put(ZUBAT, 4);
+		map.put(GOLBAT, 2);
+		map.put(GRIMER, 4);
+		map.put(MUK, 1);
+		map.put(BaseSet.KOFFING, 4);
+		map.put(GEODUDE, 3);
+		map.put(GRAVELER, 2);
+		map.put(BaseSet.ONIX, 1);
+		map.put(BaseSet.POKEMON_CENTER, 1);
+		map.put(BaseSet.POTION, 4);
+		map.put(BaseSet.PROFESSOR_OAK, 2);
+		map.put(BaseSet.SUPER_POTION, 2);
+		map.put(BaseSet.GRASS_ENERGY, 16);
+		map.put(BaseSet.FIGHTING_ENERGY, 12);
+		// map.put(,);
+		deck.setMap(map);
+		return deck;
+	}
+
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
 	
 	protected CardTypeSet cardTypes;

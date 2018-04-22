@@ -62,7 +62,7 @@ public enum BaseSet implements CardInfo {
 	CHARMELEON ("Charmeleon", 24, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
 	DEWGONG ("Dewgong", 25, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
 	DRATINI ("Dratini", 26, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-	FARFETCH_D ("Farfetch'd", 27, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+	FARFETCHD ("Farfetch'd", 27, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
 	GROWLITHE ("Growlithe", 28, Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
 	HAUNTER ("Haunter", 29, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
 	IVYSAUR ("Ivysaur", 30, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
@@ -138,9 +138,107 @@ public enum BaseSet implements CardInfo {
 	LIGHTNING_ENERGY ("Lightning Energy", 100, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
 	PSYCHIC_ENERGY ("Psychic Energy", 101, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
 	WATER_ENERGY ("Water Energy", 102, Rarity.COMMON, [BASIC_ENERGY, ENERGY]);
-	
+
+	static SimpleDeck blackout() {
+		SimpleDeck blackout = new SimpleDeck("Blackout Theme Deck");
+		blackout.setFormat(GameFormat.CLASSIC_SERIES);
+		Map<CardInfo, Integer> map = new HashMap<>();
+		map.put(MACHOP, 4);
+		map.put(MACHOKE, 2);
+		map.put(SANDSHREW, 3);
+		map.put(ONIX, 3);
+		map.put(HITMONCHAN, 1);
+		map.put(STARYU, 3);
+		map.put(SQUIRTLE, 4);
+		map.put(WARTORTLE, 2);
+		map.put(FARFETCHD, 2);
+		map.put(ENERGY_REMOVAL, 4);
+		map.put(SUPER_ENERGY_REMOVAL, 1);
+		map.put(GUST_OF_WIND, 1);
+		map.put(PLUSPOWER, 1);
+		map.put(PROFESSOR_OAK, 1);
+		map.put(FIGHTING_ENERGY, 16);
+		map.put(WATER_ENERGY, 12);
+		blackout.setMap(map);
+		return blackout;
+	}
+	static SimpleDeck brushfire(){
+		SimpleDeck brushfire = new SimpleDeck("Brushfire Theme Deck");
+		brushfire.setFormat(GameFormat.CLASSIC_SERIES);
+		Map<CardInfo, Integer> map = new HashMap<>();
+		map.put(CHARMANDER, 4);
+		map.put(CHARMELEON, 2);
+		map.put(VULPIX, 2);
+		map.put(NINETALES, 1);
+		map.put(GROWLITHE, 2);
+		map.put(ARCANINE, 1);
+		map.put(WEEDLE, 4);
+		map.put(NIDORAN_MALE, 4);
+		map.put(TANGELA, 2);
+		map.put(ENERGY_REMOVAL, 1);
+		map.put(ENERGY_RETRIEVAL, 2);
+		map.put(GUST_OF_WIND, 1);
+		map.put(LASS, 1);
+		map.put(PLUSPOWER, 1);
+		map.put(POTION, 3);
+		map.put(SWITCH, 1);
+		map.put(FIRE_ENERGY, 18);
+		map.put(GRASS_ENERGY, 10);
+		brushfire.setMap(map);
+		return brushfire;
+	}
+	static SimpleDeck zap(){
+		SimpleDeck zap = new SimpleDeck("Zap! Theme Deck");
+		zap.setFormat(GameFormat.CLASSIC_SERIES);
+		Map<CardInfo, Integer> map = new HashMap<>();
+		map.put(PIKACHU, 4);
+		map.put(MAGNEMITE, 3);
+		map.put(ABRA, 3);
+		map.put(KADABRA, 1);
+		map.put(GASTLY, 3);
+		map.put(HAUNTER, 2);
+		map.put(DROWZEE, 2);
+		map.put(JYNX, 2);
+		map.put(MEWTWO, 1);
+		map.put(BILL, 2);
+		map.put(COMPUTER_SEARCH, 1);
+		map.put(DEFENDER, 1);
+		map.put(GUST_OF_WIND, 2);
+		map.put(POTION, 1);
+		map.put(PROFESSOR_OAK, 1);
+		map.put(SUPER_POTION, 1);
+		map.put(SWITCH, 2);
+		map.put(LIGHTNING_ENERGY, 12);
+		map.put(PSYCHIC_ENERGY, 16);
+		zap.setMap(map);
+		return zap;
+	}
+	static SimpleDeck overgrowth(){
+		SimpleDeck overgrowth = new SimpleDeck("Overgrowth Theme Deck");
+		overgrowth.setFormat(GameFormat.CLASSIC_SERIES);
+		Map<CardInfo, Integer> map = new HashMap<>();
+		map.put(BULBASAUR, 4);
+		map.put(IVYSAUR, 2);
+		map.put(WEEDLE, 4);
+		map.put(KAKUNA, 2);
+		map.put(BEEDRILL, 1);
+		map.put(STARYU, 4);
+		map.put(STARMIE, 3);
+		map.put(MAGIKARP, 2);
+		map.put(GYARADOS, 1);
+		map.put(BILL, 2);
+		map.put(GUST_OF_WIND, 2);
+		map.put(POTION, 1);
+		map.put(SUPER_POTION, 2);
+		map.put(SWITCH, 2);
+		map.put(GRASS_ENERGY, 16);
+		map.put(WATER_ENERGY, 12);
+		overgrowth.setMap(map);
+		return overgrowth;
+	}
+
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
-	
+
 	protected CardTypeSet cardTypes;
 	protected String name;
 	protected Rarity rarity;
@@ -718,7 +816,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case FARFETCH_D:
+			case FARFETCHD:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness LIGHTNING
 				resistance FIGHTING, MINUS30

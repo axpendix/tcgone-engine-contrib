@@ -103,7 +103,57 @@ public enum Jungle implements CardInfo {
 	POKE_BALL ("Poké Ball", 64, Rarity.COMMON, [TRAINER]);
 	
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
-	
+
+	static SimpleDeck waterBlast() {
+		SimpleDeck deck = new SimpleDeck("Water Blast Theme Deck");
+		deck.setFormat(GameFormat.CLASSIC_SERIES);
+		Map<CardInfo, Integer> map = new HashMap<>();
+		map.put(BaseSet.POLIWAG, 4);
+		map.put(BaseSet.POLIWHIRL, 2);
+		map.put(BaseSet.SEEL, 1);
+		map.put(VAPOREON, 1);
+		map.put(BaseSet.MACHOP, 2);
+		map.put(RHYHORN, 3);
+		map.put(RHYDON, 1);
+		map.put(MEOWTH, 4);
+		map.put(PERSIAN, 2);
+		map.put(EEVEE, 4);
+		map.put(BaseSet.GUST_OF_WIND, 2);
+		map.put(BaseSet.POTION, 2);
+		map.put(BaseSet.PROFESSOR_OAK, 1);
+		map.put(BaseSet.SUPER_POTION, 2);
+		map.put(BaseSet.SWITCH, 1);
+		map.put(BaseSet.WATER_ENERGY, 14);
+		map.put(BaseSet.FIGHTING_ENERGY, 14);
+		deck.setMap(map);
+		return deck;
+	}
+
+	static SimpleDeck powerReserve() {
+		SimpleDeck deck = new SimpleDeck("Power Reserve Theme Deck");
+		deck.setFormat(GameFormat.CLASSIC_SERIES);
+		Map<CardInfo, Integer> map = new HashMap<>();
+		map.put(NIDORAN_FEMALE, 4);
+		map.put(NIDORINA, 2);
+		map.put(ODDISH, 2);
+		map.put(GLOOM, 1);
+		map.put(BELLSPROUT, 4);
+		map.put(WEEPINBELL, 2);
+		map.put(BaseSet.ABRA, 4);
+		map.put(BaseSet.KADABRA, 2);
+		map.put(BaseSet.JYNX, 1);
+		map.put(KANGASKHAN, 1);
+		map.put(BaseSet.BILL, 2);
+		map.put(BaseSet.GUST_OF_WIND, 2);
+		map.put(BaseSet.POKEDEX, 1);
+		map.put(BaseSet.POTION, 3);
+		map.put(BaseSet.SWITCH, 1);
+		map.put(BaseSet.GRASS_ENERGY, 17);
+		map.put(BaseSet.PSYCHIC_ENERGY, 11);
+		deck.setMap(map);
+		return deck;
+	}
+
 	protected CardTypeSet cardTypes;
 	protected String name;
 	protected Rarity rarity;
