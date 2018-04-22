@@ -1266,7 +1266,7 @@ public enum Jungle implements CardInfo {
 						assert my.bench.notFull
 					}
 					onAttack {
-						deck.search (count: 1,{it.cardTypes.is(BASIC) && (it.name == "Nidoran ♂"} || it.name == "Nidoran ♀")).each {
+						deck.search (count: 1,{it.cardTypes.is(BASIC) && (it.name == "Nidoran ♂" || it.name == "Nidoran ♀")}).each {
 							deck.remove(it)
 							benchPCS(it)
 						}
