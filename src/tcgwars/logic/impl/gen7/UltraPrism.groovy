@@ -1559,7 +1559,7 @@ public enum UltraPrism implements CardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            increasedBaseDamageNextTurn("Pierce", hp(90))
+            increasedBaseDamageNextTurn("Pierce", hp(60))
           }
         }
         move "Pierce", {
@@ -2530,7 +2530,7 @@ public enum UltraPrism implements CardInfo {
           energyCost G, C, C
           attackRequirement {}
           onAttack {
-            flip self.cards.energyCount(C),{damage 80}
+            flip self.cards.energyCount(G),{damage 80}
           }
         }
 
@@ -2612,7 +2612,9 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 100
-            //TODO: check if Cynthia has been played
+            if(bg.em().retrieveObject("Cynthia_"+bg.turnCount)){
+              damage 100
+            }
           }
         }
 
@@ -3051,7 +3053,7 @@ public enum UltraPrism implements CardInfo {
             before APPLY_ATTACK_DAMAGES, self, {
               bg.dm().each{
                 if(self.name=="Regirock" || self.name=="Regice"  || self.name=="Registeel"  || self.name=="Regigigas" ){
-                  bc "Submerge prevent all damage"
+                  bc "ancient crystal -30"
                   it.dmg-=hp(30)
                 }
               }
@@ -3069,6 +3071,7 @@ public enum UltraPrism implements CardInfo {
           my.hand.moveTo(hidden:true, my.deck)
           shuffleDeck()
           draw 6
+          bg.em().storeObject("Cynthia_"+bg.turnCount, 1)
         }
         playRequirement{
           assert my.deck.notEmpty && (my.hand.size() != 0)
