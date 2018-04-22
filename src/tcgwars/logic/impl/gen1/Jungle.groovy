@@ -35,7 +35,7 @@ import tcgwars.logic.util.*;
  * @author axpendix@hotmail.com
  */
 public enum Jungle implements CardInfo {
-	
+
 	CLEFABLE_1 ("Clefable", 1, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
 	ELECTRODE_2 ("Electrode", 2, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
 	FLAREON_3 ("Flareon", 3, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
@@ -101,7 +101,7 @@ public enum Jungle implements CardInfo {
 	SPEAROW ("Spearow", 62, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
 	VENONAT ("Venonat", 63, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
 	POKE_BALL ("Poké Ball", 64, Rarity.COMMON, [TRAINER]);
-	
+
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
 
 	static SimpleDeck waterBlast() {
@@ -213,7 +213,7 @@ public enum Jungle implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						attack(choose(defending.moves,"Which move do you want to use?"))
 					}
 				}
 				move "Minimize", {
@@ -221,10 +221,10 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						reduceDamageNextTurn(hp(20), thisMove)
 					}
 				}
-				
+
 			};
 			case ELECTRODE_2:
 			return evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:1) {
@@ -234,7 +234,7 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Chain Lightning", {
@@ -242,10 +242,29 @@ public enum Jungle implements CardInfo {
 					energyCost L, L, L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						def defType = (defending.types as List<Type>)
+						if(!defending.types.contains(C) || defType.size() != 1){
+							if(defType.size() == 1){
+								opp.bench.each{
+									if(it.types.contains(defType.get(0))) damage 10, it
+								}
+								my.bench.each{
+									if(it.types.contains(defType.get(0))) damage 10, it
+								}
+							}
+							else{
+								opp.bench.each{
+									if(it.types.contains(defType.get(0)) || it.types.contains(defType.get(1))) damage 10, it
+								}
+								my.bench.each{
+									if(it.types.contains(defType.get(0))) damage 10, it
+								}
+							}
+						}
 					}
 				}
-				
+
 			};
 			case FLAREON_3:
 			return evolution (this, from:"Eevee", hp:HP070, type:FIRE, retreatCost:1) {
@@ -255,7 +274,8 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {damage 20}
 					}
 				}
 				move "Flamethrower", {
@@ -263,10 +283,11 @@ public enum Jungle implements CardInfo {
 					energyCost R, R, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						discardSelfEnergy R
 					}
 				}
-				
+
 			};
 			case JOLTEON_4:
 			return evolution (this, from:"Eevee", hp:HP070, type:LIGHTNING, retreatCost:1) {
@@ -276,7 +297,8 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {damage 20}
 					}
 				}
 				move "Pin Missile", {
@@ -284,10 +306,10 @@ public enum Jungle implements CardInfo {
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 4, {damage 20}
 					}
 				}
-				
+
 			};
 			case KANGASKHAN_5:
 			return basic (this, hp:HP090, type:COLORLESS, retreatCost:3) {
@@ -298,7 +320,7 @@ public enum Jungle implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						draw 1
 					}
 				}
 				move "Comet Punch", {
@@ -306,17 +328,27 @@ public enum Jungle implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 4, {damage 20}
 					}
 				}
-				
+
 			};
 			case MR_MIME_6:
 			return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
 				weakness PSYCHIC
 				pokemonPower "Invisible Wall", {
 					text "Whenever an attack (including your own) does 30 or more damage to Mr. Mime (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.) This power can’t be used if Mr. Mime is Asleep, Confused, or Paralyzed."
-					actionA {
+					delayedA {
+						before APPLY_ATTACK_DAMAGES, self, {
+							if(!(self.isSPC(ASLEEP) || self.isSPC(CONFUSED) || self.isSPC(PARALYZED))){
+								bg.dm().each {
+									if(it.to == self & it.dmg.value > 20) {
+										bc "Invisible Wall prevents damage"
+										it.dmg = hp(0)
+									}
+								}
+							}
+						}
 					}
 				}
 				move "Meditate", {
@@ -324,10 +356,10 @@ public enum Jungle implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10+10*defending.numberOfDamageCounters
 					}
 				}
-				
+
 			};
 			case NIDOQUEEN_7:
 			return evolution (this, from:"Nidorina", hp:HP090, type:GRASS, retreatCost:3) {
@@ -337,7 +369,10 @@ public enum Jungle implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						my.all.each{
+							if(it.name == "Nidoking") damage 20
+						}
 					}
 				}
 				move "Mega Punch", {
@@ -345,10 +380,10 @@ public enum Jungle implements CardInfo {
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
-				
+
 			};
 			case PIDGEOT_8:
 			return evolution (this, from:"Pidgeotto", hp:HP080, type:COLORLESS, retreatCost:0) {
@@ -359,7 +394,7 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Hurricane", {
@@ -367,10 +402,14 @@ public enum Jungle implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						afterDamage{
+							shuffleDeck(defending.cards)
+	            removePCS(defending)
+						}
 					}
 				}
-				
+
 			};
 			case PINSIR_9:
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
@@ -380,7 +419,8 @@ public enum Jungle implements CardInfo {
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Guillotine", {
@@ -388,10 +428,10 @@ public enum Jungle implements CardInfo {
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
-				
+
 			};
 			case SCYTHER_10:
 			return basic (this, hp:HP070, type:GRASS, retreatCost:0) {
@@ -402,7 +442,7 @@ public enum Jungle implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						increasedBaseDamageNextTurn("Slash",hp(30))
 					}
 				}
 				move "Slash", {
@@ -410,10 +450,10 @@ public enum Jungle implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
-				
+
 			};
 			case SNORLAX_11:
 			return basic (this, hp:HP090, type:COLORLESS, retreatCost:4) {
@@ -421,7 +461,16 @@ public enum Jungle implements CardInfo {
 				resistance PSYCHIC, MINUS30
 				pokemonPower "Thick Skinned", {
 					text "Snorlax can’t become Asleep, Confused, Paralyzed, or Poisoned. This power can’t be used if Snorlax is already Asleep, Confused, or Paralyzed."
-					actionA {
+					delayedA {
+						before APPLY_SPECIAL_CONDITION,self, {
+							if(!(self.isSPC(ASLEEP) || self.isSPC(CONFUSED) || self.isSPC(PARALYZED))){
+								if(ef.type == ASLEEP  || ef.type == CONFUSED  ||  ef.type == PARALYZED  || ef.type == POISONED)
+								{
+									bc "Thick Skinned"
+									prevent()
+								}
+							}
+						}
 					}
 				}
 				move "Body Slam", {
@@ -429,10 +478,11 @@ public enum Jungle implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flipThenApplySC PARALYZED
 					}
 				}
-				
+
 			};
 			case VAPOREON_12:
 			return evolution (this, from:"Eevee", hp:HP080, type:WATER, retreatCost:1) {
@@ -442,7 +492,8 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {damage 20}
 					}
 				}
 				move "Water Gun", {
@@ -450,10 +501,11 @@ public enum Jungle implements CardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def dmgInc = Math.max(Math.min(4,self.cards.energyCount(W))-2,0)
+						damage 30 + 10 * dmgInc
 					}
 				}
-				
+
 			};
 			case VENOMOTH_13:
 			return evolution (this, from:"Venonat", hp:HP070, type:GRASS, retreatCost:0) {
@@ -462,6 +514,22 @@ public enum Jungle implements CardInfo {
 				pokemonPower "Shift", {
 					text "Once during your turn (before your attack), you may change the type of Venomoth to the type of any other Pokémon in play other than Colorless. This power can’t be used if Venomoth is Asleep, Confused, or Paralyzed."
 					actionA {
+						assert !(self.isSPC(ASLEEP) || self.isSPC(CONFUSED) || self.isSPC(PARALYZED)) : "This pokemon is Asleep, Confused, or Paralyzed"
+						checkLastTurn()
+						def typeList = []
+						my.all.each{
+							if(typeList.contains(it.types.get(0)) && it.types.get(0) != C) typeList.add(it.types.get(0))
+
+							if(it.types.size() > 1){
+								if(typeList.contains(it.types.get(1)) && it.types.get(1) != C) typeList.add(it.types.get(1))
+							}
+						}
+						assert typeList : "There is no pokemon in play with a type different than [C]"
+						powerUsed()
+						getter GET_POKEMON_TYPE, self, {h->
+							h.object.retainAll()
+							h.object.add(choose(typeList,"Select the new type of Venomoth"))
+						}
 					}
 				}
 				move "Venom Powder", {
@@ -469,10 +537,14 @@ public enum Jungle implements CardInfo {
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {
+							apply POISONED
+							apply CONFUSED
+						}
 					}
 				}
-				
+
 			};
 			case VICTREEBEL_14:
 			return evolution (this, from:"Weepinbell", hp:HP080, type:GRASS, retreatCost:2) {
@@ -482,7 +554,8 @@ public enum Jungle implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def pcs = opp.bench.select("Switch")
+            sw opp.active, pcs
 					}
 				}
 				move "Acid", {
@@ -490,10 +563,11 @@ public enum Jungle implements CardInfo {
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {cantAttackNextTurn defending}
 					}
 				}
-				
+
 			};
 			case VILEPLUME_15:
 			return evolution (this, from:"Gloom", hp:HP080, type:GRASS, retreatCost:2) {
@@ -501,6 +575,12 @@ public enum Jungle implements CardInfo {
 				pokemonPower "Heal", {
 					text "Once during your turn (before your attack), you may flip a coin. If heads, remove 1 damage counter from 1 of your Pokémon. This power can’t be used if Vileplume is Asleep, Confused, or Paralyzed."
 					actionA {
+						checkLastTurn()
+						assert !(self.isSPC(ASLEEP) || self.isSPC(CONFUSED) || self.isSPC(PARALYZED)) : "This pokemon is Asleep, Confused, or Paralyzed"
+						powerUsed()
+						flip{
+							heal 10, my.all.select("Select 1 pokemon to remove 1 damage")
+						}
 					}
 				}
 				move "Petal Dance", {
@@ -508,10 +588,10 @@ public enum Jungle implements CardInfo {
 					energyCost G, G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 40}
 					}
 				}
-				
+
 			};
 			case WIGGLYTUFF_16:
 			return evolution (this, from:"Jigglypuff", hp:HP080, type:COLORLESS, retreatCost:2) {
@@ -522,7 +602,7 @@ public enum Jungle implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply ASLEEP
 					}
 				}
 				move "Do the Wave", {
@@ -530,10 +610,10 @@ public enum Jungle implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10 + 10* my.bench.size()
 					}
 				}
-				
+
 			};
 			case CLEFABLE:
 			return copy (CLEFABLE_1, this)
@@ -576,7 +656,10 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						afterDamage{
+							whirlwind()
+						}
 					}
 				}
 				move "Mega Drain", {
@@ -584,10 +667,11 @@ public enum Jungle implements CardInfo {
 					energyCost G, G, G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						removeDamageCounterEqualToHalfDamageDone()
 					}
 				}
-				
+
 			};
 			case DODRIO:
 			return evolution (this, from:"Doduo", hp:HP070, type:COLORLESS, retreatCost:0) {
@@ -595,7 +679,10 @@ public enum Jungle implements CardInfo {
 				resistance FIGHTING, MINUS30
 				pokemonPower "Retreat Aid", {
 					text "As long as Dodrio is Benched, pay 1 less to retreat your Active Pokémon."
-					actionA {
+					getterA GET_RETREAT_COST { h->
+						if(my.bench.find{it == self}){
+							h.object = Math.max(0,h.object-1)
+						}
 					}
 				}
 				move "Rage", {
@@ -603,10 +690,10 @@ public enum Jungle implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10+10*my.bench.size()
 					}
 				}
-				
+
 			};
 			case EXEGGUTOR:
 			return evolution (this, from:"Exeggcute", hp:HP080, type:GRASS, retreatCost:3) {
@@ -614,9 +701,12 @@ public enum Jungle implements CardInfo {
 				move "Teleport", {
 					text "Switch Exeggutor with 1 of your Benched Pokémon."
 					energyCost P
-					attackRequirement {}
+					attackRequirement {
+						assert my.bench.notEmpty : "there is no pokemon on your bench"
+					}
 					onAttack {
-						damage 0
+						def pcs = my.bench.select("Switch")
+            sw opp.active, pcs
 					}
 				}
 				move "Big Eggsplosion", {
@@ -624,10 +714,12 @@ public enum Jungle implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip self.energyCount(C){
+							damage 20
+						}
 					}
 				}
-				
+
 			};
 			case FEAROW:
 			return evolution (this, from:"Spearow", hp:HP070, type:COLORLESS, retreatCost:0) {
@@ -638,7 +730,8 @@ public enum Jungle implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip{preventAllEffectsNextTurn()}
 					}
 				}
 				move "Drill Peck", {
@@ -646,10 +739,10 @@ public enum Jungle implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
-				
+
 			};
 			case GLOOM:
 			return evolution (this, from:"Oddish", hp:HP060, type:GRASS, retreatCost:1) {
@@ -659,7 +752,7 @@ public enum Jungle implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply POISONED
 					}
 				}
 				move "Foul Odor", {
@@ -667,10 +760,12 @@ public enum Jungle implements CardInfo {
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						apply CONFUSED
+						apply CONFUSED, self
 					}
 				}
-				
+
 			};
 			case LICKITUNG:
 			return basic (this, hp:HP090, type:COLORLESS, retreatCost:3) {
@@ -681,7 +776,8 @@ public enum Jungle implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {apply PARALYZED}
 					}
 				}
 				move "Supersonic", {
@@ -689,10 +785,10 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flipThenApplySC CONFUSED
 					}
 				}
-				
+
 			};
 			case MAROWAK:
 			return evolution (this, from:"Cubone", hp:HP060, type:FIGHTING, retreatCost:1) {
@@ -703,18 +799,25 @@ public enum Jungle implements CardInfo {
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2, {damage 30}
 					}
 				}
 				move "Call for Friend", {
 					text "Search your deck for a [F] Basic Pokémon card and put it onto your Bench. Shuffle your deck afterward. (You can’t use this attack if your bench is full.)"
 					energyCost F, F, C
-					attackRequirement {}
+					attackRequirement {
+						assert deck.notEmpty
+						assert my.bench.notFull
+					}
 					onAttack {
-						damage 0
+						deck.search (count: 1,{it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(F)}).each {
+              deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
 					}
 				}
-				
+
 			};
 			case NIDORINA:
 			return evolution (this, from:"Nidoran ♀", hp:HP070, type:GRASS, retreatCost:1) {
@@ -724,7 +827,7 @@ public enum Jungle implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flipThenApplySC CONFUSED
 					}
 				}
 				move "Double Kick", {
@@ -732,10 +835,10 @@ public enum Jungle implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2, {damage 30}
 					}
 				}
-				
+
 			};
 			case PARASECT:
 			return evolution (this, from:"Paras", hp:HP060, type:GRASS, retreatCost:1) {
@@ -745,7 +848,7 @@ public enum Jungle implements CardInfo {
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply ASLEEP
 					}
 				}
 				move "Slash", {
@@ -753,10 +856,10 @@ public enum Jungle implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
-				
+
 			};
 			case PERSIAN:
 			return evolution (this, from:"Meowth", hp:HP070, type:COLORLESS, retreatCost:0) {
@@ -767,7 +870,7 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Pounce", {
@@ -775,10 +878,25 @@ public enum Jungle implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						delayed{
+							before APPLY_ATTACK_DAMAGES, {
+								if(ef.attacker.owner == self.owner.opposite) {
+									bg.dm().each{
+										if(it.to == self && it.notNoEffect && it.dmg.value) {
+											 bc "Pounce -10"
+											 it.dmg -= hp(10)
+										}
+									}
+								}
+							}
+							unregisterAfter 2
+							after EVOLVE,defending, {unregister()}
+							after SWITCH,defending, {unregister()}
+						}
 					}
 				}
-				
+
 			};
 			case PRIMEAPE:
 			return evolution (this, from:"Mankey", hp:HP070, type:FIGHTING, retreatCost:1) {
@@ -788,7 +906,7 @@ public enum Jungle implements CardInfo {
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 3, {damage 20}
 					}
 				}
 				move "Tantrum", {
@@ -796,10 +914,11 @@ public enum Jungle implements CardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						flip 1, {}, {apply CONFUSED}
 					}
 				}
-				
+
 			};
 			case RAPIDASH:
 			return evolution (this, from:"Ponyta", hp:HP070, type:FIRE, retreatCost:0) {
@@ -809,7 +928,8 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {damage 10}
 					}
 				}
 				move "Agility", {
@@ -817,10 +937,11 @@ public enum Jungle implements CardInfo {
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flip{preventAllEffectsNextTurn()}
 					}
 				}
-				
+
 			};
 			case RHYDON:
 			return evolution (this, from:"Rhyhorn", hp:HP100, type:FIGHTING, retreatCost:3) {
@@ -831,7 +952,7 @@ public enum Jungle implements CardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Ram", {
@@ -839,10 +960,16 @@ public enum Jungle implements CardInfo {
 					energyCost F, F, F, F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						damage 20, Self
+						afterDamage{
+							if(opp.bench){
+								whirlwind()
+							}
+						}
 					}
 				}
-				
+
 			};
 			case SEAKING:
 			return evolution (this, from:"Goldeen", hp:HP070, type:WATER, retreatCost:1) {
@@ -852,7 +979,7 @@ public enum Jungle implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Waterfall", {
@@ -860,10 +987,10 @@ public enum Jungle implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
-				
+
 			};
 			case TAUROS:
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:2) {
@@ -874,7 +1001,8 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {damage 10}
 					}
 				}
 				move "Rampage", {
@@ -882,10 +1010,13 @@ public enum Jungle implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20+10*self.numberOfDamageCounters
+						afterDamage{
+							flip 1, {}, {apply CONFUSED}
+						}
 					}
 				}
-				
+
 			};
 			case WEEPINBELL:
 			return evolution (this, from:"Bellsprout", hp:HP070, type:GRASS, retreatCost:1) {
@@ -895,7 +1026,8 @@ public enum Jungle implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						apply POISONED
 					}
 				}
 				move "Razor Leaf", {
@@ -903,10 +1035,10 @@ public enum Jungle implements CardInfo {
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
-				
+
 			};
 			case BELLSPROUT:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
@@ -916,18 +1048,24 @@ public enum Jungle implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Call for Family", {
 					text "Search your deck for a Basic Pokémon named Bellsprout and put it onto your Bench. Shuffle your deck afterward. (You can’t use this attack if your Bench is full.)"
 					energyCost G
-					attackRequirement {}
+					attackRequirement {
+						assert deck.notEmpty
+						assert my.bench.notFull
+					}
 					onAttack {
-						damage 0
+						deck.search (count: 1,{it.cardTypes.is(BASIC) && it.name == "Bellsprout"}).each {
+              deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
 					}
 				}
-				
 			};
 			case CUBONE:
 			return basic (this, hp:HP040, type:FIGHTING, retreatCost:1) {
@@ -938,7 +1076,21 @@ public enum Jungle implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						delayed{
+							before APPLY_ATTACK_DAMAGES, {
+								if(ef.attacker.owner == self.owner.opposite) {
+									bg.dm().each{
+										if(it.to == self && it.notNoEffect && it.dmg.value) {
+											 bc "Snivel -20"
+											 it.dmg -= hp(20)
+										}
+									}
+								}
+							}
+							unregisterAfter 2
+							after SWITCH,defending, {unregister()}
+							after SWITCH,self, {unregister()}
+						}
 					}
 				}
 				move "Rage", {
@@ -946,10 +1098,10 @@ public enum Jungle implements CardInfo {
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10+10*self.numberOfDamageCounters
 					}
 				}
-				
+
 			};
 			case EEVEE:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -960,7 +1112,22 @@ public enum Jungle implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{
+							delayed{
+								before APPLY_ATTACK_DAMAGES, {
+									bc "Tail Wag prevent attacking Eevee"
+									prevent()
+								}
+								before null, self, Source.ATTACK, {
+									bc "Tail Wag prevent attacking Eevee"
+									prevent()
+								}
+
+								unregisterAfter 2
+								after SWITCH,defending, {unregister()}
+								after SWITCH,self, {unregister()}
+							}
+						}
 					}
 				}
 				move "Quick Attack", {
@@ -968,10 +1135,11 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {damage 20}
 					}
 				}
-				
+
 			};
 			case EXEGGCUTE:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -981,7 +1149,7 @@ public enum Jungle implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply ASLEEP
 					}
 				}
 				move "Leech Seed", {
@@ -989,10 +1157,18 @@ public enum Jungle implements CardInfo {
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						delayed {
+						  before APPLY_ATTACK_DAMAGES, {
+						    if(bg.dm().find{it.to == defending && it.from == self && it.dmg.value}) {
+						      heal 10, self
+						    }
+						  }
+						  unregisterAfter 1
+						}
 					}
 				}
-				
+
 			};
 			case GOLDEEN:
 			return basic (this, hp:HP040, type:WATER, retreatCost:0) {
@@ -1002,10 +1178,10 @@ public enum Jungle implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
-				
+
 			};
 			case JIGGLYPUFF:
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
@@ -1016,7 +1192,7 @@ public enum Jungle implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply ASLEEP
 					}
 				}
 				move "Pound", {
@@ -1024,10 +1200,10 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
-				
+
 			};
 			case MANKEY:
 			return basic (this, hp:HP030, type:FIGHTING, retreatCost:0) {
@@ -1035,6 +1211,15 @@ public enum Jungle implements CardInfo {
 				pokemonPower "Peek", {
 					text "Once during your turn (before your attack), you may look at one of the following: the top card of either player’s deck, a random card from your opponent’s hand, or one of either player’s Prizes. This power can’t be used if Mankey is Asleep, Confused, or Paralyzed."
 					actionA {
+						assert !(self.isSPC(ASLEEP) || self.isSPC(CONFUSED) || self.isSPC(PARALYZED)) : "This pokemon is Asleep, Confused, or Paralyzed"
+						def choice = choose([0,1,2,3,4],["Top of your deck", "Top of your opponent's deck", "Your opponent’s hand ", "Your Prizes", "Opponent's Prizes"])
+						switch (choice){
+							case 0: my.deck.subList(0,1).showToMe("Top of your deck");
+							case 1: opp.deck.subList(0,1).showToMe("Top of your opponent's deck");
+							case 2: opp.hand.select(hidden: true, "Select a random card from opponent's hand").showToMe("Selected card");
+							case 3: my.prizeAsList.select(hidden: true, "Select a random card from your prizes").showToMe("Selected card");
+							case 4: opp.prizeAsList.select(hidden: true, "Select a random card from your opponent's prizes").showToMe("Selected card");
+						}
 					}
 				}
 				move "Scratch", {
@@ -1042,10 +1227,10 @@ public enum Jungle implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
-				
+
 			};
 			case MEOWTH:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -1056,10 +1241,11 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {draw 1}
 					}
 				}
-				
+
 			};
 			case NIDORAN_FEMALE:
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
@@ -1069,18 +1255,25 @@ public enum Jungle implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 3 {damage 10}
 					}
 				}
 				move "Call for Family", {
 					text "earch your deck for a Basic Pokémon named Nidoran ♂ or Nidoran ♀ and put it onto your Bench. Shuffle your deck afterward. (You can’t use this attack if your Bench is full.)"
 					energyCost G, G
-					attackRequirement {}
+					attackRequirement {
+						assert deck.notEmpty
+						assert my.bench.notFull
+					}
 					onAttack {
-						damage 0
+						deck.search (count: 1,{it.cardTypes.is(BASIC) && (it.name == "Nidoran ♂"} || it.name == "Nidoran ♀")).each {
+							deck.remove(it)
+							benchPCS(it)
+						}
+						shuffleDeck()
 					}
 				}
-				
+
 			};
 			case ODDISH:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1090,18 +1283,26 @@ public enum Jungle implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {apply PARALYZED}
 					}
 				}
 				move "Sprout", {
 					text "Search your deck for a Basic Pokémon named Oddish and put it onto your Bench. Shuffle your deck afterward. (You can’t use this attack if your Bench is full.)"
 					energyCost G, G
-					attackRequirement {}
+					attackRequirement {
+						assert deck.notEmpty
+						assert my.bench.notFull
+					}
 					onAttack {
-						damage 0
+						deck.search (count: 1,{it.cardTypes.is(BASIC) && it.name == "Oddish"}).each {
+              deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
 					}
 				}
-				
+
 			};
 			case PARAS:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
@@ -1111,7 +1312,7 @@ public enum Jungle implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Spore", {
@@ -1119,10 +1320,10 @@ public enum Jungle implements CardInfo {
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply ASLEEP
 					}
 				}
-				
+
 			};
 			case PIKACHU:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
@@ -1132,10 +1333,11 @@ public enum Jungle implements CardInfo {
 					energyCost L, L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(opp.bench) damage 10, opp.bench.select().first()
 					}
 				}
-				
+
 			};
 			case RHYHORN:
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:3) {
@@ -1146,7 +1348,22 @@ public enum Jungle implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{
+							delayed{
+								before APPLY_ATTACK_DAMAGES, {
+									bc "Tail Wag prevent attacking Eevee"
+									prevent()
+								}
+								before null, self, Source.ATTACK, {
+									bc "Tail Wag prevent attacking Eevee"
+									prevent()
+								}
+
+								unregisterAfter 2
+								after SWITCH,defending, {unregister()}
+								after SWITCH,self, {unregister()}
+							}
+						}
 					}
 				}
 				move "Slash", {
@@ -1154,10 +1371,10 @@ public enum Jungle implements CardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
-				
+
 			};
 			case SPEAROW:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:0) {
@@ -1168,7 +1385,7 @@ public enum Jungle implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Mirror Move", {
@@ -1176,10 +1393,10 @@ public enum Jungle implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						//TODO : implement mirror move.
 					}
 				}
-				
+
 			};
 			case VENONAT:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
@@ -1189,7 +1406,8 @@ public enum Jungle implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {apply PARALYZED}
 					}
 				}
 				move "Leech Life", {
@@ -1197,22 +1415,27 @@ public enum Jungle implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						removeDamageCounterEqualToDamageDone()
 					}
 				}
-				
+
 			};
 			case POKE_BALL:
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, you may search your deck for any Basic Pokémon or Evolution card. Show that card to your opponent, then put it into your hand. Shuffle your deck afterward."
 				onPlay {
+					flip{
+						my.deck.search(count : 1, "search for a Basic Pokémon or Evolution card", {it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)}).moveTo(my.hand)
+					}
 				}
 				playRequirement{
+					assert my.deck
 				}
 			};
 				default:
 			return null;
 		}
 	}
-	
+
 }
