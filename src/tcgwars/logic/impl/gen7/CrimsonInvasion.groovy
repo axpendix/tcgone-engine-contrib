@@ -128,13 +128,13 @@ public enum CrimsonInvasion implements CardInfo {
   TYPE__NULL_89 ("Type: Null", 89, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
   SILVALLY_GX_90 ("Silvally-GX", 90, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _COLORLESS_]),
   COUNTER_CATCHER_91 ("Counter Catcher", 91, Rarity.UNCOMMON, [ITEM, TRAINER]),
-  DASHING_POUCH_92 ("Dashing Pouch", 92, Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER]),
+  DASHING_POUCH_92 ("Dashing Pouch", 92, Rarity.UNCOMMON, [POKEMON_TOOL, ITEM, TRAINER]),
   DEVOURED_FIELD_93 ("Devoured Field", 93, Rarity.UNCOMMON, [STADIUM, TRAINER]),
-  FIGHTING_MEMORY_94 ("Fighting Memory", 94, Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER]),
+  FIGHTING_MEMORY_94 ("Fighting Memory", 94, Rarity.UNCOMMON, [POKEMON_TOOL, ITEM, TRAINER]),
   GLADION_95 ("Gladion", 95, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
   LUSAMINE_96 ("Lusamine", 96, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
   PEEKING_RED_CARD_97 ("Peeking Red Card", 97, Rarity.UNCOMMON, [ITEM, TRAINER]),
-  PSYCHIC_MEMORY_98 ("Psychic Memory", 98, Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER]),
+  PSYCHIC_MEMORY_98 ("Psychic Memory", 98, Rarity.UNCOMMON, [POKEMON_TOOL, ITEM, TRAINER]),
   SEA_OF_NOTHINGNESS_99 ("Sea of Nothingness", 99, Rarity.UNCOMMON, [STADIUM, TRAINER]),
   COUNTER_ENERGY_100 ("Counter Energy", 100, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   GYARADOS_GX_101 ("Gyarados-GX", 101, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _WATER_]),
@@ -157,7 +157,7 @@ public enum CrimsonInvasion implements CardInfo {
   ALOLAN_EXEGGUTOR_GX_118 ("Alolan Exeggutor-GX", 118, Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _DRAGON_]),
   SILVALLY_GX_119 ("Silvally-GX", 119, Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _COLORLESS_]),
   COUNTER_CATCHER_120 ("Counter Catcher", 120, Rarity.SECRET, [ITEM, TRAINER]),
-  WISHFUL_BATON_121 ("Wishful Baton", 121, Rarity.SECRET, [POKEMON_TOOL, TRAINER]),
+  WISHFUL_BATON_121 ("Wishful Baton", 121, Rarity.SECRET, [POKEMON_TOOL,ITEM, TRAINER]),
   COUNTER_ENERGY_122 ("Counter Energy", 122, Rarity.SECRET, [SPECIAL_ENERGY, ENERGY]),
   WARP_ENERGY_123 ("Warp Energy", 123, Rarity.SECRET, [SPECIAL_ENERGY, ENERGY]),
   WATER_ENERGY_124 ("Water Energy", 124, Rarity.SECRET, [BASIC_ENERGY, ENERGY]);
@@ -544,9 +544,9 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Submerge", {
           text "As long as this Pokémon is on your Bench, prevent all damage done to this Pokémon by attacks (both yours and your opponent's)."
           delayedA {
-            before APPLY_ATTACK_DAMAGES, {
+            before APPLY_ATTACK_DAMAGES, self, {
               bg.dm().each{
-                if(!self.active){
+                if(!self.active && it.to == self){
                   bc "Submerge prevent all damage"
                   it.dmg=hp(0)
                 }
@@ -762,7 +762,9 @@ public enum CrimsonInvasion implements CardInfo {
         move "TLC", {
           text "Shuffle 1 of your opponent's Benched Pokémon that has any damage counters on it and all cards attached to it into their deck."
           energyCost W
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench.findAll {it.numberOfDamageCounters}
+          }
           onAttack {
             def tar = opp.bench.findAll {it.numberOfDamageCounters}.select()
             tar.cards.moveTo(opp.deck)
@@ -1241,7 +1243,6 @@ public enum CrimsonInvasion implements CardInfo {
                 poktool.showToMe("Pokemon with tool")
 
                 if(confirm("discard this tool for 40 more damages?")){
-
                   it.cards.filterByType(POKEMON_TOOL).discard()
                   damage 40
                 }
@@ -1528,7 +1529,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            damage 30, opp.bench.select()
+            if(opp.bench) damage 30, opp.bench.select()
           }
         }
         move "Knuckle Impact", {
