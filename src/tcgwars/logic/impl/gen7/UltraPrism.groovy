@@ -1507,8 +1507,8 @@ public enum UltraPrism implements CardInfo {
           onAttack {
             my.all.each{
               def dmcm = Math.min(4,it.numberOfDamageCounters)
-              it.damage-=hp(dmcm)
-              opp.active.damage+=hp(dmcm)
+              it.damage-=hp(dmcm*10)
+              opp.active.damage+=hp(dmcm*10)
             }
           }
         }
@@ -1637,7 +1637,7 @@ public enum UltraPrism implements CardInfo {
           onActivate {r->
 						if(r==PLAY_FROM_HAND && confirm('Use Chaotic Star?')){
               if(my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(PSYCHIC)){
-                my.hand.select(count:2,"Search for 2 Psychic Energy",basicEnergyFilter(PSYCHIC)).each{
+                my.hand.select(max:2,"Search for 2 Psychic Energy",basicEnergyFilter(PSYCHIC)).each{
                   attachEnergy(self,it)
                 }
               }
