@@ -2673,7 +2673,7 @@ public enum UltraPrism implements CardInfo {
                   prevent()
                 }
               }
-              unregisterAfter 1
+              unregisterAfter 2
             }
           }
         }
