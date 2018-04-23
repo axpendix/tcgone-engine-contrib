@@ -501,8 +501,8 @@ public enum Jungle implements CardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						def dmgInc = Math.max(Math.min(4,self.cards.energyCount(W))-2,0)
-						damage 30 + 10 * dmgInc
+						damage 30
+						extraEnergyDamage(2,hp(10),W,thisMove)
 					}
 				}
 
