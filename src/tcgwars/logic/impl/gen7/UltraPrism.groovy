@@ -1507,8 +1507,8 @@ public enum UltraPrism implements CardInfo {
           onAttack {
             my.all.each{
               def dmcm = Math.min(4,it.numberOfDamageCounters)
-              it.damages-=hp(dmcm)
-              opp.active.damages+=hp(dmcm)
+              it.damage-=hp(dmcm)
+              opp.active.damage+=hp(dmcm)
             }
           }
         }
@@ -1636,8 +1636,8 @@ public enum UltraPrism implements CardInfo {
           text "When you play this Pokémon from your hand onto your Bench during your turn, you may attach 2 [P] Energy cards from your hand to it."
           onActivate {r->
 						if(r==PLAY_FROM_HAND && confirm('Use Chaotic Star?')){
-              if(my.hand.filterByEnergyType(PSYCHIC)){
-                my.hand.select(count:2,"Search for 2 Psychic Energy",cardTypeFilter(PSYCHIC)).each{
+              if(my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(PSYCHIC)){
+                my.hand.select(count:2,"Search for 2 Psychic Energy",basicEnergyFilter(PSYCHIC)).each{
                   attachEnergy(self,it)
                 }
               }
@@ -1709,7 +1709,8 @@ public enum UltraPrism implements CardInfo {
             assert my.discard.filterByEnergyType(PSYCHIC) : "There is no [P] Energy card in your discard pile."
           }
           onAttack {
-            my.discard.select(max:opp.all.size(),"Search for $cnt Psychic Energy",cardTypeFilter(PSYCHIC)).each{
+            def cnt = opp.all.size()
+            my.discard.select(max:cnt,"Search for $cnt Psychic Energy",basicEnergyFilter(PSYCHIC)).each{
               attachEnergy(self,it)
             }
           }
@@ -1838,11 +1839,10 @@ public enum UltraPrism implements CardInfo {
           actionA {
             checkLastTurn()
 						assert my.deck
+            assert my.all.findAll({it.name.contains("Garchomp")})
 						powerUsed()
-            if(my.bench.findAll({it.name.contains("Garchomp")})){
-              my.deck.search(count:1).moveTo(my.hand)
-              shuffleDeck()
-            }
+            my.deck.select(count:1).moveTo(my.hand)
+            shuffleDeck()
           }
         }
         move "Missile Jab", {
