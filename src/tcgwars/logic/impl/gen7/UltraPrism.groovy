@@ -1332,7 +1332,7 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Evolutionary Advantage", {
           text "If you go second, this Pokémon can evolve during your first turn."
           getterA IS_EVOLUTION_BLOCKED { h ->
-            if(bg.turnCount == turnCount && h.effect.target == self)
+            if(bg.turnCount == 2 && h.effect.target == self)
               h.object = false
           }
         }
@@ -2567,7 +2567,7 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Rock Hiding", {
           text "If this Pokémon has any [F] Energy attached to it, it has no Retreat Cost."
           getterA GET_RETREAT_COST, self, {h->
-            if(bg.cards.energyCount(F)) {
+            if(it.effect.target.energyCount(F)) {
               h.object = 0
             }
           }
@@ -2662,10 +2662,20 @@ public enum UltraPrism implements CardInfo {
           onAttack {
             damage 150
             //TODO : skip turns
+            def eff
             delayed{
-              before null, {
+
+              before BETWEEN_TURNS, {
+                if(bg.currentTurn == self.owner.opposite) eff.unregister()
+              }
+              register {
+                eff = before null, {
                   wcu "Timeless GX makes you skip turn"
                   prevent()
+                }
+              }
+              unregister{
+                eff.unregister()
               }
               unregisterAfter 1
             }
