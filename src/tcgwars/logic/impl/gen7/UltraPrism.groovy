@@ -1506,7 +1506,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             my.all.each{
-              def dmcm = min(4,it.numberOfDamageCounters)
+              def dmcm = Math.min(4,it.numberOfDamageCounters)
               it.damages-=hp(dmcm)
               opp.active.damages+=hp(dmcm)
             }
@@ -1518,7 +1518,9 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 80
-            whirlwind()
+            afterDamage{
+              whirlwind()
+            }
           }
         }
 
@@ -1530,7 +1532,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C
           attackRequirement {
             //Does this need an attack requirement?
-            assert my.discard.filterByType(SUPPORTER)
+            assert my.discard.filterByType(SUPPORTER) : "There is no Supporter cards in your discard"
           }
           onAttack {
             def list = my.discard.filterByType(SUPPORTER)
@@ -1540,13 +1542,13 @@ public enum UltraPrism implements CardInfo {
           }
         }
         move "Terrify", {
-          text "If the Defending Pokémon is a Basic Pokémon, it can’t attack during your opponent’s next turn."
+          text "10 damage. If the Defending Pokémon is a Basic Pokémon, it can’t attack during your opponent’s next turn."
           energyCost C
           attackRequirement {
-            assert defending.basic
           }
           onAttack {
-            cantAttackNextTurn defending
+            damage 10
+            if(defending.basic) cantAttackNextTurn defending
           }
         }
 
@@ -1612,7 +1614,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            applyAfterDamage(PARALYZED)
+            applyAfterDamage(POISONED)
           }
         }
         move "Exact Revenge", {
@@ -1621,9 +1623,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            //TODO: check the type of the koed pokemon
-            if(my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1) damage 90
-
+            if(my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1 && my.lastKnockoutTypes && my.lastKnockoutTypes.contains(F)) damage 70
           }
         }
 
@@ -1636,8 +1636,10 @@ public enum UltraPrism implements CardInfo {
           text "When you play this Pokémon from your hand onto your Bench during your turn, you may attach 2 [P] Energy cards from your hand to it."
           onActivate {r->
 						if(r==PLAY_FROM_HAND && confirm('Use Chaotic Star?')){
-              my.hand.search(max:2,"Search for 2 Psychic Energy",cardTypeFilter(PSYCHIC)).each{
-                attachEnergy(self,it)
+              if(my.hand.filterByEnergyType(PSYCHIC)){
+                my.hand.select(count:2,"Search for 2 Psychic Energy",cardTypeFilter(PSYCHIC)).each{
+                  attachEnergy(self,it)
+                }
               }
 						}
 					}
@@ -1703,9 +1705,11 @@ public enum UltraPrism implements CardInfo {
         move "Full Moon Star", {
           text "For each of your opponent’s Pokémon in play, attach a [P] Energy card from your discard pile to your Pokémon in any way you like."
           energyCost P
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard.filterByEnergyType(PSYCHIC) : "There is no [P] Energy card in your discard pile."
+          }
           onAttack {
-            my.deck.search(max:opp.all.size,"Search for $cnt Psychic Energy",cardTypeFilter(PSYCHIC)).each{
+            my.discard.select(max:opp.all.size(),"Search for $cnt Psychic Energy",cardTypeFilter(PSYCHIC)).each{
               attachEnergy(self,it)
             }
           }
@@ -1718,7 +1722,8 @@ public enum UltraPrism implements CardInfo {
             int c=0
             opp.all.each {c+=it.cards.energyCount(C)}
             my.all.each {c+=it.cards.energyCount(C)}
-            damage 20*c          }
+            damage 20*c
+          }
         }
 
       };
@@ -1749,7 +1754,7 @@ public enum UltraPrism implements CardInfo {
           energyCost P, P, P
           attackRequirement {
             gxCheck()
-            assert my.prizeAsList.size() > opp.prizeAsList.size()
+            assert my.prizeAsList.size() > opp.prizeAsList.size() : "you don't have more Prize cards remaining"
           }
           onAttack {
             damage 180
@@ -1832,9 +1837,8 @@ public enum UltraPrism implements CardInfo {
           text "Once during your turn (before your attack), if you have Garchomp in play, you may search your deck for a card and put it into your hand. Then, shuffle your deck."
           actionA {
             checkLastTurn()
-						assert self.deck
+						assert my.deck
 						powerUsed()
-            //TODO : Garchomp EX/GX check?
             if(my.bench.findAll({it.name.contains("Garchomp")})){
               my.deck.search(count:1).moveTo(my.hand)
               shuffleDeck()
@@ -1861,7 +1865,6 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            //TODO: Eleventh Hour Tackle
             if(my.deck.size()<4)
               damage 130
           }
