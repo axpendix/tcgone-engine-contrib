@@ -2257,7 +2257,7 @@ public enum UltraPrism implements CardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if(it.to.types.contains(M) && it.to.owner == self.owner && it.from.owner == self.owner){
+                if(it.to.types.contains(M) && it.from.cards.filterByType(SPECIAL_ENERGY) && it.to.owner == self.owner && it.from.owner == self.owner.opposite){
                     it.dmg = hp(0)
                 }
               }
@@ -2359,7 +2359,7 @@ public enum UltraPrism implements CardInfo {
           }
           onAttack {
             opp.all.each{
-              attachEnergyFrom(METAL,my.discard,my.all.select())
+              attachEnergyFrom(type:M,my.discard,my.all.select())
             }
           }
         }
@@ -2500,13 +2500,11 @@ public enum UltraPrism implements CardInfo {
           }
           onAttack {
             while(1){
-              def pl=(my.all.findAll {it.numberOfDamageCounters})
+              def pl=(opp.all.findAll {it.numberOfDamageCounters})
               if(!pl) break;
-              def src =pl.select("source for energy (cancel to stop)", false)
+              def src =pl.select("source for damage counter (cancel to stop)", false)
               if(!src) break;
-              def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
-
-              def tar=my.all.select("Target for damage counter (cancel to stop)", false)
+              def tar=opp.all.select("Target for damage counter (cancel to stop)", false)
               if(!tar) break;
 
               src.damage-=hp(10)
@@ -2539,7 +2537,7 @@ public enum UltraPrism implements CardInfo {
               if(it.name=="Exeggcute"){
                 def nam=it.name
                 def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-                evolve(it, tar.first(), OTHER)
+                if(tar) evolve(it, tar.first(), OTHER)
               }
             }
             shuffleDeck()
@@ -2565,9 +2563,9 @@ public enum UltraPrism implements CardInfo {
             assert my.deck
           }
           onAttack {
-            def nam=it.name
+            def nam=self.name
             def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-            evolve(it, tar.first(), OTHER)
+            if(tar) evolve(it, tar.first(), OTHER)
             shuffleDeck()
           }
         }
@@ -2604,9 +2602,9 @@ public enum UltraPrism implements CardInfo {
             assert my.deck
           }
             onAttack {
-              def nam=it.name
+              def nam=self.name
               def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              evolve(it, tar.first(), OTHER)
+              if(tar) evolve(it, tar.first(), OTHER)
               shuffleDeck()
             }
         }
