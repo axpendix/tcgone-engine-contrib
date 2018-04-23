@@ -2484,7 +2484,6 @@ public enum CrimsonInvasion implements CardInfo {
         onPlay {
           if(my.discard.findAll(cardTypeFilter(SUPPORTER))) my.discard.select(count :1,"Search your discard pile for 1 supporter", cardTypeFilter(SUPPORTER)).moveTo(hand)
           if(my.discard.findAll(cardTypeFilter(STADIUM))) my.discard.select(count :1,"Search your discard pile for 1 stadium",cardTypeFilter(STADIUM)).moveTo(hand)
-          shuffleDeck()
         }
         playRequirement{
           assert deck
