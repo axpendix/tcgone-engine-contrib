@@ -2210,8 +2210,8 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Magnetic Circuit", {
           text "As often as you like during your turn (before your attack), you may attach a [M] Energy card from your hand to 1 of your Pokémon."
           actionA {
-            assert my.hand.findAll{it.cardTypes.is(M)}
-            my.hand.findAll{it.cardTypes.is(M)}.select().moveTo(my.all.select())
+            assert my.hand.findAll(basicEnergyFilter(METAL))
+            my.hand.findAll(basicEnergyFilter(METAL)).select().moveTo(my.all.select())
           }
         }
         move "Zap Cannon", {
@@ -2255,9 +2255,9 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Earthen Shield", {
           text "Prevent all damage done to your [M] Pokémon by attacks from your opponent’s Pokémon that have any Special Energy attached to them."
           delayedA {
-            before PROCESS_ATTACK_EFFECTS, {
+            before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if(ef.target.types.contains(M)){
+                if(ef.target.types.contains(M) && ef.target.owner = self.owner){
                     it.dmg = hp(0)
                 }
               }
@@ -2333,7 +2333,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            decreasedBaseDamageNextTurn(hp(30),thisMove)
+            reduceDamageNextTurn(hp(30),thisMove)
           }
         }
         move "Boiling Impact", {
@@ -2355,11 +2355,12 @@ public enum UltraPrism implements CardInfo {
           text "For each of your opponent’s Pokémon in play, attach a [M] Energy card from your discard pile to your Pokémon in any way you like."
           energyCost M
           attackRequirement {
-            assert my.discard
+            assert my.discard.filterByEnergyType(METAL) : "There is no [M] Energy card in your discard pile."
           }
           onAttack {
-            opp.all.each{
-              attachEnergyFrom(type: METAL, my.discard, my.all.select)
+            def cnt = opp.all.size()
+            my.discard.select(max:cnt,"Search for $cnt Metal Energy",basicEnergyFilter(METAL)).each{
+              attachEnergy(self,it)
             }
           }
         }
@@ -2416,10 +2417,11 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Change Clothes", {
           text "Once your turn (before your attack), you may put a Pokémon Tool card attached to 1 of your Pokémon into your hand."
           actionA {
+            checkLastTurn()
             def tar = my.all.findAll{it.cards.filterByType(POKEMON_TOOL)}
-            if(tar){
-              tar.select().cards.filterByType(POKEMON_TOOL).moveTo(my.hand)
-            }
+            assert tar : "None of your pokemon have a Pokémon Tool card attached to it"
+            powerUsed()
+            tar.select().cards.filterByType(POKEMON_TOOL).moveTo(my.hand)
           }
         }
         move "Rolling Attack", {
@@ -2461,6 +2463,7 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Illuminate", {
           text "Once during your turn (before your attack), you may search your deck for a [Y] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
           actionA {
+            checkLastTurn()
             assert my.deck
             my.deck.search(count: 1, "search for a fairy pokemon", {it.types.contains(Y)}).moveTo(my.hand)
             shuffleDeck()
@@ -2497,13 +2500,24 @@ public enum UltraPrism implements CardInfo {
           }
           onAttack {
             while(1){
-              if(confirm("move a damage counter on your opponent’s Pokémon to their other Pokémon (you can move as many as you want in any way you like)"))
+              def pl=(my.all.findAll {it.numberOfDamageCounters()})
+              if(!pl) break;
+              def src =pl.select("source for energy (cancel to stop)", false)
+              if(!src) break;
+              def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
+
+              def tar=my.all.select("Target for damage counter (cancel to stop)", false)
+              if(!tar) break;
+
+              src.damage-=hp(10)
+              tar.damage+=hp(10)
+              /*if(confirm("move a damage counter on your opponent’s Pokémon to their other Pokémon (you can move as many as you want in any way you like)"))
               {
                 def src = opp.all.select()
                 def tar = opp.all.findAll({it != src}).select()
                 src.damage-=hp(10)
                 tar.damage+=hp(10)
-              }
+              }*/
               else{
                 break
               }
@@ -2517,12 +2531,15 @@ public enum UltraPrism implements CardInfo {
         weakness FAIRY
         move "Exeggutor’s Paradise", {
           text "For each of your Benched Exeggcute, search your deck for an Alolan Exeggutor or Alolan Exeggutor-GX and put it onto that Exeggcute to evolve it. Then, shuffle your deck."
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck
+          }
           onAttack {
             my.bench.each{
               if(it.name=="Exeggcute"){
-                def names=my.all.collect{it.name}
-                my.deck.search("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
+                def nam=it.name
+                def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
+                evolve(it, tar, OTHER)
               }
             }
             shuffleDeck()
@@ -2544,10 +2561,13 @@ public enum UltraPrism implements CardInfo {
         move "Ascension", {
           text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
           energyCost F
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck
+          }
           onAttack {
-            def names=my.all.collect{it.name}
-            my.deck.search("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
+            def nam=it.name
+            def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
+            evolve(it, tar, OTHER)
             shuffleDeck()
           }
         }
@@ -2580,10 +2600,13 @@ public enum UltraPrism implements CardInfo {
         move "Ascension", {
           text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
           energyCost F
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck
+          }
             onAttack {
-              def names=my.all.collect{it.name}
-              my.deck.search("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
+              def nam=it.name
+              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
+              evolve(it, tar, OTHER)
               shuffleDeck()
             }
         }
