@@ -2665,10 +2665,11 @@ public enum UltraPrism implements CardInfo {
             def eff
             delayed{
 
-              before BETWEEN_TURNS, {
-                if(bg.currentTurn == self.owner.opposite) eff.unregister()
-              }
+
               register {
+                before BETWEEN_TURNS, {
+                  if(bg.currentTurn == self.owner.opposite) unregister()
+                }
                 eff = before null, {
                   if(bg.currentTurn == self.owner.opposite){
                     wcu "Timeless GX makes you skip turn"
