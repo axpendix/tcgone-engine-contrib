@@ -2211,7 +2211,7 @@ public enum UltraPrism implements CardInfo {
           text "As often as you like during your turn (before your attack), you may attach a [M] Energy card from your hand to 1 of your Pokémon."
           actionA {
             assert my.hand.findAll(basicEnergyFilter(METAL))
-            my.hand.findAll(basicEnergyFilter(METAL)).select().moveTo(my.all.select())
+            attachEnergyFrom(may: true, type: METAL, my.hand, my.all)
           }
         }
         move "Zap Cannon", {
@@ -2257,7 +2257,7 @@ public enum UltraPrism implements CardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if(ef.target.types.contains(M) && ef.target.owner == self.owner){
+                if(it.to.types.contains(M) && it.to.owner == self.owner && it.from.owner == self.owner){
                     it.dmg = hp(0)
                 }
               }
@@ -2358,9 +2358,8 @@ public enum UltraPrism implements CardInfo {
             assert my.discard.filterByEnergyType(METAL) : "There is no [M] Energy card in your discard pile."
           }
           onAttack {
-            def cnt = opp.all.size()
-            my.discard.select(max:cnt,"Search for $cnt Metal Energy",basicEnergyFilter(METAL)).each{
-              attachEnergy(self,it)
+            opp.all.each{
+              attachEnergyFrom(METAL,my.discard,my.all.select())
             }
           }
         }
@@ -2465,6 +2464,7 @@ public enum UltraPrism implements CardInfo {
           actionA {
             checkLastTurn()
             assert my.deck
+            powerUsed()
             my.deck.search(count: 1, "search for a fairy pokemon", {it.types.contains(Y)}).moveTo(my.hand)
             shuffleDeck()
           }
@@ -2500,7 +2500,7 @@ public enum UltraPrism implements CardInfo {
           }
           onAttack {
             while(1){
-              def pl=(my.all.findAll {it.numberOfDamageCounters()})
+              def pl=(my.all.findAll {it.numberOfDamageCounters})
               if(!pl) break;
               def src =pl.select("source for energy (cancel to stop)", false)
               if(!src) break;
@@ -2539,7 +2539,7 @@ public enum UltraPrism implements CardInfo {
               if(it.name=="Exeggcute"){
                 def nam=it.name
                 def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-                evolve(it, tar, OTHER)
+                evolve(it, tar.first(), OTHER)
               }
             }
             shuffleDeck()
@@ -2567,7 +2567,7 @@ public enum UltraPrism implements CardInfo {
           onAttack {
             def nam=it.name
             def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-            evolve(it, tar, OTHER)
+            evolve(it, tar.first(), OTHER)
             shuffleDeck()
           }
         }
@@ -2606,7 +2606,7 @@ public enum UltraPrism implements CardInfo {
             onAttack {
               def nam=it.name
               def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              evolve(it, tar, OTHER)
+              evolve(it, tar.first(), OTHER)
               shuffleDeck()
             }
         }
