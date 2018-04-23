@@ -2162,7 +2162,7 @@ public enum UltraPrism implements CardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if(!self.active){
+                if(!self.active && it.to == self){
                   bc "Solid Unit prevent all damage"
                   it.dmg=hp(0)
                 }
