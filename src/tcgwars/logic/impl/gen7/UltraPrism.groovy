@@ -2517,10 +2517,10 @@ public enum UltraPrism implements CardInfo {
                 def tar = opp.all.findAll({it != src}).select()
                 src.damage-=hp(10)
                 tar.damage+=hp(10)
-              }*/
+              }
               else{
                 break
-              }
+              }*/
             }
           }
         }
