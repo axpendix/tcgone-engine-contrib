@@ -2482,8 +2482,8 @@ public enum CrimsonInvasion implements CardInfo {
       return supporter (this) {
         text "Put 2 in any combination of Supporter and Stadium cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          my.deck.search(count :1,"Search your deck for 1 supporter", cardTypeFilter(SUPPORTER)).moveTo(hand)
-          my.deck.search(count :1,"Search your deck for 1 stadium",cardTypeFilter(STADIUM)).moveTo(hand)
+          if(my.discard.findAll(cardTypeFilter(SUPPORTER))) my.discard.select(count :1,"Search your discard pile for 1 supporter", cardTypeFilter(SUPPORTER)).moveTo(hand)
+          if(my.discard.findAll(cardTypeFilter(STADIUM))) my.discard.select(count :1,"Search your discard pile for 1 stadium",cardTypeFilter(STADIUM)).moveTo(hand)
           shuffleDeck()
         }
         playRequirement{
