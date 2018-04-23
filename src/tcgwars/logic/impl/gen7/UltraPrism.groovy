@@ -2567,7 +2567,7 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Rock Hiding", {
           text "If this Pokémon has any [F] Energy attached to it, it has no Retreat Cost."
           getterA GET_RETREAT_COST, self, {h->
-            if(h.effect.target.energyCount(F)) {
+            if(h.effect.target.cards.energyCount(F)) {
               h.object = 0
             }
           }
@@ -2664,21 +2664,14 @@ public enum UltraPrism implements CardInfo {
             //TODO : skip turns
             def eff
             delayed{
-
-
-              register {
-                before BETWEEN_TURNS, {
-                  if(bg.currentTurn == self.owner.opposite) unregister()
-                }
-                eff = before null, {
-                  if(bg.currentTurn == self.owner.opposite){
-                    wcu "Timeless GX makes you skip turn"
-                    prevent()
-                  }
-                }
+              before BETWEEN_TURNS, {
+                if(bg.currentTurn == self.owner.opposite) unregister()
               }
-              unregister{
-                eff.unregister()
+              before null, {
+                if(bg.currentTurn == self.owner.opposite){
+                  wcu "Timeless GX makes you skip turn"
+                  prevent()
+                }
               }
               unregisterAfter 1
             }
