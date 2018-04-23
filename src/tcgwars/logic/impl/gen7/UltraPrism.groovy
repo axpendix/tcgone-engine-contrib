@@ -1469,7 +1469,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 120
-            cantAttackNextTurn(self)
+            cantAttackNextTurn self
           }
         }
 
@@ -2369,7 +2369,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 160
-            CantAttackNextTurn()
+            cantAttackNextTurn self
           }
         }
 
@@ -2509,16 +2509,6 @@ public enum UltraPrism implements CardInfo {
 
               src.damage-=hp(10)
               tar.damage+=hp(10)
-              /*if(confirm("move a damage counter on your opponent’s Pokémon to their other Pokémon (you can move as many as you want in any way you like)"))
-              {
-                def src = opp.all.select()
-                def tar = opp.all.findAll({it != src}).select()
-                src.damage-=hp(10)
-                tar.damage+=hp(10)
-              }
-              else{
-                break
-              }*/
             }
           }
         }
@@ -2565,7 +2555,7 @@ public enum UltraPrism implements CardInfo {
           onAttack {
             def nam=self.name
             def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-            if(tar) evolve(it, tar.first(), OTHER)
+            if(tar) evolve(self, tar.first(), OTHER)
             shuffleDeck()
           }
         }
@@ -2604,7 +2594,7 @@ public enum UltraPrism implements CardInfo {
             onAttack {
               def nam=self.name
               def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(it, tar.first(), OTHER)
+              if(tar) evolve(self, tar.first(), OTHER)
               shuffleDeck()
             }
         }
