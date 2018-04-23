@@ -2257,7 +2257,7 @@ public enum UltraPrism implements CardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if(ef.target.types.contains(M) && ef.target.owner = self.owner){
+                if(ef.target.types.contains(M) && ef.target.owner == self.owner){
                     it.dmg = hp(0)
                 }
               }
