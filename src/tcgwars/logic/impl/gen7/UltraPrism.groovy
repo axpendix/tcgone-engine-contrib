@@ -2669,9 +2669,10 @@ public enum UltraPrism implements CardInfo {
               delayed{
                 before BETWEEN_TURNS, {
                   prevent()
+                  unregister()
                 }
-                unregisterAfter 1
               }
+              draw 1
             }
           }
         }
