@@ -3303,6 +3303,13 @@ public enum UltraPrism implements CardInfo {
                         }
                     }
                     acl = action("Discard unidentified fossil", [TargetPlayer.SELF]){
+                        delayed{
+                          before TAKE_PRIZE, {
+                            if(ef.pcs==self){
+                                prevent()
+                            }
+                          }
+                        }
                         new Knockout(self).run(bg)
                     }
                 }
