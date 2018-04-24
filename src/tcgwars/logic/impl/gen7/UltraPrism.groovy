@@ -3110,7 +3110,7 @@ public enum UltraPrism implements CardInfo {
           def num = 0
           while(benChoice.size()<2){
             num = 2 - benChoice.size()
-            benChoice.add(opp.bench.findAll{!benChoice.contains(it)}.oppSelect("select a pokemon to discard ($num remaining to discard)"))
+            benChoice.add(opp.bench.findAll{!benChoice.contains(it)}.oppSelect("select a pokemon to keep on your bench ($num remaining)"))
           }
           opp.bench.findAll{!benChoice.contains(it)}.each{
             shuffleDeck(it.cards)
