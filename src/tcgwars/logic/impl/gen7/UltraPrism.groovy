@@ -2658,8 +2658,11 @@ public enum UltraPrism implements CardInfo {
         move "Timeless GX", {
           text "150 damage. Take another turn after this one. (Skip the between-turns step.) (You can’t use more than 1 GX attack in a game.)"
           energyCost M, M, M, C, C
-          attackRequirement {}
+          attackRequirement {
+            gxCheck()
+          }
           onAttack {
+            gxPerform()
             damage 150
             afterDamage{
               bg.turnCount += 1
@@ -2683,7 +2686,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             while(1){
-              def pl=(my.bench.findAll {it.cards.energyCount(G)})
+              def pl=(my.bench.findAll {it.cards.energyCount(C)})
               if(!pl) break;
               def src =pl.select("source for energy (cancel to stop)", false)
               if(!src) break;
@@ -2703,8 +2706,11 @@ public enum UltraPrism implements CardInfo {
         move "Zero Vanish GX", {
           text "150 damage. Shuffle all Energy from each of your opponent’s Pokémon into their deck. (You can’t use more than 1 GX attack in a game.)"
           energyCost W, W, W, C, C
-          attackRequirement {}
+          attackRequirement {
+            gxCheck()
+          }
           onAttack {
+            gxPerform()
             damage 150
             afterDamage{
               opp.all.each{
@@ -2864,6 +2870,7 @@ public enum UltraPrism implements CardInfo {
             damage 20
             if(bg.stadiumInfoStruct)
             {
+              dc "${bg.stadiumInfoStruct}"
               discard bg.stadiumInfoStruct.stadiumCard
               preventAllEffectsNextTurn()
             }
@@ -3067,9 +3074,10 @@ public enum UltraPrism implements CardInfo {
         def eff
         onPlay {reason->
           eff = delayed{
-            before APPLY_ATTACK_DAMAGES, self, {
+            before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if(it.to == self && (self.name=="Regirock" || self.name=="Regice"  || self.name=="Registeel"  || self.name=="Regigigas")){
+                bc "${it.to.name}"
+                if(it.to == self && it.from.owner == self.owner.opposite && (self.name=="Regirock" || self.name=="Regice" || self.name=="Registeel" || self.name=="Regigigas")){
                   bc "ancient crystal -30"
                   it.dmg-=hp(30)
                 }
@@ -3098,12 +3106,14 @@ public enum UltraPrism implements CardInfo {
       return supporter (this) {
         text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nYou can’t play this card if you don’t have any [W] or [M] Pokémon in play.\nYour opponent chooses 2 Benched Pokémon and shuffles the others, and all cards attached to them, into their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          if(opp.bench.size()>2){
-            def tar = opp.bench.oppSelect(count : 2)
-            opp.bench.removeAll(tar).each{
-              it.cards.moveTo(opp.deck)
-              removePCS(it)
-            }
+          def benChoice = []
+          while(benChoice.size()<2){
+            num = 2 - benChoice.size()
+            benChoice.add(opp.bench.oppSelect("select a pokemon to discard ($num remaining to discard)"))
+          }
+          opp.bench.removeAll(benChoice).each{
+            shuffleDeck(it.cards)
+            removePCS(it)
           }
         }
         playRequirement{
@@ -3297,9 +3307,29 @@ public enum UltraPrism implements CardInfo {
         }
       };
       case UNIT_ENERGY_GRW_137:
-      return copy (SUPER_BOOST_ENERGY_PRISM_STAR_136, this);
+      return specialEnergy (this,[[G],[R],[W]]) {
+        text "This card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [G], [W], and [R] Energy but provides only 1 Energy at a time."
+        onPlay {reason->
+        }
+        onRemoveFromPlay {
+        }
+        onMove {to->
+        }
+        allowAttach {to->
+        }
+      };
       case UNIT_ENERGY_LPM_138:
-      return copy (SUPER_BOOST_ENERGY_PRISM_STAR_136, this);
+      return specialEnergy (this, [[L],[P],[M]]) {
+        text "is card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [L], [P], and [M] Energy but provides only 1 Energy at a time."
+        onPlay {reason->
+        }
+        onRemoveFromPlay {
+        }
+        onMove {to->
+        }
+        allowAttach {to->
+        }
+      };
       case LEAFEON_GX_139:
       return copy (LEAFEON_GX_13, this);
       case PHEROMOSA_GX_140:
