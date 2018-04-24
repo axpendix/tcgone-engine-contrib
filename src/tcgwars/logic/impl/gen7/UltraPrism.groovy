@@ -3278,9 +3278,50 @@ public enum UltraPrism implements CardInfo {
       return itemCard (this) {
         text "Play this card as if it were a 60-HP [C] Basic Pokémon. At any time during your turn (before your attack), you may discard this card from play.\nThis card can’t retreat.\nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {
-          //TODO : copy old fossil card?
+        Card pokemonCard, trainerCard = thisCard
+        pokemonCard = basic (new CustomCardInfo(UNIDENTIFIED_FOSSIL_134).setCardTypes(BASIC, POKEMON), hp:HP060, type:COLORLESS, retreatCost:0) {
+            customAbility{
+                def ef2, acl
+                onActivate{
+                    delayed {
+                        before RETREAT, self, {
+                            wcu "Cannot retreat"
+                            prevent()
+                        }
+                        before TAKE_PRIZE, {
+                            if(ef.pcs==self){
+                                bc "No prize card for Robo Substitute"
+                                prevent()
+                            }
+                        }
+                    }
+                    if(!ef2){
+                        ef2 = delayed {
+                            after REMOVE_FROM_PLAY, {
+                                if(ef.removedCards.contains(pokemonCard)){
+                                    bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                                    unregister()
+                                    ef2 = null
+                                }
+                            }
+                        }
+                    }
+                    acl = action("Discard Robo Substitute", [TargetPlayer.SELF]){
+                        new Knockout(self).run(bg)
+                    }
+                }
+                onDeactivate{
+                    acl.each{bg.gm().unregisterAction(it)}
+                }
+            }
+        }
+        pokemonCard.player = trainerCard.player
+        bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+        hand.remove(pokemonCard)
+        benchPCS(pokemonCard)
         }
         playRequirement{
+            assert bench.notFull
         }
       };
       case VOLKNER_135:
