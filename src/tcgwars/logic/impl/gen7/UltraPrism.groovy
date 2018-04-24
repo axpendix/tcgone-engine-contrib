@@ -3440,18 +3440,16 @@ public enum UltraPrism implements CardInfo {
       };
       case DUSK_MANE_NECROZMA_GX_145:
       return copy (DUSK_MANE_NECROZMA_GX_90, this);
+      case DIALGA_GX_146:
+      return copy (DIALGA_GX_100, this);
+      case PALKIA_GX_147:
+      return copy (PALKIA_GX_101, this);
+      case CYNTHIA_148:
+      return copy (CYNTHIA_119, this);
+      case GARDENIA_149:
+      return copy (GARDENIA_124, this);
       case LANA_150:
-      return supporter (this) {
-        text "Heal 50 damage from each of your Pokémon that has any [W] Energy attached to it.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        onPlay {
-          my.all.each{
-            if(it.cards.energyCount(W))
-              heal 50, it
-          }
-        }
-        playRequirement{
-        }
-      };
+      return copy (BurningShadows.LANA_117,this);
       case LILLIE_151:
       return copy (LILLIE_125, this);
       case LOOKER_152:
