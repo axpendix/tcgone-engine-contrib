@@ -3077,7 +3077,6 @@ public enum UltraPrism implements CardInfo {
           eff = delayed{
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                bc "${it.to.name}"
                 if(it.to == self && it.from.owner == self.owner.opposite && (self.name=="Regirock" || self.name=="Regice" || self.name=="Registeel" || self.name=="Regigigas")){
                   bc "ancient crystal -30"
                   it.dmg-=hp(30)
@@ -3108,6 +3107,7 @@ public enum UltraPrism implements CardInfo {
         text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nYou can’t play this card if you don’t have any [W] or [M] Pokémon in play.\nYour opponent chooses 2 Benched Pokémon and shuffles the others, and all cards attached to them, into their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
           def benChoice = []
+          def num = 0
           while(benChoice.size()<2){
             num = 2 - benChoice.size()
             benChoice.add(opp.bench.oppSelect("select a pokemon to discard ($num remaining to discard)"))
