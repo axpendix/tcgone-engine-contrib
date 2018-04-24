@@ -3221,7 +3221,7 @@ public enum UltraPrism implements CardInfo {
           if(my.hand.findAll({it.name=="Missing Clover"}).size()==4)
             {
               if(confirm("Use your 4 Missing Clover and take a prize card?")){
-                  bg.em().run(new TakePrize(thisCard.player,thisCard.player.active))
+                  bg.em().run(new TakePrize(thisCard.player,thisCard.player.pbg.active))
                   my.hand.findAll({it.name=="Missing Clover"}).discard()
               }
             }
@@ -3243,7 +3243,7 @@ public enum UltraPrism implements CardInfo {
 						assert lastTurn != bg().turnCount : "Already used"
 						bc "Used Brooklet Hill effect"
 						lastTurn = bg().turnCount
-            my.discard.search(max:2,"Search for 2 Metal Energy card to put into your hand",basicEnergyFilter(M)).moveTo(my.hand)
+            my.discard.select(max:2,"Search for 2 Metal Energy card to put into your hand",basicEnergyFilter(M)).moveTo(my.hand)
           }
         }
         onRemoveFromPlay{
@@ -3347,10 +3347,18 @@ public enum UltraPrism implements CardInfo {
       case UNIT_ENERGY_GRW_137:
       return specialEnergy (this,[[G],[R],[W]]) {
         text "This card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [G], [W], and [R] Energy but provides only 1 Energy at a time."
+        onPlay {reason->
+	      }
+	      onRemoveFromPlay {
+	      }
       };
       case UNIT_ENERGY_LPM_138:
       return specialEnergy (this, [[L],[P],[M]]) {
         text "is card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [L], [P], and [M] Energy but provides only 1 Energy at a time."
+        onPlay {reason->
+	      }
+	      onRemoveFromPlay {
+	      }
       };
       case LEAFEON_GX_139:
       return copy (LEAFEON_GX_13, this);
@@ -3362,11 +3370,7 @@ public enum UltraPrism implements CardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            delayed{
-              before PREVENT_EFFECT, {
-                if(bg.turnCount < 3) prevent()
-              }
-            }
+            //TODO : attack first turn
             damage 30
           }
         }
@@ -3424,9 +3428,13 @@ public enum UltraPrism implements CardInfo {
           energyCost L
           attackRequirement {
             assert opp.hand.notEmpty
+            gxCheck()
           }
           onAttack {
-            damage opp.hand.select().moveTo(opp.prizeAsList)
+            gxPerform()
+            def newPrizelist = new CardList(opp.prizeAsList);
+            newPrizelist.add(opp.hand.select(hidden : false, count : 1).remove(0))
+            opp.prize= newPrizelist.toArray()
           }
         }
 
