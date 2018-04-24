@@ -3186,10 +3186,10 @@ public enum UltraPrism implements CardInfo {
       return supporter (this) {
         text "Draw 3 cards from the bottom of your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          my.deck.subList(my.deck.size()-3,my.deck.size())
+          my.deck.subList(my.deck.size()-3,my.deck.size()).moveTo(my.hand)
         }
         playRequirement{
-          assert my.deck.size()>2
+          assert my.deck
         }
       };
       case LOOKER_WHISTLE_127:
@@ -3218,10 +3218,10 @@ public enum UltraPrism implements CardInfo {
       return itemCard (this) {
         text "You may play 4 Missing Clover cards at once. \n-If you played 1 card, look at the top card of your deck \n if you played 4 cards, take a prize card \nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {
-          if(my.hand.findAll({it.name=="Missing Clover"}).size()==3)
+          if(my.hand.findAll({it.name=="Missing Clover"}).size()==4)
             {
               if(confirm("Use your 4 Missing Clover and take a prize card?")){
-                  bg.em().run(new TakePrize(self.owner,self))
+                  bg.em().run(new TakePrize(thisCard.player,thisCard.player.active))
                   my.hand.findAll({it.name=="Missing Clover"}).discard()
               }
             }
@@ -3235,12 +3235,14 @@ public enum UltraPrism implements CardInfo {
       case MT__CORONET_130:
       return stadium (this) {
         text "Once during each player’s turn, that player may put 2 [M] Energy cards from their discard pile into their hand.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
-        def eff
+        def lastTurn=0
+				def actions=[]
         onPlay {
-          eff=action{
-            checkLastTurn()
-            assert my.discard
-            powerUsed()
+          actions=action("Stadium: Mt Coronet"){
+            assert my.discard.filterByEnergyType(METAL)
+						assert lastTurn != bg().turnCount : "Already used"
+						bc "Used Brooklet Hill effect"
+						lastTurn = bg().turnCount
             my.discard.search(max:2,"Search for 2 Metal Energy card to put into your hand",basicEnergyFilter(M)).moveTo(my.hand)
           }
         }
@@ -3265,7 +3267,7 @@ public enum UltraPrism implements CardInfo {
       return itemCard (this) {
         text "Shuffle 2 Supporter cards from your discard pile into your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {
-          my.discard.search(count:2,"Search for 2 Supporter cards to shuffle into your deck",cardTypeFilter(SUPPORTER)).moveTo(my.deck)
+          my.discard.select(count:2,"Search for 2 Supporter cards to shuffle into your deck",cardTypeFilter(SUPPORTER)).moveTo(my.deck)
           shuffleDeck()
         }
         playRequirement{
@@ -3288,12 +3290,6 @@ public enum UltraPrism implements CardInfo {
                             wcu "Cannot retreat"
                             prevent()
                         }
-                        before TAKE_PRIZE, {
-                            if(ef.pcs==self){
-                                bc "No prize card for Robo Substitute"
-                                prevent()
-                            }
-                        }
                     }
                     if(!ef2){
                         ef2 = delayed {
@@ -3306,7 +3302,7 @@ public enum UltraPrism implements CardInfo {
                             }
                         }
                     }
-                    acl = action("Discard Robo Substitute", [TargetPlayer.SELF]){
+                    acl = action("Discard unidentified fossil", [TargetPlayer.SELF]){
                         new Knockout(self).run(bg)
                     }
                 }
@@ -3328,8 +3324,8 @@ public enum UltraPrism implements CardInfo {
       return supporter (this) {
         text "Search your deck for an Item card and a [L] Energy card, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          my.deck.search(cardTypeFilter(ITEM)).moveTo(my.hand)
-          my.deck.search(basicEnergyFilter(L)).moveTo(my.hand)
+          my.deck.search("Search your deck for an Item card",cardTypeFilter(ITEM)).moveTo(my.hand)
+          my.deck.search("Search your deck for a [L] Energy card",basicEnergyFilter(L)).moveTo(my.hand)
           shuffleDeck()
         }
         playRequirement{
@@ -3351,26 +3347,10 @@ public enum UltraPrism implements CardInfo {
       case UNIT_ENERGY_GRW_137:
       return specialEnergy (this,[[G],[R],[W]]) {
         text "This card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [G], [W], and [R] Energy but provides only 1 Energy at a time."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
       };
       case UNIT_ENERGY_LPM_138:
       return specialEnergy (this, [[L],[P],[M]]) {
         text "is card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [L], [P], and [M] Energy but provides only 1 Energy at a time."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
       };
       case LEAFEON_GX_139:
       return copy (LEAFEON_GX_13, this);
@@ -3382,7 +3362,11 @@ public enum UltraPrism implements CardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            //TODO : allow action first turn
+            delayed{
+              before PREVENT_EFFECT, {
+                if(bg.turnCount < 3) prevent()
+              }
+            }
             damage 30
           }
         }
