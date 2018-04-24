@@ -2661,19 +2661,14 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 150
-            //TODO : skip turns
-            def eff
-            delayed{
-              before BETWEEN_TURNS, {
-                if(bg.currentTurn == self.owner.opposite) unregister()
-              }
-              before null, {
-                if(bg.currentTurn == self.owner.opposite){
-                  wcu "Timeless GX makes you skip turn"
+            afterDamage{
+              bg.turnCount += 1
+              delayed{
+                before BETWEEN_TURNS, {
                   prevent()
                 }
+                unregisterAfter 1
               }
-              unregisterAfter 2
             }
           }
         }
@@ -2688,13 +2683,12 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             while(1){
-              if(confirm("Move an Energy from your Benched Pokémon to this Pokémon (you can move as many as you want)"))
-              {
-                moveEnergy(my.bench,self)
-              }
-              else{
-                break
-              }
+              def pl=(my.bench.findAll {it.cards.energyCount(G)})
+              if(!pl) break;
+              def src =pl.select("source for energy (cancel to stop)", false)
+              if(!src) break;
+              def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
+              energySwitch(src, self, card)
             }
           }
         }
@@ -2703,7 +2697,7 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 60+20*self.energyCount(W)
+            damage 60+20*self.cards.energyCount(W)
           }
         }
         move "Zero Vanish GX", {
@@ -2834,10 +2828,12 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            if(confirm("Shuffle this Pokémon and all cards attached to it into your deck?"))
-            {
-              shuffleDeck(self.cards)
-              removePCS(self)
+            if(my.bench){
+              if(confirm("Shuffle this Pokémon and all cards attached to it into your deck?"))
+              {
+                shuffleDeck(self.cards)
+                removePCS(self)
+              }
             }
           }
         }
@@ -2852,7 +2848,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            decreasedBaseDamageNextTurn(hp(40),thisMove)
+            reduceDamageFromDefendingNextTurn(hp(40),thisMove,defending)
           }
         }
 
@@ -2866,7 +2862,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            if(bg.stadiumInfoStruct.stadiumCard)
+            if(bg.stadiumInfoStruct)
             {
               discard bg.stadiumInfoStruct.stadiumCard
               preventAllEffectsNextTurn()
@@ -2977,7 +2973,7 @@ public enum UltraPrism implements CardInfo {
           onAttack {
             damage 20
             opp.hand.showToMe("Opponent's hand")
-            if(opp.hand.findAll(filterByType(POKEMON))){
+            if(opp.hand.filterByType(POKEMON)){
               damage 80
             }
           }
@@ -3003,7 +2999,7 @@ public enum UltraPrism implements CardInfo {
           }
           onAttack {
             //TODO : how to put the cards at the bottom?
-            my.discard.search(count : 3).moveTo(my.deck)
+            my.discard.select(count : 3).moveTo(my.deck)
           }
         }
         move "Profound Knowledge", {
@@ -3041,7 +3037,7 @@ public enum UltraPrism implements CardInfo {
 
       };
       case SILVALLY_GX_116:
-      return copy (CrimsonInvasion.SYLVALLY_GX_90, this);
+      return copy (CrimsonInvasion.SILVALLY_GX_90, this);
 
       case DRAMPA_117:
       return basic (this, hp:HP130, type:COLORLESS, retreatCost:3) {
@@ -3068,11 +3064,12 @@ public enum UltraPrism implements CardInfo {
       case ANCIENT_CRYSTAL_118:
       return pokemonTool (this) {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nThe Regirock, Regice, Registeel, or Regigigas this card is attached to takes 30 less damage from your opponent’s attacks (after applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack)."
+        def eff
         onPlay {reason->
           eff = delayed{
             before APPLY_ATTACK_DAMAGES, self, {
               bg.dm().each{
-                if(self.name=="Regirock" || self.name=="Regice"  || self.name=="Registeel"  || self.name=="Regigigas" ){
+                if(it.to == self && (self.name=="Regirock" || self.name=="Regice"  || self.name=="Registeel"  || self.name=="Regigigas")){
                   bc "ancient crystal -30"
                   it.dmg-=hp(30)
                 }
@@ -3102,7 +3099,8 @@ public enum UltraPrism implements CardInfo {
         text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nYou can’t play this card if you don’t have any [W] or [M] Pokémon in play.\nYour opponent chooses 2 Benched Pokémon and shuffles the others, and all cards attached to them, into their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
           if(opp.bench.size()>2){
-            opp.bench.oppSelect(count : opp.bench.size()-2, "Select the cards you will shuffle back in your deck").each{
+            def tar = opp.bench.oppSelect(count : 2)
+            opp.bench.removeAll(tar).each{
               it.cards.moveTo(opp.deck)
               removePCS(it)
             }
@@ -3119,9 +3117,13 @@ public enum UltraPrism implements CardInfo {
         onPlay {reason->
           eff=getter GET_POKEMON_TYPE, self, {h ->
             if(h.effect.target.name == "Silvally-GX")
-              h.object = ELECTRIC
+            {
+              h.object.retainAll()
+              h.object.add(LIGHTNING)
+            }
           }
         }
+
         onRemoveFromPlay {
           eff.unregister()
         }
@@ -3147,7 +3149,10 @@ public enum UltraPrism implements CardInfo {
         onPlay {reason->
           eff=getter GET_POKEMON_TYPE, self, {h ->
             if(h.effect.target.name == "Silvally-GX")
-              h.object = FIRE
+            {
+              h.object.retainAll()
+              h.object.add(FIRE)
+            }
           }
         }
         onRemoveFromPlay {
@@ -3158,10 +3163,10 @@ public enum UltraPrism implements CardInfo {
       return supporter (this) {
         text "Heal 80 damage from 1 of your Pokémon that has any [G] Energy attached to it.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          heal 80, my.all.findAll({it.cards.energyCount(H)}).select()
+          heal 80, my.all.findAll({it.cards.energyCount(G)}).select()
         }
         playRequirement{
-          assert my.all.findAll({it.cards.energyCount(H)})
+          assert my.all.findAll({it.cards.energyCount(G)})
         }
       };
       case LILLIE_125:
@@ -3237,7 +3242,7 @@ public enum UltraPrism implements CardInfo {
         text "Flip a coin. If heads, search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {
           flip{
-            my.deck.search(filterByType(ITEM)).moveTo(my.hand)
+            my.deck.search(count: 1,"search your deck for an Item card", cardTypeFilter(ITEM)).moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -3249,7 +3254,7 @@ public enum UltraPrism implements CardInfo {
       return itemCard (this) {
         text "Shuffle 2 Supporter cards from your discard pile into your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {
-          my.discard.search(count:2,"Search for 2 Supporter cards to shuffle into your deck",filterByType(SUPPORTER)).moveTo(my.deck)
+          my.discard.search(count:2,"Search for 2 Supporter cards to shuffle into your deck",cardTypeFilter(SUPPORTER)).moveTo(my.deck)
           shuffleDeck()
         }
         playRequirement{
