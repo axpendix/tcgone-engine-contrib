@@ -564,8 +564,10 @@ public enum BaseSet implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						apply POISONED
-						extraPoison 1
+						afterDamage{
+							apply POISONED
+							extraPoison 1
+						}
 					}
 				}
 				
@@ -974,9 +976,11 @@ public enum BaseSet implements CardInfo {
 				move "Dream Eater", {
 					text "50 damage. You can’t use this attack unless the Defending Pokémon is Asleep."
 					energyCost P, P
-					attackRequirement {}
+					attackRequirement {
+						assert opp.active.isSPC(ASLEEP)
+					}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
 				
@@ -989,7 +993,7 @@ public enum BaseSet implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Poisonpowder", {
@@ -997,7 +1001,8 @@ public enum BaseSet implements CardInfo {
 					energyCost G, G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						applyAfterDamage(POISONED)
 					}
 				}
 				
@@ -1010,7 +1015,7 @@ public enum BaseSet implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2, {damage 10}
 					}
 				}
 				move "Meditate", {
@@ -1018,7 +1023,7 @@ public enum BaseSet implements CardInfo {
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20+10*opp.active.numberOfDamageCounters
 					}
 				}
 				
@@ -1029,9 +1034,12 @@ public enum BaseSet implements CardInfo {
 				move "Recover", {
 					text "Discard 1 [P] Energy card attached to Kadabra in order to use this attack. Remove all damage counters from Kadabra."
 					energyCost P, P
-					attackRequirement {}
+					attackRequirement {
+						assert self.numberOfDamageCounters
+					}
 					onAttack {
-						damage 0
+						healAfterDamage self.damage.value, self
+						discardSelfEnergy(P)
 					}
 				}
 				move "Super Psy", {
@@ -1039,7 +1047,7 @@ public enum BaseSet implements CardInfo {
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
 				
@@ -1052,7 +1060,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{preventAllDamageNextTurn()}
 					}
 				}
 				move "Poisonpowder", {
@@ -1060,7 +1068,8 @@ public enum BaseSet implements CardInfo {
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip{applyAfterDamage(POISONED)}
 					}
 				}
 				
@@ -1073,7 +1082,7 @@ public enum BaseSet implements CardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50 - 10*self.numberOfDamageCounters
 					}
 				}
 				move "Submission", {
@@ -1081,7 +1090,8 @@ public enum BaseSet implements CardInfo {
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						damage 20, self
 					}
 				}
 				
@@ -1094,7 +1104,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Flail", {
@@ -1102,7 +1112,7 @@ public enum BaseSet implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10*self.numberOfDamageCounters
 					}
 				}
 				
@@ -1115,7 +1125,7 @@ public enum BaseSet implements CardInfo {
 					energyCost R, R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Flamethrower", {
@@ -1123,7 +1133,8 @@ public enum BaseSet implements CardInfo {
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						discardSelfEnergy(R)
 					}
 				}
 				
@@ -1136,7 +1147,7 @@ public enum BaseSet implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2, {damage 30}
 					}
 				}
 				move "Horn Drill", {
@@ -1144,7 +1155,7 @@ public enum BaseSet implements CardInfo {
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
 				
@@ -1157,7 +1168,7 @@ public enum BaseSet implements CardInfo {
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						amnesia delegate
 					}
 				}
 				move "Doubleslap", {
@@ -1165,7 +1176,7 @@ public enum BaseSet implements CardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2, {damage 30}
 					}
 				}
 				
@@ -1177,9 +1188,30 @@ public enum BaseSet implements CardInfo {
 				move "Conversion 1", {
 					text "If the Defending Pokémon has a Weakness, you may change it to a type of your choice other than Colorless."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {assert opp.active.weakness} //Is this right?
 					onAttack {
-						damage 0
+						targeted (defending) {
+							delayed {
+								//TODO: Give the user a list of types and allow him to choose one as a weakness
+								//Default is just psychic for now
+								def eff
+								register {
+									eff = getter (GET_WEAKNESSES, defending) {h->
+										def list = h.object as List<Weakness>
+										if(list) {
+											list.get(0).type = PSYCHIC
+										} else {
+											list.add(new Weakness(PSYCHIC))
+										}
+									}
+								}
+								unregister {
+									eff.unregister()
+								}
+								after SWITCH, defending, {unregister()}
+								after EVOLVE, defending, {unregister()}
+							}
+						}
 					}
 				}
 				move "Conversion 2", {
@@ -1187,7 +1219,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						//TODO: How do you make a getter for this pokemon's type, and same problem as above
 					}
 				}
 				
@@ -1201,7 +1233,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Super Fang", {
@@ -1209,7 +1241,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage ceil((defending.hp/10)/2)*10
 					}
 				}
 				
@@ -1222,7 +1254,7 @@ public enum BaseSet implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				
@@ -1235,7 +1267,7 @@ public enum BaseSet implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{preventAllDamageNextTurn()}
 					}
 				}
 				move "Bite", {
@@ -1243,7 +1275,7 @@ public enum BaseSet implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
 				
@@ -1256,7 +1288,8 @@ public enum BaseSet implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
 				
@@ -1269,7 +1302,9 @@ public enum BaseSet implements CardInfo {
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						//TODO: Prevent heal if the damage is prevented
+						heal 10, self
 					}
 				}
 				
@@ -1282,7 +1317,8 @@ public enum BaseSet implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
 				
@@ -1295,7 +1331,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Ember", {
@@ -1303,7 +1339,8 @@ public enum BaseSet implements CardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						discardSelfEnergy(R)
 					}
 				}
 				
@@ -1317,7 +1354,7 @@ public enum BaseSet implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Mud Slap", {
@@ -1325,7 +1362,7 @@ public enum BaseSet implements CardInfo {
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				
@@ -1339,7 +1376,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2, {damage 10}
 					}
 				}
 				
@@ -1352,7 +1389,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Confuse Ray", {
@@ -1360,7 +1397,8 @@ public enum BaseSet implements CardInfo {
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip{applyAfterDamage(CONFUSED)}
 					}
 				}
 				
@@ -1373,7 +1411,7 @@ public enum BaseSet implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{applyAfterDamage(ASLEEP)}
 					}
 				}
 				move "Destiny Bond", {
@@ -1381,7 +1419,8 @@ public enum BaseSet implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						//TODO: Create a getter that KO's attacking pokemon
+						discardSelfEnergy(P)
 					}
 				}
 				
@@ -1394,7 +1433,8 @@ public enum BaseSet implements CardInfo {
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip 1, {applyAfterDamage(POISONED)}, {applyAfterDamage(CONFUSED)}
 					}
 				}
 				
@@ -1407,7 +1447,7 @@ public enum BaseSet implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -1420,7 +1460,8 @@ public enum BaseSet implements CardInfo {
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
 				move "Selfdestruct", {
@@ -1428,7 +1469,10 @@ public enum BaseSet implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						opp.bench.each({ damage 10, it})
+						my.bench.each({ damage 10, it})
+						damage 40, self
 					}
 				}
 				
@@ -1441,7 +1485,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{preventAllDamageNextTurn()}
 					}
 				}
 				move "Stun Spore", {
@@ -1449,7 +1493,8 @@ public enum BaseSet implements CardInfo {
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
 				
@@ -1462,7 +1507,7 @@ public enum BaseSet implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{damage 30}
 					}
 				}
 				
@@ -1475,10 +1520,10 @@ public enum BaseSet implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
-				move "Harden", {
+				move "Harden", { //TODO: Import this attack from evolutions
 					text "During your opponent’s next turn, whenever 30 or less damage is done to Onix (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.)"
 					energyCost F, F
 					attackRequirement {}
@@ -1497,7 +1542,8 @@ public enum BaseSet implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						whirlwind()
 					}
 				}
 				
@@ -1510,7 +1556,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Thunder Jolt", {
@@ -1518,7 +1564,8 @@ public enum BaseSet implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flip{damage 30, self}
 					}
 				}
 				
@@ -1531,7 +1578,8 @@ public enum BaseSet implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						extraEnergyDamage(2,hp(10),W,thisMove)
 					}
 				}
 				
@@ -1544,7 +1592,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Flame Tail", {
@@ -1552,7 +1600,7 @@ public enum BaseSet implements CardInfo {
 					energyCost R, R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				
@@ -1566,7 +1614,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -1580,7 +1628,8 @@ public enum BaseSet implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						sandAttack()//TODO: Verify that sandAttack does not take any extra parameters
 					}
 				}
 				
@@ -1593,7 +1642,8 @@ public enum BaseSet implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
 				move "Withdraw", {
@@ -1601,7 +1651,7 @@ public enum BaseSet implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{preventAllDamageNextTurn()}
 					}
 				}
 				
@@ -1614,7 +1664,8 @@ public enum BaseSet implements CardInfo {
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						healAfterDamage self.damage.value, self
+						discardSelfEnergy(W)
 					}
 				}
 				move "Star Freeze", {
@@ -1622,7 +1673,8 @@ public enum BaseSet implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
 				
@@ -1635,7 +1687,7 @@ public enum BaseSet implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -1648,7 +1700,8 @@ public enum BaseSet implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip{applyAfterDamage(PARALYZED)""
 					}
 				}
 				move "Poisonpowder", {
@@ -1656,7 +1709,8 @@ public enum BaseSet implements CardInfo {
 					energyCost G, G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						applyAfterDamage(POISONED)
 					}
 				}
 				
@@ -1669,7 +1723,7 @@ public enum BaseSet implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				
@@ -1682,7 +1736,8 @@ public enum BaseSet implements CardInfo {
 					energyCost R, R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip(applyAfterDamage(CONFUSED))
 					}
 				}
 				
@@ -1695,7 +1750,8 @@ public enum BaseSet implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip{applyAfterDamage(POISONED)}
 					}
 				}
 				
