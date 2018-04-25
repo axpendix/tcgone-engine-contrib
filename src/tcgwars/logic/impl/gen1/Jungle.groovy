@@ -213,7 +213,16 @@ public enum Jungle implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						attack(choose(defending.moves,"Which move do you want to use?"))
+						def moveList = []
+						def labelList = []
+						opp.all.each {pcs->
+							moveList.addAll(pcs.topPokemonCard.moves);
+							labelList.addAll(pcs.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
+						}
+						def move=choose(moveList, labelList, "Which move do you want to use")
+						def bef=blockingEffect(ENERGY_COST_CALCULATOR, DISCARD_SELF_ENERGY, BETWEEN_TURNS)
+						attack (move as Move)
+						bef.unregisterItself(bg().em())
 					}
 				}
 				move "Minimize", {
@@ -1391,9 +1400,11 @@ public enum Jungle implements CardInfo {
 				move "Mirror Move", {
 					text "If Spearow was attacked last turn, do the final result of that attack on Spearow to the Defending Pokémon."
 					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-						//TODO : implement mirror move.
+					attackRequirement {
+						assert lastDamage && turnCount+1==bg.turnCount
+					}
+					 onAttack {
+						damage lastDamage.value
 					}
 				}
 
