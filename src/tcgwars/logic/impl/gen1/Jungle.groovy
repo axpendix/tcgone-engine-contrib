@@ -689,9 +689,7 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
-						afterDamage{
-							removeDamageCounterEqualToHalfDamageDone()
-						}
+						removeDamageCounterEqualToHalfDamageDone()
 					}
 				}
 
@@ -702,8 +700,8 @@ public enum Jungle implements CardInfo {
 				resistance FIGHTING, MINUS30
 				pokemonPower "Retreat Aid", {
 					text "As long as Dodrio is Benched, pay 1 less to retreat your Active Pokémon."
-					getterA GET_RETREAT_COST { h->
-						if(my.bench.find{it == self}){
+					getterA GET_RETREAT_COST ,{ h->
+						if(my.bench.find{it == self} && h.effect.target.owner == self.owner){
 							h.object = Math.max(0,h.object-1)
 						}
 					}
@@ -729,7 +727,7 @@ public enum Jungle implements CardInfo {
 					}
 					onAttack {
 						def pcs = my.bench.select("Switch")
-            sw opp.active, pcs
+            sw my.active, pcs
 					}
 				}
 				move "Big Eggsplosion", {
@@ -938,7 +936,7 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-						flip 1, {}, {apply CONFUSED}
+						flip 1, {}, {apply CONFUSED, self}
 					}
 				}
 
@@ -984,7 +982,7 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-						damage 20, Self
+						damage 20, self
 						afterDamage{
 							if(opp.bench){
 								whirlwind()
@@ -1035,7 +1033,7 @@ public enum Jungle implements CardInfo {
 					onAttack {
 						damage 20+10*self.numberOfDamageCounters
 						afterDamage{
-							flip 1, {}, {apply CONFUSED}
+							flip 1, {}, {apply CONFUSED, self}
 						}
 					}
 				}
@@ -1050,7 +1048,7 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						apply POISONED
+						flip {apply POISONED}
 					}
 				}
 				move "Razor Leaf", {
@@ -1234,14 +1232,16 @@ public enum Jungle implements CardInfo {
 				pokemonPower "Peek", {
 					text "Once during your turn (before your attack), you may look at one of the following: the top card of either player’s deck, a random card from your opponent’s hand, or one of either player’s Prizes. This power can’t be used if Mankey is Asleep, Confused, or Paralyzed."
 					actionA {
+						checkLastTurn()
 						assert !(self.specialConditions) : "This pokemon has a special condition"
+						powerUsed()
 						def choice = choose([0,1,2,3,4],["Top of your deck", "Top of your opponent's deck", "Your opponent’s hand ", "Your Prizes", "Opponent's Prizes"])
 						switch (choice){
-							case 0: my.deck.subList(0,1).showToMe("Top of your deck");
-							case 1: opp.deck.subList(0,1).showToMe("Top of your opponent's deck");
-							case 2: opp.hand.select(hidden: true, "Select a random card from opponent's hand").showToMe("Selected card");
-							case 3: my.prizeAsList.select(hidden: true, "Select a random card from your prizes").showToMe("Selected card");
-							case 4: opp.prizeAsList.select(hidden: true, "Select a random card from your opponent's prizes").showToMe("Selected card");
+							case 0: my.deck.subList(0,1).showToMe("Top of your deck"); break;
+							case 1: opp.deck.subList(0,1).showToMe("Top of your opponent's deck"); break;
+							case 2: opp.hand.select(hidden: true, "Select a random card from opponent's hand").showToMe("Selected card"); break;
+							case 3: my.prizeAsList.select(hidden: true, "Select a random card from your prizes").showToMe("Selected card"); break;
+							case 4: opp.prizeAsList.select(hidden: true, "Select a random card from your opponent's prizes").showToMe("Selected card"); break;
 						}
 					}
 				}
@@ -1278,7 +1278,7 @@ public enum Jungle implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						flip 3 {damage 10}
+						flip 3 , {damage 10}
 					}
 				}
 				move "Call for Family", {
@@ -1357,7 +1357,7 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						if(opp.bench) damage 10, opp.bench.select().first()
+						if(opp.bench) damage 10, opp.bench.select()
 					}
 				}
 
@@ -1374,11 +1374,11 @@ public enum Jungle implements CardInfo {
 						flip{
 							delayed{
 								before APPLY_ATTACK_DAMAGES, {
-									bc "Tail Wag prevent attacking Eevee"
+									bc "Leer prevent attacking Rhyhorn"
 									prevent()
 								}
 								before null, self, Source.ATTACK, {
-									bc "Tail Wag prevent attacking Eevee"
+									bc "Leer prevent attacking Rhyhorn"
 									prevent()
 								}
 
@@ -1403,6 +1403,19 @@ public enum Jungle implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:0) {
 				weakness LIGHTNING
 				resistance FIGHTING, MINUS30
+				def turnCount=-1
+        HP lastDamage=null
+        customAbility {
+            delayed (priority: LAST) {
+                before APPLY_ATTACK_DAMAGES, {
+                    if(bg().currentTurn==self.owner.opposite) {
+                        turnCount=bg.turnCount
+                        lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
+                    }
+                }
+            }
+        }
+
 				move "Peck", {
 					text "10 damage."
 					energyCost C
