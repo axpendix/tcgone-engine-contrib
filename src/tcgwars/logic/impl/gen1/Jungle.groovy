@@ -735,7 +735,7 @@ public enum Jungle implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						flip self.energyCount(C), {
+						flip self.cards.energyCount(C), {
 							damage 20
 						}
 					}
