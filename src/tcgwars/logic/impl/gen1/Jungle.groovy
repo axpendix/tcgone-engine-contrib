@@ -543,7 +543,6 @@ public enum Jungle implements CardInfo {
 						}
 						assert typeList : "There is no pokemon in play with a type different than [C]"
 						powerUsed()
-						bc "$typeList"
 						def newType = choose(typeList,"Select the new type of Venomoth")
 						getter GET_POKEMON_TYPE, self, {h->
 							h.object.retainAll()
@@ -690,7 +689,9 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
-						removeDamageCounterEqualToHalfDamageDone()
+						afterDamage{
+							removeDamageCounterEqualToHalfDamageDone()
+						}
 					}
 				}
 
