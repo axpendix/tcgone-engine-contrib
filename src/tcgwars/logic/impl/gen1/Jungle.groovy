@@ -413,8 +413,10 @@ public enum Jungle implements CardInfo {
 					onAttack {
 						damage 30
 						afterDamage{
-							defending.cards.moveTo(hand)
-							removePCS(defending)
+							if(opp.bench){
+								defending.cards.moveTo(opp.hand)
+								removePCS(defending)
+							}
 						}
 					}
 				}
@@ -523,12 +525,20 @@ public enum Jungle implements CardInfo {
 						assert !(self.specialConditions) : "This pokemon has a special condition"
 						checkLastTurn()
 						def typeList = []
-						my.all.each{
+						my.bench.each{
 							def typesCard = it.types as List<Type>
-							if(typeList.contains(typesCard.get(0)) && typesCard.get(0) != C) typeList.add(typesCard.get(0))
+							if(!typeList.contains(typesCard.get(0)) && typesCard.get(0) != C) typeList.add(typesCard.get(0))
 
 							if(it.types.size() > 1){
-								if(typeList.contains(typesCard.get(1)) && typesCard.get(1) != C) typeList.add(typesCard.get(1))
+								if(!typeList.contains(typesCard.get(1)) && typesCard.get(1) != C) typeList.add(typesCard.get(1))
+							}
+						}
+						opp.all.each{
+							def typesCard = it.types as List<Type>
+							if(!typeList.contains(typesCard.get(0)) && typesCard.get(0) != C) typeList.add(typesCard.get(0))
+
+							if(it.types.size() > 1){
+								if(!typeList.contains(typesCard.get(1)) && typesCard.get(1) != C) typeList.add(typesCard.get(1))
 							}
 						}
 						assert typeList : "There is no pokemon in play with a type different than [C]"
@@ -596,6 +606,9 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						flip 3, {damage 40}
+						afterDamage{
+							apply CONFUSED, self
+						}
 					}
 				}
 
