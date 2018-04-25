@@ -472,7 +472,7 @@ public enum Jungle implements CardInfo {
 					text "Snorlax can’t become Asleep, Confused, Paralyzed, or Poisoned. This power can’t be used if Snorlax is already Asleep, Confused, or Paralyzed."
 					delayedA {
 						before APPLY_SPECIAL_CONDITION,self, {
-							if(!(self.specialConditions){
+							if(!(self.specialConditions)){
 								bc (self+"is thick Skinned!")
 								prevent()
 							}
