@@ -2005,9 +2005,9 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Nightmare Star", {
           text "When you play this Pokémon from your hand onto your Bench during your turn, you may attach 2 [D] Energy cards from your hand to it."
           onActivate {r->
-            if(r==PLAY_FROM_HAND && confirm('Use Chaotic Star?')){
-              if(my.hand.filterByEnergyType(DARKNESS)){
-                my.hand.select(max:2,"Search for 2 Psychic Energy",basicEnergyFilter(DARKNESS)).each{
+            if(r==PLAY_FROM_HAND && confirm('Use Nightmare Star?')){
+              if(my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(DARKNESS)){
+                my.hand.select(max:2,"Search for 2 Dark Energy",basicEnergyFilter(DARKNESS)).each{
                   attachEnergy(self,it)
                 }
               }
@@ -2068,12 +2068,7 @@ public enum UltraPrism implements CardInfo {
             assert my.hand.filterByEnergyType(M)
           }
           onAttack {
-            onAttack {
-              def tar = my.hand.filterByEnergyType(M).select(max: 60)
-              def dmgMul = tar.size()
-              tar.discard()
-              damage 30*dmgMul
-            }
+            damage 30*my.hand.filterByEnergyType(M).select(max: 60).discard().size()
           }
         }
 
