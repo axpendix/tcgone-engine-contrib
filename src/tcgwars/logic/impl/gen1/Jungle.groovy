@@ -529,7 +529,7 @@ public enum Jungle implements CardInfo {
 							def typesCard = it.types as List<Type>
 							if(!typeList.contains(typesCard.get(0)) && typesCard.get(0) != C) typeList.add(typesCard.get(0))
 
-							if(it.types.size() > 1){
+							if(typesCard.size() > 1){
 								if(!typeList.contains(typesCard.get(1)) && typesCard.get(1) != C) typeList.add(typesCard.get(1))
 							}
 						}
@@ -537,15 +537,17 @@ public enum Jungle implements CardInfo {
 							def typesCard = it.types as List<Type>
 							if(!typeList.contains(typesCard.get(0)) && typesCard.get(0) != C) typeList.add(typesCard.get(0))
 
-							if(it.types.size() > 1){
+							if(typesCard.size() > 1){
 								if(!typeList.contains(typesCard.get(1)) && typesCard.get(1) != C) typeList.add(typesCard.get(1))
 							}
 						}
 						assert typeList : "There is no pokemon in play with a type different than [C]"
 						powerUsed()
+						bc "$typeList"
+						def newType = choose(typeList,"Select the new type of Venomoth")
 						getter GET_POKEMON_TYPE, self, {h->
 							h.object.retainAll()
-							h.object.add(choose(typeList,"Select the new type of Venomoth"))
+							h.object.add(newType)
 						}
 					}
 				}
