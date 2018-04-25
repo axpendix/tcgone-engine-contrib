@@ -348,8 +348,8 @@ public enum Jungle implements CardInfo {
 				pokemonPower "Invisible Wall", {
 					text "Whenever an attack (including your own) does 30 or more damage to Mr. Mime (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.) This power can’t be used if Mr. Mime is Asleep, Confused, or Paralyzed."
 					delayedA {
-						before APPLY_ATTACK_DAMAGES, self, {
-							if(!(self.isSPC(ASLEEP) || self.isSPC(CONFUSED) || self.isSPC(PARALYZED))){
+						before APPLY_ATTACK_DAMAGES, {
+							if(!(self.specialConditions)){
 								bg.dm().each {
 									if(it.to == self & it.dmg.value > 20) {
 										bc "Invisible Wall prevents damage"
@@ -413,8 +413,8 @@ public enum Jungle implements CardInfo {
 					onAttack {
 						damage 30
 						afterDamage{
-							shuffleDeck(defending.cards)
-	            removePCS(defending)
+							defending.cards.moveTo(hand)
+							removePCS(defending)
 						}
 					}
 				}
@@ -472,12 +472,9 @@ public enum Jungle implements CardInfo {
 					text "Snorlax can’t become Asleep, Confused, Paralyzed, or Poisoned. This power can’t be used if Snorlax is already Asleep, Confused, or Paralyzed."
 					delayedA {
 						before APPLY_SPECIAL_CONDITION,self, {
-							if(!(self.isSPC(ASLEEP) || self.isSPC(CONFUSED) || self.isSPC(PARALYZED))){
-								if(ef.type == ASLEEP  || ef.type == CONFUSED  ||  ef.type == PARALYZED  || ef.type == POISONED)
-								{
-									bc "Thick Skinned"
-									prevent()
-								}
+							if(!(self.specialConditions){
+								bc (self+"is thick Skinned!")
+								prevent()
 							}
 						}
 					}
@@ -523,14 +520,15 @@ public enum Jungle implements CardInfo {
 				pokemonPower "Shift", {
 					text "Once during your turn (before your attack), you may change the type of Venomoth to the type of any other Pokémon in play other than Colorless. This power can’t be used if Venomoth is Asleep, Confused, or Paralyzed."
 					actionA {
-						assert !(self.isSPC(ASLEEP) || self.isSPC(CONFUSED) || self.isSPC(PARALYZED)) : "This pokemon is Asleep, Confused, or Paralyzed"
+						assert !(self.specialConditions) : "This pokemon has a special condition"
 						checkLastTurn()
 						def typeList = []
 						my.all.each{
-							if(typeList.contains(it.types.get(0)) && it.types.get(0) != C) typeList.add(it.types.get(0))
+							def typesCard = it.types as List<Type>
+							if(typeList.contains(typesCard.get(0)) && typesCard.get(0) != C) typeList.add(typesCard.get(0))
 
 							if(it.types.size() > 1){
-								if(typeList.contains(it.types.get(1)) && it.types.get(1) != C) typeList.add(it.types.get(1))
+								if(typeList.contains(typesCard.get(1)) && typesCard.get(1) != C) typeList.add(typesCard.get(1))
 							}
 						}
 						assert typeList : "There is no pokemon in play with a type different than [C]"
@@ -573,7 +571,7 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flip {cantAttackNextTurn defending}
+						flip {cantRetreat defending}
 					}
 				}
 
@@ -585,7 +583,7 @@ public enum Jungle implements CardInfo {
 					text "Once during your turn (before your attack), you may flip a coin. If heads, remove 1 damage counter from 1 of your Pokémon. This power can’t be used if Vileplume is Asleep, Confused, or Paralyzed."
 					actionA {
 						checkLastTurn()
-						assert !(self.isSPC(ASLEEP) || self.isSPC(CONFUSED) || self.isSPC(PARALYZED)) : "This pokemon is Asleep, Confused, or Paralyzed"
+						assert !(self.specialConditions) : "This pokemon has a special condition"
 						powerUsed()
 						flip{
 							heal 10, my.all.select("Select 1 pokemon to remove 1 damage")
@@ -597,7 +595,7 @@ public enum Jungle implements CardInfo {
 					energyCost G, G, G
 					attackRequirement {}
 					onAttack {
-						flip {damage 40}
+						flip 3, {damage 40}
 					}
 				}
 
@@ -1220,7 +1218,7 @@ public enum Jungle implements CardInfo {
 				pokemonPower "Peek", {
 					text "Once during your turn (before your attack), you may look at one of the following: the top card of either player’s deck, a random card from your opponent’s hand, or one of either player’s Prizes. This power can’t be used if Mankey is Asleep, Confused, or Paralyzed."
 					actionA {
-						assert !(self.isSPC(ASLEEP) || self.isSPC(CONFUSED) || self.isSPC(PARALYZED)) : "This pokemon is Asleep, Confused, or Paralyzed"
+						assert !(self.specialConditions) : "This pokemon has a special condition"
 						def choice = choose([0,1,2,3,4],["Top of your deck", "Top of your opponent's deck", "Your opponent’s hand ", "Your Prizes", "Opponent's Prizes"])
 						switch (choice){
 							case 0: my.deck.subList(0,1).showToMe("Top of your deck");
