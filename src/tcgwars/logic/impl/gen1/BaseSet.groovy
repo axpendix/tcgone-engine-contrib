@@ -1192,18 +1192,25 @@ public enum BaseSet implements CardInfo {
 					onAttack {
 						targeted (defending) {
 							delayed {
-								//TODO: Give the user a list of types and allow him to choose one as a weakness
-								//Default is just psychic for now
 								def eff
 								register {
-									eff = getter (GET_WEAKNESSES, defending) {h->
+									eff = getter GET_WEAKNESS, {h->
 										def list = h.object as List<Weakness>
 										if(list) {
-											list.get(0).type = PSYCHIC
-										} else {
-											list.add(new Weakness(PSYCHIC))
+											def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],”Select the new weakness”)
+										   list.get(0).type = newWeakness
 										}
 									}
+									
+								
+//									eff = getter (GET_WEAKNESSES, defending) {h->
+//										def list = h.object as List<Weakness>
+//										if(list) {
+//											list.get(0).type = PSYCHIC
+//										} else {
+//											list.add(new Weakness(PSYCHIC))
+//										}
+//									}
 								}
 								unregister {
 									eff.unregister()
@@ -1303,8 +1310,18 @@ public enum BaseSet implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						//TODO: Prevent heal if the damage is prevented
-						heal 10, self
+						delayed { //TODO: Make sure this effect unregisters
+						    before APPLY_ATTACK_DAMAGES, {
+						         if(bg.dm().find{it.to == defending && it.from == self && it.dmg.value}) {
+									 heal 10, self
+						         }
+						    }
+						}
+					}
+                }
+       }
+         unregisterAfter 1
+}
 					}
 				}
 				
