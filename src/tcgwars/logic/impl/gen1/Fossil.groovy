@@ -245,7 +245,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-						flip ,{
+						flip 1,{
 							opp.bench.each{damage 10, it}
 						},{
 							my.bench.each{damage 10, it}
@@ -324,7 +324,7 @@ public enum Fossil implements CardInfo {
 						def coinRes = false
 						before null, self, Source.ATTACK, {
               if(!self.specialConditions){
-								flip {coinRes = true},{coinRes = false}
+								flip 1,{coinRes = true},{coinRes = false}
                 if (coinRes&& bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "Safeguard prevents effect"
                   prevent()
@@ -575,7 +575,7 @@ public enum Fossil implements CardInfo {
 						def selfDmg = 0
 						if(opp.bench){
 							opp.bench.each{
-								flip {damage 20, it}, {selfDmg += 1}
+								flip 1,{damage 20, it}, {selfDmg += 1}
 							}
 							damage 10*selfDmg, self
 						}
@@ -1267,7 +1267,7 @@ public enum Fossil implements CardInfo {
 				onPlay {
 					my.hand.moveTo(hidden:true, my.deck)
           shuffleDeck()
-          flip {draw 8},{draw 1}
+          flip 1,{draw 8},{draw 1}
 				}
 				playRequirement{
 				}

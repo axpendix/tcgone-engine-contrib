@@ -377,7 +377,7 @@ public enum TeamRocket implements CardInfo {
 					delayedA {
 						before RETREAT, {
 							if(ef.retreater.owner==self.owner.opposite){
-								 flip {}, {damage 20, ef.retreater}
+								 flip 1, {}, {damage 20, ef.retreater}
 							 }
 						}
 					}
@@ -387,7 +387,7 @@ public enum TeamRocket implements CardInfo {
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
-						flip {damage 20}, {damage 40}
+						flip 1,{damage 20}, {damage 40}
 					}
 				}
 
@@ -599,7 +599,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flip {apply POISONED},{apply PARALYZED}
+						flip 1,{apply POISONED},{apply PARALYZED}
 					}
 				}
 
@@ -752,7 +752,7 @@ public enum TeamRocket implements CardInfo {
 						assert self.cards.energyCount(R)
 					}
 					onAttack {
-						flip {
+						flip 1,{
 							damage 50
 							discardSelfEnergy R
 						},{
@@ -771,7 +771,7 @@ public enum TeamRocket implements CardInfo {
 						checkLastTurn()
 						assert !self.specialConditions
 						powerUsed()
-						flip {apply CONFUSED},{apply CONFUSED, self}
+						flip 1,{apply CONFUSED},{apply CONFUSED, self}
 					}
 				}
 				move "Poisonpowder", {
@@ -827,7 +827,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						flip {apply PARALYZED},{damage 10, self}
+						flip 1,{apply PARALYZED},{damage 10, self}
 					}
 				}
 
@@ -1214,7 +1214,7 @@ public enum TeamRocket implements CardInfo {
 						checkLastTurn()
 						assert !self.specialConditions
 						powerUsed()
-						flip {apply ASLEEP, defending},{apply ASLEEP, my.active}
+						flip 1,{apply ASLEEP, defending},{apply ASLEEP, my.active}
 					}
 				}
 				move "Nightmare", {
