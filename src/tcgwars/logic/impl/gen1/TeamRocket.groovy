@@ -1624,6 +1624,9 @@ public enum TeamRocket implements CardInfo {
 			return basicTrainer (this) {
 				text "Discard a card from your hand in order to play this card. Your opponent shuffles his or her hand into his or her deck, then draws 4 cards."
 				onPlay {
+					my.hand.findAll({it != self}).select().discard()
+					shuffleDeck(opp.hand)
+					draw(4, TargetPlayer.OPPONENT)
 				}
 				playRequirement{
 					assert my.hand.findAll({it != self})
@@ -1633,14 +1636,29 @@ public enum TeamRocket implements CardInfo {
 			return basicTrainer (this) {
 				text "Choose up to 3 Basic Pokémon cards, Evolution cards, and/or basic Energy cards from your discard pile. Show them to your opponent and shuffle them into your deck."
 				onPlay {
+					def tar = my.discard.select(max : 3, "Choose up to 3 Basic Pokémon cards, Evolution cards, and/or basic Energy cards from your discard pile", {it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION) || it.cardTypes.is(ENERGY)})
+					tar.showToOpponent("Opponent's choosen cards")
+					tar.moveTo(my.deck)
 				}
 				playRequirement{
+					assert my.discard
 				}
 			};
 			case GOOP_GAS_ATTACK:
 			return basicTrainer (this) {
 				text "All Pokémon Powers stop working until the end of your opponent’s next turn."
 				onPlay {
+					delayed{
+						getter IS_ABILITY_BLOCKED, { Holder h->
+							if (h.effect.ability instanceof BwAbility) {
+								h.object=true
+							}
+						}
+						getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+							h.object=true
+						}
+						unregisterAfter 2
+					}
 				}
 				playRequirement{
 				}
@@ -1649,6 +1667,7 @@ public enum TeamRocket implements CardInfo {
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, the Defending Pokémon is now Asleep."
 				onPlay {
+					flip {apply ASLEEP, defending}
 				}
 				playRequirement{
 				}
@@ -1659,24 +1678,18 @@ public enum TeamRocket implements CardInfo {
 			return specialEnergy (this, [[C]]) {
 				text "If you play this card from your hand, the Pokémon you attach it to is no long Asleep, Confused, Paralyzed, or Poisoned.\nFull Heal Energy provides [C] energy. (Doesn’t count as a basic Energy card.)"
 				onPlay {reason->
+					self.specialConditions.clear()
 				}
 				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
 				}
 			};
 			case POTION_ENERGY:
 			return specialEnergy (this, [[C]]) {
 				text "If you play this card from your hand, remove 1 damage counter from the Pokémon you attach it to, if it has any.\nPotion Energy provides [C] energy. (Doesn’t count as a basic Energy card.)"
 				onPlay {reason->
+					self.damage -= hp(10)
 				}
 				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
 				}
 			};
 			case DARK_RAICHU:
@@ -1687,7 +1700,18 @@ public enum TeamRocket implements CardInfo {
 					energyCost L, L, L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flip {
+							flip 1,{
+								opp.bench.each{
+									damage 10, it
+								}
+							},{
+								opp.bench.each{
+									damage 20, it
+								}
+							}
+						}
 					}
 				}
 
