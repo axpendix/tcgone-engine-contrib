@@ -1187,7 +1187,9 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						discardSelfEnergy P
-						if(my.discard.find(cardTypeFilter(TRAINER))) my.discard.findAll(cardTypeFilter(TRAINER).select.moveTo(my.hand)
+						if(my.discard.find(cardTypeFilter(TRAINER))) {
+							my.discard.findAll(cardTypeFilter(TRAINER)).select.moveTo(my.hand)
+						}
 					}
 				}
 
