@@ -236,7 +236,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						flip ,{apply PARALYZED}
+						flip {apply PARALYZED}
 					}
 				}
 				move "Blizzard", {

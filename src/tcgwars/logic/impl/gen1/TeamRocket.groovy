@@ -376,7 +376,9 @@ public enum TeamRocket implements CardInfo {
 					text "Whenever your opponent’s Active Pokémon retreats, your opponent flips a coin. If tails, this power does 20 damage to that Pokémon. (Don’t apply Weakness and Resistance.) This power stops working while Dark Dugtrio is Asleep, Confused, or Paralyzed."
 					delayedA {
 						before RETREAT, {
-							if(ef.retreater.owner==self.owner.opposite) flip {}, {damage 20, ef.retreater}
+							if(ef.retreater.owner==self.owner.opposite){
+								 flip {}, {damage 20, ef.retreater}
+							 }
 						}
 					}
 				}
