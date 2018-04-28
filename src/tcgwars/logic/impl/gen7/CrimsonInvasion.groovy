@@ -1437,7 +1437,7 @@ public enum CrimsonInvasion implements CardInfo {
                 bg.dm().each {
                   if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value) {
                     bc "Rock Peak Growl +10"
-                    it.dmg += hp(1)
+                    it.dmg += hp(10)
                   }
                 }
               }
