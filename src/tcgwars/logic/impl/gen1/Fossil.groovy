@@ -1067,7 +1067,7 @@ public enum Fossil implements CardInfo {
 										bc "$dmgVal / ${dmgInt/8}"
 										if((dmgInt /10) % 2){
 											bc "${(dmgInt - 10)/2}"
-											it.dmg = hp((int) ()(dmgInt - 10)/2))
+											it.dmg = hp((int) ((dmgInt - 10)/2))
 										}
 										else{
 											bc "${dmgInt / 2}"
