@@ -1057,7 +1057,7 @@ public enum Fossil implements CardInfo {
 				pokemonPower "Kabuto Armor", {
 					text "Whenever an attack (even your own) does damage to Kabuto (after applying Weakness and Resistance), that attack does half the damage to Kabuto (rounded down to the nearest 10). (Any other effects of attacks still happen.) This power stops working while Kabuto is Asleep, Confused, or Paralzyed."
 					delayedA {
-						after APPLY_RESISTANCE, {
+						before APPLY_DAMAGES, {
 							if(!(self.specialConditions)){
 								bg.dm().each {
 									if(it.to == self & it.dmg.value > 20) {
@@ -1216,9 +1216,9 @@ public enum Fossil implements CardInfo {
 						assert !self.specialConditions : "Cowardice can't be used if Tentacool has a status"
 						assert self.lastEvolved != bg.turnCount : "Cowardice can't be used the turn you put Tentacool into play"
 						assert my.bench : "You have no other Pokémon"
-						self.cards.moveTo(my.discard)
-						self.cards.moveTo(my.hand)
-            removePCS(self)
+						self.cards.getExcludedList(self.topPokemonCard).discard()
+						moveCard(self.topPokemonCard, my.hand)
+						removePCS(self)
 					}
 				}
 				move "Acid", {
