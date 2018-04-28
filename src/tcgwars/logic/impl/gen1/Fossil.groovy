@@ -1060,10 +1060,11 @@ public enum Fossil implements CardInfo {
 						before APPLY_ATTACK_DAMAGES, {
 							if(!(self.specialConditions)){
 								bg.dm().each {
+
 									if(it.to == self){
-										def intDmg = Integer(it.dmg.value.intValue())
+										def dmgVal = it.dmg.value/10
 										bc "Kabuto Armor halves damage"
-										if((intDmg/10)%2){
+										if(dmgVal.remainder(2) == 0){
 											it.dmg = hp(it.dmg.value / 2)
 										}
 										else{
