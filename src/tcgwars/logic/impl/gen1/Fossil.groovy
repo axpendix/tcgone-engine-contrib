@@ -1062,16 +1062,16 @@ public enum Fossil implements CardInfo {
 								bg.dm().each {
 									if(it.to == self){
 										def dmgVal = it.dmg.value
-										def dmgInt = dmgVal.intValue()
+										int dmgInt = (int) dmgVal.intValue()
 										bc "Kabuto Armor halves damage"
 										bc "$dmgVal / ${dmgInt/8}"
 										if((dmgInt /10) % 2){
 											bc "${(dmgInt - 10)/2}"
-											it.dmg = hp((dmgInt - 10)/2)
+											it.dmg = hp((int) ()(dmgInt - 10)/2))
 										}
 										else{
 											bc "${dmgInt / 2}"
-											it.dmg = hp(dmgInt / 2)
+											it.dmg = hp((int) (dmgInt / 2))
 										}
 									}
 								}
