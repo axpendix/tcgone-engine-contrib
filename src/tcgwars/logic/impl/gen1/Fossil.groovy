@@ -296,6 +296,7 @@ public enum Fossil implements CardInfo {
 					text "Once during your turn (before your attack), you may move 1 damage counter from 1 of your opponent’s Pokémon to another (even if it would Knock Out the other Pokémon). This power can’t be used if Gengar is Asleep, Confused, or Paralyzed."
 					actionA {
 						checkLastTurn()
+						assert opp.bench : "There is only one Pokémon"
 						assert opp.all.find{it.numberOfDamageCounters} : "None of your opponent’s Pokémon have damage counter to move"
 						powerUsed()
 						def src = opp.all.findAll{it.numberOfDamageCounters}.select().first()
@@ -577,7 +578,7 @@ public enum Fossil implements CardInfo {
 							opp.bench.each{
 								flip 1,{
 									targeted(it){
-										damage 20, it
+										directDamage 20, it
 									}
 								},{selfDmg += 1}
 							}
