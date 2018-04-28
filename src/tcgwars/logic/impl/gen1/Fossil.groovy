@@ -299,8 +299,8 @@ public enum Fossil implements CardInfo {
 						assert opp.bench : "There is only one Pokémon"
 						assert opp.all.find{it.numberOfDamageCounters} : "None of your opponent’s Pokémon have damage counter to move"
 						powerUsed()
-						def src = opp.all.findAll{it.numberOfDamageCounters}.select().first()
-						def tar = opp.all.findAll{it != src}.select().first()
+						def src = opp.all.findAll{it.numberOfDamageCounters}.select()
+						def tar = opp.all.findAll{it != src}.select()
 						src.damage-=hp(10)
 						tar.damage+=hp(10)
 					}
@@ -575,12 +575,13 @@ public enum Fossil implements CardInfo {
 						damage 40
 						def selfDmg = 0
 						if(opp.bench){
+							def benchDmg = false
 							opp.bench.each{
+								benchDmg = false
 								flip 1,{
-									targeted(it){
-										directDamage 20, it
-									}
+									benchDmg= true
 								},{selfDmg += 1}
+								if(benchDmg) damage 20, it
 							}
 							damage 10*selfDmg, self
 						}
