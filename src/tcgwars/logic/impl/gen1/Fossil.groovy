@@ -1024,7 +1024,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flipThenApplySC
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Minimize", {
@@ -1062,7 +1062,12 @@ public enum Fossil implements CardInfo {
 								bg.dm().each {
 									if(it.to == self & it.dmg.value > 20) {
 										bc "Kabuto Armor halves damage"
-										it.dmg = hp((it.dmg.value - ((it.dmg.value/10)%2)*10)/2)
+										if(it.dmg.intValue()%2){
+											it.dmg = hp(it.dmg.value / 2)
+										}
+										else{
+											it.dmg = hp((it.dmg.value - 10)/2)
+										}
 									}
 								}
 							}
@@ -1137,7 +1142,7 @@ public enum Fossil implements CardInfo {
 						delayed{
 							before PLAY_TRAINER, {
 								if (bg.currentTurn == self.owner.opposite) {
-									wcu "Disconnect prevents playing this card"
+									wcu "Psyduck's Headache prevents playing this card!"
 									prevent()
 								}
 							}
@@ -1196,7 +1201,7 @@ public enum Fossil implements CardInfo {
 					onAttack {
 						discardSelfEnergy P
 						if(my.discard.find(cardTypeFilter(TRAINER))) {
-							my.discard.findAll(cardTypeFilter(TRAINER)).select.moveTo(my.hand)
+							my.discard.findAll(cardTypeFilter(TRAINER)).select().moveTo(my.hand)
 						}
 					}
 				}
@@ -1212,6 +1217,7 @@ public enum Fossil implements CardInfo {
 						assert self.lastEvolved != bg.turnCount : "Cowardice can't be used the turn you put Tentacool into play"
 						assert my.bench : "You have no other Pokémon"
 						self.cards.discard()
+						self.cards.moveTo(hand)
             removePCS(self)
 					}
 				}
@@ -1252,7 +1258,7 @@ public enum Fossil implements CardInfo {
 			return basicTrainer (this) {
 				text "Choose a Pokémon on your Bench. Shuffle it any any cards attached to it into your deck."
 				onPlay {
-					def tar = my.bench.select().first()
+					def tar = my.bench.select()
 					shuffleDeck(tar.cards)
 					removePCS(tar)
 				}
@@ -1275,8 +1281,7 @@ public enum Fossil implements CardInfo {
 			return basicTrainer (this) {
 				text "Shuffle your hand into your deck. Flip a coin. If heads, draw 8 cards. If tails, draw 1 card."
 				onPlay {
-					my.hand.moveTo(hidden:true, my.deck)
-          shuffleDeck()
+          shuffleDeck(my.hand.getExcludedList(thisCard))
           flip 1,{draw 8},{draw 1}
 				}
 				playRequirement{
@@ -1286,7 +1291,9 @@ public enum Fossil implements CardInfo {
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, put a card in your discard pile on top of your deck."
 				onPlay {
-					flip{my.deck.addAll(0, my.discard.select())}
+					flip{
+						my.deck.addAll(0, my.discard.select().remove())
+					}
 				}
 				playRequirement{
 					assert my.discard
