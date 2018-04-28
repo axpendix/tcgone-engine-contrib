@@ -298,8 +298,8 @@ public enum Fossil implements CardInfo {
 						checkLastTurn()
 						assert opp.all.find{it.numberOfDamageCounters} : "None of your opponent’s Pokémon have damage counter to move"
 						powerUsed()
-						def src = opp.all.findall{it.numberOfDamageCounters}.select().first()
-						def tar = opp.all.findall{it != src}.select().first()
+						def src = opp.all.findAll{it.numberOfDamageCounters}.select().first()
+						def tar = opp.all.findAll{it != src}.select().first()
 						src.damage-=hp(10)
 						tar.damage+=hp(10)
 					}
@@ -398,7 +398,7 @@ public enum Fossil implements CardInfo {
 						def mySize = Math.min(my.deck.size(),3)
 						def oppSize = Math.min(opp.deck.size(),3)
 						if(mySize) my.deck.setSubList(0,rearrange(my.deck.subList(0,mySize)))
-						if(oppSize) my.deck.setSubList(0,rearrange(my.deck.subList(0,oppSize)))
+						if(oppSize) opp.deck.setSubList(0,rearrange(opp.deck.subList(0,oppSize)))
 					}
 				}
 				move "Dark Mind", {
@@ -453,7 +453,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						apply CONFUSED
+						flipThenApplySC CONFUSED
 					}
 				}
 
@@ -475,9 +475,9 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 100
-						damage 100,self
 						if(my.bench) my.bench.each{damage 20, it}
 						if(opp.bench) opp.bench.each{damage 20, it}
+						damage 100,self
 					}
 				}
 
@@ -491,7 +491,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						def src = self.cards.filterByEnergyType(R)
-						def tar = src.select(max : src.size)
+						def tar = src.select(max : src.size())
 						if(tar){
 							opp.deck.subList(0,tar.size()).moveTo(opp.discard)
 							tar.moveTo(my.discard)
@@ -575,7 +575,11 @@ public enum Fossil implements CardInfo {
 						def selfDmg = 0
 						if(opp.bench){
 							opp.bench.each{
-								flip 1,{damage 20, it}, {selfDmg += 1}
+								flip 1,{
+									targeted(it){
+										damage 20, it
+									}
+								},{selfDmg += 1}
 							}
 							damage 10*selfDmg, self
 						}
