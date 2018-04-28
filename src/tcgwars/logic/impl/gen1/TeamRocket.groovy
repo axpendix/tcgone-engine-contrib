@@ -818,7 +818,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						sandAttack()
+						sandAttack(thisMove)
 					}
 				}
 				move "Thunder Attack", {
@@ -1246,7 +1246,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						sandAttack()
+						sandAttack(thisMove)
 					}
 				}
 

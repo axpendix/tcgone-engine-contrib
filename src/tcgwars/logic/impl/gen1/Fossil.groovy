@@ -625,11 +625,11 @@ public enum Fossil implements CardInfo {
 				move "Terror Strike", {
 					text "Flip a coin. If heads and if your opponent has any Benched Pokémon, he or she chooses 1 of them and switches it with the Defending Pokémon. (Do the damage before switching the Pokémon.)"
 					energyCost G
-					attackRequirement {
-						assert opp.bench
-					}
+					attackRequirement {}
 					onAttack {
-						flip {whirlwind()}
+						damage 10
+						if(opp.bench)
+							flip {whirlwind()}
 					}
 				}
 				move "Poison Fang", {
@@ -709,7 +709,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						removeDamageCounterEqualToHalfDamageDone()
+						removeDamageCounterEqualToDamageDone()
 					}
 				}
 
@@ -825,7 +825,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						sandAttack()
+						sandAttack(thisMove)
 					}
 				}
 				move "Smog", {
@@ -917,7 +917,7 @@ public enum Fossil implements CardInfo {
 						def tar = my.all.findAll{it != self && it.numberOfDamageCounters}
 						assert tar : "There is no Pokemon with damage counter outside Slowbro"
 						self.damage+=hp(10)
-						tar.select().first().damage-=hp(10)
+						tar.select().damage-=hp(10)
 					}
 				}
 				move "Psyshock", {
@@ -926,7 +926,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC CONFUSED
+						flipThenApplySC Paralyzed
 					}
 				}
 
@@ -1044,7 +1044,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						sandAttack()
+						sandAttack(thisMove)
 					}
 				}
 
