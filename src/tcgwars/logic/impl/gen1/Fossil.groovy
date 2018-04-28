@@ -589,7 +589,7 @@ public enum Fossil implements CardInfo {
 				}
 
 			};
-			case AERODACTYL_16:
+			case AERODACTYL:
 			return copy (AERODACTYL_1, this);
 			case ARTICUNO:
 			return copy (ARTICUNO_2, this);
