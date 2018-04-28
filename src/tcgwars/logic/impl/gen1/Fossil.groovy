@@ -916,8 +916,10 @@ public enum Fossil implements CardInfo {
 						assert self.damage != self.fullHP - hp(10) : "Slowbro can't be Knocked Out by Strange Behavior!"
 						def tar = my.all.findAll{it != self && it.numberOfDamageCounters}
 						assert tar : "There is no Pokemon with damage counter outside Slowbro"
+						def pcs = tar.select()
+
 						self.damage+=hp(10)
-						tar.select().damage-=hp(10)
+						pcs.damage-=hp(10)
 					}
 				}
 				move "Psyshock", {
@@ -926,7 +928,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC Paralyzed
+						flipThenApplySC PARALYZED
 					}
 				}
 
