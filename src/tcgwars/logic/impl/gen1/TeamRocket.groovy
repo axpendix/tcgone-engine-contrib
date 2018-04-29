@@ -349,15 +349,17 @@ public enum TeamRocket implements CardInfo {
 				resistance FIGHTING, MINUS30
 				pokemonPower "Summon Minions", {
 					text "When you play Dark Dragonite from your hand, search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
-					onActivate{
-						if(my.bench.notFull){
-							def cnt = Math.min(my.bench.getFreeBenchCount(),2)
-							bc "$cnt"
-							my.deck.search (count: cnt,{it.cardTypes.is(BASIC)}).each {
-	              deck.remove(it)
-	              benchPCS(it)
-	            }
-	            shuffleDeck()
+					onActivate{r->
+						if(r==PLAY_FROM_HAND){
+							if(my.bench.notFull){
+								def cnt = Math.min(my.bench.getFreeBenchCount(),2)
+								bc "$cnt"
+								my.deck.search (max: cnt,"Search for 2 basic pokemon",{it.cardTypes.is(BASIC)}).each {
+		              deck.remove(it)
+		              benchPCS(it)
+		            }
+		            shuffleDeck()
+							}
 						}
 					}
 				}
@@ -521,7 +523,8 @@ public enum TeamRocket implements CardInfo {
 					onAttack {
 						damage 30
 						if(defending.cards.filterByType(BASIC_ENERGY) && opp.bench){
-							defending.cards.filterByType(BASIC_ENERGY).select().moveTo(opp.bench.select())
+							def pcs = opp.bench.select()
+							moveEnergy(basic : true, defending, pcs)
 						}
 					}
 				}
@@ -534,7 +537,7 @@ public enum TeamRocket implements CardInfo {
 					text "When you play Dark Slowbro from your hand, choose up to 3 Basic Pokémon and/or Evolution cards from you discard pile and put them into your hand."
 					onActivate {r->
 						if(r==PLAY_FROM_HAND && my.discard.filterByType(POKEMON)){
-							my.discard.filterByType(POKEMON).select(3).moveTo(my.hand)
+							my.discard.filterByType(POKEMON).select(count : 3).moveTo(my.hand)
 						}
 					}
 				}
@@ -555,8 +558,10 @@ public enum TeamRocket implements CardInfo {
 					text "No Trainer cards can be played. This power stops working while Dark Vileplume is Asleep, Confused, or Paralyzed."
 					delayedA {
 						before PLAY_TRAINER, {
-							wcu "Hay Fever prevents playing this card"
-							prevent()
+							if(!self.specialConditions){
+								wcu "Hay Fever prevents playing this card"
+								prevent()
+							}
 						}
 					}
 				}
@@ -627,7 +632,7 @@ public enum TeamRocket implements CardInfo {
 					def list = opp.hand.filterByType(TRAINER)
 					if(list){
 						list.select(count: 1, "Discard").moveTo(opp.deck)
-						shuffleDeck()
+						shuffleDeck(opp.deck)
 					}
 				}
 				playRequirement{
