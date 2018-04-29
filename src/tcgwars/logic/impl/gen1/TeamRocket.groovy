@@ -1054,6 +1054,7 @@ public enum TeamRocket implements CardInfo {
 							before APPLY_ATTACK_DAMAGES, {
 								bg.dm().each {
 									if(bg.currentTurn==self.owner.opposite) {
+										new ResolvedDamage(it.dmg, my.active, it.from, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT).run(bg)
 										it.from.damage += it.dmg
 									}
 								}
@@ -1107,9 +1108,7 @@ public enum TeamRocket implements CardInfo {
 									eff = getter (GET_WEAKNESSES, defending) {h->
 										def list = h.object as List<Weakness>
 										if(list) {
-											list.get(0).type = PSYCHIC
-										} else {
-											list.add(new Weakness(PSYCHIC))
+											confirm("Change weakness?")
 										}
 									}
 								}
