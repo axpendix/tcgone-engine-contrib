@@ -1061,7 +1061,7 @@ public enum TeamRocket implements CardInfo {
 									}
 								}
 								if(dmgVal){
-									damage dmgVal,pcs
+									damage(dmgVal, self, pcs)
 								}
 							}
 							unregisterAfter 2
@@ -1106,26 +1106,28 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {
 					}
 					onAttack {
-						targeted (defending) {
-							delayed {
-								def eff
-								register {
-									eff = getter (GET_WEAKNESSES, defending) {h->
-										def list = h.object as List<Weakness>
-										if(list) {
-											def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new weakness")
+						afterDamage{
+							targeted (defending) {
+								delayed {
+									def eff
+									register {
+										eff = getter (GET_WEAKNESSES, defending) {h->
+											def list = h.object as List<Weakness>
+											if(list) {
+												def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new weakness")
+												list.get(0).type = newWeakness
+											}
 										}
 									}
+									unregister {
+										eff.unregister()
+									}
+									after SWITCH, defending, {unregister()}
+									after EVOLVE, defending, {unregister()}
 								}
-								unregister {
-									eff.unregister()
-								}
-								after SWITCH, defending, {unregister()}
-								after EVOLVE, defending, {unregister()}
 							}
 						}
 					}
-					damage 0
 				}
 				move "Psybeam", {
 					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
