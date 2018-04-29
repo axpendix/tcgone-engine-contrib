@@ -311,7 +311,9 @@ public enum TeamRocket implements CardInfo {
 					onAttack {
 						damage 40
 						damage 10, self
-						flip {preventAllDamageNextTurn()}
+						afterDamage{
+							flip {preventAllDamageNextTurn()}
+						}
 					}
 				}
 
@@ -349,7 +351,8 @@ public enum TeamRocket implements CardInfo {
 					text "When you play Dark Dragonite from your hand, search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
 					onActivate{
 						if(my.bench.notFull){
-							def cnt = my.bench.getFreeBenchCount()
+							def cnt = Math.min(my.bench.getFreeBenchCount(),2)
+							def "$cnt"
 							my.deck.search (count: cnt,{it.cardTypes.is(BASIC)}).each {
 	              deck.remove(it)
 	              benchPCS(it)
@@ -377,8 +380,10 @@ public enum TeamRocket implements CardInfo {
 					delayedA {
 						before RETREAT, {
 							if(ef.retreater.owner==self.owner.opposite){
-								 flip 1, {}, {damage 20, ef.retreater}
-							 }
+								def applyDmg = true
+								flip {applyDmg = false}
+								if(applyDmg) directDamage(20,ef.retreater)
+							}
 						}
 					}
 				}
@@ -402,6 +407,8 @@ public enum TeamRocket implements CardInfo {
 						if(confirm("Use Dark Golbat Sneak attack to do 10 damage to one of your opponent’s Pokémon")){
 							def pcs = opp.all.select()
 							new ResolvedDamage(hp(10), self, pcs, POKEMONPOWER, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
+							//new ResolvedDamage(hp(dmg), my.active, to, Source.ATTACK, DamageManager.DamageFlag.NO_RESISTANCE, DamageManager.DamageFlag.NO_WEAKNESS).run(bg)
+
 							bg.dm().applyWeakness()
 							bg.dm().applyResistance()
 							def damage = bg.dm().getTotalDamage(self, pcs)
@@ -427,7 +434,7 @@ public enum TeamRocket implements CardInfo {
 				pokemonPower "Final Beam", {
 					text "When Dark Gyarados is Knocked Out by an attack, flip a coin. If heads, this power does 20 damage for each [W] Energy attached to Dark Gyarados to the Pokémon that Knocked Out Dark Gyarados. Apply Weakness and Resistance. This power doesn’t work if Dark Gyarados is Asleep, Confused, or Paralyzed."
 					delayedA {
-						before KNOCKOUT, self{
+						before KNOCKOUT, self, {
 							if((ef as Knockout).byDamageFromAttack && !self.specialConditions){
 								def pcs = bg.currentTurn.active
 								new ResolvedDamage(hp(20*self.cards.energyCount(W)), self, pcs, POKEMONPOWER, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
@@ -490,8 +497,6 @@ public enum TeamRocket implements CardInfo {
 						assert opp.bench
 					}
 					onAttack {
-						checkLastTurn()
-            powerUsed()
             shuffleDeck(opp.active.cards)
             removePCS(opp.active)
 					}
@@ -516,7 +521,7 @@ public enum TeamRocket implements CardInfo {
 					onAttack {
 						damage 30
 						if(defending.cards.filterByType(BASIC_ENERGY) && opp.bench){
-							defending.cards.filterByType(BASIC_ENERGY).select().moveTo.(opp.bench.select())
+							defending.cards.filterByType(BASIC_ENERGY).select().moveTo(opp.bench.select())
 						}
 					}
 				}
@@ -527,7 +532,10 @@ public enum TeamRocket implements CardInfo {
 				weakness PSYCHIC
 				pokemonPower "Real In", {
 					text "When you play Dark Slowbro from your hand, choose up to 3 Basic Pokémon and/or Evolution cards from you discard pile and put them into your hand."
-					onActivate {
+					onActivate {r->
+						if(r==PLAY_FROM_HAND && my.discard.filterByType(POKEMON)){
+							my.discard.filterByType(POKEMON).select(3).moveTo(my.hand)
+						}
 					}
 				}
 				move "Fickle Attack", {
@@ -547,8 +555,7 @@ public enum TeamRocket implements CardInfo {
 					text "No Trainer cards can be played. This power stops working while Dark Vileplume is Asleep, Confused, or Paralyzed."
 					delayedA {
 						before PLAY_TRAINER, {
-							if (bg.currentTurn == self.owner.opposite) {
-								wcu "Disconnect prevents playing this card"
+								wcu "Hay Fever prevents playing this card"
 								prevent()
 							}
 						}
@@ -580,13 +587,13 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						my.all.each{
-							if(it.name == "Koffing" || it.name == "Weezing" || it.name == "Dark Weezings"){
+							if(it.name == "Koffing" || it.name == "Weezing" || it.name == "Dark Weezing"){
 								damage 20
 								damage 20, it
 							}
 						}
 						opp.all.each{
-							if(it.name == "Koffing" || it.name == "Weezing" || it.name == "Dark Weezings"){
+							if(it.name == "Koffing" || it.name == "Weezing" || it.name == "Dark Weezing"){
 								damage 20
 								damage 20, it
 							}
@@ -620,7 +627,8 @@ public enum TeamRocket implements CardInfo {
 					opp.hand.showToMe("Opponent's hand")
 					def list = opp.hand.filterByType(TRAINER)
 					if(list){
-						shuffleDeck(list.select(count: 1, "Discard"))
+						list.select(count: 1, "Discard").moveTo(opp.deck)
+						shuffleDeck()
 					}
 				}
 				playRequirement{

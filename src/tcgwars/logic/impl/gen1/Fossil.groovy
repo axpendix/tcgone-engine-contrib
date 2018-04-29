@@ -1064,13 +1064,10 @@ public enum Fossil implements CardInfo {
 										def dmgVal = it.dmg.value
 										int dmgInt = (int) dmgVal.intValue()
 										bc "Kabuto Armor halves damage"
-										bc "$dmgVal / ${((int) ((int) dmgInt)/8)}"
 										if(((int) (dmgInt / 10)) % 2){
-											bc "${(dmgInt - 10)/2}"
 											it.dmg = hp((int) ((dmgInt - 10)/2))
 										}
 										else{
-											bc "${dmgInt / 2}"
 											it.dmg = hp((int) (dmgInt / 2))
 										}
 									}
