@@ -369,7 +369,7 @@ public enum BaseSet implements CardInfo {
 				}
 				
 			};
-			case CHARIZARD:
+			case CHARIZARD: //TODO: Import the ability from Evolutions Charizard or Noble Victories Hydregion
 			return evolution (this, from:"Charmeleon", hp:HP120, type:FIRE, retreatCost:3) {
 				weakness WATER
 				resistance FIGHTING, MINUS30
@@ -1316,14 +1316,10 @@ public enum BaseSet implements CardInfo {
 									 heal 10, self
 						         }
 						    }
+							unregisterAfter 1
 						}
 					}
                 }
-       }
-         unregisterAfter 1
-}
-					}
-				}
 				
 			};
 			case CATERPIE:
