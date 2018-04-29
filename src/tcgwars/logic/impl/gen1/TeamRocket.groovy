@@ -1061,7 +1061,7 @@ public enum TeamRocket implements CardInfo {
 									}
 								}
 								if(dmgVal){
-									damage(dmgVal, self, pcs)
+									damage(hp(dmgVal), self, pcs)
 								}
 							}
 							unregisterAfter 2
