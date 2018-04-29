@@ -177,7 +177,7 @@ public enum TeamRocket implements CardInfo {
 		return deck;
 	}
 
-	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
+	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
 	protected CardTypeSet cardTypes;
 	protected String name;
@@ -711,7 +711,7 @@ public enum TeamRocket implements CardInfo {
 						checkLastTurn()
 						assert !self.specialConditions
 						powerUsed()
-						my.deck.search(count : 1,"Search for an evolution",cardTypeFilter())
+						my.deck.search(count : 1,"Search for an evolution",cardTypeFilter(EVOLUTION)).moveTo(my.hand)
 					}
 				}
 				move "Tail Strike", {
@@ -742,6 +742,14 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+						if(my.bench){
+							while(self.cards.energyCount(C)){
+								moveEnergy(self,my.bench)
+							}
+						}
+						else{
+							discardAllSelfEnergy
+						}
 					}
 				}
 
@@ -894,7 +902,7 @@ public enum TeamRocket implements CardInfo {
 							def pcs = opp.bench.oppSelect("Switch")
 	            sw opp.active, pcs
 						}
-            damage 40
+            damage 30
 					}
 				}
 
@@ -905,7 +913,7 @@ public enum TeamRocket implements CardInfo {
 				pokemonPower "Sticky Goo", {
 					text "As long as Dark Muk is your Active Pokémon, your opponent pays [C][C] more to retreat his or her Active Pokémon. This power stops working while Dark Muk is Asleep, Confused, or Paralyzed."
 					getterA (GET_RETREAT_COST) { h->
-						if(h.effect.target.owner == self.owner.opposite && h.effect.target.active) {
+						if(h.effect.target.owner == self.owner.opposite && self.active) {
 							h.object += 2
 						}
 					}
@@ -928,7 +936,9 @@ public enum TeamRocket implements CardInfo {
 				move "Fascinate", {
 					text "Flip a coin. If heads, choose 1 of your opponent’s Benched Pokémon and switch it with the Defending Pokémon. This attack can’t be used if your opponent has no Benched Pokémon."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert opp.bench : "There is no Benched Pokémon"
+					}
 					onAttack {
 						flip{
 							def pcs = opp.bench.select("Switch")
@@ -956,7 +966,7 @@ public enum TeamRocket implements CardInfo {
 						before APPLY_DAMAGES, {
 							if(self.isSPC(CONFUSED)){
 								bg.dm().each {
-									if(it.to == self &&it.dmg.value) {
+									if(it.from == self && it.dmg.value) {
 										bc "Frenzy +30"
 										it.dmg += hp(30)
 									}
@@ -1042,8 +1052,10 @@ public enum TeamRocket implements CardInfo {
 					onAttack {
 						delayed{
 							before APPLY_ATTACK_DAMAGES, {
-								if(bg().currentTurn==self.owner.opposite) {
-									damage it.dmg.value, it.from
+								bg.dm().each {
+									if(bg().currentTurn==self.owner.opposite) {
+										damage it.dmg.value, it.from
+									}
 								}
 							}
 							unregisterAfter 2
@@ -1088,13 +1100,16 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {
 					}
 					onAttack {
-						delayed {
-							getter GET_WEAKNESSES,defending, {
-								def list = h.object as List<Weakness>
-								if(list) {
-									if(confirm("change your Defending Pokémon's weakness?")){
-										def newType = choose([FIRE,FIGHTING,GRASS,WATER,PSYCHIC,LIGHTNING], "New weakness")
-										list.get(0).type = newType
+						targeted (defending) {
+							delayed {
+								getter (GET_WEAKNESSES, defending) { h->
+									def list = h.object as List<Weakness>
+									bc "$list"
+									if(list) {
+										if(confirm("change your Defending Pokémon's weakness?")){
+											def newType = choose([FIRE,FIGHTING,GRASS,WATER,PSYCHIC,LIGHTNING], "New weakness")
+											list.get(0).type = newType
+										}
 									}
 								}
 							}
@@ -1118,10 +1133,14 @@ public enum TeamRocket implements CardInfo {
 				move "Vanish", {
 					text "Shuffle Abra into your deck. (Discard all cards attached to Abra.)"
 					energyCost P
-					attackRequirement {}
+					attackRequirement {
+						assert my.bench
+					}
 					onAttack {
-						self.cards.discard()
-						shuffleDeck(self)
+						self.cards.getExcludedList(self.topPokemonCard).discard()
+						removePCS(self)
+						moveCard(self.topPokemonCard, my.deck)
+						shuffleDeck()
 					}
 				}
 				move "Psyshock", {
@@ -1146,7 +1165,7 @@ public enum TeamRocket implements CardInfo {
 						def tar = my.all.findAll{it != self && it.cards.energyCount(R)}
 						assert tar
 						powerUsed()
-						moveEnergy(type:R,tar.select().first(),self)
+						moveEnergy(type:R,tar.select(),self)
 					}
 				}
 				move "Fire Tail", {
@@ -1226,7 +1245,7 @@ public enum TeamRocket implements CardInfo {
 						checkLastTurn()
 						assert !self.specialConditions
 						powerUsed()
-						flip 1,{apply ASLEEP, defending},{apply ASLEEP, my.active}
+						flip 1,{apply ASLEEP, opp.active},{apply ASLEEP, my.active}
 					}
 				}
 				move "Nightmare", {
