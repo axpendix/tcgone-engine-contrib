@@ -555,9 +555,8 @@ public enum TeamRocket implements CardInfo {
 					text "No Trainer cards can be played. This power stops working while Dark Vileplume is Asleep, Confused, or Paralyzed."
 					delayedA {
 						before PLAY_TRAINER, {
-								wcu "Hay Fever prevents playing this card"
-								prevent()
-							}
+							wcu "Hay Fever prevents playing this card"
+							prevent()
 						}
 					}
 				}
