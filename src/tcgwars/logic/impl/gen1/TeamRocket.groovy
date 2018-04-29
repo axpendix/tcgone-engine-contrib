@@ -1052,11 +1052,16 @@ public enum TeamRocket implements CardInfo {
 					onAttack {
 						delayed{
 							before APPLY_ATTACK_DAMAGES, {
+								def pcs
+								def dmgVal = 0
 								bg.dm().each {
-									if(bg.currentTurn==self.owner.opposite) {
-										new ResolvedDamage(it.dmg, my.active, it.from, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT).run(bg)
-										it.from.damage += it.dmg
+									if(bg.currentTurn==self.owner.opposite && it.to == self) {
+										pcs = it.from
+										dmgVal = it.dmg.value
 									}
+								}
+								if(dmgVal){
+									damage dmgVal,pcs
 								}
 							}
 							unregisterAfter 2
@@ -1108,7 +1113,7 @@ public enum TeamRocket implements CardInfo {
 									eff = getter (GET_WEAKNESSES, defending) {h->
 										def list = h.object as List<Weakness>
 										if(list) {
-											confirm("Change weakness?")
+											def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new weakness")
 										}
 									}
 								}
@@ -1120,6 +1125,7 @@ public enum TeamRocket implements CardInfo {
 							}
 						}
 					}
+					damage 0
 				}
 				move "Psybeam", {
 					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
