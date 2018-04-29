@@ -748,7 +748,7 @@ public enum TeamRocket implements CardInfo {
 							}
 						}
 						else{
-							discardAllSelfEnergy
+							discardAllSelfEnergy null
 						}
 					}
 				}
@@ -1053,7 +1053,7 @@ public enum TeamRocket implements CardInfo {
 						delayed{
 							before APPLY_ATTACK_DAMAGES, {
 								bg.dm().each {
-									if(bg().currentTurn==self.owner.opposite) {
+									if(bg.currentTurn==self.owner.opposite) {
 										damage it.dmg.value, it.from
 									}
 								}
@@ -1102,16 +1102,24 @@ public enum TeamRocket implements CardInfo {
 					onAttack {
 						targeted (defending) {
 							delayed {
-								getter (GET_WEAKNESSES, defending) { h->
-									def list = h.object as List<Weakness>
-									bc "$list"
-									if(list) {
-										if(confirm("change your Defending Pokémon's weakness?")){
-											def newType = choose([FIRE,FIGHTING,GRASS,WATER,PSYCHIC,LIGHTNING], "New weakness")
-											list.get(0).type = newType
+								def eff
+								register {
+									eff =getter (GET_WEAKNESSES, defending) { h->
+										def list = h.object as List<Weakness>
+										bc "$list"
+										if(list) {
+											if(confirm("change your Defending Pokémon's weakness?")){
+												def newType = choose([FIRE,FIGHTING,GRASS,WATER,PSYCHIC,LIGHTNING], "New weakness")
+												list.get(0).type = newType
+											}
 										}
 									}
 								}
+								unregister {
+									eff.unregister()
+								}
+								after SWITCH, defending, {unregister()}
+								after EVOLVE, defending, {unregister()}
 							}
 						}
 					}
