@@ -352,7 +352,7 @@ public enum TeamRocket implements CardInfo {
 					onActivate{
 						if(my.bench.notFull){
 							def cnt = Math.min(my.bench.getFreeBenchCount(),2)
-							def "$cnt"
+							bc "$cnt"
 							my.deck.search (count: cnt,{it.cardTypes.is(BASIC)}).each {
 	              deck.remove(it)
 	              benchPCS(it)
