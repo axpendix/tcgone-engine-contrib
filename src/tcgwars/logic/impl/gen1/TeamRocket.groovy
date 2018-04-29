@@ -1054,7 +1054,7 @@ public enum TeamRocket implements CardInfo {
 							before APPLY_ATTACK_DAMAGES, {
 								bg.dm().each {
 									if(bg.currentTurn==self.owner.opposite) {
-										damage it.dmg.value, it.from
+										it.from.damage += it.dmg
 									}
 								}
 							}
@@ -1104,14 +1104,12 @@ public enum TeamRocket implements CardInfo {
 							delayed {
 								def eff
 								register {
-									eff =getter (GET_WEAKNESSES, defending) { h->
+									eff = getter (GET_WEAKNESSES, defending) {h->
 										def list = h.object as List<Weakness>
-										bc "$list"
 										if(list) {
-											if(confirm("change your Defending Pokémon's weakness?")){
-												def newType = choose([FIRE,FIGHTING,GRASS,WATER,PSYCHIC,LIGHTNING], "New weakness")
-												list.get(0).type = newType
-											}
+											list.get(0).type = PSYCHIC
+										} else {
+											list.add(new Weakness(PSYCHIC))
 										}
 									}
 								}
