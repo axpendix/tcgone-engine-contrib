@@ -1777,51 +1777,114 @@ public enum BaseSet implements CardInfo {
 			return basicTrainer (this) {
 				text "Play Clefairy Doll as if it were a Basic Pokémon. While in play, Clefairy Doll counts a a Pokémon (instead of a Trainer card). Clefairy Doll has no attacks, can’t retreat, and can’t be Asleep, Confused, Paralyzed, or Poisoned. If Clefairy Doll is Knocked Out, it doesn’t count as a Knocked Out Pokémon. At any time during your turn before your attack, you may discard Clefairy Doll."
 				onPlay {
+					Card pokemonCard, trainerCard = thisCard
+					pokemonCard = basic (new CustomCardInfo(CLEFAIRY_DOLL).setCardTypes(BASIC, POKEMON), hp:HP010, type:COLORLESS, retreatCost:0) {
+						customAbility{
+							def ef2, acl
+							onActivate{
+								delayed {
+									before RETREAT, self, {
+										wcu "Cannot retreat"
+										prevent()
+									}
+									before APPLY_SPECIAL_CONDITION, {
+										def pcs=e.getTarget(bg)
+										if(pcs==self){
+											bc "Clefairy Doll is unaffected by Special Conditions"
+											prevent()
+										}
+									}
+									before TAKE_PRIZE, {
+										if(ef.pcs==self){
+											prevent()
+										}
+									}
+								}
+								if(!ef2){
+									ef2 = delayed {
+										after REMOVE_FROM_PLAY, {
+											if(ef.removedCards.contains(pokemonCard)){
+												bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+												unregister()
+												ef2 = null
+											}
+										}
+									}
+								}
+								acl = action("Discard Clefairy Doll", [TargetPlayer.SELF]){
+									new Knockout(self).run(bg)
+								}
+							}
+							onDeactivate{
+								acl.each{bg.gm().unregisterAction(it)}
+							}
+						}
+					}
+					pokemonCard.player = trainerCard.player
+					bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+					hand.remove(pokemonCard)
+					benchPCS(pokemonCard)
 				}
 				playRequirement{
+					assert bench.notFull
 				}
 			};
 			case COMPUTER_SEARCH:
 			return basicTrainer (this) {
 				text "Discard 2 of the other cards from you hand in order to search your deck for any card and put it into your hand. Shuffle your deck afterward."
 				onPlay {
+					my.hand.getExcludedList(thisCard).select(count: 2, "Discard").discard()
+					my.deck.select(count:1).moveTo(my.hand)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.hand.getExcludedList(thisCard).size() >= 2
+					assert my.deck
 				}
 			};
 			case DEVOLUTION_SPRAY:
-			return basicTrainer (this) {
-				text "Choose 1 of your own Pokémon in play and a Stage of Evolution. Discard all Evolution cards of that Stage or higher attached to that Pokémon. That Pokémon is no longer Asleep, Confused, Paralyzed, Poisoned, or anything else that might be the result of an attack (just as if you had evolved it)."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+				return copy(FatesCollide.DEVOlUTION_SPRAY_95, this);
 			case IMPOSTOR_PROFESSOR_OAK:
 			return basicTrainer (this) {
 				text "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards."
 				onPlay {
+					opp.hand.moveTo(opp.deck)
+					shuffleDeck(null, TargetPlayer.OPPONENT)
+					draw 7, TargetPlayer.OPPONENT
 				}
 				playRequirement{
+					assert opp.deck
 				}
 			};
 			case ITEM_FINDER:
 			return basicTrainer (this) {
 				text "Discard 2 of the other cards from your hand in order to put a Trainer card from your discard pile into your hand."
 				onPlay {
+					def selection = my.hand.getExcludedList(thisCard).select(count: 2, "Discard")
+					my.discard.select(count:1).moveTo(my.hand)
+					selection.discard()
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.hand.getExcludedList(thisCard).size() >= 2
+					assert my.discard
 				}
 			};
 			case LASS:
 			return basicTrainer (this) {
 				text "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks."
 				onPlay {
+					opp.hand.showToMe("Opponent's hand")
+					my.hand.showtoOpponent("Opponent's hand")
+					def tarOpp = opp.hand.findAll {it.cardTypes.is(TRAINER)} //Is this a card list?
+					def tarMy = my.hand.findAll {it.cardTypes.is(TRAINER)}
+					shuffleDeck(tarOpp, TargetPlayer.OPPONENT)
+					shuffleDeck(tarMy)
 				}
 				playRequirement{
 				}
 			};
-			case POKEMON_BREEDER:
+			case POKEMON_BREEDER: //TODO: Use the implementation of Rare Candy
 			return basicTrainer (this) {
 				text "Put a Stage 2 Evolution card from your hand on the matching Basic Pokémon. You can only play this card when you would be allowed to evolve that Pokémon anyway."
 				onPlay {
@@ -1833,14 +1896,19 @@ public enum BaseSet implements CardInfo {
 			return basicTrainer (this) {
 				text "Trade 1 of the Basic Pokémon or Evolution cards in your hand for 1 of the Basic Pokémon or Evolution cards from your deck. Show both cards to your opponent. Shuffle your deck afterward."
 				onPlay {
+					my.hand.select("Choose a Pokemon", cardTypeFilter(POKEMON)).select().moveTo(my.deck)
+					my.deck.search (max: 1, cardTypeFilter(POKEMON)).moveTo(hand)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.hand.find(cardTypeFilter(POKEMON))
+					
 				}
 			};
-			case SCOOP_UP:
+			case SCOOP_UP: 
 			return basicTrainer (this) {
 				text "Choose 1 of your Pokémon in play and return its Basic Pokémon card to your hand. (Discard all cards attached to that card.)"
-				onPlay {
+				onPlay { //TODO: How does one find the basic of a Pokemon card?  It's possible that Pokemon like Ditto can mess up looking through a stack of cards
 				}
 				playRequirement{
 				}
@@ -1849,11 +1917,29 @@ public enum BaseSet implements CardInfo {
 			return basicTrainer (this) {
 				text "Discard 1 Energy card attached to 1 of your Pokémon in order to choose 1 of your opponent’s Pokémon and up to 2 Energy cards attached to it. Discard those Energy cards."
 				onPlay {
+					def tar1 = my.all.findAll {it.cards.energyCount(C)}
+					if(tar1) {
+						def pcs = tar1.select("Discard energy from")
+						targeted (pcs, TRAINER_CARD) {
+							pcs.cards.filterByType(ENERGY).select("Discard").discard()
+						}
+					}
+					def tar2 = opp.all.findAll {it.cards.energyCount(C)}
+					if(tar2) {
+						def pcs = tar2.select("Discard energy from")
+						targeted (pcs, TRAINER_CARD) {
+							pcs.cards.filterByType(ENERGY).select("Discard").discard()
+							pcs.cards.filterByType(ENERGY).search("Discard").discard()
+
+						}
+					}
 				}
 				playRequirement{
+					assert opp.all.findAll {it.cards.energyCount(C)}
+					assert my.all.findAll {it.cards.energyCount(C)}
 				}
 			};
-			case DEFENDER:
+			case DEFENDER: //TODO
 			return basicTrainer (this) {
 				text "Attach Defender to 1 of your Pokémon. At the end of your opponent’s next turn, discard Defender. Damage done to that Pokémon by attacks is reduced by 20 (after applying Weakness and Resistance)."
 				onPlay {
@@ -1863,30 +1949,14 @@ public enum BaseSet implements CardInfo {
 			};
 			case ENERGY_RETRIEVAL:
 			return basicTrainer (this) {
-				text "Trade 1 of the other cards in your hand for up to 2 basic Energy cards from your discard pile."
-				onPlay {
-				}
-				playRequirement{
-				}
+				return copy(BlackWhite.ENERGY_RETRIEVAL_92, this)
 			};
 			case FULL_HEAL:
-			return basicTrainer (this) {
-				text "Your Active Pokémon is no longer Asleep, Confused, Paralyzed, or Poisoned."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+				return copy(BlackWhite.FULL_HEAL_95, this)
 			case MAINTENANCE:
-			return basicTrainer (this) {
-				text "Shuffle 2 of the other cards from your hand into your deck in order to draw a card."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+				return copy(FuriousFists.MAINTENANCE_96, this)
 			case PLUSPOWER:
-			return basicTrainer (this) {
+			return basicTrainer (this) { //TODO
 				text "Attach PlusPower to your Active Pokémon. At the end of your turn, discard PlusPower. If this Pokémon’s attack does damage to the Defending Pokémon (after applying Weakness and Resistance), the attack does 10 more damage to the Defending Pokémon."
 				onPlay {
 				}
@@ -1897,101 +1967,134 @@ public enum BaseSet implements CardInfo {
 			return basicTrainer (this) {
 				text "Remove all damage counters from all of your own Pokémon with damage counters on them, then discard all Energy cards attached to those Pokémon."
 				onPlay {
+					def tar = my.all.findAll {it.numberOfDamageCounters}
+					if(tar) {
+						tar.each{
+							targeted (it, TRAINER_CARD) {
+								heal it.damage.value, it
+								it.cards.filterByType(ENERGY).each{it.discard()}
+							}
+						}
+					}
 				}
 				playRequirement{
+					assert my.all.findAll{it.numberOfDamageCounters}
 				}
 			};
 			case POKEMON_FLUTE:
 			return basicTrainer (this) {
 				text "Choose 1 Basic Pokémon card from your opponent’s discard pile and put it onto his or her Bench. (You can’t play Pokémon Flute if your opponent’s Bench is full.)"
 				onPlay {
+					def tar = TargetPlayer.OPPONENT
+					tar.discard.findAll(cardTypeFilter(BASIC)).select().each {
+						tar.pbg.discard.remove(it)
+						def pcs = benchPCS(it, OTHER, tar)
+					}
 				}
 				playRequirement{
+					assert opp.discard.find(cardTypeFilter(BASIC)) && opp.bench.notFull 
 				}
 			};
 			case POKEDEX:
-			return basicTrainer (this) {
-				text "Look at up to 5 cards from the top of your deck and rearrange them as you like."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+				return copy(BlackWhite.POKEDEX_98, this)
 			case PROFESSOR_OAK:
 			return basicTrainer (this) {
 				text "Discard your hand, then draw 7 cards."
 				onPlay {
+					my.hand.discard()
+					draw 7
 				}
 				playRequirement{
+					assert my.deck
 				}
 			};
 			case REVIVE:
 			return basicTrainer (this) {
 				text "Put 1 Basic Pokémon card from your discard pile onto your Bench. Put damage counters on that Pokémon equal to half its HP (rounded down to the nearest 10). (You can’t play Revive if your Bench is full.)"
 				onPlay {
+					def tar = TargetPlayer.SELF
+					my.discard.findAll(cardTypeFilter(BASIC)).select().each {
+						tar.pbg.discard.remove(it)
+						def pcs = benchPCS(it, OTHER, tar)
+						pcs.hp = ceil((pcs.fullHp/10)/2)*10
+					}
 				}
 				playRequirement{
+					assert my.discard.find(cardTypeFilter(BASIC)) && my.bench.notFull
 				}
 			};
 			case SUPER_POTION:
 			return basicTrainer (this) {
 				text "Discard 1 Energy card attached to your own Pokémon in order to remove up to 4 damage counters from that Pokémon."
 				onPlay {
+					def tar = my.all.findAll {it.cards.energyCount(C) && it.numberOfDamageCounters}
+					if(tar) {
+						def pcs = tar.select("Heal which Pokemon?")
+						targeted (pcs, TRAINER_CARD) {
+							pcs.cards.filterByType(ENERGY).select("Discard which Energy?").discard()
+							heal 40, pcs
+						}
+					}
 				}
 				playRequirement{
+					assert opp.all.findAll {it.cards.energyCount(C) && it.numberOfDamageCounters}
 				}
 			};
 			case BILL:
 			return basicTrainer (this) {
 				text "Draw 2 cards."
 				onPlay {
+					draw 2
 				}
 				playRequirement{
+					assert my.deck
 				}
 			};
 			case ENERGY_REMOVAL:
 			return basicTrainer (this) {
 				text "Choose 1 Energy card attached to 1 of your opponent’s Pokémon and discard it."
 				onPlay {
+					def tar = opp.all.findAll {it.cards.energyCount(C)}
+					if(tar) {
+						def pcs = tar.select("Discard energy from")
+						targeted (pcs, TRAINER_CARD) {
+							pcs.cards.filterByType(ENERGY).select("Discard").discard()
+						}
+					}
 				}
 				playRequirement{
+					assert opp.all.findAll {it.cards.energyCount(C)}
 				}
 			};
 			case GUST_OF_WIND:
 			return basicTrainer (this) {
 				text "Choose 1 of your opponent’s Benched Pokémon and switch it with his or her Active Pokémon."
 				onPlay {
+					def pcs = opp.bench.select("New active")
+					targeted (pcs, TRAINER_CARD) {
+						sw opp.active, pcs
+					}
 				}
 				playRequirement{
+					assert opp.bench
 				}
 			};
 			case POTION:
 			return basicTrainer (this) {
 				text "Remove up to 2 damage counters from 1 of your Pokémon."
 				onPlay {
+					def pcs = my.all.findAll{it.numberOfDamageCounters}.select()
+					heal 20, pcs
 				}
 				playRequirement{
+					assert my.all.findAll{it.numberOfDamageCounters}
 				}
 			};
 			case SWITCH:
-			return basicTrainer (this) {
-				text "Switch 1 of your own Benched Pokémon with your Active Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
+				return copy(BlackWhite.SWITCH_104, this)
 			};
 			case DOUBLE_COLORLESS_ENERGY:
-			return specialEnergy (this) {
-				text "Provides [C][C] energy. Doesn’t count as a basic Energy card."
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
+				return copy(Xy.DOUBLE_COLORLESS_ENERGY_130, this)
 			};
 			case FIGHTING_ENERGY:
 			return basicEnergy (this, FIGHTING);
