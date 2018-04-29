@@ -438,7 +438,7 @@ public enum TeamRocket implements CardInfo {
 					delayedA {
 						before KNOCKOUT, self, {
 							if((ef as Knockout).byDamageFromAttack && !self.specialConditions){
-								def pcs = bg.currentTurn.active
+								def pcs = bg.currentTurn.pbg.active
 								new ResolvedDamage(hp(20*self.cards.energyCount(W)), self, pcs, POKEMONPOWER, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
 								bg.dm().applyWeakness()
 								bg.dm().applyResistance()
@@ -632,7 +632,7 @@ public enum TeamRocket implements CardInfo {
 					def list = opp.hand.filterByType(TRAINER)
 					if(list){
 						list.select(count: 1, "Discard").moveTo(opp.deck)
-						shuffleDeck(opp.deck)
+						shuffleDeck(null, TargetPlayer.OPPONENT)
 					}
 				}
 				playRequirement{
