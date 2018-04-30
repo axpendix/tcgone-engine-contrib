@@ -406,7 +406,7 @@ public enum TeamRocket implements CardInfo {
 				pokemonPower "Sneak Attack", {
 					text "When you play Dark Golbat from your hand, you may choose 1 of your opponent’s Pokémon. If you do, Dark Golbat does 10 damage to that Pokémon. Apply Weakness and Resistance."
 					onActivate { r->
-						if(r==PLAY_FROM_HAND)){
+						if(r==PLAY_FROM_HAND){
 							if(confirm("Use Dark Golbat Sneak attack to do 10 damage to one of your opponent’s Pokémon")){
 								def pcs = opp.all.select()
 								new ResolvedDamage(hp(10), self, pcs, Source.POKEMONPOWER, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
