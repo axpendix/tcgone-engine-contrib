@@ -1062,6 +1062,11 @@ public enum TeamRocket implements CardInfo {
 								}
 								if(dmgVal){
 									new ResolvedDamage(hp(dmgVal), self, pcs, Source.ATTACK, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
+									bg.dm().applyWeakness()
+									bg.dm().applyResistance()
+									def damage = bg.dm().getTotalDamage(self, pcs)
+									bg.dm().clearDamages()
+									bg.em().run(new DirectDamage(damage, pcs))
 								}
 							}
 							after SWITCH, self, {unregister()}
@@ -1441,7 +1446,7 @@ public enum TeamRocket implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						def tar = opp.all.select
+						def tar = opp.all.select()
 						flip {noWrDamage(20,tar.first())}
 					}
 				}
@@ -1519,7 +1524,7 @@ public enum TeamRocket implements CardInfo {
 						powerUsed()
 						def tar = my.prizeAsList.select(hidden: true, "Prize to replace with the top card of your deck")
 						def ind = my.prizeAsList.indexOf(tar.first())
-						my.prize[ind] = my.deck.subList(0,1)
+						my.prize[ind] = my.deck.get(0)
 						my.deck.setSubList(0,tar)
 					}
 				}
@@ -1630,13 +1635,13 @@ public enum TeamRocket implements CardInfo {
 						if(oppConfirm("accepts the challenge (if decline your opponent draws 2 cards, otherwise you both put as many basic pokemon on your bench fro your deck)")){
 							if(my.bench.notFull) {
 								def myCnt = my.bench.getFreeBenchCount()
-								my.deck.search(max:myCnt,"search for at most $myCnt Basic Pokemon").each{
+								my.deck.search(max:myCnt,"search for at most $myCnt Basic Pokemon",cardTypeFilter(BASIC)).each{
 									benchPCS(it)
 								}
 							}
 							if(opp.bench.notFull) {
 								def oppCnt = opp.bench.getFreeBenchCount()
-								opp.deck.search(max:oppCnt,"search for at most $oppCnt Basic Pokemon").each{
+								opp.deck.search(max:oppCnt,"search for at most $oppCnt Basic Pokemon",cardTypeFilter(BASIC)).each{
 									benchPCS(it)
 								}
 							}
@@ -1659,10 +1664,10 @@ public enum TeamRocket implements CardInfo {
 					def tar = 0
 					flipUntilTails {tar = 1 - tar}
 					if(tar){
-						damage 10, opp.active
+						directDamage(10, opp.active,TRAINER_CARD)
 					}
 					else{
-						damage 10, my.active
+						directDamage(10, my.active,TRAINER_CARD)
 					}
 				}
 				playRequirement{
@@ -1672,7 +1677,7 @@ public enum TeamRocket implements CardInfo {
 			return basicTrainer (this) {
 				text "Discard a card from your hand in order to play this card. Your opponent shuffles his or her hand into his or her deck, then draws 4 cards."
 				onPlay {
-					my.hand.findAll({it != self}).select().discard()
+					my.hand.findAll({it != thisCard}).select().discard()
 					shuffleDeck(opp.hand)
 					draw(4, TargetPlayer.OPPONENT)
 				}
@@ -1687,6 +1692,7 @@ public enum TeamRocket implements CardInfo {
 					def tar = my.discard.select(max : 3, "Choose up to 3 Basic Pokémon cards, Evolution cards, and/or basic Energy cards from your discard pile", {it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION) || it.cardTypes.is(ENERGY)})
 					tar.showToOpponent("Opponent's choosen cards")
 					tar.moveTo(my.deck)
+					shuffleDeck()
 				}
 				playRequirement{
 					assert my.discard
@@ -1695,15 +1701,23 @@ public enum TeamRocket implements CardInfo {
 			case GOOP_GAS_ATTACK:
 			return basicTrainer (this) {
 				text "All Pokémon Powers stop working until the end of your opponent’s next turn."
+				def effect1
+				def effect2
 				onPlay {
 					delayed{
-						getter IS_ABILITY_BLOCKED, { Holder h->
-							if (h.effect.ability instanceof BwAbility) {
+						register{
+							effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
+								if (h.effect.ability instanceof BwAbility) {
+									h.object=true
+								}
+							}
+							effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
 								h.object=true
 							}
 						}
-						getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-							h.object=true
+						unregister{
+							effect1.unregister()
+							effect2.unregister()
 						}
 						unregisterAfter 2
 					}
@@ -1715,7 +1729,7 @@ public enum TeamRocket implements CardInfo {
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, the Defending Pokémon is now Asleep."
 				onPlay {
-					flip {apply ASLEEP, defending}
+					flip {apply ASLEEP, opp.active}
 				}
 				playRequirement{
 				}
@@ -1752,11 +1766,11 @@ public enum TeamRocket implements CardInfo {
 						flip {
 							flip 1,{
 								opp.bench.each{
-									damage 10, it
+									damage 20, it
 								}
 							},{
 								opp.bench.each{
-									damage 20, it
+									damage 10, it
 								}
 							}
 						}
