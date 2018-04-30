@@ -1064,9 +1064,9 @@ public enum TeamRocket implements CardInfo {
 									new ResolvedDamage(hp(dmgVal), self, pcs, Source.ATTACK, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
 									bg.dm().applyWeakness()
 									bg.dm().applyResistance()
-									def damage = bg.dm().getTotalDamage(self, pcs)
+									/*def damage = bg.dm().getTotalDamage(self, pcs)
 									bg.dm().clearDamages()
-									bg.em().run(new DirectDamage(damage, pcs))
+									bg.em().run(new DirectDamage(damage, pcs))*/
 								}
 							}
 							after SWITCH, self, {unregister()}
@@ -1447,7 +1447,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						def tar = opp.all.select()
-						flip {noWrDamage(20,tar.first())}
+						flip {noWrDamage(20,tar)}
 					}
 				}
 
@@ -1642,7 +1642,7 @@ public enum TeamRocket implements CardInfo {
 							if(opp.bench.notFull) {
 								def oppCnt = opp.bench.getFreeBenchCount()
 								opp.deck.search(max:oppCnt,"search for at most $oppCnt Basic Pokemon",cardTypeFilter(BASIC)).each{
-									benchPCS(it)
+									benchPCS(it,OTHER, TargetPlayer.OPPONENT)
 								}
 							}
 						}
@@ -1682,7 +1682,7 @@ public enum TeamRocket implements CardInfo {
 					draw(4, TargetPlayer.OPPONENT)
 				}
 				playRequirement{
-					assert my.hand.findAll({it != self})
+					assert my.hand.findAll({it != thisCard})
 				}
 			};
 			case NIGHTLY_GARBAGE_RUN:
