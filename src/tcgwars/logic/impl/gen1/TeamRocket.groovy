@@ -405,18 +405,18 @@ public enum TeamRocket implements CardInfo {
 				resistance FIGHTING, MINUS30
 				pokemonPower "Sneak Attack", {
 					text "When you play Dark Golbat from your hand, you may choose 1 of your opponent’s Pokémon. If you do, Dark Golbat does 10 damage to that Pokémon. Apply Weakness and Resistance."
-					onActivate {
-						checkLastTurn()
-						powerUsed()
-						if(confirm("Use Dark Golbat Sneak attack to do 10 damage to one of your opponent’s Pokémon")){
-							def pcs = opp.all.select()
-							new ResolvedDamage(hp(10), self, pcs, Source.POKEMONPOWER, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
+					onActivate { r->
+						if(r==PLAY_FROM_HAND)){
+							if(confirm("Use Dark Golbat Sneak attack to do 10 damage to one of your opponent’s Pokémon")){
+								def pcs = opp.all.select()
+								new ResolvedDamage(hp(10), self, pcs, Source.POKEMONPOWER, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
 
-							bg.dm().applyWeakness()
-							bg.dm().applyResistance()
-							def damage = bg.dm().getTotalDamage(self, pcs)
-							bg.dm().clearDamages()
-							bg.em().run(new DirectDamage(damage, pcs))
+								bg.dm().applyWeakness()
+								bg.dm().applyResistance()
+								def damage = bg.dm().getTotalDamage(self, pcs)
+								bg.dm().clearDamages()
+								bg.em().run(new DirectDamage(damage, pcs))
+							}
 						}
 					}
 				}
@@ -621,9 +621,7 @@ public enum TeamRocket implements CardInfo {
 				text "Each player plays with his or her Prize cards face up for the rest of the game."
 				onPlay {
 					for(int i=0; i<my.prizeIsTurnedUp.length; i++){
-						bc "$i"
             if(my.prize[i] != null){
-							bc "turn up : $i"
               my.prizeIsTurnedUp[i] = true
             }
         	}
