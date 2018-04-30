@@ -408,8 +408,7 @@ public enum TeamRocket implements CardInfo {
 					onActivate {
 						if(confirm("Use Dark Golbat Sneak attack to do 10 damage to one of your opponent’s Pokémon")){
 							def pcs = opp.all.select()
-							new ResolvedDamage(hp(10), self, pcs, POKEMONPOWER, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
-							//new ResolvedDamage(hp(dmg), my.active, to, Source.ATTACK, DamageManager.DamageFlag.NO_RESISTANCE, DamageManager.DamageFlag.NO_WEAKNESS).run(bg)
+							new ResolvedDamage(hp(10), self, pcs, Source.POKEMONPOWER, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
 
 							bg.dm().applyWeakness()
 							bg.dm().applyResistance()
@@ -439,7 +438,7 @@ public enum TeamRocket implements CardInfo {
 						before KNOCKOUT, self, {
 							if((ef as Knockout).byDamageFromAttack && !self.specialConditions){
 								def pcs = bg.currentTurn.pbg.active
-								new ResolvedDamage(hp(20*self.cards.energyCount(W)), self, pcs, POKEMONPOWER, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
+								new ResolvedDamage(hp(20*self.cards.energyCount(W)), self, pcs, Source.POKEMONPOWER, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
 								bg.dm().applyWeakness()
 								bg.dm().applyResistance()
 								def damage = bg.dm().getTotalDamage(self, pcs)
@@ -619,7 +618,11 @@ public enum TeamRocket implements CardInfo {
 			return basicTrainer (this) {
 				text "Each player plays with his or her Prize cards face up for the rest of the game."
 				onPlay {
-					//TODO : face up
+					for(int i=0; i<my.prizeIsTurnedUp.length; i++){
+            if(my.prize[i] != null){
+                my.prizeIsTurnedUp[i] = true
+            }
+        	}
 				}
 				playRequirement{
 				}
