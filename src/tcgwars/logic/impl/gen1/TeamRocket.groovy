@@ -406,6 +406,8 @@ public enum TeamRocket implements CardInfo {
 				pokemonPower "Sneak Attack", {
 					text "When you play Dark Golbat from your hand, you may choose 1 of your opponent’s Pokémon. If you do, Dark Golbat does 10 damage to that Pokémon. Apply Weakness and Resistance."
 					onActivate {
+						checkLastTurn()
+						powerUsed()
 						if(confirm("Use Dark Golbat Sneak attack to do 10 damage to one of your opponent’s Pokémon")){
 							def pcs = opp.all.select()
 							new ResolvedDamage(hp(10), self, pcs, Source.POKEMONPOWER, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
@@ -619,8 +621,15 @@ public enum TeamRocket implements CardInfo {
 				text "Each player plays with his or her Prize cards face up for the rest of the game."
 				onPlay {
 					for(int i=0; i<my.prizeIsTurnedUp.length; i++){
+						bc "$i"
             if(my.prize[i] != null){
-                my.prizeIsTurnedUp[i] = true
+							bc "turn up : $i"
+              my.prizeIsTurnedUp[i] = true
+            }
+        	}
+					for(int i=0; i<opp.prizeIsTurnedUp.length; i++){
+            if(opp.prize[i] != null){
+              opp.prizeIsTurnedUp[i] = true
             }
         	}
 				}
@@ -1682,7 +1691,7 @@ public enum TeamRocket implements CardInfo {
 				onPlay {
 					my.hand.findAll({it != thisCard}).select().discard()
 					opp.hand.moveTo(opp.deck)
-					shuffleDeck()
+					shuffleDeck(null,TargetPlayer.OPPONENT)
 					draw(4, TargetPlayer.OPPONENT)
 				}
 				playRequirement{
