@@ -1061,7 +1061,7 @@ public enum TeamRocket implements CardInfo {
 									}
 								}
 								if(dmgVal){
-									new ResolvedDamage(hp(dmgVal), self, pcs, Source.ATTACK).run(bg)
+									new ResolvedDamage(hp(dmgVal), self, pcs, Source.ATTACK, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
 								}
 							}
 							after SWITCH, self, {unregister()}
@@ -1111,7 +1111,7 @@ public enum TeamRocket implements CardInfo {
 					onAttack {
 						targeted (defending) {
 							delayed {
-								if(opp.active.weakness)
+								if(opp.active.getWeakness)
 								{
 									def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new weakness")
 									def eff
