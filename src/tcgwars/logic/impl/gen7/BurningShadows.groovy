@@ -1715,8 +1715,22 @@ public enum BurningShadows implements CardInfo {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may prevent all effects of your opponent's attacks, including damage, done to this Pokémon until the end of your opponent's next turn."
 					onActivate {r->
             if(r==PLAY_FROM_HAND && confirm("Use Stance?")){
-              powerUsed()
-              preventAllEffectsNextTurn()
+							powerUsed()
+							delayed{
+								before APPLY_ATTACK_DAMAGES, {
+		              bg.dm().each{
+		                if(it.to == self){
+		                  bc "Stance prevent all damage"
+		                  it.dmg=hp(0)
+		                }
+		              }
+		            }
+								before PROCESS_ATTACK_EFFECTS, self, {
+									bc "Stance prevent effects"
+		              prevent()
+		            }
+								unregisterAfter 2
+							}
             }
 					}
 				}
@@ -2143,7 +2157,7 @@ public enum BurningShadows implements CardInfo {
                 def pcs = my.bench.select()
                 self.cards.filterByType(ENERGY).each {energySwitch(self,pcs,it)}
               }
-						}            
+						}
 					}
 				}
 
