@@ -1116,7 +1116,7 @@ public enum TeamRocket implements CardInfo {
 					onAttack {
 						targeted (defending) {
 							delayed {
-								if(opp.active.getWeakness)
+								if(opp.active.weaknesses
 								{
 									def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new weakness")
 									def eff
@@ -1678,7 +1678,8 @@ public enum TeamRocket implements CardInfo {
 				text "Discard a card from your hand in order to play this card. Your opponent shuffles his or her hand into his or her deck, then draws 4 cards."
 				onPlay {
 					my.hand.findAll({it != thisCard}).select().discard()
-					shuffleDeck(opp.hand)
+					opp.hand.moveTo(opp.deck)
+					shuffleDeck()
 					draw(4, TargetPlayer.OPPONENT)
 				}
 				playRequirement{
@@ -1706,12 +1707,12 @@ public enum TeamRocket implements CardInfo {
 				onPlay {
 					delayed{
 						register{
-							effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
+							effect1 = getter IS_ABILITY_BLOCKED, {h->
 								if (h.effect.ability instanceof BwAbility) {
 									h.object=true
 								}
 							}
-							effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+							effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {h->
 								h.object=true
 							}
 						}
