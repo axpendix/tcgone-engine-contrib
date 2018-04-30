@@ -1116,7 +1116,7 @@ public enum TeamRocket implements CardInfo {
 					onAttack {
 						targeted (defending) {
 							delayed {
-								if(opp.active.weaknesses
+								if(opp.active.weaknesses)
 								{
 									def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new weakness")
 									def eff
