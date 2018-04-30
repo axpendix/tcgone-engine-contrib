@@ -1881,7 +1881,7 @@ public enum CrimsonInvasion implements CardInfo {
         bwAbility "Slice Off", {
           text "When you play this Pokémon from your hand onto your Bench during your turn, you may discard a Special Energy from your opponent's Pokémon."
           onActivate {reason ->
-            if(reason == PLAY_FROM_HAND && self.benched && confirm("Use Empty Light?")){
+            if(reason == PLAY_FROM_HAND && self.benched && confirm("Use Slice Off?")){
               powerUsed()
               def tar = opp.all.findAll({it.cards.filterByType(SPECIAL_ENERGY)})
               if(tar){
