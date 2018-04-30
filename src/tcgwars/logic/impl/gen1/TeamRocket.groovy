@@ -1061,9 +1061,12 @@ public enum TeamRocket implements CardInfo {
 									}
 								}
 								if(dmgVal){
-									damage(hp(dmgVal), self, pcs)
+									new ResolvedDamage(hp(dmgVal), self, pcs, Source.ATTACK).run(bg)
 								}
 							}
+							after SWITCH, self, {unregister()}
+							after EVOLVE, self, {unregister()}
+
 							unregisterAfter 2
 						}
 					}
@@ -1106,15 +1109,16 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {
 					}
 					onAttack {
-						afterDamage{
-							targeted (defending) {
-								delayed {
+						targeted (defending) {
+							delayed {
+								if(opp.active.weakness)
+								{
+									def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new weakness")
 									def eff
 									register {
 										eff = getter (GET_WEAKNESSES, defending) {h->
 											def list = h.object as List<Weakness>
 											if(list) {
-												def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new weakness")
 												list.get(0).type = newWeakness
 											}
 										}
