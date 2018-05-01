@@ -2128,7 +2128,7 @@ public enum UltraPrism implements CardInfo {
               def tar = my.hand.filterByEnergyType(M).select(max: 60)
               def dmgMul = tar.size()
               tar.discard()
-              damage 30*dmgMul //TODO: Get rid of hardcoded max
+              damage 30*dmgMul
             }
           }
         }
