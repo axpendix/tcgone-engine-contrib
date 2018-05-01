@@ -2040,9 +2040,8 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            //TODO: Sticky Smokescreen
-            //This kind of effect used to be reminiscent of all the XY sets, but this is the first time it has appeared in SUM
-            //It just needs the old code plus an extra flip in the effect
+            sandAttack(thisMove)
+            sandAttack(thisMove)
           }
         }
         move "Hammer In", {
@@ -2063,14 +2062,17 @@ public enum UltraPrism implements CardInfo {
           text "When you play this Pokémon from your hand onto your Bench during your turn, you may attach 2 [D] Energy cards from your hand to it."
           onActivate {r->
             if(r==PLAY_FROM_HAND && confirm('Use Chaotic Star?')){
-              my.hand.search(max:2,"Search for 2 Dark Energy",cardTypeFilter(DARK)).each{
-                attachEnergy(self,it)
+              if(my.hand.filterByEnergyType(DARKNESS)){
+                my.hand.select(max:2,"Search for 2 Psychic Energy",basicEnergyFilter(DARKNESS)).each{
+                  attachEnergy(self,it)
+                }
               }
             }
-          }        }
+          }
+        }
 
         move "Abyssal Sleep", {
-          text "120 damage. Your opponent’s Active Pokémon is now Asleep. Your opponent flips 2 coins instead of 1 between turns. If either of them is tails, that Pokémon is still Asleep."
+          text "120 damage. Your opponentâ€™s Active PokÃ©mon is now Asleep. Your opponent flips 2 coins instead of 1 between turns. If either of them is tails, that PokÃ©mon is still Asleep."
           energyCost D, D, D, D
           attackRequirement {}
           onAttack {
@@ -2123,7 +2125,10 @@ public enum UltraPrism implements CardInfo {
           }
           onAttack {
             onAttack {
-              damage 30*my.hand.filterByEnergyType(M).select(max: 60).discard().size() //TODO: Get rid of hardcoded max
+              def tar = my.hand.filterByEnergyType(M).select(max: 60)
+              def dmgMul = tar.size()
+              tar.discard()
+              damage 30*dmgMul //TODO: Get rid of hardcoded max
             }
           }
         }
@@ -3142,15 +3147,20 @@ public enum UltraPrism implements CardInfo {
       case ESCAPE_BOARD_122:
       return pokemonTool (this) {
         text "The Retreat Cost of the Pokémon this card is attached to is [C] less, and it can retreat even if it’s Asleep or Paralyzed.\nYou may play as many Item cards as you like during your turn (before your attack)."
-        def eff
+        def eff1
+        def eff2
         onPlay {reason->
-          eff=delayed RETREAT, self, {h ->
-          //TODO: add effect
-
+          eff1 = getter GET_RETREAT_COST, self, {h ->
+              h.object -= 1
+          }
+          eff2 = delayed{
+            before ASLEEP_SPC, self, null, RETREAT, {if(e.parentEvent.effect.retreater == self) prevent() }
+            before PARALYZED_SPC, self, null, RETREAT, {if(e.parentEvent.effect.retreater == self) prevent() }
           }
         }
         onRemoveFromPlay {
-          eff.unregister()
+          eff1.unregister()
+          eff2.unregister()
         }
       };
       case FIRE_MEMORY_123:
@@ -3377,7 +3387,6 @@ public enum UltraPrism implements CardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            //TODO : attack first turn
             damage 30
           }
         }
@@ -3474,7 +3483,13 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 180
-            //TODO : reveal prizes
+            afterDamage{
+              for(int i=0; i<my.prizeIsTurnedUp.length; i++){
+                if(my.prize[i] != null){
+                  my.prizeIsTurnedUp[i] = true
+                }
+              }
+            }
           }
         }
 
