@@ -1658,7 +1658,9 @@ public enum CrimsonInvasion implements CardInfo {
             while(my.bench.size()>3){
               num = my.bench.size()-3
               def tar = my.bench.select("select a pokemon to discard ($num remaining to discard)")
-              shuffleDeck(tar.cards)
+              tar.each{
+                it.cards.discard()
+              }
               removePCS(tar)
             }
           }
