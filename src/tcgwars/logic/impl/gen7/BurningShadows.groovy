@@ -1725,10 +1725,16 @@ public enum BurningShadows implements CardInfo {
 		                }
 		              }
 		            }
-								before PROCESS_ATTACK_EFFECTS, self, {
-									bc "Stance prevent effects"
-		              prevent()
-		            }
+								before null, self, Source.ATTACK, {
+									bc "Stance prevents effect"
+									prevent()
+								}
+								after ENERGY_SWITCH, {
+									def efs = (ef as EnergySwitch)
+									if(efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+										discard efs.card
+									}
+								}
 								unregisterAfter 2
 							}
             }
