@@ -35,7 +35,7 @@ import tcgwars.logic.util.*;
  * @author axpendix@hotmail.com
  */
 public enum FireredLeafgreen implements CardInfo {
-	
+
 	BEEDRILL_1 ("Beedrill", 1, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
 	BUTTERFREE_2 ("Butterfree", 2, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
 	DEWGONG_3 ("Dewgong", 3, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
@@ -152,9 +152,9 @@ public enum FireredLeafgreen implements CardInfo {
 	ARTICUNO_EX_114 ("Articuno ex", 114, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, EX]),
 	MOLTRES_EX_115 ("Moltres ex", 115, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, EX]),
 	ZAPDOS_EX_116 ("Zapdos ex", 116, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_, EX]);
-	
+
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS;
-	
+
 	protected CardTypeSet cardTypes;
 	protected String name;
 	protected Rarity rarity;
@@ -213,7 +213,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						apply POISONED
 					}
 				}
 				move "Link Needle", {
@@ -221,10 +222,13 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						my.all.findAll{it != self && it.name = "Beedrill"}.each{
+							damage 30
+						}
 					}
 				}
-				
+
 			};
 			case BUTTERFREE_2:
 			return evolution (this, from:"Metapod", hp:HP100, type:GRASS, retreatCost:0) {
@@ -233,6 +237,15 @@ public enum FireredLeafgreen implements CardInfo {
 				pokeBody "Smooth Dust", {
 					text "As long as Butterfree is your Active Pokémon, remove 1 damage counter from each of your Pokémon between turns."
 					delayedA {
+						before BETWEEN_TURNS, {
+							if(self.active){
+								all.each{
+									if(it.numberOfDamageCounters){
+										it.damage -= hp(10)
+									}
+								}
+							}
+						}
 					}
 				}
 				move "Whirlwind", {
@@ -240,7 +253,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						whirlwind()
 					}
 				}
 				move "Gust", {
@@ -248,10 +262,10 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
-				
+
 			};
 			case DEWGONG_3:
 			return evolution (this, from:"Seel", hp:HP080, type:WATER, retreatCost:2) {
@@ -259,6 +273,7 @@ public enum FireredLeafgreen implements CardInfo {
 				pokeBody "Safeguard", {
 					text "Prevent all effects of attacks, including damage, done to Dewgong by your opponent’s Pokémon-ex."
 					delayedA {
+						safeguard(self,delegate)
 					}
 				}
 				move "Cold Breath", {
@@ -266,7 +281,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						apply ASLEEP
 					}
 				}
 				move "Aurora Beam", {
@@ -274,10 +290,10 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
-				
+
 			};
 			case DITTO_4:
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
@@ -285,17 +301,22 @@ public enum FireredLeafgreen implements CardInfo {
 				pokePower "Form Variation", {
 					text "Once during your turn (before your attack), you may search you discard pile for a Basic Pokémon (excluding Pokémon-ex and Ditto) and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Place Ditto in the discard pile."
 					actionA {
+						checkLastTurn()
+						powerUsed()
+						self.topPokemonCard = my.discard.findAll{it.cardTypes(BASIC)}
+
 					}
 				}
 				move "Energy Ball", {
-					text "10+ damage. Does 10 damage lus 10 more damage for each Energy attached to Ditto but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
+					text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Ditto but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						extraEnergyDamage(2,hp(10),C,thisMove)
 					}
 				}
-				
+
 			};
 			case EXEGGUTOR_5:
 			return evolution (this, from:"Exeggcute", hp:HP080, type:PSYCHIC, retreatCost:2) {
@@ -303,9 +324,13 @@ public enum FireredLeafgreen implements CardInfo {
 				move "Psychic Exchange", {
 					text "Shuffle your hand into your deck. Draw up to 8 cards."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.hand.notEmpty && my.deck.notEmpty
+					}
 					onAttack {
-						damage 0
+						my.hand.moveTo(my.deck)
+						shuffleDeck()
+						draw 8
 					}
 				}
 				move "Big Eggsplosion", {
@@ -316,7 +341,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case KANGASKHAN_6:
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:2) {
@@ -345,7 +370,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MAROWAK_7:
 			return evolution (this, from:"Cubone", hp:HP080, type:FIGHTING, retreatCost:1) {
@@ -366,7 +391,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case NIDOKING_8:
 			return evolution (this, from:"Nidorino", hp:HP120, type:FIGHTING, retreatCost:3) {
@@ -392,7 +417,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case NIDOQUEEN_9:
 			return evolution (this, from:"Nidorina", hp:HP120, type:FIGHTING, retreatCost:2) {
@@ -418,7 +443,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PIDGEOT_10:
 			return evolution (this, from:"Pidgeotto", hp:HP100, type:COLORLESS, retreatCost:0) {
@@ -437,7 +462,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case POLIWRATH_11:
 			return evolution (this, from:"Poliwhirl", hp:HP120, type:WATER, retreatCost:2) {
@@ -463,7 +488,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case RAICHU_12:
 			return evolution (this, from:"Pikachu", hp:HP080, type:LIGHTNING, retreatCost:1) {
@@ -484,7 +509,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case RAPIDASH_13:
 			return evolution (this, from:"Ponyta", hp:HP080, type:FIRE, retreatCost:1) {
@@ -510,7 +535,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SLOWBRO_14:
 			return evolution (this, from:"Slowpoke", hp:HP060, type:PSYCHIC, retreatCost:1) {
@@ -528,7 +553,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SNORLAX_15:
 			return basic (this, hp:HP090, type:COLORLESS, retreatCost:3) {
@@ -554,7 +579,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case TAUROS_16:
 			return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
@@ -575,7 +600,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case VICTREEBEL_17:
 			return evolution (this, from:"Weepinbell", hp:HP110, type:GRASS, retreatCost:2) {
@@ -593,7 +618,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ARCANINE_18:
 			return evolution (this, from:"Growlithe", hp:HP090, type:FIRE, retreatCost:2) {
@@ -614,7 +639,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CHANSEY_19:
 			return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
@@ -635,7 +660,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CLOYSTER_20:
 			return evolution (this, from:"Shellder", hp:HP070, type:WATER, retreatCost:1) {
@@ -661,7 +686,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case DODRIO_21:
 			return evolution (this, from:"Doduo", hp:HP070, type:COLORLESS, retreatCost:1) {
@@ -680,7 +705,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case DUGTRIO_22:
 			return evolution (this, from:"Diglett", hp:HP080, type:FIGHTING, retreatCost:1) {
@@ -701,7 +726,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case FARFETCH_D_23:
 			return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
@@ -723,7 +748,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case FEAROW_24:
 			return evolution (this, from:"Spearow", hp:HP080, type:COLORLESS, retreatCost:1) {
@@ -750,7 +775,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case HYPNO_25:
 			return evolution (this, from:"Drowzee", hp:HP080, type:PSYCHIC, retreatCost:1) {
@@ -768,7 +793,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case KINGLER_26:
 			return evolution (this, from:"Krabby", hp:HP080, type:WATER, retreatCost:2) {
@@ -789,7 +814,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MAGNETON_27:
 			return evolution (this, from:"Magnemite", hp:HP080, type:LIGHTNING, retreatCost:1) {
@@ -811,7 +836,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PRIMEAPE_28:
 			return evolution (this, from:"Mankey", hp:HP070, type:FIGHTING, retreatCost:0) {
@@ -832,7 +857,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SCYTHER_29:
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
@@ -850,7 +875,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case TANGELA_30:
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
@@ -872,7 +897,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CHARMELEON_31:
 			return evolution (this, from:"Charmander", hp:HP070, type:FIRE, retreatCost:1) {
@@ -893,7 +918,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case DROWZEE_32:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -914,7 +939,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case EXEGGCUTE_33:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -935,7 +960,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case HAUNTER_34:
 			return evolution (this, from:"Gastly", hp:HP070, type:PSYCHIC, retreatCost:1) {
@@ -954,7 +979,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case IVYSAUR_35:
 			return evolution (this, from:"Bulbasaur", hp:HP080, type:GRASS, retreatCost:1) {
@@ -975,7 +1000,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case KAKUNA_36:
 			return evolution (this, from:"Weedle", hp:HP070, type:GRASS, retreatCost:2) {
@@ -993,7 +1018,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case LICKITUNG_37:
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:2) {
@@ -1014,7 +1039,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MANKEY_38:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1035,7 +1060,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case METAPOD_39:
 			return evolution (this, from:"Caterpie", hp:HP080, type:GRASS, retreatCost:2) {
@@ -1053,7 +1078,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case NIDORINA_40:
 			return evolution (this, from:"Nidoran ♀", hp:HP080, type:GRASS, retreatCost:1) {
@@ -1074,7 +1099,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case NIDORINO_41:
 			return evolution (this, from:"Nidoran ♂", hp:HP070, type:GRASS, retreatCost:1) {
@@ -1095,7 +1120,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ONIX_42:
 			return basic (this, hp:HP080, type:FIGHTING, retreatCost:3) {
@@ -1116,7 +1141,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PARASECT_43:
 			return evolution (this, from:"Paras", hp:HP070, type:GRASS, retreatCost:1) {
@@ -1137,7 +1162,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PERSIAN_44:
 			return evolution (this, from:"Meowth", hp:HP080, type:COLORLESS, retreatCost:1) {
@@ -1163,7 +1188,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PIDGEOTTO_45:
 			return evolution (this, from:"Pidgey", hp:HP070, type:COLORLESS, retreatCost:0) {
@@ -1185,7 +1210,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case POLIWHIRL_46:
 			return evolution (this, from:"Poliwag", hp:HP080, type:WATER, retreatCost:1) {
@@ -1206,7 +1231,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PORYGON_47:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -1227,7 +1252,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case RATICATE_48:
 			return evolution (this, from:"Rattata", hp:HP070, type:COLORLESS, retreatCost:0) {
@@ -1253,7 +1278,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case VENOMOTH_49:
 			return evolution (this, from:"Venonat", hp:HP070, type:GRASS, retreatCost:0) {
@@ -1279,7 +1304,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case WARTORTLE_50:
 			return evolution (this, from:"Squirtle", hp:HP080, type:WATER, retreatCost:2) {
@@ -1300,7 +1325,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case WEEPINBELL_51:
 			return evolution (this, from:"Bellsprout", hp:HP070, type:GRASS, retreatCost:1) {
@@ -1321,7 +1346,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case WIGGLYTUFF_52:
 			return evolution (this, from:"Jigglypuff", hp:HP080, type:COLORLESS, retreatCost:1) {
@@ -1339,7 +1364,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case BELLSPROUT_53:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1352,7 +1377,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case BULBASAUR_54:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1373,7 +1398,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case BULBASAUR_55:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1394,7 +1419,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CATERPIE_56:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1415,7 +1440,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CHARMANDER_57:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -1428,7 +1453,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CHARMANDER_58:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -1449,7 +1474,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CLEFAIRY_59:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -1470,7 +1495,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CUBONE_60:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1491,7 +1516,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case DIGLETT_61:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1504,7 +1529,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case DODUO_62:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
@@ -1526,7 +1551,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case GASTLY_63:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -1540,7 +1565,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case GROWLITHE_64:
 			return basic (this, hp:HP060, type:FIRE, retreatCost:2) {
@@ -1561,7 +1586,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case JIGGLYPUFF_65:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -1582,7 +1607,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case KRABBY_66:
 			return basic (this, hp:HP050, type:WATER, retreatCost:2) {
@@ -1603,7 +1628,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MAGIKARP_67:
 			return basic (this, hp:HP030, type:WATER, retreatCost:1) {
@@ -1624,7 +1649,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MAGNEMITE_68:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
@@ -1646,7 +1671,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MEOWTH_69:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -1667,7 +1692,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case NIDORAN_FEMALE_70:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1688,7 +1713,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case NIDORAN_MALE_71:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1709,7 +1734,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PARAS_72:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1730,7 +1755,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PIDGEY_73:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -1752,7 +1777,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PIKACHU_74:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
@@ -1765,7 +1790,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case POLIWAG_75:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1786,7 +1811,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PONYTA_76:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -1799,7 +1824,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case RATTATA_77:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
@@ -1820,7 +1845,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SEEL_78:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1833,7 +1858,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SHELLDER_79:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1854,7 +1879,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SLOWPOKE_80:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -1867,7 +1892,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SPEAROW_81:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -1889,7 +1914,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SQUIRTLE_82:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1902,7 +1927,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SQUIRTLE_83:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1923,7 +1948,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case VENONAT_84:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1944,7 +1969,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case VOLTORB_85:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
@@ -1962,7 +1987,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case WEEDLE_86:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1983,7 +2008,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case BILL_S_MAINTENANCE_87:
 			return supporter (this) {
@@ -2143,7 +2168,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CHARIZARD_EX_105:
 			return evolution (this, from:"Charmeleon", hp:HP160, type:FIRE, retreatCost:2) {
@@ -2169,7 +2194,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CLEFABLE_EX_106:
 			return evolution (this, from:"Clefairy", hp:HP100, type:COLORLESS, retreatCost:2) {
@@ -2190,7 +2215,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ELECTRODE_EX_107:
 			return evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:1) {
@@ -2208,7 +2233,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case GENGAR_EX_108:
 			return evolution (this, from:"Haunter", hp:HP150, type:PSYCHIC, retreatCost:2) {
@@ -2230,7 +2255,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case GYARADOS_EX_109:
 			return evolution (this, from:"Magikarp", hp:HP130, type:WATER, retreatCost:3) {
@@ -2251,7 +2276,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MR__MIME_EX_110:
 			return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
@@ -2268,7 +2293,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MR__MIME_EX_111:
 			return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
@@ -2285,7 +2310,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case VENUSAUR_EX_112:
 			return evolution (this, from:"Ivysaur", hp:HP150, type:GRASS, retreatCost:3) {
@@ -2311,7 +2336,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CHARMANDER_113:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -2332,7 +2357,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ARTICUNO_EX_114:
 			return basic (this, hp:HP110, type:WATER, retreatCost:2) {
@@ -2350,7 +2375,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MOLTRES_EX_115:
 			return basic (this, hp:HP110, type:FIRE, retreatCost:2) {
@@ -2368,7 +2393,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ZAPDOS_EX_116:
 			return basic (this, hp:HP110, type:LIGHTNING, retreatCost:2) {
@@ -2386,11 +2411,11 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 				default:
 			return null;
 		}
 	}
-	
+
 }
