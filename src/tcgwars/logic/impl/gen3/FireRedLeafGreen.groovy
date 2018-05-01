@@ -223,7 +223,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-						my.all.findAll{it != self && it.name = "Beedrill"}.each{
+						my.all.findAll{it != self && it.name == "Beedrill"}.each{
 							damage 30
 						}
 					}
