@@ -1814,7 +1814,7 @@ public enum SunMoon implements CardInfo {
 				return basic (this, hp:HP080, type:FIGHTING, retreatCost:3) {
 					weakness GRASS
 					move "Shore Up", {
-						text "Attack a [F] Energy card from your discard pile to this Pokémon."
+						text "Attach a [F] Energy card from your discard pile to this Pokémon."
 						energyCost C
 						onAttack {
 							attachEnergyFromDiscardPile(F)
