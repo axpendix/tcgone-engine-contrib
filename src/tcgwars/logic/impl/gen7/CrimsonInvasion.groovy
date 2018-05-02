@@ -883,7 +883,7 @@ public enum CrimsonInvasion implements CardInfo {
         resistance METAL, MINUS20
         bwAbility "Surge Surfer", {
           text "If there is any Stadium card in play, this Pokémon has no Retreat Cost."
-          getterA GET_RETREAT_COST, self, {h->
+          getterA (GET_RETREAT_COST, BEFORE_LAST,self) {h->
             if(bg.stadiumInfoStruct) {
               h.object = 0
             }
@@ -2382,7 +2382,7 @@ public enum CrimsonInvasion implements CardInfo {
         weakness FIGHTING
         bwAbility "Gyro Unit", {
           text "Your Basic Pokémon in play have no Retreat Cost."
-          getterA GET_RETREAT_COST, {h->
+          getterA (GET_RETREAT_COST,BEFORE_LAST) {h->
             if(h.effect.target.owner == self.owner && h.effect.target.topPokemonCard.cardTypes.is(BASIC)) {
               h.object = 0
             }

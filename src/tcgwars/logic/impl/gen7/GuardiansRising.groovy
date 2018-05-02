@@ -1125,7 +1125,7 @@ public enum GuardiansRising implements CardInfo {
 					text "During your next turn, this Pokémon has no Retreat Cost."
 					onAttack {
 						delayed {
-							def eff = getter (GET_RETREAT_COST, self) {h->
+							def eff = getter (GET_RETREAT_COST, BEFORE_LAST, self) {h->
 								h.object=0
 							}
 							unregisterAfter 3

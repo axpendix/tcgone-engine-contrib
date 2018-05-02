@@ -2571,7 +2571,7 @@ public enum UltraPrism implements CardInfo {
         weakness FAIRY
         bwAbility "Rock Hiding", {
           text "If this Pokémon has any [F] Energy attached to it, it has no Retreat Cost."
-          getterA GET_RETREAT_COST, self, {h->
+          getterA (GET_RETREAT_COST, BEFORE_LAST,self) {h->
             if(h.effect.target.cards.energyCount(F)) {
               h.object = 0
             }
