@@ -2902,8 +2902,8 @@ public enum FireredLeafgreen implements CardInfo {
 							discardSelfEnergy C
 							apply CONFUSED
 						}
+					}
 				}
-
 			};
 			case ZAPDOS_EX_116:
 			return basic (this, hp:HP110, type:LIGHTNING, retreatCost:2) {
@@ -2936,7 +2936,6 @@ public enum FireredLeafgreen implements CardInfo {
 						}
 					}
 				}
-
 			};
 				default:
 			return null;
