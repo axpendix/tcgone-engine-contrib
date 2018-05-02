@@ -153,7 +153,7 @@ public enum FireredLeafgreen implements CardInfo {
 	MOLTRES_EX_115 ("Moltres ex", 115, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, EX]),
 	ZAPDOS_EX_116 ("Zapdos ex", 116, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_, EX]);
 
-	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS;
+	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
 	protected CardTypeSet cardTypes;
 	protected String name;
@@ -438,7 +438,7 @@ public enum FireredLeafgreen implements CardInfo {
 				pokeBody "Family Bonds", {
 					text "As long as Nidoqueen is in play, the Retreat Cost for Nidoran Female, Nidorina, Nidoran Male, Nidorino and Nidoking is 0."
 					delayedA {
-						eff = getter (GET_RETREAT_COST) {
+						eff = getter (GET_RETREAT_COST, BEFORE_LAST) {
 							if (it.effect.target.name == "Nidoran ♂" || it.effect.target.name == "Nidoran ♀" || it.effect.target.name == "Nidorino" || it.effect.target.name == "Nidorina" || it.effect.target.name == "Nidoking" || it.effect.target.name == "Nidoqueen") {
 								it.object = 0
 							}
@@ -486,7 +486,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
-						cantRetreat(defending)
+						cantRetreat defending
 					}
 				}
 
@@ -681,7 +681,11 @@ public enum FireredLeafgreen implements CardInfo {
 				pokeBody "Acid Sampler", {
 					text "As long as Victreebel is your Active Pokémon, put 1 damage counter on each Defending Pokémon between turns. Acid Sampler stops working if your other Active Pokémon is not a Victreebel."
 					delayedA {
-						//TODO : WHAT?
+						before BETWEEN_TURNS, {
+							if(self.active){
+								directDamage 10, opp.active
+							}
+						}
 					}
 				}
 				move "Acid", {
@@ -690,7 +694,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-						cantRetreat(defending)
+						cantRetreat defending
 					}
 				}
 
@@ -820,7 +824,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-						cantRetreat(defending)
+						cantRetreat defending
 					}
 				}
 
@@ -862,7 +866,7 @@ public enum FireredLeafgreen implements CardInfo {
 				resistance FIGHTING, MINUS30
 				pokeBody "Free Flight", {
 					text "If Fearow has no Energy attached to it, Fearow’s Retreat Cost is 0."
-					getterA GET_RETREAT_COST, self, {h->
+					getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {h->
             if(self.card.energyCount(C) == 0) {
               h.object = 0
             }
@@ -988,7 +992,7 @@ public enum FireredLeafgreen implements CardInfo {
 				weakness FIRE
 				pokeBody "Leaf Ride", {
 					text "If Scyther has any Energy attached to it, Scyther’s Retreat Cost is 0."
-					getterA GET_RETREAT_COST, self, {h->
+					getterA (GET_RETREAT_COST, BEFORE_LAST,self) {h->
             if(self.card.energyCount(C)) {
               h.object = 0
             }
@@ -1041,7 +1045,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Damage Burn", {
@@ -1049,7 +1053,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						if(defending.numberOfDamageCounters) damage 20
 					}
 				}
 
@@ -1062,7 +1067,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply ASLEEP
 					}
 				}
 				move "Ambush", {
@@ -1070,7 +1075,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {damage 10}
 					}
 				}
 
@@ -1083,7 +1089,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flipThenApplySC CONFUSED
 					}
 				}
 				move "Double Spin", {
@@ -1091,7 +1098,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2, {damage 20}
 					}
 				}
 
@@ -1103,6 +1110,10 @@ public enum FireredLeafgreen implements CardInfo {
 				pokePower "Head Trip", {
 					text "Once during your turn (before your attack), if Haunter is on your Bench, you may use this power. One of your Active Pokémon is now Confused."
 					actionA {
+						checkLastTurn()
+						assert self.benched
+						powerUsed()
+						apply CONFUSED, my.active
 					}
 				}
 				move "Confuse Ray", {
@@ -1110,7 +1121,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC CONFUSED
 					}
 				}
 
@@ -1123,7 +1135,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply POISONED
 					}
 				}
 				move "Razor Leaf", {
@@ -1131,7 +1143,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
 
@@ -1142,6 +1154,16 @@ public enum FireredLeafgreen implements CardInfo {
 				pokeBody "Poison Payback", {
 					text "If Kakuna is your Active Pokémon and is damaged by an opponent’s attack (even if Kakuna is Knocked Out), the Attacking Pokémon is now Poisoned."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							if(ef.attacker.owner != self.owner) {
+								bg.dm().each{
+									if(it.to == self && self.active && it.dmg.notNoEffect && it.dmg.value) {
+										bc "Kakuna's Poison Payback poison your Pokémon!"
+										apply POISONED,ef.attacker
+									}
+								}
+							}
+						}
 					}
 				}
 				move "Headbutt", {
@@ -1149,7 +1171,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 
@@ -1162,7 +1184,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Tongue Whip", {
@@ -1170,7 +1193,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20, opp.all.select()
 					}
 				}
 
@@ -1183,7 +1206,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						shuffleDeck(null, TargetPlayer.OPPONENT)
 					}
 				}
 				move "Light Punch", {
@@ -1191,7 +1214,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 
@@ -1202,6 +1225,15 @@ public enum FireredLeafgreen implements CardInfo {
 				pokeBody "Energy Protection", {
 					text "Any damage done to Metapod by attacks is reduced by 10 for each Energy attached to Metapod. You can’t reduce more than 30 damage in this way."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES,{
+							def dmgRed = Math.min(3,self.cards.energyCount())
+							bg.dm().each{
+								if(it.to == self && it.dmg.notNoEffect && it.dmg.value) {
+									bc "Exoskeleton -20"
+									it.dmg -= hp(10*dmgRed)
+								}
+							}
+						}
 					}
 				}
 				move "Sharpen", {
@@ -1209,7 +1241,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -1222,15 +1254,18 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Fast Evolution", {
 					text "Search your deck for up to 2 Evolution cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 					energyCost C, C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						damage 0
+						my.deck.search(count:2,"Search your deck for up to 2 Evolution cards",cardTypeFilter(EVOLUTION)).moveTo(my.hand)
+						shuffleDeck()
 					}
 				}
 
@@ -1243,7 +1278,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2,{damage 20}
 					}
 				}
 				move "Rend", {
@@ -1251,7 +1286,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						if(defending.numberOfDamageCounters) damage 30
 					}
 				}
 
@@ -1264,7 +1300,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Tunneling", {
@@ -1272,7 +1308,11 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						multiSelect(opp.bench, 2).each{
+							targeted(it){
+								damage 10, it
+							}
+						}
 					}
 				}
 
@@ -1283,9 +1323,14 @@ public enum FireredLeafgreen implements CardInfo {
 				move "Energy Powder", {
 					text "Search your deck for up to 2 basic Energy cards and attach them to any of your Pokémon (excluding Pokémon-ex) in any way you like. Shuffle your deck afterward."
 					energyCost G
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						damage 0
+						my.deck.search(count : 2, "Search your deck for up to 2 basic Energy cards", cardTypeFilter(BASIC_ENERGY)).each{
+							def pcs = my.all.findAll{!(it.pokemonEX)}.select("Attach $it to one of thos Pokémon")
+							attachEnergy(pcs, it)
+						}
 					}
 				}
 				move "Toxic Spore", {
@@ -1293,7 +1338,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						apply POISONED
 					}
 				}
 
@@ -1304,6 +1350,10 @@ public enum FireredLeafgreen implements CardInfo {
 				pokeBody "Thick Skin", {
 					text "Persian can’t be affected by any Special Conditions."
 					delayedA {
+						before APPLY_SPECIAL_CONDITION,self, {
+							bc (self+"is thick Skinned!")
+							prevent()
+						}
 					}
 				}
 				move "Poison Claws", {
@@ -1311,7 +1361,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply POISONED
 					}
 				}
 				move "Shining Claws", {
@@ -1319,7 +1369,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						apply CONFUSED
 					}
 				}
 
@@ -1333,7 +1384,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						cantRetreat defending
 					}
 				}
 				move "Cutting Wind", {
@@ -1341,7 +1393,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 
@@ -1354,7 +1406,11 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						def tar = my.discard.filterByType(BASIC_ENERGY)
+						if(tar){
+							attachEnergyFrom(basic: true, my.discard, self)
+						}
 					}
 				}
 				move "Bubble", {
@@ -1362,7 +1418,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC PARALYZED
 					}
 				}
 
@@ -1375,7 +1432,9 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						if(my.hand.size() < 4){
+							draw 4 - my.hand.size()
+						}
 					}
 				}
 				move "Confuse Ray", {
@@ -1383,7 +1442,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						apply CONFUSED
 					}
 				}
 
@@ -1394,6 +1454,10 @@ public enum FireredLeafgreen implements CardInfo {
 				pokeBody "Thick Skin", {
 					text "Raticate can’t be affected by any Special Conditions."
 					delayedA {
+						before APPLY_SPECIAL_CONDITION,self, {
+							bc (self+"is thick Skinned!")
+							prevent()
+						}
 					}
 				}
 				move "Pickup", {
@@ -1401,7 +1465,13 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						if(my.discard){
+							def selectedCard = new CardList(it.topPokemonCard);
+							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for a Basic Pokémon (or Evolution card)",cardTypeFilter(POKEMON)))
+							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for a Trainer card",cardTypeFilter(TRAINER)))
+							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for an Energy card)",cardTypeFilter(ENERGY)))
+							selectedCard.showToOpponent("Your opponent selected those cards").moveTo(my.hand)
+						}
 					}
 				}
 				move "Quick Attack", {
@@ -1409,7 +1479,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {damage 40}
 					}
 				}
 
@@ -1420,6 +1491,10 @@ public enum FireredLeafgreen implements CardInfo {
 				pokeBody "Protective Dust", {
 					text "Prevent all effects of attacks, except damage, done to Venomoth by the Attacking Pokémon."
 					delayedA {
+						before null, self, Source.ATTACK, {
+							bc "Protective Dust prevents effect"
+							prevent()
+						}
 					}
 				}
 				move "Sleep Poison", {
@@ -1427,7 +1502,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply ASLEEP
+						apply POISONED
 					}
 				}
 				move "Razor Wind", {
@@ -1435,7 +1511,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 60}
 					}
 				}
 
@@ -1448,7 +1524,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						extraEnergyDamage(2,hp(10),W,thisMove)
 					}
 				}
 				move "Smash Turn", {
@@ -1456,7 +1533,14 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						afterDamage{
+							if(my.bench){
+								if(confirm("switch Wartortle with 1 of your Benched Pokémon?")){
+									sw self, my.bench.select
+								}
+							}
+						}
 					}
 				}
 
@@ -1469,7 +1553,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Corrosive Acid", {
@@ -1477,7 +1561,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						apply BURNED
 					}
 				}
 
@@ -1488,6 +1573,12 @@ public enum FireredLeafgreen implements CardInfo {
 				pokePower "Assistance", {
 					text "Once during your turn (before your attack), if Wigglytuff is on your Bench, you may choose 1 of your Active Pokémon and remove 1 Special Condition from it."
 					actionA {
+						checkLastTurn()
+						assert self.benched : "Wigglytuff is not benched"
+						assert my.active.specialConditions : "your active does not have any Special Condition"
+						powerUsed()
+						def spcCleared = choose(my.active.specialConditions,"choose the Special Condition to remove from your active")
+						clearSpecialCondition(self, POKEPOWER, [spcCleared])
 					}
 				}
 				move "Expand", {
@@ -1495,7 +1586,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						reduceDamageNextTurn(hp(10),thisMove)
 					}
 				}
 
@@ -1508,7 +1600,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 
@@ -1521,7 +1613,10 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {
+							apply ASLEEP
+							apply POISONED
+						}
 					}
 				}
 				move "Razor Leaf", {
@@ -1529,7 +1624,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -1542,7 +1637,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Gouge", {
@@ -1550,7 +1645,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {damage 10}
 					}
 				}
 
@@ -1563,7 +1659,9 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						my.deck.search(max: count, "Select a Metapod and a Butterfree", {it.name == "Metapod" || it.name == "Butterfree"}, {CardList list ->
+							list.filterByNameEquals("Metapod").size() <= 1 && list.filterByNameEquals("Butterfree").size() <= 1
+						}).moveTo(my.hand)
 					}
 				}
 				move "String Shot", {
@@ -1571,7 +1669,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						apply PARALYZED
 					}
 				}
 
@@ -1584,7 +1683,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply BURNED
 					}
 				}
 
@@ -1597,7 +1696,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Slash", {
@@ -1605,7 +1704,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -1616,9 +1715,11 @@ public enum FireredLeafgreen implements CardInfo {
 				move "Gesture", {
 					text "Choose 1 of your opponent’s Benched Pokémon and switch it with the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert opp.bench
+					}
 					onAttack {
-						damage 0
+						sw defending, opp.bench
 					}
 				}
 				move "Moon Kick", {
@@ -1626,7 +1727,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -1639,7 +1740,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Linear Attack", {
@@ -1647,7 +1748,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20, opp.all.select()
 					}
 				}
 
@@ -1660,7 +1761,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						noWrDamage(10,opp.all.select())
 					}
 				}
 
@@ -1672,9 +1773,11 @@ public enum FireredLeafgreen implements CardInfo {
 				move "Run Around", {
 					text "Switch Doduo with 1 of your Benched Pokémon."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.bench : "No pokemon to switch Doduo with"
+					}
 					onAttack {
-						damage 0
+						sw self, my.bench.select()
 					}
 				}
 				move "Random Peck", {
@@ -1682,7 +1785,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2, {damage 10}
 					}
 				}
 
@@ -1696,7 +1799,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply CONFUSED
 					}
 				}
 
@@ -1709,7 +1812,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Flame Tail", {
@@ -1717,7 +1820,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
 
@@ -1728,9 +1831,13 @@ public enum FireredLeafgreen implements CardInfo {
 				move "Sleep Inducer", {
 					text "Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. The new Defending Pokémon is now Asleep."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert opp.bench : "There is no Pokémon to switch"
+					}
 					onAttack {
-						damage 0
+						def pcs = opp.bench.select("New active")
+						sw defending, pcs
+						apply ASLEEP, pcs
 					}
 				}
 				move "Quick Blow", {
@@ -1738,7 +1845,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {damage 20}
 					}
 				}
 
@@ -1751,15 +1859,18 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Nap", {
 					text "Remove 2 damage counters from Krabby (remove 1 of there is only 1)."
 					energyCost W
-					attackRequirement {}
+					attackRequirement {
+						assert self.numberOfDamageCounters : "your Krabby does not have any damage counters"
+					}
 					onAttack {
-						damage 0
+						def dmgRem = Math.min(2,self.numberOfDamageCounters)
+						self.damage -= hp(10*dmgRem)
 					}
 				}
 
@@ -1772,15 +1883,20 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 10}
 					}
 				}
 				move "Ascension", {
 					text "Search your deck for a card that evolves from Magikarp and put it on Magikarp. (This counts as evolving Magikarp.) Shuffle your deck afterward."
 					energyCost W, C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						damage 0
+						def nam=self.name
+						def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
+						if(tar) evolve(self, tar.first(), OTHER)
+						shuffleDeck()
 					}
 				}
 
@@ -1794,7 +1910,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flipThenApplySC CONFUSED
 					}
 				}
 				move "Speed Ball", {
@@ -1802,7 +1918,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -1813,9 +1929,11 @@ public enum FireredLeafgreen implements CardInfo {
 				move "Collect", {
 					text "Draw a card."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						damage 0
+						draw 1
 					}
 				}
 				move "Cat Kick", {
@@ -1823,7 +1941,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -1836,7 +1954,17 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def revealCard = new CardList();
+						def ind = 0
+						while(ind < my.deck.size()){
+							def curCard = my.deck.get(ind)
+							revealCard.add(curCard)
+							if(curCard.cardTypes.is(BASIC))
+								break
+						}
+						revealCard.showToOpponent("revealed cards")
+						curCard.moveTo(my.hand)
+						shuffleDeck()
 					}
 				}
 				move "Bite", {
@@ -1844,7 +1972,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -1855,9 +1983,16 @@ public enum FireredLeafgreen implements CardInfo {
 				move "Call for Family", {
 					text "Search your deck for a Nidoran Female or Nidoran Male card and put it onto your Bench. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert deck.notEmpty
+						assert my.bench.notFull
+					}
 					onAttack {
-						damage 0
+						deck.search (count: 1,{it.cardTypes.is(BASIC) && (it.name == "Nidoran ♀" || it.name == "Nidoran ♂")}).each {
+							deck.remove(it)
+							benchPCS(it)
+						}
+						shuffleDeck()
 					}
 				}
 				move "Double Stab", {
@@ -1865,7 +2000,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2,{damage 10}
 					}
 				}
 
@@ -1876,9 +2011,17 @@ public enum FireredLeafgreen implements CardInfo {
 				move "Call for Family", {
 					text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert bench.notFull
+						assert deck.notEmpty
+					}
 					onAttack {
-						damage 0
+						int count = bench.freeBenchCount>=2?2:1
+						deck.search (max: count, cardTypeFilter(BASIC)).each {
+							deck.remove(it)
+							benchPCS(it)
+						}
+						shuffleDeck()
 					}
 				}
 				move "Toxic SPore", {
@@ -1886,7 +2029,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flipThenApplySC POISONED
 					}
 				}
 
@@ -1900,7 +2044,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						cantRetreat defending
 					}
 				}
 				move "Gust", {
@@ -1908,7 +2052,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -1921,7 +2065,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						attachEnergyFromDiscardPile(L,true)
 					}
 				}
 
@@ -1934,7 +2079,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flipThenApplySC CONFUSED
 					}
 				}
 				move "Tail Whap", {
@@ -1942,7 +2087,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -1955,7 +2100,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {damage 10}
 					}
 				}
 
@@ -1966,9 +2112,11 @@ public enum FireredLeafgreen implements CardInfo {
 				move "Collect", {
 					text "Draw a card."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						damage 0
+						draw 1
 					}
 				}
 				move "Scratch", {
@@ -1976,7 +2124,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 
@@ -1989,7 +2137,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 30}
 					}
 				}
 
@@ -2002,7 +2150,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						reduceDamageNextTurn(hp(20,thisMove))
 					}
 				}
 				move "Wave Splash", {
@@ -2010,7 +2158,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 
@@ -2023,7 +2171,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply CONFUSED
+						apply CONFUSED, self
 					}
 				}
 
@@ -2037,7 +2186,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 10}
 					}
 				}
 				move "Wing Attack", {
@@ -2045,7 +2194,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -2058,7 +2207,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flipThenApplySC ASLEEP
 					}
 				}
 
@@ -2071,7 +2221,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Smash Turn", {
@@ -2079,7 +2229,14 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						afterDamage{
+							if(my.bench){
+								if(confirm("switch Squirtle with 1 of your Benched Pokémon?")){
+									sw self, my.bench.select("New active")
+								}
+							}
+						}
 					}
 				}
 
@@ -2092,7 +2249,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						discardSelfEnergy C
+						apply CONFUSED
 					}
 				}
 				move "Bite", {
@@ -2100,7 +2258,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 
@@ -2110,7 +2268,10 @@ public enum FireredLeafgreen implements CardInfo {
 				weakness FIGHTING
 				pokeBody "Floating Electrons", {
 					text "As long as Voltorb has any Energy attached to it, Voltorb’s Retreat Cost is 0."
-					delayedA {
+					getterA (GET_RETREAT_COST, BEFORE_LAST,self) {h->
+						if(self.card.energyCount(C)) {
+							h.object = 0
+						}
 					}
 				}
 				move "Thundershock", {
@@ -2118,7 +2279,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC PARALYZED
 					}
 				}
 
@@ -2129,9 +2291,17 @@ public enum FireredLeafgreen implements CardInfo {
 				move "Call for Family", {
 					text "Search your deck for up to 2 [G] Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert bench.notFull
+						assert deck.notEmpty
+					}
 					onAttack {
-						damage 0
+						int count = bench.freeBenchCount>=2?2:1
+						deck.search (max: count, {it.cardTypes.is(BASIC) && it.types.contains(G)}).each {
+							deck.remove(it)
+							benchPCS(it)
+						}
+						shuffleDeck()
 					}
 				}
 				move "Poison Spurt", {
@@ -2139,7 +2309,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						discardSelfEnergy G
+						apply POISONED
 					}
 				}
 
@@ -2148,22 +2319,32 @@ public enum FireredLeafgreen implements CardInfo {
 			return supporter (this) {
 				text "If you have any cards in your hand, shuffle 1 of them into your deck, then draw 3 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					my.hand.getExcludedList(thisCard).select("card to shuffle into your deck").moveTo(my.deck)
+					shuffleDeck()
+					draw 3
 				}
 				playRequirement{
+						assert my.hand.getExcludedList(thisCard)
 				}
 			};
 			case CELIO_S_NETWORK_88:
 			return supporter (this) {
 				text "Search your deck for a Basic Pokémon or Evolution card (excluding Pokémon-ex), show it to your opponent, and put it into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					my.deck.search(count: 1,"Search your deck for a Basic Pokémon or Evolution card",{(it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)) && !(it.pokemonEX) }).showToOpponent("Selected card").moveTo(my.hand)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.deck
 				}
 			};
 			case ENERGY_REMOVAL_2_89:
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponent’s Pokémon and discard it."
 				onPlay {
+					flip {
+						discardOpponentEnergy(opp.all.select())
+					}
 				}
 				playRequirement{
 				}
@@ -2172,6 +2353,11 @@ public enum FireredLeafgreen implements CardInfo {
 			return basicTrainer (this) {
 				text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
 				onPlay {
+					if(my.bench && my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}){
+						def pcs = my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}.select("Move energy from")
+						def tar = my.all.getExcludedList(pcs).select("Move energy to")
+						moveEnergy(basic: true, pcs, tar)
+					}
 				}
 				playRequirement{
 				}
@@ -2179,25 +2365,50 @@ public enum FireredLeafgreen implements CardInfo {
 			case EXP_ALL_91:
 			return pokemonTool (this) {
 				text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAttach EXP.ALL to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has an owner in its name) that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nDuring your opponent’s turn, if 1 of your Active Pokémon would be Knocked Out by your opponent’s attack, you may take 1 basic Energy card attached to that Knocked Out Pokémon and attach it to the Pokémon with EXP.ALL attached to it. If you do, discard EXP.ALL."
+				def eff
+				def eff
 				onPlay {reason->
+					eff = delayed {
+						before (KNOCKOUT,self) {
+							if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.cards.filterByType(ENERGY)) {
+								bc "EXP.ALL activates"
+								def pcs = self.owner.pbg.bench.select("Wishful Baton activates, choose target pokemon for energies", true, self.owner)
+								moveEnergy(basic: true, self, pcs)
+							}
+						}
+					}
 				}
 				onRemoveFromPlay {
+					eff.unregister()
 				}
 				allowAttach {to->
+					to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && to.topPokemonCard.cardTypes.isNot(POKEMON_EX)
 				}
 			};
 			case GREAT_BALL_92:
 			return basicTrainer (this) {
 				text "Search your deck for a Basic Pokémon (excluding Pokémon-ex) and put it onto your Bench. Shuffle your deck afterward."
 				onPlay {
+					my.deck.search(count : 1,"Search your deck for a Basic Pokémon (excluding Pokémon-ex)",{it.cardTypes.is(BASIC) && it.cardTypes.isNot(POKEMON_EX)}).each{
+						deck.remove(it)
+						benchPCS(it)
+					}
 				}
 				playRequirement{
+					assert my.bench.notFull()
 				}
 			};
 			case LIFE_HERB_93:
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, choose 1 of your Pokémon (excluding Pokémon-ex), and remove all Special Conditions and 6 damage counters from that Pokémon (all if there are less than 6)."
 				onPlay {
+					def tar = my.all.findAll{(it.numberOfDamageCounters !=0 || !(it.noSPC())) && it.topPokemonCard.cardTypes.isNot(POKEMON_EX)}
+					if(tar){
+						def pcs = tar.select("select 1 of your Pokémon (excluding Pokémon-ex) to remove all Special Conditions and 6 damage counters")
+						clearSpecialCondition(pcs,TRAINER_CARD)
+						def dmgCt = Math.min(pcs.numberOfDamageCounters,6)
+						pcs.damage -= hp(10*dmgCt)
+					}
 				}
 				playRequirement{
 				}
@@ -2205,31 +2416,57 @@ public enum FireredLeafgreen implements CardInfo {
 			case MT__MOON_94:
 			return stadium (this) {
 				text "Any Pokémon (both yours and your opponent’s) with maximum HP less than 70 can’t use any Poké-Powers.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+				def eff
 				onPlay {
+					effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
+						if (h.effect.target.fullHP < 70 && h.effect.ability instanceof PokePower) {
+							h.object=true
+						}
+					}
+					effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+						if ((h.effect.target as Card).fullHP < 70) {
+							h.object=true
+						}
+					}
 				}
 				onRemoveFromPlay{
+					eff.unregister()
 				}
 			};
 			case POKE_BALL_95:
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, search your deck for a Basic Pokémon or Evolution card, show it to your opponent and put it into your hand. Shuffle your deck afterward."
 				onPlay {
+					flip{
+						my.deck.search(count : 1,"Basic Pokémon or Evolution card", {it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)}).moveTo(my.hand)
+						shuffleDeck()
+					}
 				}
 				playRequirement{
+					assert my.deck
 				}
 			};
 			case POKEDEX_HANDY909_96:
 			return basicTrainer (this) {
 				text "Shuffle your deck. Look at 6 cards from the top of your deck, then put them back on top of your deck in any order."
 				onPlay {
+					def list=rearrange(my.deck.subList(0,6), "Rearrange top 6 cards in your deck")
+					my.deck.setSubList(0, list)
 				}
 				playRequirement{
+					assert my.deck
+
 				}
 			};
 			case POKEMON_REVERSAL_97:
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, choose 1 of your opponent’s Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
 				onPlay {
+					if(opp.bench){
+						flip{
+							sw opp.active, opp.bench.select()
+						}
+					}
 				}
 				playRequirement{
 				}
@@ -2238,22 +2475,33 @@ public enum FireredLeafgreen implements CardInfo {
 			return supporter (this) {
 				text "Shuffle your hand into your deck, then draw 5 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					my.hand.moveTo(my.deck)
+					shuffleDeck()
+					draw 5
 				}
 				playRequirement{
+					assert my.deck.notEmpty && (my.hand.getExcludedList(thisCard).size() >0)
 				}
 			};
 			case SUPER_SCOOP_UP_99:
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, return 1 of your Pokémon and all cards attached to it to your hand."
 				onPlay {
+					def pcs = my.all.select()
+					pcs.cards.moveTo(hand)
+					removePCS(pcs)
 				}
 				playRequirement{
+					assert my.bench : "you don't have pokemon to return to your hand"
 				}
 			};
 			case VS_SEEKER_100:
 			return basicTrainer (this) {
 				text "Search your discard pile for a Supporter card, show it to your opponent, and put it into your hand."
 				onPlay {
+					if(my.discard.filterByType(SUPPORTER)){
+						my.discard.filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
+					}
 				}
 				playRequirement{
 				}
@@ -2262,6 +2510,12 @@ public enum FireredLeafgreen implements CardInfo {
 			return basicTrainer (this) {
 				text "Remove 2 damage counters from 1 of your Pokémon (remove 1 damage counter if that Pokémon has only 1)."
 				onPlay {
+					def tar = my.all.findAll{it.numberOfDamageCounters}
+					if(tar){
+						def pcs = tar.select()
+						def dmgRem = Math.min(2,pcs.numberOfDamageCounters)
+						pcs.damage -= hp(10*dmgRem)
+					}
 				}
 				playRequirement{
 				}
@@ -2270,28 +2524,43 @@ public enum FireredLeafgreen implements CardInfo {
 			return basicTrainer (this) {
 				text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
 				onPlay {
+					sw my.active, my.bench.select()
 				}
 				playRequirement{
+					assert my.bench : "No benched Pokémon"
 				}
 			};
 			case MULTI_ENERGY_103:
 			return specialEnergy (this, [[C]]) {
 				text "Attach Multi Energy to 1 of your Pokémon. While in play, Multi Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) Multi Energy provides [C] Energy when attached to a Pokémon that already has Special Energy cards attached to it."
 				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
-			};
+        }
+        onRemoveFromPlay {
+        }
+        onMove {to->
+        }
+        getEnergyTypesOverride{
+            if(self.cards.filterByType(SPECIAL_ENERGY) )
+                return [[R],[F],[G],[W],[P],[L],[M],[D],[Y],[N]]
+            else
+                return [[C]]
+        }
+      };
 			case BLASTOISE_EX_104:
 			return evolution (this, from:"Wartortle", hp:HP150, type:WATER, retreatCost:3) {
 				weakness LIGHTNING
 				pokePower "Energy Rain", {
 					text "As often as you like during your turn (before your attack), you may attach a [W] Energy card from your hand to 1 of your Pokémon. Put 1 damage counter on that Pokémon. This power can’t be used if Blastoise ex is affected by a Special Condition."
 					actionA {
+						assert !(self.specialConditions)
+
+						assert my.hand.find{it.cardTypes.is(W)}
+						assert my.all.find{it.types.contains(W)}
+
+						def pcs = my.all.select()
+						attachEnergyFrom(type:W,my.hand,pcs)
+						pcs.damage += hp(10)
+
 					}
 				}
 				move "Hyper Whirlpool", {
@@ -2299,7 +2568,10 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost W, W, W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 80
+						flipUntilTails {
+							discardDefendingEnergy()
+						}
 					}
 				}
 
@@ -2309,7 +2581,12 @@ public enum FireredLeafgreen implements CardInfo {
 				weakness LIGHTNING
 				pokeBody "Energy Flame", {
 					text "All Energy attached to Charizard ex are [R] Energy instead of its usual type."
-					delayedA {
+					getterA GET_ENERGY_TYPES, { holder->
+						if(holder.effect.target.owner == self.owner
+								&& holder.effect.card == self
+								&& holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
+							holder.object = [[R]] as Set
+						}
 					}
 				}
 				move "Slash", {
@@ -2317,7 +2594,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
 				move "Burn Down", {
@@ -2325,7 +2602,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost R, R, R, R, R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						swiftDamage(200, defending)
+						discardSelfEnergy R,R,R,R,R
 					}
 				}
 
@@ -2338,7 +2616,16 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def moveList = []
+						def labelList = []
+
+						moveList.addAll(defending.topPokemonCard.moves);
+						labelList.addAll(defending.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
+
+						def move=choose(moveList, labelList)
+						def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+						attack (move as Move)
+						bef.unregisterItself(bg().em())
 					}
 				}
 				move "Moon Impact", {
@@ -2346,7 +2633,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
 
@@ -2357,6 +2644,14 @@ public enum FireredLeafgreen implements CardInfo {
 				pokePower "Extra Energy Bomb", {
 					text "Once during your turn (before your attack), you may discard Electrode ex and all the cards attached to it (this counts as Knocking Out Electrode ex). If you do, search your discard pile for 5 Energy cards and attach them to any of your Pokémon (excluding Pokémon-ex) in any way you like. This power can’t be used if Electrode ex is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						powerUsed()
+						new Knockout(self).run(bg)
+						attachEnergyFrom(type : L,my.discard, my.all.findAll{!(it.pokemonEX)})
+						attachEnergyFrom(type : L,my.discard, my.all.findAll{!(it.pokemonEX)})
+						attachEnergyFrom(type : L,my.discard, my.all.findAll{!(it.pokemonEX)})
+						attachEnergyFrom(type : L,my.discard, my.all.findAll{!(it.pokemonEX)})
+						attachEnergyFrom(type : L,my.discard, my.all.findAll{!(it.pokemonEX)})
 					}
 				}
 				move "Crush and Burn", {
@@ -2364,7 +2659,18 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						def bonusDmg = 0
+						while(self.cards.energyCount(C)){
+							if(confirm("discard one energy for 20 more damage?")){
+								bonusDmg += 20
+								discardSelfEnergy C
+							}
+							else{
+								break
+							}
+						}
+						damage bonusDmg
 					}
 				}
 
@@ -2378,7 +2684,9 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						opp.hand.showToMe("Opponent’s hand")
+						damage 10*opp.hand.findAll{it.cardTypes(TRAINER)}.size()
 					}
 				}
 				move "Prize Count", {
@@ -2386,7 +2694,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						if(my.prizeAsList.size() > opp.prizeAsList.size()) damage 40
 					}
 				}
 
@@ -2399,7 +2708,12 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def noEff = true
+						flip 2, {
+							noEff = false
+							discardDefendingEnergy()
+						}
+						if(!noEff) damage 40
 					}
 				}
 				move "Dragon Rage", {
@@ -2407,7 +2721,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost W, W, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 100
 					}
 				}
 
@@ -2417,6 +2731,14 @@ public enum FireredLeafgreen implements CardInfo {
 				pokeBody "Magic Odds", {
 					text "If Mr. Mime ex would be damaged by an attack, prevent that attack’s damage done to Mr. Mime ex if that damage is 10, 30, 50, 70, 90, 110, 130, 150, or 170."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each{
+								if(it.to == self && it.dmg.notNoEffect && (it.dmg.value == 10 || it.dmg.value == 30 || it.dmg.value == 50 || it.dmg.value == 70 || it.dmg.value == 90 || it.dmg.value == 110 || it.dmg.value == 130 || it.dmg.value == 150  || it.dmg.value == 170)) {
+									bc "Magic Odds prevent damage"
+									it.dmg = hp(0)
+								}
+							}
+						}
 					}
 				}
 				move "Breakdown", {
@@ -2424,7 +2746,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						defending.damage += hp(10*opp.hand.size())
 					}
 				}
 
@@ -2434,6 +2756,14 @@ public enum FireredLeafgreen implements CardInfo {
 				pokeBody "Magic Evens", {
 					text "If Mr. Mime ex would be damaged by an attack, prevent that attack’s damage done to Mr. Mime ex if that damage is 20, 40, 60, 80, 100, 120, 140, 160, or 180."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each{
+								if(it.to == self && it.dmg.notNoEffect && (it.dmg.value == 20 || it.dmg.value == 40 || it.dmg.value == 60 || it.dmg.value == 80 || it.dmg.value == 100 || it.dmg.value == 130 || it.dmg.value == 140 || it.dmg.value == 160  || it.dmg.value == 180)) {
+									bc "Magic Evens prevent damage"
+									it.dmg -= hp(30)
+								}
+							}
+						}
 					}
 				}
 				move "Breakdown", {
@@ -2441,7 +2771,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						defending.damage += hp(10*opp.hand.size())
 					}
 				}
 
@@ -2452,6 +2782,17 @@ public enum FireredLeafgreen implements CardInfo {
 				pokePower "Energy Trans", {
 					text "As often as you like during your turn (before your attack), move a [G] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Venusaur ex is affected by a Special Condition."
 					actionA {
+						assert !(self.specialConditions)
+						assert my.all.findAll {it.cards.energyCount(G)>0}
+						assert my.all.size()>=2
+
+						powerUsed()
+						def src=my.all.findAll {it.cards.energyCount(G)>0}.select("Source for [G]")
+						def card=src.cards.filterByEnergyType(G).select("Card to move").first()
+						def tar=my.all
+						tar.remove(src)
+						tar=tar.select("Target for [G]")
+						energySwitch(src, tar, card)
 					}
 				}
 				move "Pollen Hazard", {
@@ -2459,7 +2800,11 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						apply POISONED
+						apply BURNED
+						apply CONFUSED
+
 					}
 				}
 				move "Solarbeam", {
@@ -2467,7 +2812,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost G, G, G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 90
 					}
 				}
 
@@ -2480,7 +2825,7 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Rage", {
@@ -2488,7 +2833,8 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10+10*self.numberOfDamageCounters
+
 					}
 				}
 
@@ -2499,6 +2845,17 @@ public enum FireredLeafgreen implements CardInfo {
 				pokePower "Legendary Ascent", {
 					text "Once during your turn, when you put Articuno ex from your hand onto your Bench, you may switch 1 of your Active Pokémon with Articuno ex. If you do, you may also move any number of basic [W] Energy cards attached to your Pokémon to Articuno ex."
 					actionA {
+						if(self.lastEvolved == bg.turnCount){
+							if(confirm("Switch your active with Articuno ex"))
+							{
+								def energyCnt = my.active.cards.filterByEnergyType(W).size()
+								def energyMove = choose(0..energyCnt,"Choose the number of energy to move")
+								for(int i=0;i<energyMove;i++){
+									moveEnergy(type: W, my.active, self)
+								}
+								sw self, my.active
+							}
+						}
 					}
 				}
 				move "Cold Crush", {
@@ -2506,7 +2863,11 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						if(confirm("discard an Energy card attached to Articuno ex")){
+							discardSelfEnergy C
+							discardDefendingEnergy()
+						}
 					}
 				}
 
@@ -2517,15 +2878,30 @@ public enum FireredLeafgreen implements CardInfo {
 				pokePower "Legendary Ascent", {
 					text "Once during your turn, when you put Moltres ex from your hand onto your Bench, you may switch 1 of your Active Pokémon with Moltres ex. If you do, you may also move any number of basic [R] Energy cards attached to your Pokémon to Moltres ex."
 					actionA {
+						if(self.lastEvolved == bg.turnCount){
+							if(confirm("Switch your active with Moltres ex"))
+							{
+								def energyCnt = my.active.cards.filterByEnergyType(W).size()
+								def energyMove = choose(0..energyCnt,"Choose the number of energy to move")
+								for(int i=0;i<energyMove;i++){
+									moveEnergy(type: R, my.active, self)
+								}
+								sw self, my.active
+							}
+						}
 					}
 				}
+
 				move "Crushing Flames", {
 					text "60 damage. You may discard an Energy card attached to Moltres ex. If you do, the Defending Pokémon is now Confused."
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
-					}
+						damage 60
+						if(confirm("discard an Energy card attached to Articuno ex")){
+							discardSelfEnergy C
+							apply CONFUSED
+						}
 				}
 
 			};
@@ -2535,6 +2911,17 @@ public enum FireredLeafgreen implements CardInfo {
 				pokePower "Legendary Ascent", {
 					text "Once during your turn, when you put Zapdos ex from your hand onto your Bench, you may switch 1 of your Active Pokémon with Zapdos ex. If you do, you may also move any number of basic [L] Energy cards attached to your Pokémon to Zapdos ex."
 					actionA {
+						if(self.lastEvolved == bg.turnCount){
+							if(confirm("Switch your active with Zapdos ex"))
+							{
+								def energyCnt = my.active.cards.filterByEnergyType(W).size()
+								def energyMove = choose(0..energyCnt,"Choose the number of energy to move")
+								for(int i=0;i<energyMove;i++){
+									moveEnergy(type: L, my.active, self)
+								}
+								sw self, my.active
+							}
+						}
 					}
 				}
 				move "Electron Crush", {
@@ -2542,7 +2929,11 @@ public enum FireredLeafgreen implements CardInfo {
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						if(confirm("discard an Energy card attached to Articuno ex")){
+							discardSelfEnergy C
+							damage 20
+						}
 					}
 				}
 
