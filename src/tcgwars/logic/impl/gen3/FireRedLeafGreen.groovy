@@ -405,7 +405,7 @@ public enum FireredLeafgreen implements CardInfo {
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
 							bg.dm().each{
-								if(it.from.owner = self.owner && (it.from.name == "Nidoran ♂" || it.from.name == "Nidoran ♀" || it.from.name == "Nidorino" || it.from.name == "Nidorina" || it.from.name == "Nidoking" || it.from.name == "Nidoqueen")) {
+								if(it.from.owner == self.owner && (it.from.name == "Nidoran ♂" || it.from.name == "Nidoran ♀" || it.from.name == "Nidorino" || it.from.name == "Nidorina" || it.from.name == "Nidoking" || it.from.name == "Nidoqueen")) {
 									bc "Power Gene +10"
 									it.dmg += hp(10)
 								}
