@@ -431,7 +431,7 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 				move "Guillotine", {
@@ -487,7 +487,7 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 
@@ -557,8 +557,8 @@ public enum Jungle implements CardInfo {
 					onAttack {
 						damage 10
 						flip {
-							apply POISONED
-							apply CONFUSED
+							applyAfterDamage POISONED
+							applyAfterDamage CONFUSED
 						}
 					}
 				}
@@ -782,8 +782,8 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						apply CONFUSED
-						apply CONFUSED, self
+						applyAfterDamage CONFUSED
+						applyAfterDamage CONFUSED, self
 					}
 				}
 
@@ -798,7 +798,7 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flip {apply PARALYZED}
+						flip {applyAfterDamage PARALYZED}
 					}
 				}
 				move "Supersonic", {
@@ -936,7 +936,7 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-						flip 1, {}, {apply CONFUSED, self}
+						flip 1, {}, {applyAfterDamage CONFUSED, self}
 					}
 				}
 
@@ -1048,7 +1048,7 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flip {apply POISONED}
+						flip {applyAfterDamage POISONED}
 					}
 				}
 				move "Razor Leaf", {
@@ -1307,7 +1307,7 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flip {apply PARALYZED}
+						flip {applyAfterDamage PARALYZED}
 					}
 				}
 				move "Sprout", {
@@ -1445,7 +1445,7 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flip {apply PARALYZED}
+						flip {applyAfterDamage PARALYZED}
 					}
 				}
 				move "Leech Life", {

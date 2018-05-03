@@ -236,7 +236,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						flip {apply PARALYZED}
+						flip {applyAfterDamage PARALYZED}
 					}
 				}
 				move "Blizzard", {
@@ -358,7 +358,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						apply ASLEEP
+						applyAfterDamage ASLEEP
 					}
 				}
 
@@ -454,7 +454,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flipThenApplySC CONFUSED
+						afterDamage{flipThenApplySC CONFUSED}
 					}
 				}
 
@@ -539,7 +539,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						flipThenApplySC POISONED
+						afterDamage {flipThenApplySC POISONED}
 					}
 				}
 
@@ -638,7 +638,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						apply POISONED
+						applyAfterDamage POISONED
 					}
 				}
 
@@ -653,7 +653,7 @@ public enum Fossil implements CardInfo {
 					onAttack {
 						flip {
 							damage 30
-							apply PARALYZED
+							applyAfterDamage PARALYZED
 						}
 					}
 				}
@@ -676,7 +676,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 				move "Energy Conversion", {
@@ -723,7 +723,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 				move "Hyper Beam", {
@@ -834,7 +834,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC POISONED
+						afterDamage {flipThenApplySC POISONED}
 					}
 				}
 
@@ -928,7 +928,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 
@@ -950,7 +950,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						apply POISONED
+						applyAfterDamage POISONED
 					}
 				}
 
@@ -964,7 +964,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC POISONED
+						afterDamage {flipThenApplySC POISONED}
 					}
 				}
 				move "Selfdestruct", {
@@ -997,7 +997,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 
@@ -1024,7 +1024,7 @@ public enum Fossil implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 				move "Minimize", {

@@ -1439,7 +1439,7 @@ public enum UltraPrism implements CardInfo {
           energyCost L
           attackRequirement {}
           onAttack {
-            flip{ applyAfterDamage(PARALYZED) }
+            flip{ apply PARALYZED}
           }
         }
 
@@ -1483,7 +1483,7 @@ public enum UltraPrism implements CardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            applyAfterDamage CONFUSED
+            apply CONFUSED
           }
         }
         move "Hang Down", {
@@ -1614,7 +1614,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            applyAfterDamage(POISONED)
+            applyAfterDamage POISONED
           }
         }
         move "Exact Revenge", {
@@ -2024,8 +2024,8 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            apply CONFUSED
-            apply CONFUSED, self
+            applyAfterDamage CONFUSED
+            applyAfterDamage CONFUSED, self
           }
         }
 
@@ -2077,7 +2077,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 120
-            apply ASLEEP, defending
+            applyAfterDamage ASLEEP, defending
             delayed {
               after CLEAR_SPECIAL_CONDITION, defending, {
                 if(ef.types.contains(ASLEEP)){
@@ -2313,7 +2313,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            flip {apply PARALYZED}
+            flip {applyAfterDamage PARALYZED}
           }
         }
         move "Psychic Resonance", {
@@ -2480,7 +2480,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
 
@@ -3021,7 +3021,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
 
@@ -3396,7 +3396,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
         move "Beauty GX", {

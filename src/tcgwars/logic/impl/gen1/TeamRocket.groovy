@@ -286,7 +286,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						apply POISONED
+						applyAfterDamage POISONED
 						if(opp.bench) opp.bench.each{damage 10, it}
 					}
 				}
@@ -456,7 +456,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 
@@ -577,7 +577,7 @@ public enum TeamRocket implements CardInfo {
 							hdCnt += 1
 						}
 						if(hdCnt > 1){
-							apply CONFUSED, self
+							applyAfterDamage CONFUSED, self
 						}
 					}
 				}
@@ -611,7 +611,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flip 1,{apply POISONED},{apply PARALYZED}
+						flip 1,{applyAfterDamage POISONED},{applyAfterDamage PARALYZED}
 					}
 				}
 
@@ -810,7 +810,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						apply POISONED
+						applyAfterDamage POISONED
 					}
 				}
 
@@ -857,7 +857,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						flip 1,{apply PARALYZED},{damage 10, self}
+						flip 1,{applyAfterDamage PARALYZED},{damage 10, self}
 					}
 				}
 
@@ -934,7 +934,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						apply POISONED
+						applyAfterDamage POISONED
 					}
 				}
 
@@ -962,7 +962,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flipThenApplySC POISONED
+						afterDamage {flipThenApplySC POISONED}
 					}
 				}
 
@@ -991,7 +991,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
-						apply CONFUSED, self
+						applyAfterDamage CONFUSED, self
 					}
 				}
 
@@ -1154,7 +1154,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC CONFUSED
+						afterDamage {flipThenApplySC CONFUSED}
 					}
 				}
 
@@ -1181,7 +1181,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 
@@ -1263,7 +1263,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 
@@ -1286,7 +1286,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						apply ASLEEP
+						applyAfterDamage ASLEEP
 					}
 				}
 
@@ -1331,7 +1331,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC POISONED
+						afterDamage {flipThenApplySC POISONED}
 					}
 				}
 
@@ -1355,7 +1355,7 @@ public enum TeamRocket implements CardInfo {
 						damage 10
 						flip {
 							damage 20
-							apply PARALYZED
+							applyAfterDamage PARALYZED
 						}
 					}
 				}
@@ -1378,7 +1378,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC POISONED
+						afterDamage {flipThenApplySC POISONED}
 					}
 				}
 

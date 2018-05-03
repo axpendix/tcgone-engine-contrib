@@ -214,7 +214,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						apply POISONED
+						applyAfterDamage POISONED
 					}
 				}
 				move "Link Needle", {
@@ -282,7 +282,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						apply ASLEEP
+						applyAfterDamage ASLEEP
 					}
 				}
 				move "Aurora Beam", {
@@ -419,7 +419,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
-						if(defending.numberOfDamageCounters) apply POISONED
+						if(defending.numberOfDamageCounters) applyAfterDamage POISONED
 					}
 				}
 				move "Bound Crush", {
@@ -511,7 +511,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						apply CONFUSED
+						applyAfterDamage CONFUSED
 					}
 				}
 				move "Mega Throw", {
@@ -568,7 +568,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						apply BURNED
+						applyAfterDamage BURNED
 					}
 				}
 				move "Rear Kick", {
@@ -603,7 +603,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 
@@ -636,7 +636,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						apply ASLEEP, self
+						applyAfterDamage ASLEEP, self
 					}
 				}
 				move "Toss and Turn", {
@@ -670,7 +670,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20+10*self.numberOfDamageCounters
-						flip 1, {}, {apply CONFUSED, self}
+						flip 1, {}, {applyAfterDamage CONFUSED, self}
 					}
 				}
 
@@ -771,7 +771,7 @@ public enum FireredLeafgreen implements CardInfo {
 					onAttack {
 						flip 2,{
 							damage 10
-							apply PARALYZED
+							applyAfterDamage PARALYZED
 						}
 					}
 				}
@@ -913,7 +913,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						apply ASLEEP
+						applyAfterDamage ASLEEP
 					}
 				}
 
@@ -951,7 +951,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 				move "Speed Shot", {
@@ -1090,7 +1090,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flipThenApplySC CONFUSED
+						afterDamage {flipThenApplySC CONFUSED}
 					}
 				}
 				move "Double Spin", {
@@ -1122,7 +1122,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC CONFUSED
+						afterDamage {flipThenApplySC CONFUSED}
 					}
 				}
 
@@ -1185,7 +1185,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 				move "Tongue Whip", {
@@ -1339,7 +1339,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						apply POISONED
+						applyAfterDamage POISONED
 					}
 				}
 
@@ -1370,7 +1370,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						apply CONFUSED
+						applyAfterDamage CONFUSED
 					}
 				}
 
@@ -1419,7 +1419,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 
@@ -1443,7 +1443,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						apply CONFUSED
+						applyAfterDamage CONFUSED
 					}
 				}
 
@@ -1562,7 +1562,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						apply BURNED
+						applyAfterDamage BURNED
 					}
 				}
 
@@ -1670,7 +1670,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						apply PARALYZED
+						applyAfterDamage PARALYZED
 					}
 				}
 
@@ -2030,7 +2030,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flipThenApplySC POISONED
+						afterDamage {flipThenApplySC POISONED}
 					}
 				}
 
@@ -2208,7 +2208,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						flipThenApplySC ASLEEP
+						afterDamage {flipThenApplySC ASLEEP}
 					}
 				}
 
@@ -2280,7 +2280,7 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC PARALYZED
+						afterDamage {flipThenApplySC PARALYZED}
 					}
 				}
 
@@ -2800,9 +2800,9 @@ public enum FireredLeafgreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						apply POISONED
-						apply BURNED
-						apply CONFUSED
+						applyAfterDamage POISONED
+						applyAfterDamage BURNED
+						applyAfterDamage CONFUSED
 
 					}
 				}
@@ -2899,7 +2899,7 @@ public enum FireredLeafgreen implements CardInfo {
 						damage 60
 						if(confirm("discard an Energy card attached to Articuno ex")){
 							discardSelfEnergy C
-							apply CONFUSED
+							applyAfterDamage CONFUSED
 						}
 					}
 				}
