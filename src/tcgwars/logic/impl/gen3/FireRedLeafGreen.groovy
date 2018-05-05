@@ -34,7 +34,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum FireredLeafgreen implements CardInfo {
+public enum FireRedLeafGreen implements CardInfo {
 
 	BEEDRILL_1 ("Beedrill", 1, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
 	BUTTERFREE_2 ("Butterfree", 2, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
@@ -160,7 +160,7 @@ public enum FireredLeafgreen implements CardInfo {
 	protected Rarity rarity;
 	protected int collectionLineNo;
 
-	FireredLeafgreen(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+	FireRedLeafGreen(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
 		this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
 		this.name = name;
 		this.rarity = rarity;
