@@ -302,9 +302,12 @@ public enum FireRedLeafGreen implements CardInfo {
 					text "Once during your turn (before your attack), you may search you discard pile for a Basic Pokémon (excluding Pokémon-ex and Ditto) and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Place Ditto in the discard pile."
 					actionA {
 						checkLastTurn()
+						assert my.discard.findAll {it.cardTypes(BASIC)} : "No basic in discard"
 						powerUsed()
-						self.topPokemonCard = my.discard.findAll{it.cardTypes(BASIC)}
-
+						def ditto = self.topPokemonCard
+						my.discard.findAll{it.cardTypes(BASIC)}.select().moveTo(self)
+						discard(ditto)
+						checkFaint()
 					}
 				}
 				move "Energy Ball", {
