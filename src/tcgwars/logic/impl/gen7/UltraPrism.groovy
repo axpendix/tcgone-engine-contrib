@@ -3350,16 +3350,27 @@ public enum UltraPrism implements CardInfo {
         }
       };
       case SUPER_BOOST_ENERGY_PRISM_STAR_136:
-      return specialEnergy (this) {
-        text "null"
+      return specialEnergy (this, [[C]]) {
+        text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\n" +
+                "This card provides [C] Energy.\n" +
+                "While this card is attached to a Stage 2 Pokémon, it provides every type of Energy but provides only 1 Energy at a time. If you have 3 or more Stage 2 Pokémon in play, it provides every type of Energy but provides 4 Energy at a time."
         onPlay {reason->
         }
         onRemoveFromPlay {
         }
-        onMove {to->
+        getEnergyTypesOverride {
+          if(!self || !self.topPokemonCard)
+            return [[C]]
+          boolean cond1 = self.topPokemonCard.cardTypes.is(STAGE2)
+          boolean cond2 = self.owner.pbg.all.findAll{it.topPokemonCard.cardTypes.is(STAGE2)}.size() >= 3
+          if(cond1 && cond2)
+            return [[R, D, F, G, W, Y, L, M, P], [R, D, F, G, W, Y, L, M, P], [R, D, F, G, W, Y, L, M, P], [R, D, F, G, W, Y, L, M, P]]
+          else if(cond1) 
+            return [[R, D, F, G, W, Y, L, M, P]]
+          else
+            return [[C]]
         }
-        allowAttach {to->
-        }
+
       };
       case UNIT_ENERGY_GRW_137:
       return specialEnergy (this,[[G, R, W]]) {
