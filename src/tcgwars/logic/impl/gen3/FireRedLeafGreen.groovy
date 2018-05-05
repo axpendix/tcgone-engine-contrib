@@ -2584,7 +2584,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						if(holder.effect.target.owner == self.owner
 								&& holder.effect.card == self
 								&& holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
-							holder.object = [[R]] as Set
+							holder.object = [[R] as Set]
 						}
 					}
 				}

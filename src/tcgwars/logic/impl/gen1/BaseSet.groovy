@@ -384,7 +384,7 @@ public enum BaseSet implements CardInfo {
 							if(holder.effect.target.owner == self.owner
 									&& holder.effect.card == self //TODO: Probably not the right syntax for this ccheck
 									&& holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
-								holder.object = [[R]] as Set //TODO: Make sure this turns each ENERGY into Fire energy (Not just each card)
+								holder.object = [[R] as Set] //TODO: Make sure this turns each ENERGY into Fire energy (Not just each card)
 							}
 						}
 					}

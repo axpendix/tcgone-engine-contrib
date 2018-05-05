@@ -207,7 +207,7 @@ public enum ShiningLegends implements CardInfo {
 							if(holder.effect.target.owner == self.owner
 									&& holder.effect.card.containsTypePlain(G)
 									&& holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
-								holder.object = [[G,G]] as Set
+								holder.object = [[G] as Set,[G] as Set]
 							}
 						}
 					}

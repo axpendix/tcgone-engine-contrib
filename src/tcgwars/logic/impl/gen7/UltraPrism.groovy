@@ -3362,7 +3362,7 @@ public enum UltraPrism implements CardInfo {
         }
       };
       case UNIT_ENERGY_GRW_137:
-      return specialEnergy (this,[[G],[R],[W]]) {
+      return specialEnergy (this,[[G, R, W]]) {
         text "This card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [G], [W], and [R] Energy but provides only 1 Energy at a time."
         onPlay {reason->
 	      }
@@ -3370,7 +3370,7 @@ public enum UltraPrism implements CardInfo {
 	      }
       };
       case UNIT_ENERGY_LPM_138:
-      return specialEnergy (this, [[L],[P],[M]]) {
+      return specialEnergy (this, [[L, P, M]]) {
         text "is card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [L], [P], and [M] Energy but provides only 1 Energy at a time."
         onPlay {reason->
 	      }
