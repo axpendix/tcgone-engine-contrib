@@ -341,10 +341,10 @@ public enum UltraPrism implements CardInfo {
             assert opp.bench.notEmpty
           }
           onAttack {
-            afterDamage {
-              def pcs = opp.bench.select("Switch")
+            def pcs = opp.bench.select("Switch")
+            targeted(pcs) {
               sw opp.active, pcs
-              apply POISONED
+              apply POISONED, pcs
             }
           }
         }
@@ -357,7 +357,7 @@ public enum UltraPrism implements CardInfo {
             while(1){
               def pl=(my.all.findAll {it.cards.energyCount(G)})
               if(!pl) break;
-              def src =pl.select("source for energy (cancel to stop)", false)
+              def src =pl.select("Source for energy (cancel to stop)", false)
               if(!src) break;
               def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
               def tar=my.all.select("Target for energy (cancel to stop)", false)
@@ -477,8 +477,7 @@ public enum UltraPrism implements CardInfo {
           text "Your [G] Pokémon have no Weakness."
           getterA GET_WEAKNESSES, { h ->
             if (h.effect.target.types.contains(G) && h.effect.target.owner == self.owner) {
-              def list = h.object as List<Weakness>
-              list.retainAll()
+              h.object.clear()
             }
           }
         }
@@ -521,15 +520,15 @@ public enum UltraPrism implements CardInfo {
           text "If this Pokémon is your Active Pokémon, once during your turn (before your attack), you may heal 50 damage from 1 of your Pokémon that has any Energy attached to it."
           actionA {
             checkLastTurn() // check whether it has already been used this turn
-						assert self.active : "Leafeon GX is not your active pokemon"
-						def tar = my.all.findAll{it.numberOfDamageCounters && it.cards.energyCount(C)}
-						assert tar
+            assert self.active : "Leafeon GX is not your active pokemon"
+            def tar = my.all.findAll{it.numberOfDamageCounters && it.cards.energyCount(C)}
+            assert tar
 
-						// power is going through
-						powerUsed()
+            // power is going through
+            powerUsed()
 
-						// now do the main effect:
-						heal 50, tar.select()
+            // now do the main effect:
+            heal 50, tar.select(), SRC_ABILITY
 
           }
         }
@@ -551,16 +550,15 @@ public enum UltraPrism implements CardInfo {
           }
           onAttack {
             gxPerform()
-            my.bench.findAll{it.basic}.each{
-              def tar = it
-              def nam = it.name
-              def sel=self.owner.pbg.deck.search(count:1, "search for a card that evolve for $nam",
-                          {it.cardTypes.is(EVOLUTION) && it.predecessor==tar.name})
+            my.bench.findAll{it.basic}.each{pcs->
+              def nam = pcs.name
+              def sel=self.owner.pbg.deck.search(count:1, "Search for a card that evolve from $nam",
+                          {it.cardTypes.is(EVOLUTION) && it.predecessor==pcs.name})
               if(sel){
-                evolve(it, sel.first(), OTHER)
+                evolve(pcs, sel.first(), OTHER)
               }
             }
-            shuffleDeck(null, self.owner.toTargetPlayer())
+            shuffleDeck()
           }
         }
 
@@ -571,16 +569,16 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Roto Motor", {
           text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
           getterA GET_MOVE_LIST, NORMAL,self, {h->
-            def toolReq = (my.discard.filterByType(POKEMON_TOOL).size()>8)
+            def toolReq = (my.discard.filterByType(POKEMON_TOOL).size()>=9)
             def list=[]
-  					for(move in h.object){
-  						def copy=move.shallowCopy()
+            for(move in h.object){
+              def copy=move.shallowCopy()
               if(toolReq){
-                copy.energyCost.retainAll()
+                copy.energyCost.clear()
               }
-  						list.add(copy)
-  					}
-  					h.object=list
+              list.add(copy)
+            }
+            h.object=list
           }
         }
         move "Special Mow", {
@@ -604,64 +602,21 @@ public enum UltraPrism implements CardInfo {
             my.bench.notFull
           }
           onAttack {
-            def tar1 = my.deck.search (count : 1,cardTypeFilter(BASIC))
-            //TODO : not hardcode dual type case (aka. contains for list of types)
-            if(tar1){
-              def typ1 = (tar1.first().types as List<Type>)
-              my.deck.remove(tar1.first())
-              benchPCS(tar1.first())
-              if(my.bench.notFull){
-                if(typ1.size() != 1)
-                {
-                  def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0))) && !(it.types.contains(typ1.get(1)))})
-                  if(tar2){
-                    def typ2 = tar2.first().types
-                    my.deck.remove(tar2.first())
-      							benchPCS(tar2.first())
-                    if(my.bench.notFull){
-                      if(typ2.size() != 1){
-                        def tar3 = my.deck.search (count : 1,{it.topPokemonCard.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0))) && !(it.types.contains(typ1.get(1))) && !(it.types.contains(typ2.get(0))) && !(it.types.contains(typ2.get(1)))})
-                        if(tar3){
-                          my.deck.remove(tar3.first())
-            							benchPCS(tar3.first())
-                        }
-                      }
-                      else{
-                        def tar3 = my.deck.search (count : 1,{it.topPokemonCard.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0))) && !(it.types.contains(typ1.get(1))) && !(it.types.contains(typ2.get(0)))})
-                        if(tar3){
-                          my.deck.remove(tar3.first())
-            							benchPCS(tar3.first())
-                        }
-                      }
-                    }
+            my.deck.select(min:0, max:3, "Select up to 3 Basic Pokémon of different types", cardTypeFilter(BASIC), self.owner,
+              {CardList list->
+                TypeSet typeSet=new TypeSet()
+                for(card in list){
+                  if(typeSet.containsAny(card.asPokemonCard().types)){
+                    return false
                   }
+                  typeSet.addAll(card.asPokemonCard().types)
                 }
-                else{
-                  def tar2 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0)))})
-                  if(tar2){
-                    def typ2 = tar2.first().types
-                    my.deck.remove(tar2.first())
-      							benchPCS(tar2.first())
-                    if(my.bench.notFull){
-                      if(typ2.size() != 1){
-                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0))) && !(it.types.contains(typ2.get(0))) && !(it.types.contains(typ2.get(1)))})
-                        if(tar3){
-                          my.deck.remove(tar3.first())
-            							benchPCS(tar3.first())
-                        }
-                      }
-                      else{
-                        def tar3 = my.deck.search (count : 1,{it.cardTypes.is(BASIC) && !(it.types.contains(typ1.get(0))) && !(it.types.contains(typ2.get(0)))})
-                        if(tar3){
-                          my.deck.remove(tar3.first())
-            							benchPCS(tar3.first())
-                        }
-                      }
-                    }
-                  }
-                }
+                return true
+              }).each {
+                my.deck.remove(it)
+                benchPCS(it)
               }
-            }
+            shuffleDeck()
           }
         }
         move "Soothing Scent", {
