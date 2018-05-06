@@ -783,7 +783,7 @@ public enum Jungle implements CardInfo {
 					onAttack {
 						damage 20
 						applyAfterDamage CONFUSED
-						applyAfterDamage CONFUSED, self
+						afterDamage{apply CONFUSED, self}
 					}
 				}
 
@@ -936,7 +936,7 @@ public enum Jungle implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-						flip 1, {}, {applyAfterDamage CONFUSED, self}
+						flip 1, {}, {afterDamage{apply CONFUSED, self}}
 					}
 				}
 

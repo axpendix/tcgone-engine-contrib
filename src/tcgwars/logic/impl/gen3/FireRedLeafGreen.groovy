@@ -241,7 +241,7 @@ public enum FireRedLeafGreen implements CardInfo {
 							if(self.active){
 								all.each{
 									if(it.numberOfDamageCounters){
-										it.damage -= hp(10)
+										heal 10, self
 									}
 								}
 							}
@@ -272,9 +272,7 @@ public enum FireRedLeafGreen implements CardInfo {
 				weakness METAL
 				pokeBody "Safeguard", {
 					text "Prevent all effects of attacks, including damage, done to Dewgong by your opponent’s Pokémon-ex."
-					delayedA {
-						safeguard(self,delegate)
-					}
+					safeguard(self,delegate)
 				}
 				move "Cold Breath", {
 					text "10 damage. The Defending Pokémon is now Asleep."
@@ -408,7 +406,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
 							bg.dm().each{
-								if(it.from.owner == self.owner && (it.from.name == "Nidoran ♂" || it.from.name == "Nidoran ♀" || it.from.name == "Nidorino" || it.from.name == "Nidorina" || it.from.name == "Nidoking" || it.from.name == "Nidoqueen")) {
+								if(it.from.owner == self.owner && (it.from.name == "Nidoran ♂" || it.from.name == "Nidoran ♀" || it.from.name == "Nidorino" || it.from.name == "Nidorina"|| it.from.name == "Nidoqueen")) {
 									bc "Power Gene +10"
 									it.dmg += hp(10)
 								}
@@ -431,6 +429,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60, opp.all.select()
+						cantUseAttack(thisMove, self)
 					}
 				}
 
@@ -438,11 +437,12 @@ public enum FireRedLeafGreen implements CardInfo {
 			case NIDOQUEEN_9:
 			return evolution (this, from:"Nidorina", hp:HP120, type:FIGHTING, retreatCost:2) {
 				weakness GRASS
+				def eff
 				pokeBody "Family Bonds", {
 					text "As long as Nidoqueen is in play, the Retreat Cost for Nidoran Female, Nidorina, Nidoran Male, Nidorino and Nidoking is 0."
 					delayedA {
 						eff = getter (GET_RETREAT_COST, BEFORE_LAST) {
-							if (it.effect.target.name == "Nidoran ♂" || it.effect.target.name == "Nidoran ♀" || it.effect.target.name == "Nidorino" || it.effect.target.name == "Nidorina" || it.effect.target.name == "Nidoking" || it.effect.target.name == "Nidoqueen") {
+							if (it.effect.target.name == "Nidoran ♂" || it.effect.target.name == "Nidoran ♀" || it.effect.target.name == "Nidorino" || it.effect.target.name == "Nidorina" || it.effect.target.name == "Nidoking") {
 								it.object = 0
 							}
 						}
@@ -480,7 +480,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						checkLastTurn()
 						assert my.deck
 						powerUsed()
-						my.deck.search(count : 1).moveTo(my.hand)
+						my.deck.search(max : 1).moveTo(my.hand)
 					}
 				}
 				move "Clutch", {
@@ -537,6 +537,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						attachEnergyFrom(type: L, my.deck, self)
+						attachEnergyFrom(type: L, my.deck, self)
 					}
 				}
 				move "Thunder Reflection", {
@@ -548,7 +549,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						if(confirm("move any number of [L] Energy cards attached to Raichu to another of your Pokémon?"))
 						{
 							def pcs = my.bench.select()
-							self.cards.filterByEnergyType(L).select(min : 0).each{
+							self.cards.filterByEnergyType(L).select(min : 1).each{
 								energySwitch(self,pcs,it)
 							}
 						}
@@ -627,8 +628,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					delayedA {
 						after BETWEEN_TURNS, {
 							if(self.isSPC(ASLEEP)){
-								def dmgCt = Math.min(self.numberOfDamageCounters,2)
-								self.damage -= hp(10*dmgCt)
+								heal 20, self
 							}
 						}
 					}
@@ -639,7 +639,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						applyAfterDamage ASLEEP, self
+						afterDamage {apply ASLEEP, self}
 					}
 				}
 				move "Toss and Turn", {
@@ -673,7 +673,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20+10*self.numberOfDamageCounters
-						flip 1, {}, {applyAfterDamage CONFUSED, self}
+						flip 1, {}, {afterDamage {apply CONFUSED, self}}
 					}
 				}
 
@@ -743,8 +743,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						flip 1,{
 							damage 50
 						},{
-							def dmgCt = Math.min(self.numberOfDamageCounters,5)
-							self.damage -= hp(10*dmgCt)
+							heal 50, self
 						}
 
 					}
@@ -1872,8 +1871,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						assert self.numberOfDamageCounters : "your Krabby does not have any damage counters"
 					}
 					onAttack {
-						def dmgRem = Math.min(2,self.numberOfDamageCounters)
-						self.damage -= hp(10*dmgRem)
+						heal 20, self
 					}
 				}
 
@@ -2408,8 +2406,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					if(tar){
 						def pcs = tar.select("select 1 of your Pokémon (excluding Pokémon-ex) to remove all Special Conditions and 6 damage counters")
 						clearSpecialCondition(pcs,TRAINER_CARD)
-						def dmgCt = Math.min(pcs.numberOfDamageCounters,6)
-						pcs.damage -= hp(10*dmgCt)
+						heal 60, self
 					}
 				}
 				playRequirement{
@@ -2515,8 +2512,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					def tar = my.all.findAll{it.numberOfDamageCounters}
 					if(tar){
 						def pcs = tar.select()
-						def dmgRem = Math.min(2,pcs.numberOfDamageCounters)
-						pcs.damage -= hp(10*dmgRem)
+						heal 20, self
 					}
 				}
 				playRequirement{

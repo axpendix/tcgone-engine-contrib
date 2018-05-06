@@ -2025,7 +2025,7 @@ public enum UltraPrism implements CardInfo {
           onAttack {
             damage 10
             applyAfterDamage CONFUSED
-            applyAfterDamage CONFUSED, self
+            afterDamage{apply CONFUSED, self}
           }
         }
 
@@ -2077,7 +2077,7 @@ public enum UltraPrism implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 120
-            applyAfterDamage ASLEEP, defending
+            afterDamage{apply ASLEEP, defending}
             delayed {
               after CLEAR_SPECIAL_CONDITION, defending, {
                 if(ef.types.contains(ASLEEP)){
