@@ -1,0 +1,2938 @@
+package tcgwars.logic.impl.gen7;
+
+import static tcgwars.logic.card.HP.*;
+import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
+import static tcgwars.logic.card.Resistance.ResistanceType.*
+
+import java.util.*;
+import org.apache.commons.lang.WordUtils;
+import tcgwars.entity.*;
+import tcgwars.logic.*;
+import tcgwars.logic.card.*;
+import tcgwars.logic.card.energy.*;
+import tcgwars.logic.card.pokemon.*;
+import tcgwars.logic.card.trainer.*;
+import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.ability.*;
+import tcgwars.logic.effect.ability.Ability.*;
+import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.basic.*;
+import tcgwars.logic.effect.blocking.*;
+import tcgwars.logic.effect.event.*;
+import tcgwars.logic.effect.getter.*;
+import tcgwars.logic.effect.special.*;
+import tcgwars.logic.util.*;
+
+/**
+ * @author axpendix@hotmail.com
+ */
+public enum ForbiddenLight implements CardInfo {
+	
+	EXEGGCUTE_1 ("Exeggcute", 1, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	ALOLAN_EXEGGUTOR_2 ("Alolan Exeggutor", 2, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	SNOVER_3 ("Snover", 3, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	ABOMASNOW_4 ("Abomasnow", 4, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	SCATTERBUG_5 ("Scatterbug", 5, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	SCATTERBUG_6 ("Scatterbug", 6, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	SPEWPA_7 ("Spewpa", 7, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	VIVILLON_8 ("Vivillon", 8, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+	SKIDDO_9 ("Skiddo", 9, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+	GOGOAT_10 ("Gogoat", 10, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+	PHEROMOSA_11 ("Pheromosa", 11, Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
+	ALOLAN_MAROWAK_12 ("Alolan Marowak", 12, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+	HEATRAN_13 ("Heatran", 13, Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
+	FENNEKIN_14 ("Fennekin", 14, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+	FENNEKIN_15 ("Fennekin", 15, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+	BRAIXEN_16 ("Braixen", 16, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+	DELPHOX_17 ("Delphox", 17, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
+	LITLEO_18 ("Litleo", 18, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+	PYROAR_19 ("Pyroar", 19, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+	PALKIA_GX_20 ("Palkia-GX", 20, Rarity.ULTRARARE, [BASIC, POKEMON, _WATER_]),
+	FROAKIE_21 ("Froakie", 21, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	FROAKIE_22 ("Froakie", 22, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	FROGADIER_23 ("Frogadier", 23, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	GRENINJA_GX_24 ("Greninja-GX", 24, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+	CLAUNCHER_25 ("Clauncher", 25, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	CLAWITZER_26 ("Clawitzer", 26, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	AMAURA_27 ("Amaura", 27, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	AURORUS_28 ("Aurorus", 28, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+	BERGMITE_29 ("Bergmite", 29, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	AVALUGG_30 ("Avalugg", 30, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	VOLCANION_PRISM_STAR_31 ("Volcanion Prism Star", 31, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
+	DEWPIDER_32 ("Dewpider", 32, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+	ARAQUANID_33 ("Araquanid", 33, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	MAGNEMITE_34 ("Magnemite", 34, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	MAGNETON_35 ("Magneton", 35, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+	MAGNEZONE_36 ("Magnezone", 36, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
+	HELIOPTILE_37 ("Helioptile", 37, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	HELIOLISK_38 ("Heliolisk", 38, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+	XURKITREE_39 ("Xurkitree", 39, Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
+	ROTOM_40 ("Rotom", 40, Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
+	UXIE_41 ("Uxie", 41, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	MESPRIT_42 ("Mesprit", 42, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	AZELF_43 ("Azelf", 43, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	ESPURR_44 ("Espurr", 44, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	MEOWSTIC_45 ("Meowstic", 45, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	HONEDGE_46 ("Honedge", 46, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	HONEDGE_47 ("Honedge", 47, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	DOUBLADE_48 ("Doublade", 48, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	AEGISLASH_49 ("Aegislash", 49, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
+	INKAY_50 ("Inkay", 50, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	MALAMAR_51 ("Malamar", 51, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	SKRELP_52 ("Skrelp", 52, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	DRAGALGE_53 ("Dragalge", 53, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	HOOPA_54 ("Hoopa", 54, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	POIPOLE_55 ("Poipole", 55, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	NAGANADEL_GX_56 ("Naganadel-GX", 56, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	CUBONE_57 ("Cubone", 57, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	TORTERRA_58 ("Torterra", 58, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+	INFERNAPE_59 ("Infernape", 59, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+	GIBLE_60 ("Gible", 60, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	GABITE_61 ("Gabite", 61, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	GARCHOMP_62 ("Garchomp", 62, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+	CROAGUNK_63 ("Croagunk", 63, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	TOXICROAK_64 ("Toxicroak", 64, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	PANCHAM_65 ("Pancham", 65, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	BINACLE_66 ("Binacle", 66, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	BARBARACLE_67 ("Barbaracle", 67, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	TYRUNT_68 ("Tyrunt", 68, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	TYRANTRUM_69 ("Tyrantrum", 69, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+	HAWLUCHA_70 ("Hawlucha", 70, Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
+	ZYGARDE_71 ("Zygarde", 71, Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
+	ZYGARDE_72 ("Zygarde", 72, Rarity.RARE, [BASIC, POKEMON, _FIGHTING_]),
+	ZYGARDE_GX_73 ("Zygarde-GX", 73, Rarity.ULTRARARE, [BASIC, POKEMON, _FIGHTING_]),
+	DIANCIE_PRISM_STAR_74 ("Diancie Prism Star", 74, Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
+	ROCKRUFF_75 ("Rockruff", 75, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	LYCANROC_76 ("Lycanroc", 76, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	BUZZWOLE_77 ("Buzzwole", 77, Rarity.RARE, [BASIC, POKEMON, _FIGHTING_]),
+	PANGORO_78 ("Pangoro", 78, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+	YVELTAL_GX_79 ("Yveltal-GX", 79, Rarity.ULTRARARE, [BASIC, POKEMON, _DARKNESS_]),
+	GUZZLORD_80 ("Guzzlord", 80, Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_]),
+	EMPOLEON_81 ("Empoleon", 81, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _METAL_]),
+	DIALGA_GX_82 ("Dialga-GX", 82, Rarity.ULTRARARE, [BASIC, POKEMON, _METAL_]),
+	FLABEBE_83 ("Flabébé", 83, Rarity.COMMON, [BASIC, POKEMON, _FAIRY_]),
+	FLABEBE_84 ("Flabébé", 84, Rarity.COMMON, [BASIC, POKEMON, _FAIRY_]),
+	FLOETTE_85 ("Floette", 85, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FAIRY_]),
+	FLORGES_86 ("Florges", 86, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FAIRY_]),
+	SYLVEON_87 ("Sylveon", 87, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FAIRY_]),
+	DEDENNE_88 ("Dedenne", 88, Rarity.UNCOMMON, [BASIC, POKEMON, _FAIRY_]),
+	KLEFKI_89 ("Klefki", 89, Rarity.UNCOMMON, [BASIC, POKEMON, _FAIRY_]),
+	XERNEAS_GX_90 ("Xerneas-GX", 90, Rarity.ULTRARARE, [BASIC, POKEMON, _FAIRY_]),
+	GOOMY_91 ("Goomy", 91, Rarity.COMMON, [BASIC, POKEMON, _DRAGON_]),
+	GOOMY_92 ("Goomy", 92, Rarity.COMMON, [BASIC, POKEMON, _DRAGON_]),
+	SLIGGOO_93 ("Sliggoo", 93, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DRAGON_]),
+	GOODRA_94 ("Goodra", 94, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _DRAGON_]),
+	ULTRA_NECROZMA_GX_95 ("Ultra Necrozma-GX", 95, Rarity.ULTRARARE, [BASIC, POKEMON, _DRAGON_]),
+	ARCEUS_PRISM_STAR_96 ("Arceus Prism Star", 96, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+	BUNNELBY_97 ("Bunnelby", 97, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+	DIGGERSBY_98 ("Diggersby", 98, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	FURFROU_99 ("Furfrou", 99, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+	NOIBAT_100 ("Noibat", 100, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+	NOIVERN_101 ("Noivern", 101, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	BEAST_RING_102 ("Beast Ring", 102, Rarity.RARE, [ITEM, TRAINER]),
+	BONNIE_103 ("Bonnie", 103, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+	CRASHER_WAKE_104 ("Crasher Wake", 104, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+	DIANTHA_105 ("Diantha", 105, Rarity.HOLORARE, [SUPPORTER, TRAINER]),
+	ENEPORTER_106 ("Eneporter", 106, Rarity.UNCOMMON, [ITEM, TRAINER]),
+	FOSSIL_EXCAVATION_MAP_107 ("Fossil Excavation Map", 107, Rarity.UNCOMMON, [ITEM, TRAINER]),
+	JUDGE_108 ("Judge", 108, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+	LADY_109 ("Lady", 109, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+	LYSANDRE_PRISM_STAR_110 ("Lysandre Prism Star", 110, Rarity.HOLORARE, [SUPPORTER, TRAINER]),
+	LYSANDRE_LABS_111 ("Lysandre Labs", 111, Rarity.UNCOMMON, [STADIUM, TRAINER]),
+	METAL_FRYING_PAN_112 ("Metal Frying Pan", 112, Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER]),
+	MYSTERIOUS_TREASURE_113 ("Mysterious Treasure", 113, Rarity.UNCOMMON, [ITEM, TRAINER]),
+	ULTRA_RECON_SQUAD_114 ("Ultra Recon Squad", 114, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+	ULTRA_SPACE_115 ("Ultra Space", 115, Rarity.UNCOMMON, [STADIUM, TRAINER]),
+	UNIDENTIFIED_FOSSIL_116 ("Unidentified Fossil", 116, Rarity.UNCOMMON, [ITEM, TRAINER]),
+	BEAST_ENERGY_PRISM_STAR_117 ("Beast Energy Prism Star", 117, Rarity.HOLORARE, [SPECIAL_ENERGY, ENERGY]),
+	UNIT_ENERGY_FDY_118 ("Unit Energy FDY", 118, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
+	PALKIA_GX_119 ("Palkia-GX", 119, Rarity.ULTRARARE, [BASIC, POKEMON, _WATER_]),
+	GRENINJA_GX_120 ("Greninja-GX", 120, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+	NAGANADEL_GX_121 ("Naganadel-GX", 121, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	LUCARIO_GX_122 ("Lucario-GX", 122, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	ZYGARDE_GX_123 ("Zygarde-GX", 123, Rarity.ULTRARARE, [BASIC, POKEMON, _FIGHTING_]),
+	YVELTAL_GX_124 ("Yveltal-GX", 124, Rarity.ULTRARARE, [BASIC, POKEMON, _DARKNESS_]),
+	DIALGA_GX_125 ("Dialga-GX", 125, Rarity.ULTRARARE, [BASIC, POKEMON, _METAL_]),
+	XERNEAS_GX_126 ("Xerneas-GX", 126, Rarity.ULTRARARE, [BASIC, POKEMON, _FAIRY_]),
+	ULTRA_NECROZMA_GX_127 ("Ultra Necrozma-GX", 127, Rarity.ULTRARARE, [BASIC, POKEMON, _DRAGON_]),
+	BONNIE_128 ("Bonnie", 128, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
+	CRASHER_WAKE_129 ("Crasher Wake", 129, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
+	DIANTHA_130 ("Diantha", 130, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
+	ULTRA_RECON_SQUAD_131 ("Ultra Recon Squad", 131, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
+	PALKIA_GX_132 ("Palkia-GX", 132, Rarity.SECRET, [BASIC, POKEMON, _WATER_]),
+	GRENINJA_GX_133 ("Greninja-GX", 133, Rarity.SECRET, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+	NAGANADEL_GX_134 ("Naganadel-GX", 134, Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+	LUCARIO_GX_135 ("Lucario-GX", 135, Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	ZYGARDE_GX_136 ("Zygarde-GX", 136, Rarity.SECRET, [BASIC, POKEMON, _FIGHTING_]),
+	YVELTAL_GX_137 ("Yveltal-GX", 137, Rarity.SECRET, [BASIC, POKEMON, _DARKNESS_]),
+	DIALGA_GX_138 ("Dialga-GX", 138, Rarity.SECRET, [BASIC, POKEMON, _METAL_]),
+	XERNEAS_GX_139 ("Xerneas-GX", 139, Rarity.SECRET, [BASIC, POKEMON, _FAIRY_]),
+	ULTRA_NECROZMA_GX_140 ("Ultra Necrozma-GX", 140, Rarity.SECRET, [BASIC, POKEMON, _DRAGON_]),
+	BEAST_RING_141 ("Beast Ring", 141, Rarity.SECRET, [ITEM, TRAINER]),
+	ENEPORTER_142 ("Eneporter", 142, Rarity.SECRET, [ITEM, TRAINER]),
+	ENERGY_RECYCLER_143 ("Energy Recycler", 143, Rarity.SECRET, [ITEM, TRAINER]),
+	METAL_FRYING_PAN_144 ("Metal Frying Pan", 144, Rarity.SECRET, [POKEMON_TOOL, TRAINER]),
+	MYSTERIOUS_TREASURE_145 ("Mysterious Treasure", 145, Rarity.SECRET, [ITEM, TRAINER]),
+	UNIT_ENERGY_FDY_146 ("Unit Energy FDY", 146, Rarity.SECRET, [SPECIAL_ENERGY, ENERGY]);
+	
+	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+	
+	protected CardTypeSet cardTypes;
+	protected String name;
+	protected Rarity rarity;
+	protected int collectionLineNo;
+
+	ForbiddenLight(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+		this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
+		this.name = name;
+		this.rarity = rarity;
+		this.collectionLineNo = collectionLineNo;
+	}
+
+	@Override
+	public CardTypeSet getCardTypes() {
+		return cardTypes;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public Rarity getRarity() {
+		return rarity;
+	}
+
+	@Override
+	public int getCollectionLineNo() {
+		return collectionLineNo;
+	}
+
+	@Override
+	public tcgwars.logic.card.Collection getCollection() {
+		return tcgwars.logic.card.Collection.FORBIDDEN_LIGHT;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s:%s", this.name(), this.getCollection().name());
+	}
+
+	@Override
+	public String getEnumName() {
+			return name();
+	}
+
+	@Override
+	public Card getImplementation() {
+		switch (this) {
+			case EXEGGCUTE_1:
+			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
+				weakness FIRE
+				move "Multiply", {
+					text "Search your deck for Exeggcute and put it onto your Bench. Then, shuffle your deck."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case ALOLAN_EXEGGUTOR_2:
+			return evolution (this, from:"Exeggcute", hp:HP160, type:GRASS, retreatCost:3) {
+				weakness FIRE
+				move "Tropical Shake", {
+					text "20+ damage. This attack does 20 more damage for each type of basic Energy card in your discard pile. You can’t add more than 100 damage in this way."
+					energyCost G
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case SNOVER_3:
+			return basic (this, hp:HP080, type:GRASS, retreatCost:3) {
+				weakness FIRE
+				move "Ice Shard", {
+					text "20+ damage. If your opponent’s Active Pokémon is a [F] Pokémon, this attack does 40 more damage."
+					energyCost G, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case ABOMASNOW_4:
+			return evolution (this, from:"Snover", hp:HP130, type:GRASS, retreatCost:3) {
+				weakness FIRE
+				bwAbility "Blessings of the Forest", {
+					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may attach a [G] Energy card from your discard pile to 1 of your Pokémon."
+					actionA {
+					}
+				}
+				move "Hypno Hammer", {
+					text "80 damage. Your opponent’s Active Pokémon is now Asleep."
+					energyCost G, C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case SCATTERBUG_5:
+			return basic (this, hp:HP030, type:GRASS, retreatCost:1) {
+				weakness FIRE
+				move "Outbreak<br> You can use this Ability only if you go second", {
+					text "Once during your first turn (before your attack), you may search your deck for a Spewpa and a Vivillon, reveal them, and put them into your hand. Then, shuffle your deck."
+					energyCost Abnormal
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Tackle", {
+					text "10 damage."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case SCATTERBUG_6:
+			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
+				weakness FIRE
+				move "Ultra Evolution", {
+					text "Flip a coin. If heads, search your deck for Vivillon and put it onto this Scatterbug to evolve it. Then, shuffle your deck."
+					energyCost G
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case SPEWPA_7:
+			return evolution (this, from:"Scatterbug", hp:HP070, type:GRASS, retreatCost:2) {
+				weakness FIRE
+				move "String Shot", {
+					text "20 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
+					energyCost G
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case VIVILLON_8:
+			return evolution (this, from:"Spewpa", hp:HP130, type:GRASS, retreatCost:1) {
+				weakness LIGHTNING
+				resistance FIGHTING, MINUS20
+				move "Vivid Powder", {
+					text "50 damage. Your opponent’s Active Pokémon is now Asleep and Poisoned."
+					energyCost G
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case SKIDDO_9:
+			return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
+				weakness FIRE
+				move "Growth", {
+					text "Attach a [G] Energy card from your hand to this Pokémon."
+					energyCost G
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Razor Leaf", {
+					text "40 damage."
+					energyCost G, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case GOGOAT_10:
+			return evolution (this, from:"Skiddo", hp:HP120, type:GRASS, retreatCost:2) {
+				weakness FIRE
+				move "Drink Milk", {
+					text "Flip 2 coins. For each heads, heal 40 damage from this Pokémon."
+					energyCost G
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Double-Edge", {
+					text "120 damage. This Pokémon does 30 damage to itself."
+					energyCost G, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case PHEROMOSA_11:
+			return basic (this, hp:HP110, type:GRASS, retreatCost:0) {
+				weakness FIRE
+				move "High Jump Kick", {
+					text "20 damage."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "White Ray", {
+					text "90+ damage. If you have only 1 Prize card remaining, this attack does 90 more damage."
+					energyCost G, G, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case ALOLAN_MAROWAK_12:
+			return evolution (this, from:"Cubone", hp:HP120, type:FIRE, retreatCost:2) {
+				weakness WATER
+				move "Limbo Limbo", {
+					text "Search your deck for up to 2 basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
+					energyCost -
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Alolan Club", {
+					text "20× damage. This attack does 20 damage for each of your Pokémon in play that has Alolan in its name."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case HEATRAN_13:
+			return basic (this, hp:HP130, type:FIRE, retreatCost:3) {
+				weakness WATER
+				move "Guard Press", {
+					text "30 damage. During your opponent’s next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+					energyCost R, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Boiling Impact", {
+					text "130 damage. Discard 2 Energy from this Pokémon."
+					energyCost R, R, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case FENNEKIN_14:
+			return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
+				weakness WATER
+				move "Ember", {
+					text "30 damage. Discard an Energy from this Pokémon."
+					energyCost R
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case FENNEKIN_15:
+			return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
+				weakness WATER
+				move "Live Coal", {
+					text "10 damage."
+					energyCost R
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Rear Kick", {
+					text "20 damage."
+					energyCost R, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case BRAIXEN_16:
+			return evolution (this, from:"Fennekin", hp:HP090, type:FIRE, retreatCost:2) {
+				weakness WATER
+				move "Flare", {
+					text "20 damage."
+					energyCost R
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Flamethrower", {
+					text "80 damage. Discard an Energy from this Pokémon."
+					energyCost R, R, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case DELPHOX_17:
+			return evolution (this, from:"Braixen", hp:HP150, type:FIRE, retreatCost:2) {
+				weakness WATER
+				bwAbility "Mystical Torch", {
+					text "Once during your turn (before your attack), you may leave your opponent’s Active Pokémon Burned."
+					actionA {
+					}
+				}
+				move "Fire Spin", {
+					text "150 damage. Discard 2 Energy from this Pokémon."
+					energyCost R, R, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case LITLEO_18:
+			return basic (this, hp:HP070, type:FIRE, retreatCost:2) {
+				weakness WATER
+				move "Headbutt", {
+					text "20 damage."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case PYROAR_19:
+			return evolution (this, from:"Litleo", hp:HP120, type:FIRE, retreatCost:2) {
+				weakness WATER
+				bwAbility "Unnerve", {
+					text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
+					actionA {
+					}
+				}
+				move "Dominating Fangs", {
+					text "80+ damage. If Lysandre Labs is in play, this attack does 60 more damage."
+					energyCost R, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case PALKIA_GX_20:
+			return basic (this, hp:HP180, type:WATER, retreatCost:3) {
+				weakness GRASS
+				move "Spatial Control", {
+					text "Move any number of Energy from your Benched Pokémon to this Pokémon."
+					energyCost W
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Hydro Pressure", {
+					text "60+ damage. This attack does 20 more damage times the amount of [W] Energy attached to this Pokémon."
+					energyCost C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Zero Vanish GX", {
+					text "150 damage. Shuffle all Energy from each of your opponent’s Pokémon into their deck. (You can’t use more than 1 GX attack in a game.)"
+					energyCost W, W, W, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case FROAKIE_21:
+			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
+				weakness GRASS
+				bwAbility "Frubbles", {
+					text "If this Pokémon has any [W] Energy attached to it, it has no Retreat Cost."
+					actionA {
+					}
+				}
+				move "Flop", {
+					text "20 damage."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case FROAKIE_22:
+			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
+				weakness GRASS
+				move "Rain Splash", {
+					text "10 damage."
+					energyCost W
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Wave Splash", {
+					text "20 damage."
+					energyCost W, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case FROGADIER_23:
+			return evolution (this, from:"Froakie", hp:HP080, type:WATER, retreatCost:1) {
+				weakness GRASS
+				bwAbility "Gale Shuriken", {
+					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put 2 damage counters on 1 of your opponent’s Pokémon."
+					actionA {
+					}
+				}
+				move "Water Drip", {
+					text "20 damage."
+					energyCost W
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case GRENINJA_GX_24:
+			return evolution (this, from:"Frogadier", hp:HP230, type:WATER, retreatCost:2) {
+				weakness GRASS
+				bwAbility "Shuriken Flurry", {
+					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put 3 damage counters on 1 of your opponent’s Pokémon."
+					actionA {
+					}
+				}
+				move "Haze Slash", {
+					text "110 damage. You may shuffle this Pokémon and all cards attached to it into your deck."
+					energyCost W, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Shadowy Hunter GX", {
+					text "This attack does 130 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) (You can’t use more than 1 GX attack in a game.)"
+					energyCost W, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case CLAUNCHER_25:
+			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
+				weakness GRASS
+				move "Water Gun", {
+					text "10 damage."
+					energyCost W
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case CLAWITZER_26:
+			return evolution (this, from:"Clauncher", hp:HP100, type:WATER, retreatCost:2) {
+				weakness GRASS
+				move "Standing By", {
+					text "During your next turn, this Pokémon’s Sharpshooting attack does 120 damage instead of 40."
+					energyCost W
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Sharpshooting", {
+					text "This attack does 40 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+					energyCost W
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case AMAURA_27:
+			return evolution (this, from:"Unidentified Fossil", hp:HP090, type:WATER, retreatCost:3) {
+				weakness METAL
+				move "Powder Snow", {
+					text "30 damage. Your opponent’s Active Pokémon is now Asleep."
+					energyCost W, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Aurora Beam", {
+					text "60 damage."
+					energyCost W, W, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case AURORUS_28:
+			return evolution (this, from:"Amaura", hp:HP160, type:WATER, retreatCost:4) {
+				weakness METAL
+				move "Frost Wall", {
+					text "50 damage. During your opponent’s next turn, prevent all damage done to this Pokémon by attacks from Evolution Pokémon."
+					energyCost W, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Blizzard Burn", {
+					text "150 damage. This Pokémon can’t attack during your next turn."
+					energyCost W, W, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case BERGMITE_29:
+			return basic (this, hp:HP060, type:WATER, retreatCost:2) {
+				weakness METAL
+				move "Break Open", {
+					text "10 damage. If your opponent has a Stadium card in play, discard it. If you do, your opponent’s Active Pokémon is now Paralyzed."
+					energyCost W
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case AVALUGG_30:
+			return evolution (this, from:"Bergmite", hp:HP140, type:WATER, retreatCost:4) {
+				weakness METAL
+				move "Frozen Ground", {
+					text "80 damage. Your opponent can’t play any Stadium cards from their hand during their next turn."
+					energyCost W, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Skull Bash", {
+					text "100 damage."
+					energyCost W, C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case VOLCANION_PRISM_STAR_31:
+			return basic (this, hp:HP160, type:WATER, retreatCost:3) {
+				weakness LIGHTNING
+				bwAbility "Jet Geyser", {
+					text "Once during your turn (before your attack), you may discard a [W] Energy card from your hand. If you do, your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
+					actionA {
+					}
+				}
+				move "Sauna Blast", {
+					text "100 damage. This attack does 20 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+					energyCost W, W, W
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case DEWPIDER_32:
+			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
+				weakness GRASS
+				move "Gnaw", {
+					text "10 damage."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Spider Web", {
+					text "The Defending Pokémon can’t retreat during your opponent’s next turn."
+					energyCost W
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case ARAQUANID_33:
+			return evolution (this, from:"Dewpider", hp:HP100, type:WATER, retreatCost:1) {
+				weakness GRASS
+				move "Bubble", {
+					text "30 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
+					energyCost W
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Bubble Trap", {
+					text "40+ damage. If 1 of your Pokémon used Bubble during your last turn, this attack does 80 more damage."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case MAGNEMITE_34:
+			return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
+				weakness FIGHTING
+				resistance METAL, MINUS20
+				move "Searching Magnet", {
+					text "Search your deck for up to 3 [L] Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Tackle", {
+					text "10 damage."
+					energyCost L
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case MAGNETON_35:
+			return evolution (this, from:"Magnemite", hp:HP090, type:LIGHTNING, retreatCost:2) {
+				weakness FIGHTING
+				resistance METAL, MINUS20
+				move "Ram", {
+					text "20 damage."
+					energyCost L
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Zap Cannon", {
+					text "80 damage. This Pokémon can’t use Zap Cannon during your next turn."
+					energyCost L, L, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case MAGNEZONE_36:
+			return evolution (this, from:"Magneton", hp:HP150, type:LIGHTNING, retreatCost:1) {
+				weakness FIGHTING
+				resistance METAL, MINUS20
+				bwAbility "Magnetic Circuit", {
+					text "As often as you like during your turn (before your attack), you may attach a [L] Energy card from your hand to 1 of your Pokémon."
+					actionA {
+					}
+				}
+				move "Zap Cannon", {
+					text "130 damage. This Pokémon can’t use Zap Cannon during your next turn."
+					energyCost L, L, L, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case HELIOPTILE_37:
+			return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
+				weakness FIGHTING
+				resistance METAL, MINUS20
+				move "Gnaw", {
+					text "10 damage."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Tail Whap", {
+					text "20 damage."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case HELIOLISK_38:
+			return evolution (this, from:"Helioptile", hp:HP100, type:LIGHTNING, retreatCost:1) {
+				weakness FIGHTING
+				resistance METAL, MINUS20
+				move "Gnaw", {
+					text "20 damage."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Volt Wave", {
+					text "80 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
+					energyCost C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case XURKITREE_39:
+			return basic (this, hp:HP120, type:LIGHTNING, retreatCost:1) {
+				weakness FIGHTING
+				resistance METAL, MINUS20
+				move "Dazzle Blast", {
+					text "20 damage. Your opponent’s Active Pokémon is now Confused."
+					energyCost L
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Cablegram", {
+					text "100 damage. If you have exactly 3 Prize cards remaining, your opponent’s Active Pokémon is now Paralyzed."
+					energyCost L, L, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case ROTOM_40:
+			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
+				weakness DARKNESS
+				resistance FIGHTING, MINUS20
+				bwAbility "Roto Motor", {
+					text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
+					actionA {
+					}
+				}
+				move "Plasma Slice", {
+					text "120 damage. This Pokémon can’t attack during your next turn."
+					energyCost P, P, P
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case UXIE_41:
+			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
+				weakness PSYCHIC
+				move "Memory Skip", {
+					text "30 damage. Choose 1 of your opponent’s Active Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
+					energyCost P
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case MESPRIT_42:
+			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
+				weakness PSYCHIC
+				bwAbility "Silent Waves", {
+					text "If you have Azelf in play, your opponent’s Pokémon in play have no Resistance."
+					actionA {
+					}
+				}
+				move "Mind Splash", {
+					text "20+ damage. If Uxie is on your Bench, this attack does 50 more damage."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case AZELF_43:
+			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
+				weakness PSYCHIC
+				move "Psychic Abduction", {
+					text "You can use this attack only if you go second, and only on your first turn. Shuffle 1 of your opponent’s Benched Pokémon and all cards attached to it into their deck."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Hypnoblast", {
+					text "10 damage. Your opponent’s Active Pokémon is now Asleep."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case ESPURR_44:
+			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
+				weakness PSYCHIC
+				move "Energy Teaser", {
+					text "Move an Energy from 1 of your opponent’s Benched Pokémon to another of their Pokémon."
+					energyCost P
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case MEOWSTIC_45:
+			return evolution (this, from:"Espurr", hp:HP090, type:PSYCHIC, retreatCost:1) {
+				weakness PSYCHIC
+				move "Teleportation Burst", {
+					text "20 damage. Switch this Pokémon with 1 of your Benched Pokémon."
+					energyCost P
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Psychic", {
+					text "30+ damage. This attack does 30 more damage times the amount of Energy attached to your opponent’s Active Pokémon."
+					energyCost P, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case HONEDGE_46:
+			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:2) {
+				weakness DARKNESS
+				resistance FIGHTING, MINUS20
+				bwAbility "Final Hour", {
+					text "If this Pokémon is your Active Pokémon and is Knocked Out by damage from an opponent’s attack, put 3 damage counters on 1 of your opponent’s Pokémon."
+					actionA {
+					}
+				}
+				move "Slash", {
+					text "50 damage."
+					energyCost P, P, P
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case HONEDGE_47:
+			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
+				weakness DARKNESS
+				resistance FIGHTING, MINUS20
+				move "Metal Sound", {
+					text "Your opponent’s Active Pokémon is now Confused."
+					energyCost P
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case DOUBLADE_48:
+			return evolution (this, from:"Honedge", hp:HP080, type:PSYCHIC, retreatCost:2) {
+				weakness DRAGON
+				resistance FIGHTING, MINUS20
+				move "Curse of the Blade", {
+					text "Put 3 damage counters on each of your opponent’s Pokémon that has a Pokémon Tool card attached to it."
+					energyCost P
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case AEGISLASH_49:
+			return evolution (this, from:"Doublade", hp:HP150, type:PSYCHIC, retreatCost:2) {
+				weakness DARKNESS
+				resistance FIGHTING, MINUS20
+				move "Ticking Knock Out", {
+					text "During your next turn, if the Defending Pokémon is damaged by an attack, it will be Knocked Out."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Draining Blade", {
+					text "90 damage. Heal 30 damage from this Pokémon."
+					energyCost P, P, P
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case INKAY_50:
+			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
+				weakness PSYCHIC
+				move "Hypnosis", {
+					text "Your opponent’s Active Pokémon is now Asleep."
+					energyCost P
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case MALAMAR_51:
+			return evolution (this, from:"Inkay", hp:HP090, type:PSYCHIC, retreatCost:2) {
+				weakness PSYCHIC
+				bwAbility "Psychic Recharge", {
+					text "Once during your turn (before your attack), you may attach a [P] Energy card from your discard pile to 1 of your Benched Pokémon."
+					actionA {
+					}
+				}
+				move "Psychic Sphere", {
+					text "60 damage."
+					energyCost P, P, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case SKRELP_52:
+			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
+				weakness PSYCHIC
+				move "Hook", {
+					text "10 damage."
+					energyCost P
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case DRAGALGE_53:
+			return evolution (this, from:"Skrelp", hp:HP120, type:PSYCHIC, retreatCost:1) {
+				weakness PSYCHIC
+				bwAbility "Poison Point", {
+					text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Poisoned."
+					actionA {
+					}
+				}
+				move "Twister", {
+					text "60 damage. Flip 2 coins. For each heads, discard an Energy from your opponent’s Active Pokémon. If both of them are tails, this attack does nothing."
+					energyCost P, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case HOOPA_54:
+			return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
+				weakness PSYCHIC
+				move "Hyperspace Ring", {
+					text "Search your deck for up to 2 Item cards, reveal them, and put them into your hand. Then, shuffle your deck."
+					energyCost P
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Psy Bolt", {
+					text "10 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
+					energyCost P
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case POIPOLE_55:
+			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
+				weakness PSYCHIC
+				move "Spit Poison", {
+					text "Your opponent’s Active Pokémon is now Poisoned."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Knockout Reviver", {
+					text "During your opponent’s next turn, if this Pokémon is Knocked Out, your opponent can’t take any Prize cards for it."
+					energyCost P, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case NAGANADEL_GX_56:
+			return evolution (this, from:"Poipole – Ultra Beast", hp:HP210, type:PSYCHIC, retreatCost:1) {
+				weakness PSYCHIC
+				move "Beast Raid", {
+					text "20× damage. This attack does 20 damage for each of your Ultra Beasts in play."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Jet Needle", {
+					text "110 damage. This attack’s damage isn’t affected by Weakness or Resistance."
+					energyCost P, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Stinger-GX", {
+					text "Both players shuffle their Prize cards into their decks. Then, each player puts the top 3 cards of their deck face down as their Prize cards. (You can’t use more than 1 GX attack in a game.)"
+					energyCost C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case CUBONE_57:
+			return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
+				weakness GRASS
+				move "Burdensome Bone", {
+					text "40 damage. This Pokémon can’t attack during your next turn."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case TORTERRA_58:
+			return evolution (this, from:"Grotle", hp:HP180, type:FIGHTING, retreatCost:4) {
+				weakness GRASS
+				move "Giga Drain", {
+					text "50 damage. Heal from this Pokémon the same amount of damage you did to your opponent’s Active Pokémon."
+					energyCost F, F, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Earthquake", {
+					text "180 damage. This attack does 20 damage to each of your Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+					energyCost F, F, F, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case INFERNAPE_59:
+			return evolution (this, from:"Monferno", hp:HP130, type:FIGHTING, retreatCost:1) {
+				weakness PSYCHIC
+				bwAbility "Flaming Fighter", {
+					text "Put 6 damage counters instead of 2 on your opponent’s Burned Pokémon between turns."
+					actionA {
+					}
+				}
+				move "Burst Punch", {
+					text "50 damage. Your opponent’s Active Pokémon is now Burned."
+					energyCost F, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case GIBLE_60:
+			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
+				weakness GRASS
+				move "Ascension", {
+					text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
+					energyCost F
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case GABITE_61:
+			return evolution (this, from:"Gible", hp:HP080, type:FIGHTING, retreatCost:1) {
+				weakness GRASS
+				move "Ascension", {
+					text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
+					energyCost F
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Slash", {
+					text "40 damage."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case GARCHOMP_62:
+			return evolution (this, from:"Gabite", hp:HP150, type:FIGHTING, retreatCost:0) {
+				weakness GRASS
+				move "Quick Dive", {
+					text "This attack does 50 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Royal Blades", {
+					text "100+ damage. If you played Cynthia from your hand during this turn, this attack does 100 more damage."
+					energyCost F, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case CROAGUNK_63:
+			return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
+				weakness PSYCHIC
+				move "Swagger", {
+					text "10 damage. Flip a coin. If heads, discard an Energy from your opponent’s Active Pokémon."
+					energyCost F
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case TOXICROAK_64:
+			return evolution (this, from:"Croagunk", hp:HP100, type:FIGHTING, retreatCost:2) {
+				weakness PSYCHIC
+				move "Poison Jab", {
+					text "30 damage. Your opponent’s Active Pokémon is now Poisoned."
+					energyCost F
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Exact Revenge", {
+					text "50+ damage. If any of your [P] Pokémon were Knocked Out by damage from an opponent’s attack during their last turn, this attack does 70 more damage."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case PANCHAM_65:
+			return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
+				weakness PSYCHIC
+				move "Act Tough", {
+					text "10+ damage. If this Pokémon has any [D] Energy attached to it, this attack does 30 more damage."
+					energyCost F
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case BINACLE_66:
+			return basic (this, hp:HP070, type:FIGHTING, retreatCost:3) {
+				weakness GRASS
+				move "Allotment", {
+					text "10 damage. Draw a card."
+					energyCost F
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case BARBARACLE_67:
+			return evolution (this, from:"Binacle", hp:HP130, type:FIGHTING, retreatCost:3) {
+				weakness GRASS
+				move "Seven Shock", {
+					text "30 damage. If you have exactly 7 cards in your hand, your opponent’s Active Pokémon is now Paralyzed."
+					energyCost F, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Claw Slash", {
+					text "90 damage."
+					energyCost F, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case TYRUNT_68:
+			return evolution (this, from:"Unidentified Fossil", hp:HP090, type:FIGHTING, retreatCost:2) {
+				weakness GRASS
+				move "Crunch", {
+					text "20 damage. Flip a coin. If heads, discard an Energy from your opponent’s Active Pokémon."
+					energyCost F
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Hammer In", {
+					text "40 damage."
+					energyCost F, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case TYRANTRUM_69:
+			return evolution (this, from:"Tyrunt", hp:HP160, type:FIGHTING, retreatCost:3) {
+				weakness GRASS
+				bwAbility "Tyrannical Heart", {
+					text "As long as you don’t have more Pokémon in play than your opponent, this Pokémon’s attacks do 60 more damage (before applying Weakness and Resistance), and it takes 30 less damage from attacks (after applying Weakness and Resistance)."
+					actionA {
+					}
+				}
+				move "Crunch", {
+					text "100 damage. Discard an Energy from your opponent’s Active Pokémon."
+					energyCost F, F, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case HAWLUCHA_70:
+			return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
+				weakness LIGHTNING
+				resistance FIGHTING, MINUS20
+				move "High Jump Kick", {
+					text "20 damage."
+					energyCost F
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Sky Drop", {
+					text "80- damage. This attack does 20 less damage for each [C] in your opponent’s Active Pokémon’s Retreat Cost."
+					energyCost C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case ZYGARDE_71:
+			return basic (this, hp:HP090, type:FIGHTING, retreatCost:1) {
+				weakness GRASS
+				bwAbility "Earthen Aura", {
+					text "Damage from this Pokémon’s attacks isn’t affected by Weakness or Resistance."
+					actionA {
+					}
+				}
+				move "Peace Maker", {
+					text "30+ damage. If your opponent has an Ultra Beast in play, this attack does 30 more damage."
+					energyCost F
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case ZYGARDE_72:
+			return basic (this, hp:HP130, type:FIGHTING, retreatCost:2) {
+				weakness GRASS
+				move "Glare", {
+					text "20 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Calm Strike", {
+					text "60+ damage. If you have used your GX attack, this attack does 60 more damage."
+					energyCost F, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case ZYGARDE_GX_73:
+			return basic (this, hp:HP200, type:FIGHTING, retreatCost:3) {
+				weakness GRASS
+				move "Cell Connector", {
+					text "50 damage. Attach 2 [F] Energy cards from your discard pile to this Pokémon."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Land’s Wrath", {
+					text "130 damage."
+					energyCost F, F, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Verdict GX", {
+					text "150 damage. Prevent all damage done to this Pokémon by attacks from Pokémon-GX and Pokémon-EX during your opponent’s next turn. (You can’t use more than 1 GX attack in a game.)"
+					energyCost F, F, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case DIANCIE_PRISM_STAR_74:
+			return basic (this, hp:HP120, type:FIGHTING, retreatCost:2) {
+				weakness GRASS
+				bwAbility "Princess’s Cheers", {
+					text "As long as this Pokémon is on your Bench, your [F] Pokémon’s attacks do 20 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
+					actionA {
+					}
+				}
+				move "Diamond Rain", {
+					text "90 damage. Heal 30 damage from each of your Benched Pokémon."
+					energyCost F, F, F
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case ROCKRUFF_75:
+			return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
+				weakness GRASS
+				move "Surprise Attack", {
+					text "50 damage. Flip a coin. If tails, this attack does nothing."
+					energyCost F, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case LYCANROC_76:
+			return evolution (this, from:"Rockruff", hp:HP120, type:FIGHTING, retreatCost:2) {
+				weakness GRASS
+				move "Dangerous Rogue", {
+					text "20+ damage. This attack does 20 more damage for each of your opponent’s Benched Pokémon."
+					energyCost F, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Accelerock", {
+					text "100 damage."
+					energyCost F, F, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case BUZZWOLE_77:
+			return basic (this, hp:HP130, type:FIGHTING, retreatCost:2) {
+				weakness PSYCHIC
+				move "Sledgehammer", {
+					text "30+ damage. If your opponent has exactly 4 Prize cards remaining, this attack does 90 more damage."
+					energyCost F
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Swing Around", {
+					text "80+ damage. Flip 2 coins. This attack does 20 more damage for each heads."
+					energyCost F, F, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case PANGORO_78:
+			return evolution (this, from:"Pancham", hp:HP130, type:DARKNESS, retreatCost:3) {
+				weakness FIGHTING
+				resistance PSYCHIC, MINUS20
+				move "Untamed Punch", {
+					text "50+ damage. If this Pokémon has any damage counters on it, this attack does 50 more damage, and both Active Pokémon are now Confused."
+					energyCost D, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Double Stomp", {
+					text "80+ damage. Flip 2 coins. This attack does 40 more damage for each heads."
+					energyCost D, D, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case YVELTAL_GX_79:
+			return basic (this, hp:HP180, type:DARKNESS, retreatCost:2) {
+				weakness LIGHTNING
+				resistance FIGHTING, MINUS20
+				move "Absorb Vitality", {
+					text "20 damage. Heal from this Pokémon the same amount of damage you did to your opponent’s Active Pokémon."
+					energyCost D
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Sonic Evil", {
+					text "100 damage. This attack’s damage isn’t affected by Weakness or Resistance."
+					energyCost C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Doom Count GX", {
+					text "If your opponent’s Active Pokémon has exactly 4 damage counters on it, that Pokémon is Knocked Out. (You can’t use more than 1 GX attack in a game.)"
+					energyCost D
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case GUZZLORD_80:
+			return basic (this, hp:HP160, type:DARKNESS, retreatCost:4) {
+				weakness FIGHTING
+				resistance PSYCHIC, MINUS20
+				move "Lord’s Valley", {
+					text "160 damage. If you have exactly 2, 4, or 6 Prize cards remaining, discard the top 10 cards of your deck."
+					energyCost D, D, D, D
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case EMPOLEON_81:
+			return evolution (this, from:"Prinplup", hp:HP160, type:METAL, retreatCost:2) {
+				weakness FIRE
+				resistance PSYCHIC, MINUS20
+				move "Total Command", {
+					text "20× damage. This attack does 20 damage for each Benched Pokémon (both yours and your opponent’s)."
+					energyCost M, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Whirlpool", {
+					text "90 damage. Discard an Energy from your opponent’s Active Pokémon."
+					energyCost M, M, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case DIALGA_GX_82:
+			return basic (this, hp:HP180, type:METAL, retreatCost:3) {
+				weakness FIRE
+				resistance PSYCHIC, MINUS20
+				move "Overclock", {
+					text "Draw cards until you have 6 cards in your hand."
+					energyCost M
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Shred", {
+					text "80 damage. This attack’s damage isn’t affected by any effects on your opponent’s Active Pokémon."
+					energyCost M, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Timeless GX", {
+					text "150 damage. Take another turn after this one. (Skip the between turns step.) (You can’t use more than 1 GX attack in a game.)"
+					energyCost M, M, M, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case FLABEBE_83:
+			return basic (this, hp:HP030, type:FAIRY, retreatCost:1) {
+				weakness METAL
+				resistance DARKNESS, MINUS20
+				bwAbility "Evolutionary Advantage", {
+					text "If you go second, this Pokémon can evolve during your first turn."
+					actionA {
+					}
+				}
+				move "Tackle", {
+					text "10 damage."
+					energyCost Y
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case FLABEBE_84:
+			return basic (this, hp:HP040, type:FAIRY, retreatCost:1) {
+				weakness METAL
+				resistance DARKNESS, MINUS20
+				move "Secret Blessings", {
+					text "Shuffle 3 in any combination of Pokémon and basic Energy cards from your discard pile into your deck."
+					energyCost Y
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case FLOETTE_85:
+			return evolution (this, from:"Flabébé", hp:HP070, type:FAIRY, retreatCost:1) {
+				weakness METAL
+				resistance DARKNESS, MINUS20
+				move "Swirling Petals", {
+					text "Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon. If you do, switch this Pokémon with 1 of your Benched Pokémon."
+					energyCost Y
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case FLORGES_86:
+			return evolution (this, from:"Floette", hp:HP120, type:FAIRY, retreatCost:2) {
+				weakness METAL
+				resistance DARKNESS, MINUS20
+				bwAbility "Wondrous Gift", {
+					text "Once during your turn (before your attack), you may flip a coin. If heads, put an Item card from your discard pile on top of your deck."
+					actionA {
+					}
+				}
+				move "Mist Guard", {
+					text "70 damage. Prevent all damage done to this Pokémon by attacks from [N] Pokémon during your opponent’s next turn."
+					energyCost Y, Y, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case SYLVEON_87:
+			return evolution (this, from:"Eevee", hp:HP090, type:FAIRY, retreatCost:1) {
+				weakness METAL
+				resistance DARKNESS, MINUS20
+				move "Wink Wink", {
+					text "Your opponent reveals their hand. You may discard a Supporter card you find there and use the effect of that card as the effect of this attack."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Magical Shot", {
+					text "40 damage."
+					energyCost Y, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case DEDENNE_88:
+			return basic (this, hp:HP060, type:FAIRY, retreatCost:1) {
+				weakness METAL
+				resistance DARKNESS, MINUS20
+				move "Find a Friend", {
+					text "Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
+					energyCost Y
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Electrichain", {
+					text "30+ damage. If you have any [L] Pokémon on your Bench, this attack does 30 more damage."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case KLEFKI_89:
+			return basic (this, hp:HP070, type:FAIRY, retreatCost:1) {
+				weakness METAL
+				resistance DARKNESS, MINUS20
+				move "Metal Sound", {
+					text "Your opponent’s Active Pokémon is now Confused."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Fairy Lock", {
+					text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case XERNEAS_GX_90:
+			return basic (this, hp:HP180, type:FAIRY, retreatCost:2) {
+				weakness METAL
+				resistance DARKNESS, MINUS20
+				move "Overrun", {
+					text "20 damage. This attack does 20 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Aurora Horns", {
+					text "120 damage."
+					energyCost Y, Y, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Sanctuary GX", {
+					text "Move all damage counters from each of your Pokémon to your opponent’s Active Pokémon. (You can’t use more than 1 GX attack in a game.)"
+					energyCost Y, Y, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case GOOMY_91:
+			return basic (this, hp:HP040, type:DRAGON, retreatCost:1) {
+				weakness FAIRY
+				bwAbility "Sticky Membrane", {
+					text "As long as this Pokémon is your Active Pokémon, your opponent’s Pokémon’s attacks cost [C] more."
+					actionA {
+					}
+				}
+				move "Ram", {
+					text "10 damage."
+					energyCost Y
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case GOOMY_92:
+			return basic (this, hp:HP050, type:DRAGON, retreatCost:2) {
+				weakness FAIRY
+				move "Rain Splash", {
+					text "10 damage."
+					energyCost W
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Flail", {
+					text "10× damage. This attack does 10 damage for each damage counter on this Pokémon."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case SLIGGOO_93:
+			return evolution (this, from:"Goomy", hp:HP080, type:DRAGON, retreatCost:2) {
+				resistance FAIRY, MINUS20
+				move "Absorb", {
+					text "30 damage. Heal 30 damage from this Pokémon."
+					energyCost W, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Hammer In", {
+					text "50 damage."
+					energyCost W, Y, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case GOODRA_94:
+			return evolution (this, from:"Sliggoo", hp:HP160, type:DRAGON, retreatCost:3) {
+				weakness FAIRY
+				bwAbility "Hydration", {
+					text "Whenever you attach a [W] Energy card from your hand to this Pokémon, heal 20 damage from it."
+					actionA {
+					}
+				}
+				move "Soaking Horn", {
+					text "80+ damage. If this Pokémon was healed during this turn, this attack does 80 more damage."
+					energyCost W, Y, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case ULTRA_NECROZMA_GX_95:
+			return basic (this, hp:HP190, type:DRAGON, retreatCost:2) {
+				weakness FAIRY
+				move "Photon Geyser", {
+					text "20+ damage. Discard all basic [P] Energy from this Pokémon. This attack does 80 more damage for each card you discarded in this way."
+					energyCost P, M
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Sky-Scorching Light GX", {
+					text "You can use this attack only if the total of both players’ remaining Prize cards is 6 or less. Put 6 damage counters on each of your opponent’s Pokémon. (You can’t use more than 1 GX attack in a game.)"
+					energyCost P, M
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case ARCEUS_PRISM_STAR_96:
+			return basic (this, hp:HP160, type:COLORLESS, retreatCost:1) {
+				weakness FIGHTING
+				bwAbility "First Law", {
+					text "Prevent all effects of your opponent’s attacks, except damage, done to this Pokémon."
+					actionA {
+					}
+				}
+				move "Trinity Star", {
+					text "30 damage. You can use this attack only if you have [G], [W], and [L] Pokémon on your Bench. Search your deck for up to 3 basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case BUNNELBY_97:
+			return basic (this, hp:HP070, type:COLORLESS, retreatCost:2) {
+				weakness FIGHTING
+				move "Collect", {
+					text "Draw a card."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Gnaw", {
+					text "20 damage."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case DIGGERSBY_98:
+			return evolution (this, from:"Bunnelby", hp:HP130, type:COLORLESS, retreatCost:3) {
+				weakness FIGHTING
+				move "Mountaintop Mining", {
+					text "60+ damage. You may do 40 more damage. If you do, discard the top 2 cards of your deck."
+					energyCost C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Rock Cannon", {
+					text "80× damage. Flip a coin until you get tails. This attack does 80 damage for each heads."
+					energyCost C, C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case FURFROU_99:
+			return basic (this, hp:HP090, type:COLORLESS, retreatCost:1) {
+				weakness FIGHTING
+				move "Return", {
+					text "20 damage. You may draw cards until you have 5 cards in your hand."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case NOIBAT_100:
+			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
+				weakness LIGHTNING
+				resistance FIGHTING, MINUS20
+				move "Ram", {
+					text "10 damage."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Destructive Sound", {
+					text "Your opponent reveals their hand. Discard all Item cards you find there."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case NOIVERN_101:
+			return evolution (this, from:"Noibat", hp:HP120, type:COLORLESS, retreatCost:1) {
+				weakness LIGHTNING
+				resistance FIGHTING, MINUS20
+				move "Supersonic", {
+					text "20 damage. Your opponent’s Active Pokémon is now Confused."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Resonance", {
+					text "70+ damage. If your opponent’s Active Pokémon is Confused, this attack does 70 more damage."
+					energyCost C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case BEAST_RING_102:
+			return itemCard (this) {
+				text "You can play this card only if your opponent has exactly 3 or 4 Prize cards remaining.\nSearch your deck for up to 2 basic Energy cards and attach them to 1 of your Ultra Beasts. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			};
+			case BONNIE_103:
+			return supporter (this) {
+				text "You can play this card only if there is any Stadium card in play.\nDiscard that Stadium card. During this turn, your Zygarde-GX can use its GX attack even if you have used your GX attack.\nYou may play only 1 Supporter card during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			};
+			case CRASHER_WAKE_104:
+			return supporter (this) {
+				text "Discard 2 [W] Energy cards from your hand. If you do, search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			};
+			case DIANTHA_105:
+			return supporter (this) {
+				text "You can play this card only if 1 of your [Y] Pokémon was Knocked Out during your opponent’s last turn.\nPut 2 cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			};
+			case ENEPORTER_106:
+			return itemCard (this) {
+				text "Move a Special Energy from 1 of your opponent’s Pokémon to another of their Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			};
+			case FOSSIL_EXCAVATION_MAP_107:
+			return itemCard (this) {
+				text "Choose 1:\nYou may play as many Item cards as you like during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			};
+			case JUDGE_108:
+			return supporter (this) {
+				text "Each player shuffles their hand into their deck and draws 4 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			};
+			case LADY_109:
+			return supporter (this) {
+				text "Search your deck for up to 4 basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			};
+			case LYSANDRE_PRISM_STAR_110:
+			return supporter (this) {
+				text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nFor each of your [R] Pokémon in play, put a card from your opponent’s discard pile in the Lost Zone.\nYou may play only 1 Supporter card during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			};
+			case LYSANDRE_LABS_111:
+			return stadium (this) {
+				text "Pokémon Tool cards in play (both yours and your opponent’s) have no effect.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+				onPlay {
+				}
+				onRemoveFromPlay{
+				}
+			};
+			case METAL_FRYING_PAN_112:
+			return pokemonTool (this) {
+				text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nThe [M] Pokémon this card is attached to takes 30 less damage from your opponent’s attacks (after applying Weakness and Resistance) and has no Weakness.\nYou may play as many Item cards as you like during your turn (before your attack)."
+				onPlay {reason->
+				}
+				onRemoveFromPlay {
+				}
+				allowAttach {to->
+				}
+			};
+			case MYSTERIOUS_TREASURE_113:
+			return itemCard (this) {
+				text "Discard a card from your hand. If you do, search your deck for a [P] or [N] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			};
+			case ULTRA_RECON_SQUAD_114:
+			return supporter (this) {
+				text "Discard up to 2 Ultra Beast cards from your hand. Draw 3 cards for each card you discarded in this way.\nYou may play only 1 Supporter card during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			};
+			case ULTRA_SPACE_115:
+			return stadium (this) {
+				text "Once during each player’s turn, that player may search their deck for an Ultra Beast card, reveal it, put it into their hand, and shuffle their deck.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+				onPlay {
+				}
+				onRemoveFromPlay{
+				}
+			};
+			case UNIDENTIFIED_FOSSIL_116:
+			return itemCard (this) {
+				text "Play this card as if it were a 60-HP [C] Basic Pokémon. At any time during your turn (before your attack), you may discard this card from play.\nThis card can’t retreat.\nYou may play as many Item cards as you like during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			};
+			case BEAST_ENERGY_PRISM_STAR_117:
+			return specialEnergy (this, [[C]]) {
+				text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nThis card provides [C] Energy.\nWhile this card is attached to an Ultra Beast, it provides every type of Energy but provides only 1 Energy at a time. The attacks of the Ultra Beast this card is attached to do 30 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
+				onPlay {reason->
+				}
+				onRemoveFromPlay {
+				}
+				onMove {to->
+				}
+				allowAttach {to->
+				}
+			};
+			case UNIT_ENERGY_FDY_118:
+			return specialEnergy (this, [[C]]) {
+				text "This card provides [C] Energy.\nWhile this card is attached to a Pokémon, it provides [F], [D], and [Y] Energy but provides only 1 Energy at a time."
+				onPlay {reason->
+				}
+				onRemoveFromPlay {
+				}
+				onMove {to->
+				}
+				allowAttach {to->
+				}
+			};
+			case PALKIA_GX_119:
+			return copy (PALKIA_GX_20, this)
+			/*basic (this, hp:HP180, type:WATER, retreatCost:3) {
+				weakness GRASS
+				move "Spatial Control", {
+					text "Move any number of Energy from your Benched Pokémon to this Pokémon."
+					energyCost W
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Hydro Pressure", {
+					text "60+ damage. This attack does 20 more damage times the amount of [W] Energy attached to this Pokémon."
+					energyCost C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Zero Vanish GX", {
+					text "150 damage. Shuffle all Energy from each of your opponent’s Pokémon into their deck. (You can’t use more than 1 GX attack in a game.)"
+					energyCost W, W, W, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case GRENINJA_GX_120:
+			return copy (GRENINJA_GX_24, this)
+			/*evolution (this, from:"Frogadier", hp:HP230, type:WATER, retreatCost:2) {
+				weakness GRASS
+				bwAbility "Shuriken Flurry", {
+					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put 3 damage counters on 1 of your opponent’s Pokémon."
+					actionA {
+					}
+				}
+				move "Haze Slash", {
+					text "110 damage. You may shuffle this Pokémon and all cards attached to it into your deck."
+					energyCost W, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Shadowy Hunter GX", {
+					text "This attack does 130 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) (You can’t use more than 1 GX attack in a game.)"
+					energyCost W, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case NAGANADEL_GX_121:
+			return copy (NAGANADEL_GX_56, this)
+			/*evolution (this, from:"Poipole – Ultra Beast", hp:HP210, type:PSYCHIC, retreatCost:1) {
+				weakness PSYCHIC
+				move "Beast Raid", {
+					text "20× damage. This attack does 20 damage for each of your Ultra Beasts in play."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Jet Needle", {
+					text "110 damage. This attack’s damage isn’t affected by Weakness or Resistance."
+					energyCost P, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Stinger-GX", {
+					text "Both players shuffle their Prize cards into their decks. Then, each player puts the top 3 cards of their deck face down as their Prize cards. (You can’t use more than 1 GX attack in a game.)"
+					energyCost C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case LUCARIO_GX_122:
+			return evolution (this, from:"Riolu", hp:HP210, type:FIGHTING, retreatCost:2) {
+				weakness PSYCHIC
+				move "Aura Strike", {
+					text "30+ damage. If this Pokémon evolved from Riolu during this turn, this attack does 90 more damage."
+					energyCost F
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Cyclone Kick", {
+					text "130 damage."
+					energyCost F, F, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Cantankerous Beatdown GX", {
+					text "30× damage. This attack does 30 damage for each damage counter on this Pokémon. (You can’t use more than 1 GX attack in a game.)"
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			};
+			case ZYGARDE_GX_123:
+			return copy (ZYGARDE_GX_73, this)
+			/*basic (this, hp:HP200, type:FIGHTING, retreatCost:3) {
+				weakness GRASS
+				move "Cell Connector", {
+					text "50 damage. Attach 2 [F] Energy cards from your discard pile to this Pokémon."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Land’s Wrath", {
+					text "130 damage."
+					energyCost F, F, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Verdict GX", {
+					text "150 damage. Prevent all damage done to this Pokémon by attacks from Pokémon-GX and Pokémon-EX during your opponent’s next turn. (You can’t use more than 1 GX attack in a game.)"
+					energyCost F, F, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case YVELTAL_GX_124:
+			return copy (YVELTAL_GX_79, this)
+			/*basic (this, hp:HP180, type:DARKNESS, retreatCost:2) {
+				weakness LIGHTNING
+				resistance FIGHTING, MINUS20
+				move "Absorb Vitality", {
+					text "20 damage. Heal from this Pokémon the same amount of damage you did to your opponent’s Active Pokémon."
+					energyCost D
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Sonic Evil", {
+					text "100 damage. This attack’s damage isn’t affected by Weakness or Resistance."
+					energyCost C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Doom Count GX", {
+					text "If your opponent’s Active Pokémon has exactly 4 damage counters on it, that Pokémon is Knocked Out. (You can’t use more than 1 GX attack in a game.)"
+					energyCost D
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case DIALGA_GX_125:
+			return copy (DIALGA_GX_82, this)
+			/*basic (this, hp:HP180, type:METAL, retreatCost:3) {
+				weakness FIRE
+				resistance PSYCHIC, MINUS20
+				move "Overclock", {
+					text "Draw cards until you have 6 cards in your hand."
+					energyCost M
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Shred", {
+					text "80 damage. This attack’s damage isn’t affected by any effects on your opponent’s Active Pokémon."
+					energyCost M, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Timeless GX", {
+					text "150 damage. Take another turn after this one. (Skip the between turns step.) (You can’t use more than 1 GX attack in a game.)"
+					energyCost M, M, M, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case XERNEAS_GX_126:
+			return copy (XERNEAS_GX_90, this)
+			/*basic (this, hp:HP180, type:FAIRY, retreatCost:2) {
+				weakness METAL
+				resistance DARKNESS, MINUS20
+				move "Overrun", {
+					text "20 damage. This attack does 20 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Aurora Horns", {
+					text "120 damage."
+					energyCost Y, Y, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Sanctuary GX", {
+					text "Move all damage counters from each of your Pokémon to your opponent’s Active Pokémon. (You can’t use more than 1 GX attack in a game.)"
+					energyCost Y, Y, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case ULTRA_NECROZMA_GX_127:
+			return copy (ULTRA_NECROZMA_GX_95, this)
+			/*basic (this, hp:HP190, type:DRAGON, retreatCost:2) {
+				weakness FAIRY
+				move "Photon Geyser", {
+					text "20+ damage. Discard all basic [P] Energy from this Pokémon. This attack does 80 more damage for each card you discarded in this way."
+					energyCost P, M
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Sky-Scorching Light GX", {
+					text "You can use this attack only if the total of both players’ remaining Prize cards is 6 or less. Put 6 damage counters on each of your opponent’s Pokémon. (You can’t use more than 1 GX attack in a game.)"
+					energyCost P, M
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case BONNIE_128:
+			return copy (BONNIE_103, this)
+			/*supporter (this) {
+				text "You can play this card only if there is any Stadium card in play.\nDiscard that Stadium card. During this turn, your Zygarde-GX can use its GX attack even if you have used your GX attack.\nYou may play only 1 Supporter card during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			}*/;
+			case CRASHER_WAKE_129:
+			return copy (CRASHER_WAKE_104, this)
+			/*supporter (this) {
+				text "Discard 2 [W] Energy cards from your hand. If you do, search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			}*/;
+			case DIANTHA_130:
+			return copy (DIANTHA_105, this)
+			/*supporter (this) {
+				text "You can play this card only if 1 of your [Y] Pokémon was Knocked Out during your opponent’s last turn.\nPut 2 cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			}*/;
+			case ULTRA_RECON_SQUAD_131:
+			return copy (ULTRA_RECON_SQUAD_114, this)
+			/*supporter (this) {
+				text "Discard up to 2 Ultra Beast cards from your hand. Draw 3 cards for each card you discarded in this way.\nYou may play only 1 Supporter card during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			}*/;
+			case PALKIA_GX_132:
+			return copy (PALKIA_GX_20, this)
+			/*basic (this, hp:HP180, type:WATER, retreatCost:3) {
+				weakness GRASS
+				move "Spatial Control", {
+					text "Move any number of Energy from your Benched Pokémon to this Pokémon."
+					energyCost W
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Hydro Pressure", {
+					text "60+ damage. This attack does 20 more damage times the amount of [W] Energy attached to this Pokémon."
+					energyCost C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Zero Vanish GX", {
+					text "150 damage. Shuffle all Energy from each of your opponent’s Pokémon into their deck. (You can’t use more than 1 GX attack in a game.)"
+					energyCost W, W, W, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case GRENINJA_GX_133:
+			return copy (GRENINJA_GX_24, this)
+			/*evolution (this, from:"Frogadier", hp:HP230, type:WATER, retreatCost:2) {
+				weakness GRASS
+				bwAbility "Shuriken Flurry", {
+					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put 3 damage counters on 1 of your opponent’s Pokémon."
+					actionA {
+					}
+				}
+				move "Haze Slash", {
+					text "110 damage. You may shuffle this Pokémon and all cards attached to it into your deck."
+					energyCost W, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Shadowy Hunter GX", {
+					text "This attack does 130 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) (You can’t use more than 1 GX attack in a game.)"
+					energyCost W, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case NAGANADEL_GX_134:
+			return copy (NAGANADEL_GX_56, this)
+			/*evolution (this, from:"Poipole – Ultra Beast", hp:HP210, type:PSYCHIC, retreatCost:1) {
+				weakness PSYCHIC
+				move "Beast Raid", {
+					text "20× damage. This attack does 20 damage for each of your Ultra Beasts in play."
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Jet Needle", {
+					text "110 damage. This attack’s damage isn’t affected by Weakness or Resistance."
+					energyCost P, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Stinger-GX", {
+					text "Both players shuffle their Prize cards into their decks. Then, each player puts the top 3 cards of their deck face down as their Prize cards. (You can’t use more than 1 GX attack in a game.)"
+					energyCost C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case LUCARIO_GX_135:
+			return copy (LUCARIO_GX_122, this)
+			/*evolution (this, from:"Riolu", hp:HP210, type:FIGHTING, retreatCost:2) {
+				weakness PSYCHIC
+				move "Aura Strike", {
+					text "30+ damage. If this Pokémon evolved from Riolu during this turn, this attack does 90 more damage."
+					energyCost F
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Cyclone Kick", {
+					text "130 damage."
+					energyCost F, F, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Cantankerous Beatdown GX", {
+					text "30× damage. This attack does 30 damage for each damage counter on this Pokémon. (You can’t use more than 1 GX attack in a game.)"
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case ZYGARDE_GX_136:
+			return copy (ZYGARDE_GX_73, this)
+			/*basic (this, hp:HP200, type:FIGHTING, retreatCost:3) {
+				weakness GRASS
+				move "Cell Connector", {
+					text "50 damage. Attach 2 [F] Energy cards from your discard pile to this Pokémon."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Land’s Wrath", {
+					text "130 damage."
+					energyCost F, F, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Verdict GX", {
+					text "150 damage. Prevent all damage done to this Pokémon by attacks from Pokémon-GX and Pokémon-EX during your opponent’s next turn. (You can’t use more than 1 GX attack in a game.)"
+					energyCost F, F, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case YVELTAL_GX_137:
+			return copy (YVELTAL_GX_79, this)
+			/*basic (this, hp:HP180, type:DARKNESS, retreatCost:2) {
+				weakness LIGHTNING
+				resistance FIGHTING, MINUS20
+				move "Absorb Vitality", {
+					text "20 damage. Heal from this Pokémon the same amount of damage you did to your opponent’s Active Pokémon."
+					energyCost D
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Sonic Evil", {
+					text "100 damage. This attack’s damage isn’t affected by Weakness or Resistance."
+					energyCost C, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Doom Count GX", {
+					text "If your opponent’s Active Pokémon has exactly 4 damage counters on it, that Pokémon is Knocked Out. (You can’t use more than 1 GX attack in a game.)"
+					energyCost D
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case DIALGA_GX_138:
+			return copy (DIALGA_GX_82, this)
+			/*basic (this, hp:HP180, type:METAL, retreatCost:3) {
+				weakness FIRE
+				resistance PSYCHIC, MINUS20
+				move "Overclock", {
+					text "Draw cards until you have 6 cards in your hand."
+					energyCost M
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Shred", {
+					text "80 damage. This attack’s damage isn’t affected by any effects on your opponent’s Active Pokémon."
+					energyCost M, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Timeless GX", {
+					text "150 damage. Take another turn after this one. (Skip the between turns step.) (You can’t use more than 1 GX attack in a game.)"
+					energyCost M, M, M, C, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case XERNEAS_GX_139:
+			return copy (XERNEAS_GX_90, this)
+			/*basic (this, hp:HP180, type:FAIRY, retreatCost:2) {
+				weakness METAL
+				resistance DARKNESS, MINUS20
+				move "Overrun", {
+					text "20 damage. This attack does 20 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+					energyCost C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Aurora Horns", {
+					text "120 damage."
+					energyCost Y, Y, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Sanctuary GX", {
+					text "Move all damage counters from each of your Pokémon to your opponent’s Active Pokémon. (You can’t use more than 1 GX attack in a game.)"
+					energyCost Y, Y, C
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case ULTRA_NECROZMA_GX_140:
+			return copy (ULTRA_NECROZMA_GX_95, this)
+			/*basic (this, hp:HP190, type:DRAGON, retreatCost:2) {
+				weakness FAIRY
+				move "Photon Geyser", {
+					text "20+ damage. Discard all basic [P] Energy from this Pokémon. This attack does 80 more damage for each card you discarded in this way."
+					energyCost P, M
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				move "Sky-Scorching Light GX", {
+					text "You can use this attack only if the total of both players’ remaining Prize cards is 6 or less. Put 6 damage counters on each of your opponent’s Pokémon. (You can’t use more than 1 GX attack in a game.)"
+					energyCost P, M
+					attackRequirement {}
+					onAttack {
+						damage 0
+					}
+				}
+				
+			}*/;
+			case BEAST_RING_141:
+			return copy (BEAST_RING_102, this)
+			/*itemCard (this) {
+				text "You can play this card only if your opponent has exactly 3 or 4 Prize cards remaining.\nSearch your deck for up to 2 basic Energy cards and attach them to 1 of your Ultra Beasts. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			}*/;
+			case ENEPORTER_142:
+			return copy (ENEPORTER_106, this)
+			/*itemCard (this) {
+				text "Move a Special Energy from 1 of your opponent’s Pokémon to another of their Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			}*/;
+			case ENERGY_RECYCLER_143:
+			return itemCard (this) {
+				text "Shuffle 5 basic Energy cards from your discard pile into your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			};
+			case METAL_FRYING_PAN_144:
+			return copy (METAL_FRYING_PAN_112, this)
+			/*pokemonTool (this) {
+				text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nThe [M] Pokémon this card is attached to takes 30 less damage from your opponent’s attacks (after applying Weakness and Resistance) and has no Weakness.\nYou may play as many Item cards as you like during your turn (before your attack)."
+				onPlay {reason->
+				}
+				onRemoveFromPlay {
+				}
+				allowAttach {to->
+				}
+			}*/;
+			case MYSTERIOUS_TREASURE_145:
+			return copy (MYSTERIOUS_TREASURE_113, this)
+			/*itemCard (this) {
+				text "Discard a card from your hand. If you do, search your deck for a [P] or [N] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
+				onPlay {
+				}
+				playRequirement{
+				}
+			}*/;
+			case UNIT_ENERGY_FDY_146:
+			return copy (UNIT_ENERGY_FDY_118, this)
+			/*specialEnergy (this, [[C]]) {
+				text "This card provides [C] Energy.\nWhile this card is attached to a Pokémon, it provides [F], [D], and [Y] Energy but provides only 1 Energy at a time."
+				onPlay {reason->
+				}
+				onRemoveFromPlay {
+				}
+				onMove {to->
+				}
+				allowAttach {to->
+				}
+			}*/;
+				default:
+			return null;
+		}
+	}
+	
+}
