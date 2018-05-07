@@ -708,9 +708,9 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             damage 40
             def list = self.cards.filterByType(SPECIAL_ENERGY)
-            if(list && confirm ("You may discard a Special Energy from this Pokémon. If you do, this attack does 60 more damage.")){
+            if(list && confirm ("You may discard a Special Energy from this Pokémon. If you do, this attack does 80 more damage.")){
                 list.select().discard()
-                damage 60
+                damage 80
             }
           }
         }

@@ -577,7 +577,7 @@ public enum TeamRocket implements CardInfo {
 							hdCnt += 1
 						}
 						if(hdCnt > 1){
-							applyAfterDamage CONFUSED, self
+							afterDamage {apply CONFUSED, self}
 						}
 					}
 				}
@@ -650,13 +650,12 @@ public enum TeamRocket implements CardInfo {
 				}
 			};
 			case RAINBOW_ENERGY_17:
-			return specialEnergy (this, [[R, D, F, G, W, Y, L, M, P]]) {
+			return specialEnergy (this, [[R],[F],[G],[W],[P],[L]]) {
 				text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy counts as every type of basic Energy but only provides 1 Energy at a time. (Doesn’t count as a basic Energy card when not in play.) When you attach this card from your hand to 1 of your Pokémon, it does 10 damage to that Pokémon. (Don’t apply Weakness and Resistance.)"
-				typeImagesOverride = [RAINBOW]
 				onPlay {reason->
-					if(reason == PLAY_FROM_HAND){
-						directDamage(10, self)
-					}
+					self.damage+=10
+				}
+				onRemoveFromPlay {
 				}
 			};
 			case DARK_ALAKAZAM:
@@ -992,7 +991,7 @@ public enum TeamRocket implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
-						applyAfterDamage CONFUSED, self
+						afterDamage{apply CONFUSED, self}
 					}
 				}
 

@@ -241,7 +241,7 @@ public enum FireRedLeafGreen implements CardInfo {
 							if(self.active){
 								all.each{
 									if(it.numberOfDamageCounters){
-										heal 10, self
+										heal 10, it
 									}
 								}
 							}
@@ -303,7 +303,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						assert my.discard.findAll {it.cardTypes.is(BASIC)} : "No basic in discard"
 						powerUsed()
 						def ditto = self.topPokemonCard
-						my.discard.findAll{it.cardTypes.is(BASIC)}.select().moveTo(self)
+						my.discard.findAll{it.cardTypes.is(BASIC)}.select().moveTo(self.cards)
 						discard(ditto)
 						checkFaint()
 					}
