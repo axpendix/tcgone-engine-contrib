@@ -2486,10 +2486,11 @@ public enum CrimsonInvasion implements CardInfo {
       return supporter (this) {
         text "Put 2 in any combination of Supporter and Stadium cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          if(my.discard.findAll({it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)})) my.discard.select(count :2,"Search your discard pile for 2 supporter or stadium", {it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)}).moveTo(hand)
+          def cnt = Math.min(2,my.discard.findAll({it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)}).size())
+          if(cnt) my.discard.select(count :cnt,"Search your discard pile for 2 supporter or stadium", {it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)}).moveTo(hand)
         }
         playRequirement{
-          assert deck
+          assert my.deck
         }
       };
       case PEEKING_RED_CARD_97:
