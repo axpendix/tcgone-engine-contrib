@@ -870,8 +870,10 @@ public enum ForbiddenLight implements CardInfo {
 						damage 10
 						if(bg.stadiumInfoStruct){
 							afterDamage {
-								discard(bg.stadiumInfoStruct.stadiumCard)
-								apply PARALYZED
+								if(bg.stadiumInfoStruct.stadiumCard.player != self.owner) {
+									discard(bg.stadiumInfoStruct.stadiumCard)
+									apply PARALYZED
+								}
 							}
 						}
 					}
