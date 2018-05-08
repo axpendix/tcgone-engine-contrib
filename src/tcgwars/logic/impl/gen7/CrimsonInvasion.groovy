@@ -793,7 +793,7 @@ public enum CrimsonInvasion implements CardInfo {
             before null, self, Source.ATTACK, {
               if(self.owner.pbg.all.findAll{it.name=="Regirock"}){
                 if (self.owner.opposite.pbg.active.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                  bc "Safeguard prevents effect"
+                  bc "Iceberg Shield prevents effect"
                   prevent()
                 }
               }
@@ -804,7 +804,7 @@ public enum CrimsonInvasion implements CardInfo {
                 bg.dm().each {
                   if(it.to == self && it.notNoEffect && it.from.topPokemonCard.cardTypes.is(STAGE2)){
                     it.dmg = hp(0)
-                    bc "Safeguard prevents damage"
+                    bc "Iceberg Shield prevents damage"
                   }
                 }
               }
@@ -2486,11 +2486,10 @@ public enum CrimsonInvasion implements CardInfo {
       return supporter (this) {
         text "Put 2 in any combination of Supporter and Stadium cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          def cnt = Math.min(2,my.discard.findAll({it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)}).size())
-          if(cnt) my.discard.select(count :cnt,"Search your discard pile for 2 supporter or stadium", {it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)}).moveTo(hand)
+          my.discard.filterByType(SUPPORTER,STADIUM).select(count :2,"Search your discard pile for 2 supporter or stadium").moveTo(hand)
         }
         playRequirement{
-          assert my.deck
+          assert my.discard
         }
       };
       case PEEKING_RED_CARD_97:
