@@ -636,6 +636,7 @@ public enum ForbiddenLight implements CardInfo {
 							if(!src) break;
 							def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
 							energySwitch(src, self, card)
+						}
 					}
 				}
 				move "Hydro Pressure", {
@@ -662,7 +663,6 @@ public enum ForbiddenLight implements CardInfo {
             }
           }
 				}
-
 			};
 			case FROAKIE_21:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -2729,7 +2729,9 @@ public enum ForbiddenLight implements CardInfo {
 			return supporter (this) {
 				text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nFor each of your [R] Pokémon in play, put a card from your opponent’s discard pile in the Lost Zone.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
-					//TODO : put cards to lost zone
+					my.all.each{
+						if(opp.discard) opp.discard.select("choose a card to send to the lost zone").moveTo(opp.lostZone)
+					}
 				}
 				playRequirement{
 					assert my.all.findAll{it.types.contains(R)}
