@@ -1197,8 +1197,9 @@ public enum BaseSet implements CardInfo {
 									eff = getter GET_WEAKNESS, {h->
 										def list = h.object as List<Weakness>
 										if(list) {
-											def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],îSelect the new weaknessî)
-										   list.get(0).type = newWeakness
+											// TODO this is wrong, select the type OUTSIDE of the GETTER clause
+											def newWeakness = choose(Type.valuesPokemon(),"Select the new weakness")
+											list.get(0).type = newWeakness
 										}
 									}
 									
@@ -1642,7 +1643,7 @@ public enum BaseSet implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						sandAttack()//TODO: Verify that sandAttack does not take any extra parameters
+						sandAttack(thisMove)
 					}
 				}
 				
@@ -1714,7 +1715,7 @@ public enum BaseSet implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flip{applyAfterDamage(PARALYZED)""
+						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
 				move "Poisonpowder", {
@@ -1880,7 +1881,7 @@ public enum BaseSet implements CardInfo {
 				playRequirement{
 				}
 			};
-			case POKEMON_BREEDER: //TODO: Use the implementation of Rare Candy
+			case POKEMON_BREEDER: //TODO: Use the implementation of Rare Candy (admin: they are not the same!)
 			return basicTrainer (this) {
 				text "Put a Stage 2 Evolution card from your hand on the matching Basic Pok√©mon. You can only play this card when you would be allowed to evolve that Pok√©mon anyway."
 				onPlay {
@@ -2087,11 +2088,9 @@ public enum BaseSet implements CardInfo {
 				}
 			};
 			case SWITCH:
-				return copy(BlackWhite.SWITCH_104, this)
-			};
+				return copy(BlackWhite.SWITCH_104, this); //TODO DO NOT COPY THIS, IMPLEMENT IT HERE
 			case DOUBLE_COLORLESS_ENERGY:
-				return copy(Xy.DOUBLE_COLORLESS_ENERGY_130, this)
-			};
+				return copy(Xy.DOUBLE_COLORLESS_ENERGY_130, this) //TODO DO NOT COPY THIS, IMPLEMENT IT HERE
 			case FIGHTING_ENERGY:
 			return basicEnergy (this, FIGHTING);
 			case FIRE_ENERGY:
