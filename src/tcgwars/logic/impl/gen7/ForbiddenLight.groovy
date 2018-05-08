@@ -264,7 +264,7 @@ public enum ForbiddenLight implements CardInfo {
 						damage 20
 						def addDmg = 0
 						for(Type t1:Type.values()){
-							if(my.discard.filterByEnergyType(t1)})
+							if(my.discard.filterByEnergyType(t1))
 								addDmg += 20
 						}
 						addDmg = Math.min(100,addDmg)
@@ -2729,14 +2729,17 @@ public enum ForbiddenLight implements CardInfo {
 			return supporter (this) {
 				text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nFor each of your [R] Pokémon in play, put a card from your opponent’s discard pile in the Lost Zone.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					//TODO : put cards to lost zone
 				}
 				playRequirement{
+					assert my.all.findAll{it.types.contains(R)}
 				}
 			};
 			case LYSANDRE_LABS_111:
 			return stadium (this) {
 				text "Pokémon Tool cards in play (both yours and your opponent’s) have no effect.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
 				onPlay {
+					//TODO : desactivate Pokémon Tools
 				}
 				onRemoveFromPlay{
 				}
@@ -2744,9 +2747,27 @@ public enum ForbiddenLight implements CardInfo {
 			case METAL_FRYING_PAN_112:
 			return pokemonTool (this) {
 				text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nThe [M] Pokémon this card is attached to takes 30 less damage from your opponent’s attacks (after applying Weakness and Resistance) and has no Weakness.\nYou may play as many Item cards as you like during your turn (before your attack)."
+				def eff1
+				def eff2
 				onPlay {reason->
+					eff1 = getter GET_WEAKNESSES, self, {h ->
+							def list = h.object as List<Weakness>
+							list.clear()
+          }
+					eff2 = delayed{
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each{
+                if(it.to == self && self.types.contains(M)){
+                  bc "Metal Frying Pan -30"
+                  it.dmg-=hp(30)
+                }
+              }
+            }
+          }
 				}
 				onRemoveFromPlay {
+					eff1.unregister()
+          eff2.unregister()
 				}
 				allowAttach {to->
 				}
@@ -2755,14 +2776,21 @@ public enum ForbiddenLight implements CardInfo {
 			return itemCard (this) {
 				text "Discard a card from your hand. If you do, search your deck for a [P] or [N] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
 				onPlay {
+					my.deck.search(count : 1, "", {it.cardTypes.is(POKEMON) && (it.types.contains(P) || it.types.contains(N))}).moveTo(my.hand)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.hand.getExcludedList(thisCard)
 				}
 			};
 			case ULTRA_RECON_SQUAD_114:
 			return supporter (this) {
 				text "Discard up to 2 Ultra Beast cards from your hand. Draw 3 cards for each card you discarded in this way.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					//TODO : replace pokemon by Ultra Beast
+					def tar = my.hand.filterByType(POKEMON).select(max : 2)
+					draw 3*tar.size()
+					tar.discard()
 				}
 				playRequirement{
 				}
@@ -2770,9 +2798,25 @@ public enum ForbiddenLight implements CardInfo {
 			case ULTRA_SPACE_115:
 			return stadium (this) {
 				text "Once during each player’s turn, that player may search their deck for an Ultra Beast card, reveal it, put it into their hand, and shuffle their deck.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+				def lastTurn=0
+				def actions=[]
 				onPlay {
+					actions=action("Stadium: Ultra Space") {
+						assert my.deck
+						assert my.bench.notFull
+						assert lastTurn != bg().turnCount : "Already used"
+						bc "Used Ultra Space effect"
+						lastTurn = bg().turnCount
+						//TODO : replace by ultra beast
+						deck.search {Card c->c.cardTypes.is(POKEMON)}.each {
+							deck.remove(it)
+							benchPCS(it)
+						}
+						shuffleDeck()
+					}
 				}
 				onRemoveFromPlay{
+					actions.each { bg().gm().unregisterAction(it) }
 				}
 			};
 			case UNIDENTIFIED_FOSSIL_116:
@@ -2780,13 +2824,30 @@ public enum ForbiddenLight implements CardInfo {
 			case BEAST_ENERGY_PRISM_STAR_117:
 			return specialEnergy (this, [[C]]) {
 				text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nThis card provides [C] Energy.\nWhile this card is attached to an Ultra Beast, it provides every type of Energy but provides only 1 Energy at a time. The attacks of the Ultra Beast this card is attached to do 30 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
+				def eff
 				onPlay {reason->
+					//TODO : replace by ultra beast
+					eff = delayed {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each{
+								if(it.from == self && it.from.cards.topPokemonCard.is(POKEMON) && it.notNoEffect && it.dmg.value) {
+									 bc "Beast Energy +30"
+									 it.dmg += hp(30)
+								}
+							}
+						}
+					}
 				}
 				onRemoveFromPlay {
 				}
 				onMove {to->
 				}
-				allowAttach {to->
+				getEnergyTypesOverride{
+						//TODO : replace by ultra beast
+						if(self.cards.topPokemonCard.is(POKEMON))
+								return [[R, D, F, G, W, Y, L, M, P]]
+						else
+								return [[C]]
 				}
 			};
 			case UNIT_ENERGY_FDY_118:
@@ -2812,7 +2873,10 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						if(self.lastEvolved == bg.turnCount){
+							damage 90
+						}
 					}
 				}
 				move "Cyclone Kick", {
@@ -2820,15 +2884,18 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 130
 					}
 				}
 				move "Cantankerous Beatdown GX", {
 					text "30× damage. This attack does 30 damage for each damage counter on this Pokémon. (You can’t use more than 1 GX attack in a game.)"
 					energyCost C, C
-					attackRequirement {}
+					attackRequirement {
+						gxCheck()
+					}
 					onAttack {
-						damage 0
+						gxPerform()
+						damage 30*self.numberOfDamageCounters
 					}
 				}
 
