@@ -650,10 +650,12 @@ public enum TeamRocket implements CardInfo {
 				}
 			};
 			case RAINBOW_ENERGY_17:
-			return specialEnergy (this, [[R],[F],[G],[W],[P],[L]]) {
+			return specialEnergy (this, [[R, D, F, G, W, Y, L, M, P]]) {
 				text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy counts as every type of basic Energy but only provides 1 Energy at a time. (Doesn’t count as a basic Energy card when not in play.) When you attach this card from your hand to 1 of your Pokémon, it does 10 damage to that Pokémon. (Don’t apply Weakness and Resistance.)"
 				onPlay {reason->
-					self.damage+=10
+					if(reason == PLAY_FROM_HAND){
+						directDamage(10, self)
+					}
 				}
 				onRemoveFromPlay {
 				}
