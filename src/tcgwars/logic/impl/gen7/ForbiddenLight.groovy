@@ -1808,7 +1808,21 @@ public enum ForbiddenLight implements CardInfo {
 				weakness GRASS
 				bwAbility "Earthen Aura", {
 					text "Damage from this Pokémon’s attacks isn’t affected by Weakness or Resistance."
-					actionA {
+					delayedA {
+						before APPLY_WEAKNESS, {
+							bg.dm().each{
+								if(it.from==self){
+									prevent()
+								}
+							}
+						}
+						before APPLY_RESISTANCE, {
+							bg.dm().each{
+								if(it.from==self){
+									prevent()
+								}
+							}
+						}
 					}
 				}
 				move "Peace Maker", {
@@ -1816,7 +1830,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						//TODO : identify Ultra Beast
 					}
 				}
 
@@ -1829,7 +1844,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Calm Strike", {
@@ -1837,7 +1853,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						if(gxCheck()) damage 60
 					}
 				}
 
@@ -1850,7 +1867,9 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						attachEnergyFromDiscardPile(F)
+						attachEnergyFromDiscardPile(F)
 					}
 				}
 				move "Land’s Wrath", {
@@ -1858,15 +1877,29 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 130
 					}
 				}
 				move "Verdict GX", {
 					text "150 damage. Prevent all damage done to this Pokémon by attacks from Pokémon-GX and Pokémon-EX during your opponent’s next turn. (You can’t use more than 1 GX attack in a game.)"
 					energyCost F, F, C, C
-					attackRequirement {}
+					attackRequirement {
+						assert !bg.em().retrieveObject("gx_"+my.owner) || bg.em().retrieveObject("Bonnie")==bg.turnCount
+					}
 					onAttack {
-						damage 0
+						gxPerform()
+						damage 150
+						delayedA{
+							before APPLY_ATTACK_DAMAGES, {
+								bg.dm().each {
+									if(it.to == self && it.notNoEffect && (it.from.pokemonGX || it.from.pokemonEX)){
+										it.dmg = hp(0)
+										bc "Verdict GX prevents damage from Pokémon-GX and Pokémon-EX"
+									}
+								}
+							}
+							unregisterAfter 2
+						}
 					}
 				}
 
@@ -1876,7 +1909,17 @@ public enum ForbiddenLight implements CardInfo {
 				weakness GRASS
 				bwAbility "Princess’s Cheers", {
 					text "As long as this Pokémon is on your Bench, your [F] Pokémon’s attacks do 20 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
-					actionA {
+					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							if(ef.attacker.owner == self.owner && self.benched) {
+								bg.dm().each{
+									if(it.from.types.contains(R) && it.notNoEffect && it.dmg.value) {
+										 bc "Princess’s Cheers +20"
+										 it.dmg += hp(20)
+									}
+								}
+							}
+						}
 					}
 				}
 				move "Diamond Rain", {
@@ -1884,7 +1927,10 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost F, F, F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 90
+						afterDamage{
+							heal 30
+						}
 					}
 				}
 
@@ -1897,7 +1943,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 50}
 					}
 				}
 
@@ -1910,7 +1956,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20 + 20*my.bench.size()
 					}
 				}
 				move "Accelerock", {
@@ -1918,7 +1964,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 100
 					}
 				}
 
@@ -1931,7 +1977,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						if(opp.prizeAsList.size() == 4) damage 90
 					}
 				}
 				move "Swing Around", {
@@ -1939,7 +1986,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 80
+						flip 2,{damage 20}
 					}
 				}
 
@@ -1953,7 +2001,14 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						if(self.numberOfDamageCounters) {
+							damage 50
+							afterDamage{
+								apply CONFUSED
+								apply CONFUSED, self
+							}
+						}
 					}
 				}
 				move "Double Stomp", {
@@ -1961,7 +2016,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 80
+						flip 2,{damage 40}
 					}
 				}
 
@@ -1975,7 +2031,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						removeDamageCounterEqualToDamageDone()
 					}
 				}
 				move "Sonic Evil", {
@@ -1983,15 +2040,20 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						noWrDamage(100,defending)
 					}
 				}
 				move "Doom Count GX", {
 					text "If your opponent’s Active Pokémon has exactly 4 damage counters on it, that Pokémon is Knocked Out. (You can’t use more than 1 GX attack in a game.)"
 					energyCost D
-					attackRequirement {}
+					attackRequirement {
+						gxCheck()
+					}
 					onAttack {
-						damage 0
+						gxPerform()
+						if(defending.numberOfDamageCounters == 4){
+							new Knockout(opp.active).run(bg)
+						}
 					}
 				}
 
@@ -2003,9 +2065,12 @@ public enum ForbiddenLight implements CardInfo {
 				move "Lord’s Valley", {
 					text "160 damage. If you have exactly 2, 4, or 6 Prize cards remaining, discard the top 10 cards of your deck."
 					energyCost D, D, D, D
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						damage 0
+						damage 160
+						if(my.prizeAsList.size() == 2 || my.prizeAsList.size() == 4 || my.prizeAsList.size() == 6) my.deck.subList(0, 10).discard()
 					}
 				}
 
@@ -2019,7 +2084,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20 * (my.bench.size()+opp.bench.size())
 					}
 				}
 				move "Whirlpool", {
@@ -2027,7 +2092,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 90
+						discardDefendingEnergy()
 					}
 				}
 
@@ -2039,26 +2105,42 @@ public enum ForbiddenLight implements CardInfo {
 				move "Overclock", {
 					text "Draw cards until you have 6 cards in your hand."
 					energyCost M
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
+					attackRequirement {
+            assert my.deck
+            assert my.hand.size()<6
+          }
+          onAttack {
+            draw (6-my.hand.size())
+          }
 				}
 				move "Shred", {
 					text "80 damage. This attack’s damage isn’t affected by any effects on your opponent’s Active Pokémon."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						shredDamage 80
 					}
 				}
 				move "Timeless GX", {
 					text "150 damage. Take another turn after this one. (Skip the between turns step.) (You can’t use more than 1 GX attack in a game.)"
 					energyCost M, M, M, C, C
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
+					attackRequirement {
+            gxCheck()
+          }
+          onAttack {
+            gxPerform()
+            damage 150
+            afterDamage{
+              bg.turnCount += 1
+              delayed{
+                before BETWEEN_TURNS, {
+                  prevent()
+                  unregister()
+                }
+              }
+              draw 1
+            }
+          }
 				}
 
 			};
@@ -2068,7 +2150,10 @@ public enum ForbiddenLight implements CardInfo {
 				resistance DARKNESS, MINUS20
 				bwAbility "Evolutionary Advantage", {
 					text "If you go second, this Pokémon can evolve during your first turn."
-					actionA {
+					delayedA {
+						before PREVENT_EVOLVE, {
+							if(bg.turnCount == 2) prevent()
+						}
 					}
 				}
 				move "Tackle", {
@@ -2076,7 +2161,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost Y
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 
@@ -2090,7 +2175,9 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost Y
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def tar = my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)}
+						if(tar) tar.select(count : 3).moveTo(my.deck)
+						shuffleDeck()
 					}
 				}
 
@@ -2102,9 +2189,12 @@ public enum ForbiddenLight implements CardInfo {
 				move "Swirling Petals", {
 					text "Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon. If you do, switch this Pokémon with 1 of your Benched Pokémon."
 					energyCost Y
-					attackRequirement {}
+					attackRequirement {
+						assert opp.bench
+					}
 					onAttack {
-						damage 0
+						sw defending, opp.bench.select("New opponent’s Active")
+						if(my.bench) sw self, my.bench.select("Your new Active")
 					}
 				}
 
@@ -2116,6 +2206,14 @@ public enum ForbiddenLight implements CardInfo {
 				bwAbility "Wondrous Gift", {
 					text "Once during your turn (before your attack), you may flip a coin. If heads, put an Item card from your discard pile on top of your deck."
 					actionA {
+						checkLastTurn()
+						assert my.deck
+						assert my.discard.filterByType(ITEM)
+						powerUsed()
+						flip {
+							def tar = my.discard.filterByType(ITEM).select()
+							my.deck.addAll(0, tar)
+						}
 					}
 				}
 				move "Mist Guard", {
@@ -2123,7 +2221,18 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost Y, Y, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
+						delayedA{
+							before APPLY_ATTACK_DAMAGES, {
+								bg.dm().each {
+									if(it.to == self && it.notNoEffect && (it.from.types.contains(N))){
+										it.dmg = hp(0)
+										bc "Mist Guard prevents damage from Dragon Pokémon"
+									}
+								}
+							}
+							unregisterAfter 2
+						}
 					}
 				}
 
@@ -2137,7 +2246,14 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						// TODO : use the effect of the card ?
+						opp.hand.showToMe("Opponent's hand")
+						if(opp.hand.filterByType(SUPPORTER))
+						{
+							def card = opp.hand.filterByType(SUPPORTER).select()
+							card.discard()
+							card.play(bg,self)
+						}
 					}
 				}
 				move "Magical Shot", {
@@ -2145,7 +2261,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost Y, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
 
@@ -2157,9 +2273,13 @@ public enum ForbiddenLight implements CardInfo {
 				move "Find a Friend", {
 					text "Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
 					energyCost Y
-					attackRequirement {}
+					attackRequirement {
+						assert bench.notFull
+						assert deck.notEmpty
+					}
 					onAttack {
-						damage 0
+						my.deck.search(count : 1, cardTypeFilter(POKEMON)).showToOpponent("Selected Pokémon").moveTo(my.hand)
+						shuffleDeck()
 					}
 				}
 				move "Electrichain", {
@@ -2167,7 +2287,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						if(my.bench.findAll{it.types.contains(L)}) damage 30
 					}
 				}
 
@@ -2181,7 +2302,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply CONFUSED
 					}
 				}
 				move "Fairy Lock", {
@@ -2189,7 +2310,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						cantRetreat(defending)
 					}
 				}
 
@@ -2203,7 +2325,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(opp.bench) damage 20, opp.bench.select()
 					}
 				}
 				move "Aurora Horns", {
@@ -2211,15 +2334,21 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost Y, Y, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 120
 					}
 				}
 				move "Sanctuary GX", {
 					text "Move all damage counters from each of your Pokémon to your opponent’s Active Pokémon. (You can’t use more than 1 GX attack in a game.)"
 					energyCost Y, Y, C
-					attackRequirement {}
+					attackRequirement {
+						gxCheck()
+					}
 					onAttack {
-						damage 0
+						gxPerform()
+						my.all.each{
+							defending.damage+=tar.damage
+							it.damage==hp(0)
+						}
 					}
 				}
 
@@ -2229,7 +2358,10 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FAIRY
 				bwAbility "Sticky Membrane", {
 					text "As long as this Pokémon is your Active Pokémon, your opponent’s Pokémon’s attacks cost [C] more."
-					actionA {
+					getterA (GET_RETREAT_COST) { h->
+						if(h.effect.target.owner == self.owner.opposite && self.active) {
+							h.object += 1
+						}
 					}
 				}
 				move "Ram", {
@@ -2237,7 +2369,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost Y
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 
@@ -2250,7 +2382,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Flail", {
@@ -2258,7 +2390,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10*self.numberOfDamageCounters
 					}
 				}
 
@@ -2271,7 +2403,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						afterDamage{heal 30, self}
 					}
 				}
 				move "Hammer In", {
@@ -2279,7 +2412,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost W, Y, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
 
@@ -2287,9 +2420,23 @@ public enum ForbiddenLight implements CardInfo {
 			case GOODRA_94:
 			return evolution (this, from:"Sliggoo", hp:HP160, type:DRAGON, retreatCost:3) {
 				weakness FAIRY
+				customAbility {
+					delayedA {
+						before REMOVE_DAMAGE_COUNTER, self, {
+							bg.em().storeObject("Soaking_Horn", bg.turnCount)
+						}
+					}
+				}
+
 				bwAbility "Hydration", {
 					text "Whenever you attach a [W] Energy card from your hand to this Pokémon, heal 20 damage from it."
-					actionA {
+					delayedA{
+						before PLAY_ENERGY, {
+							if (ef.cardToPlay.asEnergyCard().containsType(W) && bg.currentTurn == self.owner) {
+								wcu "Hydration"
+								heal 20, ef.resolvedTarget
+							}
+						}
 					}
 				}
 				move "Soaking Horn", {
@@ -2297,7 +2444,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost W, Y, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 80
+						if(bg.em().retrieveObject("Soaking_Horn") == bg.turnCount) damage 80
 					}
 				}
 
@@ -2310,15 +2458,23 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost P, M
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						damage 80*discardAllSelfEnergy(P).size()
 					}
 				}
 				move "Sky-Scorching Light GX", {
 					text "You can use this attack only if the total of both players’ remaining Prize cards is 6 or less. Put 6 damage counters on each of your opponent’s Pokémon. (You can’t use more than 1 GX attack in a game.)"
 					energyCost P, M
-					attackRequirement {}
+					attackRequirement {
+						gxCheck()
+					}
 					onAttack {
-						damage 0
+						gxPerform()
+						if(my.prizeAsList.size() + opp.prizeAsList.size()<= 6){
+							opp.all.each{
+								directDamage 60, it
+							}
+						}
 					}
 				}
 
@@ -2328,15 +2484,30 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIGHTING
 				bwAbility "First Law", {
 					text "Prevent all effects of your opponent’s attacks, except damage, done to this Pokémon."
-					actionA {
+					delayedA {
+						before null, self, Source.ATTACK, {
+							bc "First Law prevents effect"
+							prevent()
+						}
+						after ENERGY_SWITCH, {
+							def efs = (ef as EnergySwitch)
+							if(efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+								discard efs.card
+							}
+						}
 					}
 				}
 				move "Trinity Star", {
 					text "30 damage. You can use this attack only if you have [G], [W], and [L] Pokémon on your Bench. Search your deck for up to 3 basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.bench.findAll{it.types.contains(G)}.notEmpty && my.bench.findAll{it.types.contains(W)}.notEmpty && my.bench.findAll{it.types.contains(L)}.notEmpty
+					}
 					onAttack {
-						damage 0
+						damage 30
+						attachEnergyFrom(basic : true, my.deck, my.all)
+						attachEnergyFrom(basic : true, my.deck, my.all)
+						attachEnergyFrom(basic : true, my.deck, my.all)
 					}
 				}
 
@@ -2349,7 +2520,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						draw 1
 					}
 				}
 				move "Gnaw", {
@@ -2357,7 +2528,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -2370,7 +2541,11 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						if(confirm("Discard the top 2 cards of your deck and do 40 more damage?")){
+							my.deck.subList(0,2).discard()
+							damage 40
+						}
 					}
 				}
 				move "Rock Cannon", {
@@ -2378,7 +2553,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flipUntilTails {damage 80}
 					}
 				}
 
@@ -2391,7 +2566,12 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(my.hand.size() < 5 && my.deck.notEmpty){
+							if(confirm("draw cards until you have 5 cards in your hand?")){
+								draw 5-my.hand.size()
+							}
+						}
 					}
 				}
 
@@ -2405,7 +2585,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Destructive Sound", {
@@ -2413,7 +2593,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						opp.hand.showToMe("Opponent's hand").filterByType(ITEM).discard()
 					}
 				}
 
@@ -2427,7 +2607,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						applyAfterDamage CONFUSED
 					}
 				}
 				move "Resonance", {
@@ -2435,7 +2616,8 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
+						if(opp.isSPC(CONFUSED)) damage 70
 					}
 				}
 
@@ -2444,54 +2626,90 @@ public enum ForbiddenLight implements CardInfo {
 			return itemCard (this) {
 				text "You can play this card only if your opponent has exactly 3 or 4 Prize cards remaining.\nSearch your deck for up to 2 basic Energy cards and attach them to 1 of your Ultra Beasts. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
 				onPlay {
+					attachEnergyFrom(basic : true, my.deck, my.all)
+					attachEnergyFrom(basic : true, my.deck, my.all)
 				}
 				playRequirement{
+					assert opp.prizeAsList.size() == 3 || opp.prizeAsList.size() == 4
 				}
 			};
 			case BONNIE_103:
 			return supporter (this) {
 				text "You can play this card only if there is any Stadium card in play.\nDiscard that Stadium card. During this turn, your Zygarde-GX can use its GX attack even if you have used your GX attack.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					discard bg.stadiumInfoStruct.stadiumCard
+					bg.em().storeObject("Bonnie",bg.currentTurn)
 				}
 				playRequirement{
+					assert bg.stadiumInfoStruct
 				}
 			};
 			case CRASHER_WAKE_104:
 			return supporter (this) {
 				text "Discard 2 [W] Energy cards from your hand. If you do, search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					my.hand.filterByEnergyType(W).select(count : 2).discard()
+					my.deck.search(max : 2).moveTo(my.hand)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.hand.filterByEnergyType(W).size() >= 2
+					assert my.deck
 				}
 			};
 			case DIANTHA_105:
 			return supporter (this) {
 				text "You can play this card only if 1 of your [Y] Pokémon was Knocked Out during your opponent’s last turn.\nPut 2 cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					my.discard.select(count : Math.min(2,my.discard.size())).moveTo(my.hand)
 				}
 				playRequirement{
+					assert my.lastKnockoutTypes.contains(Y)
 				}
 			};
 			case ENEPORTER_106:
 			return itemCard (this) {
 				text "Move a Special Energy from 1 of your opponent’s Pokémon to another of their Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
 				onPlay {
+					def src = opp.all.findAll{it.cards.filterByType(SPECIAL_ENERGY)}.select("Select the source pokémon for the Special Energy")
+					def tar = opp.all.getExcludedList(src).select("Select the Pokémon that will recieve the Special Energy")
+					moveEnergy(basic : false, src, tar)
 				}
 				playRequirement{
+					assert opp.bench
+					assert opp.all.findAll{it.cards.filterByType(SPECIAL_ENERGY)}
 				}
 			};
 			case FOSSIL_EXCAVATION_MAP_107:
 			return itemCard (this) {
-				text "Choose 1:\nYou may play as many Item cards as you like during your turn (before your attack)."
+				text "Choose 1:\n Search your deck for an Unidentified Fossil card, reveal it, and put it into your hand. Then, shuffle your deck.\n Put an Unidentified Fossil card from your discard pile into your hand. \nYou may play as many Item cards as you like during your turn (before your attack)."
 				onPlay {
+					def choice = 1
+					if(my.discard.findAll{it.name== "Unidentified Fossil"}){
+						choice = choose([1,2],['Search your deck for an Unidentified Fossil card, reveal it, and put it into your hand. Then, shuffle your deck.', 'Put an Unidentified Fossil card from your discard pile into your hand.'], "Choose 1")
+					}
+					if(choice == 1){
+						my.deck.search(count : 1,"Search for an Unidentified Fossil card",{it.name == "Unidentified Fossil"}).showToOpponent("Unidentified Fossil").moveTo(my.hand)
+						shuffleDeck()
+					}
+					if(choice == 2){
+						my.discard.findAll{it.name== "Unidentified Fossil"}.select().moveTo(my.hand)
+					}
 				}
 				playRequirement{
+					assert my.deck.notEmpty || my.discard.findAll{it.name== "Unidentified Fossil"}
 				}
 			};
 			case JUDGE_108:
 			return supporter (this) {
 				text "Each player shuffles their hand into their deck and draws 4 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					my.hand.getExcludedList(thisCard).moveTo(my.deck)
+					opp.hand.moveTo(opp.deck)
+					shuffleDeck()
+					shuffleDeck(null, targetPlayer.OPPONENT)
+					draw 4
+					draw(4, targetPlayer.OPPONENT)
 				}
 				playRequirement{
 				}
@@ -2500,8 +2718,11 @@ public enum ForbiddenLight implements CardInfo {
 			return supporter (this) {
 				text "Search your deck for up to 4 basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					my.deck.search(max : 4,"Search for up to 4 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.hand
 				}
 			};
 			case LYSANDRE_PRISM_STAR_110:
@@ -2555,13 +2776,7 @@ public enum ForbiddenLight implements CardInfo {
 				}
 			};
 			case UNIDENTIFIED_FOSSIL_116:
-			return itemCard (this) {
-				text "Play this card as if it were a 60-HP [C] Basic Pokémon. At any time during your turn (before your attack), you may discard this card from play.\nThis card can’t retreat.\nYou may play as many Item cards as you like during your turn (before your attack)."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+			return copy (UltraPrism.UNIDENTIFIED_FOSSIL_134, this);
 			case BEAST_ENERGY_PRISM_STAR_117:
 			return specialEnergy (this, [[C]]) {
 				text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nThis card provides [C] Energy.\nWhile this card is attached to an Ultra Beast, it provides every type of Energy but provides only 1 Energy at a time. The attacks of the Ultra Beast this card is attached to do 30 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
@@ -2575,17 +2790,14 @@ public enum ForbiddenLight implements CardInfo {
 				}
 			};
 			case UNIT_ENERGY_FDY_118:
-			return specialEnergy (this, [[C]]) {
+			return specialEnergy (this, [[F,D,Y]]) {
 				text "This card provides [C] Energy.\nWhile this card is attached to a Pokémon, it provides [F], [D], and [Y] Energy but provides only 1 Energy at a time."
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
 				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
 			};
+
 			case PALKIA_GX_119:
 			return copy (PALKIA_GX_20, this);
 			case GRENINJA_GX_120:
