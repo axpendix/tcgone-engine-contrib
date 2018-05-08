@@ -2254,7 +2254,7 @@ public enum ForbiddenLight implements CardInfo {
 						opp.hand.showToMe("Opponent's hand")
 						if(opp.hand.filterByType(SUPPORTER))
 						{
-							def card = opp.hand.filterByType(SUPPORTER).select()
+							def card = opp.hand.filterByType(SUPPORTER).select().first()
 							card.discard()
 							card.play(bg,self)
 						}
