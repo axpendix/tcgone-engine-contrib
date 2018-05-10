@@ -931,7 +931,7 @@ public enum BurningShadows implements CardInfo {
             before APPLY_ATTACK_DAMAGES, {
               if(ef.attacker.owner != self.owner && (ef.attacker.types.contains(R) || ef.attacker.types.contains(W))) {
                 bg.dm().each{
-                  if(it.to == self && it.dmg.notNoEffect && it.dmg.value) {
+                  if(it.to == self && it.notNoEffect && it.dmg.value) {
                     bc "Thick Fat -30"
                     it.dmg -= hp(30)
                   }
