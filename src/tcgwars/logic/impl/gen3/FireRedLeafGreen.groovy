@@ -477,10 +477,10 @@ public enum FireRedLeafGreen implements CardInfo {
 				pokePower "Quick Search", {
 					text "Once during your turn (before your attack), you may choose any 1 card from your deck and put it into your hand. Shuffle your deck afterward. You can’t use more than 1 Quick Search Poké-Power each turn. This power can’t be used if Pidgeot is affected by a Special Condition."
 					actionA {
-						checkLastTurn()
+						assert bg.em().retrieveObject("Quick_Search") != bg.turnCount : "You cannot use Quick Search more than once per turn!"
 						assert my.deck
-						powerUsed()
-						my.deck.search(max : 1).moveTo(my.hand)
+						bg.em().storeObject("Quick_Search",bg.turnCount)
+						my.deck.search(count : 1).moveTo(my.hand)
 					}
 				}
 				move "Clutch", {
@@ -549,7 +549,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						if(confirm("move any number of [L] Energy cards attached to Raichu to another of your Pokémon?"))
 						{
 							def pcs = my.bench.select()
-							self.cards.filterByEnergyType(L).select(min : 1).each{
+							self.cards.filterByEnergyType(L).select(max : self.cards.filterByEnergyType(L).size()).each{
 								energySwitch(self,pcs,it)
 							}
 						}
@@ -686,7 +686,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					delayedA {
 						before BETWEEN_TURNS, {
 							if(self.active){
-								directDamage 10, opp.active
+								directDamage 10, self.owner.opposite.pbg.active
 							}
 						}
 					}
@@ -758,7 +758,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
 							bg.dm().each{
-								if(it.to == self && it.dmg.notNoEffect && it.dmg.value) {
+								if(it.to == self && it.notNoEffect && it.dmg.value) {
 									bc "Exoskeleton -20"
 									it.dmg -= hp(20)
 								}
@@ -794,7 +794,7 @@ public enum FireRedLeafGreen implements CardInfo {
 				pokeBody "Retreat Aid", {
 					text "As long as Dodrio is on your Bench, you pay [C][C] less to retreat your Active Pokémon (excluding Pokémon-ex and Baby Pokémon.)"
 					getterA GET_RETREAT_COST ,{ h->
-						if(self.benched && h.effect.target.owner == self.owner && !(h.effect.target.pokemonEX || h.effect.target.cardTypes.is(BABY))){
+						if(self.benched && h.effect.target.owner == self.owner && !(h.effect.target.pokemonEX || h.effect.target.topPokemonCard.cardTypes.is(BABY))){
 							h.object = Math.max(0,h.object-2)
 						}
 					}
@@ -844,7 +844,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					onAttack {
 						def tar = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))})
 						if(tar){
-							my.deck.search(max : Math.min(2,tar),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{
+							my.deck.search(max : Math.min(2,tar.size()),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{
 								def pcs = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))}).select()
 								attachPokemonTool(it,pcs)
 							}
