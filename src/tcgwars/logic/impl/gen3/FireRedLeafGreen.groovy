@@ -480,7 +480,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						assert bg.em().retrieveObject("Quick_Search") != bg.turnCount : "You cannot use Quick Search more than once per turn!"
 						assert my.deck
 						bg.em().storeObject("Quick_Search",bg.turnCount)
-						my.deck.search(count : 1).moveTo(my.hand)
+						my.deck.search("search for 1 card.",{true}).moveTo(my.hand)
 					}
 				}
 				move "Clutch", {
@@ -846,6 +846,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						if(tar){
 							my.deck.search(max : Math.min(2,tar.size()),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{
 								def pcs = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))}).select()
+								my.deck.remove(it)
 								attachPokemonTool(it,pcs)
 							}
 						}
@@ -869,7 +870,7 @@ public enum FireRedLeafGreen implements CardInfo {
 				pokeBody "Free Flight", {
 					text "If Fearow has no Energy attached to it, Fearow’s Retreat Cost is 0."
 					getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {h->
-            if(self.card.energyCount(C) == 0) {
+            if(self.cards.energyCount(C) == 0) {
               h.object = 0
             }
           }
@@ -995,7 +996,7 @@ public enum FireRedLeafGreen implements CardInfo {
 				pokeBody "Leaf Ride", {
 					text "If Scyther has any Energy attached to it, Scyther’s Retreat Cost is 0."
 					getterA (GET_RETREAT_COST, BEFORE_LAST,self) {h->
-            if(self.card.energyCount(C)) {
+            if(self.cards.energyCount(C)) {
               h.object = 0
             }
           }
@@ -2270,7 +2271,7 @@ public enum FireRedLeafGreen implements CardInfo {
 				pokeBody "Floating Electrons", {
 					text "As long as Voltorb has any Energy attached to it, Voltorb’s Retreat Cost is 0."
 					getterA (GET_RETREAT_COST, BEFORE_LAST,self) {h->
-						if(self.card.energyCount(C)) {
+						if(self.cards.energyCount(C)) {
 							h.object = 0
 						}
 					}
@@ -2581,8 +2582,8 @@ public enum FireRedLeafGreen implements CardInfo {
 					text "All Energy attached to Charizard ex are [R] Energy instead of its usual type."
 					getterA GET_ENERGY_TYPES, { holder->
 						if(holder.effect.target.owner == self.owner
-								&& holder.effect.card == self
-								&& holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
+								&& holder.effect.cards == self
+								&& holder.effect.cards.cardTypes.is(BASIC_ENERGY)) {
 							holder.object = [[R] as Set]
 						}
 					}
