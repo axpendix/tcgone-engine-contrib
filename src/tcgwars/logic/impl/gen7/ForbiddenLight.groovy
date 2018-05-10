@@ -2256,7 +2256,7 @@ public enum ForbiddenLight implements CardInfo {
 						{
 							def card = opp.hand.filterByType(SUPPORTER).select()
 							card.discard()
-							(card.first() as Card).play(bg,self)
+							(card.first() as TrainerCard).play(bg,self)
 						}
 					}
 				}
