@@ -1234,7 +1234,7 @@ public enum FireRedLeafGreen implements CardInfo {
 							def dmgRed = Math.min(3,self.cards.energyCount())
 							bg.dm().each{
 								if(it.to == self && it.notNoEffect && it.dmg.value) {
-									bc "Exoskeleton -20"
+									bc "Energy Protection -${10*dmgRed}"
 									it.dmg -= hp(10*dmgRed)
 								}
 							}
@@ -1472,9 +1472,9 @@ public enum FireRedLeafGreen implements CardInfo {
 					onAttack {
 						if(my.discard){
 							def selectedCard = new CardList();
-							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for a Basic Pokémon (or Evolution card)",cardTypeFilter(POKEMON)))
-							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for a Trainer card",cardTypeFilter(TRAINER)))
-							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for an Energy card)",cardTypeFilter(ENERGY)))
+							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for a Basic Pokémon (or Evolution card)",cardTypeFilter(POKEMON)).first())
+							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for a Trainer card",cardTypeFilter(TRAINER)).first())
+							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for an Energy card)",cardTypeFilter(ENERGY)).first())
 							selectedCard.showToOpponent("Your opponent selected those cards").moveTo(my.hand)
 						}
 					}
