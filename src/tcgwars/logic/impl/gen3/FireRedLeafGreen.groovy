@@ -850,6 +850,7 @@ public enum FireRedLeafGreen implements CardInfo {
 								attachPokemonTool(it,pcs)
 							}
 						}
+						shuffleDeck()
 					}
 				}
 				move "Cross-Cut", {
@@ -939,7 +940,8 @@ public enum FireRedLeafGreen implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						extraEnergyDamage(2,hp(20),W,thisMove)
 					}
 				}
 
@@ -975,7 +977,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						def tar = my.hand.filterByType(POKEMON_TOOL).select(min:0)
+						def tar = my.hand.filterByType(POKEMON_TOOL).select(max:my.hand.filterByType(POKEMON_TOOL).size())
 						damage 30*tar.size()
 						tar.discard()
 					}
@@ -1160,7 +1162,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						before APPLY_ATTACK_DAMAGES, {
 							if(ef.attacker.owner != self.owner) {
 								bg.dm().each{
-									if(it.to == self && self.active && it.dmg.notNoEffect && it.dmg.value) {
+									if(it.to == self && self.active && it.notNoEffect && it.dmg.value) {
 										bc "Kakuna's Poison Payback poison your Pokémon!"
 										apply POISONED,ef.attacker
 									}
@@ -1231,7 +1233,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						before APPLY_ATTACK_DAMAGES,{
 							def dmgRed = Math.min(3,self.cards.energyCount())
 							bg.dm().each{
-								if(it.to == self && it.dmg.notNoEffect && it.dmg.value) {
+								if(it.to == self && it.notNoEffect && it.dmg.value) {
 									bc "Exoskeleton -20"
 									it.dmg -= hp(10*dmgRed)
 								}
@@ -1267,7 +1269,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						assert my.deck
 					}
 					onAttack {
-						my.deck.search(count:2,"Search your deck for up to 2 Evolution cards",cardTypeFilter(EVOLUTION)).moveTo(my.hand)
+						my.deck.search(max:2,"Search your deck for up to 2 Evolution cards",cardTypeFilter(EVOLUTION)).showToOpponent("Selected cards").moveTo(my.hand)
 						shuffleDeck()
 					}
 				}
@@ -1330,7 +1332,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						assert my.deck
 					}
 					onAttack {
-						my.deck.search(count : 2, "Search your deck for up to 2 basic Energy cards", cardTypeFilter(BASIC_ENERGY)).each{
+						my.deck.search(max : 2, "Search your deck for up to 2 basic Energy cards", cardTypeFilter(BASIC_ENERGY)).each{
 							def pcs = my.all.findAll{!(it.pokemonEX)}.select("Attach $it to one of thos Pokémon")
 							attachEnergy(pcs, it)
 						}
@@ -1354,7 +1356,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					text "Persian can’t be affected by any Special Conditions."
 					delayedA {
 						before APPLY_SPECIAL_CONDITION,self, {
-							bc (self+"is thick Skinned!")
+							bc ("$self is thick Skinned!")
 							prevent()
 						}
 					}
@@ -1458,7 +1460,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					text "Raticate can’t be affected by any Special Conditions."
 					delayedA {
 						before APPLY_SPECIAL_CONDITION,self, {
-							bc (self+"is thick Skinned!")
+							bc ("$self is thick Skinned!")
 							prevent()
 						}
 					}
@@ -1469,7 +1471,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						if(my.discard){
-							def selectedCard = new CardList(it.topPokemonCard);
+							def selectedCard = new CardList();
 							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for a Basic Pokémon (or Evolution card)",cardTypeFilter(POKEMON)))
 							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for a Trainer card",cardTypeFilter(TRAINER)))
 							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for an Energy card)",cardTypeFilter(ENERGY)))
@@ -1495,8 +1497,10 @@ public enum FireRedLeafGreen implements CardInfo {
 					text "Prevent all effects of attacks, except damage, done to Venomoth by the Attacking Pokémon."
 					delayedA {
 						before null, self, Source.ATTACK, {
-							bc "Protective Dust prevents effect"
-							prevent()
+							if(self.owner.opposite.pbg.active.pokemonEX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+								bc "Protective Dust prevents effect"
+								prevent()
+							}
 						}
 					}
 				}
@@ -1540,7 +1544,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						afterDamage{
 							if(my.bench){
 								if(confirm("switch Wartortle with 1 of your Benched Pokémon?")){
-									sw self, my.bench.select
+									sw self, my.bench.select()
 								}
 							}
 						}
@@ -2732,7 +2736,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
 							bg.dm().each{
-								if(it.to == self && it.dmg.notNoEffect && (it.dmg.value == 10 || it.dmg.value == 30 || it.dmg.value == 50 || it.dmg.value == 70 || it.dmg.value == 90 || it.dmg.value == 110 || it.dmg.value == 130 || it.dmg.value == 150  || it.dmg.value == 170)) {
+								if(it.to == self && it.notNoEffect && (it.dmg.value == 10 || it.dmg.value == 30 || it.dmg.value == 50 || it.dmg.value == 70 || it.dmg.value == 90 || it.dmg.value == 110 || it.dmg.value == 130 || it.dmg.value == 150  || it.dmg.value == 170)) {
 									bc "Magic Odds prevent damage"
 									it.dmg = hp(0)
 								}
@@ -2757,7 +2761,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
 							bg.dm().each{
-								if(it.to == self && it.dmg.notNoEffect && (it.dmg.value == 20 || it.dmg.value == 40 || it.dmg.value == 60 || it.dmg.value == 80 || it.dmg.value == 100 || it.dmg.value == 130 || it.dmg.value == 140 || it.dmg.value == 160  || it.dmg.value == 180)) {
+								if(it.to == self && it.notNoEffect && (it.dmg.value == 20 || it.dmg.value == 40 || it.dmg.value == 60 || it.dmg.value == 80 || it.dmg.value == 100 || it.dmg.value == 130 || it.dmg.value == 140 || it.dmg.value == 160  || it.dmg.value == 180)) {
 									bc "Magic Evens prevent damage"
 									it.dmg -= hp(30)
 								}
