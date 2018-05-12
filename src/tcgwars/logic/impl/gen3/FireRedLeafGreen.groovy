@@ -1472,9 +1472,9 @@ public enum FireRedLeafGreen implements CardInfo {
 					onAttack {
 						if(my.discard){
 							def selectedCard = new CardList();
-							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for a Basic Pokémon (or Evolution card)",cardTypeFilter(POKEMON)).first())
-							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for a Trainer card",cardTypeFilter(TRAINER)).first())
-							selectedCard.add(my.discard.select(count : 1, "Search your discard pile for an Energy card)",cardTypeFilter(ENERGY)).first())
+							selectedCard.add(my.discard.filterByType(POKEMON).select(count : 1, "Search your discard pile for a Basic Pokémon (or Evolution card)").first())
+							selectedCard.add(my.discard.filterByType(TRAINER).select(count : 1, "Search your discard pile for a Trainer card").first())
+							selectedCard.add(my.discard.filterByType(ENERGY).select(count : 1, "Search your discard pile for an Energy card)").first())
 							selectedCard.showToOpponent("Your opponent selected those cards").moveTo(my.hand)
 						}
 					}
@@ -1584,7 +1584,9 @@ public enum FireRedLeafGreen implements CardInfo {
 						assert self.benched : "Wigglytuff is not benched"
 						assert my.active.specialConditions : "your active does not have any Special Condition"
 						powerUsed()
-						def spcCleared = choose(my.active.specialConditions,"choose the Special Condition to remove from your active")
+						def scpList = new List<SpecialConditionType>
+						scpList.addAll(my.active.specialConditions)
+						def spcCleared = choose(scpList,"choose the Special Condition to remove from your active")
 						clearSpecialCondition(self, POKEPOWER, [spcCleared])
 					}
 				}
@@ -1666,7 +1668,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						my.deck.search(max: count, "Select a Metapod and a Butterfree", {it.name == "Metapod" || it.name == "Butterfree"}, {CardList list ->
+						my.deck.search(max: 2, "Select a Metapod and a Butterfree", {it.name == "Metapod" || it.name == "Butterfree"}, {CardList list ->
 							list.filterByNameEquals("Metapod").size() <= 1 && list.filterByNameEquals("Butterfree").size() <= 1
 						}).moveTo(my.hand)
 					}
@@ -1726,7 +1728,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						assert opp.bench
 					}
 					onAttack {
-						sw defending, opp.bench
+						sw defending, opp.bench.select()
 					}
 				}
 				move "Moon Kick", {
@@ -1806,7 +1808,14 @@ public enum FireRedLeafGreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						apply CONFUSED
+						delayed{
+							before BETWEEN_TURNS, {
+								if(bg.currentTurn == self.owner.opposite){
+									apply CONFUSED
+								}
+							}
+							unregisterAfter 2
+						}
 					}
 				}
 
@@ -1842,7 +1851,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						assert opp.bench : "There is no Pokémon to switch"
 					}
 					onAttack {
-						def pcs = opp.bench.select("New active")
+						def pcs = opp.bench.oppSelect("New active")
 						sw defending, pcs
 						apply ASLEEP, pcs
 					}
@@ -1964,6 +1973,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						def ind = 0
 						while(ind < my.deck.size()){
 							def curCard = my.deck.get(ind)
+							ind+=1
 							revealCard.add(curCard)
 							if(curCard.cardTypes.is(BASIC))
 								break
@@ -2072,7 +2082,9 @@ public enum FireRedLeafGreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						attachEnergyFromDiscardPile(L,true)
+						flip {
+							afterDamage{attachEnergyFrom(type : L, self, my.discard)}
+						}
 					}
 				}
 
