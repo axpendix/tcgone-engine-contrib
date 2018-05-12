@@ -1584,7 +1584,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						assert self.benched : "Wigglytuff is not benched"
 						assert my.active.specialConditions : "your active does not have any Special Condition"
 						powerUsed()
-						def scpList = new List<SpecialConditionType>
+						def scpList = new ArrayList<SpecialConditionType>()
 						scpList.addAll(my.active.specialConditions)
 						def spcCleared = choose(scpList,"choose the Special Condition to remove from your active")
 						clearSpecialCondition(self, POKEPOWER, [spcCleared])
