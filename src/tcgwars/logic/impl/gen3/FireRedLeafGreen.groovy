@@ -1472,9 +1472,9 @@ public enum FireRedLeafGreen implements CardInfo {
 					onAttack {
 						if(my.discard){
 							def selectedCard = new CardList();
-							selectedCard.add(my.discard.filterByType(POKEMON).select(count : 1, "Search your discard pile for a Basic Pokémon (or Evolution card)").first())
-							selectedCard.add(my.discard.filterByType(TRAINER).select(count : 1, "Search your discard pile for a Trainer card").first())
-							selectedCard.add(my.discard.filterByType(ENERGY).select(count : 1, "Search your discard pile for an Energy card)").first())
+							if(my.discard.filterByType(POKEMON)) selectedCard.add(my.discard.filterByType(POKEMON).select(count : 1, "Search your discard pile for a Basic Pokémon (or Evolution card)").first())
+							if(my.discard.filterByType(TRAINER)) selectedCard.add(my.discard.filterByType(TRAINER).select(count : 1, "Search your discard pile for a Trainer card").first())
+							if(my.discard.filterByType(ENERGY)) selectedCard.add(my.discard.filterByType(ENERGY).select(count : 1, "Search your discard pile for an Energy card)").first())
 							selectedCard.showToOpponent("Your opponent selected those cards").moveTo(my.hand)
 						}
 					}
@@ -1587,7 +1587,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						def scpList = new ArrayList<SpecialConditionType>()
 						scpList.addAll(my.active.specialConditions)
 						def spcCleared = choose(scpList,"choose the Special Condition to remove from your active")
-						clearSpecialCondition(self, POKEPOWER, [spcCleared])
+						clearSpecialCondition(self.owner.pbg.active, Source.ABILITY, [spcCleared])
 					}
 				}
 				move "Expand", {
@@ -1811,7 +1811,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						delayed{
 							before BETWEEN_TURNS, {
 								if(bg.currentTurn == self.owner.opposite){
-									apply CONFUSED
+									apply CONFUSED, self.owner.opposite.pbg.active
 								}
 							}
 							unregisterAfter 2
@@ -1851,7 +1851,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						assert opp.bench : "There is no Pokémon to switch"
 					}
 					onAttack {
-						def pcs = opp.bench.oppSelect("New active")
+						def pcs = opp.bench.select("New active")
 						sw defending, pcs
 						apply ASLEEP, pcs
 					}
@@ -1979,7 +1979,7 @@ public enum FireRedLeafGreen implements CardInfo {
 								break
 						}
 						revealCard.showToOpponent("revealed cards")
-						curCard.moveTo(my.hand)
+						revealCard.first().moveTo(my.hand)
 						shuffleDeck()
 					}
 				}
@@ -2083,7 +2083,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					onAttack {
 						damage 10
 						flip {
-							afterDamage{attachEnergyFrom(type : L, self, my.discard)}
+							afterDamage{attachEnergyFrom(type : L, my.discard, self)}
 						}
 					}
 				}
