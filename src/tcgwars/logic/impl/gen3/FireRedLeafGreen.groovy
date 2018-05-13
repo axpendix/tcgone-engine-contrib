@@ -1981,8 +1981,11 @@ public enum FireRedLeafGreen implements CardInfo {
 							if(curCard.cardTypes.is(BASIC))
 								break
 						}
+						revealCard.showToMe("Drawn cards")
 						revealCard.showToOpponent("revealed cards")
-						curCard.moveTo(my.hand)
+						revealCard.clear()
+						revealCard.add(curCard)
+						revealCard.moveTo(my.hand)
 						shuffleDeck()
 					}
 				}
