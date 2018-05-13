@@ -1587,7 +1587,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						def scpList = new ArrayList<SpecialConditionType>()
 						scpList.addAll(my.active.specialConditions)
 						def spcCleared = choose(scpList,"choose the Special Condition to remove from your active")
-						clearSpecialCondition(self.owner.pbg.active, Source.OTHER, [spcCleared])
+						clearSpecialCondition(self.owner.pbg.active, Source.SRC_ABILITY, [spcCleared])
 					}
 				}
 				move "Expand", {
@@ -1967,19 +1967,22 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Look for Friends", {
 					text "Reveal cards from your deck until you reveal a Basic Pokémon. Show that card to your opponent and put it into your hand. Shuffle the other revealed cards into your deck. (If you don’t reveal a Basic Pokémon, shuffle all the revealed cards back into your deck.)"
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
 						def revealCard = new CardList();
 						def ind = 0
+						def curCard
 						while(ind < my.deck.size()){
-							def curCard = my.deck.get(ind)
+							curCard = my.deck.get(ind)
 							ind+=1
 							revealCard.add(curCard)
 							if(curCard.cardTypes.is(BASIC))
 								break
 						}
 						revealCard.showToOpponent("revealed cards")
-						revealCard.get(0).moveTo(my.hand)
+						curCard.moveTo(my.hand)
 						shuffleDeck()
 					}
 				}
