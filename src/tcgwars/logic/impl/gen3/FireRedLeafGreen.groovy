@@ -1587,7 +1587,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						def scpList = new ArrayList<SpecialConditionType>()
 						scpList.addAll(my.active.specialConditions)
 						def spcCleared = choose(scpList,"choose the Special Condition to remove from your active")
-						clearSpecialCondition(self.owner.pbg.active, Source.ABILITY, [spcCleared])
+						clearSpecialCondition(self.owner.pbg.active, Source.OTHER, [spcCleared])
 					}
 				}
 				move "Expand", {
@@ -1979,7 +1979,7 @@ public enum FireRedLeafGreen implements CardInfo {
 								break
 						}
 						revealCard.showToOpponent("revealed cards")
-						revealCard.first().moveTo(my.hand)
+						revealCard.get(0).moveTo(my.hand)
 						shuffleDeck()
 					}
 				}
