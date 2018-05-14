@@ -1283,7 +1283,8 @@ public enum Fossil implements CardInfo {
 			return basicTrainer (this) {
 				text "Shuffle your hand into your deck. Flip a coin. If heads, draw 8 cards. If tails, draw 1 card."
 				onPlay {
-          shuffleDeck(my.hand.getExcludedList(thisCard))
+					my.hand.getExcludedList(thisCard).moveTo(my.deck)
+          shuffleDeck()
           flip 1,{draw 8},{draw 1}
 				}
 				playRequirement{
