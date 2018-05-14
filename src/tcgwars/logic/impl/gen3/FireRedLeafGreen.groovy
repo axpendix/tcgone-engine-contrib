@@ -2174,7 +2174,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						reduceDamageNextTurn(hp(20,thisMove))
+						reduceDamageNextTurn(hp(20),thisMove)
 					}
 				}
 				move "Wave Splash", {
@@ -2355,7 +2355,7 @@ public enum FireRedLeafGreen implements CardInfo {
 			return supporter (this) {
 				text "Search your deck for a Basic Pokémon or Evolution card (excluding Pokémon-ex), show it to your opponent, and put it into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
-					my.deck.search(count: 1,"Search your deck for a Basic Pokémon or Evolution card",{(it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)) && !(it.pokemonEX) }).showToOpponent("Selected card").moveTo(my.hand)
+					my.deck.search(count: 1,"Search your deck for a Basic Pokémon or Evolution card",{(it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)) && !(it.cardTypes.is(POKEMON_EX))}).showToOpponent("Selected card").moveTo(my.hand)
 					shuffleDeck()
 				}
 				playRequirement{
@@ -2367,7 +2367,7 @@ public enum FireRedLeafGreen implements CardInfo {
 				text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponent’s Pokémon and discard it."
 				onPlay {
 					flip {
-						discardOpponentEnergy(opp.all.select())
+						discardOpponentEnergy(Target.OPP_ALL)
 					}
 				}
 				playRequirement{
@@ -2379,7 +2379,7 @@ public enum FireRedLeafGreen implements CardInfo {
 				onPlay {
 					if(my.bench && my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}){
 						def pcs = my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}.select("Move energy from")
-						def tar = my.all.getExcludedList(pcs).select("Move energy to")
+						def tar = my.all.findAll{it != pcs}.select("Move energy to")
 						moveEnergy(basic: true, pcs, tar)
 					}
 				}
@@ -2392,11 +2392,13 @@ public enum FireRedLeafGreen implements CardInfo {
 				def eff
 				onPlay {reason->
 					eff = delayed {
-						before (KNOCKOUT,self) {
-							if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.cards.filterByType(ENERGY)) {
+						before KNOCKOUT {
+							if(!self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.owner.pbg.active.cards.filterByType(ENERGY)) {
 								bc "EXP.ALL activates"
-								def pcs = self.owner.pbg.bench.select("Wishful Baton activates, choose target pokemon for energies", true, self.owner)
-								moveEnergy(basic: true, self, pcs)
+								if(confirm("move an energy from ${self.owner.pbg.active} to $self ?")){
+									def pcs = self.owner.pbg.bench.select("EXP.ALL activates, choose target pokemon for energies", true, self.owner)
+									moveEnergy(basic: true, self, pcs)
+								}
 							}
 						}
 					}
@@ -2418,7 +2420,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					}
 				}
 				playRequirement{
-					assert my.bench.notFull()
+					assert my.bench.notFull
 				}
 			};
 			case LIFE_HERB_93:
@@ -2428,7 +2430,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					def tar = my.all.findAll{(it.numberOfDamageCounters !=0 || !(it.noSPC())) && it.topPokemonCard.cardTypes.isNot(POKEMON_EX)}
 					if(tar){
 						def pcs = tar.select("select 1 of your Pokémon (excluding Pokémon-ex) to remove all Special Conditions and 6 damage counters")
-						clearSpecialCondition(pcs,TRAINER_CARD)
+						clearSpecialCondition(pcs,Source.TRAINER_CARD)
 						heal 60, self
 					}
 				}
@@ -2438,7 +2440,8 @@ public enum FireRedLeafGreen implements CardInfo {
 			case MT__MOON_94:
 			return stadium (this) {
 				text "Any Pokémon (both yours and your opponent’s) with maximum HP less than 70 can’t use any Poké-Powers.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
-				def eff
+				def effect1
+				def effect2
 				onPlay {
 					effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
 						if (h.effect.target.fullHP < 70 && h.effect.ability instanceof PokePower) {
@@ -2497,21 +2500,23 @@ public enum FireRedLeafGreen implements CardInfo {
 			return supporter (this) {
 				text "Shuffle your hand into your deck, then draw 5 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
-					my.hand.moveTo(my.deck)
+					my.hand.getExcludedList(thisCard).moveTo(my.deck)
 					shuffleDeck()
 					draw 5
 				}
 				playRequirement{
-					assert my.deck.notEmpty && (my.hand.getExcludedList(thisCard).size() >0)
+					assert my.deck.notEmpty || (my.hand.getExcludedList(thisCard).size() >0)
 				}
 			};
 			case SUPER_SCOOP_UP_99:
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, return 1 of your Pokémon and all cards attached to it to your hand."
 				onPlay {
-					def pcs = my.all.select()
-					pcs.cards.moveTo(hand)
-					removePCS(pcs)
+					flip{
+						def pcs = my.all.select()
+						pcs.cards.moveTo(hand)
+						removePCS(pcs)
+					}
 				}
 				playRequirement{
 					assert my.bench : "you don't have pokemon to return to your hand"
