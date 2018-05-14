@@ -2396,8 +2396,7 @@ public enum FireRedLeafGreen implements CardInfo {
 							if(!self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.owner.pbg.active.cards.filterByType(ENERGY)) {
 								bc "EXP.ALL activates"
 								if(confirm("move an energy from ${self.owner.pbg.active} to $self ?")){
-									def pcs = self.owner.pbg.bench.select("EXP.ALL activates, choose target pokemon for energies", true, self.owner)
-									moveEnergy(basic: true, self, pcs)
+									moveEnergy(basic: true, self.owner.pbg.active, self)
 								}
 							}
 						}
