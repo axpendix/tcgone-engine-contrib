@@ -2392,7 +2392,7 @@ public enum FireRedLeafGreen implements CardInfo {
 				def eff
 				onPlay {reason->
 					eff = delayed {
-						before KNOCKOUT {
+						before KNOCKOUT, {
 							if(!self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.owner.pbg.active.cards.filterByType(ENERGY)) {
 								bc "EXP.ALL activates"
 								if(confirm("move an energy from ${self.owner.pbg.active} to $self ?")){
@@ -2431,7 +2431,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					if(tar){
 						def pcs = tar.select("select 1 of your Pokémon (excluding Pokémon-ex) to remove all Special Conditions and 6 damage counters")
 						clearSpecialCondition(pcs,Source.TRAINER_CARD)
-						heal 60, self
+						heal 60, pcs
 					}
 				}
 				playRequirement{
@@ -2444,12 +2444,12 @@ public enum FireRedLeafGreen implements CardInfo {
 				def effect2
 				onPlay {
 					effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
-						if (h.effect.target.fullHP < 70 && h.effect.ability instanceof PokePower) {
+						if (h.effect.target.fullHP.value < 70 && h.effect.ability instanceof PokePower) {
 							h.object=true
 						}
 					}
 					effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-						if ((h.effect.target as Card).fullHP < 70) {
+						if ((h.effect.target as Card).fullHP.value < 70) {
 							h.object=true
 						}
 					}
