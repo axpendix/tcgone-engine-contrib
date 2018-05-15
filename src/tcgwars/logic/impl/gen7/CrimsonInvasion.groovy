@@ -2569,7 +2569,7 @@ public enum CrimsonInvasion implements CardInfo {
                   if(self.owner.pbg.prizeAsList.size() > self.owner.opposite.pbg.prizeAsList.size())
                       return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
                   else
-                      return [[C]]
+                      return [[C] as Set]
               }
           };
       case GYARADOS_GX_101:

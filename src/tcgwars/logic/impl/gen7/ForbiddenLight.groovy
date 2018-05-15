@@ -1560,7 +1560,17 @@ public enum ForbiddenLight implements CardInfo {
 				weakness PSYCHIC
 				bwAbility "Flaming Fighter", {
 					text "Put 6 damage counters instead of 2 on your opponent’s Burned Pokémon between turns."
-					actionA {
+					def eff
+					onActivate{
+						eff =  getterA (GET_BURN_DAMAGE) {h->
+							if(h.effect.target.owner != self.owner){
+								bc "Scorching Scales increases burn damage to 40"
+								h.object = hp(60)
+							}
+						}
+					}
+					onDeactivate {
+						eff.unregister()
 					}
 				}
 				move "Burst Punch", {
