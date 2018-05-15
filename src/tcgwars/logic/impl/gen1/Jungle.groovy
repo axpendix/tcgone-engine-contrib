@@ -215,10 +215,10 @@ public enum Jungle implements CardInfo {
 					onAttack {
 						def moveList = []
 						def labelList = []
-						opp.all.each {pcs->
-							moveList.addAll(pcs.topPokemonCard.moves);
-							labelList.addAll(pcs.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
-						}
+
+						moveList.addAll(defending.topPokemonCard.moves);
+						labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
+
 						def move=choose(moveList, labelList, "Which move do you want to use")
 						def bef=blockingEffect(ENERGY_COST_CALCULATOR, DISCARD_SELF_ENERGY, BETWEEN_TURNS)
 						attack (move as Move)
