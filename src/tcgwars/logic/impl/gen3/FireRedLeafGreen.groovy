@@ -1502,7 +1502,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					text "Prevent all effects of attacks, except damage, done to Venomoth by the Attacking Pokémon."
 					delayedA {
 						before null, self, Source.ATTACK, {
-							if(self.owner.opposite.pbg.active.pokemonEX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)){
+							if(bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)){
 								bc "Protective Dust prevents effect"
 								prevent()
 							}
@@ -2571,7 +2571,7 @@ public enum FireRedLeafGreen implements CardInfo {
         }
         getEnergyTypesOverride{
             if(self.cards.filterByType(SPECIAL_ENERGY).size() > 1)
-							return [[C]]
+							return [[C] as Set]
             else
 							return [[R, D, F, G, W, Y, L, M, P] as Set]
         }
@@ -2583,7 +2583,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					text "As often as you like during your turn (before your attack), you may attach a [W] Energy card from your hand to 1 of your Pokémon. Put 1 damage counter on that Pokémon. This power can’t be used if Blastoise ex is affected by a Special Condition."
 					actionA {
 						assert !(self.specialConditions) : "Blastoise ex is affected by a Special Condition."
-						assert my.hand.find{it.cardTypes.filterByType(BASIC_ENERGY).filterByEnergyType(W)} : "You have no [W] Energy card in your hand"
+						assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W) : "You have no [W] Energy card in your hand"
 
 						def pcs = my.all.select()
 						attachEnergyFrom(type:W,my.hand,pcs)
