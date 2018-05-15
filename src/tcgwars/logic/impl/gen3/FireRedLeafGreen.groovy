@@ -2539,7 +2539,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					def tar = my.all.findAll{it.numberOfDamageCounters}
 					if(tar){
 						def pcs = tar.select()
-						heal 20, self
+						heal 20, pcs
 					}
 				}
 				playRequirement{
@@ -2565,8 +2565,13 @@ public enum FireRedLeafGreen implements CardInfo {
         onMove {to->
         }
         getEnergyTypesOverride{
+<<<<<<< HEAD
             if(self.cards.filterByType(SPECIAL_ENERGY) )
                 return [[R, D, F, G, W, Y, L, M, P] as Set]
+=======
+            if(self.cards.filterByType(SPECIAL_ENERGY).size() == 1)
+                return [[R,F,G,W,P,L,M,D,Y,N]]
+>>>>>>> FRLG (101-116) fixes 1
             else
                 return [[C]]
         }
@@ -2580,7 +2585,6 @@ public enum FireRedLeafGreen implements CardInfo {
 						assert !(self.specialConditions)
 
 						assert my.hand.find{it.cardTypes.is(W)}
-						assert my.all.find{it.types.contains(W)}
 
 						def pcs = my.all.select()
 						attachEnergyFrom(type:W,my.hand,pcs)
@@ -2607,9 +2611,10 @@ public enum FireRedLeafGreen implements CardInfo {
 				pokeBody "Energy Flame", {
 					text "All Energy attached to Charizard ex are [R] Energy instead of its usual type."
 					getterA GET_ENERGY_TYPES, { holder->
+						bc "${holder.effect.target}"
 						if(holder.effect.target.owner == self.owner
-								&& holder.effect.cards == self
-								&& holder.effect.cards.cardTypes.is(BASIC_ENERGY)) {
+								&& holder.effect.target == self
+								&& holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
 							holder.object = [[R] as Set]
 						}
 					}
@@ -2645,7 +2650,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						def labelList = []
 
 						moveList.addAll(defending.topPokemonCard.moves);
-						labelList.addAll(defending.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
+						labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
 
 						def move=choose(moveList, labelList)
 						def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
@@ -2672,11 +2677,11 @@ public enum FireRedLeafGreen implements CardInfo {
 						checkLastTurn()
 						powerUsed()
 						new Knockout(self).run(bg)
-						attachEnergyFrom(type : L,my.discard, my.all.findAll{!(it.pokemonEX)})
-						attachEnergyFrom(type : L,my.discard, my.all.findAll{!(it.pokemonEX)})
-						attachEnergyFrom(type : L,my.discard, my.all.findAll{!(it.pokemonEX)})
-						attachEnergyFrom(type : L,my.discard, my.all.findAll{!(it.pokemonEX)})
-						attachEnergyFrom(type : L,my.discard, my.all.findAll{!(it.pokemonEX)})
+						attachEnergyFrom(may : true ,my.discard, my.all.findAll{!(it.pokemonEX)})
+						attachEnergyFrom(may : true,my.discard, my.all.findAll{!(it.pokemonEX)})
+						attachEnergyFrom(may : true,my.discard, my.all.findAll{!(it.pokemonEX)})
+						attachEnergyFrom(may : true,my.discard, my.all.findAll{!(it.pokemonEX)})
+						attachEnergyFrom(may : true,my.discard, my.all.findAll{!(it.pokemonEX)})
 					}
 				}
 				move "Crush and Burn", {
@@ -2711,7 +2716,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					onAttack {
 						damage 40
 						opp.hand.showToMe("Opponent’s hand")
-						damage 10*opp.hand.findAll{it.cardTypes(TRAINER)}.size()
+						damage 10*opp.hand.findAll{it.cardTypes.is(TRAINER)}.size()
 					}
 				}
 				move "Prize Count", {
@@ -2771,7 +2776,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						defending.damage += hp(10*opp.hand.size())
+						directDamage 10*opp.hand.size(), defending
 					}
 				}
 
@@ -2785,7 +2790,7 @@ public enum FireRedLeafGreen implements CardInfo {
 							bg.dm().each{
 								if(it.to == self && it.notNoEffect && (it.dmg.value == 20 || it.dmg.value == 40 || it.dmg.value == 60 || it.dmg.value == 80 || it.dmg.value == 100 || it.dmg.value == 130 || it.dmg.value == 140 || it.dmg.value == 160  || it.dmg.value == 180)) {
 									bc "Magic Evens prevent damage"
-									it.dmg -= hp(30)
+									it.dmg = hp(0)
 								}
 							}
 						}
@@ -2796,7 +2801,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						defending.damage += hp(10*opp.hand.size())
+						directDamage 10*opp.hand.size(), defending
 					}
 				}
 
@@ -2859,7 +2864,6 @@ public enum FireRedLeafGreen implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10+10*self.numberOfDamageCounters
-
 					}
 				}
 
@@ -2878,7 +2882,7 @@ public enum FireRedLeafGreen implements CardInfo {
 								for(int i=0;i<energyMove;i++){
 									moveEnergy(type: W, my.active, self)
 								}
-								sw self, my.active
+								sw my.active, self
 							}
 						}
 					}
@@ -2911,7 +2915,7 @@ public enum FireRedLeafGreen implements CardInfo {
 								for(int i=0;i<energyMove;i++){
 									moveEnergy(type: R, my.active, self)
 								}
-								sw self, my.active
+								sw my.active, self
 							}
 						}
 					}
@@ -2944,7 +2948,7 @@ public enum FireRedLeafGreen implements CardInfo {
 								for(int i=0;i<energyMove;i++){
 									moveEnergy(type: L, my.active, self)
 								}
-								sw self, my.active
+								sw my.active, self
 							}
 						}
 					}
