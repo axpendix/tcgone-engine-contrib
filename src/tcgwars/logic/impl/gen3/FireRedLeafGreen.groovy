@@ -563,7 +563,12 @@ public enum FireRedLeafGreen implements CardInfo {
 				pokeBody "Fiery Aura", {
 					text "As long as Rapidash is your Active Pokémon, put 4 damage counters instead of 2 on Burned Pokémon between turns."
 					delayedA {
-						//TODO: increase burn damage
+						getterA (GET_BURN_DAMAGE) {h->
+							if(self.active){
+								bc "Fiery Aura increases burn damage to 40"
+								h.object = hp(40)
+							}
+						}
 					}
 				}
 				move "Searing Flame", {
@@ -977,7 +982,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						def tar = my.hand.filterByType(POKEMON_TOOL).select(max:my.hand.filterByType(POKEMON_TOOL).size())
+						def tar = my.hand.filterByType(POKEMON_TOOL,TECHNICAL_MACHINE).select(max:my.hand.filterByType(POKEMON_TOOL,TECHNICAL_MACHINE).size())
 						damage 30*tar.size()
 						tar.discard()
 					}
@@ -1497,7 +1502,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					text "Prevent all effects of attacks, except damage, done to Venomoth by the Attacking Pokémon."
 					delayedA {
 						before null, self, Source.ATTACK, {
-							if(self.owner.opposite.pbg.active.pokemonEX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+							if(self.owner.opposite.pbg.active.pokemonEX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof Attack) && !(ef instanceof ApplyDamages)){
 								bc "Protective Dust prevents effect"
 								prevent()
 							}
@@ -2565,10 +2570,10 @@ public enum FireRedLeafGreen implements CardInfo {
         onMove {to->
         }
         getEnergyTypesOverride{
-            if(self.cards.filterByType(SPECIAL_ENERGY) )
-                return [[R, D, F, G, W, Y, L, M, P] as Set]
+            if(self.cards.filterByType(SPECIAL_ENERGY).size() > 1)
+							return [[C]]
             else
-                return [[C]]
+							return [[R, D, F, G, W, Y, L, M, P] as Set]
         }
       };
 			case BLASTOISE_EX_104:
@@ -2577,9 +2582,8 @@ public enum FireRedLeafGreen implements CardInfo {
 				pokePower "Energy Rain", {
 					text "As often as you like during your turn (before your attack), you may attach a [W] Energy card from your hand to 1 of your Pokémon. Put 1 damage counter on that Pokémon. This power can’t be used if Blastoise ex is affected by a Special Condition."
 					actionA {
-						assert !(self.specialConditions)
-
-						assert my.hand.find{it.cardTypes.is(W)}
+						assert !(self.specialConditions) : "Blastoise ex is affected by a Special Condition."
+						assert my.hand.find{it.cardTypes.filterByType(BASIC_ENERGY).filterByEnergyType(W)} : "You have no [W] Energy card in your hand"
 
 						def pcs = my.all.select()
 						attachEnergyFrom(type:W,my.hand,pcs)
@@ -2606,7 +2610,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				pokeBody "Energy Flame", {
 					text "All Energy attached to Charizard ex are [R] Energy instead of its usual type."
 					getterA GET_ENERGY_TYPES, { holder->
-						bc "${holder.effect.target}"
 						if(holder.effect.target.owner == self.owner
 								&& holder.effect.target == self
 								&& holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
@@ -2905,7 +2908,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						if(self.lastEvolved == bg.turnCount){
 							if(confirm("Switch your active with Moltres ex"))
 							{
-								def energyCnt = my.active.cards.filterByEnergyType(W).size()
+								def energyCnt = my.active.cards.filterByEnergyType(R).size()
 								def energyMove = choose(0..energyCnt,"Choose the number of energy to move")
 								for(int i=0;i<energyMove;i++){
 									moveEnergy(type: R, my.active, self)
@@ -2938,7 +2941,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						if(self.lastEvolved == bg.turnCount){
 							if(confirm("Switch your active with Zapdos ex"))
 							{
-								def energyCnt = my.active.cards.filterByEnergyType(W).size()
+								def energyCnt = my.active.cards.filterByEnergyType(L).size()
 								def energyMove = choose(0..energyCnt,"Choose the number of energy to move")
 								for(int i=0;i<energyMove;i++){
 									moveEnergy(type: L, my.active, self)
