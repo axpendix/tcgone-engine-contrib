@@ -770,12 +770,11 @@ public enum UltraPrism implements CardInfo {
           text "Put 6 damage counters instead of 2 on your opponent’s Burned Pokémon between turns."
           def eff
           onActivate{
-            //TODO : implement it properly and change burn
-            eff = before BETWEEN_TURNS, {
-              if(opp.active.isSPC(BURNED)){
-								bc "Flaming Fighter increase burn damage"
-								opp.active.damage += hp(40)
-							}
+            eff =  getterA (GET_BURN_DAMAGE) {h->
+              if(h.effect.target.owner != self.owner){
+                bc "Scorching Scales increases burn damage to 40"
+                h.object = hp(60)
+              }
             }
           }
           onDeactivate {
@@ -2948,7 +2947,6 @@ public enum UltraPrism implements CardInfo {
             assert my.discard.notEmpty
           }
           onAttack {
-            //TODO : how to put the cards at the bottom?
             my.discard.select(count : 3).moveTo(my.deck)
           }
         }
