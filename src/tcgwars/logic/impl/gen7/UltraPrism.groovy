@@ -3300,9 +3300,9 @@ public enum UltraPrism implements CardInfo {
           boolean cond1 = self.topPokemonCard.cardTypes.is(STAGE2)
           boolean cond2 = self.owner.pbg.all.findAll{it.topPokemonCard.cardTypes.is(STAGE2)}.size() >= 3
           if(cond1 && cond2)
-            return [[R, D, F, G, W, Y, L, M, P], [R, D, F, G, W, Y, L, M, P], [R, D, F, G, W, Y, L, M, P], [R, D, F, G, W, Y, L, M, P]]
+            return [[R, D, F, G, W, Y, L, M, P]  as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
           else if(cond1)
-            return [[R, D, F, G, W, Y, L, M, P]]
+            return [[R, D, F, G, W, Y, L, M, P]  as Set]
           else
             return [[C]]
         }
