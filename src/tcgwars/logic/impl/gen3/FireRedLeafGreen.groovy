@@ -1502,7 +1502,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					text "Prevent all effects of attacks, except damage, done to Venomoth by the Attacking Pokémon."
 					delayedA {
 						before null, self, Source.ATTACK, {
-							if(self.owner.opposite.pbg.active.pokemonEX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof Attack) && !(ef instanceof ApplyDamages)){
+							if(self.owner.opposite.pbg.active.pokemonEX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)){
 								bc "Protective Dust prevents effect"
 								prevent()
 							}
