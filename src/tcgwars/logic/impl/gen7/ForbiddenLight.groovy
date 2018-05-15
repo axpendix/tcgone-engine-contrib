@@ -1490,8 +1490,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						//TODO : Identify ultra beasts
-						damage 0
+						damage 20*my.all.findAll{it.topPokemonCard.cardTypes.is(ULTRA_BEAST)}.size()
 					}
 				}
 				move "Jet Needle", {
@@ -1835,7 +1834,7 @@ public enum ForbiddenLight implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						//TODO : identify Ultra Beast
+						if(opp.all.findAll{it.topPokemonCard.cardTypes.is(ULTRA_BEAST)})
 					}
 				}
 
@@ -2793,8 +2792,7 @@ public enum ForbiddenLight implements CardInfo {
 			return supporter (this) {
 				text "Discard up to 2 Ultra Beast cards from your hand. Draw 3 cards for each card you discarded in this way.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
-					//TODO : replace pokemon by Ultra Beast
-					def tar = my.hand.filterByType(POKEMON).select(max : 2)
+					def tar = my.hand.filterByType(ULTRA_BEAST).select(max : 2)
 					draw 3*tar.size()
 					tar.discard()
 				}
@@ -2813,8 +2811,7 @@ public enum ForbiddenLight implements CardInfo {
 						assert lastTurn != bg().turnCount : "Already used"
 						bc "Used Ultra Space effect"
 						lastTurn = bg().turnCount
-						//TODO : replace by ultra beast
-						deck.search {Card c->c.cardTypes.is(POKEMON)}.each {
+						deck.search {Card c->c.cardTypes.is(ULTRA_BEAST)}.each {
 							deck.remove(it)
 							benchPCS(it)
 						}
@@ -2832,11 +2829,10 @@ public enum ForbiddenLight implements CardInfo {
 				text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nThis card provides [C] Energy.\nWhile this card is attached to an Ultra Beast, it provides every type of Energy but provides only 1 Energy at a time. The attacks of the Ultra Beast this card is attached to do 30 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
 				def eff
 				onPlay {reason->
-					//TODO : replace by ultra beast
 					eff = delayed {
 						before APPLY_ATTACK_DAMAGES, {
 							bg.dm().each{
-								if(it.from == self && it.from.cards.topPokemonCard.is(POKEMON) && it.notNoEffect && it.dmg.value) {
+								if(it.from == self && it.from.cards.topPokemonCard.is(ULTRA_BEAST) && it.notNoEffect && it.dmg.value) {
 									 bc "Beast Energy +30"
 									 it.dmg += hp(30)
 								}
@@ -2849,11 +2845,10 @@ public enum ForbiddenLight implements CardInfo {
 				onMove {to->
 				}
 				getEnergyTypesOverride{
-						//TODO : replace by ultra beast
-						if(self.cards.topPokemonCard.is(POKEMON))
+						if(self.cards.topPokemonCard.is(ULTRA_BEAST))
 								return [[R, D, F, G, W, Y, L, M, P] as Set]
 						else
-								return [[C]]
+								return [[C] as Set]
 				}
 			};
 			case UNIT_ENERGY_FDY_118:
