@@ -3304,7 +3304,7 @@ public enum UltraPrism implements CardInfo {
           else if(cond1)
             return [[R, D, F, G, W, Y, L, M, P]  as Set]
           else
-            return [[C]]  as Set]
+            return [[C]  as Set]
         }
 
       };
