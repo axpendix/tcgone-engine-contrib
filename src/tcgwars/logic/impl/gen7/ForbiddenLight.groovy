@@ -1834,7 +1834,7 @@ public enum ForbiddenLight implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						if(opp.all.findAll{it.topPokemonCard.cardTypes.is(ULTRA_BEAST)})
+						if(opp.all.findAll{it.topPokemonCard.cardTypes.is(ULTRA_BEAST)}) damage 30
 					}
 				}
 
