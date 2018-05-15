@@ -2851,7 +2851,7 @@ public enum ForbiddenLight implements CardInfo {
 				getEnergyTypesOverride{
 						//TODO : replace by ultra beast
 						if(self.cards.topPokemonCard.is(POKEMON))
-								return [[R, D, F, G, W, Y, L, M, P]]
+								return [[R, D, F, G, W, Y, L, M, P] as Set]
 						else
 								return [[C]]
 				}

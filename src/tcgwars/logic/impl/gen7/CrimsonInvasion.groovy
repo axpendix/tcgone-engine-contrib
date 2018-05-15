@@ -2489,7 +2489,7 @@ public enum CrimsonInvasion implements CardInfo {
           my.discard.filterByType(SUPPORTER,STADIUM).select(count :2,"Search your discard pile for 2 supporter or stadium").moveTo(hand)
         }
         playRequirement{
-          assert my.discard
+          assert my.discard.filterByType(SUPPORTER,STADIUM)
         }
       };
       case PEEKING_RED_CARD_97:
@@ -2567,7 +2567,7 @@ public enum CrimsonInvasion implements CardInfo {
               }
               getEnergyTypesOverride{
                   if(self.owner.pbg.prizeAsList.size() > self.owner.opposite.pbg.prizeAsList.size())
-                      return [[R, D, F, G, W, Y, L, M, P], [R, D, F, G, W, Y, L, M, P]]
+                      return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
                   else
                       return [[C]]
               }
