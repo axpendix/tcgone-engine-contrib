@@ -768,17 +768,11 @@ public enum UltraPrism implements CardInfo {
         weakness WATER
         bwAbility "Flaming Fighter", {
           text "Put 6 damage counters instead of 2 on your opponent’s Burned Pokémon between turns."
-          def eff
-          onActivate{
-            eff =  getterA (GET_BURN_DAMAGE) {h->
-              if(h.effect.target.owner != self.owner){
-                bc "Scorching Scales increases burn damage to 40"
-                h.object = hp(60)
-              }
+          getterA (GET_BURN_DAMAGE) {h->
+            if(h.effect.target.owner != self.owner){
+              bc "Flaming Fighter increases burn damage to 60"
+              h.object = hp(60)
             }
-          }
-          onDeactivate {
-            eff.unregister()
           }
         }
         move "Burst Punch", {
@@ -3294,15 +3288,15 @@ public enum UltraPrism implements CardInfo {
         }
         getEnergyTypesOverride {
           if(!self || !self.topPokemonCard)
-            return [[C]]
+            return [[C] as Set]
           boolean cond1 = self.topPokemonCard.cardTypes.is(STAGE2)
           boolean cond2 = self.owner.pbg.all.findAll{it.topPokemonCard.cardTypes.is(STAGE2)}.size() >= 3
           if(cond1 && cond2)
-            return [[R, D, F, G, W, Y, L, M, P]  as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
+            return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
           else if(cond1)
-            return [[R, D, F, G, W, Y, L, M, P]  as Set]
+            return [[R, D, F, G, W, Y, L, M, P] as Set]
           else
-            return [[C]  as Set]
+            return [[C] as Set]
         }
 
       };

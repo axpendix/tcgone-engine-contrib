@@ -1687,7 +1687,9 @@ public enum CrimsonInvasion implements CardInfo {
         move "Eat Sloppily", {
           text "Discard the top 5 cards of your deck. If any of those cards are Energy cards, attach them to this Pokémon."
           energyCost D
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck.notEmpty
+          }
           onAttack {
             def list = my.deck.subList(0,5).findAll(cardTypeFilter(ENERGY))
             //TODO : show the 5 top card before discard
@@ -2566,7 +2568,7 @@ public enum CrimsonInvasion implements CardInfo {
               onMove {to->
               }
               getEnergyTypesOverride{
-                  if(self.owner.pbg.prizeAsList.size() > self.owner.opposite.pbg.prizeAsList.size())
+                  if(self && self.owner.pbg.prizeAsList.size() > self.owner.opposite.pbg.prizeAsList.size())
                       return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
                   else
                       return [[C] as Set]

@@ -562,12 +562,10 @@ public enum FireRedLeafGreen implements CardInfo {
 				weakness WATER
 				pokeBody "Fiery Aura", {
 					text "As long as Rapidash is your Active Pokémon, put 4 damage counters instead of 2 on Burned Pokémon between turns."
-					delayedA {
-						getterA (GET_BURN_DAMAGE) {h->
-							if(self.active){
-								bc "Fiery Aura increases burn damage to 40"
-								h.object = hp(40)
-							}
+					getterA (GET_BURN_DAMAGE) {h->
+						if(self.active){
+							bc "Fiery Aura increases burn damage to 40"
+							h.object = hp(40)
 						}
 					}
 				}
