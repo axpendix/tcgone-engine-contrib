@@ -35,7 +35,7 @@ import tcgwars.logic.util.*;
  * @author axpendix@hotmail.com
  */
 public enum TeamRocketReturns implements CardInfo {
-	
+
 	AZUMARILL_1 ("Azumarill", 1, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
 	DARK_AMPHAROS_2 ("Dark Ampharos", 2, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
 	DARK_CROBAT_3 ("Dark Crobat", 3, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
@@ -147,9 +147,9 @@ public enum TeamRocketReturns implements CardInfo {
 	TREECKO_STAR_109 ("Treecko Star", 109, Rarity.ULTRARARE, [BASIC, POKEMON, _GRASS_]),
 	CHARMELEON_110 ("Charmeleon", 110, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
 	HERE_COMES_TEAM_ROCKET__111 ("Here Comes Team Rocket!", 111, Rarity.HOLORARE, [TRAINER]);
-	
+
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS;
-	
+
 	protected CardTypeSet cardTypes;
 	protected String name;
 	protected Rarity rarity;
@@ -205,7 +205,12 @@ public enum TeamRocketReturns implements CardInfo {
 				weakness LIGHTNING
 				pokePower "Froth", {
 					text "Once during your turn, when you play Azumarill from your hand to evolve 1 of your Active Pokémon, you may use this power. Each Defending Pokémon is now Paralyzed."
-					actionA {
+					onActivate {r->
+            if(r==PLAY_FROM_HAND) {
+              if(confirm("Use Initialize?")) {
+								apply PARALYZED, self.owner.opposite.pbg.active
+							}
+						}
 					}
 				}
 				move "Water Punch", {
@@ -213,17 +218,32 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip self.cards.energyCount(W), {damage 20}
 					}
 				}
-				
+
 			};
 			case DARK_AMPHAROS_2:
 			return evolution (this, from:"Dark Flaaffy", hp:HP120, type:[DARKNESS, LIGHTNING], retreatCost:2) {
 				weakness FIGHTING
 				pokeBody "Darkest Impulse", {
 					text "As long as Dark Ampharos is in play, whenever your opponent plays an Evolution card from his or her hand to evolve 1 of his or her Pokémon, put 2 damage counters on that Pokémon. You can’t use more than 1 Darkest Impulse Poké-Body each turn."
-					delayedA {
+					def eff
+					onActivate {
+						eff = delayed {
+							after EVOLVE_STANDARD, {
+								if(ef.pokemonToBeEvolved.owner != self.owner){
+									checkLastTurn()
+									powerUsed()
+									bc "Darkest Impulse"
+									directDamage(30, ef.pokemonToBeEvolved, TRAINER_CARD)
+								}
+							}
+						}
+					}
+					onDeactivate{
+						eff.unregister()
 					}
 				}
 				move "Ram", {
@@ -231,7 +251,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Shock Bolt", {
@@ -239,10 +259,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
+						discardAllSelfEnergy(L)
 					}
 				}
-				
 			};
 			case DARK_CROBAT_3:
 			return evolution (this, from:"Dark Golbat", hp:HP090, type:[DARKNESS, GRASS], retreatCost:1) {
@@ -251,6 +271,11 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Black Beam", {
 					text "Once during your turn (before your attack), if Dark Crobat is your Active Pokémon, you may choose 1 of the Defending Pokémon. That Pokémon is now Poisoned. This power can’t be used if Dark Crobat is affected by a Special Condition."
 					actionA {
+						assert !(self.specialConditions) : "Dark Crobat is affected by a Special Condition"
+						assert self.active : "Dark Crobat is not your active"
+						checkLastTurn()
+						powerUsed()
+						apply POISONED, self.owner.opposite.pbg.active
 					}
 				}
 				move "Dark Drain", {
@@ -258,7 +283,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						opp.all.each{
+							damage 10, it
+						}
+						heal 10*opp.all.size()
 					}
 				}
 				move "Skill Dive", {
@@ -266,10 +294,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30, opp.all.select()
 					}
 				}
-				
+
 			};
 			case DARK_ELECTRODE_4:
 			return evolution (this, from:"Voltorb", hp:HP070, type:[DARKNESS, LIGHTNING], retreatCost:1) {
@@ -277,6 +305,13 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Darkness Navigation", {
 					text "Once during your turn (before your attack), if Dark Electrode has no Energy attached to it, you may search your deck for a [D] or Dark Metal Energy and attach it to Dark Electrode. Shuffle your deck afterward. This power can’t be used if Dark Electrode is affected by a Special Condition."
 					actionA {
+						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						assert !(self.cards.energyCount(C)) : "Dark Electrode has Energies attached to it"
+						checkLastTurn()
+						powerUsed()
+						def energyToAttach = my.deck.search(max:1,"search your deck for a [D] or Dark Metal Energy",{it.asEnergyCard().containsTypePlain(D) || (it.name == 'Dark Metal Energy')})
+						attachEnergy(self, energyToAttach)
+
 					}
 				}
 				move "Energy Bomb", {
@@ -284,10 +319,17 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						if(my.bench){
+							if(confirm("move all Energy cards attached to Dark Electrode to your Benched Pokémon in any way you like?")){
+								self.cards.filterByType(ENERGY).each{
+									energySwitch(self, my.bench.select("move $it to?"),it)
+								}
+							}
+						}
 					}
 				}
-				
+
 			};
 			case DARK_HOUNDOOM_5:
 			return evolution (this, from:"Houndour", hp:HP070, type:[DARKNESS, FIRE], retreatCost:1) {
@@ -298,7 +340,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(opp.hand){
+							opp.hand.select(hidden: true, "Select random card from opponent's hand").showToOpponent("Card to be discarded").discard()
+						}
 					}
 				}
 				move "Dark Fire", {
@@ -306,10 +351,14 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						if(confirm("discard a [R] Energy or [D] Energy attached to Dark Houndoom for 20 more damage?")){
+							self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(R,D).select().discard()
+							damage 20
+						}
 					}
 				}
-				
+
 			};
 			case DARK_HYPNO_6:
 			return evolution (this, from:"Drowzee", hp:HP070, type:[DARKNESS, PSYCHIC], retreatCost:1) {
@@ -317,9 +366,24 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Dark Link", {
 					text "Flip a coin. If heads, choose an attack on 1 of your Pokémon in play that has Dark in its name (excluding this one). Dark Link copies that attack except for its Energy cost. (You must still do anything else required for that attack.) (No matter what type that Pokémon is, Dark Hypno’s type is still .) Dark Hypno performs that attack."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.bench.find {it.name.contains("Dark") && it.topPokemonCard.moves} : "No moves to perform"
+					}
 					onAttack {
-						damage 0
+						flip {
+							def moveList = []
+							def labelList = []
+							my.bench.each {pcs->
+								if(pcs.name.contains("Dark")){
+									moveList.addAll(pcs.topPokemonCard.moves);
+									labelList.addAll(pcs.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
+								}
+							}
+							def move=choose(moveList, labelList)
+							def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+							attack (move as Move)
+							bef.unregisterItself(bg().em())
+						}
 					}
 				}
 				move "Black Magic", {
@@ -327,10 +391,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20*opp.bench.size()
 					}
 				}
-				
+
 			};
 			case DARK_MAROWAK_7:
 			return evolution (this, from:"Cubone", hp:HP070, type:[DARKNESS, FIGHTING], retreatCost:1) {
@@ -340,18 +404,21 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						swiftDamage(30, defending)
 					}
 				}
 				move "Hard Bone", {
 					text "70 damage. Discard a Basic Pokémon or Evolution card from your hand or this attack does nothing."
 					energyCost F, F, C
-					attackRequirement {}
+					attackRequirement {
+						assert my.hand.findAll{it.cardTypes.is(BASIC) || it.cardTypes.is(STAGE1) || it.cardTypes.is(STAGE2) }
+					}
 					onAttack {
-						damage 0
+						damage 70
+						my.hand.filterByType(BASIC,STAGE1,STAGE2).discard()
 					}
 				}
-				
+
 			};
 			case DARK_OCTILLERY_8:
 			return evolution (this, from:"Remoraid", hp:HP070, type:[DARKNESS, WATER], retreatCost:1) {
@@ -361,7 +428,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Ink Blast", {
@@ -369,10 +437,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						extraEnergyDamage(2,hp(10),C,thisMove)
 					}
 				}
-				
+
 			};
 			case DARK_SLOWKING_9:
 			return evolution (this, from:"Slowpoke", hp:HP080, type:[DARKNESS, PSYCHIC], retreatCost:1) {
@@ -380,6 +449,12 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Cunning", {
 					text "Once during your turn (before your attack), you may look at the top card of your opponent’s deck. Then, you may shuffle his or her deck. This power can’t be used if Dark Slowking is affected by a Special Condition."
 					actionA {
+						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						assert opp.deck
+						checkLastTurn()
+						powerUsed()
+						opp.deck.subList(0,1).showToMe("Opponent's top Deck")
+						if(confirm("Shuffle opponent's deck?")) shuffleDeck(null, TargetPlayer.OPPONENT)
 					}
 				}
 				move "Litter", {
@@ -387,10 +462,13 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						//TODO : rocket secret machine
+						if(my.discard.filterByType(POKEMON_TOOL){
+							damage 30*my.discard.filterByType(POKEMON_TOOL).select(count :2,"Search your discard pile for 2 supporter or stadium").discard().size()
+						}
 					}
 				}
-				
 			};
 			case DARK_STEELIX_10:
 			return evolution (this, from:"Onix", hp:HP110, type:[DARKNESS, METAL], retreatCost:4) {
@@ -401,7 +479,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						attachEnergyFrom(my.discard,self)
 					}
 				}
 				move "Heavy Impact", {
@@ -409,10 +488,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost F, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
 					}
 				}
-				
+
 			};
 			case JUMPLUFF_11:
 			return evolution (this, from:"Skiploom", hp:HP090, type:GRASS, retreatCost:0) {
@@ -421,6 +500,15 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Buffer", {
 					text "If Jumpluff would be Knocked Out by an opponent’s attack, flip a coin. If heads, Jumpluff is not Knocked Out and its remaining HP becomes 10 instead."
 					delayedA {
+						before KNOCKOUT, self, {
+							if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
+								flip "Buffer", {
+									self.damage = self.fullHP - hp(10)
+									bc "Buffer saved $self!"
+									prevent()
+								}
+							}
+						}
 					}
 				}
 				move "Energy Crush", {
@@ -428,17 +516,24 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						opp.all.each{
+							damage 10*it.cards.energyCount(C)
+						}
 					}
 				}
-				
+
 			};
 			case KINGDRA_12:
 			return evolution (this, from:"Seadra", hp:HP120, type:WATER, retreatCost:2) {
 				weakness LIGHTNING
 				pokeBody "Dragon Veil", {
 					text "As long as Kingdra is in play, each of your Active Pokémon has no Weakness."
-					delayedA {
+					getterA (GET_WEAKNESSES) { h->
+						if(h.effect.target.owner == self.owner && h.effect.target.active) {
+							def list = h.object as List<Weakness>
+							list.clear()
+						}
 					}
 				}
 				move "Hyper Whirlpool", {
@@ -446,7 +541,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipUntilTails {
+							discardDefendingEnergy()
+						}
 					}
 				}
 				move "Aqua Sonic", {
@@ -454,10 +552,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						dontApplyResistance()
 					}
 				}
-				
+
 			};
 			case PILOSWINE_13:
 			return evolution (this, from:"Swinub", hp:HP100, type:FIGHTING, retreatCost:2) {
@@ -467,7 +566,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Tonnage", {
@@ -475,10 +575,13 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						if(confirm("Do 30 damage to Piloswine for 40 more damage")){
+							damage 40
+						}
 					}
 				}
-				
+
 			};
 			case TOGETIC_14:
 			return evolution (this, from:"Togepi", hp:HP070, type:COLORLESS, retreatCost:1) {
@@ -487,6 +590,26 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Holy Shield", {
 					text "Prevent all effects of attacks, including damage, done to Togetic by your opponent’s Pokémon that has Dark in its name."
 					delayedA {
+						before null, self, Source.ATTACK, {
+							if (self.owner.opposite.pbg.active.name.contains("Dark") && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+								bc "Holy Shield prevents effect"
+								prevent()
+							}
+						}
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each {
+								if(it.to == self && it.notNoEffect && self.owner.opposite.pbg.active.name.contains("Dark")){
+									it.dmg = hp(0)
+									bc "Holy Shield prevents damage"
+								}
+							}
+						}
+						after ENERGY_SWITCH, {
+						def efs = (ef as EnergySwitch)
+							if(self.owner.opposite.pbg.active.name.contains("Dark") && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+								discard efs.card
+							}
+						}
 					}
 				}
 				move "Dive", {
@@ -494,18 +617,29 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Rainbow Moves", {
 					text "Choose 1 of your opponent’s Benched Pokémon’s attacks. Rainbow Moves copies that attack except for its Energy cost. (You must still do anything else required for that attack.) (No matter what type that Pokémon is, Togetic’s type is still [C].) Togetic performs that attack."
 					energyCost C, C, C
-					attackRequirement {}
+					attackRequirement {
+						assert opp.bench
+					}
 					onAttack {
-						damage 0
+						def moveList = []
+						def labelList = []
+						opp.bench.each {pcs->
+							moveList.addAll(pcs.topPokemonCard.moves);
+							labelList.addAll(pcs.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
+						}
+						def move=choose(moveList, labelList)
+						def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+						attack (move as Move)
+						bef.unregisterItself(bg().em())
 					}
 				}
-				
+
 			};
 			case DARK_DRAGONITE_15:
 			return evolution (this, from:"Dark Dragonair", hp:HP120, type:DARKNESS, retreatCost:2) {
@@ -514,6 +648,17 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Dark Trance", {
 					text "As often as you like during your turn (before your attack), you may move a [D] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Dark Dragonite is affected by a Special Condition."
 					actionA {
+						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						assert my.all.findAll {it.cards.energyCount(D)>0}
+						assert my.all.size()>=2
+
+						powerUsed()
+						def src=my.all.findAll {it.cards.energyCount(D)>0}.select("Source for [G]")
+						def card=src.cards.filterByEnergyType(D).select("Card to move").first()
+						def tar=my.all
+						tar.remove(src)
+						tar=tar.select("Target for [D]")
+						energySwitch(src, tar, card)
 					}
 				}
 				move "Double Wing Attack", {
@@ -521,7 +666,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Claw Swipe", {
@@ -529,17 +674,20 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
-				
+
 			};
 			case DARK_MUK_16:
 			return evolution (this, from:"Grimer", hp:HP080, type:[DARKNESS, GRASS], retreatCost:1) {
 				weakness PSYCHIC
 				pokeBody "Sticky Goo", {
 					text "As long as Dark Muk is your Active Pokémon, your opponent pays [C][C] more to retreat his or her Active Pokémon."
-					delayedA {
+					getterA (GET_RETREAT_COST) { h->
+						if(h.effect.target.owner == self.owner.opposite && self.active) {
+							h.object += 2
+						}
 					}
 				}
 				move "Slimy Water", {
@@ -547,7 +695,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10*defending.retreatCost
 					}
 				}
 				move "Acidic Poison", {
@@ -555,10 +703,14 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						afterDamage{
+							apply BURNED
+							apply POISONED
+						}
 					}
 				}
-				
+
 			};
 			case DARK_RATICATE_17:
 			return evolution (this, from:"Rattata", hp:HP070, type:DARKNESS, retreatCost:0) {
@@ -568,7 +720,15 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						damage 0
+						cantRetreat defending
+						delayed{
+							before BETWEEN_TURNS, {
+								if(bg.currentTurn == self.owner.opposite){
+									directDamage 50, self.owner.opposite.pbg.active
+								}
+							}
+							unregisterAfter 2
+						}
 					}
 				}
 				move "Spread Poison", {
@@ -576,17 +736,25 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						if(opp.bench) damage 20, opp.bench.select()
+						applyAfterDamage POISONED
 					}
 				}
-				
+
 			};
 			case DARK_SANDSLASH_18:
 			return evolution (this, from:"Sandshrew", hp:HP070, type:[DARKNESS, FIGHTING], retreatCost:0) {
 				weakness GRASS
 				pokeBody "Poison Payback", {
 					text "If Dark Sandslash is your Active Pokémon and is damaged by an opponent’s attack (even if Dark Sandslash is Knocked Out), the Attacking Pokémon is now Poisoned."
-					delayedA {
+					delayedA (priority: LAST) {
+						before APPLY_ATTACK_DAMAGES, {
+							if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
+								bc "Poison Payback"
+								apply POISONED, (ef.attacker as PokemonCardSet)
+							}
+						}
 					}
 				}
 				move "Swift", {
@@ -594,10 +762,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						swiftDamage(50,defending)
 					}
 				}
-				
+
 			};
 			case DARK_TYRANITAR_19:
 			return evolution (this, from:"Dark Pupitar", hp:HP120, type:DARKNESS, retreatCost:2) {
@@ -608,7 +776,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10+10*self.cards.energyCount(C)
 					}
 				}
 				move "Spinning Tail", {
@@ -616,7 +784,9 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						opp.all.each{
+							damage 20
+						}
 					}
 				}
 				move "Bite Off", {
@@ -624,10 +794,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost D, D, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
+						if(defending.pokemonEX) damage 50
 					}
 				}
-				
+
 			};
 			case DARK_TYRANITAR_20:
 			return evolution (this, from:"Dark Pupitar", hp:HP120, type:[DARKNESS, FIGHTING], retreatCost:3) {
@@ -635,6 +806,13 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Sand Damage", {
 					text "As long as Dark Tyranitar is your Active Pokémon, put 1 damage counter on each of your opponent’s Benched Basic Pokémon between turns. You can’t use more than 1 Sand Damage Poké-Body between turns."
 					delayedA {
+						before BETWEEN_TURNS, {
+							if(bg.currentTurn == self.owner.opposite && self.active){
+								opp.bench.each{
+									if(it.basic) directDamage 10, it
+								}
+							}
+						}
 					}
 				}
 				move "Second Strike", {
@@ -642,10 +820,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						if(opp.active.numberOfDamageCounters >= 2) damage 20
 					}
 				}
-				
+
 			};
 			case DELIBIRD_21:
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
@@ -653,6 +832,12 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Gift Exchange", {
 					text "Once during your turn (before your attack), if Delibird is your Active Pokémon, you may shuffle 1 card from your hand into your deck. Then, draw a card. This power can’t be used if Delibird is affected by a Special Condition."
 					actionA {
+						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						assert my.hand
+						checkLastTurn()
+						my.hand.select("select card to shuffle into your deck").moveTo(my.deck)
+						shuffleDeck()
+						draw 1
 					}
 				}
 				move "Souvenir", {
@@ -660,10 +845,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 3,{},{},[0:{heal opp.active.damage.value, opp.active},1:{directDamage 20},2:{heal 10, opp.active},3:{directDamage 100}]
+
 					}
 				}
-				
+
 			};
 			case FURRET_22:
 			return evolution (this, from:"Sentret", hp:HP080, type:COLORLESS, retreatCost:1) {
@@ -673,7 +859,9 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def drawNb = my.hand.select(max:3,"select 3 card to put at the top of your deck").moveTo(my.deck).size()
+						shuffleDeck()
+						my.deck.search(count : drawNb).moveTo(my.hand)
 					}
 				}
 				move "Quick Tail Smash", {
@@ -681,10 +869,15 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						if(confirm("flip a coin instead of doing 30 damage. If heads do 80 but if tail this attack does nothing.")){
+							flip {damage 80}
+						}
+						else{
+							damage 30
+						}
 					}
 				}
-				
+
 			};
 			case LEDIAN_23:
 			return evolution (this, from:"Ledyba", hp:HP070, type:GRASS, retreatCost:1) {
@@ -692,6 +885,14 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Powder Protection", {
 					text "Any damage done to Ledian by attacks from Pokémon that has an owner in its name is reduced by 40."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each{
+								if(it.to == self && it.notNoEffect && it.dmg.value && it.from.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
+									bc "Powder Protection -40"
+									it.dmg -= hp(40)
+								}
+							}
+						}
 					}
 				}
 				move "Split Spiral Punch", {
@@ -699,7 +900,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC CONFUSED
 					}
 				}
 				move "Tackle", {
@@ -707,10 +909,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
-				
+
 			};
 			case MAGBY_24:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -718,6 +920,7 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Baby Evolution", {
 					text "Once during your turn (before your attack), you may put Magmar from your hand onto Magby (this counts as evolving Magby), and remove all damage counters from Magby."
 					actionA {
+
 					}
 				}
 				move "Detour", {
@@ -728,7 +931,7 @@ public enum TeamRocketReturns implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MISDREAVUS_25:
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
@@ -737,6 +940,12 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Dark Spell", {
 					text "Once during your turn (before your attack), if Misdreavus is your Active Pokémon, you may flip a coin. If heads, put 1 damage counter on 1 of your opponent’s Pokémon. This power can’t be used if Misdreavus is affected by a Special Condition or if your other Active Pokémon is not Misdreavus."
 					actionA {
+						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						checkLastTurn()
+						powerUsed()
+						flip {
+							directDamage 10, opp.all.select()
+						}
 					}
 				}
 				move "Hide in Shadows", {
@@ -744,10 +953,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(my.becnh) sw self, my.bench.select()
 					}
 				}
-				
+
 			};
 			case QUAGSIRE_26:
 			return evolution (this, from:"Wooper", hp:HP080, type:WATER, retreatCost:2) {
@@ -755,6 +965,12 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Saturation", {
 					text "When you attach a [W] Energy card from your hand to Quagsire, remove all Special Conditions and 2 damage counters from Quagsire."
 					delayedA {
+						before ATTACH_ENERGY, self, {
+							if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == W){
+								clearSpecialCondition(self,Source.SRC_ABILITY)
+								heal 20, self
+							}
+						}
 					}
 				}
 				move "Hyper Pump", {
@@ -762,17 +978,26 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						extraEnergyDamage(3,hp(20),W,thisMove)
 					}
 				}
-				
+
 			};
 			case QWILFISH_27:
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				pokeBody "Spiny", {
 					text "If Qwilfish is your Active Pokémon and is damaged by an opponent’s attack (even if Qwilfish is Knocked Out), flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
-					delayedA {
+					delayedA (priority: LAST) {
+						before APPLY_ATTACK_DAMAGES, {
+							if(bg.dm().find({it.to==self && it.dmg.value})){
+								bg.dm().each{
+									bc "Spiny"
+									flipUntilTails {damage 10, it.from}
+                }
+							}
+						}
 					}
 				}
 				move "Stun Poison", {
@@ -780,10 +1005,16 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						afterDamage{
+							flip {
+								apply PARALYZED
+								apply POISONED
+							}
+						}
 					}
 				}
-				
+
 			};
 			case YANMA_28:
 			return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
@@ -794,7 +1025,18 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						my.deck.select(min:0, max:4, "Select up to 3 Basic Pokémon of different types", cardTypeFilter(BASIC_ENERGY), self.owner,
+							{CardList list->
+								TypeSet typeSet=new TypeSet()
+								for(card in list){
+									for(type in typeSet){
+										if(card.asEnergyCard().containsTypePlain(type)){
+									}
+									typeSet.addAll(card.asEnergyCard().types)
+								}
+								return true
+							}
+						}).showToOpponent("Selected energies").moveTo(my.hand)
 					}
 				}
 				move "Swift", {
@@ -802,10 +1044,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						swiftDamage(20,defending)
 					}
 				}
-				
+
 			};
 			case DARK_ARBOK_29:
 			return evolution (this, from:"Ekans", hp:HP090, type:[DARKNESS, GRASS], retreatCost:1) {
@@ -815,7 +1057,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						if(defending.getRemainingHP() < self.getRemainingHP()) damage 30
 					}
 				}
 				move "Extra Poison", {
@@ -823,10 +1066,16 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						if(defending.pokemonEX){
+							afterDamage{
+								apply ASLEEP
+								apply POISONED
+							}
+						}
 					}
 				}
-				
+
 			};
 			case DARK_ARIADOS_30:
 			return evolution (this, from:"Spinarak", hp:HP070, type:[DARKNESS, GRASS], retreatCost:1) {
@@ -836,7 +1085,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply POISONED
 					}
 				}
 				move "Breaking Impact", {
@@ -844,10 +1093,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def pcs = opp.all.select("Select the pokemon to attack.")
+						damage 20*pcs.retreatCost, pcs
 					}
 				}
-				
+
 			};
 			case DARK_DRAGONAIR_31:
 			return evolution (this, from:"Dratini", hp:HP070, type:DARKNESS, retreatCost:1) {
@@ -856,6 +1106,11 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Evolutionary Light", {
 					text "Once during your turn (before your attack), if Dark Dragonair is your Active Pokémon, you may search your deck for an Evolution card. Show it to your opponent and put it into your hand. Shuffle your deck afterward. This power can’t be used if Dark Dragonair is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						powerUsed()
+						my.deck.search(max : 1,"Search for an evolution",cardTypeFilter(EVOLUTION)).showtoOpponent("Selected card.").moveTo(my.hand)
+
 					}
 				}
 				move "Dragon Rage", {
@@ -863,10 +1118,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
-				
+
 			};
 			case DARK_DRAGONAIR_32:
 			return evolution (this, from:"Dratini", hp:HP080, type:DARKNESS, retreatCost:1) {
@@ -877,7 +1132,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Crushing Blow", {
@@ -885,10 +1140,13 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						flip {
+							discardOpponentEnergy()
+						}
 					}
 				}
-				
+
 			};
 			case DARK_FLAAFFY_33:
 			return evolution (this, from:"Mareep", hp:HP080, type:[DARKNESS, LIGHTNING], retreatCost:1) {
@@ -898,7 +1156,9 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						if(defending.basic) applyAfterDamage PARALYZED
+						cantUseAttack thisMove, self
 					}
 				}
 				move "Headbutt", {
@@ -906,10 +1166,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
-				
+
 			};
 			case DARK_GOLBAT_34:
 			return evolution (this, from:"Zubat", hp:HP070, type:[DARKNESS, GRASS], retreatCost:0) {
@@ -919,10 +1179,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30, opp.all.select()
+						cantAttackNextTurn self
 					}
 				}
-				
+
 			};
 			case DARK_GOLDUCK_35:
 			return evolution (this, from:"Psyduck", hp:HP070, type:[DARKNESS, WATER], retreatCost:1) {
@@ -932,7 +1193,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip{preventAllEffectsNextTurn()}
 					}
 				}
 				move "Cold Crush", {
@@ -940,10 +1202,14 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						if(confirm("discard an Energy card attached to Dark Golduck. If you do, discard an Energy attached to the Defending Pokémon")){
+							discardSelfEnergy C
+							discardDefendingEnergy()
+						}
 					}
 				}
-				
+
 			};
 			case DARK_GYARADOS_36:
 			return evolution (this, from:"Magikarp", hp:HP080, type:[DARKNESS, WATER], retreatCost:2) {
@@ -952,6 +1218,11 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Dark Scale", {
 					text "If Dark Gyarados is your Active Pokémon and is Knocked Out by an opponent’s attack, put 3 damage counters on the Attacking Pokémon."
 					delayedA {
+						before KNOCKOUT, self, {
+							if((ef as Knockout).byDamageFromAttack){
+								directDamage 30,bg.currentTurn.pbg.active
+							}
+						}
 					}
 				}
 				move "Sharp Fang", {
@@ -959,7 +1230,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Dark Streak", {
@@ -967,10 +1238,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						flipThenApplySC PARALYZED
 					}
 				}
-				
+
 			};
 			case DARK_HOUNDOOM_37:
 			return evolution (this, from:"Houndour", hp:HP070, type:[DARKNESS, FIRE], retreatCost:1) {
@@ -978,6 +1250,10 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Fire Breath", {
 					text "Once during your turn (before your attack), if Dark Houndoom is your Active Pokémon, you may flip a coin. If heads, the Defending Pokémon (choose 1 if there are 2) is now Burned. This power can’t be used if Dark Houndoom is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						powerUsed()
+						flip{apply BURNED}
 					}
 				}
 				move "Fire Payback", {
@@ -985,10 +1261,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						if(my.bench.size() < opp.bench.size()) damage 20
 					}
 				}
-				
+
 			};
 			case DARK_MAGCARGO_38:
 			return evolution (this, from:"Slugma", hp:HP080, type:[DARKNESS, FIRE], retreatCost:2) {
@@ -998,7 +1275,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10+10*self.cards.energyCount(C)
 					}
 				}
 				move "Linear Attack", {
@@ -1006,10 +1283,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40, opp.all.select()
 					}
 				}
-				
+
 			};
 			case DARK_MAGNETON_39:
 			return evolution (this, from:"Magnemite", hp:HP070, type:[DARKNESS, LIGHTNING], retreatCost:1) {
@@ -1019,7 +1296,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(opp.bench) moveEnergy(basic : true, defending, opp.bench)
 					}
 				}
 				move "Poison Pulse", {
@@ -1027,10 +1305,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						applyAfterDamage POISONED
 					}
 				}
-				
+
 			};
 			case DARK_PUPITAR_40:
 			return evolution (this, from:"Larvitar", hp:HP070, type:[DARKNESS, FIGHTING], retreatCost:1) {
@@ -1040,7 +1319,16 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{
+							opp.all.each{
+								damage 10, it
+							}
+							if(my.deck){
+								def tar = my.deck.search(max:1,"Search for a card that evolves from Dark Pupitar",{it.cardTypes.is(EVOLUTION) && self.name == it.predecessor})
+								if(tar) evolve(self, tar.first(), OTHER)
+								shuffleDeck()
+							}
+						}
 					}
 				}
 				move "Double Tackle", {
@@ -1048,10 +1336,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
-				
+
 			};
 			case DARK_PUPITAR_41:
 			return evolution (this, from:"Larvitar", hp:HP080, type:[DARKNESS, FIGHTING], retreatCost:2) {
@@ -1061,7 +1349,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Rock Tumble", {
@@ -1069,10 +1358,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						dontApplyResistance()
 					}
 				}
-				
+
 			};
 			case DARK_WEEZING_42:
 			return evolution (this, from:"Koffing", hp:HP080, type:[DARKNESS, GRASS], retreatCost:2) {
@@ -1080,6 +1370,12 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Methane Leak", {
 					text "As long as Dark Weezing is your Active Pokémon, put 1 damage counter on each Pokémon that remains Poisoned between turns."
 					delayedA {
+						before BETWEEN_TURNS, {
+							if(self.active){
+								if(my.active.isSPC(POISONED)) directDamage 10, my.active
+								if(opp.active.isSPC(POISONED)) directDamage 10, opp.active
+							}
+						}
 					}
 				}
 				move "Smog", {
@@ -1087,7 +1383,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply POISONED
 					}
 				}
 				move "Darkness Charge", {
@@ -1095,10 +1391,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						directDamage 20, self
 					}
 				}
-				
+
 			};
 			case HERACROSS_43:
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
@@ -1106,6 +1403,14 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Crust", {
 					text "Any damage done to Heracross by attacks from your opponent’s Basic Pokémon is reduced by 20 (after applying Weakness and Resistance)."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each{
+								if(it.to == self && it.from.basic && it.notNoEffect && it.dmg.value) {
+									bc "Crust -20"
+									it.dmg -= hp(20)
+								}
+							}
+						}
 					}
 				}
 				move "Get Even", {
@@ -1113,10 +1418,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(my.prizeAsList.size() > opp.prizeAsList.size()) damage 10*(my.prizeAsList.size() - opp.prizeAsList.size())
 					}
 				}
-				
+
 			};
 			case MAGMAR_44:
 			return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
@@ -1124,9 +1430,12 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Dump and Draw", {
 					text "Discard up to 2 Energy cards from your hand. Then, draw 2 cards for each Energy card you discarded."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.hand.filterByType(ENERGY)
+					}
 					onAttack {
-						damage 0
+						def dscNB = my.hand.filterByType(ENERGY).select(max : 2, "Select the energy to discard").discard()
+						draw 2*dscNB
 					}
 				}
 				move "Flame Tail", {
@@ -1134,10 +1443,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
-				
+
 			};
 			case MANTINE_45:
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
@@ -1145,6 +1454,11 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Ripples", {
 					text "Once during your turn (before your attack), you may remove 1 damage counter from 1 of your Pokémon (excluding Mantine). This power can’t be used if Mantine is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						assert my.all.findAll{it.numberOfDamageCounters}
+						powerUsed()
+						heal 10, my.all.findAll{it.numberOfDamageCounters}.select("Select the pokemon to heal.")
 					}
 				}
 				move "Aqua Slash", {
@@ -1152,10 +1466,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						cantAttackNextTurn self
 					}
 				}
-				
+
 			};
 			case ROCKET_S_MEOWTH_46:
 			return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
@@ -1163,9 +1478,15 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Snatch and Run", {
 					text "Search your deck for a Pokémon Tool card or Rocket’s Secret Machine card, show it to your opponent, and put it into your hand. If you do, you may switch Rocket’s Meowth with 1 of your Benched Pokémon. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						damage 0
+						if(my.deck.search(max : 1,"Select a Pokémon Tool card or Rocket’s Secret Machine.",cardTypeFilter(POKEMON_TOOL)).showToOpponent("Selected card.").moveTo(my.hand)){
+							if(my.bench){
+								if(confirm("switch $self ?")) sw self, my.bench.select()
+							}
+						}
 					}
 				}
 				move "Miraculous Comeback", {
@@ -1173,10 +1494,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip (my.all.size() + opp.all.size()), {damage 10}, {damage 10, self}
 					}
 				}
-				
+
 			};
 			case ROCKET_S_WOBBUFFET_47:
 			return basic (this, hp:HP070, type:DARKNESS, retreatCost:1) {
@@ -1184,9 +1505,23 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Dark Aid", {
 					text "Search your discard pile for Pokémon Tool cards and Rocket’s Secret Machine cards. You may show either 1 Pokémon Tool card or Rocket’s Secret Machine card to your opponent and put it into your hand, or show a combination of 3 Pokémon Tool cards or Rocket’s Secret Machine cards to your opponent and shuffle them into your deck."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.discard.filterByType(POKEMON_TOOL)
+					}
 					onAttack {
-						damage 0
+						if(my.discard.filterByType(POKEMON_TOOL).size() < 3){
+							my.discard.filterByType(POKEMON_TOOL).select(count : 1,"Select 1 Pokémon Tool card or Rocket’s Secret Machine").showToOpponent("Selected card.").moveTo(my.hand)
+						}
+						else{
+							def choice = choose([0,1],["Select 1 card : put it in your hand","Select 3 cards : shuffle them in your deck"],"What do you want to do?")
+							if(choice){
+								my.discard.filterByType(POKEMON_TOOL).select(count : 3,"Select a combination of 3 Pokémon Tool card and Rocket’s Secret Machine").showToOpponent("Selected cards.").moveTo(my.deck)
+								shuffleDeck()
+							}
+							else{
+								my.discard.filterByType(POKEMON_TOOL).select(count : 1,"Select 1 Pokémon Tool card or Rocket’s Secret Machine").showToOpponent("Selected card.").moveTo(my.hand)
+							}
+						}
 					}
 				}
 				move "Amnesia", {
@@ -1194,10 +1529,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						amnesia delegate
 					}
 				}
-				
+
 			};
 			case SEADRA_48:
 			return evolution (this, from:"Horsea", hp:HP070, type:WATER, retreatCost:1) {
@@ -1207,7 +1543,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						applyAfterDamage CONFUSED
 					}
 				}
 				move "Aqua Trick", {
@@ -1215,10 +1552,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						if(opp.bench) moveEnergy(defending,opp.bench.select())
 					}
 				}
-				
+
 			};
 			case SKIPLOOM_49:
 			return evolution (this, from:"Hoppip", hp:HP060, type:GRASS, retreatCost:0) {
@@ -1227,6 +1565,15 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Buffer", {
 					text "If Skiploom would be Knocked Out by an opponent’s attack, flip a coin. If heads, Skiploom is not Knocked Out and its remaining HP becomes 10 instead."
 					delayedA {
+						before KNOCKOUT, self, {
+							if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
+								flip "Buffer", {
+									self.damage = self.fullHP - hp(10)
+									bc "Buffer saved $self!"
+									prevent()
+								}
+							}
+						}
 					}
 				}
 				move "Miracle Powder", {
@@ -1234,10 +1581,13 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {
+							applyAfterDamage choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending pokemon")
+						}
 					}
 				}
-				
+
 			};
 			case TOGEPI_50:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
@@ -1247,7 +1597,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply ASLEEP
 					}
 				}
 				move "Mini-Metronome", {
@@ -1255,10 +1605,19 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def moveList = []
+						def labelList = []
+
+						moveList.addAll(defending.topPokemonCard.moves);
+						labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
+
+						def move=choose(moveList, labelList, "Which move do you want to use")
+						def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+						attack (move as Move)
+						bef.unregisterItself(bg().em())
 					}
 				}
-				
+
 			};
 			case CUBONE_51:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1266,9 +1625,26 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Look for Friends", {
 					text "Reveal cards from your deck until you reveal a Basic Pokémon. Show that card to your opponent and put it into your hand. Shuffle the other revealed cards into your deck. (If you don’t reveal a Basic Pokémon, shuffle all the revealed cards back into your deck.)"
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						damage 0
+						def revealCard = new CardList();
+						def ind = 0
+						def curCard
+						while(ind < my.deck.size()){
+							curCard = my.deck.get(ind)
+							ind+=1
+							revealCard.add(curCard)
+							if(curCard.cardTypes.is(BASIC))
+								break
+						}
+						revealCard.showToMe("Drawn cards")
+						revealCard.showToOpponent("revealed cards")
+						revealCard.clear()
+						revealCard.add(curCard)
+						revealCard.moveTo(my.hand)
+						shuffleDeck()
 					}
 				}
 				move "Bonemerang", {
@@ -1276,10 +1652,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2, {damage 10}
 					}
 				}
-				
+
 			};
 			case DRATINI_52:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
@@ -1288,10 +1664,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
-				
+
 			};
 			case DRATINI_53:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -1302,7 +1678,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply ASLEEP
 					}
 				}
 				move "Tail Strike", {
@@ -1310,17 +1686,22 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {damage 10}
 					}
 				}
-				
+
 			};
 			case DROWZEE_54:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness PSYCHIC
 				pokePower "Insomnia", {
 					text "Drowzee can’t be Asleep."
-					actionA {
+					delayedA {
+						before APPLY_SPECIAL_CONDITION, self, null, ASLEEP_SPC, {
+								wcu "$self can't be Asleep"
+								prevent()
+						}
 					}
 				}
 				move "Soothing Wave", {
@@ -1328,10 +1709,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flipThenApplySC ASLEEP
 					}
 				}
-				
+
 			};
 			case EKANS_55:
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
@@ -1341,10 +1723,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{apply PARALYZED}
 					}
 				}
-				
+
 			};
 			case GRIMER_56:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1354,7 +1736,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						sw opp.active, opp.bench.select()
 					}
 				}
 				move "Spit Poison", {
@@ -1362,10 +1744,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						apply POISONED
 					}
 				}
-				
+
 			};
 			case HOPPIP_57:
 			return basic (this, hp:HP030, type:GRASS, retreatCost:1) {
@@ -1374,6 +1757,15 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Buffer", {
 					text "If Hoppip would be Knocked Out by an opponent’s attack, flip a coin. If heads, Hoppip is not Knocked Out and its remaining HP becomes 10 instead."
 					delayedA {
+						before KNOCKOUT, self, {
+							if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
+								flip "Buffer", {
+									self.damage = self.fullHP - hp(10)
+									bc "Buffer saved $self!"
+									prevent()
+								}
+							}
+						}
 					}
 				}
 				move "Miracle Powder", {
@@ -1381,10 +1773,12 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {
+							applyAfterDamage choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending pokemon")
+						}
 					}
 				}
-				
+
 			};
 			case HORSEA_58:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1392,9 +1786,11 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Water Plant", {
 					text "Search your discard pile for up to 2 [W] Energy cards, show them to your opponent, and put them into your hand."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(W)
+					}
 					onAttack {
-						damage 0
+						my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(W).select(count : 2,).showToOpponent.moveTo(my.hand)
 					}
 				}
 				move "Swift", {
@@ -1402,10 +1798,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						swiftDamage(30,defending)
 					}
 				}
-				
+
 			};
 			case HOUNDOUR_59:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -1415,7 +1811,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Smokescreen", {
@@ -1423,28 +1819,33 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						sandAttack()
 					}
 				}
-				
+
 			};
 			case HOUNDOUR_60:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
 				weakness WATER
 				pokeBody "Dark Lift", {
 					text "If Houndour has any [D] Energy attached to it, the Retreat Cost for Houndour is 0."
-					delayedA {
-					}
+					getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {h->
+            if(self.cards.energyCount(D)) {
+              h.object = 0
+            }
+          }
 				}
 				move "Firebreathing", {
 					text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {damage 10}
 					}
 				}
-				
+
 			};
 			case KOFFING_61:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1452,6 +1853,12 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Knockout Gas", {
 					text "If Koffing is your Active Pokémon and is Knocked Out by an opponent’s attack, the Attacking Pokémon is now Confused and Poisoned."
 					delayedA {
+						before KNOCKOUT, self, {
+							if((ef as Knockout).byDamageFromAttack){
+								apply CONFUSED
+								apply POISONED
+							}
+						}
 					}
 				}
 				move "Gnaw", {
@@ -1459,10 +1866,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
-				
+
 			};
 			case LARVITAR_62:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1472,10 +1879,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 3, {damage 10}
 					}
 				}
-				
+
 			};
 			case LARVITAR_63:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1485,7 +1892,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Dig Drain", {
@@ -1493,10 +1900,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						heal 10, self
 					}
 				}
-				
+
 			};
 			case LEDYBA_64:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1504,9 +1912,16 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Call for Family", {
 					text "Search your deck for a [G] Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert deck.notEmpty
+						assert my.bench.notFull
+					}
 					onAttack {
-						damage 0
+						deck.search (count: 1,{it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(N)}).each {
+              deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
 					}
 				}
 				move "Beat", {
@@ -1514,10 +1929,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
-				
+
 			};
 			case MAGIKARP_65:
 			return basic (this, hp:HP030, type:WATER, retreatCost:1) {
@@ -1525,12 +1940,19 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Call for Friends", {
 					text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
 					energyCost W
-					attackRequirement {}
+					attackRequirement {
+						assert deck.notEmpty
+						assert my.bench.notFull
+					}
 					onAttack {
-						damage 0
+						int count = bench.freeBenchCount>=2?2:1
+						deck.search (max: count, cardTypeFilter(BASIC)).each {
+							deck.remove(it)
+							benchPCS(it)
+						}
+						shuffleDeck()
 					}
 				}
-				
 			};
 			case MAGNEMITE_66:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
@@ -1540,10 +1962,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						noWrDamage(10,defending)
 					}
 				}
-				
+
 			};
 			case MAREEP_67:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
@@ -1551,9 +1973,12 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Minor Errand-Running", {
 					text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						damage 0
+						my.deck.search(max : 1, "Select a basic Energy card.",cardTypeFilter(BASIC_ENERGY)).showToOpponent("Selected card.").moveTo(my.hand)
+						shuffleDeck()
 					}
 				}
 				move "Quick Attack", {
@@ -1561,10 +1986,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {damage 10}
 					}
 				}
-				
+
 			};
 			case MARILL_68:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1572,12 +1998,15 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Minor Errand-Running", {
 					text "Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						damage 0
+						my.deck.search(max : 2, "Select 2 basic Energy cards.",cardTypeFilter(BASIC_ENERGY)).showToOpponent("Selected card.").moveTo(my.hand)
+						shuffleDeck()
 					}
 				}
-				
+
 			};
 			case ONIX_69:
 			return basic (this, hp:HP080, type:FIGHTING, retreatCost:3) {
@@ -1587,7 +2016,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 10}
 					}
 				}
 				move "Granite Head", {
@@ -1595,10 +2024,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						reduceDamageNextTurn(hp(10),thisMove)
 					}
 				}
-				
+
 			};
 			case PSYDUCK_70:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1608,25 +2038,35 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Headache", {
 					text "Flip a coin. If heads, your opponent can’t play a Trainer card from his or her hand until the end of your opponent’s next turn."
 					energyCost W
 					attackRequirement {}
-					onAttack {
-						damage 0
+						onAttack {
+							delayed{
+								before PLAY_TRAINER, {
+									if (bg.currentTurn == self.owner.opposite) {
+										wcu "Psyduck's Headache prevents playing this card!"
+										prevent()
+									}
+								}
+								unregisterAfter 2
+							}
+						}
 					}
-				}
-				
 			};
 			case RATTATA_71:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
 				weakness FIGHTING
 				pokeBody "Scramble", {
 					text "As long as your opponent has any Pokémon-ex as his or her Active Pokémon, the Retreat Cost for Rattata is 0."
-					delayedA {
+					getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {
+						if(self.owner.opposite.pbg.active.pokemonEX){
+							h.object = 0
+						}
 					}
 				}
 				move "Fury Swipes", {
@@ -1634,10 +2074,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 3, {damage 10}
 					}
 				}
-				
+
 			};
 			case RATTATA_72:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
@@ -1645,9 +2085,16 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Call for Family", {
 					text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert deck.notEmpty
+						assert my.bench.notFull
+					}
 					onAttack {
-						damage 0
+						deck.search (count: 1,{it.cardTypes.is(BASIC)}).each {
+              deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
 					}
 				}
 				move "Snarl", {
@@ -1655,10 +2102,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 1, {damage 10},{apply PARALYZED}
 					}
 				}
-				
+
 			};
 			case REMORAID_73:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1666,9 +2113,11 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Energy Draw", {
 					text "Flip a coin. If heads, search your deck for a basic Energy card and attach it to Remoraid. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						damage 0
+						flip{attachEnergyFrom(basic : true, my.deck, self)}
 					}
 				}
 				move "Razor Fin", {
@@ -1676,10 +2125,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
-				
+
 			};
 			case SANDSHREW_74:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1689,7 +2138,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Swift", {
@@ -1697,10 +2146,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						swiftDamage 20
 					}
 				}
-				
+
 			};
 			case SENTRET_75:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -1708,9 +2157,13 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Friend Search", {
 					text "Look at the top 5 cards of your deck. Choose a Basic Pokémon or Evolution card you find there, show it to your opponent, and put it into your hand. Put the other 4 cards back on top of your deck. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						damage 0
+						my.deck.subList(0,Math.min(my.deck.size(),5)).showToMe("The top 5 cards of your deck.")
+						if(my.deck.filterByType(BASIC,STAGE1,STAGE2)) my.deck.filterByType(BASIC,STAGE1,STAGE2).select().showtoOpponent("selectedCard").moveTo(my.hand)
+						shuffleDeck()
 					}
 				}
 				move "Surprise Attack", {
@@ -1718,10 +2171,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 20}
 					}
 				}
-				
+
 			};
 			case SLOWPOKE_76:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -1729,17 +2182,26 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Dense", {
 					text "Any damage done to Slowpoke by attacks from your opponent’s Evolved Pokémon is reduced by 10 (after applying Weakness and Resistance)."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each{
+								if(it.to == self && it.from.evolution && it.notNoEffect && it.dmg.value) {
+									bc "Crust -10"
+									it.dmg -= hp(10)
+								}
+							}
+						}
 					}
 				}
+
 				move "Bite", {
 					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
-				
+
 			};
 			case SLUGMA_77:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:2) {
@@ -1749,7 +2211,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {apply BURNED}
 					}
 				}
 				move "Heat Tackle", {
@@ -1757,10 +2219,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						damage 10, self
 					}
 				}
-				
+
 			};
 			case SPINARAK_78:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1770,7 +2233,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						draw 1
 					}
 				}
 				move "Rising Lunge", {
@@ -1778,10 +2241,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {damage 10}
 					}
 				}
-				
+
 			};
 			case SWINUB_79:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1791,7 +2255,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Rest", {
@@ -1799,10 +2263,14 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						heal self.damage.value, self
+						clearSpecialCondition(self,Source.ATTACK)
+						afterDamage{
+							apply ASLEEP, self
+						}
 					}
 				}
-				
+
 			};
 			case VOLTORB_80:
 			return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
@@ -1810,9 +2278,12 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Psycho Waves", {
 					text "Discard an Energy card attached to Voltorb. The Defending Pokémon is now Confused."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert self.cards.energyCount(C) : "Voltorb don't have energies to discard."
+					}
 					onAttack {
-						damage 0
+						discardSelfEnergy(C)
+						apply CONFUSED
 					}
 				}
 				move "Thunder Wave", {
@@ -1820,10 +2291,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flipThenApplySC PARALYZED
 					}
 				}
-				
+
 			};
 			case WOOPER_81:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1831,6 +2303,12 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Saturation", {
 					text "When you attach a [W] Energy card from your hand to Wooper, remove all Special Conditions and 1 damage counter from Wooper."
 					delayedA {
+						before ATTACH_ENERGY, self, {
+							if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == W){
+								clearSpecialCondition(self,Source.SRC_ABILITY)
+								heal 10, self
+							}
+						}
 					}
 				}
 				move "Wave Splash", {
@@ -1838,10 +2316,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
-				
+
 			};
 			case ZUBAT_82:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1851,7 +2329,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {apply PARALYZED}
 					}
 				}
 				move "Ambush", {
@@ -1859,71 +2337,132 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {damage 20}
 					}
 				}
-				
+
 			};
 			case COPYCAT_83:
-			return basicTrainer (this) {
+			return supporter (this) {
 				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, count the number of cards in your opponent’s hand and draw that many cards."
 				onPlay {
+					my.hand.getExcludedList(thisCard).moveTo(my.deck)
+					shuffleDeck()
+					draw opp.hand.size()
 				}
 				playRequirement{
+					assert my.hand.getExcludedList(thisCard) || my.deck
 				}
 			};
 			case POKEMON_RETRIEVER_84:
 			return basicTrainer (this) {
 				text "Search your discard pile for Basic Pokémon and Evolution cards. You may either show 1 Basic Pokémon or Evolution card to your opponent and put it into your hand, or show a combination of 3 Basic Pokémon or Evolution cards to your opponent and shuffle them into your deck."
 				onPlay {
+					if(my.discard.filterByType(BASIC,STAGE1,STAGE2).size() < 3){
+						my.discard.filterByType(BASIC,STAGE1,STAGE2).select(count : 1,"Select 1 Basic Pokémon or Evolution").showToOpponent("Selected card.").moveTo(my.hand)
+					}
+					else{
+						def choice = choose([0,1],["Select 1 card : put it in your hand","Select 3 cards : shuffle them in your deck"],"What do you want to do?")
+						if(choice){
+							my.discard.filterByType(BASIC,STAGE1,STAGE2).select(count : 3,"Select a combination of 3 Basic Pokémon or Evolution cards.").showToOpponent("Selected cards.").moveTo(my.deck)
+							shuffleDeck()
+						}
+						else{
+							my.discard.filterByType(BASIC,STAGE1,STAGE2).select(count : 1,"Select 1 Basic Pokémon or Evolution").showToOpponent("Selected card.").moveTo(my.hand)
+						}
+					}
 				}
 				playRequirement{
+					assert my.discard.filterByType(BASIC,STAGE1,STAGE2)
 				}
 			};
 			case POW__HAND_EXTENSION_85:
 			return basicTrainer (this) {
 				text "You may use this card only if you have more Prize cards left than your opponent.\nMove 1 Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon. Or, switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
 				onPlay {
+					if(opp.bench){
+						if(opp.active.cards.energyCount(C)){
+							def choice = choose([0,1],["Move 1 Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon","switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon"])
+							if(choice){
+								sw opp.active, opp.bench.select()
+							}
+							else{
+								moveEnergy(opp.active,opp.bench.select("Select the pokemon getting the Energy"))
+							}
+						}
+						else{
+							sw opp.active, opp.bench.select()
+						}
+					}
 				}
 				playRequirement{
+					assert my.prizeAsList.size() > opp.prizeAsList.size() : "You need more Prize cards left than your opponent to use this card"
 				}
 			};
 			case ROCKET_S_ADMIN__86:
-			return basicTrainer (this) {
+			return supporter (this) {
 				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck. Then, each player counts his or her Prize cards left and draws up to that many cards. (You draw your cards first.)"
 				onPlay {
+					my.hand.getExcludedList(thisCard).moveTo(my.deck)
+					opp.hand.getExcludedList(thisCard).moveTo(opp.deck)
+					shuffleDeck()
+					shuffleDeck(null,TargetPlayer.OPPONENT)
+					draw my.prizeAsList.size()
+					draw(opp.prizeAsList.size(),TargetPlayer.OPPONENT)
 				}
 				playRequirement{
 				}
 			};
 			case ROCKET_S_HIDEOUT_87:
-			return basicTrainer (this) {
+			return stadium (this) {
 				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play.\nEach Pokémon in play with Dark or Rocket’s in its name (both yours and your opponent’s) gets +20 HP."
-				onPlay {
-				}
-				playRequirement{
-				}
+				def eff
+        onPlay {
+          eff = getter (GET_FULL_HP, self) {h->
+						if(self.topPokemonCard.cardTypes.is(STAGE1)) {
+							h.object += hp(20)
+						}
+					}
+        }
+        onRemoveFromPlay{
+          eff.unregister()
+        }
 			};
 			case ROCKET_S_MISSION_88:
-			return basicTrainer (this) {
+			return supporter (this) {
 				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDiscard a card from your hand. Then, draw 3 cards. If you discarded a Pokémon that has Dark or Rocket’s in its name, draw 4 cards instead."
 				onPlay {
+					def tar = my.hand.getExcludedList(thisCard).select("Select a card to discard (If you discard a Pokémon that has Dark or Rocket’s in its name you will draw 1 more card.)")
+					tar.discard()
+					if(tar.name.contains("Dark") || tar.name.contains("Rocket’s"))
+					{
+						draw 4
+					}
+					else{
+						draw 3
+					}
 				}
 				playRequirement{
+					assert my.hand.getExcludedList(thisCard)
 				}
 			};
 			case ROCKET_S_POKE_BALL_89:
 			return basicTrainer (this) {
 				text "Search your deck for a Pokémon that has Dark in its name, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 				onPlay {
+					my.deck.search(max:1,"Select a Pokémon with Dark in its name",{it.cardTypes.is(POKEMON) || it.names.contains("Dark")}).showToOpponent("Selected card.").moveTo(my.hand)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.deck
 				}
 			};
 			case ROCKET_S_TRICKY_GYM_90:
 			return stadium (this) {
 				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play.\nEach Pokémon with Dark or Rocket’s in its name (both yours and your opponent’s) can use attacks on this card instead of its own.\n[C] Feint Attack: Does 20 damage to 1 of your opponent’s Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
 				onPlay {
+					//TODO : get TM example
 				}
 				onRemoveFromPlay{
 				}
@@ -1932,14 +2471,35 @@ public enum TeamRocketReturns implements CardInfo {
 			return basicTrainer (this) {
 				text "Choose 1 of your Evolved Pokémon, remove the highest Stage Evolution card from it, and shuffle it into your deck (this counts as devolving that Pokémon). If that Pokémon remains in play, search your deck for an Evolution card that evolves from that Pokémon and put it onto that Pokémon (this counts as evolving that Pokémon). Shuffle your deck afterward."
 				onPlay {
+					def pcs = my.all.findAll{it.evolution}.select("Select the Pokémon to devolve.")
+					if(pcs.evolution) {
+						targeted (pcs, SRC_ABILITY) {
+							def top=pcs.topPokemonCard
+							bc "$top Devolved"
+							moveCard(top, my.deck)
+							devolve(pcs, top)
+							shuffleDeck()
+							checkFaint()
+							if(pcs) {
+								def tar = my.deck.search(max:1,"Search for an Evolution card that evolves from that Pokémon",{it.cardTypes.is(EVOLUTION) && self.name == it.predecessor})
+								evolve(pcs,tar.first(),OTHER)
+							}
+						}
+					}
 				}
 				playRequirement{
+					assert my.all.findAll{it.evolution}
 				}
 			};
 			case SWOOP__TELEPORTER_92:
 			return basicTrainer (this) {
 				text "Search your deck for a Basic Pokémon (excluding Pokémon-ex) and switch it with 1 of your Basic Pokémon (excluding Pokémon-ex) in play. (Any cards attached to that Pokémon, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Place the first Basic Pokémon in the discard pile. Shuffle your deck afterward."
 				onPlay {
+					assert my.hand.findAll {it.cardTypes.is(BASIC) && it.cardTypes.isNot(POKEMON_EX)} : "No basic in play"
+
+					def pcs = my.hand.filterByType(BASIC).select()
+					my.deck.search(max:1,"Select a Basic Pokémon (excluding Pokémon-ex)",{it.cardTypes.is(BASIC) && it.cardTypes.isNot(POKEMON_EX)}).select().moveTo(pcs.cards)
+					discard(pcs)
 				}
 				playRequirement{
 				}
@@ -1948,32 +2508,56 @@ public enum TeamRocketReturns implements CardInfo {
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, put 1 damage counter on 1 of your opponent’s Pokémon. If tails, put 1 damage counter on 1 of your Pokémon."
 				onPlay {
+					flip 1,{
+						directDamage(10, opp.active,TRAINER_CARD)
+					},
+					{
+						directDamage(10, my.active,TRAINER_CARD)
+					}
 				}
 				playRequirement{
 				}
 			};
 			case DARK_METAL_ENERGY_94:
-			return specialEnergy (this, [[C]]) {
+			return specialEnergy (this, [[D,M]]) {
 				text "Attach Dark Metal Energy to 1 of your Pokémon. While in play, Dark Metal Energy provides [D] Energy and [M] Energy, but provides only 1 Energy at a time. (Doesn’t count as a basic Energy card when not in play and has no effect other than providing Energy.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
 				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
 			};
 			case R_ENERGY_95:
-			return specialEnergy (this, [[C]]) {
+			return specialEnergy (this, [[D,D]]) {
 				text "R Energy can be attached only to a Pokémon that have Dark or Rocket’s in its name. While in play, R Energy provides 2 [D] Energy. (Doesn’t count as a basic Energy card.) If the Pokémon R Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). When your turn ends, discard R Energy."
+				def eff
+				def check = {
+								if(!(it.name.contains("Dark") || it.name.contains("Rocket’s"))){discard thisCard}
+				}
 				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
+          eff = delayed {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each {
+								if(it.from == self && it.notNoEffect && it.dmg.value)){
+									bc "R Energy prevents damage"
+									it.dmg += hp(10)
+								}
+							}
+						}
+            after BETWEEN_TURNS, {
+              discard thisCard
+              unregister()
+            }
+            after EVOLVE, {check(self)} //some pokemon evolve into different type
+          }
+        }
+        onRemoveFromPlay {
+          eff.unregister()
+        }
+        onMove {to->
+          check(to)
+        }
 				allowAttach {to->
+					to.name.contains("Dark") || to.name.contains("Rocket’s")
 				}
 			};
 			case ROCKET_S_ARTICUNO_EX_96:
@@ -1982,6 +2566,12 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Darkness Veil", {
 					text "As long as Rocket’s Articuno ex has any [D] Energy attached to it, prevent all effects, except damage, by an opponent’s attack done to Rocket’s Articuno ex."
 					delayedA {
+						before null, self, Source.ATTACK, {
+							if(bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.energyCount(D)){
+								bc "Darkness Veil prevents effect"
+								prevent()
+							}
+						}
 					}
 				}
 				move "Freeze Solid", {
@@ -1989,7 +2579,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						if(my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(W)) attachEnergyFrom(type:W,my.discard,self)
 					}
 				}
 				move "Ice Wing", {
@@ -1997,17 +2588,21 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
-				
+
 			};
 			case ROCKET_S_ENTEI_EX_97:
 			return basic (this, hp:HP100, type:DARKNESS, retreatCost:1) {
 				weakness WATER
 				pokeBody "Dark Condition", {
 					text "As long as Rocket’s Entei ex has any [D] Energy attached to it, Rocket’s Entei ex has no Weakness."
-					delayedA {
+					getterA (GET_WEAKNESSES) { h->
+						if(h.effect.target == self && self.cards.energyCount(D)) {
+							def list = h.object as List<Weakness>
+							list.clear()
+						}
 					}
 				}
 				move "Energy Link", {
@@ -2015,7 +2610,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						if(my.discard.filterByType(ENERGY)) attachEnergyFrom(my.discard,self)
 					}
 				}
 				move "Volcanic Ash", {
@@ -2023,17 +2619,24 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						discardSelfEnergy C,C
+						damage 60, opp.all.select()
 					}
 				}
-				
+
 			};
 			case ROCKET_S_HITMONCHAN_EX_98:
 			return basic (this, hp:HP100, type:DARKNESS, retreatCost:1) {
 				weakness PSYCHIC
 				pokeBody "Strikes Back", {
 					text "If Rocket’s Hitmonchan ex is your Active Pokémon and is damaged by an opponent’s attack (even if Rocket’s Hitmonchan ex is Knocked Out), put 2 damage counters on the Attacking Pokémon."
-					delayedA {
+					delayedA (priority: LAST) {
+						before APPLY_ATTACK_DAMAGES, {
+							if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
+								bc "$self Strikes Back!"
+								directDamage 20, (ef.attacker as PokemonCardSet)
+							}
+						}
 					}
 				}
 				move "Mach Punch", {
@@ -2041,7 +2644,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						if(opp.bench) damage 10, opp.bench.select()
 					}
 				}
 				move "Magnum Punch", {
@@ -2049,10 +2653,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
 					}
 				}
-				
+
 			};
 			case ROCKET_S_MEWTWO_EX_99:
 			return basic (this, hp:HP100, type:DARKNESS, retreatCost:2) {
@@ -2062,7 +2666,12 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						discardSelfEnergy(C)
+            targeted (defending) {
+              def oldDamage = defending.damage
+              defending.damage = self.damage
+              self.damage = oldDamage
+            }
 					}
 				}
 				move "Hypnoblast", {
@@ -2070,7 +2679,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						flipThenApplySC ASLEEP
 					}
 				}
 				move "Psyburn", {
@@ -2078,17 +2688,20 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost P, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
 					}
 				}
-				
+
 			};
 			case ROCKET_S_MOLTRES_EX_100:
 			return basic (this, hp:HP100, type:DARKNESS, retreatCost:2) {
 				weakness WATER
 				pokeBody "Dark Lift", {
 					text "If Rocket’s Moltres ex has any [D] Energy attached to it, the Retreat Cost for Rocket’s Moltres ex is 0."
-					delayedA {
+					getterA (GET_RETREAT_COST, BEFORE_LAST,self) {h->
+						if(self.cards.energyCount(D)) {
+							h.object = 0
+						}
 					}
 				}
 				move "Fire Dance", {
@@ -2096,7 +2709,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						attachEnergyFrom(type : R, my.discard,my.all)
 					}
 				}
 				move "Combustion", {
@@ -2104,10 +2718,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
-				
+
 			};
 			case ROCKET_S_SCIZOR_EX_101:
 			return evolution (this, from:"Rocket's Scyther Ex", hp:HP120, type:DARKNESS, retreatCost:1) {
@@ -2115,7 +2729,8 @@ public enum TeamRocketReturns implements CardInfo {
 				resistance GRASS, MINUS30
 				pokeBody "Dual Armor", {
 					text "As long as Rocket’s Scizor ex has any [M] Energy attached to it, Rocket’s Scizor ex is both [M] and [D] type."
-					delayedA {
+					getterA GET_POKEMON_TYPE, self, {h->
+						if(self.cards.energyCount(M)) h.object.add(M)
 					}
 				}
 				move "Rotating Claws", {
@@ -2123,10 +2738,14 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						if(confirm("discard an Energy card attached to Rocket’s Scizor ex?")){
+							discardSelfEnergy C
+							attachEnergyFrom(my.discard,self)
+						}
 					}
 				}
-				
+
 			};
 			case ROCKET_S_SCYTHER_EX_102:
 			return basic (this, hp:HP080, type:DARKNESS, retreatCost:1) {
@@ -2134,7 +2753,8 @@ public enum TeamRocketReturns implements CardInfo {
 				resistance FIGHTING, MINUS30
 				pokeBody "Dual Armor", {
 					text "As long as Rocket’s Scyther ex has any [G] Energy attached to it, Rocket’s Scyther ex is both [G] and [D] type."
-					delayedA {
+					getterA GET_POKEMON_TYPE, self, {h->
+						if(self.cards.energyCount(G)) h.object.add(G)
 					}
 				}
 				move "Bounce", {
@@ -2142,7 +2762,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						if(my.bench){
+							if(confirm("Switch Rocket’s Scyther ex with 1 of your Benched Pokémon?")) sw self, my.bench.select()
+						}
 					}
 				}
 				move "Slashing Strike", {
@@ -2150,10 +2773,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						cantUseAttack thisMove, self
 					}
 				}
-				
+
 			};
 			case ROCKET_S_SNEASEL_EX_103:
 			return basic (this, hp:HP090, type:DARKNESS, retreatCost:1) {
@@ -2164,7 +2788,13 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def pcs = defending
+						if(opp.bench){
+							if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")){
+								pcs = opp.bench.select()
+							}
+						}
+						damage 10, pcs
 					}
 				}
 				move "Dark Ring", {
@@ -2172,10 +2802,13 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						my.all.each{
+							if(it.types.contains(D)) damage 10
+						}
 					}
 				}
-				
+
 			};
 			case ROCKET_S_SNORLAX_EX_104:
 			return basic (this, hp:HP100, type:DARKNESS, retreatCost:3) {
@@ -2183,6 +2816,11 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Dark Healer", {
 					text "As long as Rocket’s Snorlax ex has any [D] Energy attached to it, remove 1 damage counter from Rocket’s Snorlax ex between turns."
 					delayedA {
+						after BETWEEN_TURNS, {
+							if(self.cards.energyCount(D)){
+								heal 10, self
+							}
+						}
 					}
 				}
 				move "Poison Claws", {
@@ -2190,7 +2828,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC POISONED
 					}
 				}
 				move "Collapse", {
@@ -2198,10 +2837,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						apply ASLEEP, self
 					}
 				}
-				
+
 			};
 			case ROCKET_S_SUICUNE_EX_105:
 			return basic (this, hp:HP100, type:DARKNESS, retreatCost:1) {
@@ -2209,6 +2849,12 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Dark and Clear", {
 					text "As long as Rocket’s Suicune ex has any [D] Energy attached to it, Rocket’s Suicune ex can’t be affected by any Special Conditions."
 					delayedA {
+						before APPLY_SPECIAL_CONDITION,self, {
+							if(e.getTarget(bg)==self && self.cards.energyCount(D)){
+								bc "Dark and Clear prevents special conditions"
+								prevent()
+							}
+						}
 					}
 				}
 				move "Icy Wind", {
@@ -2216,7 +2862,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						applyAfterDamage ASLEEP
 					}
 				}
 				move "Hyper Splash", {
@@ -2224,10 +2871,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						if(opp.active.topPokemonCard.cardTypes.is(STAGE2)) damage 40
 					}
 				}
-				
+
 			};
 			case ROCKET_S_ZAPDOS_EX_106:
 			return basic (this, hp:HP100, type:DARKNESS, retreatCost:1) {
@@ -2235,6 +2883,13 @@ public enum TeamRocketReturns implements CardInfo {
 				pokeBody "Darkness Guard", {
 					text "As long as Rocket’s Zapdos ex has any [D] Energy attached to it, damage done to Rocket’s Zapdos ex by an opponent’s attack is reduced by 10 (after applying Weakness and Resistance)."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each {
+								if(it.to == self && it.notNoEffect && self.cards.energyCount(D)){
+									it.dmg -= hp(10)
+								}
+							}
+						}
 					}
 				}
 				move "Plasma", {
@@ -2242,7 +2897,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						attachEnergyFrom(type : L,my.discard,self)
 					}
 				}
 				move "Raging Thunder", {
@@ -2250,10 +2906,11 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						damage 30, my.all.select()
 					}
 				}
-				
+
 			};
 			case MUDKIP_STAR_107:
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
@@ -2263,7 +2920,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{discardDefendingEnergy()}
 					}
 				}
 				move "Spring Back", {
@@ -2271,10 +2928,14 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(opp.prizeAsList.size() == 1){
+							damage 50
+							applyAfterDamage ASLEEP
+						}
 					}
 				}
-				
+
 			};
 			case TORCHIC_STAR_108:
 			return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
@@ -2284,7 +2945,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip 1, {}, {discardSelfEnergy R}
 					}
 				}
 				move "Spring Back", {
@@ -2292,10 +2954,14 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost R, R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(opp.prizeAsList.size() == 1){
+							damage 50
+							applyAfterDamage CONFUSED
+						}
 					}
 				}
-				
+
 			};
 			case TREECKO_STAR_109:
 			return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
@@ -2306,7 +2972,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Spring Back", {
@@ -2314,10 +2980,14 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(opp.prizeAsList.size() == 1){
+							damage 50
+							applyAfterDamage POISONED
+						}
 					}
 				}
-				
+
 			};
 			case CHARMELEON_110:
 			return evolution (this, from:"Charmander", hp:HP070, type:FIRE, retreatCost:1) {
@@ -2327,7 +2997,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						sandAttack()
 					}
 				}
 				move "Fireworks", {
@@ -2335,22 +3006,32 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						flip 1, {}, {discardSelfEnergy R}
 					}
 				}
-				
+
 			};
 			case HERE_COMES_TEAM_ROCKET__111:
-			return basicTrainer (this) {
+			return supporter (this) {
 				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player plays with his or her Prize cards face up for the rest of the game."
 				onPlay {
+					for(int i=0; i<my.prizeIsTurnedUp.length; i++){
+						if(my.prize[i] != null){
+							my.prizeIsTurnedUp[i] = true
+						}
+					}
+					for(int i=0; i<opp.prizeIsTurnedUp.length; i++){
+						if(opp.prize[i] != null){
+							opp.prizeIsTurnedUp[i] = true
+						}
+					}
 				}
-				playRequirement{
-				}
+
 			};
 				default:
 			return null;
 		}
 	}
-	
+
 }
