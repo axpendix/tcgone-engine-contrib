@@ -723,7 +723,7 @@ public enum TeamRocket implements CardInfo {
 						checkLastTurn()
 						assert !self.specialConditions
 						powerUsed()
-						my.deck.search(count : 1,"Search for an evolution",cardTypeFilter(EVOLUTION)).moveTo(my.hand)
+						my.deck.search(count : 1,"Search for an evolution",cardTypeFilter(EVOLUTION)).showToOpponent("Selected card.").moveTo(my.hand)
 					}
 				}
 				move "Tail Strike", {
