@@ -2409,8 +2409,8 @@ public enum TeamRocketReturns implements CardInfo {
 					opp.hand.getExcludedList(thisCard).moveTo(opp.deck)
 					shuffleDeck()
 					shuffleDeck(null,TargetPlayer.OPPONENT)
-					draw my.prizeAsList.size()
-					draw(opp.prizeAsList.size(),TargetPlayer.OPPONENT)
+					draw choose(1..my.prizeAsList.size(),"How many cards would you like to draw?")
+					draw(choose(1..opp.prizeAsList.size(),"How many cards would you like to draw?"),TargetPlayer.OPPONENT)
 				}
 				playRequirement{
 				}
@@ -2538,7 +2538,7 @@ public enum TeamRocketReturns implements CardInfo {
           eff = delayed {
 						before APPLY_ATTACK_DAMAGES, {
 							bg.dm().each {
-								if(it.from == self && it.notNoEffect && it.dmg.value)){
+								if(it.from == self && it.notNoEffect && it.dmg.value){
 									bc "R Energy prevents damage"
 									it.dmg += hp(10)
 								}
