@@ -1494,7 +1494,8 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						flip (my.all.size() + opp.all.size()), {damage 10}, {damage 10, self}
+						def flipCnt = my.all.size() + opp.all.size()
+						flip flipCnt, {damage 10}, {damage 10, self}
 					}
 				}
 
@@ -3027,7 +3028,6 @@ public enum TeamRocketReturns implements CardInfo {
 						}
 					}
 				}
-
 			};
 				default:
 			return null;
