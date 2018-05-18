@@ -2153,14 +2153,16 @@ public enum CrimsonInvasion implements CardInfo {
         move "Draco Melody", {
           text "Flip a coin. If heads, search your deck for a [N] Pokémon and put it onto your Bench. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.notFull
+          }
           onAttack {
             flip {
               deck.search ({it.asPokemonCard().types.contains(N)}).each {
                 deck.remove(it)
                 benchPCS(it)
               }
-
+              shuffleDeck()
             }
           }
         }
