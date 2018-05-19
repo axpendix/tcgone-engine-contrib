@@ -613,7 +613,9 @@ public enum ForbiddenLight implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
-						if(bg.stadiumInfoStruct?.stadiumCard.name == "Lysandre Labs") damage 60
+						if(bg.stadiumInfoStruct){
+							if(bg.stadiumInfoStruct.stadiumCard.name == "Lysandre Labs") damage 60
+						}
 					}
 				}
 
@@ -731,7 +733,7 @@ public enum ForbiddenLight implements CardInfo {
 				bwAbility "Shuriken Flurry", {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put 3 damage counters on 1 of your opponent’s Pokémon."
 					onActivate {reason ->
-            if(reason == PLAY_FROM_HAND && confirm("Gale Shuriken")){
+            if(reason == PLAY_FROM_HAND && confirm("Shuriken Flurry")){
               powerUsed()
 							directDamage 30,opp.all.select()
             }
@@ -915,7 +917,7 @@ public enum ForbiddenLight implements CardInfo {
 						assert my.hand.filterByEnergyType(W) : "There is [W] energy in your hand"
 						powerUsed()
 						my.hand.filterByEnergyType(W).select().discard()
-						if(my.bench) sw opp.active, opp.bench.select()
+						if(opp.bench) sw opp.active, opp.bench.select()
 					}
 				}
 				move "Sauna Blast", {
