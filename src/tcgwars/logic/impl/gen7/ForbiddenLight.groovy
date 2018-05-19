@@ -247,7 +247,7 @@ public enum ForbiddenLight implements CardInfo {
 						assert my.deck
 					}
 					onAttack {
-						my.deck.sreach("Exeggcute", {it.name=="Exeggcute"}).each{
+						my.deck.search("Exeggcute", {it.name=="Exeggcute"}).each{
 							my.deck.remove(it)
 							benchPCS(it)
 						}
@@ -266,7 +266,7 @@ public enum ForbiddenLight implements CardInfo {
 						damage 20
 						def addDmg = 0
 						for(Type t1:Type.values()){
-							if(my.discard.filterByEnergyType(t1))
+							if(my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(t1))
 								addDmg += 20
 						}
 						addDmg = Math.min(100,addDmg)
@@ -297,7 +297,7 @@ public enum ForbiddenLight implements CardInfo {
 					onActivate {reason ->
             if(reason == PLAY_FROM_HAND && confirm("Blessings of the Frost")){
               powerUsed()
-              attachEnergyFrom(type:W,my.discard,my.all.select())
+              attachEnergyFrom(type:G,my.discard,my.all.select())
             }
           }
 				}
@@ -317,7 +317,6 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIRE
 				move "Outbreak<br> You can use this Ability only if you go second", {
 					text "Once during your first turn (before your attack), you may search your deck for a Spewpa and a Vivillon, reveal them, and put them into your hand. Then, shuffle your deck."
-					energyCost Abnormal
 					attackRequirement {
 						assert bg.turnCount == 2 : "this is not your first turn"
 						assert my.deck //would be an achievment to deck out first turn
@@ -352,7 +351,7 @@ public enum ForbiddenLight implements CardInfo {
 					onAttack {
 						flip {
 							my.deck.search("Select a Vivillon",{it.name == "Vivillon"}).each{
-								evolve(self,it,ATTACK)
+								evolve(self,it,Source.ATTACK)
 							}
 						}
 					}
