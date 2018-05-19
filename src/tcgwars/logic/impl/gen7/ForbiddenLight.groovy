@@ -245,6 +245,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost C
 					attackRequirement {
 						assert my.deck
+						assert my.bench.notFull
 					}
 					onAttack {
 						my.deck.search("Exeggcute", {it.name=="Exeggcute"}).each{
@@ -315,18 +316,15 @@ public enum ForbiddenLight implements CardInfo {
 			case SCATTERBUG_5:
 			return basic (this, hp:HP030, type:GRASS, retreatCost:1) {
 				weakness FIRE
-				move "Outbreak<br> You can use this Ability only if you go second", {
+				bwAbility "Outbreak", {
 					text "Once during your first turn (before your attack), you may search your deck for a Spewpa and a Vivillon, reveal them, and put them into your hand. Then, shuffle your deck."
-					attackRequirement {
+					actionA {
 						assert bg.turnCount == 2 : "this is not your first turn"
 						assert my.deck //would be an achievment to deck out first turn
-					}
-					onAttack {
 						my.deck.search(max: 2, "Select a Spewpa and a Vivillon", {it.name == "Spewpa" || it.name == "Vivillon"}, {CardList list ->
 							list.filterByNameEquals("Spewpa").size() <= 1 && list.filterByNameEquals("Vivillon").size() <= 1
 						}).moveTo(my.hand)
 						shuffleDeck()
-
 					}
 				}
 				move "Tackle", {
@@ -351,7 +349,7 @@ public enum ForbiddenLight implements CardInfo {
 					onAttack {
 						flip {
 							my.deck.search("Select a Vivillon",{it.name == "Vivillon"}).each{
-								evolve(self,it,Source.ATTACK)
+								evolve(self,it,OTHER)
 							}
 						}
 					}
@@ -421,7 +419,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						flip 2, {heal 40}
+						flip 2, {heal 40, self}
 					}
 				}
 				move "Double-Edge", {
@@ -497,7 +495,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+						damage 130
 						discardSelfEnergy C,C
 					}
 				}
@@ -568,7 +566,7 @@ public enum ForbiddenLight implements CardInfo {
 					actionA {
 						checkLastTurn()
 						powerUsed()
-						apply BURN
+						apply BURNED, opp.active
 					}
 				}
 				move "Fire Spin", {
@@ -601,13 +599,11 @@ public enum ForbiddenLight implements CardInfo {
 				bwAbility "Unnerve", {
 					text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
 					delayedA {
-						before null, self, Source.ITEM, {
-							bc "Unnerve prevent effect of item"
-							prevent()
-						}
-						before null, self, Source.SUPPORTER, {
-							bc "Unnerve prevent effect of item"
-							prevent()
+						before null, self, Source.TRAINER_CARD, {
+							if (bg.currentThreadPlayerType != self.owner){
+								bc "Unnerve prevent effect of item"
+								prevent()
+							}
 						}
 					}
 				}
@@ -671,7 +667,7 @@ public enum ForbiddenLight implements CardInfo {
 				bwAbility "Frubbles", {
 					text "If this Pokémon has any [W] Energy attached to it, it has no Retreat Cost."
 					getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {h->
-            if(self.card.energyCount(W)) {
+            if(self.cards.energyCount(W)) {
               h.object = 0
             }
           }
@@ -715,7 +711,7 @@ public enum ForbiddenLight implements CardInfo {
 					onActivate {reason ->
             if(reason == PLAY_FROM_HAND && confirm("Gale Shuriken")){
               powerUsed()
-							directDamage 20,opp.all.select
+							directDamage 20,opp.all.select()
             }
           }
 				}
@@ -737,7 +733,7 @@ public enum ForbiddenLight implements CardInfo {
 					onActivate {reason ->
             if(reason == PLAY_FROM_HAND && confirm("Gale Shuriken")){
               powerUsed()
-							directDamage 30,opp.all.select
+							directDamage 30,opp.all.select()
             }
           }
 				}
@@ -834,7 +830,7 @@ public enum ForbiddenLight implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-						delayedA{
+						delayed{
 							before APPLY_ATTACK_DAMAGES, {
 								bg.dm().each {
 									if(it.to == self && it.from.evolution && it.dmg.value && it.notNoEffect) {
@@ -917,9 +913,9 @@ public enum ForbiddenLight implements CardInfo {
 					actionA {
 						checkLastTurn()
 						assert my.hand.filterByEnergyType(W) : "There is [W] energy in your hand"
-						powerUsed
+						powerUsed()
 						my.hand.filterByEnergyType(W).select().discard()
-						sw opp.active, opp.bench.select()
+						if(my.bench) sw opp.active, opp.bench.select()
 					}
 				}
 				move "Sauna Blast", {
@@ -928,6 +924,9 @@ public enum ForbiddenLight implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 100
+						opp.bench.each{
+							damage 20
+						}
 					}
 				}
 
