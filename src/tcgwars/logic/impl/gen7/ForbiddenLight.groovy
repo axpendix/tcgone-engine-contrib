@@ -1164,7 +1164,7 @@ public enum ForbiddenLight implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						cantUseAttack opp.active.moves.select(), opp.active
+						amnesia delegate
 					}
 				}
 
@@ -1176,7 +1176,7 @@ public enum ForbiddenLight implements CardInfo {
 					text "If you have Azelf in play, your opponent’s Pokémon in play have no Resistance."
 					getterA (GET_RESISTANCES) {h->
             if(h.effect.target.owner == self.owner.opposite && my.all.find({it.name == "Azelf"})) {
-              h.clear()
+              h.object.clear()
             }
 					}
 				}
@@ -1228,7 +1228,7 @@ public enum ForbiddenLight implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						def pcs = opp.bench.select("select the Benched Pokémon from which you remove energy")
-						def tar = opp.all.getExcludedList(pcs).select("select the Pokémon to which you ")
+						def tar = opp.all.findAll{it != pcs}.select("select the Pokémon to which you ")
 						moveEnergy(basic: true, pcs, tar)
 					}
 				}
@@ -1251,7 +1251,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 30
+						damage 30+30*defending.cards.energyCount(C)
 
 					}
 				}
@@ -1343,7 +1343,7 @@ public enum ForbiddenLight implements CardInfo {
 					onAttack {
 						damage 90
 						afterDamage{
-							heal 30
+							heal 30, self
 						}
 					}
 				}
@@ -1371,7 +1371,7 @@ public enum ForbiddenLight implements CardInfo {
 						checkLastTurn()
 						assert my.bench
 						powerUsed()
-						attachEnergyFrom(type : L, my.discard, my.bench.select())
+						attachEnergyFrom(type : P, my.discard, my.bench)
 					}
 				}
 				move "Psychic Sphere", {
@@ -1418,15 +1418,15 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-					def hasEff = false
+						def hasEff = false
 
-					flip 2, {
-						hasEff=true
-						afterDamage{discardDefendingEnergy()}}
+						flip 2, {
+							hasEff=true
+							afterDamage{discardDefendingEnergy()}
+						}
+						if(hasEff) damage 60
 					}
-					if(hasEff) damage 60
 				}
-
 			};
 			case HOOPA_54:
 			return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
@@ -1436,7 +1436,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						my.deck.search(max:2,"Search your deck for up to 2 Item cards",filterByType(ITEM)).showToOpponent("Chosen cards").moveTo(my.hand)
+						my.deck.search(max:2,"Search your deck for up to 2 Item cards",cardTypeFilter(ITEM)).showToOpponent("Chosen cards").moveTo(my.hand)
 						shuffleDeck()
 					}
 				}
@@ -1509,7 +1509,7 @@ public enum ForbiddenLight implements CardInfo {
 						my.prizeAsList.moveTo(my.deck)
 						opp.prizeAsList.moveTo(opp.deck)
 						shuffleDeck()
-						shuffleDeck(null, targetPlayer.OPPONENT)
+						shuffleDeck(null, TargetPlayer.OPPONENT)
 						for(int i=0;i<3;i++){
 							my.prize[i] = my.deck.remove(0)
 							opp.prize[i] = opp.deck.remove(0)
@@ -1563,6 +1563,7 @@ public enum ForbiddenLight implements CardInfo {
 					def eff
 					onActivate{
 						eff =  getterA (GET_BURN_DAMAGE) {h->
+							bc "${h.effect.target} : ${h.effect.target.owner} / $self : ${self.owner}"
 							if(h.effect.target.owner != self.owner){
 								bc "Scorching Scales increases burn damage to 40"
 								h.object = hp(60)
@@ -1684,7 +1685,7 @@ public enum ForbiddenLight implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-            if(my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1 && my.lastKnockoutTypes && my.lastKnockoutTypes.contains(F)) damage 70
+            if(my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1 && my.lastKnockoutTypes && my.lastKnockoutTypes.contains(P)) damage 70
 					}
 				}
 
@@ -1768,7 +1769,7 @@ public enum ForbiddenLight implements CardInfo {
 					text "As long as you don’t have more Pokémon in play than your opponent, this Pokémon’s attacks do 60 more damage (before applying Weakness and Resistance), and it takes 30 less damage from attacks (after applying Weakness and Resistance)."
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
-							if(my.all.size() < opp.all.size()){
+							if(self.owner.pbg.all.size() < self.owner.opposite.pbg.all.size()){
 								bg.dm().each{
 									if(it.from==self && it.dmg.value && it.notNoEffect){
 										bc "+60 from Tyrantrum (Tyrannical Heart)"
@@ -1867,7 +1868,7 @@ public enum ForbiddenLight implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
-						if(gxCheck()) damage 60
+						if(bg.em().retrieveObject("gx_"+my.owner)) damage 60
 					}
 				}
 
@@ -1902,7 +1903,7 @@ public enum ForbiddenLight implements CardInfo {
 					onAttack {
 						gxPerform()
 						damage 150
-						delayedA{
+						delayed{
 							before APPLY_ATTACK_DAMAGES, {
 								bg.dm().each {
 									if(it.to == self && it.notNoEffect && (it.from.pokemonGX || it.from.pokemonEX)){
@@ -1926,7 +1927,7 @@ public enum ForbiddenLight implements CardInfo {
 						before APPLY_ATTACK_DAMAGES, {
 							if(ef.attacker.owner == self.owner && self.benched) {
 								bg.dm().each{
-									if(it.from.types.contains(R) && it.notNoEffect && it.dmg.value) {
+									if(it.from.types.contains(F) && it.notNoEffect && it.dmg.value) {
 										 bc "Princess’s Cheers +20"
 										 it.dmg += hp(20)
 									}
@@ -1942,7 +1943,9 @@ public enum ForbiddenLight implements CardInfo {
 					onAttack {
 						damage 90
 						afterDamage{
-							heal 30
+							my.bench.each{
+								heal 30, it
+							}
 						}
 					}
 				}
@@ -2685,7 +2688,7 @@ public enum ForbiddenLight implements CardInfo {
 				text "Move a Special Energy from 1 of your opponent’s Pokémon to another of their Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
 				onPlay {
 					def src = opp.all.findAll{it.cards.filterByType(SPECIAL_ENERGY)}.select("Select the source pokémon for the Special Energy")
-					def tar = opp.all.getExcludedList(src).select("Select the Pokémon that will recieve the Special Energy")
+					def tar = opp.all.findAll{it != src}.select("Select the Pokémon that will recieve the Special Energy")
 					moveEnergy(basic : false, src, tar)
 				}
 				playRequirement{
@@ -2720,7 +2723,7 @@ public enum ForbiddenLight implements CardInfo {
 					my.hand.getExcludedList(thisCard).moveTo(my.deck)
 					opp.hand.moveTo(opp.deck)
 					shuffleDeck()
-					shuffleDeck(null, targetPlayer.OPPONENT)
+					shuffleDeck(null, TargetPlayer.OPPONENT)
 					draw 4
 					draw(4, targetPlayer.OPPONENT)
 				}
