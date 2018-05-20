@@ -1109,12 +1109,12 @@ public enum UltraPrism implements CardInfo {
           def effect2
           onActivate {
             effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (self.active && (h.effect.target.pokemonEX || h.effect.target.pokemonGX) && h.effect.ability instanceof BwAbility) {
+              if (self.active && h.effect.target.owner != self.owner && (h.effect.target.pokemonEX || h.effect.target.pokemonGX) && h.effect.ability instanceof BwAbility) {
                 h.object=true
               }
             }
             effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-              if (self.active && ((h.effect.target as Card).cardTypes.is(POKEMON_EX) || (h.effect.target as Card).cardTypes.is(POKEMON_GX))) {
+              if (self.active && h.effect.target.owner != self.owner && ((h.effect.target as Card).cardTypes.is(POKEMON_EX) || (h.effect.target as Card).cardTypes.is(POKEMON_GX))) {
                 h.object=true
               }
             }
@@ -1281,10 +1281,11 @@ public enum UltraPrism implements CardInfo {
         resistance METAL, MINUS20
         bwAbility "Evolutionary Advantage", {
           text "If you go second, this Pokémon can evolve during your first turn."
-          getterA IS_EVOLUTION_BLOCKED { h ->
-            if(bg.turnCount == 2 && h.effect.target == self)
-              h.object = false
-          }
+          delayedA {
+						before PREVENT_EVOLVE, {
+							if(bg.turnCount == 2) prevent()
+						}
+					}
         }
         move "Static Shock", {
           text "10 damage."
@@ -3029,7 +3030,7 @@ public enum UltraPrism implements CardInfo {
       return supporter (this) {
         text "Shuffle your hand into your deck. Then, draw 6 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          my.hand.moveTo(hidden:true, my.deck)
+          my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
           shuffleDeck()
           draw 6
           bg.em().storeObject("Cynthia_"+bg.turnCount, 1)
