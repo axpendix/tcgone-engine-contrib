@@ -1226,12 +1226,13 @@ public enum ForbiddenLight implements CardInfo {
 					text "Move an Energy from 1 of your opponent’s Benched Pokémon to another of their Pokémon."
 					energyCost P
 					attackRequirement {
-						assert opp.bench
+						assert opp.bench.findAll{it.cards.energyCount(C)}
 					}
 					onAttack {
-						def pcs = opp.bench.select("select the Benched Pokémon from which you remove energy")
+						if()
+						def pcs = opp.bench.findAll{it.cards.energyCount(C)}.select("select the Benched Pokémon from which you remove energy")
 						def tar = opp.all.findAll{it != pcs}.select("select the Pokémon to which you ")
-						moveEnergy(basic: true, pcs, tar)
+						moveEnergy(basic: false, pcs, tar)
 					}
 				}
 
