@@ -1225,7 +1225,9 @@ public enum ForbiddenLight implements CardInfo {
 				move "Energy Teaser", {
 					text "Move an Energy from 1 of your opponent’s Benched Pokémon to another of their Pokémon."
 					energyCost P
-					attackRequirement {}
+					attackRequirement {
+						assert opp.bench
+					}
 					onAttack {
 						def pcs = opp.bench.select("select the Benched Pokémon from which you remove energy")
 						def tar = opp.all.findAll{it != pcs}.select("select the Pokémon to which you ")
@@ -1330,9 +1332,9 @@ public enum ForbiddenLight implements CardInfo {
 									}
 								}
 							}
-							before EVOLVE, {unregister()}
-							before SWITCH, {unregister()}
-							unregisterAfter 2
+							before EVOLVE, defending, {unregister()}
+							before SWITCH, defending, {unregister()}
+							unregisterAfter 3
 						}
 					}
 				}
@@ -1409,7 +1411,6 @@ public enum ForbiddenLight implements CardInfo {
 								apply POISONED, (ef.attacker as PokemonCardSet)
 							}
 						}
-						unregisterAfter 2
 						after SWITCH, self, {unregister()}
 					}
 				}
@@ -1560,18 +1561,12 @@ public enum ForbiddenLight implements CardInfo {
 				weakness PSYCHIC
 				bwAbility "Flaming Fighter", {
 					text "Put 6 damage counters instead of 2 on your opponent’s Burned Pokémon between turns."
-					def eff
-					onActivate{
-						eff =  getterA (GET_BURN_DAMAGE) {h->
-							bc "${h.effect.target} : ${h.effect.target.owner} / $self : ${self.owner}"
-							if(h.effect.target.owner != self.owner){
-								bc "Scorching Scales increases burn damage to 40"
-								h.object = hp(60)
-							}
+					getterA (GET_BURN_DAMAGE) {h->
+						bc "${h.effect.target} : ${h.effect.target.owner} / $self : ${self.owner}"
+						if(h.effect.target.owner != self.owner){
+							bc "Scorching Scales increases burn damage to 40"
+							h.object = hp(60)
 						}
-					}
-					onDeactivate {
-						eff.unregister()
 					}
 				}
 				move "Burst Punch", {
