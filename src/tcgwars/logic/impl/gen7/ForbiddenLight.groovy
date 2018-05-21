@@ -1230,7 +1230,7 @@ public enum ForbiddenLight implements CardInfo {
 					}
 					onAttack {
 						def pcs = opp.bench.findAll{it.cards.energyCount(C)}.select("select the Benched Pokémon from which you remove energy")
-						def tar = opp.all.findAll{it != pcs}.select("select the Pokémon to which you ")
+						def tar = opp.all.findAll{it != pcs}.select("select the Pokémon receiving an energy from $pcs ")
 						moveEnergy(basic: false, pcs, tar)
 					}
 				}
