@@ -992,7 +992,7 @@ class TcgStatics {
 	/**
 	* Moves an energy card attached to one pokemon to another
 	*/
-	static void moveEnergy(params=[:], def from, def to, Source src=Source.ATTACK) {
+	static void moveOwnEnergy(params=[:], def from, def to, Source src=Source.ATTACK) {
 		if(to instanceof PcsList && to.empty) return
 		if(from instanceof PcsList){
 			if(from.empty) return
@@ -1024,6 +1024,50 @@ class TcgStatics {
 			}
 		}
 	}
+
+	static void moveOppEnergy(params=[:], def from, def to, Source src=Source.ATTACK) {
+		if(to instanceof PcsList && to.empty) return
+		if(from instanceof PcsList){
+			if(from.empty) return
+			from = from.oppSelect("From?")
+		}
+		def filterType = params.basic ? BASIC_ENERGY : ENERGY
+		def list = from.cards.filterByType(filterType)
+		if(params.type) {
+			list = list.filterByEnergyType(params.type)
+		}
+		if(!list){
+			return
+		}
+		list = list.oppSelect(min: (params.may ? 0 : 1), "Move which card?")
+		if(!list) return
+		if(to instanceof PcsList){
+			if(to.empty) return;
+			to = to.oppSelect("To?")
+		}
+		if(to.owner != bg.currentThreadPlayerType){
+			targeted (from, src) {
+				list.each {
+					energySwitch(from, to, it)
+				}
+			}
+		} else {
+			list.each {
+				energySwitch(from, to, it)
+			}
+		}
+	}
+
+	static void moveEnergy(params=[:], def from, def to, Source src=Source.ATTACK, TargetPlayer targetPlayer=TargetPlayer.SELF) {
+		if(targetPlayer==TargetPlayer.SELF){
+			moveOwnEnergy(params,from,to,src)
+		}
+		else{
+			moveOppEnergy(params,from,to,src)
+		}
+	}
+
+
 	static attachEnergyFrom (params=[:], CardList from, def to){
 		if(to instanceof PcsList && to.empty) return
 		def list

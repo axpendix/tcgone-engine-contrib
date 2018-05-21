@@ -1781,7 +1781,7 @@ public enum UltraPrism implements CardInfo {
 						assert my.deck
             assert my.all.findAll({it.name.contains("Garchomp")})
 						powerUsed()
-            my.deck.select(hidden: true, count:1).moveTo(my.hand)
+            my.deck.select(count:1).moveTo(hidden: true,my.hand)
             shuffleDeck()
           }
         }
