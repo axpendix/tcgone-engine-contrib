@@ -1109,12 +1109,12 @@ public enum UltraPrism implements CardInfo {
           def effect2
           onActivate {
             effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (self.active && h.effect.target.owner != self.owner && (h.effect.target.pokemonEX || h.effect.target.pokemonGX) && h.effect.ability instanceof BwAbility) {
+              if (self.active && h.effect.ability.name != "Freezing Gaze" && h.effect.target.owner != self.owner && (h.effect.target.pokemonEX || h.effect.target.pokemonGX) && h.effect.ability instanceof BwAbility) {
                 h.object=true
               }
             }
             effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-              if (self.active && h.effect.target.owner != self.owner && ((h.effect.target as Card).cardTypes.is(POKEMON_EX) || (h.effect.target as Card).cardTypes.is(POKEMON_GX))) {
+              if (self.active && h.effect.ability.name != "Freezing Gaze" && h.effect.target.owner != self.owner && ((h.effect.target as Card).cardTypes.is(POKEMON_EX) || (h.effect.target as Card).cardTypes.is(POKEMON_GX))) {
                 h.object=true
               }
             }
@@ -1781,7 +1781,7 @@ public enum UltraPrism implements CardInfo {
 						assert my.deck
             assert my.all.findAll({it.name.contains("Garchomp")})
 						powerUsed()
-            my.deck.select(count:1).moveTo(my.hand)
+            my.deck.select(hidden: true, count:1).moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -2043,7 +2043,7 @@ public enum UltraPrism implements CardInfo {
       };
       case ALOLAN_DIGLETT_78:
       return basic (this, hp:HP050, type:METAL, retreatCost:1) {
-        weakness FIGHTING
+        weakness FIRE
         resistance PSYCHIC, MINUS20
         move "Iron Head", {
           text "10× damage. Flip a coin until you get tails. This attack does 10 damage for each heads."
@@ -3036,7 +3036,7 @@ public enum UltraPrism implements CardInfo {
           bg.em().storeObject("Cynthia_"+bg.turnCount, 1)
         }
         playRequirement{
-          assert my.deck.notEmpty && (my.hand.size() != 0)
+          assert my.deck.notEmpty || (my.hand.getExcludedList(thisCard).size() != 0)
         }
       };
       case CYRUS_PRISM_STAR_120:
