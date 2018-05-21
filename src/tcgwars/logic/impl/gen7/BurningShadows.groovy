@@ -2802,9 +2802,11 @@ public enum BurningShadows implements CardInfo {
 							if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.cards.filterByType(ENERGY)) {
 								bc "Wishful Baton activates"
 								def pcs = self.owner.pbg.bench.select("Wishful Baton activates, choose target pokemon for energies", true, self.owner)
-								moveEnergy(basic: true, self, pcs,self.owner.toTargetPlayer())
-								moveEnergy(basic: true, self, pcs,self.owner.toTargetPlayer())
-								moveEnergy(basic: true, self, pcs,self.owner.toTargetPlayer())
+								def targetPlayer = TargetPlayer.SELF
+								if(self.owner.opposite == bg.currentTurn) targetPlayer = TargetPlayer.OPPONENT
+								moveEnergy(basic: true, self, pcs,targetPlayer)
+								moveEnergy(basic: true, self, pcs,targetPlayer)
+								moveEnergy(basic: true, self, pcs,targetPlayer)
 							}
 						}
 					}
