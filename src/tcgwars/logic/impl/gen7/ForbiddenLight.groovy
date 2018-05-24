@@ -2374,9 +2374,7 @@ public enum ForbiddenLight implements CardInfo {
 	            def list=[]
 	            for(move in h.object){
 	              def copy=move.shallowCopy()
-	              if(toolReq){
-	                copy.energyCost.add(C)
-	              }
+	              copy.energyCost.add(C)
 	              list.add(copy)
 	            }
 	            h.object=list
