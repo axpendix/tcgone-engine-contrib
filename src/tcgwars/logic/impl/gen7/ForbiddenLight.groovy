@@ -2677,8 +2677,11 @@ public enum ForbiddenLight implements CardInfo {
 					my.discard.select(count : Math.min(2,my.discard.size())).moveTo(my.hand)
 				}
 				playRequirement{
+					assert bg.turnCount
 					assert my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1: "No Pokémon has been Knocked Out during your opponent’s last turn"
-					assert my.lastKnockoutTypes.contains(Y) : "The Pokémon Knocked Out was not Fairy"
+					if(my.lastKnockoutTypes){
+						assert my.lastKnockoutTypes.contains(Y) : "The Pokémon Knocked Out was not Fairy"
+					}
 				}
 			};
 			case ENEPORTER_106:
@@ -2687,7 +2690,7 @@ public enum ForbiddenLight implements CardInfo {
 				onPlay {
 					def src = opp.all.findAll{it.cards.filterByType(SPECIAL_ENERGY)}.select("Select the source pokémon for the Special Energy")
 					def tar = opp.all.findAll{it != src}.select("Select the Pokémon that will recieve the Special Energy")
-					energySwitch(src, tar, it.cards.filterByType(SPECIAL_ENERGY).select())
+					energySwitch(src, tar, src.cards.filterByType(SPECIAL_ENERGY).select().first())
 				}
 				playRequirement{
 					assert opp.bench
@@ -2854,7 +2857,7 @@ public enum ForbiddenLight implements CardInfo {
 				onMove {to->
 				}
 				getEnergyTypesOverride{
-						if(self?.topPokemonCard.cardTypes.is(ULTRA_BEAST))
+						if(self.topPokemonCard.cardTypes.is(ULTRA_BEAST))
 								return [[R, D, F, G, W, Y, L, M, P] as Set]
 						else
 								return [[C] as Set]
