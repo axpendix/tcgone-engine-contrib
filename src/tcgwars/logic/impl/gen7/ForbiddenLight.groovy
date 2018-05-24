@@ -2370,16 +2370,17 @@ public enum ForbiddenLight implements CardInfo {
 				bwAbility "Sticky Membrane", {
 					text "As long as this Pokémon is your Active Pokémon, your opponent’s Pokémon’s attacks cost [C] more."
 					getterA GET_MOVE_LIST, {h->
-						if(self.active && h.effect.target.owner == self.owner.opposite)
-            def list=[]
-            for(move in h.object){
-              def copy=move.shallowCopy()
-              if(toolReq){
-                copy.energyCost.add(C)
-              }
-              list.add(copy)
-            }
-            h.object=list
+						if(self.active && h.effect.target.owner == self.owner.opposite){
+	            def list=[]
+	            for(move in h.object){
+	              def copy=move.shallowCopy()
+	              if(toolReq){
+	                copy.energyCost.add(C)
+	              }
+	              list.add(copy)
+	            }
+	            h.object=list
+						}
           }
 				}
 				move "Ram", {
@@ -2450,7 +2451,7 @@ public enum ForbiddenLight implements CardInfo {
 					text "Whenever you attach a [W] Energy card from your hand to this Pokémon, heal 20 damage from it."
 					delayedA{
 						before ATTACH_ENERGY, {
-							if (ef.reason == PLAY_FROM_HAND && ef.cardToPlay.asEnergyCard().containsType(W) && bg.currentTurn == self.owner) {
+							if (ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W) && bg.currentTurn == self.owner) {
 								wcu "Hydration"
 								heal 20, ef.resolvedTarget
 							}
@@ -2504,7 +2505,7 @@ public enum ForbiddenLight implements CardInfo {
 					delayedA {
 						before null, self, Source.ATTACK, {
 							if(bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)){
-								bc "Protective Dust prevents effect"
+								bc "First Law prevents effect"
 								prevent()
 							}
 						}
