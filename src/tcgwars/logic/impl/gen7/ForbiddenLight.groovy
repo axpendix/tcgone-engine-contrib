@@ -2233,7 +2233,7 @@ public enum ForbiddenLight implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
-						delayedA{
+						delayed{
 							before APPLY_ATTACK_DAMAGES, {
 								bg.dm().each {
 									if(it.to == self && it.notNoEffect && (it.from.types.contains(N))){
@@ -2357,7 +2357,7 @@ public enum ForbiddenLight implements CardInfo {
 					onAttack {
 						gxPerform()
 						my.all.each{
-							defending.damage+=tar.damage
+							defending.damage+=it.damage
 							it.damage==hp(0)
 						}
 					}
@@ -2369,11 +2369,18 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FAIRY
 				bwAbility "Sticky Membrane", {
 					text "As long as this Pokémon is your Active Pokémon, your opponent’s Pokémon’s attacks cost [C] more."
-					getterA (GET_RETREAT_COST) { h->
-						if(h.effect.target.owner == self.owner.opposite && self.active) {
-							h.object += 1
-						}
-					}
+					getterA GET_MOVE_LIST, {h->
+						if(self.active && h.effect.target.owner == self.owner.opposite)
+            def list=[]
+            for(move in h.object){
+              def copy=move.shallowCopy()
+              if(toolReq){
+                copy.energyCost.add(C)
+              }
+              list.add(copy)
+            }
+            h.object=list
+          }
 				}
 				move "Ram", {
 					text "10 damage."
@@ -2442,8 +2449,8 @@ public enum ForbiddenLight implements CardInfo {
 				bwAbility "Hydration", {
 					text "Whenever you attach a [W] Energy card from your hand to this Pokémon, heal 20 damage from it."
 					delayedA{
-						before PLAY_ENERGY, {
-							if (ef.cardToPlay.asEnergyCard().containsType(W) && bg.currentTurn == self.owner) {
+						before ATTACH_ENERGY, {
+							if (ef.reason == PLAY_FROM_HAND && ef.cardToPlay.asEnergyCard().containsType(W) && bg.currentTurn == self.owner) {
 								wcu "Hydration"
 								heal 20, ef.resolvedTarget
 							}
@@ -2478,13 +2485,12 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost P, M
 					attackRequirement {
 						gxCheck()
+						assert my.prizeAsList.size() + opp.prizeAsList.size()<= 6
 					}
 					onAttack {
 						gxPerform()
-						if(my.prizeAsList.size() + opp.prizeAsList.size()<= 6){
-							opp.all.each{
-								directDamage 60, it
-							}
+						opp.all.each{
+							directDamage 60, it
 						}
 					}
 				}
@@ -2497,13 +2503,9 @@ public enum ForbiddenLight implements CardInfo {
 					text "Prevent all effects of your opponent’s attacks, except damage, done to this Pokémon."
 					delayedA {
 						before null, self, Source.ATTACK, {
-							bc "First Law prevents effect"
-							prevent()
-						}
-						after ENERGY_SWITCH, {
-							def efs = (ef as EnergySwitch)
-							if(efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
-								discard efs.card
+							if(bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)){
+								bc "Protective Dust prevents effect"
+								prevent()
 							}
 						}
 					}
@@ -2628,7 +2630,7 @@ public enum ForbiddenLight implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
-						if(opp.isSPC(CONFUSED)) damage 70
+						if(opp.active.isSPC(CONFUSED)) damage 70
 					}
 				}
 

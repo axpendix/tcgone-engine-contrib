@@ -992,7 +992,7 @@ class TcgStatics {
 	/**
 	* Moves an energy card attached to one pokemon to another
 	*/
-	static void moveOwnEnergy(params=[:], def from, def to, Source src=Source.ATTACK) {
+	static void moveEnergy(params=[:], def from, def to, Source src=Source.ATTACK) {
 		if(to instanceof PcsList && to.empty) return
 		if(from instanceof PcsList){
 			if(from.empty) return
@@ -1055,15 +1055,6 @@ class TcgStatics {
 			list.each {
 				energySwitch(from, to, it)
 			}
-		}
-	}
-
-	static void moveEnergy(params=[:], def from, def to, Source src=Source.ATTACK, TargetPlayer targetPlayer=TargetPlayer.SELF) {
-		if(targetPlayer==TargetPlayer.SELF){
-			moveOwnEnergy(params,from,to,src)
-		}
-		else{
-			moveOppEnergy(params,from,to,src)
 		}
 	}
 
