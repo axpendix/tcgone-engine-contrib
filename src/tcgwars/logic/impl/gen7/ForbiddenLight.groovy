@@ -2638,11 +2638,12 @@ public enum ForbiddenLight implements CardInfo {
 			return itemCard (this) {
 				text "You can play this card only if your opponent has exactly 3 or 4 Prize cards remaining.\nSearch your deck for up to 2 basic Energy cards and attach them to 1 of your Ultra Beasts. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
 				onPlay {
-					attachEnergyFrom(basic : true, my.deck, my.all)
-					attachEnergyFrom(basic : true, my.deck, my.all)
+					attachEnergyFrom(basic : true, my.deck, my.all.filterByType(ULTRA_BEAST))
+					attachEnergyFrom(basic : true, my.deck, my.all.filterByType(ULTRA_BEAST))
 				}
 				playRequirement{
-					assert opp.prizeAsList.size() == 3 || opp.prizeAsList.size() == 4
+					assert (opp.prizeAsList.size() == 3 || opp.prizeAsList.size() == 4) : " Your opponent need to have exactly 3 or 4 Prize cards remaining"
+					assert my.all.filterByType(ULTRA_BEAST) : "No Ultra Beast in play."
 				}
 			};
 			case BONNIE_103:
@@ -2650,7 +2651,7 @@ public enum ForbiddenLight implements CardInfo {
 				text "You can play this card only if there is any Stadium card in play.\nDiscard that Stadium card. During this turn, your Zygarde-GX can use its GX attack even if you have used your GX attack.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
 					discard bg.stadiumInfoStruct.stadiumCard
-					bg.em().storeObject("Bonnie",bg.currentTurn)
+					bg.em().storeObject("Bonnie",bg.turnCount)
 				}
 				playRequirement{
 					assert bg.stadiumInfoStruct
@@ -2661,7 +2662,7 @@ public enum ForbiddenLight implements CardInfo {
 				text "Discard 2 [W] Energy cards from your hand. If you do, search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
 					my.hand.filterByEnergyType(W).select(count : 2).discard()
-					my.deck.search(max : 2).moveTo(my.hand)
+					my.deck.search(max : 2,"Select 2 cards",{true}).moveTo(my.hand)
 					shuffleDeck()
 				}
 				playRequirement{
@@ -2676,7 +2677,8 @@ public enum ForbiddenLight implements CardInfo {
 					my.discard.select(count : Math.min(2,my.discard.size())).moveTo(my.hand)
 				}
 				playRequirement{
-					assert my.lastKnockoutTypes.contains(Y)
+					assert my.lastKnockoutByOpponentDamageTurn != bg.turnCount - 1: "No Pokémon has been Knocked Out during your opponent’s last turn"
+					assert my.lastKnockoutTypes.contains(Y) : "The Pokémon Knocked"
 				}
 			};
 			case ENEPORTER_106:
@@ -2685,7 +2687,7 @@ public enum ForbiddenLight implements CardInfo {
 				onPlay {
 					def src = opp.all.findAll{it.cards.filterByType(SPECIAL_ENERGY)}.select("Select the source pokémon for the Special Energy")
 					def tar = opp.all.findAll{it != src}.select("Select the Pokémon that will recieve the Special Energy")
-					moveEnergy(basic : false, src, tar)
+					energySwitch(src, tar, it.cards.filterByType(SPECIAL_ENERGY).select())
 				}
 				playRequirement{
 					assert opp.bench
@@ -2721,7 +2723,7 @@ public enum ForbiddenLight implements CardInfo {
 					shuffleDeck()
 					shuffleDeck(null, TargetPlayer.OPPONENT)
 					draw 4
-					draw(4, targetPlayer.OPPONENT)
+					draw(4, TargetPlayer.OPPONENT)
 				}
 				playRequirement{
 				}
@@ -2765,8 +2767,10 @@ public enum ForbiddenLight implements CardInfo {
 				def eff2
 				onPlay {reason->
 					eff1 = getter GET_WEAKNESSES, self, {h ->
+						if(self.types.contains(M)){
 							def list = h.object as List<Weakness>
 							list.clear()
+						}
           }
 					eff2 = delayed{
             before APPLY_ATTACK_DAMAGES, {
@@ -2783,14 +2787,13 @@ public enum ForbiddenLight implements CardInfo {
 					eff1.unregister()
           eff2.unregister()
 				}
-				allowAttach {to->
-				}
 			};
 			case MYSTERIOUS_TREASURE_113:
 			return itemCard (this) {
 				text "Discard a card from your hand. If you do, search your deck for a [P] or [N] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
 				onPlay {
-					my.deck.search(count : 1, "", {it.cardTypes.is(POKEMON) && (it.types.contains(P) || it.types.contains(N))}).moveTo(my.hand)
+					my.hand.getExcludedList(thisCard).select("Select a card to discard.").discard()
+					my.deck.search(count : 1, "Select a a [P] or [N] Pokémon.", {it.cardTypes.is(POKEMON) && (it.types.contains(P) || it.types.contains(N))}).moveTo(my.hand)
 					shuffleDeck()
 				}
 				playRequirement{
@@ -2821,8 +2824,7 @@ public enum ForbiddenLight implements CardInfo {
 						bc "Used Ultra Space effect"
 						lastTurn = bg().turnCount
 						deck.search {Card c->c.cardTypes.is(ULTRA_BEAST)}.each {
-							deck.remove(it)
-							benchPCS(it)
+							it.moveTo(my.hand)
 						}
 						shuffleDeck()
 					}
@@ -2841,7 +2843,7 @@ public enum ForbiddenLight implements CardInfo {
 					eff = delayed {
 						before APPLY_ATTACK_DAMAGES, {
 							bg.dm().each{
-								if(it.from == self && it.from.cards.topPokemonCard.is(ULTRA_BEAST) && it.notNoEffect && it.dmg.value) {
+								if(it.from == self && it.from.topPokemonCard.is(ULTRA_BEAST) && it.notNoEffect && it.dmg.value) {
 									 bc "Beast Energy +30"
 									 it.dmg += hp(30)
 								}
