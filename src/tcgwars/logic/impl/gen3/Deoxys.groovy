@@ -389,7 +389,7 @@ public enum Deoxys implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flip 2, {}, {}, [2:while(defending.cards.energyCount()) discardDefendingEnergy()]
+						flip 2, {}, {}, [2:{while(defending.cards.energyCount()) discardDefendingEnergy()}]
 					}
 				}
 				move "Powerful Hand", {
@@ -1063,6 +1063,14 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Mirror Coat", {
 					text "If Xatu is Burned or Poisoned by an opponent’s attack (even if Xatu is Knocked Out), the Attacking Pokémon is now affected by the same Special Conditions (1 if there is only 1)."
 					delayedA {
+						after APPLY_SPECIAL_CONDITION,self, {
+							if(ef.types.contains(BURNED)){
+								apply BURNED, defending
+							}
+							if(ef.types.contains(POISONED)){
+								apply POISONED, defending
+							}
+						}
 					}
 				}
 				move "Dazzle Dance", {
@@ -1100,7 +1108,9 @@ public enum Deoxys implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						opp.all.each{
+							damage 10, it
+						}
 					}
 				}
 				move "Rock Hurl", {
@@ -1108,7 +1118,8 @@ public enum Deoxys implements CardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						dontApplyResistance()
 					}
 				}
 
@@ -1119,6 +1130,11 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Self-control", {
 					text "Golbat can’t be Paralyzed."
 					delayedA {
+						after APPLY_SPECIAL_CONDITION,self, {
+							if(ef.types.contains(PARALYZED)){
+								clearSpecialCondition(self,SRC_ABILITY, [PARALYZED])
+							}
+						}
 					}
 				}
 				move "Spiral Drain", {
@@ -1126,7 +1142,8 @@ public enum Deoxys implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						heal 10,self
 					}
 				}
 
@@ -1137,6 +1154,11 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Carefree", {
 					text "Grumpig can’t be Confused."
 					delayedA {
+						after APPLY_SPECIAL_CONDITION,self, {
+							if(ef.types.contains(CONFUSED)){
+								clearSpecialCondition(self,SRC_ABILITY, [CONFUSED])
+							}
+						}
 					}
 				}
 				move "Hypnoblast", {
@@ -1144,7 +1166,8 @@ public enum Deoxys implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						apply ASLEEP
 					}
 				}
 				move "Extra Ball", {
@@ -1152,7 +1175,8 @@ public enum Deoxys implements CardInfo {
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						if(defending.pokemonEX) damage 30
 					}
 				}
 
@@ -1162,7 +1186,10 @@ public enum Deoxys implements CardInfo {
 				weakness LIGHTNING
 				pokeBody "Aqua Lift", {
 					text "If Lombre has any [W] Energy attached to it, the Retreat Cost for Lombre is 0."
-					delayedA {
+					getterA (GET_RETREAT_COST, BEFORE_LAST,self) {h->
+						if(self.cards.energyCount(W)) {
+							h.object = 0
+						}
 					}
 				}
 				move "Ambush", {
@@ -1170,7 +1197,8 @@ public enum Deoxys implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {damage 20}
 					}
 				}
 
@@ -1181,6 +1209,11 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Natural Cure", {
 					text "When you attach a [W] Energy card from your hand to Lombre, remove all Special Conditions from Lombre."
 					delayedA {
+						after ATTACH_ENERGY, self {
+							if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == W){
+								clearSpecialCondition(self,Source.SRC_ABILITY)
+							}
+						}
 					}
 				}
 				move "Blot", {
@@ -1188,7 +1221,8 @@ public enum Deoxys implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						heal 20, self
 					}
 				}
 
@@ -1201,7 +1235,7 @@ public enum Deoxys implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 
