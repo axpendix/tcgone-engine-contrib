@@ -35,7 +35,7 @@ import tcgwars.logic.util.*;
  * @author axpendix@hotmail.com
  */
 public enum Deoxys implements CardInfo {
-	
+
 	ALTARIA_1 ("Altaria", 1, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
 	BEAUTIFLY_2 ("Beautifly", 2, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
 	BRELOOM_3 ("Breloom", 3, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
@@ -144,9 +144,9 @@ public enum Deoxys implements CardInfo {
 	LATIOS_STAR_106 ("Latios Star", 106, Rarity.SECRET, [BASIC, POKEMON, _COLORLESS_]),
 	RAYQUAZA_STAR_107 ("Rayquaza Star", 107, Rarity.SECRET, [BASIC, POKEMON, _COLORLESS_]),
 	ROCKET_S_RAIKOU_EX_108 ("Rocket's Raikou ex", 108, Rarity.ULTRARARE, [BASIC, POKEMON, _DARKNESS_, EX]);
-	
+
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS;
-	
+
 	protected CardTypeSet cardTypes;
 	protected String name;
 	protected Rarity rarity;
@@ -203,15 +203,14 @@ public enum Deoxys implements CardInfo {
 				resistance FIGHTING, MINUS30
 				pokeBody "Safeguard", {
 					text "Prevent all effects of attacks, including damage, done to Altaria by your opponent’s Pokémon-ex."
-					delayedA {
-					}
+					safeguard()
 				}
 				move "Double Wing Attack", {
 					text "Does 20 Damage to each Defending Pokémon."
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Dive", {
@@ -219,10 +218,10 @@ public enum Deoxys implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
-				
+
 			};
 			case BEAUTIFLY_2:
 			return evolution (this, from:"Silcoon", hp:HP100, type:GRASS, retreatCost:1) {
@@ -230,6 +229,16 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Hunch", {
 					text "As long as Beautifly’s remaining HP is 40 or less, Beautifly does 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES,{
+							if(self.getRemainingHP() <= 40){
+								bg.dm().each{
+									if(it.from == self){
+										bc "Hunch +40"
+										it.dmg+=hp(40)
+									}
+								}
+							}
+						}
 					}
 				}
 				move "Luring Antenna", {
@@ -237,7 +246,13 @@ public enum Deoxys implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def pcs = defending
+						if(opp.bench){
+							if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")){
+								pcs = opp.bench.select()
+							}
+						}
+						damage 20, pcs
 					}
 				}
 				move "Cutting Wind", {
@@ -245,10 +260,10 @@ public enum Deoxys implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
-				
+
 			};
 			case BRELOOM_3:
 			return evolution (this, from:"Shroomish", hp:HP080, type:FIGHTING, retreatCost:1) {
@@ -258,7 +273,8 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(self.cards.energyCount(G)) applyAfterDamage POISONED
 					}
 				}
 				move "Hustle Punch", {
@@ -266,10 +282,11 @@ public enum Deoxys implements CardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
+						decreasedBaseDamageNextTurn(self,"Hustle Punch",hp(20))
 					}
 				}
-				
+
 			};
 			case CAMERUPT_4:
 			return evolution (this, from:"Numel", hp:HP090, type:FIRE, retreatCost:2) {
@@ -279,7 +296,9 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						attachEnergyFrom(basic: true,my.discard,my.all)
+						attachEnergyFrom(basic: true,my.discard,my.all)
+
 					}
 				}
 				move "Split Bomb", {
@@ -287,10 +306,14 @@ public enum Deoxys implements CardInfo {
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						multiSelect(opp.bench, 2).each{
+							targeted(it){
+								damage 30, it
+							}
+						}
 					}
 				}
-				
+
 			};
 			case CLAYDOL_5:
 			return evolution (this, from:"Baltoy", hp:HP080, type:FIGHTING, retreatCost:1) {
@@ -298,6 +321,13 @@ public enum Deoxys implements CardInfo {
 				pokePower "Psychic Trance", {
 					text "Once during your turn (before you attack), if Claydol is your Active Pokémon, you may shuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent’s hand. This power can’t be used if Claydol is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						assert self.active : "$self is not your Active Pokémon"
+						powerUsed()
+						my.hand.moveTo(my.deck)
+						shuffleDeck()
+						draw opp.hand.size()
 					}
 				}
 				move "Ancient Mantra", {
@@ -305,10 +335,12 @@ public enum Deoxys implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(self.cards.energyCount(F)) damage 20
+						if(self.cards.energyCount(P)) applyAfterDamage CONFUSED
 					}
 				}
-				
+
 			};
 			case CRAWDAUNT_6:
 			return evolution (this, from:"Corphish", hp:HP070, type:DARKNESS, retreatCost:1) {
@@ -317,6 +349,15 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Dark Protection", {
 					text "Any damage done to Crawdaunt by your opponent’s attacks is reduced by 10 for each [D] Energy attached to Crawdaunt (after applying Weakness and Resistance). You can’t reduce more than 20 damage in this way."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES,{
+							def dmgRed = Math.min(2,self.cards.energyCount(D))
+							bg.dm().each{
+								if(it.to == self && it.notNoEffect && it.dmg.value) {
+									bc "Dark Protection -${10*dmgRed}"
+									it.dmg -= hp(10*dmgRed)
+								}
+							}
+						}
 					}
 				}
 				move "Bubblebeam", {
@@ -324,7 +365,8 @@ public enum Deoxys implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Cross-Cut", {
@@ -332,10 +374,11 @@ public enum Deoxys implements CardInfo {
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						if(defending.evolution) damage 20
 					}
 				}
-				
+
 			};
 			case DUSCLOPS_7:
 			return evolution (this, from:"Duskull", hp:HP070, type:PSYCHIC, retreatCost:1) {
@@ -345,7 +388,8 @@ public enum Deoxys implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip 2, {}, {}, [2:while(defending.cards.energyCount()) discardDefendingEnergy()]
 					}
 				}
 				move "Powerful Hand", {
@@ -353,10 +397,10 @@ public enum Deoxys implements CardInfo {
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						directDamage 10*Math.min(7,my.hand.size()), defending
 					}
 				}
-				
+
 			};
 			case GYARADOS_8:
 			return evolution (this, from:"Magikarp", hp:HP090, type:WATER, retreatCost:2) {
@@ -366,7 +410,9 @@ public enum Deoxys implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						opp.all.each{
+							damage 10, it
+						}
 					}
 				}
 				move "Full Retaliation", {
@@ -374,7 +420,11 @@ public enum Deoxys implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def totalDmg = 0
+						my.all.each{
+							if(it.name == "Magikarp") totalDmg += it.numberOfDamageCounters
+						}
+						damage 20*totalDmg
 					}
 				}
 				move "Pulverize", {
@@ -382,10 +432,11 @@ public enum Deoxys implements CardInfo {
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						if(defending.numberOfDamageCounters >= 2) damage 50
 					}
 				}
-				
+
 			};
 			case JIRACHI_9:
 			return basic (this, hp:HP060, type:METAL, retreatCost:1) {
@@ -394,6 +445,14 @@ public enum Deoxys implements CardInfo {
 				pokePower "Wishing Star", {
 					text "Once during your turn (before your attack), if Jirachi is your Active Pokémon, you may look at the top 5 cards of your deck, choose one of them, and put it into your hand. Shuffle your deck afterward. Jirachi and your other Active Pokémon, if any, are now Asleep. This power can’t be used if Jirachi is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						assert !(self.specialConditions) : "$self is affected by a Special Condition."
+						assert self.active : "$self is not your Active Pokémon."
+						assert my.deck : "There is no cards remaining."
+						powerUsed()
+						my.deck.subList(0,Math.min(5,my.deck.size())).select("Select one card to put into your hand.").moveTo(hidden:true, my.hand)
+						shuffleDeck()
+						apply ASLEEP, self
 					}
 				}
 				move "Metallic Blow", {
@@ -401,10 +460,15 @@ public enum Deoxys implements CardInfo {
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						def hasPokeBody = false
+						for (Ability ability : defending.getAbilities().keySet()) {
+							if (ability instanceof PokeBody) hasPokeBody = true;
+						}
+						if(hasPokeBody) damage 30
 					}
 				}
-				
+
 			};
 			case LUDICOLO_10:
 			return evolution (this, from:"Lombre", hp:HP100, type:WATER, retreatCost:2) {
@@ -412,6 +476,11 @@ public enum Deoxys implements CardInfo {
 				pokePower "Swing Dance", {
 					text "Once during your turn (before your attack), you may draw a card. This power can’t be used if Ludicolo is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						assert !(self.specialConditions) : "$self is affected by a Special Condition."
+						assert my.deck : "There is no cards remaining."
+						powerUsed()
+						draw 1
 					}
 				}
 				move "Healing Steps", {
@@ -419,7 +488,12 @@ public enum Deoxys implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						if(self.numberOfDamageCounters) {
+							if(confirm("Discard cards from your hand to remove damage counter on Ludicolo?")){
+								heal 10*my.hand.select(max : self.numberOfDamageCounters,"For each card discarded you will remove 1 damage counter").discard().size() ,self
+							}
+						}
 					}
 				}
 				move "Circular Steps", {
@@ -427,10 +501,10 @@ public enum Deoxys implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10*(my.bench.size()+opp.all.size())
 					}
 				}
-				
+
 			};
 			case METAGROSS_11:
 			return evolution (this, from:"Metang", hp:HP100, type:PSYCHIC, retreatCost:2) {
@@ -438,6 +512,12 @@ public enum Deoxys implements CardInfo {
 				pokePower "Super Connectivity", {
 					text "Once during your turn (before you attack), you may search your discard pile for a [P] or [M] Energy card and attach it to your Active Pokémon. Then, put 1 damage counter on that Pokémon. This power can’t be used if Metagross is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						assert !(self.specialConditions) : "$self is affected by a Special Condition."
+						assert my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(P,M) : "There is no [P] or [M] Energy card in your discard."
+						powerUsed()
+						attachEnergy(my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(P,M).select().first(),my.active)
+						directDamage 10, my.active
 					}
 				}
 				move "Link Blast", {
@@ -445,10 +525,15 @@ public enum Deoxys implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						if(self.cards.energyCount(C) == defending.cards.energyCount(C)){
+							damage 70
+						}
+						else{
+							damage 40
+						}
 					}
 				}
-				
+
 			};
 			case MIGHTYENA_12:
 			return evolution (this, from:"Poochyena", hp:HP070, type:DARKNESS, retreatCost:0) {
@@ -459,7 +544,8 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						my.deck.seach(max:1,"Select 1 card",{true})
+						shuffleDeck()
 					}
 				}
 				move "Pull Away", {
@@ -467,10 +553,13 @@ public enum Deoxys implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						if(opp.hand.size() >= 5){
+							opp.hand.oppSelect(max : opp.hand.size() - 4,"Select the card to discard").discard()
+						}
 					}
 				}
-				
+
 			};
 			case NINJASK_13:
 			return evolution (this, from:"Nincada", hp:HP070, type:GRASS, retreatCost:0) {
@@ -478,6 +567,26 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Fast Protection", {
 					text "Prevent all effects, including damage, done to Ninjask by your opponent’s attacks from his or her Basic Pokémon."
 					delayedA {
+						before null, self, Source.ATTACK, {
+							if (self.owner.opposite.pbg.active.basic && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+								bc "Fast Protection prevents effect"
+								prevent()
+							}
+						}
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each {
+								if(it.to == self && it.notNoEffect && it.from.basic ){
+									it.dmg = hp(0)
+									bc "Fast Protection prevents damage"
+								}
+							}
+						}
+						after ENERGY_SWITCH, {
+							def efs = (ef as EnergySwitch)
+							if(efs.from.basic && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+								discard efs.card
+							}
+						}
 					}
 				}
 				move "Swords Dance", {
@@ -485,7 +594,7 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						increasedBaseDamageNextTurn("Slash",hp(50))
 					}
 				}
 				move "Slash", {
@@ -493,16 +602,22 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
-				
+
 			};
 			case SHEDINJA_14:
 			return evolution (this, from:"Nincada", hp:HP050, type:PSYCHIC, retreatCost:0) {
 				pokeBody "Empty Shell", {
 					text "When Shedinja is Knocked Out, your opponent doesn’t take any Prize cards."
 					delayedA {
+						before TAKE_PRIZE, {
+							if(ef.pcs==self){
+									bc "Empty Shell prevent you from taking prize."
+									prevent()
+							}
+						}
 					}
 				}
 				move "Extra Curse", {
@@ -510,10 +625,15 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						if(defending.pokemonEX){
+							directDamage 40, defending
+						}
+						else{
+							directDamage 20, defending
+						}
 					}
 				}
-				
+
 			};
 			case SLAKING_15:
 			return evolution (this, from:"Vigoroth", hp:HP120, type:COLORLESS, retreatCost:3) {
@@ -521,6 +641,14 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Lazy Aura", {
 					text "As long as Slaking is your Active Pokémon, any damage done by attacks from your opponent’s Pokémon-ex is reduced by 30 (before applying Weakness and Resistance)."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each{
+								if(it.to == self && it.notNoEffect && it.dmg.value && it.from.pokemonEX) {
+									bc "Lazy Aura -30"
+									it.dmg -= hp(30)
+								}
+							}
+						}
 					}
 				}
 				move "Amnesia", {
@@ -528,7 +656,8 @@ public enum Deoxys implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						amnesia()
 					}
 				}
 				move "Lazy Headbutt", {
@@ -536,10 +665,13 @@ public enum Deoxys implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
+						afterDamage{
+							apply ASLEEP, self
+						}
 					}
 				}
-				
+
 			};
 			case DEOXYS_16:
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
@@ -547,6 +679,18 @@ public enum Deoxys implements CardInfo {
 				pokePower "Form Change", {
 					text "Once during your turn (before you attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
 					actionA {
+						checkLastTurn()
+						assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
+						assert my.deck : "There is no card in your deck"
+						powerUsed()
+						bg.em().storeObject("Form_Change",bg.turnCount)
+						def deoxys = self.topPokemonCard
+						if(my.deck.findAll{it.names.contains("Deoxys")}){
+							my.deck.findAll{it.names.contains("Deoxys")}.select().moveTo(self.cards)
+							deoxys.moveTo(my.deck)
+							shuffleDeck()
+							checkFaint()
+						}
 					}
 				}
 				move "Link Blast", {
@@ -554,10 +698,10 @@ public enum Deoxys implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
-				
+
 			};
 			case DEOXYS_17:
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
@@ -565,6 +709,18 @@ public enum Deoxys implements CardInfo {
 				pokePower "Form Change", {
 					text "Once during your turn (before you attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
 					actionA {
+						checkLastTurn()
+						assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
+						assert my.deck : "There is no card in your deck"
+						powerUsed()
+						bg.em().storeObject("Form_Change",bg.turnCount)
+						def deoxys = self.topPokemonCard
+						if(my.deck.findAll{it.names.contains("Deoxys")}){
+							my.deck.findAll{it.names.contains("Deoxys")}.select().moveTo(self.cards)
+							deoxys.moveTo(my.deck)
+							shuffleDeck()
+							checkFaint()
+						}
 					}
 				}
 				move "Energy Crush", {
@@ -572,10 +728,14 @@ public enum Deoxys implements CardInfo {
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def addDmg = 0
+						opp.all.each{
+							addDmg += it.cards.energyCount(C)
+						}
+						damage 10+10*addDmg
 					}
 				}
-				
+
 			};
 			case DEOXYS_18:
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
@@ -583,6 +743,18 @@ public enum Deoxys implements CardInfo {
 				pokePower "Form Change", {
 					text "Once during your turn (before you attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
 					actionA {
+						checkLastTurn()
+						assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
+						assert my.deck : "There is no card in your deck"
+						powerUsed()
+						bg.em().storeObject("Form_Change",bg.turnCount)
+						def deoxys = self.topPokemonCard
+						if(my.deck.findAll{it.names.contains("Deoxys")}){
+							my.deck.findAll{it.names.contains("Deoxys")}.select().moveTo(self.cards)
+							deoxys.moveTo(my.deck)
+							shuffleDeck()
+							checkFaint()
+						}
 					}
 				}
 				move "Barrier Attack", {
@@ -590,10 +762,11 @@ public enum Deoxys implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						reduceDamageNextTurn(hp(30),thisMove)
 					}
 				}
-				
+
 			};
 			case LUDICOLO_19:
 			return evolution (this, from:"Lombre", hp:HP100, type:WATER, retreatCost:2) {
@@ -601,6 +774,13 @@ public enum Deoxys implements CardInfo {
 				pokePower "Happy Dance", {
 					text "Once during your turn (before your attack), you may remove 1 damage counter from each of your Pokémon. You can’t use more than 1 Happy Dance Poké-Power each turn. This power can’t be used if Ludicolo is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						assert bg.em().retrieveObject("Happy_Dance") != bg.turnCount : "You cannot use Happy Dance more than once per turn!"
+						powerUsed()
+						bg.em().storeObject("Happy_Dance",bg.turnCount)
+						my.all.each{
+							heal 10, it
+						}
 					}
 				}
 				move "Water Punch", {
@@ -608,10 +788,11 @@ public enum Deoxys implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						flip self.cards.energyCount(W), {damage 20}
 					}
 				}
-				
+
 			};
 			case MAGCARGO_20:
 			return evolution (this, from:"Slugma", hp:HP080, type:FIRE, retreatCost:3) {
@@ -619,6 +800,14 @@ public enum Deoxys implements CardInfo {
 				pokePower "Smooth Over", {
 					text "Once during your turn (before your attack), you may search your deck for a card. Shuffle your deck, then put that card on top of your deck. This power can’t be used if Magcargo is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						assert my.deck : "There is no card in your deck"
+						powerUsed()
+						def tar = my.deck.search(max:1,"Select 1 card",{true})
+						my.deck.remove(tar)
+						shuffleDeck()
+						my.deck.addAll(0, tar)
 					}
 				}
 				move "Knock Over", {
@@ -626,7 +815,10 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						if(bg.stadiumInfoStruct) afterDamage {
+							if(confirm("Discard the Stadium card")) discard(bg.stadiumInfoStruct.stadiumCard)
+						}
 					}
 				}
 				move "Combustion", {
@@ -634,10 +826,10 @@ public enum Deoxys implements CardInfo {
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
-				
+
 			};
 			case PELIPPER_21:
 			return evolution (this, from:"Wingull", hp:HP070, type:WATER, retreatCost:1) {
@@ -648,7 +840,9 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						increasedBaseDamageNextTurn("Bay Dance",hp(30))
+						increasedBaseDamageNextTurn("Aqua Sonic",hp(30))
 					}
 				}
 				move "Aqua Sonic", {
@@ -656,10 +850,11 @@ public enum Deoxys implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						dontApplyResistance()
 					}
 				}
-				
+
 			};
 			case RAYQUAZA_22:
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
@@ -667,17 +862,25 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Dragon Aura", {
 					text "As long as Rayquaza has any basic [R] Energy cards and any basic [L] Energy cards attached to it, prevent all effects, except damage, by an opponent’s attack done to Rayquaza."
 					delayedA {
+						before null, self, Source.ATTACK, {
+							if(bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.energyCount(L) && self.cards.energyCount(R)){
+								bc "Dragon Aura prevents effect"
+								prevent()
+							}
+						}
 					}
+				}
 				}
 				move "Tumbling Attack", {
 					text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {damage 20}
 					}
 				}
-				
+
 			};
 			case SABLEYE_23:
 			return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
@@ -685,6 +888,11 @@ public enum Deoxys implements CardInfo {
 				pokePower "Night Vision", {
 					text "Once during your turn (before you attack), if Sableye is your Active Pokémon, you may look at your opponent’s hand. This power can’t be used if Sableye is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						assert opp.hand : "There is no card in your opponent hand"
+						powerUsed()
+						opp.hand.showToMe("Opponent's hand")
 					}
 				}
 				move "Slash", {
@@ -692,7 +900,7 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Limitation", {
@@ -700,20 +908,33 @@ public enum Deoxys implements CardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						damage 0
+						delayed {
+							before PLAY_TRAINER, {
+								if (ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner.opposite) {
+									wcu "Distort prevents playing this card"
+									prevent()
+								}
+							}
+							unregisterAfter 2
+						}
 					}
 				}
-				
+
 			};
 			case SEAKING_24:
 			return evolution (this, from:"Goldeen", hp:HP070, type:WATER, retreatCost:0) {
 				weakness LIGHTNING
 				move "Triple Breach", {
-					text "Choose 3 od your opponent’s Pokémon. This attack does 10 damage to each of those Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+					text "Choose 3 of your opponent’s Pokémon. This attack does 10 damage to each of those Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						multiSelect(opp.bench, 3).each{
+							targeted(it){
+								damage 10, it
+							}
+						}
+
 					}
 				}
 				move "Rend", {
@@ -721,10 +942,11 @@ public enum Deoxys implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						if(defending.numberOfDamageCounters) damage 20
 					}
 				}
-				
+
 			};
 			case SHIFTRY_25:
 			return evolution (this, from:"Nuzleaf", hp:HP110, type:GRASS, retreatCost:1) {
@@ -732,6 +954,12 @@ public enum Deoxys implements CardInfo {
 				pokePower "Fan Action", {
 					text "Once during your turn (before your attack), you may switch 1 of the Defending Pokémon with 1 of your opponent’s Benched Pokémon. You opponent chooses the Benched Pokémon to switch. This power can’t be used if Shiftry is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						assert opp.bench : "There is no benched Pokemon"
+						powerUsed()
+
+						sw opp.active, opp.bench.oppSelect()
 					}
 				}
 				move "Stadium Power", {
@@ -739,10 +967,10 @@ public enum Deoxys implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						if(bg.stadiumInfoStruct) damage 20
 					}
 				}
-				
 			};
 			case SKARMORY_26:
 			return basic (this, hp:HP070, type:METAL, retreatCost:1) {
@@ -750,7 +978,10 @@ public enum Deoxys implements CardInfo {
 				resistance FIGHTING, MINUS30
 				pokeBody "Metallic Lift", {
 					text "If Skarmory has any [M] Energy attached to it, the Retreat Cost for Skarmory is 0."
-					delayedA {
+					getterA (GET_RETREAT_COST, BEFORE_LAST,self) {h->
+						if(self.cards.energyCount(M)) {
+							h.object = 0
+						}
 					}
 				}
 				move "Spearhead", {
@@ -758,7 +989,7 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						draw 1
 					}
 				}
 				move "Heavy Metal", {
@@ -766,17 +997,21 @@ public enum Deoxys implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip self.cards.energyCount(M), {damage 20}
 					}
 				}
-				
+
 			};
 			case TROPIUS_27:
 			return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				pokeBody "Tropical Motion", {
 					text "As long as Tropius is your Active Pokémon, your opponent’s Active Pokémon have no Resistance."
-					delayedA {
+					getterA (GET_RESISTANCES) {h->
+            if(h.effect.target.owner == self.owner.opposite && self.active) {
+              h.object.clear()
+            }
 					}
 				}
 				move "Miracle Blow", {
@@ -784,7 +1019,9 @@ public enum Deoxys implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {
+							apply choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending pokemon")
+						}
 					}
 				}
 				move "Stomp", {
@@ -792,10 +1029,11 @@ public enum Deoxys implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						flip {damage 20}
 					}
 				}
-				
+
 			};
 			case WHISCASH_28:
 			return evolution (this, from:"Barboach", hp:HP090, type:FIGHTING, retreatCost:2) {
@@ -805,7 +1043,7 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10*self.numberOfDamageCounters
 					}
 				}
 				move "Dwindling Wave", {
@@ -813,10 +1051,10 @@ public enum Deoxys implements CardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70-10*self.numberOfDamageCounters
 					}
 				}
-				
+
 			};
 			case XATU_29:
 			return evolution (this, from:"Natu", hp:HP070, type:PSYCHIC, retreatCost:0) {
@@ -832,7 +1070,7 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply CONFUSED
 					}
 				}
 				move "Psyloop", {
@@ -840,10 +1078,19 @@ public enum Deoxys implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def addDmg = 0
+						damage 30
+						opp.all.each{
+							if(it.cards.filterByType(POKEMON_TOOL)) addDmg += 1
+						}
+						if(bg.stadiumInfoStruct){
+							if(bg.stadiumInfoStruct.stadiumCard.player){
+								addDmg += 1
+							}
+						}
+						damage 30*addDmg
 					}
 				}
-				
 			};
 			case DONPHAN_30:
 			return evolution (this, from:"Phanpy", hp:HP080, type:FIGHTING, retreatCost:1) {
@@ -864,7 +1111,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case GOLBAT_31:
 			return evolution (this, from:"Zubat", hp:HP070, type:GRASS, retreatCost:0) {
@@ -882,7 +1129,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case GRUMPIG_32:
 			return evolution (this, from:"Spoink", hp:HP080, type:PSYCHIC, retreatCost:1) {
@@ -908,7 +1155,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case LOMBRE_33:
 			return evolution (this, from:"Lotad", hp:HP070, type:WATER, retreatCost:1) {
@@ -926,7 +1173,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case LOMBRE_34:
 			return evolution (this, from:"Lotad", hp:HP070, type:WATER, retreatCost:1) {
@@ -944,7 +1191,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case LOTAD_35:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -957,7 +1204,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case LUNATONE_36:
 			return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
@@ -983,7 +1230,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MAGCARGO_37:
 			return evolution (this, from:"Slugma", hp:HP080, type:FIRE, retreatCost:2) {
@@ -1004,7 +1251,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MANECTRIC_38:
 			return evolution (this, from:"Electrike", hp:HP070, type:LIGHTNING, retreatCost:1) {
@@ -1026,7 +1273,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MASQUERAIN_39:
 			return evolution (this, from:"Surskit", hp:HP060, type:GRASS, retreatCost:0) {
@@ -1045,7 +1292,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case METANG_40:
 			return evolution (this, from:"Beldum", hp:HP080, type:PSYCHIC, retreatCost:2) {
@@ -1066,7 +1313,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MINUN_41:
 			return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
@@ -1087,7 +1334,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case NOSEPASS_42:
 			return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
@@ -1105,7 +1352,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case NUZLEAF_43:
 			return evolution (this, from:"Seedot", hp:HP070, type:GRASS, retreatCost:1) {
@@ -1126,7 +1373,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PLUSLE_44:
 			return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
@@ -1147,7 +1394,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SHELGON_45:
 			return evolution (this, from:"Bagon", hp:HP080, type:COLORLESS, retreatCost:2) {
@@ -1166,7 +1413,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SILCOON_46:
 			return evolution (this, from:"Wurmple", hp:HP080, type:GRASS, retreatCost:2) {
@@ -1187,7 +1434,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SOLROCK_47:
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
@@ -1213,7 +1460,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case STARMIE_48:
 			return evolution (this, from:"Staryu", hp:HP070, type:WATER, retreatCost:1) {
@@ -1239,7 +1486,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SWELLOW_49:
 			return evolution (this, from:"Taillow", hp:HP070, type:COLORLESS, retreatCost:0) {
@@ -1261,7 +1508,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case VIGOROTH_50:
 			return evolution (this, from:"Slakoth", hp:HP080, type:COLORLESS, retreatCost:2) {
@@ -1279,7 +1526,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case WEEZING_51:
 			return evolution (this, from:"Koffing", hp:HP070, type:GRASS, retreatCost:1) {
@@ -1300,7 +1547,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case BAGON_52:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -1322,7 +1569,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case BALTOY_53:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1343,7 +1590,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case BARBOACH_54:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1364,7 +1611,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case BELDUM_55:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -1377,7 +1624,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CARVANHA_56:
 			return basic (this, hp:HP050, type:DARKNESS, retreatCost:1) {
@@ -1399,7 +1646,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CORPHISH_57:
 			return basic (this, hp:HP040, type:WATER, retreatCost:1) {
@@ -1417,7 +1664,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case DUSKULL_58:
 			return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
@@ -1439,7 +1686,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ELECTRIKE_59:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
@@ -1461,7 +1708,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ELECTRIKE_60:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
@@ -1482,7 +1729,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case GOLDEEN_61:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1503,7 +1750,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case KOFFING_62:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1516,7 +1763,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case LOTAD_63:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1537,7 +1784,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MAGIKARP_64:
 			return basic (this, hp:HP030, type:WATER, retreatCost:1) {
@@ -1558,7 +1805,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MAKUHITA_65:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1579,7 +1826,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case NATU_66:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -1597,7 +1844,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case NINCADA_67:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1618,7 +1865,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case NUMEL_68:
 			return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
@@ -1636,7 +1883,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PHANPY_69:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1657,7 +1904,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case POOCHYENA_70:
 			return basic (this, hp:HP050, type:DARKNESS, retreatCost:1) {
@@ -1679,7 +1926,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SEEDOT_71:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
@@ -1700,7 +1947,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SHROOMISH_72:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
@@ -1722,7 +1969,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SLAKOTH_73:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
@@ -1743,7 +1990,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SLUGMA_74:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:2) {
@@ -1764,7 +2011,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SLUGMA_75:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:2) {
@@ -1785,7 +2032,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SPOINK_76:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -1806,7 +2053,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case STARYU_77:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1819,7 +2066,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SURSKIT_78:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1832,7 +2079,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SWABLU_79:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
@@ -1851,7 +2098,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case TAILLOW_80:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
@@ -1865,7 +2112,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case WINGULL_81:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1879,7 +2126,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case WURMPLE_82:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1900,7 +2147,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ZUBAT_83:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1918,7 +2165,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case BALLOON_BERRY_84:
 			return pokemonTool (this) {
@@ -2059,7 +2306,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case DEOXYS_EX_97:
 			return basic (this, hp:HP100, type:PSYCHIC, retreatCost:1) {
@@ -2077,7 +2324,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case DEOXYS_EX_98:
 			return basic (this, hp:HP110, type:PSYCHIC, retreatCost:2) {
@@ -2095,7 +2342,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case DEOXYS_EX_99:
 			return basic (this, hp:HP090, type:PSYCHIC, retreatCost:2) {
@@ -2113,7 +2360,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case HARIYAMA_EX_100:
 			return evolution (this, from:"Makuhita", hp:HP110, type:FIGHTING, retreatCost:2) {
@@ -2139,7 +2386,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MANECTRIC_EX_101:
 			return evolution (this, from:"Electrike", hp:HP100, type:LIGHTNING, retreatCost:1) {
@@ -2161,7 +2408,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case RAYQUAZA_EX_102:
 			return basic (this, hp:HP100, type:COLORLESS, retreatCost:2) {
@@ -2180,7 +2427,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SALAMENCE_EX_103:
 			return evolution (this, from:"Shelgon", hp:HP160, type:COLORLESS, retreatCost:2) {
@@ -2207,7 +2454,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SHARPEDO_EX_104:
 			return evolution (this, from:"Carvanha", hp:HP100, type:DARKNESS, retreatCost:0) {
@@ -2229,7 +2476,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case LATIAS_STAR_105:
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
@@ -2251,7 +2498,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case LATIOS_STAR_106:
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:null) {
@@ -2273,7 +2520,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case RAYQUAZA_STAR_107:
 			return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
@@ -2295,7 +2542,7 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ROCKET_S_RAIKOU_EX_108:
 			return basic (this, hp:HP100, type:DARKNESS, retreatCost:2) {
@@ -2313,11 +2560,11 @@ public enum Deoxys implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 				default:
 			return null;
 		}
 	}
-	
+
 }
