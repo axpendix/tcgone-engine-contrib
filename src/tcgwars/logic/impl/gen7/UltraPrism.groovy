@@ -3050,8 +3050,9 @@ public enum UltraPrism implements CardInfo {
             benChoice.add(opp.bench.findAll{!benChoice.contains(it)}.oppSelect("select a pokemon to keep on your bench ($num remaining)"))
           }
           opp.bench.findAll{!benChoice.contains(it)}.each{
-            shuffleDeck(it.cards)
+            it.cards.moveTo(my.deck)
             removePCS(it)
+            shuffleDeck()
           }
         }
         playRequirement{
