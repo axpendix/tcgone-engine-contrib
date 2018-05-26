@@ -451,8 +451,7 @@ public enum CrimsonInvasion implements CardInfo {
           onAttack {
             //TODO : more efecient way?
             opp.active.cards.filterByType(ENERGY).each{
-                if(my.discard.findAll(energyFilter(FIRE)))
-                  my.discard.findAll(energyFilter(FIRE)).select().moveTo(my.all.select())
+              attachEnergyFrom(type:R,my.discard,my.all)
             }
           }
         }
