@@ -870,7 +870,6 @@ public enum Deoxys implements CardInfo {
 						}
 					}
 				}
-				}
 				move "Tumbling Attack", {
 					text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
 					energyCost C, C
