@@ -910,7 +910,7 @@ public enum Deoxys implements CardInfo {
 						delayed {
 							before PLAY_TRAINER, {
 								if (ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner.opposite) {
-									wcu "Distort prevents playing this card"
+									wcu "Limitation prevents playing this card"
 									prevent()
 								}
 							}
@@ -1869,7 +1869,7 @@ public enum Deoxys implements CardInfo {
 							delayed{
 								before PLAY_TRAINER, {
 									if (bg.currentTurn == self.owner.opposite) {
-										wcu "Disconnect prevents playing this card"
+										wcu "High Voltage prevents playing this card"
 										prevent()
 									}
 								}
@@ -2830,6 +2830,12 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Commanding Aura", {
 					text "As long as Hariyama ex is your Active Pokémon, your opponent can’t play any Stadium cards from his or her hand."
 					delayedA {
+						before PLAY_TRAINER, {
+							if (ef.cardToPlay.cardTypes.is(STADIUM) && bg.currentTurn == self.owner.opposite && self.active) {
+								wcu "Commanding Aura prevents playing this card"
+								prevent()
+							}
+						}
 					}
 				}
 				move "Knock Off", {
@@ -2837,7 +2843,10 @@ public enum Deoxys implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						afterDamage{
+							if(opp.hand) opp.hand.select(hidden : true,"Select one card to discard").discard()
+						}
 					}
 				}
 				move "Pivot Throw", {
@@ -2845,7 +2854,19 @@ public enum Deoxys implements CardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 80
+						delayed {
+							before APPLY_ATTACK_DAMAGES, {
+								bg.dm().each {
+									if(it.from.owner==self.owner.opposite && it.to==self && it.dmg.value && it.notNoEffect){
+										bc "Pivot Throw increases damage"
+										it.dmg+=hp(10)
+									}
+								}
+							}
+							unregisterAfter 2
+							after EVOLVE, pcs, {unregister()}
+						}
 					}
 				}
 
@@ -2859,7 +2880,16 @@ public enum Deoxys implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						delayed {
+							before PLAY_TRAINER, {
+								if (!ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner.opposite) {
+									wcu "Disconnect prevents playing this card"
+									prevent()
+								}
+							}
+							unregisterAfter 2
+						}
 					}
 				}
 				move "Mega Shot", {
@@ -2867,7 +2897,8 @@ public enum Deoxys implements CardInfo {
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						discardAllSelfEnergy(L)
+						damage 80, opp.all.select("Select the target of this attack.")
 					}
 				}
 
@@ -2877,8 +2908,21 @@ public enum Deoxys implements CardInfo {
 				weakness COLORLESS
 				resistance FIGHTING
 				pokePower "Dragon Boost", {
-					text "Once during your turn, when you put Rayquaza ex from your hand onto your Bench, yuo may move any number of basic Energy cards attached to your Pokémon to Rayquaza ex."
+					text "Once during your turn, when you put Rayquaza ex from your hand onto your Bench, you may move any number of basic Energy cards attached to your Pokémon to Rayquaza ex."
 					actionA {
+						if(self.lastEvolved == bg.turnCount){
+							if(confirm("move any number of basic Energy cards attached to your Pokémon to Rayquaza ex ?"))
+							{
+								while(1){
+		              def pl=(my.all.findAll {it.cards.filterByType(BASIC_ENERGY) && it != self})
+		              if(!pl) break;
+		              def src =pl.select("source for energy (cancel to stop)", false)
+		              if(!src) break;
+		              def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
+		              energySwitch(src, self, card)
+		            }
+							}
+						}
 					}
 				}
 				move "Spiral Blast", {
@@ -2886,7 +2930,7 @@ public enum Deoxys implements CardInfo {
 					energyCost R, L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20*self.cards.filterByType(BASIC_ENERGY)
 					}
 				}
 
@@ -2897,7 +2941,10 @@ public enum Deoxys implements CardInfo {
 				resistance FIGHTING
 				pokeBody "Dragon Lift", {
 					text "The Retreat Cost for each of your Pokémon (excluding Pokémon-ex and Baby Pokémon) is 0."
-					delayedA {
+					getterA (GET_RETREAT_COST, BEFORE_LAST) {h->
+						if(h.effect.target.owner == self.owner && h.effect.target.isNot(BABY) &&  h.effect.target.isNot(POKEMON_EX)) {
+							h.object = 0
+						}
 					}
 				}
 				move "Flame Jet", {
@@ -2905,7 +2952,7 @@ public enum Deoxys implements CardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						noWrDamage 40, opp.all.select
 					}
 				}
 				move "Bright Flame", {
@@ -2913,7 +2960,8 @@ public enum Deoxys implements CardInfo {
 					energyCost R, W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 120
+						discardSelfEnergy C,C
 					}
 				}
 
@@ -2927,7 +2975,13 @@ public enum Deoxys implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def pcs = defending
+						if(opp.bench){
+							if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")){
+								pcs = opp.bench.select()
+							}
+						}
+						damage 20, pcs
 					}
 				}
 				move "Darkness Blast", {
@@ -2935,7 +2989,11 @@ public enum Deoxys implements CardInfo {
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						if(confirm("Discard a [D] Energy attached to Sharpedo ex? You will do 20 more damage and discard 1 Energy card attached to the Defending Pokémon.")){
+							damage 20
+							discardDefendingEnergy()
+						}
 					}
 				}
 
@@ -2949,7 +3007,10 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						my.all.each{
+							heal 10, it
+						}
 					}
 				}
 				move "Shooting Star", {
@@ -2957,7 +3018,11 @@ public enum Deoxys implements CardInfo {
 					energyCost R, W, P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						if(defending.pokemonEX){
+							damage 100
+							discardAllSelfEnergy(null)
+						}
 					}
 				}
 
@@ -2971,7 +3036,8 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						heal 10, self
+						clearSpecialCondition(self, ATTACK)
 					}
 				}
 				move "Shining Star", {
@@ -2979,7 +3045,11 @@ public enum Deoxys implements CardInfo {
 					energyCost G, L, P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						if(defending.evolution && defending.cards.topPokemonCard.is(STAGE2)){
+							damage 100
+							discardAllSelfEnergy(null)
+						}
 					}
 				}
 
@@ -2993,7 +3063,7 @@ public enum Deoxys implements CardInfo {
 					energyCost R, L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flipUntilTails {damage 30}
 					}
 				}
 				move "Holy Star", {
@@ -3001,7 +3071,10 @@ public enum Deoxys implements CardInfo {
 					energyCost R, R, L, L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						discardAllSelfEnergy(null)
+						opp.all.each{
+							if(it.pokemonEX) damage 100, it
+						}
 					}
 				}
 
@@ -3011,15 +3084,20 @@ public enum Deoxys implements CardInfo {
 				weakness FIGHTING
 				pokePower "Lightning Burst", {
 					text "Whenever you attach a [D] Energy card from your hand to Rocket’s Raikou ex, you may choose 1 of the Defending Pokémon and switch it with 1 of your opponent’s Benched Pokémon. Your opponent chooses the Benched Pokémon to switch. This power can’t be used if Rocket’s Raikou ex is affected by a Special Condition."
-					actionA {
+					delayedA {
+						after ATTACH_ENERGY, self, {
+							if(!self.specialConditions && ef.reason == PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == W)
+								 if(self.owner.opposite.pbg.bench) sw self.owner.opposite.pbg.active, self.owner.opposite.pbg.bench.select("Select the new active Pokémon.")
+						}
 					}
+
 				}
 				move "Thunderous Blow", {
 					text "40+ damage. Does 40 damage plus 10 more damage for each [L] Energy attached to Rocket’s Raikou ex."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40+10*self.cards.energyCount(L)
 					}
 				}
 
