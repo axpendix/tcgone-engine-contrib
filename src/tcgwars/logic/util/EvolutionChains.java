@@ -160,6 +160,11 @@ public class EvolutionChains {
 		ADD(BELDUM_28, METANG_21, METAGROSS_11);
 		ADD(BELDUM_28, METANG_21, METAGROSS_EX_95);
 		ADD(ODDISH, GLOOM, VILEPLUME_EX_100);
+        //FRLG
+        ADD("Charmander", "Charmeleon", "Charizard-ex");
+        ADD("Squirtle", "Wartortle", "Blastoise-ex");
+        ADD("Bulbasaur", "Ivysaur", "Venusaur-ex");
+        ADD("Gastly", "Haunter", "Gengar-ex");
 		//BLW-EPO-NVI-NXD
 		ADD(DEINO_77,ZWEILOUS_78,HYDREIGON_103);
 		ADD(LITWICK_18,LAMPENT_19,CHANDELURE_101);
@@ -230,6 +235,11 @@ public class EvolutionChains {
 		ADD("Charmander", "Charmeleon", "Charizard-GX");
 		ADD("Ralts", "Kirlia", "Gardevoir-GX");
 		ADD("Machop", "Machoke", "Machamp-GX");
+        ADD("Alolan Geodude", "Alolan Graveler", "Alolan Golem-GX");
+        ADD("Froakie", "Frogadier", "Greninja-GX");
+        ADD("Unidentified Fossil", "Amaura", "Aurorus");
+        ADD("Unidentified Fossil", "Shieldon", "Bastiodon");
+        ADD("Unidentified Fossil", "Cranidos", "Rampardos");
 	}
 	
 	private static void ADD(CardInfo...a){
