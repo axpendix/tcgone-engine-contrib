@@ -1474,7 +1474,7 @@ public enum Deoxys implements CardInfo {
 						shuffleDeck()
 					}
 				}
-			
+
 				move "Positive Spark", {
 					text "Does 20 damage to each of your opponent’s Pokémon that has any Poké-Powers. Don’t apply Weakness and Resistance."
 					energyCost L
@@ -2563,7 +2563,7 @@ public enum Deoxys implements CardInfo {
 							h.object=true
 						}
 					}
-					eff2 = = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+					eff2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
 						if (h.effect.ability instanceof PokeBody && !h.effect.target.pokemonEX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
 							h.object=true
 						}
