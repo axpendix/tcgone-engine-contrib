@@ -2888,20 +2888,16 @@ public enum UltraPrism implements CardInfo {
       return supporter (this) {
         text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nYou can’t play this card if you don’t have any [W] or [M] Pokémon in play.\nYour opponent chooses 2 Benched Pokémon and shuffles the others, and all cards attached to them, into their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          def benChoice = []
-          def num = 0
-          while(benChoice.size()<2){
-            num = 2 - benChoice.size()
-            benChoice.add(opp.bench.findAll{!benChoice.contains(it)}.oppSelect("select a pokemon to keep on your bench ($num remaining)"))
-          }
-          opp.bench.findAll{!benChoice.contains(it)}.each{
-            it.cards.moveTo(my.deck)
+          def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.bench, "Opponent played Cyrus. Select 2 pokemon to keep on your bench. Rest will be shuffled to your deck", 2)
+          opp.bench.findAll{!list.contains(it)}.each{
+            it.cards.moveTo(opp.deck)
             removePCS(it)
             shuffleDeck()
           }
         }
         playRequirement{
-          assert my.all.findAll{it.types.contains(W) || it.types.contains(M)}
+          assert my.all.findAll{it.types.contains(W) || it.types.contains(M)} : "You don’t have any [W] or [M] Pokémon in play"
+          assert opp.bench.size() > 2 : "Opponent needs to have more than 2 benched Pokemon"
         }
       };
       case ELECTRIC_MEMORY_121:
