@@ -207,7 +207,7 @@ public enum TeamRocketReturns implements CardInfo {
 					text "Once during your turn, when you play Azumarill from your hand to evolve 1 of your Active Pokémon, you may use this power. Each Defending Pokémon is now Paralyzed."
 					onActivate {r->
             if(r==PLAY_FROM_HAND) {
-              if(confirm("Use Initialize?")) {
+              if(confirm("Use Froth?")) {
 								apply PARALYZED, self.owner.opposite.pbg.active
 							}
 						}
