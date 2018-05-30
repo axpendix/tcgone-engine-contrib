@@ -999,39 +999,6 @@ class TcgStatics {
 			from = from.select("From?")
 		}
 		def filterType = params.basic ? BASIC_ENERGY : ENERGY
-    def list = from.cards.filterByType(filterType)
-    if(params.type) {
-      list = list.filterByEnergyType(params.type)
-    }
-		if(!list){
-			return
-		}
-		list = list.select(min: (params.may ? 0 : 1), "Move which card?")
-		if(!list) return
-		if(to instanceof PcsList){
-			if(to.empty) return;
-			to = to.select("To?")
-		}
-		if(to.owner != bg.currentThreadPlayerType){
-			targeted (from, src) {
-				list.each {
-					energySwitch(from, to, it)
-				}
-			}
-		} else {
-			list.each {
-				energySwitch(from, to, it)
-			}
-		}
-	}
-
-	static void moveOppEnergy(params=[:], def from, def to, Source src=Source.ATTACK) {
-		if(to instanceof PcsList && to.empty) return
-		if(from instanceof PcsList){
-			if(from.empty) return
-			from = from.oppSelect("From?")
-		}
-		def filterType = params.basic ? BASIC_ENERGY : ENERGY
 		def list = from.cards.filterByType(filterType)
 		if(params.type) {
 			list = list.filterByEnergyType(params.type)
@@ -1039,13 +1006,14 @@ class TcgStatics {
 		if(!list){
 			return
 		}
-		list = list.oppSelect(min: (params.may ? 0 : 1), "Move which card?")
+		def playerType = params.playerType ?: bg.currentThreadPlayerType
+		list = list.select(min: (params.may ? 0 : 1), "Move which card?", {true}, playerType)
 		if(!list) return
 		if(to instanceof PcsList){
 			if(to.empty) return;
-			to = to.oppSelect("To?")
+			to = to.select("To?", true, playerType)
 		}
-		if(to.owner != bg.currentThreadPlayerType){
+		if(to.owner != playerType){
 			targeted (from, src) {
 				list.each {
 					energySwitch(from, to, it)
@@ -1057,7 +1025,6 @@ class TcgStatics {
 			}
 		}
 	}
-
 
 	static attachEnergyFrom (params=[:], CardList from, def to){
 		if(to instanceof PcsList && to.empty) return
