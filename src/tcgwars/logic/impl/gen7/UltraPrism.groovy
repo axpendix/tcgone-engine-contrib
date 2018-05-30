@@ -1222,7 +1222,7 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Evolutionary Advantage", {
           text "If you go second, this Pokémon can evolve during your first turn."
           delayedA {
-						before PREVENT_EVOLVE, {
+						before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
 							if(bg.turnCount == 2) prevent()
 						}
 					}
@@ -3238,9 +3238,21 @@ public enum UltraPrism implements CardInfo {
           }
           onAttack {
             gxPerform()
-            def newPrizelist = new CardList(opp.prizeAsList);
-            newPrizelist.add(opp.hand.select(hidden : false, count : 1).remove(0))
-            opp.prize= newPrizelist.toArray()
+            def card = opp.hand.select("Opponent's hand. Put one card as opponent prize")
+            opp.hand.remove(card)
+            def found = false
+            for(int i=0;i<opp.prize.length;i++){
+              if(opp.prize[i]==null){
+                opp.prize[i]=card
+                found=true
+                break
+              }
+            }
+            if(!found){
+              def newPrizelist = new CardList(opp.prizeAsList)
+              newPrizelist.add(card)
+              opp.prize = newPrizelist.toArray()
+            }
           }
         }
 
