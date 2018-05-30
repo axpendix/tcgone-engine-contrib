@@ -272,7 +272,6 @@ public enum UltraPrism implements CardInfo {
         move "Continuous Eggsplosion", {
           text "20× damage. Flip a coin until you get tails. This attack does 20 damage for each heads."
           energyCost G
-          attackRequirement {}
           onAttack {
             flipUntilTails{damage 20}
           }
@@ -286,7 +285,6 @@ public enum UltraPrism implements CardInfo {
         move "Super Speed", {
           text "20 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent’s next turn."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip{preventAllEffectsNextTurn()}
@@ -301,7 +299,6 @@ public enum UltraPrism implements CardInfo {
         move "Supersonic", {
           text "30 damage. Your opponent’s Active Pokémon is now Confused."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage {
@@ -312,7 +309,6 @@ public enum UltraPrism implements CardInfo {
         move "Cutting Wind", {
           text "120 damage."
           energyCost C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 120
           }
@@ -325,7 +321,6 @@ public enum UltraPrism implements CardInfo {
         move "Petal Dance", {
           text "30× damage. Flip 3 coins. This attack does 30 damage for each heads. This Pokémon is now Confused."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             flip 3,{damage 30}
             afterDamage {apply CONFUSED, self}
@@ -353,7 +348,6 @@ public enum UltraPrism implements CardInfo {
         move "Flower Tornado", {
           text "100 damage. Move any number of [G] Energy from your Pokémon to your other Pokémon in any way you like."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 100
             while(1){
@@ -386,7 +380,6 @@ public enum UltraPrism implements CardInfo {
         move "Headbutt Bounce", {
           text "30 damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -399,7 +392,6 @@ public enum UltraPrism implements CardInfo {
         move "Tackle", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -407,7 +399,6 @@ public enum UltraPrism implements CardInfo {
         move "Razor Leaf", {
           text "50 damage."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -420,7 +411,6 @@ public enum UltraPrism implements CardInfo {
         move "Mega Drain", {
           text "30 damage. Heal 30 damage from this Pokémon."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage {heal 30,self}
@@ -429,7 +419,6 @@ public enum UltraPrism implements CardInfo {
         move "Razor Leaf", {
           text "80 damage."
           energyCost G, G, G, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -442,7 +431,6 @@ public enum UltraPrism implements CardInfo {
         move "Giga Drain", {
           text "50 damage. Heal from this Pokémon the same amount of damage you did to your opponent’s Active Pokémon."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 50
             removeDamageCounterEqualToDamageDone()
@@ -451,7 +439,6 @@ public enum UltraPrism implements CardInfo {
         move "Earthquake", {
           text "180 damage. This attack does 20 damage to each of your Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
           energyCost G, G, G, C
-          attackRequirement {}
           onAttack {
             damage 180
             my.bench.each {damage 20, it}
@@ -465,7 +452,6 @@ public enum UltraPrism implements CardInfo {
         move "Surprise Attack", {
           text "30 damage. Flip a coin. If tails, this attack does nothing."
           energyCost G
-          attackRequirement {}
           onAttack {
             flip {damage 30}
           }
@@ -486,7 +472,6 @@ public enum UltraPrism implements CardInfo {
         move "Seed Bomb", {
           text "30 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -499,7 +484,6 @@ public enum UltraPrism implements CardInfo {
         move "Chomp Chomp", {
           text "20 damage. Heal 20 damage from this Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             healAfterDamage(20, self)
@@ -508,7 +492,6 @@ public enum UltraPrism implements CardInfo {
         move "Loom Over", {
           text "90- damage. This attack does 10 less damage for each damage counter on this Pokémon."
           energyCost G, G
-          attackRequirement {}
           onAttack {
             damage 90 - 10*self.numberOfDamageCounters
           }
@@ -537,7 +520,6 @@ public enum UltraPrism implements CardInfo {
         move "Solar Beam", {
           text "110 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 110
           }
@@ -586,7 +568,6 @@ public enum UltraPrism implements CardInfo {
         move "Special Mow", {
           text "60 damage. Discard a Special Energy from your opponent’s Active Pokémon."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             discardDefendingSpecialEnergy(delegate)
@@ -624,7 +605,6 @@ public enum UltraPrism implements CardInfo {
         move "Soothing Scent", {
           text "30 damage. Your opponent’s Active Pokémon is now Asleep."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 30
             applyAfterDamage ASLEEP
@@ -638,7 +618,6 @@ public enum UltraPrism implements CardInfo {
         move "Bubble", {
           text "10 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
             flip {apply PARALYZED}
@@ -665,7 +644,6 @@ public enum UltraPrism implements CardInfo {
         move "Aqua Edge", {
           text "70 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -688,7 +666,6 @@ public enum UltraPrism implements CardInfo {
         move "Flamethrower", {
           text "80 damage. Discard an Energy from this Pokémon."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 80
             discardSelfEnergy(C)
@@ -714,7 +691,6 @@ public enum UltraPrism implements CardInfo {
         move "Fire Blaster", {
           text "80+ damage. You may discard 2 Energy from this Pokémon. If you do, this attack does 80 more damage."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 80
             if(confirm("You may discard 2 Energy from this Pokémon. If you do, this attack does 80 more damage.")){
@@ -731,7 +707,6 @@ public enum UltraPrism implements CardInfo {
         move "Flare", {
           text "20 damage."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -744,7 +719,6 @@ public enum UltraPrism implements CardInfo {
         move "Fury Swipes", {
           text "10× damage. Flip 3 coins. This attack does 10 damage for each heads."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip 3,{damage 10}
           }
@@ -757,7 +731,6 @@ public enum UltraPrism implements CardInfo {
         move "Super Singe", {
           text "20 damage. Your opponent’s Active Pokémon is now Burned."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 20
             applyAfterDamage(BURNED)
@@ -780,7 +753,6 @@ public enum UltraPrism implements CardInfo {
         move "Burst Punch", {
           text "50 damage. Your opponent’s Active Pokémon is now Burned."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 50
             applyAfterDamage(BURNED)
@@ -809,7 +781,6 @@ public enum UltraPrism implements CardInfo {
         move "Heat Blast", {
           text "80 damage."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -822,7 +793,6 @@ public enum UltraPrism implements CardInfo {
         move "Live Coal", {
           text "10 damage."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -830,7 +800,6 @@ public enum UltraPrism implements CardInfo {
         move "Combustion", {
           text "30 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -843,7 +812,6 @@ public enum UltraPrism implements CardInfo {
         move "Panic Poison", {
           text "Your opponent’s Active Pokémon is now Burned, Confused, and Poisoned."
           energyCost R
-          attackRequirement {}
           onAttack {
             afterDamage {
               apply BURNED
@@ -855,7 +823,6 @@ public enum UltraPrism implements CardInfo {
         move "Hunter’s Nails", {
           text "60+ damage. If your opponent’s Active Pokémon is affected by a Special Condition, this attack does 60 more damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 60
             if(defending.specialConditions){
@@ -871,7 +838,6 @@ public enum UltraPrism implements CardInfo {
         move "Searing Flame", {
           text "10 damage. Your opponent’s Active Pokémon is now Burned."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 10
             applyAfterDamage(BURNED)
@@ -880,7 +846,6 @@ public enum UltraPrism implements CardInfo {
         move "Steam Artillery", {
           text "100 damage."
           energyCost R, C, C, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -892,7 +857,6 @@ public enum UltraPrism implements CardInfo {
         weakness METAL
         move "Fury Swipes", {
           text "10× damage. Flip 3 coins. This attack does 10 damage for each heads."
-          attackRequirement {}
           onAttack {
             flip 3,{damage 10}
           }
@@ -904,7 +868,6 @@ public enum UltraPrism implements CardInfo {
         weakness METAL
         move "Spike Armor", {
           text "30 damage. During your opponent’s next turn, if this Pokémon is damaged by an attack (even if this Pokémon is Knocked Out), put 6 damage counters on the Attacking Pokémon."
-          attackRequirement {}
           onAttack {
             damage 30
             delayed (priority: LAST) {
@@ -922,7 +885,6 @@ public enum UltraPrism implements CardInfo {
         move "Frost Breath", {
           text "90 damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 90
           }
@@ -934,7 +896,6 @@ public enum UltraPrism implements CardInfo {
         weakness METAL
         move "Roar", {
           text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
-          attackRequirement {}
           onAttack {
             whirlwind()
           }
@@ -942,7 +903,6 @@ public enum UltraPrism implements CardInfo {
         move "Icy Snow", {
           text "10 damage."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -955,7 +915,6 @@ public enum UltraPrism implements CardInfo {
         move "Splatter", {
           text "This attack does 20 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20,opp.all.select()
           }
@@ -968,7 +927,6 @@ public enum UltraPrism implements CardInfo {
         move "Peck", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -976,7 +934,6 @@ public enum UltraPrism implements CardInfo {
         move "Wave Splash", {
           text "20 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -989,7 +946,6 @@ public enum UltraPrism implements CardInfo {
         move "Bubble Beam", {
           text "20 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
             flip{applyAfterDamage(PARALYZED)}
@@ -998,7 +954,6 @@ public enum UltraPrism implements CardInfo {
         move "Wave Splash", {
           text "40 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1011,7 +966,6 @@ public enum UltraPrism implements CardInfo {
         move "Total Command", {
           text "20× damage. This attack does 20 damage for each Benched Pokémon (both yours and your opponent’s)."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20*(my.bench.size()+opp.bench.size())
           }
@@ -1019,7 +973,6 @@ public enum UltraPrism implements CardInfo {
         move "Whirlpool", {
           text "90 damage. Discard an Energy from your opponent’s Active Pokémon."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 90
             discardDefendingEnergy()
@@ -1033,7 +986,6 @@ public enum UltraPrism implements CardInfo {
         move "Water Gun", {
           text "30 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1046,7 +998,6 @@ public enum UltraPrism implements CardInfo {
         move "Agility", {
           text "30 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent’s next turn."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 30
             flip{preventAllEffectsNextTurn()}
@@ -1055,7 +1006,6 @@ public enum UltraPrism implements CardInfo {
         move "Aqua Blast", {
           text "80 damage. Discard a [W] Energy from this Pokémon."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 80
             discardSelfEnergy W
@@ -1069,7 +1019,6 @@ public enum UltraPrism implements CardInfo {
         move "Ice Shard", {
           text "20+ damage. If your opponent’s Active Pokémon is a [F] Pokémon, this attack does 40 more damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
             if(defending.types.contains(F)) damage 40
@@ -1092,7 +1041,6 @@ public enum UltraPrism implements CardInfo {
         move "Hypno Hammer", {
           text "80 damage. Your opponent’s Active Pokémon is now Asleep."
           energyCost W, C, C, C
-          attackRequirement {}
           onAttack {
             damage 80
             applyAfterDamage ASLEEP
@@ -1127,7 +1075,6 @@ public enum UltraPrism implements CardInfo {
         move "Frost Bullet", {
           text "90 damage. This attack does 30 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 90
             if(opp.bench) damage 30, opp.bench.select('30 damage')
@@ -1136,7 +1083,6 @@ public enum UltraPrism implements CardInfo {
         move "Polar Spear GX", {
           text "50× damage. This attack does 50 damage for each damage counter on your opponent’s Active Pokémon. (You can’t use more than 1 GX attack in a game.)"
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             gxPerform()
             damage 50*defending.numberOfDamageCounters
@@ -1195,7 +1141,6 @@ public enum UltraPrism implements CardInfo {
         move "Frost Crush", {
           text "10+ damage. This attack does 20 more damage times the amount of Energy attached to all of your opponent’s Pokémon."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             int c=0
             opp.all.each {c+=it.cards.energyCount(C)}
@@ -1221,7 +1166,6 @@ public enum UltraPrism implements CardInfo {
         move "Water Pulse", {
           text "20 damage. Your opponent’s Active Pokémon is now Asleep."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
             applyAfterDamage ASLEEP
@@ -1236,7 +1180,6 @@ public enum UltraPrism implements CardInfo {
         move "Low Kick", {
           text "30 damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1244,7 +1187,6 @@ public enum UltraPrism implements CardInfo {
         move "Thunder", {
           text "90 damage. This Pokémon does 30 damage to itself."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 90
             damage 30,self
@@ -1259,7 +1201,6 @@ public enum UltraPrism implements CardInfo {
         move "Steel Short", {
           text "60 damage. If your opponent’s Active Pokémon is a [M] Pokémon, it is now Paralyzed."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             if(defending.types.contains(M)) applyAfterDamage PARALYZED
@@ -1268,7 +1209,6 @@ public enum UltraPrism implements CardInfo {
         move "Volt Knuckle", {
           text "130 damage."
           energyCost L, L, C, C
-          attackRequirement {}
           onAttack {
             damage 130
           }
@@ -1290,7 +1230,6 @@ public enum UltraPrism implements CardInfo {
         move "Static Shock", {
           text "10 damage."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1321,7 +1260,6 @@ public enum UltraPrism implements CardInfo {
         move "Disconnect", {
           text "30 damage. Your opponent can’t play any Item cards from their hand during their next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 30
             delayed {
@@ -1355,7 +1293,6 @@ public enum UltraPrism implements CardInfo {
         move "Volt Bolt", {
           text "Discard all [L] Energy from this Pokémon. This attack does 150 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness or Resistance for Benched Pokémon.)"
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             discardAllSelfEnergy(L) //Should this come before or after the damage step?
             damage 150, opp.all.select()
@@ -1388,7 +1325,6 @@ public enum UltraPrism implements CardInfo {
         move "Nuzzle", {
           text "Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
           energyCost L
-          attackRequirement {}
           onAttack {
             flip{ apply PARALYZED}
           }
@@ -1417,7 +1353,6 @@ public enum UltraPrism implements CardInfo {
         move "Plasma Slice", {
           text "120 damage. This Pokémon can’t attack during your next turn."
           energyCost L, L, L
-          attackRequirement {}
           onAttack {
             damage 120
             cantAttackNextTurn self
@@ -1432,7 +1367,6 @@ public enum UltraPrism implements CardInfo {
         move "Creepy Wind", {
           text "Your opponent’s Active Pokémon is now Confused."
           energyCost P
-          attackRequirement {}
           onAttack {
             apply CONFUSED
           }
@@ -1440,7 +1374,6 @@ public enum UltraPrism implements CardInfo {
         move "Hang Down", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1454,7 +1387,6 @@ public enum UltraPrism implements CardInfo {
         move "Damage Transport", {
           text "Move 4 damage counters from each of your Pokémon to your opponent’s Active Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             my.all.each{
               def dmcm = Math.min(4,it.numberOfDamageCounters)
@@ -1466,7 +1398,6 @@ public enum UltraPrism implements CardInfo {
         move "Wind Wheel", {
           text "80 damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 80
             afterDamage{
@@ -1504,7 +1435,6 @@ public enum UltraPrism implements CardInfo {
         move "Hone Claws", {
           text "During your next turn, this Pokémon’s Pierce attack’s base damage is 90."
           energyCost P
-          attackRequirement {}
           onAttack {
             increasedBaseDamageNextTurn("Pierce", hp(60))
           }
@@ -1512,7 +1442,6 @@ public enum UltraPrism implements CardInfo {
         move "Pierce", {
           text "30 damage."
           energyCost P, P
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1525,7 +1454,6 @@ public enum UltraPrism implements CardInfo {
         move "Dangerous Stinger", {
           text "100 damage. Your opponent’s Active Pokémon is now Paralyzed and Poisoned."
           energyCost P, P, P, P
-          attackRequirement {}
           onAttack {
             damage 100
             afterDamage{ //Is this the general way to format multiple special conditions? A: yes
@@ -1542,7 +1470,6 @@ public enum UltraPrism implements CardInfo {
         move "Swagger", {
           text "10 damage. Flip a coin. If heads, discard an Energy from your opponent’s Active Pokémon."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
             flip{afterDamage{discardDefendingEnergy()}}
@@ -1556,7 +1483,6 @@ public enum UltraPrism implements CardInfo {
         move "Poison Jab", {
           text "30 damage. Your opponent’s Active Pokémon is now Poisoned."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 30
             applyAfterDamage POISONED
@@ -1565,7 +1491,6 @@ public enum UltraPrism implements CardInfo {
         move "Exact Revenge", {
           text "50+ damage. If any of your [F] Pokémon were Knocked Out by damage from an opponent’s attack during their last turn, this attack does 70 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 50
             if(my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1 && my.lastKnockoutTypes && my.lastKnockoutTypes.contains(F)) damage 70
@@ -1590,7 +1515,6 @@ public enum UltraPrism implements CardInfo {
         move "Crisis Dive", {
           text "160 damage. Discard 2 Energy from this Pokémon."
           energyCost P, P, P, P
-          attackRequirement {}
           onAttack {
             damage 160
             discardSelfEnergy(C,C)
@@ -1604,7 +1528,6 @@ public enum UltraPrism implements CardInfo {
         move "Lunar Payback", {
           text "Discard an Energy from this Pokémon. If you do, switch all damage counters on this Pokémon with those on your opponent’s Active Pokémon."
           energyCost P
-          attackRequirement {}
           onAttack {
             discardSelfEnergy(C)
             //TODO: Make a damage counter switch consequential of discarding the energy.
@@ -1618,7 +1541,6 @@ public enum UltraPrism implements CardInfo {
         move "Psychic", {
           text "60+ damage. This attack does 20 more damage times the amount of Energy attached to your opponent’s Active Pokémon."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 60+20*defending.cards.energyCount(C)
           }
@@ -1631,7 +1553,6 @@ public enum UltraPrism implements CardInfo {
         move "Teleport", {
           text "Switch this Pokémon with 1 of your Benched Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             switchYourActive()
           }
@@ -1657,7 +1578,6 @@ public enum UltraPrism implements CardInfo {
         move "Psystorm", {
           text "20× damage. This attack does 20 damage times the amount of Energy attached to all Pokémon."
           energyCost P, P, P, P
-          attackRequirement {}
           onAttack {
             int c=0
             opp.all.each {c+=it.cards.energyCount(C)}
@@ -1683,7 +1603,6 @@ public enum UltraPrism implements CardInfo {
         move "Dark Flash", {
           text "120 damage. This attack’s damage isn’t affected by Resistance."
           energyCost P, P, P
-          attackRequirement {}
           onAttack {
             dontApplyResistance()
             damage 120
@@ -1711,7 +1630,6 @@ public enum UltraPrism implements CardInfo {
         move "Corkscrew Punch", {
           text "30 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1719,7 +1637,6 @@ public enum UltraPrism implements CardInfo {
         move "Headstrike", {
           text "50 damage."
           energyCost F, F
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1732,7 +1649,6 @@ public enum UltraPrism implements CardInfo {
         move "Clean Hit", {
           text "60+ damage. If your opponent’s Active Pokémon is an Evolution Pokémon, this attack does 60 more damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 60
             if(defending.evolution) damage 60
@@ -1756,7 +1672,6 @@ public enum UltraPrism implements CardInfo {
         move "Detect", {
           text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent’s next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip{preventAllEffectsNextTurn()}
           }
@@ -1764,7 +1679,6 @@ public enum UltraPrism implements CardInfo {
         move "Jab", {
           text "10 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1788,7 +1702,6 @@ public enum UltraPrism implements CardInfo {
         move "Missile Jab", {
           text "70 damage. This attack’s damage isn’t affected by Resistance."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             dontApplyResistance()
             damage 70
@@ -1802,7 +1715,6 @@ public enum UltraPrism implements CardInfo {
         move "Eleventh Hour Tackle", {
           text "50+ damage. If there are 3 or fewer cards in your deck, this attack does 130 more damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             if(my.deck.size()<4)
@@ -1817,7 +1729,6 @@ public enum UltraPrism implements CardInfo {
         move "Sand Tomb", {
           text "50 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             cantRetreat(defending)
@@ -1826,7 +1737,6 @@ public enum UltraPrism implements CardInfo {
         move "Dust Cannon", {
           text "100+ damage. This attack does 10 more damage for each [C] in your opponent’s Active Pokémon’s Retreat Cost."
           energyCost F, F, C, C
-          attackRequirement {}
           onAttack {
             damage 100+10*defending.retreatCost
           }
@@ -1853,7 +1763,6 @@ public enum UltraPrism implements CardInfo {
         move "Rock Hurl", {
           text "40 damage. This attack’s damage isn’t affected by Resistance."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             dontApplyResistance()
             damage 40
@@ -1868,7 +1777,6 @@ public enum UltraPrism implements CardInfo {
         move "Mean Look", {
           text "10 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
           energyCost D
-          attackRequirement {}
           onAttack {
             damage 10
             cantRetreat(defending)
@@ -1883,7 +1791,6 @@ public enum UltraPrism implements CardInfo {
         move "Rip and Run", {
           text "Discard a random card from your opponent’s hand. Switch this Pokémon with 1 of your Benched Pokémon."
           energyCost D
-          attackRequirement {}
           onAttack {
             discardRandomCardFromOpponentsHand()
             switchYourActive()
@@ -1892,7 +1799,6 @@ public enum UltraPrism implements CardInfo {
         move "Speed Dive", {
           text "90 damage."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 90
           }
@@ -1923,7 +1829,6 @@ public enum UltraPrism implements CardInfo {
         move "Ambush", {
           text "10+ damage. Flip a coin. If heads, this attack does 20 more damage."
           energyCost D
-          attackRequirement {}
           onAttack {
             damage 10
             flip {damage 20}
@@ -1938,7 +1843,6 @@ public enum UltraPrism implements CardInfo {
         move "Icy Wind", {
           text "10 damage. Your opponent’s Active Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             applyAfterDamage ASLEEP
@@ -1947,7 +1851,6 @@ public enum UltraPrism implements CardInfo {
         move "Evil Admonition", {
           text "50× damage. This attack does 50 damage for each of your opponent’s Pokémon that has an Ability."
           energyCost D
-          attackRequirement {}
           onAttack {
             opp.all.each {if(it.hasModernAbility()) damage 50}
           }
@@ -1961,7 +1864,6 @@ public enum UltraPrism implements CardInfo {
         move "Gas Bond", {
           text "10 damage. Both Active Pokémon are now Confused."
           energyCost D
-          attackRequirement {}
           onAttack {
             damage 10
             applyAfterDamage CONFUSED
@@ -1977,7 +1879,6 @@ public enum UltraPrism implements CardInfo {
         move "Sticky Smokescreen", {
           text "50 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips 2 coins. If either of them is tails, that attack does nothing."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 50
             sandAttack(thisMove)
@@ -1987,7 +1888,6 @@ public enum UltraPrism implements CardInfo {
         move "Hammer In", {
           text "100 damage."
           energyCost D, D, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -2014,7 +1914,6 @@ public enum UltraPrism implements CardInfo {
         move "Abyssal Sleep", {
           text "120 damage. Your opponentâ€™s Active PokÃ©mon is now Asleep. Your opponent flips 2 coins instead of 1 between turns. If either of them is tails, that PokÃ©mon is still Asleep."
           energyCost D, D, D, D
-          attackRequirement {}
           onAttack {
             damage 120
             afterDamage{apply ASLEEP, defending}
@@ -2047,7 +1946,6 @@ public enum UltraPrism implements CardInfo {
         resistance PSYCHIC, MINUS20
         move "Iron Head", {
           text "10× damage. Flip a coin until you get tails. This attack does 10 damage for each heads."
-          attackRequirement {}
           onAttack {
             flipUntilTails{damage 10}
           }
@@ -2086,7 +1984,6 @@ public enum UltraPrism implements CardInfo {
         move "Tackle", {
           text "10 damage."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2113,7 +2010,6 @@ public enum UltraPrism implements CardInfo {
         move "Ram", {
           text "20 damage."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2127,7 +2023,6 @@ public enum UltraPrism implements CardInfo {
         move "Ram", {
           text "20 damage."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2135,7 +2030,6 @@ public enum UltraPrism implements CardInfo {
         move "Zap Cannon", {
           text "80 damage. This Pokémon can’t use Zap Cannon during your next turn."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 80
             cantUseAttack thisMove, self
@@ -2157,7 +2051,6 @@ public enum UltraPrism implements CardInfo {
         move "Zap Cannon", {
           text "130 damage. This Pokémon can’t use Zap Cannon during your next turn."
           energyCost M, M, M, C
-          attackRequirement {}
           onAttack {
             damage 130
             cantUseAttack thisMove, self
@@ -2172,7 +2065,6 @@ public enum UltraPrism implements CardInfo {
         move "Take Down", {
           text "50 damage. This Pokémon does 10 damage to itself."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 50
             damage 10, self
@@ -2181,7 +2073,6 @@ public enum UltraPrism implements CardInfo {
         move "Confront", {
           text "80 damage."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -2207,7 +2098,6 @@ public enum UltraPrism implements CardInfo {
         move "Push Down", {
           text "110 damage. You may have your opponent switch their Active Pokémon with 1 of their Benched Pokémon."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 110
             if(confirm("Your opponent switch their pokemon with 1 of their bench?"))
@@ -2223,7 +2113,6 @@ public enum UltraPrism implements CardInfo {
         move "Hypnosis", {
           text "Your opponent’s Active Pokémon is now Asleep."
           energyCost M
-          attackRequirement {}
           onAttack {
             apply ASLEEP
           }
@@ -2231,7 +2120,6 @@ public enum UltraPrism implements CardInfo {
         move "Spinning Attack", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2245,7 +2133,6 @@ public enum UltraPrism implements CardInfo {
         move "Psy Bolt", {
           text "20 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 20
             flip {applyAfterDamage PARALYZED}
@@ -2254,7 +2141,6 @@ public enum UltraPrism implements CardInfo {
         move "Psychic Resonance", {
           text "60+ damage. If your opponent has any [P] Pokémon in play, this attack does 60 more damage."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             if(opp.all.findAll{it.types.contains(P)})
@@ -2270,7 +2156,6 @@ public enum UltraPrism implements CardInfo {
         move "Guard Press", {
           text "30 damage. During your opponent’s next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 30
             reduceDamageNextTurn(hp(30),thisMove)
@@ -2279,7 +2164,6 @@ public enum UltraPrism implements CardInfo {
         move "Boiling Impact", {
           text "130 damage. Discard 2 Energy from this Pokémon."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 130
             discardSelfEnergy(C,C)
@@ -2306,7 +2190,6 @@ public enum UltraPrism implements CardInfo {
         move "Corona Impact", {
           text "160 damage. This Pokémon can’t attack during your next turn."
           energyCost M, M, M, M
-          attackRequirement {}
           onAttack {
             damage 160
             cantAttackNextTurn self
@@ -2321,7 +2204,6 @@ public enum UltraPrism implements CardInfo {
         move "Claw Slash", {
           text "60 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -2329,7 +2211,6 @@ public enum UltraPrism implements CardInfo {
         move "Meteor Tempest", {
           text "220 damage. Discard 3 Energy from this Pokémon."
           energyCost M, M, M, C
-          attackRequirement {}
           onAttack {
             damage 220
             discardSelfEnergy(C,C,C)
@@ -2366,7 +2247,6 @@ public enum UltraPrism implements CardInfo {
         move "Rolling Attack", {
           text "60 damage."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -2380,7 +2260,6 @@ public enum UltraPrism implements CardInfo {
         move "Flickering Spores", {
           text "Your opponent’s Active Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             apply ASLEEP
           }
@@ -2388,7 +2267,6 @@ public enum UltraPrism implements CardInfo {
         move "Ram", {
           text "10 damage."
           energyCost Y
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2412,7 +2290,6 @@ public enum UltraPrism implements CardInfo {
         move "Flickering Spores", {
           text "30 damage. Your opponent’s Active Pokémon is now Asleep."
           energyCost Y, C
-          attackRequirement {}
           onAttack {
             damage 30
             applyAfterDamage ASLEEP
@@ -2427,7 +2304,6 @@ public enum UltraPrism implements CardInfo {
         move "Psywave", {
           text "20× damage. This attack does 20 damage times the amount of Energy attached to your opponent’s Active Pokémon."
           energyCost Y
-          attackRequirement {}
           onAttack {
             damage 20*opp.active.cards.energyCount(C)
           }
@@ -2476,7 +2352,6 @@ public enum UltraPrism implements CardInfo {
         move "Draco Meteor Barrage", {
           text "80× damage. Flip a coin for each [G] Energy attached to this Pokémon. This attack does 80 damage for each heads."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             flip self.cards.energyCount(G),{damage 80}
           }
@@ -2515,7 +2390,6 @@ public enum UltraPrism implements CardInfo {
         move "Gnaw", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2541,7 +2415,6 @@ public enum UltraPrism implements CardInfo {
         move "Slash", {
           text "40 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -2554,7 +2427,6 @@ public enum UltraPrism implements CardInfo {
         move "Quick Dive", {
           text "This attack does 50 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C
-          attackRequirement {}
           onAttack {
             def tar = opp.all.select()
             damage 50,tar
@@ -2563,7 +2435,6 @@ public enum UltraPrism implements CardInfo {
         move "Royal Blades", {
           text "100+ damage. If you played Cynthia from your hand during this turn, this attack does 100 more damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 100
             if(bg.em().retrieveObject("Cynthia_"+bg.turnCount)){
@@ -2590,7 +2461,6 @@ public enum UltraPrism implements CardInfo {
         move "Shred", {
           text "80 damage. This attack’s damage isn’t affected by any effects on your opponent’s Active Pokémon."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             shredDamage 80
           }
@@ -2624,7 +2494,6 @@ public enum UltraPrism implements CardInfo {
         move "Spatial Control", {
           text "Move any number of Energy from your Benched Pokémon to this Pokémon."
           energyCost W
-          attackRequirement {}
           onAttack {
             while(1){
               def pl=(my.bench.findAll {it.cards.energyCount(C)})
@@ -2639,7 +2508,6 @@ public enum UltraPrism implements CardInfo {
         move "Hydro Pressure", {
           text "60+ damage. This attack does 20 more damage times the amount of [W] Energy attached to this Pokémon."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 60+20*self.cards.energyCount(W)
           }
@@ -2668,7 +2536,6 @@ public enum UltraPrism implements CardInfo {
         move "Lap Up", {
           text "Draw 3 cards."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             draw 3
           }
@@ -2676,7 +2543,6 @@ public enum UltraPrism implements CardInfo {
         move "Slam", {
           text "50× damage. Flip 2 coins. This attack does 50 damage for each heads."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             flip 2, {damage 50}
           }
@@ -2689,7 +2555,6 @@ public enum UltraPrism implements CardInfo {
         move "Dangerous Lick", {
           text "50+ damage. Flip a coin until you get tails. This attack does 50 more damage for each heads. If the first flip is tails, your opponent’s Active Pokémon is now Paralyzed."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             flipUntilTails {damage 50}
@@ -2698,7 +2563,6 @@ public enum UltraPrism implements CardInfo {
         move "Rolling Tackle", {
           text "110 damage."
           energyCost C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 110
           }
@@ -2711,7 +2575,6 @@ public enum UltraPrism implements CardInfo {
         move "Gnaw", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2743,7 +2606,6 @@ public enum UltraPrism implements CardInfo {
         move "Weak Kneed", {
           text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
           energyCost C
-          attackRequirement {}
           onAttack {
             sandAttack(thisMove)
           }
@@ -2751,7 +2613,6 @@ public enum UltraPrism implements CardInfo {
         move "Skip", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2764,7 +2625,6 @@ public enum UltraPrism implements CardInfo {
         move "Stompy Stomp", {
           text "40× damage. Flip 2 coins. This attack does 40 damage for each heads."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip 2, {damage 40}
           }
@@ -2772,7 +2632,6 @@ public enum UltraPrism implements CardInfo {
         move "Happy Turn", {
           text "60 damage. You may shuffle this Pokémon and all cards attached to it into your deck."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 60
             if(my.bench){
@@ -2792,7 +2651,6 @@ public enum UltraPrism implements CardInfo {
         move "Gentle Bite", {
           text "10 damage. During your opponent’s next turn, the Defending Pokémon’s attacks do 40 less damage (before applying Weakness and Resistance)."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             reduceDamageFromDefendingNextTurn(hp(40),thisMove,defending)
@@ -2806,7 +2664,6 @@ public enum UltraPrism implements CardInfo {
         move "Own the Place", {
           text "20 damage. If your opponent has a Stadium card in play, discard it. If you do, prevent all effects of attacks, including damage, done to this Pokémon during your opponent’s next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
             if(bg.stadiumInfoStruct.stadiumCard.player != self.owner) {
@@ -2818,7 +2675,6 @@ public enum UltraPrism implements CardInfo {
         move "Toss Aside", {
           text "60 damage. Discard random cards from your opponent’s hand until they have 3 cards in their hand."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             if(opp.hand.size()>3)
@@ -2849,7 +2705,6 @@ public enum UltraPrism implements CardInfo {
         move "Spinning Fan", {
           text "This attack does 20 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             opp.all.each{damage 20, it}
           }
@@ -2880,7 +2735,6 @@ public enum UltraPrism implements CardInfo {
         move "Glide", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2893,7 +2747,6 @@ public enum UltraPrism implements CardInfo {
         move "Scout", {
           text "Your opponent reveals their hand."
           energyCost C
-          attackRequirement {}
           onAttack {
             opp.hand.showToMe("Opponent's hand")
           }
@@ -2901,7 +2754,6 @@ public enum UltraPrism implements CardInfo {
         move "Take Down", {
           text "30 damage. This Pokémon does 10 damage to itself."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             damage 10, self
@@ -2915,7 +2767,6 @@ public enum UltraPrism implements CardInfo {
         move "Identify", {
           text "20+ damage. Your opponent reveals their hand. If you find a Pokémon there, this attack does 80 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             opp.hand.showToMe("Opponent's hand")
@@ -2927,7 +2778,6 @@ public enum UltraPrism implements CardInfo {
         move "Whap Down", {
           text "70 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -2950,7 +2800,6 @@ public enum UltraPrism implements CardInfo {
         move "Profound Knowledge", {
           text "60 damage. Your opponent’s Active Pokémon is now Confused."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             applyAfterDamage CONFUSED
@@ -2964,7 +2813,6 @@ public enum UltraPrism implements CardInfo {
         move "Merciless Strike", {
           text "30+ damage. If your opponent’s Active Pokémon already has any damage counters on it, this attack does 30 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             if(opp.active.numberOfDamageCounters)
@@ -2974,7 +2822,6 @@ public enum UltraPrism implements CardInfo {
         move "Headbang", {
           text "70 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -2990,7 +2837,6 @@ public enum UltraPrism implements CardInfo {
         move "Outrage", {
           text "20+ damage. This attack does 10 more damage for each damage counter on this Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20+10*self.numberOfDamageCounters
           }
@@ -2998,7 +2844,6 @@ public enum UltraPrism implements CardInfo {
         move "Dragon Pulse", {
           text "100 damage. Discard the top 2 cards of your deck."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 100
             def list = my.deck.subList(0, 2).discard()
@@ -3328,7 +3173,6 @@ public enum UltraPrism implements CardInfo {
         move "Fast Raid", {
           text "30 damage. If you go first, you can use this attack on your first turn."
           energyCost G
-          attackRequirement {}
           onAttack {
             // "Fast Raid" is hardcoded in Attack to be able to go first
             damage 30
@@ -3337,7 +3181,6 @@ public enum UltraPrism implements CardInfo {
         move "Cruel Spike", {
           text "60 damage. Your opponent’s Active Pokémon is now Confused."
           energyCost G, G
-          attackRequirement {}
           onAttack {
             damage 60
             applyAfterDamage CONFUSED
@@ -3411,7 +3254,6 @@ public enum UltraPrism implements CardInfo {
         move "Rocket Fall", {
           text "30+ damage. This attack does 30 more damage for each [C] in your opponent’s Active Pokémon’s Retreat Cost."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 30+30*opp.active.retreatCost
           }
@@ -3419,7 +3261,6 @@ public enum UltraPrism implements CardInfo {
         move "Moon Press", {
           text "130 damage."
           energyCost M, C, C, C
-          attackRequirement {}
           onAttack {
             damage 130
           }

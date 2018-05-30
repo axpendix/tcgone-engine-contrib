@@ -211,7 +211,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Poison Sting", {
 					text "20 damage. The Defending Pokémon is now Poisoned."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 						damage 20
 						applyAfterDamage POISONED
@@ -220,7 +219,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Link Needle", {
 					text "50+ damage. This attack does 50 damage plus 30 more damage for each Beedrill (excluding this one) you have in play."
 					energyCost G, C, C
-					attackRequirement {}
 					onAttack {
 						damage 50
 						my.all.findAll{it != self && it.name == "Beedrill"}.each{
@@ -251,7 +249,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Whirlwind", {
 					text "30 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 30
 						whirlwind()
@@ -260,7 +257,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Gust", {
 					text "50 damage."
 					energyCost G, C, C
-					attackRequirement {}
 					onAttack {
 						damage 50
 					}
@@ -277,7 +273,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Cold Breath", {
 					text "10 damage. The Defending Pokémon is now Asleep."
 					energyCost W
-					attackRequirement {}
 					onAttack {
 						damage 10
 						applyAfterDamage ASLEEP
@@ -286,7 +281,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Aurora Beam", {
 					text "40 damage."
 					energyCost C, C, C
-					attackRequirement {}
 					onAttack {
 						damage 40
 					}
@@ -311,7 +305,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Energy Ball", {
 					text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Ditto but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						extraEnergyDamage(2,hp(10),C,thisMove)
@@ -337,7 +330,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Big Eggsplosion", {
 					text "40× damage. Flip a coin for each Energy attached to Exeggutor. This attack does 40 damage times the number of heads."
 					energyCost P, C
-					attackRequirement {}
 					onAttack {
 						flip self.cards.energyCount(C), {
 							damage 40
@@ -351,7 +343,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Fetch", {
 					text "Draw a card."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						draw 1
 					}
@@ -359,7 +350,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Headbutt", {
 					text "20 damage."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 					}
@@ -367,7 +357,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "One-Two Punch", {
 					text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 20 more damage."
 					energyCost C, C, C
-					attackRequirement {}
 					onAttack {
 						damage 30
 						flip {damage 20}
@@ -381,7 +370,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Linear Attack", {
 					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost F, C
-					attackRequirement {}
 					onAttack {
 						damage 30 ,opp.all.select()
 					}
@@ -389,7 +377,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Vengeance", {
 					text "30+ damage. Does 30 damage plus 10 more damage for each Basic Pokémon and each Evolution card in your discard pile. You can’t add more than 60 damage in this way."
 					energyCost F, C, C
-					attackRequirement {}
 					onAttack {
 						damage 30
 						def addDmg = Math.min(my.discard.filterByType(BASIC, EVOLUTION).size(),6)
@@ -417,7 +404,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Earth Poison", {
 					text "40 damage. If the Defending Pokémon already has any damage counters on it, the Defending Pokémon is now Poisoned."
 					energyCost F, C
-					attackRequirement {}
 					onAttack {
 						damage 40
 						if(defending.numberOfDamageCounters) applyAfterDamage POISONED
@@ -426,7 +412,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Bound Crush", {
 					text "Choose 1 of your opponent’s Pokémon. This attack does 60 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) Nidoking can’t use Bound Crush during your next turn."
 					energyCost F, F, C, C
-					attackRequirement {}
 					onAttack {
 						damage 60, opp.all.select()
 						cantUseAttack(thisMove, self)
@@ -451,7 +436,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Toxic", {
 					text "The Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 						apply POISONED
 						extraPoison 1
@@ -460,7 +444,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Power Lariat", {
 					text "40+ damage. Does 40 damage plus 10 more damage for each Evolved Pokémon you have in play."
 					energyCost F, C, C
-					attackRequirement {}
 					onAttack {
 						damage 40
 						my.all.each{
@@ -486,7 +469,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Clutch", {
 					text "40 damage. The Defending Pokémon can’t retreat until the end of your opponent’s next turn."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 40
 						cantRetreat defending
@@ -511,7 +493,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Split Spiral Punch", {
 					text "20 damage. The Defending Pokémon is now Confused."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 						applyAfterDamage CONFUSED
@@ -520,7 +501,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Mega Throw", {
 					text "50+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 50 damage plus 30 more damage."
 					energyCost W, C, C
-					attackRequirement {}
 					onAttack {
 						damage 50
 						if(defending.pokemonEX) damage 30
@@ -534,7 +514,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Recharge", {
 					text "Search your deck for up to 2 [L] Energy cards and attach them to Raichu. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						attachEnergyFrom(type: L, my.deck, self)
 						attachEnergyFrom(type: L, my.deck, self)
@@ -543,7 +522,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Thunder Reflection", {
 					text "50 damage. You may move any number of [L] Energy cards attached to Raichu to another of your Pokémon."
 					energyCost L, L, C
-					attackRequirement {}
 					onAttack {
 						damage 50
 						if(confirm("move any number of [L] Energy cards attached to Raichu to another of your Pokémon?"))
@@ -572,7 +550,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Searing Flame", {
 					text "10 damage. The Defending Pokémon is now Burned."
 					energyCost R, C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						applyAfterDamage BURNED
@@ -581,7 +558,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Rear Kick", {
 					text "40 damage."
 					energyCost R, C, C
-					attackRequirement {}
 					onAttack {
 						damage 40
 					}
@@ -607,7 +583,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Psyshock", {
 					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
 					energyCost P, C
-					attackRequirement {}
 					onAttack {
 						damage 30
 						afterDamage {flipThenApplySC PARALYZED}
@@ -639,7 +614,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Collapse", {
 					text "10 damage. Snorlax is now Asleep."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						afterDamage {apply ASLEEP, self}
@@ -648,7 +622,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Toss and Turn", {
 					text "30+ damage. If Snorlax is Asleep, this attack does 30 damage plus 30 more damage. (This attack can be used even if Snorlax is Asleep.)"
 					energyCost C, C, C
-					attackRequirement {}
 					onAttack {
 						damage 30
 						if(self.isSPC(ASLEEP)) damage 30
@@ -662,7 +635,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Knock Over", {
 					text "10 damage. You may discard any Stadium card in play."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						if(bg.stadiumInfoStruct) {
@@ -673,7 +645,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Rampage", {
 					text "20+ damage. Does 20 damage plus 10 more damage for each damage counter on Tauros. After doing damage, flip a coin. If tails, Tauros is now Confused."
 					energyCost C, C, C
-					attackRequirement {}
 					onAttack {
 						damage 20+10*self.numberOfDamageCounters
 						flip 1, {}, {afterDamage {apply CONFUSED, self}}
@@ -697,7 +668,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Acid", {
 					text "50 damage. The Defending Pokémon can’t retreat until the end of your opponent’s next turn."
 					energyCost G, C, C
-					attackRequirement {}
 					onAttack {
 						damage 50
 						cantRetreat defending
@@ -711,7 +681,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Flare", {
 					text "20 damage."
 					energyCost R
-					attackRequirement {}
 					onAttack {
 						damage 20
 					}
@@ -719,7 +688,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Heat Tackle", {
 					text "70 damage. Arcanine does 10 damage to itself."
 					energyCost R, C, C, C
-					attackRequirement {}
 					onAttack {
 						damage 70
 						damage 10, self
@@ -733,7 +701,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Sing", {
 					text "The Defending Pokémon is now Asleep."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						apply ASLEEP
 					}
@@ -741,7 +708,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Egg Surprise", {
 					text "Flip a coin. If heads, Chansey does 50 damage to the Defending Pokémon. If tails, remove 5 damage counters from Chansey. (All if there are less than 5.)"
 					energyCost C, C, C
-					attackRequirement {}
 					onAttack {
 						flip 1,{
 							damage 50
@@ -772,7 +738,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Double Bubble", {
 					text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads. If either of the coins is heads, the Defending Pokémon is now Paralyzed."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						flip 2,{
 							damage 10
@@ -783,7 +748,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Shell Attack", {
 					text "50 damage."
 					energyCost W, C, C
-					attackRequirement {}
 					onAttack {
 						damage 50
 					}
@@ -805,7 +769,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Tri Attack", {
 					text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						flip 3,{damage 20}
 					}
@@ -818,7 +781,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Sonicboom", {
 					text "30 damage. This attack’s damage isn’t affected by Weakness or Resistance."
 					energyCost F, C
-					attackRequirement {}
 					onAttack {
 						noWrDamage(30,defending)
 					}
@@ -826,7 +788,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Rumble", {
 					text "50 damage. The Defending Pokémon can’t retreat until the end of your opponent’s next turn."
 					energyCost F, C, C
-					attackRequirement {}
 					onAttack {
 						damage 50
 						cantRetreat defending
@@ -859,7 +820,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Cross-Cut", {
 					text "10+ damage. If the Defending Pokémon is an Evolved Pokémon, this attack does 10 damage plus 20 more damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						if(defending.evolution) damage 20
@@ -882,7 +842,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Shot Air", {
 					text "10 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance.)"
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						damage 20, opp.bench.select()
@@ -891,7 +850,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Drill Peck", {
 					text "50 damage."
 					energyCost C, C, C
-					attackRequirement {}
 					onAttack {
 						damage 50
 					}
@@ -917,7 +875,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Hypnotic Ray", {
 					text "20 damage. The Defending Pokémon is now Asleep."
 					energyCost P, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 						applyAfterDamage ASLEEP
@@ -931,7 +888,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Salt Water", {
 					text "Search your deck for up to 2 [W] Energy cards and attach them to Kingler. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						my.deck.search(max : 2,"Search your deck for up to 2 [W] Energy cards",basicEnergyFilter(W)).each{
 							attachEnergy(self, it)
@@ -941,7 +897,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Hyper Pump", {
 					text "30+ damage. Does 30 damage plus 20 more damage for each basic Energy attached to Kingler but not used to pay for this attack’s Energy cost. You can’t add more than 40 damage in this way."
 					energyCost W, C
-					attackRequirement {}
 					onAttack {
 						damage 30
 						extraEnergyDamage(2,hp(20),W,thisMove)
@@ -956,7 +911,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Thundershock", {
 					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
 					energyCost L, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 						afterDamage {flipThenApplySC PARALYZED}
@@ -965,7 +919,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Speed Shot", {
 					text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
 					energyCost C, C, C
-					attackRequirement {}
 					onAttack {
 						directDamage 40, opp.all.select()
 					}
@@ -978,7 +931,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Toss", {
 					text "30× damage. You may discard from your hand as many Technical Machine and Pokémon Tool cards as you like. This attack does 30 damage times the number of cards your discarded."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						def tar = my.hand.filterByType(POKEMON_TOOL,TECHNICAL_MACHINE).select(max:my.hand.filterByType(POKEMON_TOOL,TECHNICAL_MACHINE).size())
 						damage 30*tar.size()
@@ -988,7 +940,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Low Kick", {
 					text "40 damage."
 					energyCost F, C
-					attackRequirement {}
 					onAttack {
 						damage 40
 					}
@@ -1009,7 +960,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Fury Cutter", {
 					text "10+ damage. Flip 3 coins. If 1 of them is heads, this attack does 10 damage plus 10 more damage. If 2 of them are heads, this attack does 10 damage plus 20 more damage. If all of them are heads, this attack does 10 damage plus 40 more damage."
 					energyCost G, C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						flip 3,{},{},[1:{damage 10},2:{damage 20},3:{damage 40}]
@@ -1024,7 +974,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Vine Tease", {
 					text "Look at your Prize cards without showing your opponent. Choose 1 of the Prize cards and switch it with the top card of your deck without looking at the top card of your deck. If you have no cards in your deck, this attack does nothing."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						if(my.deck){
 							def tar = my.prizeAsList.select(hidden: false, "Prize to replace with the top card of your deck")
@@ -1038,7 +987,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Wiggle", {
 					text "Flip a coin. If heads, the Defending Pokémon is now Confused. If tails, the Defending Pokémon is now Poisoned."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 						flip 1,{apply CONFUSED}, {apply POISONED}
 					}
@@ -1051,7 +999,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Flare", {
 					text "30 damage."
 					energyCost R, C
-					attackRequirement {}
 					onAttack {
 						damage 30
 					}
@@ -1059,7 +1006,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Damage Burn", {
 					text "40+ damage. If the Defending Pokémon already has any damage counters on it, this attack does 40 damage plus 20 more damage."
 					energyCost R, C, C
-					attackRequirement {}
 					onAttack {
 						damage 40
 						if(defending.numberOfDamageCounters) damage 20
@@ -1073,7 +1019,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Hypnosis", {
 					text "The Defending Pokémon is now Asleep."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						apply ASLEEP
 					}
@@ -1081,7 +1026,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Ambush", {
 					text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
 					energyCost P
-					attackRequirement {}
 					onAttack {
 						damage 10
 						flip {damage 10}
@@ -1095,7 +1039,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Psybeam", {
 					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
 					energyCost P
-					attackRequirement {}
 					onAttack {
 						damage 10
 						afterDamage {flipThenApplySC CONFUSED}
@@ -1104,7 +1047,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Double Spin", {
 					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						flip 2, {damage 20}
 					}
@@ -1127,7 +1069,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Confuse Ray", {
 					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
 					energyCost P, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 						afterDamage {flipThenApplySC CONFUSED}
@@ -1141,7 +1082,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Poison Seed", {
 					text "The Defending Pokémon is now Poisoned."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						apply POISONED
 					}
@@ -1149,7 +1089,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Razor Leaf", {
 					text "50 damage."
 					energyCost G, G, C
-					attackRequirement {}
 					onAttack {
 						damage 50
 					}
@@ -1177,7 +1116,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Headbutt", {
 					text "10 damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 					}
@@ -1190,7 +1128,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Lick", {
 					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						afterDamage {flipThenApplySC PARALYZED}
@@ -1199,7 +1136,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Tongue Whip", {
 					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 20, opp.all.select()
 					}
@@ -1212,7 +1148,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Mischief", {
 					text "Shuffle your opponent’s deck."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						shuffleDeck(null, TargetPlayer.OPPONENT)
 					}
@@ -1220,7 +1155,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Light Punch", {
 					text "30 damage."
 					energyCost F, C
-					attackRequirement {}
 					onAttack {
 						damage 30
 					}
@@ -1247,7 +1181,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Sharpen", {
 					text "20 damage."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 					}
@@ -1260,7 +1193,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Scratch", {
 					text "20 damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 20
 					}
@@ -1284,7 +1216,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Double Stab", {
 					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						flip 2,{damage 20}
 					}
@@ -1292,7 +1223,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Rend", {
 					text "30+ damage. If the Defending Pokémon already has any damage counters on it, this attack does 30 damage plus 30 more damage."
 					energyCost C, C, C
-					attackRequirement {}
 					onAttack {
 						damage 30
 						if(defending.numberOfDamageCounters) damage 30
@@ -1306,7 +1236,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Rock Throw", {
 					text "10 damage."
 					energyCost F
-					attackRequirement {}
 					onAttack {
 						damage 10
 					}
@@ -1314,7 +1243,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Tunneling", {
 					text "Choose up to 2 of your opponent’s Benched Pokémon. This attack does 10 damage to each of them. (Don’t apply Weakness and Resistance for Benched Pokémon.) Onix can’t attack during your next turn."
 					energyCost F, C
-					attackRequirement {}
 					onAttack {
 						multiSelect(opp.bench, 2).each{
 							targeted(it){
@@ -1344,7 +1272,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Toxic Spore", {
 					text "20 damage. The Defending Pokémon is now Poisoned."
 					energyCost G, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 						applyAfterDamage POISONED
@@ -1367,7 +1294,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Poison Claws", {
 					text "The Defending Pokémon is now Poisoned."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						apply POISONED
 					}
@@ -1375,7 +1301,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Shining Claws", {
 					text "30 damage. The Defending Pokémon is now Confused."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 30
 						applyAfterDamage CONFUSED
@@ -1390,7 +1315,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Clutch", {
 					text "10 damage. The Defending Pokémon can’t retreat until the end of your opponent’s next turn."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						cantRetreat defending
@@ -1399,7 +1323,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Cutting Wind", {
 					text "30 damage."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 30
 					}
@@ -1412,7 +1335,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Energy Stream", {
 					text "10 damage. Search your discard pile for a basic Energy card and attach it to Poliwhirl."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						def tar = my.discard.filterByType(BASIC_ENERGY)
@@ -1424,7 +1346,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Bubble", {
 					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
 					energyCost W, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 						afterDamage {flipThenApplySC PARALYZED}
@@ -1438,7 +1359,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Data Retrieval", {
 					text "If you have less than 4 cards in your hand, draw cards until you have 4 cards in your hand."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						if(my.hand.size() < 4){
 							draw 4 - my.hand.size()
@@ -1448,7 +1368,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Confuse Ray", {
 					text "10 damage. The Defending Pokémon is now Confused."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						applyAfterDamage CONFUSED
@@ -1471,7 +1390,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Pickup", {
 					text "Search your discard pile for a Basic Pokémon (or Evolution card), a Trainer card, and an Energy card. Show them to your opponent and put them into your hand."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						if(my.discard){
 							def selectedCard = new CardList();
@@ -1485,7 +1403,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Quick Attack", {
 					text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 40 more damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						flip {damage 40}
@@ -1510,7 +1427,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Sleep Poison", {
 					text "The Defending Pokémon is now Asleep and Poisoned."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 						apply ASLEEP
 						apply POISONED
@@ -1519,7 +1435,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Razor Wind", {
 					text "60 damage. Flip a coin. If tails, this attack does nothing."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						flip {damage 60}
 					}
@@ -1532,7 +1447,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Water Gun", {
 					text "20+ damage. Does 20 damage plus 10 more damage for each [W] Energy attached to Wartortle but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
 					energyCost W
-					attackRequirement {}
 					onAttack {
 						damage 20
 						extraEnergyDamage(2,hp(10),W,thisMove)
@@ -1541,7 +1455,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Smash Turn", {
 					text "40 damage. After your attack, you may switch Wartortle with 1 of your Benched Pokémon."
 					energyCost W, C, C
-					attackRequirement {}
 					onAttack {
 						damage 40
 						afterDamage{
@@ -1561,7 +1474,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Razor Leaf", {
 					text "20 damage."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 						damage 20
 					}
@@ -1569,7 +1481,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Corrosive Acid", {
 					text "10 damage. The Defending Pokémon is now Burned."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						applyAfterDamage BURNED
@@ -1596,7 +1507,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Expand", {
 					text "30 damage. During your opponent’s next turn, any damage done to Wigglytuff by attacks is reduced by 10 (after applying Weakness and Resistance)."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 30
 						reduceDamageNextTurn(hp(10),thisMove)
@@ -1610,7 +1520,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Vine Whip", {
 					text "10 damage."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 						damage 10
 					}
@@ -1623,7 +1532,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Sleep Poison", {
 					text "Flip a coin. If heads, the Defending Pokémon is now Alseep and Poisoned."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						flip {
 							apply ASLEEP
@@ -1634,7 +1542,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Razor Leaf", {
 					text "20 damage."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 					}
@@ -1647,7 +1554,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Ram", {
 					text "10 damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 					}
@@ -1655,7 +1561,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Gouge", {
 					text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
 					energyCost G, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 						flip {damage 10}
@@ -1669,7 +1574,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Signs of Evolution", {
 					text "Search your deck for a Metapod and a Butterfree card, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						my.deck.search(max: 2, "Select a Metapod and a Butterfree", {it.name == "Metapod" || it.name == "Butterfree"}, {CardList list ->
 							list.filterByNameEquals("Metapod").size() <= 1 && list.filterByNameEquals("Butterfree").size() <= 1
@@ -1679,7 +1583,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "String Shot", {
 					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 						damage 10
 						applyAfterDamage PARALYZED
@@ -1693,7 +1596,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Singe", {
 					text "The Defending Pokémon is now Burned."
 					energyCost R
-					attackRequirement {}
 					onAttack {
 						apply BURNED
 					}
@@ -1706,7 +1608,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Headbutt", {
 					text "10 damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 					}
@@ -1714,7 +1615,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Slash", {
 					text "20 damage."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 					}
@@ -1737,7 +1637,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Moon Kick", {
 					text "20 damage."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 					}
@@ -1750,7 +1649,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Beat", {
 					text "10 damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 					}
@@ -1758,7 +1656,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Linear Attack", {
 					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost F, C
-					attackRequirement {}
 					onAttack {
 						damage 20, opp.all.select()
 					}
@@ -1771,7 +1668,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Dig Under", {
 					text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						noWrDamage(10,opp.all.select())
 					}
@@ -1795,7 +1691,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Random Peck", {
 					text "10× damage. Flip 2 coins. This attack does 10 damage plus 10 more damage for each heads."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						flip 2, {damage 10}
 					}
@@ -1809,7 +1704,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Slow Trip Gas", {
 					text "At the end of your opponent’s next turn, the Defending Pokémon is now Confused."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						delayed{
 							before BETWEEN_TURNS, {
@@ -1829,7 +1723,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Bite", {
 					text "10 damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 					}
@@ -1837,7 +1730,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Flame Tail", {
 					text "40 damage."
 					energyCost R, C, C
-					attackRequirement {}
 					onAttack {
 						damage 40
 					}
@@ -1862,7 +1754,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Quick Blow", {
 					text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						flip {damage 20}
@@ -1876,7 +1767,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Irongrip", {
 					text "10 damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 					}
@@ -1899,7 +1789,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Surprise Attack", {
 					text "10 damage. Flip a coin. If tails, this attack does nothing."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						flip {damage 10}
 					}
@@ -1926,7 +1815,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Supersonic", {
 					text "Flip a coin. If heads, the Defending Pokémon is now Confused."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						flipThenApplySC CONFUSED
 					}
@@ -1934,7 +1822,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Speed Ball", {
 					text "20 damage."
 					energyCost L, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 					}
@@ -1957,7 +1844,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Cat Kick", {
 					text "20 damage."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 					}
@@ -1995,7 +1881,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Bite", {
 					text "20 damage."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 					}
@@ -2023,7 +1908,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Double Stab", {
 					text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						flip 2,{damage 10}
 					}
@@ -2052,7 +1936,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Toxic SPore", {
 					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 						damage 10
 						afterDamage {flipThenApplySC POISONED}
@@ -2067,7 +1950,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Corner", {
 					text "The Defending Pokémon can’t retreat until the end of your opponent’s next turn."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						cantRetreat defending
 					}
@@ -2075,7 +1957,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Gust", {
 					text "20 damage."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 					}
@@ -2088,7 +1969,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Plasma", {
 					text "10 damage. Flip a coin. If heads, search your discard pile for a [L] Energy card and attach it to Pikachu."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						flip {
@@ -2104,7 +1984,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Spiral Attack", {
 					text "Flip a coin. If heads, the Defending Pokémon is now Confused."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						flipThenApplySC CONFUSED
 					}
@@ -2112,7 +1991,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Tail Whap", {
 					text "20 damage."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 					}
@@ -2125,7 +2003,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Stomp", {
 					text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 						flip {damage 10}
@@ -2149,7 +2026,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Scratch", {
 					text "10 damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						damage 10
 					}
@@ -2162,7 +2038,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Horn Hazzard", {
 					text "30 damage. Flip a coin. If tails, this attack does nothing."
 					energyCost W
-					attackRequirement {}
 					onAttack {
 						flip {damage 30}
 					}
@@ -2175,7 +2050,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Minimize", {
 					text "During your opponent’s next turn, any damage done to Shellder by attacks in reduced by 20 (after applying Weakness and Resistance)."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						reduceDamageNextTurn(hp(20),thisMove)
 					}
@@ -2183,7 +2057,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Wave Splash", {
 					text "10 damage."
 					energyCost W
-					attackRequirement {}
 					onAttack {
 						damage 10
 					}
@@ -2196,7 +2069,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Confusion Wave", {
 					text "Both Slowpoke and the Defending Pokémon are now Confused."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						apply CONFUSED
 						apply CONFUSED, self
@@ -2211,7 +2083,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Claw", {
 					text "10 damage. Flip a coin. If tails, this attack does nothing."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						flip {damage 10}
 					}
@@ -2219,7 +2090,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Wing Attack", {
 					text "20 damage."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 					}
@@ -2232,7 +2102,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Sleepy Ball", {
 					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
 					energyCost W
-					attackRequirement {}
 					onAttack {
 						damage 10
 						afterDamage {flipThenApplySC ASLEEP}
@@ -2246,7 +2115,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Bubble", {
 					text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						flipThenApplySC PARALYZED
 					}
@@ -2254,7 +2122,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Smash Turn", {
 					text "20 damage. After your attack, you may switch Squirtle with 1 of your Benched Pokémon."
 					energyCost W, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 						afterDamage{
@@ -2274,7 +2141,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Psycho Waves", {
 					text "Discard an Energy card attached to Venonat. The Defending Pokémon is now Confused."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 						discardSelfEnergy C
 						apply CONFUSED
@@ -2283,7 +2149,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Bite", {
 					text "10 damage."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 						damage 10
 					}
@@ -2304,7 +2169,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Thundershock", {
 					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
 					energyCost L, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 						afterDamage {flipThenApplySC PARALYZED}
@@ -2334,7 +2198,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Poison Spurt", {
 					text "Discard a [G] Energy card attached to Weedle. The Defending Pokémon is now Poisoned."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 						discardSelfEnergy G
 						apply POISONED
@@ -2592,7 +2455,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Hyper Whirlpool", {
 					text "80 damage. Flip a coin until you get tails. For each heads, your opponent discards an Energy card attached to the Defending Pokémon."
 					energyCost W, W, W, C
-					attackRequirement {}
 					onAttack {
 						damage 80
 						flipUntilTails {
@@ -2618,7 +2480,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Slash", {
 					text "50 damage."
 					energyCost C, C, C
-					attackRequirement {}
 					onAttack {
 						damage 50
 					}
@@ -2626,7 +2487,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Burn Down", {
 					text "200 damage. Discard 5 [R] Energy attached to Charizard ex. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, and any other effects on the Defending Pokémon."
 					energyCost R, R, R, R, R
-					attackRequirement {}
 					onAttack {
 						swiftDamage(200, defending)
 						discardSelfEnergy R,R,R,R,R
@@ -2640,7 +2500,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Metronome", {
 					text "Choose 1 of the Defending Pokémon’s attacks. Metronome copies that attack except for its Energy cost. (You must still do anything else in order to use that attack.) (No matter what type that Pokémon is, Clefable ex’s type is still [C].) Clefable ex performs that attack."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						def moveList = []
 						def labelList = []
@@ -2657,7 +2516,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Moon Impact", {
 					text "40 damage."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 40
 					}
@@ -2683,7 +2541,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Crush and Burn", {
 					text "30+ damage. You may discard as many Energy as you like attached to your Pokémon in play. If you do, this attack does 30 damage plus 20 more damage for each Energy you discarded."
 					energyCost L, C
-					attackRequirement {}
 					onAttack {
 						damage 30
 						def bonusDmg = 0
@@ -2708,7 +2565,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Poltergeist", {
 					text "40+ damage. Look at your opponent’s hand. This attack does 40 damage plus 10 more damage for each Trainer card in your opponent’s hand."
 					energyCost P, C
-					attackRequirement {}
 					onAttack {
 						damage 40
 						opp.hand.showToMe("Opponent’s hand")
@@ -2718,7 +2574,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Prize Count", {
 					text "60+ damage. If you have more Prize cards left than your opponent, this attack does 60 damage plus 40 more damage."
 					energyCost P, P, C
-					attackRequirement {}
 					onAttack {
 						damage 60
 						if(my.prizeAsList.size() > opp.prizeAsList.size()) damage 40
@@ -2732,7 +2587,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Twister", {
 					text "40 damage. Flip 2 coins. For each heads, choose 1 Energy attached to the Defending Pokémon, if any, and discard it. If both are tails, this attack does nothing."
 					energyCost W, C
-					attackRequirement {}
 					onAttack {
 						def noEff = true
 						flip 2, {
@@ -2745,7 +2599,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Dragon Rage", {
 					text "100 damage."
 					energyCost W, W, C, C, C
-					attackRequirement {}
 					onAttack {
 						damage 100
 					}
@@ -2770,7 +2623,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Breakdown", {
 					text "Count the number of cards in your opponent’s hand. Put that many damage counters on the Defending Pokémon."
 					energyCost P, C
-					attackRequirement {}
 					onAttack {
 						directDamage 10*opp.hand.size(), defending
 					}
@@ -2795,7 +2647,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Breakdown", {
 					text "Count the number of cards in your opponent’s hand. Put that many damage counters on the Defending Pokémon."
 					energyCost P, C
-					attackRequirement {}
 					onAttack {
 						directDamage 10*opp.hand.size(), defending
 					}
@@ -2824,7 +2675,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Pollen Hazard", {
 					text "20 damage. The Defending Pokémon is now Poisoned, Burned, and Confused."
 					energyCost G, C, C
-					attackRequirement {}
 					onAttack {
 						damage 20
 						applyAfterDamage POISONED
@@ -2836,7 +2686,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Solarbeam", {
 					text "90 damage."
 					energyCost G, G, G, C, C
-					attackRequirement {}
 					onAttack {
 						damage 90
 					}
@@ -2849,7 +2698,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Flare", {
 					text "10 damage."
 					energyCost R
-					attackRequirement {}
 					onAttack {
 						damage 10
 					}
@@ -2857,7 +2705,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Rage", {
 					text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Charmander."
 					energyCost C, C
-					attackRequirement {}
 					onAttack {
 						damage 10+10*self.numberOfDamageCounters
 					}
@@ -2886,7 +2733,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Cold Crush", {
 					text "50 damage. You may discard an Energy card attached to Articuno ex. If you do, your opponent discards an Energy card attached to the Defending Pokémon."
 					energyCost W, W, C
-					attackRequirement {}
 					onAttack {
 						damage 50
 						if(confirm("discard an Energy card attached to Articuno ex")){
@@ -2920,7 +2766,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Crushing Flames", {
 					text "60 damage. You may discard an Energy card attached to Moltres ex. If you do, the Defending Pokémon is now Confused."
 					energyCost R, R, C
-					attackRequirement {}
 					onAttack {
 						damage 60
 						if(confirm("discard an Energy card attached to Articuno ex")){
@@ -2952,7 +2797,6 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Electron Crush", {
 					text "50+ damage. You may discard an Energy card attached to Zapdos ex. If you do, this attack does 50 damage plus 20 more damage."
 					energyCost L, L, C
-					attackRequirement {}
 					onAttack {
 						damage 50
 						if(confirm("discard an Energy card attached to Articuno ex")){

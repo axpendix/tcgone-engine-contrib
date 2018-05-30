@@ -222,7 +222,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Poison Sting", {
           text "Your opponent's Active Pokémon is now Poisoned."
           energyCost G
-          attackRequirement {}
           onAttack {
             apply POISONED
           }
@@ -256,7 +255,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Sudden Sting", {
           text "10 damage. If this Pokémon evolved from Kakuna during this turn, your opponent's Active Pokémon is now Paralyzed and Poisoned."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
             if(self.lastEvolved == bg.turnCount){
@@ -268,7 +266,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Sharp Sting", {
           text "60 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -281,7 +278,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Hypnosis", {
           text "Your opponent's Active Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             apply ASLEEP
           }
@@ -289,7 +285,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Ram", {
           text "10 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -302,7 +297,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Sucker Punch", {
           text "10+ damage. If this Pokémon has any [D] Energy attached to it, this attack does 30 more damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
             if(self.cards.energyCount(D))
@@ -317,7 +311,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Spike Rend", {
           text "30+ damage. If your opponent's Active Pokémon already has any damage counters on it, this attack does 60 more damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 30
             if(defending.numberOfDamageCounters)
@@ -359,7 +352,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Peck", {
           text "30 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -372,7 +364,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Absorb", {
           text "10 damage. Heal 10 damage from this Pokémon."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
             heal 10, self
@@ -386,7 +377,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Recover", {
           text "Discard an Energy from this Pokémon and heal all damage from it."
           energyCost C
-          attackRequirement {}
           onAttack {
             discardSelfEnergy(C)
             heal self.damage.value, self
@@ -395,7 +385,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Speed Attack", {
           text "70 damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -408,7 +397,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Seed Bomb", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -434,7 +422,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Horn Leech", {
           text "80 damage. Heal 20 damage from this Pokémon."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 80
             heal 20, self
@@ -447,7 +434,6 @@ public enum CrimsonInvasion implements CardInfo {
         weakness WATER
         move "Dance of Flames", {
           text "For each Energy attached to your opponent's Pokémon, attach a [R] Energy card from your discard pile to your Pokémon in any way you like."
-          attackRequirement {}
           onAttack {
             //TODO : more efecient way?
             opp.active.cards.filterByType(ENERGY).each{
@@ -458,7 +444,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Burning Bonemerang", {
           text "70× damage. Flip 2 coins. This attack does 70 damage for each heads. If either of them is heads, your opponent's Active Pokémon is now Burned."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             flip 2,{
               damage 70
@@ -474,7 +459,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Continuous Headbutt", {
           text "30× damage. Flip a coin until you get tails. This attack does 30 damage for each heads."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             flipUntilTails{damage 30}
           }
@@ -487,7 +471,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Continuous Headbutt", {
           text "80× damage. Flip a coin until you get tails. This attack does 80 damage for each heads."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             flipUntilTails{damage 80}
           }
@@ -495,7 +478,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Searing Flame", {
           text "120 damage. Your opponent's Active Pokémon is now Burned."
           energyCost R, R, C, C
-          attackRequirement {}
           onAttack {
             damage 120
             applyAfterDamage BURNED
@@ -509,7 +491,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Spinning Attack", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -532,7 +513,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Spinning Attack", {
           text "40 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -578,7 +558,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Waterfall", {
           text "70 damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -586,7 +565,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Draconic Disaster", {
           text "100+ damage. If there is any Stadium card in play, this attack does 100 more damage. Then, discard that Stadium card."
           energyCost W, C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 100
             if(bg.stadiumInfoStruct) {
@@ -618,7 +596,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Gnaw", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -631,7 +608,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Stampede", {
           text "20 damage."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -639,7 +615,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Rest", {
           text "This Pokémon is now Asleep. Heal 90 damage from it."
           energyCost C, C, C, C
-          attackRequirement {}
           onAttack {
             apply ASLEEP, self
             heal 90, self
@@ -653,7 +628,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Double Stomp", {
           text "60+ damage. Flip 2 coins. This attack does 30 more damage for each heads."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             flip 2,{
@@ -664,7 +638,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Forceful Tackle", {
           text "90+ damage. You may put up to 9 damage counters on this Pokémon. This attack does 10 more damage for each damage counter you placed in this way."
           energyCost W, W, C, C
-          attackRequirement {}
           onAttack {
             damage 90
             if(confirm("Add damage counters to Mamoswine for 10 more damage with each damage counter put that way?"))
@@ -682,7 +655,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Water Gun", {
           text "30 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -695,7 +667,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Ink Spit", {
           text "If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
           energyCost C
-          attackRequirement {}
           onAttack {
             sandAttack(thisMove)
           }
@@ -703,7 +674,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Special Artillery", {
           text "40+ damage. You may discard a Special Energy from this Pokémon. If you do, this attack does 80 more damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 40
             def list = self.cards.filterByType(SPECIAL_ENERGY)
@@ -721,7 +691,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Crabhammer", {
           text "30 damage."
           energyCost W, W
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -734,7 +703,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Double Claws", {
           text "80 damage. Discard 2 Energy from your opponent's Active Pokémon."
           energyCost W, W, W, C
-          attackRequirement {}
           onAttack {
             damage 80
             discardDefendingEnergy()
@@ -749,7 +717,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Splashing Dodge", {
           text "10 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
             flip {preventAllEffectsNextTurn()}
@@ -775,7 +742,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Ocean Cyclone", {
           text "80 damage. This attack does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, C, C
-          attackRequirement {}
           onAttack {
             damage 80
             opp.bench.each {damage 10, it}
@@ -822,7 +788,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Frost Smash", {
           text "70 damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -835,7 +800,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Regeneration", {
           text "Heal 30 damage from this Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             heal 30, self
           }
@@ -843,7 +807,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Mud-Slap", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -868,7 +831,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Quick Attack", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip {damage 20}
@@ -891,7 +853,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Psychic", {
           text "70+ damage. This attack does 20 more damage times the amount of Energy attached to your opponent's Active Pokémon."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 70 + 20*defending.cards.energyCount(C)
           }
@@ -904,7 +865,6 @@ public enum CrimsonInvasion implements CardInfo {
         resistance METAL, MINUS20
         move "Defense Curl", {
           text "Flip a coin. If heads, prevent all damage done to this Pokémon by attacks during your opponent's next turn."
-          attackRequirement {}
           onAttack {
             flip{preventAllEffectsNextTurn()}
           }
@@ -912,7 +872,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Tackle", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -926,7 +885,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Corkscrew Punch", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -934,7 +892,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Self-Destruct", {
           text "100 damage. This Pokémon does 100 damage to itself."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 100
             damage 100, self
@@ -949,7 +906,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Hammer In", {
           text "80 damage."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -957,7 +913,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Super Electromagnetic Tackle", {
           text "200 damage. This Pokémon does 50 damage to itself."
           energyCost L, L, C, C
-          attackRequirement {}
           onAttack {
             damage 200
             damage 50, self
@@ -1021,7 +976,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Volt Switch", {
           text "30 damage. Switch this Pokémon with 1 of your Benched [L] Pokémon."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 30
             if(my.bench.findAll{it.types.contains(L)}) {
@@ -1039,7 +993,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Ominous Eyes", {
           text "Put 1 damage counter on 1 of your opponent's Pokémon."
           energyCost P
-          attackRequirement {}
           onAttack {
             directDamage 10,  opp.all.select()
           }
@@ -1080,7 +1033,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Fade to Black", {
           text "70 damage. Your opponent's Active Pokémon is now Confused."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 70
             applyAfterDamage CONFUSED
@@ -1095,7 +1047,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Confuse Ray", {
           text "Your opponent's Active Pokémon is now Confused."
           energyCost P
-          attackRequirement {}
           onAttack {
             apply CONFUSED
           }
@@ -1109,7 +1060,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Chaos Wheel", {
           text "30 damage. Your opponent can't play any Pokémon Tool, Special Energy, or Stadium cards from their hand during their next turn."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 30
             delayed{
@@ -1131,7 +1081,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Dark Arts", {
           text "20× damage. This attack does 20 damage for each card in your opponent's hand."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 20 * opp.hand.size()
           }
@@ -1144,7 +1093,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Splash", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1170,7 +1118,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Psych Up", {
           text "60 damage. During your next turn, this Pokémon's Psych Up attack does 60 more damage (before applying Weakness and Resistance)."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             increasedBaseDamageNextTurn("Psych Up", hp(60))
@@ -1184,7 +1131,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Bell of Silence", {
           text "10 damage. Your opponent can't play any Pokémon that has an Ability from their hand during their next turn."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
             delayed {
@@ -1224,7 +1170,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Confuse Ray", {
           text "Your opponent's Active Pokémon is now Confused."
           energyCost P
-          attackRequirement {}
           onAttack {
             apply CONFUSED
           }
@@ -1232,7 +1177,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Pumpkin Bomb", {
           text "10+ damage. Before doing damage, you may discard any number of Pokémon Tool cards from your Pokémon. This attack does 40 more damage for each card you discarded in this way."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             def tar = my.all.findAll{it.cards.filterByType(POKEMON_TOOL)}
@@ -1259,7 +1203,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Singe", {
           text "Your opponent's Active Pokémon is now Burned."
           energyCost P
-          attackRequirement {}
           onAttack {
             apply BURNED
           }
@@ -1283,7 +1226,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Severe Poison", {
           text "Your opponent's Active Pokémon is now Poisoned. Put 4 damage counters instead of 1 on that Pokémon between turns."
           energyCost P
-          attackRequirement {}
           onAttack {
             apply POISONED
             extraPoison 3
@@ -1307,7 +1249,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Zen Headbutt", {
           text "70 damage."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -1332,7 +1273,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Lock Up", {
           text "120 damage. The Defending Pokémon can't retreat during your opponent's next turn."
           energyCost P, P, P
-          attackRequirement {}
           onAttack {
             damage 120
             cantRetreat defending
@@ -1361,7 +1301,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Three-Step Strike", {
           text "10× damage. Flip 3 coins. This attack does 10 damage for each heads."
           energyCost F
-          attackRequirement {}
           onAttack {
             flip 3,{damage 10}
           }
@@ -1374,7 +1313,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Low Kick", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1382,7 +1320,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Lucha Fight", {
           text "90 damage. During your opponent's next turn, the Defending Pokémon's attacks do 30 more damage (before applying Weakness and Resistance)."
           energyCost F, F
-          attackRequirement {}
           onAttack {
             damage 90
             delayed{
@@ -1410,7 +1347,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Leer", {
           text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip {apply PARALYZED}
           }
@@ -1418,7 +1354,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Headbutt", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1446,7 +1381,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Tough Swing", {
           text "110 damage. This attack's damage isn't affected by Resistance."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 110
             dontApplyResistance()
@@ -1460,7 +1394,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Eerie Fluid", {
           text "30 damage. Your opponent's Active Pokémon is now Confused."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 30
             applyAfterDamage CONFUSED
@@ -1469,7 +1402,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Earthquake", {
           text "120 damage. This attack does 10 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 120
             my.bench.each{
@@ -1485,7 +1417,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Flop", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1513,7 +1444,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Cross-Cut", {
           text "60+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 60 more damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             if(defending.evolution) damage 60
@@ -1527,7 +1457,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Jet Punch", {
           text "30 damage. This attack does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 30
             if(opp.bench) damage 30, opp.bench.select()
@@ -1536,7 +1465,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Knuckle Impact", {
           text "160 damage. This Pokémon can't attack during your next turn."
           energyCost F, F, F
-          attackRequirement {}
           onAttack {
             damage 160
             cantAttackNextTurn self
@@ -1560,7 +1488,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Rear Kick", {
           text "10 damage."
           energyCost D
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1568,7 +1495,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Darkness Fang", {
           text "20 damage."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1582,7 +1508,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Fire Fang", {
           text "30 damage. Your opponent's Active Pokémon is now Burned."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 30
             applyAfterDamage BURNED
@@ -1591,7 +1516,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Puncturing Fangs", {
           text "90 damage. This attack's damage isn't affected by Resistance."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 90
             dontApplyResistance()
@@ -1606,7 +1530,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Headbutt", {
           text "20 damage."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1614,7 +1537,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Surprise Attack", {
           text "60 damage. Flip a coin. If tails, this attack does nothing."
           energyCost D, D, C
-          attackRequirement {}
           onAttack {
             flip {damage 60}
           }
@@ -1628,7 +1550,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Headbutt", {
           text "30 damage."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1636,7 +1557,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Double Hit", {
           text "60× damage. Flip 2 coins. This attack does 60 damage for each heads."
           energyCost D, D, C
-          attackRequirement {}
           onAttack {
             flip 2, {damage 60}
           }
@@ -1667,7 +1587,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Dark Destruction", {
           text "120 damage. You may discard an Energy from this Pokémon. If you do, discard an Energy from your opponent's Active Pokémon."
           energyCost D, D, C
-          attackRequirement {}
           onAttack {
             damage 120
             def tar = self.cards.filterByType(ENERGY).select()
@@ -1702,7 +1621,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Tyrannical Hole", {
           text "180 damage."
           energyCost D, D, D, C, C
-          attackRequirement {}
           onAttack {
             damage 180
           }
@@ -1751,7 +1669,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Crunch", {
           text "30 damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip {discardDefendingEnergy()}
@@ -1766,7 +1683,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Tackle", {
           text "10 damage."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1774,7 +1690,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Metal Claw", {
           text "30 damage."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1788,7 +1703,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Metal Claw", {
           text "20 damage."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1796,7 +1710,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Hammer In", {
           text "80 damage."
           energyCost M, M, C, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -1810,7 +1723,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Revenge Cannon", {
           text "10+ damage. This attack does 10 more damage for each damage counter on all of your Benched Pokémon."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 10
             my.bench.each{
@@ -1821,7 +1733,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Buster Swing", {
           text "120 damage. This attack's damage isn't affected by Resistance."
           energyCost M, M, C, C
-          attackRequirement {}
           onAttack {
             damage 120
             dontApplyResistance()
@@ -1836,7 +1747,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Turbo Arm", {
           text "30 damage. Attach a basic Energy card from your discard pile to 1 of your Benched Pokémon."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 30
             attachEnergyFrom(my.discard, my.bench)
@@ -1845,7 +1755,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Iron Fist", {
           text "90 damage. If Regice is on your Bench, heal 30 damage from this Pokémon."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 90
             if(my.bench.find({it.name=="Regice"}))
@@ -1861,7 +1770,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Fury Attack", {
           text "30× damage. Flip 3 coins. This attack does 30 damage for each heads."
           energyCost M
-          attackRequirement {}
           onAttack {
             flip 3,{damage 30}
           }
@@ -1869,7 +1777,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Iron Tackle", {
           text "130 damage. This Pokémon does 30 damage to itself."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 130
             directDamage 30, self
@@ -1896,7 +1803,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Gale Blade", {
           text "70 damage. You may shuffle this Pokémon and all cards attached to it into your deck."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 70
             assert bench.notEmpty
@@ -1924,7 +1830,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Rollout", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1932,7 +1837,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Double Slap", {
           text "20× damage. Flip 2 coins. This attack does 20 damage for each heads."
           energyCost Y, C
-          attackRequirement {}
           onAttack {
             flip 2,{damage 20}
           }
@@ -1946,7 +1850,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Hypnoblast", {
           text "30 damage. Your opponent's Active Pokémon is now Asleep."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             applyAfterDamage ASLEEP
@@ -1955,7 +1858,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Punishing Slap", {
           text "60+ damage. If any of your opponent's Pokémon have any [D] Energy attached to them, this attack does 60 more damage."
           energyCost Y, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             if(opp.all.findAll {it.cards.energyCount(D)})
@@ -1971,7 +1873,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Lead", {
           text "Search your deck for a Supporter card, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
           onAttack {
             deck.search(cardTypeFilter(SUPPORTER)).moveTo(hand)
             shuffleDeck()
@@ -1980,7 +1881,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Bright Horns", {
           text "130 damage. This Pokémon can't use Bright Horns during your next turn."
           energyCost Y, Y, Y
-          attackRequirement {}
           onAttack {
             damage 130
             cantUseAttack thisMove, self
@@ -1994,7 +1894,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Tropical Head", {
           text "This attack does 20 damage times the amount of Energy attached to this Pokémon to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost G
-          attackRequirement {}
           onAttack {
             def tar = opp.all.select()
             damage 20 * self.cards.energyCount(C), tar
@@ -2003,7 +1902,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Dragon Hammer", {
           text "120 damage. Your opponent's Active Pokémon is now Confused."
           energyCost G, C, C, C
-          attackRequirement {}
           onAttack {
             damage 120
             applyAfterDamage CONFUSED
@@ -2037,7 +1935,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Headbutt", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2045,7 +1942,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Gentle Slap", {
           text "20 damage."
           energyCost L, F
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2058,7 +1954,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Noble Roar", {
           text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             whirlwind()
           }
@@ -2066,7 +1961,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Dragon Claw", {
           text "40 damage."
           energyCost L, F
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -2079,7 +1973,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "War Cry", {
           text "30+ damage. If you have fewer Pokémon in play than your opponent, this attack does 90 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             if(my.bench.size() < opp.bench.size())
@@ -2089,7 +1982,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Clanging Scales", {
           text "130 damage. During your opponent's next turn, this Pokémon takes 30 more damage from attacks (after applying Weakness and Resistance)."
           energyCost L, F, C
-          attackRequirement {}
           onAttack {
             damage 130
             delayed{
@@ -2123,7 +2015,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Sitdown Splash", {
           text "60+ damage. Flip a coin. If heads, this attack does 30 more damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             flip {damage 30}
@@ -2138,7 +2029,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Peck", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2168,7 +2058,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Cotton Guard", {
           text "30 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 30
             reduceDamageNextTurn(hp(30), thisMove)
@@ -2183,7 +2072,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Bug Search", {
           text "Your opponent reveals their hand."
           energyCost C
-          attackRequirement {}
           onAttack {
             opp.hand.showToMe("Opponent's hand")
             opp.hand.shuffle()
@@ -2192,7 +2080,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Flap", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2206,7 +2093,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Flap", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2214,7 +2100,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Wing Attack", {
           text "60 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -2228,7 +2113,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Clutch", {
           text "50 damage. The Defending Pokémon can't retreat during your opponent's next turn."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 50
             cantRetreat defending
@@ -2237,7 +2121,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Sky Hunting", {
           text "120 damage. If your opponent's Pokémon is Knocked Out by the damage from this attack, switch this Pokémon with 1 of your Benched Pokémon."
           energyCost C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 120
             afterDamage{
@@ -2275,7 +2158,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Giant Stomp", {
           text "160 damage. Discard any Stadium card in play."
           energyCost C, C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 160
             afterDamage{
@@ -2292,7 +2174,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Tickle", {
           text "10 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip {applyAfterDamage PARALYZED}
@@ -2328,7 +2209,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Mud Shot", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -2341,7 +2221,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Dig", {
           text "60 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             flip {preventAllEffectsNextTurn()}
@@ -2350,7 +2229,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Hammer Arm", {
           text "90 damage. Discard the top card of your opponent's deck."
           energyCost C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 90
             opp.deck.subList(0,1).discard()
@@ -2364,7 +2242,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Armor Press", {
           text "30 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             reduceDamageNextTurn(hp(30), thisMove)
@@ -2373,7 +2250,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Slashing Claw", {
           text "70 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -2394,7 +2270,6 @@ public enum CrimsonInvasion implements CardInfo {
         move "Turbo Drive", {
           text "120 damage. Attach a basic Energy card from your discard pile to 1 of your Benched Pokémon."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 120
             attachEnergyFrom(basic : true, my.discard, my.bench)
