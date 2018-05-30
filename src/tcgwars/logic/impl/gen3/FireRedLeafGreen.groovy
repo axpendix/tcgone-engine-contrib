@@ -239,7 +239,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					delayedA {
 						before BETWEEN_TURNS, {
 							if(self.active){
-								all.each{
+								self.owner.pbg.all.each{
 									if(it.numberOfDamageCounters){
 										heal 10, it
 									}
