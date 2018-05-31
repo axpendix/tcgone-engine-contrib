@@ -2431,7 +2431,7 @@ public enum FireRedLeafGreen implements CardInfo {
         onMove {to->
         }
         getEnergyTypesOverride{
-            if(self.cards.filterByType(SPECIAL_ENERGY).size() > 1)
+            if(self == null || self.cards.filterByType(SPECIAL_ENERGY).size() > 1)
 							return [[C] as Set]
             else
 							return [[R, D, F, G, W, Y, L, M, P] as Set]
