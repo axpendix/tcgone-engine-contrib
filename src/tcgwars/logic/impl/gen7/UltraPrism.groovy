@@ -3338,9 +3338,9 @@ public enum UltraPrism implements CardInfo {
       case PEEKING_RED_CARD_169:
       return copy (CrimsonInvasion.PEEKING_RED_CARD_97,this);
       case UNIT_ENERGY_GRW_170:
-      return copy (SUPER_BOOST_ENERGY_PRISM_STAR_136, this);
+      return copy (UNIT_ENERGY_GRW_137, this);
       case UNIT_ENERGY_LPM_171:
-      return copy (SUPER_BOOST_ENERGY_PRISM_STAR_136, this);
+      return copy (UNIT_ENERGY_LPM_138, this);
       case LUNALA_GX_172:
       return copy (SunMoonPromos.LUNALA_GX_SM17, this);
       case SOLGALEO_GX_173:
