@@ -3022,11 +3022,11 @@ public enum UltraPrism implements CardInfo {
         def actions=[]
         onPlay {
           actions=action("Stadium: Mt Coronet"){
-            assert my.discard.filterByEnergyType(METAL)
+            assert my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(METAL)
             assert lastTurn != bg().turnCount : "Already used"
             bc "Used Mt. Coronet effect"
             lastTurn = bg().turnCount
-            my.discard.filterByEnergyType(METAL).select(count:2,"Search for 2 Metal Energy card to put into your hand").moveTo(my.hand)
+            my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(METAL).select(count:2,"Search for 2 Metal Energy card to put into your hand").moveTo(my.hand)
           }
         }
         onRemoveFromPlay{

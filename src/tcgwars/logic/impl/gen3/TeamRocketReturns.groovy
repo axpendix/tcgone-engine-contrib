@@ -81,8 +81,8 @@ public enum TeamRocketReturns implements CardInfo {
 	HERACROSS_43 ("Heracross", 43, Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
 	MAGMAR_44 ("Magmar", 44, Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
 	MANTINE_45 ("Mantine", 45, Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
-	ROCKET_S_MEOWTH_46 ("Rocket's Meowth", 46, Rarity.UNCOMMON, [BASIC, POKEMON, _DARKNESS_]),
-	ROCKET_S_WOBBUFFET_47 ("Rocket's Wobbuffet", 47, Rarity.UNCOMMON, [BASIC, POKEMON, _DARKNESS_]),
+	ROCKET_S_MEOWTH_46 ("Rocket's Meowth", 46, Rarity.UNCOMMON, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_]),
+	ROCKET_S_WOBBUFFET_47 ("Rocket's Wobbuffet", 47, Rarity.UNCOMMON, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_]),
 	SEADRA_48 ("Seadra", 48, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
 	SKIPLOOM_49 ("Skiploom", 49, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
 	TOGEPI_50 ("Togepi", 50, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
@@ -131,17 +131,17 @@ public enum TeamRocketReturns implements CardInfo {
 	VENTURE_BOMB_93 ("Venture Bomb", 93, Rarity.UNCOMMON, [TRAINER]),
 	DARK_METAL_ENERGY_94 ("Dark Metal Energy", 94, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
 	R_ENERGY_95 ("R Energy", 95, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-	ROCKET_S_ARTICUNO_EX_96 ("Rocket's Articuno ex", 96, Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_, EX]),
-	ROCKET_S_ENTEI_EX_97 ("Rocket's Entei ex", 97, Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_, EX]),
-	ROCKET_S_HITMONCHAN_EX_98 ("Rocket's Hitmonchan ex", 98, Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_, EX]),
-	ROCKET_S_MEWTWO_EX_99 ("Rocket's Mewtwo ex", 99, Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_, EX]),
-	ROCKET_S_MOLTRES_EX_100 ("Rocket's Moltres ex", 100, Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_, EX]),
-	ROCKET_S_SCIZOR_EX_101 ("Rocket's Scizor ex", 101, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_, EX]),
-	ROCKET_S_SCYTHER_EX_102 ("Rocket's Scyther ex", 102, Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_, EX]),
-	ROCKET_S_SNEASEL_EX_103 ("Rocket's Sneasel ex", 103, Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_, EX]),
-	ROCKET_S_SNORLAX_EX_104 ("Rocket's Snorlax ex", 104, Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_, EX]),
-	ROCKET_S_SUICUNE_EX_105 ("Rocket's Suicune ex", 105, Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_, EX]),
-	ROCKET_S_ZAPDOS_EX_106 ("Rocket's Zapdos ex", 106, Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_, EX]),
+	ROCKET_S_ARTICUNO_EX_96 ("Rocket's Articuno ex", 96, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+	ROCKET_S_ENTEI_EX_97 ("Rocket's Entei ex", 97, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+	ROCKET_S_HITMONCHAN_EX_98 ("Rocket's Hitmonchan ex", 98, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+	ROCKET_S_MEWTWO_EX_99 ("Rocket's Mewtwo ex", 99, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+	ROCKET_S_MOLTRES_EX_100 ("Rocket's Moltres ex", 100, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+	ROCKET_S_SCIZOR_EX_101 ("Rocket's Scizor ex", 101, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+	ROCKET_S_SCYTHER_EX_102 ("Rocket's Scyther ex", 102, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+	ROCKET_S_SNEASEL_EX_103 ("Rocket's Sneasel ex", 103, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+	ROCKET_S_SNORLAX_EX_104 ("Rocket's Snorlax ex", 104, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+	ROCKET_S_SUICUNE_EX_105 ("Rocket's Suicune ex", 105, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+	ROCKET_S_ZAPDOS_EX_106 ("Rocket's Zapdos ex", 106, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
 	MUDKIP_STAR_107 ("Mudkip Star", 107, Rarity.ULTRARARE, [BASIC, POKEMON, _WATER_]),
 	TORCHIC_STAR_108 ("Torchic Star", 108, Rarity.ULTRARARE, [BASIC, POKEMON, _FIRE_]),
 	TREECKO_STAR_109 ("Treecko Star", 109, Rarity.ULTRARARE, [BASIC, POKEMON, _GRASS_]),
@@ -206,8 +206,8 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Froth", {
 					text "Once during your turn, when you play Azumarill from your hand to evolve 1 of your Active Pokémon, you may use this power. Each Defending Pokémon is now Paralyzed."
 					onActivate {r->
-            if(r==PLAY_FROM_HAND) {
-              if(confirm("Use Froth?")) {
+            if(r==PLAY_FROM_HAND && self.active) {
+              if(confirm("Use Froth? The defending Pokémon will be paralyzed.")) {
 								apply PARALYZED, self.owner.opposite.pbg.active
 							}
 						}
@@ -237,7 +237,7 @@ public enum TeamRocketReturns implements CardInfo {
 									checkLastTurn()
 									powerUsed()
 									bc "Darkest Impulse"
-									directDamage(30, ef.pokemonToBeEvolved, TRAINER_CARD)
+									directDamage(20, ef.pokemonToBeEvolved, TRAINER_CARD)
 								}
 							}
 						}
@@ -286,7 +286,7 @@ public enum TeamRocketReturns implements CardInfo {
 						opp.all.each{
 							damage 10, it
 						}
-						heal 10*opp.all.size()
+						heal 10*opp.all.size(),self
 					}
 				}
 				move "Skill Dive", {
@@ -310,7 +310,7 @@ public enum TeamRocketReturns implements CardInfo {
 						checkLastTurn()
 						powerUsed()
 						def energyToAttach = my.deck.search(max:1,"search your deck for a [D] or Dark Metal Energy",{it.asEnergyCard().containsTypePlain(D) || (it.name == 'Dark Metal Energy')})
-						attachEnergy(self, energyToAttach)
+						attachEnergy(self, energyToAttach.first())
 
 					}
 				}
@@ -353,7 +353,7 @@ public enum TeamRocketReturns implements CardInfo {
 					onAttack {
 						damage 40
 						if(confirm("discard a [R] Energy or [D] Energy attached to Dark Houndoom for 20 more damage?")){
-							self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(R,D).select().discard()
+							self.cards.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(D) || it.asEnergyCard().containsTypePlain(R)}.select().discard()
 							damage 20
 						}
 					}
@@ -415,7 +415,7 @@ public enum TeamRocketReturns implements CardInfo {
 					}
 					onAttack {
 						damage 70
-						my.hand.filterByType(BASIC,STAGE1,STAGE2).discard()
+						my.hand.filterByType(BASIC,STAGE1,STAGE2).select("Select one card to discard.").discard()
 					}
 				}
 
@@ -464,8 +464,8 @@ public enum TeamRocketReturns implements CardInfo {
 					onAttack {
 						damage 20
 						//TODO : rocket secret machine
-						if(my.discard.filterByType(POKEMON_TOOL){
-							damage 30*my.discard.filterByType(POKEMON_TOOL).select(count :2,"Search your discard pile for 2 supporter or stadium").discard().size()
+						if(my.hand.filterByType(POKEMON_TOOL)){
+							damage 30*my.hand.filterByType(POKEMON_TOOL).select(max :2,"Select up to 2 Pokémon Tool cards and Rocket’s Secret Machine cards from your hand to discard them. This attack does 30 more damage for each card you discarded.").discard().size()
 						}
 					}
 				}
@@ -567,7 +567,7 @@ public enum TeamRocketReturns implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flipThenApplySC PARALYZED
+						cantAttackNextTurn defending
 					}
 				}
 				move "Tonnage", {
@@ -785,7 +785,7 @@ public enum TeamRocketReturns implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						opp.all.each{
-							damage 20
+							damage 20, it
 						}
 					}
 				}
@@ -807,8 +807,9 @@ public enum TeamRocketReturns implements CardInfo {
 					text "As long as Dark Tyranitar is your Active Pokémon, put 1 damage counter on each of your opponent’s Benched Basic Pokémon between turns. You can’t use more than 1 Sand Damage Poké-Body between turns."
 					delayedA {
 						before BETWEEN_TURNS, {
-							if(bg.currentTurn == self.owner.opposite && self.active){
+							if(self.active){
 								opp.bench.each{
+									bc "$it / ${it.basic}"
 									if(it.basic) directDamage 10, it
 								}
 							}
@@ -834,7 +835,9 @@ public enum TeamRocketReturns implements CardInfo {
 					actionA {
 						assert !(self.specialConditions) : "$self is affected by a Special Condition"
 						assert my.hand
+						assert self.active : "$self is not your active Pokémon."
 						checkLastTurn()
+						powerUsed()
 						my.hand.select("select card to shuffle into your deck").moveTo(my.deck)
 						shuffleDeck()
 						draw 1
@@ -845,7 +848,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						flip 3,{},{},[0:{heal opp.active.damage.value, opp.active},1:{directDamage 20},2:{heal 10, opp.active},3:{directDamage 100}]
+						flip 3,{},{},[0:{heal opp.active.damage.value, opp.active},1:{directDamage 20},2:{heal 10, opp.active},3:{directDamage 100, opp.active}]
 
 					}
 				}
@@ -861,7 +864,7 @@ public enum TeamRocketReturns implements CardInfo {
 					onAttack {
 						def drawNb = my.hand.select(max:3,"select 3 card to put at the top of your deck").moveTo(my.deck).size()
 						shuffleDeck()
-						my.deck.search(count : drawNb).moveTo(my.hand)
+						my.deck.search(min : drawNb,max : drawNb).moveTo(my.hand)
 					}
 				}
 				move "Quick Tail Smash", {
@@ -920,7 +923,7 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Baby Evolution", {
 					text "Once during your turn (before your attack), you may put Magmar from your hand onto Magby (this counts as evolving Magby), and remove all damage counters from Magby."
 					actionA {
-
+						//TOD0 : baby evolution
 					}
 				}
 				move "Detour", {
@@ -928,7 +931,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						//TODO : use card effect as move
 					}
 				}
 
@@ -941,6 +944,7 @@ public enum TeamRocketReturns implements CardInfo {
 					text "Once during your turn (before your attack), if Misdreavus is your Active Pokémon, you may flip a coin. If heads, put 1 damage counter on 1 of your opponent’s Pokémon. This power can’t be used if Misdreavus is affected by a Special Condition or if your other Active Pokémon is not Misdreavus."
 					actionA {
 						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						assert self.active : "$self is not your active Pokémon."
 						checkLastTurn()
 						powerUsed()
 						flip {
@@ -954,7 +958,7 @@ public enum TeamRocketReturns implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						if(my.becnh) sw self, my.bench.select()
+						if(my.bench) sw self, my.bench.select()
 					}
 				}
 
@@ -2186,7 +2190,7 @@ public enum TeamRocketReturns implements CardInfo {
 						before APPLY_ATTACK_DAMAGES, {
 							bg.dm().each{
 								if(it.to == self && it.from.evolution && it.notNoEffect && it.dmg.value) {
-									bc "Crust -10"
+									bc "Dense -10"
 									it.dmg -= hp(10)
 								}
 							}
