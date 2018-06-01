@@ -849,7 +849,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						flip 3,{},{},[0:{heal opp.active.damage.value, opp.active},1:{directDamage 20, opp.active},2:{heal 10, opp.active},3:{directDamage 100, opp.active}]
+						flip 3,{},{},[0:{heal opp.active.damage.value, opp.active},1:{directDamage 40, opp.active},2:{heal 10, opp.active},3:{directDamage 100, opp.active}]
 
 					}
 				}
@@ -996,10 +996,11 @@ public enum TeamRocketReturns implements CardInfo {
 					text "If Qwilfish is your Active Pokémon and is damaged by an opponent’s attack (even if Qwilfish is Knocked Out), flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
 					delayedA (priority: LAST) {
 						before APPLY_ATTACK_DAMAGES, {
-							if(bg.dm().find({it.to==self && it.dmg.value})){
-								bg.dm().each{
+							bg.dm().each{
+								if(it.to == self && it.notNoEffect && it.dmg.value) {
 									bc "Spiny"
-									flipUntilTails {damage 10, it.from}
+									def pcs = it.from
+									flipUntilTails {damage 10, pcs}
                 }
 							}
 						}
@@ -1030,12 +1031,13 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						my.deck.select(min:0, max:4, "Select up to 3 Basic Pokémon of different types", cardTypeFilter(BASIC_ENERGY), self.owner,
+						my.deck.select(min:0, max:4, "Select up to 4 different types of basic Energy cards", cardTypeFilter(BASIC_ENERGY), self.owner,
 							{CardList list->
 								TypeSet typeSet=new TypeSet()
 								for(card in list){
 									for(type in typeSet){
 										if(card.asEnergyCard().containsTypePlain(type)){
+											return false
 									}
 									typeSet.addAll(card.asEnergyCard().types)
 								}
@@ -1114,7 +1116,7 @@ public enum TeamRocketReturns implements CardInfo {
 						checkLastTurn()
 						assert !(self.specialConditions) : "$self is affected by a Special Condition"
 						powerUsed()
-						my.deck.search(max : 1,"Search for an evolution",cardTypeFilter(EVOLUTION)).showtoOpponent("Selected card.").moveTo(my.hand)
+						my.deck.search(max : 1,"Search for an evolution",cardTypeFilter(EVOLUTION)).showToOpponent("Selected card.").moveTo(my.hand)
 
 					}
 				}
@@ -1147,7 +1149,7 @@ public enum TeamRocketReturns implements CardInfo {
 					onAttack {
 						damage 40
 						flip {
-							discardOpponentEnergy()
+							discardDefendingEnergy()
 						}
 					}
 				}
@@ -1280,7 +1282,10 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 10+10*self.cards.energyCount(C)
+						damage 10
+						my.all.each{
+							damage 10*it.cards.filterByType(BASIC_ENERGY).size()
+						}
 					}
 				}
 				move "Linear Attack", {
@@ -1439,7 +1444,7 @@ public enum TeamRocketReturns implements CardInfo {
 						assert my.hand.filterByType(ENERGY)
 					}
 					onAttack {
-						def dscNB = my.hand.filterByType(ENERGY).select(max : 2, "Select the energy to discard").discard()
+						def dscNB = my.hand.filterByType(ENERGY).select(max : 2, "Select the energy to discard").discard().size()
 						draw 2*dscNB
 					}
 				}
@@ -1461,9 +1466,9 @@ public enum TeamRocketReturns implements CardInfo {
 					actionA {
 						checkLastTurn()
 						assert !(self.specialConditions) : "$self is affected by a Special Condition"
-						assert my.all.findAll{it.numberOfDamageCounters}
+						assert my.all.findAll{it.numberOfDamageCounters && it != self} : "There is no Pokémon with damage counter outside from ${self}."
 						powerUsed()
-						heal 10, my.all.findAll{it.numberOfDamageCounters}.select("Select the pokemon to heal.")
+						heal 10, my.all.findAll{it.numberOfDamageCounters && it != self}.select("Select the pokemon to heal.")
 					}
 				}
 				move "Aqua Slash", {
@@ -1704,7 +1709,7 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Insomnia", {
 					text "Drowzee can’t be Asleep."
 					delayedA {
-						before APPLY_SPECIAL_CONDITION, self, null, ASLEEP_SPC, {
+						before ASLEEP_SPC, self, null, APPLY_SPECIAL_CONDITION, {
 								wcu "$self can't be Asleep"
 								prevent()
 						}
@@ -1740,7 +1745,9 @@ public enum TeamRocketReturns implements CardInfo {
 				move "Taunt", {
 					text "Choose 1 of your opponent’s Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert opp.bench : "There is no Pokémon on your opponent’s bench."
+					}
 					onAttack {
 						sw opp.active, opp.bench.select()
 					}
