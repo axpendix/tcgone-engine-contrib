@@ -996,13 +996,16 @@ public enum TeamRocketReturns implements CardInfo {
 					text "If Qwilfish is your Active Pokémon and is damaged by an opponent’s attack (even if Qwilfish is Knocked Out), flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
 					delayedA (priority: LAST) {
 						before APPLY_ATTACK_DAMAGES, {
+							def pcs = defending
+							def counterDmg = 0
 							bg.dm().each{
 								if(it.to == self && it.notNoEffect && it.dmg.value) {
 									bc "Spiny"
-									def pcs = it.from
-									flipUntilTails {damage 10, pcs}
+									pcs = it.from
+									flipUntilTails {counterDmg += 10}
                 }
 							}
+							directDamage counterDmg, pcs
 						}
 					}
 				}
@@ -1036,6 +1039,7 @@ public enum TeamRocketReturns implements CardInfo {
 								TypeSet typeSet=new TypeSet()
 								for(card in list){
 									for(type in typeSet){
+										bc "$type / ${card.asEnergyCard().types}"
 										if(card.asEnergyCard().containsTypePlain(type)){
 											return false
 									}
@@ -1043,7 +1047,7 @@ public enum TeamRocketReturns implements CardInfo {
 								}
 								return true
 							}
-						}).showToOpponent("Selected energies").moveTo(my.hand)
+						}).showToOpponent("Selected Energy cards.").moveTo(my.hand)
 					}
 				}
 				move "Swift", {
@@ -1115,6 +1119,7 @@ public enum TeamRocketReturns implements CardInfo {
 					actionA {
 						checkLastTurn()
 						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						assert self.active : "$self is not your active"
 						powerUsed()
 						my.deck.search(max : 1,"Search for an evolution",cardTypeFilter(EVOLUTION)).showToOpponent("Selected card.").moveTo(my.hand)
 
@@ -1282,10 +1287,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 10
-						my.all.each{
-							damage 10*it.cards.filterByType(BASIC_ENERGY).size()
-						}
+						damage 10+10*self.cards.filterByType(BASIC_ENERGY).size()
 					}
 				}
 				move "Linear Attack", {
@@ -1709,10 +1711,14 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Insomnia", {
 					text "Drowzee can’t be Asleep."
 					delayedA {
-						before ASLEEP_SPC, self, null, APPLY_SPECIAL_CONDITION, {
-								wcu "$self can't be Asleep"
-								prevent()
-						}
+						after APPLY_SPECIAL_CONDITION, {
+              if(self.active){
+                if(self.isSPC(ASLEEP)){
+                  bc "Insomnia prevents $self from being Confused."
+                  clearSpecialCondition(self, SRC_ABILITY, [CONFUSED])
+                }
+              }
+            }
 					}
 				}
 				move "Soothing Wave", {
