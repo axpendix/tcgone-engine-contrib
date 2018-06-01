@@ -465,7 +465,7 @@ public enum TeamRocketReturns implements CardInfo {
 						damage 20
 						//TODO : rocket secret machine
 						if(my.hand.filterByType(POKEMON_TOOL)){
-							damage 30*my.hand.filterByType(POKEMON_TOOL).select(max :2,"Select up to 2 Pokémon Tool cards and Rocket’s Secret Machine cards from your hand to discard them. This attack does 30 more damage for each card you discarded.").discard().size()
+							damage 30*my.hand.filterByType(POKEMON_TOOL).select(min:0, max :2,"Select up to 2 Pokémon Tool cards and Rocket’s Secret Machine cards from your hand to discard them. This attack does 30 more damage for each card you discarded.").discard().size()
 						}
 					}
 				}
@@ -567,7 +567,7 @@ public enum TeamRocketReturns implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						cantAttackNextTurn defending
+						flip{cantAttackNextTurn defending}
 					}
 				}
 				move "Tonnage", {
@@ -578,6 +578,7 @@ public enum TeamRocketReturns implements CardInfo {
 						damage 60
 						if(confirm("Do 30 damage to Piloswine for 40 more damage")){
 							damage 40
+							damage 30, self
 						}
 					}
 				}
@@ -808,7 +809,7 @@ public enum TeamRocketReturns implements CardInfo {
 					delayedA {
 						before BETWEEN_TURNS, {
 							if(self.active){
-								opp.bench.each{
+								self.owner.opposite.pbg.bench.each{
 									bc "$it / ${it.basic}"
 									if(it.basic) directDamage 10, it
 								}
@@ -848,7 +849,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						flip 3,{},{},[0:{heal opp.active.damage.value, opp.active},1:{directDamage 20},2:{heal 10, opp.active},3:{directDamage 100, opp.active}]
+						flip 3,{},{},[0:{heal opp.active.damage.value, opp.active},1:{directDamage 20, opp.active},2:{heal 10, opp.active},3:{directDamage 100, opp.active}]
 
 					}
 				}
@@ -864,7 +865,7 @@ public enum TeamRocketReturns implements CardInfo {
 					onAttack {
 						def drawNb = my.hand.select(max:3,"select 3 card to put at the top of your deck").moveTo(my.deck).size()
 						shuffleDeck()
-						my.deck.search(min : drawNb,max : drawNb).moveTo(my.hand)
+						my.deck.search(min : drawNb,max : drawNb,"Select $drawNb card(s).",{true}).moveTo(my.hand)
 					}
 				}
 				move "Quick Tail Smash", {
