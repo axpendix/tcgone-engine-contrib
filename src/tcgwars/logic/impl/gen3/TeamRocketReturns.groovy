@@ -996,7 +996,7 @@ public enum TeamRocketReturns implements CardInfo {
 					text "If Qwilfish is your Active Pokémon and is damaged by an opponent’s attack (even if Qwilfish is Knocked Out), flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
 					delayedA (priority: LAST) {
 						before APPLY_ATTACK_DAMAGES, {
-							def pcs = defending
+							def pcs = self.owner.opposite.pbg.active
 							def counterDmg = 0
 							bg.dm().each{
 								if(it.to == self && it.notNoEffect && it.dmg.value) {
@@ -1043,7 +1043,8 @@ public enum TeamRocketReturns implements CardInfo {
 										if(card.asEnergyCard().containsTypePlain(type)){
 											return false
 									}
-									typeSet.addAll(card.asEnergyCard().types)
+									bc "${card.asEnergyCard().getElementalTypes()}"
+									typeSet.addAll(card.asEnergyCard().getElementalTypes())
 								}
 								return true
 							}
@@ -1714,8 +1715,8 @@ public enum TeamRocketReturns implements CardInfo {
 						after APPLY_SPECIAL_CONDITION, {
               if(self.active){
                 if(self.isSPC(ASLEEP)){
-                  bc "Insomnia prevents $self from being Confused."
-                  clearSpecialCondition(self, SRC_ABILITY, [CONFUSED])
+                  bc "Insomnia prevents $self from being Asleep."
+                  clearSpecialCondition(self, SRC_ABILITY, [ASLEEP])
                 }
               }
             }
