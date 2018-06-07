@@ -1035,22 +1035,15 @@ public enum TeamRocketReturns implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						my.deck.select(min:0, max:4, "Select up to 4 different types of basic Energy cards", cardTypeFilter(BASIC_ENERGY), self.owner,
-							{CardList list->
-								TypeSet typeSet=new TypeSet()
-								for(card in list){
-									for(type in typeSet){
-										if(card.asEnergyCard().containsTypePlain(type)){
-											return false
-									}
-									for(Type t1:Type.values()){
-										if(card.asEnergyCard().containsTypePlain(t1)){
-											typeSet.add(t1)
-										}
+							{
+								CardList list->
+								for(Type t1:Type.values()){
+									if(list.findAll{it.asEnergyCard().containsTypePlain(t1)}.size() <= 1){
+										return false
 									}
 								}
 								return true
-							}
-						}).showToOpponent("Selected Energy cards.").moveTo(my.hand)
+							}).showToOpponent("Selected Energy cards.").moveTo(my.hand)
 					}
 				}
 				move "Swift", {
