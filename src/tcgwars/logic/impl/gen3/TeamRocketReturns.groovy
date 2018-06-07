@@ -1045,6 +1045,7 @@ public enum TeamRocketReturns implements CardInfo {
 									for(Type t1:Type.values()){
 										if(card.asEnergyCard().containsTypePlain(t1)){
 											typeSet.add(t1)
+										}
 									}
 								}
 								return true
@@ -2361,7 +2362,7 @@ public enum TeamRocketReturns implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flip {damage 20}
+						flip {damage 10}
 					}
 				}
 
