@@ -1039,12 +1039,13 @@ public enum TeamRocketReturns implements CardInfo {
 								TypeSet typeSet=new TypeSet()
 								for(card in list){
 									for(type in typeSet){
-										bc "$type / ${card.asEnergyCard().types}"
 										if(card.asEnergyCard().containsTypePlain(type)){
 											return false
 									}
-									bc "${card.asEnergyCard().getElementalTypes()}"
-									typeSet.addAll(card.asEnergyCard().getElementalTypes())
+									for(Type t1:Type.values()){
+										if(card.asEnergyCard().containsTypePlain(t1)){
+											typeSet.add(t1)
+									}
 								}
 								return true
 							}
@@ -1810,7 +1811,7 @@ public enum TeamRocketReturns implements CardInfo {
 						assert my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(W)
 					}
 					onAttack {
-						my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(W).select(count : 2,).showToOpponent.moveTo(my.hand)
+						my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(W).select(max : 2,).showToOpponent("Selected cards").moveTo(my.hand)
 					}
 				}
 				move "Swift", {
@@ -1840,7 +1841,7 @@ public enum TeamRocketReturns implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						sandAttack()
+						sandAttack(thisMove)
 					}
 				}
 
@@ -1875,8 +1876,8 @@ public enum TeamRocketReturns implements CardInfo {
 					delayedA {
 						before KNOCKOUT, self, {
 							if((ef as Knockout).byDamageFromAttack){
-								apply CONFUSED
-								apply POISONED
+								apply CONFUSED, self.owner.opposite.pbg.active
+								apply POISONED, self.owner.opposite.pbg.active
 							}
 						}
 					}
@@ -1937,8 +1938,8 @@ public enum TeamRocketReturns implements CardInfo {
 						assert my.bench.notFull
 					}
 					onAttack {
-						deck.search (count: 1,{it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(N)}).each {
-              deck.remove(it)
+						my.deck.search (count: 1,{it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(G)}).each {
+              my.deck.remove(it)
               benchPCS(it)
             }
             shuffleDeck()
@@ -2066,14 +2067,16 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost W
 					attackRequirement {}
 						onAttack {
-							delayed{
-								before PLAY_TRAINER, {
-									if (bg.currentTurn == self.owner.opposite) {
-										wcu "Psyduck's Headache prevents playing this card!"
-										prevent()
+							flip{
+								delayed{
+									before PLAY_TRAINER, {
+										if (bg.currentTurn == self.owner.opposite) {
+											wcu "Psyduck's Headache prevents playing this card!"
+											prevent()
+										}
 									}
+									unregisterAfter 2
 								}
-								unregisterAfter 2
 							}
 						}
 					}
@@ -2083,7 +2086,7 @@ public enum TeamRocketReturns implements CardInfo {
 				weakness FIGHTING
 				pokeBody "Scramble", {
 					text "As long as your opponent has any Pokémon-ex as his or her Active Pokémon, the Retreat Cost for Rattata is 0."
-					getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {
+					getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {h->
 						if(self.owner.opposite.pbg.active.pokemonEX){
 							h.object = 0
 						}
@@ -2166,7 +2169,7 @@ public enum TeamRocketReturns implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						swiftDamage 20
+						swiftDamage 20, defending
 					}
 				}
 
@@ -2182,8 +2185,8 @@ public enum TeamRocketReturns implements CardInfo {
 					}
 					onAttack {
 						my.deck.subList(0,Math.min(my.deck.size(),5)).showToMe("The top 5 cards of your deck.")
-						if(my.deck.filterByType(BASIC,STAGE1,STAGE2)) my.deck.filterByType(BASIC,STAGE1,STAGE2).select().showtoOpponent("selectedCard").moveTo(my.hand)
-						shuffleDeck()
+						if(my.deck.subList(0,Math.min(my.deck.size(),5)).filterByType(BASIC,STAGE1,STAGE2)) my.deck.subList(0,Math.min(my.deck.size(),5)).filterByType(BASIC,STAGE1,STAGE2).select().showToOpponent("selectedCard").moveTo(my.hand)
+							shuffleDeck()
 					}
 				}
 				move "Surprise Attack", {
@@ -3018,7 +3021,7 @@ public enum TeamRocketReturns implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						sandAttack()
+						sandAttack(thisMove)
 					}
 				}
 				move "Fireworks", {
