@@ -1038,7 +1038,7 @@ public enum TeamRocketReturns implements CardInfo {
 							{
 								CardList list->
 								for(Type t1:Type.values()){
-									if(list.findAll{it.asEnergyCard().containsTypePlain(t1)}.size() <= 1){
+									if(list.findAll{it.asEnergyCard().containsTypePlain(t1)}.size() >= 2){
 										return false
 									}
 								}
@@ -2425,8 +2425,8 @@ public enum TeamRocketReturns implements CardInfo {
 					opp.hand.getExcludedList(thisCard).moveTo(opp.deck)
 					shuffleDeck()
 					shuffleDeck(null,TargetPlayer.OPPONENT)
-					draw choose(1..my.prizeAsList.size(),"How many cards would you like to draw?")
-					draw(choose(1..opp.prizeAsList.size(),"How many cards would you like to draw?"),TargetPlayer.OPPONENT)
+					draw choose(0..my.prizeAsList.size(),"How many cards would you like to draw?")
+					draw(choose(0..opp.prizeAsList.size(),"How many cards would you like to draw?"),TargetPlayer.OPPONENT)
 				}
 				playRequirement{
 				}
@@ -2437,7 +2437,7 @@ public enum TeamRocketReturns implements CardInfo {
 				def eff
         onPlay {
           eff = getter (GET_FULL_HP, self) {h->
-						if(self.topPokemonCard.cardTypes.is(STAGE1)) {
+						if(h.effect.target.topPokemonCard.names.contains("Dark ") || h.effect.target.topPokemonCard.names.contains("Rocket’s")) {
 							h.object += hp(20)
 						}
 					}
@@ -2452,7 +2452,7 @@ public enum TeamRocketReturns implements CardInfo {
 				onPlay {
 					def tar = my.hand.getExcludedList(thisCard).select("Select a card to discard (If you discard a Pokémon that has Dark or Rocket’s in its name you will draw 1 more card.)")
 					tar.discard()
-					if(tar.name.contains("Dark") || tar.name.contains("Rocket’s"))
+					if(it.cardTypes.is(POKEMON) &&  (tar.name.contains("Dark") || tar.name.contains("Rocket’s")))
 					{
 						draw 4
 					}
@@ -2468,7 +2468,7 @@ public enum TeamRocketReturns implements CardInfo {
 			return basicTrainer (this) {
 				text "Search your deck for a Pokémon that has Dark in its name, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 				onPlay {
-					my.deck.search(max:1,"Select a Pokémon with Dark in its name",{it.cardTypes.is(POKEMON) || it.names.contains("Dark")}).showToOpponent("Selected card.").moveTo(my.hand)
+					my.deck.search(max:1,"Select a Pokémon with Dark in its name",{it.cardTypes.is(POKEMON) && it.names.contains("Dark")}).showToOpponent("Selected card.").moveTo(my.hand)
 					shuffleDeck()
 				}
 				playRequirement{
@@ -2512,9 +2512,9 @@ public enum TeamRocketReturns implements CardInfo {
 			return basicTrainer (this) {
 				text "Search your deck for a Basic Pokémon (excluding Pokémon-ex) and switch it with 1 of your Basic Pokémon (excluding Pokémon-ex) in play. (Any cards attached to that Pokémon, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Place the first Basic Pokémon in the discard pile. Shuffle your deck afterward."
 				onPlay {
-					assert my.hand.findAll {it.cardTypes.is(BASIC) && it.cardTypes.isNot(POKEMON_EX)} : "No basic in play"
+					assert my.all.findAll {it.cardTypes.is(BASIC) && it.cardTypes.isNot(POKEMON_EX)} : "No basic in play"
 
-					def pcs = my.hand.filterByType(BASIC).select()
+					def pcs = my.all.filterByType(BASIC).select()
 					my.deck.search(max:1,"Select a Basic Pokémon (excluding Pokémon-ex)",{it.cardTypes.is(BASIC) && it.cardTypes.isNot(POKEMON_EX)}).select().moveTo(pcs.cards)
 					discard(pcs)
 				}
