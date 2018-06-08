@@ -924,7 +924,14 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Baby Evolution", {
 					text "Once during your turn (before your attack), you may put Magmar from your hand onto Magby (this counts as evolving Magby), and remove all damage counters from Magby."
 					actionA {
-						//TODO : baby evolution
+						assert my.hand.findAll{it.name == "Magmar"} : "There is no pokémon in your hand to evolve ${self}."
+						checkLastTurn()
+						powerUsed()
+						def tar = my.hand.findAll{it.name == "Magmar"}.select()
+						if(tar) {
+							evolve(self, tar.first(), OTHER)
+							heal self.numberOfDamageCounters*10,self
+						}
 					}
 				}
 				move "Detour", {
@@ -2436,7 +2443,7 @@ public enum TeamRocketReturns implements CardInfo {
 				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play.\nEach Pokémon in play with Dark or Rocket’s in its name (both yours and your opponent’s) gets +20 HP."
 				def eff
         onPlay {
-          eff = getter (GET_FULL_HP, self) {h->
+          eff = getter GET_FULL_HP, {h->
 						if(h.effect.target.topPokemonCard.names.contains("Dark ") || h.effect.target.topPokemonCard.names.contains("Rocket")) {
 							h.object += hp(20)
 						}
@@ -2452,7 +2459,7 @@ public enum TeamRocketReturns implements CardInfo {
 				onPlay {
 					def tar = my.hand.getExcludedList(thisCard).select("Select a card to discard (If you discard a Pokémon that has Dark or Rocket’s in its name you will draw 1 more card.)")
 					tar.discard()
-					if(it.cardTypes.is(POKEMON) &&  (tar.name.contains("Dark") || tar.name.contains("Rocket")))
+					if(tar.cardTypes.is(POKEMON) &&  (tar.name.contains("Dark") || tar.name.contains("Rocket")))
 					{
 						draw 4
 					}
@@ -2468,7 +2475,7 @@ public enum TeamRocketReturns implements CardInfo {
 			return basicTrainer (this) {
 				text "Search your deck for a Pokémon that has Dark in its name, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 				onPlay {
-					my.deck.search(max:1,"Select a Pokémon with Dark in its name",{it.cardTypes.is(POKEMON) && it.names.contains("Dark")}).showToOpponent("Selected card.").moveTo(my.hand)
+					my.deck.search(max:1,"Select a Pokémon with Dark in its name",{it.cardTypes.is(POKEMON) && it.name.contains("Dark")}).showToOpponent("Selected card.").moveTo(my.hand)
 					shuffleDeck()
 				}
 				playRequirement{
@@ -2544,7 +2551,7 @@ public enum TeamRocketReturns implements CardInfo {
 				}
 			};
 			case R_ENERGY_95:
-			return specialEnergy (this, [[D,D]]) {
+			return specialEnergy (this, [[D],[D]]) {
 				text "R Energy can be attached only to a Pokémon that have Dark or Rocket’s in its name. While in play, R Energy provides 2 [D] Energy. (Doesn’t count as a basic Energy card.) If the Pokémon R Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). When your turn ends, discard R Energy."
 				def eff
 				def check = {
