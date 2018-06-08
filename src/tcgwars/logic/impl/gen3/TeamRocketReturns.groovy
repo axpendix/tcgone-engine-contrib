@@ -924,7 +924,7 @@ public enum TeamRocketReturns implements CardInfo {
 				pokePower "Baby Evolution", {
 					text "Once during your turn (before your attack), you may put Magmar from your hand onto Magby (this counts as evolving Magby), and remove all damage counters from Magby."
 					actionA {
-						//TOD0 : baby evolution
+						//TODO : baby evolution
 					}
 				}
 				move "Detour", {
@@ -2437,7 +2437,7 @@ public enum TeamRocketReturns implements CardInfo {
 				def eff
         onPlay {
           eff = getter (GET_FULL_HP, self) {h->
-						if(h.effect.target.topPokemonCard.names.contains("Dark ") || h.effect.target.topPokemonCard.names.contains("Rocket’s")) {
+						if(h.effect.target.topPokemonCard.names.contains("Dark ") || h.effect.target.topPokemonCard.names.contains("Rocket")) {
 							h.object += hp(20)
 						}
 					}
@@ -2452,7 +2452,7 @@ public enum TeamRocketReturns implements CardInfo {
 				onPlay {
 					def tar = my.hand.getExcludedList(thisCard).select("Select a card to discard (If you discard a Pokémon that has Dark or Rocket’s in its name you will draw 1 more card.)")
 					tar.discard()
-					if(it.cardTypes.is(POKEMON) &&  (tar.name.contains("Dark") || tar.name.contains("Rocket’s")))
+					if(it.cardTypes.is(POKEMON) &&  (tar.name.contains("Dark") || tar.name.contains("Rocket")))
 					{
 						draw 4
 					}
@@ -2548,7 +2548,7 @@ public enum TeamRocketReturns implements CardInfo {
 				text "R Energy can be attached only to a Pokémon that have Dark or Rocket’s in its name. While in play, R Energy provides 2 [D] Energy. (Doesn’t count as a basic Energy card.) If the Pokémon R Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). When your turn ends, discard R Energy."
 				def eff
 				def check = {
-								if(!(it.name.contains("Dark") || it.name.contains("Rocket’s"))){discard thisCard}
+								if(!(it.name.contains("Dark") || it.name.contains("Rocket"))){discard thisCard}
 				}
 				onPlay {reason->
           eff = delayed {
@@ -2574,7 +2574,7 @@ public enum TeamRocketReturns implements CardInfo {
           check(to)
         }
 				allowAttach {to->
-					to.name.contains("Dark") || to.name.contains("Rocket’s")
+					to.name.contains("Dark") || to.name.contains("Rocket")
 				}
 			};
 			case ROCKET_S_ARTICUNO_EX_96:
@@ -2756,9 +2756,11 @@ public enum TeamRocketReturns implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-						if(confirm("discard an Energy card attached to Rocket’s Scizor ex?")){
-							discardSelfEnergy C
-							attachEnergyFrom(my.discard,self)
+						afterDamage{
+							if(confirm("discard an Energy card attached to Rocket’s Scizor ex?")){
+								discardSelfEnergy C
+								attachEnergyFrom(my.discard,self)
+							}
 						}
 					}
 				}
@@ -2809,6 +2811,7 @@ public enum TeamRocketReturns implements CardInfo {
 						if(opp.bench){
 							if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")){
 								pcs = opp.bench.select()
+								sw defending, pcs
 							}
 						}
 						damage 10, pcs
@@ -2902,7 +2905,7 @@ public enum TeamRocketReturns implements CardInfo {
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
 							bg.dm().each {
-								if(it.to == self && it.notNoEffect && self.cards.energyCount(D)){
+								if(it.to == self && it.from.owner == self.owner.opposite && it.notNoEffect && self.cards.energyCount(D)){
 									it.dmg -= hp(10)
 								}
 							}
