@@ -2459,8 +2459,8 @@ public enum TeamRocketReturns implements CardInfo {
 				onPlay {
 					def tar = my.hand.getExcludedList(thisCard).select("Select a card to discard (If you discard a Pokémon that has Dark or Rocket’s in its name you will draw 1 more card.)")
 					tar.discard()
-					bc "${tar.name} / ${tar.first().name.contains('Rocket')}"
-					if(tar.cardTypes.is(POKEMON) &&  (tar.first().name.contains("Dark") || tar.first().name.contains("Rocket")))
+					bc "${tar.first().name} / ${tar.first().name.contains('Rocket')}"
+					if(tar.first().cardTypes.is(POKEMON) &&  (tar.first().name.contains("Dark") || tar.first().name.contains("Rocket")))
 					{
 						draw 4
 					}
@@ -2523,8 +2523,8 @@ public enum TeamRocketReturns implements CardInfo {
 					assert my.all.findAll {it.topPokemonCard.cardTypes.is(BASIC) && it.topPokemonCard.cardTypes.isNot(POKEMON_EX)} : "No basic in play"
 
 					def pcs = my.all.findAll{it.topPokemonCard.cardTypes.is(BASIC) && it.topPokemonCard.cardTypes.isNot(POKEMON_EX)}.select()
+					pcs.topPokemonCard.discard()
 					my.deck.search(max:1,"Select a Basic Pokémon (excluding Pokémon-ex)",{it.cardTypes.is(BASIC) && it.cardTypes.isNot(POKEMON_EX)}).select().moveTo(pcs.cards)
-					discard(pcs)
 				}
 				playRequirement{
 				}
