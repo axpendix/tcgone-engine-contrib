@@ -2523,8 +2523,9 @@ public enum TeamRocketReturns implements CardInfo {
 					assert my.all.findAll {it.topPokemonCard.cardTypes.is(BASIC) && it.topPokemonCard.cardTypes.isNot(POKEMON_EX)} : "No basic in play"
 
 					def pcs = my.all.findAll{it.topPokemonCard.cardTypes.is(BASIC) && it.topPokemonCard.cardTypes.isNot(POKEMON_EX)}.select()
-					pcs.topPokemonCard.discard()
+					def tpc = pcs.topPokemonCard
 					my.deck.search(max:1,"Select a Basic Pokémon (excluding Pokémon-ex)",{it.cardTypes.is(BASIC) && it.cardTypes.isNot(POKEMON_EX)}).select().moveTo(pcs.cards)
+					tpc.moveTo(my.discard)
 				}
 				playRequirement{
 				}
