@@ -203,7 +203,7 @@ public enum Deoxys implements CardInfo {
 				resistance FIGHTING, MINUS30
 				pokeBody "Safeguard", {
 					text "Prevent all effects of attacks, including damage, done to Altaria by your opponent’s Pokémon-ex."
-					safeguard()
+					safeguard(self,delegate)
 				}
 				move "Double Wing Attack", {
 					text "Does 20 Damage to each Defending Pokémon."
@@ -250,6 +250,7 @@ public enum Deoxys implements CardInfo {
 						if(opp.bench){
 							if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")){
 								pcs = opp.bench.select()
+								sw defending, pcs
 							}
 						}
 						damage 20, pcs
@@ -283,7 +284,7 @@ public enum Deoxys implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
-						decreasedBaseDamageNextTurn(self,"Hustle Punch",hp(20))
+						afterDamage{decreasedBaseDamageNextTurn(self,"Hustle Punch",hp(20))}
 					}
 				}
 
@@ -306,7 +307,7 @@ public enum Deoxys implements CardInfo {
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
-						multiSelect(opp.bench, 2).each{
+						multiSelect(opp.all, 2).each{
 							targeted(it){
 								damage 30, it
 							}
@@ -516,7 +517,7 @@ public enum Deoxys implements CardInfo {
 						assert !(self.specialConditions) : "$self is affected by a Special Condition."
 						assert my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(P,M) : "There is no [P] or [M] Energy card in your discard."
 						powerUsed()
-						attachEnergy(my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(P,M).select().first(),my.active)
+						attachEnergy(my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)}.select().first(),my.active)
 						directDamage 10, my.active
 					}
 				}
@@ -542,9 +543,11 @@ public enum Deoxys implements CardInfo {
 				move "Seek Out", {
 					text "Search your deck for 1 card and put it into your hand. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						my.deck.seach(max:1,"Select 1 card",{true})
+						my.deck.search(max:1,"Select 1 card",{true})
 						shuffleDeck()
 					}
 				}
@@ -657,7 +660,7 @@ public enum Deoxys implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						amnesia()
+						amnesia(delegate)
 					}
 				}
 				move "Lazy Headbutt", {
@@ -715,8 +718,8 @@ public enum Deoxys implements CardInfo {
 						powerUsed()
 						bg.em().storeObject("Form_Change",bg.turnCount)
 						def deoxys = self.topPokemonCard
-						if(my.deck.findAll{it.names.contains("Deoxys")}){
-							my.deck.findAll{it.names.contains("Deoxys")}.select().moveTo(self.cards)
+						if(my.deck.findAll{it.name.contains("Deoxys")}){
+							my.deck.findAll{it.name.contains("Deoxys")}.select().moveTo(self.cards)
 							deoxys.moveTo(my.deck)
 							shuffleDeck()
 							checkFaint()
@@ -749,8 +752,8 @@ public enum Deoxys implements CardInfo {
 						powerUsed()
 						bg.em().storeObject("Form_Change",bg.turnCount)
 						def deoxys = self.topPokemonCard
-						if(my.deck.findAll{it.names.contains("Deoxys")}){
-							my.deck.findAll{it.names.contains("Deoxys")}.select().moveTo(self.cards)
+						if(my.deck.findAll{it.name.contains("Deoxys")}){
+							my.deck.findAll{it.name.contains("Deoxys")}.select().moveTo(self.cards)
 							deoxys.moveTo(my.deck)
 							shuffleDeck()
 							checkFaint()
