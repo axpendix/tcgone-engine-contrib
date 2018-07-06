@@ -1062,7 +1062,7 @@ public enum UltraPrism implements CardInfo {
               }
             }
             effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-              if (self.active && h.effect.target.player != self.player && ((h.effect.target as Card).cardTypes.is(POKEMON_EX) || (h.effect.target as Card).cardTypes.is(POKEMON_GX))) {
+              if (self.active && h.effect.target.player != self.owner && ((h.effect.target as Card).cardTypes.is(POKEMON_EX) || (h.effect.target as Card).cardTypes.is(POKEMON_GX))) {
                 h.object=true
               }
             }
