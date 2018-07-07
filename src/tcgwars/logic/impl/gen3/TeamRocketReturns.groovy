@@ -1434,7 +1434,7 @@ public enum TeamRocketReturns implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						if(my.prizeAsList.size() > opp.prizeAsList.size()) damage 10*(my.prizeAsList.size() - opp.prizeAsList.size())
+						if(my.prizeCardSet.size() > opp.prizeCardSet.size()) damage 10*(my.prizeCardSet.size() - opp.prizeCardSet.size())
 					}
 				}
 
@@ -2421,7 +2421,7 @@ public enum TeamRocketReturns implements CardInfo {
 					}
 				}
 				playRequirement{
-					assert my.prizeAsList.size() > opp.prizeAsList.size() : "You need more Prize cards left than your opponent to use this card"
+					assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "You need more Prize cards left than your opponent to use this card"
 				}
 			};
 			case ROCKET_S_ADMIN__86:
@@ -2432,8 +2432,8 @@ public enum TeamRocketReturns implements CardInfo {
 					opp.hand.getExcludedList(thisCard).moveTo(opp.deck)
 					shuffleDeck()
 					shuffleDeck(null,TargetPlayer.OPPONENT)
-					draw choose(0..my.prizeAsList.size(),"How many cards would you like to draw?")
-					draw(choose(0..opp.prizeAsList.size(),"How many cards would you like to draw?"),TargetPlayer.OPPONENT)
+					draw choose(0..my.prizeCardSet.size(),"How many cards would you like to draw?")
+					draw(choose(0..opp.prizeCardSet.size(),"How many cards would you like to draw?"),TargetPlayer.OPPONENT)
 				}
 				playRequirement{
 				}
@@ -2958,7 +2958,7 @@ public enum TeamRocketReturns implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						if(opp.prizeAsList.size() == 1){
+						if(opp.prizeCardSet.size() == 1){
 							damage 50
 							applyAfterDamage ASLEEP
 						}
@@ -2984,7 +2984,7 @@ public enum TeamRocketReturns implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						if(opp.prizeAsList.size() == 1){
+						if(opp.prizeCardSet.size() == 1){
 							damage 50
 							applyAfterDamage CONFUSED
 						}
@@ -3010,7 +3010,7 @@ public enum TeamRocketReturns implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						if(opp.prizeAsList.size() == 1){
+						if(opp.prizeCardSet.size() == 1){
 							damage 50
 							applyAfterDamage POISONED
 						}
@@ -3045,17 +3045,13 @@ public enum TeamRocketReturns implements CardInfo {
 			return supporter (this) {
 				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player plays with his or her Prize cards face up for the rest of the game."
 				onPlay {
-					for(int i=0; i<my.prizeIsTurnedUp.length; i++){
-						if(my.prize[i] != null){
-							my.prizeIsTurnedUp[i] = true
-						}
-					}
-					for(int i=0; i<opp.prizeIsTurnedUp.length; i++){
-						if(opp.prize[i] != null){
-							opp.prizeIsTurnedUp[i] = true
-						}
-					}
+          my.prizeCardSet.allVisible=true
+          opp.prizeCardSet.allVisible=true
+          bc "All prizes are visible until the end of game!"
 				}
+        playRequirement {
+          assert !(my.prizeCardSet.allVisible && opp.prizeCardSet.allVisible) : "All prizes are already visible"
+        }
 			};
 				default:
 			return null;

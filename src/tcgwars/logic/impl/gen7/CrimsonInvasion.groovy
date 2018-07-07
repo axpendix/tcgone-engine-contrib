@@ -1286,11 +1286,8 @@ public enum CrimsonInvasion implements CardInfo {
           }
           onAttack {
             gxPerform()
-            def newPrizelist = new CardList(opp.prizeAsList);
-            def cnt = opp.prizeAsList.size()
-            newPrizelist.add(opp.deck.remove(0))
-            newPrizelist.add(opp.deck.remove(0))
-            opp.prize= newPrizelist.toArray()
+            opp.prizeCardSet.add(opp.deck.remove(0))
+            opp.prizeCardSet.add(opp.deck.remove(0))
           }
         }
 
@@ -1476,7 +1473,7 @@ public enum CrimsonInvasion implements CardInfo {
           attackRequirement {gxCheck()}
           onAttack {
             gxPerform()
-            damage 40 * my.prizeAsList.size()
+            damage 40 * my.prizeCardSet.size()
           }
         }
 
@@ -2294,7 +2291,7 @@ public enum CrimsonInvasion implements CardInfo {
           sw opp.active, pcs
         }
         playRequirement{
-          assert my.prizeAsList.size() > opp.prizeAsList.size()
+          assert my.prizeCardSet.size() > opp.prizeCardSet.size()
         }
       };
       case DASHING_POUCH_92:
@@ -2349,12 +2346,11 @@ public enum CrimsonInvasion implements CardInfo {
         text "Look at your face-down Prize cards and put 1 of them into your hand. Then, shuffle this Gladion into your remaining Prize cards and put them back face down. If you didn't play this Gladion from your hand, it does nothing.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
           if(my.hand.find{it == thisCard}){
-            def tar = my.prizeAsList.select(hidden: false, "Prize to replace with Gladion")
-            def ind = my.prizeAsList.indexOf(tar.first())
-            tar.moveTo(my.hand)
-            def thisCardAsList = new CardList(thisCard)
-            my.prize[ind] = thisCard
-            my.hand.removeAll(thisCardAsList)
+            def tar = my.prizeCardSet.select(hidden: false, "Prize to replace with $thisCard")
+            my.hand.remove(thisCard)
+            my.prizeCardSet.set(my.prizeCardSet.indexOf(tar.first()), thisCard)
+            tar.moveTo(hidden: true, my.hand)
+            my.prizeCardSet.shuffle()
           }
         }
         playRequirement{
@@ -2444,7 +2440,7 @@ public enum CrimsonInvasion implements CardInfo {
               onMove {to->
               }
               getEnergyTypesOverride{
-                  if(self && self.owner.pbg.prizeAsList.size() > self.owner.opposite.pbg.prizeAsList.size())
+                  if(self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size())
                       return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
                   else
                       return [[C] as Set]

@@ -974,14 +974,13 @@ public enum FireRedLeafGreen implements CardInfo {
 				move "Vine Tease", {
 					text "Look at your Prize cards without showing your opponent. Choose 1 of the Prize cards and switch it with the top card of your deck without looking at the top card of your deck. If you have no cards in your deck, this attack does nothing."
 					energyCost C
+          attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						if(my.deck){
-							def tar = my.prizeAsList.select(hidden: false, "Prize to replace with the top card of your deck")
-							def ind = my.prizeAsList.indexOf(tar.first())
-							my.prize[ind] = my.deck.get(0)
-							my.deck.setSubList(0,tar)
-
-						}
+						def tar = my.prizeCardSet.select(hidden: false, "Prize to replace with the top card of your deck").first()
+						my.prizeCardSet.set(my.prizeCardSet.indexOf(tar),my.deck.remove(0))
+						my.deck.add(0,tar)
 					}
 				}
 				move "Wiggle", {
@@ -2576,7 +2575,7 @@ public enum FireRedLeafGreen implements CardInfo {
 					energyCost P, P, C
 					onAttack {
 						damage 60
-						if(my.prizeAsList.size() > opp.prizeAsList.size()) damage 40
+						if(my.prizeCardSet.size() > opp.prizeCardSet.size()) damage 40
 					}
 				}
 

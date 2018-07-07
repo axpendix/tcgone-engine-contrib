@@ -620,18 +620,12 @@ public enum TeamRocket implements CardInfo {
 			return basicTrainer (this) {
 				text "Each player plays with his or her Prize cards face up for the rest of the game."
 				onPlay {
-					for(int i=0; i<my.prizeIsTurnedUp.length; i++){
-            if(my.prize[i] != null){
-              my.prizeIsTurnedUp[i] = true
-            }
-        	}
-					for(int i=0; i<opp.prizeIsTurnedUp.length; i++){
-            if(opp.prize[i] != null){
-              opp.prizeIsTurnedUp[i] = true
-            }
-        	}
+          my.prizeCardSet.allVisible=true
+          opp.prizeCardSet.allVisible=true
+          bc "All prizes are visible until the end of game!"
 				}
 				playRequirement{
+          assert !(my.prizeCardSet.allVisible && opp.prizeCardSet.allVisible) : "All prizes are already visible"
 				}
 			};
 			case ROCKETS_SNEAK_ATTACK_16:
@@ -1534,10 +1528,10 @@ public enum TeamRocket implements CardInfo {
 						assert !self.specialConditions
 						assert my.deck
 						powerUsed()
-						def tar = my.prizeAsList.select(hidden: true, "Prize to replace with the top card of your deck")
-						def ind = my.prizeAsList.indexOf(tar.first())
-						my.prize[ind] = my.deck.get(0)
-						my.deck.setSubList(0,tar)
+						def tar = my.prizeCardSet.select(hidden: true, "Prize to replace with the top card of your deck").first()
+						def ind = my.prizeCardSet.indexOf(tar)
+						my.prizeCardSet.set(ind, my.deck.remove(0))
+						my.deck.add(0,tar)
 					}
 				}
 				move "Quick Attack", {

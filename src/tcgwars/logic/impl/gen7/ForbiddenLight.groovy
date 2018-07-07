@@ -439,7 +439,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost G, G, C
 					onAttack {
 						damage 90
-						if(my.prizeAsList.size() == 1) damage 90
+						if(my.prizeCardSet.size() == 1) damage 90
 					}
 				}
 
@@ -1066,7 +1066,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost L, L, C
 					onAttack {
 						damage 100
-						if(my.prizeAsList.size() == 3) applyAfterDamage PARALYZED
+						if(my.prizeCardSet.size() == 3) applyAfterDamage PARALYZED
 					}
 				}
 
@@ -1431,13 +1431,13 @@ public enum ForbiddenLight implements CardInfo {
 					text "Both players shuffle their Prize cards into their decks. Then, each player puts the top 3 cards of their deck face down as their Prize cards. (You can’t use more than 1 GX attack in a game.)"
 					energyCost C, C, C
 					onAttack {
-						my.prizeAsList.moveTo(my.deck)
-						opp.prizeAsList.moveTo(opp.deck)
+						my.prizeCardSet.moveTo(my.deck)
+						opp.prizeCardSet.moveTo(opp.deck)
 						shuffleDeck()
 						shuffleDeck(null, TargetPlayer.OPPONENT)
 						for(int i=0;i<3;i++){
-							my.prize[i] = my.deck.remove(0)
-							opp.prize[i] = opp.deck.remove(0)
+							my.prizeCardSet.add(my.deck.remove(0))
+							opp.prizeCardSet.add(opp.deck.remove(0))
 						}
 					}
 				}
@@ -1884,7 +1884,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost F
 					onAttack {
 						damage 30
-						if(opp.prizeAsList.size() == 4) damage 90
+						if(opp.prizeCardSet.size() == 4) damage 90
 					}
 				}
 				move "Swing Around", {
@@ -1971,7 +1971,7 @@ public enum ForbiddenLight implements CardInfo {
 					}
 					onAttack {
 						damage 160
-						if(my.prizeAsList.size() == 2 || my.prizeAsList.size() == 4 || my.prizeAsList.size() == 6) my.deck.subList(0, 10).discard()
+						if(my.prizeCardSet.size() == 2 || my.prizeCardSet.size() == 4 || my.prizeCardSet.size() == 6) my.deck.subList(0, 10).discard()
 					}
 				}
 
@@ -2354,7 +2354,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost P, M
 					attackRequirement {
 						gxCheck()
-						assert my.prizeAsList.size() + opp.prizeAsList.size()<= 6
+						assert (my.prizeCardSet.size() + opp.prizeCardSet.size())<= 6
 					}
 					onAttack {
 						gxPerform()
@@ -2503,7 +2503,7 @@ public enum ForbiddenLight implements CardInfo {
 					attachEnergyFrom(basic : true, my.deck, my.all.findAll{it.topPokemonCard.cardTypes.is(ULTRA_BEAST)})
 				}
 				playRequirement{
-					assert (opp.prizeAsList.size() == 3 || opp.prizeAsList.size() == 4) : " Your opponent need to have exactly 3 or 4 Prize cards remaining"
+					assert (opp.prizeCardSet.size() == 3 || opp.prizeCardSet.size() == 4) : " Your opponent need to have exactly 3 or 4 Prize cards remaining"
 					assert my.all.findAll{it.topPokemonCard.cardTypes.is(ULTRA_BEAST)} : "No Ultra Beast in play."
 				}
 			};

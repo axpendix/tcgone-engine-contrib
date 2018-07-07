@@ -1613,7 +1613,7 @@ public enum UltraPrism implements CardInfo {
           energyCost P, P, P
           attackRequirement {
             gxCheck()
-            assert my.prizeAsList.size() > opp.prizeAsList.size() : "you don't have more Prize cards remaining"
+            assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "you don't have more Prize cards remaining"
           }
           onAttack {
             gxPerform()
@@ -2221,7 +2221,7 @@ public enum UltraPrism implements CardInfo {
           energyCost M, M, M
           attackRequirement {
             gxCheck()
-            assert my.prizeAsList.size() > opp.prizeAsList.size()
+            assert my.prizeCardSet.size() > opp.prizeCardSet.size()
           }
           onAttack {
             gxPerform()
@@ -3187,10 +3187,10 @@ public enum UltraPrism implements CardInfo {
           energyCost G, G
           attackRequirement {
             gxCheck()
-            assert (6-opp.prizeAsList.size()) : "No prize taken"
+            assert opp.prizeCardSet.takenCount : "No prize taken"
           }
           onAttack {
-            damage 50*(6-opp.prizeAsList.size())
+            damage 50*opp.prizeCardSet.takenCount
             gxPerform()
           }
         }
@@ -3236,19 +3236,7 @@ public enum UltraPrism implements CardInfo {
             gxPerform()
             def card = opp.hand.select("Opponent's hand. Put one card as opponent prize")
             opp.hand.remove(card)
-            def found = false
-            for(int i=0;i<opp.prize.length;i++){
-              if(opp.prize[i]==null){
-                opp.prize[i]=card
-                found=true
-                break
-              }
-            }
-            if(!found){
-              def newPrizelist = new CardList(opp.prizeAsList)
-              newPrizelist.add(card)
-              opp.prize = newPrizelist.toArray()
-            }
+            opp.prizeCardSet.add(card)
           }
         }
 
@@ -3283,9 +3271,7 @@ public enum UltraPrism implements CardInfo {
             gxPerform()
             damage 180
             afterDamage{
-              for(int i=0; i<my.prizeIsTurnedUp.length; i++){
-                my.prizeIsTurnedUp[i] = true
-              }
+              my.prizeCardSet.allVisible=true
             }
           }
         }

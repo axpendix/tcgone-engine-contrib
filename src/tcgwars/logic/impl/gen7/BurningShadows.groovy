@@ -761,7 +761,7 @@ public enum BurningShadows implements CardInfo {
 					text "50× damage. This attack does 50 damage for each Prize card you have taken."
 					energyCost R, R
 					onAttack {
-						damage 50*(6-my.prizeAsList.size())
+						damage 50*my.prizeCardSet.takenCount
 					}
 				}
 				move "Heat Blast", {
@@ -2430,7 +2430,7 @@ public enum BurningShadows implements CardInfo {
 					text "Look at 1 of your opponent's face-down Prize cards."
 					energyCost C
 					onAttack {
-						opp.prizeAsList.select(hidden: true, "Prize to look at").showToMe("Selected prize")
+						opp.prizeCardSet.select(hidden: true, "Prize to look at").showToMe("Selected prize")
 					}
 				}
 				move "Beam", {

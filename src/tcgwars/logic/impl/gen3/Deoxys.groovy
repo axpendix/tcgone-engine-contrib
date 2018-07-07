@@ -2664,7 +2664,7 @@ public enum Deoxys implements CardInfo {
 					to.evolution && !to.pokemonEX
 				}
 				getEnergyTypesOverride{
-						if(self && self.owner.pbg.prizeAsList.size() > self.owner.opposite.pbg.prizeAsList.size())
+						if(self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size())
 								return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
 						else
 								return [[C] as Set]

@@ -1279,7 +1279,7 @@ public enum SunMoon implements CardInfo {
 						text "Look at 1 of your face-down Prize cards."
 						energyCost C
 						onAttack {
-							my.prizeAsList.select(hidden: true, "Look at 1 of your face-down Prize cards.").showToMe("Selected card")
+							my.prizeCardSet.select(hidden: true, "Look at 1 of your face-down Prize cards.").showToMe("Selected card")
 						}
 					}
 					move "Electro Ball", {
@@ -2832,11 +2832,11 @@ public enum SunMoon implements CardInfo {
 				return itemCard (this) {
 					text "After counting your Prize cards, shuffle them into your deck. Then, take that many cards from the top of your deck and put them face down as your Prize cards.\nYou may play as many Item cards as you like during your turn (before your attack)."
 					onPlay {
-						int count = my.prizeAsList.size()
-						my.prizeAsList.moveTo(my.deck)
+						int count = my.prizeCardSet.size()
+						my.prizeCardSet.moveTo(my.deck)
 						shuffleDeck()
 						for(int i=0;i<count;i++){
-							my.prize[i] = my.deck.remove(0)
+							my.prizeCardSet.add(my.deck.remove(0))
 						}
 					}
 					playRequirement{
