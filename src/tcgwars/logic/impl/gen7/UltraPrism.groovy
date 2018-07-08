@@ -1282,7 +1282,7 @@ public enum UltraPrism implements CardInfo {
         bwAbility "Intimidating Fang", {
           text "As long as this Pokémon is your Active Pokémon, your opponent’s Active Pokémon’s attacks do 30 less damage (before applying Weakness and Resistance)."
           delayedA {
-            before APPLY_ATTACK_DAMAGES, {
+            after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {if(self.active && it.to==self && it.dmg.value && it.notNoEffect){
                 bc "Intimidating Fang -30"
                 it.dmg -= hp(30)
@@ -2474,15 +2474,15 @@ public enum UltraPrism implements CardInfo {
           onAttack {
             gxPerform()
             damage 150
-            afterDamage{
-              bg.turnCount += 1
-              delayed{
-                before BETWEEN_TURNS, {
-                  prevent()
+            afterDamage {
+              delayed {
+                before DRAW_CARD, {
+                  ef.playerType = self.owner
+                  bg.currentTurn = self.owner
+                  bc "Timeless GX started a new turn!"
                   unregister()
                 }
               }
-              draw 1
             }
           }
         }
@@ -3155,7 +3155,7 @@ public enum UltraPrism implements CardInfo {
       };
       case UNIT_ENERGY_LPM_138:
       return specialEnergy (this, [[L, P, M]]) {
-        text "is card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [L], [P], and [M] Energy but provides only 1 Energy at a time."
+        text "This card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [L], [P], and [M] Energy but provides only 1 Energy at a time."
         onPlay {reason->
         }
         onRemoveFromPlay {
