@@ -2283,7 +2283,7 @@ public enum UltraPrism implements CardInfo {
             checkLastTurn()
             assert my.deck
             powerUsed()
-            my.deck.search(count: 1, "search for a fairy pokemon", {it.types.contains(Y)}).moveTo(my.hand)
+            my.deck.search(count: 1, "Search for a fairy pokemon", {it.cardTypes.pokemon && it.types.contains(Y)}).moveTo(my.hand)
             shuffleDeck()
           }
         }
