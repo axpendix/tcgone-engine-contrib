@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen7;
 
 import tcgwars.logic.effect.gm.Attack
+import tcgwars.logic.effect.gm.PlayTrainer
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1306,6 +1307,7 @@ public enum ForbiddenLight implements CardInfo {
 					actionA {
 						checkLastTurn()
 						assert my.bench
+						assert my.discard.filterByEnergyType(P)
 						powerUsed()
 						attachEnergyFrom(type : P, my.discard, my.bench)
 					}
@@ -1411,7 +1413,7 @@ public enum ForbiddenLight implements CardInfo {
 
 			};
 			case NAGANADEL_GX_56:
-			return evolution (this, from:"Poipole – Ultra Beast", hp:HP210, type:PSYCHIC, retreatCost:1) {
+			return evolution (this, from:"Poipole", hp:HP210, type:PSYCHIC, retreatCost:1) {
 				weakness PSYCHIC
 				move "Beast Raid", {
 					text "20× damage. This attack does 20 damage for each of your Ultra Beasts in play."
@@ -2103,12 +2105,12 @@ public enum ForbiddenLight implements CardInfo {
 					text "Once during your turn (before your attack), you may flip a coin. If heads, put an Item card from your discard pile on top of your deck."
 					actionA {
 						checkLastTurn()
-						assert my.deck
 						assert my.discard.filterByType(ITEM)
 						powerUsed()
 						flip {
-							def tar = my.discard.filterByType(ITEM).select()
-							my.deck.addAll(0, tar)
+							def tar = my.discard.filterByType(ITEM).select().first()
+							my.discard.remove(tar)
+							my.deck.add(0, tar)
 						}
 					}
 				}
@@ -2139,14 +2141,18 @@ public enum ForbiddenLight implements CardInfo {
 				move "Wink Wink", {
 					text "Your opponent reveals their hand. You may discard a Supporter card you find there and use the effect of that card as the effect of this attack."
 					energyCost C
+					attackRequirement {
+						assert opp.hand
+					}
 					onAttack {
-						// TODO : use the effect of the card ?
-						opp.hand.showToMe("Opponent's hand")
-						if(opp.hand.filterByType(SUPPORTER))
-						{
-							def card = opp.hand.filterByType(SUPPORTER).select()
-							card.discard()
-							(card.first() as TrainerCard).play(bg,self)
+						if(opp.hand.hasType(SUPPORTER)){
+							def card=opp.hand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
+							discard card
+							bg.deterministicCurrentThreadPlayerType=self.owner
+							bg.em().run(new PlayTrainer(card))
+							bg.clearDeterministicCurrentThreadPlayerType()
+						} else {
+							opp.hand.showToMe("Opponent's hand. No supporter in there.")
 						}
 					}
 				}
@@ -2346,7 +2352,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost P, M
 					onAttack {
 						damage 20
-						damage 80*discardAllSelfEnergy(P).size()
+						damage 80*self.cards.filterByBasicEnergyType(P).discard().size()
 					}
 				}
 				move "Sky-Scorching Light GX", {
@@ -2658,7 +2664,7 @@ public enum ForbiddenLight implements CardInfo {
 				text "Discard a card from your hand. If you do, search your deck for a [P] or [N] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
 				onPlay {
 					my.hand.getExcludedList(thisCard).select("Select a card to discard.").discard()
-					my.deck.search(count : 1, "Select a a [P] or [N] Pokémon.", {it.cardTypes.is(POKEMON) && (it.types.contains(P) || it.types.contains(N))}).moveTo(my.hand)
+					my.deck.search("Select a [P] or [N] Pokémon.", {it.cardTypes.is(POKEMON) && (it.types.contains(P) || it.types.contains(N))}).moveTo(my.hand)
 					shuffleDeck()
 				}
 				playRequirement{
@@ -2684,7 +2690,6 @@ public enum ForbiddenLight implements CardInfo {
 				onPlay {
 					actions=action("Stadium: Ultra Space") {
 						assert my.deck
-						assert my.bench.notFull
 						assert lastTurn != bg().turnCount : "Already used"
 						bc "Used Ultra Space effect"
 						lastTurn = bg().turnCount
