@@ -2815,7 +2815,7 @@ public enum ForbiddenLight implements CardInfo {
 			case ENEPORTER_142:
 			return copy (ENEPORTER_106, this);
 			case ENERGY_RECYCLER_143:
-			return copy (GuardianRising.ENERGY_RECYCLER_123, this);
+			return copy (GuardiansRising.ENERGY_RECYCLER_123, this);
 			case METAL_FRYING_PAN_144:
 			return copy (METAL_FRYING_PAN_112, this);
 			case MYSTERIOUS_TREASURE_145:
