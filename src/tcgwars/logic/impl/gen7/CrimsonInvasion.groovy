@@ -2349,8 +2349,9 @@ public enum CrimsonInvasion implements CardInfo {
             def tar = my.prizeCardSet.select(hidden: false, "Prize to replace with $thisCard")
             my.hand.remove(thisCard)
             my.prizeCardSet.set(my.prizeCardSet.indexOf(tar.first()), thisCard)
-            tar.moveTo(hidden: true, my.hand)
+            my.hand.add(tar.first())
             my.prizeCardSet.shuffle()
+            bc "Took a prize card and shuffled Gladion into prizes"
           }
         }
         playRequirement{
