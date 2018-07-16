@@ -2886,7 +2886,8 @@ public enum UltraPrism implements CardInfo {
       };
       case CYRUS_PRISM_STAR_120:
       return supporter (this) {
-        text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nYou can’t play this card if you don’t have any [W] or [M] Pokémon in play.\nYour opponent chooses 2 Benched Pokémon and shuffles the others, and all cards attached to them, into their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+        text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nYou can play this card only if your Active Pokémon is a [W] or [M] Pokémon.\nYour opponent chooses 2 Benched Pokémon and shuffles the others, and all cards attached to them, into their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+        // This card was erratad, old version reads: You can’t play this card if you don’t have any [W] or [M] Pokémon in play.
         onPlay {
           def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.bench, "Opponent played Cyrus. Select 2 pokemon to keep on your bench. Rest will be shuffled to your deck", 2)
           opp.bench.findAll{!list.contains(it)}.each{
@@ -2896,7 +2897,7 @@ public enum UltraPrism implements CardInfo {
           }
         }
         playRequirement{
-          assert my.all.findAll{it.types.contains(W) || it.types.contains(M)} : "You don’t have any [W] or [M] Pokémon in play"
+          assert my.active.types.contains(W) || my.active.types.contains(M) : "Your Active Pokémon needs to be [W] or [M]. (The card text was officially changed)"
           assert opp.bench.size() > 2 : "Opponent needs to have more than 2 benched Pokemon"
         }
       };
@@ -3234,7 +3235,7 @@ public enum UltraPrism implements CardInfo {
           }
           onAttack {
             gxPerform()
-            def card = opp.hand.select("Opponent's hand. Put one card as opponent prize")
+            def card = opp.hand.select("Opponent's hand. Put one card as opponent prize").showToOpponent("This card from your hand is now in your prizes").first()
             opp.hand.remove(card)
             opp.prizeCardSet.add(card)
           }

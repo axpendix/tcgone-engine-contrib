@@ -677,6 +677,7 @@ public enum SunMoonPromos implements CardInfo {
                 def to = tar.select("To?")
                 from.damage -= hp(10)
                 to.damage += hp(10)
+                bc "Moved a damage counter from $from to $to"
                 checkFaint()
               }
 						}

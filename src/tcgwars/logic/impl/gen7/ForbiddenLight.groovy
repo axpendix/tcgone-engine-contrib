@@ -875,10 +875,10 @@ public enum ForbiddenLight implements CardInfo {
 					text "Once during your turn (before your attack), you may discard a [W] Energy card from your hand. If you do, your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
 					actionA {
 						checkLastTurn()
-						assert my.hand.filterByEnergyType(W) : "There is [W] energy in your hand"
+						assert my.hand.filterByEnergyType(W) : "There is no [W] energy in your hand"
 						powerUsed()
 						my.hand.filterByEnergyType(W).select().discard()
-						if(opp.bench) sw opp.active, opp.bench.select()
+						if(opp.bench) sw opp.active, opp.bench.oppSelect("New active")
 					}
 				}
 				move "Sauna Blast", {
@@ -887,7 +887,7 @@ public enum ForbiddenLight implements CardInfo {
 					onAttack {
 						damage 100
 						opp.bench.each{
-							damage 20
+							damage 20, it
 						}
 					}
 				}
@@ -1819,10 +1819,10 @@ public enum ForbiddenLight implements CardInfo {
 				bwAbility "Princess’s Cheers", {
 					text "As long as this Pokémon is on your Bench, your [F] Pokémon’s attacks do 20 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
 					delayedA {
-						before APPLY_ATTACK_DAMAGES, {
+						after PROCESS_ATTACK_EFFECTS, {
 							if(ef.attacker.owner == self.owner && self.benched) {
 								bg.dm().each{
-									if(it.from.types.contains(F) && it.notNoEffect && it.dmg.value) {
+									if(it.from.types.contains(F) && it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
 										 bc "Princess’s Cheers +20"
 										 it.dmg += hp(20)
 									}
@@ -2499,8 +2499,9 @@ public enum ForbiddenLight implements CardInfo {
 			return itemCard (this) {
 				text "You can play this card only if your opponent has exactly 3 or 4 Prize cards remaining.\nSearch your deck for up to 2 basic Energy cards and attach them to 1 of your Ultra Beasts. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
 				onPlay {
-					attachEnergyFrom(basic : true, my.deck, my.all.findAll{it.topPokemonCard.cardTypes.is(ULTRA_BEAST)})
-					attachEnergyFrom(basic : true, my.deck, my.all.findAll{it.topPokemonCard.cardTypes.is(ULTRA_BEAST)})
+					def pcs = my.all.findAll{it.topPokemonCard.cardTypes.is(ULTRA_BEAST)}.select("Attach To?")
+					attachEnergyFrom(basic: true, my.deck, pcs)
+					attachEnergyFrom(basic: true, my.deck, pcs)
 				}
 				playRequirement{
 					assert (opp.prizeCardSet.size() == 3 || opp.prizeCardSet.size() == 4) : " Your opponent need to have exactly 3 or 4 Prize cards remaining"
@@ -2703,9 +2704,9 @@ public enum ForbiddenLight implements CardInfo {
 				def eff
 				onPlay {reason->
 					eff = delayed {
-						before APPLY_ATTACK_DAMAGES, {
+						after PROCESS_ATTACK_EFFECTS, {
 							bg.dm().each{
-								if(it.from == self && self.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.notNoEffect && it.dmg.value) {
+								if(it.from == self && it.to.active && it.to.owner != self.owner && self.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.dmg.value) {
 									 bc "Beast Energy +30"
 									 it.dmg += hp(30)
 								}
@@ -2714,11 +2715,12 @@ public enum ForbiddenLight implements CardInfo {
 					}
 				}
 				onRemoveFromPlay {
+					eff.unregister()
 				}
 				onMove {to->
 				}
 				getEnergyTypesOverride{
-						if(self.topPokemonCard.cardTypes.is(ULTRA_BEAST))
+						if(self != null && self.topPokemonCard.cardTypes.is(ULTRA_BEAST))
 								return [[R, D, F, G, W, Y, L, M, P] as Set]
 						else
 								return [[C] as Set]
