@@ -1304,6 +1304,7 @@ public enum BurningShadows implements CardInfo {
 						def list = opp.hand.filterByType(BASIC)
 						if(list){
 							def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
+							opp.hand.remove(card)
 							def pcs = benchPCS(card, OTHER, TargetPlayer.OPPONENT)
 							directDamage(30, pcs, SRC_ABILITY)
 						}

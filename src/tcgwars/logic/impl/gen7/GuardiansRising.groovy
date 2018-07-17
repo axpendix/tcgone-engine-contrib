@@ -2653,8 +2653,11 @@ public enum GuardiansRising implements CardInfo {
 					onAttack {
 						damage 30
 						afterDamage{
-							attachEnergyFrom(basic:true, my.discard, my.bench)
-							attachEnergyFrom(basic:true, my.discard, my.bench)
+							if(my.bench){
+								def pcs = my.bench.select("Attach to?")
+								attachEnergyFrom(basic:true, my.discard, pcs)
+								attachEnergyFrom(basic:true, my.discard, pcs)								
+							}
 						}
 					}
 				}
