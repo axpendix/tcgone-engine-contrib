@@ -52,6 +52,12 @@ public class CardList extends ArrayList<Card> {
 		this.type = CardListType.PERSISTENT
 	}
 
+	public CardList(String persistentName, int initialSize) {
+		super(initialSize)
+		this.persistentName = persistentName
+		this.type = CardListType.PERSISTENT
+	}
+
 	public CardList copy(){
 		return new CardList(this);
 	}
@@ -231,16 +237,13 @@ public class CardList extends ArrayList<Card> {
 	}
 
 	public void addSubList(int from, CardList added){
-		if (this.size() <= from) {
-			throw new IllegalArgumentException();
-		}
 		for (int i=from; i<added.size()+from; i++){
 			this.add(i, added.get(i-from));
 		}
 	}
 
 	public void setSubList(int from, CardList replacement){
-		if (this.size() <= from) {
+		if (this.size() < from) {
 			throw new IllegalArgumentException();
 		}
 		for (int i=from; i<replacement.size()+from; i++){
@@ -374,7 +377,7 @@ public class CardList extends ArrayList<Card> {
 		}
 	}
 	public boolean add(Card e) {
-		e.containerAddTime=System.currentTimeMillis()
+		if(e) e.containerAddTime=System.currentTimeMillis()
 		boolean ret = super.add(e);
 		if (autosort) {
 			Collections.sort(this);
@@ -386,7 +389,7 @@ public class CardList extends ArrayList<Card> {
 			throw new IllegalStateException("Autosort is active, use addAll(c) instead.");
 		}
 		for(e in c){
-			e.containerAddTime=System.currentTimeMillis()
+			if(e) e.containerAddTime=System.currentTimeMillis()
 		}
 		boolean ret = super.addAll(index, c);
 		if (autosort) {
@@ -397,7 +400,7 @@ public class CardList extends ArrayList<Card> {
 	public boolean addAll(Collection<? extends Card> c) {
 		boolean ret = super.addAll(c);
 		for(e in c){
-			e.containerAddTime=System.currentTimeMillis()
+			if(e) e.containerAddTime=System.currentTimeMillis()
 		}
 		if (autosort) {
 			Collections.sort(this);
@@ -412,6 +415,7 @@ public class CardList extends ArrayList<Card> {
 	}
 	public CardList moveTo(params=[:], CardList newLocation){
 		for (Card card : new CardList(this)) {
+			if(card == null) continue;
 			MoveCard effect = new MoveCard(card, newLocation)
 			if(params.hidden)
 				effect.hidden = params.hidden
