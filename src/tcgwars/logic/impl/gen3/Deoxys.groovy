@@ -517,7 +517,7 @@ public enum Deoxys implements CardInfo {
 						assert !(self.specialConditions) : "$self is affected by a Special Condition."
 						assert my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)} : "There is no [P] or [M] Energy card in your discard."
 						powerUsed()
-						attachEnergy(my.active,my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)}.select())
+						attachEnergy(my.active,my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)}.select().first())
 						directDamage 10, my.active
 					}
 				}
@@ -612,17 +612,17 @@ public enum Deoxys implements CardInfo {
 			};
 			case SHEDINJA_14:
 			return evolution (this, from:"Nincada", hp:HP050, type:PSYCHIC, retreatCost:0) {
-				pokeBody "Empty Shell", {
-					text "When Shedinja is Knocked Out, your opponent doesn’t take any Prize cards."
-					delayedA {
-						before TAKE_PRIZE, {
-							bc "Empty Shell : ${ef.pcs}"
-							if(ef.pcs==self){
-									bc "Empty Shell prevent you from taking prize."
-									prevent()
-							}
+				globalAbility {Card thisCard->
+					before TAKE_PRIZE, {
+						if(ef.pcs==thisCard){
+								bc "Empty Shell prevent you from taking prize."
+								prevent()
+								//TODO : turn this into a poké-body (since Ko turns off the pokebody and therefor does not work )
 						}
 					}
+				}
+				pokeBody "Empty Shell", {
+					text "When Shedinja is Knocked Out, your opponent doesn’t take any Prize cards."
 				}
 				move "Extra Curse", {
 					text "Put 2 damage counters on the Defending Pokémon. If the Defending Pokémon is Pokémon-ex, put 4 damage counters instead."
@@ -1087,7 +1087,7 @@ public enum Deoxys implements CardInfo {
 						before APPLY_SPECIAL_CONDITION,self, {
 							bc "Mirror Coat : ${ef.type}"
 							if(ef.type == POISONED || ef.type == BURNED){
-								apply ef.type, self.owner.opposite.pbg.active.basic
+								apply ef.type, self.owner.opposite.pbg.active
 							}
 						}
 					}
