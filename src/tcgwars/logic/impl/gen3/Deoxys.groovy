@@ -515,7 +515,7 @@ public enum Deoxys implements CardInfo {
 					actionA {
 						checkLastTurn()
 						assert !(self.specialConditions) : "$self is affected by a Special Condition."
-						assert my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(P,M) : "There is no [P] or [M] Energy card in your discard."
+						assert my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)} : "There is no [P] or [M] Energy card in your discard."
 						powerUsed()
 						attachEnergy(my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)}.select().first(),my.active)
 						directDamage 10, my.active
@@ -547,7 +547,7 @@ public enum Deoxys implements CardInfo {
 						assert my.deck
 					}
 					onAttack {
-						my.deck.search(max:1,"Select 1 card",{true})
+						my.deck.search(max:1,"Select 1 card",{true}).moveTo(my.hand)
 						shuffleDeck()
 					}
 				}
@@ -558,7 +558,7 @@ public enum Deoxys implements CardInfo {
 					onAttack {
 						damage 30
 						if(opp.hand.size() >= 5){
-							opp.hand.oppSelect(max : opp.hand.size() - 4,"Select the card to discard").discard()
+							opp.hand.oppSelect(max : opp.hand.size() - 4,min : opp.hand.size() - 4,"Select the card to discard").discard()
 						}
 					}
 				}
@@ -616,6 +616,7 @@ public enum Deoxys implements CardInfo {
 					text "When Shedinja is Knocked Out, your opponent doesn’t take any Prize cards."
 					delayedA {
 						before TAKE_PRIZE, {
+							bc "${ef.pcs}"
 							if(ef.pcs==self){
 									bc "Empty Shell prevent you from taking prize."
 									prevent()
@@ -660,7 +661,7 @@ public enum Deoxys implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						amnesia(delegate)
+						amnesia delegate
 					}
 				}
 				move "Lazy Headbutt", {
@@ -689,8 +690,8 @@ public enum Deoxys implements CardInfo {
 						bg.em().storeObject("Form_Change",bg.turnCount)
 						def deoxys = self.topPokemonCard
 						if(my.deck.findAll{it.name.contains("Deoxys")}){
-							my.deck.findAll{it.name.contains("Deoxys")}.select().moveTo(self.cards)
-							deoxys.moveTo(my.deck)
+							my.deck.search{it.name.contains("Deoxys")}.select().moveTo(self.cards)
+							my.deck.add(deoxys)
 							shuffleDeck()
 							checkFaint()
 						}
@@ -720,7 +721,7 @@ public enum Deoxys implements CardInfo {
 						def deoxys = self.topPokemonCard
 						if(my.deck.findAll{it.name.contains("Deoxys")}){
 							my.deck.findAll{it.name.contains("Deoxys")}.select().moveTo(self.cards)
-							deoxys.moveTo(my.deck)
+							my.deck.add(deoxys)
 							shuffleDeck()
 							checkFaint()
 						}
@@ -754,7 +755,7 @@ public enum Deoxys implements CardInfo {
 						def deoxys = self.topPokemonCard
 						if(my.deck.findAll{it.name.contains("Deoxys")}){
 							my.deck.findAll{it.name.contains("Deoxys")}.select().moveTo(self.cards)
-							deoxys.moveTo(my.deck)
+							my.deck.add(deoxys)
 							shuffleDeck()
 							checkFaint()
 						}
@@ -843,11 +844,13 @@ public enum Deoxys implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						before APPLY_ATTACK_DAMAGES, {
-							bg.dm().each{
-								if(it.from.owner == self.owner && it.notNoEffect && it.dmg.value) {
-									bc "Bay Dance +30"
-									it.dmg += hp(20)
+						delayed{
+							before APPLY_ATTACK_DAMAGES, {
+								bg.dm().each{
+									if(it.from.owner == self.owner && it.notNoEffect && it.dmg.value) {
+										bc "Bay Dance +30"
+										it.dmg += hp(30)
+									}
 								}
 							}
 							unregisterAfter 3
@@ -1072,12 +1075,7 @@ public enum Deoxys implements CardInfo {
 					text "If Xatu is Burned or Poisoned by an opponent’s attack (even if Xatu is Knocked Out), the Attacking Pokémon is now affected by the same Special Conditions (1 if there is only 1)."
 					delayedA {
 						after APPLY_SPECIAL_CONDITION,self, {
-							if(ef.type.contains(BURNED)){
-								apply BURNED, defending
-							}
-							if(ef.type.contains(POISONED)){
-								apply POISONED, defending
-							}
+							bc "${ef.type}$"
 						}
 					}
 				}
