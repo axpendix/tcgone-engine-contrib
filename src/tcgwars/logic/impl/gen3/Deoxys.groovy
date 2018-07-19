@@ -517,7 +517,7 @@ public enum Deoxys implements CardInfo {
 						assert !(self.specialConditions) : "$self is affected by a Special Condition."
 						assert my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)} : "There is no [P] or [M] Energy card in your discard."
 						powerUsed()
-						attachEnergy(my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)}.select(),my.active)
+						attachEnergy(my.active,my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)}.select())
 						directDamage 10, my.active
 					}
 				}
@@ -1086,6 +1086,9 @@ public enum Deoxys implements CardInfo {
 					delayedA {
 						before APPLY_SPECIAL_CONDITION,self, {
 							bc "Mirror Coat : ${ef.type}"
+							if(ef.type == POISONED || ef.type == BURNED){
+								apply ef.type, self.owner.opposite.pbg.active.basic
+							}
 						}
 					}
 				}
