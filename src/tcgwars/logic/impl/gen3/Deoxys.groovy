@@ -1075,7 +1075,7 @@ public enum Deoxys implements CardInfo {
 					text "If Xatu is Burned or Poisoned by an opponent’s attack (even if Xatu is Knocked Out), the Attacking Pokémon is now affected by the same Special Conditions (1 if there is only 1)."
 					delayedA {
 						after APPLY_SPECIAL_CONDITION,self, {
-							bc "${ef.type}$"
+							bc "${ef.type}"
 						}
 					}
 				}
