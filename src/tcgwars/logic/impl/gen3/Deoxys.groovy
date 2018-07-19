@@ -688,8 +688,8 @@ public enum Deoxys implements CardInfo {
 						powerUsed()
 						bg.em().storeObject("Form_Change",bg.turnCount)
 						def deoxys = self.topPokemonCard
-						if(my.deck.findAll{it.names.contains("Deoxys")}){
-							my.deck.findAll{it.names.contains("Deoxys")}.select().moveTo(self.cards)
+						if(my.deck.findAll{it.name.contains("Deoxys")}){
+							my.deck.findAll{it.name.contains("Deoxys")}.select().moveTo(self.cards)
 							deoxys.moveTo(my.deck)
 							shuffleDeck()
 							checkFaint()
@@ -807,8 +807,7 @@ public enum Deoxys implements CardInfo {
 						assert !(self.specialConditions) : "$self is affected by a Special Condition"
 						assert my.deck : "There is no card in your deck"
 						powerUsed()
-						def tar = my.deck.search(max:1,"Select 1 card",{true})
-						my.deck.remove(tar)
+						def tar = my.deck.search(max:1,"Select 1 card",{true}).each{my.deck.remove(it)}
 						shuffleDeck()
 						my.deck.addAll(0, tar)
 					}
@@ -844,8 +843,15 @@ public enum Deoxys implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						increasedBaseDamageNextTurn("Bay Dance",hp(30))
-						increasedBaseDamageNextTurn("Aqua Sonic",hp(30))
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each{
+								if(it.from.owner == self.owner && it.notNoEffect && it.dmg.value) {
+									bc "Bay Dance +30"
+									it.dmg += hp(20)
+								}
+							}
+							unregisterAfter 3
+						}
 					}
 				}
 				move "Aqua Sonic", {
@@ -931,7 +937,7 @@ public enum Deoxys implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						multiSelect(opp.bench, 3).each{
+						multiSelect(opp.all, 3).each{
 							targeted(it){
 								damage 10, it
 							}
