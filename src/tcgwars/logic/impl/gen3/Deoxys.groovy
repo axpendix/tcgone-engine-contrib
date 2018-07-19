@@ -517,7 +517,7 @@ public enum Deoxys implements CardInfo {
 						assert !(self.specialConditions) : "$self is affected by a Special Condition."
 						assert my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)} : "There is no [P] or [M] Energy card in your discard."
 						powerUsed()
-						attachEnergy(my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)}.select().first(),my.active)
+						attachEnergy(my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)}.select(),my.active)
 						directDamage 10, my.active
 					}
 				}
@@ -616,7 +616,7 @@ public enum Deoxys implements CardInfo {
 					text "When Shedinja is Knocked Out, your opponent doesn’t take any Prize cards."
 					delayedA {
 						before TAKE_PRIZE, {
-							bc "${ef.pcs}"
+							bc "Empty Shell : ${ef.pcs}"
 							if(ef.pcs==self){
 									bc "Empty Shell prevent you from taking prize."
 									prevent()
@@ -690,8 +690,9 @@ public enum Deoxys implements CardInfo {
 						bg.em().storeObject("Form_Change",bg.turnCount)
 						def deoxys = self.topPokemonCard
 						if(my.deck.findAll{it.name.contains("Deoxys")}){
-							my.deck.search{it.name.contains("Deoxys")}.select().moveTo(self.cards)
+							my.deck.search{it.name.contains("Deoxys")}.moveTo(self.cards)
 							my.deck.add(deoxys)
+							self.cards.remove(deoxys)
 							shuffleDeck()
 							checkFaint()
 						}
@@ -702,7 +703,12 @@ public enum Deoxys implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 40
+						if(self.cards.energyCount(C) == defending.cards.energyCount(C)){
+							damage 40
+						}
+						else{
+							damage 20
+						}
 					}
 				}
 
@@ -720,8 +726,9 @@ public enum Deoxys implements CardInfo {
 						bg.em().storeObject("Form_Change",bg.turnCount)
 						def deoxys = self.topPokemonCard
 						if(my.deck.findAll{it.name.contains("Deoxys")}){
-							my.deck.findAll{it.name.contains("Deoxys")}.select().moveTo(self.cards)
+							my.deck.search{it.name.contains("Deoxys")}.moveTo(self.cards)
 							my.deck.add(deoxys)
+							self.cards.remove(deoxys)
 							shuffleDeck()
 							checkFaint()
 						}
@@ -754,8 +761,9 @@ public enum Deoxys implements CardInfo {
 						bg.em().storeObject("Form_Change",bg.turnCount)
 						def deoxys = self.topPokemonCard
 						if(my.deck.findAll{it.name.contains("Deoxys")}){
-							my.deck.findAll{it.name.contains("Deoxys")}.select().moveTo(self.cards)
+							my.deck.search{it.name.contains("Deoxys")}.moveTo(self.cards)
 							my.deck.add(deoxys)
+							self.cards.remove(deoxys)
 							shuffleDeck()
 							checkFaint()
 						}
@@ -844,16 +852,18 @@ public enum Deoxys implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-						delayed{
-							before APPLY_ATTACK_DAMAGES, {
-								bg.dm().each{
-									if(it.from.owner == self.owner && it.notNoEffect && it.dmg.value) {
-										bc "Bay Dance +30"
-										it.dmg += hp(30)
+						afterDamage{
+							delayed{
+								before APPLY_ATTACK_DAMAGES, {
+									bg.dm().each{
+										if(it.from.owner == self.owner && it.notNoEffect && it.dmg.value) {
+											bc "Bay Dance +30"
+											it.dmg += hp(30)
+										}
 									}
 								}
+								unregisterAfter 3
 							}
-							unregisterAfter 3
 						}
 					}
 				}
@@ -1074,8 +1084,8 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Mirror Coat", {
 					text "If Xatu is Burned or Poisoned by an opponent’s attack (even if Xatu is Knocked Out), the Attacking Pokémon is now affected by the same Special Conditions (1 if there is only 1)."
 					delayedA {
-						after APPLY_SPECIAL_CONDITION,self, {
-							bc "${ef.type}"
+						before APPLY_SPECIAL_CONDITION,self, {
+							bc "Mirror Coat : ${ef.type}"
 						}
 					}
 				}
