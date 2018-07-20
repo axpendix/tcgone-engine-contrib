@@ -613,11 +613,13 @@ public enum Deoxys implements CardInfo {
 			case SHEDINJA_14:
 			return evolution (this, from:"Nincada", hp:HP050, type:PSYCHIC, retreatCost:0) {
 				globalAbility {Card thisCard->
-					before TAKE_PRIZE, {
-						if(ef.pcs==thisCard){
-								bc "Empty Shell prevent you from taking prize."
-								prevent()
-								//TODO : turn this into a poké-body (since Ko turns off the pokebody and therefor does not work )
+					delayed{
+						before TAKE_PRIZE, {
+							if(ef.pcs==thisCard){
+									bc "Empty Shell prevent you from taking prize."
+									prevent()
+									//TODO : turn this into a poké-body (since Ko turns off the pokebody and therefor does not work )
+							}
 						}
 					}
 				}
@@ -1149,9 +1151,9 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Self-control", {
 					text "Golbat can’t be Paralyzed."
 					delayedA {
-						after APPLY_SPECIAL_CONDITION,self, {
-							if(ef.types.contains(PARALYZED)){
-								clearSpecialCondition(self,SRC_ABILITY, [PARALYZED])
+						before APPLY_SPECIAL_CONDITION,self, {
+							if(ef.type == PARALYZED){
+								prevent()
 							}
 						}
 					}
@@ -1173,9 +1175,9 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Carefree", {
 					text "Grumpig can’t be Confused."
 					delayedA {
-						after APPLY_SPECIAL_CONDITION,self, {
-							if(ef.types.contains(CONFUSED)){
-								clearSpecialCondition(self,SRC_ABILITY, [CONFUSED])
+						before APPLY_SPECIAL_CONDITION,self, {
+							if(ef.type == CONFUSED){
+								prevent()
 							}
 						}
 					}
@@ -1228,7 +1230,7 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Natural Cure", {
 					text "When you attach a [W] Energy card from your hand to Lombre, remove all Special Conditions from Lombre."
 					delayedA {
-						after ATTACH_ENERGY, self {
+						after ATTACH_ENERGY, self, {
 							if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == W){
 								clearSpecialCondition(self,Source.SRC_ABILITY)
 							}
@@ -1269,9 +1271,9 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Moonglow", {
 					text "The Retreat Cost for each Solrock you have in play is 0."
 					getterA (GET_RETREAT_COST, BEFORE_LAST) {holder->
-						def pcs = h.effect.target
+						def pcs = holder.effect.target
 						if(pcs.name == "Solrock"){
-							h.object = 0
+							holder.object = 0
 						}
 					}
 				}
@@ -1419,6 +1421,7 @@ public enum Deoxys implements CardInfo {
 					onAttack {
 						def hasPokeBody = false
 						opp.all.each{
+							hasPokeBody = false
 							for (Ability ability : it.getAbilities().keySet()) {
 								if (ability instanceof PokeBody) hasPokeBody = true;
 							}
@@ -1500,10 +1503,11 @@ public enum Deoxys implements CardInfo {
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						def hasPokeBody = false
+						def hasPokePower = false
 						opp.all.each{
+							hasPokePower = false
 							for (Ability ability : it.getAbilities().keySet()) {
-								if (ability instanceof PokeBody) hasPokeBody = true;
+								if (ability instanceof PokePower) hasPokePower = true;
 							}
 							if(hasPokeBody) noWrDamage 20,it
 						}
@@ -1555,18 +1559,19 @@ public enum Deoxys implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						before APPLY_ATTACK_DAMAGES, {
-							bg.dm().each{
-								if(it.from.evolution && it.to == self) {
-									bc "Advanced Armor prevent damage"
-									it.dmg = hp(0)
+						delayed{
+							before APPLY_ATTACK_DAMAGES, {
+								bg.dm().each{
+									if(it.from.evolution && it.to == self) {
+										bc "Advanced Armor prevent damage"
+										it.dmg = hp(0)
+									}
 								}
 							}
 							unregisterAfter 2
 						}
 					}
 				}
-
 			};
 			case SOLROCK_47:
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
@@ -1591,7 +1596,7 @@ public enum Deoxys implements CardInfo {
 					text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon for each Lunatone you have in play. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost P
 					attackRequirement {
-						assert opp.benched : "There is no Pokémon on your opponent's bench."
+						assert opp.bench : "There is no Pokémon on your opponent's bench."
 					}
 					onAttack {
 						def pcs = opp.bench.select("Select the Pokémon to attack.")
@@ -1622,7 +1627,7 @@ public enum Deoxys implements CardInfo {
 					text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) You may move an Energy attached to that Pokémon to another of your opponent’s Pokémon."
 					energyCost W
 					attackRequirement {
-						assert opp.benched : "There is no Pokémon on your opponent's bench."
+						assert opp.bench : "There is no Pokémon on your opponent's bench."
 					}
 					onAttack {
 						def pcs = opp.bench.select("Select the Pokémon to attack.")
@@ -1655,8 +1660,10 @@ public enum Deoxys implements CardInfo {
 					onAttack {
 						def pcs = opp.all.select("Select the Pokémon to attack.")
 						damage 20, pcs
-						if(pcs.cards.energyCount(C)){
-							pcs.cards.filterByType(ENERGY).oppSelect("Select the Energy to discard.").discard()
+						afterDamage{
+							if(pcs.cards.energyCount(C)){
+								flip {pcs.cards.filterByType(ENERGY).oppSelect("Select the Energy to discard.").discard()}
+							}
 						}
 					}
 				}
@@ -2434,9 +2441,9 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Self-control", {
 					text "Zubat can’t be Paralyzed."
 					delayedA {
-						after APPLY_SPECIAL_CONDITION,self, {
-							if(ef.types.contains(PARALYZED)){
-								clearSpecialCondition(self,SRC_ABILITY, [PARALYZED])
+						before APPLY_SPECIAL_CONDITION,self, {
+							if(ef.type == PARALYZED){
+								prevent()
 							}
 						}
 					}
