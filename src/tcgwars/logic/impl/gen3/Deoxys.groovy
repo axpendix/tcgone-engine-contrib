@@ -612,19 +612,16 @@ public enum Deoxys implements CardInfo {
 			};
 			case SHEDINJA_14:
 			return evolution (this, from:"Nincada", hp:HP050, type:PSYCHIC, retreatCost:0) {
-				globalAbility {Card thisCard->
-					delayed{
-						before TAKE_PRIZE, {
-							if(ef.pcs==thisCard){
-									bc "Empty Shell prevent you from taking prize."
-									prevent()
-									//TODO : turn this into a poké-body (since Ko turns off the pokebody and therefor does not work )
-							}
-						}
-					}
-				}
+
 				pokeBody "Empty Shell", {
 					text "When Shedinja is Knocked Out, your opponent doesn’t take any Prize cards."
+					delayedA {
+						before KNOCKOUT, self, {
+								def eff=blockingEffect(TAKE_PRIZE)
+								eff.unregisterImmediately=true
+								bc "Empty Shell blocks taking a prize card"
+						}
+					}
 				}
 				move "Extra Curse", {
 					text "Put 2 damage counters on the Defending Pokémon. If the Defending Pokémon is Pokémon-ex, put 4 damage counters instead."
@@ -1153,6 +1150,7 @@ public enum Deoxys implements CardInfo {
 					delayedA {
 						before APPLY_SPECIAL_CONDITION,self, {
 							if(ef.type == PARALYZED){
+								bc "$self Self-control pervent it to be Paralyzed"
 								prevent()
 							}
 						}
@@ -1176,6 +1174,7 @@ public enum Deoxys implements CardInfo {
 					text "Grumpig can’t be Confused."
 					delayedA {
 						before APPLY_SPECIAL_CONDITION,self, {
+							bc "$self Carefree pervent it to be Confused"
 							if(ef.type == CONFUSED){
 								prevent()
 							}
@@ -1509,7 +1508,7 @@ public enum Deoxys implements CardInfo {
 							for (Ability ability : it.getAbilities().keySet()) {
 								if (ability instanceof PokePower) hasPokePower = true;
 							}
-							if(hasPokeBody) noWrDamage 20,it
+							if(hasPokePower) noWrDamage 20,it
 						}
 					}
 				}
@@ -1601,7 +1600,7 @@ public enum Deoxys implements CardInfo {
 					onAttack {
 						def pcs = opp.bench.select("Select the Pokémon to attack.")
 						my.all.each{
-							if(it.name == "Lunatone") damage 10
+							if(it.name == "Lunatone") damage 10, pcs
 						}
 					}
 				}
