@@ -35,7 +35,7 @@ import tcgwars.logic.util.*;
  * @author axpendix@hotmail.com
  */
 public enum Emerald implements CardInfo {
-	
+
 	BLAZIKEN_1 ("Blaziken", 1, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
 	DEOXYS_2 ("Deoxys", 2, Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
 	EXPLOUD_3 ("Exploud", 3, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
@@ -143,9 +143,9 @@ public enum Emerald implements CardInfo {
 	PSYCHIC_ENERGY_105 ("Psychic Energy", 105, Rarity.RARE, [BASIC_ENERGY, ENERGY]),
 	FIGHTING_ENERGY_106 ("Fighting Energy", 106, Rarity.RARE, [BASIC_ENERGY, ENERGY]),
 	FARFETCH_D_107 ("Farfetch'd", 107, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]);
-	
+
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS;
-	
+
 	protected CardTypeSet cardTypes;
 	protected String name;
 	protected Rarity rarity;
@@ -202,6 +202,14 @@ public enum Emerald implements CardInfo {
 				pokeBody "Blaze", {
 					text "As long as Blaziken’s remaining HP is 40 or less, Blaziken does 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each{
+								if(it.from == self && it.to == self.owner.opposite.pbg.active && self.getRemainingHP().value <= 40) {
+									bc "Blaze +40"
+									it.dmg += hp(40)
+								}
+							}
+						}
 					}
 				}
 				move "Searing Flame", {
@@ -209,7 +217,10 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						afterDamage{
+							apply BURNED
+						}
 					}
 				}
 				move "Damage Burn", {
@@ -217,10 +228,11 @@ public enum Emerald implements CardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						if(defending.numberOfDamageCounters) damage 20
 					}
 				}
-				
+
 			};
 			case DEOXYS_2:
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
@@ -228,6 +240,19 @@ public enum Emerald implements CardInfo {
 				pokePower "Form Change", {
 					text "Once during your turn (before your attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
 					actionA {
+						checkLastTurn()
+						assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
+						assert my.deck : "There is no card in your deck"
+						powerUsed()
+						bg.em().storeObject("Form_Change",bg.turnCount)
+						def deoxys = self.topPokemonCard
+						if(my.deck.findAll{it.name.contains("Deoxys")}){
+							my.deck.search{it.name.contains("Deoxys")}.moveTo(self.cards)
+							my.deck.add(deoxys)
+							self.cards.remove(deoxys)
+							shuffleDeck()
+							checkFaint()
+						}
 					}
 				}
 				move "Swift", {
@@ -235,10 +260,10 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						swiftDamage(30, defending)
 					}
 				}
-				
+
 			};
 			case EXPLOUD_3:
 			return evolution (this, from:"Loudred", hp:HP120, type:COLORLESS, retreatCost:2) {
@@ -248,7 +273,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						draw 3
 					}
 				}
 				move "Body Slam", {
@@ -256,7 +281,8 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Hyper Voice", {
@@ -264,7 +290,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
 				move "Mega Throw", {
@@ -272,10 +298,11 @@ public enum Emerald implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						if(defending.pokemonEX) damage 40
 					}
 				}
-				
+
 			};
 			case GARDEVOIR_4:
 			return evolution (this, from:"Kirlia", hp:HP100, type:PSYCHIC, retreatCost:2) {
@@ -283,6 +310,12 @@ public enum Emerald implements CardInfo {
 				pokePower "Heal Dance", {
 					text "Once during your turn (before your attack), you may remove 2 damage counter from 1 of your Pokémon. You can’t use more than 1 Heal Dance Poké-Power each turn. This power can’t be used if Gardevoir is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						assert bg.em().retrieveObject("Heal_Dance") != bg.turnCount : "You cannot use Heal Dance more than once per turn!"
+						assert !(self.specialConditions) : "$self is affected by a Special Condition."
+						assert my.all.find{it.numberOfDamageCounters} : "There is no pokémon to heal"
+						bg.em().storeObject("Heal_Dance",bg.turnCount)
+						heal 20, my.all.findAll{it.numberOfDamageCounters}.select("Remove 2 damage counter from 1 of those Pokémon")
 					}
 				}
 				move "Psypunch", {
@@ -290,7 +323,7 @@ public enum Emerald implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Mind Shock", {
@@ -298,10 +331,10 @@ public enum Emerald implements CardInfo {
 					energyCost P, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						noWrDamage 60, defending
 					}
 				}
-				
+
 			};
 			case GROUDON_5:
 			return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
@@ -311,7 +344,7 @@ public enum Emerald implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Rock Tumble", {
@@ -319,10 +352,10 @@ public enum Emerald implements CardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						noWrDamage 40, defending
 					}
 				}
-				
+
 			};
 			case KYOGRE_6:
 			return basic (this, hp:HP080, type:WATER, retreatCost:2) {
@@ -332,7 +365,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Aqua Sonic", {
@@ -340,10 +373,11 @@ public enum Emerald implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						dontApplyResistance()
 					}
 				}
-				
+
 			};
 			case MANECTRIC_7:
 			return evolution (this, from:"Electrike", hp:HP080, type:LIGHTNING, retreatCost:1) {
@@ -354,7 +388,7 @@ public enum Emerald implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						swiftDamage(20,defending)
 					}
 				}
 				move "Tail Shock", {
@@ -362,10 +396,11 @@ public enum Emerald implements CardInfo {
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						opp.bench.each{damage 10, it}
 					}
 				}
-				
+
 			};
 			case MILOTIC_8:
 			return evolution (this, from:"Feebas", hp:HP090, type:WATER, retreatCost:2) {
@@ -375,7 +410,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Super Hypno Wave", {
@@ -383,10 +418,11 @@ public enum Emerald implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						flipThenApplySC ASLEEP
 					}
 				}
-				
+
 			};
 			case RAYQUAZA_9:
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:2) {
@@ -396,7 +432,17 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						delayed{
+							before APPLY_ATTACK_DAMAGES, {
+								bg.dm().each{
+									if(it.from.owner == self.owner && it.notNoEffect && it.dmg.value) {
+										bc "Dragon Dance +30"
+										it.dmg += hp(30)
+									}
+								}
+							}
+							unregisterAfter 3
+						}
 					}
 				}
 				move "Dragon Claw", {
@@ -404,10 +450,10 @@ public enum Emerald implements CardInfo {
 					energyCost R, L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
-				
+
 			};
 			case SCEPTILE_10:
 			return evolution (this, from:"Grovyle", hp:HP100, type:GRASS, retreatCost:2) {
@@ -416,6 +462,13 @@ public enum Emerald implements CardInfo {
 				pokeBody "Green Essence", {
 					text "As long as Sceptile is in play, each of your Active Pokémon that has [G] Energy attached to it can’t be affected by any Special Conditions."
 					delayedA {
+						before APPLY_SPECIAL_CONDITION, {
+							def pcs=e.getTarget(bg)
+							if(pcs.owner==self.owner && pcs.cards.energyCount(G)){
+								bc "Green Essence prevents special conditions"
+								prevent()
+							}
+						}
 					}
 				}
 				move "Razor Leaf", {
@@ -423,7 +476,7 @@ public enum Emerald implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Swift", {
@@ -431,10 +484,10 @@ public enum Emerald implements CardInfo {
 					energyCost G, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						swiftDamage(60,defending)
 					}
 				}
-				
+
 			};
 			case SWAMPERT_11:
 			return evolution (this, from:"Marshtomp", hp:HP110, type:WATER, retreatCost:2) {
@@ -442,6 +495,15 @@ public enum Emerald implements CardInfo {
 				pokePower "Water Cyclone", {
 					text "As often as you like during your turn (before your attack), you may move a [W] Energy attached to 1 of your Active Pokémon to 1 of your Benched Pokémon. This power can’t be used if Swampert is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						assert !(self.specialConditions) : "$self is affected by a Special Condition"
+						assert my.active.energyCount(W)>0 : "No [W] Energy is attached to ${my.active}"
+						assert my.bench : "There is no Benched Pokémon"
+						powerUsed()
+						def card=src.cards.filterByEnergyType(W).select("Card to move").first()
+						def tar=my.bench
+						tar=tar.select("Target for [W]")
+						energySwitch(my.active, tar, card)
 					}
 				}
 				move "Spinning Tail", {
@@ -449,7 +511,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						opp.all.each{damage 10,it}
 					}
 				}
 				move "Aqua Sonic", {
@@ -457,10 +519,11 @@ public enum Emerald implements CardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						dontApplyResistance()
 					}
 				}
-				
+
 			};
 			case CHIMECHO_12:
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
@@ -470,7 +533,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						draw 1
 					}
 				}
 				move "Warp Sounds", {
@@ -478,10 +541,11 @@ public enum Emerald implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(defending.evolved) applyAfterDamage CONFUSED
 					}
 				}
-				
+
 			};
 			case GLALIE_13:
 			return evolution (this, from:"Snorunt", hp:HP080, type:WATER, retreatCost:1) {
@@ -491,7 +555,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						opp.all.each{damage 10,it}
 					}
 				}
 				move "Super Slash", {
@@ -499,10 +563,11 @@ public enum Emerald implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						if(defending.evolved) damage 20
 					}
 				}
-				
+
 			};
 			case GROUDON_14:
 			return basic (this, hp:HP080, type:FIGHTING, retreatCost:2) {
@@ -512,7 +577,7 @@ public enum Emerald implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Eruption", {
@@ -520,10 +585,16 @@ public enum Emerald implements CardInfo {
 					energyCost F, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						if(opp.deck){
+							if(opp.deck.subList(0,1).discard().cardTypes.is(ENERGY)) damage 10
+						}
+						if(my.deck){
+							if(my.deck.subList(0,1).discard().cardTypes.is(ENERGY)) damage 10
+						}
 					}
 				}
-				
+
 			};
 			case KYOGRE_15:
 			return basic (this, hp:HP080, type:WATER, retreatCost:2) {
@@ -533,7 +604,10 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{
+							cantRetreat defending
+							cantAttackNextTurn defending
+						}
 					}
 				}
 				move "Hydro Pump", {
@@ -541,10 +615,11 @@ public enum Emerald implements CardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						extraEnergyDamage(2,hp(10),W,thisMove)
 					}
 				}
-				
+
 			};
 			case MANECTRIC_16:
 			return evolution (this, from:"Electrike", hp:HP070, type:LIGHTNING, retreatCost:1) {
@@ -555,7 +630,8 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flipThenApplySC CONFUSED
 					}
 				}
 				move "Zap Kick", {
@@ -563,10 +639,10 @@ public enum Emerald implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
-				
+
 			};
 			case NOSEPASS_17:
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
@@ -576,7 +652,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						draw 1
 					}
 				}
 				move "Wide Laser", {
@@ -584,10 +660,10 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						opp.all.each{damage 10}
 					}
 				}
-				
+
 			};
 			case RELICANTH_18:
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
@@ -597,7 +673,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Hypno Splash", {
@@ -605,10 +681,11 @@ public enum Emerald implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						applyAfterDamage ASLEEP
 					}
 				}
-				
+
 			};
 			case RHYDON_19:
 			return evolution (this, from:"Rhyhorn", hp:HP090, type:FIGHTING, retreatCost:2) {
@@ -618,7 +695,7 @@ public enum Emerald implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Rock Tumble", {
@@ -626,10 +703,11 @@ public enum Emerald implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						dontApplyResistance()
 					}
 				}
-				
+
 			};
 			case SEVIPER_20:
 			return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
@@ -639,7 +717,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Bite Off", {
@@ -647,10 +725,11 @@ public enum Emerald implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						if(defending.pokemonEX) damage 30
 					}
 				}
-				
+
 			};
 			case ZANGOOSE_21:
 			return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
@@ -660,7 +739,8 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						if(defending.pokemonEX) damage 20
 					}
 				}
 				move "Quick Attack", {
@@ -668,10 +748,11 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {damage 10}
 					}
 				}
-				
+
 			};
 			case BRELOOM_22:
 			return evolution (this, from:"Shroomish", hp:HP080, type:GRASS, retreatCost:1) {
@@ -692,7 +773,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CAMERUPT_23:
 			return evolution (this, from:"Numel", hp:HP080, type:FIRE, retreatCost:2) {
@@ -713,7 +794,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CLAYDOL_24:
 			return evolution (this, from:"Baltoy", hp:HP080, type:FIGHTING, retreatCost:2) {
@@ -731,7 +812,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case COMBUSKEN_25:
 			return evolution (this, from:"Torchic", hp:HP070, type:FIRE, retreatCost:1) {
@@ -752,7 +833,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case DODRIO_26:
 			return evolution (this, from:"Doduo", hp:HP070, type:COLORLESS, retreatCost:1) {
@@ -774,7 +855,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ELECTRODE_27:
 			return evolution (this, from:"Voltorb", hp:HP070, type:LIGHTNING, retreatCost:1) {
@@ -795,7 +876,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case GROVYLE_28:
 			return evolution (this, from:"Treecko", hp:HP070, type:GRASS, retreatCost:1) {
@@ -817,7 +898,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case GRUMPIG_29:
 			return evolution (this, from:"Spoink", hp:HP080, type:PSYCHIC, retreatCost:2) {
@@ -838,7 +919,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case GRUMPIG_30:
 			return evolution (this, from:"Spoink", hp:HP070, type:PSYCHIC, retreatCost:1) {
@@ -859,7 +940,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case HARIYAMA_31:
 			return evolution (this, from:"Makuhita", hp:HP080, type:FIGHTING, retreatCost:1) {
@@ -880,7 +961,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ILLUMISE_32:
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
@@ -901,7 +982,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case KIRLIA_33:
 			return evolution (this, from:"Ralts", hp:HP070, type:PSYCHIC, retreatCost:1) {
@@ -922,7 +1003,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case LINOONE_34:
 			return evolution (this, from:"Zigzagoon", hp:HP070, type:COLORLESS, retreatCost:0) {
@@ -943,7 +1024,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case LOUDRED_35:
 			return evolution (this, from:"Whismur", hp:HP080, type:COLORLESS, retreatCost:2) {
@@ -964,7 +1045,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MARSHTOMP_36:
 			return evolution (this, from:"Mudkip", hp:HP070, type:WATER, retreatCost:1) {
@@ -985,7 +1066,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MINUN_37:
 			return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
@@ -1004,7 +1085,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case NINETALES_38:
 			return evolution (this, from:"Vulpix", hp:HP080, type:FIRE, retreatCost:1) {
@@ -1025,7 +1106,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PLUSLE_39:
 			return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
@@ -1047,7 +1128,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SWALOT_40:
 			return evolution (this, from:"Gulpin", hp:HP080, type:GRASS, retreatCost:2) {
@@ -1068,7 +1149,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SWELLOW_41:
 			return evolution (this, from:"Taillow", hp:HP070, type:COLORLESS, retreatCost:0) {
@@ -1090,7 +1171,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case VOLBEAT_42:
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
@@ -1111,7 +1192,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case BALTOY_43:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1132,7 +1213,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CACNEA_44:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1145,7 +1226,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case DODUO_45:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
@@ -1159,7 +1240,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case DUSKULL_46:
 			return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
@@ -1173,7 +1254,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ELECTRIKE_47:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
@@ -1187,7 +1268,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ELECTRIKE_48:
 			return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
@@ -1209,7 +1290,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case FEEBAS_49:
 			return basic (this, hp:HP030, type:WATER, retreatCost:1) {
@@ -1227,7 +1308,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case FEEBAS_50:
 			return basic (this, hp:HP030, type:WATER, retreatCost:1) {
@@ -1240,7 +1321,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case GULPIN_51:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1261,7 +1342,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case LARVITAR_52:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1274,7 +1355,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case LUVDISC_53:
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -1295,7 +1376,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MAKUHITA_54:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1308,7 +1389,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MEDITITE_55:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1329,7 +1410,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MUDKIP_56:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1342,7 +1423,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case NUMEL_57:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -1363,7 +1444,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case NUMEL_58:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:2) {
@@ -1384,7 +1465,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PICHU_59:
 			return baby (this, successors:'SUCCESSOR(S)', hp:HP040, type:LIGHTNING, retreatCost:1) {
@@ -1402,7 +1483,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PIKACHU_60:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
@@ -1423,7 +1504,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case RALTS_61:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -1436,7 +1517,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case RHYHORN_62:
 			return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
@@ -1457,7 +1538,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SHROOMISH_63:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
@@ -1479,7 +1560,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SNORUNT_64:
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -1492,7 +1573,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SPOINK_65:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -1505,7 +1586,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SPOINK_66:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -1518,7 +1599,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case SWABLU_67:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
@@ -1537,7 +1618,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case TAILLOW_68:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -1551,7 +1632,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case TORCHIC_69:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -1564,7 +1645,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case TREECKO_70:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1578,7 +1659,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case VOLTORB_71:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
@@ -1599,7 +1680,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case VULPIX_72:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -1620,7 +1701,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case WHISMUR_73:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -1641,7 +1722,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case ZIGZAGOON_74:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
@@ -1662,7 +1743,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case BATTLE_FRONTIER_75:
 			return stadium (this) {
@@ -1827,7 +1908,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CACTURNE_EX_91:
 			return evolution (this, from:"Cacnea", hp:HP110, type:GRASS, retreatCost:1) {
@@ -1853,7 +1934,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case CAMERUPT_EX_92:
 			return evolution (this, from:"Numel", hp:HP120, type:FIRE, retreatCost:2) {
@@ -1879,7 +1960,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case DEOXYS_EX_93:
 			return basic (this, hp:HP110, type:PSYCHIC, retreatCost:1) {
@@ -1897,7 +1978,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case DUSCLOPS_EX_94:
 			return evolution (this, from:"Duskull", hp:HP100, type:PSYCHIC, retreatCost:2) {
@@ -1916,7 +1997,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MEDICHAM_EX_95:
 			return evolution (this, from:"Meditite", hp:HP110, type:FIGHTING, retreatCost:1) {
@@ -1942,7 +2023,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case MILOTIC_EX_96:
 			return evolution (this, from:"Feebas", hp:HP130, type:WATER, retreatCost:2) {
@@ -1968,7 +2049,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case RAICHU_EX_97:
 			return evolution (this, from:"Pikachu", hp:HP100, type:LIGHTNING, retreatCost:0) {
@@ -1994,7 +2075,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case REGICE_EX_98:
 			return basic (this, hp:HP100, type:WATER, retreatCost:3) {
@@ -2015,7 +2096,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case REGIROCK_EX_99:
 			return basic (this, hp:HP110, type:FIGHTING, retreatCost:3) {
@@ -2036,7 +2117,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case REGISTEEL_EX_100:
 			return basic (this, hp:HP090, type:METAL, retreatCost:2) {
@@ -2057,7 +2138,7 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case GRASS_ENERGY_101:
 			return basicEnergy (this, GRASS);
@@ -2091,11 +2172,11 @@ public enum Emerald implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 				default:
 			return null;
 		}
 	}
-	
+
 }
