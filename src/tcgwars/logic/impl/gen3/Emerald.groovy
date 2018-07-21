@@ -762,7 +762,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10+10*self.cards.energyCount(C)
 					}
 				}
 				move "Body Slam", {
@@ -770,7 +770,8 @@ public enum Emerald implements CardInfo {
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						flipThenApplySC PARALYZED
 					}
 				}
 
@@ -779,11 +780,12 @@ public enum Emerald implements CardInfo {
 			return evolution (this, from:"Numel", hp:HP080, type:FIRE, retreatCost:2) {
 				weakness WATER
 				move "Extra Flame", {
-					text "20+ damage. If the Defending Pokémon is Pokémon-es, this attack does 20 damage plus 30 more damage."
+					text "20+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 20 damage plus 30 more damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(defending.pokemonEX) damage 30
 					}
 				}
 				move "Super Singe", {
@@ -791,7 +793,8 @@ public enum Emerald implements CardInfo {
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						applyAfterDamage BURNED
 					}
 				}
 
@@ -801,7 +804,10 @@ public enum Emerald implements CardInfo {
 				weakness GRASS
 				pokeBody "Levitate", {
 					text "As long as Claydol has any Energy attached to it, the Retreat Cost for Claydol is 0."
-					delayedA {
+					getterA (GET_RETREAT_COST, BEFORE_LAST,self) {h->
+						if(self.cards.energyCount(C)) {
+							h.object = 0
+						}
 					}
 				}
 				move "Rock Smash", {
@@ -809,7 +815,8 @@ public enum Emerald implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flip {damage 10}
 					}
 				}
 
@@ -822,7 +829,10 @@ public enum Emerald implements CardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(opp.bench){
+							damage 10,opp.bench.select("do 10 damage to which pokémon?")
+						}
 					}
 				}
 				move "Sharp Claws", {
@@ -830,7 +840,8 @@ public enum Emerald implements CardInfo {
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						flip {damage 10}
 					}
 				}
 
@@ -844,7 +855,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Smash Turn", {
@@ -852,7 +863,12 @@ public enum Emerald implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						afterDamage{
+							if(my.bench) {
+								if(confirm("Switch $self with 1 of your Benched Pokémon?")) sw self, my.bench.select("Select new active.")
+							}
+						}
 					}
 				}
 
@@ -865,7 +881,8 @@ public enum Emerald implements CardInfo {
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Speed Ball", {
@@ -873,7 +890,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
 
@@ -887,7 +904,8 @@ public enum Emerald implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						applyAfterDamage ASLEEP
 					}
 				}
 				move "Razor Leaf", {
@@ -895,7 +913,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
 
@@ -908,7 +926,8 @@ public enum Emerald implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Teleport Blast", {
@@ -916,7 +935,12 @@ public enum Emerald implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						afterDamage{
+							if(my.bench) {
+								if(confirm("Switch $self with 1 of your Benched Pokémon?")) sw self, my.bench.select("Select new active.")
+							}
+						}
 					}
 				}
 
@@ -929,7 +953,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10, opp.all.select()
 					}
 				}
 				move "Psypunch", {
@@ -937,7 +961,7 @@ public enum Emerald implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
 
@@ -950,7 +974,8 @@ public enum Emerald implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(defending.evolved) damage 20
 					}
 				}
 				move "Shove", {
@@ -958,7 +983,8 @@ public enum Emerald implements CardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						flipThenApplySC PARALYZED
 					}
 				}
 
@@ -971,7 +997,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						draw 1
 					}
 				}
 				move "Tackle", {
@@ -979,7 +1005,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -992,7 +1018,7 @@ public enum Emerald implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				move "Mind Shock", {
@@ -1000,7 +1026,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						noWrDamage(40,defending)
 					}
 				}
 
@@ -1013,7 +1039,8 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Claw Swipe", {
@@ -1021,7 +1048,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 
@@ -1034,7 +1061,8 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Double-edge", {
@@ -1042,7 +1070,8 @@ public enum Emerald implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						damage 10,self
 					}
 				}
 
@@ -1055,7 +1084,8 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						applyAfterDamage ASLEEP
 					}
 				}
 				move "Surf", {
@@ -1063,7 +1093,7 @@ public enum Emerald implements CardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
 
@@ -1074,7 +1104,11 @@ public enum Emerald implements CardInfo {
 				resistance METAL, MINUS30
 				pokeBody "Electro-guard", {
 					text "As long Minun has any [L] Energy attached to it, Minun has no Weakness."
-					delayedA {
+					getterA (GET_WEAKNESSES) { h->
+						if(h.effect.target == self && self.cards.energyCount(L)) {
+							def list = h.object as List<Weakness>
+							list.clear()
+						}
 					}
 				}
 				move "Quick Attack", {
@@ -1082,7 +1116,8 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip{damage 20}
 					}
 				}
 
@@ -1095,7 +1130,8 @@ public enum Emerald implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						applyAfterDamage CONFUSED
 					}
 				}
 				move "Searing Flame", {
@@ -1103,7 +1139,8 @@ public enum Emerald implements CardInfo {
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						applyAfterDamage BURNED
 					}
 				}
 
@@ -1117,7 +1154,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						draw 1
 					}
 				}
 				move "Thundershock", {
@@ -1125,7 +1162,8 @@ public enum Emerald implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC PARALYZED
 					}
 				}
 
@@ -1138,7 +1176,8 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						heal 10,self
 					}
 				}
 				move "Poison Breath", {
@@ -1146,7 +1185,8 @@ public enum Emerald implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						applyAfterDamage POISONED
 					}
 				}
 
@@ -1160,7 +1200,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Skill Dive", {
@@ -1168,7 +1208,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40, opp.all.select()
 					}
 				}
 
@@ -1181,15 +1221,16 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{apply CONFUSED}
 					}
 				}
 				move "Double-edge", {
-					text "Volbeat does 10 damage to itself."
+					text "30 damage. Volbeat does 10 damage to itself."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						damage 10,self
 					}
 				}
 
@@ -1202,7 +1243,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Pierce", {
@@ -1210,7 +1251,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 
@@ -1223,7 +1264,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 3, {damage 10}
 					}
 				}
 
@@ -1237,7 +1278,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {apply PARALYZED}
 					}
 				}
 
@@ -1251,7 +1292,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 
@@ -1261,11 +1302,11 @@ public enum Emerald implements CardInfo {
 				weakness FIGHTING
 				resistance METAL, MINUS30
 				move "Double Kick", {
-					text "10× damage. Flip a coins. This attack does 10 damage times the number of heads."
+					text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2, {damage 10}
 					}
 				}
 
@@ -1279,7 +1320,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Skull Bash", {
@@ -1287,7 +1328,7 @@ public enum Emerald implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 
@@ -1298,6 +1339,14 @@ public enum Emerald implements CardInfo {
 				pokeBody "Submerge", {
 					text "As long as Feebas is on your Bench, prevent all damage done to Feebas by attacks (both yours and your opponent’s)."
 					delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each{
+                if(!self.active && it.to == self){
+                  bc "Submerge prevent all damage"
+                  it.dmg=hp(0)
+                }
+	            }
+	          }
 					}
 				}
 				move "Lunge", {
@@ -1305,7 +1354,7 @@ public enum Emerald implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 20}
 					}
 				}
 
@@ -1318,7 +1367,7 @@ public enum Emerald implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10, opp.all.select()
 					}
 				}
 
@@ -1331,7 +1380,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Drool", {
@@ -1339,7 +1388,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -1352,7 +1401,7 @@ public enum Emerald implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						noWrDamage(20,opp.all.select())
 					}
 				}
 
@@ -1363,9 +1412,16 @@ public enum Emerald implements CardInfo {
 				move "Call for Friend", {
 					text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert deck.notEmpty : "Your deck is empty"
+						assert my.bench.notFull : "You cannot put anymore Pokémon on your bench."
+					}
 					onAttack {
-						damage 0
+						deck.search (max: 1, cardTypeFilter(BASIC)).each {
+							deck.remove(it)
+							benchPCS(it)
+						}
+						shuffleDeck()
 					}
 				}
 				move "Strange Scale", {
@@ -1373,7 +1429,8 @@ public enum Emerald implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(defending.evolved) applyAfterDamage CONFUSED
 					}
 				}
 
@@ -1386,7 +1443,8 @@ public enum Emerald implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {damage 10}
 					}
 				}
 
@@ -1399,7 +1457,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Fake Out", {
@@ -1407,7 +1465,8 @@ public enum Emerald implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC PARALYZED
 					}
 				}
 
@@ -1420,7 +1479,8 @@ public enum Emerald implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {damage 10}
 					}
 				}
 
@@ -1433,7 +1493,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						draw 1
 					}
 				}
 				move "Lunge", {
@@ -1441,7 +1501,7 @@ public enum Emerald implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 20}
 					}
 				}
 
@@ -1454,7 +1514,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Steady Firebreathing", {
@@ -1462,7 +1522,7 @@ public enum Emerald implements CardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -1473,6 +1533,14 @@ public enum Emerald implements CardInfo {
 				pokePower "Baby Evolution", {
 					text "Once during your turn (before your attack), you may put Pikachu from your hand onto Pichu (this counts as evolving Pichu) and remove all damage counters from Pichu."
 					actionA {
+						assert my.hand.findAll{it.name == "Pikachu"} : "There is no pokémon in your hand to evolve ${self}."
+						checkLastTurn()
+						powerUsed()
+						def tar = my.hand.findAll{it.name == "Pikachu"}.select()
+						if(tar) {
+							evolve(self, tar.first(), OTHER)
+							heal self.numberOfDamageCounters*10,self
+						}
 					}
 				}
 				move "Collect", {
@@ -1480,7 +1548,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						draw 1
 					}
 				}
 
@@ -1493,7 +1561,7 @@ public enum Emerald implements CardInfo {
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Thundershock", {
@@ -1501,7 +1569,8 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC PARALYZED
 					}
 				}
 
@@ -1514,7 +1583,8 @@ public enum Emerald implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						applyAfterDamage ASLEEP
 					}
 				}
 
@@ -1527,7 +1597,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Horn Drill", {
@@ -1535,7 +1605,7 @@ public enum Emerald implements CardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -1549,7 +1619,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Headbutt", {
@@ -1557,7 +1627,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -1570,7 +1640,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 
@@ -1583,7 +1653,8 @@ public enum Emerald implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {damage 10}
 					}
 				}
 
@@ -1596,7 +1667,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 20}
 					}
 				}
 
@@ -1608,6 +1679,14 @@ public enum Emerald implements CardInfo {
 				pokeBody "Feathery", {
 					text "As long as Swablu is on your Bench, prevent all damage done to Swablu by opponent’s attacks."
 					delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each{
+                if(!self.active && it.to == self && it.from == self.owner.opposite){
+                  bc "Feathery prevent all damage"
+                  it.dmg=hp(0)
+                }
+	            }
+	          }
 					}
 				}
 				move "Razor Wind", {
@@ -1615,7 +1694,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 20}
 					}
 				}
 
@@ -1629,7 +1708,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 10}
 					}
 				}
 
@@ -1642,7 +1721,7 @@ public enum Emerald implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply ASLEEP
 					}
 				}
 
@@ -1656,7 +1735,7 @@ public enum Emerald implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 10}
 					}
 				}
 
@@ -1669,7 +1748,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Speed Ball", {
@@ -1677,7 +1756,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 
@@ -1690,7 +1769,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Firebreathing", {
@@ -1698,7 +1777,8 @@ public enum Emerald implements CardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {damage 10}
 					}
 				}
 
@@ -1711,7 +1791,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Rollout", {
@@ -1719,7 +1799,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 
@@ -1732,7 +1812,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Body Slam", {
@@ -1740,7 +1820,8 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flipThenApplySC PARALYZED
 					}
 				}
 
@@ -1749,14 +1830,22 @@ public enum Emerald implements CardInfo {
 			return stadium (this) {
 				text "Each player’s [C] Evolved Pokémon, [D] Evolved Pokémon and [M] Evolved Pokémon can’t use any Poké-Powers or Poké-Bodies.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
 				onPlay {
+					eff = getter IS_ABILITY_BLOCKED, { Holder h->
+						if (h.effect.target.evolved && (h.effect.ability instanceof PokeBody || h.effect.ability instanceof PokePower) && (h.effect.target.types.contains(C) || h.effect.target.types.contains(D) || h.effect.target.types.contains(M))) {
+							h.object=true
+						}
+					}
 				}
 				onRemoveFromPlay{
+					eff.unregister()
 				}
+
 			};
 			case DOUBLE_FULL_HEAL_76:
 			return basicTrainer (this) {
 				text "Remove all Special Conditions from each of your Active Pokémon."
 				onPlay {
+					clearSpecialCondition(my.active,Source.TRAINER_CARD)
 				}
 				playRequirement{
 				}
@@ -1765,62 +1854,94 @@ public enum Emerald implements CardInfo {
 			return supporter (this) {
 				text "Search your deck for up to 3 different types of Basic Pokémon cards (excluding Baby Pokémon), show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					my.deck.select(min:0, max:3, "Select up to 3 Basic Pokémon of different types", cardTypeFilter(BASIC), self.owner,
+						{CardList list->
+							TypeSet typeSet=new TypeSet()
+							for(card in list){
+								if(typeSet.containsAny(card.asPokemonCard().types)){
+									return false
+								}
+								typeSet.addAll(card.asPokemonCard().types)
+							}
+							return true
+						}).moveTo(my.hand)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.deck
 				}
 			};
 			case LUM_BERRY_78:
 			return pokemonTool (this) {
 				text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAt any time between turns, if the Pokémon this card is attached to is affected by any Special Conditions, remove all of them. Then, discard Lum Berry."
 				onPlay {reason->
+					eff=delayed{
+						before BETWEEN_TURNS,{
+							if(self.isSPC()) {
+								clearSpecialCondition(self,Source.TRAINER_CARD)
+								discard thisCard
+							}
+						}
+					}
 				}
 				onRemoveFromPlay {
-				}
-				allowAttach {to->
+					eff.unregister()
 				}
 			};
 			case MR__STONE_S_PROJECT_79:
 			return supporter (this) {
 				text "Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward. Or, search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					def choice = 1
+					if(my.discard.filterByType(BASIC_ENERGY) && my.deck){
+						choice = choose([1,2],['Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand', 'search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand.'], "Choose 1")
+					}
+					else{
+						if(!my.deck){choice = 2}
+					}
+					if(choice == 1){
+						my.deck.search{max:2,"Search for up to 2 basic Energy cards",cardTypeFilter(BASIC_ENERGY)}.showToOpponent("Selected cards.").moveTo(my.hand)
+					}
+					else{
+						my.discard.filterByType(BASIC_ENERGY).select(max : 2).showToOpponent("Selected cards.").moveTo(my.hand)
+					}
 				}
 				playRequirement{
+					assert my.deck || my.discard.filterByType(BASIC_ENERGY) : "There is no energy to be found"
 				}
 			};
 			case ORAN_BERRY_80:
 			return pokemonTool (this) {
 				text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAt any time between turns, if the Pokémon this card is attached to has at least 2 damage counters on it, remove 2 damage counters from it. Then, discard Oran Berry."
 				onPlay {reason->
+					eff=delayed{
+						before BETWEEN_TURNS,{
+							if(self.numberOfDamageCounters >= 2) {
+								heal 20, self
+								discard thisCard
+							}
+						}
+					}
 				}
 				onRemoveFromPlay {
-				}
-				allowAttach {to->
+					eff.unregister()
 				}
 			};
 			case POKENAV_81:
-			return basicTrainer (this) {
-				text "Look at the top 3 cards of your deck, and choose a Basic Pokémon, Evolution card, or Energy card. Show it to your opponent and put it into your hand. Put the 2 other cards back on top of your deck in any order."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+			return copy (RubySapphire.POKENAV_88, this);
 			case PROFESSOR_BIRCH_82:
 			return supporter (this) {
 				text "Draw cards from your deck until you have 6 cards in your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					draw (7-my.hand.size())
 				}
-				playRequirement{
+				playRequirement {
+					assert my.deck
+					assert my.hand.size()<7
 				}
 			};
 			case RARE_CANDY_83:
-			return basicTrainer (this) {
-				text "Choose 1 of your Basic Pokémon in play. If you have a Stage 1 or Stage 2 card that evolves from that Pokémon in your hand, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.)"
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+			return copy (Sandstorm.RARE_CANDY_88, this);
 			case SCOTT_84:
 			return supporter (this) {
 				text "Search you deck for up to 3 cards in any combination of Supporter cards and Stadium cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -1830,66 +1951,32 @@ public enum Emerald implements CardInfo {
 				}
 			};
 			case WALLY_S_TRAINING_85:
-			return supporter (this) {
-				text "Search your deck for a card that evolves from your Active Pokémon (choose 1 if there are 2) and put it on your Active Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+			return copy (Sandstorm.WALLY_S_TRAINING_89, this);
 			case DARKNESS_ENERGY_86:
-			return specialEnergy (this, [[C]]) {
-				text "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect unless the Attacking Pokémon is [D] or has Dark in its name. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
-			};
+			return copy (RubySapphire.DARKNESS_ENERGY_93, this);
+
 			case DOUBLE_RAINBOW_ENERGY_87:
-			return specialEnergy (this, [[C]]) {
-				text "Double Rainbow Energy can be attached only to an Evolved Pokémon (excluding Pokémon-ex). While in play, Double Rainbow Energy provides every type of Energy but provides 2 Energy at a time. (Has no effect other than providing Energy.) Damage done to your opponent’s Pokémon by the Pokémon Double Rainbow Energy is attached to is reduced by 10 (before applying Weakness and Resistance.) When the Pokémon Double Rainbow Energy is attached to is no longer an Evolved Pokémon, discard Double Rainbow Energy."
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
-			};
+			return copy (TeamMagmaVsTeamAqua.DOUBLE_RAINBOW_ENERGY_88, this);
+
 			case METAL_ENERGY_88:
-			return specialEnergy (this, [[C]]) {
-				text "Damage done by attacks to the Pokémon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that Metal Energy is attached to isn’t [M], Metal Energy provides [M] Energy. (Doesn’t count as a basic Energy card.)"
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
-			};
+			return copy (RubySapphire.METAL_ENERGY_94, this);
+
 			case MULTI_ENERGY_89:
-			return specialEnergy (this, [[C]]) {
-				text "Attach Multi Energy to 1 of your Pokémon. While in play, Multi Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) Multi Energy provides [C] Energy when attached to a Pokémon that already has Special Energy cards attached to it."
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
-			};
+			return copy (Sandstorm.MULTI_ENERGY_93, this);
+
 			case ALTARIA_EX_90:
 			return evolution (this, from:"Swablu", hp:HP100, type:COLORLESS, retreatCost:1) {
 				pokeBody "Mist", {
 					text "Any damage done to Altaria ex by attacks from Stage 2 Evolved Pokémon (both yours and your opponent’s) is reduced by 30 (after applying Weakness and Resistance)."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each {
+								if(it.from.is(STAGE2) && it.to==self && it.dmg.value && it.notNoEffect){
+									bc "Mist : -30"
+									it.dmg-=hp(30)
+								}
+							}
+						}
 					}
 				}
 				move "Dive", {
@@ -1897,7 +1984,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Dragon Mist", {
@@ -1905,7 +1992,7 @@ public enum Emerald implements CardInfo {
 					energyCost W, L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						swiftDamage(70,defending)
 					}
 				}
 
@@ -1916,6 +2003,12 @@ public enum Emerald implements CardInfo {
 				pokeBody "Cursed Glare", {
 					text "As long as Cacturne ex is your Active Pokémon, your opponent can’t attach any Special Energy cards (except for [D] and [M] Energy cards) from his or her hand to his or her Active Pokémon."
 					delayedA {
+						before ATTACH_ENERGY, defending, {
+							if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.active && (ef.card instanceof SpecialEnergyCard && ef.card.name != "Darkness Energy" && ef.card.name != "Metal Energy")) {
+								wcu "Cursed Glare: Can't attach energy"
+								prevent()
+							}
+						}
 					}
 				}
 				move "Psybeam", {
@@ -1923,7 +2016,8 @@ public enum Emerald implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						applyAfterDamage CONFUSED
 					}
 				}
 				move "Spike Rend", {
@@ -1931,7 +2025,8 @@ public enum Emerald implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						if(defending.numberOfDamageCounters) damage 20
 					}
 				}
 
@@ -1942,6 +2037,12 @@ public enum Emerald implements CardInfo {
 				pokeBody "Magma Armor", {
 					text "Camerupt ex can’t be Asleep or Paralyzed."
 					delayedA {
+						before APPLY_SPECIAL_CONDITION,self, {
+							if(ef.type == ASLEEP || ef.type == PARALYZED){
+								bc "$self Magma Armor pervent it to be ASLEEP or Paralyzed"
+								prevent()
+							}
+						}
 					}
 				}
 				move "Searing Flame", {
@@ -1949,7 +2050,8 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						applyAfterDamage BURNED
 					}
 				}
 				move "Eruption", {
@@ -1957,7 +2059,13 @@ public enum Emerald implements CardInfo {
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						if(opp.deck){
+							if(opp.deck.subList(0,1).discard().cardTypes.is(ENERGY)) damage 20
+						}
+						if(my.deck){
+							if(my.deck.subList(0,1).discard().cardTypes.is(ENERGY)) damage 20
+						}
 					}
 				}
 
@@ -1968,6 +2076,19 @@ public enum Emerald implements CardInfo {
 				pokePower "Form Change", {
 					text "Once during your turn (before your attack), you may search your deck for another Deoxys ex and switch it with Deoxys ex. (Any cards attached to Deoxys ex, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys ex on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
 					actionA {
+						checkLastTurn()
+						assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
+						assert my.deck : "There is no card in your deck"
+						powerUsed()
+						bg.em().storeObject("Form_Change",bg.turnCount)
+						def deoxys = self.topPokemonCard
+						if(my.deck.findAll{it.name.contains("Deoxys ex")}){
+							my.deck.search{it.name.contains("Deoxys ex")}.moveTo(self.cards)
+							my.deck.add(deoxys)
+							self.cards.remove(deoxys)
+							shuffleDeck()
+							checkFaint()
+						}
 					}
 				}
 				move "Fastwave", {
@@ -1975,7 +2096,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						swiftDamage(50,defending)
 					}
 				}
 
@@ -1985,16 +2106,21 @@ public enum Emerald implements CardInfo {
 				weakness DARKNESS
 				resistance COLORLESS
 				pokeBody "Dark Hole", {
-					text "As long as Dusclops ex is on your Bench, don’t apply [D] Weakness for all of your Pokémon is play."
-					delayedA {
+					text "As long as Dusclops ex is on your Bench, don’t apply [D] Weakness for all of your Pokémon in play."
+					getterA (GET_WEAKNESSES) { h->
+						if(h.effect.target == self && self.cards.energyCount(L)) {
+							def list = h.object as List<Weakness>
+							list.remove(D)
+						}
 					}
+
 				}
 				move "Shadow Beam", {
 					text "Put 2 damage counters on the Defending Pokémon for each Energy attached to Dusclops ex."
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						directDamage 20*self.cards.energyCount(C), defending
 					}
 				}
 
@@ -2004,15 +2130,20 @@ public enum Emerald implements CardInfo {
 				weakness PSYCHIC
 				pokeBody "Wise Aura", {
 					text "As long as Medicham ex is your Active Pokémon, each Pokémon (excluding Pokémon-ex) (both yours and your opponent’s can’t use any Poké-Powers."
-					delayedA {
-					}
+					getterA (IS_ABILITY_BLOCKED) { Holder h->
+              if (self.active  && !h.effect.target.pokemonEX && h.effect.ability instanceof PokéPowers) {
+                h.object=true
+          	}
+          }
 				}
 				move "Pure Power", {
 					text "Put 3 damage counters on your opponent’s Pokémon in any way you like."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						for(int i=0;i<3;i++){
+							damage 10, opp.all.select("Put 1 damage counter to which pokémon?")
+						}
 					}
 				}
 				move "Sky Kick", {
@@ -2020,7 +2151,8 @@ public enum Emerald implements CardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						if(defending.resistance.contains(F)) damage 40
 					}
 				}
 
@@ -2030,7 +2162,17 @@ public enum Emerald implements CardInfo {
 				weakness LIGHTNING
 				pokeBody "Mystic Scale", {
 					text "As long as Milotic ex is in play, each player can’t play any Technical Machine cards from his or her hand. Discard all Technical Machine cards in play (both yours and your opponent’s)."
-					delayedA {
+					onActivate {
+						opp.all.each{it.cards.filterByType(TECHNICAL_MACHINE).discard()}
+						my.all.each{it.cards.filterByType(TECHNICAL_MACHINE).discard()}
+						delayed{
+							before PLAY_TRAINER, {
+                if (ef.cardToPlay.cardTypes.is(TECHNICAL_MACHINE)){
+                  wcu "Mystic Scale prevents playing this card"
+                  prevent()
+                }
+              }
+						}
 					}
 				}
 				move "Gentle Wrap", {
@@ -2038,7 +2180,8 @@ public enum Emerald implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						cantRetreat defending
 					}
 				}
 				move "Reflect Energy", {
@@ -2046,7 +2189,7 @@ public enum Emerald implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
 					}
 				}
 
@@ -2057,6 +2200,17 @@ public enum Emerald implements CardInfo {
 				pokeBody "Rai-shield", {
 					text "Damage done to any of your Raichu ex in play by attacks from your opponent’s Pokémon-ex is reduced by 30 (after applying Weakness and Resistance). You can’t use more than 1 Rai-shield Poké-Body each turn."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							if(bg.em().retrieveObject("Form_Change") != bg.turnCount){
+								bg.em().storeObject("Rai_shield",bg.turnCount)
+								bg.dm().each {
+									if(it.from.is(STAGE2) && it.to==self && it.dmg.value && it.notNoEffect){
+										bc "Mist : -30"
+										it.dmg-=hp(30)
+									}
+								}
+							}
+						}
 					}
 				}
 				move "Power Short", {
@@ -2064,7 +2218,7 @@ public enum Emerald implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30, opp.all.select
 					}
 				}
 				move "Pika Bolt", {
@@ -2072,7 +2226,7 @@ public enum Emerald implements CardInfo {
 					energyCost L, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
 					}
 				}
 
@@ -2085,7 +2239,8 @@ public enum Emerald implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Iceburg Crush", {
@@ -2093,7 +2248,12 @@ public enum Emerald implements CardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						if(my.all.findAll{it.name == "Regirock ex"}){
+							afterDamage{
+								flip{discardDefendingEnergy()}
+							}
+						}
 					}
 				}
 
@@ -2104,9 +2264,12 @@ public enum Emerald implements CardInfo {
 				move "Mend", {
 					text "Search your discard pile for a [F] Energy card and attach it to Regirock ex. If you do, remove 1 damage counter from Regirock ex."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.discard.filterByType(ENERGY).filterByEnergyType(F) : "There is no [F] Energy card in your discard"
+					}
 					onAttack {
-						damage 0
+						attachEnergyFrom(type : F, my.discard, self)
+						heal 10, self
 					}
 				}
 				move "Metal Crush", {
@@ -2114,7 +2277,10 @@ public enum Emerald implements CardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						if(my.all.findAll{it.name == "Registeel ex"}){
+							damage 20
+						}
 					}
 				}
 
@@ -2127,7 +2293,10 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						if(my.all.findAll{it.name == "Regice ex"}){
+							flipThenApplySC CONFUSED
+						}
 					}
 				}
 				move "Wide Laser", {
@@ -2135,7 +2304,7 @@ public enum Emerald implements CardInfo {
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						opp.all.each{damage 20, it}
 					}
 				}
 
@@ -2161,7 +2330,7 @@ public enum Emerald implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						draw 1
 					}
 				}
 				move "Nosedive", {
@@ -2169,7 +2338,8 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						damage 10,self
 					}
 				}
 
