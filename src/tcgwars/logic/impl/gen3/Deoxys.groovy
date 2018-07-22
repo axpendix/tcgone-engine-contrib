@@ -1722,7 +1722,7 @@ public enum Deoxys implements CardInfo {
 					onAttack {
 						damage 20
 						applyAfterDamage POISONED
-						sandAttack()
+						sandAttack(thisMove)
 					}
 				}
 
@@ -1807,7 +1807,7 @@ public enum Deoxys implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						damage 10, self
+						noWrDamage(10, self)
 					}
 				}
 
@@ -2047,16 +2047,15 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Mirror Coat", {
 					text "If Natu if Burned or Poisoned by an opponent’s attack (even if Natu is Knocked Out), the Attacking Pokémon is now affected by the same Special Conditions (1 if there is only 1)."
 					delayedA {
-						after APPLY_SPECIAL_CONDITION,self, {
-							if(ef.types.contains(BURNED)){
-								apply BURNED, defending
-							}
-							if(ef.types.contains(POISONED)){
-								apply POISONED, defending
+						before APPLY_SPECIAL_CONDITION,self, {
+							bc "Mirror Coat : ${ef.type}"
+							if(ef.type == POISONED || ef.type == BURNED){
+								apply ef.type, self.owner.opposite.pbg.active
 							}
 						}
 					}
 				}
+
 				move "Razor Wind", {
 					text "20 damage. Flip a coin. If tails, this attack does nothing."
 					energyCost C
@@ -2294,15 +2293,13 @@ public enum Deoxys implements CardInfo {
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness LIGHTNING
 				move "Rapid Spin", {
-					text "10 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon, if any. You may switch Staryu with 1 of your Benched Pokémon, if any."
+					text "10 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon, if any. You switch Staryu with 1 of your Benched Pokémon, if any."
 					energyCost C
 					attackRequirement {}
 					onAttack {
 						damage 10
 						if(opp.bench) sw defending, opp.bench.oppSelect("Select new active.")
-						if(my.bench) {
-							if(confirm("Switch Staryu with 1 of your Benched Pokémon?")) sw self, my.bench.select("Select new active.")
-						}
+						if(my.bench) sw self, my.bench.select("Select new active.")
 					}
 				}
 
@@ -2386,8 +2383,11 @@ public enum Deoxys implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 10
-						flip {preventAllEffectsNextTurn()}
+
+						flip {
+							damage 10
+							preventAllEffectsNextTurn()
+						}
 					}
 				}
 
