@@ -1900,7 +1900,7 @@ public enum Emerald implements CardInfo {
 						if(!my.deck){choice = 2}
 					}
 					if(choice == 1){
-						my.deck.search{max:2,"Search for up to 2 basic Energy cards",cardTypeFilter(BASIC_ENERGY)}.showToOpponent("Selected cards.").moveTo(my.hand)
+						my.deck.search(max:2,"Search for up to 2 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).showToOpponent("Selected cards.").moveTo(my.hand)
 					}
 					else{
 						my.discard.filterByType(BASIC_ENERGY).select(max : 2).showToOpponent("Selected cards.").moveTo(my.hand)
