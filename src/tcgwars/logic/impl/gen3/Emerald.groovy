@@ -1954,16 +1954,12 @@ public enum Emerald implements CardInfo {
 			return copy (Sandstorm.WALLY_S_TRAINING_89, this);
 			case DARKNESS_ENERGY_86:
 			return copy (RubySapphire.DARKNESS_ENERGY_93, this);
-
 			case DOUBLE_RAINBOW_ENERGY_87:
 			return copy (TeamMagmaVsTeamAqua.DOUBLE_RAINBOW_ENERGY_88, this);
-
 			case METAL_ENERGY_88:
 			return copy (RubySapphire.METAL_ENERGY_94, this);
-
 			case MULTI_ENERGY_89:
 			return copy (Sandstorm.MULTI_ENERGY_93, this);
-
 			case ALTARIA_EX_90:
 			return evolution (this, from:"Swablu", hp:HP100, type:COLORLESS, retreatCost:1) {
 				pokeBody "Mist", {

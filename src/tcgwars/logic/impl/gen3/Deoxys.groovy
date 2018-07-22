@@ -145,7 +145,7 @@ public enum Deoxys implements CardInfo {
 	RAYQUAZA_STAR_107 ("Rayquaza Star", 107, Rarity.SECRET, [BASIC, POKEMON, _COLORLESS_]),
 	ROCKET_S_RAIKOU_EX_108 ("Rocket's Raikou ex", 108, Rarity.ULTRARARE, [BASIC, POKEMON, _DARKNESS_, EX]);
 
-	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS;
+	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY;
 
 	protected CardTypeSet cardTypes;
 	protected String name;
@@ -2484,12 +2484,9 @@ public enum Deoxys implements CardInfo {
 				def eff2
 				onPlay {reason->
 					eff1=getter GET_POKEMON_TYPE, self, {h ->
-						if(h.effect.target.name == "Silvally-GX")
-						{
 							h.object.clear()
 							h.object.add(C)
 						}
-					}
 					eff2 = delayed{
  						after BETWEEN_TURNS, {
             	discard thisCard
@@ -2514,25 +2511,7 @@ public enum Deoxys implements CardInfo {
 				}
 			};
 			case LADY_OUTING_87:
-			return supporter (this) {
-				text "Search your deck for up to 3 different types of basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
-				onPlay {
-					my.deck.select(min:0, max:3, "Select up to 3 different types of basic Energy cards", cardTypeFilter(BASIC_ENERGY), self.owner,
-						{CardList list->
-							TypeSet typeSet=new TypeSet()
-							for(card in list){
-								if(typeSet.containsAny(card.asEnergyCard().getEnergyTypes())){
-									return false
-								}
-								typeSet.addAll(card.asEnergyCard().getEnergyTypes())
-							}
-							return true
-						})
-				}
-				playRequirement{
-					assert my.deck : "There is no card remaining in your deck."
-				}
-			};
+			return copy (RubySapphire.LADY_OUTING_83, this);
 			case MASTER_BALL_88:
 			return basicTrainer (this) {
 				text "Look at the top 7 cards from your deck. Choose a Basic Pokémon or Evolution card from those cards, show it to your opponent, and put it into your hand. Put the other 6 cards back on top of your deck. Shuffle your deck afterward."
@@ -2549,7 +2528,7 @@ public enum Deoxys implements CardInfo {
 				text "Each player’s Active Evolved Pokémon (excluding Pokémon-ex) can use any attack from its Basic Pokémon or its Stage 1 Evolution card. (You still have to pay for that attack’s Energy cost.)\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
 				def eff
 				onPlay {
-					eff = getter (GET_MOVE_LIST, self) {holder->
+					eff = getter (GET_MOVE_LIST) {holder->
 						if(holder.effect.target.active && holder.effect.target.evolution){
 							for(card in holder.effect.target.cards.filterByType(POKEMON)){
 								if(card!=holder.effect.target.topPokemonCard){
@@ -2585,12 +2564,12 @@ public enum Deoxys implements CardInfo {
 				def eff2
 				onPlay {
 					eff1 = getter IS_ABILITY_BLOCKED, { Holder h->
-						if (h.effect.ability instanceof PokeBody && !h.effect.target.pokemonEX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
+						if (h.effect.ability instanceof PokeBody && h.effect.target.basic && !h.effect.target.pokemonEX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
 							h.object=true
 						}
 					}
 					eff2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-						if (h.effect.ability instanceof PokeBody && !h.effect.target.pokemonEX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
+						if (h.effect.ability instanceof PokeBody && h.effect.target.basic && !h.effect.target.pokemonEX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
 							h.object=true
 						}
 					}
@@ -2604,15 +2583,20 @@ public enum Deoxys implements CardInfo {
 			return pokemonTool (this) {
 				text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nWhenever an attack from the Pokémon that Strength Charm is attached to does damage to the Active Pokémon, the attack does 10 more damage (before applying Weakness and Resistance). Discard Strength Charm at the end of the turn in which this Pokémon attacks."
 				def eff1
+				def attackUsed = false
 				onPlay {reason->
 					eff1=delayed {
 						after PROCESS_ATTACK_EFFECTS, {
 							if(ef.attacker==self) bg.dm().each {
 								if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
 									it.dmg += hp(10)
+									attackUsed=true
 									bc "Strength Charm +10"
 								}
 							}
+						}
+						before BETWEEN_TURNS, {
+							if(attackUsed) {discard thisCard}
 						}
 					}
 				}
@@ -2621,7 +2605,7 @@ public enum Deoxys implements CardInfo {
 				}
 			};
 			case BOOST_ENERGY_93:
-			return specialEnergy (this, [[C,C,C]]) {
+			return specialEnergy (this, [[C],[C],[C]]) {
 				text "Boost Energy can be attached only to an Evolved Pokémon. Discard Boost Energy at the end of the turn it was attached. Boost Energy provides [C][C][C] Energy. The Pokémon Boost Energy is attached to can’t retreat. If the Pokémon Boost Energy is attached to isn’t an Evolved Pokémon, discard Boost Energy."
 				def eff
 				def check = {
@@ -2744,9 +2728,10 @@ public enum Deoxys implements CardInfo {
 						powerUsed()
 						bg.em().storeObject("Form_Change",bg.turnCount)
 						def deoxys = self.topPokemonCard
-						if(my.deck.findAll{it.names.contains("Deoxys ex")}){
-							my.deck.findAll{it.names.contains("Deoxys ex")}.select().moveTo(self.cards)
-							deoxys.moveTo(my.deck)
+						if(my.deck.findAll{it.name.contains("Deoxys ex")}){
+							my.deck.search{it.name.contains("Deoxys ex")}.moveTo(self.cards)
+							my.deck.add(deoxys)
+							self.cards.remove(deoxys)
 							shuffleDeck()
 							checkFaint()
 						}
@@ -2774,9 +2759,10 @@ public enum Deoxys implements CardInfo {
 						powerUsed()
 						bg.em().storeObject("Form_Change",bg.turnCount)
 						def deoxys = self.topPokemonCard
-						if(my.deck.findAll{it.names.contains("Deoxys ex")}){
-							my.deck.findAll{it.names.contains("Deoxys ex")}.select().moveTo(self.cards)
-							deoxys.moveTo(my.deck)
+						if(my.deck.findAll{it.name.contains("Deoxys ex")}){
+							my.deck.search{it.name.contains("Deoxys ex")}.moveTo(self.cards)
+							my.deck.add(deoxys)
+							self.cards.remove(deoxys)
 							shuffleDeck()
 							checkFaint()
 						}
@@ -2808,9 +2794,10 @@ public enum Deoxys implements CardInfo {
 						powerUsed()
 						bg.em().storeObject("Form_Change",bg.turnCount)
 						def deoxys = self.topPokemonCard
-						if(my.deck.findAll{it.names.contains("Deoxys ex")}){
-							my.deck.findAll{it.names.contains("Deoxys ex")}.select().moveTo(self.cards)
-							deoxys.moveTo(my.deck)
+						if(my.deck.findAll{it.name.contains("Deoxys ex")}){
+							my.deck.search{it.name.contains("Deoxys ex")}.moveTo(self.cards)
+							my.deck.add(deoxys)
+							self.cards.remove(deoxys)
 							shuffleDeck()
 							checkFaint()
 						}
