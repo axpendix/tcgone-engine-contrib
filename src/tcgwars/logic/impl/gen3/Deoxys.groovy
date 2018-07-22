@@ -2965,7 +2965,7 @@ public enum Deoxys implements CardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						noWrDamage 40, opp.all.select
+						noWrDamage 40, opp.all.select()
 					}
 				}
 				move "Bright Flame", {
@@ -3061,6 +3061,7 @@ public enum Deoxys implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+						bc "${defending.evolution} / ${defending.topPokemonCard} / ${defending.topPokemonCard.is(STAGE2)}"
 						if(defending.evolution && defending.topPokemonCard.is(STAGE2)){
 							damage 100
 							discardAllSelfEnergy(null)
