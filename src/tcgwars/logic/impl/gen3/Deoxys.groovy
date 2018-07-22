@@ -2698,7 +2698,7 @@ public enum Deoxys implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						def headCnt = 0
-						flip 2, {
+						flip 4, {
 							damage 20
 							headCnt += 1
 						}
@@ -2878,7 +2878,7 @@ public enum Deoxys implements CardInfo {
 								}
 							}
 							unregisterAfter 2
-							after EVOLVE, pcs, {unregister()}
+							after EVOLVE, self, {unregister()}
 						}
 					}
 				}
@@ -2943,7 +2943,7 @@ public enum Deoxys implements CardInfo {
 					energyCost R, L
 					attackRequirement {}
 					onAttack {
-						damage 20*self.cards.filterByType(BASIC_ENERGY)
+						damage 20*self.cards.filterByType(BASIC_ENERGY).size()
 					}
 				}
 
@@ -2955,7 +2955,7 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Dragon Lift", {
 					text "The Retreat Cost for each of your Pokémon (excluding Pokémon-ex and Baby Pokémon) is 0."
 					getterA (GET_RETREAT_COST, BEFORE_LAST) {h->
-						if(h.effect.target.owner == self.owner && h.effect.target.isNot(BABY) &&  h.effect.target.isNot(POKEMON_EX)) {
+						if(h.effect.target.owner == self.owner && !((h.effect.target as Card).cardTypes.is(BABY) &&  !((h.effect.target as Card).cardTypes.is(POKEMON_EX)) {
 							h.object = 0
 						}
 					}
@@ -2992,8 +2992,10 @@ public enum Deoxys implements CardInfo {
 						if(opp.bench){
 							if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")){
 								pcs = opp.bench.select()
+								sw defending, pcs
 							}
 						}
+
 						damage 20, pcs
 					}
 				}
@@ -3041,7 +3043,7 @@ public enum Deoxys implements CardInfo {
 
 			};
 			case LATIOS_STAR_106:
-			return basic (this, hp:HP080, type:COLORLESS, retreatCost:null) {
+			return basic (this, hp:HP080, type:COLORLESS, retreatCost:0) {
 				weakness COLORLESS
 				resistance FIGHTING
 				move "Miraculous Light", {
@@ -3099,8 +3101,10 @@ public enum Deoxys implements CardInfo {
 					text "Whenever you attach a [D] Energy card from your hand to Rocket’s Raikou ex, you may choose 1 of the Defending Pokémon and switch it with 1 of your opponent’s Benched Pokémon. Your opponent chooses the Benched Pokémon to switch. This power can’t be used if Rocket’s Raikou ex is affected by a Special Condition."
 					delayedA {
 						after ATTACH_ENERGY, self, {
-							if(!self.specialConditions && ef.reason == PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == W)
-								 if(self.owner.opposite.pbg.bench) sw self.owner.opposite.pbg.active, self.owner.opposite.pbg.bench.select("Select the new active Pokémon.")
+							if(!self.specialConditions && ef.reason == PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == D)
+								if(self.owner.opposite.pbg.bench){
+									if(confirm("Switch the defending pokemon with 1 of your opponent’s Benched Pokémon? (Your opponent chooses the Benched Pokémon to switch)")) sw self.owner.opposite.pbg.active, self.owner.opposite.pbg.bench.oppSelect("Select the new active Pokémon.")
+							}
 						}
 					}
 
