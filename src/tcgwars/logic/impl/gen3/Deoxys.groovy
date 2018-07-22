@@ -2955,7 +2955,7 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Dragon Lift", {
 					text "The Retreat Cost for each of your Pokémon (excluding Pokémon-ex and Baby Pokémon) is 0."
 					getterA (GET_RETREAT_COST, BEFORE_LAST) {h->
-						if(h.effect.target.owner == self.owner && !((h.effect.target as Card).cardTypes.is(BABY) &&  !((h.effect.target as Card).cardTypes.is(POKEMON_EX)) {
+						if(h.effect.target.owner == self.owner && !(h.effect.target as Card).cardTypes.is(BABY) &&  !(h.effect.target as Card).cardTypes.is(POKEMON_EX)) {
 							h.object = 0
 						}
 					}
