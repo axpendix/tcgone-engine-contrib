@@ -2955,7 +2955,7 @@ public enum Deoxys implements CardInfo {
 				pokeBody "Dragon Lift", {
 					text "The Retreat Cost for each of your Pokémon (excluding Pokémon-ex and Baby Pokémon) is 0."
 					getterA (GET_RETREAT_COST, BEFORE_LAST) {h->
-						if(h.effect.target.owner == self.owner && !(h.effect.target as Card).cardTypes.is(BABY) &&  !(h.effect.target as Card).cardTypes.is(POKEMON_EX)) {
+						if(h.effect.target.owner == self.owner && !h.effect.target.topPokemonCard.cardTypes.is(BABY) &&  !h.effect.target.topPokemonCard.cardTypes.is(POKEMON_EX)) {
 							h.object = 0
 						}
 					}
@@ -3043,7 +3043,7 @@ public enum Deoxys implements CardInfo {
 
 			};
 			case LATIOS_STAR_106:
-			return basic (this, hp:HP080, type:COLORLESS, retreatCost:0) {
+			return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness COLORLESS
 				resistance FIGHTING
 				move "Miraculous Light", {
@@ -3061,7 +3061,7 @@ public enum Deoxys implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-						if(defending.evolution && defending.cards.topPokemonCard.is(STAGE2)){
+						if(defending.evolution && defending.topPokemonCard.is(STAGE2)){
 							damage 100
 							discardAllSelfEnergy(null)
 						}
