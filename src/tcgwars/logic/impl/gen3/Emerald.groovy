@@ -1870,6 +1870,7 @@ public enum Emerald implements CardInfo {
 				text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAt any time between turns, if the Pokémon this card is attached to is affected by any Special Conditions, remove all of them. Then, discard Lum Berry."
 				def eff
 				onPlay {reason->
+					//TODO : decide when use the lum berry
 					eff=delayed{
 						before BETWEEN_TURNS,{
 							if(self.specialConditions) {
@@ -1942,7 +1943,7 @@ public enum Emerald implements CardInfo {
 			return supporter (this) {
 				text "Search you deck for up to 3 cards in any combination of Supporter cards and Stadium cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
-					my.deck.search(count :3,"Search your discard pile for 2 supporter or stadium",{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)}).moveTo(hand)
+					my.deck.search(max :3,"Search your deck for 3 Supporter or Stadium in any combination",{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)}).moveTo(hand)
 					shuffleDeck()
 				}
 				playRequirement{
@@ -1987,7 +1988,7 @@ public enum Emerald implements CardInfo {
 					energyCost W, L, C
 					attackRequirement {}
 					onAttack {
-						swiftDamage(70,defending)
+						new ResolvedDamage(hp(70), my.active, defending, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE).run(bg)
 					}
 				}
 
@@ -1998,7 +1999,7 @@ public enum Emerald implements CardInfo {
 				pokeBody "Cursed Glare", {
 					text "As long as Cacturne ex is your Active Pokémon, your opponent can’t attach any Special Energy cards (except for [D] and [M] Energy cards) from his or her hand to his or her Active Pokémon."
 					delayedA {
-						before ATTACH_ENERGY, defending, {
+						before ATTACH_ENERGY, self.owner.opposite.pbg.active, {
 							if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.active && (ef.card instanceof SpecialEnergyCard && ef.card.name != "Darkness Energy" && ef.card.name != "Metal Energy")) {
 								wcu "Cursed Glare: Can't attach energy"
 								prevent()
@@ -2056,10 +2057,12 @@ public enum Emerald implements CardInfo {
 					onAttack {
 						damage 60
 						if(opp.deck){
-							if(opp.deck.subList(0,1).discard().cardTypes.is(ENERGY)) damage 20
+							if(opp.deck.subList(0,1).filterByType(ENERGY)) damage 20
+							opp.deck.subList(0,1).discard()
 						}
 						if(my.deck){
-							if(my.deck.subList(0,1).discard().cardTypes.is(ENERGY)) damage 20
+							if(my.deck.subList(0,1).filterByType(ENERGY)) damage 20
+							my.deck.subList(0,1).discard()
 						}
 					}
 				}
@@ -2091,7 +2094,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						swiftDamage(50,defending)
+						new ResolvedDamage(hp(50), my.active, defending, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE).run(bg)
 					}
 				}
 
@@ -2103,7 +2106,7 @@ public enum Emerald implements CardInfo {
 				pokeBody "Dark Hole", {
 					text "As long as Dusclops ex is on your Bench, don’t apply [D] Weakness for all of your Pokémon in play."
 					getterA (GET_WEAKNESSES) { h->
-						if(h.effect.target == self && self.cards.energyCount(L)) {
+						if(h.effect.target.owner == self.owner && !self.active) {
 							def list = h.object as List<Weakness>
 							list.remove(D)
 						}
@@ -2137,7 +2140,7 @@ public enum Emerald implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						for(int i=0;i<3;i++){
-							damage 10, opp.all.select("Put 1 damage counter to which pokémon?")
+							directDamage 10, opp.all.select("Put 1 damage counter to which pokémon?")
 						}
 					}
 				}
@@ -2147,7 +2150,7 @@ public enum Emerald implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
-						if(defending.resistance.contains(F)) damage 40
+						if(defending.resistances.contains(F)) damage 40
 					}
 				}
 
@@ -2185,6 +2188,9 @@ public enum Emerald implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+						if(my.bench){
+							moveEnergy(basic: false, self, my.bench.select("Which pokémon will receive the energy?"))
+						}
 					}
 				}
 
@@ -2196,11 +2202,11 @@ public enum Emerald implements CardInfo {
 					text "Damage done to any of your Raichu ex in play by attacks from your opponent’s Pokémon-ex is reduced by 30 (after applying Weakness and Resistance). You can’t use more than 1 Rai-shield Poké-Body each turn."
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
-							if(bg.em().retrieveObject("Form_Change") != bg.turnCount){
+							if(bg.em().retrieveObject("Rai_shield") != bg.turnCount){
 								bg.em().storeObject("Rai_shield",bg.turnCount)
 								bg.dm().each {
-									if(it.from.is(STAGE2) && it.to==self && it.dmg.value && it.notNoEffect){
-										bc "Mist : -30"
+									if(it.from.pokemonEX && it.to==self && it.dmg.value && it.notNoEffect){
+										bc "Rai-shield : -30"
 										it.dmg-=hp(30)
 									}
 								}
@@ -2213,7 +2219,14 @@ public enum Emerald implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 30, opp.all.select
+						def tar = opp.all.select("Select the targeted Pokémon")
+						def hasPokePower = false
+						for (Ability ability : tar.getAbilities().keySet()) {
+							if (ability instanceof PokePower) hasPokePower = true;
+						}
+						if(hasPokePower) damage 20,tar
+
+						damage 30,tar
 					}
 				}
 				move "Pika Bolt", {
