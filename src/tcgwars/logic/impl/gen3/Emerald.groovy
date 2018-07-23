@@ -2000,7 +2000,7 @@ public enum Emerald implements CardInfo {
 					text "As long as Cacturne ex is your Active Pokémon, your opponent can’t attach any Special Energy cards (except for [D] and [M] Energy cards) from his or her hand to his or her Active Pokémon."
 					delayedA {
 						before ATTACH_ENERGY, self.owner.opposite.pbg.active, {
-							if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.active && (ef.card instanceof SpecialEnergyCard && ef.card.name != "Darkness Energy" && ef.card.name != "Metal Energy")) {
+							if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.active && self.active && (ef.card instanceof SpecialEnergyCard && ef.card.name != "Darkness Energy" && ef.card.name != "Metal Energy")) {
 								wcu "Cursed Glare: Can't attach energy"
 								prevent()
 							}
@@ -2108,7 +2108,7 @@ public enum Emerald implements CardInfo {
 					getterA (GET_WEAKNESSES) { h->
 						if(h.effect.target.owner == self.owner && !self.active) {
 							def list = h.object as List<Weakness>
-							list.remove(D)
+							list.removeAll(list.findAll{it.type==D})
 						}
 					}
 
@@ -2150,7 +2150,7 @@ public enum Emerald implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
-						if(defending.resistances.contains(F)) damage 40
+						if(defending.resistances.find{it.type==F}) damage 40
 					}
 				}
 
