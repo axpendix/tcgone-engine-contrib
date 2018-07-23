@@ -500,7 +500,7 @@ public enum Emerald implements CardInfo {
 						assert my.active.cards.energyCount(W)>0 : "No [W] Energy is attached to ${my.active}"
 						assert my.bench : "There is no Benched Pokémon"
 						powerUsed()
-						def card=src.cards.filterByEnergyType(W).select("Card to move").first()
+						def card=my.active.cards.filterByEnergyType(W).select("Card to move").first()
 						def tar=my.bench
 						tar=tar.select("Target for [W]")
 						energySwitch(my.active, tar, card)
@@ -977,7 +977,7 @@ public enum Emerald implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						if(defending.evolved) damage 20
+						if(defending.evolution) damage 20
 					}
 				}
 				move "Shove", {
@@ -1432,7 +1432,7 @@ public enum Emerald implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						if(defending.evolved) applyAfterDamage CONFUSED
+						if(defending.evolution) applyAfterDamage CONFUSED
 					}
 				}
 
@@ -1833,7 +1833,7 @@ public enum Emerald implements CardInfo {
 				text "Each player’s [C] Evolved Pokémon, [D] Evolved Pokémon and [M] Evolved Pokémon can’t use any Poké-Powers or Poké-Bodies.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
 				onPlay {
 					eff = getter IS_ABILITY_BLOCKED, { Holder h->
-						if (h.effect.target.evolved && (h.effect.ability instanceof PokeBody || h.effect.ability instanceof PokePower) && (h.effect.target.types.contains(C) || h.effect.target.types.contains(D) || h.effect.target.types.contains(M))) {
+						if (h.effect.target.evolution && (h.effect.ability instanceof PokeBody || h.effect.ability instanceof PokePower) && (h.effect.target.types.contains(C) || h.effect.target.types.contains(D) || h.effect.target.types.contains(M))) {
 							h.object=true
 						}
 					}
