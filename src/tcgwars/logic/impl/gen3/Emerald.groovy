@@ -1830,6 +1830,7 @@ public enum Emerald implements CardInfo {
 			case BATTLE_FRONTIER_75:
 			return stadium (this) {
 				text "Each player’s [C] Evolved Pokémon, [D] Evolved Pokémon and [M] Evolved Pokémon can’t use any Poké-Powers or Poké-Bodies.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+				def eff
 				onPlay {
 					eff = getter IS_ABILITY_BLOCKED, { Holder h->
 						if (h.effect.target.evolution && (h.effect.ability instanceof PokeBody || h.effect.ability instanceof PokePower) && (h.effect.target.types.contains(C) || h.effect.target.types.contains(D) || h.effect.target.types.contains(M))) {
@@ -1840,17 +1841,9 @@ public enum Emerald implements CardInfo {
 				onRemoveFromPlay{
 					eff.unregister()
 				}
-
 			};
 			case DOUBLE_FULL_HEAL_76:
-			return basicTrainer (this) {
-				text "Remove all Special Conditions from each of your Active Pokémon."
-				onPlay {
-					clearSpecialCondition(my.active,Source.TRAINER_CARD)
-				}
-				playRequirement{
-				}
-			};
+			return copy (Sandstorm.DOUBLE_FULL_HEAL_86, this);
 			case LANETTE_S_NET_SEARCH_77:
 			return supporter (this) {
 				text "Search your deck for up to 3 different types of Basic Pokémon cards (excluding Baby Pokémon), show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -1875,6 +1868,7 @@ public enum Emerald implements CardInfo {
 			case LUM_BERRY_78:
 			return pokemonTool (this) {
 				text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAt any time between turns, if the Pokémon this card is attached to is affected by any Special Conditions, remove all of them. Then, discard Lum Berry."
+				def eff
 				onPlay {reason->
 					eff=delayed{
 						before BETWEEN_TURNS,{
@@ -1914,6 +1908,7 @@ public enum Emerald implements CardInfo {
 			case ORAN_BERRY_80:
 			return pokemonTool (this) {
 				text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAt any time between turns, if the Pokémon this card is attached to has at least 2 damage counters on it, remove 2 damage counters from it. Then, discard Oran Berry."
+				def eff
 				onPlay {reason->
 					eff=delayed{
 						before BETWEEN_TURNS,{
@@ -1947,8 +1942,11 @@ public enum Emerald implements CardInfo {
 			return supporter (this) {
 				text "Search you deck for up to 3 cards in any combination of Supporter cards and Stadium cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					my.deck.search(max :3,"Search your discard pile for 2 supporter or stadium",it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)).moveTo(hand)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.deck
 				}
 			};
 			case WALLY_S_TRAINING_85:
