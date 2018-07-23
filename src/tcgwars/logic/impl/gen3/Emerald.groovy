@@ -495,7 +495,6 @@ public enum Emerald implements CardInfo {
 				pokePower "Water Cyclone", {
 					text "As often as you like during your turn (before your attack), you may move a [W] Energy attached to 1 of your Active Pokémon to 1 of your Benched Pokémon. This power can’t be used if Swampert is affected by a Special Condition."
 					actionA {
-						checkLastTurn()
 						assert !(self.specialConditions) : "$self is affected by a Special Condition"
 						assert my.active.cards.energyCount(W)>0 : "No [W] Energy is attached to ${my.active}"
 						assert my.bench : "There is no Benched Pokémon"
@@ -1530,7 +1529,7 @@ public enum Emerald implements CardInfo {
 
 			};
 			case PICHU_59:
-			return baby (this, successors:'SUCCESSOR(S)', hp:HP040, type:LIGHTNING, retreatCost:1) {
+			return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
 				weakness FIGHTING
 				pokePower "Baby Evolution", {
 					text "Once during your turn (before your attack), you may put Pikachu from your hand onto Pichu (this counts as evolving Pichu) and remove all damage counters from Pichu."
@@ -1683,7 +1682,7 @@ public enum Emerald implements CardInfo {
 					delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if(!self.active && it.to == self && it.from == self.owner.opposite){
+                if(!self.active && it.to == self && it.from.owner == self.owner.opposite){
                   bc "Feathery prevent all damage"
                   it.dmg=hp(0)
                 }
