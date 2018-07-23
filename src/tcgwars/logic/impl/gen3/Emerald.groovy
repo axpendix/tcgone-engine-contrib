@@ -497,7 +497,7 @@ public enum Emerald implements CardInfo {
 					actionA {
 						checkLastTurn()
 						assert !(self.specialConditions) : "$self is affected by a Special Condition"
-						assert my.active.energyCount(W)>0 : "No [W] Energy is attached to ${my.active}"
+						assert my.active.cards.energyCount(W)>0 : "No [W] Energy is attached to ${my.active}"
 						assert my.bench : "There is no Benched Pokémon"
 						powerUsed()
 						def card=src.cards.filterByEnergyType(W).select("Card to move").first()
@@ -542,7 +542,7 @@ public enum Emerald implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						if(defending.evolved) applyAfterDamage CONFUSED
+						if(defending.evolution) applyAfterDamage CONFUSED
 					}
 				}
 
@@ -564,7 +564,7 @@ public enum Emerald implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
-						if(defending.evolved) damage 20
+						if(defending.evolution) damage 20
 					}
 				}
 
@@ -587,10 +587,12 @@ public enum Emerald implements CardInfo {
 					onAttack {
 						damage 40
 						if(opp.deck){
-							if(opp.deck.subList(0,1).discard().cardTypes.is(ENERGY)) damage 10
+							if(opp.deck.subList(0,1).filterByType(ENERGY)) damage 10
+							opp.deck.subList(0,1).discard()
 						}
 						if(my.deck){
-							if(my.deck.subList(0,1).discard().cardTypes.is(ENERGY)) damage 10
+							if(my.deck.subList(0,1).filterByType(ENERGY)) damage 10
+							my.deck.subList(0,1).discard()
 						}
 					}
 				}
@@ -660,7 +662,7 @@ public enum Emerald implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						opp.all.each{damage 10}
+						opp.all.each{damage 10, it}
 					}
 				}
 
