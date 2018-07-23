@@ -1848,7 +1848,7 @@ public enum Emerald implements CardInfo {
 			return supporter (this) {
 				text "Search your deck for up to 3 different types of Basic Pokémon cards (excluding Baby Pokémon), show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
-					my.deck.select(min:0, max:3, "Select up to 3 Basic Pokémon of different types", cardTypeFilter(BASIC), self.owner,
+					my.deck.select(min:0, max:3, "Select up to 3 Basic Pokémon of different types", cardTypeFilter(BASIC), thisCard.player,
 						{CardList list->
 							TypeSet typeSet=new TypeSet()
 							for(card in list){
@@ -1872,7 +1872,7 @@ public enum Emerald implements CardInfo {
 				onPlay {reason->
 					eff=delayed{
 						before BETWEEN_TURNS,{
-							if(self.isSPC()) {
+							if(self.specialConditions) {
 								clearSpecialCondition(self,Source.TRAINER_CARD)
 								discard thisCard
 							}
@@ -1933,7 +1933,7 @@ public enum Emerald implements CardInfo {
 				}
 				playRequirement {
 					assert my.deck
-					assert my.hand.size()<7
+					assert my.hand.size()<7 : "You have already more than 6 cards in your hand."
 				}
 			};
 			case RARE_CANDY_83:
@@ -1942,7 +1942,7 @@ public enum Emerald implements CardInfo {
 			return supporter (this) {
 				text "Search you deck for up to 3 cards in any combination of Supporter cards and Stadium cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
-					my.deck.search(max :3,"Search your discard pile for 2 supporter or stadium",it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)).moveTo(hand)
+					my.deck.search(count :3,"Search your discard pile for 2 supporter or stadium",{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)}).moveTo(hand)
 					shuffleDeck()
 				}
 				playRequirement{
@@ -1966,7 +1966,7 @@ public enum Emerald implements CardInfo {
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
 							bg.dm().each {
-								if(it.from.is(STAGE2) && it.to==self && it.dmg.value && it.notNoEffect){
+								if(it.from.topPokemonCard.cardTypes.is(STAGE2) && it.to==self && it.dmg.value && it.notNoEffect){
 									bc "Mist : -30"
 									it.dmg-=hp(30)
 								}
