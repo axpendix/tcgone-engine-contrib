@@ -389,7 +389,7 @@ public enum BaseSet implements CardInfo {
 								set.clear()
 							}
 						}
-						eff2 = getterA GET_ENERGY_TYPES, { holder->
+						eff2 = getter GET_ENERGY_TYPES, { holder->
 							if(set.contains(holder.effect.card)) {
 								int count = holder.object.size()
 								holder.object = [(1..count).collect{[FIRE] as Set}]
