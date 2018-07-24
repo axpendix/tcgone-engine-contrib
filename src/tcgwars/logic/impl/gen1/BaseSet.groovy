@@ -295,11 +295,13 @@ public enum BaseSet implements CardInfo {
 				pokemonPower "Damage Swap", {
 					text "As often as you like during your turn (before your attack), you may move 1 damage counter from 1 of your Pokémon to another as long as you don’t Knock Out that Pokémon. This power can’t be used if Alakazam is Asleep, Confused, or Paralyzed."
 					actionA {
-						assert !(self.specialConditions)
-						
+						assert !(self.specialConditions) : "$self is affected by a special condition"
+
 						assert my.all.find({it.numberOfDamageCounters>0})
 						assert my.all.find{it.numberOfDamageCounters < (it.fullHp - 10)/10}
-						
+						assert my.all.size() > 1
+
+						powerUsed()
 						def src=my.all.findAll {it.numberOfDamageCounters>0}.select("Source for damage counter")
 						def tar=my.all.findAll {it.numberOfDamageCounters < (it.fullHp - 10)/10}
 						tar.remove(src)
@@ -319,7 +321,7 @@ public enum BaseSet implements CardInfo {
 						flip{applyAfterDamage(CONFUSED)}
 					}
 				}
-				
+
 			};
 			case BLASTOISE:
 			return evolution (this, from:"Wartortle", hp:HP100, type:WATER, retreatCost:3) {
@@ -327,12 +329,14 @@ public enum BaseSet implements CardInfo {
 				pokemonPower "Rain Dance", {
 					text "As often as you like during your turn (before your attack), you may attach 1 [W] Energy card to 1 of your [W] Pokémon. (This doesn’t use up your 1 Energy card attachment for the turn.) This power can’t be used if Blastoise is Asleep, Confused, or Paralyzed."
 					actionA {
-						assert !(self.specialConditions)
-						
-						assert my.hand.find{it.cardTypes.is(W)}
-						assert my.all.find{it.types.contains(W)}
-						
-						my.hand.findAll{it.cardTypes.is(W)}.select().moveTo(my.all.findAll{it.types.contains(W)}.select())
+						assert !(self.specialConditions) : "$self is affected by a special condition"
+
+						assert my.hand.filterByBasicEnergyType(W) : "No [W] in hand"
+						assert my.all.find{it.types.contains(W)} : "No [W] pokemon"
+
+						powerUsed()
+						def card = my.hand.filterByBasicEnergyType(W).first()
+						attachEnergy(my.all.findAll{it.types.contains(W).select("To?"), card)
 					}
 				}
 				move "Hydro Pump", {
@@ -367,25 +371,41 @@ public enum BaseSet implements CardInfo {
 						damage 80, self
 					}
 				}
-				
+
 			};
-			case CHARIZARD: //TODO: Import the ability from Evolutions Charizard or Noble Victories Hydregion
+			case CHARIZARD:
 			return evolution (this, from:"Charmeleon", hp:HP120, type:FIRE, retreatCost:3) {
 				weakness WATER
 				resistance FIGHTING, MINUS30
-				//Please just import something like EVO's charizard to implement this effect c:
 				pokemonPower "Energy Burn", {
 					text "As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into [R] Energy for the rest of the turn. This power can’t be used if Charizard is Asleep, Confused, or Paralyzed."
-					actionA {
-						assert !(self.specialConditions)
-						//TODO: Assert if energy is attached to this pokemon
-						//TODO: Make an action trigger a getter effect
-						getterA GET_ENERGY_TYPES, { holder->
-							if(holder.effect.target.owner == self.owner
-									&& holder.effect.card == self //TODO: Probably not the right syntax for this ccheck
-									&& holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
-								holder.object = [[R] as Set] //TODO: Make sure this turns each ENERGY into Fire energy (Not just each card)
+					def set = [] as Set
+					def eff1, eff2
+					onActivate {
+						if(eff1) eff1.unregister()
+						if(eff2) eff2.unregister()
+						eff1 = delayed {
+							before BETWEEN_TURNS, {
+								set.clear()
 							}
+						}
+						eff2 = getterA GET_ENERGY_TYPES, { holder->
+							if(set.contains(holder.effect.card)) {
+								int count = holder.object.size()
+								holder.object = [(1..count).collect{[FIRE] as Set}]
+							}
+						}
+					}
+					actionA {
+						assert !(self.specialConditions) : "$self is affected by a special condition"
+						def newSet = [] as Set
+						newSet.addAll(self.cards.filterByType(ENERGY))
+						if(newSet != set){
+							powerUsed()
+							set.clear()
+							set.addAll(newSet)
+						} else {
+							wcu "Nothing to burn more"
 						}
 					}
 				}
@@ -395,10 +415,11 @@ public enum BaseSet implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 100
-						discardSelfEnergy(C,C) //Does this need to be moved to specify requirement of the attack?
+						discardSelfEnergy(C) // one energy card
+						discardSelfEnergy(C) // one energy card
 					}
 				}
-				
+
 			};
 			case CLEFAIRY:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
