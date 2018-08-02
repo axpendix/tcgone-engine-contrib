@@ -35,7 +35,7 @@ import tcgwars.logic.util.*;
  * @author axpendix@hotmail.com
  */
 public enum BaseSet implements CardInfo {
-	
+
 	ALAKAZAM ("Alakazam", 1, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
 	BLASTOISE ("Blastoise", 2, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
 	CHANSEY ("Chansey", 3, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
@@ -336,7 +336,7 @@ public enum BaseSet implements CardInfo {
 
 						powerUsed()
 						def card = my.hand.filterByBasicEnergyType(W).first()
-						attachEnergy(my.all.findAll{it.types.contains(W).select("To?"), card)
+						attachEnergy(my.all.findAll{it.types.contains(W)}.select("To?"), card)
 					}
 				}
 				move "Hydro Pump", {
@@ -348,7 +348,7 @@ public enum BaseSet implements CardInfo {
 						extraEnergyDamage(2,hp(10),W,thisMove)
 					}
 				}
-				
+
 			};
 			case CHANSEY:
 			return basic (this, hp:HP120, type:COLORLESS, retreatCost:1) {
@@ -440,17 +440,17 @@ public enum BaseSet implements CardInfo {
 					onAttack {
 						def moveList = []
 						def labelList = []
-						
+
 						moveList.addAll(defending.topPokemonCard.moves);
 						labelList.addAll(defending.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
-						
+
 						def move=choose(moveList, labelList)
 						def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
 						attack (move as Move)
 						bef.unregisterItself(bg().em())
 					}
 				}
-				
+
 			};
 			case GYARADOS:
 			return evolution (this, from:"Magikarp", hp:HP100, type:WATER, retreatCost:3) {
@@ -473,7 +473,7 @@ public enum BaseSet implements CardInfo {
 						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
-				
+
 			};
 			case HITMONCHAN:
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
@@ -494,7 +494,7 @@ public enum BaseSet implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case MACHAMP:
 			return evolution (this, from:"Machoke", hp:HP100, type:FIGHTING, retreatCost:3) {
@@ -518,7 +518,7 @@ public enum BaseSet implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case MAGNETON:
 			return evolution (this, from:"Magnemite", hp:HP060, type:LIGHTNING, retreatCost:1) {
@@ -543,7 +543,7 @@ public enum BaseSet implements CardInfo {
 						damage 80, self
 					}
 				}
-				
+
 			};
 			case MEWTWO:
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:3) {
@@ -565,7 +565,7 @@ public enum BaseSet implements CardInfo {
 						preventAllEffectsNextTurn()
 					}
 				}
-				
+
 			};
 			case NIDOKING:
 			return evolution (this, from:"Nidorino", hp:HP090, type:GRASS, retreatCost:3) {
@@ -591,7 +591,7 @@ public enum BaseSet implements CardInfo {
 						}
 					}
 				}
-				
+
 			};
 			case NINETALES:
 			return evolution (this, from:"Vulpix", hp:HP080, type:FIRE, retreatCost:1) {
@@ -618,7 +618,7 @@ public enum BaseSet implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case POLIWRATH:
 			return evolution (this, from:"Poliwhirl", hp:HP090, type:WATER, retreatCost:3) {
@@ -628,7 +628,7 @@ public enum BaseSet implements CardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						damage 30 + 
+						damage 30 +
 						extraEnergyDamage(2,hp(10),W,thisMove)
 					}
 				}
@@ -641,7 +641,7 @@ public enum BaseSet implements CardInfo {
 						afterDamage{discardDefendingEnergy()}
 					}
 				}
-				
+
 			};
 			case RAICHU:
 			return evolution (this, from:"Pikachu", hp:HP080, type:LIGHTNING, retreatCost:1) {
@@ -652,7 +652,7 @@ public enum BaseSet implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-						flip{preventAllEffectsNextTurn()}	
+						flip{preventAllEffectsNextTurn()}
 					}
 				}
 				move "Thunder", {
@@ -664,7 +664,7 @@ public enum BaseSet implements CardInfo {
 						flip 1, {}, {damage 30, self}
 					}
 				}
-				
+
 			};
 			case VENUSAUR:
 			return evolution (this, from:"Ivysaur", hp:HP100, type:GRASS, retreatCost:2) {
@@ -672,10 +672,10 @@ public enum BaseSet implements CardInfo {
 				pokemonPower "Energy Trans", {
 					text "As often as you like during your turn (before you attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one. This power can’t be used if Venusaur is Asleep, Confused, or Paralyzed."
 						actionA {
-							assert !(self.specialConditions)							
+							assert !(self.specialConditions)
 							assert my.all.findAll {it.cards.energyCount(G)>0}
 							assert my.all.size()>=2
-							
+
 							powerUsed()
 							def src=my.all.findAll {it.cards.energyCount(G)>0}.select("Source for [G]")
 							def card=src.cards.filterByEnergyType(G).select("Card to move").first()
@@ -693,7 +693,7 @@ public enum BaseSet implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case ZAPDOS:
 			return basic (this, hp:HP090, type:LIGHTNING, retreatCost:3) {
@@ -716,7 +716,7 @@ public enum BaseSet implements CardInfo {
 						discardAllSelfEnergy null
 					}
 				}
-				
+
 			};
 			case BEEDRILL:
 			return evolution (this, from:"Kakuna", hp:HP080, type:GRASS, retreatCost:0) {
@@ -739,7 +739,7 @@ public enum BaseSet implements CardInfo {
 						flip{applyAfterDamage(POISONED)}
 					}
 				}
-				
+
 			};
 			case DRAGONAIR:
 			return evolution (this, from:"Dratini", hp:HP080, type:COLORLESS, retreatCost:2) {
@@ -761,7 +761,7 @@ public enum BaseSet implements CardInfo {
 						discardDefendingEnergy()
 					}
 				}
-				
+
 			};
 			case DUGTRIO:
 			return evolution (this, from:"Diglett", hp:HP070, type:FIGHTING, retreatCost:2) {
@@ -784,7 +784,7 @@ public enum BaseSet implements CardInfo {
 						my.bench.each({ damage 10, it})
 					}
 				}
-				
+
 			};
 			case ELECTABUZZ:
 			return basic (this, hp:HP070, type:LIGHTNING, retreatCost:2) {
@@ -807,7 +807,7 @@ public enum BaseSet implements CardInfo {
 						flip 1, {damage 10}, {damage 10, self}
 					}
 				}
-				
+
 			};
 			case ELECTRODE://TODO: PLEASE IMPORT THIS NIGHTMARE FROM EVOLUTIONS
 			return evolution (this, from:"Voltorb", hp:HP080, type:LIGHTNING, retreatCost:1) {
@@ -826,7 +826,7 @@ public enum BaseSet implements CardInfo {
 						flip 1, {}, {damage 10, self}
 					}
 				}
-				
+
 			};
 			case PIDGEOTTO:
 			return evolution (this, from:"Pidgey", hp:HP060, type:COLORLESS, retreatCost:1) {
@@ -844,7 +844,7 @@ public enum BaseSet implements CardInfo {
 						}
 					}
 				}
-				
+
 				move "Whirlwind", {
 					text "20 damage. If your opponent has any Benched Pokémon, he or she chooses 1 of them and switches it with the Defending Pokémon. (Do the damage before switching the Pokémon.)"
 					energyCost C, C
@@ -854,7 +854,7 @@ public enum BaseSet implements CardInfo {
 						whirlwind()
 					}
 				}
-				
+
 				move "Mirror Move", {
 					text "If Pidgeotto was attacked last turn, do the final result of that attack on Pidgeotto to the Defending Pokémon."
 					energyCost C, C, C
@@ -865,7 +865,7 @@ public enum BaseSet implements CardInfo {
 						damage lastDamage.value
 					}
 				}
-				
+
 			};
 			case ARCANINE:
 			return evolution (this, from:"Growlithe", hp:HP100, type:FIRE, retreatCost:3) {
@@ -888,7 +888,7 @@ public enum BaseSet implements CardInfo {
 						damage 30, self
 					}
 				}
-				
+
 			};
 			case CHARMELEON:
 			return evolution (this, from:"Charmander", hp:HP080, type:FIRE, retreatCost:1) {
@@ -910,7 +910,7 @@ public enum BaseSet implements CardInfo {
 						discardSelfEnergy(R)
 					}
 				}
-				
+
 			};
 			case DEWGONG:
 			return evolution (this, from:"Seel", hp:HP080, type:WATER, retreatCost:3) {
@@ -932,7 +932,7 @@ public enum BaseSet implements CardInfo {
 						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
-				
+
 			};
 			case DRATINI:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
@@ -945,7 +945,7 @@ public enum BaseSet implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case FARFETCHD:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -968,7 +968,7 @@ public enum BaseSet implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case GROWLITHE:
 			return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
@@ -981,7 +981,7 @@ public enum BaseSet implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case HAUNTER:
 			return evolution (this, from:"Gastly", hp:HP060, type:PSYCHIC, retreatCost:1) {
@@ -1004,7 +1004,7 @@ public enum BaseSet implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case IVYSAUR:
 			return evolution (this, from:"Bulbasaur", hp:HP060, type:GRASS, retreatCost:1) {
@@ -1026,7 +1026,7 @@ public enum BaseSet implements CardInfo {
 						applyAfterDamage(POISONED)
 					}
 				}
-				
+
 			};
 			case JYNX:
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
@@ -1047,7 +1047,7 @@ public enum BaseSet implements CardInfo {
 						damage 20+10*opp.active.numberOfDamageCounters
 					}
 				}
-				
+
 			};
 			case KADABRA:
 			return evolution (this, from:"Abra", hp:HP060, type:PSYCHIC, retreatCost:3) {
@@ -1071,7 +1071,7 @@ public enum BaseSet implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case KAKUNA:
 			return evolution (this, from:"Weedle", hp:HP080, type:GRASS, retreatCost:2) {
@@ -1093,7 +1093,7 @@ public enum BaseSet implements CardInfo {
 						flip{applyAfterDamage(POISONED)}
 					}
 				}
-				
+
 			};
 			case MACHOKE:
 			return evolution (this, from:"Machoke", hp:HP080, type:FIGHTING, retreatCost:3) {
@@ -1115,7 +1115,7 @@ public enum BaseSet implements CardInfo {
 						damage 20, self
 					}
 				}
-				
+
 			};
 			case MAGIKARP:
 			return basic (this, hp:HP030, type:WATER, retreatCost:1) {
@@ -1136,7 +1136,7 @@ public enum BaseSet implements CardInfo {
 						damage 10*self.numberOfDamageCounters
 					}
 				}
-				
+
 			};
 			case MAGMAR:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:2) {
@@ -1158,7 +1158,7 @@ public enum BaseSet implements CardInfo {
 						discardSelfEnergy(R)
 					}
 				}
-				
+
 			};
 			case NIDORINO:
 			return evolution (this, from:"Nidoran ♂", hp:HP060, type:GRASS, retreatCost:1) {
@@ -1179,7 +1179,7 @@ public enum BaseSet implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case POLIWHIRL:
 			return evolution (this, from:"Poliwag", hp:HP060, type:WATER, retreatCost:1) {
@@ -1200,7 +1200,7 @@ public enum BaseSet implements CardInfo {
 						flip 2, {damage 30}
 					}
 				}
-				
+
 			};
 			case PORYGON:
 			return basic (this, hp:HP030, type:COLORLESS, retreatCost:1) {
@@ -1223,8 +1223,8 @@ public enum BaseSet implements CardInfo {
 											list.get(0).type = newWeakness
 										}
 									}
-									
-								
+
+
 //									eff = getter (GET_WEAKNESSES, defending) {h->
 //										def list = h.object as List<Weakness>
 //										if(list) {
@@ -1251,7 +1251,7 @@ public enum BaseSet implements CardInfo {
 						//TODO: How do you make a getter for this pokemon's type, and same problem as above
 					}
 				}
-				
+
 			};
 			case RATICATE:
 			return evolution (this, from:"Rattata", hp:HP060, type:COLORLESS, retreatCost:1) {
@@ -1273,7 +1273,7 @@ public enum BaseSet implements CardInfo {
 						damage ceil((defending.hp/10)/2)*10
 					}
 				}
-				
+
 			};
 			case SEEL:
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -1286,7 +1286,7 @@ public enum BaseSet implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case WARTORTLE:
 			return evolution (this, from:"Squirtle", hp:HP070, type:WATER, retreatCost:1) {
@@ -1307,7 +1307,7 @@ public enum BaseSet implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case ABRA:
 			return basic (this, hp:HP030, type:PSYCHIC, retreatCost:0) {
@@ -1321,7 +1321,7 @@ public enum BaseSet implements CardInfo {
 						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
-				
+
 			};
 			case BULBASAUR:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
@@ -1342,7 +1342,7 @@ public enum BaseSet implements CardInfo {
 						}
 					}
                 }
-				
+
 			};
 			case CATERPIE:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
@@ -1356,7 +1356,7 @@ public enum BaseSet implements CardInfo {
 						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
-				
+
 			};
 			case CHARMANDER:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -1378,7 +1378,7 @@ public enum BaseSet implements CardInfo {
 						discardSelfEnergy(R)
 					}
 				}
-				
+
 			};
 			case DIGLETT:
 			return basic (this, hp:HP030, type:FIGHTING, retreatCost:0) {
@@ -1400,7 +1400,7 @@ public enum BaseSet implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case DODUO:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:0) {
@@ -1414,7 +1414,7 @@ public enum BaseSet implements CardInfo {
 						flip 2, {damage 10}
 					}
 				}
-				
+
 			};
 			case DROWZEE:
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -1436,7 +1436,7 @@ public enum BaseSet implements CardInfo {
 						flip{applyAfterDamage(CONFUSED)}
 					}
 				}
-				
+
 			};
 			case GASTLY:
 			return basic (this, hp:HP030, type:PSYCHIC, retreatCost:0) {
@@ -1458,7 +1458,7 @@ public enum BaseSet implements CardInfo {
 						discardSelfEnergy(P)
 					}
 				}
-				
+
 			};
 			case KOFFING:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1472,7 +1472,7 @@ public enum BaseSet implements CardInfo {
 						flip 1, {applyAfterDamage(POISONED)}, {applyAfterDamage(CONFUSED)}
 					}
 				}
-				
+
 			};
 			case MACHOP:
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1485,7 +1485,7 @@ public enum BaseSet implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case MAGNEMITE:
 			return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
@@ -1510,7 +1510,7 @@ public enum BaseSet implements CardInfo {
 						damage 40, self
 					}
 				}
-				
+
 			};
 			case METAPOD:
 			return evolution (this, from:"Caterpie", hp:HP070, type:GRASS, retreatCost:2) {
@@ -1532,7 +1532,7 @@ public enum BaseSet implements CardInfo {
 						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
-				
+
 			};
 			case NIDORAN_MALE:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
@@ -1545,7 +1545,7 @@ public enum BaseSet implements CardInfo {
 						flip{damage 30}
 					}
 				}
-				
+
 			};
 			case ONIX:
 			return basic (this, hp:HP090, type:FIGHTING, retreatCost:3) {
@@ -1566,7 +1566,7 @@ public enum BaseSet implements CardInfo {
 						damage 0
 					}
 				}
-				
+
 			};
 			case PIDGEY:
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
@@ -1581,7 +1581,7 @@ public enum BaseSet implements CardInfo {
 						whirlwind()
 					}
 				}
-				
+
 			};
 			case PIKACHU:
 			return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
@@ -1603,7 +1603,7 @@ public enum BaseSet implements CardInfo {
 						flip{damage 30, self}
 					}
 				}
-				
+
 			};
 			case POLIWAG:
 			return basic (this, hp:HP040, type:WATER, retreatCost:1) {
@@ -1617,7 +1617,7 @@ public enum BaseSet implements CardInfo {
 						extraEnergyDamage(2,hp(10),W,thisMove)
 					}
 				}
-				
+
 			};
 			case PONYTA:
 			return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
@@ -1638,7 +1638,7 @@ public enum BaseSet implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case RATTATA:
 			return basic (this, hp:HP030, type:COLORLESS, retreatCost:0) {
@@ -1652,7 +1652,7 @@ public enum BaseSet implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case SANDSHREW:
 			return basic (this, hp:HP040, type:FIGHTING, retreatCost:1) {
@@ -1667,7 +1667,7 @@ public enum BaseSet implements CardInfo {
 						sandAttack(thisMove)
 					}
 				}
-				
+
 			};
 			case SQUIRTLE:
 			return basic (this, hp:HP040, type:WATER, retreatCost:1) {
@@ -1689,7 +1689,7 @@ public enum BaseSet implements CardInfo {
 						flip{preventAllDamageNextTurn()}
 					}
 				}
-				
+
 			};
 			case STARMIE:
 			return evolution (this, from:"Staryu", hp:HP060, type:WATER, retreatCost:1) {
@@ -1712,7 +1712,7 @@ public enum BaseSet implements CardInfo {
 						flip{applyAfterDamage(PARALYZED)}
 					}
 				}
-				
+
 			};
 			case STARYU:
 			return basic (this, hp:HP040, type:WATER, retreatCost:1) {
@@ -1725,7 +1725,7 @@ public enum BaseSet implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case TANGELA:
 			return basic (this, hp:HP050, type:GRASS, retreatCost:2) {
@@ -1748,7 +1748,7 @@ public enum BaseSet implements CardInfo {
 						applyAfterDamage(POISONED)
 					}
 				}
-				
+
 			};
 			case VOLTORB:
 			return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
@@ -1761,7 +1761,7 @@ public enum BaseSet implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case VULPIX:
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -1775,7 +1775,7 @@ public enum BaseSet implements CardInfo {
 						flip(applyAfterDamage(CONFUSED))
 					}
 				}
-				
+
 			};
 			case WEEDLE:
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
@@ -1789,7 +1789,7 @@ public enum BaseSet implements CardInfo {
 						flip{applyAfterDamage(POISONED)}
 					}
 				}
-				
+
 			};
 			case CLEFAIRY_DOLL:
 			return basicTrainer (this) {
@@ -1920,10 +1920,10 @@ public enum BaseSet implements CardInfo {
 				}
 				playRequirement{
 					assert my.hand.find(cardTypeFilter(POKEMON))
-					
+
 				}
 			};
-			case SCOOP_UP: 
+			case SCOOP_UP:
 			return basicTrainer (this) {
 				text "Choose 1 of your Pokémon in play and return its Basic Pokémon card to your hand. (Discard all cards attached to that card.)"
 				onPlay { //TODO: How does one find the basic of a Pokemon card?  It's possible that Pokemon like Ditto can mess up looking through a stack of cards
@@ -2010,7 +2010,7 @@ public enum BaseSet implements CardInfo {
 					}
 				}
 				playRequirement{
-					assert opp.discard.find(cardTypeFilter(BASIC)) && opp.bench.notFull 
+					assert opp.discard.find(cardTypeFilter(BASIC)) && opp.bench.notFull
 				}
 			};
 			case POKEDEX:
@@ -2128,5 +2128,5 @@ public enum BaseSet implements CardInfo {
 			return null;
 		}
 	}
-	
+
 }
