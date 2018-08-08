@@ -710,6 +710,33 @@ class TcgStatics {
 			after SWITCH, self, {unregister()}
 		}
 	}
+	static callForFamily(params=[:],int count, PokemonCardSet self,Object delegate){
+		delegate.attackRequirement {
+			assert my.deck.notEmpty
+			assert my.bench.notFull
+		}
+		delegate.onAttack {
+			int maxSpace = Math.min(self.owner.pbg.bench.freeBenchCount,count)
+			basicFilter = params.basic ? BASIC : POKEMON
+			pkmnName = ""
+			if(params.name){
+				pkmnName = params.name
+			}
+			if(params.type){
+				deck.search (count: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter) && it.asPokemonCard().types.contains(params.type)}).each {
+					deck.remove(it)
+					benchPCS(it)
+				}
+			}
+			else{
+				deck.search (count: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter)).each {
+					deck.remove(it)
+					benchPCS(it)
+				}
+			}
+			shuffleDeck()
+		}
+	}
 
 	static targeted (PokemonCardSet pcs, Source source, Closure c){
 		new AbstractDirectTargetedEffect(pcs, source) {
