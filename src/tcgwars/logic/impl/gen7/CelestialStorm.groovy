@@ -3431,7 +3431,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 			case UNDERGROUND_EXPEDITION_150:
 			return copy(Skyridge.UNDERGROUND_EXPEDITION_140, this);
 			case RAINBOW_ENERGY_151:
-			return copy(Xy.RAINBOW_ENERGY_131, this)};
+			return copy(Xy.RAINBOW_ENERGY_131, this);
 			case SHIFTRY_GX_152:
 			return copy(SHIFTRY_GX_14,this);
 			case BLAZIKEN_GX_153:
