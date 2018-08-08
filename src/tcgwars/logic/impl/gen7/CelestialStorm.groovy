@@ -184,7 +184,7 @@ FISHERMAN_130("Fisherman", 130, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
 FRIEND_BALL_131("Friend Ball", 131, Rarity.UNCOMMON, [TRAINER,ITEM]),
 HAU_132("Hau", 132, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
 HIKER_133("Hiker", 133, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-HUSTLE_BELT_134("Hustle Belt", 134, Rarity.UNCOMMON, [TRAINER,ITEM,TOOL]),
+HUSTLE_BELT_134("Hustle Belt", 134, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
 LAST_CHANCE_POTION_135("Last Chance Potion", 135, Rarity.UNCOMMON, [TRAINER,ITEM]),
 LIFE_HERB_136("Life Herb", 136, Rarity.UNCOMMON, [TRAINER,ITEM]),
 LISIA_137("Lisia", 137, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
@@ -229,7 +229,7 @@ SCIZOR_GX_175("Scizor-GX", 175, Rarity.SECRET, [POKEMON_GX,POKEMON,_METAL_,STAGE
 STAKATAKA_GX_176("Stakataka-GX", 176, Rarity.SECRET, [POKEMON_GX,POKEMON,_METAL_,BASIC,ULTRA_BEAST]),
 RAYQUAZA_GX_177("Rayquaza-GX", 177, Rarity.SECRET, [POKEMON_GX,POKEMON,_DRAGON_,BASIC]),
 ACRO_BIKE_178("Acro Bike", 178, Rarity.SECRET, [TRAINER,ITEM]),
-HUSTLE_BELT_179("Hustle Belt", 179, Rarity.SECRET, [TRAINER,ITEM,TOOL]),
+HUSTLE_BELT_179("Hustle Belt", 179, Rarity.SECRET, [TRAINER,ITEM,POKEMON_TOOL]),
 LIFE_HERB_180("Life Herb", 180, Rarity.SECRET, [TRAINER,ITEM]),
 POKENAV_181("PokéNav", 181, Rarity.SECRET, [TRAINER,ITEM]),
 RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
@@ -2139,7 +2139,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					attackRequirement {}
 					onAttack {
 					  damage 20
-					  if(self.cards.filterByType(TOOL)) damage 20
+					  if(self.cards.filterByType(POKEMON_TOOL)) damage 20
 					}
 				}
 				move " Hammer Arm" , {
@@ -2434,9 +2434,9 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					}
 					onAttack {
 					  def selItem = my.deck.search(count:1,"Select an item card",cardTypeFilter(ITEM))
-					  if(selItem.cardTypes.is(TOOL)){
-					    if(my.all.findAll{!it.cards.filterByType(TOOL)} && confirm("Attach this tool to one of your pokémon?")){
-					      selItem.moveTo(my.all.findAll{!it.cards.filterByType(TOOL)}.select("Attach $selItem to which pokémon?").first().cards)
+					  if(selItem.cardTypes.is(POKEMON_TOOL)){
+					    if(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)} && confirm("Attach this tool to one of your pokémon?")){
+					      selItem.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $selItem to which pokémon?").first().cards)
 					    }
 					    else{
 					      selItem.moveTo(my.hand)
