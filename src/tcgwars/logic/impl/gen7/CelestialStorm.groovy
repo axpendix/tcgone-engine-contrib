@@ -333,7 +333,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  assert opp.bench
 					  powerUsed()
 					  flip {
-					    switch opp.active, opp.bench.select("New active.")
+					    sw opp.active, opp.bench.select("New active.")
 					  }
 					}
 				}
