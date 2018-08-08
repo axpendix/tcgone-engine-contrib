@@ -1,7 +1,7 @@
 package tcgwars.logic.impl.gen7;
 
 import tcgwars.logic.impl.gen5.DarkExplorers
-import tcgwars.logic.impl.gen6.XY
+import tcgwars.logic.impl.gen6.Xy
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
 import tcgwars.logic.impl.gen3.TeamRocketReturns
 import tcgwars.logic.impl.gen5.BlackWhite
@@ -242,7 +242,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 	protected Rarity rarity;
 	protected int collectionLineNo;
 
-	ForbiddenLight(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+	CelestialStorm(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
 		this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
 		this.name = name;
 		this.rarity = rarity;

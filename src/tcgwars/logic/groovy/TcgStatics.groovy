@@ -729,7 +729,7 @@ class TcgStatics {
 				}
 			}
 			else{
-				deck.search (count: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter)).each {
+				deck.search (count: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter)}).each{
 					deck.remove(it)
 					benchPCS(it)
 				}
