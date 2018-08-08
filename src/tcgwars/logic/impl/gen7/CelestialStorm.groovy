@@ -3122,7 +3122,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				weakness FIGHTING
 				bwAbility "Unit Color 2" , {
 					text "As long as this Pokémon has Unit Energy LPM attached to it, it is a [L], [P], and [M] Pokémon."
-					getterA (GET_POKEMON_TYPE,self){
+					getterA (GET_POKEMON_TYPE,self){h->
 					  if(self.cards.findAll{it.name=="Unit Energy LPM"}){
 					    h.object.clear()
 					    h.object.add(LIGHTNING)
