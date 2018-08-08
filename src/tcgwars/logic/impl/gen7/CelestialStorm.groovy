@@ -586,6 +586,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  pcs.cards.moveTo(my.deck)
 					  removePCS(pcs)
 					  shuffleDeck(null, TargetPlayer.OPPONENT)
+					}
 				}
 			};
 			case SURSKIT_15:
@@ -601,7 +602,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				}
 			};
 			case MASQUERAIN_16:
-			return 	evolution (this, from:"Surskit", hp:HP090, type:GRASS, retreatCost:1) {
+			return evolution (this, from:"Surskit", hp:HP090, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move " Surprising Pattern" , {
 					text "Discard all Special Energy from each of your opponent's Pokémon."
@@ -2569,7 +2570,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				globalAbility{
 				  delayed{
 				    after TAKE_PRIZE,{
-				      if(/*this card is prize*/)
+				      if(true/*this card is prize*/) heal 10, self
 				    }
 				  }
 				}
