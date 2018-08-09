@@ -271,7 +271,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 
 	@Override
 	public tcgwars.logic.card.Collection getCollection() {
-		return tcgwars.logic.card.Collection.FORBIDDEN_LIGHT;
+		return tcgwars.logic.card.Collection.CELESTIAL_STORM;
 	}
 
 	@Override
