@@ -297,7 +297,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					onAttack {
 					  damage 20
 					  afterDamage{
-					    heal 10
+					    heal 10, self
 					  }
 					}
 				}
@@ -353,7 +353,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move " Twin Play" , {
 					text "Search your deck for up to 2 Scyther and put them onto your Bench. Then, shuffle your deck."
 					energyCost C
-					callForFamily(name:scyther,2,delegate)
+					callForFamily(name:"Scyther",2,delegate)
 				}
 				move " Agility" , {
 					text "20 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
@@ -403,10 +403,11 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					text "You may switch 1 of your opponent's Benched Pokémon with their Active Pokémon. Your opponent's Active Pokémon is now Asleep and Poisoned."
 					energyCost G
 					attackRequirement {
-					  assert opp.bench.notEmpty
 					}
 					onAttack {
-					  def pcs = opp.bench.select("Switch")
+						if(opp.bench && confirm("Switch the defending pokémon with 1 of your opponent's benched pokémon?")){
+					  	def pcs = opp.bench.select("Switch")
+						}
 					  targeted(pcs) {
 					    sw opp.active, pcs
 					    apply POISONED, pcs
@@ -482,7 +483,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost G
 					attackRequirement {}
 					onAttack {
-					  my.all.each{damage 20*it.cards.energyCount(G)}
+					  my.all.each{damage 20*it.cards.energyCount(C)}
 					}
 				}
 			};
@@ -506,10 +507,13 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					    before APPLY_ATTACK_DAMAGES, {
 					      bg.dm().each {
 					        if(it.to == self && it.dmg.value <= 40 && it.notNoEffect) {
-					          bc "Power of nature prevents damage from Ultra Beasts"
+					          bc "Harden prevent those damage"
 					          it.dmg = hp(0)
 					        }
 					      }
+								unregisterAfter 2
+								after EVOLVE,self, {unregister()}
+								after SWITCH,self, {unregister()}
 					    }
 					  }
 					}
@@ -547,7 +551,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					onAttack {
 					  opp.hand.showToMe("opponent's hand")
 					  if(opp.hand.filterByType(SUPPORTER)){
-					    opp.hand.filterByType(SUPPORTER).select("select a supporter to put back in deck.").moveTo(opp.hand)
+					    opp.hand.filterByType(SUPPORTER).select("select a supporter to put back in deck.").moveTo(opp.deck)
 					    shuffleDeck(null, TargetPlayer.OPPONENT)
 					  }
 					}
@@ -609,7 +613,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost G
 					attackRequirement {}
 					onAttack {
-					  opp.each{
+					  opp.all.each{
 					    it.cards.filterByType(SPECIAL_ENERGY).discard()
 					  }
 					}
@@ -708,7 +712,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  assert my.deck
 					}
 					onAttack {
-					  my.deck.seach(max:2,"Choose up to 2 pokemon to put in your hand.",cardTypeFilter(POKEMON)).showToOpponent("Cards moved to hand").moveTo(my.hand)
+					  my.deck.search(max:2,"Choose up to 2 pokemon to put in your hand.",cardTypeFilter(POKEMON)).showToOpponent("Cards moved to hand").moveTo(my.hand)
 					  shuffleDeck()
 					}
 				}
@@ -775,7 +779,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  powerUsed()
 					  def tar = my.deck.search(count:1,"Choose 1 card to put on top of your deck",{true})
 					  my.deck.remove(tar)
-					  my.deck.add(0, tar)
+					  my.deck.addAll(0, tar)
 					}
 				}
 				move " Combustion" , {
@@ -858,7 +862,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					attackRequirement {}
 					onAttack {
 					  damage 210
-					  discardSelfEnergy F,F
+					  discardSelfEnergy R,R
 					}
 				}
 				move " Blaze Out GX" , {
@@ -889,7 +893,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					        attachEnergyFrom(my.deck.subList(0,1),self)
 					      }
 					      else{
-					        my.deck.subList(0,1).discard
+					        my.deck.subList(0,1).discard()
 					      }
 					    }
 					  }
@@ -920,6 +924,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  targeted(pcs) {
 					    sw opp.active, pcs
 					    apply BURNED, pcs
+							apply CONFUSED, pcs
 					  }
 					}
 				}
