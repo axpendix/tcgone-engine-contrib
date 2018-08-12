@@ -353,7 +353,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move " Twin Play" , {
 					text "Search your deck for up to 2 Scyther and put them onto your Bench. Then, shuffle your deck."
 					energyCost C
-					callForFamily(name:"Scyther",2,delegate)
+					callForFamily(name:"Scyther",2,self,delegate)
 				}
 				move " Agility" , {
 					text "20 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
@@ -405,8 +405,9 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					attackRequirement {
 					}
 					onAttack {
+						def pcs = defending
 						if(opp.bench && confirm("Switch the defending pokémon with 1 of your opponent's benched pokémon?")){
-					  	def pcs = opp.bench.select("Switch")
+					  	pcs = opp.bench.select("Switch")
 						}
 					  targeted(pcs) {
 					    sw opp.active, pcs
@@ -511,10 +512,10 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					          it.dmg = hp(0)
 					        }
 					      }
-								unregisterAfter 2
-								after EVOLVE,self, {unregister()}
-								after SWITCH,self, {unregister()}
 					    }
+							unregisterAfter 2
+							after EVOLVE,self, {unregister()}
+							after SWITCH,self, {unregister()}
 					  }
 					}
 				}
@@ -889,7 +890,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  damage 30
 					  for (int i = 0; i<4; i++) {
 					    if(my.deck){
-					      if(my.deck.subList(0,1).filterByType(BASIC).findAll{it.asEnergyCard().containsTypePlain(R)}){
+					      if(my.deck.subList(0,1).filterByType(BASIC_ENERGY).filterByEnergyType(R)) {
 					        attachEnergyFrom(my.deck.subList(0,1),self)
 					      }
 					      else{
