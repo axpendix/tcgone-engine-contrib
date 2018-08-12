@@ -1019,11 +1019,10 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					text "20 damage. This attack does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost W,C
 					attackRequirement {
-					  assert opp.bench : "There is no benched Pokémon"
 					}
 					onAttack {
 						damage 20
-					  damage 20, opp.bench.select("Target for 20 damage")
+						if(opp.bench) damage 20, opp.bench.select("Target for 20 damage")
 					}
 				}
 				move " Surf" , {
@@ -1646,6 +1645,8 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				weakness PSYCHIC
 				bwAbility "Sol Shade" , {
 					text "If you have Solrock in play, [R] Pokémon in play (both yours and your opponent's) have no Abilities, except Pokémon-GX and Pokémon-EX."
+					def effect1
+					def effect2
 					onActivate {
 					  effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
 					    if (h.effect.target.types.contains(R) && !h.effect.target.pokemonEX && !h.effect.target.pokemonGX && h.effect.ability instanceof BwAbility) {
@@ -1736,7 +1737,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				bwAbility "Red Eyes" , {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put a Basic Pokémon from your opponent's discard pile onto their Bench."
 					onActivate {r->
-					  if(r==PLAY_FROM_HAND && opp.discard.filterByType(BASIC) && opp.bench.notFull() && confirm('Use Red Eyes?')){
+					  if(r==PLAY_FROM_HAND && opp.discard.filterByType(BASIC) && opp.bench.notFull && confirm('Use Red Eyes?')){
 					    def pcs = opp.discard.filterByType(BASIC).select("Select the pokémon to put on the bench")
 					    opp.discard.remove(pcs)
 					    benchPCS(pcs)
@@ -1765,7 +1766,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  assert my.all.findAll{it.numberOfDamageCounters} || opp.all.findAll{it.numberOfDamageCounters} : "There is no pokémon with damage counter on them"
 					  powerUsed()
 					  def bothAll = new CardList(my.all);
-					  opp.each{
+					  opp.all.each{
 					    bothAll.add(it)
 					  }
 					  def pcs = bothAll.findAll{it.numberOfDamageCounters}.select("Choose the pokémon to move the damage counter from")
@@ -1803,6 +1804,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost P,P
 					attackRequirement {}
 					onAttack {
+						damage 20
 					  damage 20*defending.cards.energyCount(C)
 					}
 				}
@@ -1858,7 +1860,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost C,C,C
 					attackRequirement {}
 					onAttack {
-					  noWrDamage(50,defending)
+					  noWrDamage(50,opp.all.select())
 					}
 				}
 			};
@@ -1869,7 +1871,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				bwAbility "Shadow Shield" , {
 					text "If this Pokémon has any [P] Energy attached to it, it takes 20 less damage from attacks (after applying Weakness and Resistance)."
 					delayedA{
-					  before APPLY_ATTACK_DAMAGES{
+					  before APPLY_ATTACK_DAMAGES, {
 					    bg.dm().each {
 					      if(it.to == self && self.cards.energyCount(P) && it.dmg.value && it.notNoEffect) {
 					        bc "Shadow Shield -20"
@@ -1877,7 +1879,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					      }
 					    }
 					  }
-					  unregisterAfter 2
 					}
 				}
 				move " Full Moon Ray" , {
@@ -1898,7 +1899,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					attackRequirement {}
 					onAttack {
 					  delayed{
-					    before APPLY_ATTACK_DAMAGES{
+					    before APPLY_ATTACK_DAMAGES,{
 					      bg.dm().each {
 					        if(it.to == defending && it.dmg.value && it.notNoEffect) {
 					          bc "screech +20"
@@ -2020,12 +2021,12 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					attackRequirement {}
 					onAttack {
 					  my.all.each{
-					    if(it.types.contains(F)){
+					    if(!it.types.contains(F)){
 					      damage 20, it
 					    }
 					  }
 					  opp.all.each{
-					    if(it.types.contains(F)){
+					    if(!it.types.contains(F)){
 					      damage 20, it
 					    }
 					  }
@@ -2039,22 +2040,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					text "Flip a coin. If heads, if this Pokémon would be Knocked Out by damage from an attack during your opponent's next turn, it is not Knocked Out, and its remaining HP becomes 10."
 					energyCost F
 					attackRequirement {}
-					onAttack {
-					  flip{
-					    delayed {
-					      before KNOCKOUT, self, {
-					        if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
-					            self.damage = self.fullHP - hp(10)
-					            bc "$self endured the hit!"
-					            prevent()
-					        }
-					      }
-					      unregisterAfter 2
-					      after EVOLVE, self, {unregister()}
-					      after SWITCH, self, {unregister()}
-					    }
-					  }
-					}attackRequirement {}
 					onAttack {
 					  flip{
 					    delayed {
@@ -2090,7 +2075,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					attackRequirement {}
 					onAttack {
 					  damage 10
-					  if(self.getRemainingHP() <= 30) damage 160
+					  if(self.getRemainingHP().value <= 30) damage 160
 					}
 				}
 				move " Spinning Kick" , {
@@ -2133,7 +2118,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost F,C,C
 					attackRequirement {}
 					onAttack {
-					  damage 40*my.discard.findAll{it.name == "Steven's Resolve"}
+					  damage 40*my.discard.findAll{it.name == "Steven's Resolve"}.size()
 					}
 				}
 			};
@@ -2216,7 +2201,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					onAttack {
 					  gxPerform()
 					  opp.deck.subList(0,13).showToMe("The 13 top cards of your opponent's deck")
-					  damage 60*opp.deck.subList(0,13).filterByType(POKEMON).select(max:opp.deck.subList(0,13).filterByType(POKEMON).size(),"Select the cards you want to discard.").discard().size()
+					  damage 60*opp.deck.subList(0,13).filterByType(POKEMON).select(min:0,max:opp.deck.subList(0,13).filterByType(POKEMON).size(),"Select the cards you want to discard.").discard().size()
 					}
 				}
 			};
@@ -3304,10 +3289,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				}
 			};
 			case POKENAV_140:
-			return 	itemCard (this) {
-				text "Look at the top 3 cards of your deck. You may reveal a Pokémon or an Energy card you find there and put it into your hand. Put the other cards back in any order.\nYou may play as many Item cards as you like during your turn (before your attack).\n"
 				return copy(RubySapphire.POKENAV_88, this);
-			};
 			case RAINBOW_BRUSH_141:
 			return 	itemCard (this) {
 				text "Choose an Energy card attached to 1 of your Pokémon. Search your deck for a basic Energy card and switch it with that card. Shuffle the first Energy card into your deck.\nYou may play as many Item cards as you like during your turn (before your attack).\n"
