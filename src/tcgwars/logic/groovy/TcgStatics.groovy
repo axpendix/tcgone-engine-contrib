@@ -718,7 +718,7 @@ class TcgStatics {
 		delegate.onAttack {
 			int maxSpace = Math.min(my.bench.freeBenchCount,count)
 			def basicFilter = params.basic ? BASIC : POKEMON
-			pkmnName = ""
+			def pkmnName = ""
 			if(params.name){
 				pkmnName = params.name
 			}

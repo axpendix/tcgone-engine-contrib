@@ -1738,7 +1738,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put a Basic Pokémon from your opponent's discard pile onto their Bench."
 					onActivate {r->
 					  if(r==PLAY_FROM_HAND && opp.discard.filterByType(BASIC) && opp.bench.notFull && confirm('Use Red Eyes?')){
-					    def pcs = opp.discard.filterByType(BASIC).select("Select the pokémon to put on the bench")
+					    def pcs = opp.discard.filterByType(BASIC).select("Select the pokémon to put on the bench").first()
 					    opp.discard.remove(pcs)
 					    benchPCS(pcs)
 					  }
@@ -1767,7 +1767,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  powerUsed()
 					  def bothAll = new CardList(my.all);
 					  opp.all.each{
-					    bothAll.add(it)
+					    bothAll.add(it.topPokemonCard)
 					  }
 					  def pcs = bothAll.findAll{it.numberOfDamageCounters}.select("Choose the pokémon to move the damage counter from")
 					  def tar = bothAll.getExcludedList(pcs).select("Select the pokémon to recieve the damage counter")
@@ -2118,7 +2118,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost F,C,C
 					attackRequirement {}
 					onAttack {
-					  damage 40*my.discard.findAll{it.name == "Steven's Resolve"}.size()
+					  damage 40*my.discard.findAll{it.name.contains("Steven's Resolve")}.size()
 					}
 				}
 			};
