@@ -1924,7 +1924,7 @@ public enum UltraPrism implements CardInfo {
                 }
               }
               before ASLEEP_SPC, null, null, BETWEEN_TURNS, {
-                if(ef.target == defending){ //MARK parentEvent
+                if(ef.target == self.owner.opposite.pbg.active){ //MARK parentEvent
                   flip "Asleep (Abyssal Sleep)", 2, {}, {}, [2:{
                     ef.unregisterItself(bg.em());
                   },1:{

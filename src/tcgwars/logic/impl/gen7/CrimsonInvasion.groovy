@@ -1075,6 +1075,7 @@ public enum CrimsonInvasion implements CardInfo {
                   prevent()
                 }
               }
+              unregisterAfter 2
             }
           }
         }
