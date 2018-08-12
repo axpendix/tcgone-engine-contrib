@@ -710,13 +710,13 @@ class TcgStatics {
 			after SWITCH, self, {unregister()}
 		}
 	}
-	static callForFamily(params=[:],int count, PokemonCardSet self,Object delegate){
+	static callForFamily(params=[:],int count,Object delegate){
 		delegate.attackRequirement {
 			assert my.deck.notEmpty
 			assert my.bench.notFull
 		}
 		delegate.onAttack {
-			int maxSpace = Math.min(self.owner.pbg.bench.freeBenchCount,count)
+			int maxSpace = Math.min(my.bench.freeBenchCount,count)
 			basicFilter = params.basic ? BASIC : POKEMON
 			pkmnName = ""
 			if(params.name){

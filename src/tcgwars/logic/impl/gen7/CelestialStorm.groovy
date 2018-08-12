@@ -353,7 +353,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move " Twin Play" , {
 					text "Search your deck for up to 2 Scyther and put them onto your Bench. Then, shuffle your deck."
 					energyCost C
-					callForFamily(name:"Scyther",2,self,delegate)
+					callForFamily(name:"Scyther",2,delegate)
 				}
 				move " Agility" , {
 					text "20 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
@@ -408,9 +408,9 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 						def pcs = defending
 						if(opp.bench && confirm("Switch the defending pokémon with 1 of your opponent's benched pokémon?")){
 					  	pcs = opp.bench.select("Switch")
+							sw opp.active, pcs
 						}
 					  targeted(pcs) {
-					    sw opp.active, pcs
 					    apply POISONED, pcs
 					    apply ASLEEP, pcs
 					  }
@@ -891,7 +891,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  for (int i = 0; i<4; i++) {
 					    if(my.deck){
 					      if(my.deck.subList(0,1).filterByType(BASIC_ENERGY).filterByEnergyType(R)) {
-					        attachEnergyFrom(my.deck.subList(0,1),self)
+					        attachEnergyFrom(my.deck.subList(0,1),my.all)
 					      }
 					      else{
 					        my.deck.subList(0,1).discard()
@@ -1022,6 +1022,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  assert opp.bench : "There is no benched Pokémon"
 					}
 					onAttack {
+						damage 20
 					  damage 20, opp.bench.select("Target for 20 damage")
 					}
 				}
@@ -1200,9 +1201,9 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					          it.dmg = hp(0)
 					        }
 					      }
-					      unregisterAfter 2
-					      after EVOLVE,self, {unregister()}
 					    }
+							unregisterAfter 2
+							after EVOLVE,self, {unregister()}
 					  }
 					}
 				}
@@ -1339,9 +1340,9 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  damage 30
 					  def bonusDmg = 0
 					  while(my.all.findAll{it.cards.energyCount(C)}){
-					    if(confirm("discard energy from one pokémon for 30 more damage by energy discarded?")){
+					    if(confirm("discard energy from one pokémon for 50 more damage by energy discarded?")){
 					      def tar = my.all.findAll{it.cards.energyCount(C)}.select("Choose the pokémon to discard energy")
-					      bonusDmg += 30*tar.cards.filterByType(ENERGY).select(min:1,max : tar.cards.filterByType(ENERGY).size()).discard().size()
+					      bonusDmg += 50*tar.cards.filterByType(ENERGY).select(min:1,max : tar.cards.filterByType(ENERGY).size()).discard().size()
 					    }
 					    else{
 					      break
@@ -1389,7 +1390,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  before KNOCKOUT, {
 					    if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut!=self  && ef.pokemonToBeKnockedOut.cards.energyCount(C)){
 					      if(confirm("Move an energy from ${ef.pokemonToBeKnockedOut} to $self ?")){
-					        moveEnergy(ef.pokemonToBeKnockedOut,self)
+					        moveEnergy(basic:true,ef.pokemonToBeKnockedOut,self)
 					      }
 					    }
 					  }
@@ -1462,7 +1463,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					onAttack {
 					  my.hand.moveTo(my.deck)
 					  shuffleDeck()
-					  draw my.bench.size()
+					  draw my.bench.size() + opp.bench.size()
 					}
 				}
 				move " Electro Ball" , {
@@ -1486,7 +1487,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					}
 					onAttack {
 					  if(my.hand){
-					    my.hand.select(max : my.hand.size(),"Select the cards you want to discard").discard()
+					    my.hand.select(min: 0,max : my.hand.size(),"Select the cards you want to discard").discard()
 					  }
 					  if(my.hand.size() < 5){
 					    draw 5-my.hand.size()
