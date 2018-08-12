@@ -1916,23 +1916,25 @@ public enum UltraPrism implements CardInfo {
           energyCost D, D, D, D
           onAttack {
             damage 120
-            afterDamage{apply ASLEEP, defending}
-            delayed {
-              after CLEAR_SPECIAL_CONDITION, defending, {
-                if(ef.types.contains(ASLEEP)){
-                  unregister()
+            afterDamage{
+              apply ASLEEP, defending
+              delayed {
+                after CLEAR_SPECIAL_CONDITION, defending, {
+                  if(ef.types.contains(ASLEEP)){
+                    unregister()
+                  }
                 }
-              }
-              before ASLEEP_SPC, null, null, BETWEEN_TURNS, {
-                if(ef.target == self.owner.opposite.pbg.active){ //MARK parentEvent
-                  flip "Asleep (Abyssal Sleep)", 2, {}, {}, [2:{
-                    ef.unregisterItself(bg.em());
-                  },1:{
-                    bc "$self is still asleep."
-                  },0:{
-                    bc "$self is still asleep."
-                  }]
-                  prevent()
+                before ASLEEP_SPC, null, null, BETWEEN_TURNS, {
+                  if(ef.target == self.owner.opposite.pbg.active){ //MARK parentEvent
+                    flip "Asleep (Abyssal Sleep)", 2, {}, {}, [2:{
+                      ef.unregisterItself(bg.em());
+                    },1:{
+                      bc "$self is still asleep."
+                    },0:{
+                      bc "$self is still asleep."
+                    }]
+                    prevent()
+                  }
                 }
               }
             }
