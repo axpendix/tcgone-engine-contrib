@@ -2390,10 +2390,8 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					text "If this Pokémon's remaining HP is 100 or less, its attacks do 80 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
 					delayedA{
 					  after PROCESS_ATTACK_EFFECTS,{
-							bc "${self.getRemainingHP().value}"
 							if(self.getRemainingHP().value <= 100){
 						    bg.dm().each{
-									bc "${it.from}"
 						      if(it.from == self && it.notNoEffect && it.dmg.value) {
 						        bc "Danger Perception +80"
 						        it.dmg += hp(80)
@@ -2438,7 +2436,8 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					onAttack {
 					  def selItem = my.deck.search(count:1,"Select an item card",cardTypeFilter(ITEM))
 						if(selItem){
-						  if(selItem.first().cardTypes.is(POKEMON_TOOL)){
+							bc "${selItem.cardTypes} / $selItem"
+						  if(selItem.cardTypes.is(POKEMON_TOOL)){
 						    if(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)} && confirm("Attach this tool to one of your pokémon?")){
 						      selItem.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $selItem to which pokémon?").first().cards)
 						    }
@@ -2879,7 +2878,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					onAttack {
 					  def maxSpace = Math.min(my.bench.freeBenchCount,3)
 					  def hasBenched = false
-					  deck.search (min: 0,max:maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter) && it.asPokemonCard().types.contains(params.type)}).each {
+					  deck.search (min: 0,max:maxSpace,cardTypeFilter(BASIC)).each {
 					      deck.remove(it)
 					      benchPCS(it)
 					      hasBenched = true
@@ -2923,7 +2922,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					attackRequirement {}
 					onAttack {
 					  damage 30
-					  defending.cards.filterByType(ENERGY).filterByEnergyType(R).select("Choose the energy to discard").discard()
+						if(defending.cards.filterByType(ENERGY).filterByEnergyType(R)) defending.cards.filterByType(ENERGY).filterByEnergyType(R).select("Choose the energy to discard").discard()
 					}
 				}
 				move " Water Pulse" , {
@@ -3206,13 +3205,13 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				    def tar = opp.deck.subList(0,5).select("Choose the card to put at the top of the deck")
 				    opp.deck.remove(tar)
 				    shuffleDeck(null, TargetPlayer.OPPONENT)
-				    opp.deck.add(0, tar)
+				    opp.deck.addAll(0, tar)
 				  }
 				  else if(!opp.deck){
 				    def tar = my.deck.subList(0,5).select("Choose the card to put at the top of the deck")
 				    my.deck.remove(tar)
 				    shuffleDeck()
-				    my.deck.add(0, tar)
+				    my.deck.addAll(0, tar)
 				  }
 				  else{
 				    my.deck.subList(0,5).showToMe("The 5 top cards of your deck")
@@ -3223,13 +3222,13 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				      def tar = my.deck.subList(0,5).select("Choose the card to put at the top of the deck")
 				      my.deck.remove(tar)
 				      shuffleDeck()
-				      my.deck.add(0, tar)
+				      my.deck.addAll(0, tar)
 				    }
 				    else {
 				      def tar = opp.deck.subList(0,5).select("Choose the card to put at the top of the deck")
 				      opp.deck.remove(tar)
 				      shuffleDeck(null, TargetPlayer.OPPONENT)
-				      opp.deck.add(0, tar)
+				      opp.deck.addAll(0, tar)
 				    }
 				  }
 				}
@@ -3242,16 +3241,18 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				text "Attach a Pokémon Tool to 1 of your Pokémon that doesnt already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to has 30 HP or less remaining and has any damage counters on it, its attacks do 60 more damage to your opponents Active Pokémon (before applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack).\n"
 				def eff
 				onPlay {reason->
-				  eff=before PROCESS_ATTACK_EFFECTS, {
-				    if(self.getRemainingHP().value <= 30 && self.numberOfDamageCounters){
-				      bg.dm().each{
-				        if(it.from == self && it.notNoEffect && it.dmg.value) {
-				          bc "Hustle Belt +60"
-				          it.dmg += hp(60)
-				        }
-				      }
-				    }
-				  }
+				  eff=delayed{
+						before PROCESS_ATTACK_EFFECTS, {
+					    if(self.getRemainingHP().value <= 30 && self.numberOfDamageCounters){
+					      bg.dm().each{
+					        if(it.from == self && it.notNoEffect && it.dmg.value) {
+					          bc "Hustle Belt +60"
+					          it.dmg += hp(60)
+					        }
+					      }
+					    }
+					  }
+					}
 				}
 				onRemoveFromPlay {
 				  eff.unregister()
@@ -3275,7 +3276,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				  flip {
 				    def tar = my.all.findAll{(it.numberOfDamageCounters !=0 || !(it.noSPC()))}
 				    if(tar){
-				      def pcs = tar.select("select 1 of your Pokémon (excluding Pokémon-ex) to remove all Special Conditions and 6 damage counters")
+				      def pcs = tar.select("select 1 of your Pokémon to remove all Special Conditions and 6 damage counters")
 				      clearSpecialCondition(pcs,Source.TRAINER_CARD)
 				      heal 60, pcs
 				    }
@@ -3320,6 +3321,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				  if(src){
 				    tar.moveTo(my.deck)
 				    attachEnergyFrom(src,pcs)
+						shuffleDeck()
 				  }
 				}
 				playRequirement{
@@ -3385,7 +3387,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				text "Search your deck for up to 3 cards and put them into your hand. Then, shuffle your deck. Your turn ends.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
 				onPlay {
 				  my.deck.search(max:3,"Select up to 3 cards",{true}).moveTo(my.hand)
-				  if(!bg.em().retrieveObject("Extend")){
+				  if(bg.em().retrieveObject("Extend") != 1){
 				    bg.gm().betweenTurns()
 				  }
 				}
