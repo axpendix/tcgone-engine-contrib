@@ -1427,7 +1427,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				resistance METAL, MINUS20
 				bwAbility "Electric Start" , {
 					text "If you go second, and if this Pokémon is in your hand when you are setting up to play, you may put it face down as your Active Pokémon or on your Bench."
-					//TODO : Talonflame ability
+					// Impl handled in GameManager
 				}
 				move "Double Charge" , {
 					text "40 damage. You may attach up to 2 basic Energy cards from your hand to 1 of your Benched Pokémon."
@@ -2587,14 +2587,22 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				resistance PSYCHIC, MINUS20
 				globalAbility{
 				  delayed{
-				    after TAKE_PRIZE,{
-				      if(true/*TODO: this card is prize*/) bc "$it"
+				    after TAKE_PRIZE, {
+				      if(thisCard.player.pbg.prizeCardSet.notEmpty && ef.card != null && ef.card == thisCard 
+								&& thisCard.player.pbg.bench.notFull && bg.currentTurn == thisCard.player 
+								&& thisCard.player.pbg.hand.contains(thisCard)
+							  && checkGlobalAbility(thisCard)
+								&& confirm("You've picked ${thisCard}. Would you like to use Wish Upon a Star?")){
+									bc "${thisCard} used Wish Upon a Star"
+									thisCard.player.pbg.hand.remove(thisCard)
+									benchPCS(thisCard, OTHER, thisCard.player)
+									bg.em().run(new TakePrize(self.owner, ef.pcs))
+								}
 				    }
 				  }
 				}
 				bwAbility "Wish Upon a Star" , {
 					text "If you took this Pokémon as a face-down Prize card during your turn and your Bench isn't full, before you put it into your hand, you may put it onto your Bench and take 1 more Prize card."
-
 				}
 				move "Perish Dream" , {
 					text "10 damage. This Pokémon is now Asleep. At the end of your opponent's next turn, the Defending Pokémon will be Knocked Out."
