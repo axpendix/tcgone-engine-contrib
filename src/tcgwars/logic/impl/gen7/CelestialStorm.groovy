@@ -158,7 +158,7 @@ BAGON_104("Bagon", 104, Rarity.COMMON, [POKEMON,_DRAGON_,BASIC]),
 SHELGON_105("Shelgon", 105, Rarity.UNCOMMON, [POKEMON,_DRAGON_,STAGE1,EVOLUTION]),
 SALAMENCE_106("Salamence", 106, Rarity.HOLORARE, [POKEMON,_DRAGON_,STAGE2,EVOLUTION]),
 LATIAS_PRISM_STAR_107("Latias Prism Star", 107, Rarity.HOLORARE, [PRISM_STAR,POKEMON,_DRAGON_,BASIC]),
-LATIOS_PRISM_STAR_108("Latios Prism Star", 108, Rarity.HOLORARE, [PRISM_STAR,POKEMON,_DARKNESS_,BASIC]),
+LATIOS_PRISM_STAR_108("Latios Prism Star", 108, Rarity.HOLORARE, [PRISM_STAR,POKEMON,_DRAGON_,BASIC]),
 RAYQUAZA_GX_109("Rayquaza-GX", 109, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_DRAGON_,BASIC]),
 DUNSPARCE_110("Dunsparce", 110, Rarity.UNCOMMON, [POKEMON,_COLORLESS_,BASIC]),
 WINGULL_111("Wingull", 111, Rarity.COMMON, [POKEMON,_COLORLESS_,BASIC]),
@@ -1740,7 +1740,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  if(r==PLAY_FROM_HAND && opp.discard.filterByType(BASIC) && opp.bench.notFull && confirm('Use Red Eyes?')){
 					    def pcs = opp.discard.filterByType(BASIC).select("Select the pokémon to put on the bench").first()
 					    opp.discard.remove(pcs)
-					    benchPCS(pcs)
+							benchPCS(pcs, OTHER, TargetPlayer.OPPONENT)
 					  }
 					}
 				}
@@ -1765,9 +1765,12 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  checkLastTurn()
 					  assert my.all.findAll{it.numberOfDamageCounters} || opp.all.findAll{it.numberOfDamageCounters} : "There is no pokémon with damage counter on them"
 					  powerUsed()
-					  def bothAll = new CardList(my.all);
+					  def bothAll = new List();
+						my.all.each{
+					    bothAll.add(it)
+					  }
 					  opp.all.each{
-					    bothAll.add(it.topPokemonCard)
+					    bothAll.add(it)
 					  }
 					  def pcs = bothAll.findAll{it.numberOfDamageCounters}.select("Choose the pokémon to move the damage counter from")
 					  def tar = bothAll.getExcludedList(pcs).select("Select the pokémon to recieve the damage counter")
@@ -2236,7 +2239,8 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  assert my.deck : "There is no more card in your deck"
 					}
 					onAttack {
-					  my.deck.search(count:1,"Search 1 Alolan Raticate or Alolan Raticate-GX",{it.name == "Alolan Raticate" || it.name == "Alolan Raticate GX"}).showToOpponent("Selected card").moveTo(my.hand)
+					  my.deck.search(count:1,"Search 1 Alolan Raticate or Alolan Raticate-GX",{it.name.contains("Alolan Raticate") || it.name.contains("Alolan Raticate-GX")}).showToOpponent("Selected card").moveTo(my.hand)
+						shuffleDeck()
 					}
 				}
 				move " Gnaw" , {
@@ -2277,7 +2281,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					}
 					onAttack {
 					  gxPerform()
-					  my.deck.search(max:6,"Select up to 6 item cards",cardTypeFilter(ITEM)).showToOpponent("Selected cards").moveTo(my.hand)
+					  my.deck.search(min:0,max:6,"Select up to 6 item cards",cardTypeFilter(ITEM)).showToOpponent("Selected cards").moveTo(my.hand)
 					}
 				}
 			};
@@ -2320,11 +2324,14 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					attackRequirement {}
 					onAttack {
 					  damage 120
+						def dmgPkmn = false
 					  my.bench.each{
-					    flip{damage 60,it}
+					    flip 1,{dmgPkmn = true},{dmgPkmn = false}
+							if(dmgPkmn) damage 60,it
 					  }
 					  opp.bench.each{
-					    flip{damage 60,it}
+							flip 1,{dmgPkmn = true},{dmgPkmn = false}
+							if(dmgPkmn) damage 60,it
 					  }
 					}
 				}
@@ -2383,11 +2390,14 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					text "If this Pokémon's remaining HP is 100 or less, its attacks do 80 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
 					delayedA{
 					  before PROCESS_ATTACK_EFFECTS,{
-					    bg.dm().each{
-					      if(it.from == self && self.getRemainingHP().value <= 100 && it.notNoEffect && it.dmg.value) {
-					        bc "Danger Perception +80"
-					        it.dmg += hp(80)
-					      }
+							bc "${self.getRemainingHP().value}"
+							if(self.getRemainingHP().value <= 100){
+						    bg.dm().each{
+						      if(it.from == self && it.notNoEffect && it.dmg.value) {
+						        bc "Danger Perception +80"
+						        it.dmg += hp(80)
+						      }
+								}
 					    }
 					  }
 					}
@@ -2426,7 +2436,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					}
 					onAttack {
 					  def selItem = my.deck.search(count:1,"Select an item card",cardTypeFilter(ITEM))
-					  if(selItem.cardTypes.is(POKEMON_TOOL)){
+					  if(selItem.first().cardTypes.is(POKEMON_TOOL)){
 					    if(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)} && confirm("Attach this tool to one of your pokémon?")){
 					      selItem.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $selItem to which pokémon?").first().cards)
 					    }
@@ -2503,15 +2513,18 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				resistance PSYCHIC, MINUS20
 				bwAbility "Extend" , {
 					text "As long as this Pokémon is your Active Pokémon, your turn does not end when you play Steven's Resolve."
+					def effect
 					onActivate{
-					  effect = before SWITCH, {
-					    if(self.active){
-					      bg.em().storeObject("Extend", 1)
-					    }
-					    else{
-					      bg.em().storeObject("Extend", nil)
-					    }
-					  }
+					  effect = delayed{
+							before SWITCH, {
+						    if(self.active){
+						      bg.em().storeObject("Extend", 1)
+						    }
+						    else{
+						      bg.em().storeObject("Extend", nil)
+						    }
+						  }
+						}
 					}
 					onDeactivate{
 					  bg.em().storeObject("Extend", nil)
@@ -2537,7 +2550,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					delayedA{
 					  before APPLY_ATTACK_DAMAGES,{
 					    bg.dm().each{
-					      if(it.to == self && self.getRemainingHP().value <= 100 && it.notNoEffect && it.dmg.value) {
+					      if(it.to == self && it.notNoEffect && it.dmg.value) {
 					        bc "Exoskeleton -20"
 					        it.dmg -= hp(20)
 					      }
@@ -2576,7 +2589,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					attackRequirement {}
 					onAttack {
 					  damage 10
-					  applyAfterDamage ASLEEP, self
+					  afterDamage{apply ASLEEP, self}
 					  delayed{
 					    before BETWEEN_TURNS, {
 					      if(bg.currentTurn == self.owner.opposite){
@@ -2651,7 +2664,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				      def list=[]
 				      for(move in h.object){
 				        def copy=move.shallowCopy()
-				        copy.clear()
+				        copy.energyCost.clear()
 				        copy.energyCost.add(M)
 				        list.add(copy)
 				      }
@@ -2678,7 +2691,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					attackRequirement {}
 					onAttack {
 					  damage 40
-					  if(my.prizeCardSet.size() + opp.prizeCardSet.size() == 6) damage 90
+					  if(opp.prizeCardSet.size() == 6) damage 90
 					}
 				}
 			};
@@ -2747,7 +2760,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				}
 			};
 			case SHELGON_105:
-			return 	evolution (this, from:"", hp:HP090, type:DRAGON, retreatCost:3) {
+			return 	evolution (this, from:"Bagon", hp:HP090, type:DRAGON, retreatCost:3) {
 				weakness FAIRY
 				move " Raging Blade" , {
 					text "30+ damage. If this Pokémon has any damage counters on it, this attack does 50 more damage."
@@ -2799,7 +2812,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				}
 			};
 			case LATIOS_PRISM_STAR_108:
-			return basic (this, hp:HP140, type:DARKNESS, retreatCost:1) {
+			return basic (this, hp:HP140, type:DRAGON, retreatCost:1) {
 				weakness FAIRY
 				move " Dragon Fleet" , {
 					text "50× damage. This attack does 50 damage for each of your Evolution [N] Pokémon in play."
@@ -2807,7 +2820,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					attackRequirement {}
 					onAttack {
 					  my.all.each{
-					    if(it.types.contains(N) && it.evolved) damage 50
+					    if(it.types.contains(N) && it.evolution) damage 50
 					  }
 					}
 				}
@@ -2830,7 +2843,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost G,L,C
 					attackRequirement {}
 					onAttack {
-					  damage 30*(self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G) + self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L))
+					  damage 30*(self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G).size() + self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L).size())
 					}
 				}
 				move " Tempest GX" , {

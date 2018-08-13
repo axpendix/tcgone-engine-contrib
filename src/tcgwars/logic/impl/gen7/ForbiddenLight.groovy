@@ -150,7 +150,7 @@ public enum ForbiddenLight implements CardInfo {
 	LADY_109 ("Lady", 109, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
 	LYSANDRE_PRISM_STAR_110 ("Lysandre Prism Star", 110, Rarity.HOLORARE, [SUPPORTER, TRAINER, PRISM_STAR]),
 	LYSANDRE_LABS_111 ("Lysandre Labs", 111, Rarity.UNCOMMON, [STADIUM, TRAINER]),
-	METAL_FRYING_PAN_112 ("Metal Frying Pan", 112, Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER]),
+	METAL_FRYING_PAN_112 ("Metal Frying Pan", 112, Rarity.UNCOMMON, [ITEM,POKEMON_TOOL, TRAINER]),
 	MYSTERIOUS_TREASURE_113 ("Mysterious Treasure", 113, Rarity.UNCOMMON, [ITEM, TRAINER]),
 	ULTRA_RECON_SQUAD_114 ("Ultra Recon Squad", 114, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
 	ULTRA_SPACE_115 ("Ultra Space", 115, Rarity.UNCOMMON, [STADIUM, TRAINER]),
@@ -182,7 +182,7 @@ public enum ForbiddenLight implements CardInfo {
 	BEAST_RING_141 ("Beast Ring", 141, Rarity.SECRET, [ITEM, TRAINER]),
 	ENEPORTER_142 ("Eneporter", 142, Rarity.SECRET, [ITEM, TRAINER]),
 	ENERGY_RECYCLER_143 ("Energy Recycler", 143, Rarity.SECRET, [ITEM, TRAINER]),
-	METAL_FRYING_PAN_144 ("Metal Frying Pan", 144, Rarity.SECRET, [POKEMON_TOOL, TRAINER]),
+	METAL_FRYING_PAN_144 ("Metal Frying Pan", 144, Rarity.SECRET, [ITEM,POKEMON_TOOL, TRAINER]),
 	MYSTERIOUS_TREASURE_145 ("Mysterious Treasure", 145, Rarity.SECRET, [ITEM, TRAINER]),
 	UNIT_ENERGY_FDY_146 ("Unit Energy FDY", 146, Rarity.SECRET, [SPECIAL_ENERGY, ENERGY]);
 

@@ -716,20 +716,20 @@ class TcgStatics {
 			assert my.bench.notFull
 		}
 		delegate.onAttack {
-			int maxSpace = Math.min(my.bench.freeBenchCount,count)
+			def maxSpace = Math.min(my.bench.freeBenchCount,count)
 			def basicFilter = params.basic ? BASIC : POKEMON
 			def pkmnName = ""
 			if(params.name){
 				pkmnName = params.name
 			}
 			if(params.type){
-				deck.search (count: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter) && it.asPokemonCard().types.contains(params.type)}).each {
+				deck.search (max: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter) && it.asPokemonCard().types.contains(params.type)}).each {
 					deck.remove(it)
 					benchPCS(it)
 				}
 			}
 			else{
-				deck.search (count: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter)}).each{
+				deck.search (max: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter)}).each{
 					deck.remove(it)
 					benchPCS(it)
 				}
