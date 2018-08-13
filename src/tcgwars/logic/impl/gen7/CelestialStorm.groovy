@@ -2434,19 +2434,17 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  assert my.deck : "There is no more card in your deck"
 					}
 					onAttack {
-					  def selItem = my.deck.search(count:1,"Select an item card",cardTypeFilter(ITEM))
-						if(selItem){
-							bc "${selItem.cardTypes} / $selItem"
-						  if(selItem.cardTypes.is(POKEMON_TOOL)){
+					  my.deck.search(count:1,"Select an item card",cardTypeFilter(ITEM)).each{}
+						  if(it.cardTypes.is(POKEMON_TOOL)){
 						    if(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)} && confirm("Attach this tool to one of your pokémon?")){
-						      selItem.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $selItem to which pokémon?").first().cards)
+						      it.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $it to which pokémon?").first().cards)
 						    }
 						    else{
-						      selItem.moveTo(my.hand)
+						      it.moveTo(my.hand)
 						    }
 						  }
 						  else{
-						    selItem.moveTo(my.hand)
+						    it.moveTo(my.hand)
 						  }
 						}
 					}
@@ -2529,6 +2527,14 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 						      bg.em().storeObject("Extend", null)
 						    }
 						  }
+							before PLAY_TRAINER, {
+								if(self.active){
+						      bg.em().storeObject("Extend", 1)
+						    }
+						    else{
+						      bg.em().storeObject("Extend", null)
+						    }
+							}
 						}
 					}
 					onDeactivate{
@@ -3237,7 +3243,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				}
 			};
 			case HUSTLE_BELT_134:
-			return 	itemCard (this) {
+			return 	pokemonTool(this) {
 				text "Attach a Pokémon Tool to 1 of your Pokémon that doesnt already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to has 30 HP or less remaining and has any damage counters on it, its attacks do 60 more damage to your opponents Active Pokémon (before applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack).\n"
 				def eff
 				onPlay {reason->
@@ -3338,10 +3344,10 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				  eff = delayed {
 				    before BETWEEN_TURNS, {
 				      my.all.each{
-				        if(it.pokemonEX && it.pokemonGX) damage 10,it
+				        if(it.pokemonEX || it.pokemonGX) it.damage+=hp(10)
 				      }
 				      opp.all.each{
-				        if(it.pokemonEX && it.pokemonGX) damage 10,it
+				        if(it.pokemonEX || it.pokemonGX) it.damage+=hp(10)
 				      }
 				    }
 				  }
@@ -3357,9 +3363,12 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				onPlay {
 				  eff = delayed {
 				    before null, null, Source.ATTACK, {
-				      if (ef.effectType != DAMAGE && !ef.target.active){
-				        bc "Sky Pillars prevents effect to Benched Pokémon"
-				        prevent()
+				      if (ef.effectType != DAMAGE){
+								def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+								if(pcs != null && pcs.benched && pcs.owner == self.owner){
+				        	bc "Sky Pillars prevents effect to Benched Pokémon"
+				        	prevent()
+								}
 				      }
 				    }
 				    before APPLY_ATTACK_DAMAGES, {
