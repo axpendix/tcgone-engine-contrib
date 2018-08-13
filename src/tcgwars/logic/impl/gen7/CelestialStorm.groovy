@@ -1773,7 +1773,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					    bothAll.add(it)
 					  }
 					  def pcs = bothAll.findAll{it.numberOfDamageCounters}.select("Choose the pokémon to move the damage counter from")
-					  def tar = bothAll.getExcludedList(pcs).select("Select the pokémon to recieve the damage counter")
+					  def tar = bothAll.findAll{it != pcs}.select("Select the pokémon to recieve the damage counter")
 					  pcs.damage-=hp(10)
 					  tar.damage+=hp(10)
 					}
@@ -2389,10 +2389,11 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				bwAbility "Danger Perception" , {
 					text "If this Pokémon's remaining HP is 100 or less, its attacks do 80 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
 					delayedA{
-					  before PROCESS_ATTACK_EFFECTS,{
+					  after PROCESS_ATTACK_EFFECTS,{
 							bc "${self.getRemainingHP().value}"
 							if(self.getRemainingHP().value <= 100){
 						    bg.dm().each{
+									bc "${it.from}"
 						      if(it.from == self && it.notNoEffect && it.dmg.value) {
 						        bc "Danger Perception +80"
 						        it.dmg += hp(80)
@@ -2436,17 +2437,19 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					}
 					onAttack {
 					  def selItem = my.deck.search(count:1,"Select an item card",cardTypeFilter(ITEM))
-					  if(selItem.first().cardTypes.is(POKEMON_TOOL)){
-					    if(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)} && confirm("Attach this tool to one of your pokémon?")){
-					      selItem.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $selItem to which pokémon?").first().cards)
-					    }
-					    else{
-					      selItem.moveTo(my.hand)
-					    }
-					  }
-					  else{
-					    selItem.moveTo(my.hand)
-					  }
+						if(selItem){
+						  if(selItem.first().cardTypes.is(POKEMON_TOOL)){
+						    if(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)} && confirm("Attach this tool to one of your pokémon?")){
+						      selItem.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $selItem to which pokémon?").first().cards)
+						    }
+						    else{
+						      selItem.moveTo(my.hand)
+						    }
+						  }
+						  else{
+						    selItem.moveTo(my.hand)
+						  }
+						}
 					}
 				}
 				move " Bite Off" , {
@@ -2515,19 +2518,22 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					text "As long as this Pokémon is your Active Pokémon, your turn does not end when you play Steven's Resolve."
 					def effect
 					onActivate{
+						if(self.active){
+							bg.em().storeObject("Extend", 1)
+						}
 					  effect = delayed{
 							before SWITCH, {
 						    if(self.active){
 						      bg.em().storeObject("Extend", 1)
 						    }
 						    else{
-						      bg.em().storeObject("Extend", nil)
+						      bg.em().storeObject("Extend", null)
 						    }
 						  }
 						}
 					}
 					onDeactivate{
-					  bg.em().storeObject("Extend", nil)
+					  bg.em().storeObject("Extend", null)
 					  effect.unregister()
 					}
 				}
@@ -2537,7 +2543,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					attackRequirement {}
 					onAttack {
 					  damage 60
-					  increasedBaseDamageNextTurn("Meteor Mash",60)
+					  increasedBaseDamageNextTurn("Meteor Mash",hp(60))
 					}
 				}
 			};
@@ -2575,7 +2581,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				globalAbility{
 				  delayed{
 				    after TAKE_PRIZE,{
-				      if(true/*this card is prize*/) heal 10, self
+				      if(true/*this card is prize*/) bc "$it"
 				    }
 				  }
 				}
@@ -2855,6 +2861,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					}
 					onAttack {
 					  gxPerform()
+						my.hand.discard()
 					  draw 10
 					}
 				}
