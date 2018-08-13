@@ -1765,7 +1765,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  checkLastTurn()
 					  assert my.all.findAll{it.numberOfDamageCounters} || opp.all.findAll{it.numberOfDamageCounters} : "There is no pokémon with damage counter on them"
 					  powerUsed()
-					  def bothAll = new List();
+					  def bothAll = new PcsList();
 						my.all.each{
 					    bothAll.add(it)
 					  }
