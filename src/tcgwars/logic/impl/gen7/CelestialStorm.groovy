@@ -2596,7 +2596,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 									bc "${thisCard} used Wish Upon a Star"
 									thisCard.player.pbg.hand.remove(thisCard)
 									benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
-									bg.em().run(new TakePrize(self.owner, ef.pcs))
+									bg.em().run(new TakePrize(thisCard.player, ef.pcs))
 								}
 				    }
 				  }
