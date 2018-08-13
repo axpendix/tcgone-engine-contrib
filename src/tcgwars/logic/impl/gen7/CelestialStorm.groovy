@@ -2434,7 +2434,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  assert my.deck : "There is no more card in your deck"
 					}
 					onAttack {
-					  my.deck.search(count:1,"Select an item card",cardTypeFilter(ITEM)).each{}
+					  my.deck.search(count:1,"Select an item card",cardTypeFilter(ITEM)).each{
 						  if(it.cardTypes.is(POKEMON_TOOL)){
 						    if(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)} && confirm("Attach this tool to one of your pokémon?")){
 						      it.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $it to which pokémon?").first().cards)
@@ -2586,7 +2586,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				globalAbility{
 				  delayed{
 				    after TAKE_PRIZE,{
-				      if(true/*this card is prize*/) bc "$it"
+				      if(true/*TODO: this card is prize*/) bc "$it"
 				    }
 				  }
 				}
