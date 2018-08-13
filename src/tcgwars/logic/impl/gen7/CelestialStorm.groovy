@@ -2438,7 +2438,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 						selCrd.each{
 						  if(it.cardTypes.is(POKEMON_TOOL)){
 						    if(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)} && confirm("Attach this tool to one of your pokémon?")){
-						      selCrd.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $it to which pokémon?").first().cards)
+						      selCrd.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $it to which pokémon?").cards)
 						    }
 						    else{
 						      selCrd.moveTo(my.hand)
