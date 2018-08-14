@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen7;
 
 import tcgwars.logic.impl.gen2.Aquapolis
+import tcgwars.logic.impl.gen6.Flashfire
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -180,7 +181,7 @@ public enum UltraPrism implements CardInfo {
   UNIT_ENERGY_LPM_138 ("Unit Energy LPM", 138, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   LEAFEON_GX_139 ("Leafeon-GX", 139, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _GRASS_]),
   PHEROMOSA_GX_140 ("Pheromosa-GX", 140, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _GRASS_]),
-  GLACEON_GX_141 ("Glaceon-GX", 141, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, ULTRA_BEAST, _WATER_]),
+  GLACEON_GX_141 ("Glaceon-GX", 141, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _WATER_]),
   XURKITREE_GX_142 ("Xurkitree-GX", 142, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _LIGHTNING_]),
   DAWN_WINGS_NECROZMA_GX_143 ("Dawn Wings Necrozma-GX", 143, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _PSYCHIC_]),
   CELESTEELA_GX_144 ("Celesteela-GX", 144, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _METAL_]),
@@ -198,7 +199,7 @@ public enum UltraPrism implements CardInfo {
   VOLKNER_156 ("Volkner", 156, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
   LEAFEON_GX_157 ("Leafeon-GX", 157, Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _GRASS_]),
   PHEROMOSA_GX_158 ("Pheromosa-GX", 158, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _GRASS_]),
-  GLACEON_GX_159 ("Glaceon-GX", 159, Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, ULTRA_BEAST, _WATER_]),
+  GLACEON_GX_159 ("Glaceon-GX", 159, Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _WATER_]),
   XURKITREE_GX_160 ("Xurkitree-GX", 160, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _LIGHTNING_]),
   DAWN_WINGS_NECROZMA_GX_161 ("Dawn Wings Necrozma-GX", 161, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _PSYCHIC_]),
   CELESTEELA_GX_162 ("Celesteela-GX", 162, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _METAL_]),
@@ -3061,7 +3062,7 @@ public enum UltraPrism implements CardInfo {
         }
       };
       case POKEMON_FAN_CLUB_133:
-      return copy(Aquapolis.POKEMON_FAN_CLUB_130,this);
+      return copy(Flashfire.POKEMON_FAN_CLUB_94,this);
       case UNIDENTIFIED_FOSSIL_134:
       return itemCard (this) {
         text "Play this card as if it were a 60-HP [C] Basic Pokémon. At any time during your turn (before your attack), you may discard this card from play.\nThis card can’t retreat.\nYou may play as many Item cards as you like during your turn (before your attack)."
