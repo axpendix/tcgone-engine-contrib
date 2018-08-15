@@ -1680,6 +1680,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					text "Once during your turn (before your attack), if this Pokémon is your Active Pokémon, you may move 1 damage counter from 1 Pokémon to another Pokémon."
 					actionA {
 					  checkLastTurn()
+						assert self.active : "$self is not your active"
 					  assert my.all.findAll{it.numberOfDamageCounters} || opp.all.findAll{it.numberOfDamageCounters} : "There is no pokémon with damage counter on them"
 					  powerUsed()
 					  def bothAll = new PcsList();
