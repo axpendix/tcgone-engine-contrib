@@ -2173,7 +2173,6 @@ public enum ForbiddenLight implements CardInfo {
 					text "Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
 					energyCost Y
 					attackRequirement {
-						assert bench.notFull
 						assert deck.notEmpty
 					}
 					onAttack {
