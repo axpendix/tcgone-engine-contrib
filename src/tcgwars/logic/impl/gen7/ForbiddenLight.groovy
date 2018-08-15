@@ -2625,10 +2625,53 @@ public enum ForbiddenLight implements CardInfo {
 			case LYSANDRE_LABS_111:
 			return stadium (this) {
 				text "Pokémon Tool cards in play (both yours and your opponent’s) have no effect.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+				def eff
 				onPlay {
-					//TODO : desactivate Pokémon Tools
+					eff = delayed {
+						def disable={card,pcs->
+							def dset = bg.em().retrieveObject("Tool Concealment dset") as Set
+							if(!dset.contains(card)){
+								card.removeFromPlay(bg, pcs)
+								dset.add(card)
+							}
+						}
+						after PLAY_POKEMON_TOOL, {disable(ef.cardToPlay,ef.target)}
+						after PLAY_POKEMON_TOOL_FLARE, {disable(ef.cardToPlay,ef.target)}
+					}
+
+					def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) + 1
+					if (count == 1){
+						def dset = bg.em().retrieveObject("Tool Concealment dset") as Set ?: [] as Set
+						all.each {
+							def pcs = it
+							it.cards.filterByType(POKEMON_TOOL).each {
+								if(!dset.contains(it)){
+									it.removeFromPlay(bg, pcs)
+									dset.add(it)
+								}
+							}
+						}
+						bg.em().storeObject("Tool Concealment dset", dset)
+					}
+					bg.em().storeObject("Tool Concealment count", count)
 				}
 				onRemoveFromPlay{
+					eff.unregister()
+					
+					def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) - 1
+					if(count == 0){
+						def dset = bg.em().retrieveObject("Tool Concealment dset") as Set
+						all.each {
+							def pcs = it
+							it.cards.filterByType(POKEMON_TOOL).each {
+								if(dset.contains(it)){
+									it.play(bg, pcs)
+									dset.remove(it)
+								}
+							}
+						}
+					}
+					if(count >= 0) bg.em().storeObject("Tool Concealment count", count)
 				}
 			};
 			case METAL_FRYING_PAN_112:
