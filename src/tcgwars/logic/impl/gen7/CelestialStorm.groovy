@@ -293,7 +293,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Blot" , {
 					text "20 damage."
 					energyCost G,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					  afterDamage{
@@ -308,7 +307,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Growth" , {
 					text "Attach up to 2 [G] Energy cards from your hand to this Pokémon."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  attachEnergyFrom(type: GRASS, my.hand, self)
 					  attachEnergyFrom(may: true, type: GRASS, my.hand, self)
@@ -317,7 +315,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Double Razor Leaf" , {
 					text "30× damage. Flip 2 coins. This attack does 30 damage for each heads."
 					energyCost G,C
-					attackRequirement {}
 					onAttack {
 					  flip 2,{damage 30}
 					}
@@ -340,7 +337,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Corrosive Acid" , {
 					text "80 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Burned."
 					energyCost G,G,C
-					attackRequirement {}
 					onAttack {
 					  damage 80
 					  flipThenApplySC BURNED
@@ -358,7 +354,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Agility" , {
 					text "20 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					  flip{preventAllEffectsNextTurn()}
@@ -371,7 +366,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Stun Poison" , {
 					text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed and Poisoned."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 					  flip {
 					    apply POISONED
@@ -382,7 +376,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Pierce" , {
 					text "20 damage."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					}
@@ -394,7 +387,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Reactive Poison" , {
 					text "20+ damage. This attack does 50 more damage for each Special Condition affecting your opponent's Active Pokémon."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 20 + 50*defending.specialConditions.size()
 					}
@@ -423,7 +415,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Sleep Poison" , {
 					text "Your opponent's Active Pokémon is now Asleep and Poisoned."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 					  apply POISONED
 					  apply ASLEEP
@@ -436,7 +427,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Smack" , {
 					text "10 damage."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					}
@@ -444,7 +434,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Tail Whap" , {
 					text "20 damage."
 					energyCost G,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					}
@@ -456,7 +445,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Leaf Blade" , {
 					text "20+ damage. Flip a coin. If heads, this attack does 40 more damage."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					  flip {damage 40}
@@ -482,7 +470,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Powerful Storm" , {
 					text "20× damage. This attack does 20 damage times the amount of Energy attached to all of your Pokémon."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 					  my.all.each{damage 20*it.cards.energyCount(C)}
 					}
@@ -494,7 +481,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Hang Down" , {
 					text "10 damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					}
@@ -502,7 +488,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Harden" , {
 					text "During your opponent's next turn, prevent all damage done to this Pokémon by attacks if that damage is 40 or less."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 					  delayed{
 					    before APPLY_ATTACK_DAMAGES, {
@@ -526,7 +511,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Stampede" , {
 					text "30 damage."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  damage 30
 					}
@@ -538,7 +522,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Pound" , {
 					text "20 damage."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					}
@@ -564,7 +547,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Perplex" , {
 					text "40 damage. Your opponent's Active Pokémon is now Confused."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 					  damage 40
 					  applyAfterDamage CONFUSED
@@ -573,7 +555,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Extrasensory" , {
 					text "90+ damage. If you have the same number of cards in your hand as your opponent, this attack does 90 more damage."
 					energyCost G,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 90
 					  if(my.hand.size() == opp.hand.size()) damage 90
@@ -600,7 +581,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Bubble" , {
 					text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  flipThenApplySC PARALYZED
 					}
@@ -612,7 +592,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Surprising Pattern" , {
 					text "Discard all Special Energy from each of your opponent's Pokémon."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 					  opp.all.each{
 					    it.cards.filterByType(SPECIAL_ENERGY).discard()
@@ -622,7 +601,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Hurricane Wing" , {
 					text "40× damage. Flip 4 coins. This attack does 40 damage for each heads."
 					energyCost C,C,C
-					attackRequirement {}
 					onAttack {
 					  flip 4, {damage 40}
 					}
@@ -634,7 +612,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Pheromone Catch" , {
 					text "20+ damage. If your Illumise used Pheromone Signals during your last turn, this attack does 100 more damage."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					  if(bg.em().retrieveObject("Pheromone_Signal") == bg.turnCount - 2) damage 100
@@ -647,7 +624,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Pheromone Signals" , {
 					text "20 damage. Your opponent's Active Pokémon is now Confused."
 					energyCost G
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					  bg.em().storeObject("Pheromone_Signal", bg.turnCount)
@@ -673,7 +649,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Light Punch" , {
 					text "10 damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					}
@@ -697,7 +672,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Feint Attack" , {
 					text "This attack does 50 damage to 1 of your opponent's Pokémon. This damage isn't affected by Weakness, Resistance, or any other effects on that Pokémon."
 					energyCost C,C,C
-					attackRequirement {}
 					onAttack {
 					  swiftDamage(50,opp.all.select("50 damage to "))
 					}
@@ -720,7 +694,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Solar Beam" , {
 					text "70 damage."
 					energyCost G,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 70
 					}
@@ -732,7 +705,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Giga Drain" , {
 					text "30 damage. Heal from this Pokémon the same amount of damage you did to your opponent's Active Pokémon."
 					energyCost G,C
-					attackRequirement {}
 					onAttack {
 					  damage 30
 					  removeDamageCounterEqualToDamageDone()
@@ -741,7 +713,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Powerful Spin" , {
 					text "130 damage. This Pokémon can't attack during your next turn."
 					energyCost G,G,C
-					attackRequirement {}
 					onAttack {
 					  damage 130
 					  cantAttackNextTurn self
@@ -754,7 +725,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Magma Ring" , {
 					text "10 damage. The Defending Pokémon can't retreat during your opponent's next turn."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					  cantRetreat defending
@@ -763,7 +733,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Flare" , {
 					text "20 damage."
 					energyCost R,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					}
@@ -786,7 +755,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Combustion" , {
 					text "50 damage."
 					energyCost R,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 50
 					}
@@ -798,7 +766,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Ember" , {
 					text "30 damage. Discard an Energy from this Pokémon."
 					energyCost R
-					attackRequirement {}
 					onAttack {
 					  damage 30
 					  discardSelfEnergy C
@@ -811,7 +778,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Peck" , {
 					text "10 damage."
 					energyCost R
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					}
@@ -819,7 +785,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Live Coal" , {
 					text "20 damage."
 					energyCost R,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					}
@@ -831,7 +796,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Double Kick" , {
 					text "30× damage. Flip 2 coins. This attack does 30 damage for each heads."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  flip 2,{damage 30}
 					}
@@ -839,7 +803,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Flamethrower" , {
 					text "80 damage. Discard an Energy from this Pokémon."
 					energyCost R,R,C
-					attackRequirement {}
 					onAttack {
 					  damage 80
 					  discardSelfEnergy C
@@ -852,7 +815,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Slash" , {
 					text "60 damage."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  damage 60
 					}
@@ -860,7 +822,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Explosive Kick" , {
 					text "210 damage. Discard 2 [R] Energy from this Pokémon."
 					energyCost R,R,C
-					attackRequirement {}
 					onAttack {
 					  damage 210
 					  discardSelfEnergy R,R
@@ -885,7 +846,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Flaming Honk" , {
 					text "30 damage. Discard the top 4 cards of your deck. If any of those cards are [R] Energy cards, attach them to your Pokémon in any way you like."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  damage 30
 					  for (int i = 0; i<4; i++) {
@@ -903,7 +863,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Searing Flame" , {
 					text "80 damage. Your opponent's Active Pokémon is now Burned."
 					energyCost R,R,C
-					attackRequirement {}
 					onAttack {
 					  damage 80
 					  applyAfterDamage BURNED
@@ -932,7 +891,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Heat Blast" , {
 					text "70 damage."
 					energyCost R,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 70
 					}
@@ -960,7 +918,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Ice Wing" , {
 					text "130 damage."
 					energyCost W,W,C
-					attackRequirement {}
 					onAttack {
 					  damage 130
 					}
@@ -998,7 +955,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Tackle" , {
 					text "10 damage."
 					energyCost W
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					}
@@ -1006,7 +962,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Wave Splash" , {
 					text "20 damage."
 					energyCost W,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					}
@@ -1028,7 +983,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Surf" , {
 					text "70 damage."
 					energyCost W,W,C
-					attackRequirement {}
 					onAttack {
 					  damage 70
 					}
@@ -1050,7 +1004,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Hydro Pump" , {
 					text "80+ damage. This attack does 20 more damage times the amount of [W] Energy attached to this Pokémon."
 					energyCost C,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 80+20*self.cards.energyCount(W)
 					}
@@ -1062,7 +1015,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Surprise" , {
 					text "10 damage. Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck."
 					energyCost W
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					  afterDamage{
@@ -1085,7 +1037,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Ambush" , {
 					text "20+ damage. Flip a coin. If heads, this attack does 20 more damage."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					  flip {damage 20}
@@ -1107,7 +1058,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Circular Steps" , {
 					text "70+ damage. This attack does 10 more damage for each other Pokémon in play (both yours and your opponent's)."
 					energyCost W,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 70+10*(my.bench.size()+opp.all.size())
 					}
@@ -1119,7 +1069,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Wave Swallower" , {
 					text "50 damage. Flip a coin until you get tails. For each heads, heal 50 damage from this Pokémon."
 					energyCost W,W,W
-					attackRequirement {}
 					onAttack {
 					  damage 50
 					  afterDamage{
@@ -1134,7 +1083,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Dwindling Wave" , {
 					text "200- damage. This attack does 40 less damage for each damage counter on this Pokémon."
 					energyCost W,W,W,W
-					attackRequirement {}
 					onAttack {
 					  damage 200-40*self.numberOfDamageCounters
 					}
@@ -1154,7 +1102,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Sparkling Pearl" , {
 					text "10 damage."
 					energyCost W
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					}
@@ -1166,7 +1113,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Big Bite" , {
 					text "30 damage. The Defending Pokémon can't retreat during your opponent's next turn."
 					energyCost W
-					attackRequirement {}
 					onAttack {
 					  damage 30
 					  cantRetreat defending
@@ -1176,7 +1122,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Dangerous Bite" , {
 					text "40+ damage. If your opponent's Active Pokémon is a Basic Pokémon, this attack does 80 more damage."
 					energyCost W,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 40
 					  if(defending.basic) damage 80
@@ -1189,7 +1134,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Deflecting Splash" , {
 					text "30 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Evolution Pokémon."
 					energyCost W
-					attackRequirement {}
 					onAttack {
 					  damage 30
 					  delayed{
@@ -1226,7 +1170,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Water Pulse" , {
 					text "20 damage. Your opponent's Active Pokémon is now Asleep."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					  applyAfterDamage ASLEEP
@@ -1250,7 +1193,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Icy Wind" , {
 					text "60 damage. Your opponent's Active Pokémon is now Asleep."
 					energyCost W,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 60
 					  applyAfterDamage ASLEEP
@@ -1263,7 +1205,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Dual Splash" , {
 					text "This attack does 30 damage to 2 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost W,C
-					attackRequirement {}
 					onAttack {
 					  multiSelect(opp.all, 2).each{
 					    targeted(it){
@@ -1275,7 +1216,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Grand Wave" , {
 					text "120 damage. This Pokémon can't use Grand Wave during your next turn."
 					energyCost W,W,C
-					attackRequirement {}
 					onAttack {
 					  damage 120
 					  cantUseAttack thisMove, self
@@ -1296,7 +1236,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Thunder Shock" , {
 					text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 					energyCost L,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					  flipThenApplySC PARALYZED
@@ -1323,7 +1262,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Electro Ball" , {
 					text "50 damage."
 					energyCost L,C
-					attackRequirement {}
 					onAttack {
 					  damage 50
 					}
@@ -1358,7 +1296,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Pound" , {
 					text "10 damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					}
@@ -1366,7 +1303,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Spark" , {
 					text "10 damage. This attack does 10 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost L,C
-					attackRequirement {}
 					onAttack {
 						damage 10
 						if(opp.bench){
@@ -1398,7 +1334,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Lightning Strike" , {
 					text "70+ damage. You may discard all [L] Energy from this Pokémon. If you do, this attack does 70 more damage."
 					energyCost L,L,C
-					attackRequirement {}
 					onAttack {
 					  damage 70
 					  if(confirm("discard all [L] energy for 70 more damage?")){
@@ -1415,7 +1350,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Zap Kick" , {
 					text "20 damage."
 					energyCost L
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					}
@@ -1432,7 +1366,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Double Charge" , {
 					text "40 damage. You may attach up to 2 basic Energy cards from your hand to 1 of your Benched Pokémon."
 					energyCost L
-					attackRequirement {}
 					onAttack {
 					  damage 40
 					  if(my.hand.filterByType(BASIC_ENERGY) && my.bench){
@@ -1468,7 +1401,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Electro Ball" , {
 					text "30 damage."
 					energyCost L,C
-					attackRequirement {}
 					onAttack {
 					  damage 30
 					}
@@ -1496,7 +1428,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Electro Ball" , {
 					text "30 damage."
 					energyCost L,C
-					attackRequirement {}
 					onAttack {
 					  damage 30
 					}
@@ -1509,7 +1440,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Zappy Pom-Poms" , {
 					text "This attack does 30 damage to each Pokémon-GX and Pokémon-EX (both yours and your opponent's). (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost L
-					attackRequirement {}
 					onAttack {
 					  my.all.each{
 					    if(it.pokemonEX || it.pokemonGX) damage 30, it
@@ -1522,7 +1452,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Electric Ball" , {
 					text "70 damage."
 					energyCost L,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 70
 					}
@@ -1546,7 +1475,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Breakdown" , {
 					text "For each card in your opponent's hand, put 1 damage counter on their Active Pokémon."
 					energyCost P,C
-					attackRequirement {}
 					onAttack {
 					  directDamage 10*opp.hand.size(), defending
 					}
@@ -1569,7 +1497,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Yawn" , {
 					text "Your opponent's Active Pokémon is now Asleep."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  apply ASLEEP
 					}
@@ -1577,7 +1504,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Spit Poison" , {
 					text "Your opponent's Active Pokémon is now Poisoned."
 					energyCost P
-					attackRequirement {}
 					onAttack {
 					  apply POISONED
 					}
@@ -1589,7 +1515,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Amnesia" , {
 					text "30 damage. Choose 1 of your opponent's Active Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 30
 					  amnesia delegate
@@ -1598,7 +1523,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Swallow Up" , {
 					text "40+ damage. If, before doing damage, your opponent's Active Pokémon has less remaining HP than this Pokémon, this attack does 80 more damage."
 					energyCost P,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 40
 					  if(defending.getRemainingHP() < self.getRemainingHP()) damage 80
@@ -1625,7 +1549,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Mirror Step" , {
 					text "10+ damage. If 1 of your opponent's Pokémon in play has the same name as 1 of your Pokémon in play, this attack does 70 more damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					  def addDmg = false
@@ -1669,7 +1592,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Psyshock" , {
 					text "10 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 					energyCost P
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					  flipThenApplySC PARALYZED
@@ -1690,7 +1612,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Scorching Light" , {
 					text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed. If tails, your opponent's Active Pokémon is now Burned."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  flip 1, {apply PARALYZED}, {apply BURNED}
 					}
@@ -1703,7 +1624,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Headbutt" , {
 					text "10 damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					}
@@ -1711,7 +1631,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Will-O-Wisp" , {
 					text "20 damage."
 					energyCost P,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					}
@@ -1724,7 +1643,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Perplex" , {
 					text "Your opponent's Active Pokémon is now Confused."
 					energyCost P
-					attackRequirement {}
 					onAttack {
 					  apply CONFUSED
 					}
@@ -1747,7 +1665,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Enemy Show" , {
 					text "For each of your opponent's Pokémon in play, put 1 damage counter on your opponent's Pokémon in any way you like."
 					energyCost P,C
-					attackRequirement {}
 					onAttack {
 					  opp.all.each{
 					    directDamage 10, opp.all.select("Put one damage counter on which pokémon?")
@@ -1781,7 +1698,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Shadow Chant" , {
 					text "30+ damage. This attack does 10 more damage for each Supporter card in your discard pile. You can't add more than 100 damage in this way."
 					energyCost P
-					attackRequirement {}
 					onAttack {
 					  damage 30+ Math.min(my.discard.filterByType(SUPPORTER).size(),10)*10
 					}
@@ -1805,7 +1721,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Psychic" , {
 					text "20+ damage. This attack does 20 more damage times the amount of Energy attached to your opponent's Active Pokémon."
 					energyCost P,P
-					attackRequirement {}
 					onAttack {
 						damage 20
 					  damage 20*defending.cards.energyCount(C)
@@ -1814,7 +1729,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Power Blast" , {
 					text "120 damage. Discard an Energy from this Pokémon."
 					energyCost P,P,C
-					attackRequirement {}
 					onAttack {
 					  damage 120
 					  discardSelfEnergy C
@@ -1827,7 +1741,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Reflect" , {
 					text "During your opponent's next turn, this Pokémon takes 40 less damage from attacks (after applying Weakness and Resistance)."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  reduceDamageNextTurn(hp(40),thisMove)
 					}
@@ -1835,7 +1748,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Psychic Corkscrew" , {
 					text "80 damage. This attack's damage isn't affected by Resistance."
 					energyCost P,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 80
 					  dontApplyResistance()
@@ -1848,7 +1760,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Teleportation Burst" , {
 					text "20 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
 					energyCost P
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					  afterDamage{
@@ -1861,7 +1772,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Spear Dive" , {
 					text "This attack does 50 damage to 1 of your opponent's Pokémon. This damage isn't affected by Weakness or Resistance."
 					energyCost C,C,C
-					attackRequirement {}
 					onAttack {
 					  noWrDamage(50,opp.all.select())
 					}
@@ -1887,7 +1797,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Full Moon Ray" , {
 					text "80+ damage. This attack does 20 more damage times the amount of Energy attached to your opponent's Active Pokémon."
 					energyCost P,P,P
-					attackRequirement {}
 					onAttack {
 					  damage 80+20*defending.cards.energyCount(C)
 					}
@@ -1899,7 +1808,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Screech" , {
 					text "During your next turn, the Defending Pokémon takes 20 more damage from attacks (after applying Weakness and Resistance)."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  delayed{
 					    before APPLY_ATTACK_DAMAGES,{
@@ -1919,7 +1827,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Rage" , {
 					text "10+ damage. This attack does 10 more damage for each damage counter on this Pokémon."
 					energyCost F,F
-					attackRequirement {}
 					onAttack {
 					  damage 10+10*(self.numberOfDamageCounters)
 					}
@@ -1931,7 +1838,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Tackle" , {
 					text "10 damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					}
@@ -1939,7 +1845,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Endure" , {
 					text "Flip a coin. If heads, if this Pokémon would be Knocked Out by damage from an attack during your opponent's next turn, it is not Knocked Out, and its remaining HP becomes 10."
 					energyCost F
-					attackRequirement {}
 					onAttack {
 					  flip{
 					    delayed {
@@ -1964,7 +1869,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Flail" , {
 					text "10× damage. This attack does 10 damage for each damage counter on this Pokémon."
 					energyCost F
-					attackRequirement {}
 					onAttack {
 					  damage 10*self.numberOfDamageCounters
 					}
@@ -1972,7 +1876,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Rapid Spin" , {
 					text "50 damage. Switch this Pokémon with 1 of your Benched Pokémon. If you do, your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
 					energyCost F,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 50
 					  afterDamage{
@@ -1992,7 +1895,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Leer" , {
 					text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  flip {apply PARALYZED}
 					}
@@ -2000,7 +1902,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Rock Throw" , {
 					text "20 damage. "
 					energyCost F,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					}
@@ -2013,7 +1914,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					text "20 damage."
 					energyCost C,C
 
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					}
@@ -2021,7 +1921,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Dust Devil" , {
 					text "This attack does 20 damage to each non-[F] Pokémon (both yours and your opponent's). (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost F,F
-					attackRequirement {}
 					onAttack {
 					  my.all.each{
 					    if(!it.types.contains(F)){
@@ -2042,7 +1941,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Bide" , {
 					text "Flip a coin. If heads, if this Pokémon would be Knocked Out by damage from an attack during your opponent's next turn, it is not Knocked Out, and its remaining HP becomes 10."
 					energyCost F
-					attackRequirement {}
 					onAttack {
 					  flip{
 					    delayed {
@@ -2063,7 +1961,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Kick" , {
 					text "30 damage."
 					energyCost F,F
-					attackRequirement {}
 					onAttack {
 					  damage 30
 					}
@@ -2075,7 +1972,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Strike of Enlightenment" , {
 					text "10+ damage. If this Pokémon's remaining HP is 30 or less, this attack does 160 more damage."
 					energyCost F,F
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					  if(self.getRemainingHP().value <= 30) damage 160
@@ -2084,7 +1980,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Spinning Kick" , {
 					text "90 damage. This Pokémon does 30 damage to itself."
 					energyCost F,F
-					attackRequirement {}
 					onAttack {
 					  damage 90
 					  damage 30,self
@@ -2097,7 +1992,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Psy Bolt" , {
 					text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					  flipThenApplySC PARALYZED
@@ -2110,7 +2004,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Psy Bolt" , {
 					text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					  flipThenApplySC PARALYZED
@@ -2119,7 +2012,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Miraculous Spin" , {
 					text "40× damage. This attack does 40 damage for each Steven's Resolve card in your discard pile."
 					energyCost F,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 40*my.discard.findAll{it.name.contains("Steven's Resolve")}.size()
 					}
@@ -2131,7 +2023,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Enhanced Stomp" , {
 					text "20+ damage. If this Pokémon has a Pokémon Tool card attached to it, this attack does 20 more damage."
 					energyCost F
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					  if(self.cards.filterByType(POKEMON_TOOL)) damage 20
@@ -2140,7 +2031,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Hammer Arm" , {
 					text "100 damage. Discard the top card of your opponent's deck."
 					energyCost F,F,C
-					attackRequirement {}
 					onAttack {
 					  damage 100
 					  if(opp.deck) {
@@ -2155,7 +2045,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Wreck" , {
 					text "50+ damage. If there is any Stadium card in play, this attack does 50 more damage. Then, discard that Stadium card."
 					energyCost F,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 50
 					  if(bg.stadiumInfoStruct) {
@@ -2167,7 +2056,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Ground Slash" , {
 					text "130 damage. Discard an Energy from this Pokémon."
 					energyCost F,F,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 130
 					  discardSelfEnergy C
@@ -2180,7 +2068,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Eerie Light" , {
 					text "60 damage. Your opponent's Active Pokémon is now Confused."
 					energyCost F,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 60
 					  applyAfterDamage CONFUSED
@@ -2189,7 +2076,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Absorb Life" , {
 					text "100 damage. Heal 20 damage from this Pokémon."
 					energyCost F,F,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 100
 					  heal 20, self
@@ -2223,7 +2109,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Swift" , {
 					text "30 damage. This attack's damage isn't affected by Weakness, Resistance, or any other effects on your opponent's Active Pokémon."
 					energyCost F
-					attackRequirement {}
 					onAttack {
 					  swiftDamage 30, defending
 					}
@@ -2246,7 +2131,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Gnaw" , {
 					text "20 damage."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					}
@@ -2268,7 +2152,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Hyper Fang" , {
 					text "150 damage. Flip a coin. If tails, this attack does nothing."
 					energyCost D,C,C
-					attackRequirement {}
 					onAttack {
 					  flip {damage 150}
 					}
@@ -2292,7 +2175,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Fury Swipers" , {
 					text "10× damage. Flip 3 coins. This attack does 10 damage for each heads."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  flip 3,{damage 10}
 					}
@@ -2300,7 +2182,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Beat Up" , {
 					text "30× damage. Flip a coin for each Pokémon you have in play. This attack does 30 damage for each heads."
 					energyCost D,D
-					attackRequirement {}
 					onAttack {
 					  flip my.all.size(),{damage 30}
 					}
@@ -2313,7 +2194,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Slam" , {
 					text "60× damage. Flip 2 coins. This attack does 60 damage for each heads."
 					energyCost C,C,C
-					attackRequirement {}
 					onAttack {
 					  flip 2,{damage 60}
 					}
@@ -2321,7 +2201,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Trample" , {
 					text "120 damage. For each Benched Pokémon (both yours and your opponent's), flip a coin. If heads, this attack does 60 damage to that Pokémon. This attack's damage isn't affected by Weakness or Resistance."
 					energyCost D,D,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 120
 						def dmgPkmn = false
@@ -2353,7 +2232,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Disable" , {
 					text "10 damage. Choose 1 of your opponent's Active Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					  amnesia delegate
@@ -2367,7 +2245,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Tackle" , {
 					text "30 damage."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  damage 30
 					}
@@ -2375,7 +2252,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Tail Crush" , {
 					text "80+ damage. Flip a coin. If heads, this attack does 40 more damage."
 					energyCost M,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 80
 					  flip {damage 40}
@@ -2404,7 +2280,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Steel Wing" , {
 					text "80 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
 					energyCost M,C
-					attackRequirement {}
 					onAttack {
 					  damage 80
 					  reduceDamageNextTurn(hp(30),thisMove)
@@ -2454,7 +2329,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Bite Off" , {
 					text "20+ damage. If your opponent's Active Pokémon is a Pokémon-GX or a Pokémon-EX, this attack does 30 more damage (before applying Weakness and Resistance)."
 					energyCost M,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					  if(defending.pokemonGX || defending.pokemonEX) damage 30
@@ -2476,7 +2350,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Ram" , {
 					text "10 damage."
 					energyCost M
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					}
@@ -2489,7 +2362,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Single Smash" , {
 					text "50 damage. Flip a coin. If tails, this attack does nothing."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  flip {damage 50}
 					}
@@ -2502,7 +2374,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Bullet Punch" , {
 					text "20+ damage. Flip 2 coins. This attack does 20 more damage for each heads."
 					energyCost M
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					  flip 2,{damage 20}
@@ -2547,7 +2418,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Meteor Mash" , {
 					text "60 damage. During your next turn, this Pokémon's Meteor Mash attack does 60 more damage (before applying Weakness and Resistance)."
 					energyCost M
-					attackRequirement {}
 					onAttack {
 					  damage 60
 					  increasedBaseDamageNextTurn("Meteor Mash",hp(60))
@@ -2574,7 +2444,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Silver Fist" , {
 					text "60+ damage. If your opponent's Active Pokémon has an Ability, this attack does 60 more damage."
 					energyCost M,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 60
 					  if(defending.hasModernAbility()) damage 60
@@ -2607,7 +2476,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Perish Dream" , {
 					text "10 damage. This Pokémon is now Asleep. At the end of your opponent's next turn, the Defending Pokémon will be Knocked Out."
 					energyCost C,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					  afterDamage{apply ASLEEP, self}
@@ -2645,7 +2513,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Steel Tackle" , {
 					text "120 damage. This Pokémon does 30 damage to itself."
 					energyCost M,C,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 120
 					  damage 30, self
@@ -2668,7 +2535,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Rising Dash" , {
 					text "130 damage. This attack's damage isn't affected by Resistance."
 					energyCost M,M,C
-					attackRequirement {}
 					onAttack {
 					  damage 130
 					  dontApplyResistance()
@@ -2696,7 +2562,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Moon Raker" , {
 					text "160 damage. If the total of both players' remaining Prize cards is exactly 6, this attack can be used for [M]."
 					energyCost M,C,C,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 160
 					}
@@ -2709,7 +2574,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Divine Paper" , {
 					text "40+ damage. If your opponent has exactly 6 Prize cards remaining, this attack does 90 more damage."
 					energyCost M,M
-					attackRequirement {}
 					onAttack {
 					  damage 40
 					  if(opp.prizeCardSet.size() == 6) damage 90
@@ -2736,7 +2600,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Gigaton Stomp" , {
 					text "120 damage."
 					energyCost M,M,C
-					attackRequirement {}
 					onAttack {
 					  damage 120
 					}
@@ -2760,7 +2623,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Rock Head" , {
 					text "10 damage. During your opponent's next turn, this Pokémon takes 10 less damage from attacks (after applying Weakness and Resistance)."
 					energyCost W
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					  reduceDamageNextTurn(hp(10),thisMove)
@@ -2773,7 +2635,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Reckless Charge" , {
 					text "40 damage. This Pokémon does 10 damage to itself."
 					energyCost R,C
-					attackRequirement {}
 					onAttack {
 					  damage 40
 					  damage 10, self
@@ -2786,7 +2647,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Raging Blade" , {
 					text "30+ damage. If this Pokémon has any damage counters on it, this attack does 50 more damage."
 					energyCost R,W
-					attackRequirement {}
 					onAttack {
 					  damage 30
 					  if(self.numberOfDamageCounters) damage 50
@@ -2809,7 +2669,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Dragon Claw" , {
 					text "100 damage."
 					energyCost R,W,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 100
 					}
@@ -2821,7 +2680,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Dreamy Mist" , {
 					text "30 damage. Attach a basic Energy card from your discard pile to each of your Basic Benched [N] Pokémon."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 30
 					  my.all.each{
@@ -2838,7 +2696,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Dragon Fleet" , {
 					text "50× damage. This attack does 50 damage for each of your Evolution [N] Pokémon in play."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  my.all.each{
 					    if(it.types.contains(N) && it.evolution) damage 50
@@ -2862,7 +2719,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Dragon Break" , {
 					text "30× damage. This attack does 30 damage times the amount of basic [G] and basic [L] Energy attached to your Pokémon."
 					energyCost G,L,C
-					attackRequirement {}
 					onAttack {
 					  damage 30*(self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G).size() + self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L).size())
 					}
@@ -2908,7 +2764,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Sudden Flash" , {
 					text "10 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					  flipThenApplySC PARALYZED
@@ -2922,7 +2777,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Glide" , {
 					text "10 damage."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					}
@@ -2935,7 +2789,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Firefighting" , {
 					text "30 damage. Discard a [R] Energy from your opponent's Active Pokémon."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 30
 						if(defending.cards.filterByType(ENERGY).filterByEnergyType(R)) defending.cards.filterByType(ENERGY).filterByEnergyType(R).select("Choose the energy to discard").discard()
@@ -2944,7 +2797,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Water Pulse" , {
 					text "80 damage. Your opponent's Active Pokémon is now Asleep."
 					energyCost C,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 80
 					  applyAfterDamage ASLEEP
@@ -2957,7 +2809,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Claw" , {
 					text "20 damage. Flip a coin. If tails, this attack does nothing."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  flip {damage 20}
 					}
@@ -2965,7 +2816,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Slack Off" , {
 					text "Heal all damage from this Pokémon. It can't attack during your next turn."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  heal 10*self.numberOfDamageCounters, self
 					  cantAttackNextTurn self
@@ -2978,7 +2828,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Fury Swipes" , {
 					text "20× damage. Flip 3 coins. This attack does 20 damage for each heads."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  flip 3,{damage 20}
 					}
@@ -2986,7 +2835,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Rage" , {
 					text "20+ damage. This attack does 10 more damage for each damage counter on this Pokémon."
 					energyCost C,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 20+10*self.numberOfDamageCounters
 					}
@@ -3019,7 +2867,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Critical Move" , {
 					text "160 damage. Discard an Energy from this Pokémon. It can't attack during your next turn."
 					energyCost C,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 160
 					  discardSelfEnergy C
@@ -3051,7 +2898,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Pound" , {
 					text "20 damage."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  damage 20
 					}
@@ -3063,7 +2909,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Wail" , {
 					text "40 damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
 					energyCost C,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 40
 					  if(opp.bench){
@@ -3080,7 +2925,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Cracking Voice" , {
 					text "60 damage. Your opponent's Active Pokémon is now Confused."
 					energyCost C,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 60
 					  applyAfterDamage CONFUSED
@@ -3093,7 +2937,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Dangerous Concert" , {
 					text "80 damage. This attack does 30 damage to each of your opponent's Benched Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost C,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 80
 					  opp.bench.each{
@@ -3104,7 +2947,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Heavy Impact" , {
 					text "100 damage."
 					energyCost C,C,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 100
 					}
@@ -3116,7 +2958,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Fake Out" , {
 					text "10 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 					energyCost C
-					attackRequirement {}
 					onAttack {
 					  damage 10
 					  flipThenApplySC PARALYZED
@@ -3138,7 +2979,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Cat Kick" , {
 					text "40 damage."
 					energyCost C,C
-					attackRequirement {}
 					onAttack {
 					  damage 40
 					}
@@ -3161,7 +3001,6 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				move "Slash" , {
 					text "80 damage."
 					energyCost C,C,C
-					attackRequirement {}
 					onAttack {
 					  damage 80
 					}
