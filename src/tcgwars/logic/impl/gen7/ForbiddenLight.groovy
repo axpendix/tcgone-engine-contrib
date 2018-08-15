@@ -2241,7 +2241,7 @@ public enum ForbiddenLight implements CardInfo {
 						gxPerform()
 						my.all.each{
 							defending.damage+=it.damage
-							it.damage==hp(0)
+							it.damage-=it.damage
 						}
 					}
 				}
@@ -2657,7 +2657,7 @@ public enum ForbiddenLight implements CardInfo {
 				}
 				onRemoveFromPlay{
 					eff.unregister()
-					
+
 					def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) - 1
 					if(count == 0){
 						def dset = bg.em().retrieveObject("Tool Concealment dset") as Set

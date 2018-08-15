@@ -3195,9 +3195,11 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				  eff = delayed {
 				    before BETWEEN_TURNS, {
 				      my.all.each{
+								bc "Ultra Beast $it recieved 10 damage because of $thisCard"
 				        if(it.pokemonEX || it.pokemonGX) it.damage+=hp(10)
 				      }
 				      opp.all.each{
+								bc "Ultra Beast $it recieved 10 damage because of $thisCard"
 				        if(it.pokemonEX || it.pokemonGX) it.damage+=hp(10)
 				      }
 				    }
