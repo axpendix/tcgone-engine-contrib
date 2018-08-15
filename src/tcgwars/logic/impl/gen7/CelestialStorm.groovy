@@ -2457,8 +2457,8 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				globalAbility{
 				  delayed{
 				    after TAKE_PRIZE, {
-				      if(thisCard.player.pbg.prizeCardSet.notEmpty && ef.card != null && ef.card == thisCard 
-								&& thisCard.player.pbg.bench.notFull && bg.currentTurn == thisCard.player 
+				      if(thisCard.player.pbg.prizeCardSet.notEmpty && ef.card != null && ef.card == thisCard
+								&& thisCard.player.pbg.bench.notFull && bg.currentTurn == thisCard.player
 								&& thisCard.player.pbg.hand.contains(thisCard)
 							  && checkGlobalAbility(thisCard)
 								&& confirm("You've picked ${thisCard}. Would you like to use Wish Upon a Star?")){
@@ -2682,7 +2682,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost C
 					onAttack {
 					  damage 30
-					  my.all.each{
+					  my.bench.each{
 					    if(it.types.contains(N)){
 					      attachEnergyFrom(may:true,basic:true,my.discard,it)
 					    }
@@ -2720,7 +2720,9 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					text "30× damage. This attack does 30 damage times the amount of basic [G] and basic [L] Energy attached to your Pokémon."
 					energyCost G,L,C
 					onAttack {
-					  damage 30*(self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G).size() + self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L).size())
+						my.all.each{
+							damage 30*(it.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G).size() + it.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L).size())
+						}
 					}
 				}
 				move "Tempest GX" , {
