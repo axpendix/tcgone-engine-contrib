@@ -2442,7 +2442,7 @@ public enum CrimsonInvasion implements CardInfo {
               onMove {to->
               }
               getEnergyTypesOverride{
-                  if(self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size())
+                  if(self && !self.pokemonGX && !self.pokemonEX && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size())
                       return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
                   else
                       return [[C] as Set]
