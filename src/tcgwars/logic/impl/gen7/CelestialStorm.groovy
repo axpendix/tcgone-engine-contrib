@@ -747,9 +747,9 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  checkLastTurn()
 					  assert my.deck
 					  powerUsed()
-					  def tar = my.deck.search(count:1,"Choose 1 card to put on top of your deck",{true})
+					  def tar = my.deck.select("Choose 1 card to put on top of your deck").first()
 					  my.deck.remove(tar)
-					  my.deck.addAll(0, tar)
+					  my.deck.add(0, tar)
 					}
 				}
 				move "Combustion" , {
@@ -1721,7 +1721,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				weakness PSYCHIC
 				move "Psychic" , {
 					text "20+ damage. This attack does 20 more damage times the amount of Energy attached to your opponent's Active Pokémon."
-					energyCost P,P
+					energyCost C,C
 					onAttack {
 						damage 20
 					  damage 20*defending.cards.energyCount(C)
@@ -2342,7 +2342,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				resistance PSYCHIC, MINUS20
 				bwAbility "Conductive Body" , {
 					text "As long as this Pokémon is your Active Pokémon, its Retreat Cost is [C] less for each Beldum on your Bench."
-					getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {h->
+					getterA (GET_RETREAT_COST, self) {h->
 					  if(self.active) {
 					    h.object -= self.owner.pbg.bench.findAll{it.name == "Beldum"}.size()
 					  }
@@ -3251,7 +3251,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 			return supporter(this) {
 				text "Search your deck for up to 3 cards and put them into your hand. Then, shuffle your deck. Your turn ends.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
 				onPlay {
-				  my.deck.search(max:3,"Select up to 3 cards",{true}).moveTo(my.hand)
+				  my.deck.search(max:3,"Select up to 3 cards",{true}).moveTo(hidden:true,my.hand)
 				  if(bg.em().retrieveObject("Extend") != 1){
 				    bg.gm().betweenTurns()
 				  }
@@ -3266,7 +3266,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 			return copy(BlackWhite.SWITCH_104, this);
 			case TATE_LIZA_148:
 			return supporter(this) {
-				text "Choose 1:\nYou may play only 1 Supporter card during your turn (before your attack).\n"
+				text "Choose 1:\nShuffle your hand into your deck. Then, draw 5 cards.\nSwitch your Active Pokémon with 1 of your Benched Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
 				onPlay {
 				  if(!my.bench){
 				    my.hand.getExcludedList(thisCard).moveTo(my.deck)
@@ -3280,7 +3280,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				    def cl=[1,2]
 				    def c=choose(cl,["Shuffle your hand into your deck. Then, draw 5 cards.", "Switch your Active Pokémon with 1 of your Benched Pokémon."], "What do you want to do?")
 				    if(c==1){
-				      my.hand.getExcludedList(thisCard).moveTo(my.deck)
+				      my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
 				      shuffleDeck()
 				      draw 5
 				    }
@@ -3367,7 +3367,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 			case LIFE_HERB_180:
 			return copy(LIFE_HERB_136,this);
 			case POKENAV_181:
-			return copy(POKENAV_88,this);
+			return copy(POKENAV_140,this);
 			case RAINBOW_BRUSH_182:
 			return copy(RAINBOW_BRUSH_141,this);
 			default:

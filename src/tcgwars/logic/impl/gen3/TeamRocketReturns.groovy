@@ -2371,7 +2371,7 @@ public enum TeamRocketReturns implements CardInfo {
 			return supporter (this) {
 				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, count the number of cards in your opponent’s hand and draw that many cards."
 				onPlay {
-					my.hand.getExcludedList(thisCard).moveTo(my.deck)
+					my.hand.getExcludedList(thisCard).moveTo(hidden:true,my.deck)
 					shuffleDeck()
 					draw opp.hand.size()
 				}
