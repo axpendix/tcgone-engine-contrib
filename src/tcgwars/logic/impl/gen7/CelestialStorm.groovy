@@ -568,8 +568,8 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					}
 					onAttack {
 					  gxPerform()
-					  def pcs = opp.all.select("choose the Pokémon to put back in deck.")
-					  pcs.cards.moveTo(my.deck)
+					  def pcs = opp.all.select("Choose the Pokémon to put back in deck.")
+					  pcs.cards.moveTo(opp.deck)
 					  removePCS(pcs)
 					  shuffleDeck(null, TargetPlayer.OPPONENT)
 					}
@@ -2546,23 +2546,27 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 			return basic (this, hp:HP140, type:METAL, retreatCost:4) {
 				weakness LIGHTNING
 				resistance FIGHTING, MINUS20
-				customAbility{
-				  getter GET_MOVE_LIST, {h->
-				    if(h.effect.target == self && (my.prizeCardSet.size() + opp.prizeCardSet.size() == 6)){
-				      def list=[]
-				      for(move in h.object){
-				        def copy=move.shallowCopy()
-				        copy.energyCost.clear()
-				        copy.energyCost.add(M)
-				        list.add(copy)
-				      }
-				      h.object=list
-				    }
-				  }
-				}
-				move "Moon Raker" , {
+				// customAbility{
+				//   getter GET_MOVE_LIST, {h->
+				//     if(h.effect.target == self && (my.prizeCardSet.size() + opp.prizeCardSet.size() == 6)){
+				//       def list=[]
+				//       for(move in h.object){
+				//         def copy=move.shallowCopy()
+				//         copy.energyCost.clear()
+				//         copy.energyCost.add(M)
+				//         list.add(copy)
+				//       }
+				//       h.object=list
+				//     }
+				//   }
+				// }
+				move "Moon Raker", {
 					text "160 damage. If the total of both players' remaining Prize cards is exactly 6, this attack can be used for [M]."
-					energyCost M,C,C,C,C
+					energyCost M
+					attackRequirement {
+						def i = my.prizeCardSet.size() + opp.prizeCardSet.size()
+						if(i != 6) assert self.cards.energySufficient(M,C,C,C,C) : "Not enough energy. Total prize count was $i"
+					}
 					onAttack {
 					  damage 160
 					}
@@ -2614,7 +2618,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					onAttack {
 					  gxPerform()
 					  damage 50
-					  damage 50*(6-my.prizeCardSet.takenCount)
+					  damage 50*my.prizeCardSet.takenCount
 					}
 				}
 			};

@@ -2997,7 +2997,7 @@ public enum UltraPrism implements CardInfo {
         text "Draw 2 cards. If you do, discard a random card from your opponent’s hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
           draw 2
-          opp.hand.select(hidden: true, count: 1, "Choose arandom card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("this card will be discarded").discard()
+          opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("this card will be discarded").discard()
         }
         playRequirement{
           assert my.deck

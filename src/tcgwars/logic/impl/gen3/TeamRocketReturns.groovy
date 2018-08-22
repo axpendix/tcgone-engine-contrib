@@ -306,12 +306,11 @@ public enum TeamRocketReturns implements CardInfo {
 					text "Once during your turn (before your attack), if Dark Electrode has no Energy attached to it, you may search your deck for a [D] or Dark Metal Energy and attach it to Dark Electrode. Shuffle your deck afterward. This power can’t be used if Dark Electrode is affected by a Special Condition."
 					actionA {
 						assert !(self.specialConditions) : "$self is affected by a Special Condition"
-						assert !(self.cards.energyCount(C)) : "Dark Electrode has Energies attached to it"
+						assert !(self.cards.energyCount(C)) : "$self has Energies attached to it"
 						checkLastTurn()
 						powerUsed()
-						def energyToAttach = my.deck.search(max:1,"search your deck for a [D] or Dark Metal Energy",{it.asEnergyCard().containsTypePlain(D) || (it.name == 'Dark Metal Energy')})
-						attachEnergy(self, energyToAttach.first())
-
+						my.deck.search("Search your deck for a [D] or Dark Metal Energy",{it.cardTypes.energy && (it.containsTypePlain(D) || (it.name == 'Dark Metal Energy'))}).each{attachEnergy(self, it)}
+						shuffleDeck()
 					}
 				}
 				move "Energy Bomb", {

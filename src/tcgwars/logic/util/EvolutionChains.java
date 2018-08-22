@@ -240,6 +240,7 @@ public class EvolutionChains {
     ADD("Unidentified Fossil", "Amaura", "Aurorus");
     ADD("Unidentified Fossil", "Shieldon", "Bastiodon");
     ADD("Unidentified Fossil", "Cranidos", "Rampardos");
+    ADD("Unidentified Fossil", "Tyrunt", "Tyrantrum");
     ADD("Seedot", "Nuzleaf", "Shiftry-GX");
     ADD("Torchic", "Combusken", "Blaziken-GX");
 
