@@ -152,6 +152,9 @@ class TcgStatics {
 		//TODO check if energy is sufficient. if not, dont run DSE
 		new DiscardSelfEnergy(types).run(bg())
 	}
+	static discardSelfEnergyInOrderTo(Type...types){
+		new DiscardSelfEnergy(types).run(bg())
+	}
 	static discardOpponentEnergy(Target target){
 		new DiscardOpponentEnergyCard(target).run(bg())
 	}
@@ -165,11 +168,16 @@ class TcgStatics {
 			}
 		} }
 	}
-	static discardAllSelfEnergy(Type type){
+	static discardAllSelfEnergy(Type type=null){
 		def ef=new DiscardAllSelfEnergy(type)
 		ef.run(bg())
 		ef.getList()
 	}
+	static discardAllSelfEnergyInOrderTo(Type type=null){
+		def ef=new DiscardAllSelfEnergy(type)
+		ef.run(bg())
+		ef.getList()
+	}		
 	static CardList hand(){
 		bg().ownHand()
 	}

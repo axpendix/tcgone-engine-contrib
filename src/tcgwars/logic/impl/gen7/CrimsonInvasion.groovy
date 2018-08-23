@@ -2375,13 +2375,10 @@ public enum CrimsonInvasion implements CardInfo {
           opp.hand.showToMe("Opponent's hand")
           if(confirm("Replace opponent hand?")){
             def nbc = opp.hand.size()
-            opp.hand.moveTo(opp.deck)
+            opp.hand.moveTo(hidden:true,opp.deck)
             shuffleDeck(null, TargetPlayer.OPPONENT)
-            opp.deck.subList(0, nbc).each{
-              moveCard(it,opp.hand)
-            }
+            draw nbc, TargetPlayer.OPPONENT
           }
-
         }
         playRequirement{
           assert opp.hand
