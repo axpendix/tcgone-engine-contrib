@@ -3241,6 +3241,8 @@ public enum UltraPrism implements CardInfo {
             def card = opp.hand.select("Opponent's hand. Put one card as opponent prize").showToOpponent("This card from your hand is now in your prizes").first()
             opp.hand.remove(card)
             opp.prizeCardSet.add(card)
+            opp.prizeCardSet.shuffle()
+            bc "Put 1 card to prizes and shuffled them"
           }
         }
 

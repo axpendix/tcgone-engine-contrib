@@ -1090,6 +1090,7 @@ class TcgStatics {
 	static void cantBeHealed(PokemonCardSet defending){
 		delayed {
 			before REMOVE_DAMAGE_COUNTER, defending, {
+				bc "Healing was prevented due to an effect"
 				prevent()
 			}
 			unregisterAfter 3

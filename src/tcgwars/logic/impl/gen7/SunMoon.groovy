@@ -1646,6 +1646,7 @@ public enum SunMoon implements CardInfo {
 							damage 120
 							delayed {
 								before REMOVE_DAMAGE_COUNTER, defending, {
+									bc "Moongeist Beam prevents healing"
 									prevent()
 								}
 								unregisterAfter 3
