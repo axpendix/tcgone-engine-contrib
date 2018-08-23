@@ -2589,8 +2589,8 @@ public enum ForbiddenLight implements CardInfo {
 			return supporter (this) {
 				text "Each player shuffles their hand into their deck and draws 4 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
-					my.hand.getExcludedList(thisCard).moveTo(my.deck)
-					opp.hand.moveTo(opp.deck)
+					my.hand.getExcludedList(thisCard).moveTo(hidden:true,my.deck)
+					opp.hand.moveTo(hidden:true,opp.deck)
 					shuffleDeck()
 					shuffleDeck(null, TargetPlayer.OPPONENT)
 					draw 4

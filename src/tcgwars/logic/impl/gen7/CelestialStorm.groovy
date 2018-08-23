@@ -2387,33 +2387,15 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				resistance PSYCHIC, MINUS20
 				bwAbility "Extend" , {
 					text "As long as this Pokémon is your Active Pokémon, your turn does not end when you play Steven's Resolve."
-					def effect
-					onActivate{
-						if(self.active){
-							bg.em().storeObject("Extend", 1)
+					delayedA {
+						before PLAY_TRAINER, {
+							if(self.active){
+					      bg.em().storeObject("Extend_"+self.owner, 1)
+					    }
+					    else {
+					      bg.em().storeObject("Extend_"+self.owner, null)
+					    }
 						}
-					  effect = delayed{
-							before SWITCH, {
-						    if(self.active){
-						      bg.em().storeObject("Extend", 1)
-						    }
-						    else{
-						      bg.em().storeObject("Extend", null)
-						    }
-						  }
-							before PLAY_TRAINER, {
-								if(self.active){
-						      bg.em().storeObject("Extend", 1)
-						    }
-						    else{
-						      bg.em().storeObject("Extend", null)
-						    }
-							}
-						}
-					}
-					onDeactivate{
-					  bg.em().storeObject("Extend", null)
-					  effect.unregister()
 					}
 				}
 				move "Meteor Mash" , {
@@ -3256,7 +3238,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				text "Search your deck for up to 3 cards and put them into your hand. Then, shuffle your deck. Your turn ends.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
 				onPlay {
 				  my.deck.search(max:3,"Select up to 3 cards",{true}).moveTo(hidden:true,my.hand)
-				  if(bg.em().retrieveObject("Extend") != 1){
+				  if(!bg.em().retrieveObject("Extend_"+thisCard.player)){
 				    bg.gm().betweenTurns()
 				  }
 				}
