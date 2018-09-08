@@ -1580,7 +1580,7 @@ public enum SunMoon implements CardInfo {
 						text "Whenever your opponent's Active Pokémon retreats, their new Active Pokémon is Poisoned."
 						delayedA {
 							after RETREAT, {
-								if(ef.retreater == self.owner.opposite.pbg.active){
+								if(ef.retreater.owner == self.owner.opposite){
 									bc "Toxic Spikes"
 									apply POISONED, ef.newActive, SRC_ABILITY
 								}
