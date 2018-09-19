@@ -387,14 +387,15 @@ public enum DragonMajesty implements CardInfo {
 					energyCost R,R,R,C
 					attackRequirement{
 						gxCheck()
-						assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(R) : "There is no cards in your deck"
 					}
 					onAttack{
 						gxPerform()
 						damage 180
 						afterDamage{
-							my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(R).select(max : 5,"Select up to 5 Fire Energy cards.").each{
-								attachEnergy(my.all.select("attach $it to?"),it)
+							if(my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(R)){
+								my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(R).select(min:0, max : 5,"Select up to 5 Fire Energy cards.").each{
+									attachEnergy(my.all.select("attach $it to?"),it)
+								}
 							}
 						}
 					}
@@ -918,7 +919,7 @@ public enum DragonMajesty implements CardInfo {
 					text "Prevent all effects of your opponent's attacks, except damage, done to your [N] Pokémon. (Existing effects are not removed.)"
 					delayedA {
 		        before null, null, ATTACK, {
-		            if(ef instanceof TargetedEffect && bg.currentTurn==self.owner.opponent && ef.effectType != DAMAGE){
+		            if(ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
 		                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
 		                if(pcs != null && pcs.owner == self.owner){
 		                    bc "Dragon Guard prevents effect to [N] Pokémon"
