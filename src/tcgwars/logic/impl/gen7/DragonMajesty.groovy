@@ -394,7 +394,7 @@ public enum DragonMajesty implements CardInfo {
 						damage 180
 						afterDamage{
 							my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(R).select(max : 5,"Select up to 5 Fire Energy cards.").each{
-								attachEnergy(my.all,it)
+								attachEnergy(my.all.select("attach $it to?"),it)
 							}
 						}
 					}
@@ -858,10 +858,10 @@ public enum DragonMajesty implements CardInfo {
 					}
 				}
 				move "Waterfall" , {
-					text "60 damage."
+					text "80 damage."
 					energyCost W,L,C,C
 					onAttack{
-						damage 60
+						damage 80
 					}
 				}
 			};
@@ -889,6 +889,7 @@ public enum DragonMajesty implements CardInfo {
 					attackRequirement{
 						gxCheck()
 						assert my.discard.findAll{it.types.contains(N)}
+						assert my.bench.notFull
 					}
 					onAttack{
 						def maxSpace = Math.min(my.bench.freeBenchCount,3)
@@ -906,7 +907,7 @@ public enum DragonMajesty implements CardInfo {
 					text "50 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
 					energyCost F,C
 					onAttack{
-						 shredDamage 50, defending
+						 shredDamage 50
 					}
 				}
 			};
@@ -917,9 +918,9 @@ public enum DragonMajesty implements CardInfo {
 					text "Prevent all effects of your opponent's attacks, except damage, done to your [N] Pokémon. (Existing effects are not removed.)"
 					delayedA {
 		        before null, null, ATTACK, {
-		            if(ef instanceof TargetedEffect && bg.currentTurn==self.owner && ef.effectType != DAMAGE){
+		            if(ef instanceof TargetedEffect && bg.currentTurn==self.owner.opponent && ef.effectType != DAMAGE){
 		                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-		                if(pcs != null && pcs.benched && pcs.owner == self.owner){
+		                if(pcs != null && pcs.owner == self.owner){
 		                    bc "Dragon Guard prevents effect to [N] Pokémon"
 		                    prevent()
 		                }
@@ -946,7 +947,7 @@ public enum DragonMajesty implements CardInfo {
 							bg.dm().each {
 								if(it.from.owner == self.owner && it.dmg.value && it.notNoEffect && it.from.types.contains(N)) {
 									bc "Fight Song +20"
-									it.dmg += hp(plusDmg)
+									it.dmg += hp(20)
 								}
 							}
 						}
@@ -966,7 +967,7 @@ public enum DragonMajesty implements CardInfo {
 				move "Bright Tone" , {
 					text "50 damage. Prevent all damage done to this Pokémon by attacks from Pokémon-GX and Pokémon-EX during your opponent's next turn."
 					energyCost Y,C
-					attack{
+					onAttack{
 						damage 50
 						afterDamage{
 							preventAllDamageFromCustomPokemonNextTurn(thisMove, self, {it.pokemonGX || it.pokemonEX})
@@ -977,7 +978,7 @@ public enum DragonMajesty implements CardInfo {
 					text "110 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
 					energyCost W,Y,C
 					onAttack{
-						shredDamage 110, defending
+						shredDamage 110
 					}
 				}
 				move "Euphoria GX" , {
@@ -1022,7 +1023,7 @@ public enum DragonMajesty implements CardInfo {
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
 							bg.dm().each {
-								if(it.to==self && it.cards.filterByType(BASIC_ENERGY) && it.dmg.value && it.notNoEffect){
+								if(it.to==self && it.to.cards.filterByType(BASIC_ENERGY) && it.dmg.value && it.notNoEffect){
 									bc "Energy Guard -20"
 									it.dmg -= hp(20)
 								}
@@ -1043,7 +1044,7 @@ public enum DragonMajesty implements CardInfo {
 				weakness FAIRY
 				bwAbility "Dragon Lift" , {
 					text "Your Pokémon in play have no Retreat Cost, except Pokémon-GX and Pokémon-EX."
-					getterA (GET_RETREAT_COST, BEFORE_LAST,self) {h->
+					getterA (GET_RETREAT_COST, BEFORE_LAST) {h->
 						if(!h.effect.target.pokemonEX && !h.effect.target.pokemonGX) {
 							h.object = 0
 						}
@@ -1098,7 +1099,7 @@ public enum DragonMajesty implements CardInfo {
 					text "70 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
 					energyCost L,C,C
 					onAttack{
-						shredDamage 70, defending
+						shredDamage 70
 					}
 				}
 				move "Bolt Strike" , {
@@ -1140,7 +1141,7 @@ public enum DragonMajesty implements CardInfo {
 					text "40 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
 					energyCost R
 					onAttack{
-						shredDamage 40, defending
+						shredDamage 40
 					}
 				}
 				move "Raging Blade" , {
@@ -1174,7 +1175,7 @@ public enum DragonMajesty implements CardInfo {
 					energyCost F
 					onAttack{
 						damage 20
-						CantRetreat defending
+						cantRetreat defending
 					}
 				}
 				move "Raging Blade" , {
