@@ -156,7 +156,7 @@ public int getCollectionLineNo() {
 
 @Override
 public tcgwars.logic.card.Collection getCollection() {
-	return tcgwars.logic.card.Collection.BURNING_SHADOWS;
+	return tcgwars.logic.card.Collection.DRAGON_MAJESTY;
 }
 
 @Override
