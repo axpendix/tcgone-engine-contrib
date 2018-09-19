@@ -1353,7 +1353,7 @@ public enum DragonMajesty implements CardInfo {
 			return supporter(this) {
 			text "You can play this card only when it is the last card in your hand.\nDraw 2 cards for each [R] Pokémon you have in play.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
 				onPlay {
-					draw 2*my.all.findAll{it.types.contains(R)}
+					draw 2*my.all.findAll{it.types.contains(R)}.size()
 				}
 				playRequirement{
 					assert !my.hand.getExcludedList(thisCard) : "this is not your only card in hand"
@@ -1397,7 +1397,7 @@ public enum DragonMajesty implements CardInfo {
 				text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn.\nSearch your deck for up to 2 [N] Pokémon and put them onto your Bench. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
 				onPlay {
 					def maxSpace = Math.min(my.bench.freeBenchCount,2)
-					my.deck.search(max:maxSpace,"Select $maxSpace [N] Pokémon to put onto your Bench",{it.types.contains(N)}).each{
+					my.deck.search(max:maxSpace,"Select $maxSpace [N] Pokémon to put onto your Bench",{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(N)}).each{
 						my.deck.remove(it);
 						benchPCS(it)
 					}
