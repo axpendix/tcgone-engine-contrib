@@ -98,7 +98,7 @@ KANGASKHAN_55("Kangaskhan", 55, Rarity.COMMON, [POKEMON,_COLORLESS_,BASIC]),
 SWABLU_56("Swablu", 56, Rarity.COMMON, [POKEMON,_COLORLESS_,BASIC]),
 SWABLU_57("Swablu", 57, Rarity.COMMON, [POKEMON,_COLORLESS_,BASIC]),
 BLAINE_S_LAST_STAND_58("Blaine's Last Stand", 58, Rarity.HOLORARE, [TRAINER,SUPPORTER]),
-DRAGON_TALON_59("Dragon Talon", 59, Rarity.UNCOMMON, [TRAINER,ITEM,TOOL]),
+DRAGON_TALON_59("Dragon Talon", 59, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
 FIERY_FLINT_60("Fiery Flint", 60, Rarity.UNCOMMON, [TRAINER,ITEM]),
 LANCE_PRISM_STAR_61("Lance Prism Star", 61, Rarity.HOLORARE, [PRISM_STAR,TRAINER,SUPPORTER]),
 SWITCH_RAFT_62("Switch Raft", 62, Rarity.UNCOMMON, [TRAINER,ITEM]),
@@ -114,7 +114,7 @@ RESHIRAM_GX_71("Reshiram-GX", 71, Rarity.SECRET, [POKEMON_GX,POKEMON,_FIRE_,BASI
 ALTARIA_GX_72("Altaria-GX", 72, Rarity.SECRET, [POKEMON_GX,POKEMON,_DRAGON_,STAGE1,EVOLUTION]),
 SALAMENCE_GX_73("Salamence-GX", 73, Rarity.SECRET, [POKEMON_GX,POKEMON,_DRAGON_,STAGE2,EVOLUTION]),
 WHITE_KYUREM_GX_74("White Kyurem-GX", 74, Rarity.SECRET, [POKEMON_GX,POKEMON,_DRAGON_,BASIC]),
-DRAGON_TALON_75("Dragon Talon", 75, Rarity.SECRET, [TRAINER,ITEM,TOOL]),
+DRAGON_TALON_75("Dragon Talon", 75, Rarity.SECRET, [TRAINER,ITEM,POKEMON_TOOL]),
 FIERY_FLINT_76("Fiery Flint", 76, Rarity.SECRET, [TRAINER,ITEM]),
 SWITCH_RAFT_77("Switch Raft", 77, Rarity.SECRET, [TRAINER,ITEM]),
 ULTRA_NECROZMA_GX_78 ("Ultra Necrozma-GX", 78, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _DRAGON_]),
@@ -190,15 +190,14 @@ public Card getImplementation() {
 			bwAbility "Burning Fighter" , {
 				text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may discard the top 5 cards of your deck. If any of those cards are [R] Energy cards, attach them to this Pokémon."
 				onActivate{reason ->
-            if(reason == PLAY_FROM_HAND && confirm("Burning Fighter")){
-							def list = my.deck.subList(0,5).filterByType(BASIC_ENERGY).filterByEnergyType(R)
-	            def num = list.size()
-	            if(num){
-	              list.each{attachEnergy(self, it)}
-	            }
-	            my.deck.subList(0,5-num).discard()
-            }
-          }
+					if(reason == PLAY_FROM_HAND && confirm("Burning Fighter")){
+						def list = my.deck.subList(0,5).filterByType(BASIC_ENERGY).filterByEnergyType(R)
+						def num = list.size()
+						if(num){
+							list.each{attachEnergy(self, it)}
+						}
+						my.deck.subList(0,5-num).discard()
+					}
 				}
 			}
 			move "Flamethrower" , {
@@ -777,14 +776,14 @@ public Card getImplementation() {
 				def effect2
 				onActivate {
 					effect1 = getter GET_FULL_HP, { Holder h->
-						if(h.effect.target.name == "Wishiwashi-GXs" && h.effect.target.owner == self.owner) {
+						if(h.effect.target.name == "Wishiwashi-GX" && h.effect.target.owner == self.owner) {
 					    h.object += hp(20)
 					  }
 					}
 					effect2 = before APPLY_ATTACK_DAMAGES, {
 						bg.dm().each {
-							if(it.from.name == "Wishiwashi-GXs" &&  && it.dmg.value && it.notNoEffect) {
-								bc "Meet Up +$20"
+							if(it.from.name == "Wishiwashi-GX" && it.dmg.value && it.notNoEffect) {
+								bc "Meet Up +20"
 								it.dmg += hp(20)
 							}
 						}
@@ -1452,7 +1451,7 @@ public Card getImplementation() {
 		return copy(DRAGONITE_GX_37, this);
 		case ALTARIA_GX_68:
 		return copy(ALTARIA_GX_41, this);
-		case BLAINES_LAST_STAND_69:
+		case BLAINE_S_LAST_STAND_69:
 		return copy(BLAINE_S_LAST_STAND_58, this);
 		case ZINNIA_70:
 		return copy(ZINNIA_64, this);
