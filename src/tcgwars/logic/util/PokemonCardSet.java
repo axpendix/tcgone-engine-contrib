@@ -322,7 +322,9 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 		for (Ability ability : getAbilities().keySet()) {
 			if (ability instanceof BwAbility) return true;
 		}
-		return getTopPokemonCard().getGlobalAbilities().size() > 0;
+		return false;
+		// even global abilities need to be defined as regular ability with no effect
+//		return getTopPokemonCard().getGlobalAbilities().size() > 0;
 	}
 	public boolean isMegaEvolution(){
 		return getTopPokemonCard().getCardTypes().is(CardType.MEGA_POKEMON);

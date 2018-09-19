@@ -2045,13 +2045,7 @@ public enum BurningShadows implements CardInfo {
 					text "This attack does 60 damage to each Pokémon that has an Ability (both yours and your opponent's). (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost C
 					onAttack {
-						all.each {
-							def hasAbility = false
-							for (Ability ability : it.getAbilities().keySet()) {
-								if (ability instanceof BwAbility) hasAbility =  true;
-							}
-							if(hasAbility) damage 60, it
-						}
+						all.each {if(it.hasModernAbility()) damage 60,it}
 					}
 				}
 				move "Slash", {
