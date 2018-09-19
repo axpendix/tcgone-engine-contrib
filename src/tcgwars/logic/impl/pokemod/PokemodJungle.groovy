@@ -13,7 +13,6 @@ import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
 import java.util.*;
-import org.apache.commons.lang.WordUtils;
 import tcgwars.entity.*;
 import tcgwars.logic.*;
 import tcgwars.logic.card.*;
