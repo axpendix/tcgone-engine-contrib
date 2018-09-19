@@ -921,8 +921,8 @@ public enum DragonMajesty implements CardInfo {
 		        before null, null, ATTACK, {
 		            if(ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
 		                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-		                if(pcs != null && pcs.owner == self.owner){
-		                    bc "Dragon Guard prevents effect to [N] Pokémon"
+		                if(pcs != null && pcs.types.contains(N) && pcs.owner == self.owner){
+		                    bc "Dragon Guard prevents effect to Dragon Pokémon"
 		                    prevent()
 		                }
 		            }
@@ -1349,7 +1349,7 @@ public enum DragonMajesty implements CardInfo {
 					}
 				}
 			};
-			case BLAINES_LAST_STAND_58:
+			case BLAINE_S_LAST_STAND_58:
 			return supporter(this) {
 			text "You can play this card only when it is the last card in your hand.\nDraw 2 cards for each [R] Pokémon you have in play.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
 				onPlay {
