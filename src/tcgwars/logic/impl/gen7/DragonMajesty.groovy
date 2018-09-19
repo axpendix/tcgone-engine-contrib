@@ -387,13 +387,13 @@ public enum DragonMajesty implements CardInfo {
 					energyCost R,R,R,C
 					attackRequirement{
 						gxCheck()
-						assert my.deck : "There is no cards in your deck"
+						assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(R) : "There is no cards in your deck"
 					}
 					onAttack{
 						gxPerform()
 						damage 180
 						afterDamage{
-							my.deck.filterByType(BASIC_ENERGY).filterByEnergyType(R).select(max : 5,"Select up to 5 Fire Energy cards.").each{
+							my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(R).select(max : 5,"Select up to 5 Fire Energy cards.").each{
 								attachEnergy(my.all,it)
 							}
 						}
@@ -512,7 +512,7 @@ public enum DragonMajesty implements CardInfo {
 						gxCheck()
 					}
 					onAttack{
-						opp.each{
+						opp.all.each{
 							damage 40, it
 						}
 					}
@@ -549,7 +549,7 @@ public enum DragonMajesty implements CardInfo {
 					energyCost W,W,C
 					onAttack{
 						damage 160
-						if(bg.stadiumInfoStruct.stadiumCard) {
+						if(bg.stadiumInfoStruct){
 							if(confirm("Discard the stadium in play?")){
 								discard bg.stadiumInfoStruct.stadiumCard
 							}
