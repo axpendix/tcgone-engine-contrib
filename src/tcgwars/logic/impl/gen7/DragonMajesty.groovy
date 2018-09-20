@@ -1426,7 +1426,7 @@ public enum DragonMajesty implements CardInfo {
 				def eff
 				onPlay {
 					eff = delayed {
-						before BURNED_SPC, null, null, COIN_FLIP, {
+						before BURNED_SPC, null, null, COIN_FLIP_BETWEEN_EXECUTION, {
 						prevent()
 						}
 					}
