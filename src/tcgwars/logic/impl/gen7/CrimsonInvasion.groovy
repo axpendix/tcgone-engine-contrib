@@ -1803,10 +1803,11 @@ public enum CrimsonInvasion implements CardInfo {
           energyCost M, C, C
           onAttack {
             damage 70
-            assert bench.notEmpty
-            if(confirm("shuffle this Pokémon and all cards attached to it into your deck?")){
-              shuffleDeck(self.cards)
-              removePCS(self)
+            if(bench.notEmpty && confirm("shuffle this Pokémon and all cards attached to it into your deck?")){
+              afterDamage {
+                shuffleDeck(self.cards)
+                removePCS(self)
+              }
             }
           }
         }

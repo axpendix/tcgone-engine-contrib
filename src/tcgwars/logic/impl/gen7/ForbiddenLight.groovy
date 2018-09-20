@@ -2546,9 +2546,7 @@ public enum ForbiddenLight implements CardInfo {
 				playRequirement{
 					assert bg.turnCount
 					assert my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1: "No Pokémon has been Knocked Out during your opponent’s last turn"
-					if(my.lastKnockoutTypes){
-						assert my.lastKnockoutTypes.contains(Y) : "The Pokémon Knocked Out was not Fairy"
-					}
+					assert my.knockoutTypesPerTurn.get(bg.turnCount - 1)?.contains(Y) : "The Pokémon Knocked Out was not Fairy"
 				}
 			};
 			case ENEPORTER_106:
