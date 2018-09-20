@@ -2389,12 +2389,10 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					text "As long as this Pokémon is your Active Pokémon, your turn does not end when you play Steven's Resolve."
 					delayedA {
 						before PLAY_TRAINER, {
-							if(self.active){
-					      bg.em().storeObject("Extend_"+self.owner, 1)
-					    }
-					    else {
-					      bg.em().storeObject("Extend_"+self.owner, null)
-					    }
+							bg.em().storeObject("Extend_"+self.owner, self.active ? 1 : null)
+						}
+						unregister {
+							bg.em().storeObject("Extend_"+self.owner, null)
 						}
 					}
 				}

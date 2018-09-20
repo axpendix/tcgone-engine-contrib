@@ -402,7 +402,7 @@ public enum ShiningLegends implements CardInfo {
 						energyCost C, C
 						onAttack {
 							damage 30
-							increasedBaseDamageNextTurn("High-Pressure Heat", hp(20))
+							increasedBaseDamageNextTurn("High-Pressure Heat", hp(50))
 						}
 					}
 					move "Flamethrower", {
@@ -1086,8 +1086,8 @@ public enum ShiningLegends implements CardInfo {
 						onActivate {r->
 							if(r == PLAY_FROM_HAND && confirm("Use Let Loose?")) {
 								powerUsed()
-								my.hand.moveTo(my.deck)
-								opp.hand.moveTo(opp.deck)
+								my.hand.moveTo(hidden: true, my.deck)
+								opp.hand.moveTo(hidden: true, opp.deck)
 								shuffleDeck()
 								shuffleDeck(null, TargetPlayer.OPPONENT)
 								draw 4

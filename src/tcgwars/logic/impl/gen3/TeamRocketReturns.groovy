@@ -2432,7 +2432,7 @@ public enum TeamRocketReturns implements CardInfo {
 					shuffleDeck()
 					shuffleDeck(null,TargetPlayer.OPPONENT)
 					draw choose(0..my.prizeCardSet.size(),"How many cards would you like to draw?")
-					draw(choose(0..opp.prizeCardSet.size(),"How many cards would you like to draw?"),TargetPlayer.OPPONENT)
+					draw(oppChoose(0..opp.prizeCardSet.size(),"How many cards would you like to draw?"),TargetPlayer.OPPONENT)
 				}
 				playRequirement{
 				}

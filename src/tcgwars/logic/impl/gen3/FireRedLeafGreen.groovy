@@ -2220,7 +2220,7 @@ public enum FireRedLeafGreen implements CardInfo {
 			return supporter (this) {
 				text "Search your deck for a Basic Pokémon or Evolution card (excluding Pokémon-ex), show it to your opponent, and put it into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
-					my.deck.search(count: 1,"Search your deck for a Basic Pokémon or Evolution card",{(it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)) && !(it.cardTypes.is(POKEMON_EX))}).showToOpponent("Selected card").moveTo(my.hand)
+					my.deck.search(count: 1,"Search your deck for a Basic Pokémon or Evolution card",{(it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)) && !(it.cardTypes.is(EX))}).showToOpponent("Selected card").moveTo(my.hand)
 					shuffleDeck()
 				}
 				playRequirement{
