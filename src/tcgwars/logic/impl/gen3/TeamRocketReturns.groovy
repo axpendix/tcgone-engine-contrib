@@ -121,7 +121,7 @@ public enum TeamRocketReturns implements CardInfo {
 	COPYCAT_83 ("Copycat", 83, Rarity.UNCOMMON, [TRAINER]),
 	POKEMON_RETRIEVER_84 ("Pokémon Retriever", 84, Rarity.UNCOMMON, [TRAINER]),
 	POW__HAND_EXTENSION_85 ("Pow! Hand Extension", 85, Rarity.UNCOMMON, [TRAINER]),
-	ROCKET_S_ADMIN__86 ("Rocket's Admin.", 86, Rarity.UNCOMMON, [TRAINER]),
+	ROCKET_S_ADMIN__86 ("Rocket's Admin.", 86, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
 	ROCKET_S_HIDEOUT_87 ("Rocket's Hideout", 87, Rarity.UNCOMMON, [TRAINER]),
 	ROCKET_S_MISSION_88 ("Rocket's Mission", 88, Rarity.UNCOMMON, [TRAINER]),
 	ROCKET_S_POKE_BALL_89 ("Rocket's Poké Ball", 89, Rarity.UNCOMMON, [TRAINER]),
@@ -680,7 +680,7 @@ public enum TeamRocketReturns implements CardInfo {
 
 			};
 			case DARK_MUK_16:
-			return evolution (this, from:"Grimer", hp:HP080, type:[DARKNESS, GRASS], retreatCost:1) {
+			return evolution (this, from:"Grimer", hp:HP070, type:[DARKNESS, GRASS], retreatCost:1) {
 				weakness PSYCHIC
 				pokeBody "Sticky Goo", {
 					text "As long as Dark Muk is your Active Pokémon, your opponent pays [C][C] more to retreat his or her Active Pokémon."
@@ -2552,14 +2552,14 @@ public enum TeamRocketReturns implements CardInfo {
 				}
 			};
 			case R_ENERGY_95:
-			return specialEnergy (this, [[D],[D]]) {
+			return specialEnergy (this, [[C]]) {
 				text "R Energy can be attached only to a Pokémon that have Dark or Rocket’s in its name. While in play, R Energy provides 2 [D] Energy. (Doesn’t count as a basic Energy card.) If the Pokémon R Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). When your turn ends, discard R Energy."
 				def eff
 				def check = {
-								if(!(it.name.contains("Dark") || it.name.contains("Rocket"))){discard thisCard}
+					if(!(it.name.contains("Dark") || it.name.contains("Rocket"))){discard thisCard}
 				}
 				onPlay {reason->
-          eff = delayed {
+					eff = delayed {
 						before APPLY_ATTACK_DAMAGES, {
 							bg.dm().each {
 								if(it.from == self && it.notNoEffect && it.dmg.value){
@@ -2568,21 +2568,24 @@ public enum TeamRocketReturns implements CardInfo {
 								}
 							}
 						}
-            after BETWEEN_TURNS, {
-              discard thisCard
-              unregister()
-            }
-            after EVOLVE, {check(self)} //some pokemon evolve into different type
-          }
-        }
-        onRemoveFromPlay {
-          eff.unregister()
-        }
-        onMove {to->
-          check(to)
-        }
+						after BETWEEN_TURNS, {
+							discard thisCard
+							unregister()
+						}
+						after EVOLVE, {check(self)} //some pokemon evolve into different type
+					}
+				}
+				onRemoveFromPlay {
+					eff.unregister()
+				}
+				onMove {to->
+					check(to)
+				}
 				allowAttach {to->
 					to.name.contains("Dark") || to.name.contains("Rocket")
+				}
+				getEnergyTypesOverride {
+					self ? [[D] as Set, [D] as Set] : [[C] as Set]
 				}
 			};
 			case ROCKET_S_ARTICUNO_EX_96:

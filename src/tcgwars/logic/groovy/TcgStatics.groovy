@@ -576,7 +576,7 @@ class TcgStatics {
 		new CantAttackNextTurn(target).run(bg())
 	}
 	static whirlwind(){
-		new Whirlwind().run(bg())
+		new Whirlwind(bg.oppActive()).run(bg())
 	}
 	static extraEnergyDamage (int max=2, HP perExtra, Type type, Move thisMove){
 		new ExtraEnergyDamage(max, perExtra, thisMove.energyCost.toArray() as Type[], type).run(bg())
