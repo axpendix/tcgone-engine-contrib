@@ -745,10 +745,10 @@ public enum BurningShadows implements CardInfo {
 					}
 				}
 				move "Searing Flame", {
-					text "50 damage. Your opponent's Active Pokémon is now Burned."
+					text "60 damage. Your opponent's Active Pokémon is now Burned."
 					energyCost R, C, C
 					onAttack {
-						damage 50
+						damage 60
             applyAfterDamage BURNED
 					}
 				}

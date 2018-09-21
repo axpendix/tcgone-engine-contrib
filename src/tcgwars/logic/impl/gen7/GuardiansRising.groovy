@@ -3023,13 +3023,13 @@ public enum GuardiansRising implements CardInfo {
 				onPlay {
 					def i = 2
 					while(i-- > 0){
-						if (bg.stadiumInfoStruct && confirm("Would you like to discard in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokemon Tool in play")) {
+						if (bg.stadiumInfoStruct && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokemon Tool in play")) {
 							discard bg.stadiumInfoStruct.stadiumCard
 							continue
 						}
 						def tar = all.findAll {it.cards.hasType(POKEMON_TOOL)}
 						if(tar) {
-							def sel = tar.select("Select Pokemon to discard a Pokemon Tool from (cancel to stop)", false)
+							def sel = tar.select("Select Pokemon to discard a Pokemon Tool from (cancel to stop)", i == 1)
 							if(sel){
 								def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokemon Tool from $sel")
 								targeted (sel, TRAINER_CARD) {
@@ -3040,6 +3040,7 @@ public enum GuardiansRising implements CardInfo {
 					}
 				}
 				playRequirement{
+					assert all.findAll {it.cards.hasType(POKEMON_TOOL)} || bg.stadiumInfoStruct
 				}
 			};
 			case HALA_126:

@@ -3252,25 +3252,25 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 			return supporter(this) {
 				text "Choose 1:\nShuffle your hand into your deck. Then, draw 5 cards.\nSwitch your Active Pokémon with 1 of your Benched Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
 				onPlay {
+					def a1 = {
+						my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
+						shuffleDeck()
+						draw 5
+					}
+					def a2 = {
+						sw my.active, my.bench.select("New active")
+					}
 				  if(!my.bench){
-				    my.hand.getExcludedList(thisCard).moveTo(my.deck)
-				    shuffleDeck()
-				    draw 5
+						a1()
 				  }
 				  else if(!my.deck.notEmpty && (my.hand.size() <= 1)){
-				    sw my.active, my.bench.select("New active")
+				    a2()
 				  }
 				  else{
 				    def cl=[1,2]
 				    def c=choose(cl,["Shuffle your hand into your deck. Then, draw 5 cards.", "Switch your Active Pokémon with 1 of your Benched Pokémon."], "What do you want to do?")
-				    if(c==1){
-				      my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
-				      shuffleDeck()
-				      draw 5
-				    }
-				    else {
-				      sw my.active, my.bench.select("New active")
-				    }
+				    if(c==1) a1()
+						if(c==2) a2()
 				  }
 				}
 				playRequirement{
