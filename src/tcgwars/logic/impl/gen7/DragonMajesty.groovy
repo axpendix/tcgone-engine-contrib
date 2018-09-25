@@ -1423,16 +1423,10 @@ public enum DragonMajesty implements CardInfo {
 			case WELA_VOLCANO_PARK_63:
 			return stadium(this) {
 				text "Whenever a player flips a coin for the Special Condition Burned between turns, that Special Condition isn't removed even if the result is heads.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\n"
-				def eff
+				// Impl hardcoded in Burned
 				onPlay {
-					eff = delayed {
-						before BURNED_SPC, null, null, COIN_FLIP_BETWEEN_EXECUTION, {
-						prevent()
-						}
-					}
 				}
 				onRemoveFromPlay{
-					eff.unregister()
 				}
 			};
 			case ZINNIA_64:
