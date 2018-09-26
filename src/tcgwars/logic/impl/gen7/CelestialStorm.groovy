@@ -2683,7 +2683,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost C,C
 					onAttack {
 					  my.all.each{
-					    if(it.types.contains(N) && it.evolution) damage 50
+					    if(it.types.contains(N) && it.topPokemonCard.cardTypes.is(EVOLUTION)) damage 50
 					  }
 					}
 				}
