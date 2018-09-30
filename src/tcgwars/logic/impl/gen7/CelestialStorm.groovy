@@ -901,18 +901,19 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				weakness METAL
 				bwAbility "Legendary Ascent" , {
 					text "When you play this Pokémon from your hand onto your Bench during your turn, you may switch it with your Active Pokémon. If you do, move any number of [W] Energy from your other Pokémon to this Pokémon."
-					actionA {
-					  if(self.lastEvolved == bg.turnCount){
-					    if(confirm("Switch your active with Articuno ex"))
-					    {
-					      def energyCnt = my.active.cards.filterByEnergyType(W).size()
-					      def energyMove = choose(0..energyCnt,"Choose the number of energy to move")
-					      for(int i=0;i<energyMove;i++){
-					        moveEnergy(type: W, my.active, self)
-					      }
-					      sw my.active, self
-					    }
-					  }
+					onActivate {reason ->
+						if(reason == PLAY_FROM_HAND && self.benched && confirm("Use Legendary Ascent to switch your active with $self ?")){
+							powerUsed()
+							sw my.active, self
+							while(1){
+								def pl=(my.all.findAll {it.cards.filterByEnergyType(W) && it!=self})
+								if(!pl) break;
+								def src=pl.select("Source for [W] energy (cancel to stop moving)", false)
+								if(!src) break;
+								def card=src.cards.filterByEnergyType(W).select("Card to move").first()
+								energySwitch(src, self, card)
+							}
+						}
 					}
 				}
 				move "Ice Wing" , {
@@ -2667,11 +2668,13 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost C
 					onAttack {
 					  damage 30
-					  my.bench.each{
-					    if(it.types.contains(N)){
-					      attachEnergyFrom(may:true,basic:true,my.discard,it)
-					    }
-					  }
+						afterDamage{
+							my.bench.each{
+								if(it.types.contains(N) && it.basic){
+									attachEnergyFrom(may:true,basic:true,my.discard,it)
+								}
+							}
+						}
 					}
 				}
 			};

@@ -360,7 +360,7 @@ public enum DragonMajesty implements CardInfo {
 			};
 			case RESHIRAM_GX_11:
 			return basic (this, hp:HP180, type:FIRE, retreatCost:2) {
-				weakness METAL
+				weakness WATER
 				move "Flame Charge" , {
 					text "Search your deck for up to 2 [R] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
 					energyCost C
@@ -944,9 +944,9 @@ public enum DragonMajesty implements CardInfo {
 				bwAbility "Fight Song" , {
 					text "Your [N] Pokémon's attacks do 20 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
 					delayedA{
-						before APPLY_ATTACK_DAMAGES, {
+						after PROCESS_ATTACK_EFFECTS, {
 							bg.dm().each {
-								if(it.from.owner == self.owner && it.dmg.value && it.notNoEffect && it.from.types.contains(N)) {
+								if(it.from.owner == self.owner && it.dmg.value && it.from.types.contains(N)) {
 									bc "Fight Song +20"
 									it.dmg += hp(20)
 								}
@@ -1364,13 +1364,11 @@ public enum DragonMajesty implements CardInfo {
 				text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the [N] Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack (even if that Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack).\n"
 				def eff
 				onPlay {reason->
-					eff = delayed{
+					eff = delayed (priority: LAST) {
 						before APPLY_ATTACK_DAMAGES, {
-							bg.dm().each{
-								if(self.active && self.types.contains(N) && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-									bc "Dragon Talon activates"
-									directDamage(30, ef.attacker)
-								}
+							if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value}) && self.active && self.types.contains(N)){
+								bc "Dragon Talon activates"
+								directDamage(30, ef.attacker)
 							}
 						}
 					}

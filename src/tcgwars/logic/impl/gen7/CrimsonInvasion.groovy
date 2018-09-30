@@ -2313,7 +2313,7 @@ public enum CrimsonInvasion implements CardInfo {
           eff = delayed {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if((it.from.types.contains(D) || it.from.types.contains(N)) && it.dmg.value && it.notNoEffect && it.from.owner == it.to.owner.opposite && it.to.active){
+                if((it.from.types.contains(D) || it.from.types.contains(N)) && it.dmg.value && it.from.owner == it.to.owner.opposite && it.to.active){
                   bc "Devoured Field +10"
                   it.dmg += hp(10)
                 }

@@ -2612,7 +2612,7 @@ public enum ForbiddenLight implements CardInfo {
 				text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nFor each of your [R] Pokémon in play, put a card from your opponent’s discard pile in the Lost Zone.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
 					my.all.each{
-						if(opp.discard) opp.discard.select("choose a card to send to the lost zone").moveTo(opp.lostZone)
+						if(it.types.contains(R) && opp.discard) opp.discard.select("choose a card to send to the lost zone").moveTo(opp.lostZone)
 					}
 				}
 				playRequirement{

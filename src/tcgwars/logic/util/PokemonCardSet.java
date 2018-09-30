@@ -16,6 +16,8 @@ import tcgwars.logic.groovy.TcgStatics;
 import java.io.Serializable;
 import java.util.*;
 
+import static tcgwars.logic.card.CardType.EVOLUTION;
+
 /**
  * Models an in-game pokemon
  * @author axpendix@hotmail.com
@@ -59,7 +61,16 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 		this.id = UUID.randomUUID().toString();
 //		this.evolutionChain = new HashMap<PokemonCard, PokemonCard>();
 	}
-	
+
+	/**
+	 * literally: evolution
+	 */
+	public boolean isRealEvolution(){
+		return getTopPokemonCard().getTypes().contains(EVOLUTION);
+	}
+	/**
+	 * literally: evolved
+	 */
 	public boolean isEvolution(){
 		return getPokemonCards().size()>1;
 //		return getTopPokemonCard().getCardTypes().is(CardType.EVOLUTION);

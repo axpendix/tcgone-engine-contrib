@@ -168,7 +168,7 @@ public class EvolutionChains {
     //BLW-EPO-NVI-NXD
     ADD(DEINO_77,ZWEILOUS_78,HYDREIGON_103);
     ADD(LITWICK_18,LAMPENT_19,CHANDELURE_101);
-    ADD(NobleVictories.VANILLITE_27,NobleVictories.VANILLISH_28,NobleVictories.VANILLUXE_29);
+    ADD("Vanillite","Vanillish","Vanilluxe");
     ADD(SHINX_42,LUXIO_44,LUXRAY_46);
     ADD(TEPIG_15,PIGNITE_17,EMBOAR_19);
     ADD(SOLOSIS_55,DUOSION_56,REUNICLUS_57);
@@ -179,7 +179,7 @@ public class EvolutionChains {
     ADD(TYNAMO_38,EELEKTRIK_40,EELEKTROSS_41);
     ADD(ROGGENROLA_49,BOLDORE_51,GIGALITH_53);
     ADD(GOTHITA_43,GOTHORITA_45,GOTHITELLE_47);
-    ADD(BlackWhite.KLINK_74,BlackWhite.KLANG_75,BlackWhite.KLINKLANG_76);
+    ADD("Klink","Klang","Klinklang");
     ADD(VENIPEDE_38,WHIRLIPEDE_39,SCOLIPEDE_40);
     ADD(PIDOVE_80,TRANQUILL_81,UNFEZANT_82);
     ADD(SANDILE_60,KROKOROK_61,KROOKODILE_62);
@@ -243,7 +243,9 @@ public class EvolutionChains {
     ADD("Unidentified Fossil", "Tyrunt", "Tyrantrum");
     ADD("Seedot", "Nuzleaf", "Shiftry-GX");
     ADD("Torchic", "Combusken", "Blaziken-GX");
-
+    ADD("Dratini", "Dragonair", "Dragonite-GX");
+    ADD("Bagon", "Shelgon", "Salamence-GX");
+    ADD("Horsea", "Seadra", "Kingdra-GX");
   }
   
   private static void ADD(CardInfo...a){

@@ -122,7 +122,7 @@ public enum TeamRocketReturns implements CardInfo {
 	POKEMON_RETRIEVER_84 ("Pokémon Retriever", 84, Rarity.UNCOMMON, [TRAINER]),
 	POW__HAND_EXTENSION_85 ("Pow! Hand Extension", 85, Rarity.UNCOMMON, [TRAINER]),
 	ROCKET_S_ADMIN__86 ("Rocket's Admin.", 86, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-	ROCKET_S_HIDEOUT_87 ("Rocket's Hideout", 87, Rarity.UNCOMMON, [TRAINER]),
+	ROCKET_S_HIDEOUT_87 ("Rocket's Hideout", 87, Rarity.UNCOMMON, [TRAINER, STADIUM]),
 	ROCKET_S_MISSION_88 ("Rocket's Mission", 88, Rarity.UNCOMMON, [TRAINER]),
 	ROCKET_S_POKE_BALL_89 ("Rocket's Poké Ball", 89, Rarity.UNCOMMON, [TRAINER]),
 	ROCKET_S_TRICKY_GYM_90 ("Rocket's Tricky Gym", 90, Rarity.UNCOMMON, [STADIUM, TRAINER]),
@@ -644,6 +644,7 @@ public enum TeamRocketReturns implements CardInfo {
 			case DARK_DRAGONITE_15:
 			return evolution (this, from:"Dark Dragonair", hp:HP120, type:DARKNESS, retreatCost:2) {
 				weakness COLORLESS
+				resistance GRASS
 				resistance FIGHTING
 				pokePower "Dark Trance", {
 					text "As often as you like during your turn (before your attack), you may move a [D] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Dark Dragonite is affected by a Special Condition."

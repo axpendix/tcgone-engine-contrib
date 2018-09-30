@@ -2715,16 +2715,17 @@ public enum FireRedLeafGreen implements CardInfo {
 				weakness METAL
 				pokePower "Legendary Ascent", {
 					text "Once during your turn, when you put Articuno ex from your hand onto your Bench, you may switch 1 of your Active Pokémon with Articuno ex. If you do, you may also move any number of basic [W] Energy cards attached to your Pokémon to Articuno ex."
-					actionA {
-						if(self.lastEvolved == bg.turnCount){
-							if(confirm("Switch your active with Articuno ex"))
-							{
-								def energyCnt = my.active.cards.filterByEnergyType(W).size()
-								def energyMove = choose(0..energyCnt,"Choose the number of energy to move")
-								for(int i=0;i<energyMove;i++){
-									moveEnergy(type: W, my.active, self)
-								}
-								sw my.active, self
+					onActivate {reason ->
+						if(reason == PLAY_FROM_HAND && self.benched && confirm("Use Legendary Ascent to switch your active with $self ?")){
+							powerUsed()
+							sw my.active, self
+							while(1){
+								def pl=(my.all.findAll {it.cards.filterByEnergyType(W) && it!=self})
+								if(!pl) break;
+								def src=pl.select("Source for [W] energy (cancel to stop moving)", false)
+								if(!src) break;
+								def card=src.cards.filterByEnergyType(W).select("Card to move").first()
+								energySwitch(src, self, card)
 							}
 						}
 					}
