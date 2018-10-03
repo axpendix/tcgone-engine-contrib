@@ -95,7 +95,7 @@ public enum SunMoonPromos implements CardInfo {
 	SHINING_LUGIA_SM82 ("Shining Lugia", 82, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
 	PIKACHU_SM98 ("Pikachu", 98, Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
 	MIMIKYU_SM99 ("Mimikyu", 99, Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]);
-
+    DAWN_WINGS_NECROZMA_SM106 ("Dawn Wings Necrozma", 106, Rarity.PROMO, [BASIC, POKEMON, ULTRA_BEAST, _PSYCHIC_]);
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
 	protected CardTypeSet cardTypes;
@@ -954,9 +954,30 @@ public enum SunMoonPromos implements CardInfo {
 
 				};
 			case PIKACHU_SM98:
-        return copy (BurningShadows.PIKACHU_40, this);
+                return copy (BurningShadows.PIKACHU_40, this);
 			case MIMIKYU_SM99:
 				return copy (GuardiansRising.MIMIKYU_58, this);
+			case DAWN_WINGS_NECROZMA_SM106:
+			return basic (this, hp:HP130, type:PSYCHIC, retreatCost:2) {
+				weakness DARKNESS
+				resistance FIGHTING, MINUS20
+				move "Gulf Stream", {
+					text "20+ damage. If you have exactly 6 Prize cards remaining, this attack does 20 more damage for each damage counter on this Pokémon."
+					energyCost P
+					onAttack {
+						damage 20
+						if(my.prizeCardSet.size() == 6) damage 20*self.numberOfDamageCounters
+					}
+				}
+				move "Sword of Dawn", {
+					text "130 damage. Discard 2 Energy from this Pokémon."
+					energyCost P, P, P
+					onAttack {
+						damage 130
+						discardSelfEnergy(C, C)
+					}
+				}
+
 			default:
 				return null;
 		}
