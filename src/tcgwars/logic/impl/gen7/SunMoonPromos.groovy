@@ -96,6 +96,7 @@ public enum SunMoonPromos implements CardInfo {
 	PIKACHU_SM98 ("Pikachu", 98, Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
 	MIMIKYU_SM99 ("Mimikyu", 99, Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]);
     DAWN_WINGS_NECROZMA_SM106 ("Dawn Wings Necrozma", 106, Rarity.PROMO, [BASIC, POKEMON, ULTRA_BEAST, _PSYCHIC_]);
+    DUSK_MANE_NECROZMA_SM107 ("Dusk Mane Necrozma", 107, Rarity.PROMO, [BASIC, POKEMON, ULTRA_BEAST, _METAL_]);
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
 	protected CardTypeSet cardTypes;
@@ -976,8 +977,28 @@ public enum SunMoonPromos implements CardInfo {
 						damage 130
 						discardSelfEnergy(C, C)
 					}
+				};
+            case DUSK_MANE_NECROZMA_SM107:
+			return basic (this, hp:HP130, type:METAL, retreatCost:2) {
+				weakness FIRE
+				resistance PSYCHIC, MINUS20
+				move "Dusk Shot", {
+					text "This attack does 60 damage to 1 of your opponent’s Pokémon-GX or Pokémon-EX. This damage isn’t affected by Weakness or Resistance."
+					energyCost P
+					onAttack {
+						 damage 60, opp.all.select{
+					    if(it.pokemonEX || it.pokemonGX) damage 60, it
+					  }
+					}
 				}
-
+				move "Rusty Claws", {
+					text "100+ damage. If your opponent has exactly 1 Prize card remaining, this attack does 100 more damage."
+					energyCost M, M, C
+					onAttack {
+						damage 100
+						if(opp.prizeCardSet.size() == 1) damage 100
+					}
+				}:
 			default:
 				return null;
 		}
