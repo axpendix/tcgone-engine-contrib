@@ -986,7 +986,7 @@ public enum SunMoonPromos implements CardInfo {
 					resistance PSYCHIC, MINUS20
 					move "Dusk Shot", {
 						text "This attack does 60 damage to 1 of your opponent’s Pokémon-GX or Pokémon-EX. This damage isn’t affected by Weakness or Resistance."
-						energyCost P
+						energyCost M
 						attackRequirement {
 							assert opp.all.findAll { it.pokemonEX || it.pokemonGX }
 						}

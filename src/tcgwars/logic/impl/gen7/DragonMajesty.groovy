@@ -889,12 +889,12 @@ public enum DragonMajesty implements CardInfo {
 					energyCost C,C,C
 					attackRequirement{
 						gxCheck()
-						assert my.discard.findAll{it.types.contains(N)}
+						assert my.discard.findAll{it.cardTypes.pokemon && it.asPokemonCard().types.contains(N)}
 						assert my.bench.notFull
 					}
 					onAttack{
 						def maxSpace = Math.min(my.bench.freeBenchCount,3)
-						my.discard.findAll{it.types.contains(N)}.select(max:maxSpace,"Select $maxSpace [N] Pokémon to put onto your Bench").each{
+						my.discard.findAll{it.cardTypes.pokemon && it.asPokemonCard().types.contains(N)}.select(max:maxSpace,"Select $maxSpace [N] Pokémon to put onto your Bench").each{
 	            my.discard.remove(it);
 							benchPCS(it)
 						}

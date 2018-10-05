@@ -1866,7 +1866,7 @@ public enum ForbiddenLight implements CardInfo {
 					text "20+ damage. This attack does 20 more damage for each of your opponent’s Benched Pokémon."
 					energyCost F, C
 					onAttack {
-						damage 20 + 20*my.bench.size()
+						damage 20 + 20*opp.bench.size()
 					}
 				}
 				move "Accelerock", {
