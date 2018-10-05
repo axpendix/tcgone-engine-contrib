@@ -783,7 +783,7 @@ public enum DragonMajesty implements CardInfo {
 						  }
 						}
 						effect2 = delayed{
-							before APPLY_ATTACK_DAMAGES, {
+							after PROCESS_ATTACK_EFFECTS, {
 								bg.dm().each {
 									if(it.from.name == "Wishiwashi-GX" && it.from.owner == self.owner && it.dmg.value && it.notNoEffect) {
 										bc "Meet Up +20"
