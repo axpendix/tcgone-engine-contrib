@@ -1431,7 +1431,7 @@ public enum SunMoon implements CardInfo {
 						energyCost C, C, C
 						onAttack {
 							damage 60
-							if(self.lastSwitchedOut==bg.turnCount) damage 60
+							if(wasSwitchedOutThisTurn(self)) damage 60
 						}
 					}
 

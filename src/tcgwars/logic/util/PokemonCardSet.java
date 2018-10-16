@@ -47,6 +47,8 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 	public int lastEvolved = Battleground.getInstance().getTurnCount();
 	//turn last made active (switched out)
 	public int lastSwitchedOut = -1;
+	//the pokemon name during the last switch out
+	public String lastSwitchedOutName = "";
 	//equals to bg.tc if is slated to knockout by damage of an attack
 	public int KOBYDMG = 0;
 	//last abilities map

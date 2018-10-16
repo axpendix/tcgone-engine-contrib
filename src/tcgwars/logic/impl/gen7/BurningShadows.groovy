@@ -567,7 +567,7 @@ public enum BurningShadows implements CardInfo {
 					energyCost G
 					onAttack {
 						damage 30
-            if(self.lastSwitchedOut == bg.turnCount)
+            if(wasSwitchedOutThisTurn(self))
 							damage 90
 					}
 				}

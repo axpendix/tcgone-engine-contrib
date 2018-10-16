@@ -1132,5 +1132,8 @@ class TcgStatics {
 			else bc "Rearranged top $count cards of opponent's (${opp.owner.getPlayerUsername(bg)}) deck."
 		}
 	}
+	static boolean wasSwitchedOutThisTurn(PokemonCardSet self){
+		self.lastSwitchedOut == bg.turnCount && self.lastSwitchedOutName == self.name
+	}
 
 }
