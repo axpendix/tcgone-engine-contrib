@@ -3208,7 +3208,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				    before null, null, Source.ATTACK, {
 				      if (ef.effectType != DAMAGE){
 								def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-								if(pcs != null && pcs.benched && pcs.owner == self.owner){
+								if(pcs != null && pcs.benched && pcs.owner != bg.currentTurn){
 				        	bc "Sky Pillars prevents effect to Benched Pokémon"
 				        	prevent()
 								}
@@ -3216,16 +3216,10 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				    }
 				    before APPLY_ATTACK_DAMAGES, {
 				      bg.dm().each {
-				        if(!it.to.active){
+				        if(it.notNoEffect && it.to.benched && it.to.owner != bg.currentTurn && it.dmg.value){
 				          it.dmg = hp(0)
-				          bc "Sky Pillars prevents damage to Benched Pokémon"
+				          bc "Sky Pillars prevents damage to ${it.to}"
 				        }
-				      }
-				    }
-				    after ENERGY_SWITCH, {
-				      def efs = (ef as EnergySwitch)
-				      if(!efs.to.active){
-				        discard efs.card
 				      }
 				    }
 				  }

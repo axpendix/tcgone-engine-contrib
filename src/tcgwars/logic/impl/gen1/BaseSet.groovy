@@ -1852,12 +1852,29 @@ public enum BaseSet implements CardInfo {
 				}
 			};
 			case DEVOLUTION_SPRAY:
-				return copy(FatesCollide.DEVOlUTION_SPRAY_95, this);
+				return basicTrainer (this) {
+					text "Choose 1 of your own Pokémon in play and a Stage of Evolution. Discard all Evolution cards of that Stage or higher attached to that Pokémon. That Pokémon is no longer Asleep, Confused, Paralyzed, Poisoned, or anything else that might be the result of an attack (just as if you had evolved it)."
+					onPlay {
+						def pcs = my.all.findAll{it.evolution}.select("Pokemon to devolve")
+						def pkmn = []
+						pkmn.addAll(pcs.pokemonCards)
+						pkmn.remove(pcs.topPokemonCard)
+						def stage = pkmn.size()>1 ? pkmn.select("Choose stage to devolve to").first() : pkmn.first()
+						for(PokemonCard t7:pcs.pokemonCards){
+							if (t7 == stage) break
+							discard(t7)
+							devolve(pcs, t7)
+						}
+					}
+					playRequirement{
+						assert my.all.findAll{it.evolution} : "You have no evolved pokemon in play"
+					}
+				};
 			case IMPOSTOR_PROFESSOR_OAK:
 			return basicTrainer (this) {
 				text "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards."
 				onPlay {
-					opp.hand.moveTo(opp.deck)
+					opp.hand.moveTo(hidden:true, opp.deck)
 					shuffleDeck(null, TargetPlayer.OPPONENT)
 					draw 7, TargetPlayer.OPPONENT
 				}
@@ -1870,13 +1887,12 @@ public enum BaseSet implements CardInfo {
 				text "Discard 2 of the other cards from your hand in order to put a Trainer card from your discard pile into your hand."
 				onPlay {
 					def selection = my.hand.getExcludedList(thisCard).select(count: 2, "Discard")
-					my.discard.select(count:1).moveTo(my.hand)
+					my.discard.filterByType(TRAINER).select().moveTo(my.hand)
 					selection.discard()
-					shuffleDeck()
 				}
 				playRequirement{
 					assert my.hand.getExcludedList(thisCard).size() >= 2
-					assert my.discard
+					assert my.discard.hasType(TRAINER)
 				}
 			};
 			case LASS:
@@ -1884,9 +1900,11 @@ public enum BaseSet implements CardInfo {
 				text "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks."
 				onPlay {
 					opp.hand.showToMe("Opponent's hand")
-					my.hand.showtoOpponent("Opponent's hand")
-					def tarOpp = opp.hand.findAll {it.cardTypes.is(TRAINER)} //Is this a card list?
-					def tarMy = my.hand.findAll {it.cardTypes.is(TRAINER)}
+					my.hand.showToOpponent("Opponent's hand")
+					def tarOpp = opp.hand.filterByType(TRAINER)
+					def tarMy = my.hand.filterByType(TRAINER)
+					opp.hand.removeAll(tarOpp)
+					my.hand.removeAll(tarMy)
 					shuffleDeck(tarOpp, TargetPlayer.OPPONENT)
 					shuffleDeck(tarMy)
 				}
@@ -1897,8 +1915,20 @@ public enum BaseSet implements CardInfo {
 			return basicTrainer (this) {
 				text "Put a Stage 2 Evolution card from your hand on the matching Basic Pokémon. You can only play this card when you would be allowed to evolve that Pokémon anyway."
 				onPlay {
+					def stage2 = my.hand.filterByType(STAGE2).findAll{
+						def basic_name = EvolutionChains.getBasicsFromStage2(it.name)
+						my.all.find{basic_name == it.name}
+					}.select().first()
+					def basic_name = EvolutionChains.getBasicsFromStage2(stage2.name)
+					def basic = my.all.findAll{basic_name == it.name}.select("To Evolve?")
+					evolve(basic, stage2)
+
 				}
 				playRequirement{
+					assert my.hand.filterByType(STAGE2) : "No Stage 2 in hand"
+					def basic_names = my.hand.filterByType(STAGE2).collect{EvolutionChains.getBasicsFromStage2(it.name)}
+					def basics = my.all.findAll{basic_names.contains(it.name)}
+					assert basics : "No matching basic pokemon found"
 				}
 			};
 			case POKEMON_TRADER:
@@ -1957,13 +1987,41 @@ public enum BaseSet implements CardInfo {
 				}
 			};
 			case ENERGY_RETRIEVAL:
-			return basicTrainer (this) {
-				return copy(BlackWhite.ENERGY_RETRIEVAL_92, this)
-			};
+				return basicTrainer (this) {
+					text "Trade 1 of the other cards in your hand for up to 2 basic Energy cards from your discard pile."
+					onPlay {
+						def list = my.hand.getExcludedList(thisCard).select("Discard")
+						my.discard.filterByType(BASIC_ENERGY).select(max:2).moveTo(my.hand)
+						list.discard()
+					}
+					playRequirement{
+						assert my.discard.hasType(BASIC_ENERGY) : "No Basic Energy in Discard"
+						assert my.hand.getExcludedList(thisCard).size() >= 1
+					}
+				};
 			case FULL_HEAL:
-				return copy(BlackWhite.FULL_HEAL_95, this)
+				return basicTrainer (this) {
+					text "Your Active Pokémon is no longer Asleep, Confused, Paralyzed, or Poisoned."
+					onPlay {
+						clearSpecialCondition(my.active, TRAINER_CARD)
+					}
+					playRequirement{
+						assert !my.active.specialConditions.isEmpty()
+					}
+				}
 			case MAINTENANCE:
-				return copy(FuriousFists.MAINTENANCE_96, this)
+				return basicTrainer (this) {
+					text "Shuffle 2 of the other cards from your hand into your deck in order to draw a card."
+					onPlay {
+						def list = hand.getExcludedList(thisCard).select(count:2, "Shuffle to deck")
+						hand.removeAll(list)
+						shuffleDeck(list)
+						draw 1
+					}
+					playRequirement{
+						assert hand.getExcludedList(thisCard).size() >= 2
+					}
+				}
 			case PLUSPOWER:
 			return basicTrainer (this) { //TODO
 				text "Attach PlusPower to your Active Pokémon. At the end of your turn, discard PlusPower. If this Pokémon’s attack does damage to the Defending Pokémon (after applying Weakness and Resistance), the attack does 10 more damage to the Defending Pokémon."
@@ -1977,12 +2035,10 @@ public enum BaseSet implements CardInfo {
 				text "Remove all damage counters from all of your own Pokémon with damage counters on them, then discard all Energy cards attached to those Pokémon."
 				onPlay {
 					def tar = my.all.findAll {it.numberOfDamageCounters}
-					if(tar) {
-						tar.each{
-							targeted (it, TRAINER_CARD) {
-								heal it.damage.value, it
-								it.cards.filterByType(ENERGY).each{it.discard()}
-							}
+					tar.each {pcs->
+						targeted (pcs, TRAINER_CARD) {
+							healAll pcs, TRAINER_CARD
+							pcs.cards.filterByType(ENERGY).discard()
 						}
 					}
 				}
@@ -1994,14 +2050,14 @@ public enum BaseSet implements CardInfo {
 			return basicTrainer (this) {
 				text "Choose 1 Basic Pokémon card from your opponent’s discard pile and put it onto his or her Bench. (You can’t play Pokémon Flute if your opponent’s Bench is full.)"
 				onPlay {
-					def tar = TargetPlayer.OPPONENT
-					tar.discard.findAll(cardTypeFilter(BASIC)).select().each {
-						tar.pbg.discard.remove(it)
-						def pcs = benchPCS(it, OTHER, tar)
+					opp.discard.findAll(cardTypeFilter(BASIC)).select().each {
+						opp.discard.remove(it)
+						benchPCS(it, OTHER, TargetPlayer.OPPONENT)
 					}
 				}
 				playRequirement{
-					assert opp.discard.find(cardTypeFilter(BASIC)) && opp.bench.notFull
+					assert opp.discard.find(cardTypeFilter(BASIC)) : "No basic in opponent's discard"
+					assert opp.bench.notFull : "Opponent bench is full"
 				}
 			};
 			case POKEDEX:
