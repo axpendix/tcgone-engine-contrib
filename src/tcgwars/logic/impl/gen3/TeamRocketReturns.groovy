@@ -118,7 +118,7 @@ public enum TeamRocketReturns implements CardInfo {
 	VOLTORB_80 ("Voltorb", 80, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
 	WOOPER_81 ("Wooper", 81, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
 	ZUBAT_82 ("Zubat", 82, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-	COPYCAT_83 ("Copycat", 83, Rarity.UNCOMMON, [TRAINER]),
+	COPYCAT_83 ("Copycat", 83, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
 	POKEMON_RETRIEVER_84 ("Pokémon Retriever", 84, Rarity.UNCOMMON, [TRAINER]),
 	POW__HAND_EXTENSION_85 ("Pow! Hand Extension", 85, Rarity.UNCOMMON, [TRAINER]),
 	ROCKET_S_ADMIN__86 ("Rocket's Admin.", 86, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),

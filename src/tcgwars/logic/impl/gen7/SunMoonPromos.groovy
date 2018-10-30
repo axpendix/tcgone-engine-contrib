@@ -387,7 +387,7 @@ public enum SunMoonPromos implements CardInfo {
 
 				};
 			case ORANGURU_SM13:
-				return basic (this, hp:HP120, type:COLORLESS, retreatCost:1) {
+				return basic (this, hp:HP120, type:COLORLESS, retreatCost:2) {
 					weakness FIGHTING
 					bwAbility "Instruct", {
 						text "Once during your turn (before your attack), you may draw cards until you have 3 cards in your hand."
