@@ -334,22 +334,43 @@ public enum ForbiddenLight implements CardInfo {
 				move "Gentle Slap" , {
 					text "20 damage."
 					energyCost C,C
+					onAttack{
+						damage 20
+					}
 				}
 				move "Bind" , {
 					text "40 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 					energyCost G,C,C
+					onAttack{
+						damage 40
+						flipThenApplySC PARALYZED
+					}
 				}
 			};
 			case TANGROWTH_2:
 			return 	evolution (this, from:"Tangela", hp:HP140, type:GRASS, retreatCost:3) {
 				weakness FIRE
+				customAbility {
+					delayedA {
+						before REMOVE_DAMAGE_COUNTER, self, {
+							bg.em().storeObject("Hefty_Whip", bg.turnCount)
+						}
+					}
+				}
 				move "Hefty Whip" , {
-					text "30+ damage. If this Pokémon was healed during this turn, this attack does 130 more damage.\n"
+					text "30+ damage. If this Pokémon was healed during this turn, this attack does 130 more damage."
 					energyCost G,C,C
+					onAttack {
+						damage 30
+						if(bg.em().retrieveObject("Hefty_Whip") == bg.turnCount) damage 130
+					}
 				}
 				move "Whip Smash" , {
 					text "110 damage."
 					energyCost G,G,C,C
+					onAttack{
+						damage 110
+					}
 				}
 			};
 			case SCYTHER_3:
@@ -358,6 +379,10 @@ public enum ForbiddenLight implements CardInfo {
 				move "Fury Cutter" , {
 					text "10+ damage. Flip 3 coins. If 1 of them is heads, this attack does 20 more damage. If 2 of them are heads, this attack does 50 more damage. If all of them are heads, this attack does 70 more damage."
 					energyCost C,C
+					onAttack{
+						damage 10
+						flip 3,{},{},[1:{damage 20},2:{damage 50},3:{damage 70}]
+					}
 				}
 			};
 			case PINSIR_4:
@@ -366,22 +391,39 @@ public enum ForbiddenLight implements CardInfo {
 				move "Grip and Squeeze" , {
 					text "20 damage. The Defending Pokémon can't retreat during your opponent's next turn.\n"
 					energyCost G
+					onAttack{
+						damage 20
+						cantRetreat(defending)
+					}
 				}
 				move "Hammer In" , {
 					text "70 damage."
 					energyCost C,C,C
+					onAttack{
+						damage 70
+					}
 				}
 			};
 			case CHIKORITA_5:
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Synthesis" , {
-					text "Search your deck for a"
+					text "Search your deck for a [G] energy and attach it to 1 of your Pokémon. Then shuffle your deck."
 					energyCost C
+					attackRequirement {
+						assert deck
+					}
+					onAttack {
+						deck.search (basicEnergyFilter(G)).each {attachEnergy(my.all.select(),it)}
+						shuffleDeck()
+					}
 				}
 				move "Razor Leaf" , {
 					text "20 damage."
 					energyCost G,C
+					onAttack{
+						damage 20
+					}
 				}
 			};
 			case CHIKORITA_6:
@@ -390,18 +432,29 @@ public enum ForbiddenLight implements CardInfo {
 				move "Mini Drain" , {
 					text "10 damage. Heal 10 damage from this Pokémon."
 					energyCost G
+					onAttack{
+						damage 10
+						heal 10, self
+					}
 				}
 			};
 			case BAYLEEF_7:
 			return 	evolution (this, from:"Chikorita", hp:HP100, type:GRASS, retreatCost:2) {
 				weakness FIRE
 				move "Soothing Scent" , {
-					text "20 damage. Your opponent's Active Pokémon is now Asleep.\n"
+					text "20 damage. Your opponent's Active Pokémon is now Asleep."
 					energyCost G
+					onAttack{
+						damage 20
+						applyAfterDamage ASLEEP
+					}
 				}
 				move "Razor Leaf" , {
 					text "50 damage."
 					energyCost G,C,C
+					onAttack{
+						damage 50
+					}
 				}
 			};
 			case MEGANIUM_8:
@@ -409,10 +462,25 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIRE
 				bwAbility "Quick-Ripening Herb" , {
 					text "Once during your turn (before your attack), you may use this Ability. Choose 1 of your Basic Pokémon in play. If you have a Stage 2 card in your hand that evolves from that Pokémon, put that card onto the Basic Pokémon to evolve it. You can use this Ability during your first turn or on a Pokémon that was put into play this turn."
+					actionA{
+						checkLastTurn()
+						assert my.all.filterByType(BASIC)
+						def tar = my.all.filterByType(BASIC).select("Choose the pokemon to be evolved")
+						def possibleEvolutions = my.hand.filterByType(STAGE2).findAll{
+							tar.name == EvolutionChains.getBasicsFromStage2(it.name)
+						}
+						assert possibleEvolutions : "there is no pokémon in your hand $tar can evolve to"
+						powerUsed()
+						def stage2 = possibleEvolutions.select("choose a pokémon to evolve $tar").first()
+						evolve(tar, stage2)
+					}
 				}
 				move "Solar Beam" , {
 					text "110 damage."
 					energyCost G,C,C,C
+					onAttack{
+						damage 110
+					}
 				}
 			};
 			case SPINARAK_9:
@@ -421,10 +489,19 @@ public enum ForbiddenLight implements CardInfo {
 				move "Spider Hide" , {
 					text "Your opponent's Active Pokémon is now Paralyzed and Poisoned. Put this Pokémon and all cards attached to it in the Lost Zone.\n"
 					energyCost G
+					onAttack{
+						apply PARALYZED
+						apply POISONED
+						self.cards.moveTo(my.lostZone)
+            removePCS(self)
+					}
 				}
 				move "Sting" , {
-					text "10 damage. damage."
+					text "10 damage."
 					energyCost C
+					onAttack{
+						damage 10
+					}
 				}
 			};
 			case ARIADOS_10:
@@ -433,10 +510,18 @@ public enum ForbiddenLight implements CardInfo {
 				move "Trap Thread" , {
 					text "30 damage. Whenever your opponent plays an Item or Supporter card from their hand during their next turn, prevent all effects of that card done to the Defending Pokémon.\n"
 					energyCost C,C
+					onAttack{
+						damage 30
+						//Prevent effect of item & supporter on the defending
+					}
 				}
 				move "Poison Jab" , {
 					text "70 damage. Your opponent's Active Pokémon is now Poisoned."
 					energyCost G,C,C
+					onAttack{
+						damage 70
+						applyAfterDamage POISONED
+					}
 				}
 			};
 			case HOPPIP_11:
@@ -446,6 +531,7 @@ public enum ForbiddenLight implements CardInfo {
 				move "Multiply" , {
 					text "Search your deck for Hoppip and put it onto your Bench. Then, shuffle your deck."
 					energyCost C
+					callForFamily(name:"Hoppip",1,delegate)
 				}
 			};
 			case HOPPIP_12:
@@ -455,6 +541,9 @@ public enum ForbiddenLight implements CardInfo {
 				move "Tackle" , {
 					text "20 damage."
 					energyCost G
+					onAttack{
+						damage 20
+					}
 				}
 			};
 			case SKIPLOOM_13:
@@ -463,10 +552,24 @@ public enum ForbiddenLight implements CardInfo {
 				resistance FIGHTING, MINUS20
 				bwAbility "Floral Path to the Sky" , {
 					text "Once during your turn (before your attack), you may search your deck for Jumpluff, put this Pokémon and all cards attached to it in the Lost Zone, and put that Jumpluff in its place. Then, shuffle your deck."
+					actionA{
+						checkLastTurn()
+						assert my.deck
+						powerUsed()
+						def tar = my.deck.search(count:1,"Search 1 Jumpluff",{it.name.contains("Jumpluff"))
+						if (tar){
+							self.cards.moveTo(my.lostZone)
+							removePCS(self)
+							benchPCS(tar)
+						}
+					}
 				}
 				move "Tackle" , {
 					text "30 damage."
 					energyCost G
+					onAttack{
+						damage 30
+					}
 				}
 			};
 			case JUMPLUFF_14:
@@ -476,6 +579,9 @@ public enum ForbiddenLight implements CardInfo {
 				move "Lost March" , {
 					text "20× damage. This attack does 20 damage for each of your Pokémon, except Prism Star Pokémon, in the Lost Zone."
 					energyCost G
+					onAttack{
+						damage 20*my.lostZone.findAll{it.cardTypes.is(POKEMON) && !it.cardTypes.is(PRISM_STAR)}
+					}
 				}
 			};
 			case PINECO_15:
@@ -484,6 +590,9 @@ public enum ForbiddenLight implements CardInfo {
 				move "Continuous Headbutt" , {
 					text "20× damage. Flip a coin until you get tails. This attack does 20 damage for each heads."
 					energyCost C
+					onAttack{
+						flipUntilTails{damage 20}
+					}
 				}
 			};
 			case SHUCKLE_16:
@@ -491,10 +600,22 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIRE
 				bwAbility "Fresh Squeezed" , {
 					text "When you play this Pokémon from your hand onto your Bench during your turn, you may search your deck for up to 3 basic Energy cards and discard them. Then, shuffle your deck."
+					onActivate {r->
+						if(r==PLAY_FROM_HAND) {
+							if(my.deck && confirm("Use Fresh Squeezed?")) {
+								powerUsed()
+								my.deck.search (max: 3, basicEnergyFilter(G)).discard()
+							}
+						}
+					}
 				}
 				move "Energy Drink" , {
 					text "Attach 2 basic Energy cards from your discard pile to your Pokémon in any way you like."
 					energyCost G
+					onAttack{
+						attachEnergyFrom(basic:true,my.discard, my.all)
+						attachEnergyFrom(basic:true,my.discard, my.all)
+					}
 				}
 			};
 			case SHUCKLE_GX_17:
@@ -502,14 +623,38 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIRE
 				bwAbility "Protective Shell" , {
 					text "Prevent all damage done to this Pokémon by attacks from your opponent's Pokémon that have 2 or fewer Energy attached to them."
+					delayedA{
+						before APPLY_ATTACK_DAMAGES, {
+              if(ef.attacker.owner != self.owner && ef.attacker.owner.cards.filterByType(ENERGY).size() <= 2) {
+                bg.dm().each{
+                  if(it.to == self && it.notNoEffect && it.dmg.value) {
+                    bc "Protective Shell prevent damage from Pokémon that have 2 or fewer Energy attached to them"
+                    it.dmg = 0
+                  }
+                }
+              }
+            }
+					}
 				}
 				move "Triple Poison" , {
 					text "Your opponent's Active Pokémon is now Poisoned. Put 3 damage counters instead of 1 on that Pokémon between turns.\n"
 					energyCost C
+					onAttack{
+						apply POISONED
+						extraPoison 2
+					}
 				}
 				move "Wrap GX" , {
 					text "40 damage. Your opponent's Active Pokémon is now Paralyzed. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
 					energyCost C
+					attackRequirement{
+						gxCheck()
+					}
+					onAttack{
+						gxPerform()
+						damage 40
+						applyAfterDamage PARALYZED
+					}
 				}
 			};
 			case HERACROSS_18:
@@ -518,10 +663,15 @@ public enum ForbiddenLight implements CardInfo {
 				move "Tackle" , {
 					text "20 damage."
 					energyCost C
+					onAttack{
+						damage 20
+					}
 				}
 				move "Powerful Friends" , {
 					text "30+ damage. If you have any Stage 2 Pokémon on your Bench, this attack does 90 more damage."
 					energyCost G,C
+					damage 30
+					if(my.bench.filterByType(STAGE2)) {damage 90}
 				}
 			};
 			case CELEBI_PRISM_STAR_19:
@@ -530,18 +680,43 @@ public enum ForbiddenLight implements CardInfo {
 				move "Time Distortion" , {
 					text "Devolve any number of your Benched Pokémon as many times as you like. Put each Evolution card removed this way into your hand.\n"
 					energyCost C
+					onAttack{
+						def pcs
+						if(my.bench.findAll{it.evolution}){
+							pcs = my.bench.findAll{it.evolution}.select(min:0, max:1, "select one Pokémon to devolve")
+							while(my.bench.findAll{it.evolution} && pcs)){
+								def top=pcs.topPokemonCard
+								bc "$top Devolved"
+								moveCard(top, opp.hand)
+								devolve(pcs, top)
+								pcs = my.bench.findAll{it.evolution}.select(min:0, max:1, "select one Pokémon to devolve")
+							}
+						}
+
+					}
 				}
 				move "Leech Seed" , {
 					text "20 damage. Heal 20 damage from this Pokémon.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
 					energyCost G
+					onAttack{
+						damage 20
+						heal 20, self
+					}
 				}
 			};
 			case TREECKO_20:
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Find a Friend" , {
-					text "Search your deck for a"
+					text "Search your deck for a [G] Pokémon and put it into your hand. Shuffle your deck"
 					energyCost G
+					attackRequirement{
+						assert my.deck : "there is no more cards in your deck."
+					}
+					onAttack{
+						my.deck.search(count:1,"Select a [G] Pokémon to put on your hand",{it.asPokemonCard().types.contains(G)}).moveTo(my.hand)
+						shuffleDeck()
+					}
 				}
 			};
 			case GROVYLE_21:
@@ -549,26 +724,59 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIRE
 				bwAbility "Sunshine Grace" , {
 					text "Once during your turn (before your attack), you may search your deck for a [G] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
+					actionA {
+						checkLastTurn()
+						assert my.deck.notEmpty
+						powerUsed()
+						my.deck.search (pokemonTypeFilter(G)).showToOpponent("Selected card.").moveTo(my.hand)
+						shuffleDeck()
+					}
 				}
 				move "Slicing Blade" , {
 					text "40 damage."
 					energyCost G,G
+					onAttack{
+						damage 40
+					}
 				}
 			};
 			case SCEPTILE_GX_22:
 			return 	evolution (this, from:"Grovyle", hp:HP230, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Mach Cut" , {
-					text "60 damage. Discard a Special Energy from your opponent's Active Pokémon.\n"
+					text "60 damage. Discard a Special Energy from your opponent's Active Pokémon."
 					energyCost G
+					onAttack{
+						damage 60
+						if(defending.cards.filterByType(SPECIAL_ENERGY)) defending.cards.filterByType(SPECIAL_ENERGY).select("select the special energy to discard").discard()
+					}
 				}
 				move "Leaf Cyclone" , {
-					text "130 damage. Move a"
+					text "130 damage. Move a [G] energy from this Pokémon to 1 of your benched Pokémon."
 					energyCost G,G
+					onAttack{
+						damage 130
+						if(my.bench){
+							moveEnergy(type:G,self,my.bench.select("Which pokémon will recieve the [G] Energy?"))
+						}
+					}
 				}
 				move "Jungle Heal GX" , {
-					text "Heal all damage from each of your Pokémon that has any"
+					text "Heal all damage from each of your Pokémon that has any [G] Energy attached to it"
 					energyCost G
+					attackRequirement{
+						gxCheck()
+					}
+					onAttack{
+						gxPerform()
+						my.all.each{
+							if(it.cards.energyCount(G)){
+								heal it.damage.value, it
+
+							}
+						}
+
+					}
 				}
 			};
 			case WURMPLE_23:
@@ -577,6 +785,9 @@ public enum ForbiddenLight implements CardInfo {
 				move "Ram" , {
 					text "10 damage."
 					energyCost C
+					onAttack{
+						damage 10
+					}
 				}
 			};
 			case WURMPLE_24:
@@ -585,6 +796,9 @@ public enum ForbiddenLight implements CardInfo {
 				move "Poison Sting" , {
 					text "Your opponent's Active Pokémon is now Poisoned."
 					energyCost G
+					onAttack{
+						apply POISONED
+					}
 				}
 			};
 			case SILCOON_25:
@@ -593,10 +807,26 @@ public enum ForbiddenLight implements CardInfo {
 				move "Cocoon Collector" , {
 					text "Search your deck for up to 4 in any combination of Silcoon and Cascoon and put them onto your Bench. Then, shuffle your deck.\n"
 					energyCost C
+					attackRequirement {
+						assert my.deck.notEmpty
+						assert my.bench.notFull
+					}
+					onAttack {
+						def maxSpace = Math.min(my.bench.freeBenchCount,4)
+							deck.search (max: maxSpace,{it.name.contains("Silcoon") || it.name.contains("Cascoon")}).each{
+								deck.remove(it)
+								benchPCS(it)
+							}
+						}
+						shuffleDeck()
+					}
 				}
 				move "Rolling Tackle" , {
 					text "20 damage."
 					energyCost G
+					onAttack{
+						damage 20
+					}
 				}
 			};
 			case BEAUTIFLY_26:
@@ -605,10 +835,23 @@ public enum ForbiddenLight implements CardInfo {
 				move "Skill Dive" , {
 					text "This attack does 50 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)\n"
 					energyCost C
+					onAttack{
+						damage 50, opp.all.select("Choose the targeted Pokémon.")
+					}
 				}
 				move "Butterfly Edge" , {
 					text "30 damage. If your opponent's Pokémon is Knocked Out by damage from this attack, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
 					energyCost G
+					onAttack{
+						damage 100
+						delayed {
+							def pcs = defending
+							after KNOCKOUT, pcs, {
+								preventAllEffectsNextTurn()
+							}
+							unregisterAfter 1
+						}
+					}
 				}
 			};
 			case CASCOON_27:
@@ -617,10 +860,26 @@ public enum ForbiddenLight implements CardInfo {
 				move "Cocoon Collector" , {
 					text "Search your deck for up to 4 in any combination of Silcoon and Cascoon and put them onto your Bench. Then, shuffle your deck.\n"
 					energyCost C
+					attackRequirement {
+						assert my.deck.notEmpty
+						assert my.bench.notFull
+					}
+					onAttack {
+						def maxSpace = Math.min(my.bench.freeBenchCount,4)
+							deck.search (max: maxSpace,{it.name.contains("Silcoon") || it.name.contains("Cascoon")}).each{
+								deck.remove(it)
+								benchPCS(it)
+							}
+						}
+						shuffleDeck()
+					}
 				}
 				move "Ram" , {
 					text "30 damage."
 					energyCost G,C
+					onAttack{
+						damage 30
+					}
 				}
 			};
 			case DUSTOX_28:
@@ -628,10 +887,22 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIRE
 				bwAbility "Hazardous Evolution" , {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may leave your opponent's Active Pokémon Paralyzed and Poisoned. Put 3 damage counters instead of 1 on that Pokémon between turns."
+					onActivate{->
+						if(r==PLAY_FROM_HAND) {
+							if(confirm("Use Hazardous Evolution?")) {
+								apply POISONED, opp.active
+								apply PARALYZED, opp.active
+							}
+						}
+
+					}
 				}
 				move "Gust" , {
 					text "70 damage."
 					energyCost G,C
+					onAttack{
+						damage 70
+					}
 				}
 			};
 			case NINCADA_29:
@@ -640,16 +911,30 @@ public enum ForbiddenLight implements CardInfo {
 				move "Fury Swipes" , {
 					text "10× damage. Flip 3 coins. This attack does 10 damage for each heads."
 					energyCost C
+					onAttack{
+						flip 3, {damage 10}
+					}
 				}
 			};
 			case NINJASK_30:
 			return 	evolution (this, from:"Nincada", hp:HP080, type:GRASS, retreatCost:0) {
 				bwAbility "Molting" , {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put a Shedinja from your discard pile onto your Bench."
+					onActivate{->
+						if(r==PLAY_FROM_HAND) {
+							if(my.discard.findAll{it.name.contains(Shedinja)} && my.bench.notFull && confirm("Use Molting?")) {
+								def pcs = my.discard.findAll{it.name.contains(Shedinja)}.select("Select the card to put on the bench")
+							}
+						}
+					}
 				}
 				move "X-Scissor" , {
 					text "40+ damage. Flip a coin. If heads, this attack does 40 more damage."
 					energyCost G
+					onAttack{
+						damage 40
+						flip {damage 40}
+					}
 				}
 			};
 			case COMBEE_31:
@@ -658,14 +943,20 @@ public enum ForbiddenLight implements CardInfo {
 				move "Bee March" , {
 					text "Search your deck for up to 3 Combee and put them onto your Bench. Then, shuffle your deck."
 					energyCost G
+					callForFamily(name:"Combee",3,delegate)
 				}
 			};
 			case VESPIQUEN_32:
 			return 	evolution (this, from:"Combee", hp:HP120, type:GRASS, retreatCost:2) {
 				weakness FIRE
 				move "Queen Command" , {
-					text "120 damage. If you have 4 or fewer"
+					text "120 damage. If you have 4 or fewer [G] Pokémon on your bench this attack does nothing"
 					energyCost G
+					onAttack{
+						if(my.bench.findAll{it.types.contains(G)}.size() > 4){
+							damage 120
+						}
+					}
 				}
 			};
 			case SHAYMIN_33:
@@ -673,38 +964,87 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIRE
 				bwAbility "Floral Heal" , {
 					text "Once during your turn (before your attack), you may heal 20 damage from your Active [G] Pokémon."
+					actionA{
+						checkLastTurn()
+						powerUsed()
+						if(my.active.types.contains(G)){
+							heal 20, my.active
+						}
+					}
 				}
 				move "Ram" , {
 					text "30"
 					energyCost G,C
+					onAttack{
+						damage 30
+					}
 				}
 			};
 			case VIRIZION_GX_34:
 			return basic (this, hp:HP170, type:GRASS, retreatCost:2) {
 				weakness FIRE
+				customAbility {
+					delayedA {
+						before PLAY_TRAINER, {
+							if (ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner) {
+								bg.em().storeObject("Sensitive_Blade", bg.turnCount)
+							}
+						}
+					}
+				}
+
 				move "Double Draw" , {
-					text "Draw 2 cards.\n"
+					text "Draw 2 cards."
 					energyCost C
+					onAttack{
+						draw 2
+					}
 				}
 				move "Sensitive Blade" , {
 					text "50+ damage. If you played a Supporter card from your hand during this turn, this attack does 80 more damage.\n"
 					energyCost G,G
+					onAttack {
+						damage 50
+						if(bg.em().retrieveObject("Hefty_Whip") == bg.turnCount) damage 80
+					}
 				}
 				move "Breeze Away GX" , {
-					text "Put any number of your Pokémon in play and all cards attached to them into your hand. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+					text "Put any number of your Pokémon in play and all cards attached to them into your hand. (You can't use more than 1 GX attack in a game.)"
 					energyCost C
+					attackRequirement{
+						gxCheck()
+					}
+					onAttack{
+						gxPerform()
+						while(my.all){
+							def tar = my.all.findAll{true}.select("Select a Pokémon to put in your hand.")
+							if(tar){
+								tar.cards.moveTo(my.hand)
+								removePCS(tar)
+							}
+							else{
+								break
+							}
+						}
+					}
 				}
 			};
 			case SKIDDO_35:
 			return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Collect" , {
-					text "Draw a card.\n"
+					text "Draw a card."
 					energyCost C
+					onAttack{
+						draw 1
+					}
 				}
 				move "Vine Whip" , {
 					text "20 damage."
 					energyCost G,C
+					onAttack{
+						damage 20
+					}
 				}
 			};
 			case GOGOAT_36:
@@ -713,10 +1053,17 @@ public enum ForbiddenLight implements CardInfo {
 				move "Leaf Wallop" , {
 					text "40 damage. During your next turn, this Pokémon's Leaf Wallop attack does 50 more damage (before applying Weakness and Resistance).\n"
 					energyCost C,C
+					onAttack{
+						damage 40
+						increasedBaseDamageNextTurn("Leaf Wallop",hp(50))
+					}
 				}
 				move "Solar Beam" , {
 					text "100 damage."
 					energyCost G,G,C
+					onAttack{
+						damage 100
+					}
 				}
 			};
 			case TAPU_BULU_37:
@@ -725,10 +1072,17 @@ public enum ForbiddenLight implements CardInfo {
 				move "Heavy Punch" , {
 					text "20× damage. This attack does 20 damage for each of your opponent's Bench Pokémon.\n"
 					energyCost G,C
+					onAttack{
+						damage 20*opp.bench.size()
+					}
 				}
 				move "Wild Tackle" , {
 					text "120 damage. Flip a coin. If tails, this Pokémon does 30 damage to itself."
 					energyCost G,G,C
+					onAttack{
+						damage 120
+						flip 1,{},{damage 30,self}
+					}
 				}
 			};
 			case MOLTRES_38:
