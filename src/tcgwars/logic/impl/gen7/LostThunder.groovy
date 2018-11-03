@@ -711,7 +711,7 @@ public enum ForbiddenLight implements CardInfo {
 					text "Search your deck for a [G] Pokémon and put it into your hand. Shuffle your deck"
 					energyCost G
 					attackRequirement{
-						assert my.deck : "there is no more cards in your deck."
+						assert my.deck : "There is no more cards in your deck."
 					}
 					onAttack{
 						my.deck.search(count:1,"Select a [G] Pokémon to put on your hand",{it.asPokemonCard().types.contains(G)}).moveTo(my.hand)
@@ -1089,12 +1089,21 @@ public enum ForbiddenLight implements CardInfo {
 			return basic (this, hp:HP120, type:FIRE, retreatCost:1) {
 				weakness WATER
 				move "Assisting Heater" , {
-					text "30 damage. You may attach a"
+					text "30 damage. You may attach a [R] Energy card from your hand to one of your benched Pokémon."
 					energyCost R
+					onAttack{
+						damage 30
+						afterDamage{
+							attachEnergyFrom(type:R,may:true,my.hand,my.bench)
+						}
+					}
 				}
 				move "Fire Wing" , {
 					text "90 damage."
 					energyCost R,R,C
+					onAttack{
+						damage 90
+					}
 				}
 			};
 			case CYNDAQUIL_39:
@@ -1103,6 +1112,10 @@ public enum ForbiddenLight implements CardInfo {
 				move "Smokescreen" , {
 					text "10 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost R
+					onAttack{
+						damage 10
+						sandAttack(thisMove)
+					}
 				}
 			};
 			case CYNDAQUIL_40:
@@ -1111,6 +1124,9 @@ public enum ForbiddenLight implements CardInfo {
 				move "Hammer In" , {
 					text "30 damage."
 					energyCost C,C
+					onAttack{
+						damage 30
+					}
 				}
 			};
 			case QUILAVA_41:
@@ -1119,10 +1135,17 @@ public enum ForbiddenLight implements CardInfo {
 				move "Hammer In" , {
 					text "30 damage."
 					energyCost C,C
+					onAttack{
+						damage 30
+					}
 				}
 				move "Super Singe" , {
 					text "60 damage. Your opponent's Active Pokémon is now Burned."
 					energyCost R,R,R
+					onAttack{
+						damage 60
+						applyAfterDamage BURNED
+					}
 				}
 			};
 			case TYPHLOSION_42:
@@ -1130,10 +1153,35 @@ public enum ForbiddenLight implements CardInfo {
 				weakness WATER
 				bwAbility "Blazing Energy" , {
 					text "Once during your turn (before your attack), you may use this Ability. All Energy attached to your Pokémon are [R] Energy instead of their usual type until the end of your turn. (This includes cards that come into play on this turn.)"
+					actionA{
+						checkLastTurn()
+						powerUsed()
+						delayed{
+							def eff
+							register {
+								eff = getter GET_ENERGY_TYPES, { holder->
+									if(holder.effect.target.owner == self.owner) {
+  								holder.object = [[F] as Set]
+									}
+  							}
+							}
+							unregister {
+								eff.unregister()
+							}
+							unregisterAfter 1
+						}
+					}
 				}
 				move "Lost Flame" , {
 					text "120 damage. Put 2 Energy attached to your opponent's Active Pokémon in the Lost Zone."
 					energyCost R,R,R,R
+					onAttack{
+						damage 120
+						def tar = defending.cards.filterByType(ENERGY)
+						if(tar){
+							tar.select(max:2,"Choose the Energy cards to put in the Lost Zone.").moveTo(opp.lostZone)
+						}
+					}
 				}
 			};
 			case SLUGMA_43:
@@ -1142,10 +1190,17 @@ public enum ForbiddenLight implements CardInfo {
 				move "Stampede" , {
 					text "20 damage."
 					energyCost C,C
+					onAttack{
+						damage 20
+					}
 				}
 				move "Flamethrower" , {
 					text "60 damage. Discard an Energy from this Pokémon."
 					energyCost R,R,C
+					onAttack{
+						damage 60
+						discardSelfEnergy C
+					}
 				}
 			};
 			case MAGCARGO_GX_44:
@@ -1153,14 +1208,36 @@ public enum ForbiddenLight implements CardInfo {
 				weakness WATER
 				bwAbility "Crushing Charge" , {
 					text "Once during your turn (before your attack), you may discard the top card of your deck. If it's a basic Energy card, attach it to 1 of your Pokémon."
+					actionA{
+						checkLastTurn()
+						assert my.deck : "There is no more cards in your deck."
+						powerUsed()
+						if(my.deck.subList(0,1).filterByType(BASIC_ENERGY)) {
+							attachEnergyFrom(my.deck.subList(0,1),my.all)
+						}
+						else{
+							my.deck.subList(0,1).discard()
+						}
+					}
 				}
 				move "Lava Flow" , {
 					text "50+ damage. Discard any amount of basic Energy from this Pokémon. This attack does 50 more damage for each card you discarded in this way.\n"
 					energyCost R,R,C
+					onAttack{
+						damage 50+50*self.cards.filterByType(BASIC_ENERGY).select(max :self.cards.filterByType(BASIC_ENERGY).size(),"Add 50 damage for each Energy discarded.").discard().size()
+					}
 				}
 				move "Burning Magma GX" , {
 					text "Discard the top 5 cards of your opponent's deck. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
 					energyCost R
+					attackRequirement{
+						gxCheck()
+						assert opp.deck : "There is already no more cards in your opponent's deck."
+					}
+					onAttack{
+						gxPerform()
+						opp.deck.subList(0,5).discard()
+					}
 				}
 			};
 			case HOUNDOUR_45:
@@ -1169,10 +1246,20 @@ public enum ForbiddenLight implements CardInfo {
 				move "Team Hunt" , {
 					text "Draw a card for each of your Houndour in play.\n"
 					energyCost C
+					onAttack{
+						my.all.each{
+							if(it.name.contains("Houndour")){
+								draw 1
+							}
+						}
+					}
 				}
 				move "Flare" , {
 					text "10 damage."
 					energyCost R
+					onAttack{
+						damage 10
+					}
 				}
 			};
 			case HOUNDOOM_46:
@@ -1181,34 +1268,70 @@ public enum ForbiddenLight implements CardInfo {
 				move "Nasty Plot" , {
 					text "Search your deck for a card and put it into your hand. Then, shuffle your deck.\n"
 					energyCost C
+					attackRequirement{
+						assert my.deck : "There is no more cards in your deck."
+					}
+					onAttack{
+						my.deck.select(max: 1).moveTo(hidden: true, my.hand)
+						shuffleDeck()
+					}
 				}
 				move "Operation Attack" , {
 					text "50+ damage. If you have more cards in your hand than your opponent, this attack does 80 more damage."
 					energyCost R,R
+					onAttack{
+						damage 50
+						if(my.hand.size() > opp.hand.size()) damage 80
+					}
 				}
 			};
 			case ENTEI_47:
 			return basic (this, hp:HP130, type:FIRE, retreatCost:2) {
 				weakness WATER
 				move "Fire Fang" , {
-					text "20 damage. Your opponent's Active Pokémon is now Burned.\n"
+					text "20 damage. Your opponent's Active Pokémon is now Burned."
 					energyCost R,C
+					onAttack{
+						damage 20
+						applyAfterDamage BURNED
+					}
 				}
 				move "Eruption" , {
 					text "80+ damage. Each player discards the top card of their deck. This attack does 60 more damage for each Energy card discarded in this way."
 					energyCost R,R,C
+					onAttack {
+						damage 80
+						if(opp.deck){
+							if(opp.deck.subList(0,1).filterByType(ENERGY)) damage 60
+							opp.deck.subList(0,1).discard()
+						}
+						if(my.deck){
+							if(my.deck.subList(0,1).filterByType(ENERGY)) damage 60
+							my.deck.subList(0,1).discard()
+						}
+					}
 				}
 			};
 			case HEATRAN_48:
 			return basic (this, hp:HP140, type:FIRE, retreatCost:4) {
 				weakness WATER
 				move "Lava Burn" , {
-					text "60 damage. This attack does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)\n"
+					text "60 damage. This attack does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost R,C,C
+					onAttack{
+						damage 60
+						if(opp.bench){
+							damage 30, opp.bench.select("Which Pokémon to target for 30 damage?")
+						}
+					}
 				}
 				move "Heat Bazooka" , {
 					text "150 damage. Discard the top 5 cards of your deck."
 					energyCost R,R,C,C
+					onAttack{
+						damage 150
+						my.deck.subList(0,5).discard()
+					}
 				}
 			};
 			case VICTINI_49:
@@ -1217,6 +1340,11 @@ public enum ForbiddenLight implements CardInfo {
 				move "V-Beatdown" , {
 					text "20× damage. This attack does 20 damage for each of your Basic Pokémon in play."
 					energyCost R,C
+					onAttack{
+						my.all.each{
+							if(it.basic) damage 20
+						}
+					}
 				}
 			};
 			case LITLEO_50:
@@ -1224,22 +1352,38 @@ public enum ForbiddenLight implements CardInfo {
 				weakness WATER
 				bwAbility "Wild Dash" , {
 					text "If your opponent has any Pokémon-GX or Pokémon-EX in play, this Pokémon has no Retreat Cost."
+					getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {h->
+					  if(self.owner.opponent.pbg.all.findAll{it.pokemonGX || it.pokemonGX}) {
+					    h.object = 0
+					  }
+					}
 				}
 				move "Take Down" , {
 					text "30 damage. This Pokémon does 10 damage to itself."
 					energyCost C,C
+					onAttack{
+						damage 30
+						damage 10, self
+					}
 				}
 			};
 			case PYROAR_51:
 			return 	evolution (this, from:"Litleo", hp:HP130, type:FIRE, retreatCost:2) {
 				weakness WATER
 				move "Crunch" , {
-					text "30 damage. Discard an Energy from your opponent's Active Pokémon.\n"
+					text "30 damage. Discard an Energy from your opponent's Active Pokémon."
 					energyCost C,C
+					onAttack{
+						damage 30
+						discardDefendingEnergy()
+					}
 				}
 				move "Heat Blast" , {
 					text "90 damage."
 					energyCost R,C,C
+					onAttack{
+						damage 90
+					}
 				}
 			};
 			case BLACEPHALON_GX_52:
@@ -1248,45 +1392,94 @@ public enum ForbiddenLight implements CardInfo {
 				move "Bursting Burn" , {
 					text "Your opponent's Active Pokémon is now Burned and Confused.\n"
 					energyCost R
+					onAttack{
+						apply BURNED
+						apply CONFUSED
+					}
 				}
 				move "Mind Blown" , {
-					text "50× damage. Put any number of"
+					text "50× damage. Put any number of [R] Energy attached to your Pokémon in the Lost Zone. This attack does 50 damage for each cards put in the lost zone this way."
 					energyCost R,R
+					onAttack{
+						def count=0
+						while (1) {
+							def tar = my.all.findAll {it.cards.filterByEnergyType(R).notEmpty()}
+							if (!tar) break
+							def pcs = tar.select("Pokemon that has [R] energy to put in the Lost Zone. Cancel to stop", false)
+							if (!pcs) break
+							pcs.cards.filterByEnergyType(R).select("[R] Energy to put in the Lost Zone").discard()
+							count++
+						}
+						damage 50*count
+					}
 				}
 				move "Burst GX" , {
 					text "Discard 1 of your Prize cards. If it's an Energy card, attach it to 1 of your Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
 					energyCost R
+					attackRequirement{
+						gxCheck()
+					}
+					onAttack{
+						gxPerform()
+						def tar = my.prizeCardSet.select(hidden:true,count:1,"select the prize to discard")
+						if(tar.cardTypes.is(ENERGY)){
+							attachEnergyFrom(tar,my.all)
+						}
+						else{
+							tar.discard()
+						}
+					}
 				}
 			};
 			case ALOLAN_VULPIX_53:
-			return basic (this, hp:HP060, type:HP060, retreatCost:1) {
+			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 				weakness METAL
 				bwAbility "Secret Alleyway" , {
 					text "If you have any [Y] Pokémon in play, this Pokémon has no Retreat Cost."
+					getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {h->
+					  if(self.owner.pbg.all.findAll{it.types.contains(Y)}) {
+					    h.object = 0
+					  }
+					}
 				}
 				move "Gnaw" , {
 					text "20 damage."
 					energyCost C,C
+					onAttack{
+						damage 20
+					}
 				}
 			};
 			case SLOWPOKE_54:
-			return basic (this, hp:HP070, type:HP070, retreatCost:2) {
+			return basic (this, hp:HP070, type:WATER, retreatCost:2) {
 				weakness GRASS
 				move "Yawn" , {
 					text "Your opponent's Active Pokémon is now Asleep."
 					energyCost C
+					onAttack{
+						apply ASLEEP
+					}
 				}
 			};
 			case SLOWKING_55:
 			return 	evolution (this, from:"Slowpoke", hp:HP120, type:WATER, retreatCost:2) {
 				weakness GRASS
 				move "Memory Melt" , {
-					text "Look at your opponent's hand and put a card you find there in the Lost Zone.\n"
+					text "Look at your opponent's hand and put a card you find there in the Lost Zone."
 					energyCost W
+					onAttack{
+						if(opp.hand){
+							opp.hand.select("Select the card to put in the Lost Zone").moveTo(opp.lostZone)
+						}
+					}
 				}
 				move "Psychic" , {
 					text "60+ damage. This attack does 20 more damage times the amount of Energy attached to your opponent's Active Pokémon."
 					energyCost C,C,C
+					onAttack {
+						damage 60
+						damage 20*defending.cards.energyCount(C)
+					}
 				}
 			};
 			case LAPRAS_56:
@@ -1294,22 +1487,50 @@ public enum ForbiddenLight implements CardInfo {
 				weakness METAL
 				bwAbility "Go for a Swing" , {
 					text "Once during your turn (before your attack), you may look at the top 2 cards of your deck and put them back in any order."
+					attackRequirement {
+						assert deck
+					}
+					onAttack {
+						def list=rearrange(deck.subList(0,2), "Rearrange top 2 cards in your deck")
+						deck.setSubList(0, list)
+					}
 				}
 				move "Ice Beam" , {
 					text "50 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 					energyCost W,C
+					onAttack{
+						damage 50
+						flipThenApplySC PARALYZED
+					}
 				}
 			};
 			case DELIBIRD_57:
 			return basic (this, hp:HP090, type:WATER, retreatCost:1) {
 				weakness METAL
 				move "Happy Delivery" , {
-					text "Choose any number of your Benched Pokémon that don't already have a Pokémon Tool attached to them. For each of those Pokémon, search your deck for a Pokémon Tool card and attach it to that Pokémon. Then, shuffle your deck.\n"
+					text "Choose any number of your Benched Pokémon that don't already have a Pokémon Tool attached to them. For each of those Pokémon, search your deck for a Pokémon Tool card and attach it to that Pokémon. Then, shuffle your deck."
 					energyCost C
+					onAttack{
+						def tar = my.all.findAll{it.cards.filterByType(POKEMON_TOOL).size() == 0}
+						if(tar){
+							tar.select(max:tar.size(),"Attach a Pokémon Tool to which Pokémon?").each{pcs ->
+								def pkt = my.deck.search("Select a Pokémon Tool to attach to $pcs",{it.cardTypes.is(POKEMON_TOOL)})
+								if(pkt){
+									pkt.moveTo(pcs.cards)
+								}
+							}
+						}
+					}
 				}
 				move "Flap" , {
 					text "30 damage."
 					energyCost C,C
+					onAttack{
+						damage 30
+						onAttack{
+							damage 30
+						}
+					}
 				}
 			};
 			case MANTINE_58:
@@ -1318,10 +1539,18 @@ public enum ForbiddenLight implements CardInfo {
 				resistance FIGHTING, MINUS20
 				bwAbility "Mantine Surf" , {
 					text "If this Pokémon has any Energy attached to it, it has no Retreat Cost."
+					getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {h->
+					  if(self.cards.energyCount(C) > 0) {
+					    h.object = 0
+					  }
+					}
 				}
 				move "Surf" , {
 					text "100 damage."
 					energyCost W,W,C
+					onAttack{
+						damage 100
+					}
 				}
 			};
 			case SUICUNE_59:
@@ -1329,10 +1558,18 @@ public enum ForbiddenLight implements CardInfo {
 				weakness GRASS
 				bwAbility "Frozen Current" , {
 					text "Once during your turn (before your attack), if this Pokémon is your Active Pokémon, you may have your opponent switch their Active Pokémon with 1 of their Benched Pokémon."
+					actionA{
+						assert opp.bench : "There is no switch avaible."
+						sw opp.active, opp.bench.oppSelect("Select the new active.")
+					}
 				}
 				move "Aurora Gain" , {
 					text "70 damage. Heal 30 damage from this Pokémon."
 					energyCost W,C,C
+					onAttack{
+						damage 70
+						heal 30, self
+					}
 				}
 			};
 			case SUICUNE_GX_60:
@@ -1340,14 +1577,36 @@ public enum ForbiddenLight implements CardInfo {
 				weakness GRASS
 				bwAbility "Phantom Winds" , {
 					text "Once during your turn (before your attack), if this Pokémon is on your Bench, you may shuffle it and all cards attached to it into your deck."
+					actionA {
+						assert bench.notEmpty
+						checkLastTurn()
+						powerUsed()
+						shuffleDeck(self.cards)
+						removePCS(self)
+					}
 				}
 				move "Cure Stream" , {
 					text "120 damage. During your opponent's next turn, the Defending Pokémon's attacks do 30 less damage (before applying Weakness and Resistance).\n"
 					energyCost W,W,C
+					onAttack{
+						damage 120
+						reduceDamageNextTurn(hp(30),thisMove)
+					}
 				}
 				move "Brinicles GX" , {
 					text "150 damage. Switch this Pokémon with 1 of your Benched Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
 					energyCost W,W,C
+					attackRequirement{
+						gxCheck()
+					}
+					onAttack{
+						damage 150
+						afterDamage{
+							if(my.bench){
+								sw self. my.bench.select("Select the new active.")
+							}
+						}
+					}
 				}
 			};
 			case CUBCHOO_61:
@@ -1356,10 +1615,19 @@ public enum ForbiddenLight implements CardInfo {
 				move "Secondary Chills" , {
 					text "You can use this attack only if you go second, and only on your first turn. Your opponent's Active Pokémon is now Paralyzed.\n"
 					energyCost C
+					attackRequirement {
+					  assert bg.turnCount == 2 : "You can use this attack only on your first turn"
+					}
+					onAttack {
+						apply PARALYZED
+					}
 				}
 				move "Beat" , {
 					text "20 damage."
 					energyCost C,C
+					onAttack{
+						damage 20
+					}
 				}
 			};
 			case BEARTIC_62:
@@ -1368,22 +1636,40 @@ public enum ForbiddenLight implements CardInfo {
 				move "Resolute Claws" , {
 					text "60+ damage. If your opponent's Active Pokémon is a Pokémon-GX or a Pokémon-EX, this attack does 60 more damage (before applying Weakness and Resistance).\n"
 					energyCost W,C,C
+					onAttack{
+						damage 60
+						if(defending.pokemonGX || defending.pokemonEX) damage 60
+					}
 				}
 				move "Blizzard Burn" , {
 					text "150 damage. This Pokémon can't attack during your next turn."
 					energyCost W,C,C,C
+					onAttack{
+						damage 150
+						cantAttackNextTurn self
+					}
 				}
 			};
 			case WHITE_KYUREM_63:
 			return basic (this, hp:HP130, type:WATER, retreatCost:3) {
 				weakness METAL
 				move "Field Crush" , {
-					text "30 damage. If your opponent has a Stadium in play, discard it.\n"
+					text "30 damage. If your opponent has a Stadium in play, discard it."
 					energyCost C,C
+					onAttack{
+						damage 30
+						if(bg.stadiumInfoStruct.stadiumCard.player != self.owner) {
+              discard bg.stadiumInfoStruct.stadiumCard
+            }
+					}
 				}
 				move "Freezing Flames" , {
-					text "80+ damage. If this Pokémon has any"
+					text "80+ damage. If this Pokémon has any [R] Energy attached to it, this attack does 80 more damage."
 					energyCost W,W,C
+					onAttack{
+						damage 80
+						if(self.cards.energyCount(R)) damage 80
+					}
 				}
 			};
 			case POPPLIO_64:
@@ -1392,6 +1678,10 @@ public enum ForbiddenLight implements CardInfo {
 				move "Disarming Voice" , {
 					text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Confused."
 					energyCost W,C
+					onAttack{
+						damage 20
+						flipThenApplySC CONFUSED
+					}
 				}
 			};
 			case POPPLIO_65:
@@ -1400,18 +1690,31 @@ public enum ForbiddenLight implements CardInfo {
 				move "Blot" , {
 					text "10 damage. Heal 10 damage from this Pokémon."
 					energyCost W
+					onAttack{
+						damage 10
+						heal 10, self
+					}
 				}
 			};
 			case BRIONNE_66:
 			return 	evolution (this, from:"Popplio", hp:HP090, type:WATER, retreatCost:2) {
 				weakness GRASS
 				move "Captivate" , {
-					text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon.\n"
+					text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
 					energyCost W
+					attackRequirement{
+						assert opp.bench : "There is no Pokémon on your opponent's bench"
+					}
+					onAttack{
+						sw defending, opp.bench.select("Choose the new Active Pokémon.")
+					}
 				}
 				move "Water Gun" , {
 					text "20 damage."
 					energyCost W
+					onAttack{
+						damage 20
+					}
 				}
 			};
 			case PRIMARINA_67:
@@ -1419,10 +1722,22 @@ public enum ForbiddenLight implements CardInfo {
 				weakness GRASS
 				bwAbility "Harmonics" , {
 					text "Whenever you attach an Energy card from your hand to 1 of your Pokémon, except with an attack, Ability, or Trainer card, attach up to 2 Energy cards to that Pokémon instead of 1."
+					delayedA{
+						after ATTACH_ENERGY,{
+              if(self.active && ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner && ef.resolvedTarget.owner == self.owner)
+              if(self.owner.hand.filterByType(ENERGY)){
+								self.owner.hand.filterByType(ENERGY).select("Select one more card to attach to ${ef.resolvedTarget}",false).moveTo(ef.resolvedTarget.cards)
+							}
+            }
+					}
 				}
 				move "Hypno Splash" , {
 					text "80 damage. Your opponent's Active Pokémon is now Asleep."
 					energyCost W,C,C
+					onAttack{
+						damage 80
+						applyAfterDamage ASLEEP
+					}
 				}
 			};
 			case MAREANIE_68:
@@ -1431,18 +1746,27 @@ public enum ForbiddenLight implements CardInfo {
 				move "Spike Cannon" , {
 					text "30× damage. Flip 2 coins. This attack does 30 damage for each heads."
 					energyCost W
+					onAttack{
+						flip 2,{damage 30}
+					}
 				}
 			};
 			case TOXAPEX_69:
 			return 	evolution (this, from:"Mareanie", hp:HP120, type:WATER, retreatCost:3) {
 				weakness GRASS
 				move "Poison Sting" , {
-					text "Your opponent's Active Pokémon is now Poisoned.\n"
+					text "Your opponent's Active Pokémon is now Poisoned."
 					energyCost W
+					onAttack{
+						apply POISONED
+					}
 				}
 				move "Venom Fever" , {
 					text "50× damage. If your opponent's Active Pokémon is Poisoned, this attack does 50 damage for each damage counter on it."
 					energyCost W,W
+					onAttack{
+						if(defending.isSPC(POISONED)) damage 50*defending.numberOfDamageCounters
+					}
 				}
 			};
 			case BRUXISH_70:
@@ -1451,10 +1775,20 @@ public enum ForbiddenLight implements CardInfo {
 				move "Mind Bend" , {
 					text "20 damage. Your opponent's Active Pokémon is now Confused.\n"
 					energyCost W
+					onAttack{
+						damage 20
+						applyAfterDamage CONFUSED
+					}
 				}
 				move "Follow the Wound" , {
 					text "This attack does 60 damage to 1 of your opponent's Benched Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost W,C
+					attackRequirement{
+						assert opp.bench.findAll{it.numberOfDamageCounters} : "Your opponent's benched Pokémon are all heathy."
+					}
+					onAttack{
+						damage 60, opp.bench.findAll{it.numberOfDamageCounters}.select()
+					}
 				}
 			};
 			case ELECTABUZZ_71:
@@ -1464,6 +1798,10 @@ public enum ForbiddenLight implements CardInfo {
 				move "Thunder Shock" , {
 					text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 					energyCost L,C
+					onAttack{
+						damage 30
+						flipThenApplySC PARALYZED
+					}
 				}
 			};
 			case ELECTIVIRE_72:
@@ -1471,12 +1809,20 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIGHTING
 				resistance METAL, MINUS20
 				move "Electrocharge" , {
-					text "Search your deck for up to 2"
+					text "Search your deck for up to 2 [L] Energy cards and attach them to this Pokémon. Then shuffle your deck."
 					energyCost C
+					onAttack{
+						attachEnergyFrom(type:L,my.deck,self)
+						attachEnergyFrom(type:L,my.deck,self)
+					}
 				}
 				move "High-Voltage Knuckle" , {
 					text "190 damage. Discard 3 Energy from this Pokémon."
 					energyCost L,L,L,C
+					onAttack{
+						damage 190
+						discardSelfEnergy C,C,C
+					}
 				}
 			};
 			case CHINCHOU_73:
@@ -1484,12 +1830,18 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIGHTING
 				resistance METAL, MINUS20
 				move "Thunder Wave" , {
-					text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.\n"
+					text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 					energyCost C
+					onAttack{
+						flip{apply PARALYZED}
+					}
 				}
 				move "Lightning Ball" , {
 					text "20 damage."
 					energyCost L,C
+					onAttack{
+						damage 20
+					}
 				}
 			};
 			case LANTURN_74:
@@ -1497,12 +1849,22 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIGHTING
 				resistance METAL, MINUS20
 				move "Salvage" , {
-					text "Shuffle 4 cards from your discard pile into your deck.\n"
+					text "Shuffle 4 Item cards from your discard pile into your deck."
 					energyCost C
+					attackRequirement{
+						assert my.discard.filterByType(ITEM) : "there is no item in your discard pile"
+					}
+					onAttack{
+						my.discard.filterByType(ITEM).select(max:4,"Choose the item you want to put back in your deck").moveTo(my.deck)
+					}
 				}
 				move "Signal Beam" , {
 					text "50 damage. Your opponent's Active Pokémon is now Confused."
 					energyCost L,C
+					onAttack{
+						damage 50
+						apply CONFUSED
+					}
 				}
 			};
 			case MAREEP_75:
@@ -1511,10 +1873,19 @@ public enum ForbiddenLight implements CardInfo {
 				resistance METAL, MINUS20
 				bwAbility "Fluffy Pillow" , {
 					text "Once during your turn (before your attack), if this Pokémon is your Active Pokémon, you may leave your opponent's Active Pokémon Asleep."
+					actionA{
+						checkLastTurn()
+						assert self.active : "$self is not your active Pokémon."
+						powerUsed()
+						apply ASLEEP, opp.active
+					}
 				}
 				move "Tackle" , {
 					text "20 damage."
 					energyCost C,C
+					onAttack{
+						damage 20
+					}
 				}
 			};
 			case MAREEP_76:
@@ -1524,6 +1895,10 @@ public enum ForbiddenLight implements CardInfo {
 				move "Thunder Shock" , {
 					text "10 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 					energyCost L
+					onAttack{
+						damage 10
+						flipThenApplySC PARALYZED
+					}
 				}
 			};
 			case FLAAFFY_77:
@@ -1533,6 +1908,10 @@ public enum ForbiddenLight implements CardInfo {
 				move "Signal Beam" , {
 					text "40 damage. Your opponent's Active Pokémon is now Confused."
 					energyCost L,L
+					onAttack{
+						damage 40
+						applyAfterDamage CONFUSED
+					}
 				}
 			};
 			case AMPHAROS_78:
@@ -1541,10 +1920,22 @@ public enum ForbiddenLight implements CardInfo {
 				resistance METAL, MINUS20
 				bwAbility "Unseen Flash" , {
 					text "Once during your turn (before your attack), you may put 2 [L] Energy cards from your hand in the Lost Zone. If you do, your opponent's Active Pokémon is now Paralyzed."
+					actionA{
+						checkLastTurn()
+						assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(L).size() >= 2 : "You don't have enough Energy in your hand."
+						powerUsed()
+						my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(L).select(count:2).moveTo(my.lostZone)
+						apply PARALYZED, opp.active
+					}
 				}
 				move "Split Bomb" , {
 					text "This attack does 50 damage to 2 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost L,L
+					onAttack{
+						multiSelect(opp.all,2).each{
+							damage 50,it
+						}
+					}
 				}
 			};
 			case RAIKOU_79:
@@ -1552,8 +1943,12 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIGHTING
 				resistance METAL, MINUS20
 				move "Lost Voltage" , {
-					text "30+ damage. If you have any"
+					text "30+ damage. If you have any [L] Energy in your Lost Zone, this attack does 90 more damage"
 					energyCost L,C
+					onAttack{
+						damage 30
+						if(my.lostZone.filterByType(BASIC_ENERGY).filterByEnergyType(L)) damage 90
+					}
 				}
 			};
 			case PACHIRISU_80:
@@ -1563,6 +1958,12 @@ public enum ForbiddenLight implements CardInfo {
 				move "Overshort" , {
 					text "20+ damage. Before doing damage, discard all Pokémon Tool cards from your opponent's Active Pokémon. If you discarded a Pokémon Tool card in this way, this attack does 40 more damage, and your opponent's Active Pokémon is now Paralyzed."
 					energyCost L
+					onAttack{
+						def tar = defending.cards.filterByType(POKEMON_TOOL)
+						tar.discard()
+						damage 20
+						if(tar) damage 40
+					}
 				}
 			};
 			case BLITZLE_81:
@@ -1572,10 +1973,16 @@ public enum ForbiddenLight implements CardInfo {
 				move "Flop" , {
 					text "10 damage."
 					energyCost C
+					onAttack{
+						damage 10
+					}
 				}
 				move "Zap Kick" , {
 					text "20 damage."
 					energyCost L,C
+					onAttack{
+						damage 20
+					}
 				}
 			};
 			case ZEBSTRIKA_82:
@@ -1584,10 +1991,20 @@ public enum ForbiddenLight implements CardInfo {
 				resistance METAL, MINUS20
 				bwAbility "Sprint" , {
 					text "Once during your turn (before your attack), you may discard your hand and draw 4 cards."
+					actionA{
+						checkLastTurn()
+						assert my.deck : "There is no more cards in your deck."
+						powerUsed()
+						my.hand.discard()
+						draw 4
+					}
 				}
 				move "Head Bolt" , {
 					text "60 damage."
 					energyCost L,C
+					onAttack{
+						damage 60
+					}
 				}
 			};
 			case STUNFISK_83:
@@ -1597,10 +2014,17 @@ public enum ForbiddenLight implements CardInfo {
 				move "Flail" , {
 					text "10× damage. This attack does 10 damage for each damage counter on this Pokémon.\n"
 					energyCost C
+					onAttack{
+						damage 10*self.numberOfDamageCounters
+					}
 				}
 				move "Thunder Blast" , {
-					text "50 damage. Discard a"
+					text "50 damage. Discard a [L] Energy from this Pokémon"
 					energyCost L
+					onAttack{
+						damage 50
+						discardSelfEnergy L
+					}
 				}
 			};
 			case DEDENNE_84:
@@ -1608,12 +2032,29 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIGHTING
 				resistance METAL, MINUS20
 				move "Nuzzle" , {
-					text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.\n"
+					text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 					energyCost L
+					onAttack{
+						flip{apply PARALYZED}
+					}
 				}
 				move "Nuzzle Shot" , {
 					text "This attack does 10 damage for each of your Pokémon in play that has the Nuzzle attack to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost L
+					attackRequirement {
+            assert my.all.findAll{it.topPokemonCard.moves.findAll{it.name=="Nuzzle"}}
+            assert opp.bench
+          }
+          onAttack {
+						def tar = opp.bench.select()
+            my.all.each{pcs->
+              pcs.topPokemonCard.moves.each{
+                if(it.name=="Nuzzle"){
+                  damage 10
+                }
+              }
+            }
+          }
 				}
 			};
 			case TAPU_KOKO_85:
@@ -1621,12 +2062,24 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIGHTING
 				resistance METAL, MINUS20
 				move "Strafe" , {
-					text "30 damage. You may switch this Pokémon with 1 of your Benched Pokémon.\n"
+					text "30 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
 					energyCost C,C
+					onAttack{
+						damage 30
+						afterDamage{
+							if(my.bench && confirm("Switch $self with 1 of your Benched Pokémon?")){
+								sw self, my.bench.select()
+							}
+						}
+					}
 				}
 				move "Flashing Bolt" , {
 					text "120 damage. This Pokémon can't use Flashing Bolt during your next turn."
 					energyCost L,L,C
+					onAttack{
+						damage 120
+						cantUseAttack thisMove,self
+					}
 				}
 			};
 			case ZERAORA_GX_86:
@@ -1635,14 +2088,35 @@ public enum ForbiddenLight implements CardInfo {
 				resistance METAL, MINUS20
 				bwAbility "Thunderclap Zone" , {
 					text "Each of your Pokémon that has any [L] Energy attached to it has no Retreat Cost."
+					getterA (GET_RETREAT_COST,BEFORE_LAST) {h->
+            if(h.effect.target.owner == self.owner && h.effect.target.cards.energyCount(L)) {
+              h.object = 0
+            }
+          }
 				}
 				move "Plasma Fists" , {
-					text "160 damage. This Pokémon can't attack during your next turn.\n"
+					text "160 damage. This Pokémon can't attack during your next turn."
 					energyCost L,L,C
+					onAttack{
+						damage 160
+						cantAttackNextTurn self
+					}
 				}
 				move "Full Voltage GX" , {
 					text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
 					energyCost L
+					attackRequirement{
+						gxCheck()
+					}
+					onAttack{
+						gxPerform()
+						attachEnergyFrom(basic:true,my.discard,my.all)
+						attachEnergyFrom(basic:true,my.discard,my.all)
+						attachEnergyFrom(basic:true,my.discard,my.all)
+						attachEnergyFrom(basic:true,my.discard,my.all)
+						attachEnergyFrom(basic:true,my.discard,my.all)
+
+					}
 				}
 			};
 			case NATU_87:
@@ -1651,6 +2125,9 @@ public enum ForbiddenLight implements CardInfo {
 				move "Lost March" , {
 					text "20× damage. This attack does 20 damage for each of your Pokémon, excluding Prism Star Pokémon, in the Lost Zone."
 					energyCost C,C
+					onAttack{
+						damage 20*my.lostZone.findAll{it.cardTypes.is(POKEMON) && !it.cardTypes.is(PRISM_STAR)}
+					}
 				}
 			};
 			case XATU_88:
@@ -1659,22 +2136,42 @@ public enum ForbiddenLight implements CardInfo {
 				move "Energy Gaze" , {
 					text "30+ damage. Your opponent reveals their hand. If you find any Energy cards there, this attack does 60 more damage.\n"
 					energyCost C,C
+					onAttack{
+						damage 30
+						opp.hand.showToMe("Your opponent's hand")
+						if(opp.hand.filterByType(ENERGY)) damage 60
+					}
 				}
 				move "Psychic Sphere" , {
 					text "80 damage."
 					energyCost P,C,C
+					onAttack{
+						damage 80
+					}
 				}
 			};
 			case ESPEON_89:
 			return 	evolution (this, from:"Eevee", hp:HP090, type:PSYCHIC, retreatCost:1) {
 				weakness PSYCHIC
 				move "Allure" , {
-					text "Draw 3 cards.\n"
+					text "Draw 3 cards."
 					energyCost C
+					attackRequirement{
+						assert my.deck : "There is no more card in your deck."
+					}
+					onAttack{
+						draw 3
+					}
 				}
 				move "Energy Crush" , {
 					text "20+ damage. This attack does 20 more damage times the amount of Energy attached to all of your opponent's Pokémon."
 					energyCost P
+					onAttack{
+						damage 20
+						opp.all.each{
+							damage 20*it.cards.energyCount(C)
+						}
+					}
 				}
 			};
 			case UNOWN_90:
@@ -1682,10 +2179,23 @@ public enum ForbiddenLight implements CardInfo {
 				weakness PSYCHIC
 				bwAbility "DAMAGE" , {
 					text "Once during your turn (before your attack), if this Pokémon is your Active Pokémon, and if there are 66 or more damage counters on your Benched Pokémon, you may use this Ability. If you do, you win this game."
+					actionA{
+						checkLastTurn()
+						def count = 0
+						my.all.each{
+							count = count + it.numberOfDamageCounters
+						}
+						assert count >= 66 : "You need ${66 - count} more damage counter."
+						powerUsed()
+						//win
+					}
 				}
 				move "Hidden Power" , {
 					text "10 damage."
 					energyCost P
+					onAttack{
+						damage 10
+					}
 				}
 			};
 			case UNOWN_91:
@@ -1693,10 +2203,19 @@ public enum ForbiddenLight implements CardInfo {
 				weakness PSYCHIC
 				bwAbility "HAND" , {
 					text "Once during your turn (before your attack), if this Pokémon is your Active Pokémon, and if you have 35 or more cards in your hand, you may use this Ability. If you do, you win this game."
+					actionA{
+						checkLastTurn()
+						assert my.hand.size() >= 35 : "You need ${35 - my.hand.size()} more cards in your hand."
+						powerUsed()
+						//win
+					}
 				}
 				move "Hidden Power" , {
 					text "10 damage."
 					energyCost P
+					onAttack{
+						damage 10
+					}
 				}
 			};
 			case UNOWN_92:
@@ -1704,10 +2223,19 @@ public enum ForbiddenLight implements CardInfo {
 				weakness PSYCHIC
 				bwAbility "MISSING" , {
 					text "Once during your turn (before your attack), if this Pokémon is your Active Pokémon, and if your opponent has 12 or more Supporter cards in the Lost Zone, you may use this Ability. If you do, you win this game."
+					actionA{
+						checkLastTurn()
+						assert my.lostZone.filterByType(SUPPORTER).size() >= 12 : "You need ${35 - my.lostZone.filterByType(SUPPORTER).size()} more supporters in your Lost Zone."
+						powerUsed()
+						//win
+					}
 				}
 				move "Hidden Power" , {
 					text "10 damage."
 					energyCost P
+					onAttack{
+						damage 10
+					}
 				}
 			};
 			case WOBBUFFET_93:
@@ -1715,32 +2243,68 @@ public enum ForbiddenLight implements CardInfo {
 				weakness PSYCHIC
 				bwAbility "Shady Tail" , {
 					text "As long as this Pokémon is on your Bench, Pokémon Prism Star in play (both yours and your opponent's) can't attack and have no Abilities."
+					def effect1
+					def effect2
+					onActivate {
+						effect1 = before APPLY_ATTACK_DAMAGES, {
+              if(!self.active && ef.attacker.topPokemonCard.is(PRISM_STAR)) {
+                bg.dm().each{
+                  if(it.notNoEffect && it.dmg.value) {
+                    bc "Shady Tail"
+                    it.dmg = 0
+                  }
+                }
+              }
+            }
+						effect2 = getter IS_ABILITY_BLOCKED, { Holder h->
+					    if (!self.active && h.effect.target.topPokemonCard.is(PRISM_STAR)) {
+					      h.object=true
+					    }
+					  }
+					}
 				}
 				move "Knock Away" , {
 					text "30+ damage. Flip a coin. If heads, this attack does 30 more damage."
 					energyCost P,C
+					onAttack{
+						damage 30
+						flip{damage 30}
+					}
 				}
 			};
 			case GIRAFARIG_94:
 			return basic (this, hp:HP090, type:PSYCHIC, retreatCost:1) {
 				weakness PSYCHIC
 				move "Get Lost" , {
-					text "Put 2 cards from your opponent's discard pile in the Lost Zone.\n"
+					text "Put 2 cards from your opponent's discard pile in the Lost Zone."
 					energyCost C
+					attackRequirement{
+						assert opp.discard : "There is no cards in your opponent's discard pile"
+					}
+					onAttack{
+						opp.discard.select(max:2,"Choose the cards to put in the Lost Zone").moveTo(opp.lostZone)
+					}
 				}
 				move "Mind Shock" , {
 					text "70 damage. This attack's damage isn't affected by Weakness or Resistance."
 					energyCost C,C,C
+					onAttack{
+						noWrDamage 70, defending
+					}
 				}
 			};
 			case SHEDINJA_95:
 			return 	evolution (this, from:"Nincada", hp:HP040, type:PSYCHIC, retreatCost:1) {
 				bwAbility "Vessel of Life" , {
 					text "Once during your turn (before your attack), you may discard all cards attached to this Pokémon and attach it to 1 of your Pokémon as a Pokémon Tool card. When the Pokémon this card is attached to is Knocked Out, your opponent takes 1 fewer Prize card."
+					//TODO : make this pokemon a tool
 				}
 				move "Haunt" , {
 					text "Put 3 damage counters on your opponent's Active Pokémon."
 					energyCost C
+					onAttack{
+						directDamage 30, defending
+					}
 				}
 			};
 			case SABLEYE_96:
@@ -1748,22 +2312,51 @@ public enum ForbiddenLight implements CardInfo {
 				move "Quick Hunt" , {
 					text "If you go first, you can use this attack on your first turn. Search your deck for a card and put it into your hand. Then, shuffle your deck.\n"
 					energyCost C
+					onAttack{
+						//TODO : hardcode quick hunt to be used on first turn
+						my.deck.search(count:1,{true}).moveTo(my.hand)
+					}
 				}
 				move "Cursed Drop" , {
 					text "Put 3 damage counters on your opponent's Pokémon in any way you like."
 					energyCost P
+					onAttack{
+						for(int i=0;i<3;i++){
+							directDamage 10, opp.all.select()
+						}
+					}
 				}
 			};
 			case GIRATINA_97:
 			return basic (this, hp:HP130, type:PSYCHIC, retreatCost:3) {
 				weakness DARKNESS
 				resistance FIGHTING, MINUS20
+				globalAbility {Card thisCard->
+          def lastTurn=0
+          action("$thisCard: Distortion Door", [TargetPlayer.fromPlayerType(thisCard.player)]) {
+            def text="Once during your turn (before your attack), if this Pokémon is in your discard pile, you may put it onto your Bench. Then, attach a [D] Energy card from your discard pile to this Pokémon."
+            assert thisCard.player.pbg.discard.contains(thisCard) : "Not in discard"
+            assert thisCard.player.pbg.bench.notFull : "Bench full"
+            assert bg.turnCount!=lastTurn : "Already used"
+            assert checkGlobalAbility(thisCard) : "Blocked"
+            bc "$thisCard used Distortion Door"
+            my.discard.remove(thisCard)
+            def pcs = benchPCS(thisCard)
+            multiSelect(thisCard.owner.opposite.pbg.bench,2).each{
+							directDamage 10, it
+						}
+          }
+        }
 				bwAbility "Distortion Door" , {
 					text "Once during your turn (before your attack), if this Pokémon is in your discard pile, you may put it onto your Bench. If you do, put 1 damage counter on 2 of your opponent's Benched Pokémon."
 				}
 				move "Shadow Impact" , {
 					text "130 damage. Put 4 damage counters on 1 of your Pokémon."
 					energyCost P,P,C
+					onAttack{
+						damage 130
+						directDamage 40, my.all.select()
+					}
 				}
 			};
 			case SIGILYPH_GX_98:
@@ -1772,14 +2365,37 @@ public enum ForbiddenLight implements CardInfo {
 				resistance FIGHTING, MINUS20
 				bwAbility "Mirror Counter" , {
 					text "If this Pokémon is your Active Pokémon and is damaged by an attack from your opponent's Pokémon-GX or Pokémon-EX (even if this Pokémon is Knocked Out), put damage counters on the Attacking Pokémon equal to the damage done to this Pokémon."
+					delayedA{
+						after APPLY_ATTACK_DAMAGES, {
+              if(self.active && ef.attacker.owner != self.owner && (ef.attacker.pokemonGX || ef.attacker.pokemonEX)) {
+                bg.dm().each{
+                  if(it.to == self && it.notNoEffect && it.dmg.value) {
+                    bc "Mirror Counter countered ${ef.attacker}'s attack"
+										ef.attacker.dmg+=it.dmg
+                  }
+                }
+              }
+            }
+					}
 				}
 				move "Sonic Wing" , {
 					text "80 damage. This attack's damage isn't affected by Resistance.\n"
 					energyCost P,C,C
+					onAttack{
+						damage 80
+						dontApplyResistance()
+					}
 				}
 				move "Intercept GX" , {
 					text "60× damage. This attack does 60 damage times the amount of Energy attached to your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
 					energyCost P,C,C
+					attackRequirement{
+						gxCheck()
+					}
+					onAttack{
+						gxPerform()
+						damage 60*defending.cards.energyCount(C)
+					}
 				}
 			};
 			case YAMASK_99:
@@ -1789,6 +2405,9 @@ public enum ForbiddenLight implements CardInfo {
 				move "Haunt" , {
 					text "Put 1 damage counter on your opponent's Active Pokémon."
 					energyCost P
+					onAttack{
+						directDamage 10, defending
+					}
 				}
 			};
 			case COFAGRIGUS_100:
@@ -1798,6 +2417,16 @@ public enum ForbiddenLight implements CardInfo {
 				move "Soul Juggling" , {
 					text "10+ damage. Discard any number of you Benched Pokémon. This attack does 30 more damage for each Benched Pokémon you discarded in this way."
 					energyCost P,C
+					onAttack{
+						damage 10
+						if(my.bench){
+							my.bench.filterByType(POKEMON).select(max:my.bench.filterByType(POKEMON).size(),"Choose the Pokémon to discard").each{
+								it.cards.discard()
+								removePCS(it)
+								damage 30
+							}
+						}
+					}
 				}
 			};
 			case LITWICK_101:
@@ -1807,6 +2436,9 @@ public enum ForbiddenLight implements CardInfo {
 				move "Haunt" , {
 					text "Put 1 damage counter on your opponent's Active Pokémon."
 					energyCost P
+					onAttack{
+						directDamage 10, defending
+					}
 				}
 			};
 			case LAMPENT_102:
@@ -1816,6 +2448,9 @@ public enum ForbiddenLight implements CardInfo {
 				move "Haunt" , {
 					text "Put 3 damage counters on your opponent's Active Pokémon."
 					energyCost P
+					onAttack{
+						directDamage 30, defending
+					}
 				}
 			};
 			case CHANDELURE_103:
@@ -1825,10 +2460,20 @@ public enum ForbiddenLight implements CardInfo {
 				move "Cursed Drop" , {
 					text "Put 4 damage counters on your opponent's Pokémon in any way you like.\n"
 					energyCost P
+					onAttack{
+						for(int i=0;i<4;i++){
+							directDamage 10, opp.all.select()
+						}
+					}
 				}
 				move "Vortex of Pain" , {
 					text "20× damage. This attack does 20 damage for each damage counter on all of your opponent's Pokémon."
 					energyCost P,P
+					onAttack{
+						opp.all.each{
+							damage 20*it.numberOfDamageCounters
+						}
+					}
 				}
 			};
 			case MELOETTA_104:
@@ -1837,10 +2482,24 @@ public enum ForbiddenLight implements CardInfo {
 				move "Sing" , {
 					text "Your opponent's Active Pokémon is now Asleep.\n"
 					energyCost C
+					onAttack{
+						apply ASLEEP
+					}
 				}
 				move "Miracle Harmony" , {
 					text "Flip a coin for each of your Pokémon that has the Sing attack. This attack does 10 damage for each heads to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost P,C,C
+					attackRequirement {
+            assert my.all.findAll{it.topPokemonCard.moves.findAll{it.name=="Sing"}}
+          }
+          onAttack {
+						def coinFlip = my.all.findAll{it.topPokemonCard.moves.findAll{it.name=="Sing"}}.size()
+						def totalDmg = 0
+            flip coinFlip, {totalDmg += 10}
+						opp.all.each{
+							damage totalDmg, it
+						}
+          }
 				}
 			};
 			case MAREANIE_105:
@@ -1849,10 +2508,16 @@ public enum ForbiddenLight implements CardInfo {
 				move "Peck" , {
 					text "10 damage."
 					energyCost C
+					onAttack{
+						damage 10
+					}
 				}
 				move "Pin Missile" , {
 					text "10× damage. Flip 4 coins. This attack does 10 damage for each heads."
 					energyCost P,C
+					onAttack{
+						flip 4,{damage 10}
+					}
 				}
 			};
 			case NIHILEGO_106:
@@ -1861,30 +2526,70 @@ public enum ForbiddenLight implements CardInfo {
 				move "Nightcap" , {
 					text "You can use this attack only if your opponent has exactly 2 Prize cards remaining. Choose 1 of your opponent's Pokémon's attacks and use it as this attack.\n"
 					energyCost P
+					attackRequirement {
+						assert opp.prizeCardSet.size() == 2 : "Your opponent has not exactly 2 Prize cards remaining."
+						assert opp.all.find {it.topPokemonCard.moves} : "No moves to perform"
+					}
+					onAttack {
+						def moveList = []
+						def labelList = []
+						opp.all.each {pcs->
+							moveList.addAll(pcs.topPokemonCard.moves);
+							labelList.addAll(pcs.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
+						}
+						def move=choose(moveList, labelList)
+						def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+						attack (move as Move)
+						bef.unregisterItself(bg().em())
+						gxPerform()
+					}
 				}
 				move "Void Tentacles" , {
 					text "Your opponent's Active Pokémon is now Confused and Poisoned."
 					energyCost P
+					onAttack{
+						apply CONFUSED
+						apply POISONED
+					}
 				}
 			};
 			case POIPOLE_107:
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
 				weakness PSYCHIC
 				move "Eye Opener" , {
-					text "Look at your face-down Prize cards.\n"
+					text "Look at your face-down Prize cards."
 					energyCost C
+					onAttack{
+						my.prizeCardSet.showToMe("your Prize cards")
+					}
 				}
 				move "Peck" , {
 					text "20 damage."
 					energyCost C,C
+					onAttack{
+						damage 20
+					}
 				}
 			};
 			case NAGANADEL_108:
 			return 	evolution (this, from:"Poipole", hp:HP130, type:PSYCHIC, retreatCost:1) {
 				weakness PSYCHIC
+				bwAbility "Charging Up" , {
+					text "Once during your turn (before your attack), you may attach a basic Energy card from your discard pile to this Pokémon."
+					actionA{
+						checkLastTurn()
+						assert my.discard.filterByType(BASIC_ENERGY) : "there is no basic Energy card in yout discard"
+						powerUsed()
+						attachEnergyFrom(basic:true, my.discard,self)
+					}
+				}
 				move "Turning Point" , {
 					text "80+ damage. If you have exactly 3 Prize cards remaining, this attack does 80 more damage."
 					energyCost C,C,C
+					onAttack{
+						damage 80
+						if(my.prizeCardSet.size() == 3) damage 80
+					}
 				}
 			};
 			case ONIX_109:
