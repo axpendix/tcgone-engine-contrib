@@ -16,7 +16,6 @@ import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
 import java.util.*;
-import org.apache.commons.lang.WordUtils;
 import tcgwars.entity.*;
 import tcgwars.logic.*;
 import tcgwars.logic.card.*;
@@ -38,7 +37,7 @@ import tcgwars.logic.util.*;
  * @author axpendix@hotmail.com
  * @author itrezad@gmail.com
  */
-public enum ForbiddenLight implements CardInfo {
+public enum LostThunder implements CardInfo {
 
 
 	TANGELA_1("Tangela", 1, Rarity.COMMON, [POKEMON,_GRASS_,BASIC]),
@@ -275,7 +274,7 @@ public enum ForbiddenLight implements CardInfo {
 	ELECTROPOWER_232("Electropower", 232, Rarity.SECRET, [TRAINER,ITEM]),
 	LOST_BLENDER_233("Lost Blender", 233, Rarity.SECRET, [TRAINER,ITEM]),
 	NET_BALL_234("Net Ball", 234, Rarity.SECRET, [TRAINER,ITEM]),
-	SPELL_TAG_235("Spell Tag", 235, Rarity.SECRET, [TRAINER,ITEM,TOOL]),
+	SPELL_TAG_235("Spell Tag", 235, Rarity.SECRET, [TRAINER,ITEM,POKEMON_TOOL]);
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
 	protected CardTypeSet cardTypes;
@@ -556,7 +555,7 @@ public enum ForbiddenLight implements CardInfo {
 						checkLastTurn()
 						assert my.deck
 						powerUsed()
-						def tar = my.deck.search(count:1,"Search 1 Jumpluff",{it.name.contains("Jumpluff"))
+						def tar = my.deck.search(count:1,"Search 1 Jumpluff",{it.name.contains("Jumpluff")})
 						if (tar){
 							self.cards.moveTo(my.lostZone)
 							removePCS(self)
@@ -684,7 +683,7 @@ public enum ForbiddenLight implements CardInfo {
 						def pcs
 						if(my.bench.findAll{it.evolution}){
 							pcs = my.bench.findAll{it.evolution}.select(min:0, max:1, "select one Pokémon to devolve")
-							while(my.bench.findAll{it.evolution} && pcs)){
+							while(my.bench.findAll{it.evolution} && pcs){
 								def top=pcs.topPokemonCard
 								bc "$top Devolved"
 								moveCard(top, opp.hand)
@@ -813,10 +812,9 @@ public enum ForbiddenLight implements CardInfo {
 					}
 					onAttack {
 						def maxSpace = Math.min(my.bench.freeBenchCount,4)
-							deck.search (max: maxSpace,{it.name.contains("Silcoon") || it.name.contains("Cascoon")}).each{
-								deck.remove(it)
-								benchPCS(it)
-							}
+						deck.search (max: maxSpace,{it.name.contains("Silcoon") || it.name.contains("Cascoon")}).each{
+							deck.remove(it)
+							benchPCS(it)
 						}
 						shuffleDeck()
 					}
@@ -866,10 +864,9 @@ public enum ForbiddenLight implements CardInfo {
 					}
 					onAttack {
 						def maxSpace = Math.min(my.bench.freeBenchCount,4)
-							deck.search (max: maxSpace,{it.name.contains("Silcoon") || it.name.contains("Cascoon")}).each{
-								deck.remove(it)
-								benchPCS(it)
-							}
+						deck.search (max: maxSpace,{it.name.contains("Silcoon") || it.name.contains("Cascoon")}).each{
+							deck.remove(it)
+							benchPCS(it)
 						}
 						shuffleDeck()
 					}
@@ -887,7 +884,7 @@ public enum ForbiddenLight implements CardInfo {
 				weakness FIRE
 				bwAbility "Hazardous Evolution" , {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may leave your opponent's Active Pokémon Paralyzed and Poisoned. Put 3 damage counters instead of 1 on that Pokémon between turns."
-					onActivate{->
+					onActivate{r->
 						if(r==PLAY_FROM_HAND) {
 							if(confirm("Use Hazardous Evolution?")) {
 								apply POISONED, opp.active
@@ -3985,7 +3982,7 @@ public enum ForbiddenLight implements CardInfo {
 				text "Choose a Pokémon Tool or Special Energy card attached to 1 of your opponent's Pokémon, or any Stadium card in play, and put it in the Lost Zone.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
 					def choice = 0
-					if(bg.stadiumInfoStruct && opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY})){
+					if(bg.stadiumInfoStruct && opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})){
 						choice = choose([0,1],["Put a Pokémon Tool or Special Energy card attached to 1 of your opponent's Pokémon to the Lost Zone","Put the Stadium card in play in the Lost Zone"],"what do you want to do?")
 					}
 					else{
@@ -4002,7 +3999,7 @@ public enum ForbiddenLight implements CardInfo {
 					}
 				}
 				playRequirement{
-					assert bg.stadiumInfoStruct || opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY})
+					assert bg.stadiumInfoStruct || opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})
 				}
 			};
 			case FAIRY_CHARM_G_174:
@@ -4016,7 +4013,7 @@ public enum ForbiddenLight implements CardInfo {
 									bg.dm().each {
 										if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(G) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
 											bc "Fairy Charm [G] prevent damage from [G] Pokémon-GX and [G] Pokémon-EX"
-											it.dmg = 0
+											it.dmg = hp(0)
 										}
 									}
 								}
@@ -4038,7 +4035,7 @@ public enum ForbiddenLight implements CardInfo {
 									bg.dm().each {
 										if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(P) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
 											bc "Fairy Charm [P] prevent damage from [P] Pokémon-GX and [P] Pokémon-EX"
-											it.dmg = 0
+											it.dmg = hp(0)
 										}
 									}
 								}
@@ -4060,7 +4057,7 @@ public enum ForbiddenLight implements CardInfo {
 									bg.dm().each {
 										if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(F) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
 											bc "Fairy Charm [F] prevent damage from [F] Pokémon-GX and [F] Pokémon-EX"
-											it.dmg = 0
+											it.dmg = hp(0)
 										}
 									}
 								}
@@ -4082,7 +4079,7 @@ public enum ForbiddenLight implements CardInfo {
 									bg.dm().each {
 										if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(N) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
 											bc "Fairy Charm [N] prevent damage from [N] Pokémon-GX and [N] Pokémon-EX"
-											it.dmg = 0
+											it.dmg = hp(0)
 										}
 									}
 								}
@@ -4193,7 +4190,7 @@ public enum ForbiddenLight implements CardInfo {
 								bg.dm().each {
 									if(it.to.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.notNoEffect && it.dmg.value){
 										bc "Lusamine prevent damage done to Ultra Beasts"
-										it.dmg = 0
+										it.dmg = hp(0)
 									}
 								}
 							}
@@ -4249,8 +4246,7 @@ public enum ForbiddenLight implements CardInfo {
 							def pcs = tar.select("Select the pokémon to be healed")
 
 							flip 2,{
-									heal 30, pcs
-								}
+								heal 30, pcs
 							}
 						}
 					}
