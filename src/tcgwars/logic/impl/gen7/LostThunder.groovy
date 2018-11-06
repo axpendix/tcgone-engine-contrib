@@ -2608,16 +2608,15 @@ public enum LostThunder implements CardInfo {
 			case SUDOWOODO_110:
 			return basic (this, hp:HP110, type:FIGHTING, retreatCost:2) {
 				weakness WATER
+				def turnCount=-1
+				HP lastDamage=null
 				customAbility {
-					delayedA {
+					delayed (priority: LAST) {
 						before APPLY_ATTACK_DAMAGES, {
-							if(ef.attacker.owner != self.owner && self.active) {
-                bg.dm().each{
-                  if(it.to == self && it.notNoEffect && it.dmg.value) {
-										bg.em().storeObject("Reply_Strongly", bg.turnCount)
-                  }
-                }
-              }
+							if(bg().currentTurn==self.owner.opposite) {
+								turnCount=bg.turnCount
+								lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
+							}
 						}
 					}
 				}
@@ -2626,7 +2625,7 @@ public enum LostThunder implements CardInfo {
 					energyCost F
 					onAttack{
 						damage 20
-						if(bg.em().retrieveObject("Reply_Strongly") == bg.turnCount-1) damage 80
+						if(turnCount+1==bg.turnCount && lastDamage > hp(0)) damage 80
 					}
 				}
 			};
@@ -2638,7 +2637,7 @@ public enum LostThunder implements CardInfo {
 					text "50 damage. Flip a coin. If tails, this attack does nothing."
 					energyCost F,C
 					onAttack{
-						flip 1,{damage 50},{bc "Last Resort failed"}
+						flip {damage 50}
 					}
 				}
 			};
@@ -2648,28 +2647,52 @@ public enum LostThunder implements CardInfo {
 				weakness GRASS
 				bwAbility "Sturdy" , {
 					text "If this Pokémon has full HP and would be Knocked Out by damage from an attack, this Pokémon is not Knocked Out, and its remaining HP becomes 10."
-					def effect1
-					def effect2
-					onActivate {
-						effect1 = before APPLY_ATTACK_DAMAGES, {
-							if(self.fullHP == self.remainingHP) {
-								bg.em().storeObject("Sturdy_${self.id}",1)
-							}
-							else{
-								bg.em().storeObject("Sturdy_${self.id}",null)
-							}
+					/* impl in Crustle BCR
+					delayedA {
+						def fullhpturn=0
+						before PROCESS_ATTACK_EFFECTS, {
+							if (bg.currentTurn==self.owner.opposite && self.numberOfDamageCounters==0)
+								fullhpturn=bg.turnCount
 						}
-						effect2 = before KNOCKOUT, {
-					    if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut!=self && bg.em().retrieveObject("Reply_Strongly")){
+						before KNOCKOUT, self, {
+							if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && bg.turnCount==fullhpturn){
+								bc "Sturdy is activated"
 								self.damage = self.fullHP - hp(10)
-								bc "sturdy saved $self!"
+								bc "Sturdy saved $self!"
 								prevent()
-					    }
+							}
 						}
 					}
-					onDeactivate {
-					  effect1.unregister()
-					  effect2.unregister()
+					 */
+					delayedA {
+						// @mtgufo
+						before APPLY_ATTACK_DAMAGES, {
+							if(ef.attacker.owner != self.owner) {
+								bg.dm().each{
+									if(it.to == self && it.notNoEffect && self.damage == hp(0) && it.dmg.value >= self.fullHP.value) {
+										bc "Sturdy saved $self!"
+										it.dmg = self.fullHP - hp(10)
+									}
+								}
+							}
+						}
+						/* @itresad
+						def flag = null
+						before APPLY_ATTACK_DAMAGES, {
+							if(self.fullHP == self.remainingHP) {
+								flag = 1
+							}
+							else{
+								flag = null
+							}
+						}
+						before KNOCKOUT, {
+							if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut!=self && flag){
+								self.damage = self.fullHP - hp(10)
+								bc "Sturdy saved $self!"
+								prevent()
+							}
+						} */
 					}
 				}
 				move "Rolling Spin" , {
@@ -2691,9 +2714,9 @@ public enum LostThunder implements CardInfo {
 					  damage 30
 					  afterDamage{
 					    if(my.bench){
-					      sw self, my.bench.select()
+					      sw self, my.bench.select("New active")
 					      if(opp.bench){
-					        sw defending, opp.bench.oppSelect()
+					        sw defending, opp.bench.oppSelect("New active")
 					      }
 					    }
 					  }
@@ -2714,10 +2737,10 @@ public enum LostThunder implements CardInfo {
 					text "As long as this Pokémon is on your Bench, prevent all damage done to this Pokémon by attacks (both yours and your opponent's)."
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
-							bg.dm().each{
-								if(!self.active && it.to == self){
-									bc "Submerge prevent all damage"
-									it.dmg=hp(0)
+									bg.dm().each{
+										if(!self.active && it.to == self){
+											bc "Submerge prevent all damage"
+											it.dmg=hp(0)
 								}
 							}
 						}
@@ -2779,9 +2802,15 @@ public enum LostThunder implements CardInfo {
 				move "Diamond Gate" , {
 					text "Search your deck for a Supporter card and a Stadium card, reveal them, and put them into your hand. Then, shuffle your deck.\n"
 					energyCost F
-					my.deck.search(max: 2, "Select a Supporter card and a Stadium card", {it.cardTypes.is(STADIUM) || it.cardTypes.is(SUPPORTER)}, {CardList list ->
-						list.filterByType(STADIUM).size() <= 1 && list.filterByType(SUPPORTER).size() <= 1
-					}).showToOpponent("Selected cards").moveTo(my.hand)
+					attackRequirement {
+						assert my.deck
+					}
+					onAttack {
+						my.deck.search(max: 2, "Select a Supporter card and a Stadium card", {it.cardTypes.is(STADIUM) || it.cardTypes.is(SUPPORTER)}, {CardList list ->
+							list.filterByType(STADIUM).size() <= 1 && list.filterByType(SUPPORTER).size() <= 1
+						}).showToOpponent("Selected cards").moveTo(my.hand)
+						shuffleDeck()
+					}
 				}
 				move "Guard Press" , {
 					text "60 damage. During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
