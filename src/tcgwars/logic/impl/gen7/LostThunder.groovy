@@ -209,15 +209,15 @@ public enum ForbiddenLight implements CardInfo {
 	TOUCANNON_166("Toucannon", 166, Rarity.RARE, [POKEMON,_COLORLESS_,STAGE2,EVOLUTION]),
 	ADVENTURE_BAG_167("Adventure Bag", 167, Rarity.UNCOMMON, [TRAINER,ITEM]),
 	AETHER_FOUNDATION_EMPLOYEE_168("Aether Foundation Employee", 168, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-	CHOICE_HELMET_169("Choice Helmet", 169, Rarity.UNCOMMON, [TRAINER,ITEM,TOOL]),
-	COUNTER_GAIN_170("Counter Gain", 170, Rarity.UNCOMMON, [TRAINER,ITEM,TOOL]),
+	CHOICE_HELMET_169("Choice Helmet", 169, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
+	COUNTER_GAIN_170("Counter Gain", 170, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
 	CUSTOM_CATCHER_171("Custom Catcher", 171, Rarity.UNCOMMON, [TRAINER,ITEM]),
 	ELECTROPOWER_172("Electropower", 172, Rarity.UNCOMMON, [TRAINER,ITEM]),
 	FABA_173("Faba", 173, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-	FAIRY_CHARM_G_174("Fairy Charm [G]", 174, Rarity.UNCOMMON, [TRAINER,ITEM,TOOL]),
-	FAIRY_CHARM_P_175("Fairy Charm [P]", 175, Rarity.UNCOMMON, [TRAINER,ITEM,TOOL]),
-	FAIRY_CHARM_F_176("Fairy Charm [F]", 176, Rarity.UNCOMMON, [TRAINER,ITEM,TOOL]),
-	FAIRY_CHARM_N_177("Fairy Charm [N]", 177, Rarity.UNCOMMON, [TRAINER,ITEM,TOOL]),
+	FAIRY_CHARM_G_174("Fairy Charm [G]", 174, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
+	FAIRY_CHARM_P_175("Fairy Charm [P]", 175, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
+	FAIRY_CHARM_F_176("Fairy Charm [F]", 176, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
+	FAIRY_CHARM_N_177("Fairy Charm [N]", 177, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
 	HEAT_FACTORY_PRISM_STAR_178("Heat Factory Prism Star", 178, Rarity.HOLORARE, [PRISM_STAR,TRAINER,STADIUM]),
 	KAHILI_179("Kahili", 179, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
 	LIFE_FOREST_PRISM_STAR_180("Life Forest Prism Star", 180, Rarity.HOLORARE, [PRISM_STAR,TRAINER,STADIUM]),
@@ -230,7 +230,7 @@ public enum ForbiddenLight implements CardInfo {
 	NET_BALL_187("Net Ball", 187, Rarity.UNCOMMON, [TRAINER,ITEM]),
 	PROFESSOR_ELM_S_LECTURE_188("Professor Elm's Lecture", 188, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
 	SIGHTSEER_189("Sightseer", 189, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-	SPELL_TAG_190("Spell Tag", 190, Rarity.UNCOMMON, [TRAINER,ITEM,TOOL]),
+	SPELL_TAG_190("Spell Tag", 190, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
 	THUNDER_MOUNTAIN_PRISM_STAR_191("Thunder Mountain Prism Star", 191, Rarity.HOLORARE, [PRISM_STAR,TRAINER,STADIUM]),
 	WAIT_AND_SEE_HAMMER_192("Wait and See Hammer", 192, Rarity.UNCOMMON, [TRAINER,ITEM]),
 	WHITNEY_193("Whitney", 193, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
@@ -269,8 +269,8 @@ public enum ForbiddenLight implements CardInfo {
 	MIMIKYU_GX_226("Mimikyu-GX", 226, Rarity.SECRET, [POKEMON_GX,POKEMON,_FAIRY_,BASIC]),
 	LUGIA_GX_227("Lugia-GX", 227, Rarity.SECRET, [POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
 	ADVENTURE_BAG_228("Adventure Bag", 228, Rarity.SECRET, [TRAINER,ITEM]),
-	CHOICE_HELMET_229("Choice Helmet", 229, Rarity.SECRET, [TRAINER,ITEM,TOOL]),
-	COUNTER_GAIN_230("Counter Gain", 230, Rarity.SECRET, [TRAINER,ITEM,TOOL]),
+	CHOICE_HELMET_229("Choice Helmet", 229, Rarity.SECRET, [TRAINER,ITEM,POKEMON_TOOL]),
+	COUNTER_GAIN_230("Counter Gain", 230, Rarity.SECRET, [TRAINER,ITEM,POKEMON_TOOL]),
 	CUSTOM_CATCHER_231("Custom Catcher", 231, Rarity.SECRET, [TRAINER,ITEM]),
 	ELECTROPOWER_232("Electropower", 232, Rarity.SECRET, [TRAINER,ITEM]),
 	LOST_BLENDER_233("Lost Blender", 233, Rarity.SECRET, [TRAINER,ITEM]),
@@ -3879,585 +3879,603 @@ public enum ForbiddenLight implements CardInfo {
 			case ADVENTURE_BAG_167:
 			return itemCard (this) {
 					text "Search your deck for up to 2 Pokémon Tool cards, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
+					onPlay {
+	          my.deck.search(max:2, "Search your deck for up to 2 Pokémon Tool cards", cardTypeFilter(POKEMON_TOOL)).moveTo(my.hand)
+	          shuffleDeck()
+	        }
+	        playRequirement{
+	          assert my.deck
+	        }
 			};
 			case AETHER_FOUNDATION_EMPLOYEE_168:
 			return supporter(this) {
-					text "Put 3 Pokémon that have &#8220;Alolan&#8221; in their names from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
+					text "Put 3 Pokémon that have 'Alolan' in their names from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
+					onPlay {
+						my.discard.select(max:3, "Choose 3 Alolan Pokémon to put in your hand", {it.name.contains("Alolan")}).moveTo(my.hand)
+						shuffleDeck()
+					}
+					playRequirement{
+						assert my.discard.findAll{it.name.contains("Alolan")}
+					}
 			};
 			case CHOICE_HELMET_169:
-			return itemCard (this) {
+			return pokemonTool (this) {
 					text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Pokémon this card is attached to takes 30 less damage from the attacks of your opponent's Pokémon-GX and Pokémon-EX (after applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack)."
+					def eff1
+					onPlay {reason->
+						eff1=delayed {
+							after PROCESS_ATTACK_EFFECTS, {
+								bg.dm().each {
+									if(it.to==self && it.from.owner!=self.owner && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
+										it.dmg -= hp(30)
+										bc "Choice Helmet -30"
+									}
+								}
+							}
+						}
+					}
+					onRemoveFromPlay {
+						eff1.unregister()
+					}
 			};
 			case COUNTER_GAIN_170:
-			return itemCard (this) {
+			return pokemonTool (this) {
 					text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf you have more Prize cards remaining than your opponent, the attacks of the Pokémon this card is attached to cost [C] less.\nYou may play as many Item cards as you like during your turn (before your attack)."
+					def eff1
+					onPlay {reason->
+						eff1=getter GET_MOVE_LIST, self, {h->
+							if(self.owner.pbg.prizeCardSet > self.owner.opposite.pbg.prizeCardSet){
+		            def list=[]
+		            for(move in h.object){
+		              def copy=move.shallowCopy()
+		              copy.energyCost.remove(C)
+		              list.add(copy)
+		            }
+		            h.object=list
+							}
+	          }
+					}
+					onRemoveFromPlay {
+						eff1.unregister()
+					}
 			};
 			case CUSTOM_CATCHER_171:
 			return itemCard (this) {
 					text "You may play 2 Custom Catcher cards at once.If you played 1 card, draw cards from your deck until you have 3 cards in your hand.If you played 2 cards, switch 1 of your opponent's Benched Pokémon with their Active Pokémon. (This effect works one time for 2 cards.)\nYou may play as many Item cards as you like during your turn (before your attack)."
+					onPlay {
+						if(opp.bench && my.hand.findAll({it.name=="Custom Catcher"}).size()>=2) {
+	            if(confirm("Use another Custom Catcher and switch your opponent active?")){
+	              my.hand.findAll({it.name=="Custom Catcher" && it!= self}).subList(0,1).discard()
+								sw opp.active, opp.bench.select("Choose the new active")
+	            }
+							else {
+								draw 4-my.hand.size()
+							}
+	          }
+						else{
+							draw 4-my.hand.size()
+	          }
+	        }
+	        playRequirement{
+	        }
 			};
 			case ELECTROPOWER_172:
 			return itemCard (this) {
 					text "During this turn, your [L] Pokémon's attacks do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack)."
+					onPlay {
+						delayed{
+							before APPLY_ATTACK_DAMAGES, {
+	              if(ef.attacker.owner == self.owner && ef.attacker.types.contains(L)) {
+	                bg.dm().each{
+	                  if(it.from == ef.attacker && it.notNoEffect && it.dmg.value) {
+	                    bc "Electropower +30"
+	                    it.dmg += hp(30)
+	                  }
+	                }
+	              }
+	            }
+							unregisterAfter 1
+						}
+	        }
+        	playRequirement{
+        	}
 			};
 			case FABA_173:
 			return supporter(this) {
-					text "Choose a Pokémon Tool or Special Energy card attached to 1 of your opponent's Pokémon, or any Stadium card in play, and put it in the Lost Zone.\nYou may play only 1 Supporter card during your turn (before your attack)."
+				text "Choose a Pokémon Tool or Special Energy card attached to 1 of your opponent's Pokémon, or any Stadium card in play, and put it in the Lost Zone.\nYou may play only 1 Supporter card during your turn (before your attack)."
+				onPlay {
+					def choice = 0
+					if(bg.stadiumInfoStruct && opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY})){
+						choice = choose([0,1],["Put a Pokémon Tool or Special Energy card attached to 1 of your opponent's Pokémon to the Lost Zone","Put the Stadium card in play in the Lost Zone"],"what do you want to do?")
+					}
+					else{
+						if(bg.stadiumInfoStruct){
+							choice = 1
+						}
+					}
+					if(choice == 0){
+						def pcs = opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)}).select("Remove 1 card from which pokémon?")
+						pcs.cards.findAll{it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(SPECIAL_ENERGY)}.select("Choose the card to put in the Lost Zone.").moveTo(opp.lostZone)
+					}
+					else{
+						bg.stadiumInfoStruct.stadiumCard.moveTo(opp.lostZone)
+					}
+				}
+				playRequirement{
+					assert bg.stadiumInfoStruct || opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY})
+				}
 			};
 			case FAIRY_CHARM_G_174:
-			return itemCard (this) {
+			return pokemonTool (this) {
 					text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nPrevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's [G] Pokémon-GX and [G] Pokémon-EX.\nYou may play as many Item cards as you like during your turn (before your attack)."
+					def eff1
+					onPlay {reason->
+						eff1=delayed {
+							before APPLY_ATTACK_DAMAGES, {
+								if(self.types.contains(Y)){
+									bg.dm().each {
+										if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(G) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
+											bc "Fairy Charm [G] prevent damage from [G] Pokémon-GX and [G] Pokémon-EX"
+											it.dmg = 0
+										}
+									}
+								}
+							}
+						}
+					}
+					onRemoveFromPlay {
+						eff1.unregister()
+					}
 			};
 			case FAIRY_CHARM_P_175:
-			return itemCard (this) {
+			return pokemonTool (this) {
 					text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nPrevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's [P] Pokémon-GX and [P] Pokémon-EX.\nYou may play as many Item cards as you like during your turn (before your attack)."
+					def eff1
+					onPlay {reason->
+						eff1=delayed {
+							before APPLY_ATTACK_DAMAGES, {
+								if(self.types.contains(Y)){
+									bg.dm().each {
+										if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(P) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
+											bc "Fairy Charm [P] prevent damage from [P] Pokémon-GX and [P] Pokémon-EX"
+											it.dmg = 0
+										}
+									}
+								}
+							}
+						}
+					}
+					onRemoveFromPlay {
+						eff1.unregister()
+					}
 			};
 			case FAIRY_CHARM_F_176:
-			return itemCard (this) {
+			return pokemonTool (this) {
 					text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nPrevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's [F] Pokémon-GX and [F] Pokémon-EX.\nYou may play as many Item cards as you like during your turn (before your attack)."
+					def eff1
+					onPlay {reason->
+						eff1=delayed {
+							before APPLY_ATTACK_DAMAGES, {
+								if(self.types.contains(Y)){
+									bg.dm().each {
+										if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(F) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
+											bc "Fairy Charm [F] prevent damage from [F] Pokémon-GX and [F] Pokémon-EX"
+											it.dmg = 0
+										}
+									}
+								}
+							}
+						}
+					}
+					onRemoveFromPlay {
+						eff1.unregister()
+					}
 			};
 			case FAIRY_CHARM_N_177:
-			return itemCard (this) {
+			return pokemonTool (this) {
 					text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nPrevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's [N] Pokémon-GX and [N] Pokémon-EX.\nYou may play as many Item cards as you like during your turn (before your attack)."
+					def eff1
+					onPlay {reason->
+						eff1=delayed {
+							before APPLY_ATTACK_DAMAGES, {
+								if(self.types.contains(Y)){
+									bg.dm().each {
+										if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(N) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
+											bc "Fairy Charm [N] prevent damage from [N] Pokémon-GX and [N] Pokémon-EX"
+											it.dmg = 0
+										}
+									}
+								}
+							}
+						}
+					}
+					onRemoveFromPlay {
+						eff1.unregister()
+					}
 			};
 			case HEAT_FACTORY_PRISM_STAR_178:
-			return trainer(this) {
+			return stadium (this) {
 					text "Once during each player's turn, that player may discard a [R] Energy from their hand. If they do, that player draws 3 cards.\nWhenever a player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
+					def lastTurn=0
+					def actions=[]
+					def eff
+					onPlay {
+						eff = delayed{
+							before null, self, Source.SUPPORTER, {
+								bc "This stadium is not affected by Supporter cards."
+								prevent()
+							}
+							before null, self, Source.ITEM, {
+								bc "This stadium is not affected by Item cards."
+								prevent()
+							}
+						}
+						actions=action("Stadium: Ultra Space") {
+							assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(R)
+							assert lastTurn != bg().turnCount : "Already used"
+							bc "Used Heat Factory Prism Star"
+							lastTurn = bg().turnCount
+							my.hand.filterByType(BASIC_ENERGY).select("Choose the card to discard.").discard()
+							draw 3
+						}
+					}
+					onRemoveFromPlay{
+						actions.each { bg().gm().unregisterAction(it) }
+						eff.unregister()
+
+					}
 			};
 			case KAHILI_179:
 			return supporter(this) {
 					text "Draw 2 cards. Then, flip a coin. If heads, if you played this Kahili from your hand, put this card into your hand instead of the discard pile. If you have no cards in your deck, you can't play this card.\nYou may play only 1 Supporter card during your turn (before your attack)."
+					onPlay{
+						draw 2
+						flip {
+							delayed{
+								before DISCARD, self, {
+									self.moveTo(my.hand)
+									prevent()
+								}
+								unregisterAfter 1
+							}
+						}
+					}
 			};
 			case LIFE_FOREST_PRISM_STAR_180:
 			return trainer(this) {
 					text "Once during each player's turn, that player may heal 60 damage and remove all Special Conditions from 1 of their [G] Pokémon.\nWhenever a player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
+					def lastTurn=0
+					def actions=[]
+					def eff
+					onPlay {
+						eff = delayed{
+							before null, self, Source.SUPPORTER, {
+								bc "This stadium is not affected by Supporter cards."
+								prevent()
+							}
+							before null, self, Source.ITEM, {
+								bc "This stadium is not affected by Item cards."
+								prevent()
+							}
+						}
+						actions=action("Stadium: Ultra Space") {
+							assert my.all.findAll{it.types.contains(G) && (it.numberOfDamageCounters || it.specialConditions)} : "There is no grass pokémon to be healed."
+							assert lastTurn != bg().turnCount : "Already used"
+							bc "Used Life Forest Prism Star"
+							lastTurn = bg().turnCount
+							my.hand.filterByType(BASIC_ENERGY).select("Choose the card to discard.").discard()
+							draw 3
+						}
+					}
+					onRemoveFromPlay{
+						actions.each { bg().gm().unregisterAction(it) }
+						eff.unregister()
+
+					}
 			};
 			case LOST_BLENDER_181:
 			return itemCard (this) {
 					text "Put 2 cards from your hand in the Lost Zone. If you do, draw a card.\nYou may play as many Item cards as you like during your turn (before your attack)."
+					onPlay{
+						my.hand.getExcludedList(thisCard).select(count : 2,"Choose 2 cards to put in your Lost Zone").moveTo(my.lostZone)
+						draw 1
+					}
+					playRequirement{
+						assert my.hand.getExcludedList(thisCard).size() >=2 : "There is not enough cards in your hand"
+					}
 			};
 			case LUSAMINE_PRISM_STAR_182:
 			return trainer(this) {
 					text "You can play this card only if your opponent has exactly 3 Prize cards remaining.\nPrevent all damage done to your Ultra Beasts by attacks during your opponent's next turn.\nYou may play only 1 Supporter card during your turn (before your attack).\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
+					onPlay{
+						delayed {
+							before APPLY_ATTACK_DAMAGES, {
+								bg.dm().each {
+									if(it.to.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.notNoEffect && it.dmg.value){
+										bc "Lusamine prevent damage done to Ultra Beasts"
+										it.dmg = 0
+									}
+								}
+							}
+							unregisterAfter 1
+						}
+					}
+
+					playRequirement{
+						assert opp.prizeCardSet.size() == 3 : "Your opponent has not 3 Prize cards remaining."
+					}
 			};
 			case MINA_183:
 			return supporter(this) {
 					text "Search your deck for a [Y] Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+					onPlay{
+						attachEnergyFrom(basic: true, type:Y, my.deck, my.all)
+						shuffleDeck()
+					}
+					playRequirement{
+						assert my.deck : "There is no more cards in your deck"
+					}
 			};
 			case MIXED_HERBS_184:
 			return itemCard (this) {
 					text "You may play 2 Mixed Herbs cards at once.If you played 1 card, remove a Special Condition from your Active Pokémon.If you played 2 cards, heal 90 damage and remove all Special Conditions from your Active Pokémon. (This effect works one time for 2 cards.)\nYou may play as many Item cards as you like during your turn (before your attack)."
+					onPlay {
+						if(my.hand.findAll({it.name=="Mixed Herbs"}).size()>=2) {
+	            if(confirm("Use another Mixed Herbs?")){
+	              my.hand.findAll({it.name=="Mixed Herbs" && it!= self}).subList(0,1).discard()
+								heal 90, my.active
+								clearSpecialCondition(pcs,Source.TRAINER_CARD)
+	            }
+							else {
+								SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove");
+								clearSpecialCondition(my.active, TRAINER_CARD, Arrays.asList(spc))
+							}
+	          }
+						else{
+							SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove");
+							clearSpecialCondition(my.active, TRAINER_CARD, Arrays.asList(spc))
+	          }
+	        }
+	        playRequirement{
+						assert my.active.numberOfDamageCounters || my.active.specialConditions
+	        }
 			};
 			case MOOMOO_MILK_185:
 			return itemCard (this) {
 					text "Choose 1 of your Pokémon, and then flip 2 coins. For each heads, heal 30 damage from that Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
+					onPlay {
+						def tar = my.all.findAll{(it.numberOfDamageCounters !=0)}
+						if(tar){
+							def pcs = tar.select("Select the pokémon to be healed")
+
+							flip 2,{
+									heal 30, pcs
+								}
+							}
+						}
+					}
 			};
 			case MORTY_186:
 			return supporter(this) {
 					text "You can play this card only if 1 of your [P] Pokémon was Knocked Out during your opponent's last turn.\nYour opponent reveals their hand. Choose 2 cards you find there. Your opponent shuffles those cards into their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+					onPlay {
+						opp.hand.showToMe("Your opponent's hand").select(count : Math.min(2,opp.hand.size())).moveTo(opp.deck)
+						shuffleDeck(null, TargetPlayer.OPPONENT)
+					}
+					playRequirement{
+						assert bg.turnCount
+						assert my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1: "No Pokémon has been Knocked Out during your opponent’s last turn"
+						assert my.knockoutTypesPerTurn.get(bg.turnCount - 1)?.contains(P) : "The Pokémon Knocked Out was not Fairy"
+					}
 			};
 			case NET_BALL_187:
 			return itemCard (this) {
 					text "Search your deck for a Basic [G] Pokémon or a [G] Energy card, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
+					onPlay{
+						my.deck.search("Choose Basic [G] Pokémon or a [G] Energy card",{(it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(G)) || (it.cardTypes.is(BASIC_ENERGY) && it.asEnergyCard().containsTypePlain(G) )}).moveTo(my.hand)
+					}
+					playRequirement{
+						assert my.deck : "There is no more cards in your deck"
+					}
 			};
 			case PROFESSOR_ELM_S_LECTURE_188:
 			return supporter(this) {
 					text "Search your deck for up to 3 Pokémon with 60 HP or less, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+					onPlay{
+						my.deck.search(max : 3, "Choose up to 3 Pokémon with 60 HP or less",{it.cardTypes.is(POKEMON) && it.asPokemonCard().hp.value <= 60}).showToOpponent("Chosen Pokémon cards.").moveTo(my.hand)
+					}
+					playRequirement{
+						assert my.deck : "There is no more cards in your deck"
+					}
 			};
 			case SIGHTSEER_189:
 			return supporter(this) {
 					text "You may discard any number of card from your hand. Then, draw cards until you have 5 cards in your hand. If you can't draw any cards in this way, you can't play this card.\nYou may play only 1 Supporter card during your turn (before your attack)."
+					onPlay{
+						my.hand.getExcludedList(thisCard).select(min : my.hand.size() - 5 , max : my.deck.size() + my.hand.size() - 4).moveTo(my.discard)
+						draw 5 - my.hand.getExcludedList(thisCard).size()
+					}
+					playRequirement{
+						assert my.deck.size() + my.hand.size() - 1 >= 5 : "There is not enough cards in your deck"
+					}
 			};
 			case SPELL_TAG_190:
-			return itemCard (this) {
+			return pokemonTool (this) {
 					text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nWhen the [P] Pokémon this card is attached to is Knocked Out by damage from an opponent's attack, put 4 damage counters on your opponent's Pokémon in any way you like.\nYou may play as many Item cards as you like during your turn (before your attack)."
+					def eff
+					onPlay {reason->
+						eff = delayed {
+							before (KNOCKOUT,self) {
+								if(self.types.contains(P) && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+									bc "Spell Tag activates"
+									for(int i=0;i<4;i++){
+										directDamage 10, opp.all.select()
+									}
+								}
+							}
+						}
+					}
+					onRemoveFromPlay {
+						eff.unregister()
+					}
 			};
 			case THUNDER_MOUNTAIN_PRISM_STAR_191:
 			return trainer(this) {
 					text "The attacks of [L] Pokémon (both yours and your opponent's) cost [L] less.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
+					def eff1
+					def eff2
+					onPlay {
+						eff = delayed{
+							before null, self, Source.SUPPORTER, {
+								bc "This stadium is not affected by Supporter cards."
+								prevent()
+							}
+							before null, self, Source.ITEM, {
+								bc "This stadium is not affected by Item cards."
+								prevent()
+							}
+						}
+						eff2=getter GET_MOVE_LIST, {h->
+							if(h.effect.target.owner.types.contains(L)){
+		            def list=[]
+		            for(move in h.object){
+		              def copy=move.shallowCopy()
+		              copy.energyCost.remove(L)
+		              list.add(copy)
+		            }
+		            h.object=list
+							}
+	          }
+					}
+					onRemoveFromPlay{
+						eff.unregister()
+					}
 			};
 			case WAIT_AND_SEE_HAMMER_192:
 			return itemCard (this) {
 					text "You can use this card only if you go second, and only on your first turn.\nDiscard an Energy from 1 of your opponent's Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
+					onPlay{
+						def pcs = opp.all.findAll{it.cards.energyCount(C)}.select("Choose the Pokémon to discard an Energy from.")
+						pcs.cards.filterByType(ENERGY).select("Choose the energy to discard").discard()
+					}
+					playRequirement{
+						assert bg.turnCount == 2 : "This card is now useless"
+					}
 			};
 			case WHITNEY_193:
 			return supporter(this) {
 					text "Draw a card. Then, draw 2 cards for each other Whitney in your discard pile.\nYou may play only 1 Supporter card during your turn (before your attack)."
+					onPlay{
+						draw 1
+						my.discard.findAll{it.name.contains("Whitney")}.each{
+							draw 2
+						}
+					}
+					playRequirement{
+						assert my.deck : "There is no more card in your deck"
+					}
 			};
 			case MEMORY_ENERGY_194:
-			return 	specialEnergy (this) {
-					text ""
+  		return specialEnergy (this, [[C]]) {
+						text "This card provides [C] Energy.\n The Pokémon this card is attached to can use any attack from its previous Evolutions (You still need the necessary Energy to use the attack)"
+						def eff
+						onPlay {reason->
+							eff = getterA (GET_MOVE_LIST,self) {holder->
+								for(card in holder.effect.target.cards.filterByType(POKEMON)){
+									if(card!=holder.effect.target.topPokemonCard){
+										holder.object.addAll(card.moves)
+									}
+								}
+							}
+						}
+						onRemoveFromPlay {
+							eff.unregister()
+						}
+
 			};
 			case SHUCKLE_GX_195:
-			return basic (this, hp:HP170, type:GRASS, retreatCost:1) {
-				weakness FIRE
-				bwAbility "Protective Shell" , {
-					text "Prevent all damage done to this Pokémon by attacks from your opponent's Pokémon that have 2 or fewer Energy attached to them."
-				}
-				move "Triple Poison" , {
-					text "Your opponent's Active Pokémon is now Poisoned. Put 3 damage counters instead of 1 on that Pokémon between turns.\n"
-					energyCost C
-				}
-				move "Wrap GX" , {
-					text "40 damage. Your opponent's Active Pokémon is now Paralyzed. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost C
-				}
-			};
+			return copy(SHUCKLE_GX_17,this)
 			case SCEPTILE_GX_196:
-			return 	evolution (this, from:"Grovyle", hp:HP230, type:GRASS, retreatCost:1) {
-				weakness FIRE
-				move "Mach Cut" , {
-					text "60 damage. Discard a Special Energy from your opponent's Active Pokémon.\n"
-					energyCost G
-				}
-				move "Leaf Cyclone" , {
-					text "130 damage. Move a"
-					energyCost G,G
-				}
-				move "Jungle Heal GX" , {
-					text "Heal all damage from each of your Pokémon that has any"
-					energyCost G
-				}
-			};
+			return copy(SCEPTILE_GX_22,this)
 			case VIRIZION_GX_197:
-			return basic (this, hp:HP170, type:GRASS, retreatCost:2) {
-				weakness FIRE
-				move "Double Draw" , {
-					text "Draw 2 cards.\n"
-					energyCost C
-				}
-				move "Sensitive Blade" , {
-					text "50+ damage. If you played a Supporter card from your hand during this turn, this attack does 80 more damage.\n"
-					energyCost G,G
-				}
-				move "Breeze Away GX" , {
-					text "Put any number of your Pokémon in play and all cards attached to them into your hand. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost C
-				}
-			};
+			return copy(VIRIZION_GX_34,this)
 			case MAGCARGO_GX_198:
-			return 	evolution (this, from:"Slugma", hp:HP210, type:FIRE, retreatCost:3) {
-				weakness WATER
-				bwAbility "Crushing Charge" , {
-					text "Once during your turn (before your attack), you may discard the top card of your deck. If it's a basic Energy card, attach it to 1 of your Pokémon."
-				}
-				move "Lava Flow" , {
-					text "50+ damage. Discard any amount of basic Energy from this Pokémon. This attack does 50 more damage for each card you discarded in this way.\n"
-					energyCost R,R,C
-				}
-				move "Burning Magma GX" , {
-					text "Discard the top 5 cards of your opponent's deck. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost R
-				}
-			};
+			return copy(MAGCARGO_GX_44,this)
 			case BLACEPHALON_GX_199:
-			return basic (this, hp:HP180, type:FIRE, retreatCost:2) {
-				weakness WATER
-				move "Bursting Burn" , {
-					text "Your opponent's Active Pokémon is now Burned and Confused.\n"
-					energyCost R
-				}
-				move "Mind Blown" , {
-					text "50× damage. Put any number of"
-					energyCost R,R
-				}
-				move "Burst GX" , {
-					text "Discard 1 of your Prize cards. If it's an Energy card, attach it to 1 of your Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost R
-				}
-			};
+			return copy(BLACEPHALON_GX_52,this)
 			case SUICUNE_GX_200:
-			return basic (this, hp:HP180, type:WATER, retreatCost:2) {
-				weakness GRASS
-				bwAbility "Phantom Winds" , {
-					text "Once during your turn (before your attack), if this Pokémon is on your Bench, you may shuffle it and all cards attached to it into your deck."
-				}
-				move "Cure Stream" , {
-					text "120 damage. During your opponent's next turn, the Defending Pokémon's attacks do 30 less damage (before applying Weakness and Resistance).\n"
-					energyCost W,W,C
-				}
-				move "Brinicles GX" , {
-					text "150 damage. Switch this Pokémon with 1 of your Benched Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost W,W,C
-				}
-			};
+			return copy(SUICUNE_GX_60,this)
 			case ZERAORA_GX_201:
-			return basic (this, hp:HP190, type:LIGHTNING, retreatCost:2) {
-				weakness FIGHTING
-				resistance METAL, MINUS20
-				bwAbility "Thunderclap Zone" , {
-					text "Each of your Pokémon that has any [L] Energy attached to it has no Retreat Cost."
-				}
-				move "Plasma Fists" , {
-					text "160 damage. This Pokémon can't attack during your next turn.\n"
-					energyCost L,L,C
-				}
-				move "Full Voltage GX" , {
-					text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost L
-				}
-			};
+			return copy(ZERAORA_GX_86,this)
 			case SIGILYPH_GX_202:
-			return basic (this, hp:HP170, type:PSYCHIC, retreatCost:2) {
-				weakness LIGHTNING
-				resistance FIGHTING, MINUS20
-				bwAbility "Mirror Counter" , {
-					text "If this Pokémon is your Active Pokémon and is damaged by an attack from your opponent's Pokémon-GX or Pokémon-EX (even if this Pokémon is Knocked Out), put damage counters on the Attacking Pokémon equal to the damage done to this Pokémon."
-				}
-				move "Sonic Wing" , {
-					text "80 damage. This attack's damage isn't affected by Resistance.\n"
-					energyCost P,C,C
-				}
-				move "Intercept GX" , {
-					text "60× damage. This attack does 60 damage times the amount of Energy attached to your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost P,C,C
-				}
-			};
+			return copy(SIGILYPH_GX_98,this)
 			case TYRANITAR_GX_203:
-			return 	evolution (this, from:"Pupitar", hp:HP250, type:DARKNESS, retreatCost:3) {
-				weakness FIGHTING
-				resistance PSYCHIC, MINUS20
-				bwAbility "Lost Out" , {
-					text "If your opponent's Pokémon is Knocked Out by damage from this Pokémon's attacks, put that Pokémon and all cards attached to it in the Lost Zone instead of the discard pile."
-				}
-				move "Dusty Ruckus" , {
-					text "130 damage. This attack does 30 damage to each of your opponent's Benched Basic Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)\n"
-					energyCost D,D,C
-				}
-				move "Lay the Smackdown GX" , {
-					text "220 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost D,D,C
-				}
-			};
+			return copy(TYRANITAR_GX_121,this)
 			case GENESECT_GX_204:
-			return basic (this, hp:HP180, type:METAL, retreatCost:2) {
-				weakness FIRE
-				resistance PSYCHIC, MINUS20
-				bwAbility "Double Drive" , {
-					text "This Pokémon may have up to 2 Pokémon Tool cards attached to it. If it loses this Ability, discard Pokémon Tools cards from it until only 1 remains."
-				}
-				move "Burst Shot" , {
-					text "130 damage."
-					energyCost M,M,C
-				}
-				move "Break Buster GX" , {
-					text "190 damage. This attack's damage isn't affected by Resistance. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost M,M,C
-				}
-			};
+			return copy(GENESECT_GX_130,this)
 			case ALOLAN_NINETALES_GX_205:
-			return 	evolution (this, from:"Alolan Vulpix", hp:HP200, type:FAIRY, retreatCost:2) {
-				weakness METAL
-				resistance DARKNESS, MINUS20
-				bwAbility "Mysterious Guidance" , {
-					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may search your deck for up to 2 Item cards, reveal them, and put them into your hand. Then, shuffle your deck."
-				}
-				move "Snowy Wind" , {
-					text "70 damage. This attack does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)\n"
-					energyCost Y,C
-				}
-				move "Sublimation GX" , {
-					text "If your opponent's Active Pokémon is an Ultra Beast, it is Knocked Out. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost Y,C
-				}
-			};
+			return copy(ALOLAN_NINETALES_GX_132,this)
 			case MIMIKYU_GX_206:
-			return basic (this, hp:HP170, type:FAIRY, retreatCost:1) {
-				move "Perplex" , {
-					text "Your opponent's Active Pokémon is now Confused.\n"
-					energyCost Y
-				}
-				move "Let's Snuggle &#038; Fall" , {
-					text "10+ damage. This attack does 30 more damage for each damage counter on your opponent's Active Pokémon.\n"
-					energyCost Y,C
-				}
-				move "Dream Fear GX" , {
-					text "Choose 1 of your opponent's Benched Pokémon. Your opponent shuffles that Pokémon and all cards attached to it into their deck. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost Y
-				}
-			};
+			return copy(MIMIKYU_GX_149,this)
 			case LUGIA_GX_207:
-			return basic (this, hp:HP190, type:COLORLESS, retreatCost:2) {
-				weakness LIGHTNING
-				resistance FIGHTING, MINUS20
-				move "Psychic" , {
-					text "30+ damage. This attack does 30 more damage times the amount of Energy attached to your opponent's Active Pokémon.\n"
-					energyCost C,C,C
-				}
-				move "Pelagic Blade" , {
-					text "170 damage. This Pokémon can't use Pelagic Blade during your next turn.\n"
-					energyCost C,C,C,C
-				}
-				move "Lost Purge GX" , {
-					text "Put your opponent's Active Pokémon and all cards attached to it in the Lost Zone. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost C,C,C
-				}
-			};
+			return copy(LUGIA_GX_159,this)
 			case FABA_208:
-			return supporter(this) {
-					text "Choose a Pokémon Tools or Special Energy card attached to 1 of your opponent's Pokémon, or any Stadium card in play, and put it in the Lost Zone.\nYou may play only 1 Supporter card during your turn (before your attack)."
-			};
+			return copy(FABA_173,this)
 			case JUDGE_209:
-			return supporter(this) {
-					text "Each player shuffles their hand into their deck and draws 4 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
-			};
+			return copy(ForbiddenLight.JUDGE_108,this)
 			case KAHILI_210:
-			return supporter(this) {
-					text "Draw 2 cards. Then, flip a coin. If heads, if you played this Kahili from your hand, put this card into your hand instead of the discard pile. If you have no cards in your deck, you can't play this card.\nYou may play only 1 Supporter card during your turn (before your attack)."
-			};
+			return copy(KAHILI_179,this)
 			case MINA_211:
-			return supporter(this) {
-					text "Search your deck for a [Y] Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
-			};
+			return copy(MINA_183,this)
 			case MORTY_212:
-			return supporter(this) {
-					text "You can play this card only if 1 of your [P] Pokémon was Knocked Out during your opponent's last turn.\nYour opponent reveals their hand. Choose 2 cards you find there. Your opponent shuffles those cards into their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
-			};
+			return copy(MORTY_186,this)
 			case PROFESSOR_ELM_S_LECTURE_213:
-			return supporter(this) {
-					text "Search your deck for up to 3 Pokémon with 60 HP or less, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
-			};
+			return copy(PROFESSOR_ELM_S_LECTURE_188,this)
 			case WHITNEY_214:
-			return supporter(this) {
-					text "Draw a card. Then, draw 2 cards for each other Whitney in your discard pile.\nYou may play only 1 Supporter card during your turn (before your attack)."
-			};
+			return copy(WHITNEY_193,this)
 			case SHUCKLE_GX_215:
-			return basic (this, hp:HP170, type:GRASS, retreatCost:1) {
-				weakness FIRE
-				bwAbility "Protective Shell" , {
-					text "Prevent all damage done to this Pokémon by attacks from your opponent's Pokémon that have 2 or fewer Energy attached to them."
-				}
-				move "Triple Poison" , {
-					text "Your opponent's Active Pokémon is now Poisoned. Put 3 damage counters instead of 1 on that Pokémon between turns.\n"
-					energyCost C
-				}
-				move "Wrap GX" , {
-					text "40 damage. Your opponent's Active Pokémon is now Paralyzed. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost C
-				}
-			};
+			return copy(SHUCKLE_GX_17,this)
 			case SCEPTILE_GX_216:
-			return 	evolution (this, from:"Grovyle", hp:HP230, type:GRASS, retreatCost:1) {
-				weakness FIRE
-				move "Mach Cut" , {
-					text "60 damage. Discard a Special Energy from your opponent's Active Pokémon.\n"
-					energyCost G
-				}
-				move "Leaf Cyclone" , {
-					text "130 damage. Move a"
-					energyCost G,G
-				}
-				move "Jungle Heal GX" , {
-					text "Heal all damage from each of your Pokémon that has any"
-					energyCost G
-				}
-			};
+			return copy(SCEPTILE_GX_22,this)
 			case VIRIZION_GX_217:
-			return basic (this, hp:HP170, type:GRASS, retreatCost:2) {
-				weakness FIRE
-				move "Double Draw" , {
-					text "Draw 2 cards.\n"
-					energyCost C
-				}
-				move "Sensitive Blade" , {
-					text "50+ damage. If you played a Supporter card from your hand during this turn, this attack does 80 more damage.\n"
-					energyCost G,G
-				}
-				move "Breeze Away GX" , {
-					text "Put any number of your Pokémon in play and all cards attached to them into your hand. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost C
-				}
-			};
+			return copy(VIRIZION_GX_34,this)
 			case MAGCARGO_GX_218:
-			return 	evolution (this, from:"Slugma", hp:HP210, type:FIRE, retreatCost:3) {
-				weakness WATER
-				bwAbility "Crushing Charge" , {
-					text "Once during your turn (before your attack), you may discard the top card of your deck. If it's a basic Energy card, attach it to 1 of your Pokémon."
-				}
-				move "Lava Flow" , {
-					text "50+ damage. Discard any amount of basic Energy from this Pokémon. This attack does 50 more damage for each card you discarded in this way.\n"
-					energyCost R,R,C
-				}
-				move "Burning Magma GX" , {
-					text "Discard the top 5 cards of your opponent's deck. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost R
-				}
-			};
+			return copy(MAGCARGO_GX_44,this)
 			case BLACEPHALON_GX_219:
-			return basic (this, hp:HP180, type:FIRE, retreatCost:2) {
-				weakness WATER
-				move "Bursting Burn" , {
-					text "Your opponent's Active Pokémon is now Burned and Confused.\n"
-					energyCost R
-				}
-				move "Mind Blown" , {
-					text "50× damage. Put any number of"
-					energyCost R,R
-				}
-				move "Burst GX" , {
-					text "Discard 1 of your Prize cards. If it's an Energy card, attach it to 1 of your Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost R
-				}
-			};
+			return copy(BLACEPHALON_GX_52,this)
 			case SUICUNE_GX_220:
-			return basic (this, hp:HP180, type:WATER, retreatCost:2) {
-				weakness GRASS
-				bwAbility "Phantom Winds" , {
-					text "Once during your turn (before your attack), if this Pokémon is on your Bench, you may shuffle it and all cards attached to it into your deck."
-				}
-				move "Cure Stream" , {
-					text "120 damage. During your opponent's next turn, the Defending Pokémon's attacks do 30 less damage (before applying Weakness and Resistance).\n"
-					energyCost W,W,C
-				}
-				move "Brinicles GX" , {
-					text "150 damage. Switch this Pokémon with 1 of your Benched Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost W,W,C
-				}
-			};
+			return copy(SUICUNE_GX_60,this)
 			case ZERAORA_GX_221:
-			return basic (this, hp:HP190, type:LIGHTNING, retreatCost:2) {
-				weakness FIGHTING
-				resistance METAL, MINUS20
-				bwAbility "Thunderclap Zone" , {
-					text "Each of your Pokémon that has any [L] Energy attached to it has no Retreat Cost."
-				}
-				move "Plasma Fists" , {
-					text "160 damage. This Pokémon can't attack during your next turn.\n"
-					energyCost L,L,C
-				}
-				move "Full Voltage GX" , {
-					text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost L
-				}
-			};
+			return copy(ZERAORA_GX_86,this)
 			case SIGILYPH_GX_222:
-			return basic (this, hp:HP170, type:PSYCHIC, retreatCost:2) {
-				weakness LIGHTNING
-				resistance FIGHTING, MINUS20
-				bwAbility "Mirror Counter" , {
-					text "If this Pokémon is your Active Pokémon and is damaged by an attack from your opponent's Pokémon-GX or Pokémon-EX (even if this Pokémon is Knocked Out), put damage counters on the Attacking Pokémon equal to the damage done to this Pokémon."
-				}
-				move "Sonic Wing" , {
-					text "80 damage. This attack's damage isn't affected by Resistance.\n"
-					energyCost P,C,C
-				}
-				move "Intercept GX" , {
-					text "60× damage. This attack does 60 damage times the amount of Energy attached to your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost P,C,C
-				}
-			};
+			return copy(SIGILYPH_GX_98,this)
 			case TYRANITAR_GX_223:
-			return 	evolution (this, from:"Pupitar", hp:HP250, type:DARKNESS, retreatCost:3) {
-				weakness FIGHTING
-				resistance PSYCHIC, MINUS20
-				bwAbility "Lost Out" , {
-					text "If your opponent's Pokémon is Knocked Out by damage from this Pokémon's attacks, put that Pokémon and all cards attached to it in the Lost Zone instead of the discard pile."
-				}
-				move "Dusty Ruckus" , {
-					text "130 damage. This attack does 30 damage to each of your opponent's Benched Basic Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)\n"
-					energyCost D,D,C
-				}
-				move "Lay the Smackdown GX" , {
-					text "220 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost D,D,C
-				}
-			};
+			return copy(TYRANITAR_GX_121,this)
 			case GENESECT_GX_224:
-			return basic (this, hp:HP180, type:METAL, retreatCost:2) {
-				weakness FIRE
-				resistance PSYCHIC, MINUS20
-				bwAbility "Double Drive" , {
-					text "This Pokémon may have up to 2 Pokémon Tool cards attached to it. If it loses this Ability, discard Pokémon Tool cards from it until only 1 remains."
-				}
-				move "Burst Shot" , {
-					text "130 damage."
-					energyCost M,M,C
-				}
-				move "Break Buster GX" , {
-					text "190 damage. This attack's damage isn't affected by Resistance. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost M,M,C
-				}
-			};
+			return copy(GENESECT_GX_130,this)
 			case ALOLAN_NINETALES_GX_225:
-			return 	evolution (this, from:"Alolan Vulpix", hp:HP200, type:FAIRY, retreatCost:2) {
-				weakness METAL
-				resistance DARKNESS, MINUS20
-				bwAbility "Mysterious Guidance" , {
-					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may search your deck for up to 2 Item cards, reveal them, and put them into your hand. Then, shuffle your deck."
-				}
-				move "Snowy Wind" , {
-					text "70 damage. This attack does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)\n"
-					energyCost Y,C
-				}
-				move "Sublimation GX" , {
-					text "If your opponent's Active Pokémon is an Ultra Beast, it is Knocked Out. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost Y,C
-				}
-			};
+			return copy(ALOLAN_NINETALES_GX_132,this)
 			case MIMIKYU_GX_226:
-			return basic (this, hp:HP170, type:FAIRY, retreatCost:1) {
-				move "Perplex" , {
-					text "Your opponent's Active Pokémon is now Confused.\n"
-					energyCost Y
-				}
-				move "Let's Snuggle & Fall" , {
-					text "10+ damage. This attack does 30 more damage for each damage counter on your opponent's Active Pokémon.\n"
-					energyCost Y,C
-				}
-				move "Dream Fear GX" , {
-					text "Choose 1 of your opponent's Benched Pokémon. Your opponent shuffles that Pokémon and all cards attached to it into their deck. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost Y
-				}
-			};
+			return copy(MIMIKYU_GX_149,this)
 			case LUGIA_GX_227:
-			return basic (this, hp:HP190, type:COLORLESS, retreatCost:2) {
-				weakness LIGHTNING
-				resistance FIGHTING, MINUS20
-				move "Psychic" , {
-					text "30+ damage. This attack does 30 more damage times the amount of Energy attached to your opponent's Active Pokémon.\n"
-					energyCost C,C,C
-				}
-				move "Pelagic Blade" , {
-					text "170 damage. This Pokémon can't use Pelagic Blade during your next turn.\n"
-					energyCost C,C,C,C
-				}
-				move "Lost Purge GX" , {
-					text "Put your opponent's Active Pokémon and all cards attached to it in the Lost Zone. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-					energyCost C,C,C
-				}
-			};
+			return copy(LUGIA_GX_159,this)
 			case ADVENTURE_BAG_228:
-			return itemCard (this) {
-					text "Search your deck for up to 2 Pokémon Tool cards, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
-			};
+			return copy(ADVENTURE_BAG_167,this)
 			case CHOICE_HELMET_229:
-			return itemCard (this) {
-					text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Pokémon this card is attached to takes 30 less damage from the attacks of your opponent's Pokémon-GX and Pokémon-EX (after applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack)."
-			};
+			return copy(CHOICE_HELMET_169,this)
 			case COUNTER_GAIN_230:
-			return itemCard (this) {
-					text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf you have more Prize cards remaining than your opponent, the attacks of the Pokémon this card is attached to cost [C] less.\nYou may play as many Item cards as you like during your turn (before your attack)."
-			};
+			return copy(COUNTER_GAIN_170,this)
 			case CUSTOM_CATCHER_231:
-			return itemCard (this) {
-					text "You may play 2 Custom Catcher cards at once.If you played 1 card, draw cards from your deck until you have 3 cards in your hand.If you played 2 cards, switch 1 of your opponent's Benched Pokémon with their Active Pokémon. (This effect works one time for 2 cards.)\nYou may play as many Item cards as you like during your turn (before your attack)."
-			};
+			return copy(CUSTOM_CATCHER_171,this)
 			case ELECTROPOWER_232:
-			return itemCard (this) {
-					text "During this turn, your [L] Pokémon's attacks do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack)."
-			};
+			return copy(ELECTROPOWER_172,this)
 			case LOST_BLENDER_233:
-			return itemCard (this) {
-					text "Put 2 cards from your hand in the Lost Zone. If you do, draw a card.\nYou may play as many Item cards as you like during your turn (before your attack)."
-			};
+			return copy(LOST_BLENDER_181,this)
 			case NET_BALL_234:
-			return itemCard (this) {
-					text "Search your deck for a Basic [G] Pokémon or a [G] Energy card, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
-			};
+			return copy(NET_BALL_187,this)
 			case SPELL_TAG_235:
-			return itemCard (this) {
-					text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the [P] Pokémon this card is attached to is Knocked Out by damage from an opponent's attack, put 4 damage counters on your opponent's Pokémon in any way you like.\nYou may play as many Item cards as you like during your turn (before your attack)."
-			};
+			return copy(SPELL_TAG_190,this)
+
 			default:
 		return null;
 		}
