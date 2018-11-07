@@ -463,7 +463,8 @@ public enum FireRedLeafGreen implements CardInfo {
 						assert bg.em().retrieveObject("Quick_Search") != bg.turnCount : "You cannot use Quick Search more than once per turn!"
 						assert my.deck
 						bg.em().storeObject("Quick_Search",bg.turnCount)
-						my.deck.search("search for 1 card.",{true}).moveTo(my.hand)
+						my.deck.select(count:1).moveTo(my.hand)
+					shuffleDeck()
 					}
 				}
 				move "Clutch", {
