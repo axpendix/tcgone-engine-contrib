@@ -3554,7 +3554,7 @@ public enum LostThunder implements CardInfo {
 					text "Whenever you attach a Pokémon Tool card that has 'Fairy Charm' in its name from your hand to this Pokémon during your turn, you may leave your opponent's Active Pokémon Confused."
 					delayedA{
 						after PLAY_POKEMON_TOOL,{
-              if(ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner && ef.cardToPlay.name.contains("Fairy Charm"))
+              if(ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner && ef.cardToPlay.name.contains("Fairy Charm") && confirm("Use Charmed Charm?"))
                  apply CONFUSED, self.owner.opposite.pbg.active
             }
 					}
