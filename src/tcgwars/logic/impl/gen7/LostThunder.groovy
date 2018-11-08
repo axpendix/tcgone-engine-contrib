@@ -3288,8 +3288,11 @@ public enum LostThunder implements CardInfo {
 				move "Make a Mess" , {
 					text "20× damage. Discard up to 2 Trainer cards from your hand. This attack does 20 damage for each card you discarded in this way."
 					energyCost Y
+					attackRequirement{
+						assert my.hand.filterByType(TRAINER) : "No trainer in hand"
+					}
 					onAttack{
-						damage 20*my.hand.filterByType(TRAINER).select(max:2,"discard up to 2 Trainer cards for 20 damage",false).discard().size()
+						damage 20*my.hand.filterByType(TRAINER).select(max:2,"discard up to 2 Trainer cards for 20 damage").discard().size()
 					}
 				}
 			};
@@ -3320,10 +3323,11 @@ public enum LostThunder implements CardInfo {
 				move "Beckon" , {
 					text "Put a Supporter card from your discard pile into your hand."
 					energyCost Y
+					attackRequirement{
+						assert my.discard.filterByType(SUPPORTER)
+					}
 					onAttack{
-						if(my.discard.filterByType(SUPPORTER)){
-							my.discard.filterByType(SUPPORTER).select().moveTo(my.hand)
-						}
+						my.discard.filterByType(SUPPORTER).select().moveTo(my.hand)
 					}
 				}
 				move "Beat" , {
@@ -3483,11 +3487,22 @@ public enum LostThunder implements CardInfo {
 				resistance DARKNESS, MINUS20
 				bwAbility "Mysterious Buzz" , {
 					text "As long as this Pokémon is on your Bench, whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to your [Y] Pokémon in play."
-					before null, null, Source.SUPPORTER, {
-						def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-						if (bg.currentThreadPlayerType != self.owner && !self.active && pcs.types.contains(Y)){
-							bc "Mysterious Buzz prevent effect of Supporter"
-							prevent()
+					delayedA {
+						def power=false
+						before PLAY_TRAINER, {
+							if(self.benched && ef.supporter && bg.currentTurn==self.owner.opposite ){
+								power=true
+							}
+						}
+						after PLAY_TRAINER, {
+							power=false
+						}
+						before null, null, Source.TRAINER_CARD, {
+							def target=e.getTarget(bg)
+							if (power && target && self.benched && target.owner==self.owner && target.types.contains(Y)){
+								bc "Mysterious Buzz prevents effect"
+								prevent()
+							}
 						}
 					}
 				}
@@ -3643,10 +3658,10 @@ public enum LostThunder implements CardInfo {
 					text "Once during your turn (before your attack), you may remove a Special Condition from your Active Pokémon."
 					actionA{
 						checkLastTurn()
-						assert(self.owner.pbg.active.specialConditions)
+						assert my.active.specialConditions
 						powerUsed()
 						SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove")
-						clearSpecialCondition(my.active, TRAINER_CARD, Arrays.asList(spc))
+						clearSpecialCondition(my.active, TRAINER_CARD, [spc])
 					}
 				}
 				move "Powerful Slap" , {
