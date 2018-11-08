@@ -349,19 +349,12 @@ public enum LostThunder implements CardInfo {
 			case TANGROWTH_2:
 			return 	evolution (this, from:"Tangela", hp:HP140, type:GRASS, retreatCost:3) {
 				weakness FIRE
-				customAbility {
-					delayedA {
-						before REMOVE_DAMAGE_COUNTER, self, {
-							bg.em().storeObject("Hefty_Whip", bg.turnCount)
-						}
-					}
-				}
 				move "Hefty Whip" , {
 					text "30+ damage. If this Pokémon was healed during this turn, this attack does 130 more damage."
 					energyCost G,C,C
 					onAttack {
 						damage 30
-						if(bg.em().retrieveObject("Hefty_Whip") == bg.turnCount) damage 130
+						if(self.lastHealedTurn == bg.turnCount) damage 130
 					}
 				}
 				move "Whip Smash" , {

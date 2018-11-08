@@ -2314,14 +2314,6 @@ public enum ForbiddenLight implements CardInfo {
 			case GOODRA_94:
 			return evolution (this, from:"Sliggoo", hp:HP160, type:DRAGON, retreatCost:3) {
 				weakness FAIRY
-				customAbility {
-					delayedA {
-						before REMOVE_DAMAGE_COUNTER, self, {
-							bg.em().storeObject("Soaking_Horn", bg.turnCount)
-						}
-					}
-				}
-
 				bwAbility "Hydration", {
 					text "Whenever you attach a [W] Energy card from your hand to this Pokémon, heal 20 damage from it."
 					delayedA{
@@ -2338,7 +2330,7 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost W, Y, C
 					onAttack {
 						damage 80
-						if(bg.em().retrieveObject("Soaking_Horn") == bg.turnCount) damage 80
+						if(self.lastHealedTurn == bg.turnCount) damage 80
 					}
 				}
 
