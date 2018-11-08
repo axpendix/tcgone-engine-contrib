@@ -949,14 +949,20 @@ class TcgStatics {
 	}
 
 	static void switchYourActive(Map params=[:]){
-		afterDamage {
-			boolean may = params.may
+		boolean may = params.may
+		boolean now = params.now
+		def doit = {
 			if(bench.notEmpty && my.active){
 				def pcs = bench.select("Switch your active pokemon", !may)
 				if(pcs){
 					sw my.active, pcs
 				}
 			}
+		}
+		if(now){
+			doit()
+		} else {
+			afterDamage {doit()}
 		}
 	}
 

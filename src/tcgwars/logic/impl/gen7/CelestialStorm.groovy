@@ -1540,7 +1540,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  assert my.bench : "There is no pokémon on your bench"
 					}
 					onAttack {
-					  sw self, my.bench.select("New active")
+						switchYourActive(now: 1)
 					}
 				}
 			};
@@ -1764,11 +1764,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost P
 					onAttack {
 					  damage 20
-					  afterDamage{
-					    if(my.bench && confirm("switch this pokémon with one of your cenched pokémon?")){
-					      sw self, my.bench.select("New active")
-					    }
-					  }
+						switchYourActive(may: true)
 					}
 				}
 				move "Spear Dive" , {
