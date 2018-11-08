@@ -2180,12 +2180,13 @@ public enum LostThunder implements CardInfo {
 					actionA{
 						checkLastTurn()
 						def count = 0
-						my.all.each{
+						my.bench.each {
 							count = count + it.numberOfDamageCounters
 						}
-						assert count >= 66 : "You need ${66 - count} more damage counter."
+						assert count >= 66 : "You need ${66 - count} more damage counters on your Benched Pokemon."
+						assert self.active : "Counters OK but $self must be active"
 						powerUsed()
-						//win
+						bg.getGame().endGame(self.owner, WinCondition.OTHER);
 					}
 				}
 				move "Hidden Power" , {
@@ -2204,8 +2205,9 @@ public enum LostThunder implements CardInfo {
 					actionA{
 						checkLastTurn()
 						assert my.hand.size() >= 35 : "You need ${35 - my.hand.size()} more cards in your hand."
+						assert self.active : "Cards OK but $self must be active"
 						powerUsed()
-						//win
+						bg.getGame().endGame(self.owner, WinCondition.OTHER);
 					}
 				}
 				move "Hidden Power" , {
@@ -2223,9 +2225,10 @@ public enum LostThunder implements CardInfo {
 					text "Once during your turn (before your attack), if this Pokémon is your Active Pokémon, and if your opponent has 12 or more Supporter cards in the Lost Zone, you may use this Ability. If you do, you win this game."
 					actionA{
 						checkLastTurn()
-						assert my.lostZone.filterByType(SUPPORTER).size() >= 12 : "You need ${35 - my.lostZone.filterByType(SUPPORTER).size()} more supporters in your Lost Zone."
+						assert opp.lostZone.filterByType(SUPPORTER).size() >= 12 : "Your opponent needs to have ${12 - opp.lostZone.filterByType(SUPPORTER).size()} more supporters in their Lost Zone."
+						assert self.active : "Cards OK but $self must be be active"
 						powerUsed()
-						//win
+						bg.getGame().endGame(self.owner, WinCondition.OTHER);
 					}
 				}
 				move "Hidden Power" , {
