@@ -2513,7 +2513,7 @@ public enum ForbiddenLight implements CardInfo {
 					bg.em().storeObject("Bonnie",bg.turnCount)
 				}
 				playRequirement{
-					assert bg.stadiumInfoStruct
+					assert (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star')
 				}
 			};
 			case CRASHER_WAKE_104:

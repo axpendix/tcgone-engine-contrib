@@ -3023,7 +3023,7 @@ public enum GuardiansRising implements CardInfo {
 				onPlay {
 					def i = 2
 					while(i-- > 0){
-						if (bg.stadiumInfoStruct && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokemon Tool in play")) {
+						if ((bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star') && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokemon Tool in play")) {
 							discard bg.stadiumInfoStruct.stadiumCard
 							continue
 						}
@@ -3040,7 +3040,7 @@ public enum GuardiansRising implements CardInfo {
 					}
 				}
 				playRequirement{
-					assert all.findAll {it.cards.hasType(POKEMON_TOOL)} || bg.stadiumInfoStruct
+					assert all.findAll {it.cards.hasType(POKEMON_TOOL)} || (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star')
 				}
 			};
 			case HALA_126:

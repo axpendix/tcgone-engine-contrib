@@ -4051,11 +4051,11 @@ public enum LostThunder implements CardInfo {
 				text "Choose a Pokémon Tool or Special Energy card attached to 1 of your opponent's Pokémon, or any Stadium card in play, and put it in the Lost Zone.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
 					def choice = 0
-					if(bg.stadiumInfoStruct && opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})){
+					if((bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star') && opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})){
 						choice = choose([0,1],["Put a Pokémon Tool or Special Energy card attached to 1 of your opponent's Pokémon to the Lost Zone","Put the Stadium card in play in the Lost Zone"],"what do you want to do?")
 					}
 					else{
-						if(bg.stadiumInfoStruct){
+						if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star'){
 							choice = 1
 						}
 					}
@@ -4068,7 +4068,7 @@ public enum LostThunder implements CardInfo {
 					}
 				}
 				playRequirement{
-					assert bg.stadiumInfoStruct || opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})
+					assert (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star') || opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})
 				}
 			};
 			case FAIRY_CHARM_G_174:
@@ -4164,31 +4164,18 @@ public enum LostThunder implements CardInfo {
 					text "Once during each player's turn, that player may discard a [R] Energy from their hand. If they do, that player draws 3 cards.\nWhenever a player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
 					def lastTurn=0
 					def actions=[]
-					def eff
 					onPlay {
-						eff = delayed{
-							before null, self, Source.SUPPORTER, {
-								bc "This stadium is not affected by Supporter cards."
-								prevent()
-							}
-							before null, self, Source.ITEM, {
-								bc "This stadium is not affected by Item cards."
-								prevent()
-							}
-						}
-						actions=action("Stadium: Ultra Space") {
-							assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(R)
+						actions=action("Stadium: Heat Factory P.S.") {
+							assert my.hand.filterByBasicEnergyType(R)
 							assert lastTurn != bg().turnCount : "Already used"
 							bc "Used Heat Factory Prism Star"
 							lastTurn = bg().turnCount
-							my.hand.filterByType(BASIC_ENERGY).select("Choose the card to discard.").discard()
+							my.hand.filterByBasicEnergyType(R).select("Choose the card to discard.").discard()
 							draw 3
 						}
 					}
 					onRemoveFromPlay{
 						actions.each { bg().gm().unregisterAction(it) }
-						eff.unregister()
-
 					}
 			};
 			case KAHILI_179:
