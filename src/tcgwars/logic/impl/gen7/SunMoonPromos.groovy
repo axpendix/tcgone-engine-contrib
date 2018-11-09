@@ -77,15 +77,30 @@ public enum SunMoonPromos implements CardInfo {
 	BEWEAR_SM49 ("Bewear", 49, Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
 	TAPU_KOKO_GX_SM50 ("Tapu Koko-GX", 50, Rarity.PROMO, [BASIC, POKEMON, POKEMON_GX, _LIGHTNING_]),
 	ALOLAN_MEOWTH_SM51 ("Alolan Meowth", 51, Rarity.PROMO, [BASIC, POKEMON, _DARKNESS_]),
+	GOLISOPOD_SM22("Golisopod", 52, Rarity.PROMO, [POKEMON,_GRASS_,STAGE1,EVOLUTION]),
+	DHELMISE_SM53("Dhelmise", 53, Rarity.PROMO, [POKEMON,_PSYCHIC_,BASIC]),
+	LUCARIO_SM54("Lucario", 54, Rarity.PROMO, [POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
+	DECIDUEYE_SM55("Decidueye", 55, Rarity.PROMO, [POKEMON,_GRASS_,STAGE2,EVOLUTION]),
 	TSAREENA_GX_SM56 ("Tsareena-GX", 56, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, POKEMON_GX, _GRASS_]),
 	HO_OH_GX_SM57 ("Ho-Oh-GX", 57, Rarity.PROMO, [BASIC, POKEMON, POKEMON_GX, _FIRE_]),
 	NECROZMA_GX_SM58 ("Necrozma-GX", 58, Rarity.PROMO, [BASIC, POKEMON, POKEMON_GX, _PSYCHIC_]),
 	MARSHADOW_GX_SM59 ("Marshadow-GX", 59, Rarity.PROMO, [BASIC, POKEMON, POKEMON_GX, _FIGHTING_]),
 	CHARIZARD_GX_SM60 ("Charizard-GX", 60, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, POKEMON_GX, _FIRE_]),
+	TAPU_BULU_SM61("Tapu Bulu", 61, Rarity.PROMO, [POKEMON,_GRASS_,BASIC]),
 	GOLISOPOD_GX_SM62 ("Golisopod-GX", 62, Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _GRASS_]),
 	SALAZZLE_GX_SM63 ("Salazzle-GX", 63, Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _FIRE_]),
+	SILVALLY_SM64("Silvally", 64, Rarity.PROMO, [POKEMON,_COLORLESS_,STAGE1,EVOLUTION]),
+	ALOLAN_RAICHU_SM65("Alolan Raichu", 65, Rarity.PROMO, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
+	PHEROMOSA_GX_SM66("Pheromosa-GX", 66, Rarity.PROMO, [POKEMON_GX,POKEMON,_GRASS_,BASIC]),
+	CELESTEELA_GX_SM67("Celesteela-GX", 67, Rarity.PROMO, [POKEMON_GX,POKEMON,_METAL_,BASIC]),
+	XURKITREE_GX_SM68("Xurkitree-GX", 68, Rarity.PROMO, [POKEMON_GX,POKEMON,_LIGHTNING_,BASIC]),
+	BUZZWOLE_GX_SM69("Buzzwole-GX", 69, Rarity.PROMO, [POKEMON_GX,POKEMON,_FIGHTING_,BASIC]),
 	SHINING_HO_OH_SM70 ("Shining Ho-Oh", 70, Rarity.PROMO, [BASIC, POKEMON, _FIRE_]),
 	KOMMO_O_GX_SM71 ("Kommo-o-GX", 71, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, POKEMON_GX, _DRAGON_]),
+	ALOLAN_RAICHU_SM72("Alolan Raichu", 72, Rarity.PROMO, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
+	SALAZZLE_SM73("Salazzle", 73, Rarity.PROMO, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
+	REGIROCK_SM74("Regirock", 74, Rarity.PROMO, [POKEMON,_FIGHTING_,BASIC]),
+	REGISTEEL_SM75("Registeel", 75, Rarity.PROMO, [POKEMON,_METAL_,BASIC]),
 	PIKACHU_SM76 ("Pikachu", 76, Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
 	MEWTWO_SM77 ("Mewtwo", 77, Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]),
 	CHAMPIONS_FESTIVAL_SM78 ("Champions Festival", 78, Rarity.PROMO, [STADIUM, TRAINER]),
@@ -93,10 +108,81 @@ public enum SunMoonPromos implements CardInfo {
 	HO_OH_GX_SM80 ("Ho-Oh-GX", 80, Rarity.PROMO, [BASIC, POKEMON, POKEMON_GX, _FIRE_]),
 	PIKACHU_SM81 ("Pikachu", 81, Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
 	SHINING_LUGIA_SM82 ("Shining Lugia", 82, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
+	ZORUA_SM83("Zorua", 83, Rarity.PROMO, [POKEMON,_DARKNESS_,BASIC]),
+	ZOROARK_GX_SM84("Zoroark-GX", 84, Rarity.PROMO, [POKEMON_GX,POKEMON,_DARKNESS_,STAGE1,EVOLUTION]),
+	MARSHADOW_SM85("Marshadow", 85, Rarity.PROMO, [POKEMON,_PSYCHIC_,BASIC]),
+	PIKACHU_SM86("Pikachu", 86, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	LATIAS_SM87("Latias", 87, Rarity.PROMO, [POKEMON,_PSYCHIC_,BASIC]),
+	LATIOS_SM88("Latios", 88, Rarity.PROMO, [POKEMON,_PSYCHIC_,BASIC]),
+	ZOROARK_SM89("Zoroark", 89, Rarity.PROMO, [POKEMON,_DARKNESS_,STAGE1,EVOLUTION]),
+	RAICHU_GX_SM90("Raichu-GX", 90, Rarity.PROMO, [POKEMON_GX,POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
+	SILVALLY_GX_SM91("Silvally-GX", 91, Rarity.PROMO, [POKEMON_GX,POKEMON,_COLORLESS_,STAGE1,EVOLUTION]),
+	TAPU_FINI_SM92("Tapu Fini", 92, Rarity.PROMO, [POKEMON,_WATER_,BASIC]),
+	MARSHADOW_SM93("Marshadow", 93, Rarity.PROMO, [POKEMON,_PSYCHIC_,BASIC]),
+	WASH_ROTOM_SM94("Wash Rotom", 94, Rarity.PROMO, [POKEMON,_WATER_,BASIC]),
+	LUCARIO_SM95("Lucario", 95, Rarity.PROMO, [POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
+	HEATRAN_SM96("Heatran", 96, Rarity.PROMO, [POKEMON,_METAL_,BASIC]),
+	GUMSHOOS_SM97("Gumshoos", 97, Rarity.PROMO, [POKEMON,_COLORLESS_,STAGE1,EVOLUTION]),
 	PIKACHU_SM98 ("Pikachu", 98, Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
 	MIMIKYU_SM99 ("Mimikyu", 99, Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]),
+	LUCARIO_GX_SM100("Lucario-GX", 100, Rarity.PROMO, [POKEMON_GX,POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
+	DAWN_WINGS_NECROZMA_GX_SM101("Dawn Wings Necrozma-GX", 101, Rarity.PROMO, [POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
+	DUSK_MANE_NECROZMA_GX_SM102("Dusk Mane Necrozma-GX", 102, Rarity.PROMO, [POKEMON_GX,POKEMON,_METAL_,BASIC]),
+	LUNALA_GX_SM103("Lunala-GX", 103, Rarity.PROMO, [POKEMON_GX,POKEMON,_PSYCHIC_,STAGE2,EVOLUTION]),
+	SOLGALEO_GX_SM104("Solgaleo-GX", 104, Rarity.PROMO, [POKEMON_GX,POKEMON,_METAL_,STAGE2,EVOLUTION]),
+	LYCANROC_SM105("Lycanroc", 105, Rarity.PROMO, [POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
 	DAWN_WINGS_NECROZMA_SM106 ("Dawn Wings Necrozma", 106, Rarity.PROMO, [BASIC, POKEMON, ULTRA_BEAST, _PSYCHIC_]),
 	DUSK_MANE_NECROZMA_SM107 ("Dusk Mane Necrozma", 107, Rarity.PROMO, [BASIC, POKEMON, ULTRA_BEAST, _METAL_]);
+	ASHS_PIKACHU_SM108("Ash's Pikachu", 108, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	ASHS_PIKACHU_SM109("Ash's Pikachu", 109, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	ASHS_PIKACHU_SM110("Ash's Pikachu", 110, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	ASHS_PIKACHU_SM111("Ash's Pikachu", 111, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	ASHS_PIKACHU_SM112("Ash's Pikachu", 112, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	ASHS_PIKACHU_SM113("Ash's Pikachu", 113, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	ASHS_PIKACHU_SM114("Ash's Pikachu", 114, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	PHEROMOSA_SM115("Pheromosa", 115, Rarity.PROMO, [POKEMON,_GRASS_,BASIC]),
+	XURKITREE_SM116("Xurkitree", 116, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	MALAMAR_SM117("Malamar", 117, Rarity.PROMO, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
+	LYCANROC_SM118("Lycanroc", 118, Rarity.PROMO, [POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
+	EXEGGCUTE_SM119("Exeggcute", 119, Rarity.PROMO, [POKEMON,_GRASS_,BASIC]),
+	ROCKRUFF_SM120("Rockruff", 120, Rarity.PROMO, [POKEMON,_FIGHTING_,BASIC]),
+	RAIKOU_GX_SM121("Raikou-GX", 121, Rarity.PROMO, [POKEMON_GX,POKEMON,_LIGHTNING_,BASIC]),
+	ZYGARDE_GX_SM122("Zygarde-GX", 122, Rarity.PROMO, [POKEMON_GX,POKEMON,_FIGHTING_,BASIC]),
+	DAWN_WINGS_NECROZMA_SM123("Dawn Wings Necrozma", 123, Rarity.PROMO, [POKEMON,_PSYCHIC_,BASIC]),
+	DUSK_MANE_NECROZMA_SM124("Dusk Mane Necrozma", 124, Rarity.PROMO, [POKEMON,_METAL_,BASIC]),
+	NAGANADEL_GX_SM125("Naganadel-GX", 125, Rarity.PROMO, [POKEMON_GX,POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
+	ULTRA_NECROZMA_GX_SM126("Ultra Necrozma GX", 126, Rarity.PROMO, [POKEMON_GX,POKEMON,_DRAGON_,BASIC]),
+	ALOLAN_SANDSLASH_SM127("Alolan Sandslash", 127, Rarity.PROMO, [POKEMON,_METAL_,STAGE1,EVOLUTION]),
+	ALOLAN_NINETALES_SM128("Alolan Ninetales", 128, Rarity.PROMO, [POKEMON,_FAIRY_,STAGE1,EVOLUTION]),
+	KYOGRE_SM129("Kyogre", 129, Rarity.PROMO, [POKEMON,_WATER_,BASIC]),
+	MANECTRIC_SM130("Manectric", 130, Rarity.PROMO, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
+	CELESTEELA_SM131("Celesteela", 131, Rarity.PROMO, [POKEMON,_METAL_,BASIC]),
+	DELCATTY_SM132("Delcatty", 132, Rarity.PROMO, [POKEMON,_COLORLESS_,STAGE1,EVOLUTION]),
+	THUNDURUS_GX_SM133("Thundurus-GX", 133, Rarity.PROMO, [POKEMON_GX,POKEMON,_LIGHTNING_,BASIC]),
+	TORNADUS_GX_SM134("Tornadus-GX", 134, Rarity.PROMO, [POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
+	LATIAS_SM135("Latias", 135, Rarity.PROMO, [POKEMON,_DRAGON_,BASIC]),
+	LATIOS_SM136("Latios", 136, Rarity.PROMO, [POKEMON,_DRAGON_,BASIC]),
+	RESHIRAM_GX_SM137("Reshiram-GX", 137, Rarity.PROMO, [POKEMON_GX,POKEMON,_FIRE_,BASIC]),
+	ZEKROM_GX_SM138("Zekrom-GX", 138, Rarity.PROMO, [POKEMON_GX,POKEMON,_LIGHTNING_,BASIC]),
+	SALAMENCE_GX_SM139("Salamence-GX", 139, Rarity.PROMO, [POKEMON_GX,POKEMON,_DRAGON_,STAGE2,EVOLUTION]),
+	SALAMENCE_SM140("Salamence", 140, Rarity.PROMO, [POKEMON,_DRAGON_,STAGE2,EVOLUTION]),
+	WHITE_KYUREM_GX_SM141("White Kyurem-GX", 141, Rarity.PROMO, [POKEMON_GX,POKEMON,_DRAGON_,BASIC]),
+	KYUREM_SM142("Kyurem", 142, Rarity.PROMO, [POKEMON,_DRAGON_,BASIC]),
+	MOLTRES_SM143("Moltres", 143, Rarity.PROMO, [POKEMON,_FIRE_,BASIC]),
+	ARTICUNO_SM144("Articuno", 144, Rarity.PROMO, [POKEMON,_WATER_,BASIC]),
+	LEAFEON_GX_SM145("Leafeon-GX", 145, Rarity.PROMO, [POKEMON_GX,POKEMON,_GRASS_,STAGE1,EVOLUTION]),
+	ZAPDOS_SM146("Zapdos", 146, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	GLACEON_GX_SM147("Glaceon-GX", 147, Rarity.PROMO, [POKEMON_GX,POKEMON,_WATER_,STAGE1,EVOLUTION]),
+	CHAMPIONS_FESTIVAL_SM148("Champions Festival", 148, Rarity.PROMO, [TRAINER,STADIUM]),
+	SUICUNE_SM149("Suicune", 149, Rarity.PROMO, [POKEMON,_WATER_,BASIC]),
+	RAIKOU_SM150("Raikou", 150, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	GIRATINA_SM151("Giratina", 151, Rarity.PROMO, [POKEMON,_PSYCHIC_,BASIC]),
+	TAPU_LELE_SM152("Tapu Lele", 152, Rarity.PROMO, [POKEMON,_FAIRY_,BASIC]),
+	ROWLET_SM153("Rowlet", 153, Rarity.PROMO, [POKEMON,_GRASS_,BASIC]),
+	SALANDIT_SM154("Salandit", 154, Rarity.PROMO, [POKEMON,_FIRE_,BASIC]),
+	KINGDRA_GX_SM155("Kingdra-GX", 155, Rarity.PROMO, [POKEMON_GX,POKEMON,_WATER_,STAGE2,EVOLUTION]),
+	DRAGONITE_GX_SM156("Dragonite-GX", 156, Rarity.PROMO, [POKEMON_GX,POKEMON,_DRAGON_,STAGE2,EVOLUTION]),
+
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -800,6 +886,52 @@ public enum SunMoonPromos implements CardInfo {
 					}
 
 				};
+				case GOLISOPOD_SM52:
+					return 	evolution (this, from:"Wimpod", hp:HP130, type:GRASS, retreatCost:2) {
+						weakness FIRE
+						bwAbility "Armor" , {
+							text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+						}
+						move "Resolute Claws" , {
+							text "80+ damage. If your opponent's Active Pokémon is a Pokémon-GX or a Pokémon-EX, this attack does 70 more damage (before applying Weakness and Resistance)."
+							energyCost G,C,C
+						}
+					};
+					case DHELMISE_SM53:
+					return basic (this, hp:HP120, type:PSYCHIC, retreatCost:2) {
+						weakness DARKNESS
+						resistance FIGHTING, MINUS20
+						bwAbility "Steelworker" , {
+							text "Your [M] Pokémon's attacks do 10 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+						}
+						move "Anchor Shot" , {
+							text "70 damage. The Defending Pokémon can't retreat during your opponent's next turn."
+							energyCost P,C,C
+						}
+					};
+					case LUCARIO_SM54:
+					return 	evolution (this, from:"Riolu", hp:HP120, type:FIGHTING, retreatCost:1) {
+						weakness PSYCHIC
+						bwAbility "Stance" , {
+							text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may prevent all effects of your opponent's attacks, including damage, done to this Pokémon until the end of your opponent's next turn."
+						}
+						move "Submarine Blow" , {
+							text "120 damage."
+							energyCost F,F,F
+						}
+					};
+					case DECIDUEYE_SM55:
+					return 	evolution (this, from:"Dartrix", hp:HP140, type:GRASS, retreatCost:1) {
+						weakness FIRE
+						move "Leaf Blade" , {
+							text "30+ damage. Flip a coin. If heads, this attack does 30 more damage.\n"
+							energyCost G
+						}
+						move "Brave Bird" , {
+							text "120 damage. This Pokémon does 20 damage to itself."
+							energyCost G,C,C
+						}
+					};
 			case TSAREENA_GX_SM56:
 				return evolution (this, from:"Steenee", hp:HP230, type:GRASS, retreatCost:2) {
 					weakness FIRE
@@ -844,10 +976,80 @@ public enum SunMoonPromos implements CardInfo {
 				return copy (BurningShadows.MARSHADOW_GX_80, this);
 			case CHARIZARD_GX_SM60:
         return copy (BurningShadows.CHARIZARD_GX_20, this);
+			case TAPU_BULU_SM61:
+				return basic (this, hp:HP130, type:GRASS, retreatCost:2) {
+					weakness FIRE
+					move "Horn Leech" , {
+						text "30 damage. Heal 30 damage from this Pokémon."
+						energyCost G,C
+						onAttack{
+							damage 30
+							heal 30, self
+						}
+					}
+					move "Calm Strike" , {
+						text "60+ damage. If you used a GX attack in this game, this attack does 60 more damage."
+						energyCost G,C,C
+						onAttack{
+							damage 60
+							if(isGxPerformed()) damage 60
+						}
+					}
+				};
 			case GOLISOPOD_GX_SM62:
         return copy (BurningShadows.GOLISOPOD_GX_17, this);
 			case SALAZZLE_GX_SM63:
 				return copy (BurningShadows.SALAZZLE_GX_25, this);
+			case SILVALLY_SM64:
+				return 	evolution (this, from:"Type: Null", hp:HP130, type:COLORLESS, retreatCost:1) {
+					weakness FIGHTING
+					move "Gear Scan" , {
+						text "Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck.\n"
+						energyCost C
+						attackRequirement{
+							assert my.deck : "There is no more cards in your deck"
+						}
+						onAttack{
+							my.deck.search(count:1,"Choose an Item card",cardTypeFilter(ITEM)).showToOpponent("The choosen Item card.").moveTo(my.hand)
+						}
+					}
+					move "X-Scissor" , {
+						text "90+ damage. Flip a coin. If heads, this attack does 30 more damage."
+						energyCost C,C,C
+						onAttack{
+							damage 90
+							flip {damage 30}
+						}
+					}
+				};
+				case ALOLAN_RAICHU_SM65:
+				return 	evolution (this, from:"Pikachu", hp:HP110, type:LIGHTNING, retreatCost:1) {
+					weakness FIGHTING
+					resistance METAL, MINUS20
+					move "Quick Attack" , {
+						text "10+ damage. Flip a coin. If heads, this attack does 30 more damage.\n"
+						energyCost L
+						onAttack{
+							damage 10
+							flip {damage 30}
+						}
+					}
+					move "Electric Surfer" , {
+						text "70 damage."
+						energyCost L,C,C
+						onAttack{
+							damage 70
+						}
+					}
+				};
+			case PHEROMOSA_GX_SM66:
+				return copy (UltraPrism.PHEROMOSA_GX_140, this);
+			case CELESTEELA_GX_SM67:
+				return copy (UltraPrism.CELESTEELA_GX_144, this);
+			case XURKITREE_GX_SM68:
+				return copy (UltraPrism.XURKITREE_GX_142, this);
+			case BUZZWOLE_GX_SM69:
+				return copy (CrimsonInvasion.BUZZWOLE_GX_57, this);
 			case SHINING_HO_OH_SM70:
 				return basic (this, hp:HP130, type:FIRE, retreatCost:2) {
 					weakness LIGHTNING
@@ -876,6 +1078,14 @@ public enum SunMoonPromos implements CardInfo {
 				};
 			case KOMMO_O_GX_SM71:
 			  return copy (GuardiansRising.KOMMO_O_GX_100, this)
+			case ALOLAN_RAICHU_SM72:
+				return copy (CrimsonInvasion.ALOLAN_RAICHU_31, this);
+			case SALAZZLE_SM73:
+				return copy (CrimsonInvasion.SALAZZLE_47, this);
+			case REGIROCK_SM74:
+				return copy (CrimsonInvasion.REGIROCK_53, this);
+			case REGISTEEL_SM75:
+				return copy (CrimsonInvasion.REGISTEEL_68, this);
 			case PIKACHU_SM76:
 				return copy (PIKACHU_SM04, this)
 			case MEWTWO_SM77:
@@ -955,10 +1165,269 @@ public enum SunMoonPromos implements CardInfo {
 					}
 
 				};
+			case ZORUA_SM83:
+				return copy (ShiningLegends.ZORUA_52, this);
+			case ZOROARK_GX_SM84:
+				return copy (ShiningLegends.ZOROARK_GX_53, this)
+			case MARSHADOW_SM85:
+				return copy (ShiningLegends.MARSHADOW_45, this)
+			case PIKACHU_SM86:
+				return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
+					weakness FIGHTING
+					resistance METAL, MINUS20
+					move "Tail Whap" , {
+						text "10 damage."
+						energyCost C
+						onAttack{
+							damage 10
+						}
+					}
+					move "Spark" , {
+						text "20 damage. This attack does 10 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+						energyCost L,C
+						onAttack{
+							damage 20
+							if(opp.bench) damage 10, opp.bench.select()
+						}
+					}
+				};
+			case LATIAS_SM87:
+				return basic (this, hp:HP100, type:PSYCHIC, retreatCost:1) {
+					weakness PSYCHIC
+					bwAbility "Flight Support" , {
+						text "Your Latios in play have no Retreat Cost."
+						getterA (GET_RETREAT_COST,BEFORE_LAST) {h->
+							if(h.effect.target.owner == self.owner && h.effect.target.name == "Latios") {
+	              h.object = 0
+	            }
+						}
+					}
+					move "Misty Gale" , {
+						text "30 damage. Heal 30 damage from each of your Benched Pokémon."
+						energyCost P
+						onAttack{
+							damage 30
+							my.bench.each{
+								heal 30, it
+							}
+						}
+					}
+				};
+			case LATIOS_SM88:
+				return basic (this, hp:HP110, type:PSYCHIC, retreatCost:1) {
+					weakness PSYCHIC
+					move "Break Through" , {
+						text "30 damage. This attack does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)\n"
+						energyCost C,C
+						onAttack{
+							damage 30
+							if(opp.bench) damage 30, opp.bench.select()
+						}
+					}
+					move "Lagoon Flight" , {
+						text "70 damage."
+						energyCost P,C,C
+						onAttack{
+							damage 70
+						}
+					}
+				};
+			case ZOROARK_SM89:
+				return 	evolution (this, from:"Zorua", hp:HP120, type:DARKNESS, retreatCost:2) {
+					weakness FIGHTING
+					resistance PSYCHIC, MINUS20
+					move "Rip Claw" , {
+						text "30 damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+						energyCost C,C
+						onAttack{
+							damage 30
+							afterDamage{
+								flip {discardDefendingEnergy()}
+							}
+						}
+					}
+					move "Doom Crush" , {
+						text "120 damage. Discard a [D] Energy from this Pokémon."
+						energyCost D,D,C
+						onAttack{
+							damage 120
+							discardSelfEnergy D
+						}
+					}
+				};
+			case RAICHU_GX_SM90:
+				return copy (ShiningLegends.RAICHU_GX_29, this)
+
+			case SILVALLY_GX_SM91:
+				return copy (CrimsonInvasion.SILVALLY_GX_90, this);
+			case TAPU_FINI_SM92:
+				return basic (this, hp:HP120, type:WATER, retreatCost:2) {
+					weakness GRASS
+					customAbility {
+						delayedA {
+							before REMOVE_DAMAGE_COUNTER, { h->
+								if(h.effect.target.owner == self.owner && h.effect.target.types.contains(W))
+								bg.em().storeObject("Shining_Current", bg.turnCount)
+							}
+						}
+					}
+					move "Water Pulse" , {
+						text "30 damage. Your opponent's Active Pokémon is now Asleep."
+						energyCost W,C
+						onAttack{
+							damage 30
+							applyAfterDamage ASLEEP
+						}
+					}
+					move "Shining Current" , {
+						text "60+ damage. If any of your [W] Pokémon was healed during this turn, this attack does 60 more damage."
+						energyCost W,C,C
+						onAttack{
+							damage 60
+							if(bg.em().retrieveObject("Shining_Current") == bg.turnCount) damage 130
+						}
+					}
+				};
+			case MARSHADOW_SM93:
+				return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
+					weakness DARKNESS
+					resistance FIGHTING, MINUS20
+					move "Shadowy Echoes" , {
+						text "Put a Basic Pokémon from each player's discard pile onto its owner's Bench."
+						energyCost P
+						attackRequirement{
+							assert (my.bench.notFull && my.discard.filterByType(BASIC)) || (opp.bench.notFull && opp.discard.filterByType(BASIC))
+						}
+						onAttack{
+							if(my.bench.notFull && my.discard.filterByType(BASIC)){
+								my.discard.filterByType(BASIC).select().each{
+									my.discard.remove(it)
+									benchPCS(it)
+								}
+							}
+							if(opp.bench.notFull && opp.discard.filterByType(BASIC)){
+								opp.discard.filterByType(BASIC).select().each{
+									opp.discard.remove(it)
+									benchPCS(it)
+								}
+							}
+						}
+					}
+					move "Surprise Attack" , {
+						text "40 damage. Flip a coin. If tails, this attack does nothing."
+						energyCost C,C
+						onAttack{
+							flip 1,{damage 40},{bc "Surprise Attack failed"}
+						}
+					}
+				};
+			case WASH_ROTOM_SM94:
+				return copy (UltraPrism.WASH_ROTOM_40, this);
+			case LUCARIO_SM95:
+				return copy (UltraPrism.LUCARIO_67, this);
+			case HEATRAN_SM96:
+				return copy (UltraPrism.HEATRAN_88, this);
+			case GUMSHOOS_SM97:
+				return copy (UltraPrism.GUMSHOOS_113, this);
 			case PIKACHU_SM98:
                 return copy (BurningShadows.PIKACHU_40, this);
 			case MIMIKYU_SM99:
 				return copy (GuardiansRising.MIMIKYU_58, this);
+			case LUCARIO_GX_SM100:
+				return copy (ForbiddenLight.LUCARIO_GX_122, this);
+			case DAWN_WINGS_NECROZMA_GX_SM101:
+				return copy (UltraPrism.DAWN_WINGS_NECROZMA_GX_63, this);
+			case DUSK_MANE_NECROZMA_GX_SM102:
+				return copy (UltraPrism.DUSK_MANE_NECROZMA_GX_90, this);
+				case LUNALA_GX_SM103:
+				return 	evolution (this, from:"Cosmoem", hp:HP230, type:PSYCHIC, retreatCost:0) {
+					weakness DARKNESS
+					resistance FIGHTING, MINUS20
+					move "Glide" , {
+						text "50 damage."
+						energyCost C,C
+						onAttack{
+							damage 50
+						}
+					}
+					move "Lunar Javelin" , {
+						text "200 damage. Discard 2 [P] Energy from this Pokémon."
+						energyCost P,P,C,C
+						onAttack{
+							damage 200
+							discardSelfEnergy P,P
+						}
+					}
+					move "Requiem GX" , {
+						text "250 damage. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+						energyCost P,P,P,C
+						attackRequirement{
+							gxCheck()
+						}
+						onAttack{
+							gxPerform()
+							damage 250
+						}
+					}
+				};
+				case SOLGALEO_GX_SM104:
+				return 	evolution (this, from:"Cosmoem", hp:HP250, type:METAL, retreatCost:2) {
+					weakness FIRE
+					resistance PSYCHIC, MINUS20
+					bwAbility "Shining Mane" , {
+						text "Your Pokémon in play have no Weakness."
+						getterA (GET_WEAKNESSES) { h->
+						  if(h.effect.target.owner == self.owner) {
+						    def list = h.object as List<Weakness>
+						    list.clear()
+						  }
+						}
+					}
+					move "Turbo Strike" , {
+						text "120 damage. Attach 2 basic Energy cards from your discard pile to 1 of your Benched Pokémon.\n"
+						energyCost C,C
+						onAttack{
+							damage 120
+							if(my.bench){
+								afterDamage{
+									def tar = my.bench.select()
+									attachEnergyFrom(basic:true,my.discard,pcs)
+									attachEnergyFrom(basic:true,my.discard,pcs)
+								}
+							}
+						}
+					}
+					move "Prominence GX" , {
+						text "Heal all damage from all of your Pokémon. (You can't use more than 1 GX attack in a game.)"
+						energyCost C,C
+						attackRequirement{
+							gxCheck()
+						}
+						onAttack{
+							gxPerform()
+							my.all.each {heal it.damage.value, it}
+						}
+					}
+				};
+				case LYCANROC_SM105:
+				return 	evolution (this, from:"Rockruff", hp:HP120, type:FIGHTING, retreatCost:2) {
+					weakness GRASS
+					move "Bite" , {
+						text "30 damage."
+						energyCost C,C
+						onAttack{
+							damage 30
+						}
+					}
+					move "Stone Edge" , {
+						text "90+ damage. Flip a coin. If heads, this attack does 30 more damage."
+						energyCost F,F,C
+						onAttack{
+							damage 90
+							flip {damage 30}
+						}
+					}
+				};
 			case DAWN_WINGS_NECROZMA_SM106:
 				return basic (this, hp:HP130, type:PSYCHIC, retreatCost:2) {
 					weakness DARKNESS
@@ -1004,6 +1473,577 @@ public enum SunMoonPromos implements CardInfo {
 						}
 					}
 				};
+			case ASHS_PIKACHU_SM108:
+				return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
+					weakness FIGHTING
+					resistance METAL, MINUS20
+					move "I Choose You!" , {
+						text "Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.\n"
+						energyCost C
+						attackRequirement{
+							assert my.deck : "There is no more card in your deck"
+						}
+						onAttack{
+							my.deck.search(count:1,"Choose a Pokémon",cardTypeFilter(POKEMON)).showToOpponent("Selected Pokémon").moveTo(my.hand)
+						}
+					}
+					move "Thunderbolt" , {
+						text "100 damage. Discard all Energy from this Pokémon."
+						energyCost L,L,L
+						onAttack{
+							damage 100
+							afterDamage{
+								discardAllSelfEnergy(null)
+							}
+						}
+					}
+				};
+				case ASHS_PIKACHU_SM109:
+				return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
+					weakness FIGHTING
+					resistance METAL, MINUS20
+					move "Agility" , {
+						text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn.\n"
+						energyCost C
+						onAttack{
+							flip{preventAllDamageNextTurn()}
+						}
+					}
+					move "Thunder" , {
+						text "80 damage. Flip a coin. If tails, this Pokémon does 20 damage to itself."
+						energyCost L,L,C
+						onAttack{
+							damage 80
+							flip 1,{},{damage 20, self}
+						}
+					}
+				};
+				case ASHS_PIKACHU_SM110:
+				return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
+					weakness FIGHTING
+					resistance METAL, MINUS20
+					move "Iron Tail" , {
+						text "20× damage. Flip a coin until you get tails. This attack does 20 damage for each heads.\n"
+						energyCost C
+						onAttack{
+							flipUntilTails {damage 20}
+						}
+					}
+					move "Thunder" , {
+						text "80 damage. Flip a coin. If tails, this Pokémon does 20 damage to itself."
+						energyCost L,L,C
+						onAttack{
+							damage 80
+							flip 1,{},{damage 20, self}
+						}
+					}
+				};
+				case ASHS_PIKACHU_SM111:
+				return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
+					weakness FIGHTING
+					resistance METAL, MINUS20
+					move "Quick Attack" , {
+						text "10+ damage. Flip a coin. If heads, this attack does 10 more damage.\n"
+						energyCost C
+						onAttack{
+							damage 10
+							flip{damage 10}
+						}
+					}
+					move "Volt Tackle" , {
+						text "60 damage. This Pokémon does 10 damage to itself."
+						energyCost L,C,C
+						onAttack{
+							damage 60
+							damage 10, self
+						}
+					}
+				};
+				case ASHS_PIKACHU_SM112:
+				return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
+					weakness FIGHTING
+					resistance METAL, MINUS20
+					move "Quick Attack" , {
+						text "10+ damage. Flip a coin. If heads, this attack does 10 more damage.\n"
+						energyCost C
+						onAttack{
+							damage 10
+							flip{damage 10}
+						}
+					}
+					move "Electro Ball" , {
+						text "50 damage."
+						energyCost L,C,C
+						onAttack{
+							damage 50
+						}
+					}
+				};
+				case ASHS_PIKACHU_SM113:
+				return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
+					weakness FIGHTING
+					resistance METAL, MINUS20
+					move "Iron Tail" , {
+						text "20× damage. Flip a coin until you get tails. This attack does 20 damage for each heads.\n"
+						energyCost C
+						onAttack{
+							flipUntilTails {damage 20}
+						}
+					}
+					move "Electro Ball" , {
+						text "50 damage."
+						energyCost L,C,C
+						onAttack{
+							damage 50
+						}
+					}
+				};
+				case ASHS_PIKACHU_SM114:
+				return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
+					weakness FIGHTING
+					resistance METAL, MINUS20
+					move "Iron Tail" , {
+						text "20× damage. Flip a coin until you get tails. This attack does 20 damage for each heads.\n"
+						energyCost C
+						onAttack{
+							flipUntilTails {damage 20}
+						}
+					}
+					move "Thunderbolt" , {
+						text "100 damage. Discard all Energy from this Pokémon."
+						energyCost L,L,L
+						onAttack{
+							damage 100
+							afterDamage{
+								discardAllSelfEnergy(null)
+							}
+						}
+					}
+				};
+			case PHEROMOSA_SM115:
+				return copy (ForbiddenLight.PHEROMOSA_11, this);
+			case XURKITREE_SM116:
+				return copy (ForbiddenLight.XURKITREE_39, this);
+			case MALAMAR_SM117:
+				return copy (ForbiddenLight.MALAMAR_51, this);
+			case LYCANROC_SM118:
+				return copy (ForbiddenLight.LYCANROC_76, this);
+			case EXEGGCUTE_SM119:
+				return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
+					weakness FIRE
+					move "Psy Bolt" , {
+						text "10 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+						energyCost C,C
+						onAttack{
+							damage 10
+							flipThenApplySC PARALYZED
+						}
+					}
+				};
+			case ROCKRUFF_SM120:
+				return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
+					weakness GRASS
+					move "Bite" , {
+						text "30 damage."
+						energyCost C,C
+						onAttack{
+							damage 30
+						}
+					}
+				};
+			case RAIKOU_GX_SM121:
+				return basic (this, hp:HP170, type:LIGHTNING, retreatCost:1) {
+					weakness FIGHTING
+					resistance METAL, MINUS20
+					move "Dig Claws" , {
+						text "30 damage."
+						energyCost C,C
+						onAttack{
+							damage 30
+						}
+					}
+					move "Thunder" , {
+						text "150 damage. Flip a coin. If tails, this Pokémon does 50 damage to itself."
+						energyCost L,L,C,C
+						onAttack{
+							damage 150
+							flip 1,{},{damage 50, self}
+						}
+					}
+					move "Thunderous Rain GX" , {
+						text "This attack does 100 damage to each of your opponent's Pokémon that has any Energy attached to it. (Don't apply Weakness and Resistance for Benched Pokémon.) (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+						energyCost L,L,L,L
+						attackRequirement{
+							gxCheck()
+						}
+						onAttack{
+							gxPerform()
+							opp.all.each{
+								if(it.cards.energyCount(C)){
+									damage 100, it
+								}
+							}
+						}
+					}
+				};
+			case ZYGARDE_GX_SM122:
+				return basic (this, hp:HP180, type:FIGHTING, retreatCost:2) {
+					weakness GRASS
+					move "Vibration" , {
+						text "20 damage."
+						energyCost C
+						onAttack{
+							damage 20
+						}
+					}
+					move "Cell Storm" , {
+						text "80 damage. Heal 30 damage from this Pokémon.\n"
+						energyCost F,C,C
+						onAttack{
+							damage 80
+							heal 30, self
+						}
+					}
+					move "Liberation GX" , {
+						text "120× damage. Your opponent reveals their hand. This attack does 120 damage for each Energy card you find there. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+						energyCost F,F,C,C
+						attackRequirement{
+							gxCheck()
+						}
+						onAttack{
+							gxPerform()
+							if(opp.hand){
+								opp.hand.showToMe("Your opponent's hand")
+								opp.hand.filterByType(ENERGY).each{
+									damage 120
+								}
+							}
+						}
+					}
+				};
+			case DAWN_WINGS_NECROZMA_SM123:
+				return copy (DAWN_WINGS_NECROZMA_SM106, this);
+			case DUSK_MANE_NECROZMA_SM124:
+				return copy (DUSK_MANE_NECROZMA_SM107, this);
+			case NAGANADEL_GX_SM125:
+				return copy (ForbiddenLight.NAGANADEL_GX_56, this);
+			case ULTRA_NECROZMA_GX_SM126:
+				return copy (ForbiddenLight.ULTRA_NECROZMA_GX_95, this);
+			case ALOLAN_SANDSLASH_SM127:
+				return 	evolution (this, from:"Alolan Sandshrew", hp:HP120, type:METAL, retreatCost:2) {
+					weakness FIRE
+					resistance PSYCHIC, MINUS20
+					move "Metal Claw" , {
+						text "20 damage."
+						energyCost M
+						onAttack{
+							damage 20
+						}
+					}
+					move "Tumbling Attack" , {
+						text "80+ damage. Flip a coin. If heads, this attack does 40 more damage."
+						energyCost M,M,C
+						onAttack{
+							damage 80
+							flip{damage 40}
+						}
+					}
+				};
+				case ALOLAN_NINETALES_SM128:
+				return 	evolution (this, from:"Vulpix", hp:HP110, type:FAIRY, retreatCost:1) {
+					weakness METAL
+					resistance DARKNESS, MINUS20
+					move "Smash Kick" , {
+						text "30 damage."
+						energyCost C,C
+						onAttack{
+							damage 30
+						}
+					}
+					move "Spiral Drain" , {
+						text "80 damage. Heal 30 damage from this Pokémon."
+						energyCost Y,Y,C
+						onAttack{
+							damage 80
+							heal 30, self
+						}
+					}
+				};
+			case KYOGRE_SM129:
+				return copy (CelestialStorm.KYOGRE_46, this);
+			case MANECTRIC_SM130:
+				return copy (CelestialStorm.MANECTRIC_52, this);
+			case CELESTEELA_SM131:
+				return copy (CelestialStorm.CELESTEELA_100, this);
+			case DELCATTY_SM132:
+				return copy (CelestialStorm.DELCATTY_121, this);
+			case THUNDURUS_GX_SM133:
+				return basic (this, hp:HP180, type:LIGHTNING, retreatCost:2) {
+					weakness FIGHTING
+					resistance METAL, MINUS20
+					move "Charge" , {
+						text "Search your deck for a [L] Energy card and attach it to this Pokémon. Then, shuffle your deck."
+						energyCost L
+						attackRequirement{
+							assert my.deck : "There is no card in your deck"
+						}
+						onAttack{
+							attachEnergyFrom(type:L,my.deck,self)
+							shuffleDeck()
+						}
+					}
+					move "Electric Ball" , {
+						text "140 damage."
+						energyCost L,L,L
+						onAttack{
+							damage 40
+						}
+					}
+					move "Thundering Hurricane GX" , {
+						text "100× damage. Flip 4 coins. This attack does 100 damage for each heads. (You can't user more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+						energyCost L,L,L
+						attackRequirement{
+							gxCheck()
+						}
+						onAttack{
+							gxPerform()
+							flip 4,{damage 100}
+						}
+					}
+				};
+			case TORNADUS_GX_SM134:
+				return basic (this, hp:HP180, type:COLORLESS, retreatCost:2) {
+					weakness LIGHTNING
+					resistance FIGHTING, MINUS20
+					move "Gust" , {
+						text "50 damage."
+						energyCost C,C
+						onAttack{
+							damage 50
+						}
+					}
+					move "Wild Fury" , {
+						text "90+ damage. Flip a coin until you get tails. This attack does 30 more damage for each heads.\n"
+						energyCost C,C,C
+						onAttack{
+							damage 90
+							flipUntilTails {damage 30}
+						}
+					}
+					move "Destructive Cyclone GX" , {
+						text "130 damage. Discard all Energy from your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+						energyCost C,C,C
+						attackRequirement{
+							gxCheck()
+						}
+						onAttack{
+							gxPerform()
+							damage 130
+							opp.active.cards.filterByType(ENERGY).discard()
+						}
+					}
+				};
+			case LATIAS_SM135:
+				return basic (this, hp:HP110, type:DRAGON, retreatCost:1) {
+					weakness FAIRY
+					move "Hypnoblast" , {
+						text "30 damage. Your opponent's Active Pokémon is now Asleep."
+						energyCost C,C
+						onAttack{
+							damage 30
+							applyAfterDamage ASLEEP
+						}
+					}
+					move "Mist Ball" , {
+						text "110 damage. Flip a coin. If tails, discard a [R] Energy and a [P] Energy from this Pokémon."
+						energyCost R,P,C
+						onAttack{
+							damage 110
+							afterDamage{
+								discardSelfEnergy R,P
+							}
+						}
+					}
+				};
+			case LATIOS_SM136:
+				return basic (this, hp:HP120, type:DRAGON, retreatCost:2) {
+					weakness FAIRY
+					move "Energy Extract" , {
+						text "20 damage. Search your deck for a basic Energy card and attach it to this Pokémon. Then, shuffle your deck.\n"
+						energyCost C
+						onAttack{
+							damage 20
+							afterDamage{
+								if(my.deck){
+									attachEnergyFrom(basic:true,my.deck,self)
+								}
+							}
+						}
+					}
+					move "Luster Purge" , {
+						text "140 damage. Flip a coin. If tails, discard all Energy attached to this Pokémon."
+						energyCost W,P,C,C
+						onAttack{
+							damage 140
+							afterDamage{
+								flip 1,{},{discardAllSelfEnergy(null)}
+							}
+						}
+					}
+				};
+			case RESHIRAM_GX_SM137:
+				return copy(DragonMajesty.RESHIRAM_GX_11, this);
+			case ZEKROM_GX_SM138:
+				return basic (this, hp:HP180, type:LIGHTNING, retreatCost:3) {
+					weakness FIGHTING
+					resistance METAL, MINUS20
+					move "Bullet Uppercut" , {
+						text "10+ damage. If your opponent's Active Pokémon is a Pokémon-GX or a Pokémon-EX, this attack does 60 more damage. This attack's damage isn't affected by Weakness."
+						energyCost C
+						onAttack{
+							noWeaknessDamage(10,defending)
+							if(defending.pokemonEX || defending.pokemonGX) noWeaknessDamage(60,defending)
+
+						}
+					}
+					move "Swift Bolt Strike" , {
+						text "80+ damage. Flip 2 coins. This attack does 60 more damage for each heads."
+						energyCost L,L,L,C
+						onAttack{
+							damage 80
+							flip 2,{damage 60}
+						}
+					}
+					move "Rampage Bolt GX" , {
+						text "200 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)"
+						energyCost L,L,L,C
+						attackRequirement{
+							gxCheck()
+						}
+						onAttack{
+							gxPerform()
+							shredDamage 200
+						}
+					}
+				};
+			case SALAMENCE_GX_SM139:
+				return copy(DragonMajesty.SALAMENCE_GX_44, this);
+			case SALAMENCE_SM140:
+				return copy(CelestialStorm.SALAMENCE_106, this);
+			case WHITE_KYUREM_GX_SM141:
+				return copy(DragonMajesty.WHITE_KYUREM_GX_48, this);
+			case KYUREM_SM142:
+				return copy(DragonMajesty.KYUREM_47, this);
+			case MOLTRES_SM143:
+				return basic (this, hp:HP120, type:FIRE, retreatCost:1) {
+					weakness LIGHTNING
+					resistance FIGHTING, MINUS20
+					move "Wing Attack" , {
+						text "70 damage."
+						energyCost R,C,C
+						onAttack{
+							damage 70
+						}
+					}
+					move "Sky Attack" , {
+						text "150 damage. Flip a coin. If tails, this attack does nothing."
+						energyCost R,C,C,C
+						onAttack{
+							flip 1,{damage 150},{bc "Sky Attack failed"}
+						}
+					}
+				};
+				case ARTICUNO_SM144:
+				return basic (this, hp:HP120, type:WATER, retreatCost:1) {
+					weakness LIGHTNING
+					resistance FIGHTING, MINUS20
+					move "Gust" , {
+						text "30 damage."
+						energyCost C,C
+						onAttack{
+							damage 30
+						}
+					}
+					move "Sheer Cold" , {
+						text "100 damage. Flip a coin. If heads, the Defending Pokémon can't attack during your opponent's next turn."
+						energyCost W,W,C
+						onAttack{
+							damage 100
+							afterDamage{
+								flip {cantAttackNextTurn defending}
+							}
+						}
+					}
+				};
+			case LEAFEON_GX_SM145:
+				return copy (UltraPrism.LEAFEON_GX_13, this);
+			case ZAPDOS_SM146:
+				return basic (this, hp:HP120, type:LIGHTNING, retreatCost:1) {
+					weakness LIGHTNING
+					resistance FIGHTING, MINUS20
+					move "Thunder Shock" , {
+						text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+						energyCost L
+						onAttack{
+							damage 20
+							flipThenApplySC PARALYZED
+						}
+					}
+					move "Drill Peck" , {
+						text "120 damage."
+						energyCost C,C,C,C
+						onAttack{
+							damage 120
+						}
+					}
+				};
+			case GLACEON_GX_SM147:
+				return copy (UltraPrism.GLACEON_GX_39, this);
+			case CHAMPIONS_FESTIVAL_SM148:
+				return copy (CHAMPIONS_FESTIVAL_SM78, this);
+			case SUICUNE_SM149:
+				return copy (LostThunder.SUICUNE_59, this);
+			case RAIKOU_SM150:
+				return copy (LostThunder.RAIKOU_79, this);
+			case GIRATINA_SM151:
+				return copy (LostThunder.GIRATINA_97, this);
+			case TAPU_LELE_SM152:
+				return copy (LostThunder.TAPU_LELE_150, this);
+			case ROWLET_SM153:
+				return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
+					weakness FIRE
+					move "Leaf Blade" , {
+						text "10+ damage. Flip a coin. If heads, this attack does 30 more damage."
+						energyCost G,C
+						onAttack{
+							damage 10
+							flip{damage 20}
+						}
+					}
+				};
+			case SALANDIT_SM154:
+				return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
+					weakness WATER
+					move "Smog" , {
+						text "Flip a coin. If heads, your opponent's Active Pokémon is now Poisoned."
+						energyCost R
+						onAttack{
+							flip {apply POISONED}
+						}
+					}
+					move "Ember" , {
+						text "30 damage. Discard an Energy from this Pokémon."
+						energyCost R,C
+						onAttack{
+							damage 30
+							discardSelfEnergy C
+						}
+					}
+				};
+		case KINGDRA_GX_SM155:
+			return copy(DragonMajesty.KINGDRA_GX_18, this);
+		case DRAGONITE_GX_SM156:
+			return copy(DragonMajesty.DRAGONITE_GX_37, this);
 			default:
 				return null;
 		}
