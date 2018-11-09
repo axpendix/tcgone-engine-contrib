@@ -246,6 +246,8 @@ public class EvolutionChains {
     ADD("Dratini", "Dragonair", "Dragonite-GX");
     ADD("Bagon", "Shelgon", "Salamence-GX");
     ADD("Horsea", "Seadra", "Kingdra-GX");
+    ADD("Treecko", "Grovyle", "Sceptile-GX");
+    ADD("Larvitar", "Pupitar", "Tyranitar-GX");
   }
   
   private static void ADD(CardInfo...a){

@@ -91,7 +91,7 @@ public enum LostThunder implements CardInfo {
 	VICTINI_49("Victini", 49, Rarity.RARE, [POKEMON,_FIRE_,BASIC]),
 	LITLEO_50("Litleo", 50, Rarity.COMMON, [POKEMON,_FIRE_,BASIC]),
 	PYROAR_51("Pyroar", 51, Rarity.RARE, [POKEMON,_FIRE_,STAGE1,EVOLUTION]),
-	BLACEPHALON_GX_52("Blacephalon-GX", 52, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_FIRE_,BASIC]),
+	BLACEPHALON_GX_52("Blacephalon-GX", 52, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_FIRE_,BASIC,ULTRA_BEAST]),
 	ALOLAN_VULPIX_53("Alolan Vulpix", 53, Rarity.COMMON, [POKEMON,_WATER_,BASIC]),
 	SLOWPOKE_54("Slowpoke", 54, Rarity.COMMON, [POKEMON,_WATER_,BASIC]),
 	SLOWKING_55("Slowking", 55, Rarity.RARE, [POKEMON,_WATER_,STAGE1,EVOLUTION]),
@@ -145,9 +145,9 @@ public enum LostThunder implements CardInfo {
 	CHANDELURE_103("Chandelure", 103, Rarity.HOLORARE, [POKEMON,_PSYCHIC_,STAGE2,EVOLUTION]),
 	MELOETTA_104("Meloetta", 104, Rarity.RARE, [POKEMON,_PSYCHIC_,BASIC]),
 	MAREANIE_105("Mareanie", 105, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
-	NIHILEGO_106("Nihilego", 106, Rarity.HOLORARE, [POKEMON,_PSYCHIC_,BASIC]),
-	POIPOLE_107("Poipole", 107, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
-	NAGANADEL_108("Naganadel", 108, Rarity.HOLORARE, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
+	NIHILEGO_106("Nihilego", 106, Rarity.HOLORARE, [POKEMON,_PSYCHIC_,BASIC,ULTRA_BEAST]),
+	POIPOLE_107("Poipole", 107, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC,ULTRA_BEAST]),
+	NAGANADEL_108("Naganadel", 108, Rarity.HOLORARE, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION,ULTRA_BEAST]),
 	ONIX_109("Onix", 109, Rarity.COMMON, [POKEMON,_FIGHTING_,BASIC]),
 	SUDOWOODO_110("Sudowoodo", 110, Rarity.UNCOMMON, [POKEMON,_FIGHTING_,BASIC]),
 	PHANPY_111("Phanpy", 111, Rarity.COMMON, [POKEMON,_FIGHTING_,BASIC]),
@@ -238,7 +238,7 @@ public enum LostThunder implements CardInfo {
 	SCEPTILE_GX_196("Sceptile-GX", 196, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_GRASS_,STAGE2,EVOLUTION]),
 	VIRIZION_GX_197("Virizion-GX", 197, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_GRASS_,BASIC]),
 	MAGCARGO_GX_198("Magcargo-GX", 198, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_FIRE_,STAGE1,EVOLUTION]),
-	BLACEPHALON_GX_199("Blacephalon-GX", 199, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_FIRE_,BASIC]),
+	BLACEPHALON_GX_199("Blacephalon-GX", 199, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_FIRE_,BASIC,ULTRA_BEAST]),
 	SUICUNE_GX_200("Suicune-GX", 200, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_WATER_,BASIC]),
 	ZERAORA_GX_201("Zeraora-GX", 201, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_LIGHTNING_,BASIC]),
 	SIGILYPH_GX_202("Sigilyph-GX", 202, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
@@ -258,7 +258,7 @@ public enum LostThunder implements CardInfo {
 	SCEPTILE_GX_216("Sceptile-GX", 216, Rarity.SECRET, [POKEMON_GX,POKEMON,_GRASS_,STAGE2,EVOLUTION]),
 	VIRIZION_GX_217("Virizion-GX", 217, Rarity.SECRET, [POKEMON_GX,POKEMON,_GRASS_,BASIC]),
 	MAGCARGO_GX_218("Magcargo-GX", 218, Rarity.SECRET, [POKEMON_GX,POKEMON,_FIRE_,STAGE1,EVOLUTION]),
-	BLACEPHALON_GX_219("Blacephalon-GX", 219, Rarity.SECRET, [POKEMON_GX,POKEMON,_FIRE_,BASIC]),
+	BLACEPHALON_GX_219("Blacephalon-GX", 219, Rarity.SECRET, [POKEMON_GX,POKEMON,_FIRE_,BASIC,ULTRA_BEAST]),
 	SUICUNE_GX_220("Suicune-GX", 220, Rarity.SECRET, [POKEMON_GX,POKEMON,_WATER_,BASIC]),
 	ZERAORA_GX_221("Zeraora-GX", 221, Rarity.SECRET, [POKEMON_GX,POKEMON,_LIGHTNING_,BASIC]),
 	SIGILYPH_GX_222("Sigilyph-GX", 222, Rarity.SECRET, [POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
@@ -558,6 +558,7 @@ public enum LostThunder implements CardInfo {
 				bwAbility "Floral Path to the Sky" , {
 					text "Once during your turn (before your attack), you may search your deck for Jumpluff, put this Pokémon and all cards attached to it in the Lost Zone, and put that Jumpluff in its place. Then, shuffle your deck."
 					actionA{
+						assert my.all.size()>1
 						checkLastTurn()
 						assert my.deck
 						powerUsed()
@@ -1408,7 +1409,7 @@ public enum LostThunder implements CardInfo {
 							if (!tar) break
 							def pcs = tar.select("Pokemon that has [R] energy to put in the Lost Zone. Cancel to stop", false)
 							if (!pcs) break
-							pcs.cards.filterByEnergyType(R).select("[R] Energy to put in the Lost Zone").discard()
+							pcs.cards.filterByEnergyType(R).select("[R] Energy to put in the Lost Zone").moveTo(my.lostZone)
 							count++
 						}
 						damage 50*count
@@ -2375,9 +2376,11 @@ public enum LostThunder implements CardInfo {
             assert checkGlobalAbility(thisCard) : "Blocked"
             bc "$thisCard used Distortion Door"
             my.discard.remove(thisCard)
-            def pcs = benchPCS(thisCard)
-            multiSelect(thisCard.owner.opposite.pbg.bench,2).each{
-							directDamage 10, it
+            benchPCS(thisCard)
+						if(thisCard.player.opposite.pbg.bench){
+							multiSelect(thisCard.player.opposite.pbg.bench,2).each{
+								directDamage 10, it
+							}
 						}
           }
         }
@@ -2453,12 +2456,12 @@ public enum LostThunder implements CardInfo {
 					energyCost P,C
 					onAttack{
 						damage 10
-						if(my.bench){
-							my.bench.filterByType(POKEMON).select(max:my.bench.filterByType(POKEMON).size(),"Choose the Pokémon to discard").each{
-								it.cards.discard()
-								removePCS(it)
-								damage 30
-							}
+						while(my.bench.notEmpty){
+							def pcs = my.bench.select("Discard any number of you Benched Pokémon for 30x damage (cancel to stop)", false)
+							if(!pcs) break
+							pcs.cards.discard()
+							removePCS(pcs)
+							damage 30
 						}
 					}
 				}
@@ -3899,12 +3902,13 @@ public enum LostThunder implements CardInfo {
 						assert bg.turnCount!=lastTurn : "Already used"
 						assert checkGlobalAbility(thisCard) : "Blocked"
 						bc "$thisCard used Mountain Migration"
-						thisCard.showToOpponent("$thisCard is using Mountain Migration")
-						self.moveTo(thisCard.player.pbg.lostZone)
+						def ll = new CardList(thisCard)
+						ll.showToOpponent("$thisCard is using Mountain Migration")
+						ll.moveTo(thisCard.player.pbg.lostZone)
 						def revCard = thisCard.player.opposite.pbg.deck.subList(0,1)
 						revCard.showToMe("Top card of your opponent's deck")
 						if(revCard.filterByType(SUPPORTER) && confirm("Put that card in the lost zone")){
-							revCard.moveTo(lostZone)
+							revCard.moveTo(thisCard.player.opposite.pbg.lostZone)
 						}
 					}
 				}
@@ -4051,11 +4055,11 @@ public enum LostThunder implements CardInfo {
 				text "Choose a Pokémon Tool or Special Energy card attached to 1 of your opponent's Pokémon, or any Stadium card in play, and put it in the Lost Zone.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
 					def choice = 0
-					if((bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star') && opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})){
+					if((bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star' && bg.stadiumInfoStruct.stadiumCard.name != 'Life Forest Prism Star' && bg.stadiumInfoStruct.stadiumCard.name != 'Thunder Mountain Prism Star') && opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})){
 						choice = choose([0,1],["Put a Pokémon Tool or Special Energy card attached to 1 of your opponent's Pokémon to the Lost Zone","Put the Stadium card in play in the Lost Zone"],"what do you want to do?")
 					}
 					else{
-						if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star'){
+						if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star' && bg.stadiumInfoStruct.stadiumCard.name != 'Life Forest Prism Star' && bg.stadiumInfoStruct.stadiumCard.name != 'Thunder Mountain Prism Star'){
 							choice = 1
 						}
 					}
@@ -4064,11 +4068,11 @@ public enum LostThunder implements CardInfo {
 						pcs.cards.findAll{it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(SPECIAL_ENERGY)}.select("Choose the card to put in the Lost Zone.").moveTo(opp.lostZone)
 					}
 					else{
-						bg.stadiumInfoStruct.stadiumCard.moveTo(opp.lostZone)
+						new CardList(bg.stadiumInfoStruct.stadiumCard).moveTo(bg.stadiumInfoStruct.stadiumCard.player.pbg.lostZone)
 					}
 				}
 				playRequirement{
-					assert (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star') || opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})
+					assert (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star' && bg.stadiumInfoStruct.stadiumCard.name != 'Life Forest Prism Star' && bg.stadiumInfoStruct.stadiumCard.name != 'Thunder Mountain Prism Star') || opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})
 				}
 			};
 			case FAIRY_CHARM_G_174:
@@ -4184,46 +4188,40 @@ public enum LostThunder implements CardInfo {
 					onPlay{
 						draw 2
 						flip {
-							delayed{
-								before DISCARD, self, {
-									self.moveTo(my.hand)
-									prevent()
+							delayed {
+								after DISCARD, {
+									if(ef.card == thisCard){
+										new CardList(thisCard).moveTo(my.hand)
+										prevent()
+									}
 								}
 								unregisterAfter 1
 							}
 						}
 					}
+				playRequirement {
+					assert my.deck
+				}
 			};
 			case LIFE_FOREST_PRISM_STAR_180:
-			return trainer(this) {
+			return stadium(this) {
 					text "Once during each player's turn, that player may heal 60 damage and remove all Special Conditions from 1 of their [G] Pokémon.\nWhenever a player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
 					def lastTurn=0
 					def actions=[]
-					def eff
 					onPlay {
-						eff = delayed{
-							before null, self, Source.SUPPORTER, {
-								bc "This stadium is not affected by Supporter cards."
-								prevent()
-							}
-							before null, self, Source.ITEM, {
-								bc "This stadium is not affected by Item cards."
-								prevent()
-							}
-						}
-						actions=action("Stadium: Ultra Space") {
-							assert my.all.findAll{it.types.contains(G) && (it.numberOfDamageCounters || it.specialConditions)} : "There is no grass pokémon to be healed."
+						actions=action("Stadium: Life Forest P.S.") {
+							def list = my.all.findAll{it.types.contains(G) && (it.numberOfDamageCounters || it.specialConditions)}
+							assert list : "There is no grass pokémon to be healed."
 							assert lastTurn != bg().turnCount : "Already used"
 							bc "Used Life Forest Prism Star"
 							lastTurn = bg().turnCount
-							my.hand.filterByType(BASIC_ENERGY).select("Choose the card to discard.").discard()
-							draw 3
+							def pcs = list.select("Heal which one")
+							heal 60, pcs, TRAINER_CARD
+							clearSpecialCondition pcs, TRAINER_CARD
 						}
 					}
 					onRemoveFromPlay{
 						actions.each { bg().gm().unregisterAction(it) }
-						eff.unregister()
-
 					}
 			};
 			case LOST_BLENDER_181:
@@ -4238,7 +4236,7 @@ public enum LostThunder implements CardInfo {
 					}
 			};
 			case LUSAMINE_PRISM_STAR_182:
-			return trainer(this) {
+			return supporter(this) {
 					text "You can play this card only if your opponent has exactly 3 Prize cards remaining.\nPrevent all damage done to your Ultra Beasts by attacks during your opponent's next turn.\nYou may play only 1 Supporter card during your turn (before your attack).\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
 					onPlay{
 						delayed {
@@ -4344,11 +4342,12 @@ public enum LostThunder implements CardInfo {
 			return supporter(this) {
 					text "You may discard any number of card from your hand. Then, draw cards until you have 5 cards in your hand. If you can't draw any cards in this way, you can't play this card.\nYou may play only 1 Supporter card during your turn (before your attack)."
 					onPlay{
-						my.hand.getExcludedList(thisCard).select(min : my.hand.size() - 5 , max : my.deck.size() + my.hand.size() - 4).moveTo(my.discard)
+						def ll = my.hand.getExcludedList(thisCard)
+						ll.select(min: ll.size() - 4, max: ll.size(), "Discard").discard()
 						draw 5 - my.hand.getExcludedList(thisCard).size()
 					}
 					playRequirement{
-						assert my.deck.size() + my.hand.size() - 1 >= 5 : "There is not enough cards in your deck"
+						assert my.deck : "Empty deck"
 					}
 			};
 			case SPELL_TAG_190:
@@ -4372,35 +4371,24 @@ public enum LostThunder implements CardInfo {
 					}
 			};
 			case THUNDER_MOUNTAIN_PRISM_STAR_191:
-			return trainer(this) {
+			return stadium(this) {
 					text "The attacks of [L] Pokémon (both yours and your opponent's) cost [L] less.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
-					def eff1
 					def eff2
 					onPlay {
-						eff = delayed{
-							before null, self, Source.SUPPORTER, {
-								bc "This stadium is not affected by Supporter cards."
-								prevent()
-							}
-							before null, self, Source.ITEM, {
-								bc "This stadium is not affected by Item cards."
-								prevent()
-							}
-						}
 						eff2=getter GET_MOVE_LIST, {h->
 							if(h.effect.target.owner.types.contains(L)){
-		            def list=[]
-		            for(move in h.object){
-		              def copy=move.shallowCopy()
-		              copy.energyCost.remove(L)
-		              list.add(copy)
-		            }
-		            h.object=list
+								def list=[]
+								for(move in h.object){
+									def copy=move.shallowCopy()
+									copy.energyCost.remove(L)
+									list.add(copy)
+								}
+								h.object=list
 							}
-	          }
+						}
 					}
 					onRemoveFromPlay{
-						eff.unregister()
+						eff2.unregister()
 					}
 			};
 			case WAIT_AND_SEE_HAMMER_192:

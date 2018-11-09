@@ -460,11 +460,13 @@ public enum FireRedLeafGreen implements CardInfo {
 				pokePower "Quick Search", {
 					text "Once during your turn (before your attack), you may choose any 1 card from your deck and put it into your hand. Shuffle your deck afterward. You can’t use more than 1 Quick Search Poké-Power each turn. This power can’t be used if Pidgeot is affected by a Special Condition."
 					actionA {
+						checkNoSPC()
 						assert bg.em().retrieveObject("Quick_Search") != bg.turnCount : "You cannot use Quick Search more than once per turn!"
 						assert my.deck
 						bg.em().storeObject("Quick_Search",bg.turnCount)
-						my.deck.select(count:1).moveTo(my.hand)
-					shuffleDeck()
+						powerUsed()
+						my.deck.select(hidden:true, count:1).moveTo(my.hand)
+						shuffleDeck()
 					}
 				}
 				move "Clutch", {
