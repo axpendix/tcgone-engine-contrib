@@ -1492,10 +1492,10 @@ public enum LostThunder implements CardInfo {
 				weakness METAL
 				bwAbility "Go for a Swing" , {
 					text "Once during your turn (before your attack), you may look at the top 2 cards of your deck and put them back in any order."
-					attackRequirement {
-						assert deck
-					}
-					onAttack {
+					actionA {
+						checkLastTurn()
+						assert my.deck
+						powerUsed()
 						def list=rearrange(deck.subList(0,2), "Rearrange top 2 cards in your deck")
 						deck.setSubList(0, list)
 					}
@@ -2255,28 +2255,18 @@ public enum LostThunder implements CardInfo {
 				weakness PSYCHIC
 				bwAbility "Shady Tail" , {
 					text "As long as this Pokémon is on your Bench, Pokémon Prism Star in play (both yours and your opponent's) can't attack and have no Abilities."
-					def effect1
-					def effect2
-					onActivate {
-						effect1 = before APPLY_ATTACK_DAMAGES, {
-              if(!self.active && ef.attacker.topPokemonCard.is(PRISM_STAR)) {
-                bg.dm().each{
-                  if(it.notNoEffect && it.dmg.value) {
-                    bc "Shady Tail"
-                    it.dmg = 0
-                  }
-                }
-              }
-            }
-						effect2 = getter IS_ABILITY_BLOCKED, { Holder h->
-					    if (!self.active && h.effect.target.topPokemonCard.is(PRISM_STAR)) {
-					      h.object=true
-					    }
-					  }
+					delayedA {
+						before CHECK_ATTACK_REQUIREMENTS, {
+							if(self.benched && ef.attacker.topPokemonCard.is(PRISM_STAR)) {
+								wcu "Shady Tail prevents attack"
+								prevent()
+							}
+						}
 					}
-					onDeactivate {
-					  effect1.unregister()
-					  effect2.unregister()
+					getterA IS_ABILITY_BLOCKED, { Holder h->
+						if (self.benched && h.effect.target.topPokemonCard.is(PRISM_STAR)) {
+							h.object=true
+						}
 					}
 				}
 				move "Knock Away" , {
@@ -3111,23 +3101,13 @@ public enum LostThunder implements CardInfo {
 				resistance PSYCHIC, MINUS20
 				bwAbility "Double Drive" , {
 					text "This Pokémon may have up to 2 Pokémon Tool cards attached to it. If it loses this Ability, discard Pokémon Tool cards from it until only 1 remains."
-					def effect
-					onActivate{
-						effect = before PLAY_POKEMON_TOOL,{
-							if(ef.target == self && self.cards.filterByType(POKEMON_TOOL).size() == 1){
-								attachPokemonTool(ef.cardToPlay,ef.target)
-								my.hand.remove(self)
-								my.deck.remove(self)
-								my.discard.remove(self)
-							}
-						}
+					onActivate {
+						bg.em().storeObject("OMEGA_DOUBLE_"+self.hashCode(), 1)
 					}
-					onDeactivate{
-						effect.unregister()
-						if(self.cards.filterByType(POKEMON_TOOL).size() == 2){
-							def tar = self.cards.filterByType(POKEMON_TOOL).select()
-							tar.discard()
-							tar.first().removeFromPlay(bg, self)
+					onDeactivate {
+						bg.em().storeObject("OMEGA_DOUBLE_"+self.hashCode(), null);
+						while(self.cards.filterByType(POKEMON_TOOL).size() > 1){
+							self.cards.filterByType(POKEMON_TOOL).select("Discard", {true}, self.owner).discard()
 						}
 					}
 				}
@@ -3276,10 +3256,11 @@ public enum LostThunder implements CardInfo {
 						my.deck.subList(0,8).showToMe("Top 8 cards of your deck")
 						def tar = my.deck.subList(0,8).filterByType(ENERGY)
 						if(tar){
-							tar.select(max : tar.size()).each{
-									attachEnergyFrom(it,my.all)
+							tar.select(min:0, max:tar.size()).each{
+								attachEnergyFrom(it,my.all)
 							}
 						}
+						shuffleDeck()
 					}
 				}
 				move "Play Rough" , {
