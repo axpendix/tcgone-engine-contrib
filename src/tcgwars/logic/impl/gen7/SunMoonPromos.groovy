@@ -1390,7 +1390,7 @@ public enum SunMoonPromos implements CardInfo {
 							damage 120
 							if(my.bench){
 								afterDamage{
-									def tar = my.bench.select()
+									def pcs = my.bench.select()
 									attachEnergyFrom(basic:true,my.discard,pcs)
 									attachEnergyFrom(basic:true,my.discard,pcs)
 								}

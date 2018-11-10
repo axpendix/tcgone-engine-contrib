@@ -558,16 +558,15 @@ public enum LostThunder implements CardInfo {
 				bwAbility "Floral Path to the Sky" , {
 					text "Once during your turn (before your attack), you may search your deck for Jumpluff, put this Pokémon and all cards attached to it in the Lost Zone, and put that Jumpluff in its place. Then, shuffle your deck."
 					actionA{
-						assert my.all.size()>1
 						checkLastTurn()
 						assert my.deck
 						powerUsed()
 						def tar = my.deck.search("Search 1 Jumpluff",{it.name=="Jumpluff"})
 						if (tar){
 							self.cards.moveTo(my.lostZone)
-							removePCS(self)
+//							tar.moveTo(self.cards)
 							my.deck.remove(tar.first())
-							benchPCS(tar.first())
+							self.cards.add(tar.first())
 						}
 						shuffleDeck()
 					}
@@ -612,7 +611,8 @@ public enum LostThunder implements CardInfo {
 						if(r==PLAY_FROM_HAND) {
 							if(my.deck && confirm("Use Fresh Squeezed?")) {
 								powerUsed()
-								my.deck.search (max: 3, basicEnergyFilter(G)).discard()
+								my.deck.search (max: 3, cardTypeFilter(BASIC_ENERGY)).discard()
+								shuffleDeck()
 							}
 						}
 					}
@@ -993,7 +993,7 @@ public enum LostThunder implements CardInfo {
 				}
 			};
 			case VIRIZION_GX_34:
-			return basic (this, hp:HP170, type:GRASS, retreatCost:2) {
+			return basic (this, hp:HP170, type:GRASS, retreatCost:1) {
 				weakness FIRE
 				move "Double Draw" , {
 					text "Draw 2 cards."
@@ -1163,7 +1163,7 @@ public enum LostThunder implements CardInfo {
 								eff = getter GET_ENERGY_TYPES, { holder->
 									if(holder.effect.target.owner == self.owner) {
 										int count = holder.object.size()
-										holder.object = [(1..count).collect{[FIRE] as Set}]
+										holder.object = (1..count).collect{[FIRE] as Set}
 									}
   							}
 							}
@@ -1404,15 +1404,18 @@ public enum LostThunder implements CardInfo {
 					energyCost R,R
 					onAttack{
 						def count=0
+						def toBeMoved=[]
 						while (1) {
-							def tar = my.all.findAll {it.cards.filterByEnergyType(R).notEmpty()}
+							def tar = my.all.findAll {it.cards.filterByEnergyType(R).findAll {!toBeMoved.contains(it)}.notEmpty()}
 							if (!tar) break
 							def pcs = tar.select("Pokemon that has [R] energy to put in the Lost Zone. Cancel to stop", false)
 							if (!pcs) break
-							pcs.cards.filterByEnergyType(R).select("[R] Energy to put in the Lost Zone").moveTo(my.lostZone)
+							def dd = pcs.cards.filterByEnergyType(R).findAll {!toBeMoved.contains(it)}.select("[R] Energy to put in the Lost Zone")
+							toBeMoved.addAll(dd)
 							count++
 						}
 						damage 50*count
+						afterDamage {toBeMoved.moveTo(my.lostZone)}
 					}
 				}
 				move "Burst GX" , {
@@ -2402,17 +2405,17 @@ public enum LostThunder implements CardInfo {
 				resistance FIGHTING, MINUS20
 				bwAbility "Mirror Counter" , {
 					text "If this Pokémon is your Active Pokémon and is damaged by an attack from your opponent's Pokémon-GX or Pokémon-EX (even if this Pokémon is Knocked Out), put damage counters on the Attacking Pokémon equal to the damage done to this Pokémon."
-					delayedA{
-						after APPLY_ATTACK_DAMAGES, {
-              if(self.active && ef.attacker.owner != self.owner && (ef.attacker.pokemonGX || ef.attacker.pokemonEX)) {
-                bg.dm().each{
-                  if(it.to == self && it.notNoEffect && it.dmg.value) {
-                    bc "Mirror Counter countered ${ef.attacker}'s attack"
-										ef.attacker.dmg+=it.dmg
-                  }
-                }
-              }
-            }
+					delayedA (priority:LAST) {
+						before APPLY_ATTACK_DAMAGES, {
+							if(self.active && ef.attacker.owner != self.owner && (ef.attacker.pokemonGX || ef.attacker.pokemonEX)) {
+								bg.dm().each{
+									if(it.to == self && it.dmg.value) {
+										bc "Mirror Counter countered ${ef.attacker}'s attack"
+										directDamage(it.dmg.value, ef.attacker, Source.SRC_ABILITY)
+									}
+								}
+							}
+						}
 					}
 				}
 				move "Sonic Wing" , {
@@ -2615,7 +2618,7 @@ public enum LostThunder implements CardInfo {
 					text "Once during your turn (before your attack), you may attach a basic Energy card from your discard pile to this Pokémon."
 					actionA{
 						checkLastTurn()
-						assert my.discard.filterByType(BASIC_ENERGY) : "there is no basic Energy card in yout discard"
+						assert my.discard.filterByType(BASIC_ENERGY) : "there is no basic Energy card in your discard"
 						powerUsed()
 						attachEnergyFrom(basic:true, my.discard,self)
 					}
@@ -2977,8 +2980,10 @@ public enum LostThunder implements CardInfo {
 					energyCost M,M,C
 					onAttack{
 						damage 190
-						self.cards.moveTo(my.lostZone)
-						removePCS(self)
+						afterDamage {
+							self.cards.moveTo(my.lostZone)
+							removePCS(self)
+						}
 					}
 				}
 			};
@@ -3195,7 +3200,7 @@ public enum LostThunder implements CardInfo {
 					energyCost Y,C
 					attackRequirement{
 						gxCheck()
-						assert defending.topPokemonCard.is(ULTRA_BEAST)
+						assert defending.topPokemonCard.cardTypes.is(ULTRA_BEAST)
 					}
 					onAttack{
 						gxPerform()
@@ -3597,9 +3602,11 @@ public enum LostThunder implements CardInfo {
 					text "Whenever you attach a Pokémon Tool card that has 'Fairy Charm' in its name from your hand to this Pokémon during your turn, you may leave your opponent's Active Pokémon Confused."
 					delayedA{
 						after PLAY_POKEMON_TOOL,{
-              if(ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner && ef.cardToPlay.name.contains("Fairy Charm") && confirm("Use Charmed Charm?"))
-                 apply CONFUSED, self.owner.opposite.pbg.active
-            }
+							if(bg.currentTurn == self.owner && ef.cardToPlay.name.contains("Fairy Charm") && ef.target == self && confirm("Use Charmed Charm?")){
+								powerUsed()
+								apply CONFUSED, self.owner.opposite.pbg.active, Source.SRC_ABILITY
+							}
+						}
 					}
 				}
 				move "Magical Shot" , {
@@ -3641,7 +3648,7 @@ public enum LostThunder implements CardInfo {
 					text "Heal 20 damage from each of your Pokémon."
 					energyCost C
 					onAttack{
-						self.all.each{
+						my.all.each{
 							heal 20, it
 						}
 					}
@@ -3683,9 +3690,11 @@ public enum LostThunder implements CardInfo {
 					actionA{
 						checkLastTurn()
 						assert my.hand.findAll{it.cardTypes.is(STAGE1)}
+						assert bg.turnCount > 2
+						assert self.turnCount != bg.turnCount
 						powerUsed()
 						def pcs = my.hand.findAll{it.cardTypes.is(STAGE1)}.select()
-						evolve(self, pcs.first(), OTHER)
+						evolve(self, pcs.first(), PLAY_FROM_HAND)
 					}
 				}
 			};
@@ -3994,7 +4003,7 @@ public enum LostThunder implements CardInfo {
 					def eff1
 					onPlay {reason->
 						eff1=getter GET_MOVE_LIST, self, {h->
-							if(self.owner.pbg.prizeCardSet > self.owner.opposite.pbg.prizeCardSet){
+							if(self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()){
 		            def list=[]
 		            for(move in h.object){
 		              def copy=move.shallowCopy()
@@ -4034,10 +4043,10 @@ public enum LostThunder implements CardInfo {
 					text "During this turn, your [L] Pokémon's attacks do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack)."
 					onPlay {
 						delayed{
-							before APPLY_ATTACK_DAMAGES, {
-	              if(ef.attacker.owner == self.owner && ef.attacker.types.contains(L)) {
+							after PROCESS_ATTACK_EFFECTS, {
+	              if(ef.attacker.owner == thisCard.player && ef.attacker.types.contains(L)) {
 	                bg.dm().each{
-	                  if(it.from == ef.attacker && it.notNoEffect && it.dmg.value) {
+	                  if(it.from == ef.attacker && it.notNoEffect && it.dmg.value && it.to.active && it.to.owner != it.from.owner) {
 	                    bc "Electropower +30"
 	                    it.dmg += hp(30)
 	                  }
@@ -4348,6 +4357,10 @@ public enum LostThunder implements CardInfo {
 					}
 					playRequirement{
 						assert my.deck : "Empty deck"
+						int min = my.hand.getExcludedList(thisCard).size() - 4
+						if(min > 1) {
+							assert confirm ("You MUST discard at least $min cards from your hand to use this card. Are you sure you want to use it?")
+						}
 					}
 			};
 			case SPELL_TAG_190:
@@ -4360,7 +4373,7 @@ public enum LostThunder implements CardInfo {
 								if(self.types.contains(P) && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
 									bc "Spell Tag activates"
 									for(int i=0;i<4;i++){
-										directDamage 10, opp.all.select()
+										if(self.owner.opposite.pbg.all) directDamage 10, self.owner.opposite.pbg.all.select("Put 1 damage counter to", true, self.owner)
 									}
 								}
 							}
@@ -4376,7 +4389,7 @@ public enum LostThunder implements CardInfo {
 					def eff2
 					onPlay {
 						eff2=getter GET_MOVE_LIST, {h->
-							if(h.effect.target.owner.types.contains(L)){
+							if(h.effect.target.types.contains(L)){
 								def list=[]
 								for(move in h.object){
 									def copy=move.shallowCopy()
@@ -4420,7 +4433,7 @@ public enum LostThunder implements CardInfo {
 						text "This card provides [C] Energy.\n The Pokémon this card is attached to can use any attack from its previous Evolutions (You still need the necessary Energy to use the attack)"
 						def eff
 						onPlay {reason->
-							eff = getterA (GET_MOVE_LIST,self) {holder->
+							eff = getter (GET_MOVE_LIST,self) {holder->
 								for(card in holder.effect.target.cards.filterByType(POKEMON)){
 									if(card!=holder.effect.target.topPokemonCard){
 										holder.object.addAll(card.moves)
