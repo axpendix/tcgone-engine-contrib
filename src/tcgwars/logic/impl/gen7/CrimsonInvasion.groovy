@@ -2288,8 +2288,10 @@ public enum CrimsonInvasion implements CardInfo {
       return itemCard (this) {
         text "You can play this card only if you have more Prize cards remaining than your opponent.\nSwitch 1 of your opponent's Benched Pokémon with their Active Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
         onPlay {
-          def pcs = opp.bench.select("Switch")
-          sw opp.active, pcs
+          if(opp.bench){
+            def pcs = opp.bench.select("Switch")
+            sw opp.active, pcs
+          }
         }
         playRequirement{
           assert my.prizeCardSet.size() > opp.prizeCardSet.size()
