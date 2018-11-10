@@ -768,8 +768,10 @@ public enum LostThunder implements CardInfo {
 					energyCost G,G
 					onAttack{
 						damage 130
-						if(my.bench){
-							moveEnergy(type:G,self,my.bench.select("Which pokémon will recieve the [G] Energy?"))
+						afterDamage{
+							if(my.bench){
+								moveEnergy(type:G,self,my.bench.select("Which pokémon will recieve the [G] Energy?"))
+							}
 						}
 					}
 				}
