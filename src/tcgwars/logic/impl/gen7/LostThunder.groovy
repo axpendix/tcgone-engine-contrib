@@ -678,8 +678,10 @@ public enum LostThunder implements CardInfo {
 				move "Powerful Friends" , {
 					text "30+ damage. If you have any Stage 2 Pokémon on your Bench, this attack does 90 more damage."
 					energyCost G,C
-					damage 30
-					if(my.bench.find{it.topPokemonCard.cardTypes.is(STAGE2)}) damage 90
+					onAttack{
+						damage 30
+						if(my.bench.find{it.topPokemonCard.cardTypes.is(STAGE2)}) damage 90
+					}
 				}
 			};
 			case CELEBI_PRISM_STAR_19:
