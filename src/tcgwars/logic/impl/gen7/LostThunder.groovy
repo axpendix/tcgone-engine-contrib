@@ -1408,7 +1408,7 @@ public enum LostThunder implements CardInfo {
 					energyCost R,R
 					onAttack{
 						def count=0
-						def toBeMoved=[]
+						def toBeMoved=new CardList()
 						while (1) {
 							def tar = my.all.findAll {it.cards.filterByEnergyType(R).findAll {!toBeMoved.contains(it)}.notEmpty()}
 							if (!tar) break
@@ -3674,11 +3674,11 @@ public enum LostThunder implements CardInfo {
 					text "Once during your turn (before your attack), you may put any Stage 1 card from your hand onto this Pokémon to evolve it. You can't use this Ability during your first turn or on the turn this Pokémon was put into play.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
 					actionA{
 						checkLastTurn()
-						assert my.hand.findAll{it.cardTypes.is(STAGE1)}
-						assert bg.turnCount > 2
-						assert self.turnCount != bg.turnCount
+						assert my.hand.filterByType(STAGE1) : "No Stage 1 in your hand"
+						assert bg.turnCount > 2 : "Cannot evolve first turn"
+						assert self.turnCount < bg.turnCount : "Cannot evolve the turn you put it into play"
 						powerUsed()
-						def pcs = my.hand.findAll{it.cardTypes.is(STAGE1)}.select()
+						def pcs = my.hand.filterByType(STAGE1).select("Evolve To")
 						evolve(self, pcs.first(), PLAY_FROM_HAND)
 					}
 				}
@@ -4004,25 +4004,21 @@ public enum LostThunder implements CardInfo {
 					}
 			};
 			case CUSTOM_CATCHER_171:
-			return itemCard (this) {
+				return itemCard (this) {
 					text "You may play 2 Custom Catcher cards at once.If you played 1 card, draw cards from your deck until you have 3 cards in your hand.If you played 2 cards, switch 1 of your opponent's Benched Pokémon with their Active Pokémon. (This effect works one time for 2 cards.)\nYou may play as many Item cards as you like during your turn (before your attack)."
 					onPlay {
 						if(opp.bench && my.hand.findAll({it.name=="Custom Catcher"}).size()>=2) {
-	            if(confirm("Use another Custom Catcher and switch your opponent active?")){
-	              my.hand.findAll({it.name=="Custom Catcher" && it!= self}).subList(0,1).discard()
+							if(confirm("Use another Custom Catcher and switch your opponent active?")){
+								my.hand.findAll({it.name=="Custom Catcher" && it!= thisCard}).subList(0,1).discard()
 								sw opp.active, opp.bench.select("Choose the new active")
-	            }
-							else {
-								draw 4-my.hand.size()
+								return
 							}
-	          }
-						else{
-							draw 4-my.hand.size()
-	          }
-	        }
-	        playRequirement{
-	        }
-			};
+						}
+						draw 4-my.hand.size()
+					}
+					playRequirement{
+					}
+				};
 			case ELECTROPOWER_172:
 			return itemCard (this) {
 					text "During this turn, your [L] Pokémon's attacks do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -4263,27 +4259,22 @@ public enum LostThunder implements CardInfo {
 			};
 			case MIXED_HERBS_184:
 			return itemCard (this) {
-					text "You may play 2 Mixed Herbs cards at once.If you played 1 card, remove a Special Condition from your Active Pokémon.If you played 2 cards, heal 90 damage and remove all Special Conditions from your Active Pokémon. (This effect works one time for 2 cards.)\nYou may play as many Item cards as you like during your turn (before your attack)."
-					onPlay {
-						if(my.hand.findAll({it.name=="Mixed Herbs"}).size()>=2) {
-	            if(confirm("Use another Mixed Herbs?")){
-	              my.hand.findAll({it.name=="Mixed Herbs" && it!= self}).subList(0,1).discard()
-								heal 90, my.active
-								clearSpecialCondition(pcs,Source.TRAINER_CARD)
-	            }
-							else {
-								SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove");
-								clearSpecialCondition(my.active, TRAINER_CARD, Arrays.asList(spc))
-							}
-	          }
-						else{
-							SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove");
-							clearSpecialCondition(my.active, TRAINER_CARD, Arrays.asList(spc))
-	          }
-	        }
-	        playRequirement{
-						assert my.active.numberOfDamageCounters || my.active.specialConditions
-	        }
+				text "You may play 2 Mixed Herbs cards at once.If you played 1 card, remove a Special Condition from your Active Pokémon.If you played 2 cards, heal 90 damage and remove all Special Conditions from your Active Pokémon. (This effect works one time for 2 cards.)\nYou may play as many Item cards as you like during your turn (before your attack)."
+				onPlay {
+					if(my.hand.findAll({it.name=="Mixed Herbs"}).size()>=2) {
+						if(confirm("Use another Mixed Herbs?")){
+							my.hand.findAll({it.name=="Mixed Herbs" && it!= thisCard}).subList(0,1).discard()
+							heal 90, my.active
+							clearSpecialCondition(my.active, Source.TRAINER_CARD)
+							return
+						}
+					}
+					SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove");
+					clearSpecialCondition(my.active, TRAINER_CARD, [spc])
+				}
+				playRequirement{
+					assert my.active.numberOfDamageCounters || my.active.specialConditions
+				}
 			};
 			case MOOMOO_MILK_185:
 			return itemCard (this) {
@@ -4337,7 +4328,7 @@ public enum LostThunder implements CardInfo {
 					text "You may discard any number of card from your hand. Then, draw cards until you have 5 cards in your hand. If you can't draw any cards in this way, you can't play this card.\nYou may play only 1 Supporter card during your turn (before your attack)."
 					onPlay{
 						def ll = my.hand.getExcludedList(thisCard)
-						ll.select(min: ll.size() - 4, max: ll.size(), "Discard").discard()
+						ll.select(min: Math.max(ll.size() - 4, 0), max: ll.size(), "Discard").discard()
 						draw 5 - my.hand.getExcludedList(thisCard).size()
 					}
 					playRequirement{
