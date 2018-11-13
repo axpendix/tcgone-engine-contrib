@@ -1141,6 +1141,12 @@ public enum CrimsonInvasion implements CardInfo {
                   prevent()
                 }
               }
+              before PLAY_EVOLUTION, {
+                if(ef.cardToPlay.abilities) {
+                  wcu "Bell of Silence: Can't play Pokémon that has an Ability"
+                  prevent()
+                }
+              }
               unregisterAfter 2
             }
           }
