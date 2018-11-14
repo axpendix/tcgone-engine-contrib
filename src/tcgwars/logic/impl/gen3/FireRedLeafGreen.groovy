@@ -465,7 +465,7 @@ public enum FireRedLeafGreen implements CardInfo {
 						assert my.deck
 						bg.em().storeObject("Quick_Search",bg.turnCount)
 						powerUsed()
-						my.deck.select(hidden:true, count:1).moveTo(my.hand)
+						my.deck.select(count:1).moveTo(hidden:true, my.hand)
 						shuffleDeck()
 					}
 				}

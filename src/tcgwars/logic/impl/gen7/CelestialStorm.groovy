@@ -2263,8 +2263,8 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				bwAbility "Danger Perception" , {
 					text "If this Pokémon's remaining HP is 100 or less, its attacks do 80 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
 					delayedA{
-					  after PROCESS_ATTACK_EFFECTS,{
-							if(self.getRemainingHP().value <= 100){
+					  before PROCESS_ATTACK_EFFECTS,{
+							if(self.remainingHP.value <= 100){
 						    bg.dm().each{
 						      if(it.from == self && it.notNoEffect && it.dmg.value) {
 						        bc "Danger Perception +80"

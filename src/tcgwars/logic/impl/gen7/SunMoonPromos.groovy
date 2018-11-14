@@ -891,6 +891,16 @@ public enum SunMoonPromos implements CardInfo {
 						weakness FIRE
 						bwAbility "Armor" , {
 							text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+							delayedA{
+								before APPLY_ATTACK_DAMAGES,{
+									bg.dm().each{
+										if(it.to == self && it.notNoEffect && it.dmg.value) {
+											bc "Armor -30"
+											it.dmg -= hp(30)
+										}
+									}
+								}
+							}
 						}
 						move "Resolute Claws" , {
 							text "80+ damage. If your opponent's Active Pokémon is a Pokémon-GX or a Pokémon-EX, this attack does 70 more damage (before applying Weakness and Resistance)."

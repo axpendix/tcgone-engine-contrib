@@ -760,7 +760,7 @@ public enum LostThunder implements CardInfo {
 					energyCost G
 					onAttack{
 						damage 60
-						if(defending.cards.filterByType(SPECIAL_ENERGY)) defending.cards.filterByType(SPECIAL_ENERGY).select("select the special energy to discard").discard()
+						discardDefendingSpecialEnergy(delegate)
 					}
 				}
 				move "Leaf Cyclone" , {
@@ -3135,7 +3135,7 @@ public enum LostThunder implements CardInfo {
 					onAttack{
 						gxPerform()
 						damage 190
-						dontApplyResistance
+						dontApplyResistance()
 					}
 				}
 			};
@@ -3264,8 +3264,8 @@ public enum LostThunder implements CardInfo {
 						my.deck.subList(0,8).showToMe("Top 8 cards of your deck")
 						def tar = my.deck.subList(0,8).filterByType(ENERGY)
 						if(tar){
-							tar.select(min:0, max:tar.size()).each{
-								attachEnergyFrom(it,my.all)
+							tar.select(min:0, max:tar.size(), "Select the ones you want to attach").each{
+								attachEnergy(my.all.select("Attach $it to?"), it)
 							}
 						}
 						shuffleDeck()
@@ -3974,9 +3974,9 @@ public enum LostThunder implements CardInfo {
 					def eff1
 					onPlay {reason->
 						eff1=delayed {
-							after PROCESS_ATTACK_EFFECTS, {
+							before APPLY_ATTACK_DAMAGES, {
 								bg.dm().each {
-									if(it.to==self && it.from.owner!=self.owner && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
+									if(it.to==self && it.from.owner!=self.owner && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value && it.notNoEffect){
 										it.dmg -= hp(30)
 										bc "Choice Helmet -30"
 									}
