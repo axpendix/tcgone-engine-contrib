@@ -4013,16 +4013,25 @@ public enum LostThunder implements CardInfo {
 				return itemCard (this) {
 					text "You may play 2 Custom Catcher cards at once.If you played 1 card, draw cards from your deck until you have 3 cards in your hand.If you played 2 cards, switch 1 of your opponent's Benched Pokémon with their Active Pokémon. (This effect works one time for 2 cards.)\nYou may play as many Item cards as you like during your turn (before your attack)."
 					onPlay {
+						int toDraw = Math.max(0, 3 - my.hand.getExcludedList(thisCard).size())
 						if(opp.bench && my.hand.findAll({it.name=="Custom Catcher"}).size()>=2) {
-							if(confirm("Use another Custom Catcher and switch your opponent active?")){
+							if(confirm("Use another Custom Catcher and switch your opponent active?") || toDraw == 0){
 								my.hand.findAll({it.name=="Custom Catcher" && it!= thisCard}).subList(0,1).discard()
 								sw opp.active, opp.bench.select("Choose the new active")
 								return
 							}
 						}
-						draw 4-my.hand.size()
+						draw toDraw
 					}
 					playRequirement{
+						int toDraw = Math.max(0, 3 - my.hand.getExcludedList(thisCard).size())
+						if(opp.bench && my.hand.findAll({it.name=="Custom Catcher"}).size()>=2){
+							if(toDraw <= 0){
+								assert confirm("You have more than 3 cards in your hand so you can only play this card as 2 at a time (to switch your opponent's active pokemon). Are you sure you want to play it?") : "Cancelled"
+							}
+						} else {
+							assert toDraw > 0 : "You can't play it with no effect"
+						}
 					}
 				};
 			case ELECTROPOWER_172:
