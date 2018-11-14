@@ -1740,7 +1740,7 @@ public enum LostThunder implements CardInfo {
 						after ATTACH_ENERGY,{
               if(flag && ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner && ef.resolvedTarget.owner == self.owner && self.owner.pbg.hand.filterByType(ENERGY)) {
 								flag=0
-								def list = self.owner.pbg.hand.filterByType(ENERGY).select("Harmonics: You can select one more card to attach to ${ef.resolvedTarget}",false)
+								def list = self.owner.pbg.hand.filterByType(ENERGY).select(min:0,"Harmonics: You can select one more card to attach to ${ef.resolvedTarget}")
 								if(list){
 									powerUsed()
 									attachEnergy(ef.resolvedTarget,list.first(),PLAY_FROM_HAND)
@@ -2903,11 +2903,17 @@ public enum LostThunder implements CardInfo {
 				bwAbility "Lost Out" , {
 					text "If your opponent's Pokémon is Knocked Out by damage from this Pokémon's attacks, put that Pokémon and all cards attached to it in the Lost Zone instead of the discard pile."
 					delayedA {
-						before KNOCKOUT, self, {
+						def flag = null
+						before KNOCKOUT, {
 							if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner && self.active && ef.pokemonToBeKnockedOut.owner != self.owner ){
-								ef.pokemonToBeKnockedOut.cards.moveTo(opp.lostZone)
-								removePCS(ef.pokemonToBeKnockedOut)
-								bc "${ef.pokemonToBeKnockedOut} got lost."
+								flag = ef.pokemonToBeKnockedOut.cards.copy()
+							}
+						}
+						after KNOCKOUT, {
+							if(flag){
+								bc "Lost Out activates"
+								flag.moveTo(self.owner.opposite.pbg.lostZone)
+								flag = null
 							}
 						}
 					}
@@ -4232,13 +4238,13 @@ public enum LostThunder implements CardInfo {
 						delayed {
 							before APPLY_ATTACK_DAMAGES, {
 								bg.dm().each {
-									if(it.to.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.notNoEffect && it.dmg.value){
+									if(ef.attacker.owner != thisCard.player && it.to.owner == thisCard.player && it.to.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.notNoEffect && it.dmg.value){
 										bc "Lusamine prevent damage done to Ultra Beasts"
 										it.dmg = hp(0)
 									}
 								}
 							}
-							unregisterAfter 1
+							unregisterAfter 2
 						}
 					}
 

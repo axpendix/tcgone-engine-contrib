@@ -2165,7 +2165,9 @@ public enum SunMoon implements CardInfo {
 						energyCost M, M, C
 						onAttack {
 							damage 230
-							discardAllSelfEnergy(null)
+							afterDamage {
+								discardAllSelfEnergy(null)
+							}
 						}
 					}
 					move "Sol Burst GX", {
