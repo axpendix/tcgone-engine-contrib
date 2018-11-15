@@ -1584,10 +1584,11 @@ public enum CrimsonInvasion implements CardInfo {
           energyCost D, D, C
           onAttack {
             damage 120
-            def tar = self.cards.filterByType(ENERGY).select()
-            if(tar){
-              tar.discard()
-              discardDefendingEnergy()
+            if(confirm("You may discard an Energy from this Pokémon. If you do, discard an Energy from your opponent's Active Pokémon.") && self.cards.energyCount(C)){
+              afterDamage {
+                discardSelfEnergy(C)
+                discardDefendingEnergy()
+              }
             }
           }
         }

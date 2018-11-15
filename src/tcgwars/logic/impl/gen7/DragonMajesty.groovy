@@ -540,7 +540,7 @@ public enum DragonMajesty implements CardInfo {
 						before APPLY_ATTACK_DAMAGES, {
 							if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
 								bc "Commotion activates"
-								directDamage(20, ef.attacker)
+								self.owner.pbg.bench.each {directDamage(20, it)}
 							}
 						}
 					}
