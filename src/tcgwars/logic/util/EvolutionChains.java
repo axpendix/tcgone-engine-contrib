@@ -161,10 +161,12 @@ public class EvolutionChains {
     ADD(BELDUM_28, METANG_21, METAGROSS_EX_95);
     ADD(ODDISH, GLOOM, VILEPLUME_EX_100);
     //FRLG
-    ADD("Charmander", "Charmeleon", "Charizard-ex");
-    ADD("Squirtle", "Wartortle", "Blastoise-ex");
-    ADD("Bulbasaur", "Ivysaur", "Venusaur-ex");
-    ADD("Gastly", "Haunter", "Gengar-ex");
+    ADD("Charmander", "Charmeleon", "Charizard ex");
+    ADD("Squirtle", "Wartortle", "Blastoise ex");
+    ADD("Bulbasaur", "Ivysaur", "Venusaur ex");
+    ADD("Gastly", "Haunter", "Gengar ex");
+    ADD("Zubat", "Golbat", "Crobat ex");
+    ADD("Bagon", "Shelgon", "Salamence ex");
     //BLW-EPO-NVI-NXD
     ADD(DEINO_77,ZWEILOUS_78,HYDREIGON_103);
     ADD(LITWICK_18,LAMPENT_19,CHANDELURE_101);

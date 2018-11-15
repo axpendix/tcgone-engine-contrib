@@ -757,7 +757,7 @@ public enum CrimsonInvasion implements CardInfo {
           delayedA {
             before null, self, Source.ATTACK, {
               if(self.owner.pbg.all.findAll{it.name=="Regirock"}){
-                if (self.owner.opposite.pbg.active.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                if (self.owner.opposite.pbg.active.topPokemonCard.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "Iceberg Shield prevents effect"
                   prevent()
                 }
@@ -765,20 +765,12 @@ public enum CrimsonInvasion implements CardInfo {
             }
             before APPLY_ATTACK_DAMAGES, {
               if(self.owner.pbg.all.findAll{it.name=="Regirock"}){
-                bc "Regirock is in play"
+                bc "Iceberg Shield: Regirock is in play"
                 bg.dm().each {
                   if(it.to == self && it.notNoEffect && it.from.topPokemonCard.cardTypes.is(STAGE2)){
                     it.dmg = hp(0)
                     bc "Iceberg Shield prevents damage"
                   }
-                }
-              }
-            }
-            after ENERGY_SWITCH, {
-              def efs = (ef as EnergySwitch)
-              if(self.owner.pbg.all.findAll{it.name=="Regirock"}){
-                if(it.from.topPokemonCard.cardTypes.is(STAGE2) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
-                  discard efs.card
                 }
               }
             }
