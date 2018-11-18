@@ -123,7 +123,7 @@ public enum TeamRocket implements CardInfo {
 
 	public static SimpleDeck devastation() {
 		SimpleDeck deck = new SimpleDeck("Devastation Theme Deck");
-		deck.setFormat(GameFormat.CLASSIC_SERIES);
+		deck.setFormat(GameFormat.CLASSIC_EXTENDED);
 		Map<CardInfo, Integer> map = new HashMap<>();
 		map.put(BaseSet.WEEDLE, 3);
 		map.put(ODDISH, 3);
@@ -150,7 +150,7 @@ public enum TeamRocket implements CardInfo {
 
 	public static SimpleDeck trouble() {
 		SimpleDeck deck = new SimpleDeck("Trouble Theme Deck");
-		deck.setFormat(GameFormat.CLASSIC_SERIES);
+		deck.setFormat(GameFormat.CLASSIC_EXTENDED);
 		Map<CardInfo, Integer> map = new HashMap<>();
 		map.put(BaseSet.ABRA, 2);
 		map.put(ABRA, 2);
