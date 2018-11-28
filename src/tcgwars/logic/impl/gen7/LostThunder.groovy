@@ -2488,7 +2488,7 @@ public enum LostThunder implements CardInfo {
 				}
 			};
 			case CHANDELURE_103:
-			return 	evolution (this, from:"Chandelure", hp:HP140, type:PSYCHIC, retreatCost:2) {
+			return 	evolution (this, from:"Lampent", hp:HP140, type:PSYCHIC, retreatCost:2) {
 				weakness DARKNESS
 				resistance FIGHTING, MINUS20
 				move "Cursed Drop" , {
