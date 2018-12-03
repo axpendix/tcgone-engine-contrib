@@ -1492,7 +1492,7 @@ public enum LostThunder implements CardInfo {
 			case LAPRAS_56:
 			return basic (this, hp:HP120, type:WATER, retreatCost:2) {
 				weakness METAL
-				bwAbility "Go for a Swing" , {
+				bwAbility "Go for a Swim" , {
 					text "Once during your turn (before your attack), you may look at the top 2 cards of your deck and put them back in any order."
 					actionA {
 						checkLastTurn()
