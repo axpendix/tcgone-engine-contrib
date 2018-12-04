@@ -170,8 +170,8 @@ public enum SunMoonPromos implements CardInfo {
 	KYUREM_SM142("Kyurem", 142, Rarity.PROMO, [POKEMON,_DRAGON_,BASIC]),
 	MOLTRES_SM143("Moltres", 143, Rarity.PROMO, [POKEMON,_FIRE_,BASIC]),
 	ARTICUNO_SM144("Articuno", 144, Rarity.PROMO, [POKEMON,_WATER_,BASIC]),
-	LEAFEON_GX_SM145("Leafeon-GX", 145, Rarity.PROMO, [POKEMON_GX,POKEMON,_GRASS_,STAGE1,EVOLUTION]),
-	ZAPDOS_SM146("Zapdos", 146, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	ZAPDOS_SM146("Zapdos", 145, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	LEAFEON_GX_SM145("Leafeon-GX", 146, Rarity.PROMO, [POKEMON_GX,POKEMON,_GRASS_,STAGE1,EVOLUTION]),
 	GLACEON_GX_SM147("Glaceon-GX", 147, Rarity.PROMO, [POKEMON_GX,POKEMON,_WATER_,STAGE1,EVOLUTION]),
 	CHAMPIONS_FESTIVAL_SM148("Champions Festival", 148, Rarity.PROMO, [TRAINER,STADIUM]),
 	SUICUNE_SM149("Suicune", 149, Rarity.PROMO, [POKEMON,_WATER_,BASIC]),
@@ -913,6 +913,14 @@ public enum SunMoonPromos implements CardInfo {
 						resistance FIGHTING, MINUS20
 						bwAbility "Steelworker" , {
 							text "Your [M] Pokémon's attacks do 10 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+							delayedA {
+								after PROCESS_ATTACK_EFFECTS, {
+									bg.dm().each {if(it.from.owner==self.owner && it.from.types.contains(M) && it.to.active && it.to.owner!=self.owner && it.dmg.value){
+										bc "Steelworker +10"
+										it.dmg += hp(10)
+									}}
+								}
+							}
 						}
 						move "Anchor Shot" , {
 							text "70 damage. The Defending Pokémon can't retreat during your opponent's next turn."
@@ -1985,8 +1993,6 @@ public enum SunMoonPromos implements CardInfo {
 						}
 					}
 				};
-			case LEAFEON_GX_SM145:
-				return copy (UltraPrism.LEAFEON_GX_13, this);
 			case ZAPDOS_SM146:
 				return basic (this, hp:HP120, type:LIGHTNING, retreatCost:1) {
 					weakness LIGHTNING
@@ -2007,6 +2013,8 @@ public enum SunMoonPromos implements CardInfo {
 						}
 					}
 				};
+			case LEAFEON_GX_SM145:
+				return copy (UltraPrism.LEAFEON_GX_13, this);
 			case GLACEON_GX_SM147:
 				return copy (UltraPrism.GLACEON_GX_39, this);
 			case CHAMPIONS_FESTIVAL_SM148:

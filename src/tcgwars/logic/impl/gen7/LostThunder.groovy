@@ -3042,11 +3042,13 @@ public enum LostThunder implements CardInfo {
 					energyCost M,C,C
 					onAttack{
 						damage 60
-						if(defending.evolution) {
-							def top=defending.topPokemonCard
-							bc "$top Devolved"
-							moveCard(top, opp.hand)
-							devolve(defending, top)
+						afterDamage {
+							if(defending.evolution && !defending.slatedToKO) {
+								def top=defending.topPokemonCard
+								bc "$top Devolved"
+								moveCard(top, opp.hand)
+								devolve(defending, top)
+							}
 						}
 					}
 				}
@@ -4070,7 +4072,9 @@ public enum LostThunder implements CardInfo {
 					}
 					if(choice == 0){
 						def pcs = opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)}).select("Remove 1 card from which pokémon?")
-						pcs.cards.findAll{it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(SPECIAL_ENERGY)}.select("Choose the card to put in the Lost Zone.").moveTo(opp.lostZone)
+						targeted(pcs, Source.TRAINER_CARD) {
+							pcs.cards.findAll{it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(SPECIAL_ENERGY)}.select("Choose the card to put in the Lost Zone.").moveTo(opp.lostZone)
+						}
 					}
 					else{
 						new CardList(bg.stadiumInfoStruct.stadiumCard).moveTo(bg.stadiumInfoStruct.stadiumCard.player.pbg.lostZone)
