@@ -2765,19 +2765,14 @@ public enum ForbiddenLight implements CardInfo {
 			};
 			case UNIT_ENERGY_FDY_118:
 			return specialEnergy (this, [[C]]) {
-				text "This card provides [C] Energy.\nWhile this card is attached to a Pokémon, it provides [F], [D], and [Y] Energy but provides only 1 Energy at a time.”
+				text "This card provides [C] Energy.\nWhile this card is attached to a Pokémon, it provides [F], [D], and [Y] Energy but provides only 1 Energy at a time."
 				onPlay {reason->
-        boolean attached = true
-        }
-        onRemoveFromPlay {
-            attached = false
-        }
-        getEnergyTypesOverride {
-            if(attached)
-            return [[F,D,Y]]
-            else
-            return[[C]]
-        }
+				}
+				onRemoveFromPlay {
+				}
+				getEnergyTypesOverride {
+					self != null ? [[F,D,Y] as Set] : [[C] as Set]
+				}
 			};
 
 			case PALKIA_GX_119:
