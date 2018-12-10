@@ -1561,10 +1561,11 @@ public enum LostThunder implements CardInfo {
 			case SUICUNE_59:
 			return basic (this, hp:HP110, type:WATER, retreatCost:1) {
 				weakness GRASS
-				bwAbility "Frozen Current" , {
+				bwAbility "Frozen Flow" , {
 					text "Once during your turn (before your attack), if this Pokémon is your Active Pokémon, you may have your opponent switch their Active Pokémon with 1 of their Benched Pokémon."
 					actionA{
 						checkLastTurn()
+						assert self.active : "$self is not your active"
 						assert opp.bench : "No opponent bench"
 						powerUsed()
 						sw opp.active, opp.bench.oppSelect("Select the new active.")
