@@ -487,7 +487,7 @@ public enum SunMoonPromos implements CardInfo {
 					}
 					move "Psychic", {
 						text "60+ damage. This attack does 20 more damage times the amount of Energy attached to your opponent's Active Pokémon."
-						energyCost C, C
+						energyCost C, C, C
 						onAttack {
 							damage 60+20*defending.cards.energyCount(C)
 						}
