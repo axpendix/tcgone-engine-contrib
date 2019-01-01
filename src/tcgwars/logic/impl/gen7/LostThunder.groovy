@@ -3410,14 +3410,14 @@ public enum LostThunder implements CardInfo {
 						damage 30
 						delayed{
 							before null, self, Source.ATTACK, {
-                if (self.owner.opposite.pbg.active.hasModernAbility && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                if (self.owner.opposite.pbg.active.hasModernAbility() && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "Wonder Ray prevents effect"
                   prevent()
 	              }
 	            }
 	            before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.from.hasModernAbility){
+                  if(it.to == self && it.notNoEffect && it.from.hasModernAbility()){
                     it.dmg = hp(0)
                     bc "Wonder Ray prevents damage"
 	                }
@@ -3425,7 +3425,7 @@ public enum LostThunder implements CardInfo {
 	            }
 	            after ENERGY_SWITCH, {
 	              def efs = (ef as EnergySwitch)
-                if(it.from.hasModernAbility && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                if(it.from.hasModernAbility() && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                   discard efs.card
 	              }
 	            }
