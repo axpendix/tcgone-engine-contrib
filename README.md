@@ -12,4 +12,4 @@ Please see <https://forum.tcgone.net/t/card-implementation-guide/26> for updated
 
 ### Building
 
-Our CI server will automatically build [the dev server](https://dev.tcgone.net) on every push and restart it. You can follow the build progress through Gitlab. 
+Our CI server will automatically build [the dev server](https://dev.tcgone.net) on every push and restart it. You can follow the build progress through Gitlab.
