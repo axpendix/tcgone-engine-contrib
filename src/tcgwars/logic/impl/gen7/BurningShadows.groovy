@@ -2728,10 +2728,14 @@ public enum BurningShadows implements CardInfo {
 				def eff
 				onPlay {
 					eff = delayed {
-						after EVOLVE_STANDARD, {
+						boolean flag = false
+						before EVOLVE, {
+							flag = (ef.evolutionCard as Card).player.pbg.hand.contains(ef.evolutionCard)
+						}
+						after EVOLVE, { if(flag) {
 							bc "PO Town"
 							directDamage(30, ef.pokemonToBeEvolved, TRAINER_CARD)
-						}
+						} }
 					}
 				}
 				onRemoveFromPlay{
@@ -2802,10 +2806,7 @@ public enum BurningShadows implements CardInfo {
 						before (KNOCKOUT,self) {
 							if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.cards.filterByType(ENERGY)) {
 								bc "Wishful Baton activates"
-								def pcs = self.owner.pbg.bench.select("Wishful Baton activates, choose target pokemon for energies", true, self.owner)
-								moveEnergy(basic: true, playerType: self.owner, self, pcs)
-								moveEnergy(basic: true, playerType: self.owner, self, pcs)
-								moveEnergy(basic: true, playerType: self.owner, self, pcs)
+								moveEnergy(basic: true, playerType: self.owner, may: true, count: 3, info: "Wishful Baton", self, self.owner.pbg.bench)
 							}
 						}
 					}

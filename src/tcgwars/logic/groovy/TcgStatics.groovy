@@ -1048,7 +1048,7 @@ class TcgStatics {
 			return
 		}
 		def playerType = params.playerType ?: bg.currentThreadPlayerType
-		list = list.select(min: (params.may ? 0 : 1), "Move which card?", {true}, playerType)
+		list = list.select(min: (params.may ? 0 : 1), max: (params.count ?: 1), (params.info ? params.info+". " : "") + "Move energy", {true}, playerType)
 		if(!list) return
 		if(to instanceof PcsList){
 			if(to.empty) return;

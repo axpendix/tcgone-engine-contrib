@@ -1599,7 +1599,7 @@ public enum LostThunder implements CardInfo {
 					energyCost W,W,C
 					onAttack{
 						damage 120
-						reduceDamageNextTurn(hp(30),thisMove)
+						reduceDamageFromDefendingNextTurn(hp(30),thisMove,defending)
 					}
 				}
 				move "Brinicles GX" , {
@@ -3448,7 +3448,7 @@ public enum LostThunder implements CardInfo {
 					text "Once during your turn, when this Pokémon moves from your Bench to become your Active Pokémon, you may move any number of Energy from your other Pokémon to it."
 					delayedA{
 						after SWITCH, {
-							if(bg.em().retrieveObject("Path_of_Life") != bg.turnCount && self.active){
+							if(bg.em().retrieveObject("Path_of_Life") != bg.turnCount && self.active && bg.currentTurn == self.owner){
 								bg.em().storeObject("Path_of_Life", bg.turnCount)
 								while(1){
 									def pl=(my.all.findAll {it.cards.filterByType(ENERGY) && it!=self})

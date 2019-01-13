@@ -1745,7 +1745,7 @@ public enum CrimsonInvasion implements CardInfo {
           energyCost M
           onAttack {
             damage 30
-            attachEnergyFrom(my.discard, my.bench)
+            attachEnergyFrom(basic:true, my.discard, my.bench)
           }
         }
         move "Iron Fist", {
