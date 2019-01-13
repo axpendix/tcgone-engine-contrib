@@ -2560,7 +2560,9 @@ public enum UltraPrism implements CardInfo {
           energyCost C, C, C
           onAttack {
             damage 50
-            flipUntilTails {damage 50}
+            int c=0
+            flipUntilTails {damage 50;c++}
+            if(c==0) applyAfterDamage(PARALYZED)
           }
         }
         move "Rolling Tackle", {
