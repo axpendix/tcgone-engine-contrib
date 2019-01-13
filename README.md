@@ -15,4 +15,3 @@ Please see <https://forum.tcgone.net/t/card-implementation-guide/26> for updated
 Our CI server will automatically build [the dev server](https://dev.tcgone.net) on every push and restart it.
 You can follow the build progress through Gitlab. After making a commit and pushing [to master],
 you can click on the commit then the pipeline button to watch the build logs.
-
