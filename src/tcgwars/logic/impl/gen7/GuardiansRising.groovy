@@ -3077,7 +3077,7 @@ public enum GuardiansRising implements CardInfo {
 					moveEnergy(my.bench, my.active)
 				}
 				playRequirement{
-					assert my.bench
+					assert my.bench.find {it.cards.filterByType(ENERGY)}
 				}
 			};
 			case RESCUE_STRETCHER_130:

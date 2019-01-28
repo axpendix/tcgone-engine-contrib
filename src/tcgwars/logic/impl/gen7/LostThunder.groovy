@@ -2309,6 +2309,7 @@ public enum LostThunder implements CardInfo {
 					actionA {
 						checkLastTurn()
 						assert my.bench.notEmpty : "$self is your last pokemon"
+						assert my.all.findAll {it!=self && it.cards.filterByType(POKEMON_TOOL).empty} : "No place to attach"
 						powerUsed()
 						def top = self.topPokemonCard
 						self.cards.getExcludedList(top).discard()
@@ -2329,7 +2330,8 @@ public enum LostThunder implements CardInfo {
 							}
 						}
 						trcard.player = top.player
-						attachPokemonTool(trcard, my.all.select("Attach to?"))
+						def pcs = my.all.findAll {it!=self && it.cards.filterByType(POKEMON_TOOL).empty}.select("Attach to?")
+						attachPokemonTool(trcard,pcs)
 					}
 				}
 				move "Haunt" , {
@@ -3102,7 +3104,8 @@ public enum LostThunder implements CardInfo {
 					text "80+ damage. If this Pokémon has a Pokémon Tool card attached to it, this attack does 40 more damage."
 					energyCost M,M,C
 					onAttack{
-
+						damage 80
+						if(self.cards.filterByType(POKEMON_TOOL)) damage 40
 					}
 				}
 			};

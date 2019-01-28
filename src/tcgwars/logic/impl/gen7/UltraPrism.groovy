@@ -1752,8 +1752,7 @@ public enum UltraPrism implements CardInfo {
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
-                if (self.benched && it.from.owner == self.owner && my.active.name=="Passimian" && it.to.active && it.to.realEvolution && it.to.owner != self.owner && it.dmg.value) {
-                  //TODO: Compare by name to boost passiman damage
+                if (self.benched && it.from.owner == self.owner && self.owner.pbg.active.name=="Passimian" && it.to.active && it.to.realEvolution && it.to.owner != self.owner && it.dmg.value) {
                   it.dmg += hp(30)
                   bc "Power Huddle +30"
                 }

@@ -734,6 +734,7 @@ public enum ForbiddenLight implements CardInfo {
 						gxCheck()
 					}
 					onAttack {
+						gxPerform()
 						damage 130, opp.bench.select()
 					}
 				}

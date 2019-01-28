@@ -1035,11 +1035,12 @@ class TcgStatics {
 	*/
 	static void moveEnergy(params=[:], def from, def to, Source src=Source.ATTACK) {
 		if(to instanceof PcsList && to.empty) return
+		def filterType = params.basic ? BASIC_ENERGY : ENERGY
 		if(from instanceof PcsList){
+			from = from.findAll {it.cards.filterByType(filterType)}
 			if(from.empty) return
 			from = from.select("From?")
 		}
-		def filterType = params.basic ? BASIC_ENERGY : ENERGY
 		def list = from.cards.filterByType(filterType)
 		if(params.type) {
 			list = list.filterByEnergyType(params.type)

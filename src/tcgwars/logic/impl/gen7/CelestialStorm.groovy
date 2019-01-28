@@ -1140,8 +1140,8 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					  delayed{
 					    before APPLY_ATTACK_DAMAGES, {
 					      bg.dm().each {
-					        if(it.to == self && it.from.evolution && it.dmg.value <= 40 && it.notNoEffect) {
-					          bc "Deflecting Splash prevents damage from evolved pokémon"
+					        if(it.to == self && it.from.realEvolution && it.dmg.value <= 40 && it.notNoEffect) {
+					          bc "Deflecting Splash prevents damage from Evolution Pokémon"
 					          it.dmg = hp(0)
 					        }
 					      }
@@ -2832,22 +2832,22 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 				bwAbility "Lazy" , {
 					text "As long as this Pokémon is your Active Pokémon, your opponent's Pokémon in play have no Abilities, except for Lazy."
 					def effect1
-					def effect2
+//					def effect2
 					onActivate {
 					  effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
 					    if (self.active && h.effect.ability.name != "Lazy" && h.effect.target.owner != self.owner && h.effect.ability instanceof BwAbility) {
 					      h.object=true
 					    }
 					  }
-					  effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-					    if (self.active && h.effect.target.player != self.owner) {
-					      h.object=true
-					    }
-					  }
+//					  effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+//					    if (self.active && h.effect.target.player != self.owner) {
+//					      h.object=true
+//					    }
+//					  }
 					}
 					onDeactivate {
 					  effect1.unregister()
-					  effect2.unregister()
+//					  effect2.unregister()
 					}
 				}
 				move "Critical Move" , {
