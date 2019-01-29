@@ -2836,7 +2836,7 @@ public enum SunMoon implements CardInfo {
 					text "After counting your Prize cards, shuffle them into your deck. Then, take that many cards from the top of your deck and put them face down as your Prize cards.\nYou may play as many Item cards as you like during your turn (before your attack)."
 					onPlay {
 						int count = my.prizeCardSet.size()
-						my.prizeCardSet.moveTo(my.deck)
+						my.prizeCardSet.moveTo(hidden:true,my.deck)
 						shuffleDeck()
 						for(int i=0;i<count;i++){
 							my.prizeCardSet.add(my.deck.remove(0))

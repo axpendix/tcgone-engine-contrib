@@ -414,13 +414,20 @@ public class CardList extends ArrayList<Card> {
 		return this
 	}
 	public CardList moveTo(params=[:], CardList newLocation){
-		MoveCard effect = new MoveCard(new CardList(this), newLocation)
+		MoveCard effect = new MoveCard(copyWithoutNulls(this), newLocation)
 		if(params.hidden)
 			effect.hidden = params.hidden
 		if(params.suppressLog)
 			effect.suppressLog = params.suppressLog
 		effect.run(Battleground.getInstance())
 		return this
+	}
+	public static CardList copyWithoutNulls(CardList list){
+		CardList list1 = new CardList()
+		for(Card card : list){
+			list1.add(card) // iterator doesn't produce null values
+		}
+		return list1
 	}
 	public int energyCount(Type type=Type.COLORLESS){
 		ArrayList<EnergyCard> asEnergyCards = getAsEnergyCards();

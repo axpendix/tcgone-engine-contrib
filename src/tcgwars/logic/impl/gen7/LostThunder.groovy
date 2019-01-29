@@ -2914,6 +2914,7 @@ public enum LostThunder implements CardInfo {
 						}
 						after KNOCKOUT, {
 							if(flag){
+								// FIXME this doesnt work with Robo Substitute, results in duplication
 								bc "Lost Out activates"
 								flag.moveTo(self.owner.opposite.pbg.lostZone)
 								flag = null
@@ -3907,6 +3908,7 @@ public enum LostThunder implements CardInfo {
 						ll.showToOpponent("$thisCard is using Mountain Migration")
 						ll.moveTo(thisCard.player.pbg.lostZone)
 						def revCard = thisCard.player.opposite.pbg.deck.subList(0,1)
+						revCard.showToOpponent("Top card of your deck")
 						revCard.showToMe("Top card of your opponent's deck")
 						if(revCard.filterByType(SUPPORTER) && confirm("Put that card in the lost zone")){
 							revCard.moveTo(thisCard.player.opposite.pbg.lostZone)

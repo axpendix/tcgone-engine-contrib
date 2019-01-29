@@ -1605,13 +1605,7 @@ public enum CrimsonInvasion implements CardInfo {
             assert my.deck.notEmpty
           }
           onAttack {
-            def list = my.deck.subList(0,5).findAll(cardTypeFilter(ENERGY))
-            //TODO : show the 5 top card before discard
-            def num = list.size()
-            if(num){
-              list.each{attachEnergy(self, it)}
-            }
-            my.deck.subList(0,5-num).discard()
+            my.deck.subList(0,5).discard().filterByType(ENERGY).each{attachEnergy(self, it)}
           }
         }
         move "Tyrannical Hole", {

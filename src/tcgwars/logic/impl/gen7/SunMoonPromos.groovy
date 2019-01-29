@@ -905,6 +905,10 @@ public enum SunMoonPromos implements CardInfo {
 						move "Resolute Claws" , {
 							text "80+ damage. If your opponent's Active Pokémon is a Pokémon-GX or a Pokémon-EX, this attack does 70 more damage (before applying Weakness and Resistance)."
 							energyCost G,C,C
+							onAttack {
+								damage 80
+								if(defending.pokemonGX || defending.pokemonEX) damage 70
+							}
 						}
 					};
 					case DHELMISE_SM53:
@@ -1283,9 +1287,10 @@ public enum SunMoonPromos implements CardInfo {
 					weakness GRASS
 					customAbility {
 						delayedA {
-							before REMOVE_DAMAGE_COUNTER, { h->
-								if(h.effect.target.owner == self.owner && h.effect.target.types.contains(W))
-								bg.em().storeObject("Shining_Current", bg.turnCount)
+							before REMOVE_DAMAGE_COUNTER, {
+								if(ef.lastTarget.owner == self.owner && ef.lastTarget.types.contains(W)){
+									keyStore('Shining_Current',self,bg.turnCount)
+								}
 							}
 						}
 					}
@@ -1302,7 +1307,7 @@ public enum SunMoonPromos implements CardInfo {
 						energyCost W,C,C
 						onAttack{
 							damage 60
-							if(bg.em().retrieveObject("Shining_Current") == bg.turnCount) damage 130
+							if(keyStore('Shining_Current',self,null)==bg.turnCount) damage 60
 						}
 					}
 				};

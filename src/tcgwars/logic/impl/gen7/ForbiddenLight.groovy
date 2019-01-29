@@ -1675,7 +1675,7 @@ public enum ForbiddenLight implements CardInfo {
 					text "As long as you don’t have more Pokémon in play than your opponent, this Pokémon’s attacks do 60 more damage (before applying Weakness and Resistance), and it takes 30 less damage from attacks (after applying Weakness and Resistance)."
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
-							if(self.owner.pbg.all.size() < self.owner.opposite.pbg.all.size()){
+							if(self.owner.pbg.all.size() <= self.owner.opposite.pbg.all.size()){
 								bg.dm().each{
 									if(it.from==self && it.dmg.value && it.notNoEffect){
 										bc "+60 from Tyrantrum (Tyrannical Heart)"

@@ -1457,7 +1457,7 @@ public enum BaseSet implements CardInfo {
 						discardSelfEnergyInOrderTo(P)
 						delayed {
 							before KNOCKOUT, self, {
-								if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
+								if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active.inPlay){
 									bc "Destiny Bond activates"
 									new Knockout(self.owner.opposite.pbg.active).run(bg)
 								}
