@@ -11,6 +11,7 @@ import static tcgwars.logic.effect.Source.*;
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
+import static tcgwars.logic.card.Weakness.*
 
 import java.util.*;
 import org.apache.commons.lang.WordUtils;
@@ -121,7 +122,8 @@ public enum WorldCollection implements CardInfo {
 				
 			};
 			case PIKACHU_P2:
-			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
+			return copy (PIKACHU_P1, this)
+			/*basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Ciao!", {
@@ -141,7 +143,7 @@ public enum WorldCollection implements CardInfo {
 					}
 				}
 				
-			};
+			}*/;
 			case PIKACHU_P3:
 			return copy (PIKACHU_P1, this)
 			/*basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
@@ -166,7 +168,8 @@ public enum WorldCollection implements CardInfo {
 				
 			}*/;
 			case PIKACHU_P4:
-			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
+			return copy (PIKACHU_P1, this)
+			/*basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "ˇHola!", {
@@ -186,7 +189,7 @@ public enum WorldCollection implements CardInfo {
 					}
 				}
 				
-			};
+			}*/;
 			case PIKACHU_P5:
 			return copy (PIKACHU_P1, this)
 			/*basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
@@ -211,7 +214,8 @@ public enum WorldCollection implements CardInfo {
 				
 			}*/;
 			case PIKACHU_P6:
-			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
+			return copy (PIKACHU_P1, this)
+			/*basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Hallo!", {
@@ -231,9 +235,10 @@ public enum WorldCollection implements CardInfo {
 					}
 				}
 				
-			};
+			}*/;
 			case PIKACHU_P7:
-			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
+			return copy (PIKACHU_P1, this)
+			/*basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Bonjour !", {
@@ -253,9 +258,10 @@ public enum WorldCollection implements CardInfo {
 					}
 				}
 				
-			};
+			}*/;
 			case PIKACHU_P8:
-			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
+			return copy (PIKACHU_P1, this)
+			/*basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Witaj! Przywitaj si? z przeciwnikiem", {
@@ -275,9 +281,10 @@ public enum WorldCollection implements CardInfo {
 					}
 				}
 				
-			};
+			}*/;
 			case PIKACHU_P9:
-			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
+			return copy (PIKACHU_P1, this)
+			/*basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Olá!", {
@@ -297,7 +304,7 @@ public enum WorldCollection implements CardInfo {
 					}
 				}
 				
-			};
+			}*/;
 				default:
 			return null;
 		}

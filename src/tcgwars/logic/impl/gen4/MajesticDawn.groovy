@@ -11,6 +11,7 @@ import static tcgwars.logic.effect.Source.*;
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
+import static tcgwars.logic.card.Weakness.*
 
 import java.util.*;
 import org.apache.commons.lang.WordUtils;
