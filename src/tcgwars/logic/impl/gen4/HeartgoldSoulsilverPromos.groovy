@@ -36,31 +36,31 @@ import tcgwars.logic.util.*;
  */
 public enum HeartgoldSoulsilverPromos implements CardInfo {
 
-	HO_OH_& ("Ho-Oh", &, Rarity.SOULSILVER, [BASIC, POKEMON, _FIRE_]),
-	LUGIA_& ("Lugia", &, Rarity.SOULSILVER, [BASIC, POKEMON, _WATER_]),
-	PIKACHU_& ("Pikachu", &, Rarity.SOULSILVER, [BASIC, POKEMON, _LIGHTNING_]),
-	WOBBUFFET_& ("Wobbuffet", &, Rarity.SOULSILVER, [BASIC, POKEMON, _PSYCHIC_]),
-	HOOTHOOT_& ("Hoothoot", &, Rarity.SOULSILVER, [BASIC, POKEMON, _COLORLESS_]),
-	NOCTOWL_& ("Noctowl", &, Rarity.SOULSILVER, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	FERALIGATR_PRIME_& ("Feraligatr Prime", &, Rarity.SOULSILVER, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-	MEGANIUM_PRIME_& ("Meganium Prime", &, Rarity.SOULSILVER, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-	TYPHLOSION_PRIME_& ("Typhlosion Prime", &, Rarity.SOULSILVER, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
-	LATIAS_& ("Latias", &, Rarity.SOULSILVER, [BASIC, POKEMON, _COLORLESS_]),
-	LATIOS_& ("Latios", &, Rarity.SOULSILVER, [BASIC, POKEMON, _COLORLESS_]),
-	CLEFFA_& ("Cleffa", &, Rarity.SOULSILVER, [BASIC, POKEMON, _COLORLESS_]),
-	SMOOCHUM_& ("Smoochum", &, Rarity.SOULSILVER, [BASIC, POKEMON, _PSYCHIC_]),
-	LAPRAS_& ("Lapras", &, Rarity.SOULSILVER, [BASIC, POKEMON, _WATER_]),
-	SHUCKLE_& ("Shuckle", &, Rarity.SOULSILVER, [BASIC, POKEMON, _FIGHTING_]),
-	PLUSLE_& ("Plusle", &, Rarity.SOULSILVER, [BASIC, POKEMON, _LIGHTNING_]),
-	MINUN_& ("Minun", &, Rarity.SOULSILVER, [BASIC, POKEMON, _LIGHTNING_]),
-	TROPICAL_TIDAL_WAVE_& ("Tropical Tidal Wave", &, Rarity.SOULSILVER, [TRAINER]),
-	RAIKOU_& ("Raikou", &, Rarity.SOULSILVER, [BASIC, POKEMON, _LIGHTNING_]),
-	ENTEI_& ("Entei", &, Rarity.SOULSILVER, [BASIC, POKEMON, _FIRE_]),
-	SUICUNE_& ("Suicune", &, Rarity.SOULSILVER, [BASIC, POKEMON, _WATER_]),
-	PORYGON_& ("Porygon", &, Rarity.SOULSILVER, [BASIC, POKEMON, _COLORLESS_]),
-	PORYGON2_& ("Porygon2", &, Rarity.SOULSILVER, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	HITMONCHAN_& ("Hitmonchan", &, Rarity.SOULSILVER, [BASIC, POKEMON, _FIGHTING_]),
-	HITMONLEE_& ("Hitmonlee", &, Rarity.SOULSILVER, [BASIC, POKEMON, _FIGHTING_]),
+	HO_OH_HGSS01 ("Ho-Oh", HGSS01, Rarity.PROMO, [BASIC, POKEMON, _FIRE_]),
+	LUGIA_HGSS02 ("Lugia", HGSS02, Rarity.PROMO, [BASIC, POKEMON, _WATER_]),
+	PIKACHU_HGSS03 ("Pikachu", HGSS03, Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
+	WOBBUFFET_HGSS04 ("Wobbuffet", HGSS04, Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]),
+	HOOTHOOT_HGSS05 ("Hoothoot", HGSS05, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
+	NOCTOWL_HGSS06 ("Noctowl", HGSS06, Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	FERALIGATR_PRIME_HGSS07 ("Feraligatr Prime", HGSS07, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+	MEGANIUM_PRIME_HGSS08 ("Meganium Prime", HGSS08, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+	TYPHLOSION_PRIME_HGSS09 ("Typhlosion Prime", HGSS09, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
+	LATIAS_HGSS10 ("Latias", HGSS10, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
+	LATIOS_HGSS11 ("Latios", HGSS11, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
+	CLEFFA_HGSS12 ("Cleffa", HGSS12, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
+	SMOOCHUM_HGSS13 ("Smoochum", HGSS13, Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]),
+	LAPRAS_HGSS14 ("Lapras", HGSS14, Rarity.PROMO, [BASIC, POKEMON, _WATER_]),
+	SHUCKLE_HGSS15 ("Shuckle", HGSS15, Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]),
+	PLUSLE_HGSS16 ("Plusle", HGSS16, Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
+	MINUN_HGSS17 ("Minun", HGSS17, Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
+	TROPICAL_TIDAL_WAVE_HGSS18 ("Tropical Tidal Wave", HGSS18, Rarity.PROMO, [TRAINER]),
+	RAIKOU_HGSS19 ("Raikou", HGSS19, Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
+	ENTEI_HGSS20 ("Entei", HGSS20, Rarity.PROMO, [BASIC, POKEMON, _FIRE_]),
+	SUICUNE_HGSS21 ("Suicune", HGSS21, Rarity.PROMO, [BASIC, POKEMON, _WATER_]),
+	PORYGON_HGSS22 ("Porygon", HGSS22, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
+	PORYGON2_HGSS23 ("Porygon2", HGSS23, Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+	HITMONCHAN_HGSS24 ("Hitmonchan", HGSS24, Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]),
+	HITMONLEE_HGSS25 ("Hitmonlee", HGSS25, Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]),
 ;
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -115,7 +115,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 	@Override
 	public Card getImplementation() {
 		switch (this) {
-			case HO_OH_&:
+			case HO_OH_HGSS01:
 			return basic (this, hp:HP080, type:FIRE, retreatCost:3) {
 				weakness W
 				resistance F, MINUS20
@@ -128,7 +128,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 					}
 				}
 				move "Sacred Fire", {
-					text "Flip a coin. If heads, choose 1 of your opponent’s Pokémon. This attack does 80 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
+					text "Flip a coin. If heads, choose 1 of your opponentï¿½s Pokï¿½mon. This attack does 80 damage to that Pokï¿½mon. This attackï¿½s damage isnï¿½t affected by Weakness or Resistance."
 					energyCost R, R, C, C
 					attackRequirement {}
 					onAttack {
@@ -137,7 +137,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case LUGIA_&:
+			case LUGIA_HGSS02:
 			return basic (this, hp:HP090, type:WATER, retreatCost:2) {
 				weakness L
 				resistance F, MINUS20
@@ -159,7 +159,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case PIKACHU_&:
+			case PIKACHU_HGSS03:
 			return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
 				weakness F, PLUS10
 				resistance M, MINUS20
@@ -181,11 +181,11 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case WOBBUFFET_&:
+			case WOBBUFFET_HGSS04:
 			return basic (this, hp:HP090, type:PSYCHIC, retreatCost:3) {
 				weakness P
 				pokeBody "Tenacious Bind", {
-					text "As long as Wobbuffet is your Active Pokémon, your opponent’s Active Pokémon’s Retreat Cost is Energy more."
+					text "As long as Wobbuffet is your Active Pokï¿½mon, your opponentï¿½s Active Pokï¿½monï¿½s Retreat Cost is Energy more."
 					delayedA {
 					}
 				}
@@ -199,12 +199,12 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case HOOTHOOT_&:
+			case HOOTHOOT_HGSS05:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness L
 				resistance F, MINUS20
 				pokeBody "Insomnia", {
-					text "Hoothoot can’t be Asleep."
+					text "Hoothoot canï¿½t be Asleep."
 					delayedA {
 					}
 				}
@@ -218,17 +218,17 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case NOCTOWL_&:
+			case NOCTOWL_HGSS06:
 			return evolution (this, from:"Hoothoot", hp:HP090, type:COLORLESS, retreatCost:1) {
 				weakness L
 				resistance F, MINUS20
 				pokePower "Night Scope", {
-					text "Once during your turn , you may look at your opponent’s hand. This power can’t be used if Noctowl is affected by a Special Condition."
+					text "Once during your turn , you may look at your opponentï¿½s hand. This power canï¿½t be used if Noctowl is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Hypnoblast", {
-					text "30 damage. The Defending Pokémon is now Asleep."
+					text "30 damage. The Defending Pokï¿½mon is now Asleep."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -237,16 +237,16 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case FERALIGATR_PRIME_&:
+			case FERALIGATR_PRIME_HGSS07:
 			return evolution (this, from:"Croconaw", hp:HP140, type:WATER, retreatCost:3) {
 				weakness G
 				pokePower "Rain Dance", {
-					text "As often as you like during your turn , you may attach a Energy from your hand to 1 of your Pokémon. This power can’t be used if Feraligatr is affected by a Special Condition."
+					text "As often as you like during your turn , you may attach a Energy from your hand to 1 of your Pokï¿½mon. This power canï¿½t be used if Feraligatr is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Hydro Crunch", {
-					text "60+ damage. Does 60 damage plus 10 more damage for each damage counter on the Defending Pokémon."
+					text "60+ damage. Does 60 damage plus 10 more damage for each damage counter on the Defending Pokï¿½mon."
 					energyCost W, W, W, W
 					attackRequirement {}
 					onAttack {
@@ -255,12 +255,12 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case MEGANIUM_PRIME_&:
+			case MEGANIUM_PRIME_HGSS08:
 			return evolution (this, from:"Bayleef", hp:HP150, type:GRASS, retreatCost:2) {
 				weakness R
 				resistance W, MINUS20
 				pokePower "Leaf Trans", {
-					text "As often as you like during your turn , you may move a Energy attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Meganium is affected by a Special Condition."
+					text "As often as you like during your turn , you may move a Energy attached to 1 of your Pokï¿½mon to another of your Pokï¿½mon. This power canï¿½t be used if Meganium is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -274,16 +274,16 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case TYPHLOSION_PRIME_&:
+			case TYPHLOSION_PRIME_HGSS09:
 			return evolution (this, from:"Quilava", hp:HP140, type:FIRE, retreatCost:2) {
 				weakness W
 				pokePower "Afterburner", {
-					text "Once during your turn , you may search your discard pile for a Energy card and attach it to 1 of your Pokémon. If you do, put 1 damage counter on that Pokémon. This power can’t be used if Typhlosion is affected by a Special Condition."
+					text "Once during your turn , you may search your discard pile for a Energy card and attach it to 1 of your Pokï¿½mon. If you do, put 1 damage counter on that Pokï¿½mon. This power canï¿½t be used if Typhlosion is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Flare Destroy", {
-					text "70 damage. Discard an Energy card attached to Typhlosion and discard an Energy card attached to the Defending Pokémon."
+					text "70 damage. Discard an Energy card attached to Typhlosion and discard an Energy card attached to the Defending Pokï¿½mon."
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
@@ -292,11 +292,11 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case LATIAS_&:
+			case LATIAS_HGSS10:
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness C
 				move "Energy Assist", {
-					text "10 damage. Search your discard pile for a basic Energy card and attach it to 1 of your Benched Pokémon."
+					text "10 damage. Search your discard pile for a basic Energy card and attach it to 1 of your Benched Pokï¿½mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -304,7 +304,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 					}
 				}
 				move "Infinite Wind", {
-					text "40 damage. If Latios is on your Bench, remove 2 damage counters from each of your Benched Pokémon."
+					text "40 damage. If Latios is on your Bench, remove 2 damage counters from each of your Benched Pokï¿½mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -313,7 +313,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case LATIOS_&:
+			case LATIOS_HGSS11:
 			return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
 				weakness C
 				pokeBody "Luster Float", {
@@ -331,7 +331,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case CLEFFA_&:
+			case CLEFFA_HGSS12:
 			return basic (this, hp:HP030, type:COLORLESS, retreatCost:0) {
 				pokeBody "Sweet Sleeping Face", {
 					text "As long as Cleffa is Asleep, prevent all damage done to Cleffa by attacks."
@@ -348,7 +348,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case SMOOCHUM_&:
+			case SMOOCHUM_HGSS13:
 			return basic (this, hp:HP030, type:PSYCHIC, retreatCost:0) {
 				pokeBody "Sweet Sleeping Face", {
 					text "As long as Smoochum is Asleep, prevent all damage done to Smoochum by attacks."
@@ -356,7 +356,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 					}
 				}
 				move "Energy Antics", {
-					text "Move an Energy card attached to 1 of your opponent’s Pokémon to another of your opponent’s Pokémon. Smoochum is now Asleep."
+					text "Move an Energy card attached to 1 of your opponentï¿½s Pokï¿½mon to another of your opponentï¿½s Pokï¿½mon. Smoochum is now Asleep."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -365,7 +365,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case LAPRAS_&:
+			case LAPRAS_HGSS14:
 			return basic (this, hp:HP090, type:WATER, retreatCost:2) {
 				weakness M
 				move "Ferry", {
@@ -386,7 +386,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case SHUCKLE_&:
+			case SHUCKLE_HGSS15:
 			return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
 				weakness W
 				pokeBody "Fermenting Liquid", {
@@ -395,7 +395,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 					}
 				}
 				move "Shell Stunner", {
-					text "20 damage. Flip a coin. If heads, prevent all damage done to Shuckle by attacks during your opponent’s next turn."
+					text "20 damage. Flip a coin. If heads, prevent all damage done to Shuckle by attacks during your opponentï¿½s next turn."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -404,7 +404,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case PLUSLE_&:
+			case PLUSLE_HGSS16:
 			return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
@@ -426,12 +426,12 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case MINUN_&:
+			case MINUN_HGSS17:
 			return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Call for Family", {
-					text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
+					text "Search your deck for up to 2 Basic Pokï¿½mon and put them onto your Bench. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -448,7 +448,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case TROPICAL_TIDAL_WAVE_&:
+			case TROPICAL_TIDAL_WAVE_HGSS18:
 			return basicTrainer (this) {
 				text "Flip a coin. If heads, discard all Trainer and Stadium cards your opponent has in play. If tails, discard all Trainer and Stadium cards you have in play."
 				onPlay {
@@ -456,12 +456,12 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				playRequirement{
 				}
 			};
-			case RAIKOU_&:
+			case RAIKOU_HGSS19:
 			return basic (this, hp:HP080, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Zap Cannon", {
-					text "70 damage. During your next turn, Raikou can’t use Zap Cannon."
+					text "70 damage. During your next turn, Raikou canï¿½t use Zap Cannon."
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
@@ -470,7 +470,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case ENTEI_&:
+			case ENTEI_HGSS20:
 			return basic (this, hp:HP080, type:FIRE, retreatCost:1) {
 				weakness W
 				move "Flare Blitz", {
@@ -483,11 +483,11 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case SUICUNE_&:
+			case SUICUNE_HGSS21:
 			return basic (this, hp:HP080, type:WATER, retreatCost:1) {
 				weakness L
 				move "Sheer Cold", {
-					text "50 damage. Flip a coin. If heads, the Defending Pokémon can’t attack during your opponent’s next turn."
+					text "50 damage. Flip a coin. If heads, the Defending Pokï¿½mon canï¿½t attack during your opponentï¿½s next turn."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -496,7 +496,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case PORYGON_&:
+			case PORYGON_HGSS22:
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Stiffen", {
@@ -517,7 +517,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case PORYGON2_&:
+			case PORYGON2_HGSS23:
 			return evolution (this, from:"Porygon", hp:HP080, type:COLORLESS, retreatCost:2) {
 				weakness F
 				pokeBody "Shortcut", {
@@ -535,11 +535,11 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case HITMONCHAN_&:
+			case HITMONCHAN_HGSS24:
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
 				weakness P
 				move "Detect", {
-					text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to Hitmonchan during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to Hitmonchan during your opponentï¿½s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -547,7 +547,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 					}
 				}
 				move "Sky Uppercut", {
-					text "30 damage. This attack’s damage isn’t affected by Resistance."
+					text "30 damage. This attackï¿½s damage isnï¿½t affected by Resistance."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -556,7 +556,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
 				}
 				
 			};
-			case HITMONLEE_&:
+			case HITMONLEE_HGSS25:
 			return basic (this, hp:HP080, type:FIGHTING, retreatCost:2) {
 				weakness P
 				move "Kick", {

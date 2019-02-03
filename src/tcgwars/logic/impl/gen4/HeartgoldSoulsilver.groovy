@@ -222,7 +222,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
 				move "Fire Mane", {
@@ -230,7 +230,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost R, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 90
 					}
 				}
 				
@@ -243,7 +243,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
 				move "Bubblebeam", {
@@ -251,7 +251,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						flipThenApplySC PARALYZED
 					}
 				}
 				
@@ -264,7 +265,9 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						def pcs = my.all.findAll.select()
+						pcs.cards.moveTo(hand)
+						removePCS(pcs)
 					}
 				}
 				move "Moon Impact", {
@@ -272,7 +275,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
 				
@@ -286,7 +289,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
 				move "Hyper Beam", {
@@ -294,7 +297,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 80
+						discardDefendingEnergy
 					}
 				}
 				
@@ -307,7 +311,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 3,{damage 20}
 					}
 				}
 				move "Close Combat", {
@@ -315,7 +319,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
 					}
 				}
 				
@@ -325,11 +329,11 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness R
 				resistance F, MINUS30
 				move "Mass Attack", {
-					text "."
+					text "10x damage. Does 10 damage times the number of Pokémon in play (both yours and your opponent's). "
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10*all.size()
 					}
 				}
 				move "Leaf Guard", {

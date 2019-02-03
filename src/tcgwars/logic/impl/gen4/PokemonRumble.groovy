@@ -33,6 +33,7 @@ import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
+ * @author wertcatt@gmail.com
  */
 public enum PokemonRumble implements CardInfo {
 
@@ -41,16 +42,16 @@ public enum PokemonRumble implements CardInfo {
 	NINETALES_3 ("Ninetales", 3, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
 	HEATRAN_4 ("Heatran", 4, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
 	STARMIE_5 ("Starmie", 5, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	GYRADOS_6 ("Gyrados", 6, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_])
-	PIKACHU_7 ("Pikachu", 7, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_])
-	ZAPDOS_8 ("Zapdos", 8, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_])
-	MEWTWO_9 ("Mewtwo", 9, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_])
-	MEW_10 ("Mew", 10, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_])
-	DIGLETT_11 ("Diglett", 11, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_])
-	LUCARIO_12 ("Lucario", 12, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_])
-	SKUNTANK_13 ("Skuntank", 13, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_])
-	BASTIODON_14 ("Bastiodon", 14, Rarity.COMMON, [STAGE2, EVOLUTION, POKEMON, _METAL_])
-	RATTATA_15 ("Rattata", 15, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_])
+	GYRADOS_6 ("Gyrados", 6, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	PIKACHU_7 ("Pikachu", 7, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	ZAPDOS_8 ("Zapdos", 8, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	MEWTWO_9 ("Mewtwo", 9, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	MEW_10 ("Mew", 10, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+	DIGLETT_11 ("Diglett", 11, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+	LUCARIO_12 ("Lucario", 12, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+	SKUNTANK_13 ("Skuntank", 13, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+	BASTIODON_14 ("Bastiodon", 14, Rarity.COMMON, [STAGE2, EVOLUTION, POKEMON, _METAL_]),
+	RATTATA_15 ("Rattata", 15, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
 	BIBAREL_16 ("Bibarel", 16, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_])
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -117,7 +118,7 @@ public enum PokemonRumble implements CardInfo {
 					}
 				}
 				
-			};
+			}
 			case CHERRIM_2:
 			return evolution (this, from:"Cherubi", hp:HP80, type:GRASS, retreatCost:2) {
 				weakness R
@@ -143,7 +144,7 @@ public enum PokemonRumble implements CardInfo {
 				}
 				
 			}
-			case HEATRAN_4
+			case HEATRAN_4:
 			return basic (this, hp:HP110, type:FIRE, retreatCost:4) {
 				weakness W
 				move "Heat Boiler", {
@@ -151,14 +152,14 @@ public enum PokemonRumble implements CardInfo {
 					energyCost R, C, C, C
 					onAttack {
 						damage 60
-						if(defending.types.contains(W) {
+						if(defending.types.contains(W)) {
 							damage 40
 						}
 					}
 				}
 				
 			}
-			case STARMIE_5
+			case STARMIE_5:
 			return evolution (this, from:"Staryu", hp:HP80, type:WATER, retreatCost:1) {
 				weakness L 
 				move "Spiral Drain", {
@@ -171,7 +172,7 @@ public enum PokemonRumble implements CardInfo {
 				}
 				
 			}
-			case GYRADOS_6
+			case GYRADOS_6:
 			return evolution (this, from:"Magikarp", hp:HP130, type:WATER, retreatCost:3) {
 				weakness L
 				resistance F, MINUS20
@@ -185,7 +186,7 @@ public enum PokemonRumble implements CardInfo {
 				}
 				
 			}
-			case PIKACHU_7
+			case PIKACHU_7:
 			return basic (this, hp:HP60, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
@@ -199,7 +200,7 @@ public enum PokemonRumble implements CardInfo {
 				}
 				
 			}
-			case ZAPDOS_8
+			case ZAPDOS_8:
 			return basic (this, hp:HP100, type:LIGHTNING, retreatCost:2) {
 				weakness L
 				resistance F, MINUS20
@@ -212,7 +213,7 @@ public enum PokemonRumble implements CardInfo {
 				}
 				
 			}
-			case MEWTWO_9
+			case MEWTWO_9:
 			return basic (this, hp:HP100, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				move "Super Psy Bolt", {
@@ -224,7 +225,7 @@ public enum PokemonRumble implements CardInfo {
 				}
 				
 			}
-			case MEW_10
+			case MEW_10:
 			return basic (this, hp:HP60, type:PSYCHIC, retreatCost:0) {
 				weakness P
 				move "Cut", {
@@ -243,7 +244,7 @@ public enum PokemonRumble implements CardInfo {
 				}
 				
 			}
-			case DIGLETT_11
+			case DIGLETT_11:
 			return basic (this, hp:HP30, type:FIGHTING, retreatCost:1) {
 				weakness G
 				resistance L, MINUS20
@@ -256,7 +257,7 @@ public enum PokemonRumble implements CardInfo {
 				}
 				
 			}
-			case LUCARIO_12
+			case LUCARIO_12:
 			return evolution (this, from:"Riolu", hp:HP90, type:FIGHTING, retreatCost:1) {
 				weakness P
 				move "Metal Claw", {
@@ -275,7 +276,7 @@ public enum PokemonRumble implements CardInfo {
 				}
 				
 			}
-			case SKUNTANK_13
+			case SKUNTANK_13:
 			return evolution (this, from:"Stunky", hp:HP90, type:DARKNESS, retreatCost:2) {
 				weakness F
 				resistance P, MINUS20
@@ -284,13 +285,12 @@ public enum PokemonRumble implements CardInfo {
 					energyCost D, C, C
 					onAttack {
 						damage 20
-						int dmg = 10*ef.attacker.numberOfDamageCounters
-						damage $dmg
+						damage 10*ef.attacker.numberOfDamageCounters
 					}
 				}
 				
 			}
-			case BASTIODON_14
+			case BASTIODON_14:
 			return evolution (this, from:"Shieldon", hp:HP120, type:METAL, retreatCost:4) {
 				weakness F
 				resistance P, MINUS20
@@ -303,7 +303,7 @@ public enum PokemonRumble implements CardInfo {
 				}
 				
 			}
-			case RATTATA_15
+			case RATTATA_15:
 			return basic (this, hp:HP30, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Bite", {
@@ -315,7 +315,7 @@ public enum PokemonRumble implements CardInfo {
 				}
 				
 			}
-			case BIBAREL_16
+			case BIBAREL_16:
 			return evolution (this, from:"Bidoof", hp:HP90, type:COLORLESS, retreatCost:3) {
 				weakness F
 				move "Rollout", {
@@ -328,7 +328,7 @@ public enum PokemonRumble implements CardInfo {
 				
 			}
 		default:
-			return null;
+			return null
 		}
 	}
 
