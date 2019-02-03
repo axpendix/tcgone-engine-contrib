@@ -123,9 +123,9 @@ public enum Stormfront implements CardInfo {
 	GREAT_BALL_85 ("Great Ball", 85, Rarity.UNCOMMON, [TRAINER]),
 	LUXURY_BALL_86 ("Luxury Ball", 86, Rarity.UNCOMMON, [TRAINER]),
 	MARLEY_S_REQUEST_87 ("Marley's Request", 87, Rarity.UNCOMMON, [TRAINER]),
-	POKE_BLOWER_+_88 ("Poké Blower +", 88, Rarity.UNCOMMON, [TRAINER]),
-	POKE_DRAWER_+_89 ("Poké Drawer +", 89, Rarity.UNCOMMON, [TRAINER]),
-	POKE_HEALER_+_90 ("Poké Healer +", 90, Rarity.UNCOMMON, [TRAINER]),
+	POKE_BLOWER_PLUS_88 ("Poké Blower +", 88, Rarity.UNCOMMON, [TRAINER]),
+	POKE_DRAWER_PLUS_89 ("Poké Drawer +", 89, Rarity.UNCOMMON, [TRAINER]),
+	POKE_HEALER_PLUS_90 ("Poké Healer +", 90, Rarity.UNCOMMON, [TRAINER]),
 	PREMIER_BALL_91 ("Premier Ball", 91, Rarity.UNCOMMON, [TRAINER]),
 	POTION_92 ("Potion", 92, Rarity.COMMON, [TRAINER]),
 	SWITCH_93 ("Switch", 93, Rarity.UNCOMMON, [TRAINER]),
@@ -2167,7 +2167,7 @@ public enum Stormfront implements CardInfo {
 				playRequirement{
 				}
 			};
-			case POKE_BLOWER_+_88:
+			case POKE_BLOWER_PLUS_88:
 			return basicTrainer (this) {
 				text "You may play 2 Poké Blower + at the same time. If you play 1 Poké Blower +, flip a coin. If heads, put 1 damage counter on 1 of your opponent’s Pokémon. If you play 2 Poké Blower +, choose 1 of your opponent’s Benched Pokémon and switch it with 1 of your opponent’s Active Pokémon."
 				onPlay {
@@ -2175,7 +2175,7 @@ public enum Stormfront implements CardInfo {
 				playRequirement{
 				}
 			};
-			case POKE_DRAWER_+_89:
+			case POKE_DRAWER_PLUS_89:
 			return basicTrainer (this) {
 				text "You may play 2 Poké Drawer + at the same time. If you play 1 Poké Drawer +, draw a card. If you play 2 Poké Drawer +, search your deck for up to 2 cards, and put them into your hand. Shuffle your deck afterward."
 				onPlay {
@@ -2183,7 +2183,7 @@ public enum Stormfront implements CardInfo {
 				playRequirement{
 				}
 			};
-			case POKE_HEALER_+_90:
+			case POKE_HEALER_PLUS_90:
 			return basicTrainer (this) {
 				text "You may play 2 Poké Healer + at the same time. If you play 1 Poké Healer +, remove 1 damage counter and a Special Condition from 1 of your Active Pokémon. If you play 2 Poké Healer +, remove 8 damage counters and all Special Conditions from 1 of your Active Pokémon."
 				onPlay {

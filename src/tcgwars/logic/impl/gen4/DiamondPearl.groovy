@@ -238,8 +238,7 @@ public enum DiamondPearl implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
-						afterDamage {
-							if(
+						//TODO: finish this move
 					}
 				}
 				
