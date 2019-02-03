@@ -125,8 +125,8 @@ public enum Unleashed implements CardInfo {
 	STEELIX_PRIME_87 ("Steelix Prime", 87, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
 	TYRANITAR_PRIME_88 ("Tyranitar Prime", 88, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
 	URSARING_PRIME_89 ("Ursaring Prime", 89, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-	ENTEI_&_RAIKOU_LEGEND_90 ("Entei & Raikou LEGEND", 90, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
-	ENTEI_&_RAIKOU_LEGEND_91 ("Entei & Raikou LEGEND", 91, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
+	ENTEI_AND_RAIKOU_LEGEND_90 ("Entei & Raikou LEGEND", 90, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
+	ENTEI_AND_RAIKOU_LEGEND_91 ("Entei & Raikou LEGEND", 91, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
 	RAIKOU_&_SUICUNE_LEGEND_92 ("Raikou & Suicune LEGEND", 92, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
 	RAIKOU_&_SUICUNE_LEGEND_93 ("Raikou & Suicune LEGEND", 93, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
 	SUICUNE_&_ENTEI_LEGEND_94 ("Suicune & Entei LEGEND", 94, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
@@ -1816,7 +1816,7 @@ public enum Unleashed implements CardInfo {
 				}
 				
 			};
-			case ENTEI_&_RAIKOU_LEGEND_90:
+			case ENTEI_AND_RAIKOU_LEGEND_90:
 			return basic (this, hp:HP140, type:[FIRE, L], retreatCost:0) {
 				weakness W
 				weakness F
@@ -1854,8 +1854,8 @@ public enum Unleashed implements CardInfo {
 				}
 				
 			};
-			case ENTEI_&_RAIKOU_LEGEND_91:
-			return copy (ENTEI_&_RAIKOU_LEGEND_90, this)
+			case ENTEI_AND_RAIKOU_LEGEND_91:
+			return copy (ENTEI_AND_RAIKOU_LEGEND_90, this)
 			/*basic (this, hp:HP140, type:[FIRE, L], retreatCost:0) {
 				weakness W
 				weakness F

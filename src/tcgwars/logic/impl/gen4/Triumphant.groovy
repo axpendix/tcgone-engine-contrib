@@ -134,8 +134,8 @@ public enum Triumphant implements CardInfo {
 	MAGNEZONE_PRIME_96 ("Magnezone Prime", 96, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
 	MEW_PRIME_97 ("Mew Prime", 97, Rarity.ULTRARARE, [BASIC, POKEMON, _PSYCHIC_]),
 	YANMEGA_PRIME_98 ("Yanmega Prime", 98, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-	DARKRAI_&_CRESSELIA_LEGEND_99 ("Darkrai & Cresselia LEGEND", 99, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
-	DARKRAI_&_CRESSELIA_LEGEND_100 ("Darkrai & Cresselia LEGEND", 100, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
+	DARKRAI_AND_CRESSELIA_LEGEND_99 ("Darkrai & Cresselia LEGEND", 99, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
+	DARKRAI_AND_CRESSELIA_LEGEND_100 ("Darkrai & Cresselia LEGEND", 100, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
 	PALKIA_&_DIALGA_LEGEND_101 ("Palkia & Dialga LEGEND", 101, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
 	PALKIA_&_DIALGA_LEGEND_102 ("Palkia & Dialga LEGEND", 102, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
 	ALPH_LITHOGRAPH_FOUR ("Alph Lithograph", 103, Rarity.HOLORARE, [TRAINER]);
@@ -2084,7 +2084,7 @@ public enum Triumphant implements CardInfo {
 				}
 				
 			};
-			case DARKRAI_&_CRESSELIA_LEGEND_99:
+			case DARKRAI_AND_CRESSELIA_LEGEND_99:
 			return basic (this, hp:HP150, type:[PSYCHIC, D], retreatCost:2) {
 				weakness P
 				weakness F
@@ -2122,8 +2122,8 @@ public enum Triumphant implements CardInfo {
 				}
 				
 			};
-			case DARKRAI_&_CRESSELIA_LEGEND_100:
-			return copy (DARKRAI_&_CRESSELIA_LEGEND_99, this)
+			case DARKRAI_AND_CRESSELIA_LEGEND_100:
+			return copy (DARKRAI_AND_CRESSELIA_LEGEND_99, this)
 			/*basic (this, hp:HP150, type:[PSYCHIC, D], retreatCost:2) {
 				weakness P
 				weakness F
