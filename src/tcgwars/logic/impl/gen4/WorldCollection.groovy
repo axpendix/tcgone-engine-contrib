@@ -34,6 +34,7 @@ import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
+ * @author wertcatt@gmail.com
  */
 public enum WorldCollection implements CardInfo {
 

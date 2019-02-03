@@ -121,7 +121,7 @@ public enum PokemonRumble implements CardInfo {
 				
 			}
 			case CHERRIM_2:
-			return evolution (this, from:"Cherubi", hp:HP80, type:GRASS, retreatCost:2) {
+			return evolution (this, from:"Cherubi", hp:HP080, type:GRASS, retreatCost:2) {
 				weakness R
 				resistance W, MINUS20
 				move "Solarbeam", {
@@ -134,7 +134,7 @@ public enum PokemonRumble implements CardInfo {
 				
 			}
 			case NINETALES_3:
-			return evolution (this, from:"Vulpix", hp:HP90, type:FIRE, retreatCost:1) {
+			return evolution (this, from:"Vulpix", hp:HP090, type:FIRE, retreatCost:1) {
 				weakness W
 				move "Flame Tail", {
 					text "60 damage."
@@ -161,7 +161,7 @@ public enum PokemonRumble implements CardInfo {
 				
 			}
 			case STARMIE_5:
-			return evolution (this, from:"Staryu", hp:HP80, type:WATER, retreatCost:1) {
+			return evolution (this, from:"Staryu", hp:HP080, type:WATER, retreatCost:1) {
 				weakness L 
 				move "Spiral Drain", {
 					text "50 damage. Remove 1 damage counter from Starmie."
@@ -188,7 +188,7 @@ public enum PokemonRumble implements CardInfo {
 				
 			}
 			case PIKACHU_7:
-			return basic (this, hp:HP60, type:LIGHTNING, retreatCost:1) {
+			return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Volt Tackle", {
@@ -227,7 +227,7 @@ public enum PokemonRumble implements CardInfo {
 				
 			}
 			case MEW_10:
-			return basic (this, hp:HP60, type:PSYCHIC, retreatCost:0) {
+			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:0) {
 				weakness P
 				move "Cut", {
 					text "30 damage."
@@ -259,7 +259,7 @@ public enum PokemonRumble implements CardInfo {
 				
 			}
 			case LUCARIO_12:
-			return evolution (this, from:"Riolu", hp:HP90, type:FIGHTING, retreatCost:1) {
+			return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
 				weakness P
 				move "Metal Claw", {
 					text "40 damage."
@@ -278,7 +278,7 @@ public enum PokemonRumble implements CardInfo {
 				
 			}
 			case SKUNTANK_13:
-			return evolution (this, from:"Stunky", hp:HP90, type:DARKNESS, retreatCost:2) {
+			return evolution (this, from:"Stunky", hp:HP090, type:DARKNESS, retreatCost:2) {
 				weakness F
 				resistance P, MINUS20
 				move "Rage", {
@@ -317,7 +317,7 @@ public enum PokemonRumble implements CardInfo {
 				
 			}
 			case BIBAREL_16:
-			return evolution (this, from:"Bidoof", hp:HP90, type:COLORLESS, retreatCost:3) {
+			return evolution (this, from:"Bidoof", hp:HP090, type:COLORLESS, retreatCost:3) {
 				weakness F
 				move "Rollout", {
 					text "50 damage."
