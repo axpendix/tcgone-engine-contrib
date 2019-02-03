@@ -108,7 +108,12 @@ public enum WorldCollection implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						if(confirm("Greet your opponent?")){
+							bc "Hello!"
+							draw self
+							draw OPPONENT
+						}
+						else{}
 					}
 				}
 				move "Thunderbolt", {
@@ -116,7 +121,8 @@ public enum WorldCollection implements CardInfo {
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						discardAllSelfEnergy
 					}
 				}
 				
