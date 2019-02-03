@@ -136,8 +136,8 @@ public enum Triumphant implements CardInfo {
 	YANMEGA_PRIME_98 ("Yanmega Prime", 98, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
 	DARKRAI_AND_CRESSELIA_LEGEND_99 ("Darkrai & Cresselia LEGEND", 99, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
 	DARKRAI_AND_CRESSELIA_LEGEND_100 ("Darkrai & Cresselia LEGEND", 100, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
-	PALKIA_&_DIALGA_LEGEND_101 ("Palkia & Dialga LEGEND", 101, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-	PALKIA_&_DIALGA_LEGEND_102 ("Palkia & Dialga LEGEND", 102, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
+	PALKIA_AND_DIALGA_LEGEND_101 ("Palkia & Dialga LEGEND", 101, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
+	PALKIA_AND_DIALGA_LEGEND_102 ("Palkia & Dialga LEGEND", 102, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
 	ALPH_LITHOGRAPH_FOUR ("Alph Lithograph", 103, Rarity.HOLORARE, [TRAINER]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -2161,7 +2161,7 @@ public enum Triumphant implements CardInfo {
 				}
 				
 			}*/;
-			case PALKIA_&_DIALGA_LEGEND_101:
+			case PALKIA_AND_DIALGA_LEGEND_101:
 			return basic (this, hp:HP160, type:[WATER, M], retreatCost:3) {
 				weakness R
 				weakness L
@@ -2199,7 +2199,7 @@ public enum Triumphant implements CardInfo {
 				}
 				
 			};
-			case PALKIA_&_DIALGA_LEGEND_102:
+			case PALKIA_AND_DIALGA_LEGEND_102:
 			return basic (this, hp:HP160, type:[WATER, M], retreatCost:3) {
 				weakness R
 				weakness L

@@ -122,10 +122,10 @@ public enum Undaunted implements CardInfo {
 	SCIZOR_PRIME_84 ("Scizor Prime", 84, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
 	SLOWKING_PRIME_85 ("Slowking Prime", 85, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
 	UMBREON_PRIME_86 ("Umbreon Prime", 86, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-	KYOGRE_&_GROUDON_LEGEND_87 ("Kyogre & Groudon LEGEND", 87, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-	KYOGRE_&_GROUDON_LEGEND_88 ("Kyogre & Groudon LEGEND", 88, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-	RAYQUAZA_&_DEOXYS_LEGEND_89 ("Rayquaza & Deoxys LEGEND", 89, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
-	RAYQUAZA_&_DEOXYS_LEGEND_90 ("Rayquaza & Deoxys LEGEND", 90, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
+	KYOGRE_AND_GROUDON_LEGEND_87 ("Kyogre & Groudon LEGEND", 87, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
+	KYOGRE_AND_GROUDON_LEGEND_88 ("Kyogre & Groudon LEGEND", 88, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
+	RAYQUAZA_AND_DEOXYS_LEGEND_89 ("Rayquaza & Deoxys LEGEND", 89, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
+	RAYQUAZA_AND_DEOXYS_LEGEND_90 ("Rayquaza & Deoxys LEGEND", 90, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
 	ALPH_LITHOGRAPH_THREE ("Alph Lithograph", 91, Rarity.HOLORARE, [TRAINER]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -1766,7 +1766,7 @@ public enum Undaunted implements CardInfo {
 				}
 				
 			};
-			case KYOGRE_&_GROUDON_LEGEND_87:
+			case KYOGRE_AND_GROUDON_LEGEND_87:
 			return basic (this, hp:HP150, type:[WATER, F], retreatCost:3) {
 				weakness G
 				weakness L
@@ -1804,8 +1804,8 @@ public enum Undaunted implements CardInfo {
 				}
 				
 			};
-			case KYOGRE_&_GROUDON_LEGEND_88:
-			return copy (KYOGRE_&_GROUDON_LEGEND_87, this)
+			case KYOGRE_AND_GROUDON_LEGEND_88:
+			return copy (KYOGRE_AND_GROUDON_LEGEND_87, this)
 			/*basic (this, hp:HP150, type:[WATER, F], retreatCost:3) {
 				weakness G
 				weakness L
@@ -1843,7 +1843,7 @@ public enum Undaunted implements CardInfo {
 				}
 				
 			}*/;
-			case RAYQUAZA_&_DEOXYS_LEGEND_89:
+			case RAYQUAZA_AND_DEOXYS_LEGEND_89:
 			return basic (this, hp:HP140, type:[PSYCHIC, C], retreatCost:3) {
 				weakness P
 				weakness C
@@ -1878,8 +1878,8 @@ public enum Undaunted implements CardInfo {
 				}
 				
 			};
-			case RAYQUAZA_&_DEOXYS_LEGEND_90:
-			return copy (RAYQUAZA_&_DEOXYS_LEGEND_89, this)
+			case RAYQUAZA_AND_DEOXYS_LEGEND_90:
+			return copy (RAYQUAZA_AND_DEOXYS_LEGEND_89, this)
 			/*basic (this, hp:HP140, type:[PSYCHIC, C], retreatCost:3) {
 				weakness P
 				weakness C

@@ -127,10 +127,10 @@ public enum Unleashed implements CardInfo {
 	URSARING_PRIME_89 ("Ursaring Prime", 89, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
 	ENTEI_AND_RAIKOU_LEGEND_90 ("Entei & Raikou LEGEND", 90, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
 	ENTEI_AND_RAIKOU_LEGEND_91 ("Entei & Raikou LEGEND", 91, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
-	RAIKOU_&_SUICUNE_LEGEND_92 ("Raikou & Suicune LEGEND", 92, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-	RAIKOU_&_SUICUNE_LEGEND_93 ("Raikou & Suicune LEGEND", 93, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-	SUICUNE_&_ENTEI_LEGEND_94 ("Suicune & Entei LEGEND", 94, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-	SUICUNE_&_ENTEI_LEGEND_95 ("Suicune & Entei LEGEND", 95, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
+	RAIKOU_AND_SUICUNE_LEGEND_92 ("Raikou & Suicune LEGEND", 92, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
+	RAIKOU_AND_SUICUNE_LEGEND_93 ("Raikou & Suicune LEGEND", 93, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
+	SUICUNE_AND_ENTEI_LEGEND_94 ("Suicune & Entei LEGEND", 94, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
+	SUICUNE_AND_ENTEI_LEGEND_95 ("Suicune & Entei LEGEND", 95, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
 	ALPH_LITHOGRAPH_TWO ("Alph Lithograph", 96, Rarity.HOLORARE, [TRAINER]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -1893,7 +1893,7 @@ public enum Unleashed implements CardInfo {
 				}
 				
 			}*/;
-			case RAIKOU_&_SUICUNE_LEGEND_92:
+			case RAIKOU_AND_SUICUNE_LEGEND_92:
 			return basic (this, hp:HP160, type:[WATER, L], retreatCost:1) {
 				weakness L
 				weakness F
@@ -1931,8 +1931,8 @@ public enum Unleashed implements CardInfo {
 				}
 				
 			};
-			case RAIKOU_&_SUICUNE_LEGEND_93:
-			return copy (RAIKOU_&_SUICUNE_LEGEND_92, this)
+			case RAIKOU_AND_SUICUNE_LEGEND_93:
+			return copy (RAIKOU_AND_SUICUNE_LEGEND_92, this)
 			/*basic (this, hp:HP160, type:[WATER, L], retreatCost:1) {
 				weakness L
 				weakness F
@@ -1970,7 +1970,7 @@ public enum Unleashed implements CardInfo {
 				}
 				
 			}*/;
-			case SUICUNE_&_ENTEI_LEGEND_94:
+			case SUICUNE_AND_ENTEI_LEGEND_94:
 			return basic (this, hp:HP160, type:[WATER, R], retreatCost:1) {
 				weakness W
 				weakness L
@@ -2016,8 +2016,8 @@ public enum Unleashed implements CardInfo {
 				}
 				
 			};
-			case SUICUNE_&_ENTEI_LEGEND_95:
-			return copy (SUICUNE_&_ENTEI_LEGEND_94, this)
+			case SUICUNE_AND_ENTEI_LEGEND_95:
+			return copy (SUICUNE_AND_ENTEI_LEGEND_94, this)
 			/*basic (this, hp:HP160, type:[WATER, R], retreatCost:1) {
 				weakness W
 				weakness L
