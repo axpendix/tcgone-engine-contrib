@@ -167,8 +167,7 @@ public enum SecretWonders implements CardInfo {
 	DARKNESS_ENERGY_129 ("Darkness Energy", 129, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
 	METAL_ENERGY_130 ("Metal Energy", 130, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
 	GARDEVOIR_LV_X_131 ("Gardevoir LV.X", 131, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _PSYCHIC_]),
-	HONCHKROW_LV_X_132 ("Honchkrow LV.X", 132, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _DARKNESS_]),
-;
+	HONCHKROW_LV_X_132 ("Honchkrow LV.X", 132, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _DARKNESS_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -227,12 +226,12 @@ public enum SecretWonders implements CardInfo {
 				weakness F, PLUS30
 				resistance M, MINUS20
 				pokeBody "Jamming", {
-					text "After your opponent plays a Supporter card from his or her hand, put 1 damage counter on each of your opponent’s Pokémon. You can’t you more than 1 Jamming Poké-Body each turn."
+					text "After your opponent plays a Supporter card from his or her hand, put 1 damage counter on each of your opponentâ€™s PokÃ©mon. You canâ€™t you more than 1 Jamming PokÃ©-Body each turn."
 					delayedA {
 					}
 				}
 				move "Cluster Bolt", {
-					text "70 damage. Energy attached to Ampharos. If you do, this attack does 20 damage to each of your opponent’s Benched Pokémon that has any Energy cards attached to it."
+					text "70 damage. Energy attached to Ampharos. If you do, this attack does 20 damage to each of your opponentâ€™s Benched PokÃ©mon that has any Energy cards attached to it."
 					energyCost L, C, C, L
 					attackRequirement {}
 					onAttack {
@@ -245,12 +244,12 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Wartortle", hp:HP120, type:WATER, retreatCost:2) {
 				weakness L, PLUS30
 				pokePower "Waterlog", {
-					text "Once during your turn , you may attach as many basic Energy cards from your hand to any of your Pokémon in any way you like. If you do, you turn ends. This power can’t be used if Blastoise is affected by a Special Condition."
+					text "Once during your turn , you may attach as many basic Energy cards from your hand to any of your PokÃ©mon in any way you like. If you do, you turn ends. This power canâ€™t be used if Blastoise is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Hydro Pump", {
-					text "50+ damage. Energy attached to Blastoise but not used to pay for this attack’s Energy cost. You can’t add more than 40 damage in this way."
+					text "50+ damage. Energy attached to Blastoise but not used to pay for this attackâ€™s Energy cost. You canâ€™t add more than 40 damage in this way."
 					energyCost W, W, C, W
 					attackRequirement {}
 					onAttack {
@@ -264,12 +263,12 @@ public enum SecretWonders implements CardInfo {
 				weakness W
 				resistance F, MINUS20
 				pokeBody "Fury Blaze", {
-					text "If your opponent has 3 or less Prize cards left, each of Charizard’s attacks does 50 more damage to the Active Pokémon ."
+					text "If your opponent has 3 or less Prize cards left, each of Charizardâ€™s attacks does 50 more damage to the Active PokÃ©mon ."
 					delayedA {
 					}
 				}
 				move "Blast Burn", {
-					text "120 damage. Flip a coin. If heads, discard 2 Energy cards attached to Charizard. If tails, discard 4 Energy cards attached to Charizard. (If you can’t, this attack does nothing.)"
+					text "120 damage. Flip a coin. If heads, discard 2 Energy cards attached to Charizard. If tails, discard 4 Energy cards attached to Charizard. (If you canâ€™t, this attack does nothing.)"
 					energyCost R, R, R, C
 					attackRequirement {}
 					onAttack {
@@ -282,7 +281,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP080, type:FIRE, retreatCost:2) {
 				weakness W, PLUS20
 				pokeBody "Burning Coat", {
-					text "Whenever 1 of your opponent’s Pokémon is Knocked Out by damage from Entei’s attacks, discard the top 3 cards from your opponent’s deck."
+					text "Whenever 1 of your opponentâ€™s PokÃ©mon is Knocked Out by damage from Enteiâ€™s attacks, discard the top 3 cards from your opponentâ€™s deck."
 					delayedA {
 					}
 				}
@@ -301,7 +300,7 @@ public enum SecretWonders implements CardInfo {
 				weakness W, PLUS30
 				resistance L, MINUS20
 				pokeBody "Irritating Buzz", {
-					text "As long as Flygon is your Active Pokémon, put 1 damage counter on each of your opponent’s Active Pokémon between turn, excluding Pokémon."
+					text "As long as Flygon is your Active PokÃ©mon, put 1 damage counter on each of your opponentâ€™s Active PokÃ©mon between turn, excluding PokÃ©mon."
 					delayedA {
 					}
 				}
@@ -319,7 +318,7 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Kirlia", hp:HP130, type:FIGHTING, retreatCost:2) {
 				weakness P
 				move "Sonic Blade", {
-					text "Put damage counters on the Defending Pokémon until it is 50 HP away from being Knocked Out. If you do, your opponent switch the Defending Pokémon with 1 of this or her Benched Pokémon."
+					text "Put damage counters on the Defending PokÃ©mon until it is 50 HP away from being Knocked Out. If you do, your opponent switch the Defending PokÃ©mon with 1 of this or her Benched PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -340,12 +339,12 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Kirlia", hp:HP110, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS30
 				pokePower "Telepass", {
-					text "Once during your turn , you may search your opponent’s discard pile for a Supporter card and use the effect of that card as the effect of this power. (This Supporter card remains in you opponent’s discard pile.) You can’t use more than 1 Telepass Poké-Power each turn. This power can’t be used if Gardevoir is affected by a Special Condition."
+					text "Once during your turn , you may search your opponentâ€™s discard pile for a Supporter card and use the effect of that card as the effect of this power. (This Supporter card remains in you opponentâ€™s discard pile.) You canâ€™t use more than 1 Telepass PokÃ©-Power each turn. This power canâ€™t be used if Gardevoir is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Psychic Lock", {
-					text "60 damage. During your opponent’s next turn, your opponent can’t use any Poké-Powers on his or her Pokémon."
+					text "60 damage. During your opponentâ€™s next turn, your opponent canâ€™t use any PokÃ©-Powers on his or her PokÃ©mon."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -400,12 +399,12 @@ public enum SecretWonders implements CardInfo {
 				weakness W
 				resistance F, MINUS20
 				pokePower "Phoenix Turn", {
-					text "Once during your opponent’s turn, if Ho-Oh would be Knocked Out by damage from an attack, you may flip a coin. If heads, Ho-Oh isn’t discarded. Instead, remove all damage counter, Special Conditions, and other effects from Ho-Oh. Then, discard all cards attached to Ho-Oh (except for Energy cards). This counts as Ho-Oh being Knocked Out and your opponent takes a Prize card."
+					text "Once during your opponentâ€™s turn, if Ho-Oh would be Knocked Out by damage from an attack, you may flip a coin. If heads, Ho-Oh isnâ€™t discarded. Instead, remove all damage counter, Special Conditions, and other effects from Ho-Oh. Then, discard all cards attached to Ho-Oh (except for Energy cards). This counts as Ho-Oh being Knocked Out and your opponent takes a Prize card."
 					actionA {
 					}
 				}
 				move "Rainbow Wing", {
-					text "20× damage. This attack does 20 damage time the number of different types of basic Energy cards attached to Ho-Oh."
+					text "20Ã— damage. This attack does 20 damage time the number of different types of basic Energy cards attached to Ho-Oh."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -419,12 +418,12 @@ public enum SecretWonders implements CardInfo {
 				weakness R, PLUS30
 				resistance F, MINUS20
 				pokeBody "Cotton Spore", {
-					text "Whenever Jumpluff would be damaged by your opponent’s attack, flip a coin. If heads, prevent all damage done to Jumpluff by that attack."
+					text "Whenever Jumpluff would be damaged by your opponentâ€™s attack, flip a coin. If heads, prevent all damage done to Jumpluff by that attack."
 					delayedA {
 					}
 				}
 				move "Cottonweed Punch", {
-					text "Flip 2 coins. Choose 1 of your opponent’s Pokémon. For each heads, this attack does 30 damage to that Pokémon."
+					text "Flip 2 coins. Choose 1 of your opponentâ€™s PokÃ©mon. For each heads, this attack does 30 damage to that PokÃ©mon."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -437,7 +436,7 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Lickitung", hp:HP110, type:COLORLESS, retreatCost:4) {
 				weakness F, PLUS30
 				move "Tongue Reel", {
-					text "Choose 1 of your opponent’s Pokémon. If you choose a Benched Pokémon, switch the Defending Pokémon with that Pokémon. This attack does 20 damage to the Pokémon you chose. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. If you choose a Benched PokÃ©mon, switch the Defending PokÃ©mon with that PokÃ©mon. This attack does 20 damage to the PokÃ©mon you chose. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -445,7 +444,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Boundless Power", {
-					text "80 damage. During your next turn, Lickilicky can’t attack."
+					text "80 damage. During your next turn, Lickilicky canâ€™t attack."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -463,7 +462,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Nature Power", {
-					text "60+ damage. If you have a Stadium Card in play, this attack does 60 damage plus 20 more damage. If your opponent has a Stadium card in play, the Defending Pokémon is now Confused."
+					text "60+ damage. If you have a Stadium Card in play, this attack does 60 damage plus 20 more damage. If your opponent has a Stadium card in play, the Defending PokÃ©mon is now Confused."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -477,7 +476,7 @@ public enum SecretWonders implements CardInfo {
 				weakness P, PLUS20
 				resistance F, MINUS20
 				move "Silver Wing", {
-					text "20 damage. Flip a coin. If heads, choose an Energy card attached to the Defending Pokémon and return it to your opponent’s hand."
+					text "20 damage. Flip a coin. If heads, choose an Energy card attached to the Defending PokÃ©mon and return it to your opponentâ€™s hand."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -485,7 +484,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Psychic Destruction", {
-					text "120 damage. If the Defending Pokémon has any Energy cards attached to it, this attack’s base damage is 40 instead of 120."
+					text "120 damage. If the Defending PokÃ©mon has any Energy cards attached to it, this attackâ€™s base damage is 40 instead of 120."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -506,7 +505,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Re-creation", {
-					text "Choose an attack on 1 of your opponent’s Pokémon in his or her discard pile. Re-creation copies that attack except for its Energy cost. (You must still do anything else required for that attack.) Mew performs that attack."
+					text "Choose an attack on 1 of your opponentâ€™s PokÃ©mon in his or her discard pile. Re-creation copies that attack except for its Energy cost. (You must still do anything else required for that attack.) Mew performs that attack."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -520,12 +519,12 @@ public enum SecretWonders implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				pokePower "Thunder Rumble", {
-					text "Once during your turn , when you attach a Energy card from your hand to Raikou, you may put 1 damage counter on 1 of your opponent’s Benched Pokémon."
+					text "Once during your turn , when you attach a Energy card from your hand to Raikou, you may put 1 damage counter on 1 of your opponentâ€™s Benched PokÃ©mon."
 					actionA {
 					}
 				}
 				move "Thunder Climb", {
-					text "50+ damage. Energy cards to 1 of your Pokémon."
+					text "50+ damage. Energy cards to 1 of your PokÃ©mon."
 					energyCost L, L, L, L, L
 					attackRequirement {}
 					onAttack {
@@ -538,7 +537,7 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Roselia", hp:HP090, type:GRASS, retreatCost:1) {
 				weakness R, PLUS20
 				move "Sleep Poison", {
-					text "20 damage. The Defending Pokémon is now Asleep and Poisoned."
+					text "20 damage. The Defending PokÃ©mon is now Asleep and Poisoned."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -560,7 +559,7 @@ public enum SecretWonders implements CardInfo {
 				weakness C, PLUS30
 				resistance F, MINUS20
 				move "Direct Hit", {
-					text "50 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "50 damage. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -568,7 +567,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Dragon Finish", {
-					text "(If you can’t discard cards, this attack does nothing.)"
+					text "(If you canâ€™t discard cards, this attack does nothing.)"
 					energyCost R, R, W, R, W, R, W
 					attackRequirement {}
 					onAttack {
@@ -581,7 +580,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				pokePower "Aqua Recover", {
-					text "Once during your turn, when you put Suicune from your hand onto your Bench, you may search you discard pile for up to 3 Pokémon, show them to your opponent, and put them into your hand."
+					text "Once during your turn, when you put Suicune from your hand onto your Bench, you may search you discard pile for up to 3 PokÃ©mon, show them to your opponent, and put them into your hand."
 					actionA {
 					}
 				}
@@ -599,7 +598,7 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Ivysaur", hp:HP130, type:GRASS, retreatCost:3) {
 				weakness R, PLUS30
 				pokePower "Miracle Aroma", {
-					text "Once during your turn , you may flip a coin. If heads, choose either Asleep, Burned, or Poisoned. The Defending Pokémon is now affected by that Special Condition. This power can’t be used if Venusaur is affected by a Special Condition."
+					text "Once during your turn , you may flip a coin. If heads, choose either Asleep, Burned, or Poisoned. The Defending PokÃ©mon is now affected by that Special Condition. This power canâ€™t be used if Venusaur is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -618,7 +617,7 @@ public enum SecretWonders implements CardInfo {
 				weakness F, PLUS20
 				resistance P, MINUS20
 				move "Baleful Wind", {
-					text "Choose a card from you opponent’s hand without looking and discard it. If you discarded a Trainer, Support, or Stadium card, choose 1 more card from your opponent’s hand without looking and discard it."
+					text "Choose a card from you opponentâ€™s hand without looking and discard it. If you discarded a Trainer, Support, or Stadium card, choose 1 more card from your opponentâ€™s hand without looking and discard it."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -626,7 +625,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Raid", {
-					text "10 damage. If you played Absol from your hand during this turn, this attack’s base damage is 40 instead of 10."
+					text "10 damage. If you played Absol from your hand during this turn, this attackâ€™s base damage is 40 instead of 10."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -639,7 +638,7 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Growlithe", hp:HP100, type:FIRE, retreatCost:2) {
 				weakness W, PLUS30
 				pokePower "Flame Dash", {
-					text "Once during your turn, when you play Arcanine from you hand to evolve 1 of your Benched Pokémon, you may switch Arcanine with 1 of your Active Pokémon. If you do, you may move any number of Energy cards attached to that Pokémon to Arcanine."
+					text "Once during your turn, when you play Arcanine from you hand to evolve 1 of your Benched PokÃ©mon, you may switch Arcanine with 1 of your Active PokÃ©mon. If you do, you may move any number of Energy cards attached to that PokÃ©mon to Arcanine."
 					actionA {
 					}
 				}
@@ -658,7 +657,7 @@ public enum SecretWonders implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				move "Ghost Head", {
-					text "Put as many damage counters as you like on Banette. (You can’t put more than Banette’s remaining HP.) Put that many damage counters on the Defending Pokémon."
+					text "Put as many damage counters as you like on Banette. (You canâ€™t put more than Banetteâ€™s remaining HP.) Put that many damage counters on the Defending PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -680,7 +679,7 @@ public enum SecretWonders implements CardInfo {
 				weakness W, PLUS20
 				resistance L, MINUS20
 				move "Dig Trap", {
-					text "Flip a coin. If tails, this attack does nothing. If heads, prevent all effects of an attack, including damage, done to Dugtrio during your opponent’s next turn. If Dugtrio is your Active Pokémon at the end of your opponent’s next turn, put 6 damage counters on 1 of your opponent’s Bench Pokémon."
+					text "Flip a coin. If tails, this attack does nothing. If heads, prevent all effects of an attack, including damage, done to Dugtrio during your opponentâ€™s next turn. If Dugtrio is your Active PokÃ©mon at the end of your opponentâ€™s next turn, put 6 damage counters on 1 of your opponentâ€™s Bench PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -702,12 +701,12 @@ public enum SecretWonders implements CardInfo {
 				weakness F, PLUS30
 				resistance M, MINUS20
 				pokePower "Motor Drive", {
-					text "Once during your turn , you may search your discard pile for a Energy card and attach it to Elective. This power can’t be used if Elective is affected by a Special Condition."
+					text "Once during your turn , you may search your discard pile for a Energy card and attach it to Elective. This power canâ€™t be used if Elective is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Discharge", {
-					text "50× damage. Energy you discarded. This attack does 50 damage times the number of heads."
+					text "50Ã— damage. Energy you discarded. This attack does 50 damage times the number of heads."
 					energyCost L, C, C, L, L
 					attackRequirement {}
 					onAttack {
@@ -721,7 +720,7 @@ public enum SecretWonders implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				pokePower "Energy Shift", {
-					text "Once during your turn, if Electrode would be Knocked Out by damage from an attack, you may use this power. Electrode isn’t discarded. Instead, attach it as an Energy card to 1 of your Pokémon. While attached, this card is a Special Energy card and provides every type of Energy but provides on 1 Energy at a time."
+					text "Once during your turn, if Electrode would be Knocked Out by damage from an attack, you may use this power. Electrode isnâ€™t discarded. Instead, attach it as an Energy card to 1 of your PokÃ©mon. While attached, this card is a Special Energy card and provides every type of Energy but provides on 1 Energy at a time."
 					actionA {
 					}
 				}
@@ -747,7 +746,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Baton Pass", {
-					text "40 damage. You may switch Furret with 1 of your Benched Pokémon. If you do, move as many Energy cards attached to Furret as you like to the new Active Pokémon."
+					text "40 damage. You may switch Furret with 1 of your Benched PokÃ©mon. If you do, move as many Energy cards attached to Furret as you like to the new Active PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -760,7 +759,7 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Psyduck", hp:HP090, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Encore", {
-					text "20 damage. Choose 1 of the Defending Pokémon’s attacks. That Pokémon can use only that attack during your opponent’s next turn."
+					text "20 damage. Choose 1 of the Defending PokÃ©monâ€™s attacks. That PokÃ©mon can use only that attack during your opponentâ€™s next turn."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -782,7 +781,7 @@ public enum SecretWonders implements CardInfo {
 				weakness G
 				resistance L, MINUS20
 				move "Double Throw", {
-					text "Choose 2 of your opponent’s Pokémon. This attack does 30 damage to each of them."
+					text "Choose 2 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to each of them."
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
@@ -803,7 +802,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS20
 				move "Icy Kiss", {
-					text "30 damage. If Jynx was damaged by an attack during your opponent’s last turn, the Defending Pokémon is now Paralyzed."
+					text "30 damage. If Jynx was damaged by an attack during your opponentâ€™s last turn, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -811,7 +810,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Lovely Kiss", {
-					text "Move 2 damage counter from Jynx to the Defending Pokémon. If Smoochum is anywhere under Jynx, move 4 damage counters instead."
+					text "Move 2 damage counter from Jynx to the Defending PokÃ©mon. If Smoochum is anywhere under Jynx, move 4 damage counters instead."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -829,7 +828,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Flame Blast", {
-					text "20× damage. Energy attached to Magmortar."
+					text "20Ã— damage. Energy attached to Magmortar."
 					energyCost R, R
 					attackRequirement {}
 					onAttack {
@@ -837,7 +836,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Fireball Bazooka", {
-					text "40 damage. Does 20 damage to 2 of your opponent’s Benched Pokémon."
+					text "40 damage. Does 20 damage to 2 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
@@ -851,12 +850,12 @@ public enum SecretWonders implements CardInfo {
 				weakness F, PLUS10
 				resistance M, MINUS20
 				pokePower "Minus Charge", {
-					text "Once during your turn , if any Pokémon were Knocked Out during your opponent’s last turn, you may draw 2 cards. You can’t use more than 1 Minus Charge Poké-Power each turn. This power can’t be used if Minun is affected by a Special Condition."
+					text "Once during your turn , if any PokÃ©mon were Knocked Out during your opponentâ€™s last turn, you may draw 2 cards. You canâ€™t use more than 1 Minus Charge PokÃ©-Power each turn. This power canâ€™t be used if Minun is affected by a Special Condition."
 					actionA {
 					}
 				}
-				move "Tag Play —", {
-					text "20 damage. If you have Plusle on your Bench, you may move an Energy card attached to Minum to 1 of your Benched Pokémon."
+				move "Tag Play â€”", {
+					text "20 damage. If you have Plusle on your Bench, you may move an Energy card attached to Minum to 1 of your Benched PokÃ©mon."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -891,7 +890,7 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Nidorino", hp:HP130, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS30
 				move "Poison Rub", {
-					text "20 damage. The Defending Pokémon is now Poisoned. Before doing damage, you may switch 1 of the Defending Pokémon with 1 of your opponent’s Benched Pokémon. The new Defending Pokémon is now Poisoned."
+					text "20 damage. The Defending PokÃ©mon is now Poisoned. Before doing damage, you may switch 1 of the Defending PokÃ©mon with 1 of your opponentâ€™s Benched PokÃ©mon. The new Defending PokÃ©mon is now Poisoned."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -913,7 +912,7 @@ public enum SecretWonders implements CardInfo {
 				weakness L, PLUS30
 				resistance F, MINUS20
 				move "Mirror Move", {
-					text "If Pidgeot was damaged by an attack during your opponent’s last turn, this attack does the same amount of damage done to Pidgeot to the Defending Pokémon."
+					text "If Pidgeot was damaged by an attack during your opponentâ€™s last turn, this attack does the same amount of damage done to Pidgeot to the Defending PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -921,7 +920,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Whirlwind", {
-					text "50 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "50 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -935,12 +934,12 @@ public enum SecretWonders implements CardInfo {
 				weakness F, PLUS10
 				resistance M, MINUS20
 				pokePower "Plus Charge", {
-					text "Once during your turn , if any of your Pokémon were Knocked Out during your opponent’s last turn, you may search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. You can’t use more then 1 Plus Charge Poké-Power each turn. This power can’t be used if Plusle is affected by a Special Condition."
+					text "Once during your turn , if any of your PokÃ©mon were Knocked Out during your opponentâ€™s last turn, you may search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. You canâ€™t use more then 1 Plus Charge PokÃ©-Power each turn. This power canâ€™t be used if Plusle is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Tag Play +", {
-					text "20 damage. If you have Minun on your Bench, you may do 20 damage to any 1 Benched Pokémon instead."
+					text "20 damage. If you have Minun on your Bench, you may do 20 damage to any 1 Benched PokÃ©mon instead."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -954,12 +953,12 @@ public enum SecretWonders implements CardInfo {
 				weakness L, PLUS20
 				resistance P, MINUS20
 				pokeBody "Rough Skin", {
-					text "If Sharpedo is your Active Pokémon and is damaged by an opponent’s attack , put 2 damage counter on the Attacking Pokémon."
+					text "If Sharpedo is your Active PokÃ©mon and is damaged by an opponentâ€™s attack , put 2 damage counter on the Attacking PokÃ©mon."
 					delayedA {
 					}
 				}
 				move "Strike Wound", {
-					text "60+ damage. If the Defending Pokémon has 2 or more damage counters on it, this attack does 60 damage plus 20 more damage. This attack damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects of that Pokémon."
+					text "60+ damage. If the Defending PokÃ©mon has 2 or more damage counters on it, this attack does 60 damage plus 20 more damage. This attack damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects of that PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -973,12 +972,12 @@ public enum SecretWonders implements CardInfo {
 				weakness R, PLUS20
 				resistance W, MINUS20
 				pokePower "Grass Whistle", {
-					text "Once during your turn , you may remove 1 damage counter from each of your Pokémon. You can’t use more than 1 Grass Whistle Poké-Power each turn. This power can’t be used if Sunflora is affected by a Special Condition."
+					text "Once during your turn , you may remove 1 damage counter from each of your PokÃ©mon. You canâ€™t use more than 1 Grass Whistle PokÃ©-Power each turn. This power canâ€™t be used if Sunflora is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Petal Dance", {
-					text "30× damage. Flip 3 coins. This attack does 30 damage times the number of heads. If you get 2 or more heads, Sunflora is now Confused."
+					text "30Ã— damage. Flip 3 coins. This attack does 30 damage times the number of heads. If you get 2 or more heads, Sunflora is now Confused."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -996,7 +995,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Hidden Power", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1009,12 +1008,12 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Sneasel", hp:HP080, type:WATER, retreatCost:0) {
 				weakness M, PLUS20
 				pokePower "Dark Engage", {
-					text "Once during your turn , you may use this power. Each of your Active Pokémon’s type is until the end of your turn. If that Pokémon is no longer your Active Pokémon, this effect ends."
+					text "Once during your turn , you may use this power. Each of your Active PokÃ©monâ€™s type is until the end of your turn. If that PokÃ©mon is no longer your Active PokÃ©mon, this effect ends."
 					actionA {
 					}
 				}
 				move "Shadow Charge", {
-					text "Energy cards and attach them to any of your Pokémon is any way you like. Shuffle your deck afterward."
+					text "Energy cards and attach them to any of your PokÃ©mon is any way you like. Shuffle your deck afterward."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -1040,7 +1039,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Leaf Hurricane", {
-					text "60 damage. If the Defending Pokémon has fewer remaining HP than Wormadam Plant Cloak, the Defending Pokémon is now Confused."
+					text "60 damage. If the Defending PokÃ©mon has fewer remaining HP than Wormadam Plant Cloak, the Defending PokÃ©mon is now Confused."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1073,7 +1072,7 @@ public enum SecretWonders implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				pokeBody "Trash Cloak", {
-					text "If Wormadam Trash Cloak has a Pokémon Tool Card attached to it, any damage done to Wormadam Trash Cloak by attacks is reduced by 20 ."
+					text "If Wormadam Trash Cloak has a PokÃ©mon Tool Card attached to it, any damage done to Wormadam Trash Cloak by attacks is reduced by 20 ."
 					delayedA {
 					}
 				}
@@ -1092,12 +1091,12 @@ public enum SecretWonders implements CardInfo {
 				weakness P, PLUS10
 				resistance F, MINUS20
 				pokePower "Psychic Shift", {
-					text "Once during your turn, if Xatu is on you Bench, you may choose 1 Special Condition from 1 of your Active Pokémon and remove that Special Condition. Then, 1 of the Defending Pokémon is now affected by that Special Condition that you chose."
+					text "Once during your turn, if Xatu is on you Bench, you may choose 1 Special Condition from 1 of your Active PokÃ©mon and remove that Special Condition. Then, 1 of the Defending PokÃ©mon is now affected by that Special Condition that you chose."
 					actionA {
 					}
 				}
 				move "Energy Singe", {
-					text "Choose 1 of you opponent’s Pokémon. This attack does 20 damage plus 10 more damage for each Energy attached to that Pokémon."
+					text "Choose 1 of you opponentâ€™s PokÃ©mon. This attack does 20 damage plus 10 more damage for each Energy attached to that PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1110,7 +1109,7 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Shroomish", hp:HP100, type:GRASS, retreatCost:2) {
 				weakness R
 				move "Darin Punch", {
-					text "40 damage. Remove from Breloom a number of damage counters equal to the amount of Energy attached to the Defending Pokémon."
+					text "40 damage. Remove from Breloom a number of damage counters equal to the amount of Energy attached to the Defending PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1118,7 +1117,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Homing Uppercut", {
-					text "60+ damage. If the Defending Pokémon’s Retreat Cost is 0, this attack does 60 damage plus 60 more damage."
+					text "60+ damage. If the Defending PokÃ©monâ€™s Retreat Cost is 0, this attack does 60 damage plus 60 more damage."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -1131,7 +1130,7 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Charmander", hp:HP080, type:FIRE, retreatCost:1) {
 				weakness W, PLUS20
 				move "Fire Fang", {
-					text "20 damage. The Defending Pokémon is now Burned."
+					text "20 damage. The Defending PokÃ©mon is now Burned."
 					energyCost R
 					attackRequirement {}
 					onAttack {
@@ -1152,7 +1151,7 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Shellder", hp:HP080, type:WATER, retreatCost:2) {
 				weakness L, PLUS20
 				move "Withdraw", {
-					text "Flip a coin. If heads, prevent all damage done to Cloyster by attacks during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all damage done to Cloyster by attacks during your opponentâ€™s next turn."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1160,7 +1159,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Spine Missile", {
-					text "Flip 4 coins. For each heads, choose an opponent’s Pokémon in play and this attack does 20 damage to those Pokémon. (You may choose the same Pokémon more than once.)"
+					text "Flip 4 coins. For each heads, choose an opponentâ€™s PokÃ©mon in play and this attack does 20 damage to those PokÃ©mon. (You may choose the same PokÃ©mon more than once.)"
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1174,7 +1173,7 @@ public enum SecretWonders implements CardInfo {
 				weakness W, PLUS20
 				resistance L, MINUS20
 				move "Rapid Spin", {
-					text "40 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon, if any. You switch Donphan with 1 of your Benched Pokémon, if any."
+					text "40 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon, if any. You switch Donphan with 1 of your Benched PokÃ©mon, if any."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1182,7 +1181,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Bash In", {
-					text "70+ damage. If the Defending Pokémon has a Pokémon Tool card attached to it, this attack does 70 damage plus 60 more damage."
+					text "70+ damage. If the Defending PokÃ©mon has a PokÃ©mon Tool card attached to it, this attack does 70 damage plus 60 more damage."
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
@@ -1196,7 +1195,7 @@ public enum SecretWonders implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				move "Swords Dance", {
-					text "During your next turn, Farfetch’d’s Leek Slap attack’s base damage is 60."
+					text "During your next turn, Farfetchâ€™dâ€™s Leek Slap attackâ€™s base damage is 60."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1204,7 +1203,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Leek Slap", {
-					text "30 damage. During your next turn, Farfetch’d can’t use Leek Slap."
+					text "30 damage. During your next turn, Farfetchâ€™d canâ€™t use Leek Slap."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1218,7 +1217,7 @@ public enum SecretWonders implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Attract Current", {
-					text "10 damage. Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
+					text "10 damage. Energy card and attach it to 1 of your PokÃ©mon. Shuffle your deck afterward."
 					energyCost C, L
 					attackRequirement {}
 					onAttack {
@@ -1260,12 +1259,12 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				pokeBody "Camouflage", {
-					text "If any basic Energy card attached to Kecleon is the same as the Attacking Pokémon’s type, any damage done by attacks from the Pokémon to Kecleon is reduced by 40 ."
+					text "If any basic Energy card attached to Kecleon is the same as the Attacking PokÃ©monâ€™s type, any damage done by attacks from the PokÃ©mon to Kecleon is reduced by 40 ."
 					delayedA {
 					}
 				}
 				move "Blind Scratch", {
-					text "60 damage. Flip a coin. If tails, this attack does no damage to the Defending Pokémon. Instead, this attack does 20 damage to 1 of your Pokémon. (Don’t apply Weakness and Resistance fo Benched Pokémon.)"
+					text "60 damage. Flip a coin. If tails, this attack does no damage to the Defending PokÃ©mon. Instead, this attack does 20 damage to 1 of your PokÃ©mon. (Donâ€™t apply Weakness and Resistance fo Benched PokÃ©mon.)"
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1286,7 +1285,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Telekinesis", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 40 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -1299,7 +1298,7 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Lotad", hp:HP070, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Torment", {
-					text "20 damage. Flip a coin. If heads, your opponent can’t play any Supporter cards from his or her hand during his or her next turn."
+					text "20 damage. Flip a coin. If heads, your opponent canâ€™t play any Supporter cards from his or her hand during his or her next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1320,7 +1319,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
 				weakness F, PLUS20
 				move "Healing Milk", {
-					text "Flip 2 coins. For each heads, remove 3 damage counters from 1 of your Pokémon."
+					text "Flip 2 coins. For each heads, remove 3 damage counters from 1 of your PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1328,7 +1327,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Continuous Tumble", {
-					text "20× damage. Flip a coin until you get tails. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip a coin until you get tails. This attack does 20 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1341,12 +1340,12 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Grimer", hp:HP080, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS20
 				pokeBody "Toxic Sludge", {
-					text "At the end of each player’s turn, each of your opponent’s Active Pokémon that has any Energy attached to it is now Poisoned. If that Pokémon is already Poisoned, Toxic Sludge Poké-Body does nothing to that Pokémon."
+					text "At the end of each playerâ€™s turn, each of your opponentâ€™s Active PokÃ©mon that has any Energy attached to it is now Poisoned. If that PokÃ©mon is already Poisoned, Toxic Sludge PokÃ©-Body does nothing to that PokÃ©mon."
 					delayedA {
 					}
 				}
 				move "Panic Liquid", {
-					text "50 damage. The Defending Pokémon is now Confused and can’t retreat during your opponent’s next turn."
+					text "50 damage. The Defending PokÃ©mon is now Confused and canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -1367,7 +1366,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Poison Horn", {
-					text "40 damage. The Defending Pokémon is now Poisoned."
+					text "40 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -1402,7 +1401,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
 				weakness R, PLUS20
 				move "Grip and Squeeze", {
-					text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "20 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1410,7 +1409,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Power Guillotine", {
-					text "100 damage. Flip 2 coins. If either of them is tails, this attack’s base damage is 10 instead of 100."
+					text "100 damage. Flip 2 coins. If either of them is tails, this attackâ€™s base damage is 10 instead of 100."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1424,12 +1423,12 @@ public enum SecretWonders implements CardInfo {
 				weakness G
 				resistance L, MINUS20
 				pokePower "Aqua Healing", {
-					text "Once during your turn , if Quagsire is your Active Pokémon and the Defending Pokémon has any Energy attached to it, you may remove 3 damage counters from Quagsire."
+					text "Once during your turn , if Quagsire is your Active PokÃ©mon and the Defending PokÃ©mon has any Energy attached to it, you may remove 3 damage counters from Quagsire."
 					actionA {
 					}
 				}
 				move "Muddy Water", {
-					text "60 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "60 damage. Does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1463,7 +1462,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Sleep Powder", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1506,7 +1505,7 @@ public enum SecretWonders implements CardInfo {
 				weakness C, PLUS20
 				resistance F, MINUS20
 				move "Focus Energy", {
-					text "During your next turn, Shelgon’s Protect Charge attack’s base damage is 80."
+					text "During your next turn, Shelgonâ€™s Protect Charge attackâ€™s base damage is 80."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1528,12 +1527,12 @@ public enum SecretWonders implements CardInfo {
 				weakness R, PLUS20
 				resistance F, MINUS20
 				pokeBody "Cotton Balloon", {
-					text "If Skiploom has any Energy attached to it, any damage done to Skiploom by attacks from your opponent’s Evolved Pokémon is reduced by 20 ."
+					text "If Skiploom has any Energy attached to it, any damage done to Skiploom by attacks from your opponentâ€™s Evolved PokÃ©mon is reduced by 20 ."
 					delayedA {
 					}
 				}
 				move "U-turn", {
-					text "20 damage. Switch Skiploom with 1 of your Benched Pokémon."
+					text "20 damage. Switch Skiploom with 1 of your Benched PokÃ©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1554,7 +1553,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Trace", {
-					text "Flip a coin. If heads, choose an attack on 1 of your opponent’s Benched Pokémon. Trace copies that attack except for its Energy cost. (You must still do anything else required for that attack.) Smeargle performs that attack."
+					text "Flip a coin. If heads, choose an attack on 1 of your opponentâ€™s Benched PokÃ©mon. Trace copies that attack except for its Energy cost. (You must still do anything else required for that attack.) Smeargle performs that attack."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1572,7 +1571,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Psykiss", {
-					text "Flip a coin. If heads, choose a Special Energy card attached to 1 of your opponent’s Pokémon and have your opponent shuffle that card into his or her deck."
+					text "Flip a coin. If heads, choose a Special Energy card attached to 1 of your opponentâ€™s PokÃ©mon and have your opponent shuffle that card into his or her deck."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1585,7 +1584,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokePower "Kind", {
-					text "Once during your turn , you may remove 2 damage counters from 1 of the Defending Pokémon."
+					text "Once during your turn , you may remove 2 damage counters from 1 of the Defending PokÃ©mon."
 					actionA {
 					}
 				}
@@ -1603,12 +1602,12 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokePower "Nod", {
-					text "Once during your turn , if you have Unown N, Unown O, and Unown D on your Bench, you may ask your opponent to take a Prize card. If he or she does, you take a Prize card. If he or she doesn’t, draw a card."
+					text "Once during your turn , if you have Unown N, Unown O, and Unown D on your Bench, you may ask your opponent to take a Prize card. If he or she does, you take a Prize card. If he or she doesnâ€™t, draw a card."
 					actionA {
 					}
 				}
 				move "Hidden Power", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Burned."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Burned."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1626,7 +1625,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Hidden Power", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1639,12 +1638,12 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				pokePower "X-RAY", {
-					text "Once during your turn , if you have Unown X on your Bench, you may look at the top card of your opponent’s deck and put it back on top of his or her deck."
+					text "Once during your turn , if you have Unown X on your Bench, you may look at the top card of your opponentâ€™s deck and put it back on top of his or her deck."
 					actionA {
 					}
 				}
 				move "Hidden Power", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1662,7 +1661,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Hidden Power", {
-					text "Remove as many damage counters as you like from each Unown you have in play. Put that many damage counters on the Defending Pokémon."
+					text "Remove as many damage counters as you like from each Unown you have in play. Put that many damage counters on the Defending PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1676,12 +1675,12 @@ public enum SecretWonders implements CardInfo {
 				weakness R, PLUS20
 				resistance F, MINUS20
 				pokeBody "Dangerous Scales", {
-					text "If Venomoth is your Active Pokémon and is damaged by an opponent’s attack (even is Venomoth is Knocked Out), the Attacking Pokémon is now Asleep and Poisoned."
+					text "If Venomoth is your Active PokÃ©mon and is damaged by an opponentâ€™s attack (even is Venomoth is Knocked Out), the Attacking PokÃ©mon is now Asleep and Poisoned."
 					delayedA {
 					}
 				}
 				move "Disturbance Dive", {
-					text "50 damage. Prevent all effects of an attack, excluding damage, done to Venomoth during your opponent’s next turn."
+					text "50 damage. Prevent all effects of an attack, excluding damage, done to Venomoth during your opponentâ€™s next turn."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -1695,7 +1694,7 @@ public enum SecretWonders implements CardInfo {
 				weakness W, PLUS20
 				resistance L, MINUS20
 				move "Sand Wind", {
-					text "Does 10 damage to each of your opponent’s Pokémon."
+					text "Does 10 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1703,7 +1702,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Hyper Beam", {
-					text "40 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "40 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -1716,7 +1715,7 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Squirtle", hp:HP080, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Giant Wave", {
-					text "40 damage. Wartortle can’t use Giant Wave during your next turn."
+					text "40 damage. Wartortle canâ€™t use Giant Wave during your next turn."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -1759,7 +1758,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Shake Vine", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1767,7 +1766,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Bullet Seed", {
-					text "10× damage. Flip 4 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 4 coins. This attack does 10 damage times the number of heads."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1780,7 +1779,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				pokePower "Wear Cloak", {
-					text "Once during your turn , if Burmy Plant Cloak is your Active Pokémon, you may search your discard for a basic Energy card and attach it to Burmy Plant Cloak."
+					text "Once during your turn , if Burmy Plant Cloak is your Active PokÃ©mon, you may search your discard for a basic Energy card and attach it to Burmy Plant Cloak."
 					actionA {
 					}
 				}
@@ -1798,7 +1797,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				pokePower "Wear Cloak", {
-					text "Once during your turn , if Burmy Sandy Cloak is your Active Pokémon, you may search your discard for a basic Energy card and attach it to Burmy Sandy Cloak."
+					text "Once during your turn , if Burmy Sandy Cloak is your Active PokÃ©mon, you may search your discard for a basic Energy card and attach it to Burmy Sandy Cloak."
 					actionA {
 					}
 				}
@@ -1816,7 +1815,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				pokePower "Wear Cloak", {
-					text "Once during your turn , if Burmy Trash Cloak is your Active Pokémon, you may search your discard for a basic Energy card and attach it to Burmy Trash Cloak."
+					text "Once during your turn , if Burmy Trash Cloak is your Active PokÃ©mon, you may search your discard for a basic Energy card and attach it to Burmy Trash Cloak."
 					actionA {
 					}
 				}
@@ -1843,7 +1842,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Bite Away", {
-					text "20 damage. Flip a coin. If heads, choose a card from your opponent’s hand without looking and discard it."
+					text "20 damage. Flip a coin. If heads, choose a card from your opponentâ€™s hand without looking and discard it."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -1864,7 +1863,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Lava Burn", {
-					text "20 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "20 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost R, R
 					attackRequirement {}
 					onAttack {
@@ -1885,7 +1884,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Double Slap", {
-					text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 2 coins. This attack does 10 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1898,7 +1897,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
 				weakness G, PLUS20
 				move "Rally", {
-					text "Search your deck for up to 3 different types of Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
+					text "Search your deck for up to 3 different types of Basic PokÃ©mon and put them onto your Bench. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1950,7 +1949,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Astonish", {
-					text "Flip a coin. If heads, choose 1 card from your opponent’s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
+					text "Flip a coin. If heads, choose 1 card from your opponentâ€™s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1964,7 +1963,7 @@ public enum SecretWonders implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Thundershock", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1993,7 +1992,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Gunky", {
-					text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips coin. If tails, that attack does nothing."
+					text "If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips coin. If tails, that attack does nothing."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2006,7 +2005,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP070, type:FIRE, retreatCost:2) {
 				weakness W, PLUS20
 				move "Roar", {
-					text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2046,7 +2045,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:3) {
 				weakness F, PLUS20
 				move "Lick", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2067,7 +2066,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Water Sport", {
-					text "10+ damage. If Lotad has less Energy attached to it than the Defending Pokémon, this attack does 10 damage plus 20 more damage."
+					text "10+ damage. If Lotad has less Energy attached to it than the Defending PokÃ©mon, this attack does 10 damage plus 20 more damage."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2096,7 +2095,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Smog", {
-					text "20 damage. The Defending Pokémon is now Poisoned."
+					text "20 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -2110,7 +2109,7 @@ public enum SecretWonders implements CardInfo {
 				weakness F, PLUS10
 				resistance M, MINUS20
 				move "Thundershock", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -2140,7 +2139,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Feint Attack", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on that PokÃ©mon."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -2154,7 +2153,7 @@ public enum SecretWonders implements CardInfo {
 				weakness P, PLUS10
 				resistance F, MINUS20
 				move "Bothering Wave", {
-					text "20 damage. Flip a coin. If tails, this attack does nothing. If heads, discard an energy card attached to the Defending Pokémon."
+					text "20 damage. Flip a coin. If tails, this attack does nothing. If heads, discard an energy card attached to the Defending PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2162,7 +2161,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Future Sight", {
-					text "Look at the top 5 cards of either player’s deck and put them back on top of that player’s deck in any order."
+					text "Look at the top 5 cards of either playerâ€™s deck and put them back on top of that playerâ€™s deck in any order."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2183,7 +2182,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Poison Skin", {
-					text "Flip 2 coins. If either of them is heads, the Defending Pokémon is now Poisoned."
+					text "Flip 2 coins. If either of them is heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2197,7 +2196,7 @@ public enum SecretWonders implements CardInfo {
 				weakness W
 				resistance L, MINUS20
 				move "Flail", {
-					text "10× damage. Does 10 damage times the number of damage counter on Phanpy."
+					text "10Ã— damage. Does 10 damage times the number of damage counter on Phanpy."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2248,7 +2247,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Migraine", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused. If tails, Psyduck is now Confused."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused. If tails, Psyduck is now Confused."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2261,12 +2260,12 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				pokePower "Balloon Sting", {
-					text "Once during your opponent’s, if Qwilfish is your Active Pokémon and is damage by an attack (even if Qwilfish is Knocked Out), you may flip a coin. If heads, the Attacking Pokémon is now Poisoned. Put 2 damage counter instead of 1 on that Pokémon between turns."
+					text "Once during your opponentâ€™s, if Qwilfish is your Active PokÃ©mon and is damage by an attack (even if Qwilfish is Knocked Out), you may flip a coin. If heads, the Attacking PokÃ©mon is now Poisoned. Put 2 damage counter instead of 1 on that PokÃ©mon between turns."
 					actionA {
 					}
 				}
 				move "Nerve Shot", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -2287,7 +2286,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Confuse Ray", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2300,7 +2299,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP030, type:COLORLESS, retreatCost:0) {
 				weakness F, PLUS10
 				move "Tail Whip", {
-					text "Flip a coin. If heads, the Defending Pokémon can’t attack during your opponent’s next turn."
+					text "Flip a coin. If heads, the Defending PokÃ©mon canâ€™t attack during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2414,7 +2413,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Toxic Spore", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -2427,12 +2426,12 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
 				weakness R, PLUS20
 				pokeBody "Pot Shell", {
-					text "Prevent all effects of attacks, including damage, done to Shuckle by your opponent’s Pokémon that has any Special Energy cards attached to it."
+					text "Prevent all effects of attacks, including damage, done to Shuckle by your opponentâ€™s PokÃ©mon that has any Special Energy cards attached to it."
 					delayedA {
 					}
 				}
 				move "Ferment Poison", {
-					text "10 damage. The Defending Pokémon is now Poisoned. As long as the Defending Pokémon remains Poisoned by this attack, it can’t use any Poké-Body."
+					text "10 damage. The Defending PokÃ©mon is now Poisoned. As long as the Defending PokÃ©mon remains Poisoned by this attack, it canâ€™t use any PokÃ©-Body."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -2446,7 +2445,7 @@ public enum SecretWonders implements CardInfo {
 				weakness D, PLUS10
 				resistance C, MINUS20
 				move "Gossip", {
-					text "Put 1 damage counter on 1 of your opponent’s Pokémon."
+					text "Put 1 damage counter on 1 of your opponentâ€™s PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2475,7 +2474,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Synchro Punch", {
-					text "10+ damage. If any basic Energy card attached to Spinda is the same type as any Energy attached to the Defending Pokémon, this attack does 10 damage plus 30 more damage."
+					text "10+ damage. If any basic Energy card attached to Spinda is the same type as any Energy attached to the Defending PokÃ©mon, this attack does 10 damage plus 30 more damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2488,7 +2487,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Bubble", {
-					text "Flip a coin. If heads the Defending Pokémon is now Paralyzed."
+					text "Flip a coin. If heads the Defending PokÃ©mon is now Paralyzed."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2517,7 +2516,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Frighten Horn", {
-					text "20 damage. If the Defending Pokémon isn’t an Evolved Pokémon, that Pokémon is now Confused."
+					text "20 damage. If the Defending PokÃ©mon isnâ€™t an Evolved PokÃ©mon, that PokÃ©mon is now Confused."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2553,7 +2552,7 @@ public enum SecretWonders implements CardInfo {
 				weakness W, PLUS10
 				resistance L, MINUS20
 				move "Inviting Trap", {
-					text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
+					text "Switch the Defending PokÃ©mon with 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2561,7 +2560,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Sand Tomb", {
-					text "10 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "10 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -2574,7 +2573,7 @@ public enum SecretWonders implements CardInfo {
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Stun Spore", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2582,7 +2581,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Signal Beam", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -2618,7 +2617,7 @@ public enum SecretWonders implements CardInfo {
 				weakness G, PLUS20
 				resistance L, MINUS20
 				move "Yawn", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2626,7 +2625,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Splatter", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 10 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2637,7 +2636,7 @@ public enum SecretWonders implements CardInfo {
 			};
 			case BEBE_S_SEARCH_119:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you canâ€™t play this card.)"
 				onPlay {
 				}
 				playRequirement{
@@ -2645,7 +2644,7 @@ public enum SecretWonders implements CardInfo {
 			};
 			case NIGHT_MAINTENANCE_120:
 			return basicTrainer (this) {
-				text "Search your discard pile for up to 3 in any combination of Pokémon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
+				text "Search your discard pile for up to 3 in any combination of PokÃ©mon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
 				onPlay {
 				}
 				playRequirement{
@@ -2653,7 +2652,7 @@ public enum SecretWonders implements CardInfo {
 			};
 			case PLUSPOWER_121:
 			return basicTrainer (this) {
-				text "Attach Plus Power to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
+				text "Attach Plus Power to 1 of your PokÃ©mon. Discard this card at the end of your turn.\nIf the PokÃ©mon PlusPower is attached to attacks, the attack does 10 more damage to the Active PokÃ©mon (before applying Weakness and Resistance)."
 				onPlay {
 				}
 				playRequirement{
@@ -2661,7 +2660,7 @@ public enum SecretWonders implements CardInfo {
 			};
 			case PROFESSOR_OAK_S_VISIT_122:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 3 cards. Then, choose a card from your hand and put it on the bottom of your deck."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nDraw 3 cards. Then, choose a card from your hand and put it on the bottom of your deck."
 				onPlay {
 				}
 				playRequirement{
@@ -2669,7 +2668,7 @@ public enum SecretWonders implements CardInfo {
 			};
 			case PROFESSOR_ROWAN_123:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose 1 card in your hand and shuffle the rest of your cards into your deck. Then, draw 4 cards. (If this is the only card in your hand, you can’t play this card.)"
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nChoose 1 card in your hand and shuffle the rest of your cards into your deck. Then, draw 4 cards. (If this is the only card in your hand, you canâ€™t play this card.)"
 				onPlay {
 				}
 				playRequirement{
@@ -2677,7 +2676,7 @@ public enum SecretWonders implements CardInfo {
 			};
 			case RIVAL_124:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nReveal the top 5 cards of your deck. Your opponent chooses 3 of those cards. Put those cards into your hand and put other 2 cards on top of your deck. Shuffle your deck afterward."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nReveal the top 5 cards of your deck. Your opponent chooses 3 of those cards. Put those cards into your hand and put other 2 cards on top of your deck. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2685,7 +2684,7 @@ public enum SecretWonders implements CardInfo {
 			};
 			case ROSEANNE_S_RESEARCH_125:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 2 in any combination of Basic Pokémon and basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your deck for up to 2 in any combination of Basic PokÃ©mon and basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2693,7 +2692,7 @@ public enum SecretWonders implements CardInfo {
 			};
 			case TEAM_GALACTIC_S_MARS_126:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards. Then, choose a card from your opponent’s hand without looking and put it on the bottom of his or her deck."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nDraw 2 cards. Then, choose a card from your opponentâ€™s hand without looking and put it on the bottom of his or her deck."
 				onPlay {
 				}
 				playRequirement{
@@ -2701,7 +2700,7 @@ public enum SecretWonders implements CardInfo {
 			};
 			case POTION_127:
 			return basicTrainer (this) {
-				text "Remove 2 damage counter from 1 of your Pokémon (remove 1 damage counter if that Pokémon has only 1)."
+				text "Remove 2 damage counter from 1 of your PokÃ©mon (remove 1 damage counter if that PokÃ©mon has only 1)."
 				onPlay {
 				}
 				playRequirement{
@@ -2709,7 +2708,7 @@ public enum SecretWonders implements CardInfo {
 			};
 			case SWITCH_128:
 			return basicTrainer (this) {
-				text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
+				text "Switch 1 of your Active PokÃ©mon with 1 of your Benched PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2717,7 +2716,7 @@ public enum SecretWonders implements CardInfo {
 			};
 			case DARKNESS_ENERGY_129:
 			return specialEnergy (this, [[C]]) {
-				text "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
+				text "If the PokÃ©mon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active PokÃ©mon (before applying Weakness and Resistance). Ignore this effect if the PokÃ©mon that Darkness Energy is attached to isnâ€™t [D]. Darkness Energy provides [D] Energy. (Doesnâ€™t count as a basic Energy card.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2729,7 +2728,7 @@ public enum SecretWonders implements CardInfo {
 			};
 			case METAL_ENERGY_130:
 			return specialEnergy (this, [[C]]) {
-				text "Damage done by attacks to the Pokémon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that Metal Energy is attached to isn’t [M]. Metal Energy provides [M] Energy. (Doesn’t count as a basic Energy card.)"
+				text "Damage done by attacks to the PokÃ©mon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the PokÃ©mon that Metal Energy is attached to isnâ€™t [M]. Metal Energy provides [M] Energy. (Doesnâ€™t count as a basic Energy card.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2743,12 +2742,12 @@ public enum SecretWonders implements CardInfo {
 			return evolution (this, from:"Gardevoir", hp:HP130, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				pokePower "Teleportation", {
-					text "Once during your turn , choose 1 of your Active Pokémon or 1 or your Benched Pokémon and switch Gardevoir with that Pokémon. This power can’t be used if Gardevoir is affected by a Special Condition."
+					text "Once during your turn , choose 1 of your Active PokÃ©mon or 1 or your Benched PokÃ©mon and switch Gardevoir with that PokÃ©mon. This power canâ€™t be used if Gardevoir is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Bring Down", {
-					text "Choose 1 Pokémon (your or your opponent’s) with the fewest remaining HP (excluding Gardevoir) and that Pokémon is now Knocked Out."
+					text "Choose 1 PokÃ©mon (your or your opponentâ€™s) with the fewest remaining HP (excluding Gardevoir) and that PokÃ©mon is now Knocked Out."
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
@@ -2756,7 +2755,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Gardevoir. Gardevoir LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Gardevoir. Gardevoir LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2770,7 +2769,7 @@ public enum SecretWonders implements CardInfo {
 				weakness L, PLUS30
 				resistance F, MINUS20
 				move "Feint Attack", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 40 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on that PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2778,7 +2777,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "Darkness Wing", {
-					text "60 damage. If the Defending Pokémon would be Knocked Out by damage from this attack, you may search your discard pile for any 1 card, show it to your opponent, and put it into your hand."
+					text "60 damage. If the Defending PokÃ©mon would be Knocked Out by damage from this attack, you may search your discard pile for any 1 card, show it to your opponent, and put it into your hand."
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
@@ -2786,7 +2785,7 @@ public enum SecretWonders implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Honchkrow. Honchkrow LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Honchkrow. Honchkrow LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {

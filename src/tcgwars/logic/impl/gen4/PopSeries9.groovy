@@ -52,8 +52,7 @@ public enum PopSeries9 implements CardInfo {
 	GIBLE_14 ("Gible", 14, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
 	PIKACHU_15 ("Pikachu", 15, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
 	PIPLUP_16 ("Piplup", 16, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-	TURTWIG_17 ("Turtwig", 17, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-;
+	TURTWIG_17 ("Turtwig", 17, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -119,7 +118,7 @@ public enum PopSeries9 implements CardInfo {
 					}
 				}
 				move "Jet Sword", {
-					text "100 damage. Discard 2 Energy attached to Garchomp and this attack does 10 damage to each of your opponent’s Benched Pokémon."
+					text "100 damage. Discard 2 Energy attached to Garchomp and this attack does 10 damage to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -140,7 +139,7 @@ public enum PopSeries9 implements CardInfo {
 					}
 				}
 				move "Water Glow", {
-					text "Remove from Manaphy the number of damage counters equal to the damage you did to that Pokémon."
+					text "Remove from Manaphy the number of damage counters equal to the damage you did to that PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -154,7 +153,7 @@ public enum PopSeries9 implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Slam", {
-					text "30× damage. Flip 2 coins. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Flip 2 coins. This attack does 30 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -162,7 +161,7 @@ public enum PopSeries9 implements CardInfo {
 					}
 				}
 				move "High Volt", {
-					text "60 damage. If Raichu evolved from Pikachu during this turn, this attack’s base damage is 100 instead of 60."
+					text "60 damage. If Raichu evolved from Pikachu during this turn, this attackâ€™s base damage is 100 instead of 60."
 					energyCost L, L, L
 					attackRequirement {}
 					onAttack {
@@ -175,7 +174,7 @@ public enum PopSeries9 implements CardInfo {
 			return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
 				weakness F
 				move "Body Slam", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -197,12 +196,12 @@ public enum PopSeries9 implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				pokePower "Type Shift", {
-					text "Once during your turn (before your attack, you may use this power. Rotom’s type is until the end of your turn."
+					text "Once during your turn (before your attack, you may use this power. Rotomâ€™s type is until the end of your turn."
 					actionA {
 					}
 				}
 				move "Poltergeist", {
-					text "30+ damage. Look at your opponent’s hand. This attack does 30 damage plus 10 more damage for each Trainer, Supporter, and Stadium card in your opponent’s hand."
+					text "30+ damage. Look at your opponentâ€™s hand. This attack does 30 damage plus 10 more damage for each Trainer, Supporter, and Stadium card in your opponentâ€™s hand."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -215,7 +214,7 @@ public enum PopSeries9 implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Whirlpool", {
-					text "Flip a coin. If heads, discard an Energy attached to the Defending Pokémon."
+					text "Flip a coin. If heads, discard an Energy attached to the Defending PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -223,7 +222,7 @@ public enum PopSeries9 implements CardInfo {
 					}
 				}
 				move "Super Fast", {
-					text "30 damage. If you have Pachirisu in play, flip a coin. If heads, prevent all effects of an attack, including damage, done to Buizel during your opponent’s next turn."
+					text "30 damage. If you have Pachirisu in play, flip a coin. If heads, prevent all effects of an attack, including damage, done to Buizel during your opponentâ€™s next turn."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -236,7 +235,7 @@ public enum PopSeries9 implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS10
 				move "Knock Off", {
-					text "Flip a coin. If heads, choose 1 card from your opponent’s hand without looking and discard it."
+					text "Flip a coin. If heads, choose 1 card from your opponentâ€™s hand without looking and discard it."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -244,7 +243,7 @@ public enum PopSeries9 implements CardInfo {
 					}
 				}
 				move "Nimble", {
-					text "30 damage. If you have Turtwig in play, remove from Croagunk the number of damage counters equal to the damage you did to the Defending Pokémon."
+					text "30 damage. If you have Turtwig in play, remove from Croagunk the number of damage counters equal to the damage you did to the Defending PokÃ©mon."
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
@@ -257,7 +256,7 @@ public enum PopSeries9 implements CardInfo {
 			return evolution (this, from:"Gible", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness C, PLUS20
 				move "Burrow", {
-					text "Flip a coin. If heads, prevent all damage done to Gabite by attacks during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all damage done to Gabite by attacks during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -265,7 +264,7 @@ public enum PopSeries9 implements CardInfo {
 					}
 				}
 				move "Distored Wave", {
-					text "60 damage. Before doing damage, remove 2 damage counters from the Defending Pokémon."
+					text "60 damage. Before doing damage, remove 2 damage counters from the Defending PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -278,7 +277,7 @@ public enum PopSeries9 implements CardInfo {
 			return evolution (this, from:"Buneary", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				move "Jump Kick", {
-					text "20 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "20 damage. Does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -300,7 +299,7 @@ public enum PopSeries9 implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Thunder Wave", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -308,7 +307,7 @@ public enum PopSeries9 implements CardInfo {
 					}
 				}
 				move "Poison Berry", {
-					text "20+ damage. If you have Croagunk in play, this attack does 20 damage plus 20 more damage and the Defending Pokémon is now Poisoned."
+					text "20+ damage. If you have Croagunk in play, this attack does 20 damage plus 20 more damage and the Defending PokÃ©mon is now Poisoned."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -327,7 +326,7 @@ public enum PopSeries9 implements CardInfo {
 					}
 				}
 				move "Find a Friend", {
-					text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+					text "Flip a coin. If heads, search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -340,7 +339,7 @@ public enum PopSeries9 implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Dizzy Punch", {
-					text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 2 coins. This attack does 10 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -348,7 +347,7 @@ public enum PopSeries9 implements CardInfo {
 					}
 				}
 				move "Defense Curl", {
-					text "Flip a coin. If heads, prevent all damage done to Buneary by attacks during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all damage done to Buneary by attacks during your opponentâ€™s next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -361,7 +360,7 @@ public enum PopSeries9 implements CardInfo {
 			return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
 				weakness W, PLUS10
 				move "Serial Swipes", {
-					text "10× damage. Flip 4 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 4 coins. This attack does 10 damage times the number of heads."
 					energyCost R
 					attackRequirement {}
 					onAttack {
@@ -382,7 +381,7 @@ public enum PopSeries9 implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness C, PLUS10
 				move "Push Down", {
-					text "10 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "10 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -404,7 +403,7 @@ public enum PopSeries9 implements CardInfo {
 					}
 				}
 				move "Numb", {
-					text "30 damage. If Pikachu evolved from Pichu during this turn, the Defending Pokémon is now Paralyzed."
+					text "30 damage. If Pikachu evolved from Pichu during this turn, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -417,7 +416,7 @@ public enum PopSeries9 implements CardInfo {
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Water Sport", {
-					text "10+ damage. If Piplup has less Energy attached to it than the Defending Pokémon, this attack does 10 damage plus more 10 more damage."
+					text "10+ damage. If Piplup has less Energy attached to it than the Defending PokÃ©mon, this attack does 10 damage plus more 10 more damage."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -425,7 +424,7 @@ public enum PopSeries9 implements CardInfo {
 					}
 				}
 				move "Wavelet", {
-					text "40 damage. If you have Buizel in play, this attack does 10 damage to each of your opponent’s Benched Pokémon."
+					text "40 damage. If you have Buizel in play, this attack does 10 damage to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -447,7 +446,7 @@ public enum PopSeries9 implements CardInfo {
 					}
 				}
 				move "Parboil", {
-					text "40+ damage. If you have Chimchar in play, this attack does 40 damage plus 20 more damage and the Defending Pokémon is now Burned."
+					text "40+ damage. If you have Chimchar in play, this attack does 40 damage plus 20 more damage and the Defending PokÃ©mon is now Burned."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {

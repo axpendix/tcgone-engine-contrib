@@ -159,8 +159,7 @@ public enum MysteriousTreasures implements CardInfo {
 	ELECTIVIRE_LV_X_121 ("Electivire LV.X", 121, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _LIGHTNING_]),
 	LUCARIO_LV_X_122 ("Lucario LV.X", 122, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _FIGHTING_]),
 	MAGMORTAR_LV_X_123 ("Magmortar LV.X", 123, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _FIRE_]),
-	TIME_SPACE_DISTORTION_124 ("Time-Space Distortion", 124, Rarity.HOLORARE, [TRAINER]),
-;
+	TIME_SPACE_DISTORTION_124 ("Time-Space Distortion", 124, Rarity.HOLORARE, [TRAINER]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -240,7 +239,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Kadabra", hp:HP100, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS30
 				pokePower "Power Cancel", {
-					text "Once during your opponent’s turn, when your opponent’s Pokémon uses any Poké-Power, you may discard 2 cards from your hand and prevent all effects of that Poké-Power. (This counts as that Pokémon using its Poké-Power.) This power can’t be used if Alakazam is affected by a Special Condition."
+					text "Once during your opponentâ€™s turn, when your opponentâ€™s PokÃ©mon uses any PokÃ©-Power, you may discard 2 cards from your hand and prevent all effects of that PokÃ©-Power. (This counts as that PokÃ©mon using its PokÃ©-Power.) This power canâ€™t be used if Alakazam is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -258,7 +257,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Aipom", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				move "Tail Influence", {
-					text "30 damage. Your opponent flips a coin until he or she gets heads. For each tails, remove an Energy card attached to the Defending Pokémon and put it on the bottom of your opponent’s deck."
+					text "30 damage. Your opponent flips a coin until he or she gets heads. For each tails, remove an Energy card attached to the Defending PokÃ©mon and put it on the bottom of your opponentâ€™s deck."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -266,7 +265,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Charity Tail", {
-					text "80 damage. Before Ambipom does damage, your opponent may discard 2 cards from his or her hand. If he or she does, this attack’s base damage is 10 instead of 80."
+					text "80 damage. Before Ambipom does damage, your opponent may discard 2 cards from his or her hand. If he or she does, this attackâ€™s base damage is 10 instead of 80."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -279,12 +278,12 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS20
 				pokeBody "Downer Material", {
-					text "If you have Uxie and Mesprit in play, the attack cost of each of your opponent’s Basic Pokémon’s attacks is more. You can’t use more than 1 Downer Material Poké-Body each turn."
+					text "If you have Uxie and Mesprit in play, the attack cost of each of your opponentâ€™s Basic PokÃ©monâ€™s attacks is more. You canâ€™t use more than 1 Downer Material PokÃ©-Body each turn."
 					delayedA {
 					}
 				}
 				move "Bind Pulse", {
-					text "10 damage. During your opponent’s next turn, your opponent can’t attach any Special Energy cards from his or her hand to any of his or her Pokémon."
+					text "10 damage. During your opponentâ€™s next turn, your opponent canâ€™t attach any Special Energy cards from his or her hand to any of his or her PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -297,7 +296,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Chansey", hp:HP130, type:COLORLESS, retreatCost:3) {
 				weakness F, PLUS30
 				pokePower "Kind Egg", {
-					text "Once during your turn , if Happiny is anywhere under Blissey, you may choose a number of cards in your hand up to the amount of Energy attached to Blissey and put those cards on top of your deck. Shuffle your deck afterward. Then, draw that many cards. This power can’t be used if Blissey is affected by a Special Condition."
+					text "Once during your turn , if Happiny is anywhere under Blissey, you may choose a number of cards in your hand up to the amount of Energy attached to Blissey and put those cards on top of your deck. Shuffle your deck afterward. Then, draw that many cards. This power canâ€™t be used if Blissey is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -316,12 +315,12 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness R, PLUS30
 				resistance P, MINUS20
 				pokePower "Miracle Oracle", {
-					text "Once during your turn , you may draw a card. Then, discard a card from your hand. If you discard an Energy card, draw 1 more card. This power can’t be used if Bronzong is affected by a Special Condition."
+					text "Once during your turn , you may draw a card. Then, discard a card from your hand. If you discard an Energy card, draw 1 more card. This power canâ€™t be used if Bronzong is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Shady Stamp", {
-					text "50 damage. The Defending Pokémon is now Confused."
+					text "50 damage. The Defending PokÃ©mon is now Confused."
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
@@ -342,7 +341,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Leaf Tornado", {
-					text "30 damage. Energy cards attached to your Pokémon to your other Pokémon in any way you like."
+					text "30 damage. Energy cards attached to your PokÃ©mon to your other PokÃ©mon in any way you like."
 					energyCost G, G, G
 					attackRequirement {}
 					onAttack {
@@ -355,7 +354,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Croconaw", hp:HP130, type:WATER, retreatCost:2) {
 				weakness L, PLUS30
 				move "Energy Cyclone", {
-					text "20× damage. Choose as many Energy cards from your hand as you like and show them to your opponent. This attack does 20 damage times the number of Energy cards you chose. Put those Energy cards on top of your deck. Shuffle your deck afterward."
+					text "20Ã— damage. Choose as many Energy cards from your hand as you like and show them to your opponent. This attack does 20 damage times the number of Energy cards you chose. Put those Energy cards on top of your deck. Shuffle your deck afterward."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -363,7 +362,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Breaking Tail", {
-					text "60 damage. Choose 1 card from your opponent’s hand without looking and discard it."
+					text "60 damage. Choose 1 card from your opponentâ€™s hand without looking and discard it."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -376,7 +375,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Gabite", hp:HP130, type:COLORLESS, retreatCost:0) {
 				weakness C, PLUS30
 				pokeBody "Rainbow Scale", {
-					text "If an Active Pokémon has Weakness to any of the types of Energy attached to Garchomp, Garchomp’s attacks do 40 more damage to that Pokémon . Rainbow Scale Poké-Body can’t be used if Garchomp has any Special Energy cards attached to it."
+					text "If an Active PokÃ©mon has Weakness to any of the types of Energy attached to Garchomp, Garchompâ€™s attacks do 40 more damage to that PokÃ©mon . Rainbow Scale PokÃ©-Body canâ€™t be used if Garchomp has any Special Energy cards attached to it."
 					delayedA {
 					}
 				}
@@ -395,12 +394,12 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				pokeBody "Dark Genes", {
-					text "As long as Honchkrow has the Energy necessary to use its attacks, each of your Murkrow can use Honchkrow’s attack as its own without the Energy necessary to use that attack."
+					text "As long as Honchkrow has the Energy necessary to use its attacks, each of your Murkrow can use Honchkrowâ€™s attack as its own without the Energy necessary to use that attack."
 					delayedA {
 					}
 				}
 				move "Dark Wing Flaps", {
-					text "50 damage. Choose 1 card from your opponent’s hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
+					text "50 damage. Choose 1 card from your opponentâ€™s hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
@@ -413,7 +412,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Finneon", hp:HP080, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				pokePower "Lure Ring", {
-					text "Once during your turn , if Lumineon is your Active Pokémon, you may choose 1 of your opponent’s Benched Pokémon that has a maximum HP of 100 or more and switch it with 1 of the Defending Pokémon. This power can’t be used if Lumineon is affected by a Special Condition."
+					text "Once during your turn , if Lumineon is your Active PokÃ©mon, you may choose 1 of your opponentâ€™s Benched PokÃ©mon that has a maximum HP of 100 or more and switch it with 1 of the Defending PokÃ©mon. This power canâ€™t be used if Lumineon is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -431,7 +430,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Magmar", hp:HP100, type:FIRE, retreatCost:3) {
 				weakness W, PLUS30
 				move "Smoke Bomb", {
-					text "30 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "30 damage. If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -439,7 +438,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Flame Drum", {
-					text "80 damage. If Magby isn’t anywhere under Magmortar, discard 2 Energy cards from your hand. (If you can’t discard 2 Energy cards from your hand, this attack does nothing.)"
+					text "80 damage. If Magby isnâ€™t anywhere under Magmortar, discard 2 Energy cards from your hand. (If you canâ€™t discard 2 Energy cards from your hand, this attack does nothing.)"
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
@@ -453,7 +452,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness R, PLUS30
 				resistance W, MINUS20
 				move "Ultra Powder", {
-					text "20 damage. Flip 3 coins. If the first coin is heads, the Defending Pokémon is now Poisoned. If the second coin is heads, the Defending Pokémon is now Burned. If the third coin is heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip 3 coins. If the first coin is heads, the Defending PokÃ©mon is now Poisoned. If the second coin is heads, the Defending PokÃ©mon is now Burned. If the third coin is heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -461,7 +460,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Fire Counterattack", {
-					text "60+ damage. Pokémon in play, this attack does 60 damage plus 30 more damage."
+					text "60+ damage. PokÃ©mon in play, this attack does 60 damage plus 30 more damage."
 					energyCost G, G, C, R
 					attackRequirement {}
 					onAttack {
@@ -479,7 +478,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Teleportation Burst", {
-					text "30 damage. You may switch Mesprit with 1 of your Benched Pokémon."
+					text "30 damage. You may switch Mesprit with 1 of your Benched PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -493,7 +492,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Electromagnetic Induction", {
-					text "Energy cards and attach them to 1 of your Pokémon. Shuffle your deck afterward."
+					text "Energy cards and attach them to 1 of your PokÃ©mon. Shuffle your deck afterward."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -501,7 +500,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Explosive Thunder", {
-					text "30× damage. Energy cards you discarded."
+					text "30Ã— damage. Energy cards you discarded."
 					energyCost L, C, L, L
 					attackRequirement {}
 					onAttack {
@@ -514,12 +513,12 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Quilava", hp:HP110, type:FIRE, retreatCost:2) {
 				weakness W
 				pokePower "Firestarter", {
-					text "Once during your turn , you may attach a Energy card from your discard pile to one of your benched Pokémon. This power can’t be used if Typhlosion is affected by a Special Condition."
+					text "Once during your turn , you may attach a Energy card from your discard pile to one of your benched PokÃ©mon. This power canâ€™t be used if Typhlosion is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Evaporating Heat", {
-					text "60 damage. Energy attached to the Defending Pokémon."
+					text "60 damage. Energy attached to the Defending PokÃ©mon."
 					energyCost R, R, C, W
 					attackRequirement {}
 					onAttack {
@@ -533,7 +532,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness F, PLUS30
 				resistance P, MINUS20
 				move "Payback", {
-					text "40+ damage. If your opponent has only 1 Prize card left, this attack does 40 damage plus 40 more damage and discard the top 3 cards from your opponent’s deck."
+					text "40+ damage. If your opponent has only 1 Prize card left, this attack does 40 damage plus 40 more damage and discard the top 3 cards from your opponentâ€™s deck."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -554,12 +553,12 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS20
 				pokePower "Memory Out", {
-					text "Once during your opponent’s turn, if Uxie is damaged by an opponent’s attack (even if Uxie is Knocked Out), you may use this power. The Attacking Pokémon can’t use that attack during your opponent’s next turn."
+					text "Once during your opponentâ€™s turn, if Uxie is damaged by an opponentâ€™s attack (even if Uxie is Knocked Out), you may use this power. The Attacking PokÃ©mon canâ€™t use that attack during your opponentâ€™s next turn."
 					actionA {
 					}
 				}
 				move "Mind Off", {
-					text "10+ damage. If you have Mesprit and Azelf in play, this attack does 10 damage plus 20 more damage and the Defending Pokémon is now Asleep."
+					text "10+ damage. If you have Mesprit and Azelf in play, this attack does 10 damage plus 20 more damage and the Defending PokÃ©mon is now Asleep."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -572,12 +571,12 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Snover", hp:HP100, type:GRASS, retreatCost:3) {
 				weakness R, PLUS30
 				pokeBody "Glacier Snow", {
-					text "If Abomasnow is your Active Pokémon and is damaged by an opponent’s attack (even if Abomasnow is Knocked Out), the Attacking Pokémon is now Asleep."
+					text "If Abomasnow is your Active PokÃ©mon and is damaged by an opponentâ€™s attack (even if Abomasnow is Knocked Out), the Attacking PokÃ©mon is now Asleep."
 					delayedA {
 					}
 				}
 				move "Heavy Blizzard", {
-					text "60 damage. Flip a coin. If heads, put 1 damage counter on each of your opponent’s Benched Pokémon."
+					text "60 damage. Flip a coin. If heads, put 1 damage counter on each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -590,12 +589,12 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Spinarak", hp:HP080, type:GRASS, retreatCost:1) {
 				weakness R, PLUS20
 				pokeBody "Sticky", {
-					text "The Retreat Cost for each player’s Pokémon (excluding Ariados) is more."
+					text "The Retreat Cost for each playerâ€™s PokÃ©mon (excluding Ariados) is more."
 					delayedA {
 					}
 				}
 				move "Offensive Needle", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned. If tails, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned. If tails, the Defending PokÃ©mon is now Paralyzed."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -609,12 +608,12 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				pokeBody "Protective Wall", {
-					text "Prevent all damage done to your Benched Pokémon by your opponent’s attacks."
+					text "Prevent all damage done to your Benched PokÃ©mon by your opponentâ€™s attacks."
 					delayedA {
 					}
 				}
 				move "Anger Revenge", {
-					text "60 damage. If Bastiodon was damaged by an attack during your opponent’s last turn, this attack does 40 damage to 1 of your opponent’s Benched Pokémon."
+					text "60 damage. If Bastiodon was damaged by an attack during your opponentâ€™s last turn, this attack does 40 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
@@ -635,7 +634,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Strange Bell", {
-					text "20 damage. If the Defending Pokémon is a Basic Pokémon, that Pokémon is Confused."
+					text "20 damage. If the Defending PokÃ©mon is a Basic PokÃ©mon, that PokÃ©mon is Confused."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -649,7 +648,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness P, PLUS30
 				resistance F, MINUS20
 				pokePower "Evolutionary Toxic", {
-					text "Once during your turn, when you play Crobat from your hand to evolve 1 of your Pokémon, you may choose 1 of the Defending Pokémon. That Pokémon is now Poisoned. Put 2 damage counters instead of 1 on that Pokémon between turns."
+					text "Once during your turn, when you play Crobat from your hand to evolve 1 of your PokÃ©mon, you may choose 1 of the Defending PokÃ©mon. That PokÃ©mon is now Poisoned. Put 2 damage counters instead of 1 on that PokÃ©mon between turns."
 					actionA {
 					}
 				}
@@ -667,7 +666,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Exeggcute", hp:HP090, type:GRASS, retreatCost:2) {
 				weakness R, PLUS20
 				move "String Bomb", {
-					text "30× damage. Flip a coin for each basic Energy card attached to Exeggutor and to the Defending Pokémon. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Flip a coin for each basic Energy card attached to Exeggutor and to the Defending PokÃ©mon. This attack does 30 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -675,7 +674,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Nutritional Support", {
-					text "Energy cards and attach them to any of your Pokémon in any way you like. Shuffle your deck afterward."
+					text "Energy cards and attach them to any of your PokÃ©mon in any way you like. Shuffle your deck afterward."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -688,12 +687,12 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Snorunt", hp:HP090, type:WATER, retreatCost:2) {
 				weakness M, PLUS20
 				pokeBody "Craggy Face", {
-					text "As long as Glalie is your Active Pokémon, any damage done by attacks from your opponent’s Stage 2 Evolved Pokémon is reduced by 20 ."
+					text "As long as Glalie is your Active PokÃ©mon, any damage done by attacks from your opponentâ€™s Stage 2 Evolved PokÃ©mon is reduced by 20 ."
 					delayedA {
 					}
 				}
 				move "Intimidation Pebble", {
-					text "50 damage. Flip a coin. If heads, your opponent can’t play any Trainer cards or Supporter cards from his or her hand during your opponent’s next turn."
+					text "50 damage. Flip a coin. If heads, your opponent canâ€™t play any Trainer cards or Supporter cards from his or her hand during your opponentâ€™s next turn."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -707,12 +706,12 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness L, PLUS30
 				resistance F, MINUS20
 				pokeBody "Dragon DNA", {
-					text "Gyarados can use any attack from its Basic Pokémon. If Gyarados uses any attack from its Basic Pokémon, that attack does 30 more damage to the Defending Pokémon ."
+					text "Gyarados can use any attack from its Basic PokÃ©mon. If Gyarados uses any attack from its Basic PokÃ©mon, that attack does 30 more damage to the Defending PokÃ©mon ."
 					delayedA {
 					}
 				}
 				move "Enrage", {
-					text "80 damage. Flip a coin until you get tails. For each heads, choose 1 card from your opponent’s hand without looking and discard it. If the first coin is tails, Gyarados is now Confused."
+					text "80 damage. Flip a coin until you get tails. For each heads, choose 1 card from your opponentâ€™s hand without looking and discard it. If the first coin is tails, Gyarados is now Confused."
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -725,7 +724,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Kricketot", hp:HP080, type:GRASS, retreatCost:2) {
 				weakness R, PLUS20
 				move "Sore Performance", {
-					text "20 damage. The Defending Pokémon is now Asleep."
+					text "20 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -747,7 +746,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Lightning Twister", {
-					text "20× damage. Does 20 damage times the number of basic Energy cards attached to Manectric."
+					text "20Ã— damage. Does 20 damage times the number of basic Energy cards attached to Manectric."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -755,7 +754,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Chain Lightning", {
-					text "70 damage. Does 20 damage to each of your opponent’s Benched Pokémon that is the same type as the Defending Pokémon."
+					text "70 damage. Does 20 damage to each of your opponentâ€™s Benched PokÃ©mon that is the same type as the Defending PokÃ©mon."
 					energyCost L, L, L
 					attackRequirement {}
 					onAttack {
@@ -769,12 +768,12 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				pokeBody "Jumbo Fin", {
-					text "If Mantyke is anywhere under Mantine, the Retreat Cost for each of your Pokémon is less."
+					text "If Mantyke is anywhere under Mantine, the Retreat Cost for each of your PokÃ©mon is less."
 					delayedA {
 					}
 				}
 				move "Giant Wave", {
-					text "Mantine can’t use Giant Wave during your next turn."
+					text "Mantine canâ€™t use Giant Wave during your next turn."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -787,12 +786,12 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS20
 				pokeBody "Airy Wall", {
-					text "If your opponent’s Pokémon that has 2 or less Energy cards attached to it attacks Mr. Mime, prevent all damage done to Mr. Mime from that attack. If Mime Jr. is anywhere under Mr. Mime, prevent all effects of that attack, including damage, done to Mr. Mime."
+					text "If your opponentâ€™s PokÃ©mon that has 2 or less Energy cards attached to it attacks Mr. Mime, prevent all damage done to Mr. Mime from that attack. If Mime Jr. is anywhere under Mr. Mime, prevent all effects of that attack, including damage, done to Mr. Mime."
 					delayedA {
 					}
 				}
 				move "Trick Play", {
-					text "Put a coin next to your Active Pokémon without showing your opponent and cover it with your hand. Your opponent guesses if the coin is heads or tails. If he or she is wrong, this attack does 50 damage to the Defending Pokémon. If he or she is right, Mr. Mime does 20 damage to itself, and this attack’s damage isn’t affected by Weakness or Resistance."
+					text "Put a coin next to your Active PokÃ©mon without showing your opponent and cover it with your hand. Your opponent guesses if the coin is heads or tails. If he or she is wrong, this attack does 50 damage to the Defending PokÃ©mon. If he or she is right, Mr. Mime does 20 damage to itself, and this attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -806,12 +805,12 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness P, PLUS30
 				resistance L, MINUS20
 				pokeBody "Mother Phernomone", {
-					text "The attack cost of your Nidoran Female, Nidorina, Nidoran Male, Nidorino, and Nidoking’s attacks is less."
+					text "The attack cost of your Nidoran Female, Nidorina, Nidoran Male, Nidorino, and Nidokingâ€™s attacks is less."
 					delayedA {
 					}
 				}
 				move "Give Aid", {
-					text "90 damage. If you have the same number of or less Benched Pokémon than your opponent, this attack’s base damage is 50 instead of 90."
+					text "90 damage. If you have the same number of or less Benched PokÃ©mon than your opponent, this attackâ€™s base damage is 50 instead of 90."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -824,7 +823,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Vulpix", hp:HP080, type:FIRE, retreatCost:1) {
 				weakness W, PLUS20
 				pokePower "Color Shift", {
-					text "Once during your turn , you may choose 1 of your opponent’s Pokémon. Ninetales is the same type as that Pokémon (all if that Pokémon is more than 1 type) until the end of your turn. This power can’t be used if Ninetales is affected by a Special Condition."
+					text "Once during your turn , you may choose 1 of your opponentâ€™s PokÃ©mon. Ninetales is the same type as that PokÃ©mon (all if that PokÃ©mon is more than 1 type) until the end of your turn. This power canâ€™t be used if Ninetales is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -842,7 +841,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Cranidos", hp:HP130, type:FIGHTING, retreatCost:1) {
 				weakness G, PLUS30
 				move "Assurance", {
-					text "30 damage. As long as the Defending Pokémon’s remaining HP is 60 or less, this attack’s base damage is 60 instead of 30."
+					text "30 damage. As long as the Defending PokÃ©monâ€™s remaining HP is 60 or less, this attackâ€™s base damage is 60 instead of 30."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -850,7 +849,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Hasty Headbutt", {
-					text "100 damage. Rampardos does 20 damage to itself. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "100 damage. Rampardos does 20 damage to itself. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					energyCost F, F, F
 					attackRequirement {}
 					onAttack {
@@ -863,7 +862,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Vigoroth", hp:HP140, type:COLORLESS, retreatCost:4) {
 				weakness F, PLUS30
 				pokePower "Energetic Impulse", {
-					text "Once during your turn , if Slaking is your Active Pokémon, you may flip a coin. If heads, Slaking’s Lazy Blow attack’s base damage is 130 during this turn. If tails, Slaking can’t attack or retreat during this turn. (If Slaking is no longer your Active Pokémon, this effect ends.)"
+					text "Once during your turn , if Slaking is your Active PokÃ©mon, you may flip a coin. If heads, Slakingâ€™s Lazy Blow attackâ€™s base damage is 130 during this turn. If tails, Slaking canâ€™t attack or retreat during this turn. (If Slaking is no longer your Active PokÃ©mon, this effect ends.)"
 					actionA {
 					}
 				}
@@ -881,7 +880,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
 				weakness W
 				move "Sidestep", {
-					text "20 damage. If Bonsly is anywhere under Sudowoodo, flip a coin. If heads, prevent all effects of an attack, including damage, done to Sudowoodo during your opponent’s next turn."
+					text "20 damage. If Bonsly is anywhere under Sudowoodo, flip a coin. If heads, prevent all effects of an attack, including damage, done to Sudowoodo during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -889,7 +888,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Persuade", {
-					text "30 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon. The new Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "30 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon. The new Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
@@ -902,12 +901,12 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Croagunk", hp:HP090, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS20
 				pokeBody "Poison Sacs", {
-					text "Your opponent can’t remove the Special Condition Poisoned by evolving or devolving his or her Poisoned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Poisoned Pokémon.)"
+					text "Your opponent canâ€™t remove the Special Condition Poisoned by evolving or devolving his or her Poisoned PokÃ©mon. (This also includes putting a PokÃ©mon Level-Up card onto the Poisoned PokÃ©mon.)"
 					delayedA {
 					}
 				}
 				move "Knuckle Claws", {
-					text "30 damage. The Defending Pokémon is now Poisoned."
+					text "30 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -925,7 +924,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "", {
-					text "Once during your turn , if you have Unown I, Unown T, Unown E, and Unown M on your Bench, you may search your deck for a Trainer card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. You can’t use more than 1 ITEM Poké-Power each turn."
+					text "Once during your turn , if you have Unown I, Unown T, Unown E, and Unown M on your Bench, you may search your deck for a Trainer card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. You canâ€™t use more than 1 ITEM PokÃ©-Power each turn."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -933,7 +932,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Hidden Power", {
-					text "Energy and doesn’t have any effect other than providing Energy. Put that card face up at the end of your opponent’s next turn."
+					text "Energy and doesnâ€™t have any effect other than providing Energy. Put that card face up at the end of your opponentâ€™s next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -954,7 +953,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Defensive Claw", {
-					text "60+ damage. If Teddiursa is on your Bench, this attack does 60 damage plus 20 more damage. If Teddiursa is on your Bench and has any damage counters on it, this attack does 60 damage plus 40 more damage and remove all damage counters from that Pokémon."
+					text "60+ damage. If Teddiursa is on your Bench, this attack does 60 damage plus 20 more damage. If Teddiursa is on your Bench and has any damage counters on it, this attack does 60 damage plus 40 more damage and remove all damage counters from that PokÃ©mon."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -967,12 +966,12 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Sealeo", hp:HP130, type:WATER, retreatCost:3) {
 				weakness M, PLUS30
 				pokePower "Freeze-up", {
-					text "Once during your turn, when you play Walrein from your hand to evolve 1 of your Pokémon, you may flip 2 coins. If both are heads, discard the Defending Pokémon and all cards attached to it. (This doesn’t count as a Knocked Out Pokémon.)"
+					text "Once during your turn, when you play Walrein from your hand to evolve 1 of your PokÃ©mon, you may flip 2 coins. If both are heads, discard the Defending PokÃ©mon and all cards attached to it. (This doesnâ€™t count as a Knocked Out PokÃ©mon.)"
 					actionA {
 					}
 				}
 				move "Ice Bind", {
-					text "70 damage. If your opponent doesn’t discard a card from his or her hand, the Defending Pokémon is now Paralyzed."
+					text "70 damage. If your opponent doesnâ€™t discard a card from his or her hand, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -986,7 +985,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness G, PLUS30
 				resistance L, MINUS20
 				move "Fury", {
-					text "20× damage. Does 20 damage times the number of damage counters on Whiscash."
+					text "20Ã— damage. Does 20 damage times the number of damage counters on Whiscash."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1016,7 +1015,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Leaf Boomerang", {
-					text "30× damage. Flip 2 coins. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Flip 2 coins. This attack does 30 damage times the number of heads."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1055,7 +1054,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Steamroll", {
-					text "30 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "30 damage. Does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1068,12 +1067,12 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Totodile", hp:HP080, type:WATER, retreatCost:2) {
 				weakness L, PLUS20
 				pokePower "Evolutionary Vitality", {
-					text "Once during your turn, when you play Croconaw from your hand to evolve 1 of your Pokémon, you may look at the top 5 cards of your deck. Choose all Energy cards you find there, show them to your opponent, and put them into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward."
+					text "Once during your turn, when you play Croconaw from your hand to evolve 1 of your PokÃ©mon, you may look at the top 5 cards of your deck. Choose all Energy cards you find there, show them to your opponent, and put them into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward."
 					actionA {
 					}
 				}
 				move "Hover Over", {
-					text "30 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "30 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1113,7 +1112,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				move "Fury Attack", {
-					text "10× damage. Flip 3 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 3 coins. This attack does 10 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1121,7 +1120,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Triple Pick", {
-					text "Choose 3 of your opponent’s Evolved Pokémon. This attack does 30 damage to each of them."
+					text "Choose 3 of your opponentâ€™s Evolved PokÃ©mon. This attack does 30 damage to each of them."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1142,7 +1141,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Bite and Run", {
-					text "10 damage. Switch Dunsparce with 1 of your Benched Pokémon."
+					text "10 damage. Switch Dunsparce with 1 of your Benched PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1163,7 +1162,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Marvelous Shine", {
-					text "Flip a coin. If heads put 4 damage counters on 1 of your opponent’s Pokémon. If tails, remove 4 damage counters from 1 of your Pokémon."
+					text "Flip a coin. If heads put 4 damage counters on 1 of your opponentâ€™s PokÃ©mon. If tails, remove 4 damage counters from 1 of your PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1184,7 +1183,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Psybeam", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1198,7 +1197,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness P, PLUS20
 				resistance F, MINUS20
 				move "Pulse Search", {
-					text "30 damage. Look at your opponent’s hand."
+					text "30 damage. Look at your opponentâ€™s hand."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1212,7 +1211,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness G, PLUS20
 				resistance L, MINUS20
 				move "Rock Cannon", {
-					text "30× damage. Flip a coin until you get tails. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Flip a coin until you get tails. This attack does 30 damage times the number of heads."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1220,7 +1219,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Rock Slide", {
-					text "40 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
+					text "40 damage. Does 10 damage to 2 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -1238,7 +1237,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Lively", {
-					text "Remove 2 damage counters from 1 of your Pokémon."
+					text "Remove 2 damage counters from 1 of your PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1295,7 +1294,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness R, PLUS20
 				resistance F, MINUS20
 				move "Centrifugal Force", {
-					text "20× damage. Does 20 damage times the number of Energy in the Defending Pokémon’s Retreat Cost (after applying effects to the Retreat Cost)."
+					text "20Ã— damage. Does 20 damage times the number of Energy in the Defending PokÃ©monâ€™s Retreat Cost (after applying effects to the Retreat Cost)."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1303,7 +1302,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Swirling Ripple", {
-					text "30+ damage. Pokémon in play, this attack does 30 damage plus 30 more damage and the Defending Pokémon is now Confused."
+					text "30+ damage. PokÃ©mon in play, this attack does 30 damage plus 30 more damage and the Defending PokÃ©mon is now Confused."
 					energyCost G, G, W
 					attackRequirement {}
 					onAttack {
@@ -1316,7 +1315,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Nidoran Female", hp:HP080, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS20
 				move "Rescue", {
-					text "Search your discard pile for up to 2 Pokémon, show them to your opponent, and put them into your hand."
+					text "Search your discard pile for up to 2 PokÃ©mon, show them to your opponent, and put them into your hand."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1337,7 +1336,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Remoraid", hp:HP080, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Crash Bomber", {
-					text "30+ damage. If the Defending Pokémon has any Special Energy cards attached to it, this attack does 30 damage plus 30 more damage. Then, discard a Special Energy card attached to the Defending Pokémon."
+					text "30+ damage. If the Defending PokÃ©mon has any Special Energy cards attached to it, this attack does 30 damage plus 30 more damage. Then, discard a Special Energy card attached to the Defending PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1345,7 +1344,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Aqua Liner", {
-					text "Choose 1 of your opponent’s Benched Pokémon. This attack does 40 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s Benched PokÃ©mon. This attack does 40 damage to that PokÃ©mon."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -1358,7 +1357,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Paras", hp:HP090, type:GRASS, retreatCost:2) {
 				weakness R, PLUS20
 				move "Wild Spores", {
-					text "20 damage. If Parasect evolved from Paras during this turn, this attack does 40 damage and the Defending Pokémon is now Asleep and Poisoned."
+					text "20 damage. If Parasect evolved from Paras during this turn, this attack does 40 damage and the Defending PokÃ©mon is now Asleep and Poisoned."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1380,7 +1379,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness G, PLUS20
 				resistance L, MINUS20
 				move "Pressurized Gas", {
-					text "Does 10 damage to each of your opponent’s Pokémon."
+					text "Does 10 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1388,7 +1387,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Rocket Tackle", {
-					text "50 damage. Pupitar does 10 damage to itself. Flip a coin. If heads, prevent all damage done to Pupitar by attacks during your opponent’s next turn."
+					text "50 damage. Pupitar does 10 damage to itself. Flip a coin. If heads, prevent all damage done to Pupitar by attacks during your opponentâ€™s next turn."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -1415,7 +1414,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness W, PLUS20
 				resistance L, MINUS20
 				move "Spike Armor", {
-					text "During your opponent’s next turn, if Sandslash is damaged by an opponent’s attack (even if Sandslash is Knocked Out), put 4 damage counters on the Attacking Pokémon."
+					text "During your opponentâ€™s next turn, if Sandslash is damaged by an opponentâ€™s attack (even if Sandslash is Knocked Out), put 4 damage counters on the Attacking PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1423,7 +1422,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Poison Spike", {
-					text "60 damage. If the Defending Pokémon already has any damage counters on it, that Pokémon is now Poisoned."
+					text "60 damage. If the Defending PokÃ©mon already has any damage counters on it, that PokÃ©mon is now Poisoned."
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
@@ -1436,7 +1435,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Spheal", hp:HP080, type:WATER, retreatCost:2) {
 				weakness M, PLUS20
 				move "Ice Rider", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -1480,7 +1479,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Whirlwind", {
-					text "30 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "30 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1493,12 +1492,12 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokePower "EQUIP", {
-					text "Once during your turn , if Unown E is on your Bench, you may discard all cards attached to Unown E and attach Unown E to 1 of your Pokémon as a Pokémon Tool card. As long as Unown E is attached to a Pokémon, that Pokémon gets +10 HP."
+					text "Once during your turn , if Unown E is on your Bench, you may discard all cards attached to Unown E and attach Unown E to 1 of your PokÃ©mon as a PokÃ©mon Tool card. As long as Unown E is attached to a PokÃ©mon, that PokÃ©mon gets +10 HP."
 					actionA {
 					}
 				}
 				move "Hidden Power", {
-					text "During your opponent’s next turn, whenever your opponent flips a coin, treat it as tails."
+					text "During your opponentâ€™s next turn, whenever your opponent flips a coin, treat it as tails."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1511,12 +1510,12 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokePower "MAGNET", {
-					text "Once during your turn , if Unown M is your Active Pokémon, you may flip a coin. If heads, switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. This power can’t be used if Unown M is affected by a Special Condition."
+					text "Once during your turn , if Unown M is your Active PokÃ©mon, you may flip a coin. If heads, switch 1 of your opponentâ€™s Benched PokÃ©mon with 1 of the Defending PokÃ©mon. This power canâ€™t be used if Unown M is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Hidden Power", {
-					text "Flip a coin. If heads, this attack does 30 damage. If tails, this attack does 30 damage to 1 of your Pokémon, and this attack’s damage isn’t affected by Weakness or Resistance."
+					text "Flip a coin. If heads, this attack does 30 damage. If tails, this attack does 30 damage to 1 of your PokÃ©mon, and this attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1529,12 +1528,12 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokePower "THROW", {
-					text "Once during your turn , if Unown T is your Active Pokémon, you may discard a card from your hand. Then, flip a coin. If heads, put 2 damage counters on 1 of your opponent’s Benched Pokémon. This power can’t be used if Unown T is affected by a Special Condition."
+					text "Once during your turn , if Unown T is your Active PokÃ©mon, you may discard a card from your hand. Then, flip a coin. If heads, put 2 damage counters on 1 of your opponentâ€™s Benched PokÃ©mon. This power canâ€™t be used if Unown T is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Hidden Power", {
-					text "Look at your opponent’s hand and choose 1 card, then have your opponent shuffle that card into his or her deck. Then, show your opponent your hand and he or she chooses 1 card. Shuffle that card into your deck."
+					text "Look at your opponentâ€™s hand and choose 1 card, then have your opponent shuffle that card into his or her deck. Then, show your opponent your hand and he or she chooses 1 card. Shuffle that card into your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1547,7 +1546,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Slakoth", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				move "Wake-up Punch", {
-					text "10 damage. If Vigoroth evolved from Slakoth during this turn and Slakoth was Asleep, this attack’s base damage is 60 instead of 10."
+					text "10 damage. If Vigoroth evolved from Slakoth during this turn and Slakoth was Asleep, this attackâ€™s base damage is 60 instead of 10."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1555,7 +1554,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Fury Swipes", {
-					text "30× damage. "
+					text "30Ã— damage. "
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1597,7 +1596,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Throw Off", {
-					text "Before doing damage, discard all Pokémon Tool cards attached to that Pokémon."
+					text "Before doing damage, discard all PokÃ©mon Tool cards attached to that PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1625,7 +1624,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness G, PLUS10
 				resistance L, MINUS20
 				move "Mud Spit", {
-					text "Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Pokémon."
+					text "Flip a coin. If heads, this attack does 10 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1660,7 +1659,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness R, PLUS10
 				resistance P, MINUS20
 				move "Dull Light", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -1694,7 +1693,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP100, type:COLORLESS, retreatCost:2) {
 				weakness F, PLUS20
 				move "Scrunch", {
-					text "Flip a coin. If heads, prevent all damage done to Chansey by attacks during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all damage done to Chansey by attacks during your opponentâ€™s next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1716,7 +1715,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness R, PLUS10
 				resistance W, MINUS20
 				move "Sleep Scent", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Asleep."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Asleep."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1737,15 +1736,15 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				move "Ghastly Sound", {
-					text "Flip a coin. If heads, your opponent can’t play any Supporter cards from his or her hand during his or her next turn."
+					text "Flip a coin. If heads, your opponent canâ€™t play any Supporter cards from his or her hand during his or her next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
 						damage 0
 					}
 				}
-				move "Finger Poké", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+				move "Finger PokÃ©", {
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
@@ -1780,7 +1779,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness L, PLUS10
 				resistance F, MINUS20
 				move "Double Stab", {
-					text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 2 coins. This attack does 10 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1788,7 +1787,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Accelerating Stab", {
-					text "30 damage. Doduo can’t use Accelerating Stab during your next turn."
+					text "30 damage. Doduo canâ€™t use Accelerating Stab during your next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1802,7 +1801,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness F, PLUS10
 				resistance M, MINUS20
 				move "Electromagnetic Jam", {
-					text "10 damage. Flip a coin. If heads, your opponent can’t attach any Energy cards from his or her hand to the Active Pokémon during his or her next turn."
+					text "10 damage. Flip a coin. If heads, your opponent canâ€™t attach any Energy cards from his or her hand to the Active PokÃ©mon during his or her next turn."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1815,7 +1814,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Direct-hit Bomb", {
-					text "Flip a coin for each Energy attached to Exeggcute. Choose 1 of your opponent’s Pokémon. For each heads, this attack does 10 damage to that Pokémon."
+					text "Flip a coin for each Energy attached to Exeggcute. Choose 1 of your opponentâ€™s PokÃ©mon. For each heads, this attack does 10 damage to that PokÃ©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1828,7 +1827,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Elegant Swim", {
-					text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Finneon during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Finneon during your opponentâ€™s next turn."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1850,7 +1849,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness G, PLUS10
 				resistance L, MINUS20
 				move "Stone Throw", {
-					text "Choose 2 of your opponent’s Benched Pokémon. This attack does 10 damage to each of them."
+					text "Choose 2 of your opponentâ€™s Benched PokÃ©mon. This attack does 10 damage to each of them."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1863,7 +1862,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness C, PLUS10
 				move "Push Down", {
-					text "10 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "10 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1876,7 +1875,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
 				weakness R, PLUS10
 				move "Call for Family", {
-					text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
+					text "Search your deck for a Basic PokÃ©mon and put it onto your Bench. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1924,7 +1923,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Scorch", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Burned."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Burned."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1937,7 +1936,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP030, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Flail", {
-					text "10× damage. Does 10 damage times the number of damage counters on Magikarp."
+					text "10Ã— damage. Does 10 damage times the number of damage counters on Magikarp."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1967,7 +1966,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Hide Crowd", {
-					text "20 damage. Switch Murkrow with 1 of your Benched Pokémon."
+					text "20 damage. Switch Murkrow with 1 of your Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1988,7 +1987,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Poison Sting", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -2009,7 +2008,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Mushroom Tackle", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -2042,7 +2041,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness F, PLUS10
 				resistance M, MINUS20
 				pokePower "Electro Recycle", {
-					text "Once during your turn , if Pichu is anywhere under Pikachu, you may search your discard pile for a Energy card, show it to your opponent, and put it into your hand. This power can’t be used if Pikachu is affected by a Special Condition."
+					text "Once during your turn , if Pichu is anywhere under Pikachu, you may search your discard pile for a Energy card, show it to your opponent, and put it into your hand. This power canâ€™t be used if Pikachu is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -2060,7 +2059,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Sharpshooting", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 10 damage to that PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2068,7 +2067,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Numbing Water", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -2082,7 +2081,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness W, PLUS10
 				resistance L, MINUS20
 				move "Sand Attack", {
-					text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -2103,7 +2102,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:2) {
 				weakness M, PLUS10
 				move "Freezing Headbutt", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -2138,7 +2137,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Drowsy", {
-					text "Both Slakoth and the Defending Pokémon are now Asleep."
+					text "Both Slakoth and the Defending PokÃ©mon are now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2172,7 +2171,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
 				weakness R, PLUS10
 				move "Curiosity", {
-					text "Look at your opponent’s hand."
+					text "Look at your opponentâ€™s hand."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2201,7 +2200,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Willpower", {
-					text "Flip a coin. If heads, during your next turn, Spheal’s Rollout attack’s base damage is 40."
+					text "Flip a coin. If heads, during your next turn, Sphealâ€™s Rollout attackâ€™s base damage is 40."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2214,7 +2213,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Impound", {
-					text "The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2222,7 +2221,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Double Scratch", {
-					text "20× damage. "
+					text "20Ã— damage. "
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -2235,7 +2234,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Sleep Inducer", {
-					text "Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. The new Defending Pokémon is now Asleep."
+					text "Switch 1 of your opponentâ€™s Benched PokÃ©mon with 1 of the Defending PokÃ©mon. The new Defending PokÃ©mon is now Asleep."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -2256,7 +2255,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Sweet Palm", {
-					text ":30 damage. Before doing damage, remove 1 damage counter from the Defending Pokémon."
+					text ":30 damage. Before doing damage, remove 1 damage counter from the Defending PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2277,7 +2276,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "Shining Fang", {
-					text "10+ damage. If the Defending Pokémon already has any damage counters on it, this attack does 10 damage plus 10 more damage."
+					text "10+ damage. If the Defending PokÃ©mon already has any damage counters on it, this attack does 10 damage plus 10 more damage."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2290,7 +2289,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
 				weakness W, PLUS10
 				move "Fire Soul", {
-					text "20 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "20 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost R, R
 					attackRequirement {}
 					onAttack {
@@ -2304,7 +2303,7 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness P, PLUS10
 				resistance F, MINUS20
 				move "Supersonic", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2323,7 +2322,7 @@ public enum MysteriousTreasures implements CardInfo {
 			};
 			case BEBE_S_SEARCH_109:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you canâ€™t play this card.)"
 				onPlay {
 				}
 				playRequirement{
@@ -2331,7 +2330,7 @@ public enum MysteriousTreasures implements CardInfo {
 			};
 			case DUSK_BALL_110:
 			return basicTrainer (this) {
-				text "Look at the 7 cards from the bottom of your deck. Choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. Put the remaining cards back on top of your deck. Shuffle your deck afterward."
+				text "Look at the 7 cards from the bottom of your deck. Choose 1 PokÃ©mon you find there, show it to your opponent, and put it into your hand. Put the remaining cards back on top of your deck. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2339,7 +2338,7 @@ public enum MysteriousTreasures implements CardInfo {
 			};
 			case FOSSIL_EXCAVATOR_111:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2347,7 +2346,7 @@ public enum MysteriousTreasures implements CardInfo {
 			};
 			case LAKE_BOUNDARY_112:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nApply Weakness for each Pokémon (both yours and your opponent’s) as ×2 instead."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nApply Weakness for each PokÃ©mon (both yours and your opponentâ€™s) as Ã—2 instead."
 				onPlay {
 				}
 				playRequirement{
@@ -2355,7 +2354,7 @@ public enum MysteriousTreasures implements CardInfo {
 			};
 			case NIGHT_MAINTENANCE_113:
 			return basicTrainer (this) {
-				text "Search your discard pile for up to 3 in any combination of Pokémon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
+				text "Search your discard pile for up to 3 in any combination of PokÃ©mon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
 				onPlay {
 				}
 				playRequirement{
@@ -2363,7 +2362,7 @@ public enum MysteriousTreasures implements CardInfo {
 			};
 			case QUICK_BALL_114:
 			return basicTrainer (this) {
-				text "Reveal cards from your deck until you reveal a Pokémon. Show that Pokémon to your opponent and put it into your hand. Shuffle the other revealed cards back into your deck. (If you don’t reveal a Pokémon, shuffle all the revealed cards back into your deck.)"
+				text "Reveal cards from your deck until you reveal a PokÃ©mon. Show that PokÃ©mon to your opponent and put it into your hand. Shuffle the other revealed cards back into your deck. (If you donâ€™t reveal a PokÃ©mon, shuffle all the revealed cards back into your deck.)"
 				onPlay {
 				}
 				playRequirement{
@@ -2371,7 +2370,7 @@ public enum MysteriousTreasures implements CardInfo {
 			};
 			case TEAM_GALACTIC_S_WAGER_115:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck, and you and your opponent play a game of “Rock-Paper-Scissors.” The player who wins draws up to 6 cards. The player who loses draws up to 3 cards. (You draw your cards first.)"
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck, and you and your opponent play a game of â€œRock-Paper-Scissors.â€ The player who wins draws up to 6 cards. The player who loses draws up to 3 cards. (You draw your cards first.)"
 				onPlay {
 				}
 				playRequirement{
@@ -2379,7 +2378,7 @@ public enum MysteriousTreasures implements CardInfo {
 			};
 			case ARMOR_FOSSIL_116:
 			return basicTrainer (this) {
-				text "Play Armor Fossil as if it were a [C] Basic Pokémon. (Armor Fossil counts as a Trainer card as well, but if Armor Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Armor Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Armor Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Armor Stone Whenever Armor Fossil would be damaged by your opponent’s attack, flip a coin until you get tails. For each heads, reduce that damage by 10."
+				text "Play Armor Fossil as if it were a [C] Basic PokÃ©mon. (Armor Fossil counts as a Trainer card as well, but if Armor Fossil is Knocked Out, this counts as a Knocked Out PokÃ©mon.) Armor Fossil canâ€™t be affected by any Special Conditions and canâ€™t retreat. At any time during your turn before your attack, you may discard Armor Fossil from play. (This doesnâ€™t count as a Knocked Out PokÃ©mon.)\nPokÃ©-BODY: Armor Stone Whenever Armor Fossil would be damaged by your opponentâ€™s attack, flip a coin until you get tails. For each heads, reduce that damage by 10."
 				onPlay {
 				}
 				playRequirement{
@@ -2387,7 +2386,7 @@ public enum MysteriousTreasures implements CardInfo {
 			};
 			case SKULL_FOSSIL_117:
 			return basicTrainer (this) {
-				text "Play Skull Fossil as if it were a [C] Basic Pokémon. (Skull Fossil counts as a Trainer card as well, but if Skull Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Skull Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Skull Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Skull Stone During your opponent’s turn, if Skull Fossil would be Knocked Out by damage from an opponent’s attack, flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
+				text "Play Skull Fossil as if it were a [C] Basic PokÃ©mon. (Skull Fossil counts as a Trainer card as well, but if Skull Fossil is Knocked Out, this counts as a Knocked Out PokÃ©mon.) Skull Fossil canâ€™t be affected by any Special Conditions and canâ€™t retreat. At any time during your turn before your attack, you may discard Skull Fossil from play. (This doesnâ€™t count as a Knocked Out PokÃ©mon.)\nPokÃ©-BODY: Skull Stone During your opponentâ€™s turn, if Skull Fossil would be Knocked Out by damage from an opponentâ€™s attack, flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2395,7 +2394,7 @@ public enum MysteriousTreasures implements CardInfo {
 			};
 			case MULTI_ENERGY_118:
 			return specialEnergy (this, [[C]]) {
-				text "Attach Multi Energy to 1 of your Pokémon. While in play, Multi Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) Multi Energy provides [C] Energy when attached to a Pokémon that already has Special Energy cards attached to it."
+				text "Attach Multi Energy to 1 of your PokÃ©mon. While in play, Multi Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) Multi Energy provides [C] Energy when attached to a PokÃ©mon that already has Special Energy cards attached to it."
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2407,7 +2406,7 @@ public enum MysteriousTreasures implements CardInfo {
 			};
 			case DARKNESS_ENERGY_119:
 			return specialEnergy (this, [[C]]) {
-				text "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
+				text "If the PokÃ©mon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active PokÃ©mon (before applying Weakness and Resistance). Ignore this effect if the PokÃ©mon that Darkness Energy is attached to isnâ€™t [D]. Darkness Energy provides [D] Energy. (Doesnâ€™t count as a basic Energy card.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2419,7 +2418,7 @@ public enum MysteriousTreasures implements CardInfo {
 			};
 			case METAL_ENERGY_120:
 			return specialEnergy (this, [[C]]) {
-				text "Damage done by attacks to the Pokémon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that Metal Energy is attached to isn’t [M]. Metal Energy provides [M] Energy. (Doesn’t count as a basic Energy card.)"
+				text "Damage done by attacks to the PokÃ©mon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the PokÃ©mon that Metal Energy is attached to isnâ€™t [M]. Metal Energy provides [M] Energy. (Doesnâ€™t count as a basic Energy card.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2434,12 +2433,12 @@ public enum MysteriousTreasures implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				pokeBody "Shocking Tail", {
-					text "As long as Electivire is your Active Pokémon, whenever your opponent attaches an Energy card from his or her hand to 1 of his or her Pokémon, put 2 damage counters on that Pokémon."
+					text "As long as Electivire is your Active PokÃ©mon, whenever your opponent attaches an Energy card from his or her hand to 1 of his or her PokÃ©mon, put 2 damage counters on that PokÃ©mon."
 					delayedA {
 					}
 				}
 				move "Pulse Barrier", {
-					text "50 damage. Discard all of your opponent’s Pokémon Tool cards and Stadium cards in play. If you do, prevent all effects, including damage, done to Electivire during your opponent’s next turn."
+					text "50 damage. Discard all of your opponentâ€™s PokÃ©mon Tool cards and Stadium cards in play. If you do, prevent all effects, including damage, done to Electivire during your opponentâ€™s next turn."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -2447,7 +2446,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Electivire. Electivire LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Electivire. Electivire LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2460,7 +2459,7 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Lucario", hp:HP110, type:FIGHTING, retreatCost:1) {
 				weakness P
 				pokePower "Stance", {
-					text "Once during your turn , when you put Lucario LV. from your hand onto your Active Lucario, you may use this power. Prevent all effects of an attack, including damage, done to Lucario during your opponent’s next turn. (If Lucario is no longer your Active Pokémon, this effect ends.)"
+					text "Once during your turn , when you put Lucario LV. from your hand onto your Active Lucario, you may use this power. Prevent all effects of an attack, including damage, done to Lucario during your opponentâ€™s next turn. (If Lucario is no longer your Active PokÃ©mon, this effect ends.)"
 					actionA {
 					}
 				}
@@ -2473,7 +2472,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Lucario. Lucario LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Lucario. Lucario LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2486,12 +2485,12 @@ public enum MysteriousTreasures implements CardInfo {
 			return evolution (this, from:"Magmortar", hp:HP130, type:FIRE, retreatCost:3) {
 				weakness W
 				pokePower "Torrid Wave", {
-					text "Once during your turn , if Magmortar is your Active Pokémon, you may choose 1 of the Defending Pokémon. That Pokémon is now Burned. Put 3 damage counters instead of 2 on that Pokémon between turns. This power can’t be used if Magmortar is affected by a Special Condition."
+					text "Once during your turn , if Magmortar is your Active PokÃ©mon, you may choose 1 of the Defending PokÃ©mon. That PokÃ©mon is now Burned. Put 3 damage counters instead of 2 on that PokÃ©mon between turns. This power canâ€™t be used if Magmortar is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Flame Buster", {
-					text "During your next turn, Magmortar can’t use Flame Bluster."
+					text "During your next turn, Magmortar canâ€™t use Flame Bluster."
 					energyCost R, R, R, R, R
 					attackRequirement {}
 					onAttack {
@@ -2499,7 +2498,7 @@ public enum MysteriousTreasures implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Magmortar. Magmortar LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Magmortar. Magmortar LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2510,7 +2509,7 @@ public enum MysteriousTreasures implements CardInfo {
 			};
 			case TIME_SPACE_DISTORTION_124:
 			return basicTrainer (this) {
-				text "Flip 3 coins. For each heads, search your discard pile for a Pokémon, show it to your opponent, and put it into your hand."
+				text "Flip 3 coins. For each heads, search your discard pile for a PokÃ©mon, show it to your opponent, and put it into your hand."
 				onPlay {
 				}
 				playRequirement{

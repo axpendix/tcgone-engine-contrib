@@ -131,18 +131,17 @@ public enum CallOfLegends implements CardInfo {
 	FIGHTING_ENERGY_93 ("Fighting Energy", 93, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
 	DARKNESS_ENERGY_94 ("Darkness Energy", 94, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
 	METAL_ENERGY_95 ("Metal Energy", 95, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
-	DEOXYS_SL1 ("Deoxys", SL1, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
-	DIALGA_SL2 ("Dialga", SL2, Rarity.HOLORARE, [BASIC, POKEMON, _METAL_]),
-	ENTEI_SL3 ("Entei", SL3, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
-	GROUDON_SL4 ("Groudon", SL4, Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
-	HO_OH_SL5 ("Ho-Oh", SL5, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
-	KYOGRE_SL6 ("Kyogre", SL6, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
-	LUGIA_SL7 ("Lugia", SL7, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
-	PALKIA_SL8 ("Palkia", SL8, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
-	RAIKOU_SL9 ("Raikou", SL9, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-	RAYQUAZA_SL10 ("Rayquaza", SL10, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-	SUICUNE_SL11 ("Suicune", SL11, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
-;
+	DEOXYS_SL1 ("Deoxys", 96, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
+	DIALGA_SL2 ("Dialga", 97, Rarity.HOLORARE, [BASIC, POKEMON, _METAL_]),
+	ENTEI_SL3 ("Entei", 98, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
+	GROUDON_SL4 ("Groudon", 99, Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
+	HO_OH_SL5 ("Ho-Oh", 100, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
+	KYOGRE_SL6 ("Kyogre", 101, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
+	LUGIA_SL7 ("Lugia", 102, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
+	PALKIA_SL8 ("Palkia", 103, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
+	RAIKOU_SL9 ("Raikou", 104, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
+	RAYQUAZA_SL10 ("Rayquaza", 105, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+	SUICUNE_SL11 ("Suicune", 106, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -200,7 +199,7 @@ public enum CallOfLegends implements CardInfo {
 			return evolution (this, from:"Clefairy", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Fairy Power", {
-					text "Return 1 of your Pokémon and all cards attached to it in your hand."
+					text "Return 1 of your PokÃ©mon and all cards attached to it in your hand."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -248,7 +247,7 @@ public enum CallOfLegends implements CardInfo {
 			return evolution (this, from:"Eevee", hp:HP090, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Solar Suggestion", {
-					text "Move up to 4 damage counters from any of your Pokémon to any of your opponent’s Pokémon in any way you like."
+					text "Move up to 4 damage counters from any of your PokÃ©mon to any of your opponentâ€™s PokÃ©mon in any way you like."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -256,7 +255,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Psybeam", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -270,7 +269,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				move "Mirror Shot", {
-					text "30 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, this attack does nothing."
+					text "30 damage. If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, this attack does nothing."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -291,7 +290,7 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP100, type:FIGHTING, retreatCost:4) {
 				weakness G
 				move "Volcano Stomp", {
-					text "80 damage. Flip a coin. If heads, discard the top 4 cards of your opponent’s deck. If tails, discard the top 4 cards of your deck."
+					text "80 damage. Flip a coin. If heads, discard the top 4 cards of your opponentâ€™s deck. If tails, discard the top 4 cards of your deck."
 					energyCost F, F, F, F
 					attackRequirement {}
 					onAttack {
@@ -313,7 +312,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Hyper Beam", {
-					text "80 damage. Discard an Energy card attached to the Defending Pokémon."
+					text "80 damage. Discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -326,7 +325,7 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
 				weakness P
 				move "Triple Kick", {
-					text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 3 coins. This attack does 20 damage times the number of heads."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -370,7 +369,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				move "Fire Counterattack", {
-					text "20+ damage. Pokémon in play, this attack does 20 damage plus 60 more damage."
+					text "20+ damage. PokÃ©mon in play, this attack does 20 damage plus 60 more damage."
 					energyCost D, F
 					attackRequirement {}
 					onAttack {
@@ -396,7 +395,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Time Hollow", {
-					text "Choose a number of your opponent’s Stage 1 or Stage 2 Evolved Pokémon up to the amount of Energy attached to Jirachi. Remove the highest Stage Evolution card from each of those Pokémon and put those cards back into your opponent’s hand."
+					text "Choose a number of your opponentâ€™s Stage 1 or Stage 2 Evolved PokÃ©mon up to the amount of Energy attached to Jirachi. Remove the highest Stage Evolution card from each of those PokÃ©mon and put those cards back into your opponentâ€™s hand."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -409,7 +408,7 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP100, type:WATER, retreatCost:4) {
 				weakness L
 				move "Destructive Tsunami", {
-					text "Flip a coin. If heads, this attack does 40 damage to each of your opponent’s Pokémon. If tails, this attack does 40 damage to each of your Pokémon."
+					text "Flip a coin. If heads, this attack does 40 damage to each of your opponentâ€™s PokÃ©mon. If tails, this attack does 40 damage to each of your PokÃ©mon."
 					energyCost W, W, W, W
 					attackRequirement {}
 					onAttack {
@@ -423,7 +422,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				move "Miasma Wind", {
-					text "50× damage. Does 50 damage times the number of Special Conditions affecting the Defending Pokémon."
+					text "50Ã— damage. Does 50 damage times the number of Special Conditions affecting the Defending PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -431,7 +430,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Sooting Scent", {
-					text "30 damage. The Defending Pokémon is now Asleep."
+					text "30 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -444,7 +443,7 @@ public enum CallOfLegends implements CardInfo {
 			return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
 				weakness P
 				move "Dimension Sphere", {
-					text "30+ damage. Does 30 damage plus 20 more damage for each of your Pokémon in the Lost Zone."
+					text "30+ damage. Does 30 damage plus 20 more damage for each of your PokÃ©mon in the Lost Zone."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -452,7 +451,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Sky Uppercut", {
-					text "70 damage. This attack’s damage isn’t affected by Resistance."
+					text "70 damage. This attackâ€™s damage isnâ€™t affected by Resistance."
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
@@ -466,7 +465,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Linear Attack", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -508,11 +507,11 @@ public enum CallOfLegends implements CardInfo {
 			return evolution (this, from:"Vulpix", hp:HP090, type:FIRE, retreatCost:1) {
 				weakness W
 				pokePower "Roast Reveal", {
-					text "Once during your turn , you may discard a Energy from your hand. If you do, draw 3 cards. This power can’t be used if Ninetales is affected by a Special Condition."
+					text "Once during your turn , you may discard a Energy from your hand. If you do, draw 3 cards. This power canâ€™t be used if Ninetales is affected by a Special Condition."
 					actionA {
 					}
 				}
-				move "Will-o’-the-wisp", {
+				move "Will-oâ€™-the-wisp", {
 					text "60 damage. "
 					energyCost R, R, C
 					attackRequirement {}
@@ -545,7 +544,7 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP100, type:WATER, retreatCost:3) {
 				weakness L
 				move "Wormhole", {
-					text "60 damage. Switch Palkia with 1 of your Benched Pokémon. Then, your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "60 damage. Switch Palkia with 1 of your Benched PokÃ©mon. Then, your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost W, W, W, W
 					attackRequirement {}
 					onAttack {
@@ -572,12 +571,12 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
 				weakness F
 				pokePower "Portrait", {
-					text "Once during your turn , if Smeargle is your Active Pokémon, you may look at your opponent’s hand. If you do, choose a Supporter card you find there and use the effect of that card as the effect of this power. This power can’t be used if Smeargle is affected by a Special Condition."
+					text "Once during your turn , if Smeargle is your Active PokÃ©mon, you may look at your opponentâ€™s hand. If you do, choose a Supporter card you find there and use the effect of that card as the effect of this power. This power canâ€™t be used if Smeargle is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Tail Rap", {
-					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -591,7 +590,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				move "Moonlight Fang", {
-					text "30 damage. During your opponent’s next turn, prevent all effects, including damage, done to Umbreon by attacks from your opponent’s Pokémon than has any Poké-Powers or Poké-Bodies."
+					text "30 damage. During your opponentâ€™s next turn, prevent all effects, including damage, done to Umbreon by attacks from your opponentâ€™s PokÃ©mon than has any PokÃ©-Powers or PokÃ©-Bodies."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -613,7 +612,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				move "Acceleration Bolt", {
-					text "30 damage. Search your deck for up to 2 basic Energy cards and attach them to 1 of your Pokémon. Shuffle your deck afterward."
+					text "30 damage. Search your deck for up to 2 basic Energy cards and attach them to 1 of your PokÃ©mon. Shuffle your deck afterward."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -651,7 +650,7 @@ public enum CallOfLegends implements CardInfo {
 			return evolution (this, from:"Croconaw", hp:HP130, type:WATER, retreatCost:2) {
 				weakness G
 				move "Spinning Tail", {
-					text "This attack does 20 damage to each of your opponent’s Pokémon."
+					text "This attack does 20 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -672,7 +671,7 @@ public enum CallOfLegends implements CardInfo {
 			return evolution (this, from:"Snubbull", hp:HP090, type:COLORLESS, retreatCost:3) {
 				weakness F
 				move "Timid Tackle", {
-					text "50 damage. Granbull does 20 damage to itself. Switch Granbull with 1 of your Benched Pokémon."
+					text "50 damage. Granbull does 20 damage to itself. Switch Granbull with 1 of your Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -694,7 +693,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				move "Sleep Powder", {
-					text "30 damage. The Defending Pokémon is now Asleep."
+					text "30 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -716,7 +715,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				move "Sleeping Spell", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Asleep."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -724,7 +723,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Poltergeist", {
-					text "30× damage. Look at your opponent’s hand. This attack does 30 damage times the number of Trainer, Supporter, and Stadium cards in your opponent’s hand."
+					text "30Ã— damage. Look at your opponentâ€™s hand. This attack does 30 damage times the number of Trainer, Supporter, and Stadium cards in your opponentâ€™s hand."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -737,12 +736,12 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				pokePower "Trick Reveal", {
-					text "Once during your turn , you may have both you and your opponent reveal your hands. This power can’t be used if Mr. Mime is affected by a Special Condition."
+					text "Once during your turn , you may have both you and your opponent reveal your hands. This power canâ€™t be used if Mr. Mime is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Juggling", {
-					text "10× damage. Flip 4 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 4 coins. This attack does 10 damage times the number of heads."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -778,7 +777,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				move "Steel Coat", {
-					text "Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
+					text "Energy card and attach it to 1 of your PokÃ©mon. Shuffle your deck afterward."
 					energyCost M, M
 					attackRequirement {}
 					onAttack {
@@ -799,12 +798,12 @@ public enum CallOfLegends implements CardInfo {
 			return evolution (this, from:"Slowpoke", hp:HP080, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				pokePower "Second Sight", {
-					text "Once during your turn , you may look at the top 3 cards of either player’s deck and put them back on top of that player’s deck in any order. This power can’t be used if Slowking is affected by a Special Condition."
+					text "Once during your turn , you may look at the top 3 cards of either playerâ€™s deck and put them back on top of that playerâ€™s deck in any order. This power canâ€™t be used if Slowking is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Psyshock", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -817,7 +816,7 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
 				weakness F
 				move "Layabout", {
-					text "Remove all damage counters from Snorlax. Snorlax can’t use Layabout during your next turn."
+					text "Remove all damage counters from Snorlax. Snorlax canâ€™t use Layabout during your next turn."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -839,7 +838,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				move "Grind", {
-					text "20× damage. Does 20 damage times the number of Energy attached to Tangrowth."
+					text "20Ã— damage. Does 20 damage times the number of Energy attached to Tangrowth."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -847,7 +846,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Plow Over", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If tails, put 1 Energy card attached to the Defending Pokémon in the Lost Zone."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed. If tails, put 1 Energy card attached to the Defending PokÃ©mon in the Lost Zone."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -885,7 +884,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Mischievous Punch", {
-					text "30 damage. This attack’s damage isn’t affected by Weakness or Resistance. Tyrogue is now Asleep."
+					text "30 damage. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance. Tyrogue is now Asleep."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -919,7 +918,7 @@ public enum CallOfLegends implements CardInfo {
 			return evolution (this, from:"Koffing", hp:HP090, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				move "Super Poison Breath", {
-					text "The Defending Pokémon is now Poisoned."
+					text "The Defending PokÃ©mon is now Poisoned."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -927,7 +926,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Super Explosion", {
-					text "90 damage. Weezing does 90 damage to itself, and don’t apply Weakness to this damage."
+					text "90 damage. Weezing does 90 damage to itself, and donâ€™t apply Weakness to this damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -940,7 +939,7 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:2) {
 				weakness F
 				move "Swords Dance", {
-					text "During you next turn, Zangoose’s Lost Claw attack’s base damage is 80."
+					text "During you next turn, Zangooseâ€™s Lost Claw attackâ€™s base damage is 80."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -948,7 +947,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Lost Claw", {
-					text "30 damage. Choose 1 card from your opponent’s hand without looking and put it in the Lost Zone."
+					text "30 damage. Choose 1 card from your opponentâ€™s hand without looking and put it in the Lost Zone."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -991,7 +990,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Big Bite", {
-					text "50 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "50 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1005,7 +1004,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness W
 				resistance L, MINUS20
 				move "Rock Hurl", {
-					text "50 damage. This attack’s damage isn’t affected by Resistance."
+					text "50 damage. This attackâ€™s damage isnâ€™t affected by Resistance."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -1013,7 +1012,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Double Spin", {
-					text "70× damage. Flip 2 coins. This attack does 70 damage times the number of heads."
+					text "70Ã— damage. Flip 2 coins. This attack does 70 damage times the number of heads."
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
@@ -1027,7 +1026,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				move "Thunder Spear", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. (Don’t apply Weakness and Resistance to that Pokémon.)"
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to that PokÃ©mon. (Donâ€™t apply Weakness and Resistance to that PokÃ©mon.)"
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1035,7 +1034,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Thundershock", {
-					text "40 damage. If heads, the Defending Pokémon is now Paralyzed."
+					text "40 damage. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -1070,7 +1069,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				move "Agility", {
-					text "20 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to Jolteon during your opponent’s next turn."
+					text "20 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to Jolteon during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1095,7 +1094,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Play with Fire", {
-					text "The Defending Pokémon is now Burned. Magby is now Asleep."
+					text "The Defending PokÃ©mon is now Burned. Magby is now Asleep."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1112,7 +1111,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Sleepy Lost", {
-					text "Put the top card of your opponent’s deck in the Lost Zone. Mime Jr. is now Asleep."
+					text "Put the top card of your opponentâ€™s deck in the Lost Zone. Mime Jr. is now Asleep."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1134,7 +1133,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Twister", {
-					text "30 damage. Flip 2 coins. If both of them are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending Pokémon."
+					text "30 damage. Flip 2 coins. If both of them are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1168,7 +1167,7 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
 				weakness P
 				move "Tumble Over", {
-					text "20 damage. Riolu can’t attack during your next turn."
+					text "20 damage. Riolu canâ€™t attack during your next turn."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1210,7 +1209,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Dual Splash", {
-					text "Choose 2 of your opponent’s Pokémon. This attack does 30 damage to each of them."
+					text "Choose 2 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to each of them."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -1300,7 +1299,7 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
 				weakness P
 				move "Detect", {
-					text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to Hitmonchan during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to Hitmonchan during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1308,7 +1307,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Sky Uppercut", {
-					text "30 damage. This attack’s damage isn’t affected by Resistance."
+					text "30 damage. This attackâ€™s damage isnâ€™t affected by Resistance."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1356,7 +1355,7 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Smokescreen", {
-					text "10 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "10 damage. If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1434,7 +1433,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Destructive Jaw", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and discard an Energy card attached to the Defending Pokémon."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed and discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
@@ -1489,7 +1488,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Messenger", {
-					text "Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle Pidgey and all cards attached to it back into your deck."
+					text "Search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle Pidgey and all cards attached to it back into your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1510,7 +1509,7 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
 				weakness R
 				move "Focus Energy", {
-					text "During your next turn, Pineco’s Surprise Attack attack’s base damage is 80."
+					text "During your next turn, Pinecoâ€™s Surprise Attack attackâ€™s base damage is 80."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1565,7 +1564,7 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:2) {
 				weakness F
 				move "Roar", {
-					text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1587,7 +1586,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				move "Nutritional Support", {
-					text "Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
+					text "Energy card and attach it to 1 of your PokÃ©mon. Shuffle your deck afterward."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -1595,7 +1594,7 @@ public enum CallOfLegends implements CardInfo {
 					}
 				}
 				move "Poisonpowder", {
-					text "30 damage. The Defending Pokémon is now Poisoned."
+					text "30 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1608,7 +1607,7 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Fake Tears", {
-					text "Flip a coin. If heads, your opponent can’t play any Trainer cards from his or her hand during your opponent’s next turn, and any damage done to Teddiursa by attack is reduced by 30 (after applying weakness and resistance)."
+					text "Flip a coin. If heads, your opponent canâ€™t play any Trainer cards from his or her hand during your opponentâ€™s next turn, and any damage done to Teddiursa by attack is reduced by 30 (after applying weakness and resistance)."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1634,7 +1633,7 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
 				weakness W
 				move "Singe", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Burned."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Burned."
 					energyCost R
 					attackRequirement {}
 					onAttack {
@@ -1653,7 +1652,7 @@ public enum CallOfLegends implements CardInfo {
 			};
 			case CHEERLEADER_S_CHEER_76:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 3 cards. Your opponent may draw a card."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nDraw 3 cards. Your opponent may draw a card."
 				onPlay {
 				}
 				playRequirement{
@@ -1661,7 +1660,7 @@ public enum CallOfLegends implements CardInfo {
 			};
 			case COPYCAT_77:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent’s hand."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponentâ€™s hand."
 				onPlay {
 				}
 				playRequirement{
@@ -1669,7 +1668,7 @@ public enum CallOfLegends implements CardInfo {
 			};
 			case DUAL_BALL_78:
 			return basicTrainer (this) {
-				text "Flip 2 coins. For each heads, search your deck for a Basic Pokémon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
+				text "Flip 2 coins. For each heads, search your deck for a Basic PokÃ©mon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -1677,7 +1676,7 @@ public enum CallOfLegends implements CardInfo {
 			};
 			case INTERVIEWER_S_QUESTIONS_79:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at the top 8 cards of your deck. Choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Shuffle the other cards back into your deck."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nLook at the top 8 cards of your deck. Choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Shuffle the other cards back into your deck."
 				onPlay {
 				}
 				playRequirement{
@@ -1685,7 +1684,7 @@ public enum CallOfLegends implements CardInfo {
 			};
 			case LOST_REMOVER_80:
 			return basicTrainer (this) {
-				text "Put 1 Special Energy card attached to 1 of your opponent’s Pokémon in the Lost Zone."
+				text "Put 1 Special Energy card attached to 1 of your opponentâ€™s PokÃ©mon in the Lost Zone."
 				onPlay {
 				}
 				playRequirement{
@@ -1693,7 +1692,7 @@ public enum CallOfLegends implements CardInfo {
 			};
 			case LOST_WORLD_81:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, if this player’s opponent has 6 or more Pokémon in the Lost Zone, the player may choose to win the game."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nOnce during each playerâ€™s turn, if this playerâ€™s opponent has 6 or more PokÃ©mon in the Lost Zone, the player may choose to win the game."
 				onPlay {
 				}
 				playRequirement{
@@ -1701,7 +1700,7 @@ public enum CallOfLegends implements CardInfo {
 			};
 			case PROFESSOR_ELM_S_TRAINING_METHOD_82:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for an Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your deck for an Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -1709,7 +1708,7 @@ public enum CallOfLegends implements CardInfo {
 			};
 			case PROFESSOR_OAK_S_NEW_THEORY_83:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, draw 6 cards."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, draw 6 cards."
 				onPlay {
 				}
 				playRequirement{
@@ -1725,7 +1724,7 @@ public enum CallOfLegends implements CardInfo {
 			};
 			case SAGE_S_TRAINING_85:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at the top 5 cards of your deck. Choose any 2 cards you find there and put them into your hand. Discard the other cards."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nLook at the top 5 cards of your deck. Choose any 2 cards you find there and put them into your hand. Discard the other cards."
 				onPlay {
 				}
 				playRequirement{
@@ -1733,7 +1732,7 @@ public enum CallOfLegends implements CardInfo {
 			};
 			case DARKNESS_ENERGY_86:
 			return specialEnergy (this, [[C]]) {
-				text "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this Effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
+				text "If the PokÃ©mon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active PokÃ©mon (before applying Weakness and Resistance). Ignore this Effect if the PokÃ©mon that Darkness Energy is attached to isnâ€™t [D]. Darkness Energy provides [D] Energy. (Doesnâ€™t count as a basic Energy card.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -1745,7 +1744,7 @@ public enum CallOfLegends implements CardInfo {
 			};
 			case METAL_ENERGY_87:
 			return specialEnergy (this, [[C]]) {
-				text "Damage done by attacks to the Pokémon that Metal Energy attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that Metal Energy is attached to isn’t Metal. Metal Energy provides Metal Energy. (Doesn’t count as a basic Energy card.)"
+				text "Damage done by attacks to the PokÃ©mon that Metal Energy attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the PokÃ©mon that Metal Energy is attached to isnâ€™t Metal. Metal Energy provides Metal Energy. (Doesnâ€™t count as a basic Energy card.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -1804,7 +1803,7 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP090, type:FIRE, retreatCost:2) {
 				weakness W
 				pokeBody "Extreme Speed", {
-					text "Entei’s Retreat Cost is Energy less for each Energy attached to Entei."
+					text "Enteiâ€™s Retreat Cost is Energy less for each Energy attached to Entei."
 					delayedA {
 					}
 				}
@@ -1823,7 +1822,7 @@ public enum CallOfLegends implements CardInfo {
 			/*basic (this, hp:HP100, type:FIGHTING, retreatCost:4) {
 				weakness G
 				move "Volcano Stomp", {
-					text "80 damage. Flip a coin. If heads, discard the top 4 cards of your opponent’s deck. If tails, discard the top 4 cards of your deck."
+					text "80 damage. Flip a coin. If heads, discard the top 4 cards of your opponentâ€™s deck. If tails, discard the top 4 cards of your deck."
 					energyCost F, F, F, F
 					attackRequirement {}
 					onAttack {
@@ -1860,7 +1859,7 @@ public enum CallOfLegends implements CardInfo {
 			/*basic (this, hp:HP100, type:WATER, retreatCost:4) {
 				weakness L
 				move "Destructive Tsunami", {
-					text "Flip a coin. If heads, this attack does 40 damage to each of your opponent’s Pokémon. If tails, this attack does 40 damage to each of your Pokémon."
+					text "Flip a coin. If heads, this attack does 40 damage to each of your opponentâ€™s PokÃ©mon. If tails, this attack does 40 damage to each of your PokÃ©mon."
 					energyCost W, W, W, W
 					attackRequirement {}
 					onAttack {
@@ -1875,7 +1874,7 @@ public enum CallOfLegends implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Linear Attack", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1897,7 +1896,7 @@ public enum CallOfLegends implements CardInfo {
 			/*basic (this, hp:HP100, type:WATER, retreatCost:3) {
 				weakness L
 				move "Wormhole", {
-					text "60 damage. Switch Palkia with 1 of your Benched Pokémon. Then, your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "60 damage. Switch Palkia with 1 of your Benched PokÃ©mon. Then, your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost W, W, W, W
 					attackRequirement {}
 					onAttack {
@@ -1911,12 +1910,12 @@ public enum CallOfLegends implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				pokeBody "Extreme Speed", {
-					text "Raikou’s Retreat Cost is less for each Energy attached to Raikou."
+					text "Raikouâ€™s Retreat Cost is less for each Energy attached to Raikou."
 					delayedA {
 					}
 				}
 				move "Raging Thunder", {
-					text "70 damage. Does 20 damage to 1 of your Pokémon and don’t apply Weakness and Resistance to this damage."
+					text "70 damage. Does 20 damage to 1 of your PokÃ©mon and donâ€™t apply Weakness and Resistance to this damage."
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
@@ -1944,12 +1943,12 @@ public enum CallOfLegends implements CardInfo {
 			return basic (this, hp:HP090, type:WATER, retreatCost:2) {
 				weakness L
 				pokeBody "Extreme Speed", {
-					text "Suicune’s Retreat Cost is less for each Energy attached to Suicune."
+					text "Suicuneâ€™s Retreat Cost is less for each Energy attached to Suicune."
 					delayedA {
 					}
 				}
 				move "Tsunami", {
-					text "This attack does 20 damage to each of your opponent’s Pokémon."
+					text "This attack does 20 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {

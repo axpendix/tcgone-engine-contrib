@@ -130,11 +130,11 @@ public enum HeartgoldSoulsilver implements CardInfo {
 	FISHERMAN_92 ("Fisherman", 92, Rarity.UNCOMMON, [TRAINER]),
 	FULL_HEAL_93 ("Full Heal", 93, Rarity.UNCOMMON, [TRAINER]),
 	MOOMOO_MILK_94 ("Moomoo Milk", 94, Rarity.UNCOMMON, [TRAINER]),
-	POKE_BALL_95 ("Poké Ball", 95, Rarity.UNCOMMON, [TRAINER]),
-	POKEGEAR_3_0_96 ("Pokégear 3.0", 96, Rarity.UNCOMMON, [TRAINER]),
-	POKEMON_COLLECTOR_97 ("Pokémon Collector", 97, Rarity.UNCOMMON, [TRAINER]),
-	POKEMON_COMMUNICATION_98 ("Pokémon Communication", 98, Rarity.UNCOMMON, [TRAINER]),
-	POKEMON_REVERSAL_99 ("Pokémon Reversal", 99, Rarity.UNCOMMON, [TRAINER]),
+	POKE_BALL_95 ("PokÃ© Ball", 95, Rarity.UNCOMMON, [TRAINER]),
+	POKEGEAR_3_0_96 ("PokÃ©gear 3.0", 96, Rarity.UNCOMMON, [TRAINER]),
+	POKEMON_COLLECTOR_97 ("PokÃ©mon Collector", 97, Rarity.UNCOMMON, [TRAINER]),
+	POKEMON_COMMUNICATION_98 ("PokÃ©mon Communication", 98, Rarity.UNCOMMON, [TRAINER]),
+	POKEMON_REVERSAL_99 ("PokÃ©mon Reversal", 99, Rarity.UNCOMMON, [TRAINER]),
 	PROFESSOR_ELM_S_TRAINING_METHOD_100 ("Professor Elm's Training Method", 100, Rarity.UNCOMMON, [TRAINER]),
 	PROFESSOR_OAK_S_NEW_THEORY_101 ("Professor Oak's New Theory", 101, Rarity.UNCOMMON, [TRAINER]),
 	SWITCH_102 ("Switch", 102, Rarity.UNCOMMON, [TRAINER]),
@@ -159,8 +159,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 	DARKNESS_ENERGY_121 ("Darkness Energy", 121, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
 	METAL_ENERGY_122 ("Metal Energy", 122, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
 	GYARADOS_123 ("Gyarados", 123, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	ALPH_LITHOGRAPH_ONE ("Alph Lithograph", ONE, Rarity.HOLORARE, [TRAINER]),
-;
+	ALPH_LITHOGRAPH_ONE ("Alph Lithograph", 124, Rarity.HOLORARE, [TRAINER]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -247,7 +246,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Bubblebeam", {
-					text "60 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "60 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -261,7 +260,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Clefairy", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Fairy Power", {
-					text "Return 1 of your Pokémon and all cards attached to it to your hand."
+					text "Return 1 of your PokÃ©mon and all cards attached to it to your hand."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -293,7 +292,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Hyper Beam", {
-					text "80 damage. Discard an Energy card attached to the Defending Pokémon."
+					text "80 damage. Discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -307,7 +306,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
 				weakness P
 				move "Triple Kick", {
-					text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 3 coins. This attack does 20 damage times the number of heads."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -329,7 +328,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness R
 				resistance F, MINUS30
 				move "Mass Attack", {
-					text "10x damage. Does 10 damage times the number of Pokémon in play (both yours and your opponent's). "
+					text "10x damage. Does 10 damage times the number of PokÃ©mon in play (both yours and your opponent's). "
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -350,11 +349,11 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Vulpix", hp:HP090, type:FIRE, retreatCost:1) {
 				weakness W
 				pokePower "Roast Reveal", {
-					text "Once during your turn , you may discard a Energy card from your hand. If you do, draw 3 cards. This power can’t be used if Ninetales is affected by a Special Condition."
+					text "Once during your turn , you may discard a Energy card from your hand. If you do, draw 3 cards. This power canâ€™t be used if Ninetales is affected by a Special Condition."
 					actionA {
 					}
 				}
-				move "Will-o’-the-wisp", {
+				move "Will-oâ€™-the-wisp", {
 					text "60 damage. "
 					energyCost R, R, C
 					attackRequirement {}
@@ -369,7 +368,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness L
 				resistance F, MINUS30
 				pokePower "Night Sight", {
-					text "Once during your turn , you may draw a card. This power can’t be used if Noctowl is affected by a Special Condition."
+					text "Once during your turn , you may draw a card. This power canâ€™t be used if Noctowl is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -388,7 +387,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness G
 				resistance L, MINUS30
 				move "Muddy Water", {
-					text "40 damage. Does 20 damage to 1 of your opponetn’s Benched Pokémon."
+					text "40 damage. Does 20 damage to 1 of your opponetnâ€™s Benched PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -410,7 +409,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness F
 				resistance M, MINUS30
 				move "Iron Tail", {
-					text "30× damage. Flip a coin until you get tails. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Flip a coin until you get tails. This attack does 30 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -444,7 +443,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Poison Jab", {
-					text "30 damage. The Defending Pokémon is now Poisoned."
+					text "30 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
@@ -457,12 +456,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Slowpoke", hp:HP080, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				pokePower "Second Sight", {
-					text "Once during your turn , you may look at the top 3 cards of that player’s deck and put them back on top of that player’s deck in any order. This power can’t be uesd if Slowking is affected by a Special Condition."
+					text "Once during your turn , you may look at the top 3 cards of that playerâ€™s deck and put them back on top of that playerâ€™s deck in any order. This power canâ€™t be uesd if Slowking is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Psyshock", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -489,7 +488,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				move "Acceleration Bolt", {
-					text "30 damage. Search your deck for up to 2 basic Energy cards and attach them to 1 of your Pokémon. Shuffle your deck afterward."
+					text "30 damage. Search your deck for up to 2 basic Energy cards and attach them to 1 of your PokÃ©mon. Shuffle your deck afterward."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -510,7 +509,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Spinarak", hp:HP080, type:GRASS, retreatCost:1) {
 				weakness R
 				move "Leech Life", {
-					text "30 damage. Remove from Ariados the number of damage counters equal to the damage you did to the Defending Pokémon."
+					text "30 damage. Remove from Ariados the number of damage counters equal to the damage you did to the Defending PokÃ©mon."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -518,7 +517,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Poisonous Saliva", {
-					text "50 damage. The Defending Pokémon is now Poisoned."
+					text "50 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -532,7 +531,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness L
 				resistance F, MINUS30
 				move "Cure Powder", {
-					text "Remove 3 damage counters from each of your Pokémon."
+					text "Remove 3 damage counters from each of your PokÃ©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -540,7 +539,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Whirlwind", {
-					text "60 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "60 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -578,7 +577,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Big Eggsplosion", {
-					text "40× damage. Flip a coin for each Energy attached to Exeggutor. This attack does 40 damage times the number of heads."
+					text "40Ã— damage. Flip a coin for each Energy attached to Exeggutor. This attack does 40 damage times the number of heads."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -600,7 +599,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Spin Turn", {
-					text "20 damage. Switch Farfetch’d with 1 of your Benched Pokémon."
+					text "20 damage. Switch Farfetchâ€™d with 1 of your Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -613,7 +612,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Croconaw", hp:HP130, type:WATER, retreatCost:2) {
 				weakness G
 				move "Spinning Tail", {
-					text "This attack does 20 damage to each of your opponent’s Pokémon."
+					text "This attack does 20 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -634,7 +633,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Sentret", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Find a Friend", {
-					text "Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+					text "Search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -655,7 +654,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Snubbull", hp:HP090, type:COLORLESS, retreatCost:3) {
 				weakness F
 				move "Timid Tackle", {
-					text "50 damage. Granbull does 20 damage to itself. Switch Granbull with 1 of your Benched Pokémon."
+					text "50 damage. Granbull does 20 damage to itself. Switch Granbull with 1 of your Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -676,12 +675,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Drowzee", hp:HP090, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				pokePower "Sleep Pendulum", {
-					text "Once during your turn , you may flip a coin. If heads, the Defending Pokémon is now Asleep. This power can’t be used if Hypno is affected by a Special Condition."
+					text "Once during your turn , you may flip a coin. If heads, the Defending PokÃ©mon is now Asleep. This power canâ€™t be used if Hypno is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Psychic Shot", {
-					text "30 damage. Does 30 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance to Benched Pokémon.)"
+					text "30 damage. Does 30 damage to 1 of your opponentâ€™s Benched PokÃ©mon. (Donâ€™t apply Weakness and Resistance to Benched PokÃ©mon.)"
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -694,7 +693,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP090, type:WATER, retreatCost:2) {
 				weakness M
 				move "Ice Beam", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -702,7 +701,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Ice Blade", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -724,7 +723,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Swift", {
-					text "40 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "40 damage. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -738,7 +737,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness R
 				resistance W, MINUS30
 				move "Sleep Powder", {
-					text "30 damage. The Defending Pokémon is now Asleep."
+					text "30 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -759,7 +758,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Meowth", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Sharpen Claws", {
-					text "Flip 3 coins. For each heads, discard a card from your opponent’s hand without looking."
+					text "Flip 3 coins. For each heads, discard a card from your opponentâ€™s hand without looking."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -784,7 +783,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Playground", {
-					text "Each player may search his or her deck for as many Basic Pokémon as he or she likes, put them onto his or her Bench, and shuffle his or her deck afterward. (You put your Pokémon on the Bench first.) Pichu is now Asleep."
+					text "Each player may search his or her deck for as many Basic PokÃ©mon as he or she likes, put them onto his or her Bench, and shuffle his or her deck afterward. (You put your PokÃ©mon on the Bench first.) Pichu is now Asleep."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -798,7 +797,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness W
 				resistance L, MINUS30
 				move "Poison Sting", {
-					text "30 damage. The Defending Pokémon is now Poisoned."
+					text "30 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -806,7 +805,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Fury Swipes", {
-					text "30× damage. Flip 3 coins. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Flip 3 coins. This attack does 30 damage times the number of heads."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -823,7 +822,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Energy Antics", {
-					text "Move an Energy card attached to 1 of your opponent’s Pokémon to another of your opponent’s Pokémon. Smoochum is now Asleep."
+					text "Move an Energy card attached to 1 of your opponentâ€™s PokÃ©mon to another of your opponentâ€™s PokÃ©mon. Smoochum is now Asleep."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -837,7 +836,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness R
 				resistance W, MINUS30
 				pokePower "Sunshine Grace", {
-					text "Once during your turn , you may search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power can’t be used if Sunflora is affected by a Special Condition."
+					text "Once during your turn , you may search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power canâ€™t be used if Sunflora is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -880,7 +879,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Mischievous Punch", {
-					text "30 damage. This attack’s damage isn’t affected by Weakness or Resistance. Tyrogue is now Asleep."
+					text "30 damage. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance. Tyrogue is now Asleep."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -893,7 +892,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Koffing", hp:HP090, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				move "Super Poison Breath", {
-					text "The Defending Pokémon is now Poisoned."
+					text "The Defending PokÃ©mon is now Poisoned."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -901,7 +900,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Super Explosion", {
-					text "90 damage. Weezing does 90 damage to itself, and don’t apply Weakness to this damage."
+					text "90 damage. Weezing does 90 damage to itself, and donâ€™t apply Weakness to this damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -986,7 +985,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Big Bite", {
-					text "50 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "50 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1000,7 +999,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness M
 				resistance F, MINUS30
 				move "Snowy Present", {
-					text "Energy attached to all of your Pokémon."
+					text "Energy attached to all of your PokÃ©mon."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -1008,7 +1007,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Hail", {
-					text "This attack does 10 damage to each of your opponent’s Pokémon."
+					text "This attack does 10 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1022,7 +1021,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness W
 				resistance L, MINUS30
 				move "Rock Hurl", {
-					text "50 damage. This attack’s damage isn’t affected by Resistance."
+					text "50 damage. This attackâ€™s damage isnâ€™t affected by Resistance."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -1043,7 +1042,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Glare", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1065,7 +1064,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness F
 				resistance M, MINUS30
 				move "Thunder Spear", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to that PokÃ©mon."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1073,7 +1072,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Thundershock", {
-					text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "40 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -1086,7 +1085,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP080, type:GRASS, retreatCost:2) {
 				weakness R
 				move "Green Draw", {
-					text "Pokémon in play."
+					text "PokÃ©mon in play."
 					energyCost G, C, G
 					attackRequirement {}
 					onAttack {
@@ -1111,7 +1110,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Graffiti", {
-					text "Igglybuff is now Asleep. During your opponent’s next turn, the attack cost of each of the Defending Pokémon’s attacks is 1 Colorless Energy more."
+					text "Igglybuff is now Asleep. During your opponentâ€™s next turn, the attack cost of each of the Defending PokÃ©monâ€™s attacks is 1 Colorless Energy more."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1125,7 +1124,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness L
 				resistance F, MINUS30
 				move "Group Swim", {
-					text "Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+					text "PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -1133,7 +1132,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Aqua Slash", {
-					text "40 damage. Mantine can’t attack during your next turn."
+					text "40 damage. Mantine canâ€™t attack during your next turn."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -1146,7 +1145,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Caterpie", hp:HP080, type:GRASS, retreatCost:2) {
 				weakness R
 				pokeBody "Green Shield", {
-					text "Each of your Pokémon has no Weakness."
+					text "Each of your PokÃ©mon has no Weakness."
 					delayedA {
 					}
 				}
@@ -1172,7 +1171,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Body Slam", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1185,7 +1184,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Paras", hp:HP090, type:GRASS, retreatCost:2) {
 				weakness R
 				move "Sleep Drain", {
-					text "The Defending Pokémon is now Asleep. Remove 4 damage counters from Parasect."
+					text "The Defending PokÃ©mon is now Asleep. Remove 4 damage counters from Parasect."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1227,7 +1226,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
 				weakness L
 				move "Offensive Needle", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned. If tails, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned. If tails, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -1254,7 +1253,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Slowpoke", hp:HP090, type:WATER, retreatCost:2) {
 				weakness L
 				move "Big Yawn", {
-					text "30 damage. Both Slowbro and the Defending Pokémon are now Asleep."
+					text "30 damage. Both Slowbro and the Defending PokÃ©mon are now Asleep."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1275,7 +1274,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Staryu", hp:HP090, type:WATER, retreatCost:0) {
 				weakness L
 				move "Cosmic Cyclone", {
-					text "20× damage. Energy attached to your Pokémon as you like. This attack does 20 damage times the number of Energy you chose. Shuffle those cards back into your deck."
+					text "20Ã— damage. Energy attached to your PokÃ©mon as you like. This attack does 20 damage times the number of Energy you chose. Shuffle those cards back into your deck."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -1288,7 +1287,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				pokePower "RETURN", {
-					text "Once during your turn, when you put Unown from your hand onto your Bench, you may return all Energy attached to 1 of your Pokémon to your hand."
+					text "Once during your turn, when you put Unown from your hand onto your Bench, you may return all Energy attached to 1 of your PokÃ©mon to your hand."
 					actionA {
 					}
 				}
@@ -1443,7 +1442,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				move "Sleep Inducer", {
-					text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon. The new Defending Pokémon is now Asleep."
+					text "Switch the Defending PokÃ©mon with 1 of your opponentâ€™s Benched PokÃ©mon. The new Defending PokÃ©mon is now Asleep."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1464,7 +1463,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Continuous Eggsplosion", {
-					text "10× damage. Flip a coin until you get tails. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip a coin until you get tails. This attack does 10 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1520,7 +1519,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness L
 				resistance F, MINUS30
 				move "Hypnosis", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1542,7 +1541,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness R
 				resistance F, MINUS30
 				move "Bounce", {
-					text "10 damage. You may switch Hoppip with 1 of your Benched Pokémon."
+					text "10 damage. You may switch Hoppip with 1 of your Benched PokÃ©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1555,7 +1554,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Hypnoblast", {
-					text "20 damage. The Defending Pokémon is now Asleep."
+					text "20 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1568,7 +1567,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Mimic", {
-					text "Shuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent’s hand."
+					text "Shuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponentâ€™s hand."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1576,7 +1575,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Lick", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1589,7 +1588,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Smokescreen", {
-					text "10 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "10 damage. If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1731,7 +1730,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness W
 				resistance L, MINUS30
 				move "Flail", {
-					text "10× damage. Does 10 damage times the number of damage counters on Phanpy."
+					text "10Ã— damage. Does 10 damage times the number of damage counters on Phanpy."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1767,7 +1766,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness W
 				resistance L, MINUS30
 				move "Defense Curl", {
-					text "Flip a coin. If heads, prevent all damage done to Sandshrew by attacks during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all damage done to Sandshrew by attacks during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1788,7 +1787,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Scout", {
-					text "Look at your opponent’s hand."
+					text "Look at your opponentâ€™s hand."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1822,7 +1821,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:2) {
 				weakness F
 				move "Roar", {
-					text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1851,7 +1850,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Spider Web", {
-					text "The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1878,7 +1877,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness R
 				resistance W, MINUS30
 				move "Cure Kernels", {
-					text "Remove 2 damage counters from 1 of your Pokémon."
+					text "Remove 2 damage counters from 1 of your PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1920,7 +1919,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
 				weakness W
 				move "Singe", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Burned."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Burned."
 					energyCost R
 					attackRequirement {}
 					onAttack {
@@ -1942,7 +1941,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness G
 				resistance L, MINUS30
 				move "Tail Whip", {
-					text "Flip a coin. If heads, the Defending Pokémon can’t attack during your opponent’s next turn."
+					text "Flip a coin. If heads, the Defending PokÃ©mon canâ€™t attack during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1961,7 +1960,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			};
 			case BILL_89:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nDraw 2 cards."
 				onPlay {
 				}
 				playRequirement{
@@ -1969,7 +1968,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			};
 			case COPYCAT_90:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent’s hand."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponentâ€™s hand."
 				onPlay {
 				}
 				playRequirement{
@@ -1977,7 +1976,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			};
 			case ENERGY_SWITCH_91:
 			return basicTrainer (this) {
-				text "Move a basic Energy card attached 1 of your Pokémon to another of your Pokémon."
+				text "Move a basic Energy card attached 1 of your PokÃ©mon to another of your PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -1985,7 +1984,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			};
 			case FISHERMAN_92:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your discard pile for 4 basic Energy cards, show them to your opponent, and put them into your hand."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your discard pile for 4 basic Energy cards, show them to your opponent, and put them into your hand."
 				onPlay {
 				}
 				playRequirement{
@@ -1993,7 +1992,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			};
 			case FULL_HEAL_93:
 			return basicTrainer (this) {
-				text "Remove all Special Conditions from your Active Pokémon."
+				text "Remove all Special Conditions from your Active PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2001,7 +2000,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			};
 			case MOOMOO_MILK_94:
 			return basicTrainer (this) {
-				text "Choose 1 of your Pokémon. Flip 2 coins. For each heads, remove 3 damage counters from that Pokémon."
+				text "Choose 1 of your PokÃ©mon. Flip 2 coins. For each heads, remove 3 damage counters from that PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2009,7 +2008,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			};
 			case POKE_BALL_95:
 			return basicTrainer (this) {
-				text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+				text "Flip a coin. If heads, search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2025,7 +2024,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			};
 			case POKEMON_COLLECTOR_97:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 3 Basic Pokémon, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your deck for up to 3 Basic PokÃ©mon, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2033,7 +2032,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			};
 			case POKEMON_COMMUNICATION_98:
 			return basicTrainer (this) {
-				text "Choose 1 Pokémon in your hand, show it to your opponent, and put it on top of your deck. If you do, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+				text "Choose 1 PokÃ©mon in your hand, show it to your opponent, and put it on top of your deck. If you do, search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2041,7 +2040,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			};
 			case POKEMON_REVERSAL_99:
 			return basicTrainer (this) {
-				text "Flip a coin. If heads, choose 1 of your opponent’s Benched Pokémon, and switch it with your opponent’s Active Pokémon."
+				text "Flip a coin. If heads, choose 1 of your opponentâ€™s Benched PokÃ©mon, and switch it with your opponentâ€™s Active PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2049,7 +2048,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			};
 			case PROFESSOR_ELM_S_TRAINING_METHOD_100:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for an Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your deck for an Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2057,7 +2056,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			};
 			case PROFESSOR_OAK_S_NEW_THEORY_101:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, draw 6 cards."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, draw 6 cards."
 				onPlay {
 				}
 				playRequirement{
@@ -2065,7 +2064,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			};
 			case SWITCH_102:
 			return basicTrainer (this) {
-				text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
+				text "Switch 1 of your Active PokÃ©mon with 1 of your Benched PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2085,7 +2084,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			};
 			case RAINBOW_ENERGY_104:
 			return specialEnergy (this, [[C]]) {
-				text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) When you attach this card from your hand to 1 of your Pokémon, put 1 damage counter on that Pokémon. (While not in play, Rainbow Energy counts as Colorless Energy.)"
+				text "Attach Rainbow Energy to 1 of your PokÃ©mon. While in play, Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) When you attach this card from your hand to 1 of your PokÃ©mon, put 1 damage counter on that PokÃ©mon. (While not in play, Rainbow Energy counts as Colorless Energy.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2100,12 +2099,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				pokeBody "Conductivity", {
-					text "Whenever your opponent attaches an Energy card from his or her hand to 1 of his or her Pokémon, put 1 damage counter on that Pokémon."
+					text "Whenever your opponent attaches an Energy card from his or her hand to 1 of his or her PokÃ©mon, put 1 damage counter on that PokÃ©mon."
 					delayedA {
 					}
 				}
 				move "Lightning Crush", {
-					text "40 damage. Flip a coin. If heads, this attack does 40 damage plus 40 more damage. If tails, discard an Energy attached to the Defending Pokémon."
+					text "40 damage. Flip a coin. If heads, this attack does 40 damage plus 40 more damage. If tails, discard an Energy attached to the Defending PokÃ©mon."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -2118,7 +2117,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Chansey", hp:HP130, type:COLORLESS, retreatCost:2) {
 				weakness F
 				pokePower "Blissful Nurse", {
-					text "Once during your turn, when you play Blissey from your hand to evolve 1 of your Pokémon, you may remove all damage counters from all your Pokémon. If you do, discard all Energy attached to those Pokémon that had any damage counters on them."
+					text "Once during your turn, when you play Blissey from your hand to evolve 1 of your PokÃ©mon, you may remove all damage counters from all your PokÃ©mon. If you do, discard all Energy attached to those PokÃ©mon that had any damage counters on them."
 					actionA {
 					}
 				}
@@ -2142,7 +2141,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "Earthquake", {
-					text "60 damage. Does 10 damage to each of your Benched Pokémon."
+					text "60 damage. Does 10 damage to each of your Benched PokÃ©mon."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -2163,12 +2162,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Croconaw", hp:HP140, type:WATER, retreatCost:3) {
 				weakness G
 				pokePower "Rain Dance", {
-					text "As often as you like during your turn , you may attach a Energy card from your hand to 1 of your Pokémon. This power can’t be used if Feraligatr is affected by a Special Condition."
+					text "As often as you like during your turn , you may attach a Energy card from your hand to 1 of your PokÃ©mon. This power canâ€™t be used if Feraligatr is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Hydro Crunch", {
-					text "Does 60 damage plus 10 more damage for each damage counter on the Defending Pokémon."
+					text "Does 60 damage plus 10 more damage for each damage counter on the Defending PokÃ©mon."
 					energyCost W, W, W, W
 					attackRequirement {}
 					onAttack {
@@ -2182,7 +2181,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness R
 				resistance W, MINUS30
 				pokePower "Leaf Trans", {
-					text "As often as you like during your turn , you may move a Energy attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Meganium is affected by a Special Condition."
+					text "As often as you like during your turn , you may move a Energy attached to 1 of your PokÃ©mon to another of your PokÃ©mon. This power canâ€™t be used if Meganium is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -2200,12 +2199,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Quilava", hp:HP140, type:FIRE, retreatCost:2) {
 				weakness W
 				pokePower "Afterburner", {
-					text "Once during your turn , you may search your discard pile for a Fire Energy card and attach it to 1 of your Pokémon. If you do, put 1 damage counter on that Pokémon. This power can’t be used if Typhlosion is affected by a Special Condition."
+					text "Once during your turn , you may search your discard pile for a Fire Energy card and attach it to 1 of your PokÃ©mon. If you do, put 1 damage counter on that PokÃ©mon. This power canâ€™t be used if Typhlosion is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Flare Destroy", {
-					text "70 damage. Discard an Energy card attached to Typhlosion and discard an Energy card attached to the Defending Pokémon."
+					text "70 damage. Discard an Energy card attached to Typhlosion and discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
@@ -2240,7 +2239,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2276,7 +2275,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2311,7 +2310,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2347,7 +2346,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {

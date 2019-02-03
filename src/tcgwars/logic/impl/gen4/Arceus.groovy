@@ -135,19 +135,18 @@ public enum Arceus implements CardInfo {
 	GENGAR_LV_X_97 ("Gengar LV.X", 97, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _PSYCHIC_]),
 	SALAMENCE_LV_X_98 ("Salamence LV.X", 98, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _COLORLESS_]),
 	TANGROWTH_LV_X_99 ("Tangrowth LV.X", 99, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _GRASS_]),
-	BAGON_SH10 ("Bagon", SH10, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-	PONYTA_SH11 ("Ponyta", SH11, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
-	SHINX_SH12 ("Shinx", SH12, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-	ARCEUS_AR1 ("Arceus", AR1, Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_]),
-	ARCEUS_AR2 ("Arceus", AR2, Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
-	ARCEUS_AR3 ("Arceus", AR3, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
-	ARCEUS_AR4 ("Arceus", AR4, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
-	ARCEUS_AR5 ("Arceus", AR5, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-	ARCEUS_AR6 ("Arceus", AR6, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-	ARCEUS_AR7 ("Arceus", AR7, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
-	ARCEUS_AR8 ("Arceus", AR8, Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
-	ARCEUS_AR9 ("Arceus", AR9, Rarity.HOLORARE, [BASIC, POKEMON, _METAL_]),
-;
+	BAGON_SH10 ("Bagon", 100, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+	PONYTA_SH11 ("Ponyta", 101, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
+	SHINX_SH12 ("Shinx", 102, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
+	ARCEUS_AR1 ("Arceus", 103, Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_]),
+	ARCEUS_AR2 ("Arceus", 104, Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
+	ARCEUS_AR3 ("Arceus", 105, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
+	ARCEUS_AR4 ("Arceus", 106, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
+	ARCEUS_AR5 ("Arceus", 107, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+	ARCEUS_AR6 ("Arceus", 108, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
+	ARCEUS_AR7 ("Arceus", 109, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
+	ARCEUS_AR8 ("Arceus", 110, Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
+	ARCEUS_AR9 ("Arceus", 111, Rarity.HOLORARE, [BASIC, POKEMON, _METAL_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -206,7 +205,7 @@ public enum Arceus implements CardInfo {
 				weakness W, PLUS30
 				resistance F, MINUS20
 				pokeBody "Fire Formation", {
-					text "Each of Charizard’s attacks does 10 more damage for each Fire Pokémon on your Bench to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
+					text "Each of Charizardâ€™s attacks does 10 more damage for each Fire PokÃ©mon on your Bench to your opponentâ€™s Active PokÃ©mon (before applying Weakness and Resistance)."
 					delayedA {
 						after PROCESS_ATTACK_EFFECTS, {
 							bg.dm().each{if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
@@ -240,7 +239,7 @@ public enum Arceus implements CardInfo {
 			return evolution (this, from:"Snorunt", hp:HP080, type:WATER, retreatCost:1) {
 				weakness M, PLUS20
 				pokePower "Snow Gift", {
-					text "Once during your turn, when you play Froslass from your hand to evolve 1 of your Pokémon, you may search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
+					text "Once during your turn, when you play Froslass from your hand to evolve 1 of your PokÃ©mon, you may search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
 					actionA {
 					}
 				}
@@ -260,7 +259,7 @@ public enum Arceus implements CardInfo {
 			return basic (this, hp:HP100, type:FIRE, retreatCost:3) {
 				weakness W
 				move "Fire Fang", {
-					text "20 damage. The Defending Pokémon is now Burned."
+					text "20 damage. The Defending PokÃ©mon is now Burned."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -289,7 +288,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Rock Slide", {
-					text "60 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
+					text "60 damage. Does 10 damage to 2 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -303,7 +302,7 @@ public enum Arceus implements CardInfo {
 				weakness F, PLUS30
 				resistance M, MINUS20
 				move "Flash", {
-					text "30 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, this attack does nothing."
+					text "30 damage. If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, this attack does nothing."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -311,7 +310,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Gadget Bolt", {
-					text "60 damage. If Luxray has a Pokémon Tool card attached to it, you may do 100 damage instead of 60 to the Defending Pokémon. If you do, discard that Pokémon Tool card."
+					text "60 damage. If Luxray has a PokÃ©mon Tool card attached to it, you may do 100 damage instead of 60 to the Defending PokÃ©mon. If you do, discard that PokÃ©mon Tool card."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -333,7 +332,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Energy Assist", {
-					text "30 damage. Seach your discard pile for a basic Energy card and attach it to 1 of your Benched Pokémon."
+					text "30 damage. Seach your discard pile for a basic Energy card and attach it to 1 of your Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -347,7 +346,7 @@ public enum Arceus implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				pokeBody "Competitiveness", {
-					text "If you don’t have a Supporter card in play, each of Probopass’s attacks does 30 more damage to the Active Pokémon ."
+					text "If you donâ€™t have a Supporter card in play, each of Probopassâ€™s attacks does 30 more damage to the Active PokÃ©mon ."
 					delayedA {
 					}
 				}
@@ -374,12 +373,12 @@ public enum Arceus implements CardInfo {
 				weakness C, PLUS30
 				resistance F, MINUS20
 				pokePower "Top Accelerator", {
-					text "Once during your turn , you may reveal the top card of your deck. If that card is a basic Energy card, attach it to 1 of your Pokémon. If that card isn’t a basic Energy card, discard it. This power can’t be used if Salamence is affected by a Special Condition."
+					text "Once during your turn , you may reveal the top card of your deck. If that card is a basic Energy card, attach it to 1 of your PokÃ©mon. If that card isnâ€™t a basic Energy card, discard it. This power canâ€™t be used if Salamence is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Shoot Through", {
-					text "50 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "50 damage. Does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost R, W, C
 					attackRequirement {}
 					onAttack {
@@ -400,7 +399,7 @@ public enum Arceus implements CardInfo {
 			return evolution (this, from:"Gulpin", hp:HP100, type:PSYCHIC, retreatCost:3) {
 				weakness P, PLUS20
 				move "Damage Roller", {
-					text "Put damage counters on the Defending Pokémon until the Defending Pokémon has the same remaining HP as Swalot. (If the Defending Pokémon has the same or less remaining HP as Swalot, this attack does nothing.)"
+					text "Put damage counters on the Defending PokÃ©mon until the Defending PokÃ©mon has the same remaining HP as Swalot. (If the Defending PokÃ©mon has the same or less remaining HP as Swalot, this attack does nothing.)"
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -408,7 +407,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Entangle Tackle", {
-					text "50+ damage. You may do 50 damage plus 30 more damage. If you do, this attack does 30 damage to 1 of your Pokémon, and don’t apply Weakness and Resistance to this damage."
+					text "50+ damage. You may do 50 damage plus 30 more damage. If you do, this attack does 30 damage to 1 of your PokÃ©mon, and donâ€™t apply Weakness and Resistance to this damage."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -430,7 +429,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Swallow Up", {
-					text "50 damage. Before doing damage, count the remaining HP of the Defending Pokémon and Tangrowth. If the Defending Pokémon has fewer remaining HP than Tangrowth’s, this attack does 120 damage instead."
+					text "50 damage. Before doing damage, count the remaining HP of the Defending PokÃ©mon and Tangrowth. If the Defending PokÃ©mon has fewer remaining HP than Tangrowthâ€™s, this attack does 120 damage instead."
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
@@ -443,7 +442,7 @@ public enum Arceus implements CardInfo {
 			return evolution (this, from:"Croagunk", hp:HP090, type:FIGHTING, retreatCost:1) {
 				weakness P, PLUS20
 				move "Corner", {
-					text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "20 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -473,7 +472,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Lightning Strike", {
-					text "40 damage. . If you do, this attack’s base damage is 80 instead of 40."
+					text "40 damage. . If you do, this attackâ€™s base damage is 80 instead of 40."
 					energyCost L, L, C, L
 					attackRequirement {}
 					onAttack {
@@ -487,12 +486,12 @@ public enum Arceus implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				pokePower "Unearth", {
-					text "Once during your turn , you may search your deck for Helix Fossil, Dome Fossil, or Old Amber, show it your opponent, and put it into your hand. Shuffle your deck afterward. This power can’t be used if Aerodactyl is affected by a Special Condition."
+					text "Once during your turn , you may search your deck for Helix Fossil, Dome Fossil, or Old Amber, show it your opponent, and put it into your hand. Shuffle your deck afterward. This power canâ€™t be used if Aerodactyl is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Hyper Beam", {
-					text "30 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "30 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -506,7 +505,7 @@ public enum Arceus implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				move "Oracle Arrow", {
-					text "Choose 1 of your opponent’s Pokémon that has any damage counters on it. This attack does 40 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon that has any damage counters on it. This attack does 40 damage to that PokÃ©mon."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -528,12 +527,12 @@ public enum Arceus implements CardInfo {
 				weakness R, PLUS20
 				resistance W, MINUS20
 				pokeBody "Cloudy Sky", {
-					text "If any of your Pokémon or Pokémon would be damaged by an attack, reduce this damage by 10 ."
+					text "If any of your PokÃ©mon or PokÃ©mon would be damaged by an attack, reduce this damage by 10 ."
 					delayedA {
 					}
 				}
 				move "Worry Seed", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -547,12 +546,12 @@ public enum Arceus implements CardInfo {
 				weakness D, PLUS30
 				resistance C, MINUS20
 				pokePower "Curse", {
-					text "Once during your turn , you may move 1 damage counter from 1 of your opponent’s Pokémon to another of your opponent’s Pokémon. This power can’t be used if Gengar is affected by a Special Condition."
+					text "Once during your turn , you may move 1 damage counter from 1 of your opponentâ€™s PokÃ©mon to another of your opponentâ€™s PokÃ©mon. This power canâ€™t be used if Gengar is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Shadow Skip", {
-					text "60 damage. You may switch Gengar with 1 of your Benched Pokémon."
+					text "60 damage. You may switch Gengar with 1 of your Benched PokÃ©mon."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -566,7 +565,7 @@ public enum Arceus implements CardInfo {
 				weakness D, PLUS30
 				resistance C, MINUS20
 				move "Sharpshooting", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 40 damage to that PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -574,7 +573,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Poison Jab", {
-					text "60 damage. The Defending Pokémon is now Poisoned."
+					text "60 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -595,7 +594,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Avalanche", {
-					text "50 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Benched Pokémon."
+					text "50 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -617,7 +616,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Tumble Down", {
-					text "30× damage. Energy cards you discarded."
+					text "30Ã— damage. Energy cards you discarded."
 					energyCost F, C, C, F, F
 					attackRequirement {}
 					onAttack {
@@ -625,7 +624,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Rock Tumble", {
-					text "80 damage. This attack’s damage isn’t affected by Resistance."
+					text "80 damage. This attackâ€™s damage isnâ€™t affected by Resistance."
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
@@ -638,7 +637,7 @@ public enum Arceus implements CardInfo {
 			return evolution (this, from:"Makuhita", hp:HP110, type:FIGHTING, retreatCost:4) {
 				weakness P, PLUS30
 				move "Push Out", {
-					text "50 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "50 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -646,7 +645,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Vortex Chop", {
-					text "60 damage. If the Defending Pokémon has any Resistance, this attack’s base damage is 120 instead of 60."
+					text "60 damage. If the Defending PokÃ©mon has any Resistance, this attackâ€™s base damage is 120 instead of 60."
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
@@ -659,7 +658,7 @@ public enum Arceus implements CardInfo {
 			return evolution (this, from:"Buneary", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				pokePower "Relaxing Shower", {
-					text "Once during your turn , you may discard an Energy card from your hand. If you do, remove 1 damage counter from each of your Pokémon. This power can’t be used if Lopunny is affected by a Special Condition."
+					text "Once during your turn , you may discard an Energy card from your hand. If you do, remove 1 damage counter from each of your PokÃ©mon. This power canâ€™t be used if Lopunny is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -678,7 +677,7 @@ public enum Arceus implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Second Bite", {
-					text "20+ damage. Does 20 damage plus 10 more damage for each damage counter on the Defending Pokémon."
+					text "20+ damage. Does 20 damage plus 10 more damage for each damage counter on the Defending PokÃ©mon."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -686,7 +685,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Swift", {
-					text "50 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "50 damage. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -699,7 +698,7 @@ public enum Arceus implements CardInfo {
 			return evolution (this, from:"Omanyte", hp:HP120, type:WATER, retreatCost:1) {
 				weakness G, PLUS30
 				move "Time Spiral", {
-					text "Choose 1 of your opponent’s Evolved Pokémon. Remove the highest Stage Evolution card from that Pokémon and have your opponent shuffle that card into his or her deck."
+					text "Choose 1 of your opponentâ€™s Evolved PokÃ©mon. Remove the highest Stage Evolution card from that PokÃ©mon and have your opponent shuffle that card into his or her deck."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -721,7 +720,7 @@ public enum Arceus implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				move "Water Pulse", {
-					text "30 damage. The Defending Pokémon is now Asleep."
+					text "30 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -729,7 +728,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Continuous Crush", {
-					text "70 damage. Flip a coin until you get tails. For each heads, discard an Energy card attached to the Defending Pokémon."
+					text "70 damage. Flip a coin until you get tails. For each heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -761,7 +760,7 @@ public enum Arceus implements CardInfo {
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F
 				pokePower "Dowsing Code", {
-					text "Once during your turn, when you put Porygon-Z from your hand onto your Bench, you may search your discard pile for up to 2 Pokémon Tool cards, show them to your opponent, and shuffle them into your deck."
+					text "Once during your turn, when you put Porygon-Z from your hand onto your Bench, you may search your discard pile for up to 2 PokÃ©mon Tool cards, show them to your opponent, and shuffle them into your deck."
 					actionA {
 					}
 				}
@@ -780,7 +779,7 @@ public enum Arceus implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Boosted Voltage", {
-					text "20 damage. If Raichu has a Pokémon Tool card attached to it, this attack does 20 damage to each of your opponent’s Benched Pokémon that isn’t an Evolved Pokémon."
+					text "20 damage. If Raichu has a PokÃ©mon Tool card attached to it, this attack does 20 damage to each of your opponentâ€™s Benched PokÃ©mon that isnâ€™t an Evolved PokÃ©mon."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -801,7 +800,7 @@ public enum Arceus implements CardInfo {
 			return evolution (this, from:"Ponyta", hp:HP080, type:FIRE, retreatCost:0) {
 				weakness W, PLUS20
 				pokeBody "Wild Guard", {
-					text "Prevent all effects of attacks, including damage, done to Rapidash by your opponent’s Pokémon ."
+					text "Prevent all effects of attacks, including damage, done to Rapidash by your opponentâ€™s PokÃ©mon ."
 					delayedA {
 					}
 				}
@@ -827,7 +826,7 @@ public enum Arceus implements CardInfo {
 			return evolution (this, from:"Rattata", hp:HP070, type:COLORLESS, retreatCost:0) {
 				weakness F, PLUS20
 				move "Recruit", {
-					text "Look at your opponent’s hand, choose a Supporter card you find there, and discard it. Then, use the effect of that card as the effect of this attack."
+					text "Look at your opponentâ€™s hand, choose a Supporter card you find there, and discard it. Then, use the effect of that card as the effect of this attack."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -835,7 +834,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Extend Fang", {
-					text "20+ damage. If Raticate has a Pokémon Tool card attached to it, this attack does 20 damage plus 40 more damage."
+					text "20+ damage. If Raticate has a PokÃ©mon Tool card attached to it, this attack does 20 damage plus 40 more damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -854,7 +853,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Leaf Blast", {
-					text "20× damage. Energy attached to Sceptile."
+					text "20Ã— damage. Energy attached to Sceptile."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -862,7 +861,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Poison Claws", {
-					text "60 damage. The Defending Pokémon is now Poisoned."
+					text "60 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost G, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -876,7 +875,7 @@ public enum Arceus implements CardInfo {
 				weakness R, PLUS30
 				resistance W, MINUS20
 				move "Leaf Supply", {
-					text "30 damage. You may attach a basic Energy card from your hand to 1 of your Pokémon."
+					text "30 damage. You may attach a basic Energy card from your hand to 1 of your PokÃ©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -884,7 +883,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Dual Cut", {
-					text "70× damage. Flip 2 coins. This attack does 70 damage times the number of heads."
+					text "70Ã— damage. Flip 2 coins. This attack does 70 damage times the number of heads."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -897,19 +896,19 @@ public enum Arceus implements CardInfo {
 			return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
 				resistance C, MINUS20
 				pokeBody "Keystone Seal", {
-					text "As long as Spiritomb is your Active Pokémon, each player can’t play any Trainer cards from his or her hand."
+					text "As long as Spiritomb is your Active PokÃ©mon, each player canâ€™t play any Trainer cards from his or her hand."
 					delayedA {
 					}
 				}
 				move "Darkness Grace", {
-					text "Search your deck for a card that evolves from 1 of your Pokémon and put it onto that Pokémon. (This counts as evolving that Pokémon.) If you do, put 1 damage counter on Spiritomb. Shuffle your deck afterward."
+					text "Search your deck for a card that evolves from 1 of your PokÃ©mon and put it onto that PokÃ©mon. (This counts as evolving that PokÃ©mon.) If you do, put 1 damage counter on Spiritomb. Shuffle your deck afterward."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
 						damage 0
 					}
 				}
-				move "Will-o’-the-wisp", {
+				move "Will-oâ€™-the-wisp", {
 					text "10 damage. "
 					energyCost D
 					attackRequirement {}
@@ -924,7 +923,7 @@ public enum Arceus implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				move "Wide Laser", {
-					text "This attack does 10 damage to each of your opponent’s Pokémon."
+					text "This attack does 10 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -932,7 +931,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Hyper Beam", {
-					text "50 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "50 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -967,7 +966,7 @@ public enum Arceus implements CardInfo {
 			return evolution (this, from:"Charmander", hp:HP080, type:FIRE, retreatCost:1) {
 				weakness W, PLUS20
 				move "Slam", {
-					text "30× damage. Flip 2 coins. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Flip 2 coins. This attack does 30 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -989,7 +988,7 @@ public enum Arceus implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				move "Lick", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -997,7 +996,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Night Shade", {
-					text "10 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "10 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1033,7 +1032,7 @@ public enum Arceus implements CardInfo {
 				weakness R, PLUS20
 				resistance W, MINUS20
 				move "Detect", {
-					text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Grovyle during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Grovyle during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1076,7 +1075,7 @@ public enum Arceus implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS10
 				move "Endure", {
-					text "Flip a coin. If heads, during your opponent’s next turn, if Gulpin would be Knocked Out by damage from an attack, Gulpin is not Knocked Out and its remaining HP becomes 10 instead."
+					text "Flip a coin. If heads, during your opponentâ€™s next turn, if Gulpin would be Knocked Out by damage from an attack, Gulpin is not Knocked Out and its remaining HP becomes 10 instead."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1098,12 +1097,12 @@ public enum Arceus implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				pokeBody "Hidden Poison", {
-					text "If Haunter is your Active Pokémon and is damaged by an opponent’s attack (even if Haunter is Knocked Out), the Attacking Pokémon is now Poisoned."
+					text "If Haunter is your Active PokÃ©mon and is damaged by an opponentâ€™s attack (even if Haunter is Knocked Out), the Attacking PokÃ©mon is now Poisoned."
 					delayedA {
 					}
 				}
 				move "Tongue Spring", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to that PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1125,7 +1124,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Shadow Bind", {
-					text "30 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "30 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1147,7 +1146,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Discharge", {
-					text "40× damage. Energy attached to Luxio. Flip a coin for each Energy card you discarded. This attack does 40 damage times the number of heads."
+					text "40Ã— damage. Energy attached to Luxio. Flip a coin for each Energy card you discarded. This attack does 40 damage times the number of heads."
 					energyCost L, C, C, L
 					attackRequirement {}
 					onAttack {
@@ -1225,7 +1224,7 @@ public enum Arceus implements CardInfo {
 			return evolution (this, from:"Ponyta", hp:HP090, type:FIRE, retreatCost:0) {
 				weakness W, PLUS20
 				move "Searing Flame", {
-					text "10 damage. The Defending Pokémon is now Burned."
+					text "10 damage. The Defending PokÃ©mon is now Burned."
 					energyCost R
 					attackRequirement {}
 					onAttack {
@@ -1246,7 +1245,7 @@ public enum Arceus implements CardInfo {
 			return evolution (this, from:"Bagon", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness C, PLUS20
 				move "Scrunch", {
-					text "Flip a coin. If heads, prevent all damage done to Shelgon during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all damage done to Shelgon during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1267,7 +1266,7 @@ public enum Arceus implements CardInfo {
 			return evolution (this, from:"Burmy Plant Cloak", hp:HP080, type:GRASS, retreatCost:1) {
 				weakness R, PLUS20
 				move "Magical Needle", {
-					text "20 damage. Remove 2 damage counters from 1 of your Benched Pokémon."
+					text "20 damage. Remove 2 damage counters from 1 of your Benched PokÃ©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1275,7 +1274,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Cloak Scale", {
-					text "50 damage. If you have Wormadam Sandy Cloak in play, the Defending Pokémon is now Burned, Confused, and Poisoned."
+					text "50 damage. If you have Wormadam Sandy Cloak in play, the Defending PokÃ©mon is now Burned, Confused, and Poisoned."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1311,7 +1310,7 @@ public enum Arceus implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				move "Cloak Shard", {
-					text "Choose 1 of your Pokémon. This attack does 10 damage to that Pokémon. If you have Wormadam Plant Cloak in play, this attack does 40 damage to that Pokémon instead."
+					text "Choose 1 of your PokÃ©mon. This attack does 10 damage to that PokÃ©mon. If you have Wormadam Plant Cloak in play, this attack does 40 damage to that PokÃ©mon instead."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -1319,7 +1318,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Serve Trash", {
-					text "30 damage. You may search your opponent’s discard pile for any 1 card, show it to your opponent, and put it on top of his or her deck."
+					text "30 damage. You may search your opponentâ€™s discard pile for any 1 card, show it to your opponent, and put it on top of his or her deck."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1340,7 +1339,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Super Singe", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Burned."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Burned."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -1353,7 +1352,7 @@ public enum Arceus implements CardInfo {
 			return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
 				weakness R
 				move "Raid", {
-					text "10 damage. from your hand during this turn, this attack’s base damage is 40 instead of 10."
+					text "10 damage. from your hand during this turn, this attackâ€™s base damage is 40 instead of 10."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1361,7 +1360,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Fury Attack", {
-					text "30× damage. Flip 3 coins. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Flip 3 coins. This attack does 30 damage times the number of heads."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1375,7 +1374,7 @@ public enum Arceus implements CardInfo {
 				weakness R, PLUS10
 				resistance P, MINUS20
 				move "Hypnosis", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Asleep."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -1396,7 +1395,7 @@ public enum Arceus implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Bunny Hop", {
-					text "Choose 1 of your opponent’s Pokémon that doesn’t have any damage counters on it. This attack does 20 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon that doesnâ€™t have any damage counters on it. This attack does 20 damage to that PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1463,7 +1462,7 @@ public enum Arceus implements CardInfo {
 			return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
 				weakness W, PLUS10
 				move "Call for Friends", {
-					text "Basic Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+					text "Basic PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 					energyCost C, R
 					attackRequirement {}
 					onAttack {
@@ -1506,7 +1505,7 @@ public enum Arceus implements CardInfo {
 			return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
 				weakness P, PLUS10
 				move "Astonish", {
-					text "Choose 1 card from your opponent’s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
+					text "Choose 1 card from your opponentâ€™s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1586,7 +1585,7 @@ public enum Arceus implements CardInfo {
 				weakness G, PLUS10
 				resistance L, MINUS20
 				move "Stone Barrage", {
-					text "10× damage. Flip a coin until you get tails. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip a coin until you get tails. This attack does 10 damage times the number of heads."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1641,7 +1640,7 @@ public enum Arceus implements CardInfo {
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
 				weakness P, PLUS10
 				move "Sand Attack", {
-					text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1662,7 +1661,7 @@ public enum Arceus implements CardInfo {
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
 				weakness W, PLUS10
 				move "Harden", {
-					text "During your opponent’s next turn, if Nosepass would be damaged by an attack, prevent that attack’s damage done to Nosepass if that damage is 30 or less."
+					text "During your opponentâ€™s next turn, if Nosepass would be damaged by an attack, prevent that attackâ€™s damage done to Nosepass if that damage is 30 or less."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1691,7 +1690,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Tickle", {
-					text "20 damage. Flip a coin. If heads, the Defendign Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defendign PokÃ©mon is now Paralyzed."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1713,7 +1712,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Mega Shot", {
-					text "Energy attached to Pikachu and then choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
+					text "Energy attached to Pikachu and then choose 1 of your opponentâ€™s PokÃ©mon. This attack does 40 damage to that PokÃ©mon."
 					energyCost L, C, C, L
 					attackRequirement {}
 					onAttack {
@@ -1769,7 +1768,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Swagger", {
-					text "20 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "20 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1782,7 +1781,7 @@ public enum Arceus implements CardInfo {
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness M, PLUS10
 				move "Ice Breath", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1790,7 +1789,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Double Headbutt", {
-					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1812,7 +1811,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Sleep Powder", {
-					text "20 damage. The Defending Pokémon is now Asleep."
+					text "20 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1834,7 +1833,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Stun Spore", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1892,7 +1891,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Slashing Strike", {
-					text "30 damage. During your next turn, Wingull can’t use Slashing Strike."
+					text "30 damage. During your next turn, Wingull canâ€™t use Slashing Strike."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1925,7 +1924,7 @@ public enum Arceus implements CardInfo {
 			};
 			case BENCH_SHIELD_83:
 			return basicTrainer (this) {
-				text "Attach Bench Shield to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAs long as the Pokémon this card is attached to is on your Bench, prevent all damage done to that Pokémon by attacks (both yours and your opponent’s)."
+				text "Attach Bench Shield to 1 of your PokÃ©mon that doesnâ€™t already have a PokÃ©mon Tool attached to it. If that PokÃ©mon is Knocked Out, discard this card.\nAs long as the PokÃ©mon this card is attached to is on your Bench, prevent all damage done to that PokÃ©mon by attacks (both yours and your opponentâ€™s)."
 				onPlay {
 				}
 				playRequirement{
@@ -1933,7 +1932,7 @@ public enum Arceus implements CardInfo {
 			};
 			case BUFFER_PIECE_84:
 			return basicTrainer (this) {
-				text "Attach Buffer Piece to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAny damage done to the Pokémon this card is attached to by an opponent’s attack is reduced by 20 (after applying Weakness and Resistance). At the end of your opponent’s turn after you played Buffer Piece, discard Buffer Piece."
+				text "Attach Buffer Piece to 1 of your PokÃ©mon that doesnâ€™t already have a PokÃ©mon Tool attached to it. If that PokÃ©mon is Knocked Out, discard this card.\nAny damage done to the PokÃ©mon this card is attached to by an opponentâ€™s attack is reduced by 20 (after applying Weakness and Resistance). At the end of your opponentâ€™s turn after you played Buffer Piece, discard Buffer Piece."
 				onPlay {
 				}
 				playRequirement{
@@ -1941,7 +1940,7 @@ public enum Arceus implements CardInfo {
 			};
 			case DEPARTMENT_STORE_GIRL_85:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 3 Pokémon Tool cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your deck for up to 3 PokÃ©mon Tool cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -1949,7 +1948,7 @@ public enum Arceus implements CardInfo {
 			};
 			case ENERGY_RESTORE_86:
 			return basicTrainer (this) {
-				text "Flip 3 coins. For each heads, put a basic Energy card from your discard pile into your hand. If you don’t have that many basic Energy cards in your discard pile, put all of them into your hand."
+				text "Flip 3 coins. For each heads, put a basic Energy card from your discard pile into your hand. If you donâ€™t have that many basic Energy cards in your discard pile, put all of them into your hand."
 				onPlay {
 				}
 				playRequirement{
@@ -1957,7 +1956,7 @@ public enum Arceus implements CardInfo {
 			};
 			case EXPERT_BELT_87:
 			return basicTrainer (this) {
-				text "Attach Expert Belt to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nThe Pokémon this card is attached to gets +20 HP and that Pokémon’s attacks do 20 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance). When the Pokémon this card is attached to is Knocked Out, your opponent takes 1 more Prize card."
+				text "Attach Expert Belt to 1 of your PokÃ©mon that doesnâ€™t already have a PokÃ©mon Tool attached to it. If that PokÃ©mon is Knocked Out, discard this card.\nThe PokÃ©mon this card is attached to gets +20 HP and that PokÃ©monâ€™s attacks do 20 more damage to your opponentâ€™s Active PokÃ©mon (before applying Weakness and Resistance). When the PokÃ©mon this card is attached to is Knocked Out, your opponent takes 1 more Prize card."
 				onPlay {
 				}
 				playRequirement{
@@ -1965,7 +1964,7 @@ public enum Arceus implements CardInfo {
 			};
 			case LUCKY_EGG_88:
 			return basicTrainer (this) {
-				text "Attach Lucky Egg to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nWhen the Pokémon this card is attached to is Knocked Out by damage from an opponent’s attack, draw cards until you have 7 cards into your hands."
+				text "Attach Lucky Egg to 1 of your PokÃ©mon that doesnâ€™t already have a PokÃ©mon Tool attached to it. If that PokÃ©mon is Knocked Out, discard this card.\nWhen the PokÃ©mon this card is attached to is Knocked Out by damage from an opponentâ€™s attack, draw cards until you have 7 cards into your hands."
 				onPlay {
 				}
 				playRequirement{
@@ -1973,7 +1972,7 @@ public enum Arceus implements CardInfo {
 			};
 			case OLD_AMBER_89:
 			return basicTrainer (this) {
-				text "Play Old Amber as if it were a [C] Basic Pokémon. (Old Amber counts as a Trainer card as well, but if Old Amber is Knocked Out, this counts as a Knocked Out Pokémon.) Old Amber can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Old Amber from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Hard Amber As long as Old Amber is on your Bench, prevent all damage done to Old Amber by attacks (both yours and your opponent’s)."
+				text "Play Old Amber as if it were a [C] Basic PokÃ©mon. (Old Amber counts as a Trainer card as well, but if Old Amber is Knocked Out, this counts as a Knocked Out PokÃ©mon.) Old Amber canâ€™t be affected by any Special Conditions and canâ€™t retreat. At any time during your turn before your attack, you may discard Old Amber from play. (This doesnâ€™t count as a Knocked Out PokÃ©mon.)\nPokÃ©-BODY: Hard Amber As long as Old Amber is on your Bench, prevent all damage done to Old Amber by attacks (both yours and your opponentâ€™s)."
 				onPlay {
 				}
 				playRequirement{
@@ -1981,7 +1980,7 @@ public enum Arceus implements CardInfo {
 			};
 			case PROFESSOR_OAK_S_VISIT_90:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 3 cards. Then, choose a card from your hand and put it on the bottom of your deck."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nDraw 3 cards. Then, choose a card from your hand and put it on the bottom of your deck."
 				onPlay {
 				}
 				playRequirement{
@@ -1989,7 +1988,7 @@ public enum Arceus implements CardInfo {
 			};
 			case ULTIMATE_ZONE_91:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nDuring each player’s turn, the player may move an Energy card attached to 1 of his or her Benched Pokémon to his or her Active Arceus as often as he or she likes."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nDuring each playerâ€™s turn, the player may move an Energy card attached to 1 of his or her Benched PokÃ©mon to his or her Active Arceus as often as he or she likes."
 				onPlay {
 				}
 				playRequirement{
@@ -1997,7 +1996,7 @@ public enum Arceus implements CardInfo {
 			};
 			case DOME_FOSSIL_92:
 			return basicTrainer (this) {
-				text "Play Dome Fossil as if it were a [C] Basic Pokémon. (Dome Fossil counts as a Trainer card as well, but if Dome Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Dome Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Dome Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Rock Reaction When you attach a [F] Energy card from your hand to Dome Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Dome Fossil and put it onto Dome Fossil (this counts as evolving Dome Fossil). Shuffle your deck afterward."
+				text "Play Dome Fossil as if it were a [C] Basic PokÃ©mon. (Dome Fossil counts as a Trainer card as well, but if Dome Fossil is Knocked Out, this counts as a Knocked Out PokÃ©mon.) Dome Fossil canâ€™t be affected by any Special Conditions and canâ€™t retreat. At any time during your turn before your attack, you may discard Dome Fossil from play. (This doesnâ€™t count as a Knocked Out PokÃ©mon.)\nPokÃ©-BODY: Rock Reaction When you attach a [F] Energy card from your hand to Dome Fossil (excluding effects of attacks or PokÃ©-Powers), search your deck for a card that evolves from Dome Fossil and put it onto Dome Fossil (this counts as evolving Dome Fossil). Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2005,7 +2004,7 @@ public enum Arceus implements CardInfo {
 			};
 			case HELIX_FOSSIL_93:
 			return basicTrainer (this) {
-				text "Play Helix Fossil as if it were a [C] Basic Pokémon. (Helix Fossil counts as a Trainer card as well, but if Helix Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Helix Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Helix Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Aqua Reaction When you attach a [W] Energy card from your hand to Helix Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Helix Fossil and put it onto Helix Fossil (this counts as evolving Helix Fossil). Shuffle your deck afterwards."
+				text "Play Helix Fossil as if it were a [C] Basic PokÃ©mon. (Helix Fossil counts as a Trainer card as well, but if Helix Fossil is Knocked Out, this counts as a Knocked Out PokÃ©mon.) Helix Fossil canâ€™t be affected by any Special Conditions and canâ€™t retreat. At any time during your turn before your attack, you may discard Helix Fossil from play. (This doesnâ€™t count as a Knocked Out PokÃ©mon.)\nPokÃ©-BODY: Aqua Reaction When you attach a [W] Energy card from your hand to Helix Fossil (excluding effects of attacks or PokÃ©-Powers), search your deck for a card that evolves from Helix Fossil and put it onto Helix Fossil (this counts as evolving Helix Fossil). Shuffle your deck afterwards."
 				onPlay {
 				}
 				playRequirement{
@@ -2014,7 +2013,7 @@ public enum Arceus implements CardInfo {
 			case ARCEUS_LV_X_94:
 			return evolution (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
 				pokeBody "Multitype", {
-					text "Arceus LV.‘s type is the same type as its previous Level."
+					text "Arceus LV.â€˜s type is the same type as its previous Level."
 					delayedA {
 					}
 				}
@@ -2032,7 +2031,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Arceus. Arceus LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Arceus. Arceus LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2044,7 +2043,7 @@ public enum Arceus implements CardInfo {
 			case ARCEUS_LV_X_95:
 			return evolution (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
 				pokeBody "Multitype", {
-					text "Arceus LV.‘s type is the same as its previous Level."
+					text "Arceus LV.â€˜s type is the same as its previous Level."
 					delayedA {
 					}
 				}
@@ -2057,7 +2056,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Meteor Blast", {
-					text "100 damage. Flip a coin. If tails, this attack’s base damage is 50 instead of 100."
+					text "100 damage. Flip a coin. If tails, this attackâ€™s base damage is 50 instead of 100."
 					energyCost G, R, C
 					attackRequirement {}
 					onAttack {
@@ -2065,7 +2064,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Arceus. Arceus LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Arceus. Arceus LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2077,7 +2076,7 @@ public enum Arceus implements CardInfo {
 			case ARCEUS_LV_X_96:
 			return evolution (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
 				pokeBody "Multitype", {
-					text "Arceus LV.‘s type is the same type as its previous Level."
+					text "Arceus LV.â€˜s type is the same type as its previous Level."
 					delayedA {
 					}
 				}
@@ -2098,7 +2097,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Arceus. Arceus LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Arceus. Arceus LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2112,12 +2111,12 @@ public enum Arceus implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				pokePower "Level-Down", {
-					text "Once during your turn , you may choose 1 of your opponent’s Pokémon LV.. Remove the Level-Up card from that Pokémon and have your opponent shuffle the card into his or her deck. The power can’t be used if Gengar is affected by a Special Condition."
+					text "Once during your turn , you may choose 1 of your opponentâ€™s PokÃ©mon LV.. Remove the Level-Up card from that PokÃ©mon and have your opponent shuffle the card into his or her deck. The power canâ€™t be used if Gengar is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Compound Pain", {
-					text "This attack does 30 damage to each of your opponent’s Pokémon that already has damage counters on it."
+					text "This attack does 30 damage to each of your opponentâ€™s PokÃ©mon that already has damage counters on it."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -2125,7 +2124,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Gengar. Gengar LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Gengar. Gengar LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2139,7 +2138,7 @@ public enum Arceus implements CardInfo {
 				weakness C
 				resistance F, MINUS20
 				pokePower "Double Fall", {
-					text "Once during your turn , when you put Salamence LV. from your hand onto your Active Salamence, you may use this power. For each of your opponent’s Pokémon that is Knocked Out by damage from Salamence’s attacks this turn, take 1 more Prize card."
+					text "Once during your turn , when you put Salamence LV. from your hand onto your Active Salamence, you may use this power. For each of your opponentâ€™s PokÃ©mon that is Knocked Out by damage from Salamenceâ€™s attacks this turn, take 1 more Prize card."
 					actionA {
 					}
 				}
@@ -2152,7 +2151,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Salamence. Salamence LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Salamence. Salamence LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2166,12 +2165,12 @@ public enum Arceus implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				pokePower "Healing Growth", {
-					text "Once during your turn , you may flip a coin. If heads, remove 4 damage counters from 1 of your Pokémon. This power can’t be used if Tangrowth is affected by a Special Condition."
+					text "Once during your turn , you may flip a coin. If heads, remove 4 damage counters from 1 of your PokÃ©mon. This power canâ€™t be used if Tangrowth is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Big Growth", {
-					text "Energy cards as you like and attach them to your Pokémon in any way you like."
+					text "Energy cards as you like and attach them to your PokÃ©mon in any way you like."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -2179,7 +2178,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Tangrowth. Tangrowth LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Tangrowth. Tangrowth LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2262,7 +2261,7 @@ public enum Arceus implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				move "Leaf Refresh", {
-					text "30 damage. Remove 3 damage counters from each of your Benched Pokémon."
+					text "30 damage. Remove 3 damage counters from each of your Benched PokÃ©mon."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -2288,7 +2287,7 @@ public enum Arceus implements CardInfo {
 			return basic (this, hp:HP090, type:WATER, retreatCost:2) {
 				weakness L
 				move "Fastwave", {
-					text "50 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "50 damage. This attackâ€™s damage isnâ€™t affected by Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -2301,7 +2300,7 @@ public enum Arceus implements CardInfo {
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Ripple Swell", {
-					text "If you have 6 Arceus in play and each of them is a different type, search your deck for up to 6 basic Energy cards. Attach each of those Energy cards to a different Pokémon you have in play. Shuffle your deck afterward."
+					text "If you have 6 Arceus in play and each of them is a different type, search your deck for up to 6 basic Energy cards. Attach each of those Energy cards to a different PokÃ©mon you have in play. Shuffle your deck afterward."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2309,7 +2308,7 @@ public enum Arceus implements CardInfo {
 					}
 				}
 				move "Sky Spear", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 80 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon). Remove all Energy cards attached to Arceus and put them in the Lost Zone."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 80 damage to that PokÃ©mon. (Donâ€™t apply Weakness and Resistance for Benched PokÃ©mon). Remove all Energy cards attached to Arceus and put them in the Lost Zone."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -2323,7 +2322,7 @@ public enum Arceus implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				move "Lightning Turn", {
-					text "30 damage. Switch Arceus with 1 of your Benched Pokémon."
+					text "30 damage. Switch Arceus with 1 of your Benched PokÃ©mon."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -2336,7 +2335,7 @@ public enum Arceus implements CardInfo {
 			return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Mind Bend", {
-					text "40 damage. The Defending Pokémon is now Confused."
+					text "40 damage. The Defending PokÃ©mon is now Confused."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
@@ -2350,7 +2349,7 @@ public enum Arceus implements CardInfo {
 				weakness W
 				resistance L, MINUS20
 				move "Break Ground", {
-					text "60 damage. Does 10 damage to each of your Benched Pokémon."
+					text "60 damage. Does 10 damage to each of your Benched PokÃ©mon."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -2364,7 +2363,7 @@ public enum Arceus implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				move "Metal Barrier", {
-					text "40 damage. during your opponent’s next turn."
+					text "40 damage. during your opponentâ€™s next turn."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {

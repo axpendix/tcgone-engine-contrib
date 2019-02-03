@@ -148,12 +148,12 @@ public enum Platinum implements CardInfo {
 	MEMORY_BERRY_110 ("Memory Berry", 110, Rarity.UNCOMMON, [TRAINER]),
 	MIASMA_VALLEY_111 ("Miasma Valley", 111, Rarity.UNCOMMON, [TRAINER]),
 	PLUSPOWER_112 ("PlusPower", 112, Rarity.UNCOMMON, [TRAINER]),
-	POKE_BALL_113 ("Poké Ball", 113, Rarity.UNCOMMON, [TRAINER]),
-	POKEDEX_HANDY910IS_114 ("Pokédex HANDY910is", 114, Rarity.UNCOMMON, [TRAINER]),
-	POKEMON_RESCUE_115 ("Pokémon Rescue", 115, Rarity.UNCOMMON, [TRAINER]),
+	POKE_BALL_113 ("PokÃ© Ball", 113, Rarity.UNCOMMON, [TRAINER]),
+	POKEDEX_HANDY910IS_114 ("PokÃ©dex HANDY910is", 114, Rarity.UNCOMMON, [TRAINER]),
+	POKEMON_RESCUE_115 ("PokÃ©mon Rescue", 115, Rarity.UNCOMMON, [TRAINER]),
 	ENERGY_GAIN_116 ("Energy Gain", 116, Rarity.UNCOMMON, [TRAINER]),
 	POWER_SPRAY_117 ("Power Spray", 117, Rarity.UNCOMMON, [TRAINER]),
-	POKE_TURN_118 ("Poké Turn", 118, Rarity.UNCOMMON, [TRAINER]),
+	POKE_TURN_118 ("PokÃ© Turn", 118, Rarity.UNCOMMON, [TRAINER]),
 	ARMOR_FOSSIL_119 ("Armor Fossil", 119, Rarity.COMMON, [TRAINER]),
 	SKULL_FOSSIL_120 ("Skull Fossil", 120, Rarity.COMMON, [TRAINER]),
 	RAINBOW_ENERGY_121 ("Rainbow Energy", 121, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
@@ -166,10 +166,9 @@ public enum Platinum implements CardInfo {
 	ELECTABUZZ_128 ("Electabuzz", 128, Rarity.SECRET, [BASIC, POKEMON, _LIGHTNING_]),
 	HITMONCHAN_129 ("Hitmonchan", 129, Rarity.SECRET, [BASIC, POKEMON, _FIGHTING_]),
 	SCYTHER_130 ("Scyther", 130, Rarity.SECRET, [BASIC, POKEMON, _GRASS_]),
-	LOTAD_SH4 ("Lotad", SH4, Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
-	SWABLU_SH5 ("Swablu", SH5, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-	VULPIX_SH6 ("Vulpix", SH6, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
-;
+	LOTAD_SH4 ("Lotad", 131, Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
+	SWABLU_SH5 ("Swablu", 131, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+	VULPIX_SH6 ("Vulpix", 132, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -228,12 +227,12 @@ public enum Platinum implements CardInfo {
 				weakness F, PLUS30
 				resistance M, MINUS20
 				pokeBody "Damage Bind", {
-					text "Each Pokémon that has any damage counters on it can’t use any Poké-Powers."
+					text "Each PokÃ©mon that has any damage counters on it canâ€™t use any PokÃ©-Powers."
 					delayedA {
 					}
 				}
 				move "Gigavolt", {
-					text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 30 more damage. If tails, the Defending Pokémon is now Paralyzed."
+					text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 30 more damage. If tails, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -241,7 +240,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Reflect Energy", {
-					text "70 damage. Move an Energy card attached to Ampharos to 1 of your Benched Pokémon."
+					text "70 damage. Move an Energy card attached to Ampharos to 1 of your Benched PokÃ©mon."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -254,7 +253,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Wartortle", hp:HP130, type:WATER, retreatCost:2) {
 				weakness L, PLUS30
 				pokePower "Dig Well", {
-					text "Once during your turn , you may look at the top 3 cards of your deck, choose as many Energy cards as you like, and attach them to your Pokémon in any way you like. Discard the other cards. This power can’t be used if Blastoise is affected by a Special Condition."
+					text "Once during your turn , you may look at the top 3 cards of your deck, choose as many Energy cards as you like, and attach them to your PokÃ©mon in any way you like. Discard the other cards. This power canâ€™t be used if Blastoise is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -267,7 +266,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Double Launcher", {
-					text "Blastoise can’t use Double Launcher during your next turn."
+					text "Blastoise canâ€™t use Double Launcher during your next turn."
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -280,12 +279,12 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Combusken", hp:HP130, type:FIRE, retreatCost:1) {
 				weakness W, PLUS30
 				pokePower "Fire Breath", {
-					text "Once during your turn , you may choose 1 of the Defending Pokémon. That Pokémon is now Burned. This power can’t be used if Blaziken is affected by a Special Condition."
+					text "Once during your turn , you may choose 1 of the Defending PokÃ©mon. That PokÃ©mon is now Burned. This power canâ€™t be used if Blaziken is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Clutch", {
-					text "40 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "40 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -306,7 +305,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Skitty", hp:HP090, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				pokePower "Power Circulation", {
-					text "Once during your turn , you may search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put those cards on top of your deck in any order. If you do, put 2 damage counters on Delcatty. This power can’t be used if Delcatty is affected by a Special Condition."
+					text "Once during your turn , you may search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put those cards on top of your deck in any order. If you do, put 2 damage counters on Delcatty. This power canâ€™t be used if Delcatty is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -333,7 +332,7 @@ public enum Platinum implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				pokePower "Reverse Time", {
-					text "Once during your turn, when you put Dialga from your hand onto your Bench, you may search your discard pile for up to 3 in any combination of Pokémon (excluding Pokémon LV.) and basic Energy cards. Show them to your opponent and put them on top of your deck in any order."
+					text "Once during your turn, when you put Dialga from your hand onto your Bench, you may search your discard pile for up to 3 in any combination of PokÃ©mon (excluding PokÃ©mon LV.) and basic Energy cards. Show them to your opponent and put them on top of your deck in any order."
 					actionA {
 					}
 				}
@@ -352,7 +351,7 @@ public enum Platinum implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				pokeBody "Time Aura", {
-					text "As long as Dialga is your Active Pokémon, your opponent can’t play any Pokémon from his or her hand to evolve his or her Active Pokémon."
+					text "As long as Dialga is your Active PokÃ©mon, your opponent canâ€™t play any PokÃ©mon from his or her hand to evolve his or her Active PokÃ©mon."
 					delayedA {
 					}
 				}
@@ -371,7 +370,7 @@ public enum Platinum implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				move "Deafen", {
-					text "10 damage. Your opponent can’t play any Trainer cards or Stadium cards from his or her hand during your opponent’s next turn."
+					text "10 damage. Your opponent canâ€™t play any Trainer cards or Stadium cards from his or her hand during your opponentâ€™s next turn."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -379,7 +378,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Second Strike", {
-					text "50+ damage. If the Defending Pokémon already has 2 or more damage counters on it, this attack does 50 damage plus 20 more damage."
+					text "50+ damage. If the Defending PokÃ©mon already has 2 or more damage counters on it, this attack does 50 damage plus 20 more damage."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
@@ -392,12 +391,12 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Kirlia", hp:HP120, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS30
 				pokePower "Psychic Connect", {
-					text "As often as you like during your turn , you may move a Energy attached to 1 of your Benched Pokémon to your Active Pokémon. This power can’t be used if Gardevoir is affected by a Special Condition."
+					text "As often as you like during your turn , you may move a Energy attached to 1 of your Benched PokÃ©mon to your Active PokÃ©mon. This power canâ€™t be used if Gardevoir is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Energy Burst", {
-					text "20+ damage. Does 20 damage plus 10 more damage for each Energy attached to Gardevoir and the Defending Pokémon."
+					text "20+ damage. Does 20 damage plus 10 more damage for each Energy attached to Gardevoir and the Defending PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -405,7 +404,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Psychic Protection", {
-					text "60 damage. Gardevoir has no Weakness during your opponent’s next turn."
+					text "60 damage. Gardevoir has no Weakness during your opponentâ€™s next turn."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -424,7 +423,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Earth Power", {
-					text "60 damage. Flip 2 coins. This attack does 10 damage times the number of heads to each of your opponent’s Benched Pokémon."
+					text "60 damage. Flip 2 coins. This attack does 10 damage times the number of heads to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -438,7 +437,7 @@ public enum Platinum implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				move "Over Slash", {
-					text "This attack does 10 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon)."
+					text "This attack does 10 damage to each of your opponentâ€™s PokÃ©mon. (Donâ€™t apply Weakness and Resistance for Benched PokÃ©mon)."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -446,7 +445,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Dark Wing Flaps", {
-					text "20 damage. Choose 1 card from your opponent’s hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
+					text "20 damage. Choose 1 card from your opponentâ€™s hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
@@ -468,7 +467,7 @@ public enum Platinum implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				pokeBody "Electric Barrier", {
-					text "Prevent all damage done to your Benched Pokémon (excluding any Manectric) by attacks."
+					text "Prevent all damage done to your Benched PokÃ©mon (excluding any Manectric) by attacks."
 					delayedA {
 					}
 				}
@@ -481,7 +480,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Attract Current", {
-					text "40 damage. Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
+					text "40 damage. Energy card and attach it to 1 of your PokÃ©mon. Shuffle your deck afterward."
 					energyCost C, C, L
 					attackRequirement {}
 					onAttack {
@@ -494,7 +493,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP100, type:WATER, retreatCost:2) {
 				weakness L
 				move "Splashing Turn", {
-					text "20 damage. with 1 of your Benched Pokémon."
+					text "20 damage. with 1 of your Benched PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -502,7 +501,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Pearl Breath 50 damage", {
-					text "Does 10 damage to each of your opponent’s Benched Pokémon."
+					text "Does 10 damage to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -515,12 +514,12 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Cranidos", hp:HP130, type:FIGHTING, retreatCost:1) {
 				weakness G, PLUS30
 				pokeBody "Iron Skull", {
-					text "Rampardos’s attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "Rampardosâ€™s attackâ€™s damage isnâ€™t affected by Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					delayedA {
 					}
 				}
 				move "Head Smash", {
-					text "80 damage. If the Defending Pokémon would be Knocked Out by this attack, Rampardos does 40 damage to itself."
+					text "80 damage. If the Defending PokÃ©mon would be Knocked Out by this attack, Rampardos does 40 damage to itself."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -542,7 +541,7 @@ public enum Platinum implements CardInfo {
 				weakness R, PLUS20
 				resistance W, MINUS20
 				move "Flower Aroma", {
-					text "10 damage. Remove 2 damage counters from Shaymin. The Defending Pokémon is now Asleep."
+					text "10 damage. Remove 2 damage counters from Shaymin. The Defending PokÃ©mon is now Asleep."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -550,7 +549,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Damage Aid", {
-					text "30+ damage. If the Defending Pokémon is affected by a Special Condition, this attack does 30 damage plus 50 more damage. Then, remove all Special Conditions from the Defending Pokémon."
+					text "30+ damage. If the Defending PokÃ©mon is affected by a Special Condition, this attack does 30 damage plus 50 more damage. Then, remove all Special Conditions from the Defending PokÃ©mon."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -585,7 +584,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Vigoroth", hp:HP150, type:COLORLESS, retreatCost:4) {
 				weakness F, PLUS30
 				pokeBody "Lazy Paunch", {
-					text "If Slaking used any attacks during your last turn, Slaking can’t attack."
+					text "If Slaking used any attacks during your last turn, Slaking canâ€™t attack."
 					delayedA {
 					}
 				}
@@ -626,7 +625,7 @@ public enum Platinum implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				move "Midnight Eyes", {
-					text "20 damage. The Defending Pokémon is now Asleep."
+					text "20 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -634,7 +633,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Perish Song", {
-					text "If the Defending Pokémon is Asleep and was damaged or affected by Midnight Eyes during your last turn, the Defending Pokémon is Knocked Out."
+					text "If the Defending PokÃ©mon is Asleep and was damaged or affected by Midnight Eyes during your last turn, the Defending PokÃ©mon is Knocked Out."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -642,7 +641,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Healing Song", {
-					text "40 damage. Remove 1 damage counter from each of your Pokémon."
+					text "40 damage. Remove 1 damage counter from each of your PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -656,12 +655,12 @@ public enum Platinum implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				pokePower "Temper Tantrum", {
-					text "Once during your turn , you may discard as many cards as you like from your hand. If you do, put that many damage counters on Banette. This power can’t be used if Banette is affected by a Special Condition."
+					text "Once during your turn , you may discard as many cards as you like from your hand. If you do, put that many damage counters on Banette. This power canâ€™t be used if Banette is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Darkness Switch", {
-					text "Discard an Energy card attached to Banette, and then switch all damage counters on Banette with those on the Defending Pokémon. (If an effect of this attack is prevented, this attack does nothing.)"
+					text "Discard an Energy card attached to Banette, and then switch all damage counters on Banette with those on the Defending PokÃ©mon. (If an effect of this attack is prevented, this attack does nothing.)"
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -669,7 +668,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Loneliness", {
-					text "30+ damage. You may show your hand to your opponent. If you do and if you don’t have any Pokémon in your hand, this attack does 30 damage plus 30 more damage."
+					text "30+ damage. You may show your hand to your opponent. If you do and if you donâ€™t have any PokÃ©mon in your hand, this attack does 30 damage plus 30 more damage."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -683,12 +682,12 @@ public enum Platinum implements CardInfo {
 				weakness R, PLUS30
 				resistance P, MINUS20
 				pokeBody "Metal Trait", {
-					text "As long as Bastiodon has a Pokémon Tool card attached to it, remove 1 damage counter from Bastiodon between turns."
+					text "As long as Bastiodon has a PokÃ©mon Tool card attached to it, remove 1 damage counter from Bastiodon between turns."
 					delayedA {
 					}
 				}
 				move "Iron Defense", {
-					text "30 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Bastiodon during your opponent’s next turn."
+					text "30 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Bastiodon during your opponentâ€™s next turn."
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
@@ -710,7 +709,7 @@ public enum Platinum implements CardInfo {
 				weakness L, PLUS30
 				resistance F, MINUS20
 				move "Colorful Powder", {
-					text "20+ damage. If Beautifly has 2 or less Energy attached to it, the Defending Pokémon is now Poisoned. If Beautifly has 3 Energy attached to it, the Defending Pokémon is now Burned and Poisoned. If Beautifly has 4 or more Energy attached to it, this attack does 20 damage plus 40 more damage and the Defending Pokémon is now Asleep, Burned, and Poisoned."
+					text "20+ damage. If Beautifly has 2 or less Energy attached to it, the Defending PokÃ©mon is now Poisoned. If Beautifly has 3 Energy attached to it, the Defending PokÃ©mon is now Burned and Poisoned. If Beautifly has 4 or more Energy attached to it, this attack does 20 damage plus 40 more damage and the Defending PokÃ©mon is now Asleep, Burned, and Poisoned."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -718,7 +717,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Silver Scale", {
-					text "30 damage. If the Defending Pokémon has any Resistance, this attack’s base damage is 60 damage instead of 30."
+					text "30 damage. If the Defending PokÃ©mon has any Resistance, this attackâ€™s base damage is 60 damage instead of 30."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -731,7 +730,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Chansey", hp:HP120, type:COLORLESS, retreatCost:2) {
 				weakness F, PLUS30
 				pokePower "Nurse Call", {
-					text "Once during your turn , you may discard a card from your hand. If you do, remove 2 damage counters from 1 of your Pokémon. You can’t use more than 1 Nurse Call Poké-Power each turn. This power can’t be used if Blissey is affected by a Special Condition."
+					text "Once during your turn , you may discard a card from your hand. If you do, remove 2 damage counters from 1 of your PokÃ©mon. You canâ€™t use more than 1 Nurse Call PokÃ©-Power each turn. This power canâ€™t be used if Blissey is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -766,7 +765,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Diamond Blow", {
-					text "100 damage. Dialga can’t attack during your next turn."
+					text "100 damage. Dialga canâ€™t attack during your next turn."
 					energyCost M, M, M, C
 					attackRequirement {}
 					onAttack {
@@ -780,12 +779,12 @@ public enum Platinum implements CardInfo {
 				weakness W, PLUS20
 				resistance L, MINUS20
 				pokeBody "Sinkhole", {
-					text "If your opponent’s Active Pokémon retreats, put 2 damage counters on that Pokémon."
+					text "If your opponentâ€™s Active PokÃ©mon retreats, put 2 damage counters on that PokÃ©mon."
 					delayedA {
 					}
 				}
 				move "Push Down", {
-					text "30 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "30 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -806,12 +805,12 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Cascoon", hp:HP130, type:PSYCHIC, retreatCost:0) {
 				weakness R, PLUS30
 				pokeBody "Camouflage Pattern", {
-					text "Prevent all effects of attacks, including damage, done to Dustox by your opponent’s Pokémon that is affected by 2 or more Special Conditions."
+					text "Prevent all effects of attacks, including damage, done to Dustox by your opponentâ€™s PokÃ©mon that is affected by 2 or more Special Conditions."
 					delayedA {
 					}
 				}
 				move "Smogscreen", {
-					text "20 damage. The Defending Pokémon is now Poisoned. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "20 damage. The Defending PokÃ©mon is now Poisoned. If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -819,7 +818,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Chemical Scale", {
-					text "60 damage. If the Defending Pokémon has any Poké-Powers or Poké-Bodies, the Defending Pokémon is now Burned and Confused."
+					text "60 damage. If the Defending PokÃ©mon has any PokÃ©-Powers or PokÃ©-Bodies, the Defending PokÃ©mon is now Burned and Confused."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -832,7 +831,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Prinplup", hp:HP130, type:WATER, retreatCost:2) {
 				weakness L, PLUS30
 				move "Knock Off", {
-					text "40 damage. Choose 1 card from your opponent’s hand without looking and discard it."
+					text "40 damage. Choose 1 card from your opponentâ€™s hand without looking and discard it."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -840,7 +839,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Jet Smash", {
-					text "Empoleon can’t use Jet Smash during your next turn."
+					text "Empoleon canâ€™t use Jet Smash during your next turn."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -854,7 +853,7 @@ public enum Platinum implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				move "Strafe", {
-					text "20 damage. You may switch Giratina with 1 of your Benched Pokémon."
+					text "20 damage. You may switch Giratina with 1 of your Benched PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -862,7 +861,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Broken-space Blow", {
-					text "50 damage. If the Defending Pokémon is Knocked Out by this attack, put the Defending Pokémon and all cards attached to in the Lost Zone instead of the discard pile."
+					text "50 damage. If the Defending PokÃ©mon is Knocked Out by this attack, put the Defending PokÃ©mon and all cards attached to in the Lost Zone instead of the discard pile."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -884,7 +883,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Dragonbreath", {
-					text "80 damage. Flip a coin. If tails, this attack does nothing. If heads, the Defending Pokémon is now Paralyzed."
+					text "80 damage. Flip a coin. If tails, this attack does nothing. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -897,7 +896,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Psyduck", hp:HP090, type:WATER, retreatCost:0) {
 				weakness L, PLUS20
 				move "Swim", {
-					text "30 damage. Energy attached to any of his or her Pokémon, you may do 30 damage to any 1 Benched Pokémon instead."
+					text "30 damage. Energy attached to any of his or her PokÃ©mon, you may do 30 damage to any 1 Benched PokÃ©mon instead."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -905,7 +904,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Water Slide", {
-					text "40+ damage. You may move all Energy cards attached to Golduck to 1 of your Benched Pokémon. If you do, this attack does 40 damage plus 20 more damage."
+					text "40+ damage. You may move all Energy cards attached to Golduck to 1 of your Benched PokÃ©mon. If you do, this attack does 40 damage plus 20 more damage."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -918,7 +917,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP110, type:WATER, retreatCost:3) {
 				weakness L
 				move "Wriggle", {
-					text "Flip a coin for each of your opponent’s Pokémon. If that coin flip is heads, this attack does 30 damage to that Pokémon."
+					text "Flip a coin for each of your opponentâ€™s PokÃ©mon. If that coin flip is heads, this attack does 30 damage to that PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -939,7 +938,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Monferno", hp:HP110, type:FIRE, retreatCost:0) {
 				weakness W, PLUS30
 				move "Rushing Flames", {
-					text "80× damage. Energy cards as you like attached to your Pokémon in play. Flip a coin for each Energy card you discarded. This attack does 80 damage times the number of heads."
+					text "80Ã— damage. Energy cards as you like attached to your PokÃ©mon in play. Flip a coin for each Energy card you discarded. This attack does 80 damage times the number of heads."
 					energyCost R, R
 					attackRequirement {}
 					onAttack {
@@ -960,7 +959,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Kricketot", hp:HP090, type:GRASS, retreatCost:1) {
 				weakness R, PLUS20
 				move "Revenge Melody", {
-					text "20× damage. "
+					text "20Ã— damage. "
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -976,7 +975,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Bug Buzz", {
-					text "50+ damage. If the Defending Pokémon is Asleep, this attack does 50 damage plus 30 more damage. Remove the Special Condition Asleep from the Defending Pokémon."
+					text "50+ damage. If the Defending PokÃ©mon is Asleep, this attack does 50 damage plus 30 more damage. Remove the Special Condition Asleep from the Defending PokÃ©mon."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -989,7 +988,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Lickitung", hp:HP120, type:COLORLESS, retreatCost:4) {
 				weakness F, PLUS20
 				move "Harrumph", {
-					text "Before doing damage, discard all Trainer cards attached to that Pokémon."
+					text "Before doing damage, discard all Trainer cards attached to that PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -997,7 +996,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Body Press", {
-					text "60 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and discard an Energy card attached to the Defending Pokémon."
+					text "60 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed and discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1010,12 +1009,12 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Lombre", hp:HP120, type:GRASS, retreatCost:2) {
 				weakness L, PLUS30
 				pokePower "Cheerful Voice", {
-					text "Once during your turn , you may use this power. If you do, your turn ends. During your next turn, each of Ludicolo’s attacks does 60 more damage to the Defending Pokémon . This power can’t be used if Ludicolo is affected by a Special Condition."
+					text "Once during your turn , you may use this power. If you do, your turn ends. During your next turn, each of Ludicoloâ€™s attacks does 60 more damage to the Defending PokÃ©mon . This power canâ€™t be used if Ludicolo is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Mad Dance", {
-					text "20 damage. The Defending Pokémon is now Confused."
+					text "20 damage. The Defending PokÃ©mon is now Confused."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1023,7 +1022,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Best Dance", {
-					text "60 damage. After doing damage, remove from Ludicolo the number of damage counters equal to the damage you did to the Defending Pokémon. Ludicolo can’t use Best Dance during your next turn."
+					text "60 damage. After doing damage, remove from Ludicolo the number of damage counters equal to the damage you did to the Defending PokÃ©mon. Ludicolo canâ€™t use Best Dance during your next turn."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1036,7 +1035,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Love Call", {
-					text "Choose 1 of your opponent’s Pokémon. Search your deck for a Pokémon that is the same type as the Pokémon you chose, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. Search your deck for a PokÃ©mon that is the same type as the PokÃ©mon you chose, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1057,7 +1056,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Vulpix", hp:HP090, type:FIRE, retreatCost:0) {
 				weakness W, PLUS20
 				move "Flame Bash", {
-					text "Energy cards up to the number of heads and attach them to any of your Pokémon in any way you like. Shuffle your deck afterward."
+					text "Energy cards up to the number of heads and attach them to any of your PokÃ©mon in any way you like. Shuffle your deck afterward."
 					energyCost R
 					attackRequirement {}
 					onAttack {
@@ -1065,7 +1064,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Mysterious Flames", {
-					text "40 damage. If you have more Energy in play than your opponent, the Defending Pokémon is now Burned and Confused."
+					text "40 damage. If you have more Energy in play than your opponent, the Defending PokÃ©mon is now Burned and Confused."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -1078,7 +1077,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP100, type:WATER, retreatCost:2) {
 				weakness L, PLUS30
 				move "Tsunami", {
-					text "10 damage. Does 10 damage to each of your opponent’s Benched Pokémon."
+					text "10 damage. Does 10 damage to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1086,7 +1085,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Water Pulse", {
-					text "60 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
+					text "60 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Asleep."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -1108,7 +1107,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Aromatherapy", {
-					text "40 damage. Remove 2 damage counters from each of your Pokémon."
+					text "40 damage. Remove 2 damage counters from each of your PokÃ©mon."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1121,7 +1120,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Grotle", hp:HP140, type:GRASS, retreatCost:4) {
 				weakness R, PLUS30
 				move "Green Blast", {
-					text "40+ damage. Energy attached to all of your Pokémon."
+					text "40+ damage. Energy attached to all of your PokÃ©mon."
 					energyCost G, C, C, G
 					attackRequirement {}
 					onAttack {
@@ -1129,7 +1128,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Soothing Scent", {
-					text "80 damage. The Defending Pokémon is now Asleep."
+					text "80 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1147,7 +1146,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Deep Poison", {
-					text "20+ damage. If the Defending Pokémon is Poisoned, this attack does 20 damage plus 40 more damage."
+					text "20+ damage. If the Defending PokÃ©mon is Poisoned, this attack does 20 damage plus 40 more damage."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1161,12 +1160,12 @@ public enum Platinum implements CardInfo {
 				weakness P
 				resistance R, MINUS20
 				pokeBody "Galactic Switch", {
-					text "Once during your turn , you may move an Energy card attached to one of your Pokémon to another of your Pokémon to another of your Pokémon. Then, put 2 damage counters on Bronzong . This power can’t be used if Bronzong is affected by a Special Condition."
+					text "Once during your turn , you may move an Energy card attached to one of your PokÃ©mon to another of your PokÃ©mon to another of your PokÃ©mon. Then, put 2 damage counters on Bronzong . This power canâ€™t be used if Bronzong is affected by a Special Condition."
 					delayedA {
 					}
 				}
 				move "Psychic Pulse", {
-					text "40 damage. Does 10 damage to each of your opponent’s Benched Pokémon that has any damage counters on it."
+					text "40 damage. Does 10 damage to each of your opponentâ€™s Benched PokÃ©mon that has any damage counters on it."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
@@ -1179,7 +1178,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Cacnea", hp:HP090, type:GRASS, retreatCost:2) {
 				weakness R, PLUS20
 				move "Spike Wound", {
-					text "Choose 1 of your opponent’s Pokémon that has any damage counters on it. This attack does 50 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon that has any damage counters on it. This attack does 50 damage to that PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1187,7 +1186,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Poison Experiment", {
-					text "20 damage. Energy, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Energy, the Defending PokÃ©mon is now Paralyzed."
 					energyCost G, D, G, D, G, D
 					attackRequirement {}
 					onAttack {
@@ -1201,7 +1200,7 @@ public enum Platinum implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				move "Stretch Vine", {
-					text "Choose 2 of your opponent’s Benched Pokémon. This attack does 10 damage to each of them."
+					text "Choose 2 of your opponentâ€™s Benched PokÃ©mon. This attack does 10 damage to each of them."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1217,7 +1216,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Vine Extract", {
-					text "30 damage. If the Defending Pokémon already has any damage counters on it, the Defending Pokémon is now Burned and Poisoned."
+					text "30 damage. If the Defending PokÃ©mon already has any damage counters on it, the Defending PokÃ©mon is now Burned and Poisoned."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -1238,7 +1237,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Poison Thread", {
-					text "20 damage. The Defending Pokémon is now Poisoned."
+					text "20 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1294,12 +1293,12 @@ public enum Platinum implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				pokePower "Flash Bite", {
-					text "Once during your turn, when you put Crobat from your hand onto your Bench, you may put 1 damage counter on 1 of your opponent’s Pokémon."
+					text "Once during your turn, when you put Crobat from your hand onto your Bench, you may put 1 damage counter on 1 of your opponentâ€™s PokÃ©mon."
 					actionA {
 					}
 				}
 				move "Toxic Fang", {
-					text "The Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
+					text "The Defending PokÃ©mon is now Poisoned. Put 2 damage counters instead of 1 on the Defending PokÃ©mon between turns."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1313,7 +1312,7 @@ public enum Platinum implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Spark", {
-					text "10 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
+					text "10 damage. Does 10 damage to 2 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1321,7 +1320,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Tail Code", {
-					text "30 damage. Move an Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon."
+					text "30 damage. Move an Energy card attached to the Defending PokÃ©mon to another of your opponentâ€™s PokÃ©mon."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1357,7 +1356,7 @@ public enum Platinum implements CardInfo {
 				weakness F, PLUS20
 				resistance P, MINUS20
 				move "Black Cry", {
-					text "20 damage. The Defending Pokémon can’t retreat or use any Poké-Powers during your opponent’s next turn."
+					text "20 damage. The Defending PokÃ©mon canâ€™t retreat or use any PokÃ©-Powers during your opponentâ€™s next turn."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -1378,7 +1377,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Ralts", hp:HP080, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS20
 				move "Teleportation Burst", {
-					text "30 damage. vYou may switch Kirlia with 1 of your Benched Pokémon."
+					text "30 damage. vYou may switch Kirlia with 1 of your Benched PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1407,7 +1406,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "", {
-					text "Flip a coin. If heads, look at your opponent’s hand and choose 1 card, then have your opponent shuffle that card into his or her deck."
+					text "Flip a coin. If heads, look at your opponentâ€™s hand and choose 1 card, then have your opponent shuffle that card into his or her deck."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1428,7 +1427,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Riolu", hp:HP090, type:METAL, retreatCost:0) {
 				weakness R, PLUS20
 				move "Aura Sphere", {
-					text "30 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "30 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -1436,7 +1435,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Do the Wave", {
-					text "20+ damage. Does 20 damage plus 10 more damage for each of your Benched Pokémon."
+					text "20+ damage. Does 20 damage plus 10 more damage for each of your Benched PokÃ©mon."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -1450,7 +1449,7 @@ public enum Platinum implements CardInfo {
 				weakness F, PLUS20
 				resistance P, MINUS20
 				pokeBody "Cold Feet", {
-					text "If Mightyena is affected by a Special Condition, ignore all Energy necessary to use Mightyena’s attacks."
+					text "If Mightyena is affected by a Special Condition, ignore all Energy necessary to use Mightyenaâ€™s attacks."
 					delayedA {
 					}
 				}
@@ -1463,7 +1462,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Desperate Attack", {
-					text "50+ damage. If Mightyena has less Energy attached to it than the Defending Pokémon, this attack does 50 damage plus 30 more damage."
+					text "50+ damage. If Mightyena has less Energy attached to it than the Defending PokÃ©mon, this attack does 50 damage plus 30 more damage."
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
@@ -1477,7 +1476,7 @@ public enum Platinum implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				move "Upper Hand", {
-					text "30 damage. Choose 1 of the Defending Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
+					text "30 damage. Choose 1 of the Defending PokÃ©monâ€™s attacks. That PokÃ©mon canâ€™t use that attack during your opponentâ€™s next turn."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1485,7 +1484,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Psybeam", {
-					text "60 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "60 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -1506,7 +1505,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Paralyzing Gaze", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1524,7 +1523,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Strange Poison", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned. If tails, Muk is now Poisoned."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned. If tails, Muk is now Poisoned."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1532,7 +1531,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Strange Sludge", {
-					text "50+ damage. If Muk is Poisoned, this attack does 50 damage plus 20 more damage and the Defending Pokémon is now Confused."
+					text "50+ damage. If Muk is Poisoned, this attack does 50 damage plus 20 more damage and the Defending PokÃ©mon is now Confused."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -1545,7 +1544,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Remoraid", hp:HP090, type:WATER, retreatCost:2) {
 				weakness L, PLUS20
 				move "Water Vein", {
-					text "50× damage. Reveal the top 5 cards of your deck. Flip a coin for each Energy card you find there. This attack does 50 damage times the number of heads. Shuffle the revealed cards back into your deck."
+					text "50Ã— damage. Reveal the top 5 cards of your deck. Flip a coin for each Energy card you find there. This attack does 50 damage times the number of heads. Shuffle the revealed cards back into your deck."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1553,7 +1552,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Octazooka", {
-					text "40 damage. Any time the Defending Pokémon tries to attack, your opponent flips a coin. If tails, that attack does nothing. (If the Defending Pokémon is no longer your opponent’s Active Pokémon, this effect ends.)"
+					text "40 damage. Any time the Defending PokÃ©mon tries to attack, your opponent flips a coin. If tails, that attack does nothing. (If the Defending PokÃ©mon is no longer your opponentâ€™s Active PokÃ©mon, this effect ends.)"
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -1574,7 +1573,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Bubblebeam", {
-					text "50 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "50 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -1587,7 +1586,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Nosepass", hp:HP090, type:FIGHTING, retreatCost:3) {
 				weakness W, PLUS20
 				move "Stealth Rock", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1595,7 +1594,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Hyper Beam", {
-					text "70 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "70 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
@@ -1616,7 +1615,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Bite and Escape", {
-					text "20 damage. You may switch Seviper with 1 of your Benched Pokémon."
+					text "20 damage. You may switch Seviper with 1 of your Benched PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1624,7 +1623,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Paralyze Poison", {
-					text "40 damage. The Defending Pokémon is now Poisoned. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and Poisoned."
+					text "40 damage. The Defending PokÃ©mon is now Poisoned. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed and Poisoned."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -1638,7 +1637,7 @@ public enum Platinum implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				move "Endure", {
-					text "Flip a coin. If heads, during your opponent’s next turn, if Shieldon would be Knocked Out by damage from an attack, Shieldon is not Knocked Out and its remaining HP becomes 10 instead."
+					text "Flip a coin. If heads, during your opponentâ€™s next turn, if Shieldon would be Knocked Out by damage from an attack, Shieldon is not Knocked Out and its remaining HP becomes 10 instead."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1646,7 +1645,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Rock Slide", {
-					text "30 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
+					text "30 damage. Does 10 damage to 2 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -1667,7 +1666,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Sticky String", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1701,7 +1700,7 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Squirtle", hp:HP080, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Double Slap", {
-					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1709,7 +1708,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Rocket Tackle", {
-					text "30 damage. Wartortle does 10 damage to itself. Flip a coin. If heads, prevent all damage done to Wartortle by attacks during your opponent’s next turn."
+					text "30 damage. Wartortle does 10 damage to itself. Flip a coin. If heads, prevent all damage done to Wartortle by attacks during your opponentâ€™s next turn."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1722,12 +1721,12 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				pokeBody "Thick Skin", {
-					text "Zangoose can’t be affected by any Special Conditions."
+					text "Zangoose canâ€™t be affected by any Special Conditions."
 					delayedA {
 					}
 				}
 				move "Invite and Strike", {
-					text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon. This attack does 20 damage to the new Defending Pokémon."
+					text "Switch the Defending PokÃ©mon with 1 of your opponentâ€™s Benched PokÃ©mon. This attack does 20 damage to the new Defending PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1735,7 +1734,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Chop Up", {
-					text "50 damage. Does 10 damage to each of your opponent’s Benched Pokémon that has any damage counters on it."
+					text "50 damage. Does 10 damage to each of your opponentâ€™s Benched PokÃ©mon that has any damage counters on it."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1757,7 +1756,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Shoot Needle", {
-					text "(You can choose the same Pokémon more than once, but you can’t do more than 10 damage to that Pokémon in this way.)"
+					text "(You can choose the same PokÃ©mon more than once, but you canâ€™t do more than 10 damage to that PokÃ©mon in this way.)"
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1771,7 +1770,7 @@ public enum Platinum implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				move "Poison Breath", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1779,7 +1778,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Sweet Saliva", {
-					text "20 damage. Remove 1 damage counter from each of your Benched Pokémon."
+					text "20 damage. Remove 1 damage counter from each of your Benched PokÃ©mon."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1792,7 +1791,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
 				weakness F, PLUS20
 				move "Healing Trial", {
-					text "Flip a coin. If heads, remove 3 damage counters from Chansey. If tails, remove 3 damage counters from the Defending Pokémon."
+					text "Flip a coin. If heads, remove 3 damage counters from Chansey. If tails, remove 3 damage counters from the Defending PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1800,7 +1799,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Pulled Punch", {
-					text "40 damage. If the Defending Pokémon already has any damage counters on it, this attack’s base damage is 10 instead of 40."
+					text "40 damage. If the Defending PokÃ©mon already has any damage counters on it, this attackâ€™s base damage is 10 instead of 40."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1843,7 +1842,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Shoot Through", {
-					text "20 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "20 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1857,7 +1856,7 @@ public enum Platinum implements CardInfo {
 				weakness W
 				resistance L, MINUS20
 				move "Dig Under", {
-					text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
+					text "Choose 1 of your opponentâ€™s Benched PokÃ©mon. This attack does 10 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1878,7 +1877,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Call for Family", {
-					text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
+					text "Search your deck for a Basic PokÃ©mon and put it onto your Bench. Shuffle your deck afterward."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1886,7 +1885,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Spring Out", {
-					text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s Benched PokÃ©mon. This attack does 10 damage to that PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1900,7 +1899,7 @@ public enum Platinum implements CardInfo {
 				weakness F, PLUS10
 				resistance M, MINUS20
 				move "Roar", {
-					text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1908,7 +1907,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Thunder Fang", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1929,7 +1928,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Poison Gas", {
-					text "The Defending Pokémon is now Poisoned."
+					text "The Defending PokÃ©mon is now Poisoned."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1947,7 +1946,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Hospitality", {
-					text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon. Remove 2 damage counters from the new Defending Pokémon."
+					text "Switch the Defending PokÃ©mon with 1 of your opponentâ€™s Benched PokÃ©mon. Remove 2 damage counters from the new Defending PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1960,8 +1959,8 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP080, type:DARKNESS, retreatCost:1) {
 				weakness L
 				resistance F, MINUS20
-				move "Honcho’s Command", {
-					text "Search your deck for up to 2 in any combination of Stadium cards or Trainer cards that has Team Galactic’s Invention in its name, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
+				move "Honchoâ€™s Command", {
+					text "Search your deck for up to 2 in any combination of Stadium cards or Trainer cards that has Team Galacticâ€™s Invention in its name, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1969,7 +1968,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Target Attack", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. If that Pokémon already has any damage counters on it, this attack does 20 damage plus 20 more damage."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to that PokÃ©mon. If that PokÃ©mon already has any damage counters on it, this attack does 20 damage plus 20 more damage."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -1982,7 +1981,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Lullaby", {
-					text "10 damage. The Defending Pokémon is now Asleep."
+					text "10 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -2003,7 +2002,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP080, type:WATER, retreatCost:2) {
 				weakness M, PLUS20
 				move "Grind", {
-					text "10× damage. Does 10 damage times the amount of Energy attached to Lapras."
+					text "10Ã— damage. Does 10 damage times the amount of Energy attached to Lapras."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2011,7 +2010,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Ice Beam", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -2024,7 +2023,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP090, type:COLORLESS, retreatCost:3) {
 				weakness F, PLUS20
 				move "Stretch Tongue", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 10 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2032,7 +2031,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Knock Off", {
-					text "40 damage. Choose 1 card from your opponent’s hand without looking and discard it."
+					text "40 damage. Choose 1 card from your opponentâ€™s hand without looking and discard it."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -2045,7 +2044,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness L, PLUS10
 				move "Energy Ball", {
-					text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Lotad but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
+					text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Lotad but not used to pay for this attackâ€™s Energy cost. You canâ€™t add more than 20 damage in this way."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2053,7 +2052,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Synthesis", {
-					text "Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
+					text "Energy card and attach it to 1 of your PokÃ©mon. Shuffle your deck afterward."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -2110,7 +2109,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
 				weakness W, PLUS10
 				move "Pull", {
-					text "Switch the Defending Pokémon with one of your opponent’s Benched Pokémon."
+					text "Switch the Defending PokÃ©mon with one of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2131,7 +2130,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Muddy Water", {
-					text "10 damage. Does 10 damage to one of your opponent’s Benched Pokémon."
+					text "10 damage. Does 10 damage to one of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2174,7 +2173,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:2) {
 				weakness L, PLUS10
 				move "Headache", {
-					text "Flip a coin. If heads, your opponent can’t play any Trainer, Supporter, or Stadium cards from his or her during his or her next turn."
+					text "Flip a coin. If heads, your opponent canâ€™t play any Trainer, Supporter, or Stadium cards from his or her during his or her next turn."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2182,7 +2181,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Latent Power", {
-					text "30 damage. Flip a coin. If tails, this attack does no damage to the Defending Pokémon. Instead, Psyduck is now Confused."
+					text "30 damage. Flip a coin. If tails, this attack does no damage to the Defending PokÃ©mon. Instead, Psyduck is now Confused."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2216,7 +2215,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				move "Future Sight", {
-					text "Look at the top 5 cards in either player’s deck and put them back on top of that player’s deck in any order."
+					text "Look at the top 5 cards in either playerâ€™s deck and put them back on top of that playerâ€™s deck in any order."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2224,7 +2223,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Hypnoblast", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Asleep."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2245,7 +2244,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Trickle", {
-					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2280,7 +2279,7 @@ public enum Platinum implements CardInfo {
 				weakness D, PLUS10
 				resistance C, MINUS20
 				move "Hypnotic Gaze", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2288,7 +2287,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Fade Out", {
-					text "30 damage. Return Shuppet and all cards attached to it to your hand. (If you don’t have any Benched Pokémon, this attack does nothing.)"
+					text "30 damage. Return Shuppet and all cards attached to it to your hand. (If you donâ€™t have any Benched PokÃ©mon, this attack does nothing.)"
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2301,7 +2300,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Heal Bell", {
-					text "Remove 1 damage counter from each of your Pokémon."
+					text "Remove 1 damage counter from each of your PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2322,12 +2321,12 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP080, type:PSYCHIC, retreatCost:2) {
 				weakness F
 				pokePower "Poison Structure", {
-					text "Once during your turn , if you have a Stadium card in play, you may use this power. Each Active Pokémon (both your’s and your opponent’s) (excluding Pokémon ) is now Poisoned. This power can’t be used if Skuntank is affected by a Special Condition."
+					text "Once during your turn , if you have a Stadium card in play, you may use this power. Each Active PokÃ©mon (both yourâ€™s and your opponentâ€™s) (excluding PokÃ©mon ) is now Poisoned. This power canâ€™t be used if Skuntank is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Smokescreen", {
-					text "20 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, this attack does nothing."
+					text "20 damage. If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, this attack does nothing."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2340,7 +2339,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Flail", {
-					text "10× damage. Does 10 damage times the number of damage counters on Slakoth."
+					text "10Ã— damage. Does 10 damage times the number of damage counters on Slakoth."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2348,7 +2347,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Slack Off", {
-					text "Remove all damage counters from Slakoth. Slakoth can’t attack during your next turn."
+					text "Remove all damage counters from Slakoth. Slakoth canâ€™t attack during your next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2383,7 +2382,7 @@ public enum Platinum implements CardInfo {
 				weakness L, PLUS10
 				resistance F, MINUS20
 				move "Sing", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2391,7 +2390,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Run Around", {
-					text "10 damage. You may switch Swablu with one of your Benched Pokémon."
+					text "10 damage. You may switch Swablu with one of your Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2425,7 +2424,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
 				weakness W, PLUS10
 				move "Focus Energy", {
-					text "During your next turn, Torchic’s Fire Shard attack’s base damage is 80."
+					text "During your next turn, Torchicâ€™s Fire Shard attackâ€™s base damage is 80."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2446,7 +2445,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP080, type:FIRE, retreatCost:2) {
 				weakness W, PLUS20
 				move "Super Singe", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Burned."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Burned."
 					energyCost R
 					attackRequirement {}
 					onAttack {
@@ -2454,7 +2453,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Flame Ball", {
-					text "40 damage. Move an Energy card attached to Torkoal to 1 of your Benched Pokémon."
+					text "40 damage. Move an Energy card attached to Torkoal to 1 of your Benched PokÃ©mon."
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
@@ -2476,7 +2475,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Body Slam", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -2497,7 +2496,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Confuse Ray", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -2518,7 +2517,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Poison Sting", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -2529,7 +2528,7 @@ public enum Platinum implements CardInfo {
 			};
 			case BROKEN_TIME_SPACE_104:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nEach player may evolve a Pokémon that he or she just played or evolved during that turn."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nEach player may evolve a PokÃ©mon that he or she just played or evolved during that turn."
 				onPlay {
 				}
 				playRequirement{
@@ -2537,7 +2536,7 @@ public enum Platinum implements CardInfo {
 			};
 			case CYRUS_S_CONSPIRACY_105:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for a Supporter card, a basic Energy card, and a Trainer card that has Team Galactic’s Invention in its name, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your deck for a Supporter card, a basic Energy card, and a Trainer card that has Team Galacticâ€™s Invention in its name, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2545,7 +2544,7 @@ public enum Platinum implements CardInfo {
 			};
 			case GALACTIC_HQ_106:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nWhenever any player plays any Pokémon from his or her hand to evolve his or her Pokémon, put 2 damage counters on that Pokémon."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nWhenever any player plays any PokÃ©mon from his or her hand to evolve his or her PokÃ©mon, put 2 damage counters on that PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2553,7 +2552,7 @@ public enum Platinum implements CardInfo {
 			};
 			case LEVEL_MAX_107:
 			return basicTrainer (this) {
-				text "Flip a coin. If heads, search your deck for a Pokémon LV.X that levels up from 1 of your Pokémon, and put it onto that Pokémon (this counts as leveling up that Pokémon). Shuffle your deck afterward."
+				text "Flip a coin. If heads, search your deck for a PokÃ©mon LV.X that levels up from 1 of your PokÃ©mon, and put it onto that PokÃ©mon (this counts as leveling up that PokÃ©mon). Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2561,7 +2560,7 @@ public enum Platinum implements CardInfo {
 			};
 			case LIFE_HERB_108:
 			return basicTrainer (this) {
-				text "Flip a coin. If heads, choose 1 of your Pokémon, and remove all Special Conditions and 6 damage counters from that Pokémon (all if there are less than 6)."
+				text "Flip a coin. If heads, choose 1 of your PokÃ©mon, and remove all Special Conditions and 6 damage counters from that PokÃ©mon (all if there are less than 6)."
 				onPlay {
 				}
 				playRequirement{
@@ -2569,7 +2568,7 @@ public enum Platinum implements CardInfo {
 			};
 			case LOOKER_S_INVESTIGATION_109:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at your opponent’s hand, then choose you or your opponent. That player shuffles his or her hand into his or her deck and draws up to 5 cards."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nLook at your opponentâ€™s hand, then choose you or your opponent. That player shuffles his or her hand into his or her deck and draws up to 5 cards."
 				onPlay {
 				}
 				playRequirement{
@@ -2577,7 +2576,7 @@ public enum Platinum implements CardInfo {
 			};
 			case MEMORY_BERRY_110:
 			return basicTrainer (this) {
-				text "Attach Memory Berry to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nThe Pokémon this card is attached to can use any attack from its Basic Pokémon or its Stage 1 Evolution card. (You still have to pay for that attack’s Energy cost.)"
+				text "Attach Memory Berry to 1 of your PokÃ©mon that doesnâ€™t already have a PokÃ©mon Tool attached to it. If that PokÃ©mon is Knocked Out, discard this card.\nThe PokÃ©mon this card is attached to can use any attack from its Basic PokÃ©mon or its Stage 1 Evolution card. (You still have to pay for that attackâ€™s Energy cost.)"
 				onPlay {
 				}
 				playRequirement{
@@ -2585,7 +2584,7 @@ public enum Platinum implements CardInfo {
 			};
 			case MIASMA_VALLEY_111:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nWhenever any player puts a Basic Pokémon (excluding [G] or [P] Pokémon) from his or hand onto his or her Bench, put 2 damage counters on that Pokémon."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nWhenever any player puts a Basic PokÃ©mon (excluding [G] or [P] PokÃ©mon) from his or hand onto his or her Bench, put 2 damage counters on that PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2593,7 +2592,7 @@ public enum Platinum implements CardInfo {
 			};
 			case PLUSPOWER_112:
 			return basicTrainer (this) {
-				text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
+				text "Attach PlusPower to 1 of your PokÃ©mon. Discard this card at the end of your turn.\nIf the PokÃ©mon PlusPower is attached to attacks, the attack does 10 more damage to the Active PokÃ©mon (before applying Weakness and Resistance)."
 				onPlay {
 				}
 				playRequirement{
@@ -2601,7 +2600,7 @@ public enum Platinum implements CardInfo {
 			};
 			case POKE_BALL_113:
 			return basicTrainer (this) {
-				text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+				text "Flip a coin. If heads, search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2617,7 +2616,7 @@ public enum Platinum implements CardInfo {
 			};
 			case POKEMON_RESCUE_115:
 			return basicTrainer (this) {
-				text "Search your discard pile for a Pokémon, show it to your opponent, and put it into your hand."
+				text "Search your discard pile for a PokÃ©mon, show it to your opponent, and put it into your hand."
 				onPlay {
 				}
 				playRequirement{
@@ -2625,7 +2624,7 @@ public enum Platinum implements CardInfo {
 			};
 			case ENERGY_GAIN_116:
 			return basicTrainer (this) {
-				text "Attach Energy Gain to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAttach Team Galactic’s Invention G-101 Energy Gain to 1 of your Pokémon SP that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card. When the Pokémon this card is attached to is no longer a Pokémon SP, discard this card.\nAs long as Team Galactic’s Invention G-101 Energy Gain is attached to a Pokémon, the attack cost of that Pokémon’s attacks is [C] less."
+				text "Attach Energy Gain to 1 of your PokÃ©mon that doesnâ€™t already have a PokÃ©mon Tool attached to it. If that PokÃ©mon is Knocked Out, discard this card.\nAttach Team Galacticâ€™s Invention G-101 Energy Gain to 1 of your PokÃ©mon SP that doesnâ€™t already have a PokÃ©mon Tool attached to it. If that PokÃ©mon is Knocked Out, discard this card. When the PokÃ©mon this card is attached to is no longer a PokÃ©mon SP, discard this card.\nAs long as Team Galacticâ€™s Invention G-101 Energy Gain is attached to a PokÃ©mon, the attack cost of that PokÃ©monâ€™s attacks is [C] less."
 				onPlay {
 				}
 				playRequirement{
@@ -2633,7 +2632,7 @@ public enum Platinum implements CardInfo {
 			};
 			case POWER_SPRAY_117:
 			return basicTrainer (this) {
-				text "You may play this card during your opponent’s turn when your opponent’s Pokémon uses any Poké-Power. Prevent all effects of that Poké-Power. (This counts as that Pokémon using its Poké-Power.) If you have 2 or less Pokémon SP in play, you can’t play this card."
+				text "You may play this card during your opponentâ€™s turn when your opponentâ€™s PokÃ©mon uses any PokÃ©-Power. Prevent all effects of that PokÃ©-Power. (This counts as that PokÃ©mon using its PokÃ©-Power.) If you have 2 or less PokÃ©mon SP in play, you canâ€™t play this card."
 				onPlay {
 				}
 				playRequirement{
@@ -2641,7 +2640,7 @@ public enum Platinum implements CardInfo {
 			};
 			case POKE_TURN_118:
 			return basicTrainer (this) {
-				text "Return 1 of your Pokémon SP and all cards attached to it to your hand."
+				text "Return 1 of your PokÃ©mon SP and all cards attached to it to your hand."
 				onPlay {
 				}
 				playRequirement{
@@ -2649,7 +2648,7 @@ public enum Platinum implements CardInfo {
 			};
 			case ARMOR_FOSSIL_119:
 			return basicTrainer (this) {
-				text "Play Armor Fossil as if it were a [C] Basic Pokémon. (Armor Fossil counts as a Trainer card as well, but if Armor Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Armor Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Armor Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Armor Stone Whenever Armor Fossil would be damaged by your opponent’s attack, flip a coin until you get tails. For each heads, reduce that damage by 10."
+				text "Play Armor Fossil as if it were a [C] Basic PokÃ©mon. (Armor Fossil counts as a Trainer card as well, but if Armor Fossil is Knocked Out, this counts as a Knocked Out PokÃ©mon.) Armor Fossil canâ€™t be affected by any Special Conditions and canâ€™t retreat. At any time during your turn before your attack, you may discard Armor Fossil from play. (This doesnâ€™t count as a Knocked Out PokÃ©mon.)\nPokÃ©-BODY: Armor Stone Whenever Armor Fossil would be damaged by your opponentâ€™s attack, flip a coin until you get tails. For each heads, reduce that damage by 10."
 				onPlay {
 				}
 				playRequirement{
@@ -2657,7 +2656,7 @@ public enum Platinum implements CardInfo {
 			};
 			case SKULL_FOSSIL_120:
 			return basicTrainer (this) {
-				text "Play Skull Fossil as if it were a [C] Basic Pokémon. (Skull Fossil counts as a Trainer card as well, but if Skull Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Skull Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Skull Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Skull Stone During your opponent’s turn, if Skull Fossil would be Knocked Out by damage from an opponent’s attack, flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
+				text "Play Skull Fossil as if it were a [C] Basic PokÃ©mon. (Skull Fossil counts as a Trainer card as well, but if Skull Fossil is Knocked Out, this counts as a Knocked Out PokÃ©mon.) Skull Fossil canâ€™t be affected by any Special Conditions and canâ€™t retreat. At any time during your turn before your attack, you may discard Skull Fossil from play. (This doesnâ€™t count as a Knocked Out PokÃ©mon.)\nPokÃ©-BODY: Skull Stone During your opponentâ€™s turn, if Skull Fossil would be Knocked Out by damage from an opponentâ€™s attack, flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2665,7 +2664,7 @@ public enum Platinum implements CardInfo {
 			};
 			case RAINBOW_ENERGY_121:
 			return specialEnergy (this, [[C]]) {
-				text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy counts as every type of basic Energy but provides only 1 Energy at a time. (doesn’t count as a energy card when not in play.) When you attach this card from your hand to 1 of your Pokémon, it does 10 damage to that Pokémon.(don’t apply Weakness and Resistance.)"
+				text "Attach Rainbow Energy to 1 of your PokÃ©mon. While in play, Rainbow Energy counts as every type of basic Energy but provides only 1 Energy at a time. (doesnâ€™t count as a energy card when not in play.) When you attach this card from your hand to 1 of your PokÃ©mon, it does 10 damage to that PokÃ©mon.(donâ€™t apply Weakness and Resistance.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2680,12 +2679,12 @@ public enum Platinum implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				pokeBody "Time Crystal", {
-					text "Each Pokémon (excluding Pokémon ) can’t use any Poké-Bodies."
+					text "Each PokÃ©mon (excluding PokÃ©mon ) canâ€™t use any PokÃ©-Bodies."
 					delayedA {
 					}
 				}
 				move "Remove Lost", {
-					text "80 damage. Flip a coin until you get tails. For each heads, remove an Energy card attached to the Defending Pokémon and put it in the Lost Zone."
+					text "80 damage. Flip a coin until you get tails. For each heads, remove an Energy card attached to the Defending PokÃ©mon and put it in the Lost Zone."
 					energyCost M, M, C, C
 					attackRequirement {}
 					onAttack {
@@ -2693,7 +2692,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Dialga . Dialga LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Dialga . Dialga LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2706,12 +2705,12 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Drapion", hp:HP130, type:DARKNESS, retreatCost:3) {
 				weakness P
 				pokePower "Tri-Poison", {
-					text "Once during your turn , you may flip a coin. If heads, choose 1 of the Defending Pokémon. That Pokémon is now Poisoned. Put 3 damage counters instead of 1 on that Pokémon between turns. This power can’t be used if Drapion is affected by a Special Condition."
+					text "Once during your turn , you may flip a coin. If heads, choose 1 of the Defending PokÃ©mon. That PokÃ©mon is now Poisoned. Put 3 damage counters instead of 1 on that PokÃ©mon between turns. This power canâ€™t be used if Drapion is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Sniping Tail", {
-					text "40 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "40 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost D, D, C, C
 					attackRequirement {}
 					onAttack {
@@ -2719,7 +2718,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Drapion. Drapion LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Drapion. Drapion LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2733,12 +2732,12 @@ public enum Platinum implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				pokeBody "Invisible Tentacles", {
-					text "Whenever your opponent’s Pokémon tries to attack, your opponent discards 1 card from his or her hand. (If your opponent can’t discard 1 card, your opponent’s Pokémon can’t attack.) You can’t use more than 1 Invisible Tentacles Poké-Body each turn."
+					text "Whenever your opponentâ€™s PokÃ©mon tries to attack, your opponent discards 1 card from his or her hand. (If your opponent canâ€™t discard 1 card, your opponentâ€™s PokÃ©mon canâ€™t attack.) You canâ€™t use more than 1 Invisible Tentacles PokÃ©-Body each turn."
 					delayedA {
 					}
 				}
 				move "Darkness Lost", {
-					text "If any of your opponent’s Pokémon would be Knocked Out by damage from this attack, put that Pokémon and all cards attached to it in the Lost Zone instead of discarding it."
+					text "If any of your opponentâ€™s PokÃ©mon would be Knocked Out by damage from this attack, put that PokÃ©mon and all cards attached to it in the Lost Zone instead of discarding it."
 					energyCost P, P, C, C
 					attackRequirement {}
 					onAttack {
@@ -2746,7 +2745,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Giratina. Giratina LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Giratina. Giratina LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2759,12 +2758,12 @@ public enum Platinum implements CardInfo {
 			return evolution (this, from:"Palkia G", hp:HP120, type:WATER, retreatCost:2) {
 				weakness L
 				pokePower "Lost Cyclone", {
-					text "Once during your turn , you may use this power. Any player who has 4 or more Benched Pokémon chooses 3 of his or her Benched Pokémon. Put the other Benched Pokémon and all cards attached to them in the Lost Zone. This power can’t be used it Palkia is affected by a Special Condition."
+					text "Once during your turn , you may use this power. Any player who has 4 or more Benched PokÃ©mon chooses 3 of his or her Benched PokÃ©mon. Put the other Benched PokÃ©mon and all cards attached to them in the Lost Zone. This power canâ€™t be used it Palkia is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Hydro Shot", {
-					text ". Choose 1 of your opponent’s Pokémon. This attack does 80 damage to that Pokémon."
+					text ". Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 80 damage to that PokÃ©mon."
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -2772,7 +2771,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Palkia . Palkia LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Palkia . Palkia LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2786,7 +2785,7 @@ public enum Platinum implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				pokeBody "Thankfulness", {
-					text "Each of your Pokémon (excluding any Shaymin) gets +40 HP. You can’t use more than 1 Thankfulness Poké-Body each turn."
+					text "Each of your PokÃ©mon (excluding any Shaymin) gets +40 HP. You canâ€™t use more than 1 Thankfulness PokÃ©-Body each turn."
 					delayedA {
 					}
 				}
@@ -2799,7 +2798,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Shaymin. Shaymin LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Shaymin. Shaymin LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2813,12 +2812,12 @@ public enum Platinum implements CardInfo {
 				weakness R
 				resistance F, MINUS20
 				pokeBody "Revenge Seed", {
-					text "If any of your Pokémon were Knocked Out by damage from an opponent’s attack during his or her last turn, each of Shaymin’s attacks does 60 more damage to the Active Pokémon ."
+					text "If any of your PokÃ©mon were Knocked Out by damage from an opponentâ€™s attack during his or her last turn, each of Shayminâ€™s attacks does 60 more damage to the Active PokÃ©mon ."
 					delayedA {
 					}
 				}
 				move "Energy Flare", {
-					text "50 damage. You may move any number of Energy cards attached to your Pokémon to your other Pokémon in any way you like."
+					text "50 damage. You may move any number of Energy cards attached to your PokÃ©mon to your other PokÃ©mon in any way you like."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -2826,7 +2825,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Shaymin. Shaymin LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Shaymin. Shaymin LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2839,7 +2838,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP070, type:LIGHTNING, retreatCost:2) {
 				weakness F
 				move "Thundershock", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -2882,7 +2881,7 @@ public enum Platinum implements CardInfo {
 				weakness R
 				resistance F, MINUS30
 				move "Swords Dance", {
-					text "During your next turn, Scyther’s Slash attack’s base damage is 60 instead of 30."
+					text "During your next turn, Scytherâ€™s Slash attackâ€™s base damage is 60 instead of 30."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -2903,7 +2902,7 @@ public enum Platinum implements CardInfo {
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness L, PLUS10
 				pokeBody "Swift Swim", {
-					text "If Lotad has any Energy attached to it, Lotad’s Retreat Cost is 0."
+					text "If Lotad has any Energy attached to it, Lotadâ€™s Retreat Cost is 0."
 					delayedA {
 					}
 				}
@@ -2930,7 +2929,7 @@ public enum Platinum implements CardInfo {
 				weakness L, PLUS10
 				resistance F, MINUS20
 				move "Roost", {
-					text "Remove 4 damage counters from Swablu. Swablu can’t retreat during your next turn."
+					text "Remove 4 damage counters from Swablu. Swablu canâ€™t retreat during your next turn."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2938,7 +2937,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Mirror Move", {
-					text "If Swablu was damaged by an attack during your opponent’s last turn, this attack does the same amount of damage done to Swablu to the Defending Pokémon."
+					text "If Swablu was damaged by an attack during your opponentâ€™s last turn, this attack does the same amount of damage done to Swablu to the Defending PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2946,7 +2945,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Fury Attack", {
-					text "10× damage. Flip 3 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 3 coins. This attack does 10 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2967,7 +2966,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Brushfire", {
-					text "10 damage. Pokémon."
+					text "10 damage. PokÃ©mon."
 					energyCost R, G
 					attackRequirement {}
 					onAttack {
@@ -2975,7 +2974,7 @@ public enum Platinum implements CardInfo {
 					}
 				}
 				move "Inflame", {
-					text "30 damage. Energy card from your hand. (If you can’t discard a card from your hand, this attack does nothing.)"
+					text "30 damage. Energy card from your hand. (If you canâ€™t discard a card from your hand, this attack does nothing.)"
 					energyCost R, C, R
 					attackRequirement {}
 					onAttack {

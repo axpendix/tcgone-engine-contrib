@@ -126,8 +126,7 @@ public enum Undaunted implements CardInfo {
 	KYOGRE_&_GROUDON_LEGEND_88 ("Kyogre & Groudon LEGEND", 88, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
 	RAYQUAZA_&_DEOXYS_LEGEND_89 ("Rayquaza & Deoxys LEGEND", 89, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
 	RAYQUAZA_&_DEOXYS_LEGEND_90 ("Rayquaza & Deoxys LEGEND", 90, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
-	ALPH_LITHOGRAPH_THREE ("Alph Lithograph", THREE, Rarity.HOLORARE, [TRAINER]),
-;
+	ALPH_LITHOGRAPH_THREE ("Alph Lithograph", 91, Rarity.HOLORARE, [TRAINER]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -186,11 +185,11 @@ public enum Undaunted implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				pokePower "Hustle Step", {
-					text "Once during your turn , you may remove 1 damage counter from each of your Pokémon. This power can’t be used if Bellossom is affected by a Special Condition."
+					text "Once during your turn , you may remove 1 damage counter from each of your PokÃ©mon. This power canâ€™t be used if Bellossom is affected by a Special Condition."
 					actionA {
 					}
 				}
-				move "Dance ’til Dawn", {
+				move "Dance â€™til Dawn", {
 					text "Flip 3 coins. This attack does 30 damage times the number of heads. Bellossom is now Asleep."
 					energyCost G, C
 					attackRequirement {}
@@ -204,7 +203,7 @@ public enum Undaunted implements CardInfo {
 			return evolution (this, from:"Eevee", hp:HP090, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Solar Suggestion", {
-					text "Move up to 4 damage counters from any of your Pokémon to any of your opponent’s Pokémon in any way you like."
+					text "Move up to 4 damage counters from any of your PokÃ©mon to any of your opponentâ€™s PokÃ©mon in any way you like."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -212,7 +211,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Psybeam", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -226,7 +225,7 @@ public enum Undaunted implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				move "Mirror Shot", {
-					text "30 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, this attack does nothing."
+					text "30 damage. If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, this attack does nothing."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -248,7 +247,7 @@ public enum Undaunted implements CardInfo {
 				weakness W
 				resistance L, MINUS20
 				move "Ninja Fang", {
-					text "30 damage. , the Defending Pokémon is now Paralyzed."
+					text "30 damage. , the Defending PokÃ©mon is now Paralyzed."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -256,7 +255,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Poison Jab", {
-					text "50 damage. The Defending Pokémon is now Poisoned."
+					text "50 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -270,7 +269,7 @@ public enum Undaunted implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				move "Fire Counterattack", {
-					text "20 damage. Pokémon in play, this attack does 20 damage plus 60 more damage."
+					text "20 damage. PokÃ©mon in play, this attack does 20 damage plus 60 more damage."
 					energyCost D, F
 					attackRequirement {}
 					onAttack {
@@ -291,7 +290,7 @@ public enum Undaunted implements CardInfo {
 			return evolution (this, from:"Slugma", hp:HP100, type:FIRE, retreatCost:3) {
 				weakness W
 				move "Searing Flame", {
-					text "20 damage. The Defending Pokémon is now Burned."
+					text "20 damage. The Defending PokÃ©mon is now Burned."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -334,7 +333,7 @@ public enum Undaunted implements CardInfo {
 			return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
 				weakness F
 				pokePower "Portrait", {
-					text "Once during your turn , if Smeargle is your Active Pokémon, you may look at your opponent’s hand. If you do, choose a Supporter card you find there and use the effect of that card as the effect of this power. This power can’t be used if Smeargle is affected by a Special Condition."
+					text "Once during your turn , if Smeargle is your Active PokÃ©mon, you may look at your opponentâ€™s hand. If you do, choose a Supporter card you find there and use the effect of that card as the effect of this power. This power canâ€™t be used if Smeargle is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -353,7 +352,7 @@ public enum Undaunted implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Blessed Wings", {
-					text "Remove all damage counters from each of your Pokémon. Shuffle Togekiss and all cards attached to it back into your deck."
+					text "Remove all damage counters from each of your PokÃ©mon. Shuffle Togekiss and all cards attached to it back into your deck."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -375,7 +374,7 @@ public enum Undaunted implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				move "Moonlight Fang", {
-					text "30 damage. During your opponent’s next turn, prevent all effects, including damage, done to Umbreon by attacks from your opponent’s Pokémon that has any Poké-Powers or Poké-Bodies."
+					text "30 damage. During your opponentâ€™s next turn, prevent all effects, including damage, done to Umbreon by attacks from your opponentâ€™s PokÃ©mon that has any PokÃ©-Powers or PokÃ©-Bodies."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -397,7 +396,7 @@ public enum Undaunted implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				pokeBody "Retreat Aid", {
-					text "As long as Dodrio is on your Bench, your Active Pokémon’s Retreat Cost is less."
+					text "As long as Dodrio is on your Bench, your Active PokÃ©monâ€™s Retreat Cost is less."
 					delayedA {
 					}
 				}
@@ -424,7 +423,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Take Away", {
-					text "Shuffle Drifblim and all cards attached to it back into your deck. Then, your opponent shuffles the Defending Pokémon and all cards attached to it into his or her deck. (You choose your new Active Pokémon first.)"
+					text "Shuffle Drifblim and all cards attached to it back into your deck. Then, your opponent shuffles the Defending PokÃ©mon and all cards attached to it into his or her deck. (You choose your new Active PokÃ©mon first.)"
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -438,7 +437,7 @@ public enum Undaunted implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				move "Spike Spread", {
-					text "This attack does 10 damage to each of your opponent’s Pokémon."
+					text "This attack does 10 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -446,7 +445,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Gyro Ball", {
-					text "30 damage. You may switch Forretress with 1 of your Benched Pokémon. If you do, your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "30 damage. You may switch Forretress with 1 of your Benched PokÃ©mon. If you do, your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -481,7 +480,7 @@ public enum Undaunted implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Whirlwind", {
-					text "20 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "20 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -489,7 +488,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Blindside", {
-					text "Choose 1 of your opponent’s Pokémon that has any damage counters on it. This attack does 50 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon that has any damage counters on it. This attack does 50 damage to that PokÃ©mon."
 					energyCost D, D
 					attackRequirement {}
 					onAttack {
@@ -503,7 +502,7 @@ public enum Undaunted implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Shadow Bind", {
-					text "30 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "30 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -511,7 +510,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Vengeance", {
-					text "Pokémon in your discard pile."
+					text "PokÃ©mon in your discard pile."
 					energyCost D, C, C, D
 					attackRequirement {}
 					onAttack {
@@ -525,7 +524,7 @@ public enum Undaunted implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				move "Miasma Wind", {
-					text "Does 50 damage damage times the number of Special Conditions affecting the Defending Pokémon."
+					text "Does 50 damage damage times the number of Special Conditions affecting the Defending PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -533,7 +532,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Soothing Scent", {
-					text "30 damage. The Defending Pokémon is now Asleep."
+					text "30 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -569,7 +568,7 @@ public enum Undaunted implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				move "Sleeping Spell", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Asleep."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -577,7 +576,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Poltergeist", {
-					text "Look at your opponent’s hand. This attack does 30 damage times the number of Trainer, Supporter, and Stadium cards in your opponent’s hand.]"
+					text "Look at your opponentâ€™s hand. This attack does 30 damage times the number of Trainer, Supporter, and Stadium cards in your opponentâ€™s hand.]"
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -591,12 +590,12 @@ public enum Undaunted implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				pokePower "Mischievous Trick", {
-					text "Once during your turn , you may switch 1 of your face-down Prize cards with the top card of your deck. This power can’t be used if Rotom is affected by a Special Condition."
+					text "Once during your turn , you may switch 1 of your face-down Prize cards with the top card of your deck. This power canâ€™t be used if Rotom is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Plasma Arrow", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage for each Energy attached to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 20 damage for each Energy attached to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -610,7 +609,7 @@ public enum Undaunted implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				move "Steel Coat", {
-					text "Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
+					text "Energy card and attach it to 1 of your PokÃ©mon. Shuffle your deck afterward."
 					energyCost M, M
 					attackRequirement {}
 					onAttack {
@@ -632,7 +631,7 @@ public enum Undaunted implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Fresh-Picked Fruit", {
-					text "Remove 6 damage counters from 1 of your Benched Pokémon."
+					text "Remove 6 damage counters from 1 of your Benched PokÃ©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -653,12 +652,12 @@ public enum Undaunted implements CardInfo {
 			return evolution (this, from:"Combee", hp:HP100, type:GRASS, retreatCost:3) {
 				weakness R
 				pokeBody "Defense Sign", {
-					text "Prevent all damage done to your Benched Pokémon by attacks."
+					text "Prevent all damage done to your Benched PokÃ©mon by attacks."
 					delayedA {
 					}
 				}
 				move "Mach Wind", {
-					text "60 damage. During your next turn, Vespiquen’s Retreat Cost is 0."
+					text "60 damage. During your next turn, Vespiquenâ€™s Retreat Cost is 0."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -671,12 +670,12 @@ public enum Undaunted implements CardInfo {
 			return evolution (this, from:"Gloom", hp:HP120, type:GRASS, retreatCost:2) {
 				weakness P
 				pokeBody "Allergy Flower", {
-					text "Each player can’t play any Trainer cards from his or her hand."
+					text "Each player canâ€™t play any Trainer cards from his or her hand."
 					delayedA {
 					}
 				}
 				move "Dazzling Pollen", {
-					text "50 damage. Flip a coin. If heads, this attack does 50 damage plus 20 more damage. If tails, the Defending Pokémon is now Confused."
+					text "50 damage. Flip a coin. If heads, this attack does 50 damage plus 20 more damage. If tails, the Defending PokÃ©mon is now Confused."
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
@@ -690,12 +689,12 @@ public enum Undaunted implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				pokePower "Claw Snag", {
-					text "Once during your turn, when you play Weavile from your hand to evolve 1 of your Pokémon, you may look at your opponent’s hand. Choose a card from your opponent’s hand and discard it."
+					text "Once during your turn, when you play Weavile from your hand to evolve 1 of your PokÃ©mon, you may look at your opponentâ€™s hand. Choose a card from your opponentâ€™s hand and discard it."
 					actionA {
 					}
 				}
 				move "Feint Attack", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on that PokÃ©mon."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -729,7 +728,7 @@ public enum Undaunted implements CardInfo {
 			return evolution (this, from:"Oddish", hp:HP080, type:GRASS, retreatCost:1) {
 				weakness P
 				move "Miracle Powder", {
-					text "30 damage. Flip a coin. If heads, choose 1 Special Condition. The Defending Pokémon is now affected by that Special Condition."
+					text "30 damage. Flip a coin. If heads, choose 1 Special Condition. The Defending PokÃ©mon is now affected by that Special Condition."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -743,7 +742,7 @@ public enum Undaunted implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				move "Agility", {
-					text "20 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to Jolteon during your opponent’s next turn."
+					text "20 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to Jolteon during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -808,7 +807,7 @@ public enum Undaunted implements CardInfo {
 			return evolution (this, from:"Grimer", hp:HP100, type:PSYCHIC, retreatCost:3) {
 				weakness P
 				move "Sludge Drag", {
-					text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon. The new Defending Pokémon is now Confused and Poisoned."
+					text "Switch the Defending PokÃ©mon with 1 of your opponentâ€™s Benched PokÃ©mon. The new Defending PokÃ©mon is now Confused and Poisoned."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -816,7 +815,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Pester", {
-					text "50 damage. If the Defending Pokémon is affected by a Special Condition, this attack does 50 damage plus 30 more damage."
+					text "50 damage. If the Defending PokÃ©mon is affected by a Special Condition, this attack does 50 damage plus 30 more damage."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -859,7 +858,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Spark", {
-					text "40 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "40 damage. Does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -872,7 +871,7 @@ public enum Undaunted implements CardInfo {
 			return evolution (this, from:"Rattata", hp:HP080, type:COLORLESS, retreatCost:0) {
 				weakness F
 				move "Razor-Sharp Incisors", {
-					text "Does 10 damage times the number of damage counters on the Defending Pokémon."
+					text "Does 10 damage times the number of damage counters on the Defending PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -880,7 +879,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Gnaw Up", {
-					text "30 damage. Discard a Special Energy card attached to the Defending Pokémon."
+					text "30 damage. Discard a Special Energy card attached to the Defending PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -914,7 +913,7 @@ public enum Undaunted implements CardInfo {
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
 				weakness R
 				move "Afterimage Strike", {
-					text "20 damage. During your opponent’s next turn, if Scyther would be damaged by an attack, flip a coin. If heads, prevent that attack’s damage done to Scyther."
+					text "20 damage. During your opponentâ€™s next turn, if Scyther would be damaged by an attack, flip a coin. If heads, prevent that attackâ€™s damage done to Scyther."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -928,7 +927,7 @@ public enum Undaunted implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				move "Stun Gas", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Poisoned. If tails, the Defending Pokémon is now Paralyzed."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned. If tails, the Defending PokÃ©mon is now Paralyzed."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -957,7 +956,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Startling Trip", {
-					text "50 damage. Flip a coin. If heads, the Defending Pokémon is now Confused. If tails, Slowbro is now Confused."
+					text "50 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused. If tails, Slowbro is now Confused."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -979,7 +978,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Fly", {
-					text "30 damage. Flip a coin. If tails, this attack does nothing. If heads, prevent all effects of attacks, including damage done to Togetic during your opponent’s next turn."
+					text "30 damage. Flip a coin. If tails, this attack does nothing. If heads, prevent all effects of attacks, including damage done to Togetic during your opponentâ€™s next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1018,7 +1017,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Dual Splash", {
-					text "Choose 2 of your opponent’s Pokémon. This attack does 30 damage to each of them."
+					text "Choose 2 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to each of them."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -1032,7 +1031,7 @@ public enum Undaunted implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				move "Metal Sound", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -1075,7 +1074,7 @@ public enum Undaunted implements CardInfo {
 			return basic (this, hp:HP030, type:GRASS, retreatCost:1) {
 				weakness R
 				move "Enraged Assault", {
-					text "20 damage. If Vespiquen is on your Bench, and has any damage counters on it, this attack does 20 damage plus 60 more damage, and the Defending Pokémon is now Poisoned."
+					text "20 damage. If Vespiquen is on your Bench, and has any damage counters on it, this attack does 20 damage plus 60 more damage, and the Defending PokÃ©mon is now Poisoned."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1119,7 +1118,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Pull", {
-					text "Flip a coin. If heads, switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
+					text "Flip a coin. If heads, switch the Defending PokÃ©mon with 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1153,7 +1152,7 @@ public enum Undaunted implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Call for Family", {
-					text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
+					text "Search your deck for a Basic PokÃ©mon and put it onto your Bench. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1161,7 +1160,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Tickle", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1175,7 +1174,7 @@ public enum Undaunted implements CardInfo {
 				weakness W
 				resistance L, MINUS20
 				move "Stun Poison", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and Poisoned."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed and Poisoned."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1209,7 +1208,7 @@ public enum Undaunted implements CardInfo {
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
 				weakness P
 				move "Detect", {
-					text "Flip a coin. If heads, prevent all effects of attack, including damage, done to Hitmonchan during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all effects of attack, including damage, done to Hitmonchan during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1217,7 +1216,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Sky Uppercut", {
-					text "30 damage. This attack’s damage isn’t affected by Resistance."
+					text "30 damage. This attackâ€™s damage isnâ€™t affected by Resistance."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1309,7 +1308,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Destructive Jaw", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and discard an Energy card attached to the Defending Pokémon."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed and discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
@@ -1345,7 +1344,7 @@ public enum Undaunted implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Astonish", {
-					text "10 damage. Flip a coin. If heads, choose 1 card from your opponent’s hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
+					text "10 damage. Flip a coin. If heads, choose 1 card from your opponentâ€™s hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -1388,7 +1387,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Find a Friend", {
-					text "Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+					text "PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -1428,7 +1427,7 @@ public enum Undaunted implements CardInfo {
 			return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
 				weakness R
 				move "Focus Energy", {
-					text "During your next turn, Pineco’s Surprise Attack attack’s base damage is 80."
+					text "During your next turn, Pinecoâ€™s Surprise Attack attackâ€™s base damage is 80."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1470,7 +1469,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Slashing Strike", {
-					text "50 damage. During your next turn, Scyther can’t use Slashing Strike."
+					text "50 damage. During your next turn, Scyther canâ€™t use Slashing Strike."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1483,7 +1482,7 @@ public enum Undaunted implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:2) {
 				weakness L
 				move "Rambunctious Party", {
-					text "Look at the top 5 cards of your deck. Choose as many Basic Pokémon as you like and put them onto your Bench. Shuffle the other cards back into your deck."
+					text "Look at the top 5 cards of your deck. Choose as many Basic PokÃ©mon as you like and put them onto your Bench. Shuffle the other cards back into your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1504,7 +1503,7 @@ public enum Undaunted implements CardInfo {
 			return basic (this, hp:HP060, type:FIRE, retreatCost:2) {
 				weakness W
 				pokePower "Active Volcano", {
-					text "Once during your turn , you may discard the top card of your deck. If that card is a Fire Energy card, attach it to Slugma. This power can’t be used if Slugma is affected by a Special Condition."
+					text "Once during your turn , you may discard the top card of your deck. If that card is a Fire Energy card, attach it to Slugma. This power canâ€™t be used if Slugma is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -1531,7 +1530,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Beat Up", {
-					text "Flip a coin for each of your Pokémon in play. This attack does 20 damage times the number of heads."
+					text "Flip a coin for each of your PokÃ©mon in play. This attack does 20 damage times the number of heads."
 					energyCost D, D
 					attackRequirement {}
 					onAttack {
@@ -1558,7 +1557,7 @@ public enum Undaunted implements CardInfo {
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Plead", {
-					text "Ask your opponent if you may draw 2 cards. If yes, draw 2 cards. If no, this attack does 20 damage to the Defending Pokémon."
+					text "Ask your opponent if you may draw 2 cards. If yes, draw 2 cards. If no, this attack does 20 damage to the Defending PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1569,7 +1568,7 @@ public enum Undaunted implements CardInfo {
 			};
 			case BURNED_TOWER_71:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, that player may flip a coin. If heads, the player searches his or her discard pile for a basic Energy card, shows it to his or her opponent, and put it into his or her hand."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nOnce during each playerâ€™s turn, that player may flip a coin. If heads, the player searches his or her discard pile for a basic Energy card, shows it to his or her opponent, and put it into his or her hand."
 				onPlay {
 				}
 				playRequirement{
@@ -1577,7 +1576,7 @@ public enum Undaunted implements CardInfo {
 			};
 			case DEFENDER_72:
 			return basicTrainer (this) {
-				text "Attach Defender to 1 of your Pokémon. Discard this card at the end of your opponent’s next turn. Any damage done to the Pokémon Defender is attached to by an opponent’s attack is reduced by 20 (after applying Weakness and Resistance)."
+				text "Attach Defender to 1 of your PokÃ©mon. Discard this card at the end of your opponentâ€™s next turn. Any damage done to the PokÃ©mon Defender is attached to by an opponentâ€™s attack is reduced by 20 (after applying Weakness and Resistance)."
 				onPlay {
 				}
 				playRequirement{
@@ -1593,7 +1592,7 @@ public enum Undaunted implements CardInfo {
 			};
 			case FLOWER_SHOP_LADY_74:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your discard pile for 3 Pokémon and 3 basic Energy cards. Show them to your opponent and shuffle them into your deck."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your discard pile for 3 PokÃ©mon and 3 basic Energy cards. Show them to your opponent and shuffle them into your deck."
 				onPlay {
 				}
 				playRequirement{
@@ -1601,7 +1600,7 @@ public enum Undaunted implements CardInfo {
 			};
 			case LEGEND_BOX_75:
 			return basicTrainer (this) {
-				text "Reveal the top 10 cards of your deck. If you reveal both halves of a Pokémon LEGEND, put those cards onto your Bench and attach all revealed Energy cards to that Pokémon LEGEND. Shuffle the other cards back into your deck. (You can play only 1 Pokémon LEGEND in this way.)"
+				text "Reveal the top 10 cards of your deck. If you reveal both halves of a PokÃ©mon LEGEND, put those cards onto your Bench and attach all revealed Energy cards to that PokÃ©mon LEGEND. Shuffle the other cards back into your deck. (You can play only 1 PokÃ©mon LEGEND in this way.)"
 				onPlay {
 				}
 				playRequirement{
@@ -1609,7 +1608,7 @@ public enum Undaunted implements CardInfo {
 			};
 			case RUINS_OF_ALPH_76:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nEach Pokémon in play has no Resistance."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nEach PokÃ©mon in play has no Resistance."
 				onPlay {
 				}
 				playRequirement{
@@ -1617,7 +1616,7 @@ public enum Undaunted implements CardInfo {
 			};
 			case SAGE_S_TRAINING_77:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at the top 5 cards of your deck. Choose any 2 cards you find there and put them into your hand. Discard the other cards."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nLook at the top 5 cards of your deck. Choose any 2 cards you find there and put them into your hand. Discard the other cards."
 				onPlay {
 				}
 				playRequirement{
@@ -1625,7 +1624,7 @@ public enum Undaunted implements CardInfo {
 			};
 			case TEAM_ROCKET_S_TRICKERY_78:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards. Then, your opponent discards a card from his or her hand."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nDraw 2 cards. Then, your opponent discards a card from his or her hand."
 				onPlay {
 				}
 				playRequirement{
@@ -1633,7 +1632,7 @@ public enum Undaunted implements CardInfo {
 			};
 			case DARKNESS_ENERGY_79:
 			return specialEnergy (this, [[C]]) {
-				text "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
+				text "If the PokÃ©mon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active PokÃ©mon (before applying Weakness and Resistance). Ignore this effect if the PokÃ©mon that Darkness Energy is attached to isnâ€™t [D]. Darkness Energy provides [D] Energy. (Doesnâ€™t count as a basic Energy card.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -1645,7 +1644,7 @@ public enum Undaunted implements CardInfo {
 			};
 			case METAL_ENERGY_80:
 			return specialEnergy (this, [[C]]) {
-				text "Damage done by attacks to the Pokémon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that Metal Energy is attached to isn’t [M]. Metal Energy provides [M] Energy. (Doesn’t count as a basic Energy card.)"
+				text "Damage done by attacks to the PokÃ©mon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the PokÃ©mon that Metal Energy is attached to isnâ€™t [M]. Metal Energy provides [M] Energy. (Doesnâ€™t count as a basic Energy card.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -1659,12 +1658,12 @@ public enum Undaunted implements CardInfo {
 			return evolution (this, from:"Eevee", hp:HP100, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				pokeBody "Evolution Memories", {
-					text "Espeon can use the attacks of all Pokémon you have in play that evolve from Eevee as its own."
+					text "Espeon can use the attacks of all PokÃ©mon you have in play that evolve from Eevee as its own."
 					delayedA {
 					}
 				}
 				move "Solar Ray", {
-					text "30 damage. Remove 1 damage counter from each of your Pokémon."
+					text "30 damage. Remove 1 damage counter from each of your PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1678,12 +1677,12 @@ public enum Undaunted implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				pokePower "Fire Breath", {
-					text "Once during your turn , you may flip a coin. If heads, the Defending Pokémon is now Burned. This power can’t be used if Houndoom is affected by a Special Condition."
+					text "Once during your turn , you may flip a coin. If heads, the Defending PokÃ©mon is now Burned. This power canâ€™t be used if Houndoom is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Dark Clamp", {
-					text "70 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "70 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
@@ -1697,7 +1696,7 @@ public enum Undaunted implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				pokePower "Voltage Increase", {
-					text "As often as you like during your turn , you may move a Energy attached to 1 of your Pokémon to Raichu. This power can’t be used if Raichu is affected by a Special Condition."
+					text "As often as you like during your turn , you may move a Energy attached to 1 of your PokÃ©mon to Raichu. This power canâ€™t be used if Raichu is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -1716,7 +1715,7 @@ public enum Undaunted implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				pokeBody "Red Armor", {
-					text "Prevent all damage done to Scizor by attacks from your opponent’s Pokémon that have any Special Energy cards attached to them."
+					text "Prevent all damage done to Scizor by attacks from your opponentâ€™s PokÃ©mon that have any Special Energy cards attached to them."
 					delayedA {
 					}
 				}
@@ -1733,8 +1732,8 @@ public enum Undaunted implements CardInfo {
 			case SLOWKING_PRIME_85:
 			return evolution (this, from:"Slowpoke", hp:HP100, type:PSYCHIC, retreatCost:2) {
 				weakness P
-				pokePower "Opponent’s Choice", {
-					text "Once during your turn , you may reveal the top 2 cards of your deck and your opponent chooses 1 of them. Put that card into your hand and the other card on the bottom of your deck. This power can’t be used if Slowking is affected by a Special Condition."
+				pokePower "Opponentâ€™s Choice", {
+					text "Once during your turn , you may reveal the top 2 cards of your deck and your opponent chooses 1 of them. Put that card into your hand and the other card on the bottom of your deck. This power canâ€™t be used if Slowking is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -1753,12 +1752,12 @@ public enum Undaunted implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				pokePower "Cloud-Covered Moon", {
-					text "Once during your turn , if Umbreon is your Active Pokémon, you may flip a coin. If heads, return Umbreon and all cards attached to it to your hand. This power can’t be used if Umbreon is affected by a Special Condition."
+					text "Once during your turn , if Umbreon is your Active PokÃ©mon, you may flip a coin. If heads, return Umbreon and all cards attached to it to your hand. This power canâ€™t be used if Umbreon is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Evoblast", {
-					text "Does 50 damage plus 10 more damage for each of your Pokémon in play that evolves from Eevee."
+					text "Does 50 damage plus 10 more damage for each of your PokÃ©mon in play that evolves from Eevee."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -1780,7 +1779,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Mega Tidal Wave", {
-					text "Discard the top 5 cards from your opponent’s deck. This attack does 30 damage times the number of Energy cards you discarded to each of your opponent’s Benched Pokémon."
+					text "Discard the top 5 cards from your opponentâ€™s deck. This attack does 30 damage times the number of Energy cards you discarded to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1796,7 +1795,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1819,7 +1818,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "Mega Tidal Wave", {
-					text "Discard the top 5 cards from your opponent’s deck. This attack does 30 damage times the number of Energy cards you discarded to each of your opponent’s Benched Pokémon."
+					text "Discard the top 5 cards from your opponentâ€™s deck. This attack does 30 damage times the number of Energy cards you discarded to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1835,7 +1834,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1849,7 +1848,7 @@ public enum Undaunted implements CardInfo {
 				weakness P
 				weakness C
 				pokeBody "Space Virus", {
-					text "If your opponent’s Pokémon is Knocked Out by damage from an attack of Rayquaza & Deoxys LEGEND, take 1 more Prize card."
+					text "If your opponentâ€™s PokÃ©mon is Knocked Out by damage from an attack of Rayquaza & Deoxys LEGEND, take 1 more Prize card."
 					delayedA {
 					}
 				}
@@ -1870,7 +1869,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1885,7 +1884,7 @@ public enum Undaunted implements CardInfo {
 				weakness P
 				weakness C
 				pokeBody "Space Virus", {
-					text "If your opponent’s Pokémon is Knocked Out by damage from an attack of Rayquaza & Deoxys LEGEND, take 1 more Prize card."
+					text "If your opponentâ€™s PokÃ©mon is Knocked Out by damage from an attack of Rayquaza & Deoxys LEGEND, take 1 more Prize card."
 					delayedA {
 					}
 				}
@@ -1906,7 +1905,7 @@ public enum Undaunted implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {

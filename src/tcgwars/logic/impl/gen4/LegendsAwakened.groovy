@@ -168,7 +168,7 @@ public enum LegendsAwakened implements CardInfo {
 	BUCK_S_TRAINING_130 ("Buck's Training", 130, Rarity.UNCOMMON, [TRAINER]),
 	CYNTHIA_S_FEELINGS_131 ("Cynthia's Feelings", 131, Rarity.UNCOMMON, [TRAINER]),
 	ENERGY_PICKUP_132 ("Energy Pickup", 132, Rarity.UNCOMMON, [TRAINER]),
-	POKE_RADAR_133 ("Poké Radar", 133, Rarity.UNCOMMON, [TRAINER]),
+	POKE_RADAR_133 ("PokÃ© Radar", 133, Rarity.UNCOMMON, [TRAINER]),
 	SNOWPOINT_TEMPLE_134 ("Snowpoint Temple", 134, Rarity.UNCOMMON, [TRAINER]),
 	STARK_MOUNTAIN_135 ("Stark Mountain", 135, Rarity.UNCOMMON, [TRAINER]),
 	TECHNICAL_MACHINE_TS_1_136 ("Technical Machine TS-1", 136, Rarity.UNCOMMON, [TRAINER]),
@@ -181,8 +181,7 @@ public enum LegendsAwakened implements CardInfo {
 	MESPRIT_LV_X_143 ("Mesprit LV.X", 143, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _PSYCHIC_]),
 	MEWTWO_LV_X_144 ("Mewtwo LV.X", 144, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _PSYCHIC_]),
 	RHYPERIOR_LV_X_145 ("Rhyperior LV.X", 145, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _FIGHTING_]),
-	UXIE_LV_X_146 ("Uxie LV.X", 146, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _PSYCHIC_]),
-;
+	UXIE_LV_X_146 ("Uxie LV.X", 146, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _PSYCHIC_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -240,12 +239,12 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP090, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				pokePower "Form Change", {
-					text "Once during your turn , you may search your deck for any Deoxys and switch it with Deoxys Normal Forme. (Any cards attached to Deoxys Normal Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Normal Forme on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
+					text "Once during your turn , you may search your deck for any Deoxys and switch it with Deoxys Normal Forme. (Any cards attached to Deoxys Normal Forme, damage counters, Special Conditions, and effects on it are now on the new PokÃ©mon.) If you do, put Deoxys Normal Forme on top of your deck. Shuffle your deck afterward. You canâ€™t use more than 1 Form Change PokÃ©-Power each turn."
 					actionA {
 					}
 				}
 				move "Energy Crush", {
-					text "20+ damage. Does 20 damage plus 10 more damage for each Energy attached to all of your opponent’s Pokémon."
+					text "20+ damage. Does 20 damage plus 10 more damage for each Energy attached to all of your opponentâ€™s PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -259,7 +258,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness C, PLUS30
 				resistance F, MINUS20
 				move "Hyper Beam", {
-					text "40 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "40 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -267,7 +266,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Draco Meteor", {
-					text "Flip a coin for each of your opponent’s Pokémon. If that coin flip is heads, this attack does 50 damage to that Pokémon."
+					text "Flip a coin for each of your opponentâ€™s PokÃ©mon. If that coin flip is heads, this attack does 50 damage to that PokÃ©mon."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -280,7 +279,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Snorunt", hp:HP090, type:WATER, retreatCost:1) {
 				weakness M, PLUS20
 				move "Destiny Bond", {
-					text "Energy attached to Froslass. During your opponent’s next turn, if Froslass would be Knocked Out by damage from an attack, the Attacking Pokémon is Knocked Out."
+					text "Energy attached to Froslass. During your opponentâ€™s next turn, if Froslass would be Knocked Out by damage from an attack, the Attacking PokÃ©mon is Knocked Out."
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
@@ -288,7 +287,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Icy Breath", {
-					text "40 damage. The Defending Pokémon is now Asleep. Put 1 damage counter on each of your opponent’s Benched Pokémon."
+					text "40 damage. The Defending PokÃ©mon is now Asleep. Put 1 damage counter on each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -302,7 +301,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				move "Shadow Force", {
-					text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Giratina during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Giratina during your opponentâ€™s next turn."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -310,7 +309,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Brutal Edge", {
-					text "50+ damage. Does 50 damage plus 10 more damage for each damage counter on the Defending Pokémon."
+					text "50+ damage. Does 50 damage plus 10 more damage for each damage counter on the Defending PokÃ©mon."
 					energyCost P, P, C, C
 					attackRequirement {}
 					onAttack {
@@ -324,7 +323,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness W, PLUS20
 				resistance F, MINUS20
 				move "Burning Poison", {
-					text "Choose either Burned or Poisoned. The Defending Pokémon is now affected by that Special Condition. You may return Gliscor and all cards attached to it to your hand."
+					text "Choose either Burned or Poisoned. The Defending PokÃ©mon is now affected by that Special Condition. You may return Gliscor and all cards attached to it to your hand."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -332,7 +331,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Pester", {
-					text "40+ damage. If the Defending Pokémon is affected by a Special Condition, this attack does 40 damage plus 40 more damage."
+					text "40+ damage. If the Defending PokÃ©mon is affected by a Special Condition, this attack does 40 damage plus 40 more damage."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -345,7 +344,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP100, type:FIRE, retreatCost:4) {
 				weakness W
 				pokePower "Flash Fire", {
-					text "Once during your turn , you may move a Energy attached to 1 of your Pokémon to Heatran. This power can’t be used if Heatran is affected by a Special Condition."
+					text "Once during your turn , you may move a Energy attached to 1 of your PokÃ©mon to Heatran. This power canâ€™t be used if Heatran is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -363,7 +362,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Seadra", hp:HP130, type:WATER, retreatCost:1) {
 				weakness L, PLUS30
 				move "Aqua Steam", {
-					text "10× damage. Energy card you chose. Put those cards on top of your deck. Shuffle your deck afterward."
+					text "10Ã— damage. Energy card you chose. Put those cards on top of your deck. Shuffle your deck afterward."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -371,7 +370,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Dragon Pump", {
-					text "40+ damage. You may discard 2 cards from you hand. If you do, this attack does 40 damage plus 20 more damage and does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "40+ damage. You may discard 2 cards from you hand. If you do, this attack does 40 damage plus 20 more damage and does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -385,7 +384,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness F, PLUS30
 				resistance M, MINUS20
 				pokeBody "Rivalry", {
-					text "If your opponent has any Pokémon LV. in play, each of Luxray’s attacks does 50 more damage to the Active Pokémon ."
+					text "If your opponent has any PokÃ©mon LV. in play, each of Luxrayâ€™s attacks does 50 more damage to the Active PokÃ©mon ."
 					delayedA {
 					}
 				}
@@ -412,7 +411,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness M
 				resistance L, MINUS20
 				move "Ice Fang", {
-					text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and discard an Energy card attached to the Defending Pokémon."
+					text "40 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed and discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -434,12 +433,12 @@ public enum LegendsAwakened implements CardInfo {
 				weakness R, PLUS30
 				resistance P, MINUS20
 				pokePower "Magnetic Reversal", {
-					text "Once during your turn , you may flip a coin. If heads, switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. This power can’t be used if Metagross is affected by a Special Condition."
+					text "Once during your turn , you may flip a coin. If heads, switch 1 of your opponentâ€™s Benched PokÃ©mon with 1 of the Defending PokÃ©mon. This power canâ€™t be used if Metagross is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Extra Comet Punch", {
-					text "50 damage. During your next turn, Metagross’s Extra Comet Punch attack’s base is 100."
+					text "50 damage. During your next turn, Metagrossâ€™s Extra Comet Punch attackâ€™s base is 100."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
@@ -452,7 +451,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP080, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS20
 				move "Hypnoblast", {
-					text "10 damage. The Defending Pokémon is now Asleep."
+					text "10 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -460,7 +459,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Psychic", {
-					text "40+ damage. Does 40 damage plus 10 more damage for each Energy attached to the Defending Pokémon."
+					text "40+ damage. Does 40 damage plus 10 more damage for each Energy attached to the Defending PokÃ©mon."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -473,7 +472,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Poliwhirl", hp:HP120, type:WATER, retreatCost:1) {
 				weakness G, PLUS30
 				pokeBody "Enthusiasm", {
-					text "If you have Poliwag, Poliwhirl, and Poliwrath in play, each of these Pokémon’s attacks does 60 more damage to the Defending Pokémon ."
+					text "If you have Poliwag, Poliwhirl, and Poliwrath in play, each of these PokÃ©monâ€™s attacks does 60 more damage to the Defending PokÃ©mon ."
 					delayedA {
 					}
 				}
@@ -491,7 +490,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Nosepass", hp:HP090, type:FIGHTING, retreatCost:3) {
 				weakness W
 				pokeBody "Steel Coating", {
-					text "Any damage done to Probopass by your opponent’s attacks is reduced by 10 for each Energy attached to Probopass . You can’t reduce more than 20 damage in this way."
+					text "Any damage done to Probopass by your opponentâ€™s attacks is reduced by 10 for each Energy attached to Probopass . You canâ€™t reduce more than 20 damage in this way."
 					delayedA {
 					}
 				}
@@ -510,7 +509,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness C
 				resistance F, MINUS20
 				pokePower "Speed Gain", {
-					text "Once during your turn , you may flip a coin until you get tails. For each heads, search your discard pile for a basic Energy card or a basic Energy card and attach it to Rayquaza. This power can’t be used if Rayquaza is affected by a Special Condition or if you have another Rayquaza in play."
+					text "Once during your turn , you may flip a coin until you get tails. For each heads, search your discard pile for a basic Energy card or a basic Energy card and attach it to Rayquaza. This power canâ€™t be used if Rayquaza is affected by a Special Condition or if you have another Rayquaza in play."
 					actionA {
 					}
 				}
@@ -528,12 +527,12 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP120, type:COLORLESS, retreatCost:4) {
 				weakness F
 				pokeBody "Slow Start", {
-					text "Regigigas can’t attack until your opponent has 3 or less Prize cards left."
+					text "Regigigas canâ€™t attack until your opponent has 3 or less Prize cards left."
 					delayedA {
 					}
 				}
 				move "Crush Grip", {
-					text "120 damage. If the Defending Pokémon already has any damage counters on it, this attack’s base damage is 40 instead of 120."
+					text "120 damage. If the Defending PokÃ©mon already has any damage counters on it, this attackâ€™s base damage is 40 instead of 120."
 					energyCost W, F, M, C
 					attackRequirement {}
 					onAttack {
@@ -546,12 +545,12 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
 				resistance C, MINUS20
 				pokePower "Curse Breath", {
-					text "Once during your turn, when you put Spiritomb from your hand onto your Bench, you may put 1 damage counter on all Pokémon that already have any damage counters on them . You can’t use more than 1 Curse Breath Poké-Power each turn."
+					text "Once during your turn, when you put Spiritomb from your hand onto your Bench, you may put 1 damage counter on all PokÃ©mon that already have any damage counters on them . You canâ€™t use more than 1 Curse Breath PokÃ©-Power each turn."
 					actionA {
 					}
 				}
 				move "Transfer Pain", {
-					text "Move 1 damage counter from 1 of your Pokémon to 1 of your opponent’s Pokémon."
+					text "Move 1 damage counter from 1 of your PokÃ©mon to 1 of your opponentâ€™s PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -565,7 +564,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				move "Sonic Wave", {
-					text "10 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "10 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -573,7 +572,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Pursue and Turn", {
-					text "60+ damage. If the Defending Pokémon already has 2 or more damage counters on it, this attack does 60 damage plus 20 more damage and switch Yanmega with 1 of your Benched Pokémon."
+					text "60+ damage. If the Defending PokÃ©mon already has 2 or more damage counters on it, this attack does 60 damage plus 20 more damage and switch Yanmega with 1 of your Benched PokÃ©mon."
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
@@ -586,7 +585,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Anorith", hp:HP140, type:FIGHTING, retreatCost:2) {
 				weakness G, PLUS30
 				pokeBody "Fossil Armor", {
-					text "If Armaldo would be damaged by an attack, prevent that attack’s damage done to Armaldo if that damage is 60 or less."
+					text "If Armaldo would be damaged by an attack, prevent that attackâ€™s damage done to Armaldo if that damage is 60 or less."
 					delayedA {
 					}
 				}
@@ -604,12 +603,12 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS20
 				pokePower "Time Walk", {
-					text "Once during your turn, when you put Azelf from your hand onto you Bench, you may look at all of your face-down Prize cards. If you do, you may choose 1 Pokémon you find there, show it to your opponent, and put it into you hand. Then, choose 1 card in your hand and put it as a Prize card face down."
+					text "Once during your turn, when you put Azelf from your hand onto you Bench, you may look at all of your face-down Prize cards. If you do, you may choose 1 PokÃ©mon you find there, show it to your opponent, and put it into you hand. Then, choose 1 card in your hand and put it as a Prize card face down."
 					actionA {
 					}
 				}
 				move "Lock Up", {
-					text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "20 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -623,7 +622,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness R, PLUS30
 				resistance W, MINUS20
 				move "Parallel Gain", {
-					text "30 damage. Remove 1 damage counter from each of your Pokémon."
+					text "30 damage. Remove 1 damage counter from each of your PokÃ©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -631,7 +630,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Blend Pollen", {
-					text "40+ damage. Does 40 damage plus 20 more damage for each Vileplume and each Bellossom you have in play. Flip a coin. If heads, the Defending Pokémon is now Burned."
+					text "40+ damage. Does 40 damage plus 20 more damage for each Vileplume and each Bellossom you have in play. Flip a coin. If heads, the Defending PokÃ©mon is now Burned."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -644,7 +643,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Lileep", hp:HP120, type:GRASS, retreatCost:3) {
 				weakness R, PLUS30
 				move "Drain Down", {
-					text "30 damage. Before doing damage, you may switch 1 of the Defending Pokémon with 1 of your opponent’s Benched Pokémon. If you do, this attack does 30 damage to the new Defending Pokémon. If the Defending Pokémon would be Knocked Out by this attack, you may remove all damage counters from Cradily."
+					text "30 damage. Before doing damage, you may switch 1 of the Defending PokÃ©mon with 1 of your opponentâ€™s Benched PokÃ©mon. If you do, this attack does 30 damage to the new Defending PokÃ©mon. If the Defending PokÃ©mon would be Knocked Out by this attack, you may remove all damage counters from Cradily."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -652,7 +651,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Acid", {
-					text "50 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "50 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -666,7 +665,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness L, PLUS20
 				resistance P, MINUS20
 				move "Gripthrow", {
-					text "Flip a coin. If heads, your opponent returns the Defending Pokémon and all cards attached to it to his or her hand."
+					text "Flip a coin. If heads, your opponent returns the Defending PokÃ©mon and all cards attached to it to his or her hand."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -687,12 +686,12 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Skitty", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				pokeBody "Attracting Body", {
-					text "If Delcatty is your Active Pokémon and is damaged by an opponent’s attack (even if Delcatty is Knocked Out), flip a coin. If heads, the Attacking Pokémon is now Confused."
+					text "If Delcatty is your Active PokÃ©mon and is damaged by an opponentâ€™s attack (even if Delcatty is Knocked Out), flip a coin. If heads, the Attacking PokÃ©mon is now Confused."
 					delayedA {
 					}
 				}
 				move "Energy Assist", {
-					text "30 damage. Search your discard pile for a basic Energy card and attach it to 1 of your Benched Pokémon."
+					text "30 damage. Search your discard pile for a basic Energy card and attach it to 1 of your Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -705,12 +704,12 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP080, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				pokePower "Form Change", {
-					text "Once during your turn , you may search your deck for any Deoxys and switch it with Deoxys Attack Forme. (Any cards attached to Deoxys Attack Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Attack Forme on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
+					text "Once during your turn , you may search your deck for any Deoxys and switch it with Deoxys Attack Forme. (Any cards attached to Deoxys Attack Forme, damage counters, Special Conditions, and effects on it are now on the new PokÃ©mon.) If you do, put Deoxys Attack Forme on top of your deck. Shuffle your deck afterward. You canâ€™t use more than 1 Form Change PokÃ©-Power each turn."
 					actionA {
 					}
 				}
 				move "Psychic Boost", {
-					text "80 damage. During your next turn, Deoxys’s Psychic Boost attack’s base damage is 20."
+					text "80 damage. During your next turn, Deoxysâ€™s Psychic Boost attackâ€™s base damage is 20."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -723,7 +722,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP100, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				pokePower "Form Change", {
-					text "Once during your turn , you may search your deck for any Deoxys and switch it with Deoxys Defense Forme. (Any cards attached to Deoxys Defense Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Defense Forme on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
+					text "Once during your turn , you may search your deck for any Deoxys and switch it with Deoxys Defense Forme. (Any cards attached to Deoxys Defense Forme, damage counters, Special Conditions, and effects on it are now on the new PokÃ©mon.) If you do, put Deoxys Defense Forme on top of your deck. Shuffle your deck afterward. You canâ€™t use more than 1 Form Change PokÃ©-Power each turn."
 					actionA {
 					}
 				}
@@ -741,12 +740,12 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:0) {
 				weakness P
 				pokePower "Form Change", {
-					text "Once during your turn , you may search your deck for any Deoxys and switch it with Deoxys Speed Forme. (Any cards attached to Deoxys Speed Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Speed Forme on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
+					text "Once during your turn , you may search your deck for any Deoxys and switch it with Deoxys Speed Forme. (Any cards attached to Deoxys Speed Forme, damage counters, Special Conditions, and effects on it are now on the new PokÃ©mon.) If you do, put Deoxys Speed Forme on top of your deck. Shuffle your deck afterward. You canâ€™t use more than 1 Form Change PokÃ©-Power each turn."
 					actionA {
 					}
 				}
 				move "Speed Shot", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on that PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -759,7 +758,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				pokeBody "Ditto DNA", {
-					text "As long as Ditto is your Active Pokémon, its maximum HP is the same as your opponent’s Active Pokémon. Ditto can use the attacks of that Pokémon as its own. If that Pokémon is no longer your opponent’s Active Pokémon, choose 1 of your opponent’s Active Pokémon for Ditto to copy."
+					text "As long as Ditto is your Active PokÃ©mon, its maximum HP is the same as your opponentâ€™s Active PokÃ©mon. Ditto can use the attacks of that PokÃ©mon as its own. If that PokÃ©mon is no longer your opponentâ€™s Active PokÃ©mon, choose 1 of your opponentâ€™s Active PokÃ©mon for Ditto to copy."
 					delayedA {
 					}
 				}
@@ -770,7 +769,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				pokeBody "Iron Shell", {
-					text "Whenever you attach a basic Energy card from your hand to Forretress (excluding effects of attacks), you may flip a coin. If tails, put 2 damage counters on each Pokémon (excluding any Forretress)."
+					text "Whenever you attach a basic Energy card from your hand to Forretress (excluding effects of attacks), you may flip a coin. If tails, put 2 damage counters on each PokÃ©mon (excluding any Forretress)."
 					delayedA {
 					}
 				}
@@ -789,7 +788,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness G
 				resistance L, MINUS20
 				move "Drought", {
-					text "Energy cards from your hand and attach them to 1 of your Pokémon."
+					text "Energy cards from your hand and attach them to 1 of your PokÃ©mon."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -797,7 +796,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Major Earthquake", {
-					text "100 damage. Energy attached to Groudon and this attack does 10 damage to each of your Benched Pokémon."
+					text "100 damage. Energy attached to Groudon and this attack does 10 damage to each of your Benched PokÃ©mon."
 					energyCost F, F, C, F
 					attackRequirement {}
 					onAttack {
@@ -810,7 +809,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP100, type:METAL, retreatCost:3) {
 				weakness W
 				pokePower "Smelt", {
-					text "Once during your turn , you may move a Energy attached to 1 of your Pokémon to Heatran. This power can’t be used if Heatran is affected by a Special Condition."
+					text "Once during your turn , you may move a Energy attached to 1 of your PokÃ©mon to Heatran. This power canâ€™t be used if Heatran is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -837,7 +836,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Doom Desire", {
-					text "Discard all Energy attached to Jirachi. The Defending Pokémon is Knocked Out at the end of your opponent’s next turn."
+					text "Discard all Energy attached to Jirachi. The Defending PokÃ©mon is Knocked Out at the end of your opponentâ€™s next turn."
 					energyCost M, M
 					attackRequirement {}
 					onAttack {
@@ -850,7 +849,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP100, type:WATER, retreatCost:3) {
 				weakness L
 				move "Drizzle", {
-					text "Energy cards from your hand and attach them to 1 of your Pokémon."
+					text "Energy cards from your hand and attach them to 1 of your PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -858,7 +857,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "High Tide", {
-					text "60 damage. Energy attached to Kyogre. This attack does 20 damage to each of your opponent’s Benched Pokémon."
+					text "60 damage. Energy attached to Kyogre. This attack does 20 damage to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, W, C, W
 					attackRequirement {}
 					onAttack {
@@ -871,7 +870,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Buneary", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				pokeBody "Healing Tail", {
-					text "As long as Lopunny is your Active Pokémon, remove 1 damage counter from each of your Benched Pokémon between turns."
+					text "As long as Lopunny is your Active PokÃ©mon, remove 1 damage counter from each of your Benched PokÃ©mon between turns."
 					delayedA {
 					}
 				}
@@ -884,7 +883,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Cross-Cut", {
-					text "30+ damage. If the Defending Pokémon is an Evolved Pokémon, this attack does 30 damage plus 30 more damage."
+					text "30+ damage. If the Defending PokÃ©mon is an Evolved PokÃ©mon, this attack does 30 damage plus 30 more damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -897,7 +896,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS20
 				pokePower "Psychic Bind", {
-					text "Once during your turn, when you put Mesprit from your hand onto your Bench, you may use this power. Your opponent can’t use any Poké-Powers on his or her Pokémon during your opponent’s next turn."
+					text "Once during your turn, when you put Mesprit from your hand onto your Bench, you may use this power. Your opponent canâ€™t use any PokÃ©-Powers on his or her PokÃ©mon during your opponentâ€™s next turn."
 					actionA {
 					}
 				}
@@ -915,7 +914,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Poliwhirl", hp:HP130, type:WATER, retreatCost:2) {
 				weakness L, PLUS30
 				move "Focus Punch", {
-					text "60 damage. If Poliwrath was damaged by an attack during your opponent’s last turn, this attack does nothing."
+					text "60 damage. If Poliwrath was damaged by an attack during your opponentâ€™s last turn, this attack does nothing."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -936,12 +935,12 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP090, type:WATER, retreatCost:3) {
 				weakness M
 				pokePower "Regi Move", {
-					text "Once during your turn , you may use this power. Discard 2 cards from your hand and choose 1 of your opponent’s Active Pokémon that isn’t an Evolved Pokémon. Then, your opponent switches that Pokémon with 1 of his or her Benched Pokémon. This power can’t be used if Regice is affected by a Special Condition."
+					text "Once during your turn , you may use this power. Discard 2 cards from your hand and choose 1 of your opponentâ€™s Active PokÃ©mon that isnâ€™t an Evolved PokÃ©mon. Then, your opponent switches that PokÃ©mon with 1 of his or her Benched PokÃ©mon. This power canâ€™t be used if Regice is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Ice Reflect", {
-					text "50 damage. If Regice was damaged by an attack during your opponent’s last turn, the Defending Pokémon is now Paralyzed."
+					text "50 damage. If Regice was damaged by an attack during your opponentâ€™s last turn, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -959,7 +958,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Gigaton Punch", {
-					text "60+ damage. Flip a coin. If heads, this attack does 60 damage plus 20 more damage and does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "60+ damage. Flip a coin. If heads, this attack does 60 damage plus 20 more damage and does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -972,7 +971,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP090, type:FIGHTING, retreatCost:3) {
 				weakness W
 				pokePower "Regi Cycle", {
-					text "Once during your turn , if you have a card in your discard pile, you may discard 2 cards from your hand. Then, attach a Energy from your discard pile to Regirock. This power can’t be used if Regirock is affected by a Special Condition."
+					text "Once during your turn , if you have a card in your discard pile, you may discard 2 cards from your hand. Then, attach a Energy from your discard pile to Regirock. This power canâ€™t be used if Regirock is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -991,7 +990,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				pokePower "Regi Heal", {
-					text "Once during your turn , you may discard 2 cards from you hand. Then, remove 3 damage counters from Registeel. This power can’t be used if Registeel is affected by a Special Conition."
+					text "Once during your turn , you may discard 2 cards from you hand. Then, remove 3 damage counters from Registeel. This power canâ€™t be used if Registeel is affected by a Special Conition."
 					actionA {
 					}
 				}
@@ -1008,12 +1007,12 @@ public enum LegendsAwakened implements CardInfo {
 			case SHEDINJA_40:
 			return evolution (this, from:"Nincada", hp:HP060, type:GRASS, retreatCost:0) {
 				pokePower "Resent", {
-					text "Once during your opponent’s turn, if Shedinja would be Knocked Out by damage from an attack, you may put 4 damage counters on the Attacking Pokémon and each of the opponent’s Pokémon that has the same name as the Attacking Pokémon."
+					text "Once during your opponentâ€™s turn, if Shedinja would be Knocked Out by damage from an attack, you may put 4 damage counters on the Attacking PokÃ©mon and each of the opponentâ€™s PokÃ©mon that has the same name as the Attacking PokÃ©mon."
 					actionA {
 					}
 				}
 				move "Curse and Deceive", {
-					text "Put 3 damage counters on the Defending Pokémon. If Shedinja has any damage counters on it, the Defending Pokémon is now Confused."
+					text "Put 3 damage counters on the Defending PokÃ©mon. If Shedinja has any damage counters on it, the Defending PokÃ©mon is now Confused."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1026,12 +1025,12 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP080, type:FIRE, retreatCost:2) {
 				weakness W, PLUS20
 				pokeBody "White Smoke", {
-					text "As long as Torkoal is your Active Pokémon, prevent all effects, including damage, done to your Benched Pokémon by your opponent’s attacks."
+					text "As long as Torkoal is your Active PokÃ©mon, prevent all effects, including damage, done to your Benched PokÃ©mon by your opponentâ€™s attacks."
 					delayedA {
 					}
 				}
 				move "Black Soot", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Burned and Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Burned and Paralyzed."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -1044,12 +1043,12 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokePower "!", {
-					text "Once during your turn, when you put Unown ! from your hand onto your Bench, you may flip a coin. If heads, put 2 damage counters on 1 of your opponent’s Pokémon. If tails, put 2 damage counters on 1 of your Pokémon."
+					text "Once during your turn, when you put Unown ! from your hand onto your Bench, you may flip a coin. If heads, put 2 damage counters on 1 of your opponentâ€™s PokÃ©mon. If tails, put 2 damage counters on 1 of your PokÃ©mon."
 					actionA {
 					}
 				}
 				move "Hidden Power", {
-					text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage. If tails. Unown ! does damage to itself, and this attack’s damage isn’t affected by Weakness or Resistance."
+					text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage. If tails. Unown ! does damage to itself, and this attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1080,7 +1079,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Weepinbell", hp:HP120, type:GRASS, retreatCost:3) {
 				weakness R, PLUS30
 				move "Burning Scent", {
-					text "The Defending Pokémon is now Burned and Poisoned. Before applying these effects, you may switch 1 of the Defending Pokémon with 1 of your opponent’s Benched Pokémon. The new Defending Pokémon is now Burned and Poisoned."
+					text "The Defending PokÃ©mon is now Burned and Poisoned. Before applying these effects, you may switch 1 of the Defending PokÃ©mon with 1 of your opponentâ€™s Benched PokÃ©mon. The new Defending PokÃ©mon is now Burned and Poisoned."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1088,7 +1087,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Energy Dissolve", {
-					text "60 damage. Discard an Energy attached to the Defending Pokémon at the end of your opponent’s next turn."
+					text "60 damage. Discard an Energy attached to the Defending PokÃ©mon at the end of your opponentâ€™s next turn."
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
@@ -1101,12 +1100,12 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Gloom", hp:HP120, type:GRASS, retreatCost:2) {
 				weakness P, PLUS30
 				pokePower "Energy Reaction", {
-					text "Once during your turn , when you attach a or Energy card from you hand to Vileplue (excluding effects of attacks or Poké-Powers), you may use this power. If you attach a Energy card, the Defending Pokémon is now Asleep. If you attach a Energy card, the Defending Pokémon is now Poisoned. This power can’t be used if Vileplume is affected by a Special Condition."
+					text "Once during your turn , when you attach a or Energy card from you hand to Vileplue (excluding effects of attacks or PokÃ©-Powers), you may use this power. If you attach a Energy card, the Defending PokÃ©mon is now Asleep. If you attach a Energy card, the Defending PokÃ©mon is now Poisoned. This power canâ€™t be used if Vileplume is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Disturbing Pollen", {
-					text "60 damage. Flip a coin. If heads, your opponent can’t play an Trainer, Supporter, or Stadium cards from his or her hand during your opponent’s next turn."
+					text "60 damage. Flip a coin. If heads, your opponent canâ€™t play an Trainer, Supporter, or Stadium cards from his or her hand during your opponentâ€™s next turn."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -1161,7 +1160,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				pokePower "Temperament", {
-					text "Once during your turn , you may search your deck for any Castform and switch it with Castform. (Any cards attached to Castform, damage counters, Special Conditions, and effect on it are now on the new Pokémon.) If you do, put Castform on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Temperament Poké-Power each turn."
+					text "Once during your turn , you may search your deck for any Castform and switch it with Castform. (Any cards attached to Castform, damage counters, Special Conditions, and effect on it are now on the new PokÃ©mon.) If you do, put Castform on top of your deck. Shuffle your deck afterward. You canâ€™t use more than 1 Temperament PokÃ©-Power each turn."
 					actionA {
 					}
 				}
@@ -1179,12 +1178,12 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				pokePower "Temperament", {
-					text "Once during your turn , you may search your deck for any Castform and switch it with Castform Rain Form. (Any cards attached to Castform Rain Form, damage counters, Special Conditions, and effect on it are now on the new Pokémon.) Shuffle Castorm Rain Form back into your deck. You can’t use more than 1 Temperament Poké-Power each turn."
+					text "Once during your turn , you may search your deck for any Castform and switch it with Castform Rain Form. (Any cards attached to Castform Rain Form, damage counters, Special Conditions, and effect on it are now on the new PokÃ©mon.) Shuffle Castorm Rain Form back into your deck. You canâ€™t use more than 1 Temperament PokÃ©-Power each turn."
 					actionA {
 					}
 				}
 				move "Water Pulse", {
-					text "30 damage. The defending Pokémon is now Asleep."
+					text "30 damage. The defending PokÃ©mon is now Asleep."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1197,12 +1196,12 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
 				weakness M, PLUS10
 				pokePower "Temperament", {
-					text "Once during your turn , you may search your deck for any Castform and switch it with Castform Snow-cloud Form. (Any cards attached to Castform Snow-cloud Form, damage counters, Special Conditions, and effect on it are now on the new Pokémon.) Shuffle Castorm Snow-cloud Form back into your deck. You can’t use more than 1 Temperament Poké-Power each turn."
+					text "Once during your turn , you may search your deck for any Castform and switch it with Castform Snow-cloud Form. (Any cards attached to Castform Snow-cloud Form, damage counters, Special Conditions, and effect on it are now on the new PokÃ©mon.) Shuffle Castorm Snow-cloud Form back into your deck. You canâ€™t use more than 1 Temperament PokÃ©-Power each turn."
 					actionA {
 					}
 				}
 				move "Hail", {
-					text "This attack does 10 damage to each of your opponent’s Pokémon."
+					text "This attack does 10 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1215,7 +1214,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
 				weakness W, PLUS10
 				pokePower "Temperament", {
-					text "Once during your turn , you may search your deck for any Castform and switch it with Castform Sunny Form. (Any cards attached to Castform Sunny Form, damage counters, Special Conditions, and effect on it are now on the new Pokémon.) Shuffle Castorm Sunny Form back into your deck. You can’t use more than 1 Temperament Poké-Power each turn."
+					text "Once during your turn , you may search your deck for any Castform and switch it with Castform Sunny Form. (Any cards attached to Castform Sunny Form, damage counters, Special Conditions, and effect on it are now on the new PokÃ©mon.) Shuffle Castorm Sunny Form back into your deck. You canâ€™t use more than 1 Temperament PokÃ©-Power each turn."
 					actionA {
 					}
 				}
@@ -1233,7 +1232,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Dratini", hp:HP070, type:COLORLESS, retreatCost:1) {
 				weakness C, PLUS20
 				move "Wrap", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1263,7 +1262,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Whirlwind", {
-					text "60 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "60 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1276,7 +1275,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Exeggcute", hp:HP080, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS20
 				move "Psychic Strategy", {
-					text "Each player counts the number of cards in his or her opponent’s hand. Each player shuffles his or her hand into his or her deck. Then, each player draws a number of cards up to the number of cards his or her opponent had. (You draw your cards first.)"
+					text "Each player counts the number of cards in his or her opponentâ€™s hand. Each player shuffles his or her hand into his or her deck. Then, each player draws a number of cards up to the number of cards his or her opponent had. (You draw your cards first.)"
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1284,7 +1283,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Super Eggsplosion", {
-					text "50× damage. Discard as many Energy cards as you like attached to your Pokémon. For each Energy card you discarded, flip a coin. This attack does 50 damage times the number of heads."
+					text "50Ã— damage. Discard as many Energy cards as you like attached to your PokÃ©mon. For each Energy card you discarded, flip a coin. This attack does 50 damage times the number of heads."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1298,7 +1297,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness W, PLUS20
 				resistance F, MINUS20
 				move "Poison Jab", {
-					text "20 damage. The Defending Pokémon is now Poisoned."
+					text "20 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1319,7 +1318,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Spoink", hp:HP090, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS20
 				move "Magical Step", {
-					text "The Defending Pokémon is now Confused. Put 6 damage counters instead of 3 on the Confused Pokémon."
+					text "The Defending PokÃ©mon is now Confused. Put 6 damage counters instead of 3 on the Confused PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1327,7 +1326,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Grind", {
-					text "20× damage. Does 20 damage times the amount of Energy attached to Grumpig."
+					text "20Ã— damage. Does 20 damage times the amount of Energy attached to Grumpig."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1340,12 +1339,12 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Houndour", hp:HP080, type:FIRE, retreatCost:1) {
 				weakness W, PLUS20
 				pokeBody "Revenge Fang", {
-					text "If you have less Benched Pokémon than your opponent, each of Houndoom’s attacks does 40 more damage to the Active Pokémon ."
+					text "If you have less Benched PokÃ©mon than your opponent, each of Houndoomâ€™s attacks does 40 more damage to the Active PokÃ©mon ."
 					delayedA {
 					}
 				}
 				move "Burning Sensation", {
-					text "20 damage. If the Defending Pokémon already has any damage counters on it, the Defending Pokémon is now Burned."
+					text "20 damage. If the Defending PokÃ©mon already has any damage counters on it, the Defending PokÃ©mon is now Burned."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1366,7 +1365,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Chinchou", hp:HP090, type:WATER, retreatCost:1) {
 				weakness G, PLUS20
 				move "Rushing Water", {
-					text "20 damage. Move an Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon."
+					text "20 damage. Move an Energy card attached to the Defending PokÃ©mon to another of your opponentâ€™s PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1374,7 +1373,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Confuse Ray", {
-					text "40 damage. The Defending Pokémon is now Confused."
+					text "40 damage. The Defending PokÃ©mon is now Confused."
 					energyCost W, L
 					attackRequirement {}
 					onAttack {
@@ -1387,7 +1386,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Chinchou", hp:HP090, type:LIGHTNING, retreatCost:2) {
 				weakness F, PLUS20
 				move "Energy Split", {
-					text "This attack does 30 damage to each of your opponent’s Pokémon that has any Energy cards attached to it."
+					text "This attack does 30 damage to each of your opponentâ€™s PokÃ©mon that has any Energy cards attached to it."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1409,7 +1408,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness R, PLUS20
 				resistance F, MINUS20
 				move "Comet Punch", {
-					text "20× damage. Flip 4 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 4 coins. This attack does 20 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1417,7 +1416,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Baton Pass", {
-					text "50 damage. You may switch Ledian with 1 of your Benched Pokémon. If you do, move as many Energy cards attached to Ledian as you like to the new Active Pokémon."
+					text "50 damage. You may switch Ledian with 1 of your Benched PokÃ©mon. If you do, move as many Energy cards attached to Ledian as you like to the new Active PokÃ©mon."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -1430,7 +1429,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
 				weakness P, PLUS20
 				move "Focus Blast", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1438,7 +1437,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Spike Lariat", {
-					text "60+ damage. If the Defending Pokémon already has any damage counters on it, this attack does 60 damage plus 20 more damage."
+					text "60+ damage. If the Defending PokÃ©mon already has any damage counters on it, this attack does 60 damage plus 20 more damage."
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
@@ -1452,7 +1451,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Spark", {
-					text "30 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "30 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1474,7 +1473,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness W, PLUS20
 				resistance L, MINUS20
 				move "Heavy Bone", {
-					text "40 damage. Flip a coin. If tails, Marowak can’t use Heavy Bone during your next turn."
+					text "40 damage. Flip a coin. If tails, Marowak canâ€™t use Heavy Bone during your next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1482,7 +1481,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Bone Rush", {
-					text "50× damage. Flip a coin until you get tails. This attack does 50 damage times the number of heads."
+					text "50Ã— damage. Flip a coin until you get tails. This attack does 50 damage times the number of heads."
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
@@ -1496,7 +1495,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				move "Agility", {
-					text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Metang during your opponent’s next turn."
+					text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Metang during your opponentâ€™s next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1518,7 +1517,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				move "Psyshock", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -1540,7 +1539,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness F, PLUS20
 				resistance P, MINUS20
 				move "Bite One", {
-					text "30 damage. If the Defending Pokémon isn’t an Evolved Pokémon, that Pokémon can’t attack, retreat, or use any Poké-Powers during your opponent’s next turn."
+					text "30 damage. If the Defending PokÃ©mon isnâ€™t an Evolved PokÃ©mon, that PokÃ©mon canâ€™t attack, retreat, or use any PokÃ©-Powers during your opponentâ€™s next turn."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -1548,7 +1547,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Harass", {
-					text "10× damage. Does 10 damage times the number of Pokémon you have in play."
+					text "10Ã— damage. Does 10 damage times the number of PokÃ©mon you have in play."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1562,7 +1561,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness R, PLUS20
 				resistance F, MINUS20
 				pokePower "Cast-off Shell", {
-					text "Once during your turn, when you play Ninjask from your hand to evolve 1 of your Pokémon and if your Bench isn’t full, you may put Shedinja onto your Bench as a Basic Pokémon from your hand or your discard pile."
+					text "Once during your turn, when you play Ninjask from your hand to evolve 1 of your PokÃ©mon and if your Bench isnâ€™t full, you may put Shedinja onto your Bench as a Basic PokÃ©mon from your hand or your discard pile."
 					actionA {
 					}
 				}
@@ -1580,7 +1579,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Meowth", hp:HP080, type:COLORLESS, retreatCost:0) {
 				weakness F, PLUS20
 				move "Feint Attack", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on that PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1610,7 +1609,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Icy Wind", {
-					text "60 damage. The Defending Pokémon is now Asleep."
+					text "60 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost W, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1652,7 +1651,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Core Flash", {
-					text "Choose 1 of your opponent’s Pokémon that has any Poké-Powers or Poké-Bodies. This attack does 50 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon that has any PokÃ©-Powers or PokÃ©-Bodies. This attack does 50 damage to that PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1665,7 +1664,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Gulpin", hp:HP090, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS20
 				move "Swallow Up", {
-					text "30 damage. Before doing damage, count the remaining HP of the Defending Pokémon and Swalot. If the Defending Pokémon has fewer remaining HP than Swalot’s, this attack does 80 damage instead."
+					text "30 damage. Before doing damage, count the remaining HP of the Defending PokÃ©mon and Swalot. If the Defending PokÃ©mon has fewer remaining HP than Swalotâ€™s, this attack does 80 damage instead."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1673,7 +1672,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Gunk Shot", {
-					text "60 damage. The Defending Pokémon is now Poisoned."
+					text "60 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -1687,12 +1686,12 @@ public enum LegendsAwakened implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				pokeBody "Big Wing", {
-					text "If Swellow has no Energy attached to it, Swellow’s Retreat Cost is 0."
+					text "If Swellow has no Energy attached to it, Swellowâ€™s Retreat Cost is 0."
 					delayedA {
 					}
 				}
 				move "Mach Descent", {
-					text "30 damage. If Swellow was on your Bench this turn, this attack’s base damage is 60 instead of 30."
+					text "30 damage. If Swellow was on your Bench this turn, this attackâ€™s base damage is 60 instead of 30."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1705,7 +1704,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:2) {
 				weakness F, PLUS20
 				move "Herd Charge", {
-					text "20× damage. Flip a coin for each Tauros you have in play. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip a coin for each Tauros you have in play. This attack does 20 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1726,7 +1725,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Tentacool", hp:HP090, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Tentacle Strike", {
-					text "Search your opponent’s discard pile for up to 2 Energy cards and attach them to any of your opponent’s Pokémon in any way you like. For each Energy card attached in this way, this attack does 20 damage to that Pokémon."
+					text "Search your opponentâ€™s discard pile for up to 2 Energy cards and attach them to any of your opponentâ€™s PokÃ©mon in any way you like. For each Energy card attached in this way, this attack does 20 damage to that PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1734,7 +1733,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Dangerous Poison", {
-					text "60 damage. If Tentacruel has less Energy attached to it than the Defending Pokémon. The Defending Pokémon is now Paralyzed and Poisoned."
+					text "60 damage. If Tentacruel has less Energy attached to it than the Defending PokÃ©mon. The Defending PokÃ©mon is now Paralyzed and Poisoned."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1752,7 +1751,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Hidden Power", {
-					text "10 damage. Remove the Special Condition Asleep from the Defending Pokémon."
+					text "10 damage. Remove the Special Condition Asleep from the Defending PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1765,12 +1764,12 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokePower "RETIRE", {
-					text "Once during your turn, if Unown R is on your Bench, you may discard Unown R and all cards attached to it. (This doesn’t count as a Knocked Out Pokémon.) Then, draw a card."
+					text "Once during your turn, if Unown R is on your Bench, you may discard Unown R and all cards attached to it. (This doesnâ€™t count as a Knocked Out PokÃ©mon.) Then, draw a card."
 					actionA {
 					}
 				}
 				move "Hidden Power", {
-					text "Move any number of basic Energy cards attached to your Pokémon to your other Pokémon in any way you like."
+					text "Move any number of basic Energy cards attached to your PokÃ©mon to your other PokÃ©mon in any way you like."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1783,7 +1782,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokeBody "UNSEEN", {
-					text "As long as Unown U is on your Bench, prevent, all effects of attacks, including damage, done by your opponent’s Pokémon to any Unown on your Bench."
+					text "As long as Unown U is on your Bench, prevent, all effects of attacks, including damage, done by your opponentâ€™s PokÃ©mon to any Unown on your Bench."
 					delayedA {
 					}
 				}
@@ -1801,12 +1800,12 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokePower "VACATION", {
-					text "Once during your turn , you may remove 2 damage counters from each of your Pokémon. If you do, your turn ends. This power can’t be used if Unown V is affected by a Special Condition."
+					text "Once during your turn , you may remove 2 damage counters from each of your PokÃ©mon. If you do, your turn ends. This power canâ€™t be used if Unown V is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Hidden Power", {
-					text "30 damage. Does 10 damage to each of your Bench Pokémon."
+					text "30 damage. Does 10 damage to each of your Bench PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1819,7 +1818,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP090, type:PSYCHIC, retreatCost:3) {
 				weakness P, PLUS30
 				pokeBody "WALL", {
-					text "As long as Unown W is your Active Pokémon, any damage done to your Pokémon by an opponent’s attack is reduced by 10 ."
+					text "As long as Unown W is your Active PokÃ©mon, any damage done to your PokÃ©mon by an opponentâ€™s attack is reduced by 10 ."
 					delayedA {
 					}
 				}
@@ -1855,7 +1854,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokePower "?", {
-					text "Once during your turn , if Unown ? is on your Bench, you may choose a Pokémon in your hand and put it face down. Your opponent guesses a type of that Pokémon. Reveal that card. If your opponent guessed wrong, draw a card. Then, put that card back into your hand."
+					text "Once during your turn , if Unown ? is on your Bench, you may choose a PokÃ©mon in your hand and put it face down. Your opponent guesses a type of that PokÃ©mon. Reveal that card. If your opponent guessed wrong, draw a card. Then, put that card back into your hand."
 					actionA {
 					}
 				}
@@ -1874,7 +1873,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness R, PLUS10
 				resistance P, MINUS20
 				pokePower "Metal Chain", {
-					text "Once during your turn , when you attach a Energy card from your hand Beldum (excluding effects of attacks or Poké-Powers), you may search your deck for Beldum and put it onto your Bench. Shuffle your deck afterward. This power can’t be used if Beldum is affected by a Special Condition."
+					text "Once during your turn , when you attach a Energy card from your hand Beldum (excluding effects of attacks or PokÃ©-Powers), you may search your deck for Beldum and put it onto your Bench. Shuffle your deck afterward. This power canâ€™t be used if Beldum is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -1914,7 +1913,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Vine Bind", {
-					text "Flip a coin. If heads, the Defending Pokémon can’t use any Poké-Powers during your opponent’s next turn."
+					text "Flip a coin. If heads, the Defending PokÃ©mon canâ€™t use any PokÃ©-Powers during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1943,7 +1942,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Double Kick", {
-					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1956,7 +1955,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:2) {
 				weakness G, PLUS10
 				move "Supersonic", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1998,7 +1997,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Knock Off", {
-					text "Flip a coin. If heads, choose 1 card from your opponent’s hand without looking and discard it."
+					text "Flip a coin. If heads, choose 1 card from your opponentâ€™s hand without looking and discard it."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2028,7 +2027,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Bonemerang", {
-					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -2049,7 +2048,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Slam", {
-					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2063,7 +2062,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness D, PLUS10
 				resistance C, MINUS20
 				move "Mind Bend", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2084,7 +2083,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				move "Call for Family", {
-					text "Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
+					text "Basic PokÃ©mon and put them onto your Bench. Shuffle your deck afterward."
 					energyCost C, G, P
 					attackRequirement {}
 					onAttack {
@@ -2092,7 +2091,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Hypnosis", {
-					text "10 damage. The Defending Pokémon is now Asleep."
+					text "10 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2128,7 +2127,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness W, PLUS10
 				resistance F, MINUS20
 				move "Poison Sting", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2149,7 +2148,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Oddish", hp:HP070, type:GRASS, retreatCost:1) {
 				weakness R, PLUS20
 				move "Sleep Powder", {
-					text "20 damage. The Defending Pokémon is now Asleep."
+					text "20 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -2157,7 +2156,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Frustration", {
-					text "Choose 1 of your opponent’s Pokémon that doesn’t have any damage counters on it. This attack does 30 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon that doesnâ€™t have any damage counters on it. This attack does 30 damage to that PokÃ©mon."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -2178,7 +2177,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Stinky Nectar", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Confused and Poisoned."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused and Poisoned."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -2191,7 +2190,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS10
 				move "Amnesia", {
-					text "Choose 1 of the Defending Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
+					text "Choose 1 of the Defending PokÃ©monâ€™s attacks. That PokÃ©mon canâ€™t use that attack during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2199,7 +2198,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Gastro Acid", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2212,7 +2211,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
 				weakness P, PLUS20
 				move "Counter Punch", {
-					text "During your opponent’s next turn, if Hitmonchan is damaged by an opponent’s attack (even if Hitmonchan is Knocked Out), put 4 damage counters on the Attacking Pokémon."
+					text "During your opponentâ€™s next turn, if Hitmonchan is damaged by an opponentâ€™s attack (even if Hitmonchan is Knocked Out), put 4 damage counters on the Attacking PokÃ©mon."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -2220,7 +2219,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Gut Strike", {
-					text "30 damage. If Tyrogue is anywhere under Hitmonchan, this attack’s base damage is 60 instead of 30."
+					text "30 damage. If Tyrogue is anywhere under Hitmonchan, this attackâ€™s base damage is 60 instead of 30."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -2233,7 +2232,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
 				weakness P, PLUS20
 				move "Gut Kick", {
-					text "30 damage. If Tyrogue is anywhere under Hitmonlee, you may do 30 damage to 1 Benched Pokémon instead."
+					text "30 damage. If Tyrogue is anywhere under Hitmonlee, you may do 30 damage to 1 Benched PokÃ©mon instead."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -2254,7 +2253,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
 				weakness P, PLUS20
 				move "Triple Kick", {
-					text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 3 coins. This attack does 20 damage times the number of heads."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -2262,7 +2261,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Gut Spin", {
-					text "50 damage. If Tyrogue is anywhere under Hitmontop, you may switch Hitmontop with 1 of your Benched Pokémon."
+					text "50 damage. If Tyrogue is anywhere under Hitmontop, you may switch Hitmontop with 1 of your Benched PokÃ©mon."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -2275,7 +2274,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Smokescreen", {
-					text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flip a coin. If tails, that attack does nothing."
+					text "If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flip a coin. If tails, that attack does nothing."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2283,7 +2282,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Reverse Thrust", {
-					text "10 damage. Switch Horsea with 1 of your Benched Pokémon."
+					text "10 damage. Switch Horsea with 1 of your Benched PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2297,7 +2296,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness W, PLUS10
 				resistance P, MINUS20
 				move "Roar", {
-					text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2319,7 +2318,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness R, PLUS10
 				resistance F, MINUS20
 				move "Supersonic", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2340,7 +2339,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Root Fossil", hp:HP080, type:GRASS, retreatCost:2) {
 				weakness R, PLUS20
 				move "Astonish", {
-					text "20 damage. Choose 1 card from your opponent’s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
+					text "20 damage. Choose 1 card from your opponentâ€™s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2369,7 +2368,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Fury Swipes", {
-					text "10× damage. Flip 3 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 3 coins. This attack does 10 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2412,7 +2411,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Big Bite", {
-					text "The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -2454,7 +2453,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Singe", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Burned."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Burned."
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
@@ -2467,7 +2466,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Stun Spore", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2488,7 +2487,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				move "Poisonpowder", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2538,7 +2537,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Twiddle", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Confused. If tails, the Defending Pokémon is now Asleep."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Confused. If tails, the Defending PokÃ©mon is now Asleep."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2559,7 +2558,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Bubblebeam", {
-					text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "40 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -2573,7 +2572,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness F, PLUS10
 				resistance P, MINUS20
 				move "Corner", {
-					text "The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -2624,7 +2623,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Double Kick", {
-					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -2659,7 +2658,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness F, PLUS10
 				resistance P, MINUS20
 				move "Rob", {
-					text "Look at your opponent’s hand. If your opponent has any Pokémon Tool or Technical Machine cards in his or her hand, put those cards on top of his or her deck. You opponent shuffles his or her deck afterward."
+					text "Look at your opponentâ€™s hand. If your opponent has any PokÃ©mon Tool or Technical Machine cards in his or her hand, put those cards on top of his or her deck. You opponent shuffles his or her deck afterward."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -2680,7 +2679,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				move "Psybeam", {
-					text "The Defending Pokémon is now Confused."
+					text "The Defending PokÃ©mon is now Confused."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2688,7 +2687,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Bounce", {
-					text "20 damage. You may switch Spoink with 1 of your Bench Pokémon."
+					text "20 damage. You may switch Spoink with 1 of your Bench PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2745,7 +2744,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness L, PLUS10
 				resistance F, MINUS20
 				move "Focus Energy", {
-					text "During your next turn, Tailow’s Peck attack’s base damage is 30."
+					text "During your next turn, Tailowâ€™s Peck attackâ€™s base damage is 30."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2766,7 +2765,7 @@ public enum LegendsAwakened implements CardInfo {
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Crystal Barrier", {
-					text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Tentacool during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Tentacool during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2774,7 +2773,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Mysterious Beam", {
-					text "Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2792,7 +2791,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Gut Blow", {
-					text "10+ damage. If the Defending Pokémon is an Evolved Pokémon, this attack does 10 damage plus 20 more damage and Tyrogue does 10 damage to itself."
+					text "10+ damage. If the Defending PokÃ©mon is an Evolved PokÃ©mon, this attack does 10 damage plus 20 more damage and Tyrogue does 10 damage to itself."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -2805,7 +2804,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Bellsprout", hp:HP080, type:GRASS, retreatCost:2) {
 				weakness R, PLUS20
 				move "Poisonpowder", {
-					text "10 damage. The Defending Pokémon is now Poisoned."
+					text "10 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -2827,7 +2826,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				move "U-turn", {
-					text "10 damage. Switch Yanma with 1 of your Benched Pokémon."
+					text "10 damage. Switch Yanma with 1 of your Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2835,7 +2834,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "Agility", {
-					text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Yanma during your opponent’s next turn."
+					text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Yanma during your opponentâ€™s next turn."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -2846,7 +2845,7 @@ public enum LegendsAwakened implements CardInfo {
 			};
 			case BUBBLE_COAT_129:
 			return basicTrainer (this) {
-				text "Attach Bubble Coat to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAs long as Bubble Coat is attached to a Pokémon, that Pokémon has no Weakness. If that Pokémon is damaged by an opponent’s attack, discard this card at the end of the turn."
+				text "Attach Bubble Coat to 1 of your PokÃ©mon that doesnâ€™t already have a PokÃ©mon Tool attached to it. If that PokÃ©mon is Knocked Out, discard this card.\nAs long as Bubble Coat is attached to a PokÃ©mon, that PokÃ©mon has no Weakness. If that PokÃ©mon is damaged by an opponentâ€™s attack, discard this card at the end of the turn."
 				onPlay {
 				}
 				playRequirement{
@@ -2854,7 +2853,7 @@ public enum LegendsAwakened implements CardInfo {
 			};
 			case BUCK_S_TRAINING_130:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards. As long as Buck’s Training is next to your Active Pokémon, each of your Active Pokémon’s attacks does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nDraw 2 cards. As long as Buckâ€™s Training is next to your Active PokÃ©mon, each of your Active PokÃ©monâ€™s attacks does 10 more damage to the Active PokÃ©mon (before applying Weakness and Resistance)."
 				onPlay {
 				}
 				playRequirement{
@@ -2862,7 +2861,7 @@ public enum LegendsAwakened implements CardInfo {
 			};
 			case CYNTHIA_S_FEELINGS_131:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, draw 4 cards. If any of your Pokémon were Knocked Out during your opponent’s last turn, draw 4 more cards."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, draw 4 cards. If any of your PokÃ©mon were Knocked Out during your opponentâ€™s last turn, draw 4 more cards."
 				onPlay {
 				}
 				playRequirement{
@@ -2870,7 +2869,7 @@ public enum LegendsAwakened implements CardInfo {
 			};
 			case ENERGY_PICKUP_132:
 			return basicTrainer (this) {
-				text "Flip a coin. If heads, search your discard pile for a basic Energy card and attach it to 1 of your Pokémon."
+				text "Flip a coin. If heads, search your discard pile for a basic Energy card and attach it to 1 of your PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2878,7 +2877,7 @@ public enum LegendsAwakened implements CardInfo {
 			};
 			case POKE_RADAR_133:
 			return basicTrainer (this) {
-				text "Look at the top 5 cards of your deck, choose as many Pokémon as you like, show them to your opponent, and put them into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward."
+				text "Look at the top 5 cards of your deck, choose as many PokÃ©mon as you like, show them to your opponent, and put them into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2886,7 +2885,7 @@ public enum LegendsAwakened implements CardInfo {
 			};
 			case SNOWPOINT_TEMPLE_134:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nEach Pokémon that isn’t an Evolved Pokémon in play (both your and your opponent’s gets +20 HP."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nEach PokÃ©mon that isnâ€™t an Evolved PokÃ©mon in play (both your and your opponentâ€™s gets +20 HP."
 				onPlay {
 				}
 				playRequirement{
@@ -2894,7 +2893,7 @@ public enum LegendsAwakened implements CardInfo {
 			};
 			case STARK_MOUNTAIN_135:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, that player may choose a [R] or [F] Energy attached to 1 of his or her Pokémon and move that Energy to 1 of his or her Pokémon."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nOnce during each playerâ€™s turn, that player may choose a [R] or [F] Energy attached to 1 of his or her PokÃ©mon and move that Energy to 1 of his or her PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2902,7 +2901,7 @@ public enum LegendsAwakened implements CardInfo {
 			};
 			case TECHNICAL_MACHINE_TS_1_136:
 			return basicTrainer (this) {
-				text "Attach this card to 1 of your Pokémon in play. That Pokémon may use this card’s attack instead of its own.\n[-] Evoluter Search your deck for a card that evolves from 1 of your Pokémon and put it onto that Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward."
+				text "Attach this card to 1 of your PokÃ©mon in play. That PokÃ©mon may use this cardâ€™s attack instead of its own.\n[-] Evoluter Search your deck for a card that evolves from 1 of your PokÃ©mon and put it onto that PokÃ©mon. (This counts as evolving that PokÃ©mon.) Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2910,7 +2909,7 @@ public enum LegendsAwakened implements CardInfo {
 			};
 			case TECHNICAL_MACHINE_TS_2_137:
 			return basicTrainer (this) {
-				text "Attach this card to 1 of your Pokémon in play. That Pokémon may use this card’s attack instead of its own.\n[-] Devoluter Choose 1 of your opponent’s Evolved Pokémon (excluding Pokémon LV.X). Remove the highest Stage Evolution card from that Pokémon and put that card back into your opponent’s hand."
+				text "Attach this card to 1 of your PokÃ©mon in play. That PokÃ©mon may use this cardâ€™s attack instead of its own.\n[-] Devoluter Choose 1 of your opponentâ€™s Evolved PokÃ©mon (excluding PokÃ©mon LV.X). Remove the highest Stage Evolution card from that PokÃ©mon and put that card back into your opponentâ€™s hand."
 				onPlay {
 				}
 				playRequirement{
@@ -2918,7 +2917,7 @@ public enum LegendsAwakened implements CardInfo {
 			};
 			case CLAW_FOSSIL_138:
 			return basicTrainer (this) {
-				text "Play Claw Fossil as if it were a [C] Basic Pokémon. (Claw Fossil counts as a Trainer card as well, but if Claw Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Claw Fossil can’t be affected by any Special Conditions and can’t Retreat. At any time during your turn before your attack, you may discard Claw Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Jagged Stone If Claw Fossil is your Active Pokémon and is damaged by an opponent’s attack (even if Claw Fossil is Knocked Out), put 1 damage counter on the Attacking Pokémon."
+				text "Play Claw Fossil as if it were a [C] Basic PokÃ©mon. (Claw Fossil counts as a Trainer card as well, but if Claw Fossil is Knocked Out, this counts as a Knocked Out PokÃ©mon.) Claw Fossil canâ€™t be affected by any Special Conditions and canâ€™t Retreat. At any time during your turn before your attack, you may discard Claw Fossil from play. (This doesnâ€™t count as a Knocked Out PokÃ©mon.)\nPokÃ©-BODY: Jagged Stone If Claw Fossil is your Active PokÃ©mon and is damaged by an opponentâ€™s attack (even if Claw Fossil is Knocked Out), put 1 damage counter on the Attacking PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2926,7 +2925,7 @@ public enum LegendsAwakened implements CardInfo {
 			};
 			case ROOT_FOSSIL_139:
 			return basicTrainer (this) {
-				text "Play Root Fossil as if it were a [C] Basic Pokémon. (Root Fossil counts as a Trainer card as well, but if Root Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Root Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Root Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Spongy Stone At any time between turns, remove 1 damage counter from Root Fossil."
+				text "Play Root Fossil as if it were a [C] Basic PokÃ©mon. (Root Fossil counts as a Trainer card as well, but if Root Fossil is Knocked Out, this counts as a Knocked Out PokÃ©mon.) Root Fossil canâ€™t be affected by any Special Conditions and canâ€™t retreat. At any time during your turn before your attack, you may discard Root Fossil from play. (This doesnâ€™t count as a Knocked Out PokÃ©mon.)\nPokÃ©-BODY: Spongy Stone At any time between turns, remove 1 damage counter from Root Fossil."
 				onPlay {
 				}
 				playRequirement{
@@ -2936,12 +2935,12 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Azelf", hp:HP090, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				pokeBody "Psychic Aura", {
-					text "Each of your Pokémon has no Weakness."
+					text "Each of your PokÃ©mon has no Weakness."
 					delayedA {
 					}
 				}
 				move "Deep Balance", {
-					text "Choose 1 of your opponent’s Pokémon. Put 1 damage counter on that Pokémon for each Energy attached to all of your opponent’s Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. Put 1 damage counter on that PokÃ©mon for each Energy attached to all of your opponentâ€™s PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2949,7 +2948,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Azelf. Azelf LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Azelf. Azelf LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2963,12 +2962,12 @@ public enum LegendsAwakened implements CardInfo {
 				weakness W
 				resistance F, MINUS20
 				pokePower "Shoot Poison", {
-					text "Once during your turn , when you put Gliscor LV. from your hand onto your Active Gliscor, you may choose 1 of the Defending Pokémon. That Pokémon is now Paralyzed and Poisoned."
+					text "Once during your turn , when you put Gliscor LV. from your hand onto your Active Gliscor, you may choose 1 of the Defending PokÃ©mon. That PokÃ©mon is now Paralyzed and Poisoned."
 					actionA {
 					}
 				}
 				move "Night Slash", {
-					text "60 damage. You may switch Gliscor with 1 of your Benched Pokémon."
+					text "60 damage. You may switch Gliscor with 1 of your Benched PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -2976,7 +2975,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Gliscor. Gliscor LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Gliscor. Gliscor LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2990,12 +2989,12 @@ public enum LegendsAwakened implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				pokePower "Electric Trans", {
-					text "As often as you like during your turn , you may move a or Energy attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Magnezone is affected by a Special Condition."
+					text "As often as you like during your turn , you may move a or Energy attached to 1 of your PokÃ©mon to another of your PokÃ©mon. This power canâ€™t be used if Magnezone is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Cyber Shock", {
-					text "80 damage. Energy attached to Magnezone. The Defending Pokémon is now Paralyzed."
+					text "80 damage. Energy attached to Magnezone. The Defending PokÃ©mon is now Paralyzed."
 					energyCost L, M, L, M
 					attackRequirement {}
 					onAttack {
@@ -3003,7 +3002,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Magnezone. Magnezone LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Magnezone. Magnezone LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -3016,7 +3015,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Mesprit", hp:HP090, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Healing Look", {
-					text "Remove 3 damage counters from each of your Benched Pokémon."
+					text "Remove 3 damage counters from each of your Benched PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -3032,7 +3031,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Mesprit. Mesprit LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Mesprit. Mesprit LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -3045,7 +3044,7 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Mewtwo", hp:HP120, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				pokeBody "Psybarrier", {
-					text "Prevent all effects of attacks, including damage, done to Mewtwo by your opponent’s Pokémon that isn’t an Evolved Pokémon."
+					text "Prevent all effects of attacks, including damage, done to Mewtwo by your opponentâ€™s PokÃ©mon that isnâ€™t an Evolved PokÃ©mon."
 					delayedA {
 					}
 				}
@@ -3058,7 +3057,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Mewtwo. Mewtwo LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Mewtwo. Mewtwo LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -3072,7 +3071,7 @@ public enum LegendsAwakened implements CardInfo {
 				weakness W
 				resistance L, MINUS20
 				move "Hard Crush", {
-					text "50× damage. Discard the top 5 cards from your deck. This attack does 50 damage for each Energy card you discarded."
+					text "50Ã— damage. Discard the top 5 cards from your deck. This attack does 50 damage for each Energy card you discarded."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -3088,7 +3087,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Rhyperior. Rhyperior LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Rhyperior. Rhyperior LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -3101,12 +3100,12 @@ public enum LegendsAwakened implements CardInfo {
 			return evolution (this, from:"Uxie", hp:HP090, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				pokePower "Trade Off", {
-					text "Once during your turn , you may look at the top 2 cards of your deck, choose 1 of them, and put it into your hand. Put the other card on the bottom of your deck. This power can’t be used if Uxie is affected by a Special Condition. You can’t use more than 1 Trade Off Poké-Power each turn."
+					text "Once during your turn , you may look at the top 2 cards of your deck, choose 1 of them, and put it into your hand. Put the other card on the bottom of your deck. This power canâ€™t be used if Uxie is affected by a Special Condition. You canâ€™t use more than 1 Trade Off PokÃ©-Power each turn."
 					actionA {
 					}
 				}
 				move "Zen Blade", {
-					text "60 damage. Uxie can’t use Zen Blade during your next turn."
+					text "60 damage. Uxie canâ€™t use Zen Blade during your next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -3114,7 +3113,7 @@ public enum LegendsAwakened implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Uxie. Uxie LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Uxie. Uxie LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {

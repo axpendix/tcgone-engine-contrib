@@ -186,10 +186,9 @@ public enum SupremeVictors implements CardInfo {
 	ARTICUNO_148 ("Articuno", 148, Rarity.ULTRARARE, [BASIC, POKEMON, _WATER_]),
 	MOLTRES_149 ("Moltres", 149, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
 	ZAPDOS_150 ("Zapdos", 150, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-	MILOTIC_SH7 ("Milotic", SH7, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-	RELICANTH_SH8 ("Relicanth", SH8, Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
-	YANMA_SH9 ("Yanma", SH9, Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
-;
+	MILOTIC_SH7 ("Milotic", 151, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+	RELICANTH_SH8 ("Relicanth", 152, Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
+	YANMA_SH9 ("Yanma", 153, Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -248,7 +247,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				move "Feint Attack", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on that PokÃ©mon."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -256,7 +255,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Doom News", {
-					text "to your hand. The Defending Pokémon is Knocked Out at the end of your opponent’s next turn."
+					text "to your hand. The Defending PokÃ©mon is Knocked Out at the end of your opponentâ€™s next turn."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -269,7 +268,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP080, type:FIRE, retreatCost:1) {
 				weakness W
 				move "Luring Flame", {
-					text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon. The new Defending Pokémon is now Burned."
+					text "Switch the Defending PokÃ©mon with 1 of your opponentâ€™s Benched PokÃ©mon. The new Defending PokÃ©mon is now Burned."
 					energyCost R
 					attackRequirement {}
 					onAttack {
@@ -277,7 +276,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Vapor Kick", {
-					text "30+ damage. Pokémon in play, this attack does 30 damage plus 30 more damage."
+					text "30+ damage. PokÃ©mon in play, this attack does 30 damage plus 30 more damage."
 					energyCost R, C, W
 					attackRequirement {}
 					onAttack {
@@ -296,7 +295,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Shadow Ball", {
-					text "Choose 1 of your opponent’s Benched Pokémon. This attack does 40 damage to that Pokémon. Apply Weakness and Resistance for this attack."
+					text "Choose 1 of your opponentâ€™s Benched PokÃ©mon. This attack does 40 damage to that PokÃ©mon. Apply Weakness and Resistance for this attack."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -318,7 +317,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Electric Current", {
-					text "40 damage. to 1 of your Benched Pokémon."
+					text "40 damage. to 1 of your Benched PokÃ©mon."
 					energyCost L, C, C, L
 					attackRequirement {}
 					onAttack {
@@ -331,7 +330,7 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Gabite", hp:HP130, type:COLORLESS, retreatCost:0) {
 				weakness C, PLUS30
 				pokeBody "Dragon Intimidation", {
-					text "If Garchomp is your Active Pokémon and is damaged by an opponent’s attack (even if Garchomp is Knocked Out), choose an Energy card attached to the Attacking Pokémon and put it into your opponent’s hand."
+					text "If Garchomp is your Active PokÃ©mon and is damaged by an opponentâ€™s attack (even if Garchomp is Knocked Out), choose an Energy card attached to the Attacking PokÃ©mon and put it into your opponentâ€™s hand."
 					delayedA {
 					}
 				}
@@ -344,7 +343,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Speed Impact", {
-					text "120- damage. Does 120 damage minus 20 damage for each Energy attached to the Defending Pokémon."
+					text "120- damage. Does 120 damage minus 20 damage for each Energy attached to the Defending PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -357,12 +356,12 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Magmar", hp:HP110, type:FIRE, retreatCost:2) {
 				weakness W, PLUS30
 				pokePower "Evolutionary Flame", {
-					text "Once during your turn, when you play Magmortar from your hand to evolve 1 of your Pokémon, you may use this power. Your opponent’s Active Pokémon is now Burned and Confused."
+					text "Once during your turn, when you play Magmortar from your hand to evolve 1 of your PokÃ©mon, you may use this power. Your opponentâ€™s Active PokÃ©mon is now Burned and Confused."
 					actionA {
 					}
 				}
 				move "Fire Arrow", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -370,7 +369,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Flame Ball", {
-					text "60 damage. Energy card attached to Magmortar to 1 of your Benched Pokémon."
+					text "60 damage. Energy card attached to Magmortar to 1 of your Benched PokÃ©mon."
 					energyCost R, C, C, R
 					attackRequirement {}
 					onAttack {
@@ -384,12 +383,12 @@ public enum SupremeVictors implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				pokeBody "Gravitation", {
-					text "Each Pokémon in play gets -20 HP. No more than 20 HP can be reduced by all Gravitation Poké-Bodies."
+					text "Each PokÃ©mon in play gets -20 HP. No more than 20 HP can be reduced by all Gravitation PokÃ©-Bodies."
 					delayedA {
 					}
 				}
 				move "Geo Impact", {
-					text "60 damage. If you have a Stadium card in play, this attack does 20 damage to each of your opponent’s Benched Pokémon that is the same type as the Defending Pokémon."
+					text "60 damage. If you have a Stadium card in play, this attack does 20 damage to each of your opponentâ€™s Benched PokÃ©mon that is the same type as the Defending PokÃ©mon."
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
@@ -411,7 +410,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Twister", {
-					text "50 damage. Flip 2 coins. If both are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending Pokémon."
+					text "50 damage. Flip 2 coins. If both are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending PokÃ©mon."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -424,7 +423,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
 				weakness F
 				move "Drain Punch", {
-					text "30 damage. a number of damage counters equal to the amount of Energy attached to the Defending Pokémon."
+					text "30 damage. a number of damage counters equal to the amount of Energy attached to the Defending PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -432,7 +431,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Rainbow Lariat", {
-					text "20× damage. you have in play."
+					text "20Ã— damage. you have in play."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -454,7 +453,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Deep Scrap", {
-					text "60 damage. If the Defending Pokémon would be Knocked Out by this attack, discard the top 3 cards from your opponent’s deck."
+					text "60 damage. If the Defending PokÃ©mon would be Knocked Out by this attack, discard the top 3 cards from your opponentâ€™s deck."
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
@@ -476,7 +475,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Whirlwind", {
-					text "30 damage. Your opponent switches the Defending Pokémon with one of his or her Benched Pokémon."
+					text "30 damage. Your opponent switches the Defending PokÃ©mon with one of his or her Benched PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -489,12 +488,12 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Marshtomp", hp:HP130, type:WATER, retreatCost:2) {
 				weakness G, PLUS30
 				pokeBody "Root Protector", {
-					text "Any damage done to Swampert by attacks from your opponent’s Pokémon that isn’t an Evolved Pokémon is reduced by 20 ."
+					text "Any damage done to Swampert by attacks from your opponentâ€™s PokÃ©mon that isnâ€™t an Evolved PokÃ©mon is reduced by 20 ."
 					delayedA {
 					}
 				}
 				move "Drag Off", {
-					text "30 damage. Before doing damage, you may switch your opponent’s Active Pokémon with 1 of his or her Benched Pokémon."
+					text "30 damage. Before doing damage, you may switch your opponentâ€™s Active PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -515,12 +514,12 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Ivysaur", hp:HP140, type:GRASS, retreatCost:4) {
 				weakness R
 				pokeBody "Green Aroma", {
-					text "Remove all Special Conditions from each of your Pokémon. Each of your Pokémon can’t be affected by any Special Conditions."
+					text "Remove all Special Conditions from each of your PokÃ©mon. Each of your PokÃ©mon canâ€™t be affected by any Special Conditions."
 					delayedA {
 					}
 				}
 				move "Desperate Pollen", {
-					text "30 damage. If Venusaur already has 8 or more damage counters on it, the Defending Pokémon is now Burned, Confused, and Poisoned."
+					text "30 damage. If Venusaur already has 8 or more damage counters on it, the Defending PokÃ©mon is now Burned, Confused, and Poisoned."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -528,7 +527,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Special Reaction", {
-					text "40+ damage. If the Defending Pokémon is affected by any Special Conditions, this attack does 40 damage plus 40 more damage for each of those Special Conditions."
+					text "40+ damage. If the Defending PokÃ©mon is affected by any Special Conditions, this attack does 40 damage plus 40 more damage for each of those Special Conditions."
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
@@ -542,7 +541,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				pokePower "Speed Boost", {
-					text "Once during your turn , if Yanmega is your Active Pokémon, you may search your discard pile for a Energy card and attach it to Yanmega. This power can’t be used if Yanmega is affected by a Special Condition."
+					text "Once during your turn , if Yanmega is your Active PokÃ©mon, you may search your discard pile for a Energy card and attach it to Yanmega. This power canâ€™t be used if Yanmega is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -568,12 +567,12 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP090, type:FIRE, retreatCost:2) {
 				weakness W
 				pokeBody "Extreme Speed", {
-					text "Arcanine ‘s Retreat Cost is less for each Energy attached to Arcanine ."
+					text "Arcanine â€˜s Retreat Cost is less for each Energy attached to Arcanine ."
 					delayedA {
 					}
 				}
 				move "Overrun", {
-					text "40 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "40 damage. Does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
@@ -595,7 +594,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Ice Beam", {
-					text "50 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "50 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -609,12 +608,12 @@ public enum SupremeVictors implements CardInfo {
 				weakness R
 				resistance F, MINUS20
 				pokeBody "Compound Eyes", {
-					text "If your opponent’s Active Pokémon has any Poké-BODY, each of Butterfree ‘s attacks does 30 more damage to the Active Pokémon ."
+					text "If your opponentâ€™s Active PokÃ©mon has any PokÃ©-BODY, each of Butterfree â€˜s attacks does 30 more damage to the Active PokÃ©mon ."
 					delayedA {
 					}
 				}
 				move "Select Powder", {
-					text "30 damage. Choose either Burned or Poisoned. The Defending Pokémon is now affected by that Special Condition."
+					text "30 damage. Choose either Burned or Poisoned. The Defending PokÃ©mon is now affected by that Special Condition."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -627,7 +626,7 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Numel", hp:HP120, type:FIRE, retreatCost:4) {
 				weakness W, PLUS30
 				move "Moving Fire", {
-					text "30 damage. Energy card attached to 1 of your Benched Pokémon to Camerupt."
+					text "30 damage. Energy card attached to 1 of your Benched PokÃ©mon to Camerupt."
 					energyCost C, C, R
 					attackRequirement {}
 					onAttack {
@@ -635,7 +634,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Volcanic Crash", {
-					text "100 damage. Pokémon in play."
+					text "100 damage. PokÃ©mon in play."
 					energyCost R, R, C, C, W
 					attackRequirement {}
 					onAttack {
@@ -648,7 +647,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP100, type:FIRE, retreatCost:3) {
 				weakness W
 				move "Searing Flame", {
-					text "20 damage. The Defending Pokémon is now Burned."
+					text "20 damage. The Defending PokÃ©mon is now Burned."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -656,7 +655,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Earth Power", {
-					text "60 damage. Flip 2 coins. This attack does 10 damage times the number of heads to each of your opponent’s Benched Pokémon."
+					text "60 damage. Flip 2 coins. This attack does 10 damage times the number of heads to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -670,7 +669,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness W
 				resistance F, MINUS20
 				move "Flame Jet", {
-					text "Flip a coin. If heads, this attack does 40 damage to 1 of your opponent’s Pokémon."
+					text "Flip a coin. If heads, this attack does 40 damage to 1 of your opponentâ€™s PokÃ©mon."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -691,7 +690,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS20
 				move "Heal Bell", {
-					text "Remove 3 damage counters from each of your Pokémon."
+					text "Remove 3 damage counters from each of your PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -699,7 +698,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Super Psywave", {
-					text "Choose 1 of your opponent’s Pokémon. Count the amount of Energy attached to that Pokémon. Put"
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. Count the amount of Energy attached to that PokÃ©mon. Put"
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -720,7 +719,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Synchro Attack", {
-					text "30 damage. If the Defending Pokémon has the same remaining HP as Claydol, this attack’s base damage is 90 instead of 30."
+					text "30 damage. If the Defending PokÃ©mon has the same remaining HP as Claydol, this attackâ€™s base damage is 90 instead of 30."
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
@@ -733,7 +732,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP080, type:DARKNESS, retreatCost:1) {
 				weakness L
 				move "Smash Turn", {
-					text "10 damage. with 1 of your Benched Pokémon."
+					text "10 damage. with 1 of your Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -741,7 +740,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Hyper Beam", {
-					text "40 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "40 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -754,12 +753,12 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Seel", hp:HP100, type:WATER, retreatCost:3) {
 				weakness M, PLUS20
 				pokeBody "Thick Fat", {
-					text "Any damage done to Dewgong by attacks from Pokémon and Pokémon is reduced by 30 ."
+					text "Any damage done to Dewgong by attacks from PokÃ©mon and PokÃ©mon is reduced by 30 ."
 					delayedA {
 					}
 				}
 				move "Ice Shard", {
-					text "30 damage. Pokémon, this attack’s base damage is 80 instead of 30."
+					text "30 damage. PokÃ©mon, this attackâ€™s base damage is 80 instead of 30."
 					energyCost W, C, F
 					attackRequirement {}
 					onAttack {
@@ -781,7 +780,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				pokePower "Echo Draw", {
-					text "Once during your turn , you may draw a card. This power can’t be used if Dodrio is affected by a Special Condition."
+					text "Once during your turn , you may draw a card. This power canâ€™t be used if Dodrio is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -800,7 +799,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				move "Ghost Hand", {
-					text "30 damage. Put 1 damage counter on 1 of your Benched Pokémon."
+					text "30 damage. Put 1 damage counter on 1 of your Benched PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -808,7 +807,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Cursed Wrath", {
-					text "10× damage. in your discard pile."
+					text "10Ã— damage. in your discard pile."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -821,7 +820,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP090, type:WATER, retreatCost:2) {
 				weakness L
 				move "Rushing Water", {
-					text "20 damage. Move an Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon."
+					text "20 damage. Move an Energy card attached to the Defending PokÃ©mon to another of your opponentâ€™s PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -842,12 +841,12 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Loudred", hp:HP130, type:COLORLESS, retreatCost:2) {
 				weakness F, PLUS30
 				pokeBody "Erasing Sound", {
-					text "Each of your Pokémon has no Weakness."
+					text "Each of your PokÃ©mon has no Weakness."
 					delayedA {
 					}
 				}
 				move "Knock Back", {
-					text "40 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "40 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -855,7 +854,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Hyper Beam", {
-					text "60 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "60 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -869,12 +868,12 @@ public enum SupremeVictors implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				pokePower "Darkness Restore", {
-					text "Once during your turn , if Honchkrow is your Active Pokémon and your opponent’s Bench isn’t full, you may use this power. Search your opponent’s discard pile for a Basic Pokémon, and put it on his or her bench. This power can’t be used if Honchkrow is affected by a Special Condition"
+					text "Once during your turn , if Honchkrow is your Active PokÃ©mon and your opponentâ€™s Bench isnâ€™t full, you may use this power. Search your opponentâ€™s discard pile for a Basic PokÃ©mon, and put it on his or her bench. This power canâ€™t be used if Honchkrow is affected by a Special Condition"
 					actionA {
 					}
 				}
 				move "Riot", {
-					text "30+ damage. Does 30 damage plus 10 more damage for each Pokémon that isn’t an evolved Pokémon in play (both your’s and your opponent’s)."
+					text "30+ damage. Does 30 damage plus 10 more damage for each PokÃ©mon that isnâ€™t an evolved PokÃ©mon in play (both yourâ€™s and your opponentâ€™s)."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -887,7 +886,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
 				weakness F
 				move "Licking-Licking Heal", {
-					text "Attach a Basic Energy card from your hand to 1 of your Pokémon. Then remove 2 damage counters from that Pokémon."
+					text "Attach a Basic Energy card from your hand to 1 of your PokÃ©mon. Then remove 2 damage counters from that PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -929,12 +928,12 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:0) {
 				weakness P, PLUS20
 				pokeBody "Marvel Eyes", {
-					text "If you have Solrock in play, prevent all effects of attacks, including damage, done to any of your Lunatone or Solrock by your opponent’s Pokémon LV.."
+					text "If you have Solrock in play, prevent all effects of attacks, including damage, done to any of your Lunatone or Solrock by your opponentâ€™s PokÃ©mon LV.."
 					delayedA {
 					}
 				}
 				move "Gravity Wave", {
-					text "30 damage. Does 30 damage to each of your opponent’s Benched Pokémon that doesn’t have a Retreat Cost."
+					text "30 damage. Does 30 damage to each of your opponentâ€™s Benched PokÃ©mon that doesnâ€™t have a Retreat Cost."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -956,7 +955,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Swallow", {
-					text "20 damage. Remove from Mawile the number of damage counters equal to the damage you did to the Defending Pokémon."
+					text "20 damage. Remove from Mawile the number of damage counters equal to the damage you did to the Defending PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -985,7 +984,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Chakra Points", {
-					text "10+ damage. Does 10 damage plus 10 more damage for each card in your opponent’s hand."
+					text "10+ damage. Does 10 damage plus 10 more damage for each card in your opponentâ€™s hand."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -1006,7 +1005,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Wrap", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1058,7 +1057,7 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Paras", hp:HP080, type:GRASS, retreatCost:1) {
 				weakness R, PLUS20
 				move "Nutritional Support", {
-					text "Energy cards and attach them to any of your Pokémon in any way you like. Shuffle your deck afterward."
+					text "Energy cards and attach them to any of your PokÃ©mon in any way you like. Shuffle your deck afterward."
 					energyCost C, G
 					attackRequirement {}
 					onAttack {
@@ -1066,7 +1065,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Hibernation Spore", {
-					text "40 damage. The Defending Pokémon is now Asleep. Flip 2 coins instead of 1 between turns. If either of them is tails, the Defending Pokémon is still Asleep."
+					text "40 damage. The Defending PokÃ©mon is now Asleep. Flip 2 coins instead of 1 between turns. If either of them is tails, the Defending PokÃ©mon is still Asleep."
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
@@ -1079,7 +1078,7 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Mankey", hp:HP090, type:FIGHTING, retreatCost:1) {
 				weakness P, PLUS20
 				move "Top Drop", {
-					text "Discard the top card from your opponent’s deck. If you discarded a Pokémon, this attack does damage equal to the HP of that Pokémon."
+					text "Discard the top card from your opponentâ€™s deck. If you discarded a PokÃ©mon, this attack does damage equal to the HP of that PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1087,7 +1086,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Brick Break", {
-					text "40 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "40 damage. This attackâ€™s damage isnâ€™t affected by Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1126,7 +1125,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Astonish", {
-					text "20 damage. Choose 1 card from your opponent’s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
+					text "20 damage. Choose 1 card from your opponentâ€™s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -1140,12 +1139,12 @@ public enum SupremeVictors implements CardInfo {
 				weakness W, PLUS20
 				resistance L, MINUS20
 				pokePower "Dig Down", {
-					text "Once during your turn , you may look at the top 5 cards in your deck. Choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward. This power can’t be used if Sandslash is affected by a Special Condition."
+					text "Once during your turn , you may look at the top 5 cards in your deck. Choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward. This power canâ€™t be used if Sandslash is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Needle", {
-					text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and Poisoned."
+					text "40 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed and Poisoned."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -1166,7 +1165,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Endure", {
-					text "30 damage. Flip a coin. If heads, during your opponent’s next turn, if Seaking would be Knocked Out by damage from an attack, Seaking is not Knocked Out, and its remaining HP becomes 10 instead."
+					text "30 damage. Flip a coin. If heads, during your opponentâ€™s next turn, if Seaking would be Knocked Out by damage from an attack, Seaking is not Knocked Out, and its remaining HP becomes 10 instead."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1179,12 +1178,12 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Nincada", hp:HP060, type:GRASS, retreatCost:1) {
 				weakness R, PLUS20
 				pokeBody "Marvel Shell", {
-					text "Prevent all effects of attacks, including damage, done to Shedinja by your opponent’s Pokémon that has any Poké-Powers or Poké-Bodies."
+					text "Prevent all effects of attacks, including damage, done to Shedinja by your opponentâ€™s PokÃ©mon that has any PokÃ©-Powers or PokÃ©-Bodies."
 					delayedA {
 					}
 				}
 				move "Spike Wound", {
-					text "Choose 1 of your opponent’s Pokémon that has any damage counters on it. This attack does 30 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon that has any damage counters on it. This attack does 30 damage to that PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1197,7 +1196,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
 				weakness G, PLUS20
 				pokePower "Sunshine Fate", {
-					text "Once during your turn , if you have Lunatone in play, you may look at the top 3 cards of your deck and put them back on top of your deck in any order. This power can’t be used if Solrock is affected by a Special Condition."
+					text "Once during your turn , if you have Lunatone in play, you may look at the top 3 cards of your deck and put them back on top of your deck in any order. This power canâ€™t be used if Solrock is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -1215,7 +1214,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				move "Synchro Removal", {
-					text "If any Energy card attached to Spinda is the same type as any Energy card attached to the Defending Pokémon, discard one of those Energy cards from the Defending Pokémon."
+					text "If any Energy card attached to Spinda is the same type as any Energy card attached to the Defending PokÃ©mon, discard one of those Energy cards from the Defending PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1223,7 +1222,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Pulled Punch", {
-					text "30 damage. If the Defending Pokémon already has any damage counters on it, this attack’s base damage is 10 instead of 30."
+					text "30 damage. If the Defending PokÃ©mon already has any damage counters on it, this attackâ€™s base damage is 10 instead of 30."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1244,7 +1243,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Giant Wave", {
-					text "100 damage. Wailord can’t use Giant Wave during your next turn."
+					text "100 damage. Wailord canâ€™t use Giant Wave during your next turn."
 					energyCost W, W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1280,7 +1279,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness C
 				resistance F, MINUS20
 				move "Sing", {
-					text "20 damage. The Defending Pokémon is now Asleep."
+					text "20 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1288,7 +1287,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Sonic Wing", {
-					text "30 damage. This attack’s damage is not affected by Resistance."
+					text "30 damage. This attackâ€™s damage is not affected by Resistance."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1301,7 +1300,7 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Growlithe", hp:HP080, type:FIRE, retreatCost:3) {
 				weakness W, PLUS20
 				move "Overrun", {
-					text "20 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "20 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1330,7 +1329,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Tail Rap", {
-					text "30× damage. Flip 2 coins. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Flip 2 coins. This attack does 30 damage times the number of heads."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1343,7 +1342,7 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Shroomish", hp:HP090, type:FIGHTING, retreatCost:1) {
 				weakness R, PLUS20
 				move "Hover Hit", {
-					text "40 damage. The Retreat Cost for the Defending Pokémon is 0 until the end of your next turn."
+					text "40 damage. The Retreat Cost for the Defending PokÃ©mon is 0 until the end of your next turn."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1351,7 +1350,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Crash Bomber", {
-					text "20+ damage. If the Defending Pokémon has any Special Energy cards attached to it, this attack does 20 damage plus 40 more damage. Then, discard a Special Energy card attached to the Defending Pokémon."
+					text "20+ damage. If the Defending PokÃ©mon has any Special Energy cards attached to it, this attack does 20 damage plus 40 more damage. Then, discard a Special Energy card attached to the Defending PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1373,7 +1372,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Swallow", {
-					text "30 damage. Flip a coin. If heads, remove from Carnivine the number of damage counters equal to the damage you did to the Defending Pokémon."
+					text "30 damage. Flip a coin. If heads, remove from Carnivine the number of damage counters equal to the damage you did to the Defending PokÃ©mon."
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
@@ -1387,7 +1386,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				pokePower "Disrupting Spy", {
-					text "Once during your turn, when you put Chatot from your hand onto your Bench, you may look at top 4 cards of your opponent’s deck. Put them back on top of your opponent’s deck in any order."
+					text "Once during your turn, when you put Chatot from your hand onto your Bench, you may look at top 4 cards of your opponentâ€™s deck. Put them back on top of your opponentâ€™s deck in any order."
 					actionA {
 					}
 				}
@@ -1414,7 +1413,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Petal Dance", {
-					text "30× damage. Flip 3 coins. This attack does 30 damage times the numbers of heads. Cherrim is now Confused."
+					text "30Ã— damage. Flip 3 coins. This attack does 30 damage times the numbers of heads. Cherrim is now Confused."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1428,7 +1427,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness C
 				resistance F, MINUS20
 				move "Mach Blow", {
-					text "20 damage. , this attack’s base damage is 80 instead of 20."
+					text "20 damage. , this attackâ€™s base damage is 80 instead of 20."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1492,7 +1491,7 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Gible", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness C, PLUS20
 				move "Healing Scale", {
-					text "Remove 1 damage counter from each of your Pokémon."
+					text "Remove 1 damage counter from each of your PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1500,7 +1499,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Sand Tomb", {
-					text "30 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "30 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1521,7 +1520,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Earthquake", {
-					text "50 damage. This attack does 10 damage to each of your Benched Pokémon."
+					text "50 damage. This attack does 10 damage to each of your Benched PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1534,7 +1533,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
 				weakness W, PLUS10
 				move "Double Headbutt", {
-					text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 2 coins. This attack does 10 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1555,7 +1554,7 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Bulbasuar", hp:HP080, type:GRASS, retreatCost:2) {
 				weakness R, PLUS20
 				pokePower "Evolutionary Pollen", {
-					text "Once during your turn, when you play Ivysaur from your hand to evolve 1 of your Pokémon, you may use this power. Your opponent’s Active Pokémon is now Asleep."
+					text "Once during your turn, when you play Ivysaur from your hand to evolve 1 of your PokÃ©mon, you may use this power. Your opponentâ€™s Active PokÃ©mon is now Asleep."
 					actionA {
 					}
 				}
@@ -1573,7 +1572,7 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Buneary", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				move "Ice Beam", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1602,7 +1601,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Stomp Off", {
-					text "50 damage. Discard the top card from your opponent’s deck."
+					text "50 damage. Discard the top card from your opponentâ€™s deck."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1615,7 +1614,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
 				weakness W, PLUS20
 				move "Smokescreen", {
-					text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, this attack does nothing."
+					text "If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, this attack does nothing."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1645,7 +1644,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Thunder Fang", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1658,7 +1657,7 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Mudkip", hp:HP080, type:WATER, retreatCost:1) {
 				weakness G, PLUS20
 				pokePower "Plunge", {
-					text "Once during your turn , if Marshtomp is on your Bench, you may flip a coin. If heads, move all Energy cards attached to your Active Pokémon to Marshtomp. If you do, switch Marshtomp with that Active Pokémon."
+					text "Once during your turn , if Marshtomp is on your Bench, you may flip a coin. If heads, move all Energy cards attached to your Active PokÃ©mon to Marshtomp. If you do, switch Marshtomp with that Active PokÃ©mon."
 					actionA {
 					}
 				}
@@ -1704,7 +1703,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Psychic", {
-					text "40+ damage. Does 40 damage plus 10 more damage for each Energy card attached to the Defending Pokémon."
+					text "40+ damage. Does 40 damage plus 10 more damage for each Energy card attached to the Defending PokÃ©mon."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
@@ -1717,7 +1716,7 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Feebas", hp:HP090, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Cleansing Ring", {
-					text "20 damage. You may discard 2 cards from your hand. If you do, remove 4 damage counters from 1 of your Pokémon."
+					text "20 damage. You may discard 2 cards from your hand. If you do, remove 4 damage counters from 1 of your PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1747,7 +1746,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "", {
-					text "10 damage. Energy card and attach it to 1 of your Pokémon."
+					text "10 damage. Energy card and attach it to 1 of your PokÃ©mon."
 					energyCost L, L
 					attackRequirement {}
 					onAttack {
@@ -1761,7 +1760,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness L, PLUS10
 				resistance F, MINUS20
 				move "Switcheroo", {
-					text "Move a Pokémon Tool card attached to 1 of your opponent’s Pokémon to another of your opponent’s Pokémon (excluding Pokémon that already has a Pokémon Tool attached to it). (If an effect of this attack is prevented, this attack does nothing.)"
+					text "Move a PokÃ©mon Tool card attached to 1 of your opponentâ€™s PokÃ©mon to another of your opponentâ€™s PokÃ©mon (excluding PokÃ©mon that already has a PokÃ©mon Tool attached to it). (If an effect of this attack is prevented, this attack does nothing.)"
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1783,7 +1782,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness R, PLUS20
 				resistance F, MINUS20
 				move "Circling Dive", {
-					text "Switch Ninjask with 1 of your Benched Pokémon."
+					text "Switch Ninjask with 1 of your Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1791,7 +1790,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Parallel Drain", {
-					text "30 damage. Remove from 1 of your Pokémon the number of damage counters equal to the damage you did to the Defending Pokémon."
+					text "30 damage. Remove from 1 of your PokÃ©mon the number of damage counters equal to the damage you did to the Defending PokÃ©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1825,7 +1824,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP090, type:GRASS, retreatCost:2) {
 				weakness R, PLUS20
 				move "Gripthrow", {
-					text "Flip a coin. If heads, your opponent returns the Defending Pokémon and all cards attached to it to his or her hand."
+					text "Flip a coin. If heads, your opponent returns the Defending PokÃ©mon and all cards attached to it to his or her hand."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1833,7 +1832,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Sever", {
-					text "50+ damage. If the Defending Pokémon is a Stage 2 Pokémon, this attack does 50 damage plus 30 more damage."
+					text "50+ damage. If the Defending PokÃ©mon is a Stage 2 PokÃ©mon, this attack does 50 damage plus 30 more damage."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1855,7 +1854,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Hand Charge", {
-					text "10 damage. Energy card from your hand to 1 of your Pokémon."
+					text "10 damage. Energy card from your hand to 1 of your PokÃ©mon."
 					energyCost L, L
 					attackRequirement {}
 					onAttack {
@@ -1877,7 +1876,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Gigashock", {
-					text "60 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
+					text "60 damage. Does 10 damage to 2 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
@@ -1911,7 +1910,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
 				weakness G, PLUS20
 				move "Grand Swell", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon for each Pokémon Tool and Stadium card your opponent has in play."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon for each PokÃ©mon Tool and Stadium card your opponent has in play."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1919,7 +1918,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Amnesia", {
-					text "30 damage. Choose 1 of the Defending Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
+					text "30 damage. Choose 1 of the Defending PokÃ©monâ€™s attacks. That PokÃ©mon canâ€™t use that attack during your opponentâ€™s next turn."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1933,7 +1932,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness W, PLUS20
 				resistance L, MINUS20
 				move "Fury Attack", {
-					text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 3 coins. This attack does 20 damage times the number of heads."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1941,7 +1940,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Rock Tumble", {
-					text "60 damage. This attack’s damage isn’t affected by Resistance."
+					text "60 damage. This attackâ€™s damage isnâ€™t affected by Resistance."
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
@@ -1962,7 +1961,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Poison Seed", {
-					text "30 damage. The Defending Pokémon is now Poisoned."
+					text "30 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1976,7 +1975,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				move "Discharge", {
-					text "40× damage. Energy attached to Rotom. Flip a coin for each Energy card you discarded. This attack does 40 damage times the number of heads."
+					text "40Ã— damage. Energy attached to Rotom. Flip a coin for each Energy card you discarded. This attack does 40 damage times the number of heads."
 					energyCost L, L
 					attackRequirement {}
 					onAttack {
@@ -1984,7 +1983,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Uproar", {
-					text "This attack does 10 damage to each of your opponent’s Pokémon."
+					text "This attack does 10 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1998,7 +1997,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Silver Feather", {
-					text "20 damage. During your opponent’s next turn, when your opponent puts a Basic Pokémon from his or her hand onto his or her Bench, put 2 damage counters on that Pokémon."
+					text "20 damage. During your opponentâ€™s next turn, when your opponent puts a Basic PokÃ©mon from his or her hand onto his or her Bench, put 2 damage counters on that PokÃ©mon."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -2019,7 +2018,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
 				resistance C, MINUS20
 				move "Sharpshooting", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 10 damage to that PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2027,7 +2026,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Lock Up", {
-					text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "20 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -2041,7 +2040,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				move "Double Peck", {
-					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2049,7 +2048,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Air Crash", {
-					text "30 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "30 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -2084,7 +2083,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP080, type:WATER, retreatCost:3) {
 				weakness L, PLUS20
 				move "Hydro Pump", {
-					text "20+ damage. Energy attached to Wailmer but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
+					text "20+ damage. Energy attached to Wailmer but not used to pay for this attackâ€™s Energy cost. You canâ€™t add more than 20 damage in this way."
 					energyCost W, C, W
 					attackRequirement {}
 					onAttack {
@@ -2106,7 +2105,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				move "Supersonic", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2135,7 +2134,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Quick Turn", {
-					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2225,7 +2224,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Bounce", {
-					text "Switch Buneary with 1 of your Benched Pokémon."
+					text "Switch Buneary with 1 of your Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2247,7 +2246,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness L, PLUS10
 				resistance F, MINUS20
 				move "Call for Family", {
-					text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
+					text "Search your deck for a Basic PokÃ©mon and put it onto your Bench. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2316,7 +2315,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Chime", {
-					text "Search your opponent’s discard pile for a Supporter card and use the effect of that card as the effect of this attack. (The Supporter card remains in your opponent’s discard pile.)"
+					text "Search your opponentâ€™s discard pile for a Supporter card and use the effect of that card as the effect of this attack. (The Supporter card remains in your opponentâ€™s discard pile.)"
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2437,7 +2436,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Count and Draw", {
-					text "Draw a card for each of your opponent’s Pokémon that isn’t an Evolved Pokémon."
+					text "Draw a card for each of your opponentâ€™s PokÃ©mon that isnâ€™t an Evolved PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2471,7 +2470,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness C, PLUS10
 				move "Sand-Attack", {
-					text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2492,7 +2491,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Flail", {
-					text "10× damage. Does 10 damage times the number of damage counters on Goldeen."
+					text "10Ã— damage. Does 10 damage times the number of damage counters on Goldeen."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2500,7 +2499,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Fury Attack", {
-					text "10× damage. Flip 3 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 3 coins. This attack does 10 damage times the number of heads."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2555,7 +2554,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP030, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Flail Around", {
-					text "10× damage. Flip 3 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 3 coins. This attack does 10 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2632,7 +2631,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Double Kick", {
-					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -2650,7 +2649,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Encore", {
-					text "Choose 1 of the Defending Pokémon’s attacks. That Pokémon can use only that attack during your opponent’s next turn."
+					text "Choose 1 of the Defending PokÃ©monâ€™s attacks. That PokÃ©mon can use only that attack during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2663,7 +2662,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 				weakness G, PLUS10
 				move "Mud Sport", {
-					text "10+ damage. If Mudkip has less Energy attached to it than the Defending Pokémon, this attack does 10 damage plus 10 more damage."
+					text "10+ damage. If Mudkip has less Energy attached to it than the Defending PokÃ©mon, this attack does 10 damage plus 10 more damage."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2684,7 +2683,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Call for Family", {
-					text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
+					text "Search your deck for a Basic PokÃ©mon and put it onto your Bench. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2692,7 +2691,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Dash Attack", {
-					text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s Benched PokÃ©mon. This attack does 10 damage to that PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2727,7 +2726,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Spore", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2757,7 +2756,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Thundershock", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -2821,7 +2820,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Spit Poison", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -2856,7 +2855,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Icy Wind", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Asleep."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -2884,7 +2883,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness R, PLUS10
 				resistance W, MINUS20
 				move "Stun Spore", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2905,7 +2904,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS10
 				move "Poison Sting", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -2975,7 +2974,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Tone-Deaf", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2997,7 +2996,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness P, PLUS10
 				resistance F, MINUS20
 				move "Quick Turn", {
-					text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 2 coins. This attack does 10 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -3008,7 +3007,7 @@ public enum SupremeVictors implements CardInfo {
 			};
 			case BATTLE_TOWER_134:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nWhenever any player plays any Pokémon from his or her hand to Level-Up 1 of his or her Pokémon, remove 4 damage counters from that Pokémon."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nWhenever any player plays any PokÃ©mon from his or her hand to Level-Up 1 of his or her PokÃ©mon, remove 4 damage counters from that PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -3016,7 +3015,7 @@ public enum SupremeVictors implements CardInfo {
 			};
 			case CHAMPION_S_ROOM_135:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nThe Retreat cost of each Pokémon SP (both yours and your opponent’s) is [C] less."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nThe Retreat cost of each PokÃ©mon SP (both yours and your opponentâ€™s) is [C] less."
 				onPlay {
 				}
 				playRequirement{
@@ -3024,7 +3023,7 @@ public enum SupremeVictors implements CardInfo {
 			};
 			case CYNTHIA_S_GUIDANCE_136:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at the top 7 cards of your deck, choose 1 of them, and put it into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nLook at the top 7 cards of your deck, choose 1 of them, and put it into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -3032,7 +3031,7 @@ public enum SupremeVictors implements CardInfo {
 			};
 			case CYRUS_S_INITIATIVE_137:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nFlip 2 coins. If either of them is heads, look at your opponent’s hand. For each heads, choose 1 card from your opponent’s hand and put it on the bottom of your opponent’s deck in any order."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nFlip 2 coins. If either of them is heads, look at your opponentâ€™s hand. For each heads, choose 1 card from your opponentâ€™s hand and put it on the bottom of your opponentâ€™s deck in any order."
 				onPlay {
 				}
 				playRequirement{
@@ -3048,7 +3047,7 @@ public enum SupremeVictors implements CardInfo {
 			};
 			case PALMER_S_CONTRIBUTION_139:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your discard pile for up to 5 in any combination of Pokémon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your discard pile for up to 5 in any combination of PokÃ©mon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
 				onPlay {
 				}
 				playRequirement{
@@ -3067,7 +3066,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				pokePower "Darkness Send", {
-					text "Once during your turn , when you put Absol LV. from your hand onto your Active Absol , you may flip 3 coins. For each heads, put the top card from your opponent’s deck in the Lost Zone."
+					text "Once during your turn , when you put Absol LV. from your hand onto your Active Absol , you may flip 3 coins. For each heads, put the top card from your opponentâ€™s deck in the Lost Zone."
 					actionA {
 					}
 				}
@@ -3080,7 +3079,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Absol . Absol LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Absol . Absol LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -3093,7 +3092,7 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Blaziken FB", hp:HP110, type:FIRE, retreatCost:1) {
 				weakness W
 				pokeBody "Burning Spirit", {
-					text "Any damage done by attacks to a Burned Pokémon is increased by 40 . No more than 40 damage can be added by all Burning Spirit Poké-Bodies."
+					text "Any damage done by attacks to a Burned PokÃ©mon is increased by 40 . No more than 40 damage can be added by all Burning Spirit PokÃ©-Bodies."
 					delayedA {
 					}
 				}
@@ -3106,7 +3105,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Blaziken . Blaziken LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Blaziken . Blaziken LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -3120,7 +3119,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness W
 				resistance F, MINUS20
 				pokePower "Call for Power", {
-					text "As often as you like during your turn , you may move an Energy attached to 1 of your Pokémon to Charizard . This power can’t be used if Charizard is affected by a Special Condition."
+					text "As often as you like during your turn , you may move an Energy attached to 1 of your PokÃ©mon to Charizard . This power canâ€™t be used if Charizard is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -3133,7 +3132,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Charizard . Charizard LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Charizard . Charizard LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -3147,12 +3146,12 @@ public enum SupremeVictors implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				pokePower "Energy Recycle", {
-					text "Once during your turn , you may use this power. If you do, your turn ends. Search your discard pile for up to 3 Energy cards and attach them to your Pokémon in any way you like. This power can’t be used if Electivire is affected by a Special Condition."
+					text "Once during your turn , you may use this power. If you do, your turn ends. Search your discard pile for up to 3 Energy cards and attach them to your PokÃ©mon in any way you like. This power canâ€™t be used if Electivire is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Powerful Spark", {
-					text "30+ damage. This attack does 30 damage plus 10 damage for each Energy attached to all of your Pokémon."
+					text "30+ damage. This attack does 30 damage plus 10 damage for each Energy attached to all of your PokÃ©mon."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -3160,7 +3159,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Electivire . Electivire LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Electivire . Electivire LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -3173,12 +3172,12 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Garchomp C", hp:HP110, type:COLORLESS, retreatCost:0) {
 				weakness C
 				pokePower "Healing Breath", {
-					text "Once during your turn , when you put Garchomp LV. from your hand onto your Active Garchomp , you may remove all damage counters from each of your Pokémon ."
+					text "Once during your turn , when you put Garchomp LV. from your hand onto your Active Garchomp , you may remove all damage counters from each of your PokÃ©mon ."
 					actionA {
 					}
 				}
 				move "Dragon Rush", {
-					text "can’t use Dragon Rush during your next turn."
+					text "canâ€™t use Dragon Rush during your next turn."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -3186,7 +3185,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Garchomp . Garchomp LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Garchomp . Garchomp LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -3200,7 +3199,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness C
 				resistance F, MINUS20
 				pokeBody "Dragon Spirit", {
-					text "If Rayquaza is your Active Pokémon and is damaged but not Knocked Out by an opponent’s attack, you may search your discard pile for an Energy card and attach it to Rayquaza ."
+					text "If Rayquaza is your Active PokÃ©mon and is damaged but not Knocked Out by an opponentâ€™s attack, you may search your discard pile for an Energy card and attach it to Rayquaza ."
 					delayedA {
 					}
 				}
@@ -3213,7 +3212,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Rayquaza . Rayquaza LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Rayquaza . Rayquaza LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -3227,12 +3226,12 @@ public enum SupremeVictors implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				pokePower "Fast Call", {
-					text "Once during your turn , you may search your deck for a Supporter card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power can’t be used if Staraptor is affected by a Special Condition."
+					text "Once during your turn , you may search your deck for a Supporter card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power canâ€™t be used if Staraptor is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Defog", {
-					text "40 damage. Before doing damage, you may discard any Stadium card in play. If you do, this attack’s base damage is 70 instead of 40."
+					text "40 damage. Before doing damage, you may discard any Stadium card in play. If you do, this attackâ€™s base damage is 70 instead of 40."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -3240,7 +3239,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Staraptor . Staraptor LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Staraptor . Staraptor LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -3253,7 +3252,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
 				resistance F, MINUS30
 				move "Diamond Dust", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed, and this attack does 10 damage to each of your opponent’s Benched Pokémon."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed, and this attack does 10 damage to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, W, W
 					attackRequirement {}
 					onAttack {
@@ -3266,7 +3265,7 @@ public enum SupremeVictors implements CardInfo {
 			return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
 				resistance F, MINUS30
 				move "Hyper Flame", {
-					text "60 damage. Energy card attached to Moltres. If tails, discard all Energy cards attached to Moltres. If you can’t discard Energy cards, this attack does nothing."
+					text "60 damage. Energy card attached to Moltres. If tails, discard all Energy cards attached to Moltres. If you canâ€™t discard Energy cards, this attack does nothing."
 					energyCost R, R, R, R
 					attackRequirement {}
 					onAttack {
@@ -3292,7 +3291,7 @@ public enum SupremeVictors implements CardInfo {
 			return evolution (this, from:"Feebas", hp:HP080, type:WATER, retreatCost:1) {
 				weakness L
 				pokeBody "Aqua Mirage", {
-					text "If you have no cards in your hand, prevent all damage done to Milotic by attacks from your opponent’s Pokémon."
+					text "If you have no cards in your hand, prevent all damage done to Milotic by attacks from your opponentâ€™s PokÃ©mon."
 					delayedA {
 					}
 				}
@@ -3332,7 +3331,7 @@ public enum SupremeVictors implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Sonicboom", {
-					text "10 damage. This attack’s damage isn’t affected by Weakness or Resistance."
+					text "10 damage. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -3340,7 +3339,7 @@ public enum SupremeVictors implements CardInfo {
 					}
 				}
 				move "Baton Pass", {
-					text "30 damage. You may switch Yanma with 1 of your Benched Pokémon. If you do, move as many Energy cards attached to Yanma as you like to the new Active Pokémon."
+					text "30 damage. You may switch Yanma with 1 of your Benched PokÃ©mon. If you do, move as many Energy cards attached to Yanma as you like to the new Active PokÃ©mon."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {

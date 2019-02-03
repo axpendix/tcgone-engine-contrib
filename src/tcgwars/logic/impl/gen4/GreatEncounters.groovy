@@ -141,8 +141,7 @@ public enum GreatEncounters implements CardInfo {
 	CRESSELIA_LV_X_103 ("Cresselia LV.X", 103, Rarity.ULTRARARE, [POKEMON_LVX, EVOLUTION, POKEMON, _PSYCHIC_]),
 	DARKRAI_LV_X_104 ("Darkrai LV.X", 104, Rarity.ULTRARARE, [POKEMON_LVX, EVOLUTION, POKEMON, _DARKNESS_]),
 	DIALGA_LV_X_105 ("Dialga LV.X", 105, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _METAL_]),
-	PALKIA_LV_X_106 ("Palkia LV.X", 106, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _WATER_]),
-;
+	PALKIA_LV_X_106 ("Palkia LV.X", 106, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _WATER_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -200,7 +199,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Combusken", hp:HP130, type:FIRE, retreatCost:1) {
 				weakness W, PLUS30
 				move "Fire Dance", {
-					text "30 damage. Energy card and attach it to 1 of your PokÈmon."
+					text "30 damage. Energy card and attach it to 1 of your Pok√©mon."
 					energyCost C, R
 					attackRequirement {}
 					onAttack {
@@ -208,7 +207,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Flame Kick", {
-					text "Energy attached to Blaziken. This attack does 80 damage to 1 of your opponentís PokÈmon."
+					text "Energy attached to Blaziken. This attack does 80 damage to 1 of your opponent‚Äôs Pok√©mon."
 					energyCost R, R, C, R
 					attackRequirement {}
 					onAttack {
@@ -229,7 +228,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Lunar Dance", {
-					text "50 damage. You may discard 2 Energy attached to Cresselia. If you do, remove all damage counters from 1 of your Benched PokÈmon."
+					text "50 damage. You may discard 2 Energy attached to Cresselia. If you do, remove all damage counters from 1 of your Benched Pok√©mon."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -251,7 +250,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Darkness Pursuit", {
-					text "50 damage. If the Defending PokÈmon is Cresselia, this attackís base damage is 100."
+					text "50 damage. If the Defending Pok√©mon is Cresselia, this attack‚Äôs base damage is 100."
 					energyCost D, D, D
 					attackRequirement {}
 					onAttack {
@@ -265,7 +264,7 @@ public enum GreatEncounters implements CardInfo {
 				weakness F, PLUS20
 				resistance P, MINUS20
 				move "Darkness Roar", {
-					text "10 damage. You may have your opponent switch the Defending PokÈmon with 1 or his or her Benched PokÈmon."
+					text "10 damage. You may have your opponent switch the Defending Pok√©mon with 1 or his or her Benched Pok√©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -273,7 +272,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Sleep Hole", {
-					text "40+ damage. If the Defending PokÈmon is Asleep, this attack does 40 damage plus 40 more damage. If the Defending PokÈmon is not Asleep, that PokÈmon is now Asleep."
+					text "40+ damage. If the Defending Pok√©mon is Asleep, this attack does 40 damage plus 40 more damage. If the Defending Pok√©mon is not Asleep, that Pok√©mon is now Asleep."
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
@@ -287,7 +286,7 @@ public enum GreatEncounters implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Call for Family", {
-					text "Search you deck for up to 3 Basic PokÈmon and put them onto your Bench. Shuffle you deck afterward."
+					text "Search you deck for up to 3 Basic Pok√©mon and put them onto your Bench. Shuffle you deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -295,7 +294,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Smash Short", {
-					text "10+ damage. If the Defending PokÈmon has a PokÈmon Tool card attached to it, this attack does 10 damage plus 20 more damage. Discard that PokÈmon Tool card, loo, at your opponentís hand and discard any PokÈmon Tool cards of the same name you find there."
+					text "10+ damage. If the Defending Pok√©mon has a Pok√©mon Tool card attached to it, this attack does 10 damage plus 20 more damage. Discard that Pok√©mon Tool card, loo, at your opponent‚Äôs hand and discard any Pok√©mon Tool cards of the same name you find there."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -308,12 +307,12 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Porygon 2", hp:HP110, type:COLORLESS, retreatCost:2) {
 				weakness F, PLUS30
 				pokePower "Conversion", {
-					text "Once during your turn , you may discard a basic Energy card from your hand. Porygon-Z is the same type as that Energy Card until the end of your turn. This power canít be used if Porygon-Z is affected by a Special Condition."
+					text "Once during your turn , you may discard a basic Energy card from your hand. Porygon-Z is the same type as that Energy Card until the end of your turn. This power can‚Äôt be used if Porygon-Z is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Tri Attack", {
-					text "40◊ damage. Flip 3 coins. This attack does 40 damage times the number of heads."
+					text "40√ó damage. Flip 3 coins. This attack does 40 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -327,7 +326,7 @@ public enum GreatEncounters implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				move "Astonish", {
-					text "20 damage. Choose 1 card from you opponentís hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
+					text "20 damage. Choose 1 card from you opponent‚Äôs hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -335,7 +334,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Telebeam", {
-					text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 30 more damage and the Defending PokÈmon is now Paralyzed."
+					text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 30 more damage and the Defending Pok√©mon is now Paralyzed."
 					energyCost L, L
 					attackRequirement {}
 					onAttack {
@@ -349,7 +348,7 @@ public enum GreatEncounters implements CardInfo {
 				weakness R, PLUS30
 				resistance W, MINUS20
 				pokeBody "Wild Growth", {
-					text "Each basic Energy card attached to your PokÈmon provides Energy instead. You canít use more than 1 Wild Growth PokÈ-Body each turn."
+					text "Each basic Energy card attached to your Pok√©mon provides Energy instead. You can‚Äôt use more than 1 Wild Growth Pok√©-Body each turn."
 					delayedA {
 					}
 				}
@@ -367,12 +366,12 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Marshtomp", hp:HP130, type:WATER, retreatCost:2) {
 				weakness G, PLUS30
 				pokePower "Wash Out", {
-					text "As often as you like during your turn , you may move a or Energy attached to 1 of your Benched PokÈmon to your Active PokÈmon. This power canít be used if Swampert is affected by a Special Condition."
+					text "As often as you like during your turn , you may move a or Energy attached to 1 of your Benched Pok√©mon to your Active Pok√©mon. This power can‚Äôt be used if Swampert is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Hammer Arm", {
-					text "80 damage. Discard the top card from your opponentís deck."
+					text "80 damage. Discard the top card from your opponent‚Äôs deck."
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -386,7 +385,7 @@ public enum GreatEncounters implements CardInfo {
 				weakness R, PLUS30
 				resistance W, MINUS20
 				move "Power Whip", {
-					text "Choose 1 of your opponentís PokÈmon. This attack does 10 damage for each basic Energy card attached to Tangrowth to that PokÈmon."
+					text "Choose 1 of your opponent‚Äôs Pok√©mon. This attack does 10 damage for each basic Energy card attached to Tangrowth to that Pok√©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -394,7 +393,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Stick and Absorb", {
-					text "60 damage. Remove 3 damage counters from Tangrowth. The Defending PokÈmon canít retreat during your opponentís next turn."
+					text "60 damage. Remove 3 damage counters from Tangrowth. The Defending Pok√©mon can‚Äôt retreat during your opponent‚Äôs next turn."
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
@@ -408,7 +407,7 @@ public enum GreatEncounters implements CardInfo {
 				weakness L, PLUS30
 				resistance F, MINUS20
 				pokePower "Serene Grace", {
-					text "Once during your turn, when you play Togekiss from your hand to evolve 1 of your PokÈmon, you may look at the top 10 cards of your deck, choose as many basic Energy cards as you like, and attach them to your PokÈmon in any way you like. Put the other cards back on your deck. Shuffle your deck afterward."
+					text "Once during your turn, when you play Togekiss from your hand to evolve 1 of your Pok√©mon, you may look at the top 10 cards of your deck, choose as many basic Energy cards as you like, and attach them to your Pok√©mon in any way you like. Put the other cards back on your deck. Shuffle your deck afterward."
 					actionA {
 					}
 				}
@@ -427,7 +426,7 @@ public enum GreatEncounters implements CardInfo {
 				weakness C, PLUS20
 				resistance F, MINUS20
 				move "Dragonbreath", {
-					text "40 damage. Flip a coin. If tails, this attack does nothing. If heads, the Defending PokÈmon is now Paralyzed."
+					text "40 damage. Flip a coin. If tails, this attack does nothing. If heads, the Defending Pok√©mon is now Paralyzed."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -448,7 +447,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Kakuna", hp:HP110, type:GRASS, retreatCost:0) {
 				weakness R, PLUS30
 				move "Band Attack", {
-					text "30◊ damage. Does 30 damage times the number of Beedrill you have in play."
+					text "30√ó damage. Does 30 damage times the number of Beedrill you have in play."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -456,7 +455,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Twineedle", {
-					text "50◊ damage. Flip 2 coins. This attack does 50 damage times the number of heads."
+					text "50√ó damage. Flip 2 coins. This attack does 50 damage times the number of heads."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -469,7 +468,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Metapod", hp:HP120, type:GRASS, retreatCost:0) {
 				weakness R, PLUS30
 				move "Parallel Drain", {
-					text "30 damage. After your attack, remove from 1 of your PokÈmon the number of damage counters equal to the damage you did to the Defending PokÈmon."
+					text "30 damage. After your attack, remove from 1 of your Pok√©mon the number of damage counters equal to the damage you did to the Defending Pok√©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -477,7 +476,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Dozing Scales", {
-					text "60 damage. Flip a coin. If heads, the Defending PokÈmon is now Asleep. If tails, the Defending PokÈmon is now Poisoned."
+					text "60 damage. Flip a coin. If heads, the Defending Pok√©mon is now Asleep. If tails, the Defending Pok√©mon is now Poisoned."
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
@@ -490,7 +489,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Baltoy", hp:HP080, type:FIGHTING, retreatCost:2) {
 				weakness G, PLUS20
 				pokePower "Cosmic Power", {
-					text "Once during your turn , you may choose up to 2 cards from your hand and put them on the bottom of your deck in any order. If you do, draw cards until you have 6 cards in you hand. This power canít be used if Claydol is affected by a Special Condition."
+					text "Once during your turn , you may choose up to 2 cards from your hand and put them on the bottom of your deck in any order. If you do, draw cards until you have 6 cards in you hand. This power can‚Äôt be used if Claydol is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -517,7 +516,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Flash Cannon", {
-					text "40 damage. You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending PokÈmon and shuffle that card into your opponentís deck."
+					text "40 damage. You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pok√©mon and shuffle that card into your opponent‚Äôs deck."
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
@@ -530,7 +529,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Loudred", hp:HP130, type:COLORLESS, retreatCost:3) {
 				weakness F, PLUS30
 				move "Ambient Noise", {
-					text "If the second coin is tails, your opponent canít play any Trainer, Supporter, or Stadium cards from his or her hand during your opponentís next turn."
+					text "If the second coin is tails, your opponent can‚Äôt play any Trainer, Supporter, or Stadium cards from his or her hand during your opponent‚Äôs next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -552,7 +551,7 @@ public enum GreatEncounters implements CardInfo {
 				weakness W, PLUS20
 				resistance P, MINUS20
 				move "Dark Fang", {
-					text "20 damage. Choose 1 card from you opponentís hand without looking and discard it."
+					text "20 damage. Choose 1 card from you opponent‚Äôs hand without looking and discard it."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -573,7 +572,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Drowzee", hp:HP080, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS20
 				move "Dream Catcher", {
-					text "If the defending PokÈmon is Asleep, move all damage counters from Hypno to the Defending PokÈmon."
+					text "If the defending Pok√©mon is Asleep, move all damage counters from Hypno to the Defending Pok√©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -581,7 +580,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Hypnoblast", {
-					text "60 damage. The Defending PokÈmon is now Asleep."
+					text "60 damage. The Defending Pok√©mon is now Asleep."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -602,7 +601,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Scissor Blow", {
-					text "80 damage. If the Defending PokÈmon would be be Knocked Out by this attack, Kingler does 30 damage to itself."
+					text "80 damage. If the Defending Pok√©mon would be be Knocked Out by this attack, Kingler does 30 damage to itself."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -615,7 +614,7 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP080, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Carry In", {
-					text "Search your deck for a PokÈmon Tool Card, a Supporter card, and a basic Energy card, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
+					text "Search your deck for a Pok√©mon Tool Card, a Supporter card, and a basic Energy card, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -681,7 +680,7 @@ public enum GreatEncounters implements CardInfo {
 				weakness R, PLUS10
 				resistance P, MINUS20
 				move "Pick Out", {
-					text "Choose 1 face-down Prize card (yours or your opponentís and put it face up. If that card is a Support card, use the effect of that card as the effect of this attack. (That card remains face up for the rest of the game.)"
+					text "Choose 1 face-down Prize card (yours or your opponent‚Äôs and put it face up. If that card is a Support card, use the effect of that card as the effect of this attack. (That card remains face up for the rest of the game.)"
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -702,12 +701,12 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Feebas", hp:HP090, type:WATER, retreatCost:2) {
 				weakness L, PLUS20
 				pokeBody "Marvel Scale", {
-					text "Prevent all effects of attacks, including damage, done to Milotic by your opponentís PokÈmon LV.."
+					text "Prevent all effects of attacks, including damage, done to Milotic by your opponent‚Äôs Pok√©mon LV.."
 					delayedA {
 					}
 				}
 				move "Twister", {
-					text "50 damage. Flip 2 coins. If both are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending PokÈmon."
+					text "50 damage. Flip 2 coins. If both are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending Pok√©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -728,7 +727,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Transback", {
-					text "40 damage. You may flip a coin. If heads, discard all energy attached to Palkia and put the Defending PokÈmon and all cards attached to it on top of your opponentís deck. Your opponent shuffles his or her deck aftward."
+					text "40 damage. You may flip a coin. If heads, discard all energy attached to Palkia and put the Defending Pok√©mon and all cards attached to it on top of your opponent‚Äôs deck. Your opponent shuffles his or her deck aftward."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -741,12 +740,12 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Mankey", hp:HP090, type:FIGHTING, retreatCost:1) {
 				weakness P, PLUS20
 				pokeBody "Anger Point", {
-					text "If Primeape has any damage counters on it, Primeapeís attacks do 40 more damage to the Active PokÈmon ."
+					text "If Primeape has any damage counters on it, Primeape‚Äôs attacks do 40 more damage to the Active Pok√©mon ."
 					delayedA {
 					}
 				}
 				move "Whump", {
-					text "50 damage. Primeape is now Confused. Flip a coin. If heads, the Defending PokÈmon canít attack during your opponentís next turn."
+					text "50 damage. Primeape is now Confused. Flip a coin. If heads, the Defending Pok√©mon can‚Äôt attack during your opponent‚Äôs next turn."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -759,12 +758,12 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Slowpoke", hp:HP080, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS20
 				pokePower "Trump Card", {
-					text "Once during your turn , if any of your PokÈmon were Knocked Out during your opponentís last turn, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward. This power canít be used if Slowking is affected by a Special Condition."
+					text "Once during your turn , if any of your Pok√©mon were Knocked Out during your opponent‚Äôs last turn, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward. This power can‚Äôt be used if Slowking is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Psych Up", {
-					text "30 damage. During your next turn, Slowkingís Psych Up attackís base damage is 60."
+					text "30 damage. During your next turn, Slowking‚Äôs Psych Up attack‚Äôs base damage is 60."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -777,12 +776,12 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokePower "HEAL", {
-					text "Once during your turn , if you have Unown H, Unown E, Unown A, and Unown L on you Bench you may remove all Special Conditions from 1 of your Active PokÈmon."
+					text "Once during your turn , if you have Unown H, Unown E, Unown A, and Unown L on you Bench you may remove all Special Conditions from 1 of your Active Pok√©mon."
 					actionA {
 					}
 				}
 				move "Hidden Power", {
-					text "30 damage. Discard a card from your hand. (If you canít discard a card from you hand, this attack does nothing.)"
+					text "30 damage. Discard a card from your hand. (If you can‚Äôt discard a card from you hand, this attack does nothing.)"
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -813,12 +812,12 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Koffing", hp:HP080, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS20
 				pokeBody "Toxic Virus", {
-					text "At any time between turns, each player puts 1 more damage counter on his or her Poisoned PokÈmon."
+					text "At any time between turns, each player puts 1 more damage counter on his or her Poisoned Pok√©mon."
 					delayedA {
 					}
 				}
 				move "Offensive Gas", {
-					text "30 damage. Flip a coin. If heads, the Defending PokÈmon is now Confused and Poisoned."
+					text "30 damage. Flip a coin. If heads, the Defending Pok√©mon is now Confused and Poisoned."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -831,7 +830,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Jigglypuff", hp:HP090, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				pokePower "Good Night Melody", {
-					text "Once during your turn , you may use this power. Each Active PokÈmon (both your and your opponentís is now Asleep. This power canít be use if Wigglytuff is affected by a Special Condition."
+					text "Once during your turn , you may use this power. Each Active Pok√©mon (both your and your opponent‚Äôs is now Asleep. This power can‚Äôt be use if Wigglytuff is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -849,7 +848,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Ekans", hp:HP080, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS20
 				move "Deadly Poison", {
-					text "10+ damage. If the Defending PokÈmon is Poisoned, this attack does 10 damage plus 40 more damage. If the Defending PokÈmon is not Poisoned, that PokÈmon is now Poisoned."
+					text "10+ damage. If the Defending Pok√©mon is Poisoned, this attack does 10 damage plus 40 more damage. If the Defending Pok√©mon is not Poisoned, that Pok√©mon is now Poisoned."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -857,7 +856,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Wrap", {
-					text "50 damage. Flip a coin. If heads, the Defending PokÈmon is now Paralyzed."
+					text "50 damage. Flip a coin. If heads, the Defending Pok√©mon is now Paralyzed."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -871,7 +870,7 @@ public enum GreatEncounters implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				move "Pin Missile", {
-					text "20◊ damage. Flip 3 coins. This attack does 20 damage times the number of heads."
+					text "20√ó damage. Flip 3 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -879,7 +878,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Needle Arm", {
-					text "50+ damage. If the Defending PokÈmon already has any damage counters on it, this attack does 50 damage plus 20 more damage."
+					text "50+ damage. If the Defending Pok√©mon already has any damage counters on it, this attack does 50 damage plus 20 more damage."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -900,7 +899,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Double Kick", {
-					text "50◊ damage. Flip 2 coins. This attack does 50 damage times the number of heads."
+					text "50√ó damage. Flip 2 coins. This attack does 50 damage times the number of heads."
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
@@ -934,7 +933,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Buizel", hp:HP080, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Agility", {
-					text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Floatzel during your opponentís next turn."
+					text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Floatzel during your opponent‚Äôs next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -942,7 +941,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Aqua Jet", {
-					text "60 damage. Flip a coin. If heads, this attack does 10 damage to 1 of your opponentís Benched PokÈmon."
+					text "60 damage. Flip a coin. If heads, this attack does 10 damage to 1 of your opponent‚Äôs Benched Pok√©mon."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -955,7 +954,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Clamperl", hp:HP080, type:WATER, retreatCost:0) {
 				weakness L, PLUS20
 				move "Sweet Temptation", {
-					text "Switch 1 of your opponentís Benched PokÈmon with 1 of the Defending PokÈmon. This attack does 10 damage to the new Defending PokÈmon."
+					text "Switch 1 of your opponent‚Äôs Benched Pok√©mon with 1 of the Defending Pok√©mon. This attack does 10 damage to the new Defending Pok√©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -963,7 +962,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Psychic Snap", {
-					text "30+ damage. Energy attached to it, this attack does 30 damage plus 20 more damage and Defending PokÈmon is now Confused."
+					text "30+ damage. Energy attached to it, this attack does 30 damage plus 20 more damage and Defending Pok√©mon is now Confused."
 					energyCost W, C, P
 					attackRequirement {}
 					onAttack {
@@ -1006,7 +1005,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Poison Breath", {
-					text "30 damage. The Defending PokÈmon is now Poisoned."
+					text "30 damage. The Defending Pok√©mon is now Poisoned."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -1027,7 +1026,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Spirited Throw", {
-					text "50 damage. If Hariyama has fewer remaining HP than the Defending PokÈmon, this attackís base damage is 80."
+					text "50 damage. If Hariyama has fewer remaining HP than the Defending Pok√©mon, this attack‚Äôs base damage is 80."
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
@@ -1040,7 +1039,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Clamperl", hp:HP090, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Scary Face", {
-					text "Flip a coin. If heads, the Defending PokÈmon canít attack or retreat during your opponentís next turn."
+					text "Flip a coin. If heads, the Defending Pok√©mon can‚Äôt attack or retreat during your opponent‚Äôs next turn."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1048,7 +1047,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Threaten and Drop", {
-					text "30+ damage. Energy attached to it, this attack does 30 damage plus 20 more damage and discard a Special Energy card, if any, attached to the Defending PokÈmon."
+					text "30+ damage. Energy attached to it, this attack does 30 damage plus 20 more damage and discard a Special Energy card, if any, attached to the Defending Pok√©mon."
 					energyCost W, C, D
 					attackRequirement {}
 					onAttack {
@@ -1061,7 +1060,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Zigzagoon", hp:HP080, type:COLORLESS, retreatCost:0) {
 				weakness F, PLUS20
 				move "Switcheroo", {
-					text "Move a PokÈmon Tool card attached to 1 of your opponentís PokÈmon to another of your opponentís PokÈmon (excluding PokÈmon that already has a PokÈmon Tool attached to it). (If an effect of this attack is prevented, this attack does nothing.)"
+					text "Move a Pok√©mon Tool card attached to 1 of your opponent‚Äôs Pok√©mon to another of your opponent‚Äôs Pok√©mon (excluding Pok√©mon that already has a Pok√©mon Tool attached to it). (If an effect of this attack is prevented, this attack does nothing.)"
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1069,7 +1068,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Overrun", {
-					text "30 damage. Does 30 damage to 1 of your opponentís Benched PokÈmon."
+					text "30 damage. Does 30 damage to 1 of your opponent‚Äôs Benched Pok√©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1082,7 +1081,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Whismur", hp:HP080, type:COLORLESS, retreatCost:2) {
 				weakness F, PLUS20
 				move "Bass Control", {
-					text "Choose 1 of your opponentís PokÈmon. This attack does 20 damage to that PokÈmon."
+					text "Choose 1 of your opponent‚Äôs Pok√©mon. This attack does 20 damage to that Pok√©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1103,12 +1102,12 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Slugma", hp:HP090, type:FIRE, retreatCost:3) {
 				weakness W, PLUS20
 				pokeBody "Magma Armor", {
-					text "Magcargo canít be Asleep or Paralyzed."
+					text "Magcargo can‚Äôt be Asleep or Paralyzed."
 					delayedA {
 					}
 				}
 				move "Lava Plume", {
-					text "60 damage. You may discard the top card of your deck. If you do the Defending PokÈmon is now Burned."
+					text "60 damage. You may discard the top card of your deck. If you do the Defending Pok√©mon is now Burned."
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
@@ -1129,7 +1128,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Muddy Bomb", {
-					text "Choose 1 of your opponentís PokÈmon. This attack does 30 damage to that PokÈmon and 10 damage to each of your opponentís other PokÈmon."
+					text "Choose 1 of your opponent‚Äôs Pok√©mon. This attack does 30 damage to that Pok√©mon and 10 damage to each of your opponent‚Äôs other Pok√©mon."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -1142,7 +1141,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Caterpie", hp:HP070, type:GRASS, retreatCost:2) {
 				weakness R, PLUS20
 				pokePower "Emerge", {
-					text "Once during your turn , if Metapod is your Active PokÈmon, you may flip a coin. If heads, search your deck for a card that evolves from Metapod and put it onto Metapod. (This counts as evolving Metapod.) Shuffle your deck afterward. This power canít be used if Metapod is affected by a Special Condition."
+					text "Once during your turn , if Metapod is your Active Pok√©mon, you may flip a coin. If heads, search your deck for a card that evolves from Metapod and put it onto Metapod. (This counts as evolving Metapod.) Shuffle your deck afterward. This power can‚Äôt be used if Metapod is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -1169,7 +1168,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Jet Return", {
-					text "30◊ damage. Does 30 times the number of Energy cards attached to Pelipper. Then, put all Energy cards attached to Pelipper on top of your deck. Shuffle your deck afterward."
+					text "30√ó damage. Does 30 times the number of Energy cards attached to Pelipper. Then, put all Energy cards attached to Pelipper on top of your deck. Shuffle your deck afterward."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1182,7 +1181,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Porygon", hp:HP070, type:COLORLESS, retreatCost:2) {
 				weakness F, PLUS20
 				pokePower "Download", {
-					text "Once during your turn , you may discard a Supporter card from your hand and use the effect of that card as the effect of this power. This power canít be used if Porygon2 is affected by a Special Condition."
+					text "Once during your turn , you may discard a Supporter card from your hand and use the effect of that card as the effect of this power. This power can‚Äôt be used if Porygon2 is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -1200,7 +1199,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Glameow", hp:HP090, type:COLORLESS, retreatCost:2) {
 				weakness F, PLUS20
 				move "Swagger", {
-					text "20 damage. Flip a coin. If heads discard an Energy attached to the Defending PokÈmon."
+					text "20 damage. Flip a coin. If heads discard an Energy attached to the Defending Pok√©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1208,7 +1207,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Fury Swipes", {
-					text "40◊ damage. Flip 3 coins. This attack does 40 damage times the number of heads."
+					text "40√ó damage. Flip 3 coins. This attack does 40 damage times the number of heads."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1229,7 +1228,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Sleep Swirl", {
-					text "30 damage. Both Relicanth and the Defending PokÈmon are now Asleep."
+					text "30 damage. Both Relicanth and the Defending Pok√©mon are now Asleep."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1242,7 +1241,7 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP080, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS20
 				move "Tail Blade", {
-					text "20 damage. Flip a coin. If heads, your opponent canít play any Trainer cards from his or her hand during your opponentís next turn."
+					text "20 damage. Flip a coin. If heads, your opponent can‚Äôt play any Trainer cards from his or her hand during your opponent‚Äôs next turn."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1250,7 +1249,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Poison Tail", {
-					text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 30 more damage and the Defending PokÈmon is now Poisoned."
+					text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 30 more damage and the Defending Pok√©mon is now Poisoned."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -1264,7 +1263,7 @@ public enum GreatEncounters implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				move "Air Crash", {
-					text "20 damage. Flip a coin. If heads, discard an Energy attached to the Defending PokÈmon."
+					text "20 damage. Flip a coin. If heads, discard an Energy attached to the Defending Pok√©mon."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -1285,7 +1284,7 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Slowpoke", hp:HP080, type:WATER, retreatCost:2) {
 				weakness L, PLUS20
 				move "Amnesia", {
-					text "20 damage. Choose 1 of the Defending PokÈmonís attacks. That PokÈmon canít use that attack during your opponentís next turn."
+					text "20 damage. Choose 1 of the Defending Pok√©mon‚Äôs attacks. That Pok√©mon can‚Äôt use that attack during your opponent‚Äôs next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1328,12 +1327,12 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokePower "FAKE", {
-					text "Once during your turn , if Unown F is on your Bench, you may use this power. Put a coin next to your Active PokÈmon without showing your opponent and cover it with you hand. Your opponent guesses if the coin is heads or tails. If he or she is wrong, draw a card."
+					text "Once during your turn , if Unown F is on your Bench, you may use this power. Put a coin next to your Active Pok√©mon without showing your opponent and cover it with you hand. Your opponent guesses if the coin is heads or tails. If he or she is wrong, draw a card."
 					actionA {
 					}
 				}
 				move "Hidden Power", {
-					text "10 damage. You may flip a coin. If tails, this attack does nothing. If heads, this attackís base damage is 30."
+					text "10 damage. You may flip a coin. If tails, this attack does nothing. If heads, this attack‚Äôs base damage is 30."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1346,12 +1345,12 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokePower "GUARD", {
-					text "Once during your turn , if Unown G is on your Bench, you may discard all cards attached to Unown G and attach Unown G to 1 of your PokÈmon as a PokÈmon Tool card. As long as Unown G is attached to a PokÈmon, prevent all effects of attacks, excluding damage, done to that PokÈmon."
+					text "Once during your turn , if Unown G is on your Bench, you may discard all cards attached to Unown G and attach Unown G to 1 of your Pok√©mon as a Pok√©mon Tool card. As long as Unown G is attached to a Pok√©mon, prevent all effects of attacks, excluding damage, done to that Pok√©mon."
 					actionA {
 					}
 				}
 				move "Hidden Power", {
-					text "50 damage. If Unown G has any damage counters on it, this attackís base damage is 10."
+					text "50 damage. If Unown G has any damage counters on it, this attack‚Äôs base damage is 10."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1364,7 +1363,7 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP090, type:WATER, retreatCost:3) {
 				weakness L, PLUS20
 				move "Tsunami", {
-					text "10 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponentís Bench PokÈmon."
+					text "10 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponent‚Äôs Bench Pok√©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1414,7 +1413,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Spin Turn", {
-					text "20 damage. Switch Baltoy with 1 of your Benched PokÈmon."
+					text "20 damage. Switch Baltoy with 1 of your Benched Pok√©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1449,7 +1448,7 @@ public enum GreatEncounters implements CardInfo {
 				weakness R, PLUS10
 				resistance W, MINUS20
 				move "Sand Attack", {
-					text "If the Defending PokÈmon tries to attack during your opponentís next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "If the Defending Pok√©mon tries to attack during your opponent‚Äôs next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1457,7 +1456,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Poison Sting", {
-					text "20 damage. The Defending PokÈmon is now Poisoned."
+					text "20 damage. The Defending Pok√©mon is now Poisoned."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1470,7 +1469,7 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				pokePower "Pupate", {
-					text "Once during your turn , if Caterpie is your Active PokÈmon, you may flip a coin, if heads search your deck for a card that evolves from Caterpie and put it onto Caterpie. (This counts as evolving Caterpie.) Shuffle your deck afterward. This power canít be used if Caterpie is affected by a Special Condition."
+					text "Once during your turn , if Caterpie is your Active Pok√©mon, you may flip a coin, if heads search your deck for a card that evolves from Caterpie and put it onto Caterpie. (This counts as evolving Caterpie.) Shuffle your deck afterward. This power can‚Äôt be used if Caterpie is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -1488,7 +1487,7 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP040, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Clamp", {
-					text "10 damage. Flip a coin. If tails, this attack does nothing. If heads, the Defending PokÈmon is now Paralyzed."
+					text "10 damage. Flip a coin. If tails, this attack does nothing. If heads, the Defending Pok√©mon is now Paralyzed."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1509,7 +1508,7 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				move "Hypnosis", {
-					text "The Defending PokÈmon is now Asleep."
+					text "The Defending Pok√©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1538,7 +1537,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Poison Fang", {
-					text "10 damage. Flip a coin. If heads, the Defending PokÈmon is now Poisoned."
+					text "10 damage. Flip a coin. If heads, the Defending Pok√©mon is now Poisoned."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1572,7 +1571,7 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Captivate", {
-					text "Switch 1 of your opponentís Benched PokÈmon with 1 of the Defending PokÈmon."
+					text "Switch 1 of your opponent‚Äôs Benched Pok√©mon with 1 of the Defending Pok√©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1619,7 +1618,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Inquire", {
-					text "Draw a card. If you didnít play any Supporter card from your hand during this turn, draw 2 more cards."
+					text "Draw a card. If you didn‚Äôt play any Supporter card from your hand during this turn, draw 2 more cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1632,12 +1631,12 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
 				weakness R, PLUS20
 				pokePower "Scent Conduct", {
-					text "Once during your turn , you may flip a coin. If heads, search your deck for a Basic PokÈmon and put it onto your Bench. Shuffle your deck afterward. This power canít be used if Illumise is affected by a Special Condition."
+					text "Once during your turn , you may flip a coin. If heads, search your deck for a Basic Pok√©mon and put it onto your Bench. Shuffle your deck afterward. This power can‚Äôt be used if Illumise is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Firefly Scent", {
-					text "30 damage. If the Defending PokÈmon has any PokÈ-Bodies, that PokÈmon is now Asleep."
+					text "30 damage. If the Defending Pok√©mon has any Pok√©-Bodies, that Pok√©mon is now Asleep."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1650,7 +1649,7 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Hypnotic Gaze", {
-					text "The Defending PokÈmon is now Asleep."
+					text "The Defending Pok√©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1679,7 +1678,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Spit Poison", {
-					text "10 damage. The Defending PokÈmon is now Poisoned."
+					text "10 damage. The Defending Pok√©mon is now Poisoned."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1700,7 +1699,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Smogscreen", {
-					text "10 damage. The Defending PokÈmon is now Poisoned. If the Defending PokÈmon tries to attack during your opponentís next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "10 damage. The Defending Pok√©mon is now Poisoned. If the Defending Pok√©mon tries to attack during your opponent‚Äôs next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1734,7 +1733,7 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
 				weakness P, PLUS20
 				pokePower "Gravity Change", {
-					text "Once during your turn , you may discard a card from your hand. Then, if you have Solrock in play, draw a card. This power canít be used if Lunatone is affected by a Special Condition."
+					text "Once during your turn , you may discard a card from your hand. Then, if you have Solrock in play, draw a card. This power can‚Äôt be used if Lunatone is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -1752,7 +1751,7 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Rendezvous", {
-					text "Reveal the top card of your deck and put it into your hand. If that card is a PokÈmon, draw 2 cards."
+					text "Reveal the top card of your deck and put it into your hand. If that card is a Pok√©mon, draw 2 cards."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1760,7 +1759,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Synchro Dance", {
-					text "10+ damage. If Luvdisc and the Defending PokÈmon have the same amount of Energy attached to them, this attack does 10 damage plus 20 more damage."
+					text "10+ damage. If Luvdisc and the Defending Pok√©mon have the same amount of Energy attached to them, this attack does 10 damage plus 20 more damage."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1781,7 +1780,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Arm Thrust", {
-					text "40 damage. Flip a coin. If tails, this attack does nothing. If heads, discard an Energy card attached to the Defending PokÈmon."
+					text "40 damage. Flip a coin. If tails, this attack does nothing. If heads, discard an Energy card attached to the Defending Pok√©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1865,7 +1864,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Tumble Over", {
-					text "20 damage. Slowpoke canít attack during your next turn."
+					text "20 damage. Slowpoke can‚Äôt attack during your next turn."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1886,7 +1885,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Body Slam", {
-					text "20 damage. Flip a coin. If heads, the Defending PokÈmon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending Pok√©mon is now Paralyzed."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1899,7 +1898,7 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Roar", {
-					text "Your opponent switches the Defending PokÈmon with 1 of his or her Benched PokÈmon."
+					text "Your opponent switches the Defending Pok√©mon with 1 of his or her Benched Pok√©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1920,12 +1919,12 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
 				weakness G, PLUS20
 				pokeBody "Sunlight", {
-					text "If you have Lunatone in play, damage done to your opponentís PokÈmon by your or PokÈmon isnít affected by resistance."
+					text "If you have Lunatone in play, damage done to your opponent‚Äôs Pok√©mon by your or Pok√©mon isn‚Äôt affected by resistance."
 					delayedA {
 					}
 				}
 				move "Sol Charge", {
-					text "20 damage. Search your discard pile for a basic Energy card and attach it to 1 of your Benched PokÈmon."
+					text "20 damage. Search your discard pile for a basic Energy card and attach it to 1 of your Benched Pok√©mon."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1939,7 +1938,7 @@ public enum GreatEncounters implements CardInfo {
 				weakness L, PLUS10
 				resistance F, MINUS20
 				move "Super Speed", {
-					text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Swablu during your opponentís next turn."
+					text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Swablu during your opponent‚Äôs next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1947,7 +1946,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Shoot Through", {
-					text "10 damage. Does 10 damage to 1 of your opponentís Benched PokÈmon."
+					text "10 damage. Does 10 damage to 1 of your opponent‚Äôs Benched Pok√©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1960,7 +1959,7 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
 				weakness R, PLUS10
 				move "Vine Invite", {
-					text "Switch 1 of your opponentís Benched PokÈmon with 1 of the Defending PokÈmon."
+					text "Switch 1 of your opponent‚Äôs Benched Pok√©mon with 1 of the Defending Pok√©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1968,7 +1967,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Grass Knot", {
-					text "20+ damage. Energy in the Defending PokÈmonís Retreat Cost (after applying effects to the the Retreat Cost)."
+					text "20+ damage. Energy in the Defending Pok√©mon‚Äôs Retreat Cost (after applying effects to the the Retreat Cost)."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1981,7 +1980,7 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Yawn", {
-					text "The Defending PokÈmon is now Asleep."
+					text "The Defending Pok√©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1989,7 +1988,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Find a Friend", {
-					text "Flip a coin. If heads, search your deck for a PokÈmon, show it to your opponent, and put it into you hand. Shuffle your deck afterward."
+					text "Flip a coin. If heads, search your deck for a Pok√©mon, show it to your opponent, and put it into you hand. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2010,7 +2009,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Singe", {
-					text "The Defending PokÈmon is now Burned."
+					text "The Defending Pok√©mon is now Burned."
 					energyCost R
 					attackRequirement {}
 					onAttack {
@@ -2024,7 +2023,7 @@ public enum GreatEncounters implements CardInfo {
 				weakness R, PLUS10
 				resistance W, MINUS20
 				move "Energy Ball", {
-					text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Treecko but not used to pay for this attackís Energy cost. You canít add more than 20 damage in this way."
+					text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Treecko but not used to pay for this attack‚Äôs Energy cost. You can‚Äôt add more than 20 damage in this way."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2050,7 +2049,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Hidden Power", {
-					text "Search either playerís discard pile for up to any 2 cards, show them to your opponent, and put them on top of that playerís deck in any order you like."
+					text "Search either player‚Äôs discard pile for up to any 2 cards, show them to your opponent, and put them on top of that player‚Äôs deck in any order you like."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -2063,12 +2062,12 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
 				weakness R, PLUS20
 				pokePower "Light Conduct", {
-					text "Once during your turn (before your attack,) if you have Illumise in play, you may search your discard pile for a Support card, show it to your opponent, and put it on top of your deck. This power canít be used if Volbeat is affected by a Special Condition."
+					text "Once during your turn (before your attack,) if you have Illumise in play, you may search your discard pile for a Support card, show it to your opponent, and put it on top of your deck. This power can‚Äôt be used if Volbeat is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Firefly Light", {
-					text "20 damage. Flip a coin. If heads, the Defending PokÈmon is now Confused."
+					text "20 damage. Flip a coin. If heads, the Defending Pok√©mon is now Confused."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -2081,7 +2080,7 @@ public enum GreatEncounters implements CardInfo {
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Call for Family", {
-					text "Search your deck for a Basic PokÈmon and put it onto your Bench. Shuffle your deck afterward."
+					text "Search your deck for a Basic Pok√©mon and put it onto your Bench. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2089,7 +2088,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "String Shot", {
-					text "Flip a coin. If heads, the Defending PokÈmon is now Paralyzed."
+					text "Flip a coin. If heads, the Defending Pok√©mon is now Paralyzed."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -2110,7 +2109,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Uproar", {
-					text "Flip a coin. If heads, this attack does 10 damage to each of your opponentís PokÈmon."
+					text "Flip a coin. If heads, this attack does 10 damage to each of your opponent‚Äôs Pok√©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2153,7 +2152,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "Double Stab", {
-					text "10◊ damage. Flip 2 coins. This attack does 10 damage times the number of heads."
+					text "10√ó damage. Flip 2 coins. This attack does 10 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2164,7 +2163,7 @@ public enum GreatEncounters implements CardInfo {
 			};
 			case AMULET_COIN_97:
 			return basicTrainer (this) {
-				text "Attach Amulet Coin to 1 of your PokÈmon that doesnít already have a PokÈmon Tool attached to it. If that PokÈmon is Knocked Out, discard this card.\nIf the PokÈmon Amulet Coin is attached to is your Active PokÈmon at the end of your turn, draw a card."
+				text "Attach Amulet Coin to 1 of your Pok√©mon that doesn‚Äôt already have a Pok√©mon Tool attached to it. If that Pok√©mon is Knocked Out, discard this card.\nIf the Pok√©mon Amulet Coin is attached to is your Active Pok√©mon at the end of your turn, draw a card."
 				onPlay {
 				}
 				playRequirement{
@@ -2172,7 +2171,7 @@ public enum GreatEncounters implements CardInfo {
 			};
 			case FELICITY_S_DRAWING_98:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÈmon. When your turn ends, discard this card.\nDiscard up to 2 cards from your hand. If you discard 1 card, draw 3 cards. If you discard 2 cards, draw 4 cards."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pok√©mon. When your turn ends, discard this card.\nDiscard up to 2 cards from your hand. If you discard 1 card, draw 3 cards. If you discard 2 cards, draw 4 cards."
 				onPlay {
 				}
 				playRequirement{
@@ -2180,7 +2179,7 @@ public enum GreatEncounters implements CardInfo {
 			};
 			case LEFTOVERS_99:
 			return basicTrainer (this) {
-				text "Attach Leftovers to 1 of your PokÈmon that doesnít already have a PokÈmon Tool attached to it. If that PokÈmon is Knocked Out, discard this card.\nIf the PokÈmon Leftovers is attached to is your Active PokÈmon at the end of your turn, remove 1 damage counter from the PokÈmon."
+				text "Attach Leftovers to 1 of your Pok√©mon that doesn‚Äôt already have a Pok√©mon Tool attached to it. If that Pok√©mon is Knocked Out, discard this card.\nIf the Pok√©mon Leftovers is attached to is your Active Pok√©mon at the end of your turn, remove 1 damage counter from the Pok√©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2188,7 +2187,7 @@ public enum GreatEncounters implements CardInfo {
 			};
 			case MOONLIGHT_STADIUM_100:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canít play this card.\nThe Retreat Cost for each [P] and [D] PokÈmon (both yours and your opponentís) is 0."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can‚Äôt play this card.\nThe Retreat Cost for each [P] and [D] Pok√©mon (both yours and your opponent‚Äôs) is 0."
 				onPlay {
 				}
 				playRequirement{
@@ -2196,7 +2195,7 @@ public enum GreatEncounters implements CardInfo {
 			};
 			case PREMIER_BALL_101:
 			return basicTrainer (this) {
-				text "Search your deck or your discard pile for a PokÈmon LV.X, show it to your opponent, and put it into your hand. If you search your deck, shuffle your deck afterward."
+				text "Search your deck or your discard pile for a Pok√©mon LV.X, show it to your opponent, and put it into your hand. If you search your deck, shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2204,7 +2203,7 @@ public enum GreatEncounters implements CardInfo {
 			};
 			case RARE_CANDY_102:
 			return basicTrainer (this) {
-				text "Choose 1 of your Basic PokÈmon in play. If you have a Stage 1 or Stage 2 card that evolves from that PokÈmon in your hand, put that card on the Basic PokÈmon. (This counts as evolving that PokÈmon.)"
+				text "Choose 1 of your Basic Pok√©mon in play. If you have a Stage 1 or Stage 2 card that evolves from that Pok√©mon in your hand, put that card on the Basic Pok√©mon. (This counts as evolving that Pok√©mon.)"
 				onPlay {
 				}
 				playRequirement{
@@ -2214,12 +2213,12 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Cresselia", hp:HP100, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				pokePower "Full Moon Dance", {
-					text "Once during your turn , you may move 1 damage counter from either playerís PokÈmon to another PokÈmon . This power canít be used if Cresselia is affected by a Special Condition."
+					text "Once during your turn , you may move 1 damage counter from either player‚Äôs Pok√©mon to another Pok√©mon . This power can‚Äôt be used if Cresselia is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Moon Skip", {
-					text "40 damage. If the Defending PokÈmon is Knocked Out by this attack, take 1 more Prize card."
+					text "40 damage. If the Defending Pok√©mon is Knocked Out by this attack, take 1 more Prize card."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -2227,7 +2226,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Cresselia. Cresselia LV. can use any attack, PokÈ-Power, or PokÈ-Body from its previous level."
+					text "Put this card onto your Active Cresselia. Cresselia LV. can use any attack, Pok√©-Power, or Pok√©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2241,12 +2240,12 @@ public enum GreatEncounters implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				pokeBody "Dark Shadow", {
-					text "Each basic Energy card attached to your PokÈmon now has the effect ìIf the PokÈmon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active PokÈmon .î You canít use more than 1 Dark Shadow PokÈ-Body each turn."
+					text "Each basic Energy card attached to your Pok√©mon now has the effect ‚ÄúIf the Pok√©mon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pok√©mon .‚Äù You can‚Äôt use more than 1 Dark Shadow Pok√©-Body each turn."
 					delayedA {
 					}
 				}
 				move "Endless Darkness", {
-					text "40 damage. The Defending PokÈmon is now Asleep. Flip 2 coins instead of 1 between turns. If either of this is tails, the Defending PokÈmon is still Asleep. If both of them are tails, the Defending PokÈmon is Knocked Out."
+					text "40 damage. The Defending Pok√©mon is now Asleep. Flip 2 coins instead of 1 between turns. If either of this is tails, the Defending Pok√©mon is still Asleep. If both of them are tails, the Defending Pok√©mon is Knocked Out."
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
@@ -2254,7 +2253,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Darkrai. Darkrai LV. can use any attack, PokÈ-Power, or PokÈ-Body from its previous level."
+					text "Put this card onto your Active Darkrai. Darkrai LV. can use any attack, Pok√©-Power, or Pok√©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2268,12 +2267,12 @@ public enum GreatEncounters implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				pokePower "Time Skip", {
-					text "Once during your turn , you may have your opponent flip 2 coins. If both of them are heads, your turn ends. If both of them are tails, after your opponent draws a card at the beginning of his or her next turn, his or her turn ends. This power canít be used if Dialga is affected by a Special Condition."
+					text "Once during your turn , you may have your opponent flip 2 coins. If both of them are heads, your turn ends. If both of them are tails, after your opponent draws a card at the beginning of his or her next turn, his or her turn ends. This power can‚Äôt be used if Dialga is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Metal Flash", {
-					text "80 damage. During your next turn, Dialga canít use Metal Flash."
+					text "80 damage. During your next turn, Dialga can‚Äôt use Metal Flash."
 					energyCost M, M, C, C
 					attackRequirement {}
 					onAttack {
@@ -2281,7 +2280,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Dialga. Dialga LV. can use any attack, PokÈ-Power, or PokÈ-Body from its previous level."
+					text "Put this card onto your Active Dialga. Dialga LV. can use any attack, Pok√©-Power, or Pok√©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2294,12 +2293,12 @@ public enum GreatEncounters implements CardInfo {
 			return evolution (this, from:"Palkia", hp:HP120, type:WATER, retreatCost:3) {
 				weakness L
 				pokePower "Restructure", {
-					text "Once during your turn , you may have your opponent switch 1 of your Active PokÈmon with 1 of your Bench PokÈmon. Then, you switch 1 of the Defending PokÈmon with 1 of your opponentís Benched PokÈmon. This power canít be used if Palkia is affected by a Special Condition."
+					text "Once during your turn , you may have your opponent switch 1 of your Active Pok√©mon with 1 of your Bench Pok√©mon. Then, you switch 1 of the Defending Pok√©mon with 1 of your opponent‚Äôs Benched Pok√©mon. This power can‚Äôt be used if Palkia is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Hydro Reflect", {
-					text "60 damage. You may move all Energy cards attached to Palkia to your Benched PokÈmon in any way you like (Ignore this effect if you donít have any Benched PokÈmon.)"
+					text "60 damage. You may move all Energy cards attached to Palkia to your Benched Pok√©mon in any way you like (Ignore this effect if you don‚Äôt have any Benched Pok√©mon.)"
 					energyCost W, W, W
 					attackRequirement {}
 					onAttack {
@@ -2307,7 +2306,7 @@ public enum GreatEncounters implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Palkia. Palkia LV. can use any attack, PokÈ-Power, or PokÈ-Body from its previous level."
+					text "Put this card onto your Active Palkia. Palkia LV. can use any attack, Pok√©-Power, or Pok√©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {

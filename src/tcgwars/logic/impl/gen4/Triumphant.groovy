@@ -138,8 +138,7 @@ public enum Triumphant implements CardInfo {
 	DARKRAI_&_CRESSELIA_LEGEND_100 ("Darkrai & Cresselia LEGEND", 100, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
 	PALKIA_&_DIALGA_LEGEND_101 ("Palkia & Dialga LEGEND", 101, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
 	PALKIA_&_DIALGA_LEGEND_102 ("Palkia & Dialga LEGEND", 102, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-	ALPH_LITHOGRAPH_FOUR ("Alph Lithograph", FOUR, Rarity.HOLORARE, [TRAINER]),
-;
+	ALPH_LITHOGRAPH_FOUR ("Alph Lithograph", 103, Rarity.HOLORARE, [TRAINER]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -198,7 +197,7 @@ public enum Triumphant implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				move "Second Strike", {
-					text "40 damage. If the Defending Pokémon already has any damage counters on it, this attack does 40 damage plus 40 more damage."
+					text "40 damage. If the Defending PokÃ©mon already has any damage counters on it, this attack does 40 damage plus 40 more damage."
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
@@ -220,7 +219,7 @@ public enum Triumphant implements CardInfo {
 				weakness C
 				resistance F, MINUS20
 				move "Midnight Eyes", {
-					text "20 damage. The Defending Pokémon is now Asleep."
+					text "20 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -241,7 +240,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Future Sight", {
-					text "Look at the top 5 cards of either player’s deck and put them back on top of that player’s deck in any order."
+					text "Look at the top 5 cards of either playerâ€™s deck and put them back on top of that playerâ€™s deck in any order."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -249,7 +248,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Leaf Bind", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -263,7 +262,7 @@ public enum Triumphant implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				move "Toxic Fang", {
-					text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on that Pokémon between turns."
+					text "40 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned. Put 2 damage counters instead of 1 on that PokÃ©mon between turns."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -284,7 +283,7 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Piloswine", hp:HP140, type:WATER, retreatCost:4) {
 				weakness M
 				move "Icy Wind", {
-					text "40 damage. The Defending Pokémon is now Asleep."
+					text "40 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -292,7 +291,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Snowstorm", {
-					text "70 damage. Does 20 damage to each of your opponent’s Benched Pokémon that has any damage counters on it."
+					text "70 damage. Does 20 damage to each of your opponentâ€™s Benched PokÃ©mon that has any damage counters on it."
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -311,7 +310,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Venomous Horn", {
-					text "80 damage. The Defending Pokémon is now Poisoned."
+					text "80 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
@@ -324,7 +323,7 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Porygon 2", hp:HP110, type:COLORLESS, retreatCost:2) {
 				weakness F
 				pokePower "Dimensional Transfer", {
-					text "Once during your turn , you may flip a coin. If heads, search your discard pile for a Trainer card, show it to your opponent, and put it on top of your deck. This power can’t be used if Porygon-Z is affected by a Special Condition."
+					text "Once during your turn , you may flip a coin. If heads, search your discard pile for a Trainer card, show it to your opponent, and put it on top of your deck. This power canâ€™t be used if Porygon-Z is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -342,12 +341,12 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Ponyta", hp:HP090, type:FIRE, retreatCost:1) {
 				weakness W
 				pokeBody "Fiery Spirit", {
-					text "Rapidash can’t be confused."
+					text "Rapidash canâ€™t be confused."
 					delayedA {
 					}
 				}
 				move "Ring of Fire", {
-					text "50 damage. The Defending Pokémon is now Burned and can’t retreat during your opponent’s next turn."
+					text "50 damage. The Defending PokÃ©mon is now Burned and canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
@@ -360,12 +359,12 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
 				weakness G
 				pokeBody "Heal Block", {
-					text "If you have Lunatone in play, damage counters can’t be removed from any Pokémon . (Damage counters can still be moved.)"
+					text "If you have Lunatone in play, damage counters canâ€™t be removed from any PokÃ©mon . (Damage counters can still be moved.)"
 					delayedA {
 					}
 				}
 				move "Sun Flash", {
-					text "20 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "20 damage. If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -383,7 +382,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Color Tag", {
-					text "type. Put 1 damage counter on each Pokémon your opponent has in play of the type you chose."
+					text "type. Put 1 damage counter on each PokÃ©mon your opponent has in play of the type you chose."
 					energyCost P, G, R, W, L, P, F, D, M, C
 					attackRequirement {}
 					onAttack {
@@ -396,12 +395,12 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Venonat", hp:HP080, type:GRASS, retreatCost:1) {
 				weakness R
 				pokePower "Poison Moth Wind", {
-					text "Once during your turn , you may flip a coin. If heads, your opponent’s Active Pokémon is now Poisoned. If tails, your Active Pokémon is now Poisoned. This power can’t be used if Venomoth is affected by a Special Condition."
+					text "Once during your turn , you may flip a coin. If heads, your opponentâ€™s Active PokÃ©mon is now Poisoned. If tails, your Active PokÃ©mon is now Poisoned. This power canâ€™t be used if Venomoth is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Stun Spore", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -414,12 +413,12 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Weepinbell", hp:HP110, type:GRASS, retreatCost:2) {
 				weakness R
 				pokeBody "Tangling Tendrils", {
-					text "As long as Victreebel is your Active Pokémon, your opponent’s Active Pokémon’s Retreat Cost is more."
+					text "As long as Victreebel is your Active PokÃ©mon, your opponentâ€™s Active PokÃ©monâ€™s Retreat Cost is more."
 					delayedA {
 					}
 				}
 				move "Acidic Drain", {
-					text "30 damage. The Defending Pokémon is now Burned and Poisoned. Remove 3 damage counters from Victreebel."
+					text "30 damage. The Defending PokÃ©mon is now Burned and Poisoned. Remove 3 damage counters from Victreebel."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -432,7 +431,7 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Aipom", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Astonish", {
-					text "20 damage. Choose 2 cards from your opponent’s hand without looking. Look at the cards you chose, then have your opponent shuffle those cards into his or her deck."
+					text "20 damage. Choose 2 cards from your opponentâ€™s hand without looking. Look at the cards you chose, then have your opponent shuffle those cards into his or her deck."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -440,7 +439,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Tail Spank", {
-					text "60 damage. Discard 2 cards from your hand. (If you can’t discard 2 cards from your hand, this attack does nothing.)"
+					text "60 damage. Discard 2 cards from your hand. (If you canâ€™t discard 2 cards from your hand, this attack does nothing.)"
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -454,7 +453,7 @@ public enum Triumphant implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				move "Lost Crush", {
-					text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponent’s Pokémon and put it in the Lost Zone."
+					text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponentâ€™s PokÃ©mon and put it in the Lost Zone."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -462,7 +461,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Breakdown", {
-					text "Count the number of cards in your opponent’s hand. Put that many damage counters on the Defending Pokémon."
+					text "Count the number of cards in your opponentâ€™s hand. Put that many damage counters on the Defending PokÃ©mon."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -476,7 +475,7 @@ public enum Triumphant implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				move "Legend Ceremony", {
-					text "Search your deck for both halves of a Pokémon LEGEND, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
+					text "Search your deck for both halves of a PokÃ©mon LEGEND, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -484,7 +483,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Reflect Energy", {
-					text "30 damage. Move an Energy card attached to Bronzong to 1 of your Benched Pokémon."
+					text "30 damage. Move an Energy card attached to Bronzong to 1 of your Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -498,7 +497,7 @@ public enum Triumphant implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				move "Saliva Lure", {
-					text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
+					text "Switch the Defending PokÃ©mon with 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -506,7 +505,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Stick and Absorb", {
-					text "30 damage. Remove 3 damage counters from Carnivine. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "30 damage. Remove 3 damage counters from Carnivine. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
@@ -519,7 +518,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
 				weakness F
 				pokeBody "Dittobolic", {
-					text "The number of Benched Pokémon your opponent can have is now 4. If your opponent has 5 Benched Pokémon, your opponent must discard 1 of them and all cards attached to it."
+					text "The number of Benched PokÃ©mon your opponent can have is now 4. If your opponent has 5 Benched PokÃ©mon, your opponent must discard 1 of them and all cards attached to it."
 					delayedA {
 					}
 				}
@@ -546,7 +545,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Dragon Stamp", {
-					text "80 damage. Flip 2 coins. If both of them are tails, this attack does nothing. If both of them are heads, the Defending Pokémon is now Paralyzed."
+					text "80 damage. Flip 2 coins. If both of them are tails, this attack does nothing. If both of them are heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -590,7 +589,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Thunder Shot", {
-					text "This attack does 50 damage to each of your opponent’s Pokémon that has any Energy cards attached to it."
+					text "This attack does 50 damage to each of your opponentâ€™s PokÃ©mon that has any Energy cards attached to it."
 					energyCost L, L, L
 					attackRequirement {}
 					onAttack {
@@ -607,7 +606,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Sparking Ball", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance. Elekid is now Asleep."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance. Elekid is now Asleep."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -625,7 +624,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Powerful Splash", {
-					text "Does 30 damage plus 10 more damage for each Water Energy attached to all your Pokémon."
+					text "Does 30 damage plus 10 more damage for each Water Energy attached to all your PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -638,7 +637,7 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Spoink", hp:HP090, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				move "Psychic Lock", {
-					text "20 damage. Your opponent can’t use any Poké-Powers on his or her Pokémon during his or her next turn."
+					text "20 damage. Your opponent canâ€™t use any PokÃ©-Powers on his or her PokÃ©mon during his or her next turn."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -646,7 +645,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Bench Manipulation", {
-					text "Your opponent flips a coin for each of his or her Benched Pokémon. This attack does 40 damage times the number of tails. This attack’s damage isn’t affected by Weakness or Resistance."
+					text "Your opponent flips a coin for each of his or her Benched PokÃ©mon. This attack does 40 damage times the number of tails. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -659,7 +658,7 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Kricketot", hp:HP080, type:GRASS, retreatCost:1) {
 				weakness R
 				move "Entrancing Melody", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -730,7 +729,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Burst Punch", {
-					text "60 damage. The Defending Pokémon is now Burned."
+					text "60 damage. The Defending PokÃ©mon is now Burned."
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
@@ -815,7 +814,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Swallow up", {
-					text "50 damage. Before doing damage, count the remaining HP of the Defending Pokémon and Wailord. If the Defending Pokémon has fewer remaining HP than Wailord, this attack does 50 damage plus 50 more damage."
+					text "50 damage. Before doing damage, count the remaining HP of the Defending PokÃ©mon and Wailord. If the Defending PokÃ©mon has fewer remaining HP than Wailord, this attack does 50 damage plus 50 more damage."
 					energyCost W, W, W, C
 					attackRequirement {}
 					onAttack {
@@ -828,7 +827,7 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Dratini", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness C
 				move "Search and Invite", {
-					text "Search your deck for up to 2 Pokémon, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
+					text "Search your deck for up to 2 PokÃ©mon, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -894,7 +893,7 @@ public enum Triumphant implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				move "Sneaky Placement", {
-					text "Put 2 damage counters on 1 of your opponent’s Pokémon."
+					text "Put 2 damage counters on 1 of your opponentâ€™s PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -902,7 +901,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Sleep Poison", {
-					text "The Defending Pokémon is now Asleep and Poisoned."
+					text "The Defending PokÃ©mon is now Asleep and Poisoned."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -915,7 +914,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:3) {
 				weakness F
 				move "Split Spiral Punch", {
-					text "20 damage. The Defending Pokémon is now Confused."
+					text "20 damage. The Defending PokÃ©mon is now Confused."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -950,7 +949,7 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Lickitung", hp:HP100, type:COLORLESS, retreatCost:3) {
 				weakness F
 				move "Licking Shot", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon for each Energy attached to Lickilicky."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 10 damage to that PokÃ©mon for each Energy attached to Lickilicky."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -958,7 +957,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Stick and Absorb", {
-					text "50 damage. Remove 2 damage counters from Lickilicky. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "50 damage. Remove 2 damage counters from Lickilicky. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -979,7 +978,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Distorted Wave", {
-					text "30 damage. Before doing damage, remove 1 damage counter from the Defending Pokémon."
+					text "30 damage. Before doing damage, remove 1 damage counter from the Defending PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -992,7 +991,7 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Machop", hp:HP090, type:FIGHTING, retreatCost:2) {
 				weakness P
 				move "Knuckle Down", {
-					text "30 damage. This attack’s damage isn’t affected by Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "30 damage. This attackâ€™s damage isnâ€™t affected by PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1017,7 +1016,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Play with Fire", {
-					text "The Defending Pokémon is now Burned. Magby is now Asleep."
+					text "The Defending PokÃ©mon is now Burned. Magby is now Asleep."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1146,7 +1145,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Twister", {
-					text "30 damage. Flip 2 coins. If both of them are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending Pokémon."
+					text "30 damage. Flip 2 coins. If both of them are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1159,7 +1158,7 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Swinub", hp:HP100, type:WATER, retreatCost:3) {
 				weakness M
 				move "Blizzard", {
-					text "40 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Benched Pokémon. If tails, this attack does 10 damage to each of your Benched Pokémon."
+					text "40 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponentâ€™s Benched PokÃ©mon. If tails, this attack does 10 damage to each of your Benched PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1180,7 +1179,7 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Porygon", hp:HP080, type:COLORLESS, retreatCost:2) {
 				weakness F
 				pokePower "Mapping", {
-					text "Once during your turn, when you play Porygon2 from you hand to evolve 1 of your Pokémon, you may search your deck for a Stadium card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+					text "Once during your turn, when you play Porygon2 from you hand to evolve 1 of your PokÃ©mon, you may search your deck for a Stadium card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 					actionA {
 					}
 				}
@@ -1198,7 +1197,7 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Tentacool", hp:HP090, type:WATER, retreatCost:2) {
 				weakness L
 				move "Tentavolve", {
-					text "20 damage. If Tentacruel evolved from Tentacool during this turn, the Defending Pokémon is now Paralyzed and Poisoned."
+					text "20 damage. If Tentacruel evolved from Tentacool during this turn, the Defending PokÃ©mon is now Paralyzed and Poisoned."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1206,7 +1205,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Hyper Beam", {
-					text "50 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "50 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1219,7 +1218,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				pokePower "CURE", {
-					text "Once during your turn, when you put Unown from your hand onto your Bench, remove all Special Conditions from your Active Pokémon."
+					text "Once during your turn, when you put Unown from your hand onto your Bench, remove all Special Conditions from your Active PokÃ©mon."
 					actionA {
 					}
 				}
@@ -1237,7 +1236,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP090, type:WATER, retreatCost:3) {
 				weakness L
 				move "Double Attack", {
-					text "Choose 2 of your opponent’s Pokémon. This attack does 20 damage to each of them."
+					text "Choose 2 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to each of them."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1258,7 +1257,7 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Bellsprout", hp:HP080, type:GRASS, retreatCost:1) {
 				weakness R
 				move "Poisonpowder", {
-					text "The Defending Pokémon is now Poisoned."
+					text "The Defending PokÃ©mon is now Poisoned."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1266,7 +1265,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Corrode Target", {
-					text "10 damage. Flip a coin. If heads, look at your opponent’s hand, choose 1 card, and discard it."
+					text "10 damage. Flip a coin. If heads, look at your opponentâ€™s hand, choose 1 card, and discard it."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1280,7 +1279,7 @@ public enum Triumphant implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Shoot Through U-turn", {
-					text "20 damage. Switch Yanmega with 1 of your Benched Pokémon."
+					text "20 damage. Switch Yanmega with 1 of your Benched PokÃ©mon."
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1336,7 +1335,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness R
 				move "Inviting Scent", {
-					text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
+					text "Switch the Defending PokÃ©mon with 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1358,7 +1357,7 @@ public enum Triumphant implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				move "Iron Defense", {
-					text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to Bronzor during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to Bronzor during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1379,7 +1378,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP050, type:DARKNESS, retreatCost:1) {
 				weakness L
 				move "Focus Energy", {
-					text "During your next turn, Carvanha’s Bite attack’s base damage is 40."
+					text "During your next turn, Carvanhaâ€™s Bite attackâ€™s base damage is 40."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1401,7 +1400,7 @@ public enum Triumphant implements CardInfo {
 				weakness W
 				resistance L, MINUS20
 				pokeBody "Lonely Bone", {
-					text "Any damage done to Cubone by your opponent’s attacks is reduced by 20 for each Marowak in your discard pile ."
+					text "Any damage done to Cubone by your opponentâ€™s attacks is reduced by 20 for each Marowak in your discard pile ."
 					delayedA {
 					}
 				}
@@ -1420,7 +1419,7 @@ public enum Triumphant implements CardInfo {
 				weakness W
 				resistance L, MINUS20
 				move "Sand Veil", {
-					text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to Diglett during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to Diglett during your opponentâ€™s next turn."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1428,7 +1427,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Mini Earthquake", {
-					text "40 damage. Does 10 damage to each of your Benched Pokémon."
+					text "40 damage. Does 10 damage to each of your Benched PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1441,7 +1440,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness C
 				move "Gentle Wrap", {
-					text "10 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "10 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1463,7 +1462,7 @@ public enum Triumphant implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				move "Sneaky Placement", {
-					text "Put 1 damage counter on 1 of your opponent’s Pokémon."
+					text "Put 1 damage counter on 1 of your opponentâ€™s PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1476,7 +1475,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
 				weakness R
 				move "Sweet Scent", {
-					text "Remove 3 damage counters from 1 of your Pokémon."
+					text "Remove 3 damage counters from 1 of your PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1518,7 +1517,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Tongue Whip", {
-					text "Choose 1 of your opponent’s Benched Pokémon. This attack does 30 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s Benched PokÃ©mon. This attack does 30 damage to that PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1553,7 +1552,7 @@ public enum Triumphant implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				move "Magnetic Switch", {
-					text "Switch Magnemite with 1 of your Benched Pokémon."
+					text "Switch Magnemite with 1 of your Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1561,7 +1560,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Thundershock", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1574,7 +1573,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Friend Search", {
-					text "Look at the top 5 cards of your deck, choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. Shuffle the other cards back into your deck."
+					text "Look at the top 5 cards of your deck, choose 1 PokÃ©mon you find there, show it to your opponent, and put it into your hand. Shuffle the other cards back into your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1595,7 +1594,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Pheromone Poison", {
-					text "10 damage. If Nidoran Female is on your Bench, the Defending Pokémon is now Poisoned."
+					text "10 damage. If Nidoran Female is on your Bench, the Defending PokÃ©mon is now Poisoned."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1617,7 +1616,7 @@ public enum Triumphant implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Messenger", {
-					text "Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle Pidgey and all cards attached to it back into your deck."
+					text "Search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle Pidgey and all cards attached to it back into your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1680,7 +1679,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 				weakness L
 				move "Tripping Headbutt", {
-					text "Flip a coin. If heads, this attack does 30 damage to 1 of your opponent’s Pokémon. If tails, this attack does 30 damage to 1 of your Pokémon."
+					text "Flip a coin. If heads, this attack does 30 damage to 1 of your opponentâ€™s PokÃ©mon. If tails, this attack does 30 damage to 1 of your PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1694,7 +1693,7 @@ public enum Triumphant implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				move "Disable", {
-					text "Flip a coin. If heads, choose 1 of the Defending Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
+					text "Flip a coin. If heads, choose 1 of the Defending PokÃ©monâ€™s attacks. That PokÃ©mon canâ€™t use that attack during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1702,7 +1701,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Haunt", {
-					text "Put 1 damage counter on the Defending Pokémon."
+					text "Put 1 damage counter on the Defending PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1715,7 +1714,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Paralyzing Clamp", {
-					text "30 damage. Flip a coin. If tails, this attack does nothing. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If tails, this attack does nothing. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1728,7 +1727,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Sleep Pearl", {
-					text "The Defending Pokémon is now Asleep. Switch Spoink with 1 of your Benched Pokémon."
+					text "The Defending PokÃ©mon is now Asleep. Switch Spoink with 1 of your Benched PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1742,7 +1741,7 @@ public enum Triumphant implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Wing Flick", {
-					text "10 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "10 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1776,7 +1775,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 				weakness L
 				move "Gentle Wrap", {
-					text "10 damage. The Defending Pokémon can’t retreat during you opponent’s next turn."
+					text "10 damage. The Defending PokÃ©mon canâ€™t retreat during you opponentâ€™s next turn."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1789,7 +1788,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness R
 				move "Leech Life", {
-					text "10 damage. Remove from Venonat the number of damage counters equal to the damage you did to the Defending Pokémon."
+					text "10 damage. Remove from Venonat the number of damage counters equal to the damage you did to the Defending PokÃ©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1810,7 +1809,7 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
 				weakness R
 				move "Illumisile", {
-					text "If you don’t have Illumise in play, this attack does nothing. Choose 1 of your opponent’s Benched Pokémon. This attack does 30 damage to that Pokémon."
+					text "If you donâ€™t have Illumise in play, this attack does nothing. Choose 1 of your opponentâ€™s Benched PokÃ©mon. This attack does 30 damage to that PokÃ©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1818,7 +1817,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Firefly Light", {
-					text "30 damage. The Defending Pokémon is now Burned and Confused."
+					text "30 damage. The Defending PokÃ©mon is now Burned and Confused."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1846,7 +1845,7 @@ public enum Triumphant implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				pokeBody "Free Flight", {
-					text "If Yanma has no Energy attached to it, Yanma’s Retreat Cost is 0."
+					text "If Yanma has no Energy attached to it, Yanmaâ€™s Retreat Cost is 0."
 					delayedA {
 					}
 				}
@@ -1862,7 +1861,7 @@ public enum Triumphant implements CardInfo {
 			};
 			case BLACK_BELT_85:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nYou may use this card only if you have more Prize cards left than your opponent. During this turn, each of your Active Pokémon’s attacks does 40 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nYou may use this card only if you have more Prize cards left than your opponent. During this turn, each of your Active PokÃ©monâ€™s attacks does 40 more damage to your opponentâ€™s Active PokÃ©mon (before applying Weakness and Resistance)."
 				onPlay {
 				}
 				playRequirement{
@@ -1870,7 +1869,7 @@ public enum Triumphant implements CardInfo {
 			};
 			case INDIGO_PLATEAU_86:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nEach Pokémon LEGEND in play (both yours and your opponent’s) gets +30 HP."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nEach PokÃ©mon LEGEND in play (both yours and your opponentâ€™s) gets +30 HP."
 				onPlay {
 				}
 				playRequirement{
@@ -1878,7 +1877,7 @@ public enum Triumphant implements CardInfo {
 			};
 			case JUNK_ARM_87:
 			return basicTrainer (this) {
-				text "Discard 2 cards from you hand. Search your discard pile for a Trainer card, show it to your opponent, and put it into your hand. You can’t choose Junk Arm with the effect of this card."
+				text "Discard 2 cards from you hand. Search your discard pile for a Trainer card, show it to your opponent, and put it into your hand. You canâ€™t choose Junk Arm with the effect of this card."
 				onPlay {
 				}
 				playRequirement{
@@ -1886,7 +1885,7 @@ public enum Triumphant implements CardInfo {
 			};
 			case SEEKER_88:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player returns 1 of his or her Benched Pokémon and all cards attached to it to his or her hand. (You return your Pokémon first.)"
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nEach player returns 1 of his or her Benched PokÃ©mon and all cards attached to it to his or her hand. (You return your PokÃ©mon first.)"
 				onPlay {
 				}
 				playRequirement{
@@ -1894,7 +1893,7 @@ public enum Triumphant implements CardInfo {
 			};
 			case TWINS_89:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nYou may use this card only if you have more Prize cards left than your opponent. Search your deck for any 2 cards and put them into your hand. Shuffle your deck afterward."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nYou may use this card only if you have more Prize cards left than your opponent. Search your deck for any 2 cards and put them into your hand. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -1902,7 +1901,7 @@ public enum Triumphant implements CardInfo {
 			};
 			case RESCUE_ENERGY_90:
 			return specialEnergy (this, [[C]]) {
-				text "Rescue Energy provides 1 [C] Energy. IF the Pokémon this card is attached to is Knocked Out by damage from an attack, put that Pokémon back into your hand. (Discard all cards attached to that Pokémon.)"
+				text "Rescue Energy provides 1 [C] Energy. IF the PokÃ©mon this card is attached to is Knocked Out by damage from an attack, put that PokÃ©mon back into your hand. (Discard all cards attached to that PokÃ©mon.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -1917,12 +1916,12 @@ public enum Triumphant implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				pokeBody "Eye of Disaster", {
-					text "As long as Absol is your Active Pokémon, whenever your opponent puts a Basic Pokémon from his or her hand onto his or her Bench, put 2 damage counters on that Pokémon."
+					text "As long as Absol is your Active PokÃ©mon, whenever your opponent puts a Basic PokÃ©mon from his or her hand onto his or her Bench, put 2 damage counters on that PokÃ©mon."
 					delayedA {
 					}
 				}
 				move "Vicious Claw", {
-					text "70 damage. Choose 1 Pokémon from your hand and put it in the Lost Zone. (If you can’t put a Pokémon in the Lost Zone, this attack does nothing.)"
+					text "70 damage. Choose 1 PokÃ©mon from your hand and put it in the Lost Zone. (If you canâ€™t put a PokÃ©mon in the Lost Zone, this attack does nothing.)"
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -1935,12 +1934,12 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
 				weakness R
 				pokePower "Forest Breath", {
-					text "Once during your turn , if Celebi is your Active Pokémon, you may attach a Grass Energy card from your hand to 1 of your Pokémon. This power can’t be used if Celebi is affected by a Special Condition."
+					text "Once during your turn , if Celebi is your Active PokÃ©mon, you may attach a Grass Energy card from your hand to 1 of your PokÃ©mon. This power canâ€™t be used if Celebi is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Time Circle", {
-					text "30 damage. During your opponent’s next turn, prevent all damage done to Celebe by attacks from your opponent’s Stage 1 or Stage 2 Pokémon."
+					text "30 damage. During your opponentâ€™s next turn, prevent all damage done to Celebe by attacks from your opponentâ€™s Stage 1 or Stage 2 PokÃ©mon."
 					energyCost G, P, C
 					attackRequirement {}
 					onAttack {
@@ -1954,12 +1953,12 @@ public enum Triumphant implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				pokePower "Energymite", {
-					text "Once during your turn , you may use this power. If you do, Electrode is Knocked Out. Look at the top 7 cards of your deck. Choose as many Energy cards as you like and attach them to your Pokémon in any way you like. Discard the other cards. This power can’t be used if Electrode is affected by a Special Condition."
+					text "Once during your turn , you may use this power. If you do, Electrode is Knocked Out. Look at the top 7 cards of your deck. Choose as many Energy cards as you like and attach them to your PokÃ©mon in any way you like. Discard the other cards. This power canâ€™t be used if Electrode is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Gigashock", {
-					text "30 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
+					text "30 damage. Does 10 damage to 2 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1973,12 +1972,12 @@ public enum Triumphant implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				pokeBody "Catastrophe", {
-					text "As long as Gengar is your Active Pokémon, if any of your opponent’s Pokémon would be Knocked Out, put that Pokémon in the Lost Zone instead of discarding."
+					text "As long as Gengar is your Active PokÃ©mon, if any of your opponentâ€™s PokÃ©mon would be Knocked Out, put that PokÃ©mon in the Lost Zone instead of discarding."
 					delayedA {
 					}
 				}
 				move "Hurl into Darkness", {
-					text "Look at your opponent’s hand and choose a number of Pokémon you find there up to the number of Psychic Energy attached to Gengar. PUt the Pokémon you chose in the Lost Zone."
+					text "Look at your opponentâ€™s hand and choose a number of PokÃ©mon you find there up to the number of Psychic Energy attached to Gengar. PUt the PokÃ©mon you chose in the Lost Zone."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1986,7 +1985,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Cursed Drop", {
-					text "Put 4 damage counters on your opponent’s Pokémon in any way you like."
+					text "Put 4 damage counters on your opponentâ€™s PokÃ©mon in any way you like."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1999,12 +1998,12 @@ public enum Triumphant implements CardInfo {
 			return evolution (this, from:"Machoke", hp:HP150, type:FIGHTING, retreatCost:3) {
 				weakness P
 				pokePower "Fighting Tag", {
-					text "Once during your turn , if Machamp is on your Bench, you may move all Energy attached to your Active Pokémon to Machamp. If you do, switch Machamp with your Active Pokémon."
+					text "Once during your turn , if Machamp is on your Bench, you may move all Energy attached to your Active PokÃ©mon to Machamp. If you do, switch Machamp with your Active PokÃ©mon."
 					actionA {
 					}
 				}
 				move "Crushing Punch", {
-					text "60 damage. Discard a Special Energy card attached to the Defending Pokémon."
+					text "60 damage. Discard a Special Energy card attached to the Defending PokÃ©mon."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -2012,7 +2011,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Champ Buster", {
-					text "Does 100 damage plus 10 more damage for each of your Benched Pokémon that has any damage counters on it."
+					text "Does 100 damage plus 10 more damage for each of your Benched PokÃ©mon that has any damage counters on it."
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
@@ -2026,12 +2025,12 @@ public enum Triumphant implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				pokePower "Magnetic Draw", {
-					text "Once during your turn , you may draw cards until you have 6 cards in your hand. This power can’t be used if Magnezone is affected by a Special Condition."
+					text "Once during your turn , you may draw cards until you have 6 cards in your hand. This power canâ€™t be used if Magnezone is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Lost Burn", {
-					text "Put as many Energy cards attached to your Pokémon as you like in the Lost Zone. This attack does 50 damage times the number of Energy cards put in the Lost Zone in this way."
+					text "Put as many Energy cards attached to your PokÃ©mon as you like in the Lost Zone. This attack does 50 damage times the number of Energy cards put in the Lost Zone in this way."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -2044,12 +2043,12 @@ public enum Triumphant implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:0) {
 				weakness P
 				pokeBody "Lost Link", {
-					text "Mew can use the attacks of all Pokémon in the Lost Zone ."
+					text "Mew can use the attacks of all PokÃ©mon in the Lost Zone ."
 					delayedA {
 					}
 				}
 				move "See Off", {
-					text "Search your deck for 1 Pokémon and put it in the Lost Zone. Shuffle your deck afterward."
+					text "Search your deck for 1 PokÃ©mon and put it in the Lost Zone. Shuffle your deck afterward."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2063,12 +2062,12 @@ public enum Triumphant implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				pokeBody "Insight", {
-					text "If you have the same number of cards in your hand as your opponent, the attack cost of each of Yanmega’s attacks is 0."
+					text "If you have the same number of cards in your hand as your opponent, the attack cost of each of Yanmegaâ€™s attacks is 0."
 					delayedA {
 					}
 				}
 				move "Linear Attack", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 40 damage to that PokÃ©mon."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -2076,7 +2075,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Sonicboom", {
-					text "70 damage. This attack’s damage isn’t affected by Weakness or Resistance."
+					text "70 damage. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
@@ -2097,8 +2096,8 @@ public enum Triumphant implements CardInfo {
 						damage 0
 					}
 				}
-				move "Moon’s Invite", {
-					text "Move as many damage counters on your opponent’s Pokémon as you like to any of your opponent’s other Pokémon in any way you like."
+				move "Moonâ€™s Invite", {
+					text "Move as many damage counters on your opponentâ€™s PokÃ©mon as you like to any of your opponentâ€™s other PokÃ©mon in any way you like."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2106,7 +2105,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Lost Crisis", {
-					text "100 damage. Choose 2 Energy attached to Darkrai & Cresselia LEGEND and put them in the Lost Zone. If any of your opponent’s Pokémon would be Knocked Out by damage from this attack, put that Pokémon and all cards attached to it in the Lost Zone instead of discarding it."
+					text "100 damage. Choose 2 Energy attached to Darkrai & Cresselia LEGEND and put them in the Lost Zone. If any of your opponentâ€™s PokÃ©mon would be Knocked Out by damage from this attack, put that PokÃ©mon and all cards attached to it in the Lost Zone instead of discarding it."
 					energyCost D, D, C, C
 					attackRequirement {}
 					onAttack {
@@ -2114,7 +2113,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2136,8 +2135,8 @@ public enum Triumphant implements CardInfo {
 						damage 0
 					}
 				}
-				move "Moon’s Invite", {
-					text "Move as many damage counters on your opponent’s Pokémon as you like to any of your opponent’s other Pokémon in any way you like."
+				move "Moonâ€™s Invite", {
+					text "Move as many damage counters on your opponentâ€™s PokÃ©mon as you like to any of your opponentâ€™s other PokÃ©mon in any way you like."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2145,7 +2144,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Lost Crisis", {
-					text "100 damage. Choose 2 Energy attached to Darkrai & Cresselia LEGEND and put them in the Lost Zone. If any of your opponent’s Pokémon would be Knocked Out by damage from this attack, put that Pokémon and all cards attached to it in the Lost Zone instead of discarding it."
+					text "100 damage. Choose 2 Energy attached to Darkrai & Cresselia LEGEND and put them in the Lost Zone. If any of your opponentâ€™s PokÃ©mon would be Knocked Out by damage from this attack, put that PokÃ©mon and all cards attached to it in the Lost Zone instead of discarding it."
 					energyCost D, D, C, C
 					attackRequirement {}
 					onAttack {
@@ -2153,7 +2152,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2175,7 +2174,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Sudden Delete", {
-					text "Choose 1 of your opponent’s Benched Pokémon. Put that Pokémon and all cards attached to it back to your opponent’s hand."
+					text "Choose 1 of your opponentâ€™s Benched PokÃ©mon. Put that PokÃ©mon and all cards attached to it back to your opponentâ€™s hand."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -2183,7 +2182,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Time Control", {
-					text "Energy attached to Palkia & Dialga LEGEND. Add the top 2 cards of your opponent’s deck to his or her Prize cards."
+					text "Energy attached to Palkia & Dialga LEGEND. Add the top 2 cards of your opponentâ€™s deck to his or her Prize cards."
 					energyCost M, M, C, M
 					attackRequirement {}
 					onAttack {
@@ -2191,7 +2190,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2213,7 +2212,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Sudden Delete", {
-					text "Choose 1 of your opponent’s Benched Pokémon. Put that Pokémon and all cards attached to it back to your opponent’s hand."
+					text "Choose 1 of your opponentâ€™s Benched PokÃ©mon. Put that PokÃ©mon and all cards attached to it back to your opponentâ€™s hand."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -2221,7 +2220,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "Time Control", {
-					text "Discard all Metal Energy attached to Palkia & Dialga LEGEND. Add the top 2 cards of your opponent’s deck to his or her Prize cards."
+					text "Discard all Metal Energy attached to Palkia & Dialga LEGEND. Add the top 2 cards of your opponentâ€™s deck to his or her Prize cards."
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
@@ -2229,7 +2228,7 @@ public enum Triumphant implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {

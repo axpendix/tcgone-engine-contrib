@@ -143,10 +143,10 @@ public enum DiamondPearl implements CardInfo {
 	DOUBLE_FULL_HEAL_105 ("Double Full Heal", 105, Rarity.UNCOMMON, [TRAINER]),
 	ENERGY_RESTORE_106 ("Energy Restore", 106, Rarity.UNCOMMON, [TRAINER]),
 	ENERGY_SWITCH_107 ("Energy Switch", 107, Rarity.UNCOMMON, [TRAINER]),
-	NIGHT_POKEMON_CENTER_108 ("Night Pokémon Center", 108, Rarity.UNCOMMON, [TRAINER]),
+	NIGHT_POKEMON_CENTER_108 ("Night PokÃ©mon Center", 108, Rarity.UNCOMMON, [TRAINER]),
 	PLUSPOWER_109 ("PlusPower", 109, Rarity.UNCOMMON, [TRAINER]),
-	POKE_BALL_110 ("Poké Ball", 110, Rarity.UNCOMMON, [TRAINER]),
-	POKEDEX_HANDY910IS_111 ("Pokédex HANDY910is", 111, Rarity.UNCOMMON, [TRAINER]),
+	POKE_BALL_110 ("PokÃ© Ball", 110, Rarity.UNCOMMON, [TRAINER]),
+	POKEDEX_HANDY910IS_111 ("PokÃ©dex HANDY910is", 111, Rarity.UNCOMMON, [TRAINER]),
 	PROFESSOR_ROWAN_112 ("Professor Rowan", 112, Rarity.UNCOMMON, [TRAINER]),
 	RIVAL_113 ("Rival", 113, Rarity.UNCOMMON, [TRAINER]),
 	SPEED_STADIUM_114 ("Speed Stadium", 114, Rarity.UNCOMMON, [TRAINER]),
@@ -165,8 +165,7 @@ public enum DiamondPearl implements CardInfo {
 	PSYCHIC_ENERGY_127 ("Psychic Energy", 127, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
 	FIGHTING_ENERGY_128 ("Fighting Energy", 128, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
 	DARKNESS_ENERGY_129 ("Darkness Energy", 129, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
-	METAL_ENERGY_130 ("Metal Energy", 130, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
-;
+	METAL_ENERGY_130 ("Metal Energy", 130, Rarity.COMMON, [BASIC_ENERGY, ENERGY]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -234,7 +233,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Flash Cannon", {
-					text "40 damage. You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent’s deck."
+					text "40 damage. You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending PokÃ©mon and shuffle that card into your opponentâ€™s deck."
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
@@ -250,12 +249,12 @@ public enum DiamondPearl implements CardInfo {
 				weakness D, PLUS30
 				resistance C, MINUS20
 				pokePower "Dark Palm", {
-					text "Once during your turn , if your opponent has 4 or more Benched Pokémon, you may choose 1 of them and shuffle that Pokémon and all cards attached to it into his or her deck. This power can’t be used if Dusknoir if affected by a Special Condition."
+					text "Once during your turn , if your opponent has 4 or more Benched PokÃ©mon, you may choose 1 of them and shuffle that PokÃ©mon and all cards attached to it into his or her deck. This power canâ€™t be used if Dusknoir if affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Hard Feelings", {
-					text "Put 5 damage counters on the Defending Pokémon. Then, count the number of Prize cards your opponents has taken and put that many damage counters on the Defending Pokémon."
+					text "Put 5 damage counters on the Defending PokÃ©mon. Then, count the number of Prize cards your opponents has taken and put that many damage counters on the Defending PokÃ©mon."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -269,12 +268,12 @@ public enum DiamondPearl implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				pokePower "Intense Voltage", {
-					text "As often as you like during your turn (before your attack, if Elekid is anywhere under Electivire, you may move a Energy attached to your Pokémon to Electivire. This power can’t be used if Electivire is affected by a Special Condition."
+					text "As often as you like during your turn (before your attack, if Elekid is anywhere under Electivire, you may move a Energy attached to your PokÃ©mon to Electivire. This power canâ€™t be used if Electivire is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Giga Impact", {
-					text "60 damage. Energy attached to Electivire. If you do. This attack’s base damage is 120 instead of 60."
+					text "60 damage. Energy attached to Electivire. If you do. This attackâ€™s base damage is 120 instead of 60."
 					energyCost L, L, L, C, L
 					attackRequirement {}
 					onAttack {
@@ -287,7 +286,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Prinplup", hp:HP130, type:WATER, retreatCost:2) {
 				weakness L, PLUS30
 				move "Ice Blade", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 40 damage to that PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -295,7 +294,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Aqua Jet", {
-					text "70 damage. Flip a coin. If heads, this attack does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "70 damage. Flip a coin. If heads, this attack does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -308,7 +307,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Monferno", hp:HP100, type:FIRE, retreatCost:0) {
 				weakness W, PLUS30
 				move "Meteor Punch", {
-					text "30× damage. Flip a coin until you get tails. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Flip a coin until you get tails. This attack does 30 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -329,7 +328,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
 				weakness P, PLUS20
 				move "Feint", {
-					text "30 damage. This attack’s damage isn’t affected by Resistance."
+					text "30 damage. This attackâ€™s damage isnâ€™t affected by Resistance."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -337,7 +336,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Aura Sphere", {
-					text "40 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "40 damage. Does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
@@ -351,12 +350,12 @@ public enum DiamondPearl implements CardInfo {
 				weakness F, PLUS30
 				resistance M, MINUS20
 				pokePower "Gleam Eyes", {
-					text "Once during your turn, when you play Luxray from your hand to evolve 1 of your Pokémon, you may look at your opponent’s hand. If your opponent’s Bench isn’t full, choose 1 Basic Pokémon from your opponent’s hand, and put it onto his or her Bench. Then, swithc it with the Defending Pokémon."
+					text "Once during your turn, when you play Luxray from your hand to evolve 1 of your PokÃ©mon, you may look at your opponentâ€™s hand. If your opponentâ€™s Bench isnâ€™t full, choose 1 Basic PokÃ©mon from your opponentâ€™s hand, and put it onto his or her Bench. Then, swithc it with the Defending PokÃ©mon."
 					actionA {
 					}
 				}
 				move "Lightning Star", {
-					text "80 damage. Energy attached to Luxray to 1 of your Benched Pokémon. (Ignore this effect if you don’t have any Benched Pokémon.)"
+					text "80 damage. Energy attached to Luxray to 1 of your Benched PokÃ©mon. (Ignore this effect if you donâ€™t have any Benched PokÃ©mon.)"
 					energyCost L, L, L, L, L
 					attackRequirement {}
 					onAttack {
@@ -370,7 +369,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness R, PLUS30
 				resistance P, MINUS20
 				pokeBody "Magnetize", {
-					text "If you have any Energy attached to your Active Pokémon, the Retreat Cost for that Pokémon is 0."
+					text "If you have any Energy attached to your Active PokÃ©mon, the Retreat Cost for that PokÃ©mon is 0."
 					delayedA {
 					}
 				}
@@ -388,7 +387,7 @@ public enum DiamondPearl implements CardInfo {
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Call for Family", {
-					text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
+					text "Search your deck for a Basic PokÃ©mon and put it onto your Bench. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -396,7 +395,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Aqua Ring", {
-					text "30 damage. Switch Manaphy with 1 of your Benched Pokémon."
+					text "30 damage. Switch Manaphy with 1 of your Benched PokÃ©mon."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -410,7 +409,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				move "Avenge", {
-					text "Count the number of your Pokémon that have any damage counters on them. Put that many damage counters on the Defending Pokémon."
+					text "Count the number of your PokÃ©mon that have any damage counters on them. Put that many damage counters on the Defending PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -418,7 +417,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Psywave", {
-					text "30+ damage. Does 30 damage plus 20 more damage for each Energy attached to the Defending Pokémon."
+					text "30+ damage. Does 30 damage plus 20 more damage for each Energy attached to the Defending PokÃ©mon."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -439,7 +438,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Transback", {
-					text "40 damage. You may flip a coin. If heads, discard all Energy attached to Palkia and put the Defending Pokémon and all cards attached to it on top of your opponent’s deck. Your opponent shuffles his or her deck afterward."
+					text "40 damage. You may flip a coin. If heads, discard all Energy attached to Palkia and put the Defending PokÃ©mon and all cards attached to it on top of your opponentâ€™s deck. Your opponent shuffles his or her deck afterward."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -453,12 +452,12 @@ public enum DiamondPearl implements CardInfo {
 				weakness W, PLUS30
 				resistance L, MINUS20
 				pokePower "Earth Fissure", {
-					text "Once during your turn, when you play Rhyperior from your hand to evolve 1 of your Pokémon, you may discard the top 3 cards from your opponent’s deck."
+					text "Once during your turn, when you play Rhyperior from your hand to evolve 1 of your PokÃ©mon, you may discard the top 3 cards from your opponentâ€™s deck."
 					actionA {
 					}
 				}
 				move "Rock Wrecker", {
-					text "80 damage. This attack’s damage isn’t affected by Weakness or Resistance. Rhyperior can’t attack during your next turn."
+					text "80 damage. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance. Rhyperior canâ€™t attack during your next turn."
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
@@ -471,7 +470,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Roselia", hp:HP090, type:GRASS, retreatCost:1) {
 				weakness R, PLUS20
 				move "Poison Sting", {
-					text "30 damage. The Defending Pokémon is now Poisoned."
+					text "30 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -479,7 +478,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Spike Whip", {
-					text "50 damage. If Budew is anywhere under Roserade, choose 1 of your opponent’s Benched Pokémon. This attack does 30 damage to that Pokémon."
+					text "50 damage. If Budew is anywhere under Roserade, choose 1 of your opponentâ€™s Benched PokÃ©mon. This attack does 30 damage to that PokÃ©mon."
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
@@ -493,7 +492,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness F, PLUS30
 				resistance P, MINUS20
 				pokePower "Darkness Fan", {
-					text "Once during your turn , if Shiftry is your Active Pokémon, you may flip a coin. If heads, choose 1 Evolved Pokémon on your opponent’s Bench, remove the highest Stage Evolution card from that Pokémon, and put it back into his or her hand. This power can’t be used if Shiftry is affected by a Special Condition."
+					text "Once during your turn , if Shiftry is your Active PokÃ©mon, you may flip a coin. If heads, choose 1 Evolved PokÃ©mon on your opponentâ€™s Bench, remove the highest Stage Evolution card from that PokÃ©mon, and put it back into his or her hand. This power canâ€™t be used if Shiftry is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -512,7 +511,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness F, PLUS20
 				resistance P, MINUS20
 				move "Frustration", {
-					text "Choose 1 of your opponent’s Pokémon that doesn’t have any damage counters on it. This attack does 30 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon that doesnâ€™t have any damage counters on it. This attack does 30 damage to that PokÃ©mon."
 					energyCost D, D
 					attackRequirement {}
 					onAttack {
@@ -520,7 +519,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Toxic Cloud", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned. Put 2 damage counters instead of 1 on the Defending PokÃ©mon between turns."
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
@@ -555,7 +554,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Grotle", hp:HP140, type:GRASS, retreatCost:4) {
 				weakness R, PLUS30
 				move "Body Slam", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -563,7 +562,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Leaf Storm", {
-					text "60 damage. Pokémon."
+					text "60 damage. PokÃ©mon."
 					energyCost G, G, C, C, G
 					attackRequirement {}
 					onAttack {
@@ -576,7 +575,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Marill", hp:HP080, type:WATER, retreatCost:2) {
 				weakness L, PLUS20
 				move "Defense Curl", {
-					text "Flip a coin. If heads, prevent all damage done to Azumarill during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all damage done to Azumarill during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -584,7 +583,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Bubble Pump", {
-					text "40+ damage. If Azumarill has 3 or more Energy attached to it, this attack does 40 damage plus 20 more damage. If Azurill is anywhere under Azumarill, flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "40+ damage. If Azumarill has 3 or more Energy attached to it, this attack does 40 damage plus 20 more damage. If Azurill is anywhere under Azumarill, flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -598,7 +597,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness R, PLUS20
 				resistance F, MINUS20
 				move "Whirlwind", {
-					text "30 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "30 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -606,7 +605,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Giga Drain", {
-					text "50 damage. After your attack, remove from Beautifly the number of damage counters equal to the damage you did to the Defending Pokémon."
+					text "50 damage. After your attack, remove from Beautifly the number of damage counters equal to the damage you did to the Defending PokÃ©mon."
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
@@ -641,7 +640,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness R, PLUS20
 				resistance W, MINUS20
 				move "Swallow Up", {
-					text "30 damage. Before doing damage, count the remaining HP of the Defending Pokémon and Carnivine. If the Defending Pokémon has fewer remaining HP than Carnivine’s, this attack does 60 damage instead."
+					text "30 damage. Before doing damage, count the remaining HP of the Defending PokÃ©mon and Carnivine. If the Defending PokÃ©mon has fewer remaining HP than Carnivineâ€™s, this attack does 60 damage instead."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -649,7 +648,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Wring Out", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and discard an Energy card attached to the Defending Pokémon."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed and discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -662,7 +661,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Clefairy", hp:HP090, type:COLORLESS, retreatCost:2) {
 				weakness F, PLUS20
 				move "Double Slap", {
-					text "30× damage. Flip 2 coins. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Flip 2 coins. This attack does 30 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -670,7 +669,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Metronome", {
-					text "Choose 1 of the Defending Pokémon’s attacks. Metronome copies that attack except for its Energy cost. (You must still do anything else in order to use that attack.) Clefable performs that attack."
+					text "Choose 1 of the Defending PokÃ©monâ€™s attacks. Metronome copies that attack except for its Energy cost. (You must still do anything else in order to use that attack.) Clefable performs that attack."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -691,7 +690,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Poison Claws", {
-					text "50 damage. The Defending Pokémon is now Poisoned."
+					text "50 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -705,7 +704,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				move "Wind Wave", {
-					text "Search your discard pile for up to 5 in any combination of Pokémon and Supporter cards. Show them to your opponent and shuffle them into your deck."
+					text "Search your discard pile for up to 5 in any combination of PokÃ©mon and Supporter cards. Show them to your opponent and shuffle them into your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -726,7 +725,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Cascoon", hp:HP120, type:GRASS, retreatCost:2) {
 				weakness R, PLUS30
 				move "Stun Spore", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -734,7 +733,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Toxic Dust", {
-					text "50 damage. The Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
+					text "50 damage. The Defending PokÃ©mon is now Poisoned. Put 2 damage counters instead of 1 on the Defending PokÃ©mon between turns."
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
@@ -747,7 +746,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Buizel", hp:HP090, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Screw Tail", {
-					text "30 damage. Flip a coin. If heads, discard an Energy attached to the Defending Pokémon."
+					text "30 damage. Flip a coin. If heads, discard an Energy attached to the Defending PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -755,7 +754,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Water Gun", {
-					text "40+ damage. Energy attached to Floatzel but not used to pay for this attack’s Energy cost. You can’t add more than 40 damage in this way."
+					text "40+ damage. Energy attached to Floatzel but not used to pay for this attackâ€™s Energy cost. You canâ€™t add more than 40 damage in this way."
 					energyCost W, W, W
 					attackRequirement {}
 					onAttack {
@@ -769,7 +768,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness D, PLUS30
 				resistance C, MINUS20
 				move "Life Drain", {
-					text "Flip a coin. If heads, put damage counter on the Defending Pokémon until it is 10 HP away from being Knocked Out."
+					text "Flip a coin. If heads, put damage counter on the Defending PokÃ©mon until it is 10 HP away from being Knocked Out."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -777,7 +776,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Shadow Dance", {
-					text "Put 4 damage counters on your opponent’s Pokémon in any way you like. Then, switch Gengar with 1 of your Benched Pokémon."
+					text "Put 4 damage counters on your opponentâ€™s PokÃ©mon in any way you like. Then, switch Gengar with 1 of your Benched PokÃ©mon."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -790,7 +789,7 @@ public enum DiamondPearl implements CardInfo {
 			return basic (this, hp:HP080, type:GRASS, retreatCost:2) {
 				weakness R, PLUS20
 				move "Pitch", {
-					text "10 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "10 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -812,7 +811,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness W, PLUS20
 				resistance L, MINUS20
 				move "Vacuum Up", {
-					text "40 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "40 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -833,7 +832,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Buneary", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				move "Healing Wish", {
-					text "Flip a coin until you get tails. Remove a number of damage counters equal to the number of heads from 1 of your Pokémon."
+					text "Flip a coin until you get tails. Remove a number of damage counters equal to the number of heads from 1 of your PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -841,7 +840,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Flop", {
-					text "30 damage. You may switch Lopunny with 1 of your Benched Pokémon."
+					text "30 damage. You may switch Lopunny with 1 of your Benched PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -854,7 +853,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Machoke", hp:HP130, type:FIGHTING, retreatCost:3) {
 				weakness P, PLUS30
 				move "Revenge", {
-					text "20+ damage. If any of your Pokémon were Knocked Out by damage from an opponent’s attack during his or her last turn, this attack does 20 damage plus 50 more damage."
+					text "20+ damage. If any of your PokÃ©mon were Knocked Out by damage from an opponentâ€™s attack during his or her last turn, this attack does 20 damage plus 50 more damage."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -867,7 +866,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Meditite", hp:HP090, type:FIGHTING, retreatCost:2) {
 				weakness P, PLUS20
 				move "Force Palm", {
-					text "Count the number of damage counters on Medicham. Put that many damage counters on 1 of your opponent’s Pokémon."
+					text "Count the number of damage counters on Medicham. Put that many damage counters on 1 of your opponentâ€™s PokÃ©mon."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -893,7 +892,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Heave", {
-					text "30× damage. Discard 2 cards from your hand. (If you can’t discard 2 cards, this attack does nothing.) Flip 2 coins. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Discard 2 cards from your hand. (If you canâ€™t discard 2 cards, this attack does nothing.) Flip 2 coins. This attack does 30 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -950,7 +949,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Glameow", hp:HP090, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				move "High Hat", {
-					text "Choose 1 card from your opponent’s hand without looking and discard it."
+					text "Choose 1 card from your opponentâ€™s hand without looking and discard it."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -958,7 +957,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Body Slam", {
-					text "50 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "50 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -971,7 +970,7 @@ public enum DiamondPearl implements CardInfo {
 			return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
 				weakness F, PLUS20
 				move "Block", {
-					text "The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -993,7 +992,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				move "Slam", {
-					text "30× damage. Flip 2 coins. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Flip 2 coins. This attack does 30 damage times the number of heads."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -1001,7 +1000,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Metal Slash", {
-					text "100 damage. Steelix can’t attack during your next turn."
+					text "100 damage. Steelix canâ€™t attack during your next turn."
 					energyCost M, M, C, C
 					attackRequirement {}
 					onAttack {
@@ -1015,7 +1014,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness R, PLUS20
 				resistance F, MINUS20
 				move "Leaf Honey", {
-					text "Pokémon."
+					text "PokÃ©mon."
 					energyCost G, G, G
 					attackRequirement {}
 					onAttack {
@@ -1023,7 +1022,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Attack Order", {
-					text "10× damage. Pokémon in play [both yours and your opponent’s)."
+					text "10Ã— damage. PokÃ©mon in play [both yours and your opponentâ€™s)."
 					energyCost G, C, C, G
 					attackRequirement {}
 					onAttack {
@@ -1045,7 +1044,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Dark Pulse", {
-					text "10× damage. Energy attached to all of your Pokémon."
+					text "10Ã— damage. Energy attached to all of your PokÃ©mon."
 					energyCost D, D, D, D
 					attackRequirement {}
 					onAttack {
@@ -1058,7 +1057,7 @@ public enum DiamondPearl implements CardInfo {
 			return basic (this, hp:HP080, type:PSYCHIC, retreatCost:3) {
 				weakness P, PLUS20
 				move "Countercharge", {
-					text "Flip a coin. If heads, move all damage counters from Wobbuffet to the Defending Pokémon."
+					text "Flip a coin. If heads, move all damage counters from Wobbuffet to the Defending PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1076,7 +1075,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Astonish", {
-					text "Choose 1 card from your opponent’s hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
+					text "Choose 1 card from your opponentâ€™s hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1107,7 +1106,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Wurmple", hp:HP080, type:GRASS, retreatCost:3) {
 				weakness R, PLUS20
 				move "Harden", {
-					text "During your opponent’s next turn, if Cascoon would be damaged by an attack, prevent that attack’s damage done to Cascoon if that damage is 30 or less."
+					text "During your opponentâ€™s next turn, if Cascoon would be damaged by an attack, prevent that attackâ€™s damage done to Cascoon if that damage is 30 or less."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1115,7 +1114,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Gooey Thread", {
-					text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "20 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1129,7 +1128,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness R, PLUS20
 				resistance W, MINUS20
 				move "Worry Seed", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1151,7 +1150,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness D, PLUS10
 				resistance C, MINUS20
 				move "Blowing Wind", {
-					text "Flip a coin. If heads, put 1 of your Benched Pokémon and all cards attached to on top of your deck. Shuffle your deck afterward."
+					text "Flip a coin. If heads, put 1 of your Benched PokÃ©mon and all cards attached to on top of your deck. Shuffle your deck afterward."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1159,7 +1158,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Ominous Wind", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused and can’t retreat during your opponent’s next turn."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused and canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1173,7 +1172,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				move "Roam", {
-					text "Flip a coin. If heads, put 2 damage counters on each of your opponent’s Pokémon. If tails, put 2 damage counters on 1 of your Pokémon."
+					text "Flip a coin. If heads, put 2 damage counters on each of your opponentâ€™s PokÃ©mon. If tails, put 2 damage counters on 1 of your PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1181,7 +1180,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Gravity Wave", {
-					text "30 damage. Does 10 damage to each of your opponent’s Benched Pokémon that doesn’t have a Retreat Cost."
+					text "30 damage. Does 10 damage to each of your opponentâ€™s Benched PokÃ©mon that doesnâ€™t have a Retreat Cost."
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
@@ -1214,7 +1213,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness R, PLUS20
 				resistance W, MINUS20
 				move "Synthesis", {
-					text "Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
+					text "Energy card and attach it to 1 of your PokÃ©mon. Shuffle your deck afterward."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -1236,7 +1235,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				move "Hypnosis", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1244,7 +1243,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Dream Eater", {
-					text "60 damage. If the Defending Pokémon is now Asleep, this attack does nothing."
+					text "60 damage. If the Defending PokÃ©mon is now Asleep, this attack does nothing."
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
@@ -1258,7 +1257,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness W, PLUS10
 				resistance L, MINUS20
 				move "Yawn", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1266,7 +1265,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Sand Attack", {
-					text "10 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "10 damage. If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1288,7 +1287,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Thunder Fang", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L, L
 					attackRequirement {}
 					onAttack {
@@ -1323,7 +1322,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				move "Tri Attack", {
-					text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 3 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1331,7 +1330,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Magnetic Ray", {
-					text "40 damage. Before doing damage, you may choose 1 of your opponent’s Benched Pokémon that has any Energy attached to it and switch that Pokémon with 1 of the Defending Pokémon."
+					text "40 damage. Before doing damage, you may choose 1 of your opponentâ€™s Benched PokÃ©mon that has any Energy attached to it and switch that PokÃ©mon with 1 of the Defending PokÃ©mon."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
@@ -1350,7 +1349,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Call for Friends", {
-					text "Basic Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+					text "Basic PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1371,7 +1370,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Fury Swipes", {
-					text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 3 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1385,7 +1384,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness F, PLUS20
 				resistance P, MINUS20
 				move "Dirty Trick", {
-					text "Flip a coin. If heads, discard an Energy card attached to 1 of your opponent’s Pokémon."
+					text "Flip a coin. If heads, discard an Energy card attached to 1 of your opponentâ€™s PokÃ©mon."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -1406,7 +1405,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Piplup", hp:HP080, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Aqua Shower", {
-					text "Does 10 damage to each of your opponent’s Pokémon."
+					text "Does 10 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1414,7 +1413,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Brine", {
-					text "Choose 1 of your opponent’s Pokémon that has any damage counters on it. This attack does 40 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon that has any damage counters on it. This attack does 40 damage to that PokÃ©mon."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -1427,7 +1426,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Ponyta", hp:HP080, type:FIRE, retreatCost:0) {
 				weakness W, PLUS20
 				move "Overrun", {
-					text "20 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "20 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1435,7 +1434,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Blaze Up", {
-					text "50 damage. Energy attached to Rapidash and this attack does 10 damage to each of your opponent’s Benched Pokémon."
+					text "50 damage. Energy attached to Rapidash and this attack does 10 damage to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost R, R, C, R
 					attackRequirement {}
 					onAttack {
@@ -1457,7 +1456,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Crash Impact", {
-					text "60 damage. Rhydon does 10 damage to itself. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon, if any."
+					text "60 damage. Rhydon does 10 damage to itself. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon, if any."
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
@@ -1483,7 +1482,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Goldeen", hp:HP080, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Flail", {
-					text "10× damage. Does 10 damage times the number of damage counters on Seaking."
+					text "10Ã— damage. Does 10 damage times the number of damage counters on Seaking."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1504,7 +1503,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Wurmple", hp:HP080, type:GRASS, retreatCost:3) {
 				weakness R, PLUS20
 				move "Harden", {
-					text "During your opponent’s next turn, If Silcoon would be damaged by an attack, prevent that attack’s damage done to Silcoon if that damage is 30 or less."
+					text "During your opponentâ€™s next turn, If Silcoon would be damaged by an attack, prevent that attackâ€™s damage done to Silcoon if that damage is 30 or less."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1512,7 +1511,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Entangling String", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon can’t attack during your opponent’s next turn."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon canâ€™t attack during your opponentâ€™s next turn."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1526,7 +1525,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Whirlwind", {
-					text "20 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "20 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1534,7 +1533,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Clutch", {
-					text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "20 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1565,7 +1564,7 @@ public enum DiamondPearl implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokePower "BOUNCE", {
-					text "Once during your turn , if Unown B is on your Bench, you may flip a coin. If heads, discard all cards attached to any 1 of your Unown and shuffle that Pokémon back into your deck."
+					text "Once during your turn , if Unown B is on your Bench, you may flip a coin. If heads, discard all cards attached to any 1 of your Unown and shuffle that PokÃ©mon back into your deck."
 					actionA {
 					}
 				}
@@ -1637,7 +1636,7 @@ public enum DiamondPearl implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Amnesia", {
-					text "Choose 1 of the Defending Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
+					text "Choose 1 of the Defending PokÃ©monâ€™s attacks. That PokÃ©mon canâ€™t use that attack during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1676,7 +1675,7 @@ public enum DiamondPearl implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Splash About", {
-					text "10+ damage. If Buizel has less Energy attached to it than the Defending Pokémon, this attack does 10 damage plus 10 more damage."
+					text "10+ damage. If Buizel has less Energy attached to it than the Defending PokÃ©mon, this attack does 10 damage plus 10 more damage."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1697,7 +1696,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Jump Kick", {
-					text "10 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "10 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1719,7 +1718,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Tone-Deaf", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1733,7 +1732,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness R, PLUS10
 				resistance W, MINUS20
 				move "Sleep Powder", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1775,7 +1774,7 @@ public enum DiamondPearl implements CardInfo {
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Sing", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1815,7 +1814,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness R, PLUS10
 				resistance F, MINUS20
 				move "Soliciting Nectar", {
-					text "Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. The new Defending Pokémon is now Asleep."
+					text "Switch 1 of your opponentâ€™s Benched PokÃ©mon with 1 of the Defending PokÃ©mon. The new Defending PokÃ©mon is now Asleep."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1837,7 +1836,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness D, PLUS10
 				resistance C, MINUS20
 				move "Disable", {
-					text "Flip a coin. If heads, choose 1 of the Defending Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
+					text "Flip a coin. If heads, choose 1 of the Defending PokÃ©monâ€™s attacks. That PokÃ©mon canâ€™t use that attack during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1845,7 +1844,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Night Shade", {
-					text "20 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "20 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1867,7 +1866,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Shock Wave", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If Electabuzz is evolved from Elekid, this attack does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed. If Electabuzz is evolved from Elekid, this attack does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost L, L
 					attackRequirement {}
 					onAttack {
@@ -1881,7 +1880,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness D, PLUS10
 				resistance C, MINUS20
 				move "Pain Payback", {
-					text "Move 1 damage counter from Gastly to 1 of your opponent’s Pokémon."
+					text "Move 1 damage counter from Gastly to 1 of your opponentâ€™s PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1937,7 +1936,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness L, PLUS10
 				resistance F, MINUS20
 				move "Hypnosis", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1972,7 +1971,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness R, PLUS10
 				resistance P, MINUS20
 				move "Metal Sound", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -1980,7 +1979,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Resonance", {
-					text "20+ damage. If the Defending Pokémon is Confused, this attack does 20 damage plus 20 more damage."
+					text "20+ damage. If the Defending PokÃ©mon is Confused, this attack does 20 damage plus 20 more damage."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -2001,7 +2000,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Splashing Turn", {
-					text "20 damage. Switch Marill with 1 of your Benched Pokémon."
+					text "20 damage. Switch Marill with 1 of your Benched PokÃ©mon."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -2014,7 +2013,7 @@ public enum DiamondPearl implements CardInfo {
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
 				weakness P, PLUS10
 				move "Detect", {
-					text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Meditite during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Meditite during your opponentâ€™s next turn."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -2022,7 +2021,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Meditate", {
-					text "10+ damage. Does 10 damage plus 1 more damage for each damage counter on the Defending Pokémon."
+					text "10+ damage. Does 10 damage plus 1 more damage for each damage counter on the Defending PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -2040,7 +2039,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Mime", {
-					text "Shuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent’s hand."
+					text "Shuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponentâ€™s hand."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2054,7 +2053,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness D, PLUS10
 				resistance C, MINUS20
 				move "Astonish", {
-					text "Choose 1 card from your opponent’s hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
+					text "Choose 1 card from your opponentâ€™s hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2062,7 +2061,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Confuse Ray", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -2075,7 +2074,7 @@ public enum DiamondPearl implements CardInfo {
 			return basic (this, hp:HP090, type:FIGHTING, retreatCost:3) {
 				weakness G, PLUS20
 				move "Tunneling", {
-					text "Onix can’t attack during your next turn."
+					text "Onix canâ€™t attack during your next turn."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -2160,7 +2159,7 @@ public enum DiamondPearl implements CardInfo {
 			return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Toxic Spikes", {
-					text "The Defending Pokémon is now Poisoned. If Roselia is evolved from Budew, this attack does 10 damage to the Defending Pokémon."
+					text "The Defending PokÃ©mon is now Poisoned. If Roselia is evolved from Budew, this attack does 10 damage to the Defending PokÃ©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -2168,7 +2167,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Sweet Spike", {
-					text "10 damage. The Defending Pokémon is now Asleep. Remove 2 damage counters from 1 of your Pokémon."
+					text "10 damage. The Defending PokÃ©mon is now Asleep. Remove 2 damage counters from 1 of your PokÃ©mon."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -2182,7 +2181,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness R, PLUS10
 				resistance W, MINUS20
 				move "Bide", {
-					text "Flip a coin. If heads, during your opponent’s next turn, if Seedot would be Knocked Out by damage from an attack, Seedot is not Knocked Out and its remaining HP becomes 10 instead."
+					text "Flip a coin. If heads, during your opponentâ€™s next turn, if Seedot would be Knocked Out by damage from an attack, Seedot is not Knocked Out and its remaining HP becomes 10 instead."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2204,7 +2203,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness F, PLUS10
 				resistance M, MINUS20
 				move "Spark", {
-					text "10 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "10 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -2217,7 +2216,7 @@ public enum DiamondPearl implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS10
 				move "Poison Sting", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2225,7 +2224,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Pin Missile", {
-					text "10× damage. Flip 4 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 4 coins. This attack does 10 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2239,7 +2238,7 @@ public enum DiamondPearl implements CardInfo {
 				weakness F, PLUS10
 				resistance P, MINUS20
 				move "Double Slap", {
-					text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 2 coins. This attack does 10 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2247,7 +2246,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Feint Attack", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to the Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to the PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on that PokÃ©mon."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -2291,7 +2290,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "Severe Gas", {
-					text "10 damage. The Defending Pokémon is now Poisoned."
+					text "10 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -2334,7 +2333,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "String Shot", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -2345,7 +2344,7 @@ public enum DiamondPearl implements CardInfo {
 			};
 			case DOUBLE_FULL_HEAL_105:
 			return basicTrainer (this) {
-				text "Remove all Special Conditions from each of your Active Pokémon."
+				text "Remove all Special Conditions from each of your Active PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2353,7 +2352,7 @@ public enum DiamondPearl implements CardInfo {
 			};
 			case ENERGY_RESTORE_106:
 			return basicTrainer (this) {
-				text "Flip 3 coins. For each heads, put a basic Energy card from your discard pile into your hand. If you don’t have that many basic Energy cards in your discard pile, put all of them into your hand."
+				text "Flip 3 coins. For each heads, put a basic Energy card from your discard pile into your hand. If you donâ€™t have that many basic Energy cards in your discard pile, put all of them into your hand."
 				onPlay {
 				}
 				playRequirement{
@@ -2361,7 +2360,7 @@ public enum DiamondPearl implements CardInfo {
 			};
 			case ENERGY_SWITCH_107:
 			return basicTrainer (this) {
-				text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
+				text "Move a basic Energy card attached to 1 of your PokÃ©mon to another of your PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2369,7 +2368,7 @@ public enum DiamondPearl implements CardInfo {
 			};
 			case NIGHT_POKEMON_CENTER_108:
 			return basicTrainer (this) {
-				text "Choose 1 of your Pokémon. Flip 2 coins. If both are heads, remove all damage counters from that Pokémon. If both are tails, discard all Energy cards attached to that Pokémon."
+				text "Choose 1 of your PokÃ©mon. Flip 2 coins. If both are heads, remove all damage counters from that PokÃ©mon. If both are tails, discard all Energy cards attached to that PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2377,7 +2376,7 @@ public enum DiamondPearl implements CardInfo {
 			};
 			case PLUSPOWER_109:
 			return basicTrainer (this) {
-				text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
+				text "Attach PlusPower to 1 of your PokÃ©mon. Discard this card at the end of your turn.\nIf the PokÃ©mon PlusPower is attached to attacks, the attack does 10 more damage to the Active PokÃ©mon (before applying Weakness and Resistance)."
 				onPlay {
 				}
 				playRequirement{
@@ -2385,7 +2384,7 @@ public enum DiamondPearl implements CardInfo {
 			};
 			case POKE_BALL_110:
 			return basicTrainer (this) {
-				text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+				text "Flip a coin. If heads, search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2401,7 +2400,7 @@ public enum DiamondPearl implements CardInfo {
 			};
 			case PROFESSOR_ROWAN_112:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose 1 card in your hand and shuffle the rest of your cards into your deck. Then, draw 4 cards. (If this is the only card in your hand, you can’t play this card.)"
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nChoose 1 card in your hand and shuffle the rest of your cards into your deck. Then, draw 4 cards. (If this is the only card in your hand, you canâ€™t play this card.)"
 				onPlay {
 				}
 				playRequirement{
@@ -2409,7 +2408,7 @@ public enum DiamondPearl implements CardInfo {
 			};
 			case RIVAL_113:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nReveal the top 5 cards of your deck. Your opponent choose 3 of those cards. Put those cards into your hand and put other 2 cards on top of your deck. Shuffle your deck afterward."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nReveal the top 5 cards of your deck. Your opponent choose 3 of those cards. Put those cards into your hand and put other 2 cards on top of your deck. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2417,7 +2416,7 @@ public enum DiamondPearl implements CardInfo {
 			};
 			case SPEED_STADIUM_114:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, the player may flip a coin until he or she gets tails. For each heads, that player draws a card."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nOnce during each playerâ€™s turn, the player may flip a coin until he or she gets tails. For each heads, that player draws a card."
 				onPlay {
 				}
 				playRequirement{
@@ -2425,7 +2424,7 @@ public enum DiamondPearl implements CardInfo {
 			};
 			case SUPER_SCOOP_UP_115:
 			return basicTrainer (this) {
-				text "Flip a coin. If heads, return 1 of your Pokémon and all cards attached to it to your hand."
+				text "Flip a coin. If heads, return 1 of your PokÃ©mon and all cards attached to it to your hand."
 				onPlay {
 				}
 				playRequirement{
@@ -2433,7 +2432,7 @@ public enum DiamondPearl implements CardInfo {
 			};
 			case WARP_POINT_116:
 			return basicTrainer (this) {
-				text "Your opponent switches 1 of his or her Defending Pokémon with 1 of his or her Benched Pokémon, if any. You switch 1 of your Active Pokémon with 1 of your Benched Pokémon, if any."
+				text "Your opponent switches 1 of his or her Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon, if any. You switch 1 of your Active PokÃ©mon with 1 of your Benched PokÃ©mon, if any."
 				onPlay {
 				}
 				playRequirement{
@@ -2449,7 +2448,7 @@ public enum DiamondPearl implements CardInfo {
 			};
 			case POTION_118:
 			return basicTrainer (this) {
-				text "Remove 2 damage counters from 1 of your Pokémon (remove 1 damage counter if that Pokémon has only 1)."
+				text "Remove 2 damage counters from 1 of your PokÃ©mon (remove 1 damage counter if that PokÃ©mon has only 1)."
 				onPlay {
 				}
 				playRequirement{
@@ -2457,7 +2456,7 @@ public enum DiamondPearl implements CardInfo {
 			};
 			case SWITCH_119:
 			return basicTrainer (this) {
-				text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
+				text "Switch 1 of your Active PokÃ©mon with 1 of your Benched PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2467,12 +2466,12 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Empoleon", hp:HP140, type:WATER, retreatCost:2) {
 				weakness L, PLUS30
 				pokePower "Supreme Command", {
-					text "Once during your turn , you may choose up to 2 cards from your opponent’s hand without looking and put them face down next to the Defending Pokémon. (These cards are not in play or in your opponent’s hand.) At the end of your opponent’s next turn, return those cards to your opponent’s hand. This power can’t be used if Empoleon is affected by a Special Condition."
+					text "Once during your turn , you may choose up to 2 cards from your opponentâ€™s hand without looking and put them face down next to the Defending PokÃ©mon. (These cards are not in play or in your opponentâ€™s hand.) At the end of your opponentâ€™s next turn, return those cards to your opponentâ€™s hand. This power canâ€™t be used if Empoleon is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Hydro Impact", {
-					text "Empoleon can’t attack during your next turn."
+					text "Empoleon canâ€™t attack during your next turn."
 					energyCost W, W, W
 					attackRequirement {}
 					onAttack {
@@ -2480,7 +2479,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Empoleon. Empoleon LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Empoleon. Empoleon LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2493,7 +2492,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Infernape", hp:HP120, type:FIRE, retreatCost:0) {
 				weakness W, PLUS30
 				pokePower "Burning Head", {
-					text "Once during your turn , you may look at the top 3 cards of your deck, choose 1 of them, and put it into your hand. Discard the other 2 cards. This power can’t be used if Infernape is affected by a Special Condition."
+					text "Once during your turn , you may look at the top 3 cards of your deck, choose 1 of them, and put it into your hand. Discard the other 2 cards. This power canâ€™t be used if Infernape is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -2506,7 +2505,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Infernape. Infernape LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Infernape. Infernape LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2519,7 +2518,7 @@ public enum DiamondPearl implements CardInfo {
 			return evolution (this, from:"Torterra", hp:HP160, type:GRASS, retreatCost:4) {
 				weakness R, PLUS30
 				pokePower "Forest Murmurs", {
-					text "Once during your turn , if you have more Prize cards left than your opponent, you may choose 1 of your opponent’s Benched Pokémon and switch it with 1 of the Defending Pokémon. This power can’t be used if Torterra is affected by a Special Condition."
+					text "Once during your turn , if you have more Prize cards left than your opponent, you may choose 1 of your opponentâ€™s Benched PokÃ©mon and switch it with 1 of the Defending PokÃ©mon. This power canâ€™t be used if Torterra is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -2532,7 +2531,7 @@ public enum DiamondPearl implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Torterra. Torterra LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Torterra. Torterra LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {

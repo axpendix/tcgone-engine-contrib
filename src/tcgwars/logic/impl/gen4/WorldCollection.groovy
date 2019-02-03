@@ -36,16 +36,15 @@ import tcgwars.logic.util.*;
  */
 public enum WorldCollection implements CardInfo {
 
-	PIKACHU_P ("Pikachu", P, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-	PIKACHU_P ("Pikachu", P, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-	PIKACHU_P ("Pikachu", P, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-	PIKACHU_P ("Pikachu", P, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-	PIKACHU_P ("Pikachu", P, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-	PIKACHU_P ("Pikachu", P, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-	PIKACHU_P ("Pikachu", P, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-	PIKACHU_P ("Pikachu", P, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-	PIKACHU_P ("Pikachu", P, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-;
+	PIKACHU_P1 ("Pikachu", 1, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	PIKACHU_P2 ("Pikachu", 2, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	PIKACHU_P3 ("Pikachu", 3, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	PIKACHU_P4 ("Pikachu", 4, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	PIKACHU_P5 ("Pikachu", 5, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	PIKACHU_P6 ("Pikachu", 6, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	PIKACHU_P7 ("Pikachu", 7, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	PIKACHU_P8 ("Pikachu", 8, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+	PIKACHU_P9 ("Pikachu", 9, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -99,7 +98,7 @@ public enum WorldCollection implements CardInfo {
 	@Override
 	public Card getImplementation() {
 		switch (this) {
-			case PIKACHU_P:
+			case PIKACHU_P1:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
@@ -121,7 +120,7 @@ public enum WorldCollection implements CardInfo {
 				}
 				
 			};
-			case PIKACHU_P:
+			case PIKACHU_P2:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
@@ -143,8 +142,8 @@ public enum WorldCollection implements CardInfo {
 				}
 				
 			};
-			case PIKACHU_P:
-			return copy (PIKACHU_P, this)
+			case PIKACHU_P3:
+			return copy (PIKACHU_P1, this)
 			/*basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
@@ -166,11 +165,11 @@ public enum WorldCollection implements CardInfo {
 				}
 				
 			}*/;
-			case PIKACHU_P:
+			case PIKACHU_P4:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
-				move "°Hola!", {
+				move "ÀáHola!", {
 					text "Saluda a tu rival. Luego cada jugador roba una carta."
 					energyCost C
 					attackRequirement {}
@@ -188,8 +187,8 @@ public enum WorldCollection implements CardInfo {
 				}
 				
 			};
-			case PIKACHU_P:
-			return copy (PIKACHU_P, this)
+			case PIKACHU_P5:
+			return copy (PIKACHU_P1, this)
 			/*basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
@@ -211,12 +210,12 @@ public enum WorldCollection implements CardInfo {
 				}
 				
 			}*/;
-			case PIKACHU_P:
+			case PIKACHU_P6:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Hallo!", {
-					text "Begr¸ﬂe deinen Gegner. Anschlieﬂend ziehen alle Spieler je eine Karte."
+					text "Begr√º√üe deinen Gegner. Anschlie√üend ziehen alle Spieler je eine Karte."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -233,7 +232,7 @@ public enum WorldCollection implements CardInfo {
 				}
 				
 			};
-			case PIKACHU_P:
+			case PIKACHU_P7:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
@@ -255,7 +254,7 @@ public enum WorldCollection implements CardInfo {
 				}
 				
 			};
-			case PIKACHU_P:
+			case PIKACHU_P8:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
@@ -277,12 +276,12 @@ public enum WorldCollection implements CardInfo {
 				}
 				
 			};
-			case PIKACHU_P:
+			case PIKACHU_P9:
 			return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
-				move "Ol·!", {
-					text "Cumprimenta o teu advers·rio. Em seguida, cada jogador tira uma carta."
+				move "Ol√°!", {
+					text "Cumprimenta o teu advers√°rio. Em seguida, cada jogador tira uma carta."
 					energyCost C
 					attackRequirement {}
 					onAttack {

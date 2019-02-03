@@ -52,8 +52,7 @@ public enum PopSeries6 implements CardInfo {
 	CHIMCHAR_14 ("Chimchar", 14, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
 	PIPLUP_15 ("Piplup", 15, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
 	STARLY_16 ("Starly", 16, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-	TURTWIG_17 ("Turtwig", 17, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-;
+	TURTWIG_17 ("Turtwig", 17, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -112,12 +111,12 @@ public enum PopSeries6 implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				pokeBody "Protective Wall", {
-					text "Prevent all damage done to your Benched Pokémon by your opponent’s attacks."
+					text "Prevent all damage done to your Benched PokÃ©mon by your opponentâ€™s attacks."
 					delayedA {
 					}
 				}
 				move "Anger Revenge", {
-					text "60 damage. If Bastiodon was damaged by an attack during your opponent’s last turn, this attack does 40 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon."
+					text "60 damage. If Bastiodon was damaged by an attack during your opponentâ€™s last turn, this attack does 40 damage to 1 of your opponentâ€™s Benched PokÃ©mon. (Donâ€™t apply Weakness and Resistance for Benched PokÃ©mon."
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
@@ -130,7 +129,7 @@ public enum PopSeries6 implements CardInfo {
 			return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
 				weakness P, PLUS20
 				move "Feint", {
-					text "30 damage. This attack’s damage isn’t affected by Resistance."
+					text "30 damage. This attackâ€™s damage isnâ€™t affected by Resistance."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -138,7 +137,7 @@ public enum PopSeries6 implements CardInfo {
 					}
 				}
 				move "Aura Sphere", {
-					text "40 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "40 damage. Does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
@@ -151,7 +150,7 @@ public enum PopSeries6 implements CardInfo {
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Call for Family", {
-					text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
+					text "Search your deck for a Basic PokÃ©mon and put it onto your Bench. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -159,7 +158,7 @@ public enum PopSeries6 implements CardInfo {
 					}
 				}
 				move "Aqua Ring", {
-					text "30 damage. Switch Manaphy with 1 of your Benched Pokémon."
+					text "30 damage. Switch Manaphy with 1 of your Benched PokÃ©mon."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -194,7 +193,7 @@ public enum PopSeries6 implements CardInfo {
 			return evolution (this, from:"Cranidos", hp:HP120, type:FIGHTING, retreatCost:1) {
 				weakness G, PLUS30
 				move "Assurance", {
-					text "30 damage. As long as the Defending Pokémon’s remaining HP is 60 or less, this attack’s base damage is 60 instead of 30."
+					text "30 damage. As long as the Defending PokÃ©monâ€™s remaining HP is 60 or less, this attackâ€™s base damage is 60 instead of 30."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -202,7 +201,7 @@ public enum PopSeries6 implements CardInfo {
 					}
 				}
 				move "Hasty Headbutt", {
-					text "100 damage. Rampardos does 20 damage to itself. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "100 damage. Rampardos does 20 damage to itself. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					energyCost F, F, F
 					attackRequirement {}
 					onAttack {
@@ -216,7 +215,7 @@ public enum PopSeries6 implements CardInfo {
 				weakness D, PLUS10
 				resistance C, MINUS20
 				move "Blowing Wind", {
-					text "Flip a coin. If heads, put 1 of your Benched Pokémon and all cards attached to it on top of your deck. Shuffle your deck afterward."
+					text "Flip a coin. If heads, put 1 of your Benched PokÃ©mon and all cards attached to it on top of your deck. Shuffle your deck afterward."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -224,7 +223,7 @@ public enum PopSeries6 implements CardInfo {
 					}
 				}
 				move "Ominous Wind", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused and can’t retreat during your opponent’s next turn."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused and canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -280,7 +279,7 @@ public enum PopSeries6 implements CardInfo {
 					}
 				}
 				move "Spark", {
-					text "10 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
+					text "10 damage. Does 10 damage to 2 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -294,7 +293,7 @@ public enum PopSeries6 implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				move "Whirlwind", {
-					text "20 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "20 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -302,7 +301,7 @@ public enum PopSeries6 implements CardInfo {
 					}
 				}
 				move "Clutch", {
-					text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "20 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -315,7 +314,7 @@ public enum PopSeries6 implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Amnesia", {
-					text "Choose 1 of the Defending Pokémon’s attack’s. That Pokémon can’t use that attack during your opponent’s next turn."
+					text "Choose 1 of the Defending PokÃ©monâ€™s attackâ€™s. That PokÃ©mon canâ€™t use that attack during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -344,7 +343,7 @@ public enum PopSeries6 implements CardInfo {
 					}
 				}
 				move "Jump Kick", {
-					text "10 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon. Don’t apply Weakness and Resistance for Benched Pokémon.)"
+					text "10 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon. Donâ€™t apply Weakness and Resistance for Benched PokÃ©mon.)"
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -358,7 +357,7 @@ public enum PopSeries6 implements CardInfo {
 				weakness R, PLUS10
 				resistance W, MINUS20
 				move "Sleep Powder", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost G
 					attackRequirement {}
 					onAttack {

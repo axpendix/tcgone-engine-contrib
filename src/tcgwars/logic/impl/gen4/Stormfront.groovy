@@ -123,9 +123,9 @@ public enum Stormfront implements CardInfo {
 	GREAT_BALL_85 ("Great Ball", 85, Rarity.UNCOMMON, [TRAINER]),
 	LUXURY_BALL_86 ("Luxury Ball", 86, Rarity.UNCOMMON, [TRAINER]),
 	MARLEY_S_REQUEST_87 ("Marley's Request", 87, Rarity.UNCOMMON, [TRAINER]),
-	POKE_BLOWER_+_88 ("Poké Blower +", 88, Rarity.UNCOMMON, [TRAINER]),
-	POKE_DRAWER_+_89 ("Poké Drawer +", 89, Rarity.UNCOMMON, [TRAINER]),
-	POKE_HEALER_+_90 ("Poké Healer +", 90, Rarity.UNCOMMON, [TRAINER]),
+	POKE_BLOWER_+_88 ("PokÃ© Blower +", 88, Rarity.UNCOMMON, [TRAINER]),
+	POKE_DRAWER_+_89 ("PokÃ© Drawer +", 89, Rarity.UNCOMMON, [TRAINER]),
+	POKE_HEALER_+_90 ("PokÃ© Healer +", 90, Rarity.UNCOMMON, [TRAINER]),
 	PREMIER_BALL_91 ("Premier Ball", 91, Rarity.UNCOMMON, [TRAINER]),
 	POTION_92 ("Potion", 92, Rarity.COMMON, [TRAINER]),
 	SWITCH_93 ("Switch", 93, Rarity.UNCOMMON, [TRAINER]),
@@ -139,10 +139,9 @@ public enum Stormfront implements CardInfo {
 	CHARMANDER_101 ("Charmander", 101, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
 	CHARMELEON_102 ("Charmeleon", 102, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
 	CHARIZARD_103 ("Charizard", 103, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
-	DRIFLOON_SH1 ("Drifloon", SH1, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
-	DUSKULL_SH2 ("Duskull", SH2, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
-	VOLTORB_SH3 ("Voltorb", SH3, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-;
+	DRIFLOON_SH1 ("Drifloon", 104, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
+	DUSKULL_SH2 ("Duskull", 105, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
+	VOLTORB_SH3 ("Voltorb", 106, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -201,12 +200,12 @@ public enum Stormfront implements CardInfo {
 				weakness D, PLUS30
 				resistance C, MINUS20
 				pokeBody "Shadow Command", {
-					text "Once during your turn , you may draw 2 cards. If you have 7 or more cards in your hand, discard a number of cards until you have 6 cards in your hand. Then, put 2 damage counters on Dusknoir. This power can’t be used if Dusknoir is affected by a Special Condition."
+					text "Once during your turn , you may draw 2 cards. If you have 7 or more cards in your hand, discard a number of cards until you have 6 cards in your hand. Then, put 2 damage counters on Dusknoir. This power canâ€™t be used if Dusknoir is affected by a Special Condition."
 					delayedA {
 					}
 				}
 				move "Damage Even", {
-					text "Count the number of damage counters on Dusknoir. Put that many damage counters on 1 of your opponent’s Pokémon."
+					text "Count the number of damage counters on Dusknoir. Put that many damage counters on 1 of your opponentâ€™s PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -214,7 +213,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Night Spin", {
-					text "50 damage. Prevent all effects of an attack, including damage, done to Dusknoir by your opponent’s Pokémon that has 2 or less Energy attached to it during your opponent’s next turn."
+					text "50 damage. Prevent all effects of an attack, including damage, done to Dusknoir by your opponentâ€™s PokÃ©mon that has 2 or less Energy attached to it during your opponentâ€™s next turn."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -227,7 +226,7 @@ public enum Stormfront implements CardInfo {
 			return evolution (this, from:"Prinplup", hp:HP130, type:METAL, retreatCost:2) {
 				weakness L, PLUS30
 				pokePower "Emperor Aura", {
-					text "Once during your turn , when you play Empoleon from your hand to evolve 1 of your Active Pokémon, you may use this power. Your opponent can’t attach any Energy cards from his or her hand to his or her Pokémon during your opponent’s next turn."
+					text "Once during your turn , when you play Empoleon from your hand to evolve 1 of your Active PokÃ©mon, you may use this power. Your opponent canâ€™t attach any Energy cards from his or her hand to his or her PokÃ©mon during your opponentâ€™s next turn."
 					actionA {
 					}
 				}
@@ -240,7 +239,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Whirlpool", {
-					text "60 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "60 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -253,7 +252,7 @@ public enum Stormfront implements CardInfo {
 			return evolution (this, from:"Monferno", hp:HP120, type:FIGHTING, retreatCost:0) {
 				weakness P, PLUS30
 				pokePower "Blaze Dance", {
-					text "Once during your turn , when you play Infernape from your hand to evolve 1 of your Pokémon, you may flip a coin. If heads, search your deck for up to 4 Energy cards and attach them to your Pokémon in any way you like. Shuffle your deck afterward."
+					text "Once during your turn , when you play Infernape from your hand to evolve 1 of your PokÃ©mon, you may flip a coin. If heads, search your deck for up to 4 Energy cards and attach them to your PokÃ©mon in any way you like. Shuffle your deck afterward."
 					actionA {
 					}
 				}
@@ -266,7 +265,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Spreading Fire", {
-					text "80 damage. Energy attached to Infernape and this attack does 20 damage to each of your opponent’s Benched Pokémon."
+					text "80 damage. Energy attached to Infernape and this attack does 20 damage to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost R, R, C, C, R
 					attackRequirement {}
 					onAttack {
@@ -279,12 +278,12 @@ public enum Stormfront implements CardInfo {
 			return evolution (this, from:"Finneon", hp:HP080, type:WATER, retreatCost:0) {
 				weakness L, PLUS20
 				pokePower "Fin Luster", {
-					text "Once during your turn , if Lumineon is your Active Pokémon, you may look at your opponent’s hand. If your opponent’s Bench isn’t full, choose 1 Basic Pokémon from your opponent’s hand, and put it onto his or her Bench. Then, switch it with the Defending Pokémon. This power can’t be used if Lumineon is affected by a Special Condition."
+					text "Once during your turn , if Lumineon is your Active PokÃ©mon, you may look at your opponentâ€™s hand. If your opponentâ€™s Bench isnâ€™t full, choose 1 Basic PokÃ©mon from your opponentâ€™s hand, and put it onto his or her Bench. Then, switch it with the Defending PokÃ©mon. This power canâ€™t be used if Lumineon is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Quick Swim", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -292,7 +291,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Elegant Swim", {
-					text "30 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Lumineon during your opponent’s next turn."
+					text "30 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Lumineon during your opponentâ€™s next turn."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -306,12 +305,12 @@ public enum Stormfront implements CardInfo {
 				weakness R, PLUS30
 				resistance P, MINUS20
 				pokePower "Magnetic Search", {
-					text "Once during your turn , you may search your deck for a or Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power can’t be used if Magnezone is affected by a Special Condition."
+					text "Once during your turn , you may search your deck for a or PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power canâ€™t be used if Magnezone is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Speed Shot", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on that PokÃ©mon."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -333,12 +332,12 @@ public enum Stormfront implements CardInfo {
 				weakness F, PLUS30
 				resistance M, MINUS20
 				pokePower "Super Connectivity", {
-					text "Once during your turn , you may search your discard pile for a or Energy card and attach it to your Active Pokémon. Then, put 1 damage counter on that Pokémon. This power can’t be used if Magnezone is affected by a Special Condition."
+					text "Once during your turn , you may search your discard pile for a or Energy card and attach it to your Active PokÃ©mon. Then, put 1 damage counter on that PokÃ©mon. This power canâ€™t be used if Magnezone is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Gyro Ball", {
-					text "60 damage. You may switch Magnezone with 1 of your Benched Pokémon. If you do, your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "60 damage. You may switch Magnezone with 1 of your Benched PokÃ©mon. If you do, your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -352,7 +351,7 @@ public enum Stormfront implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				move "Crash Chant", {
-					text "20× damage. and discard them. This attack does 20 damage times the number of cards discarded in this way."
+					text "20Ã— damage. and discard them. This attack does 20 damage times the number of cards discarded in this way."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -360,7 +359,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Horror Chant", {
-					text "40 damage. If your opponent has 4 or more Benched Pokémon, choose 1 of them and return that Pokémon and all cards attached to it to your opponent’s hand."
+					text "40 damage. If your opponent has 4 or more Benched PokÃ©mon, choose 1 of them and return that PokÃ©mon and all cards attached to it to your opponentâ€™s hand."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -374,7 +373,7 @@ public enum Stormfront implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Slice", {
-					text "30 damage. Raichu can’t use Slice during your next turn."
+					text "30 damage. Raichu canâ€™t use Slice during your next turn."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -382,7 +381,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Split Ball", {
-					text "50 damage. Move an Energy card attached to Raichu to 1 of your Benched Pokémon."
+					text "50 damage. Move an Energy card attached to Raichu to 1 of your Benched PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -390,7 +389,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Burst Ball", {
-					text "100 damage. Discard 3 Energy attached to any of your Pokémon in any way you like."
+					text "100 damage. Discard 3 Energy attached to any of your PokÃ©mon in any way you like."
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
@@ -403,7 +402,7 @@ public enum Stormfront implements CardInfo {
 			return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
 				weakness F
 				pokeBody "Regi Form", {
-					text "If you have Regirock, Regice, and Registeel in play, the attack cost of Regigigas’s attacks is less."
+					text "If you have Regirock, Regice, and Registeel in play, the attack cost of Regigigasâ€™s attacks is less."
 					delayedA {
 					}
 				}
@@ -430,12 +429,12 @@ public enum Stormfront implements CardInfo {
 				weakness R, PLUS30
 				resistance W, MINUS20
 				pokePower "Energy Trans", {
-					text "As often as you like during your turn , move a Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Sceptile is affected by a Special Condition."
+					text "As often as you like during your turn , move a Energy card attached to 1 of your PokÃ©mon to another of your PokÃ©mon. This power canâ€™t be used if Sceptile is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Poison Leaf", {
-					text "40 damage. The Defending Pokémon is now Poisoned."
+					text "40 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -457,12 +456,12 @@ public enum Stormfront implements CardInfo {
 				weakness W, PLUS30
 				resistance L, MINUS20
 				pokePower "Sunshine Song", {
-					text "Once during your turn, when you play Torterra from your hand to evolve 1 of your Pokémon, you may choose as many of your Pokémon in play as you like. For each Pokémon you choose, search your deck for an Evolution card that evolves from that Pokémon and evolve it. Shuffle your deck afterward."
+					text "Once during your turn, when you play Torterra from your hand to evolve 1 of your PokÃ©mon, you may choose as many of your PokÃ©mon in play as you like. For each PokÃ©mon you choose, search your deck for an Evolution card that evolves from that PokÃ©mon and evolve it. Shuffle your deck afterward."
 					actionA {
 					}
 				}
 				move "Crash Impact", {
-					text "60 damage. Torterra does 20 damage to itself. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon, if any."
+					text "60 damage. Torterra does 20 damage to itself. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon, if any."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -470,7 +469,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Land Shake", {
-					text "80 damage. During your opponent’s next turn, whenever your opponent puts a Basic Pokémon from his or her hand onto his or her Bench, put 2 damage counters on that Pokémon."
+					text "80 damage. During your opponentâ€™s next turn, whenever your opponent puts a Basic PokÃ©mon from his or her hand onto his or her Bench, put 2 damage counters on that PokÃ©mon."
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
@@ -483,12 +482,12 @@ public enum Stormfront implements CardInfo {
 			return evolution (this, from:"Snover", hp:HP100, type:WATER, retreatCost:3) {
 				weakness R, PLUS30
 				pokeBody "Snow Veil", {
-					text "As long as Abomasnow is your Active Pokémon, any damage done to your Pokémon by an opponent’s attack is reduced by 20 ."
+					text "As long as Abomasnow is your Active PokÃ©mon, any damage done to your PokÃ©mon by an opponentâ€™s attack is reduced by 20 ."
 					delayedA {
 					}
 				}
 				move "Snow Play", {
-					text "20 damage. Pokémon."
+					text "20 damage. PokÃ©mon."
 					energyCost C, C, G, W
 					attackRequirement {}
 					onAttack {
@@ -496,7 +495,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Below Zero", {
-					text "60 damage. If Abomasnow evolved from Snover during this turn, the Defending Pokémon is now Paralyzed."
+					text "60 damage. If Abomasnow evolved from Snover during this turn, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -510,12 +509,12 @@ public enum Stormfront implements CardInfo {
 				weakness P, PLUS20
 				resistance R, MINUS20
 				pokePower "Cycler", {
-					text "Once during your turn , you may choose a card from your hand and put it on top of your deck. Then, search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward. This power can’t be used if Bronzong is affected by a Special Condition."
+					text "Once during your turn , you may choose a card from your hand and put it on top of your deck. Then, search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward. This power canâ€™t be used if Bronzong is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Strange Spin", {
-					text "20+ damage. If you have the same number of cards in your hand as your opponent, this attack does 20 damage plus 40 more damage and the Defending Pokémon is now Confused."
+					text "20+ damage. If you have the same number of cards in your hand as your opponent, this attack does 20 damage plus 40 more damage and the Defending PokÃ©mon is now Confused."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -523,7 +522,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Heavy Potential", {
-					text "Energy in that Pokémon’s Retreat Cost (after applying effects to the Retreat Cost)."
+					text "Energy in that PokÃ©monâ€™s Retreat Cost (after applying effects to the Retreat Cost)."
 					energyCost P, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -537,12 +536,12 @@ public enum Stormfront implements CardInfo {
 				weakness R, PLUS20
 				resistance W, MINUS20
 				pokeBody "Sunny Day", {
-					text "Each of your Pokémon’s and Pokémon’s attacks does 10 more damage to the Defending Pokémon ."
+					text "Each of your PokÃ©monâ€™s and PokÃ©monâ€™s attacks does 10 more damage to the Defending PokÃ©mon ."
 					delayedA {
 					}
 				}
 				move "Salty-sweet Pollen", {
-					text "20 damage. Remove 2 damage counters from 1 of your Pokémon."
+					text "20 damage. Remove 2 damage counters from 1 of your PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -563,7 +562,7 @@ public enum Stormfront implements CardInfo {
 			return evolution (this, from:"Skorupi", hp:HP110, type:DARKNESS, retreatCost:3) {
 				weakness P, PLUS20
 				move "Scorpion Grapple", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If tails, the Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed. If tails, the Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -571,7 +570,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Cross Poison", {
-					text "20× damage. Flip 4 coins. This attack does 20 damage times the number of heads. If 2 or more of them are heads, the Defending Pokémon is now Poisoned."
+					text "20Ã— damage. Flip 4 coins. This attack does 20 damage times the number of heads. If 2 or more of them are heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -579,7 +578,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Derail", {
-					text "60 damage. Discard all Special Energy cards attached to the Defending Pokémon."
+					text "60 damage. Discard all Special Energy cards attached to the Defending PokÃ©mon."
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
@@ -601,7 +600,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Lifting", {
-					text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. For each Basic Pokémon you put onto your Bench, you may search your deck for a basic Energy card and attach it to that Pokémon. Shuffle your deck afterward."
+					text "Search your deck for up to 2 Basic PokÃ©mon and put them onto your Bench. For each Basic PokÃ©mon you put onto your Bench, you may search your deck for a basic Energy card and attach it to that PokÃ©mon. Shuffle your deck afterward."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -609,7 +608,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Ominous Wind", {
-					text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Confused and can’t retreat during your opponent’s next turn."
+					text "40 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused and canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -623,12 +622,12 @@ public enum Stormfront implements CardInfo {
 				weakness D, PLUS30
 				resistance C, MINUS20
 				pokeBody "Spirit Pulse", {
-					text "As long as Dusknoir is your Active Pokémon, put 1 damage counter on each of your opponent’s Pokémon that has any Energy attached to it between turns."
+					text "As long as Dusknoir is your Active PokÃ©mon, put 1 damage counter on each of your opponentâ€™s PokÃ©mon that has any Energy attached to it between turns."
 					delayedA {
 					}
 				}
 				move "Darkness Mist", {
-					text "60+ damage. If the Defending Pokémon already has 2 or more damage counters on it, this attack does 60 damage plus 20 more damage."
+					text "60+ damage. If the Defending PokÃ©mon already has 2 or more damage counters on it, this attack does 60 damage plus 20 more damage."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -642,12 +641,12 @@ public enum Stormfront implements CardInfo {
 				weakness D, PLUS30
 				resistance C, MINUS20
 				pokePower "Fainting Spell", {
-					text "Once during your opponent’s turn, if Gengar would be Knocked Out by damage from an attack, you may flip a coin. If heads, the Defending Pokémon is Knocked Out."
+					text "Once during your opponentâ€™s turn, if Gengar would be Knocked Out by damage from an attack, you may flip a coin. If heads, the Defending PokÃ©mon is Knocked Out."
 					actionA {
 					}
 				}
 				move "Shadow Room", {
-					text "Put 3 damage counters on 1 of your opponent’s Pokémon. If that Pokémon has any Poké-Powers, put 6 damage counters on that Pokémon instead."
+					text "Put 3 damage counters on 1 of your opponentâ€™s PokÃ©mon. If that PokÃ©mon has any PokÃ©-Powers, put 6 damage counters on that PokÃ©mon instead."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -655,7 +654,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Poltergeist", {
-					text "30× damage. Look at your opponent’s hand. This attack does 30 damage times the number of Trainer, Supporter and Stadium cards in your opponent’s hand."
+					text "30Ã— damage. Look at your opponentâ€™s hand. This attack does 30 damage times the number of Trainer, Supporter and Stadium cards in your opponentâ€™s hand."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -669,7 +668,7 @@ public enum Stormfront implements CardInfo {
 				weakness L, PLUS30
 				resistance F, MINUS20
 				move "Tail Revenge", {
-					text "30× damage. Does 30 damage times the number of Magikarp in your discard pile."
+					text "30Ã— damage. Does 30 damage times the number of Magikarp in your discard pile."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -677,7 +676,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Wreak Havoc", {
-					text "40 damage. Flip a coin until you get tails. For each heads, discard the top card from your opponent’s deck."
+					text "40 damage. Flip a coin until you get tails. For each heads, discard the top card from your opponentâ€™s deck."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -685,7 +684,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Dragon Beat", {
-					text "100 damage. Flip a coin. If heads, discard an Energy card from each of your opponent’s Pokémon."
+					text "100 damage. Flip a coin. If heads, discard an Energy card from each of your opponentâ€™s PokÃ©mon."
 					energyCost W, W, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -698,7 +697,7 @@ public enum Stormfront implements CardInfo {
 			return evolution (this, from:"Machoke", hp:HP130, type:FIGHTING, retreatCost:2) {
 				weakness P, PLUS30
 				move "Take Out", {
-					text "40 damage. If the Defending Pokémon isn’t an Evolved Pokémon, that Pokémon is Knocked Out instead of damaged by this attack."
+					text "40 damage. If the Defending PokÃ©mon isnâ€™t an Evolved PokÃ©mon, that PokÃ©mon is Knocked Out instead of damaged by this attack."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -706,7 +705,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Hurricane Punch", {
-					text "30× damage. Flip 4 coins. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Flip 4 coins. This attack does 30 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -728,7 +727,7 @@ public enum Stormfront implements CardInfo {
 				weakness G, PLUS30
 				resistance L, MINUS20
 				move "Ramming Strike", {
-					text "30× damage. Flip a coin until you get tails. This attack does 30 damage times the number of heads or you may start again. Each time you start again, put 2 damage counters on Mamoswine. (If Mamoswine would be Knocked Out, you can’t start again.)"
+					text "30Ã— damage. Flip a coin until you get tails. This attack does 30 damage times the number of heads or you may start again. Each time you start again, put 2 damage counters on Mamoswine. (If Mamoswine would be Knocked Out, you canâ€™t start again.)"
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -749,7 +748,7 @@ public enum Stormfront implements CardInfo {
 			return evolution (this, from:"Ponyta", hp:HP080, type:FIRE, retreatCost:0) {
 				weakness W, PLUS20
 				pokeBody "Burning Mane", {
-					text "If Rapidash is your Active Pokémon and is damaged by an opponent’s attack (even if Rapidash is Knocked Out), the Attacking Pokémon is now Burned."
+					text "If Rapidash is your Active PokÃ©mon and is damaged by an opponentâ€™s attack (even if Rapidash is Knocked Out), the Attacking PokÃ©mon is now Burned."
 					delayedA {
 					}
 				}
@@ -762,7 +761,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Shooting Fire", {
-					text "Energy attached to Rapidash and choose 1 of your opponent’s Pokémon. This attack does 60 damage to that Pokémon."
+					text "Energy attached to Rapidash and choose 1 of your opponentâ€™s PokÃ©mon. This attack does 60 damage to that PokÃ©mon."
 					energyCost R, R, R
 					attackRequirement {}
 					onAttack {
@@ -775,12 +774,12 @@ public enum Stormfront implements CardInfo {
 			return evolution (this, from:"Roselia", hp:HP090, type:PSYCHIC, retreatCost:1) {
 				weakness R, PLUS20
 				pokeBody "Hidden Poison", {
-					text "If Roserade is your Active Pokémon and is damaged by an opponent’s attack (even if Roserade is Knocked Out), the Defending Pokémon is now Poisoned."
+					text "If Roserade is your Active PokÃ©mon and is damaged by an opponentâ€™s attack (even if Roserade is Knocked Out), the Defending PokÃ©mon is now Poisoned."
 					delayedA {
 					}
 				}
 				move "Bowed Whip", {
-					text "Flip a coin. If heads, discard an Energy card attached to that Pokémon."
+					text "Flip a coin. If heads, discard an Energy card attached to that PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -788,7 +787,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Deep Poison", {
-					text "50+ damage. If the Defending Pokémon is Poisoned, this attack does 50 damage plus 30 more damage."
+					text "50+ damage. If the Defending PokÃ©mon is Poisoned, this attack does 50 damage plus 30 more damage."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -802,7 +801,7 @@ public enum Stormfront implements CardInfo {
 				weakness C, PLUS30
 				resistance F, MINUS20
 				pokeBody "Battle Rush", {
-					text "If your opponent has any Pokémon in play that has maximum HP of 120 or more, ignore all Energy necessary to use Salamence’s attacks."
+					text "If your opponent has any PokÃ©mon in play that has maximum HP of 120 or more, ignore all Energy necessary to use Salamenceâ€™s attacks."
 					delayedA {
 					}
 				}
@@ -833,7 +832,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Accelerate", {
-					text "30 damage. If the Defending Pokémon is Knocked Out by this attack, prevent all effects of an attack, including damage, done to Scizor during your opponent’s next turn."
+					text "30 damage. If the Defending PokÃ©mon is Knocked Out by this attack, prevent all effects of an attack, including damage, done to Scizor during your opponentâ€™s next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -841,7 +840,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Pound Down", {
-					text "40+ damage. If you don’t have any Pokémon with any Poké-Powers in play, this attack does 40 damage plus 30 more damage."
+					text "40+ damage. If you donâ€™t have any PokÃ©mon with any PokÃ©-Powers in play, this attack does 40 damage plus 30 more damage."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -855,12 +854,12 @@ public enum Stormfront implements CardInfo {
 				weakness F, PLUS20
 				resistance P, MINUS20
 				pokePower "Evolutionary Gas", {
-					text "Once during your turn , when you play Skuntank from your hand to evolve 1 of your Active Pokémon, you may choose 1 of the Defending Pokémon. If that Pokémon tries to attack during your opponent’s next turn, that attack does nothing."
+					text "Once during your turn , when you play Skuntank from your hand to evolve 1 of your Active PokÃ©mon, you may choose 1 of the Defending PokÃ©mon. If that PokÃ©mon tries to attack during your opponentâ€™s next turn, that attack does nothing."
 					actionA {
 					}
 				}
 				move "Poison Claws", {
-					text "20 damage. The Defending Pokémon is now Poisoned."
+					text "20 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -882,12 +881,12 @@ public enum Stormfront implements CardInfo {
 				weakness L, PLUS30
 				resistance F, MINUS20
 				pokeBody "Protect Wing", {
-					text "As long as Staraptor is your Active Pokémon, any damage done by attacks from your opponent’s Stage 2 Evolved Pokémon is reduced by 20 ."
+					text "As long as Staraptor is your Active PokÃ©mon, any damage done by attacks from your opponentâ€™s Stage 2 Evolved PokÃ©mon is reduced by 20 ."
 					delayedA {
 					}
 				}
 				move "Strong Breeze", {
-					text "Flip a coin. If heads, put 1 of your opponent’s Benched Pokémon and all cards attached to it on top of your opponent’s deck. Your opponent shuffles his or her deck afterward."
+					text "Flip a coin. If heads, put 1 of your opponentâ€™s Benched PokÃ©mon and all cards attached to it on top of your opponentâ€™s deck. Your opponent shuffles his or her deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -895,7 +894,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Clutch", {
-					text "60 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "60 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -909,7 +908,7 @@ public enum Stormfront implements CardInfo {
 				weakness R, PLUS30
 				resistance P, MINUS20
 				move "Outbreak Power", {
-					text "Choose a number of your opponent’s Pokémon up to the amount of Energy attached to Steelix. This attack does 20 damage to each of them."
+					text "Choose a number of your opponentâ€™s PokÃ©mon up to the amount of Energy attached to Steelix. This attack does 20 damage to each of them."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -917,7 +916,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Iron Tail", {
-					text "100× damage. Flip a coin until you get tails. This attack does 100 damage for each heads."
+					text "100Ã— damage. Flip a coin until you get tails. This attack does 100 damage for each heads."
 					energyCost M, M, C, C
 					attackRequirement {}
 					onAttack {
@@ -936,7 +935,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Green Acid", {
-					text "20 damage. Flip 2 coins. If the first coin is heads, the Defending Pokémon is now Confused. If the second coin is heads, the Defending Pokémon is now Poisoned."
+					text "20 damage. Flip 2 coins. If the first coin is heads, the Defending PokÃ©mon is now Confused. If the second coin is heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -944,7 +943,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Reaching Vine", {
-					text "60 damage. Does 20 damage to 2 of your opponent’s Benched Pokémon."
+					text "60 damage. Does 20 damage to 2 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
@@ -958,12 +957,12 @@ public enum Stormfront implements CardInfo {
 				weakness F, PLUS30
 				resistance P, MINUS20
 				pokeBody "Darkness Drive", {
-					text "After your opponent’s Pokémon uses a Poké-Power, you may search your discard pile for a basic Energy and attach it to Tyranitar."
+					text "After your opponentâ€™s PokÃ©mon uses a PokÃ©-Power, you may search your discard pile for a basic Energy and attach it to Tyranitar."
 					delayedA {
 					}
 				}
 				move "Grind", {
-					text "20× damage. Does 20 damage times the amount of Energy attached to Tyranitar."
+					text "20Ã— damage. Does 20 damage times the amount of Energy attached to Tyranitar."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -971,7 +970,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Spinning Tail", {
-					text "This attack does 30 damage to each of your opponent’s Pokémon."
+					text "This attack does 30 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost D, D, D, D, D
 					attackRequirement {}
 					onAttack {
@@ -985,12 +984,12 @@ public enum Stormfront implements CardInfo {
 				weakness R, PLUS20
 				resistance F, MINUS20
 				pokeBody "Green Dignity", {
-					text "As long as you have more Prize cards left than your opponent, Vespiquen’s attacks do 10 more damage for each Pokémon on your Bench to the Active Pokémon ."
+					text "As long as you have more Prize cards left than your opponent, Vespiquenâ€™s attacks do 10 more damage for each PokÃ©mon on your Bench to the Active PokÃ©mon ."
 					delayedA {
 					}
 				}
 				move "Bee Drain", {
-					text "20 damage. After your attack, remove from Vespiquen the number of damage counters equal to the damage you did to the Defending Pokémon."
+					text "20 damage. After your attack, remove from Vespiquen the number of damage counters equal to the damage you did to the Defending PokÃ©mon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -998,7 +997,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Bee Powder", {
-					text "50 damage. Flip 2 coins. If both are heads, the Defending Pokémon is now Burned, Paralyzed and Poisoned."
+					text "50 damage. Flip 2 coins. If both are heads, the Defending PokÃ©mon is now Burned, Paralyzed and Poisoned."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1024,7 +1023,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "", {
-					text "Choose 1 of the Defending Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
+					text "Choose 1 of the Defending PokÃ©monâ€™s attacks. That PokÃ©mon canâ€™t use that attack during your opponentâ€™s next turn."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1045,7 +1044,7 @@ public enum Stormfront implements CardInfo {
 			return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
 				weakness R, PLUS10
 				pokeBody "Poison Enzyme", {
-					text "Prevent all effects of attacks, including damage, done to Budew by your opponent’s Poisoned Pokémon."
+					text "Prevent all effects of attacks, including damage, done to Budew by your opponentâ€™s Poisoned PokÃ©mon."
 					delayedA {
 					}
 				}
@@ -1055,7 +1054,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Buddy-buddy", {
-					text "Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+					text "Search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1091,7 +1090,7 @@ public enum Stormfront implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				move "Confuse Ray", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1113,12 +1112,12 @@ public enum Stormfront implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				pokeBody "Radiance", {
-					text "If Electrode is your Active Pokémon and is damaged by an opponent’s attack (even if Electrode is Knocked Out), put 1 damage counter on each of your opponent’s Pokémon."
+					text "If Electrode is your Active PokÃ©mon and is damaged by an opponentâ€™s attack (even if Electrode is Knocked Out), put 1 damage counter on each of your opponentâ€™s PokÃ©mon."
 					delayedA {
 					}
 				}
 				move "Low Current", {
-					text "30 damage. If Electrode was damaged by an attack during your opponent’s last turn, the Defending Pokémon is now Paralyzed."
+					text "30 damage. If Electrode was damaged by an attack during your opponentâ€™s last turn, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1126,7 +1125,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Swift", {
-					text "60 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "60 damage. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1140,7 +1139,7 @@ public enum Stormfront implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Flash", {
-					text "20 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "20 damage. If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1184,7 +1183,7 @@ public enum Stormfront implements CardInfo {
 				weakness R, PLUS20
 				resistance W, MINUS20
 				move "Tail Shake", {
-					text "20 damage. The Defending Pokémon is now Asleep."
+					text "20 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1192,7 +1191,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Slam", {
-					text "60× damage. Flip 2 coins. This attack does 60 damage times the number of heads."
+					text "60Ã— damage. Flip 2 coins. This attack does 60 damage times the number of heads."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1206,7 +1205,7 @@ public enum Stormfront implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				move "Smog", {
-					text "The Defending Pokémon is now Poisoned."
+					text "The Defending PokÃ©mon is now Poisoned."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1214,7 +1213,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Hoodwink", {
-					text "30 damage. You may search your opponent’s discard pile for up to 3 in any combination of Trainer, Supporter or Stadium cards and put them into your opponent’s hand."
+					text "30 damage. You may search your opponentâ€™s discard pile for up to 3 in any combination of Trainer, Supporter or Stadium cards and put them into your opponentâ€™s hand."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1235,7 +1234,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Brick Break", {
-					text "30 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "30 damage. This attackâ€™s damage isnâ€™t affected by Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1249,7 +1248,7 @@ public enum Stormfront implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				move "Magnetic Resonance", {
-					text "20 damage. If you have a Stadium card in play, this attack does 20 damage to 2 of your opponent’s Benched Pokémon."
+					text "20 damage. If you have a Stadium card in play, this attack does 20 damage to 2 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1257,7 +1256,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Magnetic Release", {
-					text "40+ damage. Does 40 damage plus 10 more damage for each Energy attached to the Defending Pokémon."
+					text "40+ damage. Does 40 damage plus 10 more damage for each Energy attached to the Defending PokÃ©mon."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -1271,7 +1270,7 @@ public enum Stormfront implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Thunder Wave", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1279,7 +1278,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Removal Pulse", {
-					text "50 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "50 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -1300,7 +1299,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Energy Milk", {
-					text "Flip a coin until you get tails. For each heads, remove 2 damage counters from 1 of your Pokémon."
+					text "Flip a coin until you get tails. For each heads, remove 2 damage counters from 1 of your PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1349,7 +1348,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Overrun", {
-					text "60 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "60 damage. Does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost F, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1363,7 +1362,7 @@ public enum Stormfront implements CardInfo {
 				weakness G, PLUS20
 				resistance L, MINUS20
 				pokeBody "Energy Protection", {
-					text "Any damage done to Pupitar by attacks is reduced by 10 for each Energy attached to Pupitar . You can’t reduce more than 30 damage in this way."
+					text "Any damage done to Pupitar by attacks is reduced by 10 for each Energy attached to Pupitar . You canâ€™t reduce more than 30 damage in this way."
 					delayedA {
 					}
 				}
@@ -1381,7 +1380,7 @@ public enum Stormfront implements CardInfo {
 			return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
 				resistance C, MINUS20
 				pokeBody "Overeager", {
-					text "If Sableye is your Active Pokémon at the beginning of the game, you go first. (If each player’s Active Pokémon has the Overeager Poké-Body, this power does nothing.)"
+					text "If Sableye is your Active PokÃ©mon at the beginning of the game, you go first. (If each playerâ€™s Active PokÃ©mon has the Overeager PokÃ©-Body, this power does nothing.)"
 					delayedA {
 					}
 				}
@@ -1408,7 +1407,7 @@ public enum Stormfront implements CardInfo {
 				weakness R, PLUS10
 				resistance F, MINUS20
 				move "Swords Dance", {
-					text "During your next turn, Scyther’s Slashing Strike attack’s base damage is 60."
+					text "During your next turn, Scytherâ€™s Slashing Strike attackâ€™s base damage is 60."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1416,7 +1415,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Slashing Strike", {
-					text "30 damage. During your next turn, Scyther can’t use Slashing Strike."
+					text "30 damage. During your next turn, Scyther canâ€™t use Slashing Strike."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1430,7 +1429,7 @@ public enum Stormfront implements CardInfo {
 				weakness C, PLUS20
 				resistance F, MINUS20
 				move "Body Slam", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1460,7 +1459,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Mach Blade", {
-					text "Flip a coin. If heads, this attack does 50 damage to 1 of your opponent’s Pokémon."
+					text "Flip a coin. If heads, this attack does 50 damage to 1 of your opponentâ€™s PokÃ©mon."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
@@ -1482,7 +1481,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Shot Air", {
-					text "20 damage. Does 30 damage to 1 of your opponent’s Benched Pokémon."
+					text "20 damage. Does 30 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1496,7 +1495,7 @@ public enum Stormfront implements CardInfo {
 				weakness C, PLUS10
 				resistance F, MINUS20
 				move "Scary Face", {
-					text "Flip a coin. If heads, the Defending Pokémon can’t attack or retreat during your opponent’s next turn."
+					text "Flip a coin. If heads, the Defending PokÃ©mon canâ€™t attack or retreat during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1517,7 +1516,7 @@ public enum Stormfront implements CardInfo {
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:2) {
 				weakness F, PLUS10
 				move "Yawn", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1525,7 +1524,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Self-abandonment", {
-					text "Flip a coin. If heads, this attack does 30 damage to the Defending Pokémon. If tails, Bidoof does 10 damage to itself."
+					text "Flip a coin. If heads, this attack does 30 damage to the Defending PokÃ©mon. If tails, Bidoof does 10 damage to itself."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1539,7 +1538,7 @@ public enum Stormfront implements CardInfo {
 				weakness P, PLUS10
 				resistance R, MINUS20
 				move "Gyro Swap", {
-					text "Energy in Bronzor’s Retreat Cost (after applying effects to the Retreat Cost)."
+					text "Energy in Bronzorâ€™s Retreat Cost (after applying effects to the Retreat Cost)."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1547,7 +1546,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Psyshock", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1569,7 +1568,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Bullet Seed", {
-					text "10× damage. Flip 4 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 4 coins. This attack does 10 damage times the number of heads."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1591,7 +1590,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Alert", {
-					text "Draw a card. Then, you may switch Combee with 1 of your Benched Pokémon."
+					text "Draw a card. Then, you may switch Combee with 1 of your Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1605,7 +1604,7 @@ public enum Stormfront implements CardInfo {
 				weakness D, PLUS10
 				resistance C, MINUS20
 				move "Constrict", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1613,7 +1612,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Linear Attack", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 10 damage to that PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1627,14 +1626,14 @@ public enum Stormfront implements CardInfo {
 				weakness D, PLUS10
 				resistance C, MINUS20
 				move "Silhouette", {
-					text "Put 1 damage counter on the Defending Pokémon. If the Defending Pokémon already has any damage counters on it, put 2 damage counters on that Pokémon instead."
+					text "Put 1 damage counter on the Defending PokÃ©mon. If the Defending PokÃ©mon already has any damage counters on it, put 2 damage counters on that PokÃ©mon instead."
 					energyCost P
 					attackRequirement {}
 					onAttack {
 						damage 0
 					}
 				}
-				move "Will-o’-the-wisp", {
+				move "Will-oâ€™-the-wisp", {
 					text "20 damage. "
 					energyCost C, C
 					attackRequirement {}
@@ -1670,7 +1669,7 @@ public enum Stormfront implements CardInfo {
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Aqua Liner", {
-					text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s Benched PokÃ©mon. This attack does 10 damage to that PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1692,7 +1691,7 @@ public enum Stormfront implements CardInfo {
 				weakness D, PLUS10
 				resistance C, MINUS20
 				move "Pitch-Dark", {
-					text "You opponent can’t play any Trainer cards from his or her hand during your opponent’s next turn."
+					text "You opponent canâ€™t play any Trainer cards from his or her hand during your opponentâ€™s next turn."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1700,7 +1699,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Trick Gas", {
-					text "10 damage. You may switch Gastly with 1 of your Benched Pokémon."
+					text "10 damage. You may switch Gastly with 1 of your Benched PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1722,7 +1721,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Rock Slide", {
-					text "20 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
+					text "20 damage. Does 10 damage to 2 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1743,7 +1742,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Knock Back", {
-					text "20 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "20 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1778,7 +1777,7 @@ public enum Stormfront implements CardInfo {
 				weakness R, PLUS10
 				resistance P, MINUS20
 				move "", {
-					text "Magnemite’s damage. "
+					text "Magnemiteâ€™s damage. "
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1808,7 +1807,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Random Spark", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to that PokÃ©mon."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1822,7 +1821,7 @@ public enum Stormfront implements CardInfo {
 				weakness D, PLUS10
 				resistance C, MINUS20
 				move "Lullaby", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1830,7 +1829,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Nightmare Feast", {
-					text "If the Defending Pokémon is Asleep, this attack does 50 damage and remove 5 damage counters from Misdreavus. If the Defending Pokémon is not Asleep, this attack does nothing."
+					text "If the Defending PokÃ©mon is Asleep, this attack does 50 damage and remove 5 damage counters from Misdreavus. If the Defending PokÃ©mon is not Asleep, this attack does nothing."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1843,7 +1842,7 @@ public enum Stormfront implements CardInfo {
 			return basic (this, hp:HP090, type:FIGHTING, retreatCost:3) {
 				weakness G, PLUS20
 				move "Harden", {
-					text "During your opponent’s next turn, if Onix would be damaged by an attack, prevent that attack’s damage done to Onix if that damage is 40 or less."
+					text "During your opponentâ€™s next turn, if Onix would be damaged by an attack, prevent that attackâ€™s damage done to Onix if that damage is 40 or less."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1851,7 +1850,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Bind", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -1873,7 +1872,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Speed Bolt", {
-					text "40 damage. If Pikachu evolved from Pichu during this turn, prevent all effects of an attack, including damage, done to Pikachu during your opponent’s next turn."
+					text "40 damage. If Pikachu evolved from Pichu during this turn, prevent all effects of an attack, including damage, done to Pikachu during your opponentâ€™s next turn."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -1894,7 +1893,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Agility", {
-					text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Ponyta during your opponent’s next turn."
+					text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Ponyta during your opponentâ€™s next turn."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -1915,7 +1914,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Petal Spikes", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep and Poisoned. If Budew is anywhere under Roselia, the Defending Pokémon is now Asleep and Poisoned."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Asleep and Poisoned. If Budew is anywhere under Roselia, the Defending PokÃ©mon is now Asleep and Poisoned."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1928,7 +1927,7 @@ public enum Stormfront implements CardInfo {
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
 				weakness P, PLUS10
 				move "Stalk", {
-					text "10 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "10 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1936,7 +1935,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Dangerous Claw", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If tails, the Defending Pokémon is now Poisoned."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed. If tails, the Defending PokÃ©mon is now Poisoned."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1957,7 +1956,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Powder Snow", {
-					text "10 damage. The Defending Pokémon is now Asleep."
+					text "10 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1971,7 +1970,7 @@ public enum Stormfront implements CardInfo {
 				weakness L, PLUS10
 				resistance F, MINUS20
 				move "Sand Attack", {
-					text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1979,7 +1978,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Double Stab", {
-					text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 2 coins. This attack does 10 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1993,7 +1992,7 @@ public enum Stormfront implements CardInfo {
 				weakness F, PLUS10
 				resistance P, MINUS20
 				move "Gnaw and Run", {
-					text "10 damage. Switch Stunky with 1 of your Benched Pokémon."
+					text "10 damage. Switch Stunky with 1 of your Benched PokÃ©mon."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -2001,7 +2000,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Double Scratch", {
-					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2015,7 +2014,7 @@ public enum Stormfront implements CardInfo {
 				weakness G, PLUS10
 				resistance F, MINUS20
 				move "Freezing Breath", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2037,7 +2036,7 @@ public enum Stormfront implements CardInfo {
 				weakness R, PLUS10
 				resistance W, MINUS20
 				move "Ingrain", {
-					text "Energy card and attach it to Tangela. Shuffle your deck afterward. If you do, prevent all effects of an attack, including damage, done to Tangela during your opponent’s next turn."
+					text "Energy card and attach it to Tangela. Shuffle your deck afterward. If you do, prevent all effects of an attack, including damage, done to Tangela during your opponentâ€™s next turn."
 					energyCost C, G
 					attackRequirement {}
 					onAttack {
@@ -2045,7 +2044,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Tickle", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -2059,7 +2058,7 @@ public enum Stormfront implements CardInfo {
 				weakness R, PLUS10
 				resistance W, MINUS20
 				move "Call for Friends", {
-					text "Search your deck for a Basic Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+					text "Search your deck for a Basic PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2067,7 +2066,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Poison Breath", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -2081,7 +2080,7 @@ public enum Stormfront implements CardInfo {
 				weakness F, PLUS10
 				resistance M, MINUS20
 				move "Screech", {
-					text ", that attack does 20 more damage to that Pokémon until the end of your next turn."
+					text ", that attack does 20 more damage to that PokÃ©mon until the end of your next turn."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2089,7 +2088,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Double Spin", {
-					text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip 2 coins. This attack does 10 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2122,7 +2121,7 @@ public enum Stormfront implements CardInfo {
 			};
 			case CONDUCTIVE_QUARRY_82:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, the player may flip a coin. If heads, that player searches his or her discard pile for a [L] or [M] Energy card, shows it to the opponent, and puts it into his or her hand."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nOnce during each playerâ€™s turn, the player may flip a coin. If heads, that player searches his or her discard pile for a [L] or [M] Energy card, shows it to the opponent, and puts it into his or her hand."
 				onPlay {
 				}
 				playRequirement{
@@ -2130,7 +2129,7 @@ public enum Stormfront implements CardInfo {
 			};
 			case ENERGY_LINK_83:
 			return basicTrainer (this) {
-				text "Attach Energy Link to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAs long as Energy Link is attached to a Pokémon, you may move an Energy card attached to that Pokémon to another of your Pokémon that has Energy Link attached to it. You may use this effect as often as you like during your turn."
+				text "Attach Energy Link to 1 of your PokÃ©mon that doesnâ€™t already have a PokÃ©mon Tool attached to it. If that PokÃ©mon is Knocked Out, discard this card.\nAs long as Energy Link is attached to a PokÃ©mon, you may move an Energy card attached to that PokÃ©mon to another of your PokÃ©mon that has Energy Link attached to it. You may use this effect as often as you like during your turn."
 				onPlay {
 				}
 				playRequirement{
@@ -2138,7 +2137,7 @@ public enum Stormfront implements CardInfo {
 			};
 			case ENERGY_SWITCH_84:
 			return basicTrainer (this) {
-				text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
+				text "Move a basic Energy card attached to 1 of your PokÃ©mon to another of your PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2146,7 +2145,7 @@ public enum Stormfront implements CardInfo {
 			};
 			case GREAT_BALL_85:
 			return basicTrainer (this) {
-				text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
+				text "Search your deck for a Basic PokÃ©mon and put it onto your Bench. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2154,7 +2153,7 @@ public enum Stormfront implements CardInfo {
 			};
 			case LUXURY_BALL_86:
 			return basicTrainer (this) {
-				text "Search your deck for a Pokémon (excluding Pokémon LV.X), show it to your opponent, and put it into your hand. Shuffle your deck afterward. If any Luxury Ball is in your discard pile, you can’t play this card."
+				text "Search your deck for a PokÃ©mon (excluding PokÃ©mon LV.X), show it to your opponent, and put it into your hand. Shuffle your deck afterward. If any Luxury Ball is in your discard pile, you canâ€™t play this card."
 				onPlay {
 				}
 				playRequirement{
@@ -2162,7 +2161,7 @@ public enum Stormfront implements CardInfo {
 			};
 			case MARLEY_S_REQUEST_87:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your discard pile for 2 different Trainer, Supporter, or Stadium cards, show them to your opponent, and your opponent chooses 1 of them. Put that card into your hand, and discard the other card. (If all Trainer, Supporter, and Stadium cards in your discard pile have the same name, choose 1 of them. Show that card to your opponent and put it into your hand.)"
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your discard pile for 2 different Trainer, Supporter, or Stadium cards, show them to your opponent, and your opponent chooses 1 of them. Put that card into your hand, and discard the other card. (If all Trainer, Supporter, and Stadium cards in your discard pile have the same name, choose 1 of them. Show that card to your opponent and put it into your hand.)"
 				onPlay {
 				}
 				playRequirement{
@@ -2170,7 +2169,7 @@ public enum Stormfront implements CardInfo {
 			};
 			case POKE_BLOWER_+_88:
 			return basicTrainer (this) {
-				text "You may play 2 Poké Blower + at the same time. If you play 1 Poké Blower +, flip a coin. If heads, put 1 damage counter on 1 of your opponent’s Pokémon. If you play 2 Poké Blower +, choose 1 of your opponent’s Benched Pokémon and switch it with 1 of your opponent’s Active Pokémon."
+				text "You may play 2 PokÃ© Blower + at the same time. If you play 1 PokÃ© Blower +, flip a coin. If heads, put 1 damage counter on 1 of your opponentâ€™s PokÃ©mon. If you play 2 PokÃ© Blower +, choose 1 of your opponentâ€™s Benched PokÃ©mon and switch it with 1 of your opponentâ€™s Active PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2178,7 +2177,7 @@ public enum Stormfront implements CardInfo {
 			};
 			case POKE_DRAWER_+_89:
 			return basicTrainer (this) {
-				text "You may play 2 Poké Drawer + at the same time. If you play 1 Poké Drawer +, draw a card. If you play 2 Poké Drawer +, search your deck for up to 2 cards, and put them into your hand. Shuffle your deck afterward."
+				text "You may play 2 PokÃ© Drawer + at the same time. If you play 1 PokÃ© Drawer +, draw a card. If you play 2 PokÃ© Drawer +, search your deck for up to 2 cards, and put them into your hand. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2186,7 +2185,7 @@ public enum Stormfront implements CardInfo {
 			};
 			case POKE_HEALER_+_90:
 			return basicTrainer (this) {
-				text "You may play 2 Poké Healer + at the same time. If you play 1 Poké Healer +, remove 1 damage counter and a Special Condition from 1 of your Active Pokémon. If you play 2 Poké Healer +, remove 8 damage counters and all Special Conditions from 1 of your Active Pokémon."
+				text "You may play 2 PokÃ© Healer + at the same time. If you play 1 PokÃ© Healer +, remove 1 damage counter and a Special Condition from 1 of your Active PokÃ©mon. If you play 2 PokÃ© Healer +, remove 8 damage counters and all Special Conditions from 1 of your Active PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2194,7 +2193,7 @@ public enum Stormfront implements CardInfo {
 			};
 			case PREMIER_BALL_91:
 			return basicTrainer (this) {
-				text "Search your deck or your discard pile for a Pokémon LV.X, show it to your opponent, and put it into your hand. If you search your deck, shuffle your deck afterward."
+				text "Search your deck or your discard pile for a PokÃ©mon LV.X, show it to your opponent, and put it into your hand. If you search your deck, shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2202,7 +2201,7 @@ public enum Stormfront implements CardInfo {
 			};
 			case POTION_92:
 			return basicTrainer (this) {
-				text "Remove 2 damage counters from 1 of your Pokémon (remove 1 damage counter if that Pokémon has only 1)."
+				text "Remove 2 damage counters from 1 of your PokÃ©mon (remove 1 damage counter if that PokÃ©mon has only 1)."
 				onPlay {
 				}
 				playRequirement{
@@ -2210,7 +2209,7 @@ public enum Stormfront implements CardInfo {
 			};
 			case SWITCH_93:
 			return basicTrainer (this) {
-				text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
+				text "Switch 1 of your Active PokÃ©mon with 1 of your Benched PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2218,7 +2217,7 @@ public enum Stormfront implements CardInfo {
 			};
 			case CYCLONE_ENERGY_94:
 			return specialEnergy (this, [[C]]) {
-				text "Cyclone Energy provides [C] Energy. When you attach this card from your hand to your Active Pokémon, switch 1 of the Defending Pokémon with 1 of your opponent’s Benched Pokémon. Your opponent chooses the Benched Pokémon to switch."
+				text "Cyclone Energy provides [C] Energy. When you attach this card from your hand to your Active PokÃ©mon, switch 1 of the Defending PokÃ©mon with 1 of your opponentâ€™s Benched PokÃ©mon. Your opponent chooses the Benched PokÃ©mon to switch."
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2230,7 +2229,7 @@ public enum Stormfront implements CardInfo {
 			};
 			case WARP_ENERGY_95:
 			return specialEnergy (this, [[C]]) {
-				text "Warp Energy provides [C] Energy. When you attach this card from your hand to your Active Pokémon, switch that Pokémon with 1 of your Benched Pokémon."
+				text "Warp Energy provides [C] Energy. When you attach this card from your hand to your Active PokÃ©mon, switch that PokÃ©mon with 1 of your Benched PokÃ©mon."
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2245,12 +2244,12 @@ public enum Stormfront implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				pokePower "Ectoplasm", {
-					text "If Dusknoir is your Active Pokémon and would be Knocked Out by damage from your opponent’s attack, you may discard all cards attached to Dusknoir LV. and put Dusknoir LV. as a Stadium card into play instead of discarding it. This counts as Dusknoir being Knocked Out and your opponent takes a Prize card. As long as you have Dusknoir LV. as a Stadium card in play, put 1 damage counter on each of your opponent’s Pokémon between turns. If another Stadium card comes into play or Dusknoir LV. is discarded by the effects of any attacks, Poké-Powers, Poké-Bodies, Trainer, or Supporter cards, return Dusknoir LV. to your hand."
+					text "If Dusknoir is your Active PokÃ©mon and would be Knocked Out by damage from your opponentâ€™s attack, you may discard all cards attached to Dusknoir LV. and put Dusknoir LV. as a Stadium card into play instead of discarding it. This counts as Dusknoir being Knocked Out and your opponent takes a Prize card. As long as you have Dusknoir LV. as a Stadium card in play, put 1 damage counter on each of your opponentâ€™s PokÃ©mon between turns. If another Stadium card comes into play or Dusknoir LV. is discarded by the effects of any attacks, PokÃ©-Powers, PokÃ©-Bodies, Trainer, or Supporter cards, return Dusknoir LV. to your hand."
 					actionA {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Dusknoir. Dusknoir LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Dusknoir. Dusknoir LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2263,17 +2262,17 @@ public enum Stormfront implements CardInfo {
 			return evolution (this, from:"Heatran", hp:HP120, type:FIRE, retreatCost:4) {
 				weakness W
 				pokeBody "Heat Metal", {
-					text "Your opponent can’t remove the Special Condition Burned by evolving or devolving his or her Burned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Burned Pokémon.) Whenever your opponent flips a coin for the Special Condition Burned between turns, treat it as tails."
+					text "Your opponent canâ€™t remove the Special Condition Burned by evolving or devolving his or her Burned PokÃ©mon. (This also includes putting a PokÃ©mon Level-Up card onto the Burned PokÃ©mon.) Whenever your opponent flips a coin for the Special Condition Burned between turns, treat it as tails."
 					delayedA {
 					}
 				}
 				pokePower "Heat Wave", {
-					text "Once at the end of your turn, if Heatran is on your Bench, you may use this power. If you discarded basic Energy cards attached to your or Active Pokémon by that Pokémon’s attack this turn, attach up to 2 of those Energy cards to that Pokémon."
+					text "Once at the end of your turn, if Heatran is on your Bench, you may use this power. If you discarded basic Energy cards attached to your or Active PokÃ©mon by that PokÃ©monâ€™s attack this turn, attach up to 2 of those Energy cards to that PokÃ©mon."
 					actionA {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Heatran. Heatran LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Heatran. Heatran LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2286,12 +2285,12 @@ public enum Stormfront implements CardInfo {
 			return evolution (this, from:"Machamp", hp:HP150, type:FIGHTING, retreatCost:3) {
 				weakness P
 				pokeBody "No Guard", {
-					text "As long as Machamp is your Active Pokémon, each of Machamp’s attacks does 60 more damage to the Active Pokémon and any damage done to Machamp by your opponent’s Pokémon is increased by 60 ."
+					text "As long as Machamp is your Active PokÃ©mon, each of Machampâ€™s attacks does 60 more damage to the Active PokÃ©mon and any damage done to Machamp by your opponentâ€™s PokÃ©mon is increased by 60 ."
 					delayedA {
 					}
 				}
 				move "Strong-Willed", {
-					text "20 damage. During your opponent’s next turn, if Machamp would be Knocked Out by damage from an attack, flip a coin. If heads, Machamp is not Knocked Out and its remaining HP becomes 10 instead."
+					text "20 damage. During your opponentâ€™s next turn, if Machamp would be Knocked Out by damage from an attack, flip a coin. If heads, Machamp is not Knocked Out and its remaining HP becomes 10 instead."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -2299,7 +2298,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Machamp. Machamp LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Machamp. Machamp LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2313,12 +2312,12 @@ public enum Stormfront implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				pokeBody "Link Lightning", {
-					text "Once during your turn, when you put Raichu LV. onto Raichu and use Voltage Shoot, you may use another attack of Raichu afterward. This power can’t be used if Raichu is affected by a Special Condition."
+					text "Once during your turn, when you put Raichu LV. onto Raichu and use Voltage Shoot, you may use another attack of Raichu afterward. This power canâ€™t be used if Raichu is affected by a Special Condition."
 					delayedA {
 					}
 				}
 				move "Voltage Shoot", {
-					text "Energy cards from your hand and choose 1 of your opponent’s Pokémon. This attack does 80 to that Pokémon."
+					text "Energy cards from your hand and choose 1 of your opponentâ€™s PokÃ©mon. This attack does 80 to that PokÃ©mon."
 					energyCost L, L, C, L
 					attackRequirement {}
 					onAttack {
@@ -2326,7 +2325,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Raichu. Raichu LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Raichu. Raichu LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2339,12 +2338,12 @@ public enum Stormfront implements CardInfo {
 			return evolution (this, from:"Regigigas", hp:HP150, type:COLORLESS, retreatCost:4) {
 				weakness F
 				pokePower "Sacrifice", {
-					text "Once during your turn , you may choose 1 of your Pokémon and that Pokémon is Knocked Out. Then, search your discard pile for up to 2 basic Energy cards, attach them to Regigigas, and remove 8 damage counters from Regigigas. This power can’t be used if Regigigas is affected by a Special Condition."
+					text "Once during your turn , you may choose 1 of your PokÃ©mon and that PokÃ©mon is Knocked Out. Then, search your discard pile for up to 2 basic Energy cards, attach them to Regigigas, and remove 8 damage counters from Regigigas. This power canâ€™t be used if Regigigas is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Giga Blaster", {
-					text "100 damage. Discard the top card from your opponent’s deck. Then, choose 1 card from your opponent’s hand without looking and discard it. Regigigas can’t use Giga Blaster during your next turn."
+					text "100 damage. Discard the top card from your opponentâ€™s deck. Then, choose 1 card from your opponentâ€™s hand without looking and discard it. Regigigas canâ€™t use Giga Blaster during your next turn."
 					energyCost W, F, M, C
 					attackRequirement {}
 					onAttack {
@@ -2352,7 +2351,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Regigigas. Regigigas LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Regigigas. Regigigas LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2427,7 +2426,7 @@ public enum Stormfront implements CardInfo {
 				weakness D, PLUS10
 				resistance C, MINUS20
 				pokeBody "Unburden", {
-					text "If Drifloon has a Pokémon Tool card attached to it, Drifloon’s Retreat Cost is more."
+					text "If Drifloon has a PokÃ©mon Tool card attached to it, Drifloonâ€™s Retreat Cost is more."
 					delayedA {
 					}
 				}
@@ -2470,7 +2469,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Night Bind", {
-					text "20 damage. Flip a coin. If heads, your opponent can’t attach any Energy cards from his or her hand to the Active Pokémon during his or her next turn."
+					text "20 damage. Flip a coin. If heads, your opponent canâ€™t attach any Energy cards from his or her hand to the Active PokÃ©mon during his or her next turn."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -2484,7 +2483,7 @@ public enum Stormfront implements CardInfo {
 				weakness F, PLUS10
 				resistance M, MINUS20
 				move "Fastball", {
-					text "Choose 1 of your opponent’s Pokémon. Flip a coin. If heads, this attack does 20 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. Flip a coin. If heads, this attack does 20 damage to that PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2500,7 +2499,7 @@ public enum Stormfront implements CardInfo {
 					}
 				}
 				move "Thundershock", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {

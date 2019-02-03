@@ -52,8 +52,7 @@ public enum PopSeries7 implements CardInfo {
 	MAREEP_14 ("Mareep", 14, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
 	RALTS_15 ("Ralts", 15, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
 	SENTRET_16 ("Sentret", 16, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-	SPINDA_17 ("Spinda", 17, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-;
+	SPINDA_17 ("Spinda", 17, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -112,12 +111,12 @@ public enum PopSeries7 implements CardInfo {
 				weakness F, PLUS30
 				resistance M, MINUS20
 				pokeBody "Jamming", {
-					text "After your opponent plays a Support card from his or her hand, put 1 damage counter on each of your opponent’s Pokémon. You can’t use more than 1 Jamming Poké-Body each turn."
+					text "After your opponent plays a Support card from his or her hand, put 1 damage counter on each of your opponentâ€™s PokÃ©mon. You canâ€™t use more than 1 Jamming PokÃ©-Body each turn."
 					delayedA {
 					}
 				}
 				move "Cluster Bolt", {
-					text "70 damage. Energy attached to Ampharos. If you do, this attack does 20 damage to each of your opponent’s Benched Pokémon that has any Energy cards attached to it."
+					text "70 damage. Energy attached to Ampharos. If you do, this attack does 20 damage to each of your opponentâ€™s Benched PokÃ©mon that has any Energy cards attached to it."
 					energyCost L, C, C, L
 					attackRequirement {}
 					onAttack {
@@ -130,7 +129,7 @@ public enum PopSeries7 implements CardInfo {
 			return evolution (this, from:"Kirlia", hp:HP130, type:FIGHTING, retreatCost:2) {
 				weakness P, PLUS30
 				move "Sonic Blade", {
-					text "Put damage counters on the Defending Pokémon until it is 50 HP away from being Knocked Out. If you do, your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "Put damage counters on the Defending PokÃ©mon until it is 50 HP away from being Knocked Out. If you do, your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -239,7 +238,7 @@ public enum PopSeries7 implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Attract Current", {
-					text "10 damage. Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
+					text "10 damage. Energy card and attach it to 1 of your PokÃ©mon. Shuffle your deck afterward."
 					energyCost C, L
 					attackRequirement {}
 					onAttack {
@@ -268,7 +267,7 @@ public enum PopSeries7 implements CardInfo {
 					}
 				}
 				move "Telekinesis", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 40 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -289,7 +288,7 @@ public enum PopSeries7 implements CardInfo {
 					}
 				}
 				move "Frighten Horn", {
-					text "20 damage. If the Defending Pokémon isn’t an Evolved Pokémon, that Pokémon is now Confused."
+					text "20 damage. If the Defending PokÃ©mon isnâ€™t an Evolved PokÃ©mon, that PokÃ©mon is now Confused."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -321,7 +320,7 @@ public enum PopSeries7 implements CardInfo {
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				pokePower "Wear Cloak", {
-					text "Once during your turn , if Burmy Plant Cloak is your Active Pokémon, you may search your discard pile for a basic Energy card and attach it to Burmy Plant Cloak."
+					text "Once during your turn , if Burmy Plant Cloak is your Active PokÃ©mon, you may search your discard pile for a basic Energy card and attach it to Burmy Plant Cloak."
 					actionA {
 					}
 				}
@@ -339,7 +338,7 @@ public enum PopSeries7 implements CardInfo {
 			return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				pokePower "Wear Cloak", {
-					text "Once during your turn , if Burmy Sandy Cloak is your Active Pokémon, you may search your discard pile for a basic Energy card and attach it to Burmy Sandy Cloak."
+					text "Once during your turn , if Burmy Sandy Cloak is your Active PokÃ©mon, you may search your discard pile for a basic Energy card and attach it to Burmy Sandy Cloak."
 					actionA {
 					}
 				}
@@ -357,7 +356,7 @@ public enum PopSeries7 implements CardInfo {
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
 				weakness G, PLUS20
 				move "Rally", {
-					text "Search your deck for up to 3 different types of Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
+					text "Search your deck for up to 3 different types of Basic PokÃ©mon and put them onto your Bench. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -379,7 +378,7 @@ public enum PopSeries7 implements CardInfo {
 				weakness F, PLUS10
 				resistance M, MINUS20
 				move "Thundershock", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -408,7 +407,7 @@ public enum PopSeries7 implements CardInfo {
 					}
 				}
 				move "Confuse Ray", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -450,7 +449,7 @@ public enum PopSeries7 implements CardInfo {
 					}
 				}
 				move "Synchro Punch", {
-					text "10+ damage. If any basic Energy card attached to Spinda is the same type as any Energy attached to the Defending Pokémon, this attack does 10 damage plus 30 more damage."
+					text "10+ damage. If any basic Energy card attached to Spinda is the same type as any Energy attached to the Defending PokÃ©mon, this attack does 10 damage plus 30 more damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {

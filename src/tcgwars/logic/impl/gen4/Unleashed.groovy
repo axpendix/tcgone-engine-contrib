@@ -116,7 +116,7 @@ public enum Unleashed implements CardInfo {
 	JUDGE_78 ("Judge", 78, Rarity.UNCOMMON, [TRAINER]),
 	LIFE_HERB_79 ("Life Herb", 79, Rarity.UNCOMMON, [TRAINER]),
 	PLUSPOWER_80 ("PlusPower", 80, Rarity.UNCOMMON, [TRAINER]),
-	POKEMON_CIRCULATOR_81 ("Pokémon Circulator", 81, Rarity.UNCOMMON, [TRAINER]),
+	POKEMON_CIRCULATOR_81 ("PokÃ©mon Circulator", 81, Rarity.UNCOMMON, [TRAINER]),
 	RARE_CANDY_82 ("Rare Candy", 82, Rarity.UNCOMMON, [TRAINER]),
 	SUPER_SCOOP_UP_83 ("Super Scoop Up", 83, Rarity.UNCOMMON, [TRAINER]),
 	CROBAT_PRIME_84 ("Crobat Prime", 84, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
@@ -131,8 +131,7 @@ public enum Unleashed implements CardInfo {
 	RAIKOU_&_SUICUNE_LEGEND_93 ("Raikou & Suicune LEGEND", 93, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
 	SUICUNE_&_ENTEI_LEGEND_94 ("Suicune & Entei LEGEND", 94, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
 	SUICUNE_&_ENTEI_LEGEND_95 ("Suicune & Entei LEGEND", 95, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-	ALPH_LITHOGRAPH_TWO ("Alph Lithograph", TWO, Rarity.HOLORARE, [TRAINER]),
-;
+	ALPH_LITHOGRAPH_TWO ("Alph Lithograph", 96, Rarity.HOLORARE, [TRAINER]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -195,7 +194,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Time Hollow", {
-					text "Choose a number of your opponent’s Stage 1 or Stage 2 Evolved Pokémon up to the amount of Energy attached to Jirachi. Remove the highest Stage Evolution card from each of those Pokémon and put those cards back into your opponent’s hand."
+					text "Choose a number of your opponentâ€™s Stage 1 or Stage 2 Evolved PokÃ©mon up to the amount of Energy attached to Jirachi. Remove the highest Stage Evolution card from each of those PokÃ©mon and put those cards back into your opponentâ€™s hand."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -250,7 +249,7 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Metang", hp:HP130, type:PSYCHIC, retreatCost:4) {
 				weakness P
 				pokeBody "Psychic Float", {
-					text "If you have any Energy attached to your Active Pokémon, the Retreat Cost for that Pokémon is 0."
+					text "If you have any Energy attached to your Active PokÃ©mon, the Retreat Cost for that PokÃ©mon is 0."
 					delayedA {
 					}
 				}
@@ -263,7 +262,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Double Leg Hammer", {
-					text "Choose 2 of your opponent’s Benched Pokémon. This attack does 40 damage to each of them."
+					text "Choose 2 of your opponentâ€™s Benched PokÃ©mon. This attack does 40 damage to each of them."
 					energyCost P, P, P
 					attackRequirement {}
 					onAttack {
@@ -277,12 +276,12 @@ public enum Unleashed implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				pokePower "Magical Trans", {
-					text "Once during your turn , you may move a Energy attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Mismagius is affected by a Special Condition."
+					text "Once during your turn , you may move a Energy attached to 1 of your PokÃ©mon to another of your PokÃ©mon. This power canâ€™t be used if Mismagius is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Psychic Pulse", {
-					text "30 damage. Does 10 damage to each of your opponent’s Benched Pokémon that has any damage counters on it."
+					text "30 damage. Does 10 damage to each of your opponentâ€™s Benched PokÃ©mon that has any damage counters on it."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -295,7 +294,7 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Remoraid", hp:HP080, type:WATER, retreatCost:2) {
 				weakness L
 				move "Switch Cannon", {
-					text "Switch Octillery with 1 of your Benched Pokémon."
+					text "Switch Octillery with 1 of your Benched PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -303,7 +302,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Ink Bomb", {
-					text "50 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "50 damage. If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -316,12 +315,12 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Poliwhirl", hp:HP120, type:WATER, retreatCost:2) {
 				weakness L
 				pokePower "Leap Frog", {
-					text "Once during your turn , you may choose a Pokémon on your Bench and switch it with your Active Pokémon. This power can’t be used if Politoed is affected by a Special Condition."
+					text "Once during your turn , you may choose a PokÃ©mon on your Bench and switch it with your Active PokÃ©mon. This power canâ€™t be used if Politoed is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Big Chorus", {
-					text "Pokémon you have in play. This attack does 30 damage times the number of heads."
+					text "PokÃ©mon you have in play. This attack does 30 damage times the number of heads."
 					energyCost W, C, C, W
 					attackRequirement {}
 					onAttack {
@@ -335,12 +334,12 @@ public enum Unleashed implements CardInfo {
 				weakness R
 				resistance F, MINUS20
 				pokePower "Celebration Wind", {
-					text "Once during your turn, when you put Shaymin from you hand onto your Bench, you may move as many Energy cards attached to your Pokémon as you like to any of your other Pokémon."
+					text "Once during your turn, when you put Shaymin from you hand onto your Bench, you may move as many Energy cards attached to your PokÃ©mon as you like to any of your other PokÃ©mon."
 					actionA {
 					}
 				}
 				move "Energy Bloom", {
-					text "30 damage. Remove 3 damage counters from each of your Pokémon that has any Energy attached to it."
+					text "30 damage. Remove 3 damage counters from each of your PokÃ©mon that has any Energy attached to it."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -361,7 +360,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Rumble", {
-					text "40 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "40 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -374,7 +373,7 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Grotle", hp:HP140, type:GRASS, retreatCost:4) {
 				weakness R
 				move "Giga Drain", {
-					text "40 damage. Remove from Torterra the number of damage counters equal to the damage you did to the Defending Pokémon."
+					text "40 damage. Remove from Torterra the number of damage counters equal to the damage you did to the Defending PokÃ©mon."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -396,7 +395,7 @@ public enum Unleashed implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Psywave", {
-					text "20× damage. Does 20 damage times the amount of Energy attached to the Defending Pokémon."
+					text "20Ã— damage. Does 20 damage times the amount of Energy attached to the Defending PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -404,7 +403,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Confuse Ray", {
-					text "50 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "50 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -417,7 +416,7 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Kakuna", hp:HP110, type:GRASS, retreatCost:0) {
 				weakness R
 				move "Twineedle", {
-					text "50× damage. Flip 2 coins. This attack does 50 damage times the number of heads."
+					text "50Ã— damage. Flip 2 coins. This attack does 50 damage times the number of heads."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -425,7 +424,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Paralyze Poison", {
-					text "20 damage. The Defending Pokémon is now Poisoned. Flip a coin. If heads, the Defending Pokémon is also Paralyzed."
+					text "20 damage. The Defending PokÃ©mon is now Poisoned. Flip a coin. If heads, the Defending PokÃ©mon is also Paralyzed."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -438,12 +437,12 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Wartortle", hp:HP130, type:WATER, retreatCost:3) {
 				weakness L
 				pokePower "Wash Out", {
-					text "As often as you like , you may move a Energy attached to 1 of your Benched Pokémon to your Active Pokémon. This power can’t be used if Blastoise is affected by a Special Condition."
+					text "As often as you like , you may move a Energy attached to 1 of your Benched PokÃ©mon to your Active PokÃ©mon. This power canâ€™t be used if Blastoise is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Hydro Launcher", {
-					text "Energy attached to Blastoise to your hand. Choose 1 of your opponent’s Pokémon. This attack does 100 damage to that Pokémon."
+					text "Energy attached to Blastoise to your hand. Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 100 damage to that PokÃ©mon."
 					energyCost W, W, C, C, W
 					attackRequirement {}
 					onAttack {
@@ -457,7 +456,7 @@ public enum Unleashed implements CardInfo {
 				weakness P
 				resistance F, MINUS20
 				move "Supersonic", {
-					text "30 damage. The Defending Pokémon is now Confused."
+					text "30 damage. The Defending PokÃ©mon is now Confused."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -487,7 +486,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Repeating Drill", {
-					text "20× damage. Flip 5 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 5 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -500,7 +499,7 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Buizel", hp:HP080, type:WATER, retreatCost:0) {
 				weakness L
 				pokePower "Water Acceleration", {
-					text "Once during your turn , you may attach a Water Energy card from you hand to Floatzel. This power can’t be used if Floatzel is affected by a Special Condition."
+					text "Once during your turn , you may attach a Water Energy card from you hand to Floatzel. This power canâ€™t be used if Floatzel is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -518,7 +517,7 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Seadra", hp:HP130, type:WATER, retreatCost:1) {
 				weakness L
 				move "Water Arrow", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -539,7 +538,7 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Chinchou", hp:HP090, type:LIGHTNING, retreatCost:2) {
 				weakness F
 				move "Confuse Ray", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -547,7 +546,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Reflect Energy", {
-					text "60 damage. Move an Energy card attached to Lanturn to 1 of your Benched Pokémon."
+					text "60 damage. Move an Energy card attached to Lanturn to 1 of your Benched PokÃ©mon."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -581,7 +580,7 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Vulpix", hp:HP090, type:FIRE, retreatCost:1) {
 				weakness W
 				move "Heat Acceleration", {
-					text "Energy cards and attach them to 1 of your Pokémon."
+					text "Energy cards and attach them to 1 of your PokÃ©mon."
 					energyCost R, R
 					attackRequirement {}
 					onAttack {
@@ -589,7 +588,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Searing Flame", {
-					text "30 damage. The Defending Pokémon is now Burned."
+					text "30 damage. The Defending PokÃ©mon is now Burned."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -602,7 +601,7 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Poliwhirl", hp:HP130, type:WATER, retreatCost:3) {
 				weakness L
 				move "Steamroll", {
-					text "40 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "40 damage. Does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -610,7 +609,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Dynamic Punch", {
-					text "60 damage. Flip a coin. If heads, this attack does 60 damage plus 40 more damage and the Defending Pokémon is now Confused."
+					text "60 damage. Flip a coin. If heads, this attack does 60 damage plus 40 more damage and the Defending PokÃ©mon is now Confused."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -631,7 +630,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Bebop Punch", {
-					text "Choose 1 of your opponent’s Pokémon. Flip a coin until you get tails. This attack does 50 damage times the number of heads to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. Flip a coin until you get tails. This attack does 50 damage times the number of heads to that PokÃ©mon."
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
@@ -644,7 +643,7 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Roselia", hp:HP090, type:GRASS, retreatCost:1) {
 				weakness R
 				pokePower "Energy Signal", {
-					text "When you attach a Energy card or Energy card from your hand to Roserade during your turn, you may use this power. If you attach a Energy card, the Defending Pokémon is now Confused. If you attach a Energy card, the Defending Pokémon is now Poisoned. This power can’t be used if Roserade is affected by a Special Condition."
+					text "When you attach a Energy card or Energy card from your hand to Roserade during your turn, you may use this power. If you attach a Energy card, the Defending PokÃ©mon is now Confused. If you attach a Energy card, the Defending PokÃ©mon is now Poisoned. This power canâ€™t be used if Roserade is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -684,7 +683,7 @@ public enum Unleashed implements CardInfo {
 			return basic (this, hp:HP080, type:FIRE, retreatCost:2) {
 				weakness W
 				pokePower "Hot Snort", {
-					text "Once during your turn, when you put Torkoal from you hand onto your Bench, you may flip a coin. If heads, the Defending Pokémon is now Burned."
+					text "Once during your turn, when you put Torkoal from you hand onto your Bench, you may flip a coin. If heads, the Defending PokÃ©mon is now Burned."
 					actionA {
 					}
 				}
@@ -711,7 +710,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Hyper Beam", {
-					text "80 damage. Discard an Energy card attached to the Defending Pokémon."
+					text "80 damage. Discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost D, D, C, C
 					attackRequirement {}
 					onAttack {
@@ -746,7 +745,7 @@ public enum Unleashed implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				pokePower "Sunny Heal", {
-					text "Once during your turn , you may remove 1 damage counter from your Active Pokémon. This power can’t be used if Cherrim is affected by a Special Condition."
+					text "Once during your turn , you may remove 1 damage counter from your Active PokÃ©mon. This power canâ€™t be used if Cherrim is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -778,7 +777,7 @@ public enum Unleashed implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Mean Look", {
-					text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "20 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -800,7 +799,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Sleep Powder", {
-					text "50 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
+					text "50 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Asleep."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -821,7 +820,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Poison Sting", {
-					text "The Defending Pokémon is now Poisoned."
+					text "The Defending PokÃ©mon is now Poisoned."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -834,7 +833,7 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Beldum", hp:HP080, type:PSYCHIC, retreatCost:3) {
 				weakness P
 				move "Energy Crane", {
-					text "Energy cards and attach them to your Pokémon in any way you like."
+					text "Energy cards and attach them to your PokÃ©mon in any way you like."
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
@@ -856,7 +855,7 @@ public enum Unleashed implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				move "Call for Family", {
-					text "Search you deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
+					text "Search you deck for up to 2 Basic PokÃ©mon and put them onto your Bench. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -920,7 +919,7 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Poliwag", hp:HP080, type:WATER, retreatCost:1) {
 				weakness L
 				move "Hypnoblast", {
-					text "20 damage. The Defending Pokémon is now Asleep."
+					text "20 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -982,7 +981,7 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Horsea", hp:HP080, type:WATER, retreatCost:1) {
 				weakness L
 				move "Muddy Water", {
-					text "20 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "20 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1024,7 +1023,7 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Squirtle", hp:HP080, type:WATER, retreatCost:1) {
 				weakness L
 				move "Water Arrow", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to that PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1045,7 +1044,7 @@ public enum Unleashed implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Tail Code", {
-					text "Move an Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon."
+					text "Move an Energy card attached to the Defending PokÃ©mon to another of your opponentâ€™s PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1066,7 +1065,7 @@ public enum Unleashed implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				move "Reaction", {
-					text "10 damage. You may switch Beldum with 1 of your Benched Pokémon."
+					text "10 damage. You may switch Beldum with 1 of your Benched PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1079,7 +1078,7 @@ public enum Unleashed implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 				weakness L
 				move "Muddy Water", {
-					text "10 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "10 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1171,7 +1170,7 @@ public enum Unleashed implements CardInfo {
 				weakness W
 				resistance L, MINUS20
 				move "Mountain Eater", {
-					text "Discard the top card of your opponent’s deck. Then, remove 2 damage counters from Larvitar."
+					text "Discard the top card of your opponentâ€™s deck. Then, remove 2 damage counters from Larvitar."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1257,7 +1256,7 @@ public enum Unleashed implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				move "Sharpshooting", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 10 damage to that PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1279,7 +1278,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Teleport", {
-					text "Switch Natu with 1 of your Benched Pokémon."
+					text "Switch Natu with 1 of your Benched PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1292,12 +1291,12 @@ public enum Unleashed implements CardInfo {
 			return basic (this, hp:HP090, type:FIGHTING, retreatCost:4) {
 				weakness G
 				pokeBody "Energy Healer", {
-					text "Whenever you attach an Energy card from you hand to 1 of your Pokémon, remove 1 damage counter from that Pokémon."
+					text "Whenever you attach an Energy card from you hand to 1 of your PokÃ©mon, remove 1 damage counter from that PokÃ©mon."
 					delayedA {
 					}
 				}
 				move "Boundless Power", {
-					text "80 damage. Onix can’t attack during your next turn."
+					text "80 damage. Onix canâ€™t attack during your next turn."
 					energyCost F, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1323,7 +1322,7 @@ public enum Unleashed implements CardInfo {
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness L
 				move "Call for Family", {
-					text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
+					text "Search your deck for a Basic PokÃ©mon and put it onto your Bench. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1352,7 +1351,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Water Arrow", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to that PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1400,7 +1399,7 @@ public enum Unleashed implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Roost", {
-					text "Remove 4 damage counters from Spearow. Spearow can’t retreat during you next turn."
+					text "Remove 4 damage counters from Spearow. Spearow canâ€™t retreat during you next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1442,7 +1441,7 @@ public enum Unleashed implements CardInfo {
 			return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Call for Family", {
-					text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
+					text "Search your deck for up to 2 Basic PokÃ©mon and put them onto your Bench. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1450,7 +1449,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Mystifying Horns", {
-					text "30 damage. The Defending Pokémon is now Confused."
+					text "30 damage. The Defending PokÃ©mon is now Confused."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1477,7 +1476,7 @@ public enum Unleashed implements CardInfo {
 				weakness R
 				resistance F, MINUS20
 				move "Green Call", {
-					text "Pokémon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
+					text "PokÃ©mon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -1563,7 +1562,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Double Attack", {
-					text "Choose 2 of your opponent’s Benched Pokémon. This attack does 10 damage to each of them."
+					text "Choose 2 of your opponentâ€™s Benched PokÃ©mon. This attack does 10 damage to each of them."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1574,7 +1573,7 @@ public enum Unleashed implements CardInfo {
 			};
 			case CHEERLEADER_S_CHEER_71:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 3 cards. Your opponent may draw a card."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nDraw 3 cards. Your opponent may draw a card."
 				onPlay {
 				}
 				playRequirement{
@@ -1582,7 +1581,7 @@ public enum Unleashed implements CardInfo {
 			};
 			case DUAL_BALL_72:
 			return basicTrainer (this) {
-				text "Flip 2 coins. For each heads, search your deck for a Basic Pokémon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
+				text "Flip 2 coins. For each heads, search your deck for a Basic PokÃ©mon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -1590,7 +1589,7 @@ public enum Unleashed implements CardInfo {
 			};
 			case EMCEE_S_CHATTER_73:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nFlip a coin. If heads, draw 3 cards. If tails, draw 2 cards."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nFlip a coin. If heads, draw 3 cards. If tails, draw 2 cards."
 				onPlay {
 				}
 				playRequirement{
@@ -1606,7 +1605,7 @@ public enum Unleashed implements CardInfo {
 			};
 			case ENGINEER_S_ADJUSTMENTS_75:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDiscard an Energy card from your hand. Then, draw 4 cards."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nDiscard an Energy card from your hand. Then, draw 4 cards."
 				onPlay {
 				}
 				playRequirement{
@@ -1614,7 +1613,7 @@ public enum Unleashed implements CardInfo {
 			};
 			case GOOD_ROD_76:
 			return basicTrainer (this) {
-				text "Flip a coin. If heads, search your discard pile for a Pokémon, show it to your opponent, and put it on top of your deck. If tails, search your discard pile for a Trainer card, show it to your opponent, and put it on top of your deck."
+				text "Flip a coin. If heads, search your discard pile for a PokÃ©mon, show it to your opponent, and put it on top of your deck. If tails, search your discard pile for a Trainer card, show it to your opponent, and put it on top of your deck."
 				onPlay {
 				}
 				playRequirement{
@@ -1622,7 +1621,7 @@ public enum Unleashed implements CardInfo {
 			};
 			case INTERVIEWER_S_QUESTIONS_77:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at the top 8 cards of your deck. Choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Shuffle the other cards back into your deck."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nLook at the top 8 cards of your deck. Choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Shuffle the other cards back into your deck."
 				onPlay {
 				}
 				playRequirement{
@@ -1630,7 +1629,7 @@ public enum Unleashed implements CardInfo {
 			};
 			case JUDGE_78:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck and draws 4 cards."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck and draws 4 cards."
 				onPlay {
 				}
 				playRequirement{
@@ -1638,7 +1637,7 @@ public enum Unleashed implements CardInfo {
 			};
 			case LIFE_HERB_79:
 			return basicTrainer (this) {
-				text "Flip a coin. If heads, choose 1 of your Pokémon, and remove all Special Conditions and 6 damage counters from that Pokémon (all if there are less than 6)."
+				text "Flip a coin. If heads, choose 1 of your PokÃ©mon, and remove all Special Conditions and 6 damage counters from that PokÃ©mon (all if there are less than 6)."
 				onPlay {
 				}
 				playRequirement{
@@ -1646,7 +1645,7 @@ public enum Unleashed implements CardInfo {
 			};
 			case PLUSPOWER_80:
 			return basicTrainer (this) {
-				text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
+				text "Attach PlusPower to 1 of your PokÃ©mon. Discard this card at the end of your turn.\nIf the PokÃ©mon PlusPower is attached to attacks, the attack does 10 more damage to the Defending PokÃ©mon (before applying Weakness and Resistance)."
 				onPlay {
 				}
 				playRequirement{
@@ -1654,7 +1653,7 @@ public enum Unleashed implements CardInfo {
 			};
 			case POKEMON_CIRCULATOR_81:
 			return basicTrainer (this) {
-				text "Your opponent switches his or her Active Pokémon with 1 of his or her Benched Pokémon."
+				text "Your opponent switches his or her Active PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -1662,7 +1661,7 @@ public enum Unleashed implements CardInfo {
 			};
 			case RARE_CANDY_82:
 			return basicTrainer (this) {
-				text "Choose 1 of your Basic Pokémon in play. If you have a Stage 1 or Stage 2 card that evolve from that Pokémon in your hand, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.) (If you choose a Stage 2 Pokémon in your hand, put that Pokémon on the Basic Pokémon instead of a Stage 1 Pokémon.)"
+				text "Choose 1 of your Basic PokÃ©mon in play. If you have a Stage 1 or Stage 2 card that evolve from that PokÃ©mon in your hand, put that card on the Basic PokÃ©mon. (This counts as evolving that PokÃ©mon.) (If you choose a Stage 2 PokÃ©mon in your hand, put that PokÃ©mon on the Basic PokÃ©mon instead of a Stage 1 PokÃ©mon.)"
 				onPlay {
 				}
 				playRequirement{
@@ -1670,7 +1669,7 @@ public enum Unleashed implements CardInfo {
 			};
 			case SUPER_SCOOP_UP_83:
 			return basicTrainer (this) {
-				text "Flip a coin. If heads, return 1 of your Pokémon and all cards attached to it to your hand."
+				text "Flip a coin. If heads, return 1 of your PokÃ©mon and all cards attached to it to your hand."
 				onPlay {
 				}
 				playRequirement{
@@ -1681,7 +1680,7 @@ public enum Unleashed implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Severe Poison", {
-					text "The Defending Pokémon is now Poisoned. Put 4 damage counters instead of 1 on that Pokémon between turns."
+					text "The Defending PokÃ©mon is now Poisoned. Put 4 damage counters instead of 1 on that PokÃ©mon between turns."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1689,7 +1688,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Skill Dive", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon. (Dont’ apply Weakness and Resistance for Benched Pokémon.)"
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon. (Dontâ€™ apply Weakness and Resistance for Benched PokÃ©mon.)"
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1702,12 +1701,12 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Seadra", hp:HP130, type:WATER, retreatCost:1) {
 				weakness L
 				pokePower "Spray Splash", {
-					text "Once during your turn , you may put 1 damage counter on 1 of your opponent’s Pokémon. This power can’t be used if Kingdra is affected by a Special Condition."
+					text "Once during your turn , you may put 1 damage counter on 1 of your opponentâ€™s PokÃ©mon. This power canâ€™t be used if Kingdra is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Dragon Steam", {
-					text "60 damage. Pokémon in play, this attack’s base damage is 20 instead of 60."
+					text "60 damage. PokÃ©mon in play, this attackâ€™s base damage is 20 instead of 60."
 					energyCost W, R
 					attackRequirement {}
 					onAttack {
@@ -1720,12 +1719,12 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Chinchou", hp:HP110, type:LIGHTNING, retreatCost:2) {
 				weakness F
 				pokePower "Underwater Dive", {
-					text "Once during your turn , you may use this power. Lanturn’s type is until the end of your turn. This power can’t be used if Lanturn is affected by a Special Condition."
+					text "Once during your turn , you may use this power. Lanturnâ€™s type is until the end of your turn. This power canâ€™t be used if Lanturn is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Powerful Spark", {
-					text "40+ damage. Does 40 damage plus 10 more damage for each Energy attached to all of your Pokémon."
+					text "40+ damage. Does 40 damage plus 10 more damage for each Energy attached to all of your PokÃ©mon."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -1739,7 +1738,7 @@ public enum Unleashed implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				pokeBody "Perfect Metal", {
-					text "Steelix can’t be affected by any Special Conditions"
+					text "Steelix canâ€™t be affected by any Special Conditions"
 					delayedA {
 					}
 				}
@@ -1766,7 +1765,7 @@ public enum Unleashed implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				move "Darkness Howl", {
-					text "Pokémon)."
+					text "PokÃ©mon)."
 					energyCost D, D
 					attackRequirement {}
 					onAttack {
@@ -1774,7 +1773,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Power Claw", {
-					text "60 damage. This attack’s damage isn’t affected by Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "60 damage. This attackâ€™s damage isnâ€™t affected by PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -1795,12 +1794,12 @@ public enum Unleashed implements CardInfo {
 			return evolution (this, from:"Teddiursa", hp:HP110, type:COLORLESS, retreatCost:3) {
 				weakness F
 				pokeBody "Berserk", {
-					text "If Ursaring has any damage counters on it, each of Ursaring’s attacks does 60 more damage ."
+					text "If Ursaring has any damage counters on it, each of Ursaringâ€™s attacks does 60 more damage ."
 					delayedA {
 					}
 				}
 				move "Hammer Arm", {
-					text "30 damage. Discard the top card from your opponent’s deck."
+					text "30 damage. Discard the top card from your opponentâ€™s deck."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1838,7 +1837,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Thunder Fall", {
-					text ". This attack’s damage isn’t affected by Weakness or Resistance."
+					text ". This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1846,7 +1845,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1877,7 +1876,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Thunder Fall", {
-					text ". This attack’s damage isn’t affected by Weakness or Resistance."
+					text ". This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1885,7 +1884,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1907,7 +1906,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Thunderbolt Spear", {
-					text "150 damage. Raikou & Suicune LEGEND does 50 damage to itself and don’t apply Weakness to this damage."
+					text "150 damage. Raikou & Suicune LEGEND does 50 damage to itself and donâ€™t apply Weakness to this damage."
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
@@ -1923,7 +1922,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1946,7 +1945,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Thunderbolt Spear", {
-					text "150 damage. Raikou & Suicune LEGEND does 50 damage to itself and don’t apply Weakness to this damage."
+					text "150 damage. Raikou & Suicune LEGEND does 50 damage to itself and donâ€™t apply Weakness to this damage."
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
@@ -1962,7 +1961,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1984,7 +1983,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card from your hand onto your Bench only with the other half of Suicune & Entei LEGEND. When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards"
+					text "Put this card from your hand onto your Bench only with the other half of Suicune & Entei LEGEND. When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards"
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1992,7 +1991,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Torrent Blade", {
-					text "Energy attached to Suicune & Entei LEGEND to your hand. Choose 1 of your opponent’s Benched Pokémon. This attack does 100 damage to that Pokémon."
+					text "Energy attached to Suicune & Entei LEGEND to your hand. Choose 1 of your opponentâ€™s Benched PokÃ©mon. This attack does 100 damage to that PokÃ©mon."
 					energyCost W, W, C, W
 					attackRequirement {}
 					onAttack {
@@ -2000,7 +1999,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Bursting Inferno", {
-					text "80 damage. The Defending Pokémon is now Burned."
+					text "80 damage. The Defending PokÃ©mon is now Burned."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -2008,7 +2007,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2031,7 +2030,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card from your hand onto your Bench only with the other half of Suicune & Entei LEGEND. When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards"
+					text "Put this card from your hand onto your Bench only with the other half of Suicune & Entei LEGEND. When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards"
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2039,7 +2038,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Torrent Blade", {
-					text "Energy attached to Suicune & Entei LEGEND to your hand. Choose 1 of your opponent’s Benched Pokémon. This attack does 100 damage to that Pokémon."
+					text "Energy attached to Suicune & Entei LEGEND to your hand. Choose 1 of your opponentâ€™s Benched PokÃ©mon. This attack does 100 damage to that PokÃ©mon."
 					energyCost W, W, C, W
 					attackRequirement {}
 					onAttack {
@@ -2047,7 +2046,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "Bursting Inferno", {
-					text "80 damage. The Defending Pokémon is now Burned."
+					text "80 damage. The Defending PokÃ©mon is now Burned."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -2055,7 +2054,7 @@ public enum Unleashed implements CardInfo {
 					}
 				}
 				move "", {
-					text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
+					text "When this PokÃ©mon has been Knocked Out, your opponent takes 2 Prize cards."
 					energyCost ()
 					attackRequirement {}
 					onAttack {

@@ -120,7 +120,7 @@ public enum MajesticDawn implements CardInfo {
 	FOSSIL_EXCAVATOR_82 ("Fossil Excavator", 82, Rarity.UNCOMMON, [TRAINER]),
 	MOM_S_KINDNESS_83 ("Mom's Kindness", 83, Rarity.UNCOMMON, [TRAINER]),
 	OLD_AMBER_84 ("Old Amber", 84, Rarity.UNCOMMON, [TRAINER]),
-	POKE_BALL_85 ("Poké Ball", 85, Rarity.UNCOMMON, [TRAINER]),
+	POKE_BALL_85 ("PokÃ© Ball", 85, Rarity.UNCOMMON, [TRAINER]),
 	QUICK_BALL_86 ("Quick Ball", 86, Rarity.UNCOMMON, [TRAINER]),
 	SUPER_SCOOP_UP_87 ("Super Scoop Up", 87, Rarity.UNCOMMON, [TRAINER]),
 	WARP_POINT_88 ("Warp Point", 88, Rarity.UNCOMMON, [TRAINER]),
@@ -135,8 +135,7 @@ public enum MajesticDawn implements CardInfo {
 	GARCHOMP_LV_X_97 ("Garchomp LV.X", 97, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _COLORLESS_]),
 	GLACEON_LV_X_98 ("Glaceon LV.X", 98, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _WATER_]),
 	LEAFEON_LV_X_99 ("Leafeon LV.X", 99, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _GRASS_]),
-	PORYGON_Z_LV_X_100 ("Porygon-Z LV.X", 100, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _COLORLESS_]),
-;
+	PORYGON_Z_LV_X_100 ("Porygon-Z LV.X", 100, Rarity.HOLORARE, [POKEMON_LVX, EVOLUTION, POKEMON, _COLORLESS_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -195,12 +194,12 @@ public enum MajesticDawn implements CardInfo {
 				weakness M
 				resistance F, MINUS20
 				pokePower "Freezing Screech", {
-					text "Once during your turn, when you put Articuno from your hand onto your Bench, you may flip a coin. If heads, choose 1 of the Defending Pokémon. That Pokémon is now Paralyzed."
+					text "Once during your turn, when you put Articuno from your hand onto your Bench, you may flip a coin. If heads, choose 1 of the Defending PokÃ©mon. That PokÃ©mon is now Paralyzed."
 					actionA {
 					}
 				}
 				move "Blizzard", {
-					text "60 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Benched Pokémon. If tails, this attack does 10 damage to each of your Benched Pokémon."
+					text "60 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponentâ€™s Benched PokÃ©mon. If tails, this attack does 10 damage to each of your Benched PokÃ©mon."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -213,7 +212,7 @@ public enum MajesticDawn implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS20
 				move "Future Sight", {
-					text "Look at the top 5 cards of either player’s deck and put them back on top of that player’s deck in any order."
+					text "Look at the top 5 cards of either playerâ€™s deck and put them back on top of that playerâ€™s deck in any order."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -221,7 +220,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Healing Light", {
-					text "40 damage. Remove 1 damage counter from each of your Pokémon."
+					text "40 damage. Remove 1 damage counter from each of your PokÃ©mon."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -235,12 +234,12 @@ public enum MajesticDawn implements CardInfo {
 				weakness F, PLUS20
 				resistance P, MINUS20
 				pokePower "Darkness Shade", {
-					text "Once during your turn, when you put Darkrai from your hand onto your Bench, you may choose 1 of the Defending Pokémon. That Pokémon is now Asleep."
+					text "Once during your turn, when you put Darkrai from your hand onto your Bench, you may choose 1 of the Defending PokÃ©mon. That PokÃ©mon is now Asleep."
 					actionA {
 					}
 				}
 				move "Dark Slumber", {
-					text "10 damage. At the end of your opponent’s next turn, the Defending Pokémon is now Asleep."
+					text "10 damage. At the end of your opponentâ€™s next turn, the Defending PokÃ©mon is now Asleep."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -248,7 +247,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Dark Resolve", {
-					text "40 damage. If the Defending Pokémon is Asleep, remove 4 damage counters from Darkrai."
+					text "40 damage. If the Defending PokÃ©mon is Asleep, remove 4 damage counters from Darkrai."
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
@@ -291,7 +290,7 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Eevee", hp:HP080, type:WATER, retreatCost:1) {
 				weakness M, PLUS20
 				move "Snow Cloak", {
-					text "30 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Glaceon during your opponent’s next turn."
+					text "30 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Glaceon during your opponentâ€™s next turn."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -299,7 +298,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Speed Slide", {
-					text "60 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "60 damage. This attackâ€™s damage isnâ€™t affected by Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -312,12 +311,12 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Kabuto", hp:HP120, type:FIGHTING, retreatCost:2) {
 				weakness G, PLUS30
 				pokeBody "Primal Shell", {
-					text "As long as Kabutops is your Active Pokémon, your opponent can’t play any Trainer cards from his or her hand."
+					text "As long as Kabutops is your Active PokÃ©mon, your opponent canâ€™t play any Trainer cards from his or her hand."
 					delayedA {
 					}
 				}
 				move "Chop Up", {
-					text "70 damage. Does 10 damage to each of your opponent’s Benched Pokémon that has any damage counters on it."
+					text "70 damage. Does 10 damage to each of your opponentâ€™s Benched PokÃ©mon that has any damage counters on it."
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
@@ -331,7 +330,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness R, PLUS20
 				resistance W, MINUS20
 				move "Bind Down", {
-					text "30 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "30 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -365,7 +364,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Fountain", {
-					text "30 damage. Energy cards from your hand to your Benched Pokémon in any way you like."
+					text "30 damage. Energy cards from your hand to your Benched PokÃ©mon in any way you like."
 					energyCost W, W, W
 					attackRequirement {}
 					onAttack {
@@ -434,7 +433,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Zone Shift", {
-					text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -442,7 +441,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Pearl Blast", {
-					text "60 damage. You may return an Energy card attached to Palkia to your hand. If you do, choose an Energy card attached to the Defending Pokémon and return it to your opponent’s hand."
+					text "60 damage. You may return an Energy card attached to Palkia to your hand. If you do, choose an Energy card attached to the Defending PokÃ©mon and return it to your opponentâ€™s hand."
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -455,7 +454,7 @@ public enum MajesticDawn implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Evolution Wish", {
-					text "Search your deck for a card that evolves from 1 of your Pokémon and put it onto that Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward."
+					text "Search your deck for a card that evolves from 1 of your PokÃ©mon and put it onto that PokÃ©mon. (This counts as evolving that PokÃ©mon.) Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -463,7 +462,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Water Pulse", {
-					text "30 damage. The Defending Pokémon is now Asleep."
+					text "30 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -477,7 +476,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				move "Dual Trans", {
-					text "Search your discard pile for up to 2 basic Energy cards and attach them to 1 of your Pokémon."
+					text "Search your discard pile for up to 2 basic Energy cards and attach them to 1 of your PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -485,7 +484,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Reflect Energy", {
-					text "30 damage. Move an Energy card attached to Rotom to 1 of your Benched Pokémon."
+					text "30 damage. Move an Energy card attached to Rotom to 1 of your Benched PokÃ©mon."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -499,12 +498,12 @@ public enum MajesticDawn implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				pokePower "Sheet Lightning", {
-					text "Once during your turn, when you put Zapdos from your hand onto your Bench, you may flip a coin. If heads, put 1 damage counter on each of your opponent’s Pokémon."
+					text "Once during your turn, when you put Zapdos from your hand onto your Bench, you may flip a coin. If heads, put 1 damage counter on each of your opponentâ€™s PokÃ©mon."
 					actionA {
 					}
 				}
 				move "Raging Thunder", {
-					text "80 damage. Does 40 damage to 1 of your Pokémon, and don’t apply Weakness and Resistance to this damage."
+					text "80 damage. Does 40 damage to 1 of your PokÃ©mon, and donâ€™t apply Weakness and Resistance to this damage."
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
@@ -518,12 +517,12 @@ public enum MajesticDawn implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				pokeBody "Primal Claw", {
-					text "After your opponent’s Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
+					text "After your opponentâ€™s PokÃ©mon uses a PokÃ©-Power, put 2 damage counters on that PokÃ©mon."
 					delayedA {
 					}
 				}
 				move "Supersonic", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -537,12 +536,12 @@ public enum MajesticDawn implements CardInfo {
 				weakness P, PLUS20
 				resistance R, MINUS20
 				pokeBody "Cursed Alloy", {
-					text "As long as Bronzong is your Active Pokémon, put 1 damage counter on each of your opponent’s Pokémon that has any Poké-Powers between turns."
+					text "As long as Bronzong is your Active PokÃ©mon, put 1 damage counter on each of your opponentâ€™s PokÃ©mon that has any PokÃ©-Powers between turns."
 					delayedA {
 					}
 				}
 				move "Pain Amplifier", {
-					text "Put 1 damage counter on each of your opponent’s Pokémon that already has damage counters on it"
+					text "Put 1 damage counter on each of your opponentâ€™s PokÃ©mon that already has damage counters on it"
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -563,7 +562,7 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Prinplup", hp:HP130, type:WATER, retreatCost:2) {
 				weakness L, PLUS30
 				move "Dual Splash", {
-					text "Choose 2 of your opponent’s Pokémon. This attack does 30 damage to each of them."
+					text "Choose 2 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to each of them."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -571,7 +570,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Surf Together", {
-					text "50+ damage. Does 50 damage plus 10 more damage for each of your Benched Pokémon. Flip a coin. If tails, this attack does 10 damage to each of your Benched Pokémon."
+					text "50+ damage. Does 50 damage plus 10 more damage for each of your Benched PokÃ©mon. Flip a coin. If tails, this attack does 10 damage to each of your Benched PokÃ©mon."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -584,12 +583,12 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Eevee", hp:HP080, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS20
 				pokeBody "Sunlight Veil", {
-					text "Each of your Pokémon that evolves from Eevee gets +20 HP. You can’t use more than 1 Sunlight Veil Poké-Body each turn."
+					text "Each of your PokÃ©mon that evolves from Eevee gets +20 HP. You canâ€™t use more than 1 Sunlight Veil PokÃ©-Body each turn."
 					delayedA {
 					}
 				}
 				move "Morning Sun", {
-					text "60 damage. You may move an Energy card attached to Espeon to 1 of your Benched Pokémon."
+					text "60 damage. You may move an Energy card attached to Espeon to 1 of your Benched PokÃ©mon."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -602,7 +601,7 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Eevee", hp:HP090, type:FIRE, retreatCost:2) {
 				weakness W, PLUS20
 				move "Fire Fang", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Burned."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Burned."
 					energyCost R
 					attackRequirement {}
 					onAttack {
@@ -610,7 +609,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Kindle", {
-					text "70 damage. Discard an Energy card attached to Flareon and then discard an Energy card attached to the Defending Pokémon."
+					text "70 damage. Discard an Energy card attached to Flareon and then discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
@@ -623,7 +622,7 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Eevee", hp:HP090, type:WATER, retreatCost:1) {
 				weakness M, PLUS20
 				move "Ice Shot", {
-					text "30 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "30 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -631,7 +630,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Icy Wind", {
-					text "60 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
+					text "60 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Asleep."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -665,7 +664,7 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Monferno", hp:HP110, type:FIRE, retreatCost:0) {
 				weakness W, PLUS30
 				move "Mach Punch", {
-					text "30 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "30 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -673,7 +672,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Mega Bravo", {
-					text "40× damage. Energy you discarded."
+					text "40Ã— damage. Energy you discarded."
 					energyCost R, R, R
 					attackRequirement {}
 					onAttack {
@@ -687,7 +686,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Thunder Fang", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -695,7 +694,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Lightning Strike", {
-					text "50 damage. You may discard 2 Energy attached to Jolteon. If you do, this attack’s base damage is 90 instead of 50."
+					text "50 damage. You may discard 2 Energy attached to Jolteon. If you do, this attackâ€™s base damage is 90 instead of 50."
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
@@ -739,7 +738,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "(+) Spark", {
-					text "20 damage. If Plusle is on your Bench, this attack does 20 damage to 1 of your opponent’s Benched Pokémon."
+					text "20 damage. If Plusle is on your Bench, this attack does 20 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -752,12 +751,12 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Omanyte", hp:HP110, type:WATER, retreatCost:1) {
 				weakness G, PLUS30
 				pokePower "Primal Swirl", {
-					text "Once during your turn, when you play Omastar from your hand to evolve 1 of your Pokémon, you may remove the highest Stage Evolution card from each of your opponent’s Benched Evolved Pokémon and put those cards back into his or her hand. You can’t use more than 1 Primal Swirl Poké-Power each turn."
+					text "Once during your turn, when you play Omastar from your hand to evolve 1 of your PokÃ©mon, you may remove the highest Stage Evolution card from each of your opponentâ€™s Benched Evolved PokÃ©mon and put those cards back into his or her hand. You canâ€™t use more than 1 Primal Swirl PokÃ©-Power each turn."
 					actionA {
 					}
 				}
 				move "Send Back", {
-					text "40 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "40 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -778,7 +777,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Whirlpool", {
-					text "30 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "30 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -792,7 +791,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness F, PLUS10
 				resistance M, MINUS20
 				move "Call for Family", {
-					text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
+					text "Search your deck for a Basic PokÃ©mon and put it onto your Bench. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -814,7 +813,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness R, PLUS30
 				resistance P, MINUS20
 				move "Special Blow", {
-					text "30+ damage. If the Defending Pokémon has any Special Energy cards attached to it, this attack does 30 damage plus 50 more damage."
+					text "30+ damage. If the Defending PokÃ©mon has any Special Energy cards attached to it, this attack does 30 damage plus 50 more damage."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -835,7 +834,7 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Grotle", hp:HP140, type:GRASS, retreatCost:4) {
 				weakness R, PLUS30
 				move "Earthquake", {
-					text "60 damage. Does 10 damage to each of your Benched Pokémon."
+					text "60 damage. Does 10 damage to each of your Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -843,7 +842,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Frenzy Plant", {
-					text "100 damage. Torterra can’t use Frenzy Plant during your next turn."
+					text "100 damage. Torterra canâ€™t use Frenzy Plant during your next turn."
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
@@ -856,7 +855,7 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Croagunk", hp:HP090, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS20
 				move "Paralyze Poison", {
-					text "20 damage. The Defending Pokémon is now Poisoned. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and Poisoned."
+					text "20 damage. The Defending PokÃ©mon is now Poisoned. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed and Poisoned."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -878,12 +877,12 @@ public enum MajesticDawn implements CardInfo {
 				weakness F, PLUS20
 				resistance P, MINUS20
 				pokeBody "Moonlight Veil", {
-					text "Each of your Pokémon that evolves from Eevee has no Weakness, and that Pokémon’s Retreat Cost is 0."
+					text "Each of your PokÃ©mon that evolves from Eevee has no Weakness, and that PokÃ©monâ€™s Retreat Cost is 0."
 					delayedA {
 					}
 				}
 				move "Confuse Ray", {
-					text "50 damage. The Defending Pokémon is now Confused."
+					text "50 damage. The Defending PokÃ©mon is now Confused."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -896,7 +895,7 @@ public enum MajesticDawn implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				pokePower "PUT", {
-					text "Once during your turn , if Unown P is on your Bench, you may put 1 damage counter on 1 of your Pokémon (excluding any Unown)."
+					text "Once during your turn , if Unown P is on your Bench, you may put 1 damage counter on 1 of your PokÃ©mon (excluding any Unown)."
 					actionA {
 					}
 				}
@@ -914,7 +913,7 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Eevee", hp:HP090, type:WATER, retreatCost:2) {
 				weakness L, PLUS20
 				move "Cleanse Away", {
-					text "30 damage. Remove 2 damage counters from each of your Benched Pokémon."
+					text "30 damage. Remove 2 damage counters from each of your Benched PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -922,7 +921,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Hyper Whirlpool", {
-					text "60 damage. Flip a coin until you get tails. For each heads, discard an Energy card attached to the Defending Pokémon."
+					text "60 damage. Flip a coin until you get tails. For each heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -935,7 +934,7 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Aipom", hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				move "Astonish", {
-					text "20 damage. Choose 1 card from your opponent’s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
+					text "20 damage. Choose 1 card from your opponentâ€™s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -943,7 +942,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Hang High", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 40 damage to that PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -957,7 +956,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Fury Attack", {
-					text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 3 coins. This attack does 20 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -979,7 +978,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness R, PLUS20
 				resistance W, MINUS20
 				move "Planting", {
-					text "20 damage. Energy card from your hand to 1 of your Pokémon."
+					text "20 damage. Energy card from your hand to 1 of your PokÃ©mon."
 					energyCost C, G
 					attackRequirement {}
 					onAttack {
@@ -987,7 +986,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Body Slam", {
-					text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "40 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost G, G, G
 					attackRequirement {}
 					onAttack {
@@ -1008,7 +1007,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Comet Punch", {
-					text "20× damage. Flip 4 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 4 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1029,7 +1028,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Slam", {
-					text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
+					text "20Ã— damage. Flip 2 coins. This attack does 20 damage times the number of heads."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1043,7 +1042,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Thunder Wave", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1064,7 +1063,7 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Chimchar", hp:HP070, type:FIRE, retreatCost:0) {
 				weakness W
 				move "Fire Fang", {
-					text "30 damage. The Defending Pokémon is now Burned."
+					text "30 damage. The Defending PokÃ©mon is now Burned."
 					energyCost R
 					attackRequirement {}
 					onAttack {
@@ -1086,12 +1085,12 @@ public enum MajesticDawn implements CardInfo {
 				weakness R, PLUS20
 				resistance F, MINUS30
 				pokeBody "Disturbance Scales:", {
-					text "Any damage done by attacks from your Pokémon to the Defending Pokémon isn’t affected by Resistance."
+					text "Any damage done by attacks from your PokÃ©mon to the Defending PokÃ©mon isnâ€™t affected by Resistance."
 					delayedA {
 					}
 				}
 				move "Get Help", {
-					text "30× damage. Does 30 damage times the number of different types of Wormadam on your Bench."
+					text "30Ã— damage. Does 30 damage times the number of different types of Wormadam on your Bench."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1099,7 +1098,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Quick Touch", {
-					text "40 damage. You may switch Mothim with 1 of your Benched Pokémon. If you do, move as many Energy cards attached to Mothim as you like to the new Active Pokémon."
+					text "40 damage. You may switch Mothim with 1 of your Benched PokÃ©mon. If you do, move as many Energy cards attached to Mothim as you like to the new Active PokÃ©mon."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1121,7 +1120,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Thundershock", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1134,7 +1133,7 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Piplup", hp:HP080, type:WATER, retreatCost:1) {
 				weakness L, PLUS20
 				move "Ice Blade", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1142,7 +1141,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Wash Over", {
-					text "50 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
+					text "50 damage. Does 10 damage to 2 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1156,7 +1155,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				move "Agilty", {
-					text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Raichu during your opponent’s next turn."
+					text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Raichu during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1221,7 +1220,7 @@ public enum MajesticDawn implements CardInfo {
 			return basic (this, hp:HP080, type:FIGHTING, retreatCost:2) {
 				weakness W, PLUS20
 				move "Flail", {
-					text "10× damage. Does 10 damage times the number of damage counters on Sudowoodo."
+					text "10Ã— damage. Does 10 damage times the number of damage counters on Sudowoodo."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1242,7 +1241,7 @@ public enum MajesticDawn implements CardInfo {
 			return basic (this, hp:HP030, type:PSYCHIC, retreatCost:0) {
 				weakness P, PLUS10
 				pokePower "QUICK", {
-					text "Once during your turn , if Unown Q is on your Bench, you may discard all cards attached to Unown Q and attach Unown Q to 1 of your Pokémon as a Pokémon Tool card. As long as Unown Q is attached to a Pokémon, you pay less to retreat that Pokémon."
+					text "Once during your turn , if Unown Q is on your Bench, you may discard all cards attached to Unown Q and attach Unown Q to 1 of your PokÃ©mon as a PokÃ©mon Tool card. As long as Unown Q is attached to a PokÃ©mon, you pay less to retreat that PokÃ©mon."
 					actionA {
 					}
 				}
@@ -1268,7 +1267,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Hand Trick", {
-					text "20 damage. Return Aipom and all cards attached to it to your hand. (If you don’t have any Benched Pokémon, this attack does nothing.)"
+					text "20 damage. Return Aipom and all cards attached to it to your hand. (If you donâ€™t have any Benched PokÃ©mon, this attack does nothing.)"
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1303,7 +1302,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness P, PLUS10
 				resistance R, MINUS20
 				move "Hypnosis", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1311,7 +1310,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Confuse Ray", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1332,7 +1331,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Extend Ears", {
-					text "10 damage. Remove 1 damage counter from each of your Benched Pokémon."
+					text "10 damage. Remove 1 damage counter from each of your Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1345,7 +1344,7 @@ public enum MajesticDawn implements CardInfo {
 			return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Iron Defense", {
-					text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Burmy Sandy Cloak during your opponent’s next turn."
+					text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Burmy Sandy Cloak during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1367,7 +1366,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				move "Mimic", {
-					text "Shuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent’s hand."
+					text "Shuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponentâ€™s hand."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1375,7 +1374,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Chatter", {
-					text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "20 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1416,7 +1415,7 @@ public enum MajesticDawn implements CardInfo {
 						damage 0
 					}
 				}
-				move "Fury Swipes 10× damage", {
+				move "Fury Swipes 10Ã— damage", {
 					text "Flip 3 coins. This attack does 10 damage times the number of heads."
 					energyCost C
 					attackRequirement {}
@@ -1435,7 +1434,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Uproar", {
-					text "Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Pokémon."
+					text "Flip a coin. If heads, this attack does 10 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1449,7 +1448,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness R, PLUS10
 				resistance F, MINUS20
 				move "Honey Scent", {
-					text "Remove 2 damage counters from 1 of your Pokémon."
+					text "Remove 2 damage counters from 1 of your PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1457,7 +1456,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Flitter", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -1478,7 +1477,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Poison Sting", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1500,7 +1499,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Reaction", {
-					text "20 damage. Switch Drifloon with 1 of your Benched Pokémon."
+					text "20 damage. Switch Drifloon with 1 of your Benched PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1543,7 +1542,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Sand Attack", {
-					text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1557,7 +1556,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness F, PLUS10
 				resistance M, MINUS20
 				move "Random Spark", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 10 damage to that PokÃ©mon."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1578,7 +1577,7 @@ public enum MajesticDawn implements CardInfo {
 			return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS10
 				move "Call for Family", {
-					text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterwards."
+					text "Search your deck for a Basic PokÃ©mon and put it onto your Bench. Shuffle your deck afterwards."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1586,7 +1585,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Rip Claw", {
-					text "10 damage. Flip a coin. If heads, discard an Energy attached to the Defending Pokémon."
+					text "10 damage. Flip a coin. If heads, discard an Energy attached to the Defending PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1620,7 +1619,7 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Helix Fossil", hp:HP080, type:FIGHTING, retreatCost:1) {
 				weakness G, PLUS20
 				pokePower "Ancient Guidance", {
-					text "Once during your turn , you may flip a coin. If heads, search your deck for Helix Fossil, Dome Fossil, or Old Amber and put it onto your Bench. Shuffle your deck afterward. This power can’t be used if Kabuto is affected by a Special Condition."
+					text "Once during your turn , you may flip a coin. If heads, search your deck for Helix Fossil, Dome Fossil, or Old Amber and put it onto your Bench. Shuffle your deck afterward. This power canâ€™t be used if Kabuto is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -1643,7 +1642,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Lick", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1656,7 +1655,7 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Helix Fossil", hp:HP070, type:WATER, retreatCost:1) {
 				weakness G, PLUS20
 				pokePower "Call Up", {
-					text "Once during your turn , you may flip a coin. If heads, search your discard pile for Helix Fossil, Dome Fossil, or Old Amber and put it onto your Bench. This power can’t be used if Omanyte is affected by a Special Condition."
+					text "Once during your turn , you may flip a coin. If heads, search your discard pile for Helix Fossil, Dome Fossil, or Old Amber and put it onto your Bench. This power canâ€™t be used if Omanyte is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -1725,7 +1724,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Splatter", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 10 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1746,7 +1745,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "Muddy Water", {
-					text "20 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+					text "20 damage. Does 10 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1782,7 +1781,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness L, PLUS10
 				resistance F, MINUS20
 				move "Whirlwind", {
-					text "10 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "10 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1804,7 +1803,7 @@ public enum MajesticDawn implements CardInfo {
 				weakness F, PLUS10
 				resistance P, MINUS20
 				move "Poison Gas", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -1867,7 +1866,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case DAWN_STADIUM_79:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nWhenever any player attaches an Energy card from his or her hand to [G] Pokémon or [W] Pokémon, remove 1 damage counter and all Special Conditions from that Pokémon."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nWhenever any player attaches an Energy card from his or her hand to [G] PokÃ©mon or [W] PokÃ©mon, remove 1 damage counter and all Special Conditions from that PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -1875,7 +1874,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case DUSK_BALL_80:
 			return basicTrainer (this) {
-				text "Look at the 7 cards from the bottom of your deck. Choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. Put the remaining cards back on top of your deck. Shuffle your deck afterward."
+				text "Look at the 7 cards from the bottom of your deck. Choose 1 PokÃ©mon you find there, show it to your opponent, and put it into your hand. Put the remaining cards back on top of your deck. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -1883,7 +1882,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case ENERGY_RESTORE_81:
 			return basicTrainer (this) {
-				text "Flip 3 coins. For each heads, put a Basic Energy card from your discard pile into your hand. If you don’t have that many basic Energy cards in your discard pile, put all of them into your hand."
+				text "Flip 3 coins. For each heads, put a Basic Energy card from your discard pile into your hand. If you donâ€™t have that many basic Energy cards in your discard pile, put all of them into your hand."
 				onPlay {
 				}
 				playRequirement{
@@ -1891,7 +1890,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case FOSSIL_EXCAVATOR_82:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -1899,7 +1898,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case MOM_S_KINDNESS_83:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nDraw 2 cards."
 				onPlay {
 				}
 				playRequirement{
@@ -1907,7 +1906,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case OLD_AMBER_84:
 			return basicTrainer (this) {
-				text "Play Old Amber as if it were a [C] Basic Pokémon. (Old Amber counts as a Trainer card as well, but if Old Amber is Knocked Out, this counts as a Knocked Out Pokémon.) Old Amber can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Old Amber from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Hard Amber As long as Old Amber is on your Bench, prevent all damage done to Old Amber by attacks (both yours and your opponent’s)."
+				text "Play Old Amber as if it were a [C] Basic PokÃ©mon. (Old Amber counts as a Trainer card as well, but if Old Amber is Knocked Out, this counts as a Knocked Out PokÃ©mon.) Old Amber canâ€™t be affected by any Special Conditions and canâ€™t retreat. At any time during your turn before your attack, you may discard Old Amber from play. (This doesnâ€™t count as a Knocked Out PokÃ©mon.)\nPokÃ©-BODY: Hard Amber As long as Old Amber is on your Bench, prevent all damage done to Old Amber by attacks (both yours and your opponentâ€™s)."
 				onPlay {
 				}
 				playRequirement{
@@ -1915,7 +1914,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case POKE_BALL_85:
 			return basicTrainer (this) {
-				text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+				text "Flip a coin. If heads, search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -1923,7 +1922,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case QUICK_BALL_86:
 			return basicTrainer (this) {
-				text "Reveal cards from your deck until you reveal a Pokémon. Show that Pokémon to your opponent and put it into your hand. Shuffle the other revealed cards back into your deck. (If you don’t reveal a Pokémon, shuffle all the revealed cards back into your deck.)"
+				text "Reveal cards from your deck until you reveal a PokÃ©mon. Show that PokÃ©mon to your opponent and put it into your hand. Shuffle the other revealed cards back into your deck. (If you donâ€™t reveal a PokÃ©mon, shuffle all the revealed cards back into your deck.)"
 				onPlay {
 				}
 				playRequirement{
@@ -1931,7 +1930,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case SUPER_SCOOP_UP_87:
 			return basicTrainer (this) {
-				text "Flip a coin. If heads, return 1 of your Pokémon and all cards attached to it to your hand."
+				text "Flip a coin. If heads, return 1 of your PokÃ©mon and all cards attached to it to your hand."
 				onPlay {
 				}
 				playRequirement{
@@ -1939,7 +1938,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case WARP_POINT_88:
 			return basicTrainer (this) {
-				text "Your opponent switches 1 of his or her Defending Pokémon with 1 of his or her Benched Pokémon, if any. You switch 1 of your Active Pokémon with 1 of your Benched Pokémon, if any."
+				text "Your opponent switches 1 of his or her Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon, if any. You switch 1 of your Active PokÃ©mon with 1 of your Benched PokÃ©mon, if any."
 				onPlay {
 				}
 				playRequirement{
@@ -1947,7 +1946,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case DOME_FOSSIL_89:
 			return basicTrainer (this) {
-				text "Play Dome Fossil as if it were a [C] Basic Pokémon. (Dome Fossil counts as a Trainer card as well, but if Dome Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Dome Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Dome Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Rock Reaction When you attach a [F] Energy card from your hand to Dome Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Dome Fossil and put it onto Dome Fossil (this counts as evolving Dome Fossil). Shuffle your deck afterward."
+				text "Play Dome Fossil as if it were a [C] Basic PokÃ©mon. (Dome Fossil counts as a Trainer card as well, but if Dome Fossil is Knocked Out, this counts as a Knocked Out PokÃ©mon.) Dome Fossil canâ€™t be affected by any Special Conditions and canâ€™t retreat. At any time during your turn before your attack, you may discard Dome Fossil from play. (This doesnâ€™t count as a Knocked Out PokÃ©mon.)\nPokÃ©-BODY: Rock Reaction When you attach a [F] Energy card from your hand to Dome Fossil (excluding effects of attacks or PokÃ©-Powers), search your deck for a card that evolves from Dome Fossil and put it onto Dome Fossil (this counts as evolving Dome Fossil). Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -1963,7 +1962,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case HELIX_FOSSIL_91:
 			return basicTrainer (this) {
-				text "Play Helix Fossil as if it were a [C] Basic Pokémon. (Helix Fossil counts as a Trainer card as well, but if Helix Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Helix Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Helix Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Aqua Reaction When you attach a [W] Energy card from your hand to Helix Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Helix Fossil and put it onto Helix Fossil (this counts as evolving Helix Fossil). Shuffle your deck afterward."
+				text "Play Helix Fossil as if it were a [C] Basic PokÃ©mon. (Helix Fossil counts as a Trainer card as well, but if Helix Fossil is Knocked Out, this counts as a Knocked Out PokÃ©mon.) Helix Fossil canâ€™t be affected by any Special Conditions and canâ€™t retreat. At any time during your turn before your attack, you may discard Helix Fossil from play. (This doesnâ€™t count as a Knocked Out PokÃ©mon.)\nPokÃ©-BODY: Aqua Reaction When you attach a [W] Energy card from your hand to Helix Fossil (excluding effects of attacks or PokÃ©-Powers), search your deck for a card that evolves from Helix Fossil and put it onto Helix Fossil (this counts as evolving Helix Fossil). Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -1971,7 +1970,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case CALL_ENERGY_92:
 			return specialEnergy (this, [[C]]) {
-				text "Call Energy provides [C] Energy. Once during your turn, if the Pokémon Call Energy is attached to is your Active Pokémon, you may search your deck for up to 2 Basic Pokémon and put them onto your Bench. If you do, shuffle your deck and your turn ends."
+				text "Call Energy provides [C] Energy. Once during your turn, if the PokÃ©mon Call Energy is attached to is your Active PokÃ©mon, you may search your deck for up to 2 Basic PokÃ©mon and put them onto your Bench. If you do, shuffle your deck and your turn ends."
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -1983,7 +1982,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case DARKNESS_ENERGY_93:
 			return specialEnergy (this, [[C]]) {
-				text "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
+				text "If the PokÃ©mon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active PokÃ©mon (before applying Weakness and Resistance). Ignore this effect if the PokÃ©mon that Darkness Energy is attached to isnâ€™t [D]. Darkness Energy provides [D] Energy. (Doesnâ€™t count as a basic Energy card.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -1995,7 +1994,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case HEALTH_ENERGY_94:
 			return specialEnergy (this, [[C]]) {
-				text "Health Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter from that Pokémon."
+				text "Health Energy provides [C] Energy. When you attach this card from your hand to 1 of your PokÃ©mon, remove 1 damage counter from that PokÃ©mon."
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2007,7 +2006,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case METAL_ENERGY_95:
 			return specialEnergy (this, [[C]]) {
-				text "Damage done by attacks to the Pokémon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that Metal Energy is attached to isn’t [M]. Metal Energy provides [M] Energy. (Doesn’t count as a basic Energy card.)"
+				text "Damage done by attacks to the PokÃ©mon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the PokÃ©mon that Metal Energy is attached to isnâ€™t [M]. Metal Energy provides [M] Energy. (Doesnâ€™t count as a basic Energy card.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2019,7 +2018,7 @@ public enum MajesticDawn implements CardInfo {
 			};
 			case RECOVER_ENERGY_96:
 			return specialEnergy (this, [[C]]) {
-				text "Recover Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove all Special Conditions from that Pokémon."
+				text "Recover Energy provides [C] Energy. When you attach this card from your hand to 1 of your PokÃ©mon, remove all Special Conditions from that PokÃ©mon."
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2033,12 +2032,12 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Garchomp", hp:HP140, type:COLORLESS, retreatCost:0) {
 				weakness C
 				pokePower "Dragon Pulse", {
-					text "Once during your turn , when you put Garchomp LV. from your hand onto your Active Garchomp, you may flip 3 coins. For each heads, put 1 damage counter on each of your opponent’s Benched Pokémon."
+					text "Once during your turn , when you put Garchomp LV. from your hand onto your Active Garchomp, you may flip 3 coins. For each heads, put 1 damage counter on each of your opponentâ€™s Benched PokÃ©mon."
 					actionA {
 					}
 				}
 				move "Restore", {
-					text ") and put it onto your Bench as a Basic Pokémon. Then, you may search your discard pile for up to 3 basic Energy cards and attach them to that Pokémon."
+					text ") and put it onto your Bench as a Basic PokÃ©mon. Then, you may search your discard pile for up to 3 basic Energy cards and attach them to that PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2046,7 +2045,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Garchomp. Garchomp LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Garchomp. Garchomp LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2059,12 +2058,12 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Glaceon", hp:HP100, type:WATER, retreatCost:1) {
 				weakness M, PLUS30
 				pokeBody "Chilly Breath", {
-					text "As long as Glaceon is your Active Pokémon, your opponent’s Pokémon can’t use any Poké-Powers."
+					text "As long as Glaceon is your Active PokÃ©mon, your opponentâ€™s PokÃ©mon canâ€™t use any PokÃ©-Powers."
 					delayedA {
 					}
 				}
 				move "Avalache", {
-					text "70 damage. Flip a coin. If heads, this attack does 20 damage to each of your opponent’s Benched Pokémon."
+					text "70 damage. Flip a coin. If heads, this attack does 20 damage to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
@@ -2072,7 +2071,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Glaceon. Glaceon LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Glaceon. Glaceon LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2086,12 +2085,12 @@ public enum MajesticDawn implements CardInfo {
 				weakness R, PLUS30
 				resistance W, MINUS20
 				pokePower "Energy Forcing", {
-					text "Once during your turn , you may attach an Energy card from your hand to 1 of your Pokémon. This power can’t be used if Leafeon is affected by a Special Condition."
+					text "Once during your turn , you may attach an Energy card from your hand to 1 of your PokÃ©mon. This power canâ€™t be used if Leafeon is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Verdant Force", {
-					text "30+ damage. Does 30 damage plus 10 more damage for each Energy attached to all of your Pokémon."
+					text "30+ damage. Does 30 damage plus 10 more damage for each Energy attached to all of your PokÃ©mon."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -2099,7 +2098,7 @@ public enum MajesticDawn implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Leafeon. Leafeon LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Leafeon. Leafeon LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2112,17 +2111,17 @@ public enum MajesticDawn implements CardInfo {
 			return evolution (this, from:"Porygon Z", hp:HP130, type:COLORLESS, retreatCost:2) {
 				weakness F
 				pokePower "Mode Crash", {
-					text "Once during your turn , when you put Porygon-Z LV. from your hand onto your Active Porygon-Z, you may discard all of your opponent’s Special Energy cards in play."
+					text "Once during your turn , when you put Porygon-Z LV. from your hand onto your Active Porygon-Z, you may discard all of your opponentâ€™s Special Energy cards in play."
 					actionA {
 					}
 				}
 				pokePower "Decode", {
-					text "Once during your turn , you may search your deck for any 2 cards and shuffle your deck afterward. Then, put those cards on top of your deck in any order. This power can’t be used if Porygon-Z is affected by a Special Condition."
+					text "Once during your turn , you may search your deck for any 2 cards and shuffle your deck afterward. Then, put those cards on top of your deck in any order. This power canâ€™t be used if Porygon-Z is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Porygon Z. Porygon-Z LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Porygon Z. Porygon-Z LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {

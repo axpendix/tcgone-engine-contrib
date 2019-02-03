@@ -52,8 +52,7 @@ public enum PopSeries8 implements CardInfo {
 	HAPPINY_14 ("Happiny", 14, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
 	PIPLUP_15 ("Piplup", 15, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
 	RIOLU_16 ("Riolu", 16, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-	TURTWIG_17 ("Turtwig", 17, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-;
+	TURTWIG_17 ("Turtwig", 17, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -111,7 +110,7 @@ public enum PopSeries8 implements CardInfo {
 			return basic (this, hp:HP100, type:FIRE, retreatCost:3) {
 				weakness W, PLUS30
 				move "Body Slam", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -119,7 +118,7 @@ public enum PopSeries8 implements CardInfo {
 					}
 				}
 				move "Fire Spin", {
-					text "90 damage. Discard 2 Basic Energy cards attached to Heatran. (If you can’t discard cards, this attack does nothing."
+					text "90 damage. Discard 2 Basic Energy cards attached to Heatran. (If you canâ€™t discard cards, this attack does nothing."
 					energyCost R, R, R, C
 					attackRequirement {}
 					onAttack {
@@ -132,7 +131,7 @@ public enum PopSeries8 implements CardInfo {
 			return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
 				weakness P, PLUS20
 				move "Blocking Punch", {
-					text "40 damage. During your opponent’s next turn, any damage done to Lucario by attacks is reduced by 20 (after Weakness and Resistance)."
+					text "40 damage. During your opponentâ€™s next turn, any damage done to Lucario by attacks is reduced by 20 (after Weakness and Resistance)."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -140,7 +139,7 @@ public enum PopSeries8 implements CardInfo {
 					}
 				}
 				move "Striking Kick", {
-					text "60 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon"
+					text "60 damage. This attackâ€™s damage isnâ€™t affected by Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon"
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -154,7 +153,7 @@ public enum PopSeries8 implements CardInfo {
 				weakness F, PLUS30
 				resistance M, MINUS20
 				pokeBody "Intimidating Fang", {
-					text "As long as Luxray is your Active Pokémon, any damage done by an opponent’s attack is reduced by 10 ."
+					text "As long as Luxray is your Active PokÃ©mon, any damage done by an opponentâ€™s attack is reduced by 10 ."
 					delayedA {
 					}
 				}
@@ -173,7 +172,7 @@ public enum PopSeries8 implements CardInfo {
 				weakness R, PLUS30
 				resistance P, MINUS20
 				move "Rock Slide", {
-					text "20 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
+					text "20 damage. Does 10 damage to 2 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -195,7 +194,7 @@ public enum PopSeries8 implements CardInfo {
 				weakness L, PLUS20
 				resistance F, MINUS20
 				move "Supersonic", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -217,7 +216,7 @@ public enum PopSeries8 implements CardInfo {
 				weakness R, PLUS20
 				resistance W, MINUS20
 				move "Worry Seed", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Confused."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -239,7 +238,7 @@ public enum PopSeries8 implements CardInfo {
 				weakness R, PLUS20
 				resistance W, MINUS20
 				move "Swallow Up", {
-					text "30 damage. Before doing damage, count the remaining HP of the Defending Pokémon and Carnivine. If the Defending Pokémon has fewer remaining HP than Carnivine’s, this attack does 60 damage instead."
+					text "30 damage. Before doing damage, count the remaining HP of the Defending PokÃ©mon and Carnivine. If the Defending PokÃ©mon has fewer remaining HP than Carnivineâ€™s, this attack does 60 damage instead."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -247,7 +246,7 @@ public enum PopSeries8 implements CardInfo {
 					}
 				}
 				move "Wring Out", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and discard an Energy card attached to the Defending Pokémon."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed and discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost G, G
 					attackRequirement {}
 					onAttack {
@@ -269,7 +268,7 @@ public enum PopSeries8 implements CardInfo {
 					}
 				}
 				move "Thunder Fang", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "30 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L, L
 					attackRequirement {}
 					onAttack {
@@ -280,7 +279,7 @@ public enum PopSeries8 implements CardInfo {
 			};
 			case NIGHT_MAINTENANCE_9:
 			return basicTrainer (this) {
-				text "Search your discard pile for up to 3 in any combination of Pokémon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
+				text "Search your discard pile for up to 3 in any combination of PokÃ©mon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
 				onPlay {
 				}
 				playRequirement{
@@ -288,7 +287,7 @@ public enum PopSeries8 implements CardInfo {
 			};
 			case RARE_CANDY_10:
 			return basicTrainer (this) {
-				text "Choose 1 of your Basic Pokémon in play. If you have a Stage 1 or Stage 2 card that evolves from that Pokémon in your hand, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.)"
+				text "Choose 1 of your Basic PokÃ©mon in play. If you have a Stage 1 or Stage 2 card that evolves from that PokÃ©mon in your hand, put that card on the Basic PokÃ©mon. (This counts as evolving that PokÃ©mon.)"
 				onPlay {
 				}
 				playRequirement{
@@ -296,7 +295,7 @@ public enum PopSeries8 implements CardInfo {
 			};
 			case ROSEANNE_S_RESEARCH_11:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 2 in any combination of Basic Pokémon and basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your deck for up to 2 in any combination of Basic PokÃ©mon and basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -327,7 +326,7 @@ public enum PopSeries8 implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS10
 				move "Ghastly Sound", {
-					text "Flip a coin. If heads, your opponent can’t play any Supporter cards from his or her hand during his or her next turn."
+					text "Flip a coin. If heads, your opponent canâ€™t play any Supporter cards from his or her hand during his or her next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -335,7 +334,7 @@ public enum PopSeries8 implements CardInfo {
 					}
 				}
 				move "Finger Poke", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Poisoned."
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
@@ -353,7 +352,7 @@ public enum PopSeries8 implements CardInfo {
 					}
 				}
 				move "Lively", {
-					text "Remove 2 damage counters from 1 of your Pokémon."
+					text "Remove 2 damage counters from 1 of your PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -387,7 +386,7 @@ public enum PopSeries8 implements CardInfo {
 			return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
 				weakness P, PLUS10
 				pokeBody "Inner Focus", {
-					text "Riolu can’t be Paralyzed."
+					text "Riolu canâ€™t be Paralyzed."
 					delayedA {
 					}
 				}

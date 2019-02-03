@@ -128,7 +128,7 @@ public enum RisingRivals implements CardInfo {
 	BERTHA_S_WARMTH_90 ("Bertha's Warmth", 90, Rarity.UNCOMMON, [TRAINER]),
 	FLINT_S_WILLPOWER_91 ("Flint's Willpower", 91, Rarity.UNCOMMON, [TRAINER]),
 	LUCIAN_S_ASSIGNMENT_92 ("Lucian's Assignment", 92, Rarity.UNCOMMON, [TRAINER]),
-	POKEMON_CONTEST_HALL_93 ("Pokémon Contest Hall", 93, Rarity.UNCOMMON, [TRAINER]),
+	POKEMON_CONTEST_HALL_93 ("PokÃ©mon Contest Hall", 93, Rarity.UNCOMMON, [TRAINER]),
 	SUNYSHORE_CITY_GYM_94 ("Sunyshore City Gym", 94, Rarity.UNCOMMON, [TRAINER]),
 	TECHNICAL_MACHINE_G_95 ("Technical Machine G", 95, Rarity.UNCOMMON, [TRAINER]),
 	SP_RADAR_96 ("SP Radar", 96, Rarity.UNCOMMON, [TRAINER]),
@@ -150,13 +150,12 @@ public enum RisingRivals implements CardInfo {
 	PIKACHU_112 ("Pikachu", 112, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
 	FLYING_PIKACHU_113 ("Flying Pikachu", 113, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
 	SURFING_PIKACHU_114 ("Surfing Pikachu", 114, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-	FAN_ROTOM_RT1 ("Fan Rotom", RT1, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-	FROST_ROTOM_RT2 ("Frost Rotom", RT2, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-	HEAT_ROTOM_RT3 ("Heat Rotom", RT3, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-	MOW_ROTOM_RT4 ("Mow Rotom", RT4, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-	WASH_ROTOM_RT5 ("Wash Rotom", RT5, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-	CHARON_S_CHOICE_RT6 ("Charon's Choice", RT6, Rarity.HOLORARE, [TRAINER]),
-;
+	FAN_ROTOM_RT1 ("Fan Rotom", 115, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
+	FROST_ROTOM_RT2 ("Frost Rotom", 116, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
+	HEAT_ROTOM_RT3 ("Heat Rotom", 117, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
+	MOW_ROTOM_RT4 ("Mow Rotom", 118, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
+	WASH_ROTOM_RT5 ("Wash Rotom", 119, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
+	CHARON_S_CHOICE_RT6 ("Charon's Choice", 120, Rarity.HOLORARE, [TRAINER]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -241,7 +240,7 @@ public enum RisingRivals implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				move "Bounce Back", {
-					text "30 damage. Your opponent switches the Defending Pokémon with one of his or her Benched Pokémon."
+					text "30 damage. Your opponent switches the Defending PokÃ©mon with one of his or her Benched PokÃ©mon."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
@@ -263,12 +262,12 @@ public enum RisingRivals implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				pokeBody "Eerie Aura", {
-					text "Put 1 damage counter on each of your opponent’s Pokémon that remains Asleep between turns."
+					text "Put 1 damage counter on each of your opponentâ€™s PokÃ©mon that remains Asleep between turns."
 					delayedA {
 					}
 				}
 				move "Darkness Sleep", {
-					text "50 damage. If the Defending Pokémon already has any damage counters on it, that Pokémon is now Asleep."
+					text "50 damage. If the Defending PokÃ©mon already has any damage counters on it, that PokÃ©mon is now Asleep."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -289,7 +288,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Giant Wave", {
-					text "50 damage. can’t use Giant Wave during your next turn."
+					text "50 damage. canâ€™t use Giant Wave during your next turn."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -303,12 +302,12 @@ public enum RisingRivals implements CardInfo {
 				weakness C, PLUS30
 				resistance L, MINUS20
 				pokeBody "Rainbow Float", {
-					text "If any basic Energy card attached to Flygon is the same type as any of your Pokémon, the Retreat Cost for those Pokémon is 0."
+					text "If any basic Energy card attached to Flygon is the same type as any of your PokÃ©mon, the Retreat Cost for those PokÃ©mon is 0."
 					delayedA {
 					}
 				}
 				move "Sand Wall", {
-					text "40 damage. Discard a Stadium card your opponent has in play. If you do, prevent all effects of an attack, including damage, done to Flygon during your opponent’s next turn."
+					text "40 damage. Discard a Stadium card your opponent has in play. If you do, prevent all effects of an attack, including damage, done to Flygon during your opponentâ€™s next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -316,7 +315,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Power Swing", {
-					text "60+ damage. Does 60 damage plus 10 more damage for each Evolved Pokémon on your Bench."
+					text "60+ damage. Does 60 damage plus 10 more damage for each Evolved PokÃ©mon on your Bench."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -329,7 +328,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP070, type:WATER, retreatCost:1) {
 				weakness M
 				move "Sleep Inducer", {
-					text "Switch the Defending Pokémon with one of your opponent’s Benched Pokémon. The new Defending Pokémon is now Asleep."
+					text "Switch the Defending PokÃ©mon with one of your opponentâ€™s Benched PokÃ©mon. The new Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -337,7 +336,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Wake-Up Slap", {
-					text "30+ damage. If the Defending Pokémon is affected by any Special Conditions, this attack does 30 damage plus 20 more damage. Then, remove all Special Conditions from the Defending Pokémon."
+					text "30+ damage. If the Defending PokÃ©mon is affected by any Special Conditions, this attack does 30 damage plus 20 more damage. Then, remove all Special Conditions from the Defending PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -351,7 +350,7 @@ public enum RisingRivals implements CardInfo {
 				weakness R, PLUS20
 				resistance P, MINUS20
 				pokePower "Final Wish", {
-					text "Once during your opponent’s turn, if Jirachi would be Knocked Out by damage from an attack, you may search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
+					text "Once during your opponentâ€™s turn, if Jirachi would be Knocked Out by damage from an attack, you may search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
 					actionA {
 					}
 				}
@@ -364,7 +363,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Swift", {
-					text "20 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "20 damage. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -377,12 +376,12 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
 				weakness P
 				pokeBody "Boundary Aura", {
-					text "Apply Weakness for each Pokémon as ×2 instead."
+					text "Apply Weakness for each PokÃ©mon as Ã—2 instead."
 					delayedA {
 					}
 				}
 				move "Combo Throw", {
-					text "30+ damage. Does 30 damage plus 10 more damage for each Energy attached to the Defending Pokémon."
+					text "30+ damage. Does 30 damage plus 10 more damage for each Energy attached to the Defending PokÃ©mon."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
@@ -404,7 +403,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Trash Bolt", {
-					text "70 damage. Discard an Energy card from your hand. (If you can’t discard a card from your hand, this attack does nothing.)"
+					text "70 damage. Discard an Energy card from your hand. (If you canâ€™t discard a card from your hand, this attack does nothing.)"
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -418,7 +417,7 @@ public enum RisingRivals implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				move "Psychic Removal", {
-					text "10 damage. Flip 2 coins. If both of them are heads, discard all Energy attached to the Defending Pokémon."
+					text "10 damage. Flip 2 coins. If both of them are heads, discard all Energy attached to the Defending PokÃ©mon."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -439,7 +438,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP090, type:FIGHTING, retreatCost:1) {
 				weakness G
 				move "Trample", {
-					text ". If that coin flip is heads, this attack does 30 damage to that Pokémon."
+					text ". If that coin flip is heads, this attack does 30 damage to that PokÃ©mon."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -447,7 +446,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Rend", {
-					text "40+ damage. If the Defending Pokémon has any damage counters on it, this attack does 40 damage plus 20 more damage."
+					text "40+ damage. If the Defending PokÃ©mon has any damage counters on it, this attack does 40 damage plus 20 more damage."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -460,7 +459,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
 				weakness R
 				move "Poison Bind", {
-					text "10 damage. The Defending Pokémon is now Poisoned and can’t retreat during your opponent’s next turn."
+					text "10 damage. The Defending PokÃ©mon is now Poisoned and canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -468,7 +467,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Long Whip", {
-					text "30 damage. If the Defending Pokémon is affected by any Special Conditions, you may do 30 damage to any 1 Benched Pokémon instead."
+					text "30 damage. If the Defending PokÃ©mon is affected by any Special Conditions, you may do 30 damage to any 1 Benched PokÃ©mon instead."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -482,12 +481,12 @@ public enum RisingRivals implements CardInfo {
 				weakness R, PLUS30
 				resistance P, MINUS20
 				pokeBody "Unlucky Wind", {
-					text "As long as Shiftry is your Active Pokémon, whenever your opponent flips a coin during his or her turn, treat it as tails."
+					text "As long as Shiftry is your Active PokÃ©mon, whenever your opponent flips a coin during his or her turn, treat it as tails."
 					delayedA {
 					}
 				}
 				move "Conform", {
-					text "40 damage. If you have the same number of cards in your hand as your opponent, the Defending Pokémon is now Confused."
+					text "40 damage. If you have the same number of cards in your hand as your opponent, the Defending PokÃ©mon is now Confused."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -495,7 +494,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Seal Off", {
-					text "60 damage. The Defending Pokémon can’t use any Poké-Powers or Poké-Bodies during your opponent’s next turn."
+					text "60 damage. The Defending PokÃ©mon canâ€™t use any PokÃ©-Powers or PokÃ©-Bodies during your opponentâ€™s next turn."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -509,7 +508,7 @@ public enum RisingRivals implements CardInfo {
 				weakness R, PLUS30
 				resistance P, MINUS20
 				move "Return Blow", {
-					text "If Aggron was damaged by an attack during your opponent’s last turn, this attack does the same amount of damage done to Aggron to the Defending Pokémon."
+					text "If Aggron was damaged by an attack during your opponentâ€™s last turn, this attack does the same amount of damage done to Aggron to the Defending PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -538,12 +537,12 @@ public enum RisingRivals implements CardInfo {
 			return evolution (this, from:"Kakuna", hp:HP110, type:GRASS, retreatCost:1) {
 				weakness R, PLUS30
 				pokePower "Flutter Wings", {
-					text "Once during your turn , you may search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power can’t be used if Beedrill is affected by a Special Condition."
+					text "Once during your turn , you may search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power canâ€™t be used if Beedrill is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Needle Shock", {
-					text "30 damage. The Defending Pokémon is now Paralyzed and Poisoned. Ignore this effect if any of your Pokémon used Needle Shock during your last turn."
+					text "30 damage. The Defending PokÃ©mon is now Paralyzed and Poisoned. Ignore this effect if any of your PokÃ©mon used Needle Shock during your last turn."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -565,7 +564,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Payback", {
-					text "10+ damage. If your opponent has only 1 Prize card left, this attack does 10 damage plus 50 more damage and the Defending Pokémon is now Confused."
+					text "10+ damage. If your opponent has only 1 Prize card left, this attack does 10 damage plus 50 more damage and the Defending PokÃ©mon is now Confused."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -579,7 +578,7 @@ public enum RisingRivals implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				move "Body Slam", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -600,7 +599,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Hypnosis", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -608,7 +607,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Psywave", {
-					text "20+ damage. Does 20 damage plus 10 more damage for each Energy attached to the Defending Pokémon."
+					text "20+ damage. Does 20 damage plus 10 more damage for each Energy attached to the Defending PokÃ©mon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -621,7 +620,7 @@ public enum RisingRivals implements CardInfo {
 			return evolution (this, from:"Eevee", hp:HP080, type:FIRE, retreatCost:1) {
 				weakness W, PLUS20
 				pokePower "Undevelop", {
-					text "Once during your turn , you may devolve Flareon and put Flareon into your hand. This power can’t be used if Flareon is affected by a Special Condition."
+					text "Once during your turn , you may devolve Flareon and put Flareon into your hand. This power canâ€™t be used if Flareon is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -634,7 +633,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Evolving Flare", {
-					text "40+ damage. If Flareon evolved from Eevee during this turn, this attack does 40 damage plus 20 more damage and the Defending Pokémon is now Burned."
+					text "40+ damage. If Flareon evolved from Eevee during this turn, this attack does 40 damage plus 20 more damage and the Defending PokÃ©mon is now Burned."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -647,7 +646,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Chop Up", {
-					text "20 damage. Does 10 damage to each of your opponent’s Benched Pokémon that has any damage counters on it."
+					text "20 damage. Does 10 damage to each of your opponentâ€™s Benched PokÃ©mon that has any damage counters on it."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -655,7 +654,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Feint", {
-					text "50 damage. This attack’s damage isn’t affected by Resistance."
+					text "50 damage. This attackâ€™s damage isnâ€™t affected by Resistance."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -669,12 +668,12 @@ public enum RisingRivals implements CardInfo {
 				weakness G
 				resistance L, MINUS20
 				pokeBody "Sticky Hold", {
-					text "If Gastrodon East Sea is switched or retreats to your Bench, move as many Energy cards attached to Gastrodon East Sea as you like to the new Active Pokémon."
+					text "If Gastrodon East Sea is switched or retreats to your Bench, move as many Energy cards attached to Gastrodon East Sea as you like to the new Active PokÃ©mon."
 					delayedA {
 					}
 				}
 				move "Calling Wave", {
-					text "Search your deck for up to 2 Gastrodon and put them onto your Bench as Basic Pokémon. Put 2 damage counters on each of them. Shuffle your deck afterward."
+					text "Search your deck for up to 2 Gastrodon and put them onto your Bench as Basic PokÃ©mon. Put 2 damage counters on each of them. Shuffle your deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -704,7 +703,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Muddy Bomb", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon and 10 damage to each of your opponent’s other Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon and 10 damage to each of your opponentâ€™s other PokÃ©mon."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -712,7 +711,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Raging Sea", {
-					text "60+ damage. Does 60 damage plus 10 more damage for each of your Benched Pokémon that has any damage counters on it."
+					text "60+ damage. Does 60 damage plus 10 more damage for each of your Benched PokÃ©mon that has any damage counters on it."
 					energyCost F, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -769,7 +768,7 @@ public enum RisingRivals implements CardInfo {
 				weakness W, PLUS20
 				resistance L, MINUS20
 				pokeBody "Sand Cover", {
-					text "As long as Hippowdon is your Active Pokémon, put 1 damage counter on each of your opponent’s Pokémon LV. between turns."
+					text "As long as Hippowdon is your Active PokÃ©mon, put 1 damage counter on each of your opponentâ€™s PokÃ©mon LV. between turns."
 					delayedA {
 					}
 				}
@@ -782,7 +781,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Groundquake", {
-					text "80 damage. . (Don’t apply Weakness and Resistance for Benched Pokémon)."
+					text "80 damage. . (Donâ€™t apply Weakness and Resistance for Benched PokÃ©mon)."
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
@@ -796,7 +795,7 @@ public enum RisingRivals implements CardInfo {
 				weakness F, PLUS20
 				resistance M, MINUS20
 				pokePower "Undevelop", {
-					text "Once during your turn , you may devolve Jolteon and put Jolteon into your hand. This power can’t be used if Jolteon is affected by a Special Condition."
+					text "Once during your turn , you may devolve Jolteon and put Jolteon into your hand. This power canâ€™t be used if Jolteon is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -809,7 +808,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Evolving Thunder", {
-					text "50 damage. If Jolteon evolved from Eevee during this turn, this attack does 10 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon)."
+					text "50 damage. If Jolteon evolved from Eevee during this turn, this attack does 10 damage to each of your opponentâ€™s Benched PokÃ©mon. (Donâ€™t apply Weakness and Resistance for Benched PokÃ©mon)."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -823,12 +822,12 @@ public enum RisingRivals implements CardInfo {
 				weakness M
 				resistance L, MINUS20
 				pokeBody "Icy Aura", {
-					text "As long as Mamoswine is your Active Pokémon, put 1 damage counter on each Active Pokémon (excluding Pokémon) between turns."
+					text "As long as Mamoswine is your Active PokÃ©mon, put 1 damage counter on each Active PokÃ©mon (excluding PokÃ©mon) between turns."
 					delayedA {
 					}
 				}
 				move "Avalanche", {
-					text "60 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Benched Pokémon."
+					text "60 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -841,7 +840,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Magic Heal", {
-					text "Flip 3 coins. Remove a number of damage counters equal to the number of heads from your Pokémon in any way you like."
+					text "Flip 3 coins. Remove a number of damage counters equal to the number of heads from your PokÃ©mon in any way you like."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -863,12 +862,12 @@ public enum RisingRivals implements CardInfo {
 				weakness W, PLUS30
 				resistance L, MINUS20
 				pokeBody "Territoriality", {
-					text "If your Active Pokémon is damaged by an opponent’s attack , put 2 damage counters on the Attacking Pokémon. You can’t put more than 2 damage counters in this way."
+					text "If your Active PokÃ©mon is damaged by an opponentâ€™s attack , put 2 damage counters on the Attacking PokÃ©mon. You canâ€™t put more than 2 damage counters in this way."
 					delayedA {
 					}
 				}
 				move "Fling Away", {
-					text "60 damage. If your opponent has any Benched Pokémon, this attack’s base damage is 30 instead of 60 and this attack does 30 damage to 1 of your opponent’s Benched Pokémon."
+					text "60 damage. If your opponent has any Benched PokÃ©mon, this attackâ€™s base damage is 30 instead of 60 and this attack does 30 damage to 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -890,7 +889,7 @@ public enum RisingRivals implements CardInfo {
 				weakness P, PLUS30
 				resistance L, MINUS20
 				pokeBody "Maternal Comfort", {
-					text "At any times between turns, remove 1 damage counter from each of your Pokémon. You can’t use more than 1 Maternal Comfort Poké-Body between turns."
+					text "At any times between turns, remove 1 damage counter from each of your PokÃ©mon. You canâ€™t use more than 1 Maternal Comfort PokÃ©-Body between turns."
 					delayedA {
 					}
 				}
@@ -903,7 +902,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Ruthless Tail", {
-					text "50+ damage. Does 50 damage plus 10 more damage for each of your opponent’s Benched Pokémon."
+					text "50+ damage. Does 50 damage plus 10 more damage for each of your opponentâ€™s Benched PokÃ©mon."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -917,7 +916,7 @@ public enum RisingRivals implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				move "Thunder Throw", {
-					text "Choose 2 of your opponent’s Benched Pokémon. This attack does 10 damage to each of them."
+					text "Choose 2 of your opponentâ€™s Benched PokÃ©mon. This attack does 10 damage to each of them."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -925,7 +924,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Repeat Lightning", {
-					text "30+ damage. Does 30 damage plus 10 more damage for each of your opponent’s Benched Pokémon that has any damage counters on it."
+					text "30+ damage. Does 30 damage plus 10 more damage for each of your opponentâ€™s Benched PokÃ©mon that has any damage counters on it."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -939,7 +938,7 @@ public enum RisingRivals implements CardInfo {
 				weakness W
 				resistance L, MINUS20
 				move "Double Lariat", {
-					text "30× damage. Flip 2 coins. This attack does 30 damage times the number of heads."
+					text "30Ã— damage. Flip 2 coins. This attack does 30 damage times the number of heads."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -947,7 +946,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Rock Tumble", {
-					text "60 damage. This attack’s damage isn’t affected by Resistance."
+					text "60 damage. This attackâ€™s damage isnâ€™t affected by Resistance."
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
@@ -968,7 +967,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Roll Over", {
-					text "60 damage. Flip a coin. If heads, both Snorlax and the Defending Pokémon are now Asleep. If tails, Snorlax is now Asleep."
+					text "60 damage. Flip a coin. If heads, both Snorlax and the Defending PokÃ©mon are now Asleep. If tails, Snorlax is now Asleep."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -981,7 +980,7 @@ public enum RisingRivals implements CardInfo {
 			return evolution (this, from:"Eevee", hp:HP090, type:WATER, retreatCost:2) {
 				weakness L, PLUS20
 				pokePower "Undevelop", {
-					text "Once during your turn , you may devolve Vaporeon and put Vaporeon into your hand. This power can’t be used if Vaporeon is affected by a Special Condition."
+					text "Once during your turn , you may devolve Vaporeon and put Vaporeon into your hand. This power canâ€™t be used if Vaporeon is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -1026,12 +1025,12 @@ public enum RisingRivals implements CardInfo {
 			return evolution (this, from:"Sealeo", hp:HP140, type:WATER, retreatCost:4) {
 				weakness M, PLUS30
 				pokePower "Gather Ice", {
-					text "Once during your turn , when you play Walrein from your hand to evolve 1 of your Pokémon, you may as many Energy cards from your hand to Walrein as you like."
+					text "Once during your turn , when you play Walrein from your hand to evolve 1 of your PokÃ©mon, you may as many Energy cards from your hand to Walrein as you like."
 					actionA {
 					}
 				}
 				move "Cold Crush", {
-					text "70 damage. Discard an Energy card attached to Walrein and then discard an Energy attached to the Defending Pokémon."
+					text "70 damage. Discard an Energy card attached to Walrein and then discard an Energy attached to the Defending PokÃ©mon."
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1045,7 +1044,7 @@ public enum RisingRivals implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Skill Dive", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 10 damage to that PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1053,7 +1052,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Whirlwind", {
-					text "50 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "50 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1074,7 +1073,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Mysterious Beam", {
-					text "30 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "30 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -1096,7 +1095,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Reflect Energy", {
-					text "30 damage. to 1 of your Benched Pokémon."
+					text "30 damage. to 1 of your Benched PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1110,7 +1109,7 @@ public enum RisingRivals implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				move "Confuse Ray", {
-					text "10 damage. The Defending Pokémon is now Confused."
+					text "10 damage. The Defending PokÃ©mon is now Confused."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1131,12 +1130,12 @@ public enum RisingRivals implements CardInfo {
 			return evolution (this, from:"Eevee", hp:HP080, type:WATER, retreatCost:1) {
 				weakness M, PLUS20
 				pokeBody "Frost Wind", {
-					text "As long as Glaceon is your Active Pokémon, any damage done to your Pokémon by your opponent’s attacks is reduced by 10 ."
+					text "As long as Glaceon is your Active PokÃ©mon, any damage done to your PokÃ©mon by your opponentâ€™s attacks is reduced by 10 ."
 					delayedA {
 					}
 				}
 				move "Ice Blade", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1144,7 +1143,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Ice Bind", {
-					text "50 damage. If your opponent doesn’t discard a card from his or her hand, the Defending Pokémon is now Paralyzed."
+					text "50 damage. If your opponent doesnâ€™t discard a card from his or her hand, the Defending PokÃ©mon is now Paralyzed."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1176,7 +1175,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP090, type:FIRE, retreatCost:1) {
 				weakness W
 				move "Split Bomb", {
-					text "Choose 2 of your opponent’s Pokémon. This attack does 20 damage to each of them."
+					text "Choose 2 of your opponentâ€™s PokÃ©mon. This attack does 20 damage to each of them."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -1220,12 +1219,12 @@ public enum RisingRivals implements CardInfo {
 				weakness R, PLUS20
 				resistance W, MINUS20
 				pokeBody "Energy Refresh", {
-					text "As long as Leafeon is your Active Pokémon, whenever you attach an Energy card from your hand to 1 of your Pokémon, remove 2 damage counters from that Pokémon."
+					text "As long as Leafeon is your Active PokÃ©mon, whenever you attach an Energy card from your hand to 1 of your PokÃ©mon, remove 2 damage counters from that PokÃ©mon."
 					delayedA {
 					}
 				}
 				move "Plus Energy", {
-					text "40 damage. Attach a basic Energy card from your hand to 1 of your Pokémon."
+					text "40 damage. Attach a basic Energy card from your hand to 1 of your PokÃ©mon."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1233,7 +1232,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Soothing Scent", {
-					text "60 damage. The Defending Pokémon is now Asleep."
+					text "60 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1246,7 +1245,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP100, type:FIGHTING, retreatCost:3) {
 				weakness P
 				move "Cross-Cut", {
-					text "30+ damage. If the Defending Pokémon is an Evolved Pokémon, this attack does 30 damage plus 20 more damage."
+					text "30+ damage. If the Defending PokÃ©mon is an Evolved PokÃ©mon, this attack does 30 damage plus 20 more damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1254,7 +1253,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Brush Off", {
-					text "Put the Defending Pokémon and all cards attached to it on top of your opponent’s deck. Your opponent shuffles his or her deck afterward. (If your opponent doesn’t have any Benched Pokémon, this attack does nothing.)"
+					text "Put the Defending PokÃ©mon and all cards attached to it on top of your opponentâ€™s deck. Your opponent shuffles his or her deck afterward. (If your opponent doesnâ€™t have any Benched PokÃ©mon, this attack does nothing.)"
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
@@ -1296,7 +1295,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Crushing Blow", {
-					text "40 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
+					text "40 damage. Flip a coin. If heads, discard an Energy card attached to the Defending PokÃ©mon."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -1310,12 +1309,12 @@ public enum RisingRivals implements CardInfo {
 				weakness L, PLUS20
 				resistance P, MINUS20
 				pokeBody "Energy Shark", {
-					text "If Sharpedo is your Active Pokémon and is damaged by an opponent’s attack , flip a coin. If heads, discard an Energy card attached to the Attacking Pokémon."
+					text "If Sharpedo is your Active PokÃ©mon and is damaged by an opponentâ€™s attack , flip a coin. If heads, discard an Energy card attached to the Attacking PokÃ©mon."
 					delayedA {
 					}
 				}
 				move "Crunch", {
-					text "20 damage. , that attack does 40 more damage to that Pokémon until the end of your next turn."
+					text "20 damage. , that attack does 40 more damage to that PokÃ©mon until the end of your next turn."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -1336,12 +1335,12 @@ public enum RisingRivals implements CardInfo {
 			return evolution (this, from:"Staryu", hp:HP080, type:WATER, retreatCost:0) {
 				weakness L, PLUS20
 				pokePower "Aqua Recycle", {
-					text "Once during your turn , you may search your discard pile for a Energy card, show it to your opponent, and put it into your hand. This power can’t be used if Starmie is affected by a Special Condition."
+					text "Once during your turn , you may search your discard pile for a Energy card, show it to your opponent, and put it into your hand. This power canâ€™t be used if Starmie is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Synchro Gain", {
-					text "20 damage. If Starmie and the Defending Pokémon have the same amount of Energy attached to them, remove 4 damage counters from Starmie."
+					text "20 damage. If Starmie and the Defending PokÃ©mon have the same amount of Energy attached to them, remove 4 damage counters from Starmie."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1349,7 +1348,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Powerful Spin", {
-					text "40 damage. Starmie can’t attack during your next turn."
+					text "40 damage. Starmie canâ€™t attack during your next turn."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1371,7 +1370,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Squeeze", {
-					text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 50 more damage and the Defending Pokémon is now Paralyzed."
+					text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 50 more damage and the Defending PokÃ©mon is now Paralyzed."
 					energyCost M, M, C, C
 					attackRequirement {}
 					onAttack {
@@ -1385,7 +1384,7 @@ public enum RisingRivals implements CardInfo {
 				weakness R, PLUS20
 				resistance F, MINUS20
 				move "Fly", {
-					text "30 damage. Flip a coin. If tails, this attack does nothing. If heads, prevent all effects of an attack, including damage, done to Tropius during your opponent’s next turn."
+					text "30 damage. Flip a coin. If tails, this attack does nothing. If heads, prevent all effects of an attack, including damage, done to Tropius during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1393,7 +1392,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Blessed Fruit", {
-					text "Pokémon."
+					text "PokÃ©mon."
 					energyCost G, G, G
 					attackRequirement {}
 					onAttack {
@@ -1415,7 +1414,7 @@ public enum RisingRivals implements CardInfo {
 				weakness C, PLUS20
 				resistance L, MINUS20
 				move "Energy Typhoon", {
-					text "20× damage. Does 20 damage times the number of Energy cards in your opponent’s discard pile. Then, put those Energy cards on top of your opponent’s deck. Your opponent shuffles his or her deck afterward."
+					text "20Ã— damage. Does 20 damage times the number of Energy cards in your opponentâ€™s discard pile. Then, put those Energy cards on top of your opponentâ€™s deck. Your opponent shuffles his or her deck afterward."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1437,7 +1436,7 @@ public enum RisingRivals implements CardInfo {
 				weakness G
 				resistance L, MINUS20
 				move "Sleep Pulse", {
-					text "10 damage. The Defending Pokémon is now Asleep."
+					text "10 damage. The Defending PokÃ©mon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1445,7 +1444,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Earthquake", {
-					text "60 damage. Does 10 damage to each of your Benched Pokémon."
+					text "60 damage. Does 10 damage to each of your Benched PokÃ©mon."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -1467,7 +1466,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Primal Breath", {
-					text "30 damage. Your opponent can’t play any Pokémon from his or her hand to Evolve or to Level Up the Defending Pokémon during his or her next turn."
+					text "30 damage. Your opponent canâ€™t play any PokÃ©mon from his or her hand to Evolve or to Level Up the Defending PokÃ©mon during his or her next turn."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1480,7 +1479,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Tail Code", {
-					text "Move an Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon."
+					text "Move an Energy card attached to the Defending PokÃ©mon to another of your opponentâ€™s PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1488,7 +1487,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Snap Attack", {
-					text "60 damage. If the Defending Pokémon has any Energy cards attached to it, this attack’s base damage is 20 instead of 60."
+					text "60 damage. If the Defending PokÃ©mon has any Energy cards attached to it, this attackâ€™s base damage is 20 instead of 60."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1502,7 +1501,7 @@ public enum RisingRivals implements CardInfo {
 				weakness R, PLUS10
 				resistance P, MINUS20
 				move "Iron Head", {
-					text "10× damage. Flip a coin until you get tails. This attack does 10 damage times the number of heads."
+					text "10Ã— damage. Flip a coin until you get tails. This attack does 10 damage times the number of heads."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -1524,7 +1523,7 @@ public enum RisingRivals implements CardInfo {
 				weakness L, PLUS10
 				resistance P, MINUS20
 				move "Scary Face", {
-					text "Flip a coin. If heads, the Defending Pokémon can’t attack or retreat during your opponent’s next turn."
+					text "Flip a coin. If heads, the Defending PokÃ©mon canâ€™t attack or retreat during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1532,7 +1531,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Whirlpool", {
-					text "10 damage. Flip a coin. If heads, discard an Energy attached to the Defending Pokémon."
+					text "10 damage. Flip a coin. If heads, discard an Energy attached to the Defending PokÃ©mon."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -1553,7 +1552,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Bounce", {
-					text "10 damage. Switch Eevee with 1 of your Benched Pokémon."
+					text "10 damage. Switch Eevee with 1 of your Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1588,7 +1587,7 @@ public enum RisingRivals implements CardInfo {
 				weakness R
 				resistance P, MINUS20
 				move "Shell Scatter", {
-					text "can’t use Shell Scatter during your next turn."
+					text "canâ€™t use Shell Scatter during your next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1618,7 +1617,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Loaded Needle", {
-					text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 30 more damage. If tails, the Defending Pokémon is now Poisoned."
+					text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 30 more damage. If tails, the Defending PokÃ©mon is now Poisoned."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1653,7 +1652,7 @@ public enum RisingRivals implements CardInfo {
 				weakness W, PLUS10
 				resistance L, MINUS20
 				move "Push Down", {
-					text "10 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
+					text "10 damage. Your opponent switches the Defending PokÃ©mon with 1 of his or her Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1675,7 +1674,7 @@ public enum RisingRivals implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				move "Corner", {
-					text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+					text "20 damage. The Defending PokÃ©mon canâ€™t retreat during your opponentâ€™s next turn."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1683,7 +1682,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Fire Fang", {
-					text "40 damage. The Defending Pokémon is now Burned."
+					text "40 damage. The Defending PokÃ©mon is now Burned."
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
@@ -1701,7 +1700,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Dangerous Evolution", {
-					text "The Defending Pokémon is now Poisoned. Flip a coin. If heads, search your deck for an Evolution card that evolves from Kakuna and put it onto Kakuna. (This counts as evolving Kakuna.) Shuffle your deck afterward."
+					text "The Defending PokÃ©mon is now Poisoned. Flip a coin. If heads, search your deck for an Evolution card that evolves from Kakuna and put it onto Kakuna. (This counts as evolving Kakuna.) Shuffle your deck afterward."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -1714,7 +1713,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
 				weakness F, PLUS20
 				pokeBody "Colorful Body", {
-					text "Kecleon’s type is ."
+					text "Kecleonâ€™s type is ."
 					delayedA {
 					}
 				}
@@ -1732,7 +1731,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS10
 				move "Offensive Gas", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Confused and Poisoned."
+					text "Flip a coin. If heads, the Defending PokÃ©mon is now Confused and Poisoned."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1740,7 +1739,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Gas Bomb", {
-					text "30 damage. Koffing does 30 damage to itself, and don’t apply Weakness and Resistance to this damage."
+					text "30 damage. Koffing does 30 damage to itself, and donâ€™t apply Weakness and Resistance to this damage."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1810,7 +1809,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				move "Leer", {
-					text "Flip a coin. If heads, the Defending Pokémon can’t attack during your opponent’s next turn."
+					text "Flip a coin. If heads, the Defending PokÃ©mon canâ€™t attack during your opponentâ€™s next turn."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1831,7 +1830,7 @@ public enum RisingRivals implements CardInfo {
 			return evolution (this, from:"Nidoran Female", hp:HP080, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS20
 				move "Jump Tackle", {
-					text "30 damage. Nidorina does 10 damage to itself, and don’t apply Weakness and Resistance to this damage."
+					text "30 damage. Nidorina does 10 damage to itself, and donâ€™t apply Weakness and Resistance to this damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1839,7 +1838,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Stress Poison", {
-					text "40+ damage. If Nidorina has any damage counters on it, this attack does 40 damage plus 20 more damage and the Defending Pokémon is now Poisoned."
+					text "40+ damage. If Nidorina has any damage counters on it, this attack does 40 damage plus 20 more damage and the Defending PokÃ©mon is now Poisoned."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -1852,7 +1851,7 @@ public enum RisingRivals implements CardInfo {
 			return evolution (this, from:"Nidoran Male", hp:HP080, type:PSYCHIC, retreatCost:1) {
 				weakness P, PLUS20
 				move "Toxic", {
-					text "The Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
+					text "The Defending PokÃ©mon is now Poisoned. Put 2 damage counters instead of 1 on the Defending PokÃ©mon between turns."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1860,7 +1859,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Frustration", {
-					text "Choose 1 of your opponent’s Pokémon that doesn’t have any damage counters on it. This attack does 40 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon that doesnâ€™t have any damage counters on it. This attack does 40 damage to that PokÃ©mon."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1874,7 +1873,7 @@ public enum RisingRivals implements CardInfo {
 				weakness F, PLUS20
 				resistance P, MINUS20
 				move "Blind", {
-					text "10 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+					text "10 damage. If the Defending PokÃ©mon tries to attack during your opponentâ€™s next turn, your opponent flips a coin. If tails, that attack does nothing."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -1882,7 +1881,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Feint Attack", {
-					text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 30 damage to that PokÃ©mon. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on that PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1901,7 +1900,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Punch and Run", {
-					text "40 damage. with 1 of your Benched Pokémon."
+					text "40 damage. with 1 of your Benched PokÃ©mon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1922,7 +1921,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Sheer Cold", {
-					text "20 damage. Flip a coin. If heads, each Defending Pokémon can’t attack during your opponent’s next turn."
+					text "20 damage. Flip a coin. If heads, each Defending PokÃ©mon canâ€™t attack during your opponentâ€™s next turn."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1936,7 +1935,7 @@ public enum RisingRivals implements CardInfo {
 				weakness R, PLUS10
 				resistance W, MINUS20
 				move "Harden", {
-					text "During your opponent’s next turn, if Seedot would be damaged by an attack, prevent that attack’s damage done to Seedot if that damage is 40 or less."
+					text "During your opponentâ€™s next turn, if Seedot would be damaged by an attack, prevent that attackâ€™s damage done to Seedot if that damage is 40 or less."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1944,7 +1943,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Astonish", {
-					text "10 damage. Choose 1 card from your opponent’s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
+					text "10 damage. Choose 1 card from your opponentâ€™s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1957,7 +1956,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 				weakness G, PLUS10
 				move "Ripple", {
-					text "Flip a coin. If heads, put 1 damage counter on each of your opponent’s Pokémon."
+					text "Flip a coin. If heads, put 1 damage counter on each of your opponentâ€™s PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1965,7 +1964,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Brine", {
-					text "Choose 1 of your opponent’s Pokémon that has any damage counters on it. This attack does 20 damage to that Pokémon."
+					text "Choose 1 of your opponentâ€™s PokÃ©mon that has any damage counters on it. This attack does 20 damage to that PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1978,7 +1977,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP070, type:WATER, retreatCost:2) {
 				weakness G, PLUS20
 				move "Healing Sea", {
-					text "Flip 2 coins. Choose 1 of your Pokémon. For each heads, remove 1 damage counter from that Pokémon."
+					text "Flip 2 coins. Choose 1 of your PokÃ©mon. For each heads, remove 1 damage counter from that PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -1999,7 +1998,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
 				weakness F
 				pokeBody "Bad Sleeping Habits", {
-					text "As long as Snorlax is Asleep, your opponent’s Active Pokémon can’t retreat."
+					text "As long as Snorlax is Asleep, your opponentâ€™s Active PokÃ©mon canâ€™t retreat."
 					delayedA {
 					}
 				}
@@ -2025,7 +2024,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP060, type:WATER, retreatCost:2) {
 				weakness M, PLUS10
 				move "Powder Snow", {
-					text "The Defending Pokémon is now Asleep."
+					text "The Defending PokÃ©mon is now Asleep."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2046,7 +2045,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 				weakness L, PLUS10
 				move "Cosmic Draw", {
-					text "If your opponent has any Evolved Pokémon in play, draw 3 cards."
+					text "If your opponent has any Evolved PokÃ©mon in play, draw 3 cards."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2054,7 +2053,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Swift", {
-					text "10 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
+					text "10 damage. This attackâ€™s damage isnâ€™t affected by Weakness, Resistance, PokÃ©-Powers, PokÃ©-Bodies, or any other effects on the Defending PokÃ©mon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -2068,12 +2067,12 @@ public enum RisingRivals implements CardInfo {
 				weakness W, PLUS10
 				resistance L, MINUS20
 				pokePower "Gather Sand", {
-					text "Once during your turn , if Trapinch is your Active Pokémon, you may search your discard pile for a basic card and attach it to Trapinch."
+					text "Once during your turn , if Trapinch is your Active PokÃ©mon, you may search your discard pile for a basic card and attach it to Trapinch."
 					actionA {
 					}
 				}
 				move "Grind", {
-					text "10× damage. Does 10 damage times the amount of Energy attached to Trapinch."
+					text "10Ã— damage. Does 10 damage times the amount of Energy attached to Trapinch."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2087,12 +2086,12 @@ public enum RisingRivals implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				pokeBody "Overgrow", {
-					text "As long as Turtwig ‘s remaining HP is 60 or less, each of Turtwig ‘s attacks does 30 more damage to the Defending Pokémon ."
+					text "As long as Turtwig â€˜s remaining HP is 60 or less, each of Turtwig â€˜s attacks does 30 more damage to the Defending PokÃ©mon ."
 					delayedA {
 					}
 				}
 				move "Giga Drain", {
-					text "30 damage. the number of damage counters equal to the damage you did to the Defending Pokémon."
+					text "30 damage. the number of damage counters equal to the damage you did to the Defending PokÃ©mon."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -2105,7 +2104,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
 				weakness R, PLUS10
 				move "Rescue String", {
-					text "Search your discard pile for up to 5 Pokémon, show them to your opponent, and shuffle them into your deck."
+					text "Search your discard pile for up to 5 PokÃ©mon, show them to your opponent, and shuffle them into your deck."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2126,7 +2125,7 @@ public enum RisingRivals implements CardInfo {
 			return evolution (this, from:"Koffing", hp:HP080, type:PSYCHIC, retreatCost:2) {
 				weakness P, PLUS20
 				move "", {
-					text "If Weezing is Confused and is Knocked Out, your opponent can’t take a Prize card."
+					text "If Weezing is Confused and is Knocked Out, your opponent canâ€™t take a Prize card."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2134,7 +2133,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Damage Breakdown", {
-					text "Count the number of damage counters on Weezing. Put that many damage counters on the Defending Pokémon and Weezing is now Confused."
+					text "Count the number of damage counters on Weezing. Put that many damage counters on the Defending PokÃ©mon and Weezing is now Confused."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2142,7 +2141,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Smog", {
-					text "20 damage. The Defending Pokémon is now Poisoned."
+					text "20 damage. The Defending PokÃ©mon is now Poisoned."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -2153,7 +2152,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case AARON_S_COLLECTION_88:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your discard pile for up to 2 in any combination of Pokémon SP and basic Energy cards, show them to your opponent, and put them into your hand."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your discard pile for up to 2 in any combination of PokÃ©mon SP and basic Energy cards, show them to your opponent, and put them into your hand."
 				onPlay {
 				}
 				playRequirement{
@@ -2161,7 +2160,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case BEBE_S_SEARCH_89:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a PokÃ©mon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you canâ€™t play this card.)"
 				onPlay {
 				}
 				playRequirement{
@@ -2169,7 +2168,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case BERTHA_S_WARMTH_90:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nRemove 5 damage counters from 1 of your Pokémon SP."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nRemove 5 damage counters from 1 of your PokÃ©mon SP."
 				onPlay {
 				}
 				playRequirement{
@@ -2177,7 +2176,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case FLINT_S_WILLPOWER_91:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nAttach a basic Energy card from your hand to 1 of your Pokémon SP."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nAttach a basic Energy card from your hand to 1 of your PokÃ©mon SP."
 				onPlay {
 				}
 				playRequirement{
@@ -2185,7 +2184,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case LUCIAN_S_ASSIGNMENT_92:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nMove as many Energy cards attached to 1 of your Pokémon as you like to another of your Pokémon."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nMove as many Energy cards attached to 1 of your PokÃ©mon as you like to another of your PokÃ©mon."
 				onPlay {
 				}
 				playRequirement{
@@ -2193,7 +2192,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case POKEMON_CONTEST_HALL_93:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, if that player’s Bench isn’t full, the player may flip a coin. If heads, that player searches his or her deck for a Basic Pokémon and puts it onto his or her Bench. If the player does, he or she may search his or her deck for a Pokémon Tool card and attach it to that Pokémon. If that player searched his or her deck, the player shuffles his or her deck afterward."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nOnce during each playerâ€™s turn, if that playerâ€™s Bench isnâ€™t full, the player may flip a coin. If heads, that player searches his or her deck for a Basic PokÃ©mon and puts it onto his or her Bench. If the player does, he or she may search his or her deck for a PokÃ©mon Tool card and attach it to that PokÃ©mon. If that player searched his or her deck, the player shuffles his or her deck afterward."
 				onPlay {
 				}
 				playRequirement{
@@ -2201,7 +2200,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case SUNYSHORE_CITY_GYM_94:
 			return basicTrainer (this) {
-				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nAny damage done by attacks from [L] Pokémon (both yours and your opponent’s) to the Defending Pokémon isn’t affected by Resistance. Each [L] Pokémon in play (both yours and your opponent’s) has no Weakness."
+				text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you canâ€™t play this card.\nAny damage done by attacks from [L] PokÃ©mon (both yours and your opponentâ€™s) to the Defending PokÃ©mon isnâ€™t affected by Resistance. Each [L] PokÃ©mon in play (both yours and your opponentâ€™s) has no Weakness."
 				onPlay {
 				}
 				playRequirement{
@@ -2209,7 +2208,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case TECHNICAL_MACHINE_G_95:
 			return basicTrainer (this) {
-				text "Attach this card to 1 of your Pokémon SP in play. That Pokémon may use this card’s attack instead of its own. When the Pokémon this card is attached to is no longer Pokémon SP, discard this card.\n[C][C][C] Damage Porter Choose 1 of your opponent’s Pokémon. This attack does 10 damage times the number of damage counters on the Pokémon this card is attached to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+				text "Attach this card to 1 of your PokÃ©mon SP in play. That PokÃ©mon may use this cardâ€™s attack instead of its own. When the PokÃ©mon this card is attached to is no longer PokÃ©mon SP, discard this card.\n[C][C][C] Damage Porter Choose 1 of your opponentâ€™s PokÃ©mon. This attack does 10 damage times the number of damage counters on the PokÃ©mon this card is attached to that PokÃ©mon. (Donâ€™t apply Weakness and Resistance for Benched PokÃ©mon.)"
 				onPlay {
 				}
 				playRequirement{
@@ -2217,7 +2216,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case SP_RADAR_96:
 			return basicTrainer (this) {
-				text "Choose a card from your hand and put it on top of your deck. Search your deck for a Pokémon SP, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
+				text "Choose a card from your hand and put it on top of your deck. Search your deck for a PokÃ©mon SP, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you canâ€™t play this card.)"
 				onPlay {
 				}
 				playRequirement{
@@ -2225,7 +2224,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case UNDERGROUND_EXPEDITION_97:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at the 4 cards from the bottom of your deck. Choose any 2 cards there and put them into your hand. Put the remaining cards back on the bottom of your deck in any order."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nLook at the 4 cards from the bottom of your deck. Choose any 2 cards there and put them into your hand. Put the remaining cards back on the bottom of your deck in any order."
 				onPlay {
 				}
 				playRequirement{
@@ -2233,7 +2232,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case VOLKNER_S_PHILOSOPHY_98:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nYou may discard a card from your hand. Then, draw cards until you have 6 cards in your hand. (If you can’t draw any cards, you can’t play this card.)"
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nYou may discard a card from your hand. Then, draw cards until you have 6 cards in your hand. (If you canâ€™t draw any cards, you canâ€™t play this card.)"
 				onPlay {
 				}
 				playRequirement{
@@ -2241,7 +2240,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case DARKNESS_ENERGY_99:
 			return specialEnergy (this, [[C]]) {
-				text "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
+				text "If the PokÃ©mon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active PokÃ©mon (before applying Weakness and Resistance). Ignore this effect if the PokÃ©mon that Darkness Energy is attached to isnâ€™t [D]. Darkness Energy provides [D] Energy. (Doesnâ€™t count as a basic Energy card.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2253,7 +2252,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case METAL_ENERGY_100:
 			return specialEnergy (this, [[C]]) {
-				text "Damage done by attacks to the Pokémon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that Metal Energy is attached to isn’t [M]. Metal Energy provides [M] Energy. (Doesn’t count as a basic Energy card.)"
+				text "Damage done by attacks to the PokÃ©mon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the PokÃ©mon that Metal Energy is attached to isnâ€™t [M]. Metal Energy provides [M] Energy. (Doesnâ€™t count as a basic Energy card.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2265,7 +2264,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case SP_ENERGY_101:
 			return specialEnergy (this, [[C]]) {
-				text "SP Energy provides [C] Energy. While attached to a Pokémon SP, SP Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.)"
+				text "SP Energy provides [C] Energy. While attached to a PokÃ©mon SP, SP Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.)"
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2277,7 +2276,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case UPPER_ENERGY_102:
 			return specialEnergy (this, [[C]]) {
-				text "Upper Energy provides [C] Energy. If you have more Prize cards left than your opponent and this card is attached to a Pokémon (excluding Pokémon LV.X), Upper Energy provides [C][C]."
+				text "Upper Energy provides [C] Energy. If you have more Prize cards left than your opponent and this card is attached to a PokÃ©mon (excluding PokÃ©mon LV.X), Upper Energy provides [C][C]."
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
@@ -2291,12 +2290,12 @@ public enum RisingRivals implements CardInfo {
 			return evolution (this, from:"Alakazam 4", hp:HP100, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				pokePower "Damage Switch", {
-					text "As often as you like during your turn , you may move 1 damage counter from 1 of your Pokémon to another of your Pokémon . This power can’t be used if Alakazam 4 is affected by a Special Condition."
+					text "As often as you like during your turn , you may move 1 damage counter from 1 of your PokÃ©mon to another of your PokÃ©mon . This power canâ€™t be used if Alakazam 4 is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Mind Shock", {
-					text "50 damage. This attack’s damage isn’t affected by Weakness or Resistance."
+					text "50 damage. This attackâ€™s damage isnâ€™t affected by Weakness or Resistance."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -2304,7 +2303,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Alakazam 4. Alakazam LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Alakazam 4. Alakazam LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2317,12 +2316,12 @@ public enum RisingRivals implements CardInfo {
 			return evolution (this, from:"Floatzel GL", hp:HP100, type:WATER, retreatCost:0) {
 				weakness L
 				pokeBody "Water Rescue", {
-					text "Whenever any of your Pokémon (excluding any Floatzel) is Knocked Out by damage from your opponent’s attack, you may put that Pokémon and all cards that were attached to it from your discard pile into your hand."
+					text "Whenever any of your PokÃ©mon (excluding any Floatzel) is Knocked Out by damage from your opponentâ€™s attack, you may put that PokÃ©mon and all cards that were attached to it from your discard pile into your hand."
 					delayedA {
 					}
 				}
 				move "Energy Cyclone", {
-					text "20× damage. Choose as many Energy cards from your hand as you like and show them to your opponent. This attack does 20 damage times the number of Energy cards you chose. Put those Energy cards on top of your deck. Shuffle your deck afterward."
+					text "20Ã— damage. Choose as many Energy cards from your hand as you like and show them to your opponent. This attack does 20 damage times the number of Energy cards you chose. Put those Energy cards on top of your deck. Shuffle your deck afterward."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -2330,7 +2329,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Floatzel . Floatzel LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Floatzel . Floatzel LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2344,12 +2343,12 @@ public enum RisingRivals implements CardInfo {
 				weakness C
 				resistance L, MINUS20
 				pokeBody "Wind Erosion", {
-					text "As long as Flygon is your Active Pokémon, discard the top card from your opponent’s deck between turns."
+					text "As long as Flygon is your Active PokÃ©mon, discard the top card from your opponentâ€™s deck between turns."
 					delayedA {
 					}
 				}
 				move "Extreme Attack", {
-					text ". This attack does 150 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon)."
+					text ". This attack does 150 damage to that PokÃ©mon. (Donâ€™t apply Weakness and Resistance for Benched PokÃ©mon)."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -2357,7 +2356,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Flygon. Flygon LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Flygon. Flygon LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2370,12 +2369,12 @@ public enum RisingRivals implements CardInfo {
 			return evolution (this, from:"Gallade 4", hp:HP100, type:PSYCHIC, retreatCost:1) {
 				weakness P
 				pokePower "Blade Storm", {
-					text "Once during your turn , when you put Gallade LV. from your hand onto your Active Gallade , you may put 1 damage counter on each of your opponent’s Pokémon."
+					text "Once during your turn , when you put Gallade LV. from your hand onto your Active Gallade , you may put 1 damage counter on each of your opponentâ€™s PokÃ©mon."
 					actionA {
 					}
 				}
 				move "Aimed Cut", {
-					text "40+ damage. Does 40 damage plus 10 more damage for each damage counter on the Defending Pokémon."
+					text "40+ damage. Does 40 damage plus 10 more damage for each damage counter on the Defending PokÃ©mon."
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
@@ -2383,7 +2382,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Gallade 4. Gallade LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Gallade 4. Gallade LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2397,12 +2396,12 @@ public enum RisingRivals implements CardInfo {
 				weakness W
 				resistance L, MINUS20
 				pokePower "Sand Reset", {
-					text "Once during a game on your turn , each player shuffles all cards in play (excluding Pokémon and Supporter cards) into his or her deck. You can’t use more than 1 Sand Reset Poké-Power each game."
+					text "Once during a game on your turn , each player shuffles all cards in play (excluding PokÃ©mon and Supporter cards) into his or her deck. You canâ€™t use more than 1 Sand Reset PokÃ©-Power each game."
 					actionA {
 					}
 				}
 				move "Double Shoot", {
-					text "Discard 2 Energy attached to Hippowdon and choose 2 of your opponent’s Benched Pokémon. This attack does 40 damage to each of them."
+					text "Discard 2 Energy attached to Hippowdon and choose 2 of your opponentâ€™s Benched PokÃ©mon. This attack does 40 damage to each of them."
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
@@ -2410,7 +2409,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Hippowdon. Hippowdon LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Hippowdon. Hippowdon LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2423,7 +2422,7 @@ public enum RisingRivals implements CardInfo {
 			return evolution (this, from:"Infernape 4", hp:HP110, type:FIRE, retreatCost:0) {
 				weakness W
 				pokePower "Intimidating Roar", {
-					text "Once during your turn , you may have your opponent switch his or her Active Pokémon with one of his or her Benched Pokémon. This power can’t be used if Infernape 4 is affected by a Special Condition."
+					text "Once during your turn , you may have your opponent switch his or her Active PokÃ©mon with one of his or her Benched PokÃ©mon. This power canâ€™t be used if Infernape 4 is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -2436,7 +2435,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Infernape 4. Infernape LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Infernape 4. Infernape LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2450,7 +2449,7 @@ public enum RisingRivals implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				move "", {
-					text ", you may switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
+					text ", you may switch the Defending PokÃ©mon with 1 of your opponentâ€™s Benched PokÃ©mon."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2458,7 +2457,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Flash Impact", {
-					text "60 damage. Does 30 damage to 1 of your Pokémon, and don’t apply Weakness and Resistance to this damage."
+					text "60 damage. Does 30 damage to 1 of your PokÃ©mon, and donâ€™t apply Weakness and Resistance to this damage."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -2466,7 +2465,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Luxray . Luxray LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Luxray . Luxray LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2480,12 +2479,12 @@ public enum RisingRivals implements CardInfo {
 				weakness D
 				resistance C, MINUS20
 				pokePower "Magical Return", {
-					text "As often as you like during your turn , you may return a Pokémon Tool or Technical Machine card attached to your Pokémon to your hand. This power can’t be used if Mismagius is affected by a Special Condition."
+					text "As often as you like during your turn , you may return a PokÃ©mon Tool or Technical Machine card attached to your PokÃ©mon to your hand. This power canâ€™t be used if Mismagius is affected by a Special Condition."
 					actionA {
 					}
 				}
 				move "Darkness Magic", {
-					text "Count the number of cards in your hand. Put that many damage counters on the Defending Pokémon. You can’t put more than 8 damage counters in this way."
+					text "Count the number of cards in your hand. Put that many damage counters on the Defending PokÃ©mon. You canâ€™t put more than 8 damage counters in this way."
 					energyCost P, P, C
 					attackRequirement {}
 					onAttack {
@@ -2493,7 +2492,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Mismagius . Mismagius LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Mismagius . Mismagius LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2506,7 +2505,7 @@ public enum RisingRivals implements CardInfo {
 			return evolution (this, from:"Snorlax", hp:HP130, type:COLORLESS, retreatCost:4) {
 				weakness F
 				pokePower "Big Appetite", {
-					text "Once during your turn , if Snorlax is your Active Pokémon, you may draw cards until you have 6 cards in your hand. If you do, Snorlax is now Asleep. This power can’t be used if Snorlax is affected by a Special Condition."
+					text "Once during your turn , if Snorlax is your Active PokÃ©mon, you may draw cards until you have 6 cards in your hand. If you do, Snorlax is now Asleep. This power canâ€™t be used if Snorlax is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -2519,7 +2518,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "", {
-					text "Put this card onto your Active Snorlax. Snorlax LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
+					text "Put this card onto your Active Snorlax. Snorlax LV. can use any attack, PokÃ©-Power, or PokÃ©-Body from its previous level."
 					energyCost ()
 					attackRequirement {}
 					onAttack {
@@ -2553,7 +2552,7 @@ public enum RisingRivals implements CardInfo {
 			return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
 				resistance F, MINUS30
 				move "Thundershock", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+					text "10 damage. Flip a coin. If heads, the Defending PokÃ©mon is now Paralyzed."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -2588,12 +2587,12 @@ public enum RisingRivals implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				pokePower "Fan Shift", {
-					text "Once during your turn , you may use this power. Fan Rotom’s type is until the end of your turn."
+					text "Once during your turn , you may use this power. Fan Rotomâ€™s type is until the end of your turn."
 					actionA {
 					}
 				}
 				move "Spin Storm", {
-					text "Flip a coin. If heads, your opponent returns the Defending Pokémon and all cards attached to it to his or her hand."
+					text "Flip a coin. If heads, your opponent returns the Defending PokÃ©mon and all cards attached to it to his or her hand."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2615,12 +2614,12 @@ public enum RisingRivals implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				pokePower "Frost Shift", {
-					text "Once during your turn , you may use this power. Frost Rotom’s type is until the end of your turn."
+					text "Once during your turn , you may use this power. Frost Rotomâ€™s type is until the end of your turn."
 					actionA {
 					}
 				}
 				move "Hail", {
-					text "This attack does 10 damage to each of your opponent’s Pokémon."
+					text "This attack does 10 damage to each of your opponentâ€™s PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2628,7 +2627,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Crushing Ice", {
-					text "40+ damage. Energy in the Defending Pokémon’s Retreat Cost (after applying effects to the Retreat Cost)."
+					text "40+ damage. Energy in the Defending PokÃ©monâ€™s Retreat Cost (after applying effects to the Retreat Cost)."
 					energyCost W, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -2642,12 +2641,12 @@ public enum RisingRivals implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				pokePower "Heat Shift", {
-					text "Once during your turn , you may use this power. Heat Rotom’s type is until the end of your turn."
+					text "Once during your turn , you may use this power. Heat Rotomâ€™s type is until the end of your turn."
 					actionA {
 					}
 				}
 				move "Warm Up", {
-					text "Energy card and attach it to 1 of your Benched Pokémon. Shuffle your deck afterward."
+					text "Energy card and attach it to 1 of your Benched PokÃ©mon. Shuffle your deck afterward."
 					energyCost C, R
 					attackRequirement {}
 					onAttack {
@@ -2655,7 +2654,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Heat Burn", {
-					text "40 damage. The Defending Pokémon is now Burned."
+					text "40 damage. The Defending PokÃ©mon is now Burned."
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
@@ -2669,7 +2668,7 @@ public enum RisingRivals implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				pokePower "Mow Shift", {
-					text "Once during your turn , you may use this power. Mow Rotom’s type is until the end of your turn."
+					text "Once during your turn , you may use this power. Mow Rotomâ€™s type is until the end of your turn."
 					actionA {
 					}
 				}
@@ -2682,7 +2681,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Mow Down", {
-					text "50 damage. Flip a coin. If heads, discard an Energy card attached to each of your opponent’s Pokémon."
+					text "50 damage. Flip a coin. If heads, discard an Energy card attached to each of your opponentâ€™s PokÃ©mon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2696,12 +2695,12 @@ public enum RisingRivals implements CardInfo {
 				weakness D, PLUS20
 				resistance C, MINUS20
 				pokePower "Wash Shift", {
-					text "Once during your turn , you may use this power. Wash Rotom’s type is until the end of your turn."
+					text "Once during your turn , you may use this power. Wash Rotomâ€™s type is until the end of your turn."
 					actionA {
 					}
 				}
 				move "Cleanse Away", {
-					text "Remove 3 damage counters from each of your Benched Pokémon."
+					text "Remove 3 damage counters from each of your Benched PokÃ©mon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2709,7 +2708,7 @@ public enum RisingRivals implements CardInfo {
 					}
 				}
 				move "Drain Wash", {
-					text "30 damage. Flip a coin until you get tails. For each heads, choose 1 card from your opponent’s hand without looking and discard it."
+					text "30 damage. Flip a coin until you get tails. For each heads, choose 1 card from your opponentâ€™s hand without looking and discard it."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -2720,7 +2719,7 @@ public enum RisingRivals implements CardInfo {
 			};
 			case CHARON_S_CHOICE_RT6:
 			return basicTrainer (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for any Rotom and switch it with any Rotom you have in play. Any cards attached to Rotom and damage counters on it are now on the new Pokémon. (Remove all Special Conditions and effects from Rotom.) Put Rotom on top of your deck. Shuffle your deck afterward."
+				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active PokÃ©mon. When your turn ends, discard this card.\nSearch your deck for any Rotom and switch it with any Rotom you have in play. Any cards attached to Rotom and damage counters on it are now on the new PokÃ©mon. (Remove all Special Conditions and effects from Rotom.) Put Rotom on top of your deck. Shuffle your deck afterward."
 				onPlay {
 				}
 				playRequirement{
