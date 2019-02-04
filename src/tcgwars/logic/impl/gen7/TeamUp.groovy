@@ -647,7 +647,7 @@ public enum TeamUp implements CardInfo {
         return 	evolution (this, from:"Wartortle", hp:HP160, type:WATER, retreatCost:3) {
             weakness GRASS
             bwAbility "Powerful Squall" , {
-                text "Once during your turn (before your attack), you may look at the top 6 cards of your deck and attach any number of [W] Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck.<p class="weakness-resistance-retreat-cost">weakness: <a href="https://pkmncards.com/weakness/grass/" class="weakness">[G]×2<br>resistance:<br>retreat: <a href="https://pkmncards.com/retreat-cost/3/" class="retreat-cost">3<p class="artist-set"><a href="https://pkmncards.com/set/team-up/" class="set"><abbr title="Team Up">TEU <a href="https://pkmncards.com/number/25/" class="number">25 <a href="https://pkmncards.com/rarity/rare/" class="rarity"><abbr title="Rare">R</p"
+                text "Once during your turn (before your attack), you may look at the top 6 cards of your deck and attach any number of [W] Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck."
             }
         };
         case PSYDUCK_26:
@@ -1790,7 +1790,7 @@ public enum TeamUp implements CardInfo {
                 energyCost C,C
             }
         };
-        case FARFETCH&#8217;D_126:
+        case FARFETCHD_126:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
