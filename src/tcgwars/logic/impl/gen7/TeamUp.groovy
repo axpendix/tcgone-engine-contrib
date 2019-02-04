@@ -312,7 +312,7 @@ public enum TeamUp implements CardInfo {
                     gxPerform()
                     damage 180
                     heal self.numberOfDamageCounters*10, self
-                    if(it.cards.energyCount(G) >= 3 && thisMove.energyCost().size() < it.cards.energyCount(G)){
+                    if(self.cards.energySufficient(thisMove.energyCost() + G)){
                         my.discard.moveTo(my.deck)
                         shuffleDeck()
                     }
@@ -364,12 +364,12 @@ public enum TeamUp implements CardInfo {
                             if(it.to == self && it.notNoEffect && it.dmg.value) {
                                 bc "Grass Cushion -30"
                                 it.dmg -= hp(30)
-							}
-							}
-						}
-						}
-					  }
-			}
+							                  }
+							               }
+						            }
+						        }
+        			   }
+			      }
             move "Bug Bite" , {
                 text "20 damage."
                 energyCost C,C
@@ -703,10 +703,18 @@ public enum TeamUp implements CardInfo {
             weakness GRASS
             bwAbility "Floating Shell" , {
                 text "If you have a Stadium card in play this Pokémon has no Retreat Cost."
+                getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {h->
+      					  if(bg.stadiumInfoStruct.stadiumCard.player == self.owner) {
+      					    h.object = 0
+      					  }
+      					}
             }
             move "Water Gun" , {
                 text "30 damage"
                 energyCost W,C
+                onAttack{
+                  damage 30
+                }
             }
         };
         case SQUIRTLE_23:
@@ -715,10 +723,16 @@ public enum TeamUp implements CardInfo {
             move "Tackle" , {
                 text "10 damage"
                 energyCost C
+                onAttack{
+                  damage 10
+                }
             }
             move "Rain Splash" , {
                 text "20 damage"
                 energyCost W,C
+                onAttack{
+                  damage 20
+                }
             }
         };
         case WARTORTLE_24:
@@ -727,10 +741,16 @@ public enum TeamUp implements CardInfo {
             move "Tackle" , {
                 text "30 damage"
                 energyCost C,C
+                onAttack{
+                  damage 30
+                }
             }
             move "Waterfall" , {
                 text "70 damage"
                 energyCost W,W,C
+                onAttack{
+                  damage 70
+                }
             }
         };
         case BLASTOISE_25:
@@ -738,26 +758,78 @@ public enum TeamUp implements CardInfo {
             weakness GRASS
             bwAbility "Powerful Squall" , {
                 text "Once during your turn (before your attack), you may look at the top 6 cards of your deck and attach any number of [W] Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck."
+                actionA{
+                  checkLastTurn()
+                  assert my.deck : "There is no more cards in your deck"
+                  powerUsed()
+                  my.deck.subList(0,6).showToMe("Top 6 cards of your deck")
+      						def tar = my.deck.subList(0,6).filterByType(ENERGY).filterByEnergyType(W)
+      						if(tar){
+      							tar.select(min:0, max:tar.size(), "Select the ones you want to attach").each{
+      								attachEnergy(my.all.select("Attach $it to?"), it)
+      							}
+      						}
+      						shuffleDeck()
+                }
+            }
+            move "Hydro Tackle" , {
+                text "150 damage. This Pokémon does 30 damage to itself"
+                energyCost W,W,C
+                onAttack{
+                  damage 150
+                  damage 30, self
+                }
             }
         };
         case PSYDUCK_26:
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
             weakness GRASS
             move "Headache" , {
-                text "10 damage. Flip a coin. If heads, your opponent can&#8217;t play any Trainer cards from their hand during their next turn."
+                text "10 damage. Flip a coin. If heads, your opponent can't play any Trainer cards from their hand during their next turn."
                 energyCost C
+                onAttack{
+                  damage 10
+                  flip {
+                    delayed{
+      					      before PLAY_TRAINER, {
+      					        if (bg.currentTurn == self.owner.opposite) {
+      					           wcu "Bawl prevents playing trainer cards"
+      					           prevent()
+      					        }
+                      }
+      					  unregisterAfter 2
+                }
+              }
             }
         };
         case GOLDUCK_27:
         return 	evolution (this, from:"Psyduck", hp:HP110, type:WATER, retreatCost:1) {
             weakness GRASS
             move "Amnesia" , {
-                text "20 damage. Choose 1 of your opponent's Active Pokémon's attacks. That Pokémon can&#8217;t use that attack during your opponent's next turn.\n"
+                text "20 damage. Choose 1 of your opponent's Active Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn.\n"
                 energyCost W
+                onAttack{
+                  damage 20
+                  amnesia delegate
+                }
             }
             move "Swim" , {
-                text "90 damage. If any of your opponent's Pokémon have any"
+                text "90 damage. If any of your opponent's Pokémon have any [W] Energy attached to them, you may do 90 damage to 1 of your opponent’s Benched Pokémon instead of their Active Pokémon."
                 energyCost C,C,C
+                onAttack{
+                  def applyEffect = false
+                  opp.all.each{
+                    if(it.cards.energyCount(W)){
+                      applyEffect = true
+                    }
+                  }
+                  if(applyEffect){
+                    damage 90, opp.all.select("Choose the Pokémon to target for 90 damage")
+                  }
+                  else{
+                    damage 90
+                  }
+                }
             }
         };
         case STARYU_28:
@@ -766,6 +838,10 @@ public enum TeamUp implements CardInfo {
             move "Numbing Water" , {
                 text "10 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
                 energyCost C
+                onAttack{
+                  damage 10
+                  flipThenApplySC PARALYZED
+                }
             }
         };
         case MAGIKARP_29:
@@ -774,6 +850,13 @@ public enum TeamUp implements CardInfo {
             move "Enter the Dragon" , {
                 text "Flip a coin. If heads, put a card that evolves from this Pokémon from your discard pile onto this Pokémon to evolve it."
                 energyCost W
+                attackRequirement{
+                  assert my.discard.findAll{it.cardTypes.is(EVOLUTION) && self.name.contains(it.predecessor)})
+                }
+                onAttack{
+                  def tar = my.discard.findAll{it.cardTypes.is(EVOLUTION) && self.name.contains(it.predecessor)}).select("Choose the card that will evolve from $self")
+                  evolve(sel, tar.first(), OTHER)
+                }
             }
         };
         case LAPRAS_30:
@@ -782,10 +865,16 @@ public enum TeamUp implements CardInfo {
             move "Confuse Ray" , {
                 text "Your opponent's Active Pokémon is now Confused.\n"
                 energyCost W
+                onAttack{
+                  apply CONFUSED
+                }
             }
             move "Hydro Pump" , {
                 text "10+ damage. This attack does 30 more damage times the amount of Water Energy attached to this Pokémon."
                 energyCost C
+                onAttack{
+                  damage 10 + 30* self.cards.energyCount(W)
+                }
             }
         };
         case ARTICUNO_31:
@@ -794,10 +883,29 @@ public enum TeamUp implements CardInfo {
             resistance FIGHTING, MINUS20
             bwAbility "Blizzard Veil" , {
                 text "As long as this Pokémon is your Active Pokémon, whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to your Benched [W] Pokémon."
+                delayedA{
+                  before null, null, Source.SUPPORTER, {
+                    def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+      							if (self.active && pcs.cards.energyCount(W)){
+      								bc "Blizzard Veil prevent effect of Supporter cards."
+      								prevent()
+      							}
+      						}
+                }
             }
             move "Cold Cyclone" , {
-                text "70 damage. Move 2"
+                text "70 damage. Move 2 [W] Energy from this Pokémon to 1 of your Benched Pokémon."
                 energyCost W,W
+                onAttack{
+                  damage 70
+                  afterDamage{
+                    if(my.bench){
+                      def tar = my.bench.select()
+                      moveEnergy(type: WATER, self, tar)
+                      moveEnergy(type: WATER, self, tar)
+                    }
+                  }
+                }
             }
         };
         case PIKACHU_ZEKROM_GX_32:
