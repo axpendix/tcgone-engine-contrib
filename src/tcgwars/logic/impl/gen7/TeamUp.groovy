@@ -1024,7 +1024,7 @@ public enum TeamUp implements CardInfo {
                 energyCost L,C,C,C,C
                 onAttack{
                   damage 190
-                  DiscardSelfEnergy C,C
+                  discardSelfEnergy C,C
                 }
             }
         };
