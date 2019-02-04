@@ -539,9 +539,10 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						afterDamage{
-							heal it.dmg
-						}
+						//TODO: fix this
+						//afterDamage{
+						//	heal it.dmg
+						//}
 					}
 				}
 				move "Poisonous Saliva", {
