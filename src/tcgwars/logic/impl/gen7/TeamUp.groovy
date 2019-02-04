@@ -488,7 +488,7 @@ public enum TeamUp implements CardInfo {
                 energyCost G,G
                 onAttack{
                     my.all.each{
-                        damage 30*it.cards.energyCount(G)
+                        damage 30*it.cards.energyCount()
                     }
                 }
             }
@@ -499,10 +499,16 @@ public enum TeamUp implements CardInfo {
             move "Scratch" , {
                 text "10 damage."
                 energyCost R
+                onAttack{
+                    damage 10
+                }
             }
             move "Reprisal" , {
                 text "20× This attack does 20 damage for each damage counter on this Pokémon."
                 energyCost C,C
+                onAttack{
+                    damage 20*self.numberOfDamageCounters
+                }
             }
         };
         case CHARMANDER_12:
@@ -511,6 +517,12 @@ public enum TeamUp implements CardInfo {
             move "Ember" , {
                 text "30 damage. Discard an Energy from this Pokémon."
                 energyCost R
+                onAttack{
+                    damage 30
+                    afterDamage{
+                        discardSelfEnergy C
+                    }
+                }
             }
         };
         case CHARMELEON_13:
@@ -519,6 +531,12 @@ public enum TeamUp implements CardInfo {
             move "Fire Fang" , {
                 text "30 damage. Your opponent's Active Pokémon is now Burned."
                 energyCost R,R
+                onAttack{
+                    damage 30
+                    afterDamage{
+                        apply BURNED
+                    }
+                }
             }
         };
         case CHARIZARD_14:
@@ -526,18 +544,36 @@ public enum TeamUp implements CardInfo {
             weakness WATER
             bwAbility "Roaring Resolve" , {
                 text "Once during your turn (before your attack), you may put 2 damage counters on this Pokémon. If you do, search your deck for up to 2 [R] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
+                actionA {
+                    checkLastTurn()
+                    assert my.deck : "There is no more cards in your deck"
+                    powerUsed()
+                    damage 20, self
+                    attachEnergyFrom(type: FIRE, my.hand, self)
+                    attachEnergyFrom(type: FIRE, my.hand, self)
+                    shuffleDeck()
+                }
             }
             move "Continuous Blaze Ball" , {
-                text "30+ Discard all"
+                text "30+ Discard all [R] Energy from this Pokémon. This attack does 50 more damage for each card you discarded in this way."
                 energyCost R,R
+                onAttack{
+                    damage 30 + 50*self.cards.filterByType(ENERGY).filterByEnergyType(R).discard().size()
+
+                }
             }
         };
         case VULPIX_15:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
             weakness WATER
             move "Tail Whip" , {
-                text "Flip a coin. If heads, the Defending Pokémon can&#8217;t attack during your opponent's next turn."
+                text "Flip a coin. If heads, the Defending Pokémon can't attack during your opponent's next turn."
                 energyCost C
+                onAttack{
+                    flip{
+                        cantAttackNextTurn defending
+                    }
+                }
             }
         };
         case NINETALES_16:
@@ -545,10 +581,22 @@ public enum TeamUp implements CardInfo {
             weakness WATER
             bwAbility "Nine Temptations" , {
                 text "Once during your turn (before your attack), you may discard 2 Fire Energy cards from your hand. If you do, switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
+                actionA{
+                    checkLastTurn()
+                    def src = my.hand.filterByType(ENERGY).filterByEnergyType(R)
+                    assert src.size() >= 2 : "you don't have enough Fire Energy cards to discard"
+                    powerUsed()
+                    src.select(count : 2).discard()
+                    sw self.owner.opposite.active, self.owner.opposite.active
+                    shuffleDeck()
+                }
             }
             move "Flame Tail" , {
                 text "90 damage"
                 energyCost R,C,C
+                onAttack{
+                  damage 90
+                }
             }
         };
         case PONYTA_17:
@@ -557,10 +605,17 @@ public enum TeamUp implements CardInfo {
             move "Live Coal" , {
                 text "10 damage"
                 energyCost R
+                onAttack{
+                  damage 10
+                }
             }
             move "Stomp" , {
                 text "10+ damage. Flip a coin. If heads, this attack does 30 more damage."
                 energyCost R,R
+                onAttack{
+                  damage 10
+                  flip{damage 30}
+                }
             }
         };
         case RAPIDASH_18:
@@ -569,10 +624,20 @@ public enum TeamUp implements CardInfo {
             move "Searing Flame" , {
                 text "20 damage. Your opponent's Active Pokémon is now Burned.\n"
                 energyCost R
+                onAttack{
+                  damage 20
+                  apply BURNED
+                }
             }
             move "Agility" , {
                 text "60 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
                 energyCost R,R
+                onAttack{
+                  damage 60
+                  afterDamage{
+                    flip{preventAllEffectsNextTurn()}
+                  }
+                }
             }
         };
         case MOLTRES_19:
@@ -580,12 +645,24 @@ public enum TeamUp implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Top Burner" , {
-                text "Discard all"
+                text "Discard all [R] Energy from this Pokémon. Then, discard a card from the top of your opponent’s deck for each Energy you discarded in this way."
                 energyCost R
+                attackRequirement{
+                  assert opp.deck : "There is no more card in opponent's deck"
+                }
+                onAttack{
+                  opp.deck.subList(0,self.cards.filterByType(ENERGY).filterByEnergyType(R).discard().size()).discard()
+                }
             }
             move "Fire Spin" , {
                 text "180 damage. Discard 3 Energy from this Pokémon."
                 energyCost R,R,R,C
+                onAttack{
+                  damage 180
+                  afterDamage{
+                    discardSelfEnergy C,C,C
+                  }
+                }
             }
         };
         case LITTEN_20:
@@ -594,6 +671,10 @@ public enum TeamUp implements CardInfo {
             move "Fasten Claws" , {
                 text "10+ damage. Flip a coin. If heads, this attack does 10 more damage."
                 energyCost C
+                onAttack{
+                  damage 10
+                  flip {damage 10}
+                }
             }
         };
         case TORRACAT_21:
@@ -602,10 +683,19 @@ public enum TeamUp implements CardInfo {
             move "Roar" , {
                 text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon.\n"
                 energyCost C
+                attackRequirement{
+                    assert opp.bench : "There is no Pokémon on your opponent's bench"
+                }
+                onAttack{
+                    sw opp.active, opp.bench.select("Choose the new active")
+                }
             }
             move "Claw Slash" , {
                 text "60 damage"
                 energyCost C,C,C
+                onAttack{
+                  damage 60
+                }
             }
         };
         case SQUIRTLE_22:
