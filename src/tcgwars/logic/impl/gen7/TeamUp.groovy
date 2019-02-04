@@ -364,11 +364,12 @@ public enum TeamUp implements CardInfo {
                             if(it.to == self && it.notNoEffect && it.dmg.value) {
                                 bc "Grass Cushion -30"
                                 it.dmg -= hp(30)
-                             }
-                        }
-                    }
-                }
-            }
+							}
+							}
+						}
+						}
+					  }
+			}
             move "Bug Bite" , {
                 text "20 damage."
                 energyCost C,C
@@ -378,7 +379,7 @@ public enum TeamUp implements CardInfo {
             }
         };
         case BEEDRILL_5:
-        return 	evolution (this, from:"Kakuna", hp:HP130, type:GRASS, retreatCost:1) {
+        return evolution (this, from:"Kakuna", hp:HP130, type:GRASS, retreatCost:1) {
             weakness FIRE
             move "Destiny Stinger" , {
                 text "You can use this attack only if this Pokémon has any damage counters on it. Both Active Pokémon are Knocked Out.\n"
