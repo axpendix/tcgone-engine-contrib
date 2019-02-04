@@ -96,8 +96,8 @@ public enum UltraPrism implements CardInfo {
     MUK_62("Muk", 62, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
     ALOLAN_MAROWAK_63("Alolan Marowak", 63, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
     STARMIE_64("Starmie", 64, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
-    MR._MIME_65("Mr. Mime", 65, Rarity.RARE, [POKEMON,_PSYCHIC_,BASIC]),
-    MR._MIME_GX_66("Mr. Mime-GX", 66, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
+    MR_MIME_65("Mr. Mime", 65, Rarity.RARE, [POKEMON,_PSYCHIC_,BASIC]),
+    MR_MIME_GX_66("Mr. Mime-GX", 66, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
     JYNX_67("Jynx", 67, Rarity.UNCOMMON, [POKEMON,_PSYCHIC_,BASIC]),
     COSMOG_68("Cosmog", 68, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
     COSMOEM_69("Cosmoem", 69, Rarity.UNCOMMON, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
@@ -1089,7 +1089,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost C
             }
         };
-        case MR._MIME_65:
+        case MR_MIME_65:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
             weakness PSYCHIC
             bwAbility "Scoop-Up Block" , {
@@ -1100,7 +1100,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost C,C
             }
         };
-        case MR._MIME_GX_66:
+        case MR_MIME_GX_66:
         return basic (this, hp:HP150, type:PSYCHIC, retreatCost:2) {
             bwAbility "Magic Odds" , {
                 text "Prevent all damage done to this Pokémon by your opponent's attacks if that damage is exactly 10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210, 230, or 250."
