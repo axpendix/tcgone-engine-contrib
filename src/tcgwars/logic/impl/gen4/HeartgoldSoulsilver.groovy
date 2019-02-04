@@ -341,7 +341,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				
@@ -352,6 +352,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				pokePower "Roast Reveal", {
 					text "Once during your turn , you may discard a Energy card from your hand. If you do, draw 3 cards. This power can’t be used if Ninetales is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						checkNoSPC()
+						assert my.hand.filterByType(ENERGY)
+						powerUsed()
+						my.hand.filterByType(ENERGY).select("Discard an Energy card").discard()
+						draw 3
 					}
 				}
 				move "Will-o’-the-wisp", {
@@ -359,7 +365,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
 					}
 				}
 				
@@ -371,6 +377,10 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				pokePower "Night Sight", {
 					text "Once during your turn , you may draw a card. This power can’t be used if Noctowl is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						checkNoSPC()
+						powerUsed()
+						draw 1
 					}
 				}
 				move "Extrasensory", {
@@ -378,7 +388,10 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						if(my.hand.size() == opp.hand.size()) {
+							damage 40
+						}
 					}
 				}
 				
@@ -388,11 +401,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness G
 				resistance L, MINUS30
 				move "Muddy Water", {
-					text "40 damage. Does 20 damage to 1 of your opponetn’s Benched Pokémon."
+					text "40 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						damage(20,opp.bench.select("20 damage to "))
 					}
 				}
 				move "Mud Shot", {
@@ -400,7 +414,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost F, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
 					}
 				}
 				
@@ -414,7 +428,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flipUntilTails {damage 30} 
 					}
 				}
 				move "Thunderbolt", {
@@ -422,7 +436,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost L, L
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 100
+						discardAllSelfEnergy
 					}
 				}
 				
@@ -431,16 +446,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
 				weakness R
 				pokeBody "Shell Barricade", {
-					text ":"
+					text " As long as Shuckle is on your Bench, prevent all damage done to Shuckle by attacks (both yours and your opponent's)."
 					delayedA {
-					}
-				}
-				move "", {
-					text "As long as Shuckle is on your Bench, prevent all damage done to Shuckle by attacks ."
-					energyCost ()
-					attackRequirement {}
-					onAttack {
-						damage 0
+						assert my.bench.select(this)
+						before APPLY_ATTACK_DAMAGES, {
+							it.dmg = hp(0)
+						}
 					}
 				}
 				move "Poison Jab", {
@@ -448,7 +459,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						applyAfterDamage POISONED
 					}
 				}
 				
@@ -457,8 +469,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Slowpoke", hp:HP080, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				pokePower "Second Sight", {
-					text "Once during your turn , you may look at the top 3 cards of that player’s deck and put them back on top of that player’s deck in any order. This power can’t be uesd if Slowking is affected by a Special Condition."
+					text " Once during your turn (before your attack), you may look at the top 3 cards in either player's deck and put them back on top of that player's deck in any order. This power can't be used if Slowking is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						checkNoSPC()
+						powerUsed()
+						//TODO: actually implement SLOWKING_12's Second Sight
 					}
 				}
 				move "Psyshock", {
@@ -466,7 +482,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flipThenApplySC PARALYZED
 					}
 				}
 				
@@ -479,7 +496,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{damage 20*ef.attacker.numberOfDamageCounters}
 					}
 				}
 				
@@ -491,9 +508,13 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				move "Acceleration Bolt", {
 					text "30 damage. Search your deck for up to 2 basic Energy cards and attach them to 1 of your Pokémon. Shuffle your deck afterward."
 					energyCost L
-					attackRequirement {}
+					attackRequirement {{
+						assert my.deck
+					}
 					onAttack {
-						damage 0
+						damage 30
+						//TODO: AMPHAROS_14 Acceleration Bolt effect
+						//my.deck.search(max:2,"Choose up to 2 basic Energy to attach.",cardTypeFilter(BASIC_ENERGY)).
 					}
 				}
 				move "Thunder", {
@@ -501,7 +522,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 80
+						flipTails (damage 20 self)
 					}
 				}
 				
@@ -514,7 +536,10 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						afterDamage(
+							heal it.dmg
+						)
 					}
 				}
 				move "Poisonous Saliva", {
@@ -522,7 +547,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						applyAfterDamage POISONED
 					}
 				}
 				
@@ -536,7 +562,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						heal 30 my.all.each
 					}
 				}
 				move "Whirlwind", {
@@ -544,7 +570,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						if(opp.bench){
+					    afterDamage{
+					      sw defending, opp.bench.oppSelect("New active")
+					    }
+					  }
 					}
 				}
 				
