@@ -1337,7 +1337,7 @@ public enum TeamUp implements CardInfo {
                 text "20 damage"
                 energyCost C
                 onAttack{
-                  damage 2°
+                  damage 20
                 }
             }
             move "Wild Charge" , {
