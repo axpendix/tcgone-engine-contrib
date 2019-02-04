@@ -166,19 +166,19 @@ public enum TeamUp implements CardInfo {
     BILLS_ANALYSIS_132("Bill's Analysis", 132, Rarity.HOLORARE, [TRAINER,SUPPORTER]),
     BLACK_MARKET_PRISM_STAR_133("Black Market Prism Star", 133, Rarity.HOLORARE, [PRISM_STAR,TRAINER,STADIUM]),
     BROCKS_GRIT_134("Brock's Grit", 134, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-    BUFF_PADDING_135("Buff Padding", 135, Rarity.UNCOMMON, [TRAINER,ITEM,TOOL]),
+    BUFF_PADDING_135("Buff Padding", 135, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL),
     DANA_136("Dana", 136, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
     DANGEROUS_DRILL_137("Dangerous Drill", 137, Rarity.UNCOMMON, [TRAINER,ITEM]),
     ELECTROCHARGER_138("Electrocharger", 138, Rarity.UNCOMMON, [TRAINER,ITEM]),
     ERIKAS_HOSPITALITY_139("Erika's Hospitality", 139, Rarity.HOLORARE, [TRAINER,SUPPORTER]),
     EVELYN_140("Evelyn", 140, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-    FAIRY_CHARM_UB_141("Fairy Charm UB", 141, Rarity.UNCOMMON, [TRAINER,ITEM,TOOL]),
-    GRASS_MEMORY_142("Grass Memory", 142, Rarity.UNCOMMON, [TRAINER,ITEM,TOOL]),
+    FAIRY_CHARM_UB_141("Fairy Charm UB", 141, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL),
+    GRASS_MEMORY_142("Grass Memory", 142, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL),
     INGO_EMMET_143("Ingo & Emmet", 143, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
     JASMINE_144("Jasmine", 144, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
     JUDGE_WHISTLE_145("Judge Whistle", 145, Rarity.UNCOMMON, [TRAINER,ITEM]),
     LAVENDER_TOWN_146("Lavender Town", 146, Rarity.UNCOMMON, [TRAINER,STADIUM]),
-    METAL_GOGGLES_147("Metal Goggles", 147, Rarity.UNCOMMON, [TRAINER,ITEM,TOOL]),
+    METAL_GOGGLES_147("Metal Goggles", 147, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL),
     MORGAN_148("Morgan", 148, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
     NANU_149("Nanu", 149, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
     NITA_150("Nita", 150, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
@@ -187,7 +187,7 @@ public enum TeamUp implements CardInfo {
     SABRINAS_SUGGESTION_153("Sabrina's Suggestion", 153, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
     UNIDENTIFIED_FOSSIL_154("Unidentified Fossil", 154, Rarity.UNCOMMON, [TRAINER,ITEM]),
     VIRIDIAN_FOREST_155("Viridian Forest", 155, Rarity.UNCOMMON, [TRAINER,STADIUM]),
-    WATER_MEMORY_156("Water Memory", 156, Rarity.UNCOMMON, [TRAINER,ITEM,TOOL]),
+    WATER_MEMORY_156("Water Memory", 156, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL),
     WONDROUS_LABYRINTH_PRISM_STAR_157("Wondrous Labyrinth Prism Star", 157, Rarity.HOLORARE, [PRISM_STAR,TRAINER,STADIUM]),
     CELEBI_VENUSAUR_GX_158("Celebi & Venusaur-GX", 158, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_GRASS_,BASIC]),
     MAGIKARP_WAILORD_GX_159("Magikarp & Wailord-GX", 159, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_WATER_,BASIC]),
@@ -225,7 +225,7 @@ public enum TeamUp implements CardInfo {
     DANGEROUS_DRILL_191("Dangerous Drill", 191, Rarity.SECRET, [TRAINER,ITEM]),
     ELECTROCHARGER_192("Electrocharger", 192, Rarity.SECRET, [TRAINER,ITEM]),
     JUDGE_WHISTLE_193("Judge Whistle", 193, Rarity.SECRET, [TRAINER,ITEM]),
-    METAL_GOGGLES_194("Metal Goggles", 194, Rarity.SECRET, [TRAINER,ITEM,TOOL]),
+    METAL_GOGGLES_194("Metal Goggles", 194, Rarity.SECRET, [TRAINER,ITEM,POKEMON_TOOL),
 
  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -1867,7 +1867,7 @@ public enum TeamUp implements CardInfo {
         };
         case BLACK_MARKET_PRISM_STAR_133:
         return trainer(this) {
-                text "Whenever any player's [D] Pokémon with any [D] Energy attached to it is Knocked Out by damage from an opponent's attack, that opponent takes 1 less Prize card.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 <a href="https://pkmncards.com/is/prism-star/" class="hidden">Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
+                text "Whenever any player's [D] Pokémon with any [D] Energy attached to it is Knocked Out by damage from an opponent's attack, that opponent takes 1 less Prize card.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
         };
         case BROCKS_GRIT_134:
         return supporter(this) {
