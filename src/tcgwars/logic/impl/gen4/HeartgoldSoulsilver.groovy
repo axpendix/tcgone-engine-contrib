@@ -523,7 +523,9 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
-						flipTails(damage 20 self)
+						flipTails{
+							damage 20 self
+						}
 					}
 				}
 				
