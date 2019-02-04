@@ -31,7 +31,7 @@ import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
-public enum UltraPrism implements CardInfo {
+public enum TeamUp implements CardInfo {
     CELEBI_VENUSAUR_GX_1("Celebi & Venusaur-GX", 1, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_GRASS_,BASIC]),
     WEEDLE_2("Weedle", 2, Rarity.COMMON, [POKEMON,_GRASS_,BASIC]),
     WEEDLE_3("Weedle", 3, Rarity.COMMON, [POKEMON,_GRASS_,BASIC]),
