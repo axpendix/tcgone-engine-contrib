@@ -508,7 +508,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				move "Acceleration Bolt", {
 					text "30 damage. Search your deck for up to 2 basic Energy cards and attach them to 1 of your Pokémon. Shuffle your deck afterward."
 					energyCost L
-					attackRequirement {{
+					attackRequirement {
 						assert my.deck
 					}
 					onAttack {
@@ -523,7 +523,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
-						flipTails (damage 20 self)
+						flipTails(damage 20 self)
 					}
 				}
 				
