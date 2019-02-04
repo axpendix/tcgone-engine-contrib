@@ -303,14 +303,15 @@ public enum UltraPrism implements CardInfo {
                 }
             }
             move "Evergreen GX" , {
-                text "180 Heal all damage from this Pokémon. If this Pokémon has at least 1 extra [G] Energy attached to it (in addition to this attack’s cost), shuffle all cards from your discard pile into your deck."
+                text "180 damage. Heal all damage from this Pokémon. If this Pokémon has at least 1 extra [G] Energy attached to it (in addition to this attack’s cost), shuffle all cards from your discard pile into your deck."
                 energyCost G,G,C,C
                 attackRequirement {
                   gxCheck()
                 }
                 onAttack{
                     gxPerform()
-                    heal 180, self
+                    damage 180
+                    heal self.numberOfDamageCounters*10, self
                     if(it.cards.energyCount(G) >= 3 && thisMove.energyCost().size() < it.cards.energyCount(G)){
                         my.discard.moveTo(my.deck)
                         shuffleDeck()
@@ -322,20 +323,33 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
             weakness FIRE
             move "Tangle Drag" , {
-                text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon.\n"
+                text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
                 energyCost G
+                attackRequirement{
+                    assert opp.bench : "There is no Pokémon on your opponent's bench"
+                }
+                onAttack{
+                    sw opp.active, opp.bench.select("Choose the new active")
+                }
             }
             move "Bug Bite" , {
-                text "10 damage"
+                text "10 damage."
                 energyCost G
+                onAttack{
+                    damage 10
+                }
             }
         };
         case WEEDLE_3:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
             weakness FIRE
             move "Reckless Charge" , {
-                text "20 This Pokémon does 10 damage to itself."
+                text "20 damage. This Pokémon does 10 damage to itself."
                 energyCost C
+                onAttack{
+                    damage 20
+                    damage 10, self
+                }
             }
         };
         case KAKUNA_4:
@@ -343,10 +357,24 @@ public enum UltraPrism implements CardInfo {
             weakness FIRE
             bwAbility "Grass Cushion" , {
                 text "If this Pokémon has any [G] Energy attached to it, it takes 30 less damage from attacks (after applying Weakness and Resistance)."
+                      delayedA {
+                        before APPLY_ATTACK_DAMAGES, {
+                        if(ef.attacker.owner == self.owner.opposite && self.cards.energyCount(G)) {
+                            bg.dm().each{
+                            if(it.to == self && it.notNoEffect && it.dmg.value) {
+                                bc "Grass Cushion -30"
+                                it.dmg -= hp(30)
+                             }
+                        }
+                    }
+                }
             }
             move "Bug Bite" , {
-                text "20 damage"
+                text "20 damage."
                 energyCost C,C
+                onAttack{
+                    damage 20
+                }
             }
         };
         case BEEDRILL_5:
@@ -355,22 +383,39 @@ public enum UltraPrism implements CardInfo {
             move "Destiny Stinger" , {
                 text "You can use this attack only if this Pokémon has any damage counters on it. Both Active Pokémon are Knocked Out.\n"
                 energyCost G
+                attackRequirement{
+                    assert self.numberOfDamageCounters : "$self has no damage counter"
+                }
+                onAttack{
+                    new Knockout(defending).run(bg)
+                    new Knockout(self).run(bg)
+                }
             }
             move "Reckless Charge" , {
-                text "90 This Pokémon does 10 damage to itself."
+                text "90 damage. This Pokémon does 10 damage to itself."
                 energyCost C,C
+                onAttack{
+                    damage 90
+                    damage 10,self
+                }
             }
         };
         case PARAS_6:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
             weakness FIRE
             move "Scratch" , {
-                text "10 damage"
+                text "10 damage."
                 energyCost C
+                onAttack{
+                    damage 10
+                }
             }
             move "Slash" , {
-                text "20 damage"
+                text "20 damage."
                 energyCost G,C
+                onAttack{
+                    damage 20
+                }
             }
         };
         case PARASECT_7:
@@ -378,45 +423,80 @@ public enum UltraPrism implements CardInfo {
             weakness FIRE
             bwAbility "Panic Spores" , {
                 text "Put 2 damage counters on your opponent's Confused Pokémon between turns."
+                delayedA {
+                    before BETWEEN_TURNS, {
+                        if(self.owner.opposite.active.isSPC(CONFUSED)){
+                            damage 20, self.owner.opposite.active
+                        }
+					}
+                }
             }
             move "Mysterious Powder" , {
-                text "30 Flip a coin. If heads, your opponent's Active Pokémon is now Confused."
+                text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Confused."
                 energyCost G,C
+                onAttack{
+                    damage 30
+                    flipThenApplySC CONFUSED
+                }
             }
         };
         case EXEGGCUTE_8:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
             weakness FIRE
             move "Bullet Seed" , {
-                text "10× Flip 4 coins. This attack does 10 damage for each heads."
+                text "10× damage. Flip 4 coins. This attack does 10 damage for each heads."
                 energyCost G
+                onAttack{
+                    flip 4, {damage 10}
+                }
             }
         };
         case PINSIR_9:
         return basic (this, hp:HP120, type:GRASS, retreatCost:3) {
             weakness FIRE
             move "Grip and Squeeze" , {
-                text "30 The Defending Pokémon can&#8217;t retreat during your opponent's next turn.\n"
+                text "30 damage. The Defending Pokémon can't retreat during your opponent's next turn.\n"
                 energyCost C,C
+                onAttack{
+                    damage 30
+                    afterDamage{
+                        cantRetreat(defending)
+                    }
+                }
             }
             move "Guillotine Hug" , {
                 text "Flip 2 coins. If both of them are heads, your opponent's Active Pokémon is Knocked Out."
                 energyCost G,C,C
+                onAttack{
+                    flip 2,{},{},[2:{
+									    bc "$defending is Knocked Out.";
+                                        new Knockout(defending).run(bg)
+									},1:{
+										bc "$thisMove has no effect."
+									},0:{
+										bc "$thisMove has no effect."
+									}]
+                }
             }
         };
         case SHAYMIN_PRISM_STAR_10:
         return basic (this, hp:HP080, type:GRASS, retreatCost:0) {
             weakness FIRE
             move "Flower Storm" , {
-                text "30× This attack does 30 damage times the amount of basic Energy attached to all of your Pokémon.\nPrism Star Rule: You can&#8217;t have more than 1 <a href="https://pkmncards.com/is/prism-star/" class="hidden">Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
+                text "30× This attack does 30 damage times the amount of basic Energy attached to all of your Pokémon.\n"
                 energyCost G,G
+                onAttack{
+                    my.all.each{
+                        damage 30*it.cards.energyCount(G)
+                    }
+                }
             }
         };
         case CHARMANDER_11:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
             weakness WATER
             move "Scratch" , {
-                text "10 damage"
+                text "10 damage."
                 energyCost R
             }
             move "Reprisal" , {
@@ -428,7 +508,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
             weakness WATER
             move "Ember" , {
-                text "30 Discard an Energy from this Pokémon."
+                text "30 damage. Discard an Energy from this Pokémon."
                 energyCost R
             }
         };
@@ -436,7 +516,7 @@ public enum UltraPrism implements CardInfo {
         return 	evolution (this, from:"Charmander", hp:HP090, type:FIRE, retreatCost:2) {
             weakness WATER
             move "Fire Fang" , {
-                text "30 Your opponent's Active Pokémon is now Burned."
+                text "30 damage. Your opponent's Active Pokémon is now Burned."
                 energyCost R,R
             }
         };
@@ -478,7 +558,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost R
             }
             move "Stomp" , {
-                text "10+ Flip a coin. If heads, this attack does 30 more damage."
+                text "10+ damage. Flip a coin. If heads, this attack does 30 more damage."
                 energyCost R,R
             }
         };
@@ -486,11 +566,11 @@ public enum UltraPrism implements CardInfo {
         return 	evolution (this, from:"Ponyta", hp:HP100, type:FIRE, retreatCost:1) {
             weakness WATER
             move "Searing Flame" , {
-                text "20 Your opponent's Active Pokémon is now Burned.\n"
+                text "20 damage. Your opponent's Active Pokémon is now Burned.\n"
                 energyCost R
             }
             move "Agility" , {
-                text "60 Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
+                text "60 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
                 energyCost R,R
             }
         };
@@ -503,7 +583,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost R
             }
             move "Fire Spin" , {
-                text "180 Discard 3 Energy from this Pokémon."
+                text "180 damage. Discard 3 Energy from this Pokémon."
                 energyCost R,R,R,C
             }
         };
@@ -511,7 +591,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
             weakness WATER
             move "Fasten Claws" , {
-                text "10+ Flip a coin. If heads, this attack does 10 more damage."
+                text "10+ damage. Flip a coin. If heads, this attack does 10 more damage."
                 energyCost C
             }
         };
@@ -573,7 +653,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
             weakness GRASS
             move "Headache" , {
-                text "10 Flip a coin. If heads, your opponent can&#8217;t play any Trainer cards from their hand during their next turn."
+                text "10 damage. Flip a coin. If heads, your opponent can&#8217;t play any Trainer cards from their hand during their next turn."
                 energyCost C
             }
         };
@@ -581,11 +661,11 @@ public enum UltraPrism implements CardInfo {
         return 	evolution (this, from:"Psyduck", hp:HP110, type:WATER, retreatCost:1) {
             weakness GRASS
             move "Amnesia" , {
-                text "20 Choose 1 of your opponent's Active Pokémon's attacks. That Pokémon can&#8217;t use that attack during your opponent's next turn.\n"
+                text "20 damage. Choose 1 of your opponent's Active Pokémon's attacks. That Pokémon can&#8217;t use that attack during your opponent's next turn.\n"
                 energyCost W
             }
             move "Swim" , {
-                text "90 If any of your opponent's Pokémon have any"
+                text "90 damage. If any of your opponent's Pokémon have any"
                 energyCost C,C,C
             }
         };
@@ -593,7 +673,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
             weakness GRASS
             move "Numbing Water" , {
-                text "10 Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+                text "10 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
                 energyCost C
             }
         };
@@ -613,7 +693,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost W
             }
             move "Hydro Pump" , {
-                text "10+ This attack does 30 more damage times the amount of Water Energy attached to this Pokémon."
+                text "10+ damage. This attack does 30 more damage times the amount of Water Energy attached to this Pokémon."
                 energyCost C
             }
         };
@@ -625,7 +705,7 @@ public enum UltraPrism implements CardInfo {
                 text "As long as this Pokémon is your Active Pokémon, whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to your Benched [W] Pokémon."
             }
             move "Cold Cyclone" , {
-                text "70 Move 2"
+                text "70 damage. Move 2"
                 energyCost W,W
             }
         };
@@ -634,11 +714,11 @@ public enum UltraPrism implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Full Blitz" , {
-                text "150 Search your deck for up to 3"
+                text "150 damage. Search your deck for up to 3"
                 energyCost L,L,L
             }
             move "Tag Bolt GX" , {
-                text "200 If this Pokémon has at least 3 extra"
+                text "200 damage. If this Pokémon has at least 3 extra"
                 energyCost L,L,L
             }
         };
@@ -647,7 +727,7 @@ public enum UltraPrism implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Self-Destruct" , {
-                text "60 This Pokémon does 60 damage to itself."
+                text "60 damage. This Pokémon does 60 damage to itself."
                 energyCost L,C
             }
         };
@@ -659,7 +739,7 @@ public enum UltraPrism implements CardInfo {
                 text "Search your deck for up to 2"
             }
             move "Smash Bomb" , {
-                text "50 Flip a coin. If tails, this attack does nothing."
+                text "50 damage. Flip a coin. If tails, this attack does nothing."
                 energyCost L,C,C
             }
         };
@@ -683,7 +763,7 @@ public enum UltraPrism implements CardInfo {
                 text "20× Move any number of"
             }
             move "Super Zap Cannon" , {
-                text "190 Discard 2 Energy from this Pokémon."
+                text "190 damage. Discard 2 Energy from this Pokémon."
                 energyCost L,C,C,C,C
             }
         };
@@ -713,7 +793,7 @@ public enum UltraPrism implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Thunderous Assault" , {
-                text "10+ If this Pokémon was on the Bench and became your Active Pokémon this turn, this attack does 70 more damage. This attack's damage isn&#8217;t affected by Weakness."
+                text "10+ damage. If this Pokémon was on the Bench and became your Active Pokémon this turn, this attack does 70 more damage. This attack's damage isn&#8217;t affected by Weakness."
                 energyCost L
             }
         };
@@ -722,7 +802,7 @@ public enum UltraPrism implements CardInfo {
             weakness LIGHTNING
             resistance METAL, MINUS20
             move "Shock Bolt" , {
-                text "30 Discard all"
+                text "30 damage. Discard all"
                 energyCost L
             }
         };
@@ -735,7 +815,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost L
             }
             move "Shock Bolt" , {
-                text "60 Discard all"
+                text "60 damage. Discard all"
                 energyCost L,L
             }
         };
@@ -744,11 +824,11 @@ public enum UltraPrism implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Power Charge" , {
-                text "30 Put all Electropower cards from your discard pile into your hand.\n"
+                text "30 damage. Put all Electropower cards from your discard pile into your hand.\n"
                 energyCost L
             }
             move "Impact Bolt" , {
-                text "150 Discard all"
+                text "150 damage. Discard all"
                 energyCost L,L
             }
             move "Electrical GX" , {
@@ -774,7 +854,7 @@ public enum UltraPrism implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Raid" , {
-                text "30+ If this Pokémon evolved from Blitzle during this turn, this attack does 90 more damage.\n"
+                text "30+ damage. If this Pokémon evolved from Blitzle during this turn, this attack does 90 more damage.\n"
                 energyCost L,C
             }
             move "Mach Bolt" , {
@@ -799,7 +879,7 @@ public enum UltraPrism implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Leech Life" , {
-                text "10 Heal from this Pokémon the same amount of damage you did to your opponent's Active Pokémon."
+                text "10 damage. Heal from this Pokémon the same amount of damage you did to your opponent's Active Pokémon."
                 energyCost L
             }
         };
@@ -811,7 +891,7 @@ public enum UltraPrism implements CardInfo {
                 text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
             }
             move "Spider Thread" , {
-                text "40 Put a card from your discard pile into your hand."
+                text "40 damage. Put a card from your discard pile into your hand."
                 energyCost L
             }
         };
@@ -849,7 +929,7 @@ public enum UltraPrism implements CardInfo {
                 text "Once during your turn (before your attack), if this Pokémon is on your Bench, you may choose 2 of your Benched Pokémon and attach a [L] Energy card from your discard pile to each of them. If you do, discard all cards from this Pokémon and put it in the Lost Zone."
             }
             move "Mach Bolt" , {
-                text "120 damagePrism Star Rule: You can&#8217;t have more than 1 <a href="https://pkmncards.com/is/prism-star/" class="hidden">Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
+                text "120 damage"
                 energyCost L,L,C
             }
         };
@@ -862,7 +942,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost C
             }
             move "Wild Charge" , {
-                text "120 This Pokémon does 20 damage to itself."
+                text "120 damage. This Pokémon does 20 damage to itself."
                 energyCost L,L,C
             }
         };
@@ -871,7 +951,7 @@ public enum UltraPrism implements CardInfo {
             weakness DARKNESS
             resistance FIGHTING, MINUS20
             move "Poltergeist" , {
-                text "50× Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there.\n"
+                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there.\n"
                 energyCost P,P
             }
             move "Horror House GX" , {
@@ -910,7 +990,7 @@ public enum UltraPrism implements CardInfo {
                 text "Once during your turn (before your attack), you may search your deck for a Pokémon that isn&#8217;t a Pokémon-GX or Pokémon-EX, reveal it, and put it into your hand. Then, shuffle your deck."
             }
             move "Power Lariat" , {
-                text "10+ This attack does 50 more damage for each Evolution Pokémon on your Bench."
+                text "10+ damage. This attack does 50 more damage for each Evolution Pokémon on your Bench."
                 energyCost C,C,C
             }
         };
@@ -946,7 +1026,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost C,C
             }
             move "King's Drum" , {
-                text "100+ If Nidoqueen is on your Bench, this attack does 100 more damage."
+                text "100+ damage. If Nidoqueen is on your Bench, this attack does 100 more damage."
                 energyCost P,C,C
             }
         };
@@ -954,7 +1034,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
             weakness PSYCHIC
             move "Wrap" , {
-                text "10 Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+                text "10 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
                 energyCost C
             }
         };
@@ -966,7 +1046,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost C
             }
             move "Paranormal" , {
-                text "70 During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Ultra Beasts."
+                text "70 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Ultra Beasts."
                 energyCost P,C,C
             }
         };
@@ -985,7 +1065,7 @@ public enum UltraPrism implements CardInfo {
                 text "The Special Condition Poisoned is not removed when your opponent's Pokémon evolve or devolve."
             }
             move "Toxic Secretion" , {
-                text "40 Your opponent's Active Pokémon is now Poisoned. Put 2 damage counters instead of 1 on that Pokémon between turns."
+                text "40 damage. Your opponent's Active Pokémon is now Poisoned. Put 2 damage counters instead of 1 on that Pokémon between turns."
                 energyCost P
             }
         };
@@ -997,7 +1077,7 @@ public enum UltraPrism implements CardInfo {
                 text "Search your deck for up to 2 basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck.\n"
             }
             move "Alolan Club" , {
-                text "20× This attack does 20 damage for each of your Pokémon in play that has Alolan in its name."
+                text "20× damage. This attack does 20 damage for each of your Pokémon in play that has Alolan in its name."
                 energyCost C,C
             }
         };
@@ -1005,7 +1085,7 @@ public enum UltraPrism implements CardInfo {
         return 	evolution (this, from:"Staryu", hp:HP080, type:PSYCHIC, retreatCost:0) {
             weakness PSYCHIC
             move "Strange Wave" , {
-                text "40 Search your deck for up to 3 in any combination of"
+                text "40 damage. Search your deck for up to 3 in any combination of"
                 energyCost C
             }
         };
@@ -1016,7 +1096,7 @@ public enum UltraPrism implements CardInfo {
                 text "Your opponent's Pokémon that have any damage counters on them, and any cards attached to those Pokémon, can&#8217;t be put into your opponent's hand."
             }
             move "Psy Bolt" , {
-                text "20 Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+                text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
                 energyCost C,C
             }
         };
@@ -1085,7 +1165,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost F
             }
             move "Wreck" , {
-                text "80+ If there is any Stadium card in play, this attack does 80 more damage. Then, discard that Stadium card."
+                text "80+ damage. If there is any Stadium card in play, this attack does 80 more damage. Then, discard that Stadium card."
                 energyCost F,C,C
             }
         };
@@ -1105,7 +1185,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:1) {
             weakness PSYCHIC
             move "Hit and Run" , {
-                text "30 You may switch this Pokémon with 1 of your Benched Pokémon.\n"
+                text "30 damage. You may switch this Pokémon with 1 of your Benched Pokémon.\n"
                 energyCost F
             }
             move "Magnum Punch" , {
@@ -1117,7 +1197,7 @@ public enum UltraPrism implements CardInfo {
         return 	evolution (this, from:"Unidentified Fossil", hp:HP090, type:FIGHTING, retreatCost:1) {
             weakness GRASS
             move "Tickle" , {
-                text "30 Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+                text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
                 energyCost C
             }
         };
@@ -1136,7 +1216,7 @@ public enum UltraPrism implements CardInfo {
         return 	evolution (this, from:"Unidentified Fossil", hp:HP090, type:FIGHTING, retreatCost:1) {
             weakness GRASS
             move "Ramming Shell" , {
-                text "40 During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
+                text "40 damage. During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
                 energyCost F
             }
         };
@@ -1147,7 +1227,7 @@ public enum UltraPrism implements CardInfo {
                 text "As long as this Pokémon is your Active Pokémon, your opponent can&#8217;t play any Supporter cards from their hand."
             }
             move "Rock Slide" , {
-                text "80 This attack does 20 damage to 2 of your opponent's Benched Pokémon. (Don&#8217;t apply Weakness and Resistance for Benched Pokémon.)"
+                text "80 damage. This attack does 20 damage to 2 of your opponent's Benched Pokémon. (Don&#8217;t apply Weakness and Resistance for Benched Pokémon.)"
                 energyCost F,C,C
             }
         };
@@ -1155,7 +1235,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
             weakness GRASS
             move "Chip Away" , {
-                text "30 This attack's damage isn&#8217;t affected by any effects on your opponent's Active Pokémon."
+                text "30 damage. This attack's damage isn&#8217;t affected by any effects on your opponent's Active Pokémon."
                 energyCost C,C
             }
         };
@@ -1163,7 +1243,7 @@ public enum UltraPrism implements CardInfo {
         return 	evolution (this, from:"Larvitar", hp:HP080, type:FIGHTING, retreatCost:1) {
             weakness GRASS
             move "Payback" , {
-                text "30+ If your opponent has exactly 1 Prize card remaining, this attack does 90 more damage"
+                text "30+ damage. If your opponent has exactly 1 Prize card remaining, this attack does 90 more damage"
                 energyCost C,C
             }
         };
@@ -1171,7 +1251,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
             weakness PSYCHIC
             move "Arm Thrust" , {
-                text "40 Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon. If tails, this attack does nothing."
+                text "40 damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon. If tails, this attack does nothing."
                 energyCost C,C
             }
         };
@@ -1186,7 +1266,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost F,C,C
             }
             move "Splintered Shards GX" , {
-                text "30× This attack does 30 damage for each Energy card in your opponent's discard pile. (You can&#8217;t use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+                text "30× damage. This attack does 30 damage for each Energy card in your opponent's discard pile. (You can&#8217;t use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
                 energyCost F
             }
         };
@@ -1195,7 +1275,7 @@ public enum UltraPrism implements CardInfo {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
             move "Chemical Breath" , {
-                text "20+ This attack does 50 more damage for each Special Condition affecting your opponent's Active Pokémon."
+                text "20+ damage. This attack does 50 more damage for each Special Condition affecting your opponent's Active Pokémon."
                 energyCost C,C
             }
         };
@@ -1207,7 +1287,7 @@ public enum UltraPrism implements CardInfo {
                 text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may look at the top 6 cards of your opponent's deck and discard any number of Item cards you find there. Your opponent shuffles the other cards back into their deck."
             }
             move "Gunk Shot" , {
-                text "80 Your opponent's Active Pokémon is now Poisoned."
+                text "80 damage. Your opponent's Active Pokémon is now Poisoned."
                 energyCost D,C,C
             }
         };
@@ -1220,7 +1300,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost D,C,C
             }
             move "Bite Off" , {
-                text "130+ If your opponent's Active Pokémon is a Pokémon-GX or a Pokémon-EX, this attack does 100 more damage (before applying Weakness and Resistance)."
+                text "130+ damage. If your opponent's Active Pokémon is a Pokémon-GX or a Pokémon-EX, this attack does 100 more damage (before applying Weakness and Resistance)."
                 energyCost D,C,C,C
             }
         };
@@ -1258,7 +1338,7 @@ public enum UltraPrism implements CardInfo {
                 text "As long as this Pokémon is in play, your opponent's Active Basic Pokémon's Retreat Cost is [C] more."
             }
             move "Shadow Seeker" , {
-                text "30+ This attack does 30 more damage for each"
+                text "30+ damage. This attack does 30 more damage for each"
                 energyCost D,C,C
             }
         };
@@ -1291,7 +1371,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost D
             }
             move "Night Punishment" , {
-                text "20× This attack does 20 damage for each Pokémon in your discard pile. You can&#8217;t do more than 200 damage in this way."
+                text "20× damage. This attack does 20 damage for each Pokémon in your discard pile. You can&#8217;t do more than 200 damage in this way."
                 energyCost D,C,C
             }
         };
@@ -1317,7 +1397,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost D
             }
             move "Brave Bird" , {
-                text "120 This Pokémon does 30 damage to itself."
+                text "120 damage. This Pokémon does 30 damage to itself."
                 energyCost D,C,C
             }
         };
@@ -1326,11 +1406,11 @@ public enum UltraPrism implements CardInfo {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
             move "Tighten Up" , {
-                text "60 Your opponent discards 2 cards from their hand.\n"
+                text "60 damage. Your opponent discards 2 cards from their hand.\n"
                 energyCost D,C,C
             }
             move "Tantrum" , {
-                text "170 This Pokémon is now Confused."
+                text "170 damage. This Pokémon is now Confused."
                 energyCost D,D,C,C
             }
         };
@@ -1339,11 +1419,11 @@ public enum UltraPrism implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Derail" , {
-                text "30 Discard a Special Energy from your opponent's Active Pokémon.\n"
+                text "30 damage. Discard a Special Energy from your opponent's Active Pokémon.\n"
                 energyCost D
             }
             move "Clutch" , {
-                text "60 The Defending Pokémon can&#8217;t retreat during your opponent's next turn."
+                text "60 damage. The Defending Pokémon can&#8217;t retreat during your opponent's next turn."
                 energyCost D,D
             }
         };
@@ -1356,7 +1436,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost D
             }
             move "Dark Strike" , {
-                text "160 This Pokémon can&#8217;t use Dark Strike during your next turn.\n"
+                text "160 damage. This Pokémon can&#8217;t use Dark Strike during your next turn.\n"
                 energyCost D,D,D
             }
             move "Devilish Hands GX" , {
@@ -1372,11 +1452,11 @@ public enum UltraPrism implements CardInfo {
                 text "Once during your turn (before your attack), you may put 3 damage counters on this Pokémon. If you do, search your deck for up to 3 [D] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
             }
             move "Crushing Punch" , {
-                text "130 Discard a Special Energy from your opponent's Active Pokémon.\n"
+                text "130 damage. Discard a Special Energy from your opponent's Active Pokémon.\n"
                 energyCost C,C,C
             }
             move "Darkest Tornado GX" , {
-                text "10+ This attack does 50 more damage for each damage counter on this Pokémon. (You can&#8217;t use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+                text "10+ damage. This attack does 50 more damage for each damage counter on this Pokémon. (You can&#8217;t use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
                 energyCost C,C,C
             }
         };
@@ -1385,11 +1465,11 @@ public enum UltraPrism implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Calm Strike" , {
-                text "20+ If you have used your GX attack, this attack does 70 more damage.\n"
+                text "20+ damage. If you have used your GX attack, this attack does 70 more damage.\n"
                 energyCost M,C
             }
             move "Steel Wing" , {
-                text "90 During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+                text "90 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
                 energyCost M,M,C
             }
         };
@@ -1401,7 +1481,7 @@ public enum UltraPrism implements CardInfo {
                 text "Once during your turn (before your attack), if this Pokémon is your Active Pokémon, you may look at the top 5 cards of your deck, reveal a Trainer card you find there, and put it into your hand. Then, shuffle the other cards back into your deck, and this Pokémon is now Asleep."
             }
             move "Slap" , {
-                text "30 damage"
+                text "30 damage. damage"
                 energyCost M,C
             }
         };
@@ -1413,7 +1493,7 @@ public enum UltraPrism implements CardInfo {
                 text "If you go second, this Pokémon can evolve during your first turn."
             }
             move "Tackle" , {
-                text "20 damage"
+                text "20 damage. damage"
                 energyCost M,C
             }
         };
@@ -1425,7 +1505,7 @@ public enum UltraPrism implements CardInfo {
                 text "Prevent all damage done to this Pokémon by attacks from your opponent's [R] Pokémon."
             }
             move "Shady Stamp" , {
-                text "70 Your opponent's Active Pokémon is now Confused."
+                text "70 damage. Your opponent's Active Pokémon is now Confused."
                 energyCost M,C,C
             }
         };
@@ -1434,7 +1514,7 @@ public enum UltraPrism implements CardInfo {
             weakness FIRE
             resistance PSYCHIC, MINUS20
             move "Continuous Tumble" , {
-                text "20× Flip a coin until you get tails. This attack does 20 damage for each heads."
+                text "20× damage. Flip a coin until you get tails. This attack does 20 damage for each heads."
                 energyCost M
             }
         };
@@ -1443,11 +1523,11 @@ public enum UltraPrism implements CardInfo {
             weakness FIRE
             resistance PSYCHIC, MINUS20
             move "Guard Press" , {
-                text "20 During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance).\n"
+                text "20 damage. During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance).\n"
                 energyCost M
             }
             move "Thorn Pod Throw" , {
-                text "80 This attack does 20 damage times the amount of"
+                text "80 damage. This attack does 20 damage times the amount of"
                 energyCost C,C,C
             }
         };
@@ -1469,7 +1549,7 @@ public enum UltraPrism implements CardInfo {
             weakness FIRE
             resistance PSYCHIC, MINUS20
             move "Single Lunge" , {
-                text "30+ If this Pokémon has no damage counters on it, this attack does 90 more damage.\n"
+                text "30+ damage. If this Pokémon has no damage counters on it, this attack does 90 more damage.\n"
                 energyCost M
             }
             move "Power Edge" , {
@@ -1485,7 +1565,7 @@ public enum UltraPrism implements CardInfo {
                 text "Each of your Pokémon that has any [M] Energy attached to it can&#8217;t be affected by any Special Conditions. Remove any Special Conditions affecting those Pokémon."
             }
             move "Dueling Saber" , {
-                text "50+ If there is any Stadium card in play, this attack does 60 more damage.\n"
+                text "50+ damage. If there is any Stadium card in play, this attack does 60 more damage.\n"
                 energyCost M,M
             }
             move "Iron Rule GX" , {
@@ -1507,7 +1587,7 @@ public enum UltraPrism implements CardInfo {
             weakness FIRE
             resistance PSYCHIC, MINUS20
             move "Tool Drop" , {
-                text "30× This attack does 30 damage for each Pokémon Tool card attached to all Pokémon"
+                text "30× damage. This attack does 30 damage for each Pokémon Tool card attached to all Pokémon"
                 energyCost C,C
             }
         };
@@ -1519,7 +1599,7 @@ public enum UltraPrism implements CardInfo {
                 text "This Pokémon takes 40 less damage from attacks (after applying Weakness and Resistance)."
             }
             move "Shield Bash" , {
-                text "100 This attack's damage isn&#8217;t affected by any effects on your opponent's Active Pokémon."
+                text "100 damage. This attack's damage isn&#8217;t affected by any effects on your opponent's Active Pokémon."
                 energyCost M,C,C
             }
         };
@@ -1573,7 +1653,7 @@ public enum UltraPrism implements CardInfo {
         return 	evolution (this, from:"Exeggcute", hp:HP160, type:DRAGON, retreatCost:3) {
             weakness FAIRY
             move "Tropical Shake" , {
-                text "20+ This attack does 20 more damage for each type of basic Energy card in your discard pile. You can&#8217;t add more than 100 damage in this way."
+                text "20+ damage. This attack does 20 more damage for each type of basic Energy card in your discard pile. You can&#8217;t add more than 100 damage in this way."
                 energyCost G
             }
         };
@@ -1584,7 +1664,7 @@ public enum UltraPrism implements CardInfo {
                 text "You may discard any number of cards from your hand. Then, draw cards until you have 6 cards in your hand.\n"
             }
             move "Egg Splat" , {
-                text "60× Discard any number of Exeggcute from your hand. This attack does 60 damage for each card you discarded in this way."
+                text "60× damage. Discard any number of Exeggcute from your hand. This attack does 60 damage for each card you discarded in this way."
                 energyCost G,C
             }
         };
@@ -1592,7 +1672,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP060, type:DRAGON, retreatCost:2) {
             weakness FAIRY
             move "Dragon Rage" , {
-                text "60 Flip 2 coins. If either of them is tails, this attack does nothing."
+                text "60 damage. Flip 2 coins. If either of them is tails, this attack does nothing."
                 energyCost L
             }
         };
@@ -1611,7 +1691,7 @@ public enum UltraPrism implements CardInfo {
         return 	evolution (this, from:"Dratini", hp:HP090, type:DRAGON, retreatCost:2) {
             weakness FAIRY
             move "Twister" , {
-                text "30 Flip 2 coins. For each heads, discard an Energy from your opponent's Active Pokémon. If both of them are tails, this attack does nothing."
+                text "30 damage. Flip 2 coins. For each heads, discard an Energy from your opponent's Active Pokémon. If both of them are tails, this attack does nothing."
                 energyCost W,L
             }
         };
@@ -1630,11 +1710,11 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP270, type:COLORLESS, retreatCost:4) {
             weakness FIGHTING
             move "Dump Truck Press" , {
-                text "120+ If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage.\n"
+                text "120+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage.\n"
                 energyCost C,C,C,C
             }
             move "Megaton Friends GX" , {
-                text "210 If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can&#8217;t use more than 1 GX attack in a game.)\nTAG TEAM rule: When your TAG TEAM is Knocked Out, your opponent takes 3 Prize cards."
+                text "210 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can&#8217;t use more than 1 GX attack in a game.)\nTAG TEAM rule: When your TAG TEAM is Knocked Out, your opponent takes 3 Prize cards."
                 energyCost C,C,C,C
             }
         };
@@ -1656,7 +1736,7 @@ public enum UltraPrism implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Quick Attack" , {
-                text "10+ Flip a coin. If heads, this attack does 10 more damage."
+                text "10+ damage. Flip a coin. If heads, this attack does 10 more damage."
                 energyCost C
             }
         };
@@ -1677,7 +1757,7 @@ public enum UltraPrism implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Whirlwind" , {
-                text "60 Your opponent switches their Active Pokémon with 1 of their Benched Pokémon.\n"
+                text "60 damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon.\n"
                 energyCost C,C
             }
             move "Spin Storm" , {
@@ -1701,11 +1781,11 @@ public enum UltraPrism implements CardInfo {
         return 	evolution (this, from:"Meowth", hp:HP100, type:COLORLESS, retreatCost:1) {
             weakness FIGHTING
             move "Make &#8216;Em Pay" , {
-                text "20 If your opponent has 4 or more cards in their hand, they reveal their hand. Discard cards you find there until your opponent has exactly 4 cards in their hand.\n"
+                text "20 damage. If your opponent has 4 or more cards in their hand, they reveal their hand. Discard cards you find there until your opponent has exactly 4 cards in their hand.\n"
                 energyCost C
             }
             move "Sharp Claws" , {
-                text "30+ Flip a coin. If heads, this attack does 60 more damage."
+                text "30+ damage. Flip a coin. If heads, this attack does 60 more damage."
                 energyCost C,C
             }
         };
@@ -1718,7 +1798,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost C
             }
             move "Tool Buster" , {
-                text "20+ Before doing damage, discard all Pokémon Tool cards from your opponent's Active Pokémon. If you discarded a Pokémon Tool card in this way, this attack does 70 more damage."
+                text "20+ damage. Before doing damage, discard all Pokémon Tool cards from your opponent's Active Pokémon. If you discarded a Pokémon Tool card in this way, this attack does 70 more damage."
                 energyCost C
             }
         };
@@ -1738,7 +1818,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP130, type:COLORLESS, retreatCost:2) {
             weakness FIGHTING
             move "Raging Herd" , {
-                text "10+ This attack does 10 more damage for each damage counter on all of your Tauros and Tauros-GX."
+                text "10+ damage. This attack does 10 more damage for each damage counter on all of your Tauros and Tauros-GX."
                 energyCost C,C
             }
         };
@@ -1751,7 +1831,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost C
             }
             move "Fossil Fangs" , {
-                text "90+ If you don't have any Pokémon-GX or Pokémon-EX on your Bench, this attack does 90 more damage."
+                text "90+ damage. If you don't have any Pokémon-GX or Pokémon-EX on your Bench, this attack does 90 more damage."
                 energyCost C,C,C
             }
         };
@@ -1760,7 +1840,7 @@ public enum UltraPrism implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Power Charger" , {
-                text "30 Search your deck for a basic Energy card and attach it to this Pokémon. Then, shuffle your deck.\n"
+                text "30 damage. Search your deck for a basic Energy card and attach it to this Pokémon. Then, shuffle your deck.\n"
                 energyCost C
             }
             move "Blasting Wind" , {
@@ -1888,7 +1968,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP270, type:GRASS, retreatCost:4) {
             weakness FIRE
             move "Pollen Hazard" , {
-                text "50 Your opponent's Active Pokémon is now Burned, Confused, and Poisoned.\n"
+                text "50 damage. Your opponent's Active Pokémon is now Burned, Confused, and Poisoned.\n"
                 energyCost G,C,C
             }
             move "Solar Beam" , {
@@ -1896,7 +1976,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost G,G,C,C
             }
             move "Evergreen GX" , {
-                text "180 Heal all damage from this Pokémon. If this Pokémon has at least 1 extra"
+                text "180 damage. Heal all damage from this Pokémon. If this Pokémon has at least 1 extra"
                 energyCost G,G,C,C
             }
         };
@@ -1908,7 +1988,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost W,W,W,W,W
             }
             move "Towering Splash" , {
-                text "10 If this Pokémon has at least 7 extra"
+                text "10 damage. If this Pokémon has at least 7 extra"
                 energyCost W
             }
         };
@@ -1920,7 +2000,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost W,W,W,W,W
             }
             move "Towering Splash" , {
-                text "10 If this Pokémon has at least 7 extra"
+                text "10 damage. If this Pokémon has at least 7 extra"
                 energyCost W
             }
         };
@@ -1929,11 +2009,11 @@ public enum UltraPrism implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Full Blitz" , {
-                text "150 Search your deck for up to 3"
+                text "150 damage. Search your deck for up to 3"
                 energyCost L,L,L
             }
             move "Tag Bolt GX" , {
-                text "200 If this Pokémon has at least 3 extra"
+                text "200 damage. If this Pokémon has at least 3 extra"
                 energyCost L,L,L
             }
         };
@@ -1942,11 +2022,11 @@ public enum UltraPrism implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Power Charge" , {
-                text "30 Put all Electropower cards from your discard pile into your hand.\n"
+                text "30 damage. Put all Electropower cards from your discard pile into your hand.\n"
                 energyCost L
             }
             move "Impact Bolt" , {
-                text "150 Discard all"
+                text "150 damage. Discard all"
                 energyCost L,L
             }
             move "Electrical GX" , {
@@ -1959,7 +2039,7 @@ public enum UltraPrism implements CardInfo {
             weakness DARKNESS
             resistance FIGHTING, MINUS20
             move "Poltergeist" , {
-                text "50× Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there.\n"
+                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there.\n"
                 energyCost P,P
             }
             move "Horror House GX" , {
@@ -1972,7 +2052,7 @@ public enum UltraPrism implements CardInfo {
             weakness DARKNESS
             resistance FIGHTING, MINUS20
             move "Poltergeist" , {
-                text "50× Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there.\n"
+                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there.\n"
                 energyCost P,P
             }
             move "Horror House GX" , {
@@ -1989,7 +2069,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost D
             }
             move "Dark Strike" , {
-                text "160 This Pokémon can't use Dark Strike during your next turn.\n"
+                text "160 damage. This Pokémon can't use Dark Strike during your next turn.\n"
                 energyCost D,D,D
             }
             move "Devilish Hands GX" , {
@@ -2005,11 +2085,11 @@ public enum UltraPrism implements CardInfo {
                 text "Once during your turn (before your attack), you may put 3 damage counters on this Pokémon. If you do, search your deck for up to 3 [D] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
             }
             move "Crushing Punch" , {
-                text "130 Discard a Special Energy from your opponent's Active Pokémon.\n"
+                text "130 damage. Discard a Special Energy from your opponent's Active Pokémon.\n"
                 energyCost C,C,C
             }
             move "Darkest Tornado GX" , {
-                text "10+ This attack does 50 more damage for each damage counter on this Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+                text "10+ damage. This attack does 50 more damage for each damage counter on this Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
                 energyCost C,C,C
             }
         };
@@ -2021,7 +2101,7 @@ public enum UltraPrism implements CardInfo {
                 text "Each of your Pokémon that has any [M] Energy attached to it can't be affected by any Special Conditions. Remove any Special Conditions affecting those Pokémon."
             }
             move "Dueling Saber" , {
-                text "50+ If there is any Stadium card in play, this attack does 60 more damage.\n"
+                text "50+ damage. If there is any Stadium card in play, this attack does 60 more damage.\n"
                 energyCost M,M
             }
             move "Iron Rule GX" , {
@@ -2033,7 +2113,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP250, type:DRAGON, retreatCost:1) {
             weakness FAIRY
             move "Buster Purge" , {
-                text "240 Discard 3 Energy from this Pokémon.\n"
+                text "240 damage. Discard 3 Energy from this Pokémon.\n"
                 energyCost W,P,P,C
             }
             move "Aero Unit GX" , {
@@ -2045,7 +2125,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP250, type:DRAGON, retreatCost:1) {
             weakness FAIRY
             move "Buster Purge" , {
-                text "240 Discard 3 Energy from this Pokémon.\n"
+                text "240 damage. Discard 3 Energy from this Pokémon.\n"
                 energyCost W,P,P,C
             }
             move "Aero Unit GX" , {
@@ -2057,11 +2137,11 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP270, type:COLORLESS, retreatCost:4) {
             weakness FIGHTING
             move "Dump Truck Press" , {
-                text "120+ If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage.\n"
+                text "120+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage.\n"
                 energyCost C,C,C,C
             }
             move "Megaton Friends GX" , {
-                text "210 If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can&#8217;t use more than 1 GX attack in a game.)\nTAG TEAM rule: When your TAG TEAM is Knocked Out, your opponent takes 3 Prize cards."
+                text "210 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can&#8217;t use more than 1 GX attack in a game.)\nTAG TEAM rule: When your TAG TEAM is Knocked Out, your opponent takes 3 Prize cards."
                 energyCost C,C,C,C
             }
         };
@@ -2109,7 +2189,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP270, type:GRASS, retreatCost:4) {
             weakness FIRE
             move "Pollen Hazard" , {
-                text "50 Your opponent's Active Pokémon is now Burned, Confused, and Poisoned.\n"
+                text "50 damage. Your opponent's Active Pokémon is now Burned, Confused, and Poisoned.\n"
                 energyCost G,C,C
             }
             move "Solar Beam" , {
@@ -2117,7 +2197,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost G,G,C,C
             }
             move "Evergreen GX" , {
-                text "180 Heal all damage from this Pokémon. If this Pokémon has at least 1 extra"
+                text "180 damage. Heal all damage from this Pokémon. If this Pokémon has at least 1 extra"
                 energyCost G,G,C,C
             }
         };
@@ -2129,7 +2209,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost W,W,W,W,W
             }
             move "Towering Splash" , {
-                text "10 If this Pokémon has at least 7 extra"
+                text "10 damage. If this Pokémon has at least 7 extra"
                 energyCost W
             }
         };
@@ -2138,11 +2218,11 @@ public enum UltraPrism implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Full Blitz" , {
-                text "150 Search your deck for up to 3"
+                text "150 damage. Search your deck for up to 3"
                 energyCost L,L,L
             }
             move "Tag Bolt GX" , {
-                text "200 If this Pokémon has at least 3 extra"
+                text "200 damage. If this Pokémon has at least 3 extra"
                 energyCost L,L,L
             }
         };
@@ -2151,11 +2231,11 @@ public enum UltraPrism implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Power Charge" , {
-                text "30 Put all Electropower cards from your discard pile into your hand.\n"
+                text "30 damage. Put all Electropower cards from your discard pile into your hand.\n"
                 energyCost L
             }
             move "Impact Bolt" , {
-                text "150 Discard all"
+                text "150 damage. Discard all"
                 energyCost L,L
             }
             move "Electrical GX" , {
@@ -2168,7 +2248,7 @@ public enum UltraPrism implements CardInfo {
             weakness DARKNESS
             resistance FIGHTING, MINUS20
             move "Poltergeist" , {
-                text "50× Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there.\n"
+                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there.\n"
                 energyCost P,P
             }
             move "Horror House GX" , {
@@ -2185,7 +2265,7 @@ public enum UltraPrism implements CardInfo {
                 energyCost D
             }
             move "Dark Strike" , {
-                text "160 This Pokémon can&#8217;t use Dark Strike during your next turn.\n"
+                text "160 damage. This Pokémon can&#8217;t use Dark Strike during your next turn.\n"
                 energyCost D,D,D
             }
             move "Devilish Hands GX" , {
@@ -2201,11 +2281,11 @@ public enum UltraPrism implements CardInfo {
                 text "Once during your turn (before your attack), you may put 3 damage counters on this Pokémon. If you do, search your deck for up to 3 [D] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
             }
             move "Crushing Punch" , {
-                text "130 Discard a Special Energy from your opponent's Active Pokémon.\n"
+                text "130 damage. Discard a Special Energy from your opponent's Active Pokémon.\n"
                 energyCost C,C,C
             }
             move "Darkest Tornado GX" , {
-                text "10+ This attack does 50 more damage for each damage counter on this Pokémon. (You can&#8217;t use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+                text "10+ damage. This attack does 50 more damage for each damage counter on this Pokémon. (You can&#8217;t use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
                 energyCost C,C,C
             }
         };
@@ -2217,7 +2297,7 @@ public enum UltraPrism implements CardInfo {
                 text "Each of your Pokémon that has any [M] Energy attached to it can&#8217;t be affected by any Special Conditions. Remove any Special Conditions affecting those Pokémon."
             }
             move "Dueling Saber" , {
-                text "50+ If there is any Stadium card in play, this attack does 60 more damage.\n"
+                text "50+ damage. If there is any Stadium card in play, this attack does 60 more damage.\n"
                 energyCost M,M
             }
             move "Iron Rule GX" , {
@@ -2229,7 +2309,7 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP250, type:DRAGON, retreatCost:1) {
             weakness FAIRY
             move "Buster Purge" , {
-                text "240 Discard 3 Energy from this Pokémon.\n"
+                text "240 damage. Discard 3 Energy from this Pokémon.\n"
                 energyCost W,P,P,C
             }
             move "Aero Unit GX" , {
@@ -2241,11 +2321,11 @@ public enum UltraPrism implements CardInfo {
         return basic (this, hp:HP270, type:COLORLESS, retreatCost:4) {
             weakness FIGHTING
             move "Dump Truck Press" , {
-                text "120+ If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage.\n"
+                text "120+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage.\n"
                 energyCost C,C,C,C
             }
             move "Megaton Friends GX" , {
-                text "210 If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can&#8217;t use more than 1 GX attack in a game.)\nTAG TEAM rule: When your TAG TEAM is Knocked Out, your opponent takes 3 Prize cards."
+                text "210 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can&#8217;t use more than 1 GX attack in a game.)\nTAG TEAM rule: When your TAG TEAM is Knocked Out, your opponent takes 3 Prize cards."
                 energyCost C,C,C,C
             }
         };
