@@ -801,6 +801,7 @@ public enum TeamUp implements CardInfo {
                 }
               }
             }
+          }
         };
         case GOLDUCK_27:
         return 	evolution (this, from:"Psyduck", hp:HP110, type:WATER, retreatCost:1) {
@@ -913,12 +914,35 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Full Blitz" , {
-                text "150 damage. Search your deck for up to 3"
+                text "150 damage. Search your deck for up to 3 [L] Energy cards and attach them to 1 of your Pokémon. Then, shuffle your deck."
                 energyCost L,L,L
+                attackRequirement{
+                  assert my.deck : "There is no more cards into your deck"
+                }
+                onAttack{
+                  damage 150
+                  afterDamage{
+                    def list = my.deck.search (max: 3, basicEnergyFilter(L))
+          					def pcs = my.all.select("To?")
+          					list.each {attachEnergy(pcs, it)}
+          					shuffleDeck()
+                  }
+                }
             }
             move "Tag Bolt GX" , {
-                text "200 damage. If this Pokémon has at least 3 extra"
+                text "200 damage. If this Pokémon has at least 3 extra [L] Energy attached to it (in addition to this attack’s cost), this attack does 170 damage to 1 of your opponent’s Benched Pokémon."
                 energyCost L,L,L
+                attackRequirement {
+                  gxCheck()
+                }
+                onAttack{
+                    gxPerform()
+                    damage 200
+                    heal self.numberOfDamageCounters*10, self
+                    if(opp.bench && self.cards.energySufficient(thisMove.energyCost() + L + L + L)){
+                        damage 170, opp.bench.select("Choose the target for 170 damage")
+                    }
+                }
             }
         };
         case ALOLAN_GEODUDE_33:
@@ -928,6 +952,10 @@ public enum TeamUp implements CardInfo {
             move "Self-Destruct" , {
                 text "60 damage. This Pokémon does 60 damage to itself."
                 energyCost L,C
+                onAttack{
+                  damage 60
+                  damage 60, self
+                }
             }
         };
         case ALOLAN_GEODUDE_34:
@@ -935,11 +963,19 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Charge" , {
-                text "Search your deck for up to 2"
+                text "Search your deck for up to 2 [L] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
+                onAttack{
+                  attachEnergyFrom(type:L,my.deck,self)
+                  attachEnergyFrom(type:L,my.deck,self)
+                  shuffleDeck()
+                }
             }
             move "Smash Bomb" , {
                 text "50 damage. Flip a coin. If tails, this attack does nothing."
                 energyCost L,C,C
+                onAttack{
+                  flip 1,{damage 50},{bc "$thisMove missed."}
+                }
             }
         };
         case ALOLAN_GRAVELER_35:
@@ -948,10 +984,16 @@ public enum TeamUp implements CardInfo {
             resistance METAL, MINUS20
             move "Rollout" , {
                 text "30 damage"
+                onAttack{
+                  damage 30
+                }
             }
             move "Electroslug" , {
                 text "100 damage"
                 energyCost L,C,C,C
+                onAttack{
+                  damage 100
+                }
             }
         };
         case ALOLAN_GOLEM_36:
@@ -959,11 +1001,31 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Electromagnetic Bomb" , {
-                text "20× Move any number of"
+                text "20× damages. Move any number of [L] Energy from your Benched Pokémon to this Pokémon. This attack does 20 damage for each Energy card you moved in this way."
+                attackRequirement{
+                  assert my.all.findAll {it.cards.filterByEnergyType(L) && it!=self} : "There is no Energy to move"
+                }
+                onAttack{
+                  def dmgCount = 0
+                  while(1){
+    								def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=self})
+    								if(!pl) break;
+    								def src=pl.select("Source for [L] energy (cancel to stop moving)", false)
+    								if(!src) break;
+    								def card=src.cards.filterByEnergyType(L).select("Card to move").first()
+    								energySwitch(src, self, card)
+                    dmgCount += 20
+    							}
+                  damage dmgCount
+                }
             }
             move "Super Zap Cannon" , {
                 text "190 damage. Discard 2 Energy from this Pokémon."
                 energyCost L,C,C,C,C
+                onAttack{
+                  damage 190
+                  DiscardSelfEnergy C,C
+                }
             }
         };
         case VOLTORB_37:
@@ -973,6 +1035,9 @@ public enum TeamUp implements CardInfo {
             move "Tackle" , {
                 text "20 damage"
                 energyCost C
+                onAttack{
+                  damage 20
+                }
             }
         };
         case ELECTRODE_38:
@@ -981,10 +1046,29 @@ public enum TeamUp implements CardInfo {
             resistance METAL, MINUS20
             bwAbility "Electro Shaker" , {
                 text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may move any number of [L] Energy from your Pokémon to your other Pokémon in any way you like."
+                onActivate {r->
+      						if(r==PLAY_FROM_HAND && confirm('Use Electro Shaker?')){
+      							powerUsed()
+                    while(1){
+                      def pl=(my.all.findAll {it.cards.energyCount(L)})
+                      if(!pl) break;
+                      def src =pl.select("source for energy (cancel to stop)", false)
+                      if(!src) break;
+                      def card=src.cards.filterByEnergyType(L).select("Card to move").first()
+
+                      def tar=my.all.select("Target for energy (cancel to stop)", false)
+                      if(!tar) break;
+                      energySwitch(src, tar, card)
+                    }
+      						}
+      					}
             }
             move "Speed Ball" , {
                 text "50 damage"
                 energyCost L,C
+                onAttack{
+                  damage 50
+                }
             }
         };
         case ZAPDOS_39:
@@ -992,8 +1076,13 @@ public enum TeamUp implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Thunderous Assault" , {
-                text "10+ damage. If this Pokémon was on the Bench and became your Active Pokémon this turn, this attack does 70 more damage. This attack's damage isn&#8217;t affected by Weakness."
+                text "10+ damage. If this Pokémon was on the Bench and became your Active Pokémon this turn, this attack does 70 more damage. This attack's damage isn't affected by Weakness."
                 energyCost L
+                onAttack {
+      						noWeaknessDamage(10,defending)
+                  if(wasSwitchedOutThisTurn(self))
+      							noWeaknessDamage(70,defending)
+      					}
             }
         };
         case MAREEP_40:
@@ -1001,8 +1090,14 @@ public enum TeamUp implements CardInfo {
             weakness LIGHTNING
             resistance METAL, MINUS20
             move "Shock Bolt" , {
-                text "30 damage. Discard all"
+                text "30 damage. Discard all [L] Energy from this Pokémon."
                 energyCost L
+                onAttack{
+                  damage 30
+                  afterDamage{
+                    discardAllSelfEnergy(L)
+                  }
+                }
             }
         };
         case FLAAFFY_41:
@@ -1012,10 +1107,19 @@ public enum TeamUp implements CardInfo {
             move "Electric Punch" , {
                 text "30 damage"
                 energyCost L
+                onAttack{
+                  damage 30
+                }
             }
             move "Shock Bolt" , {
-                text "60 damage. Discard all"
+                text "60 damage. Discard all [L] Energy from this Pokémon."
                 energyCost L,L
+                onAttack{
+                  damage 60
+                  afterDamage{
+                    discardAllSelfEnergy(L)
+                  }
+                }
             }
         };
         case AMPHAROS_GX_42:
@@ -1025,14 +1129,32 @@ public enum TeamUp implements CardInfo {
             move "Power Charge" , {
                 text "30 damage. Put all Electropower cards from your discard pile into your hand.\n"
                 energyCost L
+                onAttack{
+                  damage 30
+                  my.discard.findAll{it.name.contains("Electropower")}.moveTo(my.hand)
+                }
             }
             move "Impact Bolt" , {
-                text "150 damage. Discard all"
+                text "150 damage. Discard all [L] Energy from this Pokémon"
                 energyCost L,L
+                onAttack{
+                  damage 150
+                  afterDamage{
+                    discardAllSelfEnergy(L)
+                  }
+                }
             }
             move "Electrical GX" , {
-                text "Search your deck for up to 7 Pokémon, reveal them, and put them into your hand. Then, shuffle your deck. (You can&#8217;t use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+                text "Search your deck for up to 7 Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
                 energyCost L
+                attackRequirement {
+                  gxCheck()
+                }
+                onAttack{
+                    gxPerform()
+                    my.deck.search(max:7,"Choose up to 7 Pokémon Cards",cardTypeFilter(POKEMON)).showToOpponent("Chosen Pokémon").moveTo(my.hand)
+                    shuffleDeck()
+                }
             }
         };
         case BLITZLE_43:
@@ -1042,10 +1164,19 @@ public enum TeamUp implements CardInfo {
             move "Delivery Dash" , {
                 text "Search your deck for up to 2 Electropower cards, reveal them, and put them into your hand. Then, shuffle your deck.\n"
                 energyCost L
+                attackRequirement{
+                  assert my.deck : "there is no more cards in your deck"
+                }
+                onAttack{
+                  my.deck.search(max:2,"Choose up to 2 Electropower cards",{it.name.contains("Electropower")}).showToOpponent("Chosen cards").moveTo(my.hand)
+                }
             }
             move "Zap Kick" , {
                 text "20 damage"
                 energyCost L,L
+                onAttack{
+                  damage 20
+                }
             }
         };
         case ZEBSTRIKA_44:
@@ -1055,10 +1186,19 @@ public enum TeamUp implements CardInfo {
             move "Raid" , {
                 text "30+ damage. If this Pokémon evolved from Blitzle during this turn, this attack does 90 more damage.\n"
                 energyCost L,C
+                onAttack{
+                  damage 30
+                  if(self.lastEvolved == bg.turnCount){
+                    damage 90
+                  }
+                }
             }
             move "Mach Bolt" , {
                 text "100 damage"
                 energyCost L,L,C
+                onAttack{
+                  damage 100
+                }
             }
         };
         case EMOLGA_45:
@@ -1067,10 +1207,20 @@ public enum TeamUp implements CardInfo {
             resistance FIGHTING, MINUS20
             bwAbility "Nuzzly Gathering" , {
                 text "Once during your turn (before your attack), you may search your deck for a Pokémon that has the Nuzzle attack, reveal it, and put it into your hand. Then, shuffle your deck."
+                actionA{
+                  checkLastTurn()
+                  assert my.deck : "There is no more cardds in your deck"
+                  powerUsed()
+                  my.deck.search(count : 1,"",it.topPokemonCard.moves.findAll{it.name=="Nuzzle"}).showToOpponent("Chosen Pokémon").moveTo(my.hand)
+
+                }
             }
             move "Nuzzle" , {
                 text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
                 energyCost L
+                onAttack{
+                  flip{apply PARALYZED}
+                }
             }
         };
         case JOLTIK_46:
@@ -1080,6 +1230,10 @@ public enum TeamUp implements CardInfo {
             move "Leech Life" , {
                 text "10 damage. Heal from this Pokémon the same amount of damage you did to your opponent's Active Pokémon."
                 energyCost L
+                onAttack{
+                  damage 10
+                  removeDamageCounterEqualToDamageDone()
+                }
             }
         };
         case GALVANTULA_47:
@@ -1088,10 +1242,26 @@ public enum TeamUp implements CardInfo {
             resistance METAL, MINUS20
             bwAbility "Unnerve" , {
                 text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
+                delayedA {
+      						before null, self, Source.TRAINER_CARD, {
+      							if (bg.currentThreadPlayerType != self.owner){
+      								bc "Unnerve prevent effect of item"
+      								prevent()
+      							}
+      						}
+      					}
             }
             move "Spider Thread" , {
                 text "40 damage. Put a card from your discard pile into your hand."
                 energyCost L
+                onAttack{
+                  damage 40
+                  afterDamage{
+                    if(my.discard){
+                      my.discard.select("Choose the card to move into your hand").moveTo(my.hand)
+                    }
+                  }
+                }
             }
         };
         case HELIOPTILE_48:
@@ -1101,10 +1271,16 @@ public enum TeamUp implements CardInfo {
             move "Pound" , {
                 text "10 damage"
                 energyCost C
+                onAttack{
+                  damage 10
+                }
             }
             move "Static Shock" , {
                 text "40 damage"
                 energyCost L,C,C
+                onAttack{
+                  damage 40
+                }
             }
         };
         case HELIOLISK_49:
@@ -1112,12 +1288,21 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Random Spark" , {
-                text "This attack does 30 damage to 1 of your opponent's Pokémon. (Don&#8217;t apply Weakness and Resistance for Benched Pokémon.)\n"
+                text "This attack does 30 damage to 1 of your opponent's Pokémon."
                 energyCost L
+                onAttack{
+                  damage 30, opp.all.select()
+                }
             }
             move "Volt Switch" , {
-                text "90 Switch this Pokémon with 1 of your Benched Lightning Pokémon."
+                text "90 damage. Switch this Pokémon with 1 of your Benched Lightning Pokémon."
                 energyCost L,C,C
+                onAttack{
+                  damage 90
+                  if(my.bench.findAll{it.types.contains(W)}){
+                    sw self,my.bench.findAll{it.types.contains(W)}.select()
+                  }
+                }
             }
         };
         case TAPU_KOKO_PRISM_STAR_50:
@@ -1126,10 +1311,22 @@ public enum TeamUp implements CardInfo {
             resistance METAL, MINUS20
             bwAbility "Dance of the Ancients" , {
                 text "Once during your turn (before your attack), if this Pokémon is on your Bench, you may choose 2 of your Benched Pokémon and attach a [L] Energy card from your discard pile to each of them. If you do, discard all cards from this Pokémon and put it in the Lost Zone."
+                actionA{
+                  checkLastTurn()
+                  assert !self.active : "$self is not benched."
+                  assert my.discard.filterByType(ENERGY).filterByEnergyType(L) : "There is no Lightning energy in the discard"
+                  powerUsed()
+                  attachEnergyFrom(type:L,my.discard,my.bench)
+                  attachEnergyFrom(may: true,type:L,my.discard,my.bench)
+                  self.cards.discard()
+                }
             }
             move "Mach Bolt" , {
                 text "120 damage"
                 energyCost L,L,C
+                onAttack{
+                  damage 120
+                }
             }
         };
         case ZERAORA_51:
@@ -1139,10 +1336,17 @@ public enum TeamUp implements CardInfo {
             move "Slash" , {
                 text "20 damage"
                 energyCost C
+                onAttack{
+                  damage 2°
+                }
             }
             move "Wild Charge" , {
                 text "120 damage. This Pokémon does 20 damage to itself."
                 energyCost L,L,C
+                onAttack{
+                  damage 120
+                  damage 20, self
+                }
             }
         };
         case GENGAR_MIMIKYU_GX_52:
@@ -1154,7 +1358,7 @@ public enum TeamUp implements CardInfo {
                 energyCost P,P
             }
             move "Horror House GX" , {
-                text "Your opponent can&#8217;t play any cards from their hand during their next turn. If this Pokémon has at least 1 extra"
+                text "Your opponent can't play any cards from their hand during their next turn. If this Pokémon has at least 1 extra"
                 energyCost P
             }
         };
