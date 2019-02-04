@@ -852,10 +852,10 @@ public enum TeamUp implements CardInfo {
                 text "Flip a coin. If heads, put a card that evolves from this Pokémon from your discard pile onto this Pokémon to evolve it."
                 energyCost W
                 attackRequirement{
-                  assert my.discard.findAll{it.cardTypes.is(EVOLUTION) && self.name.contains(it.predecessor)})
+                  assert my.discard.findAll{it.cardTypes.is(EVOLUTION) && self.name.contains(it.predecessor)}
                 }
                 onAttack{
-                  def tar = my.discard.findAll{it.cardTypes.is(EVOLUTION) && self.name.contains(it.predecessor)}).select("Choose the card that will evolve from $self")
+                  def tar = my.discard.findAll{it.cardTypes.is(EVOLUTION) && self.name.contains(it.predecessor)}.select("Choose the card that will evolve from $self")
                   evolve(sel, tar.first(), OTHER)
                 }
             }
