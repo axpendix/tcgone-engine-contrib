@@ -1356,10 +1356,36 @@ public enum TeamUp implements CardInfo {
             move "Poltergeist" , {
                 text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there.\n"
                 energyCost P,P
+                onAttack{
+                  if(opp.hand){
+                    opp.hand.showToMe("Your opponent's hand")
+                    damage 50*opp.hand.filterByType(TRAINER_CARD)
+                  }
+                }
             }
             move "Horror House GX" , {
-                text "Your opponent can't play any cards from their hand during their next turn. If this Pokémon has at least 1 extra"
+                text "Your opponent can't play any cards from their hand during their next turn. If this Pokémon has at least 1 extra [P] Energy attached to it (in addition to this attack’s cost), each player draws cards until they have 7 cards in their hand."
                 energyCost P
+                attackRequirement{
+                  gxCheck()
+                }
+                onAttack{
+                  gxPerform()
+                  if(self.cards.energySufficient(thisMove.energyCost() + P)){
+                      draw 7-my.hand
+                      draw 7-opp.hand, TargetPlayer.OPPONENT
+                      shuffleDeck()
+                  }
+                  delayed{
+                    before PLAY_CARD, {
+                      if (bg.currentTurn == self.owner.opposite) {
+                        wcu "Horror House GX prevents playing this card"
+                        prevent()
+                      }
+                    }
+                    unregisterAfter 2
+                  }
+                }
             }
         };
         case NIDORAN_FEMALE_53:
@@ -1368,10 +1394,14 @@ public enum TeamUp implements CardInfo {
             move "Call for Family" , {
                 text "Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck.\n"
                 energyCost C
+                callForFamily(basic:true,1,delegate)
             }
             move "Scratch" , {
                 text "20 damage"
                 energyCost C,C
+                onAttack{
+                  damage 20
+                }
             }
         };
         case NIDORINA_54:
@@ -1380,21 +1410,45 @@ public enum TeamUp implements CardInfo {
             move "Family Rescue" , {
                 text "Shuffle 5 Psychic Pokémon from your discard pile into your deck.\n"
                 energyCost C
+                attackRequirement{
+                  assert my.discard.findAll{it.cardTypes.pokemon && it.asPokemonCard().types.contains(P)}
+                }
+                onAttack{
+                  my.discard.findAll{it.cardTypes.pokemon && it.asPokemonCard().types.contains(P)}.select(max:5,"Choose the Pokémon to put back in deck").moveTo(my.deck)
+                  shuffleDeck()
+                }
             }
             move "Bite" , {
                 text "30 damage"
                 energyCost C,C
+                onAttack{
+                  damage 30
+                }
             }
         };
         case NIDOQUEEN_55:
         return 	evolution (this, from:"Nidorina", hp:HP160, type:PSYCHIC, retreatCost:3) {
             weakness PSYCHIC
             bwAbility "Queen's Call" , {
-                text "Once during your turn (before your attack), you may search your deck for a Pokémon that isn&#8217;t a Pokémon-GX or Pokémon-EX, reveal it, and put it into your hand. Then, shuffle your deck."
+                text "Once during your turn (before your attack), you may search your deck for a Pokémon that isn't a Pokémon-GX or Pokémon-EX, reveal it, and put it into your hand. Then, shuffle your deck."
+                actionA{
+                  checkLastTurn()
+                  assert my.deck : "There is no more card in your deck"
+                  my.deck.search(count:1,"Select one Pokémon that isn't a Pokémon-GX or Pokémon-EX",{it.cardTypes.is(POKEMON) && !it.cardTypes.is(POKEMON_GX) && !it.cardTypes.is(POKEMON_EX)}).showToOpponent("Chosen Pokémon").moveTo(my.hand)
+                  shuffleDeck
+                }
             }
             move "Power Lariat" , {
                 text "10+ damage. This attack does 50 more damage for each Evolution Pokémon on your Bench."
                 energyCost C,C,C
+                onAttack{
+                  damage 10
+                  my.bench.each{
+                    if(it.evolution){
+                      damage 50
+                    }
+                  }
+                }
             }
         };
         case NIDORAN_MALE_56:
@@ -1403,10 +1457,16 @@ public enum TeamUp implements CardInfo {
             move "Peck" , {
                 text "10 damage"
                 energyCost C
+                onAttack{
+                  damage 10
+                }
             }
             move "Horn Attack" , {
                 text "20 damage"
                 energyCost P,C
+                onAttack{
+                  damage 20
+                }
             }
         };
         case NIDORINO_57:
@@ -1415,10 +1475,17 @@ public enum TeamUp implements CardInfo {
             move "Peck" , {
                 text "20 damage"
                 energyCost C
+                onAttack{
+                  damage 20
+                }
+
             }
             move "Horn Drill" , {
                 text "60 damage"
                 energyCost P,C,C
+                onAttack{
+                  damage 60
+                }
             }
         };
         case NIDOKING_58:
@@ -1427,10 +1494,30 @@ public enum TeamUp implements CardInfo {
             move "Drag Off" , {
                 text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. This attack does 50 damage to the new Active Pokémon.\n"
                 energyCost C,C
+                onAttack{
+                  def tar = defending
+                  if(opp.bench){
+                    tar = opp.bench.select("Select the new active")
+                    sw defending, tar
+                  }
+                  damage 50, tar
+                }
             }
             move "King's Drum" , {
                 text "100+ damage. If Nidoqueen is on your Bench, this attack does 100 more damage."
                 energyCost P,C,C
+                onAttack{
+                  def moreDmg = false
+                  damage 100
+                  my.bench.each {
+                      if(it.name.contains("Nidoqueen")){
+                        moreDmg = true
+                      }
+                  }
+                  if(moreDmg){
+                    damage 100
+                  }
+                }
             }
         };
         case TENTACOOL_59:
@@ -1439,6 +1526,10 @@ public enum TeamUp implements CardInfo {
             move "Wrap" , {
                 text "10 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
                 energyCost C
+                onAttack{
+                  damage 10
+                  flipThenApplySC PARALYZED
+                }
             }
         };
         case TENTACRUEL_60:
@@ -1447,10 +1538,27 @@ public enum TeamUp implements CardInfo {
             move "Void Tentacles" , {
                 text "Your opponent's Active Pokémon is now Confused and Poisoned.\n"
                 energyCost C
+                onAttack{
+                  apply CONFUSED
+                  apply POISONED
+                }
             }
             move "Paranormal" , {
                 text "70 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Ultra Beasts."
                 energyCost P,C,C
+                onAttack{
+                  damage 70
+                  delayed{
+                    before APPLY_ATTACK_DAMAGES, {
+        							bg.dm().each {
+        								if(it.to == self && it.from.cardTypes.is(ULTRA_BEAST) && it.dmg.value && it.notNoEffect) {
+        									bc "Paranormal prevents damage from Ultra Beasts"
+        									it.dmg = hp(0)
+                        }
+      								}
+      							}
+      						}
+                }
             }
         };
         case GRIMER_61:
@@ -1459,6 +1567,9 @@ public enum TeamUp implements CardInfo {
             move "Pound" , {
                 text "10 damage"
                 energyCost C
+                onAttack{
+                  damage 10
+                }
             }
         };
         case MUK_62:
@@ -1466,10 +1577,24 @@ public enum TeamUp implements CardInfo {
             weakness PSYCHIC
             bwAbility "Poison Sacs" , {
                 text "The Special Condition Poisoned is not removed when your opponent's Pokémon evolve or devolve."
+                delayedA{
+                  before POISONED_SPC, null, null, EVOLVE, {
+                    if(ef.target == self.owner.opposite){
+                      prevent()
+                    }
+                  }
+                }
             }
             move "Toxic Secretion" , {
                 text "40 damage. Your opponent's Active Pokémon is now Poisoned. Put 2 damage counters instead of 1 on that Pokémon between turns."
                 energyCost P
+                onAttack{
+                  damage 40
+                  afterDamage{
+                    apply POISONED
+                    extraPoison 1
+                  }
+                }
             }
         };
         case ALOLAN_MAROWAK_63:
@@ -1478,55 +1603,116 @@ public enum TeamUp implements CardInfo {
             resistance FIGHTING, MINUS20
             move "Limbo Limbo" , {
                 text "Search your deck for up to 2 basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck.\n"
+                onAttack{
+                  attachEnergyFrom(basic:true,my.deck,my.all)
+                  attachEnergyFrom(basic:true,my.deck,my.all)
+                  shuffleDeck()
+                }
             }
             move "Alolan Club" , {
                 text "20× damage. This attack does 20 damage for each of your Pokémon in play that has Alolan in its name."
                 energyCost C,C
+                onAttack{
+                  my.all.each{
+                    if(it.name.contains("Alolan")){
+                      damage 20
+                    }
+                  }
+                }
             }
         };
         case STARMIE_64:
         return 	evolution (this, from:"Staryu", hp:HP080, type:PSYCHIC, retreatCost:0) {
             weakness PSYCHIC
             move "Strange Wave" , {
-                text "40 damage. Search your deck for up to 3 in any combination of"
+                text "40 damage. Search your deck for up to 3 in any combination of [W] and [P] Energy cards and attach them to 1 of your Benched Pokémon. Then, shuffle your deck"
                 energyCost C
+                onAttack{
+                  damage 40
+                  afterDamage{
+                    if(my.deck){
+                      def enSel = my.deck.search(max:3,"Select up to 3 in any combination of [W] and [P] Energy cards",{it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(W) || it.asEnergyCard().containsType(P))})
+                      def tar = my.all.select("Attach the energy to?")
+                      enSel.each{
+                        attachEnergyFrom(it,tar)
+                      }
+                      shuffleDeck()
+                    }
+                  }
+                }
             }
         };
         case MR_MIME_65:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
             weakness PSYCHIC
             bwAbility "Scoop-Up Block" , {
-                text "Your opponent's Pokémon that have any damage counters on them, and any cards attached to those Pokémon, can&#8217;t be put into your opponent's hand."
+                text "Your opponent's Pokémon that have any damage counters on them, and any cards attached to those Pokémon, can't be put into your opponent's hand."
+                //TODO: find a way to block scoop up effects
             }
             move "Psy Bolt" , {
                 text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
                 energyCost C,C
+                onAttack{
+                  damage 20
+                  flipThenApplySC PARALYZED
+                }
             }
         };
         case MR_MIME_GX_66:
         return basic (this, hp:HP150, type:PSYCHIC, retreatCost:2) {
             bwAbility "Magic Odds" , {
                 text "Prevent all damage done to this Pokémon by your opponent's attacks if that damage is exactly 10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210, 230, or 250."
+                delayedA {
+                  before APPLY_ATTACK_DAMAGES, {
+                    bg.dm().each{
+                      if(it.to == self && it.notNoEffect && (it.dmg.value == 10 || it.dmg.value == 30 || it.dmg.value == 50 || it.dmg.value == 70 || it.dmg.value == 90 || it.dmg.value == 110 || it.dmg.value == 130 || it.dmg.value == 150  || it.dmg.value == 170  || it.dmg.value == 190  || it.dmg.value == 210  || it.dmg.value == 230  || it.dmg.value == 250)) {
+                        bc "Magic Odds prevent damage"
+                        it.dmg = hp(0)
+                      }
+                    }
+                  }
+                }
             }
             move "Breakdown" , {
-                text "For each card in your opponent's hand, put 1 damage counter on their Active Pokémon.\n"
-                energyCost P,C
-            }
-            move "Life Trick GX" , {
-                text "Heal all damage from this Pokémon. (You can&#8217;t use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-                energyCost C
-            }
-        };
+    					text "For each card in your opponent's hand, put 1 damage counter on their Active Pokémon."
+    					energyCost P,C
+    					onAttack {
+    					  directDamage 10*opp.hand.size(), defending
+    					}
+    				}
+    				move "Life Trick GX" , {
+    					text "Heal all damage from this Pokémon. (You can't use more than 1 GX attack in a game.)"
+    					energyCost C
+    					attackRequirement{
+    					  gxCheck()
+    					}
+    					onAttack{
+    					  gxPerform()
+    					  heal self.numberOfDamageCounters*10, self
+    					}
+    				}
+    			};
         case JYNX_67:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:1) {
             weakness PSYCHIC
             move "Dazzle Dance" , {
-                text "Your opponent's Active Pokémon is now Confused.\n"
+                text "Your opponent's Active Pokémon is now Confused."
                 energyCost C
+                onAttack{
+                  apply CONFUSED
+                }
             }
             move "Mysterious Dance" , {
                 text "For each of your opponent's Benched Pokémon, put 1 damage counter on your opponent's Pokémon in any way you like."
                 energyCost P,C
+                attackRequirement{
+                  assert opp.bench : "There is no benched pokémon"
+                }
+                onAttack{
+                  opp.bench.each{
+                    directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon")
+                  }
+                }
             }
         };
         case COSMOG_68:
@@ -1534,10 +1720,23 @@ public enum TeamUp implements CardInfo {
             weakness PSYCHIC
             bwAbility "Cosmic Guard" , {
                 text "As long as this Pokémon is on your Bench, prevent all damage done to this Pokémon by attacks (both yours and your opponent's)."
+                delayedA {
+                  before APPLY_ATTACK_DAMAGES, {
+                    bg.dm().each{
+                      if(!self.active && it.to == self){
+                        bc "Cosmic Guard prevent all damage"
+                        it.dmg=hp(0)
+                      }
+                    }
+                  }
+                }
             }
             move "Mumble" , {
                 text "10 damage"
                 energyCost C
+                onAttack{
+                  damage 10
+                }
             }
         };
         case COSMOEM_69:
@@ -1546,14 +1745,18 @@ public enum TeamUp implements CardInfo {
             move "Nap" , {
                 text "Heal 20 damage from this Pokémon."
                 energyCost C
+                onAttack{
+                  heal 20, self
+                }
             }
         };
         case MANKEY_70:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
             weakness PSYCHIC
             move "Scout" , {
-                text "You opponent reveals their hand.\n"
+                text "You opponent reveals their hand."
                 energyCost C
+                onAttack{}
             }
             move "Low Kick" , {
                 text "30 damage"
