@@ -1756,11 +1756,14 @@ public enum TeamUp implements CardInfo {
             move "Scout" , {
                 text "You opponent reveals their hand."
                 energyCost C
-                onAttack{}
+                onAttack{
+                  opp.hand.showToMe("Your opponent's hand")
+                }
             }
             move "Low Kick" , {
                 text "30 damage"
                 energyCost F,C
+                onAttack{damage 30}
             }
         };
         case PRIMEAPE_71:
@@ -1769,22 +1772,43 @@ public enum TeamUp implements CardInfo {
             move "Low Kick" , {
                 text "30 damage"
                 energyCost F
+                onAttack{
+                  damage 30
+                }
             }
             move "Wreck" , {
                 text "80+ damage. If there is any Stadium card in play, this attack does 80 more damage. Then, discard that Stadium card."
                 energyCost F,C,C
+                onAttack{
+                  damage 80
+                  afterDamage {
+      							if(bg.stadiumInfoStruct)){
+      								discard bg.stadiumInfoStruct.stadiumCard
+      							}
+      						}
+                }
             }
         };
         case HITMONLEE_72:
         return basic (this, hp:HP100, type:FIGHTING, retreatCost:1) {
             weakness PSYCHIC
             move "Special Combo" , {
-                text "This attack can be used only if Hitmonchan used Hit and Run during your last turn. This attack does 90 damage to 1 of your opponent's Benched Pokémon. (Don&#8217;t apply Weakness and Resistance for Benched Pokémon.)\n"
+                text "This attack can be used only if Hitmonchan used Hit and Run during your last turn. This attack does 90 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)\n"
                 energyCost F
+                attackRequirement{
+                  assert bg.em().retrieveObject("Hit_And_Run"+thisCard.player) == bg.turnCount -2 : "Hitmonchan did not used Hit and Run during your last turn"
+                  assert opp.bench : "There is no benched Pokémon"
+                }
+                onAttack{
+                  damage 90, opp.bench.select()
+                }
             }
             move "Mega Kick" , {
                 text "90 damage"
                 energyCost F,F,C
+                onAttack{
+                  damage 90
+                }
             }
         };
         case HITMONCHAN_73:
@@ -1793,10 +1817,20 @@ public enum TeamUp implements CardInfo {
             move "Hit and Run" , {
                 text "30 damage. You may switch this Pokémon with 1 of your Benched Pokémon.\n"
                 energyCost F
+                onAttack{
+                  damage 30
+                  bg.em().storeObject("Hit_And_Run", bg.turnCount)
+                  if(my.bench && confirm("Switch $self with 1 of your Benched Pokémon")){
+                    sw self, my.bench.select("New active")
+                  }
+                }
             }
             move "Magnum Punch" , {
                 text "70 damage"
                 energyCost F,C,C
+                onAttack{
+                  damage 70
+                }
             }
         };
         case OMANYTE_74:
@@ -1805,17 +1839,32 @@ public enum TeamUp implements CardInfo {
             move "Tickle" , {
                 text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
                 energyCost C
+                onAttack{
+                  damage 30
+                  flipThenApplySC PARALYZED
+                }
             }
         };
         case OMASTAR_75:
         return 	evolution (this, from:"Omanyte", hp:HP130, type:FIGHTING, retreatCost:2) {
             weakness GRASS
             bwAbility "Fossil Bind" , {
-                text "As long as you have fewer Pokémon in play than your opponent, they can&#8217;t play any item cards from their hand."
+                text "As long as you have fewer Pokémon in play than your opponent, they can't play any item cards from their hand."
+                delayedA{
+                  before PLAY_TRAINER, {
+                    if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite && my.all.size() < opp.all.size()) {
+                      wcu "Fossil Bind prevents playing this card"
+                      prevent()
+                    }
+                  }
+                }
             }
             move "Bite" , {
                 text "60 damage"
                 energyCost F,C
+                onAttack{
+                  damage 60
+                }
             }
         };
         case KABUTO_76:
@@ -1824,25 +1873,48 @@ public enum TeamUp implements CardInfo {
             move "Ramming Shell" , {
                 text "40 damage. During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
                 energyCost F
+                onAttack{
+                  damage 40
+                  reduceDamageNextTurn(hp(20),thisMove)
+                }
             }
         };
         case KABUTOPS_77:
         return 	evolution (this, from:"Kabuto", hp:HP140, type:FIGHTING, retreatCost:2) {
             weakness GRASS
             bwAbility "Fossilized Memories" , {
-                text "As long as this Pokémon is your Active Pokémon, your opponent can&#8217;t play any Supporter cards from their hand."
+                text "As long as this Pokémon is your Active Pokémon, your opponent can't play any Supporter cards from their hand."
+                before PLAY_TRAINER, {
+                  if (ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner.opposite && self.active) {
+                    wcu "Fossilized Memories prevents playing this card"
+                    prevent()
+                  }
+                }
             }
             move "Rock Slide" , {
-                text "80 damage. This attack does 20 damage to 2 of your opponent's Benched Pokémon. (Don&#8217;t apply Weakness and Resistance for Benched Pokémon.)"
+                text "80 damage. This attack does 20 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
                 energyCost F,C,C
+                onAttack{
+                  damage 80
+                  if(opp.bench){
+                    multiSelect(opp.bench, 2).each{
+        					    targeted(it){
+        					      damage 20, it
+        					    }
+        					  }
+                  }
+                }
             }
         };
         case LARVITAR_78:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
             weakness GRASS
             move "Chip Away" , {
-                text "30 damage. This attack's damage isn&#8217;t affected by any effects on your opponent's Active Pokémon."
+                text "30 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
                 energyCost C,C
+                onAttack{
+                  shredDamage 30,defending
+                }
             }
         };
         case PUPITAR_79:
@@ -1851,6 +1923,12 @@ public enum TeamUp implements CardInfo {
             move "Payback" , {
                 text "30+ damage. If your opponent has exactly 1 Prize card remaining, this attack does 90 more damage"
                 energyCost C,C
+                onAttack{
+                  damage 30
+                  if(my.prizeCardSet.size() == 1){
+                    damage 90
+                  }
+                }
             }
         };
         case PANCHAM_80:
@@ -1859,6 +1937,10 @@ public enum TeamUp implements CardInfo {
             move "Arm Thrust" , {
                 text "40 damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon. If tails, this attack does nothing."
                 energyCost C,C
+                onAttack{
+                  flip 1,{damage 40;
+                    afterDamage{discardDefendingEnergy()}},{bc "$thisMove failed "}
+                }
             }
         };
         case LYCANROC_GX_81:
@@ -1866,14 +1948,30 @@ public enum TeamUp implements CardInfo {
             weakness GRASS
             bwAbility "Twilight Eyes" , {
                 text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may discard an Energy from your opponent's Active Pokémon."
+                onActivate {r->
+      						if(r==PLAY_FROM_HAND && confirm('Use Twilight Eyes?')){
+      							powerUsed()
+      							discardDefendingEnergy()
+      						}
+      					}
             }
             move "Accelerock" , {
                 text "120 damage"
                 energyCost F,C,C
+                onAttack{
+                  damage 120
+                }
             }
             move "Splintered Shards GX" , {
-                text "30× damage. This attack does 30 damage for each Energy card in your opponent's discard pile. (You can&#8217;t use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+                text "30× damage. This attack does 30 damage for each Energy card in your opponent's discard pile. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
                 energyCost F
+                attackRequirement{
+                  assert opp.discard : "There is no card in your opponent's discard pile"
+                }
+                onAttack{
+                  gxPerform
+                  damage 30*opp.discard.filterByType(ENERGY).size()
+                }
             }
         };
         case ALOLAN_GRIMER_82:
