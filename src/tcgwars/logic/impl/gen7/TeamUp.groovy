@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen7;
 
 import tcgwars.logic.effect.gm.Attack
+import tcgwars.logic.effect.gm.PlayTrainer
 
 
 import static tcgwars.logic.card.HP.*;
