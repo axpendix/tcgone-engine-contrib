@@ -382,7 +382,7 @@ public enum TeamUp implements CardInfo {
         return evolution (this, from:"Kakuna", hp:HP130, type:GRASS, retreatCost:1) {
             weakness FIRE
             move "Destiny Stinger" , {
-                text "You can use this attack only if this Pokémon has any damage counters on it. Both Active Pokémon are Knocked Out.\n"
+                text "You can use this attack only if this Pokémon has any damage counters on it. Both Active Pokémon are Knocked Out."
                 energyCost G
                 attackRequirement{
                     assert self.numberOfDamageCounters : "$self has no damage counter"
@@ -456,7 +456,7 @@ public enum TeamUp implements CardInfo {
         return basic (this, hp:HP120, type:GRASS, retreatCost:3) {
             weakness FIRE
             move "Grip and Squeeze" , {
-                text "30 damage. The Defending Pokémon can't retreat during your opponent's next turn.\n"
+                text "30 damage. The Defending Pokémon can't retreat during your opponent's next turn."
                 energyCost C,C
                 onAttack{
                     damage 30
@@ -484,7 +484,7 @@ public enum TeamUp implements CardInfo {
         return basic (this, hp:HP080, type:GRASS, retreatCost:0) {
             weakness FIRE
             move "Flower Storm" , {
-                text "30× This attack does 30 damage times the amount of basic Energy attached to all of your Pokémon.\n"
+                text "30× This attack does 30 damage times the amount of basic Energy attached to all of your Pokémon."
                 energyCost G,G
                 onAttack{
                     my.all.each{
@@ -622,7 +622,7 @@ public enum TeamUp implements CardInfo {
         return 	evolution (this, from:"Ponyta", hp:HP100, type:FIRE, retreatCost:1) {
             weakness WATER
             move "Searing Flame" , {
-                text "20 damage. Your opponent's Active Pokémon is now Burned.\n"
+                text "20 damage. Your opponent's Active Pokémon is now Burned."
                 energyCost R
                 onAttack{
                   damage 20
@@ -681,7 +681,7 @@ public enum TeamUp implements CardInfo {
         return 	evolution (this, from:"Litten", hp:HP090, type:FIRE, retreatCost:2) {
             weakness WATER
             move "Roar" , {
-                text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon.\n"
+                text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
                 energyCost C
                 attackRequirement{
                     assert opp.bench : "There is no Pokémon on your opponent's bench"
@@ -807,7 +807,7 @@ public enum TeamUp implements CardInfo {
         return 	evolution (this, from:"Psyduck", hp:HP110, type:WATER, retreatCost:1) {
             weakness GRASS
             move "Amnesia" , {
-                text "20 damage. Choose 1 of your opponent's Active Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn.\n"
+                text "20 damage. Choose 1 of your opponent's Active Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
                 energyCost W
                 onAttack{
                   damage 20
@@ -864,7 +864,7 @@ public enum TeamUp implements CardInfo {
         return basic (this, hp:HP130, type:WATER, retreatCost:3) {
             weakness METAL
             move "Confuse Ray" , {
-                text "Your opponent's Active Pokémon is now Confused.\n"
+                text "Your opponent's Active Pokémon is now Confused."
                 energyCost W
                 onAttack{
                   apply CONFUSED
@@ -1127,7 +1127,7 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Power Charge" , {
-                text "30 damage. Put all Electropower cards from your discard pile into your hand.\n"
+                text "30 damage. Put all Electropower cards from your discard pile into your hand."
                 energyCost L
                 onAttack{
                   damage 30
@@ -1162,7 +1162,7 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Delivery Dash" , {
-                text "Search your deck for up to 2 Electropower cards, reveal them, and put them into your hand. Then, shuffle your deck.\n"
+                text "Search your deck for up to 2 Electropower cards, reveal them, and put them into your hand. Then, shuffle your deck."
                 energyCost L
                 attackRequirement{
                   assert my.deck : "there is no more cards in your deck"
@@ -1184,7 +1184,7 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Raid" , {
-                text "30+ damage. If this Pokémon evolved from Blitzle during this turn, this attack does 90 more damage.\n"
+                text "30+ damage. If this Pokémon evolved from Blitzle during this turn, this attack does 90 more damage."
                 energyCost L,C
                 onAttack{
                   damage 30
@@ -1354,7 +1354,7 @@ public enum TeamUp implements CardInfo {
             weakness DARKNESS
             resistance FIGHTING, MINUS20
             move "Poltergeist" , {
-                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there.\n"
+                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there."
                 energyCost P,P
                 onAttack{
                   if(opp.hand){
@@ -1392,7 +1392,7 @@ public enum TeamUp implements CardInfo {
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
             weakness PSYCHIC
             move "Call for Family" , {
-                text "Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck.\n"
+                text "Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
                 energyCost C
                 callForFamily(basic:true,1,delegate)
             }
@@ -1408,7 +1408,7 @@ public enum TeamUp implements CardInfo {
         return 	evolution (this, from:"Nidoran Female", hp:HP090, type:PSYCHIC, retreatCost:2) {
             weakness PSYCHIC
             move "Family Rescue" , {
-                text "Shuffle 5 Psychic Pokémon from your discard pile into your deck.\n"
+                text "Shuffle 5 Psychic Pokémon from your discard pile into your deck."
                 energyCost C
                 attackRequirement{
                   assert my.discard.findAll{it.cardTypes.pokemon && it.asPokemonCard().types.contains(P)}
@@ -1492,7 +1492,7 @@ public enum TeamUp implements CardInfo {
         return 	evolution (this, from:"Nidorino", hp:HP160, type:PSYCHIC, retreatCost:3) {
             weakness PSYCHIC
             move "Drag Off" , {
-                text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. This attack does 50 damage to the new Active Pokémon.\n"
+                text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. This attack does 50 damage to the new Active Pokémon."
                 energyCost C,C
                 onAttack{
                   def tar = defending
@@ -1536,7 +1536,7 @@ public enum TeamUp implements CardInfo {
         return 	evolution (this, from:"Tentacool", hp:HP100, type:PSYCHIC, retreatCost:1) {
             weakness PSYCHIC
             move "Void Tentacles" , {
-                text "Your opponent's Active Pokémon is now Confused and Poisoned.\n"
+                text "Your opponent's Active Pokémon is now Confused and Poisoned."
                 energyCost C
                 onAttack{
                   apply CONFUSED
@@ -1602,7 +1602,7 @@ public enum TeamUp implements CardInfo {
             weakness DARKNESS
             resistance FIGHTING, MINUS20
             move "Limbo Limbo" , {
-                text "Search your deck for up to 2 basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck.\n"
+                text "Search your deck for up to 2 basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
                 onAttack{
                   attachEnergyFrom(basic:true,my.deck,my.all)
                   attachEnergyFrom(basic:true,my.deck,my.all)
@@ -1793,7 +1793,7 @@ public enum TeamUp implements CardInfo {
         return basic (this, hp:HP100, type:FIGHTING, retreatCost:1) {
             weakness PSYCHIC
             move "Special Combo" , {
-                text "This attack can be used only if Hitmonchan used Hit and Run during your last turn. This attack does 90 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)\n"
+                text "This attack can be used only if Hitmonchan used Hit and Run during your last turn. This attack does 90 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
                 energyCost F
                 attackRequirement{
                   assert bg.em().retrieveObject("Hit_And_Run"+thisCard.player) == bg.turnCount -2 : "Hitmonchan did not used Hit and Run during your last turn"
@@ -1815,7 +1815,7 @@ public enum TeamUp implements CardInfo {
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:1) {
             weakness PSYCHIC
             move "Hit and Run" , {
-                text "30 damage. You may switch this Pokémon with 1 of your Benched Pokémon.\n"
+                text "30 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
                 energyCost F
                 onAttack{
                   damage 30
@@ -2019,7 +2019,7 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
             move "Spinning Tail" , {
-                text "This attack does 30 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)\n"
+                text "This attack does 30 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
                 energyCost D,C,C
                 onAttack{
                   opp.all.each{
@@ -2101,7 +2101,7 @@ public enum TeamUp implements CardInfo {
         case SPIRITOMB_88:
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:1) {
             move "Spirit Compressor" , {
-                text "Search your deck for up to 4 Pokémon and discard them. Then, shuffle your deck.\n"
+                text "Search your deck for up to 4 Pokémon and discard them. Then, shuffle your deck."
                 energyCost C
                 attackRequirement{
                   assert my.deck : "There is no cards in your deck"
@@ -2136,7 +2136,7 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
             move "Taunt" , {
-                text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon.\n"
+                text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
                 energyCost D
                 attackRequirement{
                   assert opp.bench
@@ -2158,7 +2158,7 @@ public enum TeamUp implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Collect" , {
-                text "Draw a card.\n"
+                text "Draw a card."
                 energyCost C
                 onAttack{
                   draw 1
@@ -2177,7 +2177,7 @@ public enum TeamUp implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Trash Crash" , {
-                text "Discard an Item card from your hand. If you do, this attack does 60 damage to 1 of your opponent's Pokémon. This attack's damage isn't affected by Weakness or Resistance.\n"
+                text "Discard an Item card from your hand. If you do, this attack does 60 damage to 1 of your opponent's Pokémon. This attack's damage isn't affected by Weakness or Resistance."
                 energyCost D
                 attackRequirement{
                   assert my.hand.filterByType(ITEM) : "There is no item in your hand"
@@ -2201,7 +2201,7 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
             move "Tighten Up" , {
-                text "60 damage. Your opponent discards 2 cards from their hand.\n"
+                text "60 damage. Your opponent discards 2 cards from their hand."
                 energyCost D,C,C
                 onAttack{
                   damage 60
@@ -2226,7 +2226,7 @@ public enum TeamUp implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Derail" , {
-                text "30 damage. Discard a Special Energy from your opponent's Active Pokémon.\n"
+                text "30 damage. Discard a Special Energy from your opponent's Active Pokémon."
                 energyCost D
                 onAttack{
                   damage 30
@@ -2247,7 +2247,7 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
             move "Rogue Ring" , {
-                text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\n"
+                text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
                 energyCost D
                 attackRequirement{
                   assert my.deck : "There is no card in your deck"
@@ -2257,7 +2257,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
             move "Dark Strike" , {
-                text "160 damage. This Pokémon can't use Dark Strike during your next turn.\n"
+                text "160 damage. This Pokémon can't use Dark Strike during your next turn."
                 energyCost D,D,D
                 onAttack{
                   damage 160
@@ -2298,7 +2298,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
             move "Crushing Punch" , {
-                text "130 damage. Discard a Special Energy from your opponent's Active Pokémon.\n"
+                text "130 damage. Discard a Special Energy from your opponent's Active Pokémon."
                 energyCost C,C,C
                 onAttack{
                   damage 130
@@ -2322,7 +2322,7 @@ public enum TeamUp implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Calm Strike" , {
-                text "20+ damage. If you have used your GX attack, this attack does 70 more damage.\n"
+                text "20+ damage. If you have used your GX attack, this attack does 70 more damage."
                 energyCost M,C
                 onAttack{
                   damage 20
@@ -2430,7 +2430,7 @@ public enum TeamUp implements CardInfo {
             weakness FIRE
             resistance PSYCHIC, MINUS20
             move "Guard Press" , {
-                text "20 damage. During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance).\n"
+                text "20 damage. During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
                 energyCost M
                 onAttack{
                   damage 20
@@ -2452,7 +2452,7 @@ public enum TeamUp implements CardInfo {
             weakness FIRE
             resistance PSYCHIC, MINUS20
             move "Rigidify" , {
-                text "During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance).\n"
+                text "During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
                 energyCost M
                 onAttack{
                   reduceDamageNextTurn(hp(30),thisMove)
@@ -2471,7 +2471,7 @@ public enum TeamUp implements CardInfo {
             weakness FIRE
             resistance PSYCHIC, MINUS20
             move "Single Lunge" , {
-                text "30+ damage. If this Pokémon has no damage counters on it, this attack does 90 more damage.\n"
+                text "30+ damage. If this Pokémon has no damage counters on it, this attack does 90 more damage."
                 energyCost M
                 onAttack{
                   damage 30
@@ -2520,7 +2520,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
             move "Dueling Saber" , {
-                text "50+ damage. If there is any Stadium card in play, this attack does 60 more damage.\n"
+                text "50+ damage. If there is any Stadium card in play, this attack does 60 more damage."
                 energyCost M,M
                 onAttack{
                   damage 50
@@ -2691,7 +2691,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
             move "Aero Unit GX" , {
-                text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), prevent all effects of attacks, including damage, done to it during your opponent's next turn. (You can't use more than 1 GX attack in a game.)\nTAG TEAM rule: When your TAG TEAM is Knocked Out, your opponent takes 3 Prize cards."
+                text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), prevent all effects of attacks, including damage, done to it during your opponent's next turn. (You can't use more than 1 GX attack in a game.)"
                 energyCost P
                 attackRequirement{
                   gxCheck()
@@ -2715,7 +2715,7 @@ public enum TeamUp implements CardInfo {
         return 	evolution (this, from:"Exeggcute", hp:HP160, type:DRAGON, retreatCost:4) {
             weakness FAIRY
             move "Paradise Draw" , {
-                text "You may discard any number of cards from your hand. Then, draw cards until you have 6 cards in your hand.\n"
+                text "You may discard any number of cards from your hand. Then, draw cards until you have 6 cards in your hand."
                 onAttack{
                   if(my.hand){
                     my.hand.select(max:my.hand.size(),"Choose the cards to discard").discard()
@@ -2742,7 +2742,7 @@ public enum TeamUp implements CardInfo {
                 text "60 damage. Flip 2 coins. If either of them is tails, this attack does nothing."
                 energyCost L
                 onAttack{
-                  flip 2,{},{},[2:{damage 60},1:bc "$thisMove failed",0:bc "$thisMove failed"]
+                  flip 2,{},{},[2:{damage 60},1:{bc "$thisMove failed"},0:{bc "$thisMove failed"}]
                 }
             }
         };
@@ -2818,12 +2818,27 @@ public enum TeamUp implements CardInfo {
         return basic (this, hp:HP270, type:COLORLESS, retreatCost:4) {
             weakness FIGHTING
             move "Dump Truck Press" , {
-                text "120+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage.\n"
+                text "120+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage."
                 energyCost C,C,C,C
+                onAttack{
+                  damage 120
+                  if(defending.evolution){
+                    damage 120
+                  }
+                }
             }
             move "Megaton Friends GX" , {
-                text "210 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can't use more than 1 GX attack in a game.)\nTAG TEAM rule: When your TAG TEAM is Knocked Out, your opponent takes 3 Prize cards."
+                text "210 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can't use more than 1 GX attack in a game.)"
                 energyCost C,C,C,C
+                attackRequirement{
+                  gxCheck
+                }
+                onAttack{
+                  damage 210
+                  if(self.cards.energySufficient(thisMove.energyCost() + C)){
+                    draw 10-my.hand.size()
+                  }
+                }
             }
         };
         case PIDGEY_120:
@@ -2831,12 +2846,18 @@ public enum TeamUp implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Collect" , {
-                text "Draw a card.\n"
+                text "Draw a card."
                 energyCost C
+                onAttack{
+                  draw 1
+                }
             }
             move "Gust" , {
                 text "20 damage"
                 energyCost C,C
+                onAttack{
+                  damage 20
+                }
             }
         };
         case PIDGEY_121:
@@ -2846,6 +2867,10 @@ public enum TeamUp implements CardInfo {
             move "Quick Attack" , {
                 text "10+ damage. Flip a coin. If heads, this attack does 10 more damage."
                 energyCost C
+                onAttack{
+                  damage 10
+                  flip {damage 10}
+                }
             }
         };
         case PIDGEOTTO_122:
@@ -2854,10 +2879,21 @@ public enum TeamUp implements CardInfo {
             resistance FIGHTING, MINUS20
             bwAbility "Air Mail" , {
                 text "Once during your turn (before your attack), you may look at the top 2 cards of your deck and put 1 of them into your hand. Put the other card on the bottom of your deck."
+                actionA{
+                  checkLastTurn()
+                  assert my.deck : "There is no more cards in your deck"
+                  powerUsed()
+                  def sel = my.deck.subList(0,2).select("Choose 1 card to put into your hand")
+                  my.deck.subList(0,2).getExcludedList(sel).moveTo(my.deck)
+                  sel.moveTo(my.hand)
+                }
             }
             move "Gust" , {
                 text "30 damage"
                 energyCost C,C
+                onAttack{
+                  damage 30
+                }
             }
         };
         case PIDGEOT_123:
@@ -2865,12 +2901,23 @@ public enum TeamUp implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Whirlwind" , {
-                text "60 damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon.\n"
+                text "60 damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
                 energyCost C,C
+                onAttack{
+                  damage 60
+                  afterDamage{
+                    whirlwind()
+                  }
+                }
             }
             move "Spin Storm" , {
                 text "Put your opponent's Active Pokémon and all cards attached to it into your opponent's hand."
                 energyCost C,C,C
+                onAttack{
+                  def pcs = opp.all.select("Choose the Pokémon to put back in their hand.")
+      					  pcs.cards.moveTo(opp.hand)
+      					  removePCS(pcs)
+                }
             }
         };
         case MEOWTH_124:
@@ -2879,22 +2926,45 @@ public enum TeamUp implements CardInfo {
             move "Scratch" , {
                 text "10 damage"
                 energyCost C
+                onAttack{
+                  damage 10
+                }
             }
             move "Bite" , {
                 text "20 damage"
                 energyCost C,C
+                onAttack{
+                  damage 20
+                }
             }
         };
         case PERSIAN_125:
         return 	evolution (this, from:"Meowth", hp:HP100, type:COLORLESS, retreatCost:1) {
             weakness FIGHTING
-            move "Make &#8216;Em Pay" , {
-                text "20 damage. If your opponent has 4 or more cards in their hand, they reveal their hand. Discard cards you find there until your opponent has exactly 4 cards in their hand.\n"
+            move "Make 'Em Pay" , {
+                text "20 damage. If your opponent has 4 or more cards in their hand, they reveal their hand. Discard cards you find there until your opponent has exactly 4 cards in their hand."
                 energyCost C
+                onAttack{
+                  damage 20
+                  afterDamage{
+                    if(opp.hand.size() >= 4){
+                      if(opp.hand.size() == 4){
+                        opp.hand.showToMe("Your opponent's hand")
+                      }
+                      else{
+                        opp.hand.select(count:opp.hand.size() - 4,"Choose the cards to discard").discard()
+                      }
+                    }
+                  }
+                }
             }
             move "Sharp Claws" , {
                 text "30+ damage. Flip a coin. If heads, this attack does 60 more damage."
                 energyCost C,C
+                onAttack{
+                  damage 30
+                  flip {damage 60}
+                }
             }
         };
         case FARFETCHD_126:
@@ -2902,24 +2972,43 @@ public enum TeamUp implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Collect" , {
-                text "Draw 2 cards.\n"
+                text "Draw 2 cards."
                 energyCost C
+                onAttack{
+                  draw 2
+                }
             }
             move "Tool Buster" , {
                 text "20+ damage. Before doing damage, discard all Pokémon Tool cards from your opponent's Active Pokémon. If you discarded a Pokémon Tool card in this way, this attack does 70 more damage."
                 energyCost C
+                onAttack{
+                  damage 20
+                  if(defending.cards.filterByType(POKEMON_TOOL)){
+                    defending.cards.filterByType(POKEMON_TOOL).discard()
+                    damage 70
+                  }
+                }
             }
         };
         case KANGASKHAN_127:
         return basic (this, hp:HP130, type:COLORLESS, retreatCost:2) {
             weakness FIGHTING
             move "Fast Evolution" , {
-                text "Search your deck for up to 2 Evolution cards, reveal them, and put them into your hand. Then, shuffle your deck.\n"
+                text "Search your deck for up to 2 Evolution cards, reveal them, and put them into your hand. Then, shuffle your deck."
                 energyCost C
+                attackRequirement{
+                  assert my.deck : "There is no more card in your deck"
+                }
+                onAttack{
+                  my.deck.search(max:2,"Choose up to 2 Evolution cards",cardTypeFilter(EVOLUTION)).showToOpponent("Chosen Evolution cards").moveTo(my.hand)
+                }
             }
             move "Mega Punch" , {
                 text "80 damage"
                 energyCost C,C,C
+                onAttack{
+                  damage 80
+                }
             }
         };
         case TAUROS_128:
@@ -2928,6 +3017,14 @@ public enum TeamUp implements CardInfo {
             move "Raging Herd" , {
                 text "10+ damage. This attack does 10 more damage for each damage counter on all of your Tauros and Tauros-GX."
                 energyCost C,C
+                onAttack{
+                  damage 10
+                  my.all.each{
+                    if(it.name == "Tauros" || it.name == "Tauros-GX"){
+                      damage 10*it.numberOfDamageCounters
+                    }
+                  }
+                }
             }
         };
         case AERODACTYL_129:
@@ -2935,12 +3032,21 @@ public enum TeamUp implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Supersonic" , {
-                text "Your opponent's Active Pokémon is now Confused.\n"
+                text "Your opponent's Active Pokémon is now Confused."
                 energyCost C
+                onAttack{
+                  apply CONFUSED
+                }
             }
             move "Fossil Fangs" , {
                 text "90+ damage. If you don't have any Pokémon-GX or Pokémon-EX on your Bench, this attack does 90 more damage."
                 energyCost C,C,C
+                onAttack{
+                  damage 90
+                  if(!my.bench.findAll{it.pokemonEX || it.pokemonGX}){
+                    damage 90
+                  }
+                }
             }
         };
         case LUGIA_130:
@@ -2948,24 +3054,48 @@ public enum TeamUp implements CardInfo {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
             move "Power Charger" , {
-                text "30 damage. Search your deck for a basic Energy card and attach it to this Pokémon. Then, shuffle your deck.\n"
+                text "30 damage. Search your deck for a basic Energy card and attach it to this Pokémon. Then, shuffle your deck."
                 energyCost C
+                onAttack{
+                  damage 30
+                  attachEnergyFrom(basic:true,my.deck,self)
+                  shuffleDeck()
+                }
             }
             move "Blasting Wind" , {
                 text "110 damage"
                 energyCost C,C,C,C
+                onAttack{
+                  damage 110
+                }
             }
         };
         case ZANGOOSE_131:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:1) {
             weakness FIGHTING
             move "Head Hunt" , {
-                text "Look at the top 6 cards of your deck, reveal any number of Pokémon you find there, and put them into your hand. Discard the other cards.\n"
+                text "Look at the top 6 cards of your deck, reveal any number of Pokémon you find there, and put them into your hand. Discard the other cards."
                 energyCost C
+                attackRequirement{
+                  assert my.deck : "There is no more card in your deck"
+                }
+                onAttack{
+                  def topCards = my.deck.subList(0,6)
+                  def tar = topCards.filterByType(POKEMON)
+                  topCards.showToMe("Top 6 cards of your deck")
+                  def sel = tar.select(max:tar.size(),"Choose the Pokémon to put into your hand").
+                  sel.showToOpponent("Chosen cards")
+                  topCards.getExcludedList(sel).discard()
+                  sel.moveTo(my.hand)
+                }
+
             }
             move "Slash" , {
                 text "40 damage"
                 energyCost C,C
+                onAttack{
+                  damage 40
+                }
             }
         };
         case BILLS_ANALYSIS_132:
@@ -3076,7 +3206,7 @@ public enum TeamUp implements CardInfo {
         return basic (this, hp:HP270, type:GRASS, retreatCost:4) {
             weakness FIRE
             move "Pollen Hazard" , {
-                text "50 damage. Your opponent's Active Pokémon is now Burned, Confused, and Poisoned.\n"
+                text "50 damage. Your opponent's Active Pokémon is now Burned, Confused, and Poisoned."
                 energyCost G,C,C
             }
             move "Solar Beam" , {
@@ -3130,7 +3260,7 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Power Charge" , {
-                text "30 damage. Put all Electropower cards from your discard pile into your hand.\n"
+                text "30 damage. Put all Electropower cards from your discard pile into your hand."
                 energyCost L
             }
             move "Impact Bolt" , {
@@ -3147,7 +3277,7 @@ public enum TeamUp implements CardInfo {
             weakness DARKNESS
             resistance FIGHTING, MINUS20
             move "Poltergeist" , {
-                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there.\n"
+                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there."
                 energyCost P,P
             }
             move "Horror House GX" , {
@@ -3160,7 +3290,7 @@ public enum TeamUp implements CardInfo {
             weakness DARKNESS
             resistance FIGHTING, MINUS20
             move "Poltergeist" , {
-                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there.\n"
+                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there."
                 energyCost P,P
             }
             move "Horror House GX" , {
@@ -3173,11 +3303,11 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
             move "Rogue Ring" , {
-                text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\n"
+                text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
                 energyCost D
             }
             move "Dark Strike" , {
-                text "160 damage. This Pokémon can't use Dark Strike during your next turn.\n"
+                text "160 damage. This Pokémon can't use Dark Strike during your next turn."
                 energyCost D,D,D
             }
             move "Devilish Hands GX" , {
@@ -3193,7 +3323,7 @@ public enum TeamUp implements CardInfo {
                 text "Once during your turn (before your attack), you may put 3 damage counters on this Pokémon. If you do, search your deck for up to 3 [D] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
             }
             move "Crushing Punch" , {
-                text "130 damage. Discard a Special Energy from your opponent's Active Pokémon.\n"
+                text "130 damage. Discard a Special Energy from your opponent's Active Pokémon."
                 energyCost C,C,C
             }
             move "Darkest Tornado GX" , {
@@ -3209,7 +3339,7 @@ public enum TeamUp implements CardInfo {
                 text "Each of your Pokémon that has any [M] Energy attached to it can't be affected by any Special Conditions. Remove any Special Conditions affecting those Pokémon."
             }
             move "Dueling Saber" , {
-                text "50+ damage. If there is any Stadium card in play, this attack does 60 more damage.\n"
+                text "50+ damage. If there is any Stadium card in play, this attack does 60 more damage."
                 energyCost M,M
             }
             move "Iron Rule GX" , {
@@ -3221,11 +3351,11 @@ public enum TeamUp implements CardInfo {
         return basic (this, hp:HP250, type:DRAGON, retreatCost:1) {
             weakness FAIRY
             move "Buster Purge" , {
-                text "240 damage. Discard 3 Energy from this Pokémon.\n"
+                text "240 damage. Discard 3 Energy from this Pokémon."
                 energyCost W,P,P,C
             }
             move "Aero Unit GX" , {
-                text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), prevent all effects of attacks, including damage, done to it during your opponent's next turn. (You can't use more than 1 GX attack in a game.)\nTAG TEAM rule: When your TAG TEAM is Knocked Out, your opponent takes 3 Prize cards."
+                text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), prevent all effects of attacks, including damage, done to it during your opponent's next turn. (You can't use more than 1 GX attack in a game.)"
                 energyCost P
             }
         };
@@ -3233,11 +3363,11 @@ public enum TeamUp implements CardInfo {
         return basic (this, hp:HP250, type:DRAGON, retreatCost:1) {
             weakness FAIRY
             move "Buster Purge" , {
-                text "240 damage. Discard 3 Energy from this Pokémon.\n"
+                text "240 damage. Discard 3 Energy from this Pokémon."
                 energyCost W,P,P,C
             }
             move "Aero Unit GX" , {
-                text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), prevent all effects of attacks, including damage, done to it during your opponent's next turn. (You can't use more than 1 GX attack in a game.)\nTAG TEAM rule: When your TAG TEAM is Knocked Out, your opponent takes 3 Prize cards."
+                text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), prevent all effects of attacks, including damage, done to it during your opponent's next turn. (You can't use more than 1 GX attack in a game.)"
                 energyCost P
             }
         };
@@ -3245,11 +3375,11 @@ public enum TeamUp implements CardInfo {
         return basic (this, hp:HP270, type:COLORLESS, retreatCost:4) {
             weakness FIGHTING
             move "Dump Truck Press" , {
-                text "120+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage.\n"
+                text "120+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage."
                 energyCost C,C,C,C
             }
             move "Megaton Friends GX" , {
-                text "210 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can't use more than 1 GX attack in a game.)\nTAG TEAM rule: When your TAG TEAM is Knocked Out, your opponent takes 3 Prize cards."
+                text "210 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can't use more than 1 GX attack in a game.)"
                 energyCost C,C,C,C
             }
         };
@@ -3297,7 +3427,7 @@ public enum TeamUp implements CardInfo {
         return basic (this, hp:HP270, type:GRASS, retreatCost:4) {
             weakness FIRE
             move "Pollen Hazard" , {
-                text "50 damage. Your opponent's Active Pokémon is now Burned, Confused, and Poisoned.\n"
+                text "50 damage. Your opponent's Active Pokémon is now Burned, Confused, and Poisoned."
                 energyCost G,C,C
             }
             move "Solar Beam" , {
@@ -3339,7 +3469,7 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance METAL, MINUS20
             move "Power Charge" , {
-                text "30 damage. Put all Electropower cards from your discard pile into your hand.\n"
+                text "30 damage. Put all Electropower cards from your discard pile into your hand."
                 energyCost L
             }
             move "Impact Bolt" , {
@@ -3356,7 +3486,7 @@ public enum TeamUp implements CardInfo {
             weakness DARKNESS
             resistance FIGHTING, MINUS20
             move "Poltergeist" , {
-                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there.\n"
+                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there."
                 energyCost P,P
             }
             move "Horror House GX" , {
@@ -3369,11 +3499,11 @@ public enum TeamUp implements CardInfo {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
             move "Rogue Ring" , {
-                text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\n"
+                text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
                 energyCost D
             }
             move "Dark Strike" , {
-                text "160 damage. This Pokémon can't use Dark Strike during your next turn.\n"
+                text "160 damage. This Pokémon can't use Dark Strike during your next turn."
                 energyCost D,D,D
             }
             move "Devilish Hands GX" , {
@@ -3389,7 +3519,7 @@ public enum TeamUp implements CardInfo {
                 text "Once during your turn (before your attack), you may put 3 damage counters on this Pokémon. If you do, search your deck for up to 3 [D] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
             }
             move "Crushing Punch" , {
-                text "130 damage. Discard a Special Energy from your opponent's Active Pokémon.\n"
+                text "130 damage. Discard a Special Energy from your opponent's Active Pokémon."
                 energyCost C,C,C
             }
             move "Darkest Tornado GX" , {
@@ -3405,7 +3535,7 @@ public enum TeamUp implements CardInfo {
                 text "Each of your Pokémon that has any [M] Energy attached to it can't be affected by any Special Conditions. Remove any Special Conditions affecting those Pokémon."
             }
             move "Dueling Saber" , {
-                text "50+ damage. If there is any Stadium card in play, this attack does 60 more damage.\n"
+                text "50+ damage. If there is any Stadium card in play, this attack does 60 more damage."
                 energyCost M,M
             }
             move "Iron Rule GX" , {
@@ -3417,11 +3547,11 @@ public enum TeamUp implements CardInfo {
         return basic (this, hp:HP250, type:DRAGON, retreatCost:1) {
             weakness FAIRY
             move "Buster Purge" , {
-                text "240 damage. Discard 3 Energy from this Pokémon.\n"
+                text "240 damage. Discard 3 Energy from this Pokémon."
                 energyCost W,P,P,C
             }
             move "Aero Unit GX" , {
-                text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), prevent all effects of attacks, including damage, done to it during your opponent's next turn. (You can't use more than 1 GX attack in a game.)\nTAG TEAM rule: When your TAG TEAM is Knocked Out, your opponent takes 3 Prize cards."
+                text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), prevent all effects of attacks, including damage, done to it during your opponent's next turn. (You can't use more than 1 GX attack in a game.)"
                 energyCost P
             }
         };
@@ -3429,11 +3559,11 @@ public enum TeamUp implements CardInfo {
         return basic (this, hp:HP270, type:COLORLESS, retreatCost:4) {
             weakness FIGHTING
             move "Dump Truck Press" , {
-                text "120+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage.\n"
+                text "120+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage."
                 energyCost C,C,C,C
             }
             move "Megaton Friends GX" , {
-                text "210 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can't use more than 1 GX attack in a game.)\nTAG TEAM rule: When your TAG TEAM is Knocked Out, your opponent takes 3 Prize cards."
+                text "210 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can't use more than 1 GX attack in a game.)"
                 energyCost C,C,C,C
             }
         };
