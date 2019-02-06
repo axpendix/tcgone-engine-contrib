@@ -2442,7 +2442,7 @@ public enum TeamUp implements CardInfo {
                 energyCost C,C,C
                 onAttack{
                   damage 80
-                  def addDmg = 20*Math.min(self.cards.energyCount(M),5
+                  def addDmg = 20*Math.min(self.cards.energyCount(M),5)
                   damage addDmg
                 }
             }
@@ -2607,8 +2607,18 @@ public enum TeamUp implements CardInfo {
             resistance PSYCHIC, MINUS20
             bwAbility "Key of Secrets" , {
                 text "Each of your [M] Pokémon's Resistance is now –40."
-                //TODO: change resistance
-            }
+                getter(GET_RESISTANCES) {holder->
+                  if(holder.effect.target.types.contains(M) && holder.effect.target.owner == self.owner){
+                    def newR=[]
+                    for (Resistance r in holder.object){
+                      def r2=r.copy()
+                      r2.resistanceType = Resistance.ResistanceType.MINUS20
+                      newR.add(r2)
+                    }
+                  }
+                  holder.object=newR
+                }
+              }
             move "Ram" , {
                 text "30 damage"
                 energyCost M,C
@@ -2622,52 +2632,107 @@ public enum TeamUp implements CardInfo {
             weakness METAL
             bwAbility "Luminous Barrier" , {
                 text "Prevent all effects of attacks, including damage, done to this Pokémon by your opponent's Pokémon-GX or Pokémon-EX."
+                safeguardForExAndGx("Luminous Barrier", self, delegate)
             }
             move "Aurora Beam" , {
                 text "80 damage"
                 energyCost Y,C,C
+                onAttack{
+                  damage 80
+                }
             }
         };
         case MIMIKYU_111:
         return basic (this, hp:HP070, type:FAIRY, retreatCost:1) {
-            move "Filch" , {
-                text "Draw 2 cards.\n"
-                energyCost C
-            }
-            move "Copycat" , {
-                text "If your opponent's Pokémon used an attack that isn't a GX attack during their last turn, use it as this attack."
-                energyCost Y,C
-            }
+          globalAbility {Card thisCard->
+  					delayed (priority: LAST) {
+  						after PROCESS_ATTACK_EFFECTS, {
+  							if(ef.attacker.owner!=thisCard.player && !(ef as Attack).move.name.endsWith("-GX")){
+  								bg.em().storeObject("MimiCopycatMove_${thisCard.hashCode()}", ef.move)
+  								bg.em().storeObject("MimiCopycatTC_${thisCard.hashCode()}", bg.turnCount)
+  							}
+  						}
+  					}
+  				}
+  				move "Filch", {
+  					text "Draw 2 cards."
+  					energyCost C
+  					onAttack {
+  						draw 2
+  					}
+  				}
+  				move "Copycat", {
+  					text "If your opponent's Pokémon used an attack that isn't a GX attack during their last turn, use it as this attack."
+  					energyCost Y, C
+  					attackRequirement {
+  						def tc = bg.em().retrieveObject("MimiCopycatTC_${self.topPokemonCard.hashCode()}") ?: -1
+  						assert tc+1 == bg.turnCount : "Opponent did not used a valid move last turn"
+  					}
+  					onAttack {
+  						def lastMove = bg.em().retrieveObject("MimiCopycatMove_${self.topPokemonCard.hashCode()}") as Move
+  						def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+  						bc "Copycat copies ${lastMove.name}"
+  						attack (lastMove)
+  						bef.unregisterItself(bg().em())
+  					}
+  				}
         };
         case LATIAS_LATIOS_GX_112:
         return basic (this, hp:HP250, type:DRAGON, retreatCost:1) {
             weakness FAIRY
             move "Buster Purge" , {
-                text "240 Discard 3 Energy from this Pokémon.\n"
+                text "240 Discard 3 Energy from this Pokémon."
                 energyCost W,P,P,C
+                onAttack{
+                  damage 240
+                  afterDamage{
+                    discardSelfEnergy C,C,C
+                  }
+                }
             }
             move "Aero Unit GX" , {
                 text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), prevent all effects of attacks, including damage, done to it during your opponent's next turn. (You can't use more than 1 GX attack in a game.)\nTAG TEAM rule: When your TAG TEAM is Knocked Out, your opponent takes 3 Prize cards."
                 energyCost P
+                attackRequirement{
+                  gxCheck()
+                }
+                onAttack{
+                  gxPerform()
+                  attachEnergyFrom(my.discard,my.all)
+                  attachEnergyFrom(my.discard,my.all)
+                  attachEnergyFrom(my.discard,my.all)
+                  attachEnergyFrom(my.discard,my.all)
+                  attachEnergyFrom(my.discard,my.all)
+                  if(self.cards.energySufficient(thisMove.energyCost() + C)){
+                    preventAllEffectsNextTurn()
+                  }
+                }
             }
         };
         case ALOLAN_EXEGGUTOR_113:
-        return 	evolution (this, from:"Exeggcute", hp:HP160, type:DRAGON, retreatCost:3) {
-            weakness FAIRY
-            move "Tropical Shake" , {
-                text "20+ damage. This attack does 20 more damage for each type of basic Energy card in your discard pile. You can't add more than 100 damage in this way."
-                energyCost G
-            }
-        };
+        return copy (ForbiddenLight.ALOLAN_EXEGGUTOR_2, this);
         case ALOLAN_EXEGGUTOR_114:
         return 	evolution (this, from:"Exeggcute", hp:HP160, type:DRAGON, retreatCost:4) {
             weakness FAIRY
             move "Paradise Draw" , {
                 text "You may discard any number of cards from your hand. Then, draw cards until you have 6 cards in your hand.\n"
+                onAttack{
+                  if(my.hand){
+                    my.hand.select(max:my.hand.size(),"Choose the cards to discard").discard()
+                    draw 6-my.hand.size()
+                  }
+                }
             }
             move "Egg Splat" , {
                 text "60× damage. Discard any number of Exeggcute from your hand. This attack does 60 damage for each card you discarded in this way."
                 energyCost G,C
+                attackRequirement{
+                  assert my.hand.filterByType(POKEMON).findAll{it.name == "Exeggcute"} : "There is no Exeggcute in your hand"
+                }
+                onAttack{
+                  def tar = my.hand.filterByType(POKEMON).findAll{it.name == "Exeggcute"}
+                  damage 60*tar.select(max:tar.size(),"Choose the Exeggcute to discard").discard().size()
+                }
             }
         };
         case DRATINI_115:
@@ -2676,6 +2741,9 @@ public enum TeamUp implements CardInfo {
             move "Dragon Rage" , {
                 text "60 damage. Flip 2 coins. If either of them is tails, this attack does nothing."
                 energyCost L
+                onAttack{
+                  flip 2,{},{},[2:{damage 60},1:bc "$thisMove failed",0:bc "$thisMove failed"]
+                }
             }
         };
         case DRATINI_116:
@@ -2683,10 +2751,24 @@ public enum TeamUp implements CardInfo {
             weakness FAIRY
             bwAbility "Defensive Scales" , {
                 text "Prevent all effects of your opponent's attacks, except damage, done to this Pokémon."
+                delayedA {
+      		        before null, null, ATTACK, {
+      		            if(ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+      		                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+      		                if(pcs != null && pcs.owner == self.owner){
+      		                    bc "Defensive Scales prevents all effects done to $self"
+      		                    prevent()
+      		                }
+      		            }
+      		        }
+      					}
             }
             move "Rain Splash" , {
                 text "10 damage"
                 energyCost W
+                onAttack{
+                  damage 10
+                }
             }
         };
         case DRAGONAIR_117:
@@ -2695,6 +2777,21 @@ public enum TeamUp implements CardInfo {
             move "Twister" , {
                 text "30 damage. Flip 2 coins. For each heads, discard an Energy from your opponent's Active Pokémon. If both of them are tails, this attack does nothing."
                 energyCost W,L
+                onAttack{
+                  flip 2,{},{},[2:{damage 30;
+                      afterDamage{
+                        discardDefendingEnergy()
+                        discardDefendingEnergy()
+                      }
+                    },1:{
+                      damage 30;
+                      afterDamage{
+                        discardDefendingEnergy()
+                      }
+                    },0:{
+                      bc "$thisMove failed"
+                      }]
+                }
             }
         };
         case DRAGONITE_118:
@@ -2702,10 +2799,19 @@ public enum TeamUp implements CardInfo {
             weakness FAIRY
             bwAbility "Fast Call" , {
                 text "Once during your turn (before your attack), you may search your deck for a Supporter card, reveal it, and put it into your hand. Then, shuffle your deck."
+                actionA{
+                  checkLastTurn()
+                  assert my.deck : "There is no more card in your deck"
+                  powerUsed()
+                  my.deck.search(count:1,"Choose a Supporter card",cardTypeFilter(SUPPORTER)).showToOpponent("Chosen card").moveTo(my.hand)
+                }
             }
             move "Dragon Claw" , {
                 text "120 damage"
                 energyCost W,L,C
+                onAttack{
+                  damage 120
+                }
             }
         };
         case EEVEE_SNORLAX_GX_119:
