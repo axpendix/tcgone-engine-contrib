@@ -2324,10 +2324,18 @@ public enum TeamUp implements CardInfo {
             move "Calm Strike" , {
                 text "20+ damage. If you have used your GX attack, this attack does 70 more damage.\n"
                 energyCost M,C
+                onAttack{
+                  damage 20
+                  if(bg.em().retrieveObject("gx_"+my.owner)) damage 70
+                }
             }
             move "Steel Wing" , {
                 text "90 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
                 energyCost M,M,C
+                onAttack{
+                  damage 90
+                  reduceDamageNextTurn(hp(30),thisMove)
+                }
             }
         };
         case JIRACHI_98:
@@ -2336,10 +2344,25 @@ public enum TeamUp implements CardInfo {
             resistance PSYCHIC, MINUS20
             bwAbility "Stellar Wish" , {
                 text "Once during your turn (before your attack), if this Pokémon is your Active Pokémon, you may look at the top 5 cards of your deck, reveal a Trainer card you find there, and put it into your hand. Then, shuffle the other cards back into your deck, and this Pokémon is now Asleep."
+                actionA{
+                  checkLastTurn()
+                  assert self.active : "$self is not your active Pokémon"
+                  assert my.deck : "There is no more card in your deck"
+                  powerUsed()
+                  my.deck.subList(0,5).showToMe("The top 5 cards of your deck")
+                  if(my.deck.subList(0,5).filterByType(TRAINER_CARD)){
+                    my.deck.subList(0,5).filterByType(TRAINER_CARD).select("Choose the card to put in your hand").showToOpponent("Selected trainer card").moveTo(my.hand)
+                  }
+                  shuffleDeck()
+                  apply ASLEEP, self
+                }
             }
             move "Slap" , {
-                text "30 damage. damage"
+                text "30 damage."
                 energyCost M,C
+                onAttack{
+                  damage 30
+                }
             }
         };
         case BRONZOR_99:
@@ -2348,10 +2371,18 @@ public enum TeamUp implements CardInfo {
             resistance PSYCHIC, MINUS20
             bwAbility "Evolutionary Advantage" , {
                 text "If you go second, this Pokémon can evolve during your first turn."
+                delayedA {
+      					  before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+      					    if(bg.turnCount == 2) prevent()
+      					  }
+      					}
             }
             move "Tackle" , {
-                text "20 damage. damage"
+                text "20 damage."
                 energyCost M,C
+                onAttack{
+                  damage 20
+                }
             }
         };
         case BRONZONG_100:
@@ -2360,10 +2391,26 @@ public enum TeamUp implements CardInfo {
             resistance PSYCHIC, MINUS20
             bwAbility "Heatproof" , {
                 text "Prevent all damage done to this Pokémon by attacks from your opponent's [R] Pokémon."
+                delayedA{
+                  before APPLY_ATTACK_DAMAGES, {
+    					      bg.dm().each {
+    					        if(it.to == self && it.from.types.contains(R) && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
+    					          bc "Heatproof prevents damage from [R] Pokémon"
+    					          it.dmg = hp(0)
+    					        }
+    					      }
+    					    }
+                }
             }
             move "Shady Stamp" , {
                 text "70 damage. Your opponent's Active Pokémon is now Confused."
                 energyCost M,C,C
+                onAttack{
+                  damage 70
+                  afterDamage{
+                    apply CONFUSED
+                  }
+                }
             }
         };
         case FERROSEED_101:
@@ -2373,6 +2420,9 @@ public enum TeamUp implements CardInfo {
             move "Continuous Tumble" , {
                 text "20× damage. Flip a coin until you get tails. This attack does 20 damage for each heads."
                 energyCost M
+                onAttack{
+                  flipUntilTails {damage 20}
+                }
             }
         };
         case FERROTHORN_102:
@@ -2382,10 +2432,19 @@ public enum TeamUp implements CardInfo {
             move "Guard Press" , {
                 text "20 damage. During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance).\n"
                 energyCost M
+                onAttack{
+                  damage 20
+                  reduceDamageNextTurn(hp(20),thisMove)
+                }
             }
             move "Thorn Pod Throw" , {
-                text "80 damage. This attack does 20 damage times the amount of"
+                text "80 damage. This attack does 20 damage times the amount of  [M] Energy attached to this Pokémon to 1 of your opponent’s Benched Pokémon. You can’t do more than 100 damage to a Benched Pokémon in this way. "
                 energyCost C,C,C
+                onAttack{
+                  damage 80
+                  def addDmg = 20*Math.min(self.cards.energyCount(M),5
+                  damage addDmg
+                }
             }
         };
         case PAWNIARD_103:
@@ -2395,10 +2454,16 @@ public enum TeamUp implements CardInfo {
             move "Rigidify" , {
                 text "During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance).\n"
                 energyCost M
+                onAttack{
+                  reduceDamageNextTurn(hp(30),thisMove)
+                }
             }
             move "Scratch" , {
                 text "20 damage"
                 energyCost C,C
+                onAttack{
+                  damage 20
+                }
             }
         };
         case BISHARP_104:
@@ -2408,10 +2473,17 @@ public enum TeamUp implements CardInfo {
             move "Single Lunge" , {
                 text "30+ damage. If this Pokémon has no damage counters on it, this attack does 90 more damage.\n"
                 energyCost M
+                onAttack{
+                  damage 30
+                  if(self.numberOfDamageCounters == 0) damage 90
+                }
             }
             move "Power Edge" , {
                 text "90 damage"
                 energyCost M,C,C
+                onAttack{
+                  damage 90
+                }
             }
         };
         case COBALION_GX_105:
@@ -2420,14 +2492,59 @@ public enum TeamUp implements CardInfo {
             resistance PSYCHIC, MINUS20
             bwAbility "Metal Symbol" , {
                 text "Each of your Pokémon that has any [M] Energy attached to it can't be affected by any Special Conditions. Remove any Special Conditions affecting those Pokémon."
+                def verdantWind={
+                  for(pcs in all){
+                    if(pcs.specialConditions && pcs.owner==self.owner && pcs.cards.energyCount(M)){
+                      bc "Metal Symbol clears special conditions"
+                      clearSpecialCondition(pcs, SRC_ABILITY)
+                    }
+                  }
+                }
+                delayedA {
+                  after ATTACH_ENERGY, {
+                    verdantWind()
+                  }
+                  after ENERGY_SWITCH, {
+                    verdantWind()
+                  }
+                  before APPLY_SPECIAL_CONDITION, {
+                    def pcs=e.getTarget(bg)
+                    if(pcs.owner==self.owner && pcs.cards.energyCount(M)){
+                      bc "Metal Symbol prevents special conditions"
+                      prevent()
+                    }
+                  }
+                }
+                onActivate {
+                  verdantWind()
+                }
             }
             move "Dueling Saber" , {
                 text "50+ damage. If there is any Stadium card in play, this attack does 60 more damage.\n"
                 energyCost M,M
+                onAttack{
+                  damage 50
+                  if(bg.stadiumInfoStruct){
+                    damage 60
+                  }
+                }
             }
             move "Iron Rule GX" , {
                 text "During your opponent's next turn, none of your opponent's Pokémon can attack (including newly played Pokémon). (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
                 energyCost C
+                attackRequirement{
+                  gxCheck()
+                }
+                onAttack{
+                  gxPerform()
+                  delayed{
+                    before ATTACK_MAIN, {
+                      bc "Iron Rule GX prevents you from attacking"
+                      prevent()
+                    }
+                    unregisterAfter 2
+                  }
+                }
             }
         };
         case HONEDGE_106:
@@ -2437,6 +2554,9 @@ public enum TeamUp implements CardInfo {
             move "Cut Down" , {
                 text "Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
                 energyCost M
+                onAttack{
+                  flip{discardDefendingEnergy()}
+                }
             }
         };
         case DOUBLADE_107:
@@ -2446,6 +2566,14 @@ public enum TeamUp implements CardInfo {
             move "Tool Drop" , {
                 text "30× damage. This attack does 30 damage for each Pokémon Tool card attached to all Pokémon"
                 energyCost C,C
+                onAttack{
+                  my.all.each{
+                    if(it.cards.filterByType(POKEMON_TOOL)) damage 30
+                  }
+                  opp.all.each{
+                    if(it.cards.filterByType(POKEMON_TOOL)) damage 30
+                  }
+                }
             }
         };
         case AEGISLASH_108:
@@ -2454,10 +2582,23 @@ public enum TeamUp implements CardInfo {
             resistance PSYCHIC, MINUS20
             bwAbility "Royal Guard" , {
                 text "This Pokémon takes 40 less damage from attacks (after applying Weakness and Resistance)."
+                delayedA{
+                  before APPLY_ATTACK_DAMAGES, {
+                    bg.dm().each{
+                    if(it.to == self && it.notNoEffect && it.dmg.value) {
+                      bc "Royal Guard -40"
+                      it.dmg -= hp(40)
+                    }
+                  }
+                }
+              }
             }
             move "Shield Bash" , {
                 text "100 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
                 energyCost M,C,C
+                onAttack{
+                  shredDamage 100
+                }
             }
         };
         case KLEFKI_109:
@@ -2466,10 +2607,14 @@ public enum TeamUp implements CardInfo {
             resistance PSYCHIC, MINUS20
             bwAbility "Key of Secrets" , {
                 text "Each of your [M] Pokémon's Resistance is now –40."
+                //TODO: change resistance
             }
             move "Ram" , {
                 text "30 damage"
                 energyCost M,C
+                onAttack{
+                  damage 30
+                }
             }
         };
         case ALOLAN_NINETALES_110:
