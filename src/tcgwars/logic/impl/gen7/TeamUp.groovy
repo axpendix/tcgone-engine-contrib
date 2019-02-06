@@ -3154,7 +3154,7 @@ public enum TeamUp implements CardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert my.active.topPokemonCard.cardTypes(STAGE2) : "There is no more card in your deck"
+            assert opp.active.topPokemonCard.cardTypes(STAGE2) : "There is no more card in your deck"
             assert my.deck : "There is no more cards in your deck"
           }
         };
@@ -3213,7 +3213,7 @@ public enum TeamUp implements CardInfo {
                   draw 4
                 }
                 playRequirement{
-                  assert my.active.topPokemonCard.cardTypes(STAGE1) : "There is no more card in your deck"
+                  assert opp.active.topPokemonCard.cardTypes(STAGE1) : "There is no more card in your deck"
                   assert my.deck : "There is no more cards in your deck"
                 }
         };
@@ -3258,7 +3258,7 @@ public enum TeamUp implements CardInfo {
         };
         case INGO_EMMET_143:
         return supporter(this) {
-          text "Look at the top card of your deck, and then choose 1:Discard your hand and draw 5 cards.\n2: Discard your hand and draw 5 cards from the bottom of your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          text "Look at the top card of your deck, and then choose 1:Discard your hand and draw 5 cards.\nDiscard your hand and draw 5 cards from the bottom of your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             my.deck.subList(0,1).showToMe("Top card of your deck")
             if(my.deck.size() <= 5) {
@@ -3281,51 +3281,189 @@ public enum TeamUp implements CardInfo {
         };
         case JASMINE_144:
         return supporter(this) {
-                text "Search your deck for a [M] Pokémon, reveal it, and put it into your hand. If you go second and it's your first turn, search for 5 [M] Pokémon instead of 1. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          text "Search your deck for a [M] Pokémon, reveal it, and put it into your hand. If you go second and it's your first turn, search for 5 [M] Pokémon instead of 1. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          onPlay {
+            if(bg.turnCount == 2){
+              my.deck.search(max:5,"Choose 5 [M] Pokémon",{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(M)})
+            }
+            else{
+              my.deck.search(count:1,"Choose a [M] Pokémon",{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(M)})
+            }
+          }
+          playRequirement{
+            assert my.deck : "There is no more cards in your deck"
+          }
         };
         case JUDGE_WHISTLE_145:
         return itemCard (this) {
-                text "Choose 1:Draw a card.Put a Judge card from your discard pile into your hand.\nYou may play as many Item cards as you like during your turn (before your attack)."
+                text "Choose 1:Draw a card.\nPut a Judge card from your discard pile into your hand.\nYou may play as many Item cards as you like during your turn (before your attack)."
+                onPlay {
+                  def choice = 1
+                  if(!my.deck){
+                    choice = 2
+                  }
+                  else{
+                    if(my.discard.findAll{it.name == "Judge"}){
+                      choice = choose([1,2],["Draw a card","Put a Judge card from your discard pile into your hand."],"What to do?")
+                    }
+                  }
+                  if(choice == 1){
+                    draw 1
+                  }
+                  else{
+                    my.discard.findAll{it.name == "Judge"}.select("Choose the card to put in your hand").moveTo(my.hand)
+                  }
+                }
+                playRequirement{
+                  assert my.deck || my.discard.findAll{it.name == "Judge"}
+                }
         };
         case LAVENDER_TOWN_146:
         return stadium(this) {
-                text "Once during each player's turn, that player may look at their opponent's hand.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
+          text "Once during each player's turn, that player may look at their opponent's hand.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
+          def lastTurn=0
+          def actions=[]
+          onPlay {
+            actions=action("Stadium: Lavender Town") {
+              assert my.deck : "There is no more cards in your deck"
+              assert my.hand : "You don't have cards in your hand"
+              assert lastTurn != bg().turnCount : "Already used"
+              bc "Used Lavender Town effect"
+              lastTurn = bg().turnCount
+              opp.hand.showToMe("Your oppponent's hand")
+            }
+          }
+          onRemoveFromPlay{
+            actions.each { bg().gm().unregisterAction(it) }
+          }
         };
         case METAL_GOGGLES_147:
         return itemCard (this) {
-                text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe [M] Pokémon this card is attached to takes 30 less damage from your opponent's attacks (after applying Weakness and Resistance), and your opponent's attacks and Abilities can't put damage counters on it.\nYou may play as many Item cards as you like during your turn (before your attack)."
+          text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe [M] Pokémon this card is attached to takes 30 less damage from your opponent's attacks (after applying Weakness and Resistance), and your opponent's attacks and Abilities can't put damage counters on it.\nYou may play as many Item cards as you like during your turn (before your attack)."
+          def eff
+          onPlay {reason->
+            eff = delayed{
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each{
+                  if(it.to == self && it.from.owner == self.owner.opposite && self.topPokemonCard.types.contains(M)){
+                    bc "Metal Goggles -30"
+                    it.dmg-=hp(30)
+                  }
+                }
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
         };
         case MORGAN_148:
         return supporter(this) {
-                text "You can play this card only if you discard Dana, Evelyn, and Nita from your hand.\nLook at the top 12 cards of your deck and attach any number of Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          text "You can play this card only if you discard Dana, Evelyn, and Nita from your hand.\nLook at the top 12 cards of your deck and attach any number of Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          onPlay {
+              my.hand.findAll{it.name == "Dana"}.select().discard
+              my.hand.findAll{it.name == "Evelyn"}.select().discard
+              my.hand.findAll{it.name == "Nita"}.select().discard
+
+              def tar = my.deck.subList(0,12)
+              tar.showToMe("The top 12 cards of your deck")
+              tar.cardTypeFilter(ENERGY).each{
+                attachEnergyFrom(may:true,it,my.all)
+              }
+          }
+          playRequirement{
+            assert my.hand.findAll{it.name == "Dana"} : "You don't have Dana in your hand"
+            assert my.hand.findAll{it.name == "Evelyn"} : "You don't have Evelyn in your hand"
+            assert my.hand.findAll{it.name == "Nita"} : "You don't have Nita in your hand"
+            assert my.deck : "There is no more cards in your deck"
+          }
         };
         case NANU_149:
         return supporter(this) {
-                text "Choose a Basic [D] Pokémon in your discard pile. Switch it with 1 of your Pokémon in play. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain of the new Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          text "Choose a Basic [D] Pokémon in your discard pile. Switch it with 1 of your Pokémon in play. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain of the new Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          onPlay {
+            //TODO:is the basic the new top card?
+              def sel = my.discard.filterByType(BASIC).findAll{it.asPokemonCard().types.contains(D)}.select("Choose the pokémon you want to put in play")
+              def pcs = my.all.select("Choose the pokémon you want to replace")
+              pcs.topPokemonCard.discard()
+              sel.moveTo(pcs.card)
+          }
+          playRequirement{
+            assert my.discard.filterByType(BASIC).findAll{it.asPokemonCard().types.contains(D)} : "There is no more cards in your deck"
+          }
         };
         case NITA_150:
         return supporter(this) {
-                text "You can play this card only if your opponent's Active Pokémon is a Basic Pokémon.\nPut an Energy from your opponent's Active Pokémon on top of their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          text "You can play this card only if your opponent's Active Pokémon is a Basic Pokémon.\nPut an Energy from your opponent's Active Pokémon on top of their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          onPlay {
+            opp.active.cards.filterByType(ENERGY).select("Choose the energy to discard").discard()
+          }
+          playRequirement{
+            assert opp.active.topPokemonCard.cardTypes(BASIC) : "There is no more card in your deck"
+            assert opp.active.cards.filterByType(ENERGY) : "There is no energy attached to your opponent's Active Pokémon"
+          }
         };
         case POKéMON_COMMUNICATION_151:
         return itemCard (this) {
-                text "Reveal a Pokémon from your hand and put it into your deck. If you do, search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
+          text "Reveal a Pokémon from your hand and put it into your deck. If you do, search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
+          onPlay {
+            my.hand.filterByType(POKEMON).select("Choose the Pokémon to put back in your deck").showToOpponent("Chosen card")
+            my.deck.search(count:1,"Choose the Pokémon to put back in your deck",cardTypeFilter(POKEMON)).showToOpponent("Chosen card")
+          }
+          playRequirement{
+            assert my.hand.filterByType(POKEMON) : "There is no more card in your deck"
+          }
         };
         case RETURN_LABEL_152:
         return itemCard (this) {
-                text "Put a card from your opponent's discard pile on the bottom of their deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
+          text "Put a card from your opponent's discard pile on the bottom of their deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
+          onPlay {
+            opp.discard.select("Choose a card to put at the bottom of your opponent's deck").moveTo(opp.deck)
+          }
+          playRequirement{
+            assert opp.discard : "There is no card in your opponent's discard"
+          }
         };
         case SABRINAS_SUGGESTION_153:
         return supporter(this) {
-                text "Your opponent reveals their hand. You may choose a Supporter card you find there and use the effect of that card as the effect of this card.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          text "Your opponent reveals their hand. You may choose a Supporter card you find there and use the effect of that card as the effect of this card.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          onPlay {
+            if(opp.hand.hasType(SUPPORTER)){
+              def card=opp.hand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
+              discard card
+              bg.deterministicCurrentThreadPlayerType=self.owner
+              bg.em().run(new PlayTrainer(card))
+              bg.clearDeterministicCurrentThreadPlayerType()
+            } else {
+              opp.hand.showToMe("Opponent's hand. No supporter in there.")
+            }          }
+          playRequirement{
+            assert opp.hand : "There is no card in your opponent's hand"
+          }
+
         };
         case UNIDENTIFIED_FOSSIL_154:
-        return itemCard (this) {
-                text "Play this card as if it were a 60-HP [C] Basic Pokémon. At any time during your turn (before your attack), you may discard this card from play.\nThis card can't retreat.\nYou may play as many Item cards as you like during your turn (before your attack)."
-        };
+        return copy (UltraPrism.UNIDENTIFIED_FOSSIL_134, this);
         case VIRIDIAN_FOREST_155:
         return stadium(this) {
-                text "Once during each player's turn, that player may discard a card from their hand. If they do, that player searches their deck for a basic Energy card, reveals it, and puts it into their hand. Then, that player shuffles their deck\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
+          text "Once during each player's turn, that player may discard a card from their hand. If they do, that player searches their deck for a basic Energy card, reveals it, and puts it into their hand. Then, that player shuffles their deck\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
+          def lastTurn=0
+          def actions=[]
+          onPlay {
+            actions=action("Stadium: Viridian Forest") {
+              assert my.deck : "There is no more cards in your deck"
+              assert my.hand : "You don't have cards in your hand"
+              assert lastTurn != bg().turnCount : "Already used"
+              bc "Used Viridian Forest effect"
+              lastTurn = bg().turnCount
+              my.hand.select("Choose the card to discard").discard
+              my.deck.search(count:1,"Choose a basic energy card",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
+              shuffleDeck()
+            }
+          }
+          onRemoveFromPlay{
+            actions.each { bg().gm().unregisterAction(it) }
+          }
         };
         case WATER_MEMORY_156:
         return itemCard (this) {
@@ -3345,390 +3483,158 @@ public enum TeamUp implements CardInfo {
           }
         };
         case WONDROUS_LABYRINTH_PRISM_STAR_157:
-        return trainer(this) {
-                text "The attacks of non-[Y] Pokémon (both yours and your opponent's) cost [C] more.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
+        return stadium(this) {
+          text "The attacks of non-[Y] Pokémon (both yours and your opponent's) cost [C] more.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
+          def eff
+          onPlay {
+  					eff = getterA GET_MOVE_LIST, {h->
+  						if(!h.effect.target.types.contains(Y)){
+  	            def list=[]
+  	            for(move in h.object){
+  	              def copy=move.shallowCopy()
+  	              copy.energyCost.add(C)
+  	              list.add(copy)
+  	            }
+  	            h.object=list
+  						}
+            }
+  				}
+  				onRemoveFromPlay{
+  					eff.unregister()
+  				}
         };
         case CELEBI_VENUSAUR_GX_158:
-        return basic (this, hp:HP270, type:GRASS, retreatCost:4) {
-            weakness FIRE
-            move "Pollen Hazard" , {
-                text "50 damage. Your opponent's Active Pokémon is now Burned, Confused, and Poisoned."
-                energyCost G,C,C
-            }
-            move "Solar Beam" , {
-                text "150 damage"
-                energyCost G,G,C,C
-            }
-            move "Evergreen GX" , {
-                text "180 damage. Heal all damage from this Pokémon. If this Pokémon has at least 1 extra"
-                energyCost G,G,C,C
-            }
-        };
+          return copy (CELEBI_VENUSAUR_GX_1, this);
         case MAGIKARP_WAILORD_GX_159:
         return basic (this, hp:HP300, type:WATER, retreatCost:4) {
             weakness GRASS
             move "Super Splash" , {
                 text "180 damage"
                 energyCost W,W,W,W,W
+                onAttack{
+                  damage 180
+                }
             }
             move "Towering Splash" , {
-                text "10 damage. If this Pokémon has at least 7 extra"
+                text "10 damage. If this Pokémon has at least 7 extra [W] Energy attached to it (in addition to this attack’s cost), this attack does 100 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
                 energyCost W
+                attackRequirement{
+                  gxCheck()
+                }
+                onAttack{
+                  gxPerform()
+                  damage 10
+                  if(self.cards.energySufficient(thisMove.energyCost() + W + W + W + W + W + W + W)){
+                    opp.bench.each{damage 100, it}
+                  }
+                }
             }
         };
         case MAGIKARP_WAILORD_GX_160:
-        return basic (this, hp:HP300, type:WATER, retreatCost:4) {
-            weakness GRASS
-            move "Super Splash" , {
-                text "180 damage"
-                energyCost W,W,W,W,W
-            }
-            move "Towering Splash" , {
-                text "10 damage. If this Pokémon has at least 7 extra"
-                energyCost W
-            }
-        };
+          return copy (MAGIKARP_WAILORD_GX_159, this);
+
         case PIKACHU_ZEKROM_GX_161:
-        return basic (this, hp:HP240, type:LIGHTNING, retreatCost:3) {
-            weakness FIGHTING
-            resistance METAL, MINUS20
-            move "Full Blitz" , {
-                text "150 damage. Search your deck for up to 3"
-                energyCost L,L,L
-            }
-            move "Tag Bolt GX" , {
-                text "200 damage. If this Pokémon has at least 3 extra"
-                energyCost L,L,L
-            }
-        };
+          return copy (PIKACHU_ZEKROM_GX_32, this);
+
         case AMPHAROS_GX_162:
-        return 	evolution (this, from:"Flaaffy", hp:HP240, type:LIGHTNING, retreatCost:3) {
-            weakness FIGHTING
-            resistance METAL, MINUS20
-            move "Power Charge" , {
-                text "30 damage. Put all Electropower cards from your discard pile into your hand."
-                energyCost L
-            }
-            move "Impact Bolt" , {
-                text "150 damage. Discard all"
-                energyCost L,L
-            }
-            move "Electrical GX" , {
-                text "Search your deck for up to 7 Pokémon, reveal them, and put them into your hand. Then, shuffle your deck. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-                energyCost L
-            }
-        };
+          return copy (AMPHAROS_GX_42, this);
+
         case GENGAR_MIMIKYU_GX_163:
-        return basic (this, hp:HP240, type:PSYCHIC, retreatCost:2) {
-            weakness DARKNESS
-            resistance FIGHTING, MINUS20
-            move "Poltergeist" , {
-                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there."
-                energyCost P,P
-            }
-            move "Horror House GX" , {
-                text "Your opponent can't play any cards from their hand during their next turn. If this Pokémon has at least 1 extra"
-                energyCost P
-            }
-        };
+          return copy (GENGAR_MIMIKYU_GX_52, this);
+
         case GENGAR_MIMIKYU_GX_164:
-        return basic (this, hp:HP240, type:PSYCHIC, retreatCost:2) {
-            weakness DARKNESS
-            resistance FIGHTING, MINUS20
-            move "Poltergeist" , {
-                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there."
-                energyCost P,P
-            }
-            move "Horror House GX" , {
-                text "Your opponent can't play any cards from their hand during their next turn. If this Pokémon has at least 1 extra"
-                energyCost P
-            }
-        };
+          return copy (GENGAR_MIMIKYU_GX_52, this);
+
         case HOOPA_GX_165:
-        return basic (this, hp:HP190, type:DARKNESS, retreatCost:3) {
-            weakness FIGHTING
-            resistance PSYCHIC, MINUS20
-            move "Rogue Ring" , {
-                text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
-                energyCost D
-            }
-            move "Dark Strike" , {
-                text "160 damage. This Pokémon can't use Dark Strike during your next turn."
-                energyCost D,D,D
-            }
-            move "Devilish Hands GX" , {
-                text "Choose 1 of your opponent's Pokémon-GX or Pokémon-EX 6 times. (You can choose the same Pokémon more than once.) For each time you chose a Pokémon, do 30 damage to it. This damage isn't affected by Weakness or Resistance. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-                energyCost D,D,D
-            }
-        };
+          return copy (HOOPA_GX_95, this);
+
         case INCINEROAR_GX_166:
-        return 	evolution (this, from:"Torracat", hp:HP250, type:DARKNESS, retreatCost:3) {
-            weakness FIGHTING
-            resistance PSYCHIC, MINUS20
-            bwAbility "Scar Charge" , {
-                text "Once during your turn (before your attack), you may put 3 damage counters on this Pokémon. If you do, search your deck for up to 3 [D] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
-            }
-            move "Crushing Punch" , {
-                text "130 damage. Discard a Special Energy from your opponent's Active Pokémon."
-                energyCost C,C,C
-            }
-            move "Darkest Tornado GX" , {
-                text "10+ damage. This attack does 50 more damage for each damage counter on this Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-                energyCost C,C,C
-            }
-        };
+          return copy (INCINEROAR_GX_96, this);
+
         case COBALION_GX_167:
-        return basic (this, hp:HP170, type:METAL, retreatCost:1) {
-            weakness FIRE
-            resistance PSYCHIC, MINUS20
-            bwAbility "Metal Symbol" , {
-                text "Each of your Pokémon that has any [M] Energy attached to it can't be affected by any Special Conditions. Remove any Special Conditions affecting those Pokémon."
-            }
-            move "Dueling Saber" , {
-                text "50+ damage. If there is any Stadium card in play, this attack does 60 more damage."
-                energyCost M,M
-            }
-            move "Iron Rule GX" , {
-                text "During your opponent's next turn, none of your opponent's Pokémon can attack (including newly played Pokémon). (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-                energyCost C
-            }
-        };
+          return copy (COBALION_GX_105, this);
+
         case LATIAS_LATIOS_GX_168:
-        return basic (this, hp:HP250, type:DRAGON, retreatCost:1) {
-            weakness FAIRY
-            move "Buster Purge" , {
-                text "240 damage. Discard 3 Energy from this Pokémon."
-                energyCost W,P,P,C
-            }
-            move "Aero Unit GX" , {
-                text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), prevent all effects of attacks, including damage, done to it during your opponent's next turn. (You can't use more than 1 GX attack in a game.)"
-                energyCost P
-            }
-        };
+          return copy (LATIAS_LATIOS_GX_112, this);
+
         case LATIAS_LATIOS_GX_169:
-        return basic (this, hp:HP250, type:DRAGON, retreatCost:1) {
-            weakness FAIRY
-            move "Buster Purge" , {
-                text "240 damage. Discard 3 Energy from this Pokémon."
-                energyCost W,P,P,C
-            }
-            move "Aero Unit GX" , {
-                text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), prevent all effects of attacks, including damage, done to it during your opponent's next turn. (You can't use more than 1 GX attack in a game.)"
-                energyCost P
-            }
-        };
+          return copy (LATIAS_LATIOS_GX_112, this);
+
         case EEVEE_SNORLAX_GX_170:
-        return basic (this, hp:HP270, type:COLORLESS, retreatCost:4) {
-            weakness FIGHTING
-            move "Dump Truck Press" , {
-                text "120+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage."
-                energyCost C,C,C,C
-            }
-            move "Megaton Friends GX" , {
-                text "210 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can't use more than 1 GX attack in a game.)"
-                energyCost C,C,C,C
-            }
-        };
+          return copy (EEVEE_SNORLAX_GX_119, this);
+
         case BROCKS_GRIT_171:
-        return supporter(this) {
-                text "Shuffle 6 in any combination of Pokémon and basic Energy cards from your discard pile into your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        };
+          return copy (BROCKS_GRIT_134, this);
+
         case DANA_172:
-        return supporter(this) {
-                text "You can play this card only if your opponent's Active Pokémon is a Stage 2 Pokémon. Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        };
+          return copy (DANA_136, this);
+
         case ERIKAS_HOSPITALITY_173:
-        return supporter(this) {
-                text "You can play this card only if you have 4 or fewer other cards in your hand.\nDraw a card for each of your opponent's Pokémon in play.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        };
+          return copy (ERIKAS_HOSPITALITY_139, this);
+
         case EVELYN_174:
-        return supporter(this) {
-                text "You can play this card only if your opponent's Active Pokémon is a Stage 1 Pokémon.\nDraw 4 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        };
+          return copy (EVELYN_140, this);
+
         case INGO_EMMET_175:
-        return supporter(this) {
-                text "Look at the top card of your deck, and then choose 1:Discard your hand and draw 5 cards.Discard your hand and draw 5 cards from the bottom of your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        };
+          return copy (INGO_EMMET_143, this);
+
         case JASMINE_176:
-        return supporter(this) {
-                text "Search your deck for a [M] Pokémon, reveal it, and put it into your hand. If you go second and it's your first turn, search for 5 [M] Pokémon instead of 1. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        };
+          return copy (JASMINE_144, this);
+
         case MORGAN_177:
-        return supporter(this) {
-                text "You can play this card only if you discrad Dana, Evelyn, and Nita from your hand.\nLook at the top 12 cards of your deck and attach any number of Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        };
+          return copy (MORGAN_148, this);
+
         case NANU_178:
-        return supporter(this) {
-                text "Choose a Basic [D] Pokémon in your discard pile. Switch it with 1 of your Pokémon in play. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain of the new Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        };
+          return copy (NANU_149, this);
+
         case NITA_179:
-        return supporter(this) {
-                text "You can play this card only if your opponent's Active Pokémon is a Basic Pokémon.\nPut an Energy from your opponent's Active Pokémon on top of their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        };
+          return copy (NITA_150, this);
+
         case SABRINAS_SUGGESTION_180:
-        return supporter(this) {
-                text "Your opponent reveals their hand. You may choose a Supporter card you find there and use the effect of that card as the effect of this card.\nYou may play only 1 Supporter card during your turn (before your attack)."
-        };
+          return copy (SABRINAS_SUGGESTION_153, this);
+
         case CELEBI_VENUSAUR_GX_181:
-        return basic (this, hp:HP270, type:GRASS, retreatCost:4) {
-            weakness FIRE
-            move "Pollen Hazard" , {
-                text "50 damage. Your opponent's Active Pokémon is now Burned, Confused, and Poisoned."
-                energyCost G,C,C
-            }
-            move "Solar Beam" , {
-                text "150 damage"
-                energyCost G,G,C,C
-            }
-            move "Evergreen GX" , {
-                text "180 damage. Heal all damage from this Pokémon. If this Pokémon has at least 1 extra"
-                energyCost G,G,C,C
-            }
-        };
+          return copy (CELEBI_VENUSAUR_GX_1, this);
+
         case MAGIKARP_WAILORD_GX_182:
-        return basic (this, hp:HP300, type:WATER, retreatCost:4) {
-            weakness GRASS
-            move "Super Splash" , {
-                text "180 damage"
-                energyCost W,W,W,W,W
-            }
-            move "Towering Splash" , {
-                text "10 damage. If this Pokémon has at least 7 extra"
-                energyCost W
-            }
-        };
+          return copy (MAGIKARP_WAILORD_GX_159, this);
+
         case PIKACHU_ZEKROM_GX_183:
-        return basic (this, hp:HP240, type:LIGHTNING, retreatCost:3) {
-            weakness FIGHTING
-            resistance METAL, MINUS20
-            move "Full Blitz" , {
-                text "150 damage. Search your deck for up to 3"
-                energyCost L,L,L
-            }
-            move "Tag Bolt GX" , {
-                text "200 damage. If this Pokémon has at least 3 extra"
-                energyCost L,L,L
-            }
-        };
+          return copy (PIKACHU_ZEKROM_GX_32, this);
+
         case AMPHAROS_GX_184:
-        return 	evolution (this, from:"Flaaffy", hp:HP240, type:LIGHTNING, retreatCost:3) {
-            weakness FIGHTING
-            resistance METAL, MINUS20
-            move "Power Charge" , {
-                text "30 damage. Put all Electropower cards from your discard pile into your hand."
-                energyCost L
-            }
-            move "Impact Bolt" , {
-                text "150 damage. Discard all"
-                energyCost L,L
-            }
-            move "Electrical GX" , {
-                text "Search your deck for up to 7 Pokémon, reveal them, and put them into your hand. Then, shuffle your deck. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-                energyCost L
-            }
-        };
+          return copy (AMPHAROS_GX_42, this);
+
         case GENGAR_MIMIKYU_GX_185:
-        return basic (this, hp:HP240, type:PSYCHIC, retreatCost:2) {
-            weakness DARKNESS
-            resistance FIGHTING, MINUS20
-            move "Poltergeist" , {
-                text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there."
-                energyCost P,P
-            }
-            move "Horror House GX" , {
-                text "Your opponent can't play any cards from their hand during their next turn. If this Pokémon has at least 1 extra"
-                energyCost P
-            }
-        };
+          return copy (GENGAR_MIMIKYU_GX_52, this);
+
         case HOOPA_GX_186:
-        return basic (this, hp:HP190, type:DARKNESS, retreatCost:3) {
-            weakness FIGHTING
-            resistance PSYCHIC, MINUS20
-            move "Rogue Ring" , {
-                text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
-                energyCost D
-            }
-            move "Dark Strike" , {
-                text "160 damage. This Pokémon can't use Dark Strike during your next turn."
-                energyCost D,D,D
-            }
-            move "Devilish Hands GX" , {
-                text "Choose 1 of your opponent's Pokémon-GX or Pokémon-EX 6 times. (You can choose the same Pokémon more than once.) For each time you chose a Pokémon, do 30 damage to it. This damage isn't affected by Weakness or Resistance. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-                energyCost D,D,D
-            }
-        };
+          return copy (HOOPA_GX_95, this);
+
         case INCINEROAR_GX_187:
-        return 	evolution (this, from:"Torracat", hp:HP250, type:DARKNESS, retreatCost:3) {
-            weakness FIGHTING
-            resistance PSYCHIC, MINUS20
-            bwAbility "Scar Charge" , {
-                text "Once during your turn (before your attack), you may put 3 damage counters on this Pokémon. If you do, search your deck for up to 3 [D] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
-            }
-            move "Crushing Punch" , {
-                text "130 damage. Discard a Special Energy from your opponent's Active Pokémon."
-                energyCost C,C,C
-            }
-            move "Darkest Tornado GX" , {
-                text "10+ damage. This attack does 50 more damage for each damage counter on this Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-                energyCost C,C,C
-            }
-        };
+          return copy (INCINEROAR_GX_96, this);
+
         case COBALION_GX_188:
-        return basic (this, hp:HP170, type:METAL, retreatCost:1) {
-            weakness FIRE
-            resistance PSYCHIC, MINUS20
-            bwAbility "Metal Symbol" , {
-                text "Each of your Pokémon that has any [M] Energy attached to it can't be affected by any Special Conditions. Remove any Special Conditions affecting those Pokémon."
-            }
-            move "Dueling Saber" , {
-                text "50+ damage. If there is any Stadium card in play, this attack does 60 more damage."
-                energyCost M,M
-            }
-            move "Iron Rule GX" , {
-                text "During your opponent's next turn, none of your opponent's Pokémon can attack (including newly played Pokémon). (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
-                energyCost C
-            }
-        };
+          return copy (COBALION_GX_105, this);
+
         case LATIAS_LATIOS_GX_189:
-        return basic (this, hp:HP250, type:DRAGON, retreatCost:1) {
-            weakness FAIRY
-            move "Buster Purge" , {
-                text "240 damage. Discard 3 Energy from this Pokémon."
-                energyCost W,P,P,C
-            }
-            move "Aero Unit GX" , {
-                text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), prevent all effects of attacks, including damage, done to it during your opponent's next turn. (You can't use more than 1 GX attack in a game.)"
-                energyCost P
-            }
-        };
+          return copy (LATIAS_LATIOS_GX_112, this);
+
         case EEVEE_SNORLAX_GX_190:
-        return basic (this, hp:HP270, type:COLORLESS, retreatCost:4) {
-            weakness FIGHTING
-            move "Dump Truck Press" , {
-                text "120+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage."
-                energyCost C,C,C,C
-            }
-            move "Megaton Friends GX" , {
-                text "210 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can't use more than 1 GX attack in a game.)"
-                energyCost C,C,C,C
-            }
-        };
+          return copy (EEVEE_SNORLAX_GX_119, this);
+
         case DANGEROUS_DRILL_191:
-        return itemCard (this) {
-                text "You can play this card only if you discard a [D] Pokémon from your hand.\nDiscard a Pokémon Tool or Special Energy card from 1 of your opponent's Pokémon, or discard any Stadium card in play.\nYou may play as many Item cards as you like during your turn (before your attack)."
-        };
+          return copy (DANGEROUS_DRILL_137, this);
+
         case ELECTROCHARGER_192:
-        return itemCard (this) {
-                text "Flip 2 coins. For each heads, shuffle an Electropower from your discard pile into your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
-        };
+          return copy (ELECTROCHARGER_138, this);
+
         case JUDGE_WHISTLE_193:
-        return itemCard (this) {
-                text "Choose 1:Draw a card.Put a Judge card from your discard pile into your hand.\nYou may play as many Item cards as you like during your turn (before your attack)."
-        };
+          return copy (JUDGE_WHISTLE_145, this);
+
         case METAL_GOGGLES_194:
-        return itemCard (this) {
-                text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe [M] Pokémon this card is attached to takes 30 less damage from your opponent's attacks (after applying Weakness and Resistance), and your opponent's attacks and Abilities can't put damage counters on it.\nYou may play as many Item cards as you like during your turn (before your attack)."
-        };
+          return copy (METAL_GOGGLES_147, this);
+
         default:
             return null;
     }
