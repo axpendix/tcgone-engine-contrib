@@ -1,5 +1,8 @@
 package tcgwars.logic.impl.gen7;
 
+import tcgwars.logic.effect.gm.Attack
+
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -3101,50 +3104,180 @@ public enum TeamUp implements CardInfo {
         case BILLS_ANALYSIS_132:
         return supporter(this) {
                 text "Look at the top 7 cards of your deck. You may reveal up to 2 Trainer cards you find there and put them into your hand. Shuffle the other cards back into your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+                onPlay {
+                  my.deck.subList(0,7).showToMe("top 7 cards of your deck")
+                  my.deck.subList(0,7).filterByType(TRAINER_CARD).select(max:2,"Choose 2 Trainer cards to put in your hand").showToOpponent("Chosen cards").moveTo(my.hand)
+                  shuffleDeck()
+                }
+                playRequirement{
+                  assert my.deck : "There is no more card in your deck"
+                }
         };
         case BLACK_MARKET_PRISM_STAR_133:
         return trainer(this) {
                 text "Whenever any player's [D] Pokémon with any [D] Energy attached to it is Knocked Out by damage from an opponent's attack, that opponent takes 1 less Prize card.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
+                //TODO:
         };
         case BROCKS_GRIT_134:
         return supporter(this) {
                 text "Shuffle 6 in any combination of Pokémon and basic Energy cards from your discard pile into your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+                onPlay {
+                  def tar = my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)}
+                  def maxSel = Math.min(6,tar.size())
+                  tar.select(count:maxSel,"Choose $maxSel cards to put back in your deck").moveTo(my.deck)
+                  shuffleDeck()
+                }
+                playRequirement{
+                  assert my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)} : "There is no more card in your deck"
+                }
         };
         case BUFF_PADDING_135:
-        return itemCard (this) {
-                text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Retreat Cost of the Pokémon this card is attached to is 4, that Pokémon gets +50 HP.\nYou may play as many Item cards as you like during your turn (before your attack)."
+        return pokemonTool (this) {
+          text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Retreat Cost of the Pokémon this card is attached to is 4, that Pokémon gets +50 HP.\nYou may play as many Item cards as you like during your turn (before your attack)."
+          def eff
+          onPlay {reason->
+            eff = getter (GET_FULL_HP, self) {h->
+  						if(self.retreatCost  == 4) {
+  							h.object += hp(50)
+  						}
+  					}
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
         };
         case DANA_136:
         return supporter(this) {
-                text "You can play this card only if your opponent's Active Pokémon is a Stage 2 Pokémon. Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          text "You can play this card only if your opponent's Active Pokémon is a Stage 2 Pokémon. Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          onPlay {
+            my.deck.search(count:2,"Choose 2 cards to put in your hand",{true}).moveTo(my.hand)
+            shuffleDeck()
+          }
+          playRequirement{
+            assert my.active.topPokemonCard.cardTypes(STAGE2) : "There is no more card in your deck"
+            assert my.deck : "There is no more cards in your deck"
+          }
         };
         case DANGEROUS_DRILL_137:
         return itemCard (this) {
-                text "You can play this card only if you discard a [D] Pokémon from your hand.\nDiscard a Pokémon Tool or Special Energy card from 1 of your opponent's Pokémon, or discard any Stadium card in play.\nYou may play as many Item cards as you like during your turn (before your attack)."
+          text "You can play this card only if you discard a [D] Pokémon from your hand.\nDiscard a Pokémon Tool or Special Energy card from 1 of your opponent's Pokémon, or discard any Stadium card in play.\nYou may play as many Item cards as you like during your turn (before your attack)."
+          onPlay {
+            my.hand.filterByType(POKEMON).findAll{it.asPokemonCard().types.contains(D)}.select("Choose the pokémon to discard").discard()
+            def choice = 1
+            if(!opp.all.findAll{it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)}){
+              choice = 2
+            }
+            else{
+              if(bg.stadiumInfoStruct){
+                choice = choose([1,2],["A Pokémon Tool or Special Energy card from 1 of your opponent's Pokémon", "The stadium card in play"], "What to discard?")
+              }
+            }
+            if(choice == 1){
+              def tar = opp.all.findAll{it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)}.select("Choose the pokémon from which discard a Pokémon Tool or Special Energy")
+              tar.cards.findAll{it.cardTypes.is(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)}.select("Choose the card to dicard").discard()
+            }
+            else{
+              discard bg.stadiumInfoStruct.stadiumCard
+            }
+          }
+          playRequirement{
+            assert my.hand.filterByType(POKEMON).findAll{it.asPokemonCard().types.contains(D)}: "There is no [D] pokémon in your hand"
+            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)} || bg.stadiumInfoStruct : "There is no cards to discard"
+          }
         };
         case ELECTROCHARGER_138:
         return itemCard (this) {
                 text "Flip 2 coins. For each heads, shuffle an Electropower from your discard pile into your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
+                onPlay {
+                  flip 2, {my.discard.findAll{it.name == "Electropower"}.select().moveTo(my.deck);
+                  shuffleDeck()}
+                }
+                playRequirement{
+                  assert my.discard.findAll{it.name == "Electropower"} : "There is no Electropower in your discard"
+                }
         };
         case ERIKAS_HOSPITALITY_139:
         return supporter(this) {
                 text "You can play this card only if you have 4 or fewer other cards in your hand.\nDraw a card for each of your opponent's Pokémon in play.\nYou may play only 1 Supporter card during your turn (before your attack)."
+                onPlay {
+                  draw opp.all.size()
+                }
+                playRequirement{
+                  assert my.hand.size()<=4 : "You don't have 4 or fewer other cards in your hand."
+                }
         };
         case EVELYN_140:
         return supporter(this) {
                 text "You can play this card only if your opponent's Active Pokémon is a Stage 1 Pokémon.\nDraw 4 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
+                onPlay {
+                  draw 4
+                }
+                playRequirement{
+                  assert my.active.topPokemonCard.cardTypes(STAGE1) : "There is no more card in your deck"
+                  assert my.deck : "There is no more cards in your deck"
+                }
         };
         case FAIRY_CHARM_UB_141:
         return itemCard (this) {
                 text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nPrevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's Ultra Beast Pokémon-GX and Ultra Beast Pokémon-EX.\nYou may play as many Item cards as you like during your turn (before your attack)."
+                def eff1
+                onPlay {reason->
+                  eff1=delayed {
+                    before APPLY_ATTACK_DAMAGES, {
+                      if(self.types.contains(Y)){
+                        bg.dm().each {
+                          if(it.to==self && it.from.owner!=self.owner && it.from.topPokemonCard.cardTypes.is(ULTRA_BEAST) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
+                            bc "Fairy Charm UB prevent damage from Ultra Beast Pokémon-GX and Pokémon-EX"
+                            it.dmg = hp(0)
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                onRemoveFromPlay {
+                  eff1.unregister()
+                }
         };
         case GRASS_MEMORY_142:
         return itemCard (this) {
                 text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [G] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
+                def eff
+                onPlay {reason->
+                  eff=getter GET_POKEMON_TYPE, self, {h ->
+                    if(h.effect.target.name == "Silvally-GX")
+                    {
+                      h.object.retainAll()
+                      h.object.add(GRASS)
+                    }
+                  }
+                }
+                onRemoveFromPlay {
+                  eff.unregister()
+                }
         };
         case INGO_EMMET_143:
         return supporter(this) {
-                text "Look at the top card of your deck, and then choose 1:Discard your hand and draw 5 cards.Discard your hand and draw 5 cards from the bottom of your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          text "Look at the top card of your deck, and then choose 1:Discard your hand and draw 5 cards.\n2: Discard your hand and draw 5 cards from the bottom of your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          onPlay {
+            my.deck.subList(0,1).showToMe("Top card of your deck")
+            if(my.deck.size() <= 5) {
+              my.hand.discard()
+              draw 5
+            }
+            else{
+              def choice = choose([1,2],["Discard your hand and draw 5 cards","Discard your hand and draw 5 cards from the bottom of your deck"],"What to do?")
+              if(choice == 1){
+                draw 5
+              }
+              else {
+                my.deck.subList(my.deck.size() - 5, my.deck.size()).moveTo(hidden:true, my.hand)
+              }
+            }
+          }
+          playRequirement{
+            assert my.deck : "There is no more cards in your deck"
+          }
         };
         case JASMINE_144:
         return supporter(this) {
@@ -3196,7 +3329,20 @@ public enum TeamUp implements CardInfo {
         };
         case WATER_MEMORY_156:
         return itemCard (this) {
-                text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [W] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
+          text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [W] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
+          def eff
+          onPlay {reason->
+            eff=getter GET_POKEMON_TYPE, self, {h ->
+              if(h.effect.target.name == "Silvally-GX")
+              {
+                h.object.retainAll()
+                h.object.add(WATER)
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
         };
         case WONDROUS_LABYRINTH_PRISM_STAR_157:
         return trainer(this) {
