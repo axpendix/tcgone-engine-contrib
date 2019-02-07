@@ -3115,9 +3115,24 @@ public enum TeamUp implements CardInfo {
                 }
         };
         case BLACK_MARKET_PRISM_STAR_133:
-        return trainer(this) {
+        return stadium(this) {
                 text "Whenever any player's [D] Pokémon with any [D] Energy attached to it is Knocked Out by damage from an opponent's attack, that opponent takes 1 less Prize card.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
-                //TODO:
+            def eff=null
+            onPlay {
+                eff=delayed{
+                    before KNOCKOUT, {
+                        if(ef.pokemonToBeKnockedOut.types.contains(D) && ef.pokemonToBeKnockedOut.cards.energyCount(D)){
+                            bc "Black Market Prism Star prevents taking one prize card for "+ef.pokemonToBeKnockedOut
+                            blockingEffect(TAKE_PRIZE).setUnregisterImmediately(true)
+                        }
+                    }
+                }
+                // TODO block Item and Supporter effects on this stadium
+            }
+            onRemoveFromPlay {
+                eff.unregister()
+            }
+
         };
         case BROCKS_GRIT_134:
         return supporter(this) {
@@ -3383,11 +3398,11 @@ public enum TeamUp implements CardInfo {
         return supporter(this) {
           text "Choose a Basic [D] Pokémon in your discard pile. Switch it with 1 of your Pokémon in play. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain of the new Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            //TODO:is the basic the new top card?
               def sel = my.discard.filterByType(BASIC).findAll{it.asPokemonCard().types.contains(D)}.select("Choose the pokémon you want to put in play")
               def pcs = my.all.select("Choose the pokémon you want to replace")
-              pcs.topPokemonCard.discard()
-              sel.moveTo(pcs.card)
+              def list = pcs.cards.filterByType(POKEMON)
+              sel.moveTo(pcs.cards)
+              list.discard()
           }
           playRequirement{
             assert my.discard.filterByType(BASIC).findAll{it.asPokemonCard().types.contains(D)} : "There is no more cards in your deck"
