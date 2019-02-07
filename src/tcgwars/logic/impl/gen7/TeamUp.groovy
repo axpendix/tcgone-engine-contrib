@@ -229,7 +229,7 @@ public enum TeamUp implements CardInfo {
     DANGEROUS_DRILL_191("Dangerous Drill", 191, Rarity.SECRET, [TRAINER,ITEM]),
     ELECTROCHARGER_192("Electrocharger", 192, Rarity.SECRET, [TRAINER,ITEM]),
     JUDGE_WHISTLE_193("Judge Whistle", 193, Rarity.SECRET, [TRAINER,ITEM]),
-    METAL_GOGGLES_194("Metal Goggles", 194, Rarity.SECRET, [TRAINER,ITEM,POKEMON_TOOL]),
+    METAL_GOGGLES_194("Metal Goggles", 194, Rarity.SECRET, [TRAINER,ITEM,POKEMON_TOOL]);
 
  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -1363,7 +1363,7 @@ public enum TeamUp implements CardInfo {
                 onAttack{
                   if(opp.hand){
                     opp.hand.showToMe("Your opponent's hand")
-                    damage 50*opp.hand.filterByType(TRAINER_CARD)
+                    damage 50*opp.hand.filterByType(TRAINER).size()
                   }
                 }
             }
@@ -1375,9 +1375,9 @@ public enum TeamUp implements CardInfo {
                 }
                 onAttack{
                   gxPerform()
-                  if(self.cards.energySufficient(thisMove.energyCost() + P)){
-                      draw 7-my.hand
-                      draw 7-opp.hand, TargetPlayer.OPPONENT
+                  if(self.cards.energySufficient(thisMove.energyCost + P)){
+                      draw 7-my.hand.size()
+                      draw 7-opp.hand.size(), TargetPlayer.OPPONENT
                       shuffleDeck()
                   }
                   delayed{
@@ -1638,7 +1638,7 @@ public enum TeamUp implements CardInfo {
                       def enSel = my.deck.search(max:3,"Select up to 3 in any combination of [W] and [P] Energy cards",{it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsTypePlain(W) || it.asEnergyCard().containsTypePlain(P))})
                       def tar = my.all.select("Attach the energy to?")
                       enSel.each{
-                        attachEnergyFrom(it,tar)
+                          attachEnergy(tar,it)
                       }
                       shuffleDeck()
                     }
@@ -1900,13 +1900,7 @@ public enum TeamUp implements CardInfo {
                 energyCost F,C,C
                 onAttack{
                   damage 80
-                  if(opp.bench){
-                    multiSelect(opp.bench, 2).each{
-        					    targeted(it){
-        					      damage 20, it
-        					    }
-        					  }
-                  }
+                  multiDamage(opp.bench,2,20)
                 }
             }
         };
@@ -1970,10 +1964,11 @@ public enum TeamUp implements CardInfo {
                 text "30× damage. This attack does 30 damage for each Energy card in your opponent's discard pile. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
                 energyCost F
                 attackRequirement{
+                    gxCheck()
                   assert opp.discard : "There is no card in your opponent's discard pile"
                 }
                 onAttack{
-                  gxPerform
+                  gxPerform()
                   damage 30*opp.discard.filterByType(ENERGY).size()
                 }
             }
@@ -2153,7 +2148,7 @@ public enum TeamUp implements CardInfo {
                 text "20× damage. This attack does 20 damage for each Pokémon in your discard pile. You can't do more than 200 damage in this way."
                 energyCost D,C,C
                 onAttack{
-                  damage Math.min(20*my.discard.filterByType(POKEMON),200)
+                  damage Math.min(20*my.discard.filterByType(POKEMON).size(),200)
                 }
             }
         };
@@ -2273,15 +2268,14 @@ public enum TeamUp implements CardInfo {
                 energyCost D,D,D
                 attackRequirement{
                   gxCheck()
-                  assert opp.all.findAll{it.cardTypes.is(POKEMON_GX) || it.cardTypes.is(POKEMON_EX)} : "your opponent does not have any Pokémon-GX or Pokémon-EX"
+                  assert opp.all.findAll{it.pokemonGX || it.pokemonEX} : "your opponent does not have any Pokémon-GX or Pokémon-EX"
                 }
                 onAttack{
                   gxPerform()
-                  def tar = opp.all.findAll{it.cardTypes.is(POKEMON_GX) || it.cardTypes.is(POKEMON_EX)}
-                  def maxSel = Math.max(6,tar.size())
-                  tar.select(count:maxSel).each{
-                    noWrDamage(30,it)
-                  }
+                  def tar = opp.all.findAll{it.pokemonGX || it.pokemonEX}
+                    (1..6).each {
+                        noWrDamage(30,tar.select())
+                    }
                 }
             }
         };
@@ -2291,14 +2285,14 @@ public enum TeamUp implements CardInfo {
             resistance PSYCHIC, MINUS20
             bwAbility "Scar Charge" , {
                 text "Once during your turn (before your attack), you may put 3 damage counters on this Pokémon. If you do, search your deck for up to 3 [D] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
-                attackRequirement{
-                  assert my.deck : "There is no more cards in your deck"
-                }
-                onAttack{
-                  directDamage(30,self)
-                  afterDamage{
-                    my.deck.search(max:3,"Choose up to 3 [D] Energy cards", {it.cardTypes.is(ENERGY) && it.asEnergyCard.containsTypePlain(D)})
-                  }
+                actionA {
+                    checkLastTurn()
+                    assert my.deck : "There is no more cards in your deck"
+                    powerUsed()
+                    directDamage(30,self)
+                    afterDamage{
+                        my.deck.search(max:3,"Choose up to 3 [D] Energy cards", {it.cardTypes.is(ENERGY) && it.asEnergyCard.containsTypePlain(D)})
+                    }
                 }
             }
             move "Crushing Punch" , {
@@ -2354,8 +2348,8 @@ public enum TeamUp implements CardInfo {
                   assert my.deck : "There is no more card in your deck"
                   powerUsed()
                   my.deck.subList(0,5).showToMe("The top 5 cards of your deck")
-                  if(my.deck.subList(0,5).filterByType(TRAINER_CARD)){
-                    my.deck.subList(0,5).filterByType(TRAINER_CARD).select("Choose the card to put in your hand").showToOpponent("Selected trainer card").moveTo(my.hand)
+                  if(my.deck.subList(0,5).filterByType(TRAINER)){
+                    my.deck.subList(0,5).filterByType(TRAINER).select("Choose the card to put in your hand").showToOpponent("Selected trainer card").moveTo(my.hand)
                   }
                   shuffleDeck()
                   apply ASLEEP, self
@@ -2619,8 +2613,9 @@ public enum TeamUp implements CardInfo {
                       r2.resistanceType = Resistance.ResistanceType.MINUS20
                       newR.add(r2)
                     }
+                      holder.object=newR
+
                   }
-                  holder.object=newR
                 }
               }
             move "Ram" , {
@@ -2707,7 +2702,7 @@ public enum TeamUp implements CardInfo {
                   attachEnergyFrom(my.discard,my.all)
                   attachEnergyFrom(my.discard,my.all)
                   attachEnergyFrom(my.discard,my.all)
-                  if(self.cards.energySufficient(thisMove.energyCost() + C)){
+                  if(self.cards.energySufficient(thisMove.energyCost + C)){
                     preventAllEffectsNextTurn()
                   }
                 }
@@ -2835,11 +2830,12 @@ public enum TeamUp implements CardInfo {
                 text "210 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), draw cards until you have 10 cards in your hand. (You can't use more than 1 GX attack in a game.)"
                 energyCost C,C,C,C
                 attackRequirement{
-                  gxCheck
+                  gxCheck()
                 }
                 onAttack{
+                    gxPerform()
                   damage 210
-                  if(self.cards.energySufficient(thisMove.energyCost() + C)){
+                  if(self.cards.energySufficient(thisMove.energyCost + C)){
                     draw 10-my.hand.size()
                   }
                 }
@@ -3087,7 +3083,7 @@ public enum TeamUp implements CardInfo {
                   def topCards = my.deck.subList(0,6)
                   def tar = topCards.filterByType(POKEMON)
                   topCards.showToMe("Top 6 cards of your deck")
-                  def sel = tar.select(max:tar.size(),"Choose the Pokémon to put into your hand").
+                  def sel = tar.select(max:tar.size(),"Choose the Pokémon to put into your hand")
                   sel.showToOpponent("Chosen cards")
                   topCards.getExcludedList(sel).discard()
                   sel.moveTo(my.hand)
@@ -3107,7 +3103,7 @@ public enum TeamUp implements CardInfo {
                 text "Look at the top 7 cards of your deck. You may reveal up to 2 Trainer cards you find there and put them into your hand. Shuffle the other cards back into your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
                 onPlay {
                   my.deck.subList(0,7).showToMe("top 7 cards of your deck")
-                  my.deck.subList(0,7).filterByType(TRAINER_CARD).select(max:2,"Choose 2 Trainer cards to put in your hand").showToOpponent("Chosen cards").moveTo(my.hand)
+                  my.deck.subList(0,7).filterByType(TRAINER).select(max:2,"Choose 2 Trainer cards to put in your hand").showToOpponent("Chosen cards").moveTo(my.hand)
                   shuffleDeck()
                 }
                 playRequirement{
@@ -3170,7 +3166,7 @@ public enum TeamUp implements CardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert opp.active.topPokemonCard.cardTypes(STAGE2) : "There is no more card in your deck"
+            assert opp.active.topPokemonCard.cardTypes.contains(STAGE2) : "There is no more card in your deck"
             assert my.deck : "There is no more cards in your deck"
           }
         };
@@ -3229,7 +3225,7 @@ public enum TeamUp implements CardInfo {
                   draw 4
                 }
                 playRequirement{
-                  assert opp.active.topPokemonCard.cardTypes(STAGE1) : "There is no more card in your deck"
+                  assert opp.active.topPokemonCard.cardTypes.contains(STAGE1) : "There is no more card in your deck"
                   assert my.deck : "There is no more cards in your deck"
                 }
         };
@@ -3256,7 +3252,7 @@ public enum TeamUp implements CardInfo {
                 }
         };
         case GRASS_MEMORY_142:
-        return itemCard (this) {
+        return pokemonTool (this) {
                 text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [G] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
                 def eff
                 onPlay {reason->
@@ -3354,7 +3350,7 @@ public enum TeamUp implements CardInfo {
           }
         };
         case METAL_GOGGLES_147:
-        return itemCard (this) {
+        return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe [M] Pokémon this card is attached to takes 30 less damage from your opponent's attacks (after applying Weakness and Resistance), and your opponent's attacks and Abilities can't put damage counters on it.\nYou may play as many Item cards as you like during your turn (before your attack)."
           def eff
           onPlay {reason->
@@ -3415,7 +3411,7 @@ public enum TeamUp implements CardInfo {
             opp.active.cards.filterByType(ENERGY).select("Choose the energy to discard").discard()
           }
           playRequirement{
-            assert opp.active.topPokemonCard.cardTypes(BASIC) : "There is no more card in your deck"
+            assert opp.active.basic
             assert opp.active.cards.filterByType(ENERGY) : "There is no energy attached to your opponent's Active Pokémon"
           }
         };
@@ -3482,7 +3478,7 @@ public enum TeamUp implements CardInfo {
           }
         };
         case WATER_MEMORY_156:
-        return itemCard (this) {
+        return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [W] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
           def eff
           onPlay {reason->
@@ -3503,7 +3499,7 @@ public enum TeamUp implements CardInfo {
           text "The attacks of non-[Y] Pokémon (both yours and your opponent's) cost [C] more.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
           def eff
           onPlay {
-  					eff = getterA GET_MOVE_LIST, {h->
+  					eff = getter GET_MOVE_LIST, {h->
   						if(!h.effect.target.types.contains(Y)){
   	            def list=[]
   	            for(move in h.object){
@@ -3540,7 +3536,7 @@ public enum TeamUp implements CardInfo {
                 onAttack{
                   gxPerform()
                   damage 10
-                  if(self.cards.energySufficient(thisMove.energyCost() + W + W + W + W + W + W + W)){
+                  if(self.cards.energySufficient(thisMove.energyCost + W + W + W + W + W + W + W)){
                     opp.bench.each{damage 100, it}
                   }
                 }
