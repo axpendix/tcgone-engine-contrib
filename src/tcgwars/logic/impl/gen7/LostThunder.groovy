@@ -4063,11 +4063,11 @@ public enum LostThunder implements CardInfo {
 				text "Choose a Pokémon Tool or Special Energy card attached to 1 of your opponent's Pokémon, or any Stadium card in play, and put it in the Lost Zone.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
 					def choice = 0
-					if((bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star' && bg.stadiumInfoStruct.stadiumCard.name != 'Life Forest Prism Star' && bg.stadiumInfoStruct.stadiumCard.name != 'Thunder Mountain Prism Star') && opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})){
+					if((bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter()) && opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})){
 						choice = choose([0,1],["Put a Pokémon Tool or Special Energy card attached to 1 of your opponent's Pokémon to the Lost Zone","Put the Stadium card in play in the Lost Zone"],"what do you want to do?")
 					}
 					else{
-						if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star' && bg.stadiumInfoStruct.stadiumCard.name != 'Life Forest Prism Star' && bg.stadiumInfoStruct.stadiumCard.name != 'Thunder Mountain Prism Star'){
+						if(bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter()){
 							choice = 1
 						}
 					}
@@ -4082,7 +4082,7 @@ public enum LostThunder implements CardInfo {
 					}
 				}
 				playRequirement{
-					assert (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star' && bg.stadiumInfoStruct.stadiumCard.name != 'Life Forest Prism Star' && bg.stadiumInfoStruct.stadiumCard.name != 'Thunder Mountain Prism Star') || opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})
+					assert (bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter()) || opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})
 				}
 			};
 			case FAIRY_CHARM_G_174:

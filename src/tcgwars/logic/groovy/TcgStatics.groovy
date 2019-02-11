@@ -1142,5 +1142,8 @@ class TcgStatics {
 	static boolean wasSwitchedOutThisTurn(PokemonCardSet self){
 		self.lastSwitchedOut == bg.turnCount && self.lastSwitchedOutName == self.name
 	}
+	static boolean stadiumCanBeAffectedByItemAndSupporter(Card stadiumCard=bg?.stadiumInfoStruct?.stadiumCard){
+		!['Heat Factory Prism Star','Life Forest Prism Star','Thunder Mountain Prism Star','Wondrous Labyrinth Prism Star','Black Market Prism Star'].contains(stadiumCard?.name);
+	}
 
 }

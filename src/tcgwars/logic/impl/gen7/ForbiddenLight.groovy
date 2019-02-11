@@ -2514,7 +2514,7 @@ public enum ForbiddenLight implements CardInfo {
 					bg.em().storeObject("Bonnie",bg.turnCount)
 				}
 				playRequirement{
-					assert (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name != 'Heat Factory Prism Star' && bg.stadiumInfoStruct.stadiumCard.name != 'Life Forest Prism Star' && bg.stadiumInfoStruct.stadiumCard.name != 'Thunder Mountain Prism Star')
+					assert bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter()
 				}
 			};
 			case CRASHER_WAKE_104:

@@ -287,6 +287,10 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 		return getTopPokemonCard().getCardTypes().is(CardType.POKEMON_GX);
 	}
 
+	public boolean isTagTeam(){
+		return getTopPokemonCard().getCardTypes().is(CardType.TAG_TEAM);
+	}
+
 	public List<Weakness> getWeaknesses(Battleground bg){
 		return bg.em().activateGetter(new GetWeaknesses(this));
 	}
