@@ -186,7 +186,7 @@ public enum TeamUp implements CardInfo {
     MORGAN_149("Morgan", 149, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
     NANU_150("Nanu", 150, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
     NITA_151("Nita", 151, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-    POKéMON_COMMUNICATION_152("Pokémon Communication", 152, Rarity.UNCOMMON, [TRAINER,ITEM]),
+    POKEMON_COMMUNICATION_152("Pokémon Communication", 152, Rarity.UNCOMMON, [TRAINER,ITEM]),
     RETURN_LABEL_153("Return Label", 153, Rarity.UNCOMMON, [TRAINER,ITEM]),
     SABRINAS_SUGGESTION_154("Sabrina's Suggestion", 154, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
     UNIDENTIFIED_FOSSIL_155("Unidentified Fossil", 155, Rarity.UNCOMMON, [TRAINER,ITEM]),
@@ -230,7 +230,7 @@ public enum TeamUp implements CardInfo {
     ELECTROCHARGER_193("Electrocharger", 193, Rarity.SECRET, [TRAINER,ITEM]),
     JUDGE_WHISTLE_194("Judge Whistle", 194, Rarity.SECRET, [TRAINER,ITEM]),
     METAL_GOGGLES_195("Metal Goggles", 195, Rarity.SECRET, [TRAINER,ITEM,POKEMON_TOOL]),
-    POKéMON_COMMUNICATION_196("Pokémon Communication", 196, Rarity.UNCOMMON, [TRAINER,ITEM]);
+    POKEMON_COMMUNICATION_196("Pokémon Communication", 196, Rarity.UNCOMMON, [TRAINER,ITEM]);
 
  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -3416,7 +3416,7 @@ public enum TeamUp implements CardInfo {
             assert opp.active.cards.filterByType(ENERGY) : "There is no energy attached to your opponent's Active Pokémon"
           }
         };
-        case POKéMON_COMMUNICATION_152:
+        case POKEMON_COMMUNICATION_152:
         return itemCard (this) {
           text "Reveal a Pokémon from your hand and put it into your deck. If you do, search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
@@ -3544,109 +3544,112 @@ public enum TeamUp implements CardInfo {
             }
         };
         case MAGIKARP_WAILORD_GX_161:
-          return copy (MAGIKARP_WAILORD_GX_159, this);
+          return copy (MAGIKARP_WAILORD_GX_160, this);
 
         case PIKACHU_ZEKROM_GX_162:
-          return copy (PIKACHU_ZEKROM_GX_32, this);
+          return copy (PIKACHU_ZEKROM_GX_33, this);
 
         case AMPHAROS_GX_163:
-          return copy (AMPHAROS_GX_42, this);
+          return copy (AMPHAROS_GX_43, this);
 
         case GENGAR_MIMIKYU_GX_164:
-          return copy (GENGAR_MIMIKYU_GX_52, this);
+          return copy (GENGAR_MIMIKYU_GX_53, this);
 
         case GENGAR_MIMIKYU_GX_165:
-          return copy (GENGAR_MIMIKYU_GX_52, this);
+          return copy (GENGAR_MIMIKYU_GX_53, this);
 
         case HOOPA_GX_166:
-          return copy (HOOPA_GX_95, this);
+          return copy (HOOPA_GX_96, this);
 
         case INCINEROAR_GX_167:
-          return copy (INCINEROAR_GX_96, this);
+          return copy (INCINEROAR_GX_97, this);
 
         case COBALION_GX_168:
-          return copy (COBALION_GX_105, this);
+          return copy (COBALION_GX_106, this);
 
         case LATIAS_LATIOS_GX_169:
-          return copy (LATIAS_LATIOS_GX_112, this);
+          return copy (LATIAS_LATIOS_GX_113, this);
 
         case LATIAS_LATIOS_GX_170:
-          return copy (LATIAS_LATIOS_GX_112, this);
+          return copy (LATIAS_LATIOS_GX_113, this);
 
         case EEVEE_SNORLAX_GX_171:
-          return copy (EEVEE_SNORLAX_GX_119, this);
+          return copy (EEVEE_SNORLAX_GX_120, this);
 
         case BROCKS_GRIT_172:
-          return copy (BROCKS_GRIT_134, this);
+          return copy (BROCKS_GRIT_135, this);
 
         case DANA_173:
-          return copy (DANA_136, this);
+          return copy (DANA_137, this);
 
         case ERIKAS_HOSPITALITY_174:
-          return copy (ERIKAS_HOSPITALITY_139, this);
+          return copy (ERIKAS_HOSPITALITY_140, this);
 
         case EVELYN_175:
-          return copy (EVELYN_140, this);
+          return copy (EVELYN_141, this);
 
         case INGO_EMMET_176:
-          return copy (INGO_EMMET_143, this);
+          return copy (INGO_EMMET_144, this);
 
         case JASMINE_177:
-          return copy (JASMINE_144, this);
+          return copy (JASMINE_145, this);
 
         case MORGAN_178:
-          return copy (MORGAN_148, this);
+          return copy (MORGAN_149, this);
 
         case NANU_179:
-          return copy (NANU_149, this);
+          return copy (NANU_150, this);
 
         case NITA_180:
-          return copy (NITA_150, this);
+          return copy (NITA_151, this);
 
         case SABRINAS_SUGGESTION_181:
-          return copy (SABRINAS_SUGGESTION_153, this);
+          return copy (SABRINAS_SUGGESTION_154, this);
 
         case CELEBI_VENUSAUR_GX_182:
           return copy (CELEBI_VENUSAUR_GX_1, this);
 
         case MAGIKARP_WAILORD_GX_183:
-          return copy (MAGIKARP_WAILORD_GX_159, this);
+          return copy (MAGIKARP_WAILORD_GX_160, this);
 
         case PIKACHU_ZEKROM_GX_184:
-          return copy (PIKACHU_ZEKROM_GX_32, this);
+          return copy (PIKACHU_ZEKROM_GX_33, this);
 
         case AMPHAROS_GX_185:
-          return copy (AMPHAROS_GX_42, this);
+          return copy (AMPHAROS_GX_43, this);
 
         case GENGAR_MIMIKYU_GX_186:
-          return copy (GENGAR_MIMIKYU_GX_52, this);
+          return copy (GENGAR_MIMIKYU_GX_53, this);
 
         case HOOPA_GX_187:
-          return copy (HOOPA_GX_95, this);
+          return copy (HOOPA_GX_96, this);
 
         case INCINEROAR_GX_188:
-          return copy (INCINEROAR_GX_96, this);
+          return copy (INCINEROAR_GX_97, this);
 
         case COBALION_GX_189:
-          return copy (COBALION_GX_105, this);
+          return copy (COBALION_GX_106, this);
 
         case LATIAS_LATIOS_GX_190:
-          return copy (LATIAS_LATIOS_GX_112, this);
+          return copy (LATIAS_LATIOS_GX_113, this);
 
         case EEVEE_SNORLAX_GX_191:
-          return copy (EEVEE_SNORLAX_GX_119, this);
+          return copy (EEVEE_SNORLAX_GX_120, this);
 
         case DANGEROUS_DRILL_192:
-          return copy (DANGEROUS_DRILL_137, this);
+          return copy (DANGEROUS_DRILL_138, this);
 
         case ELECTROCHARGER_193:
-          return copy (ELECTROCHARGER_138, this);
+          return copy (ELECTROCHARGER_139, this);
 
         case JUDGE_WHISTLE_194:
-          return copy (JUDGE_WHISTLE_145, this);
+          return copy (JUDGE_WHISTLE_146 this);
 
         case METAL_GOGGLES_195:
-          return copy (METAL_GOGGLES_147, this);
+          return copy (METAL_GOGGLES_148, this);
+
+        case POKEMON_COMMUNICATION_196:
+          return copy (POKEMON_COMMUNICATION_152, this);
 
         default:
             return null;
