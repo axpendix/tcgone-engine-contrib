@@ -3677,7 +3677,7 @@ public enum TeamUp implements CardInfo {
           return copy (ELECTROCHARGER_139, this);
 
         case JUDGE_WHISTLE_194:
-          return copy (JUDGE_WHISTLE_146 this);
+          return copy (JUDGE_WHISTLE_146, this);
 
         case METAL_GOGGLES_195:
           return copy (METAL_GOGGLES_148, this);
