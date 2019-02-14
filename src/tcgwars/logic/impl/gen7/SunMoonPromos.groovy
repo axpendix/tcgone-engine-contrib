@@ -181,7 +181,25 @@ public enum SunMoonPromos implements CardInfo {
 	ROWLET_SM153("Rowlet", 153, Rarity.PROMO, [POKEMON,_GRASS_,BASIC]),
 	SALANDIT_SM154("Salandit", 154, Rarity.PROMO, [POKEMON,_FIRE_,BASIC]),
 	KINGDRA_GX_SM155("Kingdra-GX", 155, Rarity.PROMO, [POKEMON_GX,POKEMON,_WATER_,STAGE2,EVOLUTION]),
-	DRAGONITE_GX_SM156("Dragonite-GX", 156, Rarity.PROMO, [POKEMON_GX,POKEMON,_DRAGON_,STAGE2,EVOLUTION]);
+	DRAGONITE_GX_SM156("Dragonite-GX", 156, Rarity.PROMO, [POKEMON_GX,POKEMON,_DRAGON_,STAGE2,EVOLUTION]),
+	PIKACHU_SM157("Pikachu", 157, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	CHARIZARD_SM158("Charizard", 158, Rarity.PROMO, [POKEMON,_FIRE_,STAGE2,EVOLUTION]),
+	ZAPDOS_SM159("Zapdos", 159, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+	NIDOQUEEN_SM160("Nidoqueen", 160, Rarity.PROMO, [POKEMON,_PSYCHIC_,STAGE2,EVOLUTION]),
+	JIRACHI_SM161("Jirachi", 161, Rarity.PROMO, [POKEMON,_METAL_,BASIC]),
+	PIKACHU_SM162("Pikachu", 162, Rarity.LOL : , [POKEMON,_LIGHTNING_,BASIC]),
+	MIMIKYU_SM163("Mimikyu", 163, Rarity.PROMO, [POKEMON,_FAIRY_,BASIC]),
+	DEOXYS_SM164("Deoxys", 164, Rarity.PROMO, [POKEMON,_PSYCHIC_,BASIC]),
+	ULTRA_NECROZMA_SM165("Ultra Necrozma", 165, Rarity.PROMO, [POKEMON,_DRAGON_,BASIC,ULTRA_BEAST]),
+	MAGIKARP_WAILORD_GX_SM166("Magikarp &amp; Wailord-GX", 166, Rarity.PROMO, [POKEMON_GX,POKEMON,_WATER_,BASIC]),
+	FLAREON_GX_SM171("Flareon-GX", 171, Rarity.PROMO, [POKEMON_GX,POKEMON,_FIRE_,STAGE1,EVOLUTION]),
+	VAPOREON_GX_SM172("Vaporeon-GX", 172, Rarity.PROMO, [POKEMON_GX,POKEMON,_WATER_,STAGE1,EVOLUTION]),
+	JOLTEON_GX_SM173("Jolteon-GX", 173, Rarity.PROMO, [POKEMON_GX,POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
+	EEVEE_GX_SM174("Eevee-GX", 174, Rarity.PROMO, [POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
+	EEVEE_GX_SM175("Eevee-GX", 175, Rarity.PROMO, [POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
+	EEVEE_GX_SM176("Eevee-GX", 176, Rarity.PROMO, [POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
+	MELTAN_SM177("Meltan", 177, Rarity.PROMO, [POKEMON,_METAL_,BASIC]),;
+	MELMETAL_SM178("Meltan", 177, Rarity.PROMO, [POKEMON,_METAL_,STAGE1,EVOLUTION]),;
 
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -2067,6 +2085,327 @@ public enum SunMoonPromos implements CardInfo {
 			return copy(DragonMajesty.KINGDRA_GX_18, this);
 		case DRAGONITE_GX_SM156:
 			return copy(DragonMajesty.DRAGONITE_GX_37, this);
+		case PIKACHU_SM157:
+			return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
+				weakness FIGHTING
+				resistance METAL, MINUS20
+				bwAbility "Pika Shield" , {
+					text "This Pokémon can't be Paralyzed."
+					delayedA {
+						before APPLY_SPECIAL_CONDITION, {
+							def pcs=e.getTarget(bg)
+							if(pcs == self && ef.type == PARALYZED){
+								bc "Pika Shield prevents $self from being Paralyzed"
+								prevent()
+							}
+						}
+					}
+				}
+				move "Static Shock" , {
+					text "10 damage."
+					energyCost L
+					onAttack{
+						damage 10
+					}
+				}
+			};
+			case CHARIZARD_SM158:
+				return copy(TeamUp.CHARIZARD_14, this);
+
+		case ZAPDOS_SM159:
+			return copy(TeamUp.ZAPDOS_40, this);
+		case NIDOQUEEN_SM160:
+			return copy(TeamUp.NIDOQUEEN_56, this);
+
+		case JIRACHI_SM161:
+			return copy(TeamUp.JIRACHI_99, this);
+
+		case PIKACHU_SM162:
+			return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
+				weakness FIGHTING
+				resistance METAL, MINUS20
+				move "Nuzzle" , {
+					text "Flip a coin. If heads, your opponent&#8217;s Active Pokémon is now Paralyzed.\n"
+					energyCost C
+					onAttack{
+						flip{apply PARALYZED}
+					}
+				}
+				move "Thunder Jolt" , {
+					text "30 This Pokémon does 10 damage to itself."
+					energyCost L,C
+					onAttack{
+						damage 30
+						damage 10, self
+					}
+				}
+			};
+			case MIMIKYU_SM163:
+				return basic (this, hp:HP070, type:FAIRY, retreatCost:1) {
+					move "Mimic" , {
+						text "Shuffle your hand into your deck. Then, draw a card for each card in your opponent's hand."
+						energyCost Y
+						attackRequirement{
+							assert my.deck || my.hand : "You don't have any card to draw"
+						}
+						onAttack{
+							my.hand.moveTo(my.deck)
+							shuffleDeck()
+							draw opp.hand.size()
+						}
+					}
+					move "Play Rough" , {
+						text "20+ Flip a coin. If heads, this attack does 20 more damage."
+						energyCost Y,C
+						onAttack{
+							damage 20
+							flip {damage 20}
+						}
+					}
+				};
+				case DEOXYS_SM164:
+					return basic (this, hp:HP110, type:PSYCHIC, retreatCost:2) {
+						weakness PSYCHIC
+						bwAbility "Power Suction" , {
+							text "Once during your turn (before your attack), you may move an Energy from 1 of your Pokémon to 1 of your Deoxys."
+							actionA{
+								checkLastTurn()
+								powerUsed()
+								moveEnergy(my.all,my.all.findAll{it.name == "Deoxys"})
+							}
+						}
+						move "Psycho Boost" , {
+							text "100 During your next turn, this Pokémon's Psycho Boost's base damage is 50."
+							energyCost P,P,C
+							onAttack{
+								damage 100
+								afterDamage{decreasedBaseDamageNextTurn(self,"Psycho Boost",hp(50))}
+							}
+						}
+					};
+			case ULTRA_NECROZMA_SM165:
+				return basic (this, hp:HP130, type:DRAGON, retreatCost:3) {
+					weakness FAIRY
+					move "Shining Burst" , {
+						text "100+ If the total of both players' remaining Prize cards is 6 or less, discard all Energy attached to this Pokémon, and this attack does 100 more damage."
+						energyCost P,P,M,M
+						onAttack{
+							damage 100
+							if(my.prizeCardSet.size() + opp.prizeCardSet.size() <= 6){
+								damage 100
+								afterDamage{
+									discardAllSelfEnergy()
+								}
+							}
+						}
+					}
+				};
+		case MAGIKARP_WAILORD_GX_SM166:
+			return copy(TeamUp.MAGIKARP_WAILORD_GX_160, this);
+
+		case FLAREON_GX_SM171:
+			return 	evolution (this, from:"Eevee", hp:HP210, type:FIRE, retreatCost:2) {
+				weakness WATER
+				move "Heat Stage" , {
+					text "30 damage. You may attach up to 3 [R] Energy cards from your hand to your pokémon in any way you like"
+					energyCost R
+					onAttack{
+						damage 30
+						afterDamage{
+							if(my.hand.filterByType(ENERGY).filterByEnergyType(R)){
+								attachEnergyFrom(type:R,my.hand,my.all)
+								attachEnergyFrom(type:R,my.hand,my.all)
+								attachEnergyFrom(type:R,my.hand,my.all)
+							}
+						}
+					}
+				}
+				move "Bright Flame" , {
+					text "190 damage. Discard 2 [R] Energy from this pokémon"
+					energyCost R,R,C
+					onAttack{
+						damage 190
+						discardSelfEnergy R,R
+					}
+				}
+				move "Power Burner GX" , {
+					text "20× damage. This attack does 20 damage for each [R] Energy card in your discard"
+					energyCost R
+					attackRequirement{
+						gxCheck()
+					}
+					onAttack{
+						gxPerform()
+						damage 20*my.discard.filterByType(ENERGY).filterByEnergyType(R).size()
+					}
+				}
+			};
+			case VAPOREON_GX_SM172:
+				return 	evolution (this, from:"Eevee", hp:HP210, type:WATER, retreatCost:2) {
+					weakness GRASS
+					bwAbility "Hydrating Drops" , {
+						text "Once during your turn (before your attack), you may heal 30 damage from your Active [W] Pokémon."
+						actionA{
+							checkLastTurn()
+							assert my.active.topPokemonCard.types.constains(W)
+							powerUsed()
+							heal 30, my.active
+						}
+					}
+					move "Hydro Pump" , {
+						text "40+ damage. This attack does 30 more damage times the amount of [W] Energy attached to this Pokémon"
+						energyCost C,C,C
+						onAttack{
+							damage 40+30*self.cards.energyCount(W)
+						}
+					}
+					move "Cure Shower GX" , {
+						text "Heal all damage from all of your [W] Pokémon"
+						energyCost W
+						attackRequirement{
+							gxCheck()
+						}
+						onAttack{
+							my.all.each{
+								if(it.topPokemonCard.types.contains(W)){
+									heal 10*it.numberOfDamageCounters, it
+								}
+							}
+						}
+					}
+				};
+		case JOLTEON_GX_SM173:
+			return 	evolution (this, from:"Eevee", hp:HP200, type:LIGHTNING, retreatCost:0) {
+				weakness FIGHTING
+				resistance METAL, MINUS20
+				move "Electrobullet" , {
+					text "30 damage. This attack does 30 damage to 1 of your opponent's Benched Pokémon. (Don&#8217;t apply Weakness and Resistance for Benched Pokémon.)\n"
+					energyCost L
+					onAttack{
+						damage 30
+						if(opp.bench){
+							damage 30, opp.bench.select()
+						}
+					}
+				}
+				move "Head Bolt" , {
+					text "110 damage."
+					energyCost L,C
+					onAttack{
+						damage 110
+					}
+				}
+				move "Swift Run GX" , {
+					text "110 damage. Prevent all effects of attacks, including damage, done to this Pokémon during your opponent&#8217;s next turn. (You can&#8217;t use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+					energyCost L,C
+					attackRequirement{
+						gxCheck()
+					}
+					onAttack{
+						gxPerform()
+						damage 110
+						preventAllEffectsNextTurn()
+					}
+				}
+			};
+		case EEVEE_GX_SM174:
+			return basic (this, hp:HP150, type:COLORLESS, retreatCost:1) {
+				weakness FIGHTING
+				bwAbility "Ascension DNA" , {
+					text "Once during your turn (before your attack), if you have a Pokémon in your hand that evolves from Eevee, you may put that card onto this Pokémon to evolve it. Before evolving, heal all damage from this Pokémon. You can't use this Ability during your first turn or on the turn this Pokémon was put into play."
+					actionA{
+						checkLastTurn()
+						assert my.hand.findAll{it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"} : "No Stage 1 in your hand"
+						assert bg.turnCount > 2 : "Cannot evolve first turn"
+						assert self.turnCount < bg.turnCount : "Cannot evolve the turn you put it into play"
+						powerUsed()
+						def pcs = my.hand.findAll{it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"}.select("Evolve To")
+						evolve(self, pcs.first(), PLAY_FROM_HAND)
+					}
+				}
+				move "Boost Dash" , {
+					text "100 damage"
+					energyCost C,C,C
+					onAttack{
+						damage 100
+					}
+				}
+				move "Joy Maker GX" , {
+					text "Put 3 cards from your discard pile into your hand. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+					energyCost C
+					attackRequirement{
+						gxCheck()
+						assert my.discard : "there is no card in your discard pile"
+					}
+					onAttack{
+						gxPerform()
+						my.discard.select(max:3,"select the card you want to put in your hand.").moveTo(my.hand)
+					}
+				}
+		};
+		case EEVEE_GX_SM175:
+			return copy(EEVEE_GX_SM174, this);
+
+		case EEVEE_GX_SM176:
+			return copy(EEVEE_GX_SM174, this);
+
+		case MELTAN_SM177:
+			return basic (this, hp:HP060, type:METAL, retreatCost:1) {
+				weakness FIRE
+				resistance PSYCHIC, MINUS20
+				move "Multiply" , {
+					text "Search your deck for Meltan and put it onto your Bench. Then, shuffle your deck.\n"
+					energyCost M
+					callForFamily(name:"Meltan",1,delegate)
+				}
+				move "Beam" , {
+					text "30 damage"
+					energyCost C,C
+					onAttack{
+						damage 30
+					}
+			}
+		};
+		case MELMETAL_SM178:
+			return evolution (this,from : "Meltan", hp:HP220, type:METAL, retreatCost:4) {
+				weakness FIRE
+				resistance PSYCHIC, MINUS20
+				bwAbility "Hard Coat" , {
+					text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each{
+								if(it.to == self && it.notNoEffect && it.dmg.value) {
+									bc "Hard Coat -30"
+									it.dmg -= hp(30)
+								}
+							}
+						}
+					}
+				}
+				move "Metal Blast" , {
+					text "110+ damage. This attack does 20 more damage times the amount of [M] energy attached to this Pokémon"
+					energyCost C,C,C,C
+					onAttack{
+						damage 110+20*self.cards.energyCount(M)
+					}
+				}
+				move "Iron Force GX", {
+					text "Attach any number of [M] Energy cards from your discard pile to this Pokémon"
+					energyCost M
+					attackRequirement{
+						gxCheck()
+						assert my.discard.filterByType(ENERGY).filterByEnergyType(M) : "there is no [M] Energy card in your discard pile"
+					}
+					onAttack{
+						gxPerform()
+						my.discard.filterByType(ENERGY).filterByEnergyType(M).each{
+							attachEnergyFrom(may:true,it,self)
+						}
+					}
+				}
+
+		};
 			default:
 				return null;
 		}
