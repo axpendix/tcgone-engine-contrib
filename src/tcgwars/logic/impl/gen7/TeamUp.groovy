@@ -65,171 +65,172 @@ public enum TeamUp implements CardInfo {
     GOLDUCK_27("Golduck", 27, Rarity.UNCOMMON, [POKEMON,_WATER_,STAGE1,EVOLUTION]),
     STARYU_28("Staryu", 28, Rarity.COMMON, [POKEMON,_WATER_,BASIC]),
     MAGIKARP_29("Magikarp", 29, Rarity.COMMON, [POKEMON,_WATER_,BASIC]),
-    LAPRAS_30("Lapras", 30, Rarity.RARE, [POKEMON,_WATER_,BASIC]),
-    ARTICUNO_31("Articuno", 31, Rarity.HOLORARE, [POKEMON,_WATER_,BASIC]),
-    PIKACHU_ZEKROM_GX_32("Pikachu & Zekrom-GX", 32, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_LIGHTNING_,BASIC]),
-    ALOLAN_GEODUDE_33("Alolan Geodude", 33, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
+    LAPRAS_31("Lapras", 31, Rarity.RARE, [POKEMON,_WATER_,BASIC]),
+    ARTICUNO_32("Articuno", 32, Rarity.HOLORARE, [POKEMON,_WATER_,BASIC]),
+    PIKACHU_ZEKROM_GX_33("Pikachu & Zekrom-GX", 33, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_LIGHTNING_,BASIC]),
     ALOLAN_GEODUDE_34("Alolan Geodude", 34, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
-    ALOLAN_GRAVELER_35("Alolan Graveler", 35, Rarity.UNCOMMON, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
-    ALOLAN_GOLEM_36("Alolan Golem", 36, Rarity.RARE, [POKEMON,_LIGHTNING_,STAGE2,EVOLUTION]),
-    VOLTORB_37("Voltorb", 37, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
-    ELECTRODE_38("Electrode", 38, Rarity.HOLORARE, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
-    ZAPDOS_39("Zapdos", 39, Rarity.HOLORARE, [POKEMON,_LIGHTNING_,BASIC]),
-    MAREEP_40("Mareep", 40, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
-    FLAAFFY_41("Flaaffy", 41, Rarity.UNCOMMON, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
-    AMPHAROS_GX_42("Ampharos-GX", 42, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_LIGHTNING_,STAGE2,EVOLUTION]),
-    BLITZLE_43("Blitzle", 43, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
-    ZEBSTRIKA_44("Zebstrika", 44, Rarity.RARE, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
-    EMOLGA_45("Emolga", 45, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
-    JOLTIK_46("Joltik", 46, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
-    GALVANTULA_47("Galvantula", 47, Rarity.RARE, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
-    HELIOPTILE_48("Helioptile", 48, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
-    HELIOLISK_49("Heliolisk", 49, Rarity.UNCOMMON, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
-    TAPU_KOKO_PRISM_STAR_50("Tapu Koko Prism Star", 50, Rarity.HOLORARE, [PRISM_STAR,POKEMON,_LIGHTNING_,BASIC]),
-    ZERAORA_51("Zeraora", 51, Rarity.HOLORARE, [POKEMON,_LIGHTNING_,BASIC]),
-    GENGAR_MIMIKYU_GX_52("Gengar & Mimikyu-GX", 52, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
-    NIDORAN_FEMALE_53("Nidoran Female", 53, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
-    NIDORINA_54("Nidorina", 54, Rarity.UNCOMMON, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
-    NIDOQUEEN_55("Nidoqueen", 55, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE2,EVOLUTION]),
-    NIDORAN_MALE_56("Nidoran Male", 56, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
-    NIDORINO_57("Nidorino", 57, Rarity.UNCOMMON, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
-    NIDOKING_58("Nidoking", 58, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE2,EVOLUTION]),
-    TENTACOOL_59("Tentacool", 59, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
-    TENTACRUEL_60("Tentacruel", 60, Rarity.UNCOMMON, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
-    GRIMER_61("Grimer", 61, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
-    MUK_62("Muk", 62, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
-    ALOLAN_MAROWAK_63("Alolan Marowak", 63, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
-    STARMIE_64("Starmie", 64, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
-    MR_MIME_65("Mr. Mime", 65, Rarity.RARE, [POKEMON,_PSYCHIC_,BASIC]),
-    MR_MIME_GX_66("Mr. Mime-GX", 66, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
-    JYNX_67("Jynx", 67, Rarity.UNCOMMON, [POKEMON,_PSYCHIC_,BASIC]),
-    COSMOG_68("Cosmog", 68, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
-    COSMOEM_69("Cosmoem", 69, Rarity.UNCOMMON, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
-    MANKEY_70("Mankey", 70, Rarity.COMMON, [POKEMON,_FIGHTING_,BASIC]),
-    PRIMEAPE_71("Primeape", 71, Rarity.RARE, [POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
-    HITMONLEE_72("Hitmonlee", 72, Rarity.UNCOMMON, [POKEMON,_FIGHTING_,BASIC]),
-    HITMONCHAN_73("Hitmonchan", 73, Rarity.UNCOMMON, [POKEMON,_FIGHTING_,BASIC]),
-    OMANYTE_74("Omanyte", 74, Rarity.UNCOMMON, [POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
-    OMASTAR_75("Omastar", 75, Rarity.HOLORARE, [POKEMON,_FIGHTING_,STAGE2,EVOLUTION]),
-    KABUTO_76("Kabuto", 76, Rarity.UNCOMMON, [POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
-    KABUTOPS_77("Kabutops", 77, Rarity.RARE, [POKEMON,_FIGHTING_,STAGE2,EVOLUTION]),
-    LARVITAR_78("Larvitar", 78, Rarity.COMMON, [POKEMON,_FIGHTING_,BASIC]),
-    PUPITAR_79("Pupitar", 79, Rarity.UNCOMMON, [POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
-    PANCHAM_80("Pancham", 80, Rarity.COMMON, [POKEMON,_FIGHTING_,BASIC]),
-    LYCANROC_GX_81("Lycanroc-GX", 81, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
-    ALOLAN_GRIMER_82("Alolan Grimer", 82, Rarity.COMMON, [POKEMON,_DARKNESS_,BASIC]),
-    ALOLAN_MUK_83("Alolan Muk", 83, Rarity.RARE, [POKEMON,_DARKNESS_,STAGE1,EVOLUTION]),
-    TYRANITAR_84("Tyranitar", 84, Rarity.HOLORARE, [POKEMON,_DARKNESS_,STAGE2,EVOLUTION]),
-    POOCHYENA_85("Poochyena", 85, Rarity.COMMON, [POKEMON,_DARKNESS_,BASIC]),
-    MIGHTYENA_86("Mightyena", 86, Rarity.RARE, [POKEMON,_DARKNESS_,STAGE1,EVOLUTION]),
-    ABSOL_87("Absol", 87, Rarity.HOLORARE, [POKEMON,_DARKNESS_,BASIC]),
-    SPIRITOMB_88("Spiritomb", 88, Rarity.UNCOMMON, [POKEMON,_DARKNESS_,BASIC]),
-    ZORUA_89("Zorua", 89, Rarity.COMMON, [POKEMON,_DARKNESS_,BASIC]),
-    ZOROARK_90("Zoroark", 90, Rarity.HOLORARE, [POKEMON,_DARKNESS_,STAGE1,EVOLUTION]),
-    VULLABY_91("Vullaby", 91, Rarity.COMMON, [POKEMON,_DARKNESS_,BASIC]),
-    MANDIBUZZ_92("Mandibuzz", 92, Rarity.RARE, [POKEMON,_DARKNESS_,STAGE1,EVOLUTION]),
-    PANGORO_93("Pangoro", 93, Rarity.RARE, [POKEMON,_DARKNESS_,STAGE1,EVOLUTION]),
-    YVELTAL_94("Yveltal", 94, Rarity.HOLORARE, [POKEMON,_DARKNESS_,BASIC]),
-    HOOPA_GX_95("Hoopa-GX", 95, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_DARKNESS_,BASIC]),
-    INCINEROAR_GX_96("Incineroar-GX", 96, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_DARKNESS_,STAGE2,EVOLUTION]),
-    SKARMORY_97("Skarmory", 97, Rarity.RARE, [POKEMON,_METAL_,BASIC]),
-    JIRACHI_98("Jirachi", 98, Rarity.HOLORARE, [POKEMON,_METAL_,BASIC]),
-    BRONZOR_99("Bronzor", 99, Rarity.COMMON, [POKEMON,_METAL_,BASIC]),
-    BRONZONG_100("Bronzong", 100, Rarity.RARE, [POKEMON,_METAL_,STAGE1,EVOLUTION]),
-    FERROSEED_101("Ferroseed", 101, Rarity.COMMON, [POKEMON,_METAL_,BASIC]),
-    FERROTHORN_102("Ferrothorn", 102, Rarity.RARE, [POKEMON,_METAL_,STAGE1,EVOLUTION]),
-    PAWNIARD_103("Pawniard", 103, Rarity.COMMON, [POKEMON,_METAL_,BASIC]),
-    BISHARP_104("Bisharp", 104, Rarity.RARE, [POKEMON,_METAL_,STAGE1,EVOLUTION]),
-    COBALION_GX_105("Cobalion-GX", 105, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_METAL_,BASIC]),
-    HONEDGE_106("Honedge", 106, Rarity.COMMON, [POKEMON,_METAL_,BASIC]),
-    DOUBLADE_107("Doublade", 107, Rarity.UNCOMMON, [POKEMON,_METAL_,STAGE1,EVOLUTION]),
-    AEGISLASH_108("Aegislash", 108, Rarity.HOLORARE, [POKEMON,_METAL_,STAGE2,EVOLUTION]),
-    KLEFKI_109("Klefki", 109, Rarity.COMMON, [POKEMON,_METAL_,BASIC]),
-    ALOLAN_NINETALES_110("Alolan Ninetales", 110, Rarity.HOLORARE, [POKEMON,_FAIRY_,STAGE1,EVOLUTION]),
-    MIMIKYU_111("Mimikyu", 111, Rarity.RARE, [POKEMON,_FAIRY_,BASIC]),
-    LATIAS_LATIOS_GX_112("Latias & Latios-GX", 112, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_DRAGON_,BASIC]),
-    ALOLAN_EXEGGUTOR_113("Alolan Exeggutor", 113, Rarity.RARE, [POKEMON,_DRAGON_,STAGE1,EVOLUTION]),
+    ALOLAN_GEODUDE_35("Alolan Geodude", 35, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
+    ALOLAN_GRAVELER_36("Alolan Graveler", 36, Rarity.UNCOMMON, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
+    ALOLAN_GOLEM_37("Alolan Golem", 37, Rarity.RARE, [POKEMON,_LIGHTNING_,STAGE2,EVOLUTION]),
+    VOLTORB_38("Voltorb", 38, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
+    ELECTRODE_39("Electrode", 39, Rarity.HOLORARE, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
+    ZAPDOS_40("Zapdos", 40, Rarity.HOLORARE, [POKEMON,_LIGHTNING_,BASIC]),
+    MAREEP_41("Mareep", 41, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
+    FLAAFFY_42("Flaaffy", 42, Rarity.UNCOMMON, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
+    AMPHAROS_GX_43("Ampharos-GX", 43, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_LIGHTNING_,STAGE2,EVOLUTION]),
+    BLITZLE_44("Blitzle", 44, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
+    ZEBSTRIKA_45("Zebstrika", 45, Rarity.RARE, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
+    EMOLGA_46("Emolga", 46, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
+    JOLTIK_47("Joltik", 47, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
+    GALVANTULA_48("Galvantula", 48, Rarity.RARE, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
+    HELIOPTILE_49("Helioptile", 49, Rarity.COMMON, [POKEMON,_LIGHTNING_,BASIC]),
+    HELIOLISK_50("Heliolisk", 50, Rarity.UNCOMMON, [POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
+    TAPU_KOKO_PRISM_STAR_51("Tapu Koko Prism Star", 51, Rarity.HOLORARE, [PRISM_STAR,POKEMON,_LIGHTNING_,BASIC]),
+    ZERAORA_52("Zeraora", 52, Rarity.HOLORARE, [POKEMON,_LIGHTNING_,BASIC]),
+    GENGAR_MIMIKYU_GX_53("Gengar & Mimikyu-GX", 53, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
+    NIDORAN_FEMALE_54("Nidoran Female", 54, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
+    NIDORINA_55("Nidorina", 55, Rarity.UNCOMMON, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
+    NIDOQUEEN_56("Nidoqueen", 56, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE2,EVOLUTION]),
+    NIDORAN_MALE_57("Nidoran Male", 57, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
+    NIDORINO_58("Nidorino", 58, Rarity.UNCOMMON, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
+    NIDOKING_59("Nidoking", 59, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE2,EVOLUTION]),
+    TENTACOOL_60("Tentacool", 60, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
+    TENTACRUEL_61("Tentacruel", 61, Rarity.UNCOMMON, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
+    GRIMER_62("Grimer", 62, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
+    MUK_63("Muk", 63, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
+    ALOLAN_MAROWAK_64("Alolan Marowak", 64, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
+    STARMIE_65("Starmie", 65, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
+    MR_MIME_66("Mr. Mime", 66, Rarity.RARE, [POKEMON,_PSYCHIC_,BASIC]),
+    MR_MIME_GX_67("Mr. Mime-GX", 67, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
+    JYNX_68("Jynx", 68, Rarity.UNCOMMON, [POKEMON,_PSYCHIC_,BASIC]),
+    COSMOG_69("Cosmog", 69, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
+    COSMOEM_70("Cosmoem", 70, Rarity.UNCOMMON, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
+    MANKEY_71("Mankey", 71, Rarity.COMMON, [POKEMON,_FIGHTING_,BASIC]),
+    PRIMEAPE_72("Primeape", 72, Rarity.RARE, [POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
+    HITMONLEE_73("Hitmonlee", 73, Rarity.UNCOMMON, [POKEMON,_FIGHTING_,BASIC]),
+    HITMONCHAN_74("Hitmonchan", 74, Rarity.UNCOMMON, [POKEMON,_FIGHTING_,BASIC]),
+    OMANYTE_75("Omanyte", 75, Rarity.UNCOMMON, [POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
+    OMASTAR_76("Omastar", 76, Rarity.HOLORARE, [POKEMON,_FIGHTING_,STAGE2,EVOLUTION]),
+    KABUTO_77("Kabuto", 77, Rarity.UNCOMMON, [POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
+    KABUTOPS_78("Kabutops", 78, Rarity.RARE, [POKEMON,_FIGHTING_,STAGE2,EVOLUTION]),
+    LARVITAR_79("Larvitar", 79, Rarity.COMMON, [POKEMON,_FIGHTING_,BASIC]),
+    PUPITAR_80("Pupitar", 80, Rarity.UNCOMMON, [POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
+    PANCHAM_81("Pancham", 81, Rarity.COMMON, [POKEMON,_FIGHTING_,BASIC]),
+    LYCANROC_GX_82("Lycanroc-GX", 82, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_FIGHTING_,STAGE1,EVOLUTION]),
+    ALOLAN_GRIMER_83("Alolan Grimer", 83, Rarity.COMMON, [POKEMON,_DARKNESS_,BASIC]),
+    ALOLAN_MUK_84("Alolan Muk", 84, Rarity.RARE, [POKEMON,_DARKNESS_,STAGE1,EVOLUTION]),
+    TYRANITAR_85("Tyranitar", 85, Rarity.HOLORARE, [POKEMON,_DARKNESS_,STAGE2,EVOLUTION]),
+    POOCHYENA_86("Poochyena", 86, Rarity.COMMON, [POKEMON,_DARKNESS_,BASIC]),
+    MIGHTYENA_87("Mightyena", 87, Rarity.RARE, [POKEMON,_DARKNESS_,STAGE1,EVOLUTION]),
+    ABSOL_88("Absol", 88, Rarity.HOLORARE, [POKEMON,_DARKNESS_,BASIC]),
+    SPIRITOMB_89("Spiritomb", 89, Rarity.UNCOMMON, [POKEMON,_DARKNESS_,BASIC]),
+    ZORUA_90("Zorua", 90, Rarity.COMMON, [POKEMON,_DARKNESS_,BASIC]),
+    ZOROARK_91("Zoroark", 91, Rarity.HOLORARE, [POKEMON,_DARKNESS_,STAGE1,EVOLUTION]),
+    VULLABY_92("Vullaby", 92, Rarity.COMMON, [POKEMON,_DARKNESS_,BASIC]),
+    MANDIBUZZ_93("Mandibuzz", 93, Rarity.RARE, [POKEMON,_DARKNESS_,STAGE1,EVOLUTION]),
+    PANGORO_94("Pangoro", 94, Rarity.RARE, [POKEMON,_DARKNESS_,STAGE1,EVOLUTION]),
+    YVELTAL_95("Yveltal", 95, Rarity.HOLORARE, [POKEMON,_DARKNESS_,BASIC]),
+    HOOPA_GX_96("Hoopa-GX", 96, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_DARKNESS_,BASIC]),
+    INCINEROAR_GX_97("Incineroar-GX", 97, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_DARKNESS_,STAGE2,EVOLUTION]),
+    SKARMORY_98("Skarmory", 98, Rarity.RARE, [POKEMON,_METAL_,BASIC]),
+    JIRACHI_99("Jirachi", 99, Rarity.HOLORARE, [POKEMON,_METAL_,BASIC]),
+    BRONZOR_100("Bronzor", 100, Rarity.COMMON, [POKEMON,_METAL_,BASIC]),
+    BRONZONG_101("Bronzong", 101, Rarity.RARE, [POKEMON,_METAL_,STAGE1,EVOLUTION]),
+    FERROSEED_102("Ferroseed", 102, Rarity.COMMON, [POKEMON,_METAL_,BASIC]),
+    FERROTHORN_103("Ferrothorn", 103, Rarity.RARE, [POKEMON,_METAL_,STAGE1,EVOLUTION]),
+    PAWNIARD_104("Pawniard", 104, Rarity.COMMON, [POKEMON,_METAL_,BASIC]),
+    BISHARP_105("Bisharp", 105, Rarity.RARE, [POKEMON,_METAL_,STAGE1,EVOLUTION]),
+    COBALION_GX_106("Cobalion-GX", 106, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_METAL_,BASIC]),
+    HONEDGE_107("Honedge", 107, Rarity.COMMON, [POKEMON,_METAL_,BASIC]),
+    DOUBLADE_108("Doublade", 108, Rarity.UNCOMMON, [POKEMON,_METAL_,STAGE1,EVOLUTION]),
+    AEGISLASH_109("Aegislash", 109, Rarity.HOLORARE, [POKEMON,_METAL_,STAGE2,EVOLUTION]),
+    KLEFKI_110("Klefki", 110, Rarity.COMMON, [POKEMON,_METAL_,BASIC]),
+    ALOLAN_NINETALES_111("Alolan Ninetales", 111, Rarity.HOLORARE, [POKEMON,_FAIRY_,STAGE1,EVOLUTION]),
+    MIMIKYU_112("Mimikyu", 112, Rarity.RARE, [POKEMON,_FAIRY_,BASIC]),
+    LATIAS_LATIOS_GX_113("Latias & Latios-GX", 113, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_DRAGON_,BASIC]),
     ALOLAN_EXEGGUTOR_114("Alolan Exeggutor", 114, Rarity.RARE, [POKEMON,_DRAGON_,STAGE1,EVOLUTION]),
-    DRATINI_115("Dratini", 115, Rarity.COMMON, [POKEMON,_DRAGON_,BASIC]),
+    ALOLAN_EXEGGUTOR_115("Alolan Exeggutor", 115, Rarity.RARE, [POKEMON,_DRAGON_,STAGE1,EVOLUTION]),
     DRATINI_116("Dratini", 116, Rarity.COMMON, [POKEMON,_DRAGON_,BASIC]),
-    DRAGONAIR_117("Dragonair", 117, Rarity.UNCOMMON, [POKEMON,_DRAGON_,STAGE1,EVOLUTION]),
-    DRAGONITE_118("Dragonite", 118, Rarity.HOLORARE, [POKEMON,_DRAGON_,STAGE2,EVOLUTION]),
-    EEVEE_SNORLAX_GX_119("Eevee & Snorlax-GX", 119, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
-    PIDGEY_120("Pidgey", 120, Rarity.COMMON, [POKEMON,_COLORLESS_,BASIC]),
+    DRATINI_117("Dratini", 117, Rarity.COMMON, [POKEMON,_DRAGON_,BASIC]),
+    DRAGONAIR_118("Dragonair", 118, Rarity.UNCOMMON, [POKEMON,_DRAGON_,STAGE1,EVOLUTION]),
+    DRAGONITE_119("Dragonite", 119, Rarity.HOLORARE, [POKEMON,_DRAGON_,STAGE2,EVOLUTION]),
+    EEVEE_SNORLAX_GX_120("Eevee & Snorlax-GX", 120, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
     PIDGEY_121("Pidgey", 121, Rarity.COMMON, [POKEMON,_COLORLESS_,BASIC]),
-    PIDGEOTTO_122("Pidgeotto", 122, Rarity.COMMON, [POKEMON,_COLORLESS_,STAGE1,EVOLUTION]),
-    PIDGEOT_123("Pidgeot", 123, Rarity.RARE, [POKEMON,_COLORLESS_,STAGE2,EVOLUTION]),
-    MEOWTH_124("Meowth", 124, Rarity.COMMON, [POKEMON,_COLORLESS_,BASIC]),
-    PERSIAN_125("Persian", 125, Rarity.UNCOMMON, [POKEMON,_COLORLESS_,STAGE1,EVOLUTION]),
-    FARFETCHD_126("Farfetch'd", 126, Rarity.UNCOMMON, [POKEMON,_COLORLESS_,BASIC]),
-    KANGASKHAN_127("Kangaskhan", 127, Rarity.UNCOMMON, [POKEMON,_COLORLESS_,BASIC]),
-    TAUROS_128("Tauros", 128, Rarity.UNCOMMON, [POKEMON,_COLORLESS_,BASIC]),
-    AERODACTYL_129("Aerodactyl", 129, Rarity.RARE, [POKEMON,_COLORLESS_,STAGE1,EVOLUTION]),
-    LUGIA_130("Lugia", 130, Rarity.HOLORARE, [POKEMON,_COLORLESS_,BASIC]),
-    ZANGOOSE_131("Zangoose", 131, Rarity.HOLORARE, [POKEMON,_COLORLESS_,BASIC]),
-    BILLS_ANALYSIS_132("Bill's Analysis", 132, Rarity.HOLORARE, [TRAINER,SUPPORTER]),
-    BLACK_MARKET_PRISM_STAR_133("Black Market Prism Star", 133, Rarity.HOLORARE, [PRISM_STAR,TRAINER,STADIUM]),
-    BROCKS_GRIT_134("Brock's Grit", 134, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-    BUFF_PADDING_135("Buff Padding", 135, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
-    DANA_136("Dana", 136, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-    DANGEROUS_DRILL_137("Dangerous Drill", 137, Rarity.UNCOMMON, [TRAINER,ITEM]),
-    ELECTROCHARGER_138("Electrocharger", 138, Rarity.UNCOMMON, [TRAINER,ITEM]),
-    ERIKAS_HOSPITALITY_139("Erika's Hospitality", 139, Rarity.HOLORARE, [TRAINER,SUPPORTER]),
-    EVELYN_140("Evelyn", 140, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-    FAIRY_CHARM_UB_141("Fairy Charm UB", 141, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
-    GRASS_MEMORY_142("Grass Memory", 142, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
-    INGO_EMMET_143("Ingo & Emmet", 143, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-    JASMINE_144("Jasmine", 144, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-    JUDGE_WHISTLE_145("Judge Whistle", 145, Rarity.UNCOMMON, [TRAINER,ITEM]),
-    LAVENDER_TOWN_146("Lavender Town", 146, Rarity.UNCOMMON, [TRAINER,STADIUM]),
-    METAL_GOGGLES_147("Metal Goggles", 147, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
-    MORGAN_148("Morgan", 148, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-    NANU_149("Nanu", 149, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-    NITA_150("Nita", 150, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-    POKéMON_COMMUNICATION_151("Pokémon Communication", 151, Rarity.UNCOMMON, [TRAINER,ITEM]),
-    RETURN_LABEL_152("Return Label", 152, Rarity.UNCOMMON, [TRAINER,ITEM]),
-    SABRINAS_SUGGESTION_153("Sabrina's Suggestion", 153, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
-    UNIDENTIFIED_FOSSIL_154("Unidentified Fossil", 154, Rarity.UNCOMMON, [TRAINER,ITEM]),
-    VIRIDIAN_FOREST_155("Viridian Forest", 155, Rarity.UNCOMMON, [TRAINER,STADIUM]),
-    WATER_MEMORY_156("Water Memory", 156, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
-    WONDROUS_LABYRINTH_PRISM_STAR_157("Wondrous Labyrinth Prism Star", 157, Rarity.HOLORARE, [PRISM_STAR,TRAINER,STADIUM]),
-    CELEBI_VENUSAUR_GX_158("Celebi & Venusaur-GX", 158, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_GRASS_,BASIC]),
-    MAGIKARP_WAILORD_GX_159("Magikarp & Wailord-GX", 159, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_WATER_,BASIC]),
+    PIDGEY_122("Pidgey", 122, Rarity.COMMON, [POKEMON,_COLORLESS_,BASIC]),
+    PIDGEOTTO_123("Pidgeotto", 123, Rarity.COMMON, [POKEMON,_COLORLESS_,STAGE1,EVOLUTION]),
+    PIDGEOT_124("Pidgeot", 124, Rarity.RARE, [POKEMON,_COLORLESS_,STAGE2,EVOLUTION]),
+    MEOWTH_125("Meowth", 125, Rarity.COMMON, [POKEMON,_COLORLESS_,BASIC]),
+    PERSIAN_126("Persian", 126, Rarity.UNCOMMON, [POKEMON,_COLORLESS_,STAGE1,EVOLUTION]),
+    FARFETCHD_127("Farfetch'd", 127, Rarity.UNCOMMON, [POKEMON,_COLORLESS_,BASIC]),
+    KANGASKHAN_128("Kangaskhan", 128, Rarity.UNCOMMON, [POKEMON,_COLORLESS_,BASIC]),
+    TAUROS_129("Tauros", 129, Rarity.UNCOMMON, [POKEMON,_COLORLESS_,BASIC]),
+    AERODACTYL_130("Aerodactyl", 130, Rarity.RARE, [POKEMON,_COLORLESS_,STAGE1,EVOLUTION]),
+    LUGIA_131("Lugia", 131, Rarity.HOLORARE, [POKEMON,_COLORLESS_,BASIC]),
+    ZANGOOSE_132("Zangoose", 132, Rarity.HOLORARE, [POKEMON,_COLORLESS_,BASIC]),
+    BILLS_ANALYSIS_133("Bill's Analysis", 133, Rarity.HOLORARE, [TRAINER,SUPPORTER]),
+    BLACK_MARKET_PRISM_STAR_134("Black Market Prism Star", 134, Rarity.HOLORARE, [PRISM_STAR,TRAINER,STADIUM]),
+    BROCKS_GRIT_135("Brock's Grit", 135, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
+    BUFF_PADDING_136("Buff Padding", 136, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
+    DANA_137("Dana", 137, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
+    DANGEROUS_DRILL_138("Dangerous Drill", 138, Rarity.UNCOMMON, [TRAINER,ITEM]),
+    ELECTROCHARGER_139("Electrocharger", 139, Rarity.UNCOMMON, [TRAINER,ITEM]),
+    ERIKAS_HOSPITALITY_140("Erika's Hospitality", 140, Rarity.HOLORARE, [TRAINER,SUPPORTER]),
+    EVELYN_141("Evelyn", 141, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
+    FAIRY_CHARM_UB_142("Fairy Charm UB", 142, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
+    GRASS_MEMORY_143("Grass Memory", 143, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
+    INGO_EMMET_144("Ingo & Emmet", 144, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
+    JASMINE_145("Jasmine", 145, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
+    JUDGE_WHISTLE_146("Judge Whistle", 146, Rarity.UNCOMMON, [TRAINER,ITEM]),
+    LAVENDER_TOWN_147("Lavender Town", 147, Rarity.UNCOMMON, [TRAINER,STADIUM]),
+    METAL_GOGGLES_148("Metal Goggles", 148, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
+    MORGAN_149("Morgan", 149, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
+    NANU_150("Nanu", 150, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
+    NITA_151("Nita", 151, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
+    POKéMON_COMMUNICATION_152("Pokémon Communication", 152, Rarity.UNCOMMON, [TRAINER,ITEM]),
+    RETURN_LABEL_153("Return Label", 153, Rarity.UNCOMMON, [TRAINER,ITEM]),
+    SABRINAS_SUGGESTION_154("Sabrina's Suggestion", 154, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
+    UNIDENTIFIED_FOSSIL_155("Unidentified Fossil", 155, Rarity.UNCOMMON, [TRAINER,ITEM]),
+    VIRIDIAN_FOREST_156("Viridian Forest", 156, Rarity.UNCOMMON, [TRAINER,STADIUM]),
+    WATER_MEMORY_157("Water Memory", 157, Rarity.UNCOMMON, [TRAINER,ITEM,POKEMON_TOOL]),
+    WONDROUS_LABYRINTH_PRISM_STAR_158("Wondrous Labyrinth Prism Star", 158, Rarity.HOLORARE, [PRISM_STAR,TRAINER,STADIUM]),
+    CELEBI_VENUSAUR_GX_159("Celebi & Venusaur-GX", 159, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_GRASS_,BASIC]),
     MAGIKARP_WAILORD_GX_160("Magikarp & Wailord-GX", 160, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_WATER_,BASIC]),
-    PIKACHU_ZEKROM_GX_161("Pikachu & Zekrom-GX", 161, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_LIGHTNING_,BASIC]),
-    AMPHAROS_GX_162("Ampharos-GX", 162, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_LIGHTNING_,STAGE2,EVOLUTION]),
-    GENGAR_MIMIKYU_GX_163("Gengar & Mimikyu-GX", 163, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
+    MAGIKARP_WAILORD_GX_161("Magikarp & Wailord-GX", 161, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_WATER_,BASIC]),
+    PIKACHU_ZEKROM_GX_162("Pikachu & Zekrom-GX", 162, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_LIGHTNING_,BASIC]),
+    AMPHAROS_GX_163("Ampharos-GX", 163, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_LIGHTNING_,STAGE2,EVOLUTION]),
     GENGAR_MIMIKYU_GX_164("Gengar & Mimikyu-GX", 164, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
-    HOOPA_GX_165("Hoopa-GX", 165, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_DARKNESS_,BASIC]),
-    INCINEROAR_GX_166("Incineroar-GX", 166, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_DARKNESS_,STAGE2,EVOLUTION]),
-    COBALION_GX_167("Cobalion-GX", 167, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_METAL_,BASIC]),
-    LATIAS_LATIOS_GX_168("Latias & Latios-GX", 168, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_DRAGON_,BASIC]),
+    GENGAR_MIMIKYU_GX_165("Gengar & Mimikyu-GX", 165, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
+    HOOPA_GX_166("Hoopa-GX", 166, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_DARKNESS_,BASIC]),
+    INCINEROAR_GX_167("Incineroar-GX", 167, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_DARKNESS_,STAGE2,EVOLUTION]),
+    COBALION_GX_168("Cobalion-GX", 168, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_METAL_,BASIC]),
     LATIAS_LATIOS_GX_169("Latias & Latios-GX", 169, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_DRAGON_,BASIC]),
-    EEVEE_SNORLAX_GX_170("Eevee & Snorlax-GX", 170, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
-    BROCKS_GRIT_171("Brock's Grit", 171, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
-    DANA_172("Dana", 172, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
-    ERIKAS_HOSPITALITY_173("Erika's Hospitality", 173, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
-    EVELYN_174("Evelyn", 174, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
-    INGO_EMMET_175("Ingo & Emmet", 175, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
-    JASMINE_176("Jasmine", 176, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
-    MORGAN_177("Morgan", 177, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
-    NANU_178("Nanu", 178, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
-    NITA_179("Nita", 179, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
-    SABRINAS_SUGGESTION_180("Sabrina's Suggestion", 180, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
-    CELEBI_VENUSAUR_GX_181("Celebi & Venusaur-GX", 181, Rarity.SECRET, [TAG_TEAM,POKEMON_GX,POKEMON,_GRASS_,BASIC]),
-    MAGIKARP_WAILORD_GX_182("Magikarp & Wailord-GX", 182, Rarity.SECRET, [TAG_TEAM,POKEMON_GX,POKEMON,_WATER_,BASIC]),
-    PIKACHU_ZEKROM_GX_183("Pikachu & Zekrom-GX", 183, Rarity.SECRET, [TAG_TEAM,POKEMON_GX,POKEMON,_LIGHTNING_,BASIC]),
-    AMPHAROS_GX_184("Ampharos-GX", 184, Rarity.SECRET, [POKEMON_GX,POKEMON,_LIGHTNING_,STAGE2,EVOLUTION]),
-    GENGAR_MIMIKYU_GX_185("Gengar & Mimikyu-GX", 185, Rarity.SECRET, [TAG_TEAM,POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
-    HOOPA_GX_186("Hoopa-GX", 186, Rarity.SECRET, [POKEMON_GX,POKEMON,_DARKNESS_,BASIC]),
-    INCINEROAR_GX_187("Incineroar-GX", 187, Rarity.SECRET, [POKEMON_GX,POKEMON,_DARKNESS_,STAGE2,EVOLUTION]),
-    COBALION_GX_188("Cobalion-GX", 188, Rarity.SECRET, [POKEMON_GX,POKEMON,_METAL_,BASIC]),
-    LATIAS_LATIOS_GX_189("Latias & Latios-GX", 189, Rarity.SECRET, [TAG_TEAM,POKEMON_GX,POKEMON,_DRAGON_,BASIC]),
-    EEVEE_SNORLAX_GX_190("Eevee & Snorlax-GX", 190, Rarity.SECRET, [TAG_TEAM,POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
-    DANGEROUS_DRILL_191("Dangerous Drill", 191, Rarity.SECRET, [TRAINER,ITEM]),
-    ELECTROCHARGER_192("Electrocharger", 192, Rarity.SECRET, [TRAINER,ITEM]),
-    JUDGE_WHISTLE_193("Judge Whistle", 193, Rarity.SECRET, [TRAINER,ITEM]),
-    METAL_GOGGLES_194("Metal Goggles", 194, Rarity.SECRET, [TRAINER,ITEM,POKEMON_TOOL]);
+    LATIAS_LATIOS_GX_170("Latias & Latios-GX", 170, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_DRAGON_,BASIC]),
+    EEVEE_SNORLAX_GX_171("Eevee & Snorlax-GX", 171, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
+    BROCKS_GRIT_172("Brock's Grit", 172, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
+    DANA_173("Dana", 173, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
+    ERIKAS_HOSPITALITY_174("Erika's Hospitality", 174, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
+    EVELYN_175("Evelyn", 175, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
+    INGO_EMMET_176("Ingo & Emmet", 176, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
+    JASMINE_177("Jasmine", 177, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
+    MORGAN_178("Morgan", 178, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
+    NANU_179("Nanu", 179, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
+    NITA_180("Nita", 180, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
+    SABRINAS_SUGGESTION_181("Sabrina's Suggestion", 181, Rarity.ULTRARARE, [TRAINER,SUPPORTER]),
+    CELEBI_VENUSAUR_GX_182("Celebi & Venusaur-GX", 182, Rarity.SECRET, [TAG_TEAM,POKEMON_GX,POKEMON,_GRASS_,BASIC]),
+    MAGIKARP_WAILORD_GX_183("Magikarp & Wailord-GX", 183, Rarity.SECRET, [TAG_TEAM,POKEMON_GX,POKEMON,_WATER_,BASIC]),
+    PIKACHU_ZEKROM_GX_184("Pikachu & Zekrom-GX", 184, Rarity.SECRET, [TAG_TEAM,POKEMON_GX,POKEMON,_LIGHTNING_,BASIC]),
+    AMPHAROS_GX_185("Ampharos-GX", 185, Rarity.SECRET, [POKEMON_GX,POKEMON,_LIGHTNING_,STAGE2,EVOLUTION]),
+    GENGAR_MIMIKYU_GX_186("Gengar & Mimikyu-GX", 186, Rarity.SECRET, [TAG_TEAM,POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
+    HOOPA_GX_187("Hoopa-GX", 187, Rarity.SECRET, [POKEMON_GX,POKEMON,_DARKNESS_,BASIC]),
+    INCINEROAR_GX_188("Incineroar-GX", 188, Rarity.SECRET, [POKEMON_GX,POKEMON,_DARKNESS_,STAGE2,EVOLUTION]),
+    COBALION_GX_189("Cobalion-GX", 189, Rarity.SECRET, [POKEMON_GX,POKEMON,_METAL_,BASIC]),
+    LATIAS_LATIOS_GX_190("Latias & Latios-GX", 190, Rarity.SECRET, [TAG_TEAM,POKEMON_GX,POKEMON,_DRAGON_,BASIC]),
+    EEVEE_SNORLAX_GX_191("Eevee & Snorlax-GX", 191, Rarity.SECRET, [TAG_TEAM,POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
+    DANGEROUS_DRILL_192("Dangerous Drill", 192, Rarity.SECRET, [TRAINER,ITEM]),
+    ELECTROCHARGER_193("Electrocharger", 193, Rarity.SECRET, [TRAINER,ITEM]),
+    JUDGE_WHISTLE_194("Judge Whistle", 194, Rarity.SECRET, [TRAINER,ITEM]),
+    METAL_GOGGLES_195("Metal Goggles", 195, Rarity.SECRET, [TRAINER,ITEM,POKEMON_TOOL]),
+    POKéMON_COMMUNICATION_196("Pokémon Communication", 196, Rarity.UNCOMMON, [TRAINER,ITEM]);
 
  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -864,7 +865,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case LAPRAS_30:
+        case LAPRAS_31:
         return basic (this, hp:HP130, type:WATER, retreatCost:3) {
             weakness METAL
             move "Confuse Ray" , {
@@ -882,7 +883,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ARTICUNO_31:
+        case ARTICUNO_32:
         return basic (this, hp:HP110, type:WATER, retreatCost:2) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
@@ -913,7 +914,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case PIKACHU_ZEKROM_GX_32:
+        case PIKACHU_ZEKROM_GX_33:
         return basic (this, hp:HP240, type:LIGHTNING, retreatCost:3) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -949,7 +950,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ALOLAN_GEODUDE_33:
+        case ALOLAN_GEODUDE_34:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:2) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -962,7 +963,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ALOLAN_GEODUDE_34:
+        case ALOLAN_GEODUDE_35:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:3) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -982,7 +983,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ALOLAN_GRAVELER_35:
+        case ALOLAN_GRAVELER_36:
         return 	evolution (this, from:"Alolan Geodude", hp:HP100, type:LIGHTNING, retreatCost:4) {
             weakness FIRE
             resistance METAL, MINUS20
@@ -1000,7 +1001,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ALOLAN_GOLEM_36:
+        case ALOLAN_GOLEM_37:
         return 	evolution (this, from:"Alolan Graveler", hp:HP180, type:LIGHTNING, retreatCost:4) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -1032,7 +1033,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case VOLTORB_37:
+        case VOLTORB_38:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -1044,7 +1045,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ELECTRODE_38:
+        case ELECTRODE_39:
         return 	evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:1) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -1075,7 +1076,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ZAPDOS_39:
+        case ZAPDOS_40:
         return basic (this, hp:HP110, type:LIGHTNING, retreatCost:2) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
@@ -1089,7 +1090,7 @@ public enum TeamUp implements CardInfo {
       					}
             }
         };
-        case MAREEP_40:
+        case MAREEP_41:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
             weakness LIGHTNING
             resistance METAL, MINUS20
@@ -1104,7 +1105,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case FLAAFFY_41:
+        case FLAAFFY_42:
         return 	evolution (this, from:"Mareep", hp:HP090, type:LIGHTNING, retreatCost:2) {
             weakness FIGHTING
             resistance FIGHTING, MINUS20
@@ -1126,7 +1127,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case AMPHAROS_GX_42:
+        case AMPHAROS_GX_43:
         return 	evolution (this, from:"Flaaffy", hp:HP240, type:LIGHTNING, retreatCost:3) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -1161,7 +1162,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case BLITZLE_43:
+        case BLITZLE_44:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -1183,7 +1184,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ZEBSTRIKA_44:
+        case ZEBSTRIKA_45:
         return 	evolution (this, from:"Blitzle", hp:HP120, type:LIGHTNING, retreatCost:1) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -1205,7 +1206,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case EMOLGA_45:
+        case EMOLGA_46:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:0) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
@@ -1227,7 +1228,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case JOLTIK_46:
+        case JOLTIK_47:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -1240,7 +1241,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case GALVANTULA_47:
+        case GALVANTULA_48:
         return 	evolution (this, from:"Joltik", hp:HP090, type:LIGHTNING, retreatCost:1) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -1268,7 +1269,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case HELIOPTILE_48:
+        case HELIOPTILE_49:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -1287,7 +1288,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case HELIOLISK_49:
+        case HELIOLISK_50:
         return 	evolution (this, from:"Helioptile", hp:HP100, type:LIGHTNING, retreatCost:1) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -1309,7 +1310,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case TAPU_KOKO_PRISM_STAR_50:
+        case TAPU_KOKO_PRISM_STAR_51:
         return basic (this, hp:HP130, type:LIGHTNING, retreatCost:1) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -1333,7 +1334,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ZERAORA_51:
+        case ZERAORA_52:
         return basic (this, hp:HP120, type:LIGHTNING, retreatCost:1) {
             weakness FIGHTING
             resistance METAL, MINUS20
@@ -1353,7 +1354,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case GENGAR_MIMIKYU_GX_52:
+        case GENGAR_MIMIKYU_GX_53:
         return basic (this, hp:HP240, type:PSYCHIC, retreatCost:2) {
             weakness DARKNESS
             resistance FIGHTING, MINUS20
@@ -1392,7 +1393,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case NIDORAN_FEMALE_53:
+        case NIDORAN_FEMALE_54:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
             weakness PSYCHIC
             move "Call for Family" , {
@@ -1408,7 +1409,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case NIDORINA_54:
+        case NIDORINA_55:
         return 	evolution (this, from:"Nidoran Female", hp:HP090, type:PSYCHIC, retreatCost:2) {
             weakness PSYCHIC
             move "Family Rescue" , {
@@ -1430,7 +1431,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case NIDOQUEEN_55:
+        case NIDOQUEEN_56:
         return 	evolution (this, from:"Nidorina", hp:HP160, type:PSYCHIC, retreatCost:3) {
             weakness PSYCHIC
             bwAbility "Queen's Call" , {
@@ -1455,7 +1456,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case NIDORAN_MALE_56:
+        case NIDORAN_MALE_57:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
             weakness PSYCHIC
             move "Peck" , {
@@ -1473,7 +1474,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case NIDORINO_57:
+        case NIDORINO_58:
         return 	evolution (this, from:"Nidoran Male", hp:HP090, type:PSYCHIC, retreatCost:2) {
             weakness PSYCHIC
             move "Peck" , {
@@ -1492,7 +1493,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case NIDOKING_58:
+        case NIDOKING_59:
         return 	evolution (this, from:"Nidorino", hp:HP160, type:PSYCHIC, retreatCost:3) {
             weakness PSYCHIC
             move "Drag Off" , {
@@ -1524,7 +1525,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case TENTACOOL_59:
+        case TENTACOOL_60:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
             weakness PSYCHIC
             move "Wrap" , {
@@ -1536,7 +1537,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case TENTACRUEL_60:
+        case TENTACRUEL_61:
         return 	evolution (this, from:"Tentacool", hp:HP100, type:PSYCHIC, retreatCost:1) {
             weakness PSYCHIC
             move "Void Tentacles" , {
@@ -1565,7 +1566,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case GRIMER_61:
+        case GRIMER_62:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:2) {
             weakness PSYCHIC
             move "Pound" , {
@@ -1576,7 +1577,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case MUK_62:
+        case MUK_63:
         return 	evolution (this, from:"Grimer", hp:HP130, type:PSYCHIC, retreatCost:4) {
             weakness PSYCHIC
             bwAbility "Poison Sacs" , {
@@ -1601,7 +1602,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ALOLAN_MAROWAK_63:
+        case ALOLAN_MAROWAK_64:
         return 	evolution (this, from:"Cubone", hp:HP120, type:PSYCHIC, retreatCost:2) {
             weakness DARKNESS
             resistance FIGHTING, MINUS20
@@ -1625,7 +1626,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case STARMIE_64:
+        case STARMIE_65:
         return 	evolution (this, from:"Staryu", hp:HP080, type:PSYCHIC, retreatCost:0) {
             weakness PSYCHIC
             move "Strange Wave" , {
@@ -1646,7 +1647,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case MR_MIME_65:
+        case MR_MIME_66:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
             weakness PSYCHIC
             bwAbility "Scoop-Up Block" , {
@@ -1662,7 +1663,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case MR_MIME_GX_66:
+        case MR_MIME_GX_67:
         return basic (this, hp:HP150, type:PSYCHIC, retreatCost:2) {
             bwAbility "Magic Odds" , {
                 text "Prevent all damage done to this Pokémon by your opponent's attacks if that damage is exactly 10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210, 230, or 250."
@@ -1696,7 +1697,7 @@ public enum TeamUp implements CardInfo {
     					}
     				}
     			};
-        case JYNX_67:
+        case JYNX_68:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:1) {
             weakness PSYCHIC
             move "Dazzle Dance" , {
@@ -1719,7 +1720,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case COSMOG_68:
+        case COSMOG_69:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
             weakness PSYCHIC
             bwAbility "Cosmic Guard" , {
@@ -1743,7 +1744,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case COSMOEM_69:
+        case COSMOEM_70:
         return 	evolution (this, from:"Cosmog", hp:HP100, type:PSYCHIC, retreatCost:3) {
             weakness PSYCHIC
             move "Nap" , {
@@ -1754,7 +1755,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case MANKEY_70:
+        case MANKEY_71:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
             weakness PSYCHIC
             move "Scout" , {
@@ -1770,7 +1771,7 @@ public enum TeamUp implements CardInfo {
                 onAttack{damage 30}
             }
         };
-        case PRIMEAPE_71:
+        case PRIMEAPE_72:
         return 	evolution (this, from:"Mankey", hp:HP090, type:FIGHTING, retreatCost:1) {
             weakness PSYCHIC
             move "Low Kick" , {
@@ -1793,7 +1794,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case HITMONLEE_72:
+        case HITMONLEE_73:
         return basic (this, hp:HP100, type:FIGHTING, retreatCost:1) {
             weakness PSYCHIC
             move "Special Combo" , {
@@ -1815,7 +1816,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case HITMONCHAN_73:
+        case HITMONCHAN_74:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:1) {
             weakness PSYCHIC
             move "Hit and Run" , {
@@ -1837,7 +1838,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case OMANYTE_74:
+        case OMANYTE_75:
         return 	evolution (this, from:"Unidentified Fossil", hp:HP090, type:FIGHTING, retreatCost:1) {
             weakness GRASS
             move "Tickle" , {
@@ -1849,7 +1850,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case OMASTAR_75:
+        case OMASTAR_76:
         return 	evolution (this, from:"Omanyte", hp:HP130, type:FIGHTING, retreatCost:2) {
             weakness GRASS
             bwAbility "Fossil Bind" , {
@@ -1871,7 +1872,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case KABUTO_76:
+        case KABUTO_77:
         return 	evolution (this, from:"Unidentified Fossil", hp:HP090, type:FIGHTING, retreatCost:1) {
             weakness GRASS
             move "Ramming Shell" , {
@@ -1883,7 +1884,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case KABUTOPS_77:
+        case KABUTOPS_78:
         return 	evolution (this, from:"Kabuto", hp:HP140, type:FIGHTING, retreatCost:2) {
             weakness GRASS
             bwAbility "Fossilized Memories" , {
@@ -1904,7 +1905,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case LARVITAR_78:
+        case LARVITAR_79:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
             weakness GRASS
             move "Chip Away" , {
@@ -1915,7 +1916,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case PUPITAR_79:
+        case PUPITAR_80:
         return 	evolution (this, from:"Larvitar", hp:HP080, type:FIGHTING, retreatCost:1) {
             weakness GRASS
             move "Payback" , {
@@ -1929,7 +1930,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case PANCHAM_80:
+        case PANCHAM_81:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
             weakness PSYCHIC
             move "Arm Thrust" , {
@@ -1941,7 +1942,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case LYCANROC_GX_81:
+        case LYCANROC_GX_82:
         return 	evolution (this, from:"Rockruff", hp:HP200, type:FIGHTING, retreatCost:2) {
             weakness GRASS
             bwAbility "Twilight Eyes" , {
@@ -1973,7 +1974,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ALOLAN_GRIMER_82:
+        case ALOLAN_GRIMER_83:
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:3) {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
@@ -1985,7 +1986,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ALOLAN_MUK_83:
+        case ALOLAN_MUK_84:
         return 	evolution (this, from:"Alolan Grimer", hp:HP120, type:DARKNESS, retreatCost:3) {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
@@ -2013,7 +2014,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case TYRANITAR_84:
+        case TYRANITAR_85:
         return 	evolution (this, from:"Pupitar", hp:HP170, type:DARKNESS, retreatCost:4) {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
@@ -2037,7 +2038,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case POOCHYENA_85:
+        case POOCHYENA_86:
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:1) {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
@@ -2057,7 +2058,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case MIGHTYENA_86:
+        case MIGHTYENA_87:
         return 	evolution (this, from:"Poochyena", hp:HP100, type:DARKNESS, retreatCost:1) {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
@@ -2077,7 +2078,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ABSOL_87:
+        case ABSOL_88:
         return basic (this, hp:HP100, type:DARKNESS, retreatCost:1) {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
@@ -2097,7 +2098,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case SPIRITOMB_88:
+        case SPIRITOMB_89:
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:1) {
             move "Spirit Compressor" , {
                 text "Search your deck for up to 4 Pokémon and discard them. Then, shuffle your deck."
@@ -2115,7 +2116,7 @@ public enum TeamUp implements CardInfo {
                 energyCost C
             }
         };
-        case ZORUA_89:
+        case ZORUA_90:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
@@ -2130,7 +2131,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ZOROARK_90:
+        case ZOROARK_91:
         return 	evolution (this, from:"Zorua", hp:HP110, type:DARKNESS, retreatCost:2) {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
@@ -2152,7 +2153,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case VULLABY_91:
+        case VULLABY_92:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
@@ -2171,7 +2172,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case MANDIBUZZ_92:
+        case MANDIBUZZ_93:
         return 	evolution (this, from:"Vullaby", hp:HP120, type:DARKNESS, retreatCost:2) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
@@ -2195,7 +2196,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case PANGORO_93:
+        case PANGORO_94:
         return 	evolution (this, from:"Pancham", hp:HP140, type:DARKNESS, retreatCost:4) {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
@@ -2220,7 +2221,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case YVELTAL_94:
+        case YVELTAL_95:
         return basic (this, hp:HP110, type:DARKNESS, retreatCost:0) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
@@ -2241,7 +2242,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case HOOPA_GX_95:
+        case HOOPA_GX_96:
         return basic (this, hp:HP190, type:DARKNESS, retreatCost:3) {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
@@ -2279,7 +2280,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case INCINEROAR_GX_96:
+        case INCINEROAR_GX_97:
         return 	evolution (this, from:"Torracat", hp:HP250, type:DARKNESS, retreatCost:3) {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
@@ -2315,7 +2316,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case SKARMORY_97:
+        case SKARMORY_98:
         return basic (this, hp:HP110, type:METAL, retreatCost:1) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
@@ -2336,7 +2337,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case JIRACHI_98:
+        case JIRACHI_99:
         return basic (this, hp:HP070, type:METAL, retreatCost:1) {
             weakness FIRE
             resistance PSYCHIC, MINUS20
@@ -2363,7 +2364,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case BRONZOR_99:
+        case BRONZOR_100:
         return basic (this, hp:HP050, type:METAL, retreatCost:1) {
             weakness FIGHTING
             resistance PSYCHIC, MINUS20
@@ -2383,7 +2384,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case BRONZONG_100:
+        case BRONZONG_101:
         return 	evolution (this, from:"Bronzor", hp:HP130, type:METAL, retreatCost:3) {
             weakness FIRE
             resistance PSYCHIC, MINUS20
@@ -2411,7 +2412,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case FERROSEED_101:
+        case FERROSEED_102:
         return basic (this, hp:HP060, type:METAL, retreatCost:3) {
             weakness FIRE
             resistance PSYCHIC, MINUS20
@@ -2423,7 +2424,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case FERROTHORN_102:
+        case FERROTHORN_103:
         return 	evolution (this, from:"Ferroseed", hp:HP120, type:METAL, retreatCost:3) {
             weakness FIRE
             resistance PSYCHIC, MINUS20
@@ -2445,7 +2446,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case PAWNIARD_103:
+        case PAWNIARD_104:
         return basic (this, hp:HP070, type:METAL, retreatCost:1) {
             weakness FIRE
             resistance PSYCHIC, MINUS20
@@ -2464,7 +2465,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case BISHARP_104:
+        case BISHARP_105:
         return 	evolution (this, from:"Pawniard", hp:HP110, type:METAL, retreatCost:2) {
             weakness FIRE
             resistance PSYCHIC, MINUS20
@@ -2484,7 +2485,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case COBALION_GX_105:
+        case COBALION_GX_106:
         return basic (this, hp:HP170, type:METAL, retreatCost:1) {
             weakness FIRE
             resistance PSYCHIC, MINUS20
@@ -2545,7 +2546,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case HONEDGE_106:
+        case HONEDGE_107:
         return basic (this, hp:HP060, type:METAL, retreatCost:2) {
             weakness FIRE
             resistance PSYCHIC, MINUS20
@@ -2557,7 +2558,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case DOUBLADE_107:
+        case DOUBLADE_108:
         return 	evolution (this, from:"Honedge", hp:HP090, type:METAL, retreatCost:2) {
             weakness FIRE
             resistance PSYCHIC, MINUS20
@@ -2574,7 +2575,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case AEGISLASH_108:
+        case AEGISLASH_109:
         return 	evolution (this, from:"Doublade", hp:HP140, type:METAL, retreatCost:3) {
             weakness FIRE
             resistance PSYCHIC, MINUS20
@@ -2599,7 +2600,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case KLEFKI_109:
+        case KLEFKI_110:
         return basic (this, hp:HP060, type:METAL, retreatCost:1) {
             weakness FIRE
             resistance PSYCHIC, MINUS20
@@ -2626,7 +2627,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ALOLAN_NINETALES_110:
+        case ALOLAN_NINETALES_111:
         return 	evolution (this, from:"Alolan Vulpix", hp:HP110, type:FAIRY, retreatCost:1) {
             weakness METAL
             bwAbility "Luminous Barrier" , {
@@ -2641,7 +2642,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case MIMIKYU_111:
+        case MIMIKYU_112:
         return basic (this, hp:HP070, type:FAIRY, retreatCost:1) {
           globalAbility {Card thisCard->
   					delayed (priority: LAST) {
@@ -2676,7 +2677,7 @@ public enum TeamUp implements CardInfo {
   					}
   				}
         };
-        case LATIAS_LATIOS_GX_112:
+        case LATIAS_LATIOS_GX_113:
         return basic (this, hp:HP250, type:DRAGON, retreatCost:1) {
             weakness FAIRY
             move "Buster Purge" , {
@@ -2708,9 +2709,9 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ALOLAN_EXEGGUTOR_113:
-        return copy (ForbiddenLight.ALOLAN_EXEGGUTOR_2, this);
         case ALOLAN_EXEGGUTOR_114:
+        return copy (ForbiddenLight.ALOLAN_EXEGGUTOR_2, this);
+        case ALOLAN_EXEGGUTOR_115:
         return 	evolution (this, from:"Exeggcute", hp:HP160, type:DRAGON, retreatCost:4) {
             weakness FAIRY
             move "Paradise Draw" , {
@@ -2734,7 +2735,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case DRATINI_115:
+        case DRATINI_116:
         return basic (this, hp:HP060, type:DRAGON, retreatCost:2) {
             weakness FAIRY
             move "Dragon Rage" , {
@@ -2745,7 +2746,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case DRATINI_116:
+        case DRATINI_117:
         return basic (this, hp:HP060, type:DRAGON, retreatCost:2) {
             weakness FAIRY
             bwAbility "Defensive Scales" , {
@@ -2770,7 +2771,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case DRAGONAIR_117:
+        case DRAGONAIR_118:
         return 	evolution (this, from:"Dratini", hp:HP090, type:DRAGON, retreatCost:2) {
             weakness FAIRY
             move "Twister" , {
@@ -2793,7 +2794,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case DRAGONITE_118:
+        case DRAGONITE_119:
         return 	evolution (this, from:"Dragonair", hp:HP160, type:DRAGON, retreatCost:3) {
             weakness FAIRY
             bwAbility "Fast Call" , {
@@ -2813,7 +2814,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case EEVEE_SNORLAX_GX_119:
+        case EEVEE_SNORLAX_GX_120:
         return basic (this, hp:HP270, type:COLORLESS, retreatCost:4) {
             weakness FIGHTING
             move "Dump Truck Press" , {
@@ -2841,7 +2842,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case PIDGEY_120:
+        case PIDGEY_121:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
@@ -2860,7 +2861,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case PIDGEY_121:
+        case PIDGEY_122:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
@@ -2873,7 +2874,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case PIDGEOTTO_122:
+        case PIDGEOTTO_123:
         return 	evolution (this, from:"Pidgey", hp:HP060, type:COLORLESS, retreatCost:1) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
@@ -2896,7 +2897,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case PIDGEOT_123:
+        case PIDGEOT_124:
         return 	evolution (this, from:"Pidgeotto", hp:HP130, type:COLORLESS, retreatCost:0) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
@@ -2920,7 +2921,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case MEOWTH_124:
+        case MEOWTH_125:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
             weakness FIGHTING
             move "Scratch" , {
@@ -2938,7 +2939,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case PERSIAN_125:
+        case PERSIAN_126:
         return 	evolution (this, from:"Meowth", hp:HP100, type:COLORLESS, retreatCost:1) {
             weakness FIGHTING
             move "Make 'Em Pay" , {
@@ -2967,7 +2968,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case FARFETCHD_126:
+        case FARFETCHD_127:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
@@ -2990,7 +2991,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case KANGASKHAN_127:
+        case KANGASKHAN_128:
         return basic (this, hp:HP130, type:COLORLESS, retreatCost:2) {
             weakness FIGHTING
             move "Fast Evolution" , {
@@ -3011,7 +3012,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case TAUROS_128:
+        case TAUROS_129:
         return basic (this, hp:HP130, type:COLORLESS, retreatCost:2) {
             weakness FIGHTING
             move "Raging Herd" , {
@@ -3027,7 +3028,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case AERODACTYL_129:
+        case AERODACTYL_130:
         return 	evolution (this, from:"Unidentified Fossil", hp:HP130, type:COLORLESS, retreatCost:1) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
@@ -3049,7 +3050,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case LUGIA_130:
+        case LUGIA_131:
         return basic (this, hp:HP130, type:COLORLESS, retreatCost:2) {
             weakness LIGHTNING
             resistance FIGHTING, MINUS20
@@ -3070,7 +3071,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case ZANGOOSE_131:
+        case ZANGOOSE_132:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:1) {
             weakness FIGHTING
             move "Head Hunt" , {
@@ -3098,7 +3099,7 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case BILLS_ANALYSIS_132:
+        case BILLS_ANALYSIS_133:
         return supporter(this) {
                 text "Look at the top 7 cards of your deck. You may reveal up to 2 Trainer cards you find there and put them into your hand. Shuffle the other cards back into your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
                 onPlay {
@@ -3110,7 +3111,7 @@ public enum TeamUp implements CardInfo {
                   assert my.deck : "There is no more card in your deck"
                 }
         };
-        case BLACK_MARKET_PRISM_STAR_133:
+        case BLACK_MARKET_PRISM_STAR_134:
         return stadium(this) {
                 text "Whenever any player's [D] Pokémon with any [D] Energy attached to it is Knocked Out by damage from an opponent's attack, that opponent takes 1 less Prize card.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
             def eff=null
@@ -3130,7 +3131,7 @@ public enum TeamUp implements CardInfo {
             }
 
         };
-        case BROCKS_GRIT_134:
+        case BROCKS_GRIT_135:
         return supporter(this) {
                 text "Shuffle 6 in any combination of Pokémon and basic Energy cards from your discard pile into your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
                 onPlay {
@@ -3143,7 +3144,7 @@ public enum TeamUp implements CardInfo {
                   assert my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)} : "There is no more card in your deck"
                 }
         };
-        case BUFF_PADDING_135:
+        case BUFF_PADDING_136:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Retreat Cost of the Pokémon this card is attached to is 4, that Pokémon gets +50 HP.\nYou may play as many Item cards as you like during your turn (before your attack)."
           def eff
@@ -3158,7 +3159,7 @@ public enum TeamUp implements CardInfo {
             eff.unregister()
           }
         };
-        case DANA_136:
+        case DANA_137:
         return supporter(this) {
           text "You can play this card only if your opponent's Active Pokémon is a Stage 2 Pokémon. Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
@@ -3170,7 +3171,7 @@ public enum TeamUp implements CardInfo {
             assert my.deck : "There is no more cards in your deck"
           }
         };
-        case DANGEROUS_DRILL_137:
+        case DANGEROUS_DRILL_138:
         return itemCard (this) {
           text "You can play this card only if you discard a [D] Pokémon from your hand.\nDiscard a Pokémon Tool or Special Energy card from 1 of your opponent's Pokémon, or discard any Stadium card in play.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
@@ -3197,7 +3198,7 @@ public enum TeamUp implements CardInfo {
             assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)} || bg.stadiumInfoStruct : "There is no cards to discard"
           }
         };
-        case ELECTROCHARGER_138:
+        case ELECTROCHARGER_139:
         return itemCard (this) {
                 text "Flip 2 coins. For each heads, shuffle an Electropower from your discard pile into your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
                 onPlay {
@@ -3208,7 +3209,7 @@ public enum TeamUp implements CardInfo {
                   assert my.discard.findAll{it.name == "Electropower"} : "There is no Electropower in your discard"
                 }
         };
-        case ERIKAS_HOSPITALITY_139:
+        case ERIKAS_HOSPITALITY_140:
         return supporter(this) {
                 text "You can play this card only if you have 4 or fewer other cards in your hand.\nDraw a card for each of your opponent's Pokémon in play.\nYou may play only 1 Supporter card during your turn (before your attack)."
                 onPlay {
@@ -3218,7 +3219,7 @@ public enum TeamUp implements CardInfo {
                   assert my.hand.size()<=4 : "You don't have 4 or fewer other cards in your hand."
                 }
         };
-        case EVELYN_140:
+        case EVELYN_141:
         return supporter(this) {
                 text "You can play this card only if your opponent's Active Pokémon is a Stage 1 Pokémon.\nDraw 4 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
                 onPlay {
@@ -3229,7 +3230,7 @@ public enum TeamUp implements CardInfo {
                   assert my.deck : "There is no more cards in your deck"
                 }
         };
-        case FAIRY_CHARM_UB_141:
+        case FAIRY_CHARM_UB_142:
         return itemCard (this) {
                 text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nPrevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's Ultra Beast Pokémon-GX and Ultra Beast Pokémon-EX.\nYou may play as many Item cards as you like during your turn (before your attack)."
                 def eff1
@@ -3251,7 +3252,7 @@ public enum TeamUp implements CardInfo {
                   eff1.unregister()
                 }
         };
-        case GRASS_MEMORY_142:
+        case GRASS_MEMORY_143:
         return pokemonTool (this) {
                 text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [G] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
                 def eff
@@ -3268,7 +3269,7 @@ public enum TeamUp implements CardInfo {
                   eff.unregister()
                 }
         };
-        case INGO_EMMET_143:
+        case INGO_EMMET_144:
         return supporter(this) {
           text "Look at the top card of your deck, and then choose 1:Discard your hand and draw 5 cards.\nDiscard your hand and draw 5 cards from the bottom of your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
@@ -3291,7 +3292,7 @@ public enum TeamUp implements CardInfo {
             assert my.deck : "There is no more cards in your deck"
           }
         };
-        case JASMINE_144:
+        case JASMINE_145:
         return supporter(this) {
           text "Search your deck for a [M] Pokémon, reveal it, and put it into your hand. If you go second and it's your first turn, search for 5 [M] Pokémon instead of 1. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
@@ -3306,7 +3307,7 @@ public enum TeamUp implements CardInfo {
             assert my.deck : "There is no more cards in your deck"
           }
         };
-        case JUDGE_WHISTLE_145:
+        case JUDGE_WHISTLE_146:
         return itemCard (this) {
                 text "Choose 1:Draw a card.\nPut a Judge card from your discard pile into your hand.\nYou may play as many Item cards as you like during your turn (before your attack)."
                 onPlay {
@@ -3330,7 +3331,7 @@ public enum TeamUp implements CardInfo {
                   assert my.deck || my.discard.findAll{it.name == "Judge"}
                 }
         };
-        case LAVENDER_TOWN_146:
+        case LAVENDER_TOWN_147:
         return stadium(this) {
           text "Once during each player's turn, that player may look at their opponent's hand.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
           def lastTurn=0
@@ -3349,7 +3350,7 @@ public enum TeamUp implements CardInfo {
             actions.each { bg().gm().unregisterAction(it) }
           }
         };
-        case METAL_GOGGLES_147:
+        case METAL_GOGGLES_148:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe [M] Pokémon this card is attached to takes 30 less damage from your opponent's attacks (after applying Weakness and Resistance), and your opponent's attacks and Abilities can't put damage counters on it.\nYou may play as many Item cards as you like during your turn (before your attack)."
           def eff
@@ -3369,7 +3370,7 @@ public enum TeamUp implements CardInfo {
             eff.unregister()
           }
         };
-        case MORGAN_148:
+        case MORGAN_149:
         return supporter(this) {
           text "You can play this card only if you discard Dana, Evelyn, and Nita from your hand.\nLook at the top 12 cards of your deck and attach any number of Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
@@ -3390,7 +3391,7 @@ public enum TeamUp implements CardInfo {
             assert my.deck : "There is no more cards in your deck"
           }
         };
-        case NANU_149:
+        case NANU_150:
         return supporter(this) {
           text "Choose a Basic [D] Pokémon in your discard pile. Switch it with 1 of your Pokémon in play. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain of the new Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
@@ -3404,7 +3405,7 @@ public enum TeamUp implements CardInfo {
             assert my.discard.filterByType(BASIC).findAll{it.asPokemonCard().types.contains(D)} : "There is no more cards in your deck"
           }
         };
-        case NITA_150:
+        case NITA_151:
         return supporter(this) {
           text "You can play this card only if your opponent's Active Pokémon is a Basic Pokémon.\nPut an Energy from your opponent's Active Pokémon on top of their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
@@ -3415,7 +3416,7 @@ public enum TeamUp implements CardInfo {
             assert opp.active.cards.filterByType(ENERGY) : "There is no energy attached to your opponent's Active Pokémon"
           }
         };
-        case POKéMON_COMMUNICATION_151:
+        case POKéMON_COMMUNICATION_152:
         return itemCard (this) {
           text "Reveal a Pokémon from your hand and put it into your deck. If you do, search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
@@ -3426,7 +3427,7 @@ public enum TeamUp implements CardInfo {
             assert my.hand.filterByType(POKEMON) : "There is no more card in your deck"
           }
         };
-        case RETURN_LABEL_152:
+        case RETURN_LABEL_153:
         return itemCard (this) {
           text "Put a card from your opponent's discard pile on the bottom of their deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
@@ -3436,7 +3437,7 @@ public enum TeamUp implements CardInfo {
             assert opp.discard : "There is no card in your opponent's discard"
           }
         };
-        case SABRINAS_SUGGESTION_153:
+        case SABRINAS_SUGGESTION_154:
         return supporter(this) {
           text "Your opponent reveals their hand. You may choose a Supporter card you find there and use the effect of that card as the effect of this card.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
@@ -3454,9 +3455,9 @@ public enum TeamUp implements CardInfo {
           }
 
         };
-        case UNIDENTIFIED_FOSSIL_154:
+        case UNIDENTIFIED_FOSSIL_155:
         return copy (UltraPrism.UNIDENTIFIED_FOSSIL_134, this);
-        case VIRIDIAN_FOREST_155:
+        case VIRIDIAN_FOREST_156:
         return stadium(this) {
           text "Once during each player's turn, that player may discard a card from their hand. If they do, that player searches their deck for a basic Energy card, reveals it, and puts it into their hand. Then, that player shuffles their deck\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
           def lastTurn=0
@@ -3477,7 +3478,7 @@ public enum TeamUp implements CardInfo {
             actions.each { bg().gm().unregisterAction(it) }
           }
         };
-        case WATER_MEMORY_156:
+        case WATER_MEMORY_157:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [W] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
           def eff
@@ -3494,7 +3495,7 @@ public enum TeamUp implements CardInfo {
             eff.unregister()
           }
         };
-        case WONDROUS_LABYRINTH_PRISM_STAR_157:
+        case WONDROUS_LABYRINTH_PRISM_STAR_158:
         return stadium(this) {
           text "The attacks of non-[Y] Pokémon (both yours and your opponent's) cost [C] more.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
           def eff
@@ -3515,9 +3516,9 @@ public enum TeamUp implements CardInfo {
   					eff.unregister()
   				}
         };
-        case CELEBI_VENUSAUR_GX_158:
+        case CELEBI_VENUSAUR_GX_159:
           return copy (CELEBI_VENUSAUR_GX_1, this);
-        case MAGIKARP_WAILORD_GX_159:
+        case MAGIKARP_WAILORD_GX_160:
         return basic (this, hp:HP300, type:WATER, retreatCost:4) {
             weakness GRASS
             move "Super Splash" , {
@@ -3542,109 +3543,109 @@ public enum TeamUp implements CardInfo {
                 }
             }
         };
-        case MAGIKARP_WAILORD_GX_160:
+        case MAGIKARP_WAILORD_GX_161:
           return copy (MAGIKARP_WAILORD_GX_159, this);
 
-        case PIKACHU_ZEKROM_GX_161:
+        case PIKACHU_ZEKROM_GX_162:
           return copy (PIKACHU_ZEKROM_GX_32, this);
 
-        case AMPHAROS_GX_162:
+        case AMPHAROS_GX_163:
           return copy (AMPHAROS_GX_42, this);
-
-        case GENGAR_MIMIKYU_GX_163:
-          return copy (GENGAR_MIMIKYU_GX_52, this);
 
         case GENGAR_MIMIKYU_GX_164:
           return copy (GENGAR_MIMIKYU_GX_52, this);
 
-        case HOOPA_GX_165:
+        case GENGAR_MIMIKYU_GX_165:
+          return copy (GENGAR_MIMIKYU_GX_52, this);
+
+        case HOOPA_GX_166:
           return copy (HOOPA_GX_95, this);
 
-        case INCINEROAR_GX_166:
+        case INCINEROAR_GX_167:
           return copy (INCINEROAR_GX_96, this);
 
-        case COBALION_GX_167:
+        case COBALION_GX_168:
           return copy (COBALION_GX_105, this);
-
-        case LATIAS_LATIOS_GX_168:
-          return copy (LATIAS_LATIOS_GX_112, this);
 
         case LATIAS_LATIOS_GX_169:
           return copy (LATIAS_LATIOS_GX_112, this);
 
-        case EEVEE_SNORLAX_GX_170:
-          return copy (EEVEE_SNORLAX_GX_119, this);
-
-        case BROCKS_GRIT_171:
-          return copy (BROCKS_GRIT_134, this);
-
-        case DANA_172:
-          return copy (DANA_136, this);
-
-        case ERIKAS_HOSPITALITY_173:
-          return copy (ERIKAS_HOSPITALITY_139, this);
-
-        case EVELYN_174:
-          return copy (EVELYN_140, this);
-
-        case INGO_EMMET_175:
-          return copy (INGO_EMMET_143, this);
-
-        case JASMINE_176:
-          return copy (JASMINE_144, this);
-
-        case MORGAN_177:
-          return copy (MORGAN_148, this);
-
-        case NANU_178:
-          return copy (NANU_149, this);
-
-        case NITA_179:
-          return copy (NITA_150, this);
-
-        case SABRINAS_SUGGESTION_180:
-          return copy (SABRINAS_SUGGESTION_153, this);
-
-        case CELEBI_VENUSAUR_GX_181:
-          return copy (CELEBI_VENUSAUR_GX_1, this);
-
-        case MAGIKARP_WAILORD_GX_182:
-          return copy (MAGIKARP_WAILORD_GX_159, this);
-
-        case PIKACHU_ZEKROM_GX_183:
-          return copy (PIKACHU_ZEKROM_GX_32, this);
-
-        case AMPHAROS_GX_184:
-          return copy (AMPHAROS_GX_42, this);
-
-        case GENGAR_MIMIKYU_GX_185:
-          return copy (GENGAR_MIMIKYU_GX_52, this);
-
-        case HOOPA_GX_186:
-          return copy (HOOPA_GX_95, this);
-
-        case INCINEROAR_GX_187:
-          return copy (INCINEROAR_GX_96, this);
-
-        case COBALION_GX_188:
-          return copy (COBALION_GX_105, this);
-
-        case LATIAS_LATIOS_GX_189:
+        case LATIAS_LATIOS_GX_170:
           return copy (LATIAS_LATIOS_GX_112, this);
 
-        case EEVEE_SNORLAX_GX_190:
+        case EEVEE_SNORLAX_GX_171:
           return copy (EEVEE_SNORLAX_GX_119, this);
 
-        case DANGEROUS_DRILL_191:
+        case BROCKS_GRIT_172:
+          return copy (BROCKS_GRIT_134, this);
+
+        case DANA_173:
+          return copy (DANA_136, this);
+
+        case ERIKAS_HOSPITALITY_174:
+          return copy (ERIKAS_HOSPITALITY_139, this);
+
+        case EVELYN_175:
+          return copy (EVELYN_140, this);
+
+        case INGO_EMMET_176:
+          return copy (INGO_EMMET_143, this);
+
+        case JASMINE_177:
+          return copy (JASMINE_144, this);
+
+        case MORGAN_178:
+          return copy (MORGAN_148, this);
+
+        case NANU_179:
+          return copy (NANU_149, this);
+
+        case NITA_180:
+          return copy (NITA_150, this);
+
+        case SABRINAS_SUGGESTION_181:
+          return copy (SABRINAS_SUGGESTION_153, this);
+
+        case CELEBI_VENUSAUR_GX_182:
+          return copy (CELEBI_VENUSAUR_GX_1, this);
+
+        case MAGIKARP_WAILORD_GX_183:
+          return copy (MAGIKARP_WAILORD_GX_159, this);
+
+        case PIKACHU_ZEKROM_GX_184:
+          return copy (PIKACHU_ZEKROM_GX_32, this);
+
+        case AMPHAROS_GX_185:
+          return copy (AMPHAROS_GX_42, this);
+
+        case GENGAR_MIMIKYU_GX_186:
+          return copy (GENGAR_MIMIKYU_GX_52, this);
+
+        case HOOPA_GX_187:
+          return copy (HOOPA_GX_95, this);
+
+        case INCINEROAR_GX_188:
+          return copy (INCINEROAR_GX_96, this);
+
+        case COBALION_GX_189:
+          return copy (COBALION_GX_105, this);
+
+        case LATIAS_LATIOS_GX_190:
+          return copy (LATIAS_LATIOS_GX_112, this);
+
+        case EEVEE_SNORLAX_GX_191:
+          return copy (EEVEE_SNORLAX_GX_119, this);
+
+        case DANGEROUS_DRILL_192:
           return copy (DANGEROUS_DRILL_137, this);
 
-        case ELECTROCHARGER_192:
+        case ELECTROCHARGER_193:
           return copy (ELECTROCHARGER_138, this);
 
-        case JUDGE_WHISTLE_193:
+        case JUDGE_WHISTLE_194:
           return copy (JUDGE_WHISTLE_145, this);
 
-        case METAL_GOGGLES_194:
+        case METAL_GOGGLES_195:
           return copy (METAL_GOGGLES_147, this);
 
         default:
