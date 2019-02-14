@@ -65,6 +65,8 @@ public enum TeamUp implements CardInfo {
     GOLDUCK_27("Golduck", 27, Rarity.UNCOMMON, [POKEMON,_WATER_,STAGE1,EVOLUTION]),
     STARYU_28("Staryu", 28, Rarity.COMMON, [POKEMON,_WATER_,BASIC]),
     MAGIKARP_29("Magikarp", 29, Rarity.COMMON, [POKEMON,_WATER_,BASIC]),
+    GYARADOS_30("Gyarados", 30, Rarity.HOLORARE, [POKEMON,_WATER_,STAGE2,EVOLUTION]),
+
     LAPRAS_31("Lapras", 31, Rarity.RARE, [POKEMON,_WATER_,BASIC]),
     ARTICUNO_32("Articuno", 32, Rarity.HOLORARE, [POKEMON,_WATER_,BASIC]),
     PIKACHU_ZEKROM_GX_33("Pikachu & Zekrom-GX", 33, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_LIGHTNING_,BASIC]),
@@ -862,6 +864,38 @@ public enum TeamUp implements CardInfo {
                 onAttack{
                   def tar = my.discard.findAll{it.cardTypes.is(EVOLUTION) && self.name.contains(it.predecessor)}.select("Choose the card that will evolve from $self")
                   evolve(sel, tar.first(), OTHER)
+                }
+            }
+        };
+        case GYARADOS_30:
+        return evolution (this, from:"Magikarp", hp:HP150, type:WATER, retreatCost:4) {
+            weakness LIGHTNING
+            move "Distilled Blast" , {
+                text "30+ damage. Reveal the top 7 cards of your deck. This attack does 30 more damage times the amount of [W] Energy you find there. Then shuffle those Energy cards back into your deck and discard the other cards."
+                energyCost W
+                onAttack{
+                  damage 30
+                  if(my.deck){
+                    def topDeck = my.deck.subList(0,7)
+                    topDeck.showToMe("The top 7 cards of your deck.")
+                    topDeck.showToOpponent("The top 7 cards of your opponent's deck.")
+                    def engCards = topDeck.filterByType(ENERGY)
+                    damage 30*engCards.size()
+                    afterDamage{
+                      topDeck.getExcludedList(engCards).discard()
+                      shuffleDeck()
+                    }
+                  }
+                }
+            }
+            move "Hyper Beam" , {
+                text "100 damage. Discardan Energy from your opponent's active Pokémon."
+                energyCost W,W,W
+                onAttack{
+                  damage 100
+                  afterDamage{
+                    discardDefendingEnergy()
+                  }
                 }
             }
         };
