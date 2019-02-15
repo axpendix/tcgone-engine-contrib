@@ -3249,7 +3249,7 @@ public enum TeamUp implements CardInfo {
                   draw opp.all.size()
                 }
                 playRequirement{
-                  assert my.hand.size()<=4 : "You don't have 4 or fewer other cards in your hand."
+                  assert my.hand.getExcludedList(thisCard).size()<=4 : "You don't have 4 or fewer other cards in your hand."
                 }
         };
         case EVELYN_141:
