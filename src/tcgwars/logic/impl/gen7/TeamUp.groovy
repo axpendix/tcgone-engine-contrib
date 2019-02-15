@@ -3477,7 +3477,7 @@ public enum TeamUp implements CardInfo {
             if(opp.hand.hasType(SUPPORTER)){
               def card=opp.hand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
               discard card
-              bg.deterministicCurrentThreadPlayerType=self.owner
+              bg.deterministicCurrentThreadPlayerType=thisCard.owner
               bg.em().run(new PlayTrainer(card))
               bg.clearDeterministicCurrentThreadPlayerType()
             } else {
