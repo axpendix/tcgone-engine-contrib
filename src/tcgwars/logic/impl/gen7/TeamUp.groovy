@@ -1250,7 +1250,7 @@ public enum TeamUp implements CardInfo {
                   checkLastTurn()
                   assert my.deck : "There is no more cardds in your deck"
                   powerUsed()
-                  my.deck.search(count : 1,"",it.topPokemonCard.moves.findAll{it.name=="Nuzzle"}).showToOpponent("Chosen Pokémon").moveTo(my.hand)
+                  my.deck.search(count : 1,"",it.asPokemonCard().moves.findAll{it.name=="Nuzzle"}).showToOpponent("Chosen Pokémon").moveTo(my.hand)
 
                 }
             }
@@ -2080,7 +2080,7 @@ public enum TeamUp implements CardInfo {
                 text "Search your deck for up to 2 [D] Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
                 energyCost C
                 onAttack{
-                  my.deck.search(max:2,"Choose 2 [D] Pokémon",{it.cardTypes.is(POKEMON) && it.asPokemonCard.types.contains(D)}).moveTo(my.hand)
+                  my.deck.search(max:2,"Choose 2 [D] Pokémon",{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(D)}).moveTo(my.hand)
                   shuffleDeck()
                 }
             }
