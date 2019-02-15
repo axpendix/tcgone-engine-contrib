@@ -2119,7 +2119,7 @@ public enum TeamUp implements CardInfo {
             bwAbility "Dark Ambition" , {
                 text "As long as this Pokémon is in play, your opponent's Active Basic Pokémon's Retreat Cost is [C] more."
                 getterA (GET_RETREAT_COST) {
-      						if (it.effect.target.owner == self.owner.opposite && self.active) {
+      						if (it.effect.target.owner == self.owner.opposite) {
       							it.object += 1
       						}
                 }
