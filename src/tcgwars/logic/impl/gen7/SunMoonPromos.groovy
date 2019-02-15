@@ -1837,7 +1837,7 @@ public enum SunMoonPromos implements CardInfo {
 						text "140 damage."
 						energyCost L,L,L
 						onAttack{
-							damage 40
+							damage 140
 						}
 					}
 					move "Thundering Hurricane GX" , {
