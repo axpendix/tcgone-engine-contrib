@@ -436,6 +436,9 @@ public class CardList extends ArrayList<Card> {
 	public boolean energySufficient(Type ... types){
 		return Battleground.getInstance().em().activateGetter(new EnergySufficientGetter(getAsEnergyCards(), types))
 	}
+	public boolean energySufficient(List<Type> types){
+		return Battleground.getInstance().em().activateGetter(new EnergySufficientGetter(getAsEnergyCards(), types))
+	}
 	public CardList findAll(Closure c){
 		CardList nl=new CardList();
 		this.each {if(c(it)) nl.add(it)}

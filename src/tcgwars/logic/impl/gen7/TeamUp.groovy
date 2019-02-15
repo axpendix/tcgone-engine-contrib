@@ -90,10 +90,10 @@ public enum TeamUp implements CardInfo {
     TAPU_KOKO_PRISM_STAR_51("Tapu Koko Prism Star", 51, Rarity.HOLORARE, [PRISM_STAR,POKEMON,_LIGHTNING_,BASIC]),
     ZERAORA_52("Zeraora", 52, Rarity.HOLORARE, [POKEMON,_LIGHTNING_,BASIC]),
     GENGAR_MIMIKYU_GX_53("Gengar & Mimikyu-GX", 53, Rarity.ULTRARARE, [TAG_TEAM,POKEMON_GX,POKEMON,_PSYCHIC_,BASIC]),
-    NIDORAN_FEMALE_54("Nidoran Female", 54, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
+    NIDORAN_FEMALE_54("Nidoran ♀", 54, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
     NIDORINA_55("Nidorina", 55, Rarity.UNCOMMON, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
     NIDOQUEEN_56("Nidoqueen", 56, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE2,EVOLUTION]),
-    NIDORAN_MALE_57("Nidoran Male", 57, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
+    NIDORAN_MALE_57("Nidoran ♂", 57, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
     NIDORINO_58("Nidorino", 58, Rarity.UNCOMMON, [POKEMON,_PSYCHIC_,STAGE1,EVOLUTION]),
     NIDOKING_59("Nidoking", 59, Rarity.RARE, [POKEMON,_PSYCHIC_,STAGE2,EVOLUTION]),
     TENTACOOL_60("Tentacool", 60, Rarity.COMMON, [POKEMON,_PSYCHIC_,BASIC]),
@@ -1444,7 +1444,7 @@ public enum TeamUp implements CardInfo {
             }
         };
         case NIDORINA_55:
-        return 	evolution (this, from:"Nidoran Female", hp:HP090, type:PSYCHIC, retreatCost:2) {
+        return 	evolution (this, from:"Nidoran ♀", hp:HP090, type:PSYCHIC, retreatCost:2) {
             weakness PSYCHIC
             move "Family Rescue" , {
                 text "Shuffle 5 Psychic Pokémon from your discard pile into your deck."
@@ -1509,7 +1509,7 @@ public enum TeamUp implements CardInfo {
             }
         };
         case NIDORINO_58:
-        return 	evolution (this, from:"Nidoran Male", hp:HP090, type:PSYCHIC, retreatCost:2) {
+        return 	evolution (this, from:"Nidoran ♂", hp:HP090, type:PSYCHIC, retreatCost:2) {
             weakness PSYCHIC
             move "Peck" , {
                 text "20 damage"
@@ -2645,7 +2645,7 @@ public enum TeamUp implements CardInfo {
                     def newR=[]
                     for (Resistance r in holder.object){
                       def r2=r.copy()
-                      r2.resistanceType = Resistance.ResistanceType.MINUS20
+                      r2.resistanceType = Resistance.ResistanceType.MINUS40
                       newR.add(r2)
                     }
                       holder.object=newR
@@ -3158,7 +3158,6 @@ public enum TeamUp implements CardInfo {
                         }
                     }
                 }
-                // TODO block Item and Supporter effects on this stadium
             }
             onRemoveFromPlay {
                 eff.unregister()
