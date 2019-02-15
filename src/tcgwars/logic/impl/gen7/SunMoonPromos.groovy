@@ -2247,7 +2247,7 @@ public enum SunMoonPromos implements CardInfo {
 						text "Once during your turn (before your attack), you may heal 30 damage from your Active [W] Pokémon."
 						actionA{
 							checkLastTurn()
-							assert my.active.topPokemonCard.types.constains(W)
+							assert my.active.topPokemonCard.types.contains(W)
 							powerUsed()
 							heal 30, my.active
 						}

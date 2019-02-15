@@ -556,8 +556,8 @@ public enum TeamUp implements CardInfo {
                     assert my.deck : "There is no more cards in your deck"
                     powerUsed()
                     damage 20, self
-                    attachEnergyFrom(type: FIRE, my.hand, self)
-                    attachEnergyFrom(type: FIRE, my.hand, self)
+                    attachEnergyFrom(type: FIRE, my.deck, self)
+                    attachEnergyFrom(type: FIRE, my.deck, self)
                     shuffleDeck()
                 }
             }
