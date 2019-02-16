@@ -433,10 +433,10 @@ public enum TeamUp implements CardInfo {
                 text "Put 2 damage counters on your opponent's Confused Pokémon between turns."
                 delayedA {
                     before BETWEEN_TURNS, {
-                        if(self.owner.opposite.active.isSPC(CONFUSED)){
-                            damage 20, self.owner.opposite.active
+                        if(self.owner.opposite.pbg.active.isSPC(CONFUSED)){
+                            directDamage 20, self.owner.opposite.pbg.active
                         }
-					}
+                    }
                 }
             }
             move "Mysterious Powder" , {
@@ -1351,13 +1351,14 @@ public enum TeamUp implements CardInfo {
             bwAbility "Dance of the Ancients" , {
                 text "Once during your turn (before your attack), if this Pokémon is on your Bench, you may choose 2 of your Benched Pokémon and attach a [L] Energy card from your discard pile to each of them. If you do, discard all cards from this Pokémon and put it in the Lost Zone."
                 actionA{
-                  checkLastTurn()
-                  assert !self.active : "$self is not benched."
-                  assert my.discard.filterByType(ENERGY).filterByEnergyType(L) : "There is no Lightning energy in the discard"
-                  powerUsed()
-                  attachEnergyFrom(type:L,my.discard,my.bench)
-                  attachEnergyFrom(may: true,type:L,my.discard,my.bench)
-                  self.cards.discard()
+                    checkLastTurn()
+                    assert self.benched : "$self is not benched."
+                    assert my.discard.filterByBasicEnergyType(L) : "There is no [L] energy in the discard"
+                    powerUsed()
+                    attachEnergyFrom(type:L,my.discard,my.bench)
+                    attachEnergyFrom(may: true,type:L,my.discard,my.bench)
+                    self.cards.discard()
+                    removePCS(self)
                 }
             }
             move "Mach Bolt" , {
@@ -1473,8 +1474,8 @@ public enum TeamUp implements CardInfo {
                 actionA{
                   checkLastTurn()
                   assert my.deck : "There is no more card in your deck"
-                  my.deck.search(count:1,"Select one Pokémon that isn't a Pokémon-GX or Pokémon-EX",{it.cardTypes.is(POKEMON) && !it.cardTypes.is(POKEMON_GX) && !it.cardTypes.is(POKEMON_EX)}).showToOpponent("Chosen Pokémon").moveTo(my.hand)
-                  shuffleDeck
+                  my.deck.search("Select one Pokémon that isn't a Pokémon-GX or Pokémon-EX",{it.cardTypes.is(POKEMON) && !it.cardTypes.is(POKEMON_GX) && !it.cardTypes.is(POKEMON_EX)}).moveTo(my.hand)
+                  shuffleDeck()
                 }
             }
             move "Power Lariat" , {
@@ -1858,10 +1859,12 @@ public enum TeamUp implements CardInfo {
                 energyCost F
                 onAttack{
                   damage 30
-                  bg.em().storeObject("Hit_And_Run"+self.owner, bg.turnCount)
-                  if(my.bench && confirm("Switch $self with 1 of your Benched Pokémon")){
-                    sw self, my.bench.select("New active")
-                  }
+                    bg.em().storeObject("Hit_And_Run"+self.owner, bg.turnCount)
+                    afterDamage {
+                        if(my.bench && confirm("Switch $self with 1 of your Benched Pokémon")){
+                            sw self, my.bench.select("New active")
+                        }
+                    }
                 }
             }
             move "Magnum Punch" , {
@@ -2118,9 +2121,9 @@ public enum TeamUp implements CardInfo {
             resistance PSYCHIC, MINUS20
             bwAbility "Dark Ambition" , {
                 text "As long as this Pokémon is in play, your opponent's Active Basic Pokémon's Retreat Cost is [C] more."
-                getterA (GET_RETREAT_COST) {
-      						if (it.effect.target.owner == self.owner.opposite) {
-      							it.object += 1
+                getterA (GET_RETREAT_COST) {h->
+      						if (h.effect.target.owner == self.owner.opposite && h.effect.target.basic && h.effect.target.active) {
+      							h.object += 1
       						}
                 }
             }
@@ -2325,9 +2328,10 @@ public enum TeamUp implements CardInfo {
                     assert my.deck : "There is no more cards in your deck"
                     powerUsed()
                     directDamage(30,self)
-                    afterDamage{
-                        my.deck.search(max:3,"Choose up to 3 [D] Energy cards", {it.cardTypes.is(ENERGY) && it.asEnergyCard.containsTypePlain(D)})
+                    my.deck.search(max:3,"Choose up to 3 [D] Energy cards", basicEnergyFilter(D)).each {
+                        attachEnergy(self, it)
                     }
+                    shuffleDeck()
                 }
             }
             move "Crushing Punch" , {
@@ -2384,7 +2388,7 @@ public enum TeamUp implements CardInfo {
                   powerUsed()
                   my.deck.subList(0,5).showToMe("The top 5 cards of your deck")
                   if(my.deck.subList(0,5).filterByType(TRAINER)){
-                    my.deck.subList(0,5).filterByType(TRAINER).select("Choose the card to put in your hand").showToOpponent("Selected trainer card").moveTo(my.hand)
+                    my.deck.subList(0,5).filterByType(TRAINER).select(max:0,"Choose the card to put in your hand").moveTo(my.hand)
                   }
                   shuffleDeck()
                   apply ASLEEP, self
@@ -2936,8 +2940,8 @@ public enum TeamUp implements CardInfo {
                   assert my.deck : "There is no more cards in your deck"
                   powerUsed()
                   def sel = my.deck.subList(0,2).select("Choose 1 card to put into your hand")
-                  my.deck.subList(0,2).getExcludedList(sel).moveTo(my.deck)
-                  sel.moveTo(my.hand)
+                  my.deck.subList(0,2).getExcludedList(sel).moveTo(suppressLog: true, my.deck)
+                  sel.moveTo(hidden: true, my.hand)
                 }
             }
             move "Gust" , {
@@ -3250,14 +3254,18 @@ public enum TeamUp implements CardInfo {
         };
         case ELECTROCHARGER_139:
         return itemCard (this) {
-                text "Flip 2 coins. For each heads, shuffle an Electropower from your discard pile into your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
-                onPlay {
-                  flip 2, {my.discard.findAll{it.name == "Electropower"}.select().moveTo(my.deck);
-                  shuffleDeck()}
+            text "Flip 2 coins. For each heads, shuffle an Electropower from your discard pile into your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
+            onPlay {
+                int cnt=0
+                flip 2, {cnt++}
+                if(cnt){
+                    my.discard.findAll{it.name == "Electropower"}.select(max: cnt).moveTo(my.deck);
+                    shuffleDeck()
                 }
-                playRequirement{
-                  assert my.discard.findAll{it.name == "Electropower"} : "There is no Electropower in your discard"
-                }
+            }
+            playRequirement{
+                assert my.discard.find{it.name == "Electropower"} : "There is no Electropower in your discard"
+            }
         };
         case ERIKAS_HOSPITALITY_140:
         return supporter(this) {
