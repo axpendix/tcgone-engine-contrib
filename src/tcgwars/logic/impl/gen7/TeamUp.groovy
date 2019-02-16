@@ -3424,20 +3424,23 @@ public enum TeamUp implements CardInfo {
         return supporter(this) {
           text "You can play this card only if you discard Dana, Evelyn, and Nita from your hand.\nLook at the top 12 cards of your deck and attach any number of Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-              my.hand.findAll{it.name == "Dana"}.select().discard
-              my.hand.findAll{it.name == "Evelyn"}.select().discard
-              my.hand.findAll{it.name == "Nita"}.select().discard
+              my.hand.findAll{it.name == "Dana"}.select().discard()
+              my.hand.findAll{it.name == "Evelyn"}.select().discard()
+              my.hand.findAll{it.name == "Nita"}.select().discard()
 
               def tar = my.deck.subList(0,12)
-              tar.showToMe("The top 12 cards of your deck")
-              tar.cardTypeFilter(ENERGY).each{
-                attachEnergyFrom(may:true,it,my.all)
+              tar.showToMe("The top 12 cards of your deck. You will be asked to pick target pokemon for every energy here.")
+              tar.filterByType(ENERGY).each{
+                  def pcs = my.all.select("Attach $it to? (cancel to skip this card)", false)
+                  if(pcs) {
+                      attachEnergy(pcs, it)
+                  }
               }
           }
           playRequirement{
-            assert my.hand.findAll{it.name == "Dana"} : "You don't have Dana in your hand"
-            assert my.hand.findAll{it.name == "Evelyn"} : "You don't have Evelyn in your hand"
-            assert my.hand.findAll{it.name == "Nita"} : "You don't have Nita in your hand"
+            assert my.hand.find{it.name == "Dana"} : "You don't have Dana in your hand"
+            assert my.hand.find{it.name == "Evelyn"} : "You don't have Evelyn in your hand"
+            assert my.hand.find{it.name == "Nita"} : "You don't have Nita in your hand"
             assert my.deck : "There is no more cards in your deck"
           }
         };
