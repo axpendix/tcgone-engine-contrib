@@ -924,7 +924,8 @@ public enum TeamUp implements CardInfo {
             bwAbility "Blizzard Veil" , {
                 text "As long as this Pokémon is your Active Pokémon, whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to your Benched [W] Pokémon."
                 delayedA{
-                  before null, null, Source.SUPPORTER, {
+                    // TODO
+                  before null, null, Source.TRAINER_CARD, {
                     def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
       							if (self.active && pcs.cards.energyCount(W)){
       								bc "Blizzard Veil prevent effect of Supporter cards."
@@ -2388,7 +2389,7 @@ public enum TeamUp implements CardInfo {
                   powerUsed()
                   my.deck.subList(0,5).showToMe("The top 5 cards of your deck")
                   if(my.deck.subList(0,5).filterByType(TRAINER)){
-                    my.deck.subList(0,5).filterByType(TRAINER).select(max:0,"Choose the card to put in your hand").moveTo(my.hand)
+                    my.deck.subList(0,5).filterByType(TRAINER).select(min:0,"Choose the card to put in your hand").moveTo(my.hand)
                   }
                   shuffleDeck()
                   apply ASLEEP, self
