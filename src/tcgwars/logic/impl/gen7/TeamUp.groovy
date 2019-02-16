@@ -2,7 +2,7 @@ package tcgwars.logic.impl.gen7;
 
 import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.effect.gm.PlayTrainer
-
+import tcgwars.logic.impl.gen5.BlackWhite
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -318,8 +318,8 @@ public enum TeamUp implements CardInfo {
                 onAttack{
                     gxPerform()
                     damage 180
-                    heal self.numberOfDamageCounters*10, self
-                    if(self.cards.energySufficient(thisMove.energyCost() + G)){
+                    healAll self
+                    if(self.cards.energySufficient(thisMove.energyCost + G)){
                         my.discard.moveTo(my.deck)
                         shuffleDeck()
                     }
@@ -978,7 +978,7 @@ public enum TeamUp implements CardInfo {
                     gxPerform()
                     damage 200
                     heal self.numberOfDamageCounters*10, self
-                    if(opp.bench && self.cards.energySufficient(thisMove.energyCost() + L + L + L)){
+                    if(opp.bench && self.cards.energySufficient(thisMove.energyCost + L + L + L)){
                         damage 170, opp.bench.select("Choose the target for 170 damage")
                     }
                 }
@@ -1247,11 +1247,11 @@ public enum TeamUp implements CardInfo {
             bwAbility "Nuzzly Gathering" , {
                 text "Once during your turn (before your attack), you may search your deck for a Pokémon that has the Nuzzle attack, reveal it, and put it into your hand. Then, shuffle your deck."
                 actionA{
-                  checkLastTurn()
-                  assert my.deck : "There is no more cardds in your deck"
-                  powerUsed()
-                  my.deck.search(count : 1,"",it.asPokemonCard().moves.findAll{it.name=="Nuzzle"}).showToOpponent("Chosen Pokémon").moveTo(my.hand)
-
+                    checkLastTurn()
+                    assert my.deck : "There is no more cards in your deck"
+                    powerUsed()
+                    my.deck.search("Find Pokemon with Nuzzle attack",{it.cardTypes.pokemon && it.moves.findAll{it.name=="Nuzzle"}}).moveTo(my.hand)
+                    shuffleDeck()
                 }
             }
             move "Nuzzle" , {
@@ -1835,7 +1835,7 @@ public enum TeamUp implements CardInfo {
                 text "This attack can be used only if Hitmonchan used Hit and Run during your last turn. This attack does 90 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
                 energyCost F
                 attackRequirement{
-                  assert bg.em().retrieveObject("Hit_And_Run"+thisCard.player) == bg.turnCount -2 : "Hitmonchan did not used Hit and Run during your last turn"
+                  assert bg.em().retrieveObject("Hit_And_Run"+self.owner) == bg.turnCount -2 : "Hitmonchan did not used Hit and Run during your last turn"
                   assert opp.bench : "There is no benched Pokémon"
                 }
                 onAttack{
@@ -1858,7 +1858,7 @@ public enum TeamUp implements CardInfo {
                 energyCost F
                 onAttack{
                   damage 30
-                  bg.em().storeObject("Hit_And_Run", bg.turnCount)
+                  bg.em().storeObject("Hit_And_Run"+self.owner, bg.turnCount)
                   if(my.bench && confirm("Switch $self with 1 of your Benched Pokémon")){
                     sw self, my.bench.select("New active")
                   }
@@ -2744,7 +2744,24 @@ public enum TeamUp implements CardInfo {
             }
         };
         case ALOLAN_EXEGGUTOR_114:
-        return copy (ForbiddenLight.ALOLAN_EXEGGUTOR_2, this);
+            return evolution (this, from:"Exeggcute", hp:HP160, type:DRAGON, retreatCost:3) {
+                weakness FAIRY
+                move "Tropical Shake", {
+                    text "20+ damage. This attack does 20 more damage for each type of basic Energy card in your discard pile. You can’t add more than 100 damage in this way."
+                    energyCost G
+                    onAttack {
+                        damage 20
+                        def addDmg = 0
+                        for(Type t1:Type.values()){
+                            if(my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(t1))
+                                addDmg += 20
+                        }
+                        addDmg = Math.min(100,addDmg)
+                        damage addDmg
+                    }
+                }
+
+            };
         case ALOLAN_EXEGGUTOR_115:
         return 	evolution (this, from:"Exeggcute", hp:HP160, type:DRAGON, retreatCost:4) {
             weakness FAIRY
@@ -3450,16 +3467,17 @@ public enum TeamUp implements CardInfo {
           }
         };
         case POKEMON_COMMUNICATION_152:
-        return itemCard (this) {
-          text "Reveal a Pokémon from your hand and put it into your deck. If you do, search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
-          onPlay {
-            my.hand.filterByType(POKEMON).select("Choose the Pokémon to put back in your deck").showToOpponent("Chosen card")
-            my.deck.search(count:1,"Choose the Pokémon to put back in your deck",cardTypeFilter(POKEMON)).showToOpponent("Chosen card")
-          }
-          playRequirement{
-            assert my.hand.filterByType(POKEMON) : "There is no more card in your deck"
-          }
-        };
+            return copy(BlackWhite.POKEMON_COMMUNICATION_99, this)
+//        return itemCard (this) {
+//          text "Reveal a Pokémon from your hand and put it into your deck. If you do, search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
+//          onPlay {
+//            my.hand.filterByType(POKEMON).select("Choose the Pokémon to put back in your deck").showToOpponent("Chosen card")
+//            my.deck.search(count:1,"Choose the Pokémon to put back in your deck",cardTypeFilter(POKEMON)).showToOpponent("Chosen card")
+//          }
+//          playRequirement{
+//            assert my.hand.filterByType(POKEMON) : "There is no more card in your deck"
+//          }
+//        };
         case RETURN_LABEL_153:
         return itemCard (this) {
           text "Put a card from your opponent's discard pile on the bottom of their deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3502,8 +3520,8 @@ public enum TeamUp implements CardInfo {
               assert lastTurn != bg().turnCount : "Already used"
               bc "Used Viridian Forest effect"
               lastTurn = bg().turnCount
-              my.hand.select("Choose the card to discard").discard
-              my.deck.search(count:1,"Choose a basic energy card",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
+              my.hand.select("Choose the card to discard").discard()
+              my.deck.search("Choose a basic energy card",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -3682,7 +3700,8 @@ public enum TeamUp implements CardInfo {
           return copy (METAL_GOGGLES_148, this);
 
         case POKEMON_COMMUNICATION_196:
-          return copy (POKEMON_COMMUNICATION_152, this);
+            return copy(BlackWhite.POKEMON_COMMUNICATION_99, this)
+//          return copy (POKEMON_COMMUNICATION_152, this);
 
         default:
             return null;

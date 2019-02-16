@@ -243,6 +243,8 @@ public class EvolutionChains {
     ADD("Unidentified Fossil", "Shieldon", "Bastiodon");
     ADD("Unidentified Fossil", "Cranidos", "Rampardos");
     ADD("Unidentified Fossil", "Tyrunt", "Tyrantrum");
+    ADD("Unidentified Fossil", "Kabuto", "Kabutops");
+    ADD("Unidentified Fossil", "Omanyte", "Omastar");
     ADD("Seedot", "Nuzleaf", "Shiftry-GX");
     ADD("Torchic", "Combusken", "Blaziken-GX");
     ADD("Dratini", "Dragonair", "Dragonite-GX");
@@ -250,6 +252,7 @@ public class EvolutionChains {
     ADD("Horsea", "Seadra", "Kingdra-GX");
     ADD("Treecko", "Grovyle", "Sceptile-GX");
     ADD("Larvitar", "Pupitar", "Tyranitar-GX");
+    ADD("Mareep", "Flaaffy", "Ampharos-GX");
   }
   
   private static void ADD(CardInfo...a){
