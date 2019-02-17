@@ -65,7 +65,7 @@ public enum TeamUp implements CardInfo {
     GOLDUCK_27("Golduck", 27, Rarity.UNCOMMON, [POKEMON,_WATER_,STAGE1,EVOLUTION]),
     STARYU_28("Staryu", 28, Rarity.COMMON, [POKEMON,_WATER_,BASIC]),
     MAGIKARP_29("Magikarp", 29, Rarity.COMMON, [POKEMON,_WATER_,BASIC]),
-    GYARADOS_30("Gyarados", 30, Rarity.HOLORARE, [POKEMON,_WATER_,STAGE2,EVOLUTION]),
+    GYARADOS_30("Gyarados", 30, Rarity.HOLORARE, [POKEMON,_WATER_,STAGE1,EVOLUTION]),
 
     LAPRAS_31("Lapras", 31, Rarity.RARE, [POKEMON,_WATER_,BASIC]),
     ARTICUNO_32("Articuno", 32, Rarity.HOLORARE, [POKEMON,_WATER_,BASIC]),
@@ -978,7 +978,6 @@ public enum TeamUp implements CardInfo {
                 onAttack{
                     gxPerform()
                     damage 200
-                    heal self.numberOfDamageCounters*10, self
                     if(opp.bench && self.cards.energySufficient(thisMove.energyCost + L + L + L)){
                         damage 170, opp.bench.select("Choose the target for 170 damage")
                     }
@@ -1356,10 +1355,12 @@ public enum TeamUp implements CardInfo {
                 actionA{
                     checkLastTurn()
                     assert self.benched : "$self is not benched."
-                    assert my.discard.filterByBasicEnergyType(L) : "There is no [L] energy in the discard"
+                    assert my.discard.filterByType(ENERGY).filterByEnergyType(L) : "There is no [L] energy in the discard"
                     powerUsed()
-                    attachEnergyFrom(type:L,my.discard,my.bench)
-                    attachEnergyFrom(may: true,type:L,my.discard,my.bench)
+                    def maxAttach = Math.min(Math.min(my.bench.size(),2),my.discard.filterByType(ENERGY).filterByEnergyType(L).size())
+                    my.bench.select(count : maxAttach,"Select $maxAttach Pokémon that will receive a [L] energy").each{
+                      attachEnergyFrom(type:L,my.discard,it)
+                    }
                     self.cards.discard()
                     removePCS(self)
                 }
@@ -2342,7 +2343,7 @@ public enum TeamUp implements CardInfo {
                 energyCost C,C,C
                 onAttack{
                   damage 130
-                  discardDefendingSpecialEnergy()
+                  discardDefendingSpecialEnergy(delegate)
                 }
             }
             move "Darkest Tornado GX" , {
@@ -2875,6 +2876,17 @@ public enum TeamUp implements CardInfo {
         case EEVEE_SNORLAX_GX_120:
         return basic (this, hp:HP270, type:COLORLESS, retreatCost:4) {
             weakness FIGHTING
+            move "Cheer Up" , {
+              text "Attach an Energy card from your hand to 1 of your Pokémon."
+              energyCost C
+              attackRequirement{
+                assert my.hand.filterByType(ENERGY) : "There is no energy in your hand"
+              }
+              onAttack{
+                attachEnergyFrom(my.hand,my.all)
+              }
+            }
+
             move "Dump Truck Press" , {
                 text "120+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 120 more damage."
                 energyCost C,C,C,C
@@ -3342,9 +3354,11 @@ public enum TeamUp implements CardInfo {
             else{
               def choice = choose([1,2],["Discard your hand and draw 5 cards","Discard your hand and draw 5 cards from the bottom of your deck"],"What to do?")
               if(choice == 1){
+                my.hand.discard()
                 draw 5
               }
               else {
+                my.hand.discard()
                 my.deck.subList(my.deck.size() - 5, my.deck.size()).moveTo(hidden:true, my.hand)
               }
             }
@@ -3358,10 +3372,10 @@ public enum TeamUp implements CardInfo {
           text "Search your deck for a [M] Pokémon, reveal it, and put it into your hand. If you go second and it's your first turn, search for 5 [M] Pokémon instead of 1. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             if(bg.turnCount == 2){
-              my.deck.search(max:5,"Choose 5 [M] Pokémon",{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(M)})
+              my.deck.search(max:5,"Choose 5 [M] Pokémon",{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(M)}).moveTo(my.hand)
             }
             else{
-              my.deck.search(count:1,"Choose a [M] Pokémon",{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(M)})
+              my.deck.search(count:1,"Choose a [M] Pokémon",{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(M)}).moveTo(my.hand)
             }
           }
           playRequirement{
@@ -3508,7 +3522,6 @@ public enum TeamUp implements CardInfo {
           onPlay {
             if(opp.hand.hasType(SUPPORTER)){
               def card=opp.hand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
-              discard card
               bg.deterministicCurrentThreadPlayerType=bg.currentTurn
               bg.em().run(new PlayTrainer(card))
               bg.clearDeterministicCurrentThreadPlayerType()

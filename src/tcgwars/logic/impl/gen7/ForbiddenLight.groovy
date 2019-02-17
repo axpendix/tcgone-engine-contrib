@@ -1218,7 +1218,7 @@ public enum ForbiddenLight implements CardInfo {
 					delayedA {
 						before (KNOCKOUT,self) {
 							if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
-								def pcs = self.owner.opposite.pbg.all.select("choose the Pokémon to put 3 damage counters on")
+								def pcs = self.owner.opposite.pbg.all.oppSelect("choose the Pokémon to put 3 damage counters on")
 								directDamage 30, pcs
 							}
 						}

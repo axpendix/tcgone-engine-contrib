@@ -2416,7 +2416,10 @@ public enum SunMoonPromos implements CardInfo {
 					onAttack{
 						gxPerform()
 						my.discard.filterByType(ENERGY).filterByEnergyType(M).each{
-							attachEnergyFrom(may:true,it,self)
+							if(confirm("Attach $it to $self ? ")){
+								attachEnergy(self,it)
+
+							}
 						}
 					}
 				}
