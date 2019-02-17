@@ -646,7 +646,9 @@ public enum BurningShadows implements CardInfo {
 					energyCost R, R, R, C, C
 					onAttack {
 						damage 300
-            discardSelfEnergy R,R,R
+						afterDamage{
+							discardSelfEnergy R,R,R
+						}
 					}
 				}
 				move "Raging Out GX", {
@@ -864,7 +866,9 @@ public enum BurningShadows implements CardInfo {
 					energyCost W
 					onAttack {
 						damage 90
-            discardSelfEnergy W
+						afterDamage{
+							discardSelfEnergy W
+						}
             if(opp.bench) damage 30, opp.bench.select()
 					}
 				}
@@ -1506,9 +1510,11 @@ public enum BurningShadows implements CardInfo {
 					energyCost C, C, C, C
 					onAttack {
 						damage 100
-						discardAllSelfEnergy(null)
-						targeted (defending) {
-							defending.cards.filterByType(ENERGY).discard()
+						afterDamage{
+							discardAllSelfEnergy(null)
+							targeted (defending) {
+								defending.cards.filterByType(ENERGY).discard()
+							}
 						}
 					}
 				}
@@ -2886,7 +2892,9 @@ public enum BurningShadows implements CardInfo {
 						onAttack {
 							gxPerform()
 							damage 200
-							discardSelfEnergy(C,C)
+							afterDamage{
+								discardSelfEnergy(C,C)
+							}
 						}
 					}
 

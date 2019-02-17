@@ -410,7 +410,9 @@ public enum ShiningLegends implements CardInfo {
 						energyCost R, R, C
 						onAttack {
 							damage 90
-							discardSelfEnergy C
+							afterDamage{
+								discardSelfEnergy C
+							}
 						}
 					}
 
@@ -515,7 +517,9 @@ public enum ShiningLegends implements CardInfo {
 						energyCost R, R, C
 						onAttack {
 							damage 180
-							discardAllSelfEnergy(R)
+							afterDamage{
+								discardAllSelfEnergy(R)
+							}
 						}
 					}
 
@@ -875,7 +879,9 @@ public enum ShiningLegends implements CardInfo {
 						energyCost L, L, C
 						onAttack {
 							damage 130
-							discardSelfEnergy(C,C)
+							afterDamage{
+								discardSelfEnergy(C,C)
+							}
 						}
 					}
 
@@ -1362,7 +1368,9 @@ public enum ShiningLegends implements CardInfo {
 						energyCost R, L, L, C
 						onAttack {
 							damage 190
-							discardSelfEnergy(C,C,C)
+							afterDamage{
+								discardSelfEnergy(C,C,C)
+							}
 						}
 					}
 

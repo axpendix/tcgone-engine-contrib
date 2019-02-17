@@ -704,7 +704,9 @@ public enum SunMoon implements CardInfo {
 						energyCost R, R, R, C
 						onAttack {
 							damage 190
-							discardSelfEnergy R,R,R
+							afterDamage{
+								discardSelfEnergy R,R,R
+							}
 						}
 					}
 
@@ -763,7 +765,9 @@ public enum SunMoon implements CardInfo {
 						energyCost R, R, C
 						onAttack {
 							damage 90
-							discardSelfEnergy(C)
+							afterDamage{
+								discardSelfEnergy(C)
+							}
 						}
 					}
 
@@ -1352,7 +1356,9 @@ public enum SunMoon implements CardInfo {
 						energyCost L, C, C, C
 						onAttack {
 							damage 150
-							discardSelfEnergy(C,C,C)
+							afterDamage{
+								discardSelfEnergy(C,C,C)
+							}
 						}
 					}
 
@@ -2324,7 +2330,9 @@ public enum SunMoon implements CardInfo {
 						energyCost G, L
 						onAttack {
 							damage 130
-							discardSelfEnergy G, L
+							afterDamage{
+								discardSelfEnergy G, L
+							}
 						}
 					}
 					move "Giant Tail", {

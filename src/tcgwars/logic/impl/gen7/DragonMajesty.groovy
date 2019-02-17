@@ -203,8 +203,10 @@ public enum DragonMajesty implements CardInfo {
 					text "80 damage. Discard an Energy from this Pokémon."
 					energyCost R,R,C
 					onAttack{
-						discardSelfEnergy C
 						damage 80
+						afterDamage{
+							discardSelfEnergy C
+						}
 					}
 				}
 			};
@@ -229,8 +231,10 @@ public enum DragonMajesty implements CardInfo {
 					text "130 damage. Discard an Energy from this Pokémon."
 					energyCost R,R,C
 					onAttack{
-						discardSelfEnergy C
 						damage 130
+						afterDamage{
+							discardSelfEnergy C
+						}
 					}
 				}
 			};
@@ -285,8 +289,10 @@ public enum DragonMajesty implements CardInfo {
 					energyCost R,C,C
 					onAttack{
 						damage 90
-						discardSelfEnergy R
 						opp.bench.each{damage 20, it}
+						afterDamage{
+							discardSelfEnergy R
+						}
 					}
 				}
 			};
@@ -447,7 +453,9 @@ public enum DragonMajesty implements CardInfo {
 					energyCost R,C
 					onAttack{
 						damage 80
-						discardSelfEnergy C
+						afterDamage{
+							discardSelfEnergy C
+						}
 					}
 				}
 			};
@@ -1056,7 +1064,9 @@ public enum DragonMajesty implements CardInfo {
 					energyCost R,W,C,C
 					onAttack{
 						damage 200
-						discardSelfEnergy C,C
+						afterDamage{
+							discardSelfEnergy C,C
+						}
 					}
 				}
 				move "Flame Jet GX" , {

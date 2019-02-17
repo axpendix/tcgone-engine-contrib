@@ -768,7 +768,9 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost R
 					onAttack {
 					  damage 30
-					  discardSelfEnergy C
+						afterDamage{
+							discardSelfEnergy C
+						}
 					}
 				}
 			};
@@ -805,7 +807,9 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost R,R,C
 					onAttack {
 					  damage 80
-					  discardSelfEnergy C
+						afterDamage{
+							discardSelfEnergy C
+						}
 					}
 				}
 			};
@@ -824,7 +828,9 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost R,R,C
 					onAttack {
 					  damage 210
-					  discardSelfEnergy R,R
+						afterDamage{
+							discardSelfEnergy R,R
+						}
 					}
 				}
 				move "Blaze Out GX" , {
@@ -1733,7 +1739,9 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost P,P,C
 					onAttack {
 					  damage 120
-					  discardSelfEnergy C
+						afterDamage{
+					  	discardSelfEnergy C
+						}
 					}
 				}
 			};
@@ -2056,7 +2064,9 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost F,F,C,C
 					onAttack {
 					  damage 130
-					  discardSelfEnergy C
+						afterDamage{
+					  	discardSelfEnergy C
+						}
 					}
 				}
 			};
@@ -2855,8 +2865,10 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 					energyCost C,C,C
 					onAttack {
 					  damage 160
-					  discardSelfEnergy C
-					  cantAttackNextTurn self
+						afterDamage{
+					  	discardSelfEnergy C
+					  	cantAttackNextTurn self
+						}
 					}
 				}
 			};

@@ -483,7 +483,9 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost R, R, C
 					onAttack {
 						damage 130
-						discardSelfEnergy C,C
+						afterDamage{
+							discardSelfEnergy C,C
+						}
 					}
 				}
 
@@ -496,7 +498,9 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost R
 					onAttack {
 						damage 30
-						discardSelfEnergy C
+						afterDamage{
+							discardSelfEnergy C
+						}
 					}
 				}
 
@@ -535,7 +539,9 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost R, R, C
 					onAttack {
 						damage 80
-						discardSelfEnergy C
+						afterDamage{
+							discardSelfEnergy C
+						}
 					}
 				}
 
@@ -556,7 +562,9 @@ public enum ForbiddenLight implements CardInfo {
 					energyCost R, R, C, C
 					onAttack {
 						damage 150
-						discardSelfEnergy C,C
+						afterDamage{
+							discardSelfEnergy C,C
+						}
 					}
 				}
 

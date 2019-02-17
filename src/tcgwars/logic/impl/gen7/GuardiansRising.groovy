@@ -584,7 +584,9 @@ public enum GuardiansRising implements CardInfo {
 					energyCost R, C, C
 					onAttack {
 						damage 90
-						discardSelfEnergy(C)
+						afterDamage{
+							discardSelfEnergy(C)
+						}
 					}
 				}
 
@@ -636,7 +638,9 @@ public enum GuardiansRising implements CardInfo {
 					energyCost R, R, C
 					onAttack {
 						damage 160
-						discardSelfEnergy(R, R)
+						afterDamage{
+							discardSelfEnergy(R, R)
+						}
 					}
 				}
 				move "Nitro Tank GX", {
@@ -731,7 +735,9 @@ public enum GuardiansRising implements CardInfo {
 					energyCost W, W, C
 					onAttack {
 						damage 160
-						discardSelfEnergy(C, C)
+						afterDamage{
+							discardSelfEnergy(C, C)
+						}
 					}
 				}
 				move "Ice Path GX", {
@@ -1242,7 +1248,9 @@ public enum GuardiansRising implements CardInfo {
 					energyCost L, C, C, C
 					onAttack {
 						damage 180
-						discardSelfEnergy C, C
+						afterDamage{
+							discardSelfEnergy C, C
+						}
 					}
 				}
 				move "Gigatron GX", {
@@ -2092,7 +2100,9 @@ public enum GuardiansRising implements CardInfo {
 					energyCost M
 					onAttack {
 						damage 20
-						discardSelfEnergy M
+						afterDamage{
+							discardSelfEnergy M
+						}
 					}
 				}
 
@@ -2113,7 +2123,9 @@ public enum GuardiansRising implements CardInfo {
 					energyCost M, M, C
 					onAttack {
 						damage 80
-						discardSelfEnergy M
+						afterDamage{
+							discardSelfEnergy M
+						}
 					}
 				}
 
@@ -2656,7 +2668,7 @@ public enum GuardiansRising implements CardInfo {
 							if(my.bench){
 								def pcs = my.bench.select("Attach to?")
 								attachEnergyFrom(basic:true, my.discard, pcs)
-								attachEnergyFrom(basic:true, my.discard, pcs)								
+								attachEnergyFrom(basic:true, my.discard, pcs)
 							}
 						}
 					}

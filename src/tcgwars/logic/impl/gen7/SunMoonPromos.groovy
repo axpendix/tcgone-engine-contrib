@@ -847,7 +847,9 @@ public enum SunMoonPromos implements CardInfo {
 						energyCost D, Y, C, C
 						onAttack {
 							damage 150
-              discardSelfEnergy D, Y
+							afterDamage{
+								discardSelfEnergy D, Y
+							}
 						}
 					}
 
@@ -1111,7 +1113,9 @@ public enum SunMoonPromos implements CardInfo {
 						energyCost R, C, C, C
 						onAttack {
 							damage 110
-							discardSelfEnergy C
+							afterDamage{
+								discardSelfEnergy C
+							}
 						}
 					}
 
@@ -1200,7 +1204,9 @@ public enum SunMoonPromos implements CardInfo {
 						energyCost C, C, C, C
 						onAttack {
 							damage 130
-							discardSelfEnergy(C)
+							afterDamage{
+								discardSelfEnergy(C)
+							}
 						}
 					}
 
@@ -1291,7 +1297,9 @@ public enum SunMoonPromos implements CardInfo {
 						energyCost D,D,C
 						onAttack{
 							damage 120
-							discardSelfEnergy D
+							afterDamage{
+								discardSelfEnergy D
+							}
 						}
 					}
 				};
@@ -1396,7 +1404,9 @@ public enum SunMoonPromos implements CardInfo {
 						energyCost P,P,C,C
 						onAttack{
 							damage 200
-							discardSelfEnergy P,P
+							afterDamage{
+								discardSelfEnergy P,P
+							}
 						}
 					}
 					move "Requiem GX" , {
@@ -1486,7 +1496,9 @@ public enum SunMoonPromos implements CardInfo {
 						energyCost P, P, P
 						onAttack {
 							damage 130
-							discardSelfEnergy(C, C)
+							afterDamage{
+								discardSelfEnergy(C, C)
+							}
 						}
 					}
 				};
@@ -2077,7 +2089,9 @@ public enum SunMoonPromos implements CardInfo {
 						energyCost R,C
 						onAttack{
 							damage 30
-							discardSelfEnergy C
+							afterDamage{
+								discardSelfEnergy C
+							}
 						}
 					}
 				};
@@ -2225,7 +2239,9 @@ public enum SunMoonPromos implements CardInfo {
 					energyCost R,R,C
 					onAttack{
 						damage 190
-						discardSelfEnergy R,R
+						afterDamage{
+							discardSelfEnergy R,R
+						}
 					}
 				}
 				move "Power Burner GX" , {

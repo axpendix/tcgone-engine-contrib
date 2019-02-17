@@ -669,7 +669,9 @@ public enum UltraPrism implements CardInfo {
           energyCost R, R, C
           onAttack {
             damage 80
-            discardSelfEnergy(C)
+            afterDamage{
+              discardSelfEnergy(C)
+            }
           }
         }
 
@@ -1009,7 +1011,9 @@ public enum UltraPrism implements CardInfo {
           energyCost W, C
           onAttack {
             damage 80
-            discardSelfEnergy W
+            afterDamage{
+              discardSelfEnergy W
+            }
           }
         }
 
@@ -1518,7 +1522,9 @@ public enum UltraPrism implements CardInfo {
           energyCost P, P, P, P
           onAttack {
             damage 160
-            discardSelfEnergy(C,C)
+            afterDamage{
+              discardSelfEnergy(C,C)
+            }
           }
         }
 
@@ -2168,7 +2174,9 @@ public enum UltraPrism implements CardInfo {
           energyCost M, M, C
           onAttack {
             damage 130
-            discardSelfEnergy(C,C)
+            afterDamage{
+              discardSelfEnergy(C,C)
+            }
           }
         }
 
@@ -2215,7 +2223,10 @@ public enum UltraPrism implements CardInfo {
           energyCost M, M, M, C
           onAttack {
             damage 220
-            discardSelfEnergy(C,C,C)
+            afterDamage{
+              discardSelfEnergy(C,C,C)
+
+            }
           }
         }
         move "Sun’s Eclipse GX", {

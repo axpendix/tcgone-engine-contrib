@@ -1205,7 +1205,9 @@ public enum LostThunder implements CardInfo {
 					energyCost R,R,C
 					onAttack{
 						damage 60
-						discardSelfEnergy C
+						afterDamage{
+							discardSelfEnergy C
+						}
 					}
 				}
 			};
@@ -1840,7 +1842,9 @@ public enum LostThunder implements CardInfo {
 					energyCost L,L,L,C
 					onAttack{
 						damage 190
-						discardSelfEnergy C,C,C
+						afterDamage{
+							discardSelfEnergy C,C,C
+						}
 					}
 				}
 			};
@@ -2046,7 +2050,9 @@ public enum LostThunder implements CardInfo {
 					energyCost L
 					onAttack{
 						damage 50
-						discardSelfEnergy L
+						afterDamage{
+							discardSelfEnergy L
+						}
 					}
 				}
 			};
@@ -3061,7 +3067,9 @@ public enum LostThunder implements CardInfo {
 					energyCost M,M,C,C
 					onAttack{
 						damage 130
-						discardSelfEnergy C
+						afterDamage{
+							discardSelfEnergy C
+						}
 					}
 				}
 			};
