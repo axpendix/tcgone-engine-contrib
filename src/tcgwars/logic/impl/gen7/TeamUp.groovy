@@ -1368,7 +1368,7 @@ public enum TeamUp implements CardInfo {
                     assert my.discard.filterByType(ENERGY).filterByEnergyType(L) : "There is no [L] energy in the discard"
                     powerUsed()
                     def maxAttach = Math.min(Math.min(my.bench.size(),2),my.discard.filterByType(ENERGY).filterByEnergyType(L).size())
-                    my.bench.select(count : maxAttach,"Select $maxAttach Pokémon that will receive a [L] energy").each{
+                    multiSelect(my.bench,maxAttach,"Select Pokémon that will receive a [L] energy").each{
                       attachEnergyFrom(type:L,my.discard,it)
                     }
                     self.cards.discard()
@@ -2620,12 +2620,9 @@ public enum TeamUp implements CardInfo {
                 text "30× damage. This attack does 30 damage for each Pokémon Tool card attached to all Pokémon"
                 energyCost C,C
                 onAttack{
-                  my.all.each{
-                    if(it.cards.filterByType(POKEMON_TOOL)) damage 30
-                  }
-                  opp.all.each{
-                    if(it.cards.filterByType(POKEMON_TOOL)) damage 30
-                  }
+                    int count=0
+                    all.each {count+=it.cards.filterByType(POKEMON_TOOL).size()}
+                    damage 30*count
                 }
             }
         };
