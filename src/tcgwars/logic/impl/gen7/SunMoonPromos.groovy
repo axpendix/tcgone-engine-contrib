@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen7
 
+import tcgwars.logic.effect.Source
 import tcgwars.logic.impl.gen5.BlackWhitePromos;
 
 import static tcgwars.logic.card.HP.*;
@@ -191,7 +192,7 @@ public enum SunMoonPromos implements CardInfo {
 	MIMIKYU_SM163("Mimikyu", 163, Rarity.PROMO, [POKEMON,_FAIRY_,BASIC]),
 	DEOXYS_SM164("Deoxys", 164, Rarity.PROMO, [POKEMON,_PSYCHIC_,BASIC]),
 	ULTRA_NECROZMA_SM165("Ultra Necrozma", 165, Rarity.PROMO, [POKEMON,_DRAGON_,BASIC,ULTRA_BEAST]),
-	MAGIKARP_WAILORD_GX_SM166("Magikarp &amp; Wailord-GX", 166, Rarity.PROMO, [POKEMON_GX,POKEMON,_WATER_,BASIC]),
+	MAGIKARP_WAILORD_GX_SM166("Magikarp & Wailord-GX", 166, Rarity.PROMO, [POKEMON_GX,POKEMON,_WATER_,BASIC,TAG_TEAM]),
 	FLAREON_GX_SM171("Flareon-GX", 171, Rarity.PROMO, [POKEMON_GX,POKEMON,_FIRE_,STAGE1,EVOLUTION]),
 	VAPOREON_GX_SM172("Vaporeon-GX", 172, Rarity.PROMO, [POKEMON_GX,POKEMON,_WATER_,STAGE1,EVOLUTION]),
 	JOLTEON_GX_SM173("Jolteon-GX", 173, Rarity.PROMO, [POKEMON_GX,POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
@@ -2336,6 +2337,7 @@ public enum SunMoonPromos implements CardInfo {
 						assert self.turnCount < bg.turnCount : "Cannot evolve the turn you put it into play"
 						powerUsed()
 						def pcs = my.hand.findAll{it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"}.select("Evolve To")
+						healAll self, Source.SRC_ABILITY
 						evolve(self, pcs.first(), PLAY_FROM_HAND)
 					}
 				}

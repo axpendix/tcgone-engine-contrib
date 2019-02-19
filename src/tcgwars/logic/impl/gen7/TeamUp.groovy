@@ -711,7 +711,7 @@ public enum TeamUp implements CardInfo {
             bwAbility "Floating Shell" , {
                 text "If you have a Stadium card in play this Pokémon has no Retreat Cost."
                 getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {h->
-      					  if(bg.stadiumInfoStruct.stadiumCard.player == self.owner) {
+      					  if(bg.stadiumInfoStruct?.stadiumCard?.player == self.owner) {
       					    h.object = 0
       					  }
       					}
@@ -1897,12 +1897,12 @@ public enum TeamUp implements CardInfo {
             bwAbility "Fossil Bind" , {
                 text "As long as you have fewer Pokémon in play than your opponent, they can't play any item cards from their hand."
                 delayedA{
-                  before PLAY_TRAINER, {
-                    if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite && my.all.size() < opp.all.size()) {
-                      wcu "Fossil Bind prevents playing this card"
-                      prevent()
+                    before PLAY_TRAINER, {
+                        if(ef.item && bg.currentTurn==self.owner.opposite && my.all.size() < opp.all.size()) {
+                            wcu "Fossil Bind prevents playing item cards"
+                            prevent()
+                        }
                     }
-                  }
                 }
             }
             move "Bite" , {
@@ -1930,11 +1930,13 @@ public enum TeamUp implements CardInfo {
             weakness GRASS
             bwAbility "Fossilized Memories" , {
                 text "As long as this Pokémon is your Active Pokémon, your opponent can't play any Supporter cards from their hand."
-                before PLAY_TRAINER, {
-                  if (ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner.opposite && self.active) {
-                    wcu "Fossilized Memories prevents playing this card"
-                    prevent()
-                  }
+                delayedA {
+                    before PLAY_TRAINER, {
+                        if (ef.supporter && bg.currentTurn == self.owner.opposite && self.active) {
+                            wcu "Fossilized Memories prevents playing supporters"
+                            prevent()
+                        }
+                    }
                 }
             }
             move "Rock Slide" , {
@@ -3304,7 +3306,7 @@ public enum TeamUp implements CardInfo {
                 }
         };
         case FAIRY_CHARM_UB_142:
-        return itemCard (this) {
+        return pokemonTool (this) {
                 text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nPrevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's Ultra Beast Pokémon-GX and Ultra Beast Pokémon-EX.\nYou may play as many Item cards as you like during your turn (before your attack)."
                 def eff1
                 onPlay {reason->
@@ -3312,8 +3314,8 @@ public enum TeamUp implements CardInfo {
                     before APPLY_ATTACK_DAMAGES, {
                       if(self.types.contains(Y)){
                         bg.dm().each {
-                          if(it.to==self && it.from.owner!=self.owner && it.from.topPokemonCard.cardTypes.is(ULTRA_BEAST) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
-                            bc "Fairy Charm UB prevent damage from Ultra Beast Pokémon-GX and Pokémon-EX"
+                          if(it.to==self && it.from.owner!=self.owner && it.from.topPokemonCard.cardTypes.is(ULTRA_BEAST) && (it.from.pokemonGX || it.from.pokemonEX) && it.notZero && it.notNoEffect){
+                            bc "Fairy Charm UB prevents damage from Ultra Beast Pokémon-GX and Pokémon-EX"
                             it.dmg = hp(0)
                           }
                         }
@@ -3371,12 +3373,8 @@ public enum TeamUp implements CardInfo {
         return supporter(this) {
           text "Search your deck for a [M] Pokémon, reveal it, and put it into your hand. If you go second and it's your first turn, search for 5 [M] Pokémon instead of 1. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            if(bg.turnCount == 2){
-              my.deck.search(max:5,"Choose 5 [M] Pokémon",{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(M)}).moveTo(my.hand)
-            }
-            else{
-              my.deck.search(count:1,"Choose a [M] Pokémon",{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(M)}).moveTo(my.hand)
-            }
+              my.deck.search(max:bg.turnCount==2?5:1,"Choose [M] Pokémon",pokemonTypeFilter(M)).moveTo(my.hand)
+              shuffleDeck()
           }
           playRequirement{
             assert my.deck : "There is no more cards in your deck"
@@ -3408,17 +3406,15 @@ public enum TeamUp implements CardInfo {
         };
         case LAVENDER_TOWN_147:
         return stadium(this) {
-          text "Once during each player's turn, that player may look at their opponent's hand.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
+          text "Once during each player's turn, that player may look at their opponent's hand."
           def lastTurn=0
           def actions=[]
           onPlay {
             actions=action("Stadium: Lavender Town") {
-              assert my.deck : "There is no more cards in your deck"
-              assert my.hand : "You don't have cards in your hand"
               assert lastTurn != bg().turnCount : "Already used"
               bc "Used Lavender Town effect"
               lastTurn = bg().turnCount
-              opp.hand.showToMe("Your oppponent's hand")
+              opp.hand.showToMe("Your opponent's hand")
             }
           }
           onRemoveFromPlay{
@@ -3523,7 +3519,7 @@ public enum TeamUp implements CardInfo {
             if(opp.hand.hasType(SUPPORTER)){
               def card=opp.hand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
               bg.deterministicCurrentThreadPlayerType=bg.currentTurn
-              bg.em().run(new PlayTrainer(card))
+              bg.em().run(new PlayTrainer(card).setDontDiscard(true))
               bg.clearDeterministicCurrentThreadPlayerType()
             } else {
               opp.hand.showToMe("Opponent's hand. No supporter in there.")
