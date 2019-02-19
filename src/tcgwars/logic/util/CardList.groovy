@@ -419,6 +419,8 @@ public class CardList extends ArrayList<Card> {
 			effect.hidden = params.hidden
 		if(params.suppressLog)
 			effect.suppressLog = params.suppressLog
+		if(params.addToTop)
+			effect.addToTop = params.addToTop
 		effect.run(Battleground.getInstance())
 		return this
 	}

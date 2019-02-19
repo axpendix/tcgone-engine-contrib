@@ -590,12 +590,15 @@ public enum TeamUp implements CardInfo {
                 text "Once during your turn (before your attack), you may discard 2 Fire Energy cards from your hand. If you do, switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
                 actionA{
                     checkLastTurn()
-                    def src = my.hand.filterByType(ENERGY).filterByEnergyType(R)
-                    assert src.size() >= 2 : "you don't have enough Fire Energy cards to discard"
+                    assert opp.bench.notEmpty() : "Opponent bench empty"
+                    def src = my.hand.filterByBasicEnergyType(R)
+                    assert src.size() >= 2 : "You don't have enough Fire Energy cards to discard"
                     powerUsed()
-                    src.select(count : 2).discard()
-                    sw self.owner.opposite.active, self.owner.opposite.active
-                    shuffleDeck()
+                    src.select(count:2,"Discard").discard()
+                    def pcs = opp.bench.select("New active")
+                    targeted (pcs, SRC_ABILITY) {
+                        sw(opp.active,pcs)
+                    }
                 }
             }
             move "Flame Tail" , {
@@ -633,17 +636,15 @@ public enum TeamUp implements CardInfo {
                 energyCost R
                 onAttack{
                   damage 20
-                  apply BURNED
+                  applyAfterDamage BURNED
                 }
             }
             move "Agility" , {
                 text "60 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
                 energyCost R,R
                 onAttack{
-                  damage 60
-                  afterDamage{
+                    damage 60
                     flip{preventAllEffectsNextTurn()}
-                  }
                 }
             }
         };
@@ -658,7 +659,7 @@ public enum TeamUp implements CardInfo {
                   assert opp.deck : "There is no more card in opponent's deck"
                 }
                 onAttack{
-                  opp.deck.subList(0,self.cards.filterByType(ENERGY).filterByEnergyType(R).discard().size()).discard()
+                    opp.deck.subList(0,discardAllSelfEnergy(R).size()).discard()
                 }
             }
             move "Fire Spin" , {
@@ -694,7 +695,7 @@ public enum TeamUp implements CardInfo {
                     assert opp.bench : "There is no Pokémon on your opponent's bench"
                 }
                 onAttack{
-                    sw opp.active, opp.bench.select("Choose the new active")
+                    whirlwind()
                 }
             }
             move "Claw Slash" , {
@@ -770,7 +771,7 @@ public enum TeamUp implements CardInfo {
                   assert my.deck : "There is no more cards in your deck"
                   powerUsed()
                   my.deck.subList(0,6).showToMe("Top 6 cards of your deck")
-      						def tar = my.deck.subList(0,6).filterByType(ENERGY).filterByEnergyType(W)
+      						def tar = my.deck.subList(0,6).filterByBasicEnergyType(W)
       						if(tar){
       							tar.select(min:0, max:tar.size(), "Select the ones you want to attach").each{
       								attachEnergy(my.all.select("Attach $it to?"), it)
@@ -789,27 +790,27 @@ public enum TeamUp implements CardInfo {
             }
         };
         case PSYDUCK_26:
-        return basic (this, hp:HP060, type:WATER, retreatCost:2) {
-            weakness GRASS
-            move "Headache" , {
-                text "10 damage. Flip a coin. If heads, your opponent can't play any Trainer cards from their hand during their next turn."
-                energyCost C
-                onAttack{
-                  damage 10
-                  flip {
-                    delayed{
-      					      before PLAY_TRAINER, {
-      					        if (bg.currentTurn == self.owner.opposite) {
-      					           wcu "Bawl prevents playing trainer cards"
-      					           prevent()
-      					        }
-                      }
-      					  unregisterAfter 2
+            return basic (this, hp:HP060, type:WATER, retreatCost:2) {
+                weakness GRASS
+                move "Headache" , {
+                    text "10 damage. Flip a coin. If heads, your opponent can't play any Trainer cards from their hand during their next turn."
+                    energyCost C
+                    onAttack{
+                        damage 10
+                        flip {
+                            delayed{
+                                before PLAY_TRAINER, {
+                                    if (bg.currentTurn == self.owner.opposite) {
+                                        wcu "Bawl prevents playing trainer cards"
+                                        prevent()
+                                    }
+                                }
+                                unregisterAfter 2
+                            }
+                        }
+                    }
                 }
-              }
-            }
-          }
-        };
+            };
         case GOLDUCK_27:
         return 	evolution (this, from:"Psyduck", hp:HP110, type:WATER, retreatCost:1) {
             weakness GRASS
@@ -859,11 +860,13 @@ public enum TeamUp implements CardInfo {
                 text "Flip a coin. If heads, put a card that evolves from this Pokémon from your discard pile onto this Pokémon to evolve it."
                 energyCost W
                 attackRequirement{
-                  assert my.discard.findAll{it.cardTypes.is(EVOLUTION) && self.name.contains(it.predecessor)}
+                  assert my.discard.findAll{it.cardTypes.is(EVOLUTION) && self.name == it.predecessor}
                 }
                 onAttack{
-                  def tar = my.discard.findAll{it.cardTypes.is(EVOLUTION) && self.name.contains(it.predecessor)}.select("Choose the card that will evolve from $self")
-                  evolve(sel, tar.first(), OTHER)
+                    flip{
+                        def tar = my.discard.findAll{it.cardTypes.is(EVOLUTION) && self.name == it.predecessor}.select("Choose the card that will evolve from $self")
+                        evolve(self, tar.first(), OTHER)
+                    }
                 }
             }
         };
@@ -925,13 +928,20 @@ public enum TeamUp implements CardInfo {
                 text "As long as this Pokémon is your Active Pokémon, whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to your Benched [W] Pokémon."
                 delayedA{
                     // TODO
-                  before null, null, Source.TRAINER_CARD, {
-                    def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-      							if (self.active && pcs.cards.energyCount(W)){
-      								bc "Blizzard Veil prevent effect of Supporter cards."
-      								prevent()
-      							}
-      						}
+                    def flag = false
+                    before PLAY_TRAINER, {
+                        flag = false
+                        if(self.active && ef.supporter && bg.currentTurn != self.owner){
+                            flag = true
+                        }
+                    }
+                    before null, null, Source.TRAINER_CARD, {
+                        def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                        if (flag && self.active && pcs.types.contains(W)){
+                            bc "Blizzard Veil prevent effect of Supporter cards done to $pcs."
+                            prevent()
+                        }
+                    }
                 }
             }
             move "Cold Cyclone" , {
@@ -3483,7 +3493,7 @@ public enum TeamUp implements CardInfo {
         return supporter(this) {
           text "You can play this card only if your opponent's Active Pokémon is a Basic Pokémon.\nPut an Energy from your opponent's Active Pokémon on top of their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            opp.active.cards.filterByType(ENERGY).select("Choose the energy to discard").discard()
+              opp.active.cards.filterByType(ENERGY).select("Choose the energy to put on top of their deck").moveTo(addToTop: true, opp.deck)
           }
           playRequirement{
             assert opp.active.basic

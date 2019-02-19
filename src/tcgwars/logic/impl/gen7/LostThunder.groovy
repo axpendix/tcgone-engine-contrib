@@ -726,7 +726,7 @@ public enum LostThunder implements CardInfo {
 						assert my.deck : "There is no more cards in your deck."
 					}
 					onAttack{
-						my.deck.search("Select a [G] Pokémon to put on your hand",{it.asPokemonCard().types.contains(G)}).moveTo(my.hand)
+						my.deck.search("Select a [G] Pokémon to put on your hand",pokemonTypeFilter(G)).moveTo(my.hand)
 						shuffleDeck()
 					}
 				}
