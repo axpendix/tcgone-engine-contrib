@@ -70,7 +70,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 	 * literally: evolution
 	 */
 	public boolean isRealEvolution(){
-		return getTopPokemonCard().getTypes().contains(EVOLUTION);
+		return getTopPokemonCard().getCardTypes().contains(EVOLUTION);
 	}
 	/**
 	 * literally: evolved
