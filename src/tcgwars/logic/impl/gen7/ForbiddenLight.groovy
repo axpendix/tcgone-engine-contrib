@@ -2364,9 +2364,10 @@ public enum ForbiddenLight implements CardInfo {
 					}
 					onAttack {
 						gxPerform()
-						opp.all.each{
+						opp.bench.each{ // this ordering ensures the bench receive damage first to not conflict with Sky Pillar
 							directDamage 60, it
 						}
+						directDamage 60, opp.active
 					}
 				}
 

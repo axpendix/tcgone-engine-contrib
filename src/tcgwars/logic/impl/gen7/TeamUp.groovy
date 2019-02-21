@@ -318,7 +318,9 @@ public enum TeamUp implements CardInfo {
                 onAttack{
                     gxPerform()
                     damage 180
-                    healAll self
+                    afterDamage {
+                        healAll self
+                    }
                     if(self.cards.energySufficient(thisMove.energyCost + G)){
                         my.discard.moveTo(my.deck)
                         shuffleDeck()
@@ -712,7 +714,7 @@ public enum TeamUp implements CardInfo {
             bwAbility "Floating Shell" , {
                 text "If you have a Stadium card in play this Pokémon has no Retreat Cost."
                 getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {h->
-      					  if(bg.stadiumInfoStruct?.stadiumCard?.player == self.owner) {
+      					  if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner) {
       					    h.object = 0
       					  }
       					}
@@ -1605,7 +1607,7 @@ public enum TeamUp implements CardInfo {
                   delayed{
                     before APPLY_ATTACK_DAMAGES, {
         							bg.dm().each {
-        								if(it.to == self && it.from.cardTypes.is(ULTRA_BEAST) && it.dmg.value && it.notNoEffect) {
+        								if(it.to == self && it.from.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.dmg.value && it.notNoEffect) {
         									bc "Paranormal prevents damage from Ultra Beasts"
         									it.dmg = hp(0)
                         }
@@ -1908,7 +1910,7 @@ public enum TeamUp implements CardInfo {
                 text "As long as you have fewer Pokémon in play than your opponent, they can't play any item cards from their hand."
                 delayedA{
                     before PLAY_TRAINER, {
-                        if(ef.item && bg.currentTurn==self.owner.opposite && my.all.size() < opp.all.size()) {
+                        if(ef.item && bg.currentTurn==self.owner.opposite && self.owner.pbg.all.size() < self.owner.opposite.pbg.all.size()) {
                             wcu "Fossil Bind prevents playing item cards"
                             prevent()
                         }

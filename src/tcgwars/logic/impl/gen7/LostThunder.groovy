@@ -567,6 +567,8 @@ public enum LostThunder implements CardInfo {
 //							tar.moveTo(self.cards)
 							my.deck.remove(tar.first())
 							self.cards.add(tar.first())
+							healAll(self,SRC_ABILITY)
+							clearSpecialCondition(self,SRC_ABILITY)
 						}
 						shuffleDeck()
 					}
