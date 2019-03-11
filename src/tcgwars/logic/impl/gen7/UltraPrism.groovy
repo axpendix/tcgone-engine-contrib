@@ -3086,8 +3086,10 @@ public enum UltraPrism implements CardInfo {
                 onActivate{
                     delayed {
                         before RETREAT, self, {
-                            wcu "Cannot retreat"
-                            prevent()
+                            if(self.topPokemonCard == thisCard){
+                              wcu "Cannot retreat"
+                              prevent()
+                            }
                         }
                     }
                     if(!ef2){
