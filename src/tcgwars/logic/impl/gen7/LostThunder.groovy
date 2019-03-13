@@ -2270,24 +2270,24 @@ public enum LostThunder implements CardInfo {
 					onActivate {
 						eff1 = delayed{
 							before CHECK_ATTACK_REQUIREMENTS, {
-								if(self.benched && ef.attacker.topPokemonCard.is(PRISM_STAR)) {
+								if(self.benched && ef.attacker.topPokemonCard.cardTypes.is(PRISM_STAR)) {
 									wcu "Shady Tail prevents attack"
 									prevent()
 								}
 							}
 						}
-					eff2 = getter IS_ABILITY_BLOCKED, { Holder h->
-						if (self.benched && h.effect.target.topPokemonCard.is(PRISM_STAR) && h.effect.ability instanceof BwAbility) {
-							h.object=true
+						eff2 = getter IS_ABILITY_BLOCKED, { Holder h->
+							if (self.benched && h.effect.target.topPokemonCard.cardTypes.is(PRISM_STAR) && h.effect.ability instanceof BwAbility) {
+								h.object=true
+							}
 						}
-					}
-					eff3 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-						if (self.benched && (h.effect.target as Card).cardTypes.is(PRISM_STAR)) {
-							h.object=true
+						eff3 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+							if (self.benched && (h.effect.target as Card).cardTypes.is(PRISM_STAR)) {
+								h.object=true
+							}
 						}
+						new CheckAbilities().run(bg)
 					}
-					new CheckAbilities().run(bg)
-				}
 				onDeactivate {
 				  eff1.unregister()
 				  eff2.unregister()
