@@ -2266,19 +2266,33 @@ public enum LostThunder implements CardInfo {
 				weakness PSYCHIC
 				bwAbility "Shady Tail" , {
 					text "As long as this Pokémon is on your Bench, Pokémon Prism Star in play (both yours and your opponent's) can't attack and have no Abilities."
-					delayedA {
-						before CHECK_ATTACK_REQUIREMENTS, {
-							if(self.benched && ef.attacker.topPokemonCard.is(PRISM_STAR)) {
-								wcu "Shady Tail prevents attack"
-								prevent()
+					def eff1,eff2,eff3
+					onActivate {
+						eff1 = delayed{
+							before CHECK_ATTACK_REQUIREMENTS, {
+								if(self.benched && ef.attacker.topPokemonCard.is(PRISM_STAR)) {
+									wcu "Shady Tail prevents attack"
+									prevent()
+								}
 							}
 						}
-					}
-					getterA IS_ABILITY_BLOCKED, { Holder h->
-						if (self.benched && h.effect.target.topPokemonCard.is(PRISM_STAR)) {
+					eff2 = getter IS_ABILITY_BLOCKED, { Holder h->
+						if (self.benched && h.effect.target.topPokemonCard.is(PRISM_STAR) && h.effect.ability instanceof BwAbility) {
 							h.object=true
 						}
 					}
+					eff3 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+						if (self.benched && (h.effect.target as Card).cardTypes.is(PRISM_STAR)) {
+							h.object=true
+						}
+					}
+					new CheckAbilities().run(bg)
+				}
+				onDeactivate {
+				  eff1.unregister()
+				  eff2.unregister()
+					eff3.unregister()
+				  new CheckAbilities().run(bg)
 				}
 				move "Knock Away" , {
 					text "30+ damage. Flip a coin. If heads, this attack does 30 more damage."
