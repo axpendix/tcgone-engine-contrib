@@ -2294,6 +2294,7 @@ public enum LostThunder implements CardInfo {
 					eff3.unregister()
 				  new CheckAbilities().run(bg)
 				}
+			}
 				move "Knock Away" , {
 					text "30+ damage. Flip a coin. If heads, this attack does 30 more damage."
 					energyCost P,C
