@@ -201,6 +201,12 @@ public enum SunMoonPromos implements CardInfo {
 	EEVEE_GX_SM176("Eevee-GX", 176, Rarity.PROMO, [POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
 	MELTAN_SM177("Meltan", 177, Rarity.PROMO, [POKEMON,_METAL_,BASIC]),
 	MELMETAL_SM178("Melmetal-GX", 178, Rarity.PROMO, [POKEMON_GX,POKEMON,_METAL_,STAGE1,EVOLUTION]);
+	VOLCANION_SM179("Volcanion", 179, Rarity.PROMO, [POKEMON,POKEMON,_FIRE_,BASIC]);
+	STAKATAKA_SM180("Stakataka", 180, Rarity.PROMO, [POKEMON,POKEMON,_FIGHTING_,BASIC]);
+	MELMETAL_SM181("Melmetal", 181, Rarity.PROMO, [POKEMON,POKEMON,_METAL_,STAGE1,EVOLUTION]);
+	PERSIAN_SM182("Persian", 182, Rarity.PROMO, [POKEMON,POKEMON,_COLORLESS_,STAGE1,EVOLUTION]);
+	PIKACHU_SM183("Pikachu", 183, Rarity.PROMO, [POKEMON,POKEMON,_LIGHTNING_,BASIC]);
+	EEVEE_SM184("Eevee", 184, Rarity.PROMO, [POKEMON,POKEMON,_COLORLESS_,BASIC]);
 
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -2427,6 +2433,52 @@ public enum SunMoonPromos implements CardInfo {
 				}
 
 		};
+		case VOLCANION_SM179:
+			return copy(UnbrokenBonds.VOLCANION_25, this)
+		case STAKATAKA_SM180:
+			return copy(UnbrokenBonds.STAKATAKA_106, this)
+		case MELMETAL_SM181:
+			return copy(UnbrokenBonds.MELMETAL_129, this)
+		case PERSIAN_SM182:
+			return copy(UnbrokenBonds.PERSIAN_148, this)
+		case PIKACHU_SM183:
+			return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
+				weakness FIGHTING
+				resistance METAL, MINUS20
+				move "Thunder Jolt", {
+					text "40 This pokemon does 20 damage to itself."
+					energyCost L,C
+					onAttack {
+						damage 40
+						damage 20, self
+					}
+				}
+
+			};
+		case EEVEE_SM184:
+			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
+				weakness FIGHTING
+				move "Find a Friend", {
+					text "Flip a coin. If heads, search your deck for a pokemon and put it into your hand. Then shuffle your deck."
+					energyCost C
+					attackRequirement {
+						assert my.deck
+					}
+					onAttack {
+					    flip {
+    						my.deck.search (max: 1, cardTypeFilter(POKEMON)).moveTo(my.hand)
+    						shuffleDeck()
+					    }
+					}
+				}
+				move "Smash Kick", {
+					text "20 damage."
+					energyCost C, C
+					onAttack {
+						damage 20
+					}
+				}
+			};
 			default:
 				return null;
 		}
