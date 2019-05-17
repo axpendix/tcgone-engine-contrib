@@ -200,13 +200,14 @@ public enum SunMoonPromos implements CardInfo {
 	EEVEE_GX_SM175("Eevee-GX", 175, Rarity.PROMO, [POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
 	EEVEE_GX_SM176("Eevee-GX", 176, Rarity.PROMO, [POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
 	MELTAN_SM177("Meltan", 177, Rarity.PROMO, [POKEMON,_METAL_,BASIC]),
-	MELMETAL_SM178("Melmetal-GX", 178, Rarity.PROMO, [POKEMON_GX,POKEMON,_METAL_,STAGE1,EVOLUTION]);
-	VOLCANION_SM179("Volcanion", 179, Rarity.PROMO, [POKEMON,POKEMON,_FIRE_,BASIC]);
-	STAKATAKA_SM180("Stakataka", 180, Rarity.PROMO, [POKEMON,POKEMON,_FIGHTING_,BASIC]);
-	MELMETAL_SM181("Melmetal", 181, Rarity.PROMO, [POKEMON,POKEMON,_METAL_,STAGE1,EVOLUTION]);
-	PERSIAN_SM182("Persian", 182, Rarity.PROMO, [POKEMON,POKEMON,_COLORLESS_,STAGE1,EVOLUTION]);
-	PIKACHU_SM183("Pikachu", 183, Rarity.PROMO, [POKEMON,POKEMON,_LIGHTNING_,BASIC]);
-	EEVEE_SM184("Eevee", 184, Rarity.PROMO, [POKEMON,POKEMON,_COLORLESS_,BASIC]);
+	MELMETAL_SM178("Melmetal-GX", 178, Rarity.PROMO, [POKEMON_GX,POKEMON,_METAL_,STAGE1,EVOLUTION]),
+	VOLCANION_SM179("Volcanion", 179, Rarity.PROMO, [POKEMON,POKEMON,_FIRE_,BASIC]),
+	STAKATAKA_SM180("Stakataka", 180, Rarity.PROMO, [POKEMON,POKEMON,_FIGHTING_,BASIC]),
+	MELMETAL_SM181("Melmetal", 181, Rarity.PROMO, [POKEMON,POKEMON,_METAL_,STAGE1,EVOLUTION]),
+	PERSIAN_SM182("Persian", 182, Rarity.PROMO, [POKEMON,POKEMON,_COLORLESS_,STAGE1,EVOLUTION]),
+	PIKACHU_SM183("Pikachu", 183, Rarity.PROMO, [POKEMON,POKEMON,_LIGHTNING_,BASIC]),
+	EEVEE_SM184("Eevee", 184, Rarity.PROMO, [POKEMON,POKEMON,_COLORLESS_,BASIC]),
+	TYPHLOSION_SM185("Typhlosion", 185, Rarity.PROMO, [POKEMON,POKEMON,_FIRE_,STAGE2,EVOLUTION);
 
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -2476,6 +2477,32 @@ public enum SunMoonPromos implements CardInfo {
 					energyCost C, C
 					onAttack {
 						damage 20
+					}
+				}
+			};
+		case TYPHLOSION_SM185:
+			return evolution (this,from : "Quilava", hp:HP150, type:FIRE, retreatCost:2) {
+				weakness WATER
+				move "Exploder", {
+					text "Search your deck for up to 3 [R] Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
+					energyCost R
+					attackRequirement {
+						assert my.deck
+					}
+					onAttack {
+					    my.deck.filterByEnergyType(R).select(max: 3).each{
+							attachEnergy(my.all.select("Attach"), it)
+						}
+					}
+				}
+				move "Burning Inferno", {
+					text "100 damage. Your opponent’s Active Pokémon is now Burned."
+					energyCost R, C, C
+					onAttack {
+						damage 100
+						afterDamage{
+							apply BURNED
+						}
 					}
 				}
 			};
