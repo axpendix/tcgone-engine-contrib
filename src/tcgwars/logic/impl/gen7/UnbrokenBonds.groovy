@@ -781,14 +781,34 @@ return basic (this, hp:HP270, type:FIRE, retreatCost:3) {
 	move "Outrage" , {
 		text "30+ This attack does 10 more damage for each damage counter on this Pokémon.\n"
 		energyCost R,C
+		onAttack{
+		    
+		}
+		damage 30
+		damage self.numberOfDamageCounters
+		
 	}
 	move "Flare Strike" , {
 		text "230 This Pokémon can't use Flare Strike during your next turn.\n"
 		energyCost R,R,R,C
+		damage 230
+		cantUseAttack(thisMove, self)
 	}
 	move "Double Blaze GX" , {
-		text "200+ If this Pokémon has at least 3 extra"
+		text "200+ If this Pokémon has at least 3 extra [R] energy attached to it (in addition to this attack's cost), this does 100 more damage, and this attack's damage isnt affected by any effects on your opponents active Pokémon.\n"
 		energyCost R,R,R,+
+			attackRequirement{
+			gxCheck()
+			}
+			onAttack{
+			    gxPerform()
+			    if(self.cards.energySufficient(thisMove.energyCost + R + R + R)){
+			        directDamage 300
+			    }
+			    else{
+			        damage 200
+			    }
+			}
 	}
 };
 case GROWLITHE_21:
@@ -797,18 +817,25 @@ return basic (this, hp:HP080, type:FIRE, retreatCost:2) {
 	move "Live Coal" , {
 		text "10\n"
 		energyCost R
+		onAttack{
+		    damage 10
+		}
 	}
 	move "Combustion" , {
 		text "30 damage"
 		energyCost R,R
+		onAttack{
+		    damage 30
+		}
 	}
 };
 case ARCANINE_22:
 return 	evolution (this, from:"Growlithe", hp:HP140, type:FIRE, retreatCost:4) {
 	weakness WATER
 	move "Grand Flame" , {
-		text "120 Attach 2"
+		text "120 Attach 2 [R] energy from your discard pile to one of your Pokémon"
 		energyCost R,R,R
+		
 	}
 	move "Heat Tackle" , {
 		text "190 This Pokémon does 50 damage to itself."
