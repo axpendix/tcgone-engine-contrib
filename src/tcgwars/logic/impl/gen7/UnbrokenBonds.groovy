@@ -900,12 +900,30 @@ case VOLCANION_25:
 return basic (this, hp:HP120, type:FIRE, retreatCost:2) {
 	weakness WATER
 	move "Flare Starter" , {
-		text "Search your deck for a"
+		text "Search your deck for a [R] Energy card and attach it to 1 of your Pokémon. If you go second and it's your first turn, instead search for up to 3 [R] Energy cards and attach them to your Pokémon in any way you like. Then shuffle your deck."
 		energyCost R
+		onAttack{
+		    afterDamage{
+                    attachEnergyFrom(type: FIRE, my.deck, my.all)
+                    if(bg.turnCount == 2){
+                        attachEnergyFrom(type: FIRE, my.deck, my.all)
+                        attachEnergyFrom(type: FIRE, my.deck, my.all)
+                    }
+                  }
+		    
+		}
 	}
 	move "High-Heat Blast" , {
-		text "50+ If you have at least 4"
+		text "50+ If you have at least 4 [R] Energy in play, this attack does 60 more damage."
 		energyCost R,R
+		onAttack{
+		    damage 50
+		     int c=0
+            my.all.each {c+=it.cards.energyCount(R)}
+		    if(c>=4){
+		        damage 60
+		    }
+		}
 	}
 };
 case LITTEN_26:
@@ -914,6 +932,9 @@ return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
 	move "Singe" , {
 		text "Your opponent's Active Pokémon is now Burned."
 		energyCost R
+		onAttack{
+		    apply BURNED
+		}
 	}
 };
 case LITTEN_27:
@@ -922,10 +943,18 @@ return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
 	move "Caturday" , {
 		text "Draw a card. If you do, this Pokémon is now Asleep.\n"
 		energyCost C
+		onAttack{
+		    draw 1
+		    apply ASLEEP, self
+		}
 	}
 	move "Big Bite" , {
 		text "60 The Defending Pokémon can't retreat during your opponent's next turn."
 		energyCost R,C,C
+		onAttack{
+		    damage 60
+		    cantRetreat defending
+		}
 	}
 };
 case TORRACAT_28:
@@ -934,6 +963,10 @@ return 	evolution (this, from:"Litten", hp:HP080, type:FIRE, retreatCost:1) {
 	move "Fire Fang" , {
 		text "20 Your opponent's Active Pokémon is now Burned."
 		energyCost R
+		onAttack{
+		    damage 20
+		    apply BURNED
+		}
 	}
 };
 case INCINEROAR_29:
