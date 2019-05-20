@@ -835,35 +835,65 @@ return 	evolution (this, from:"Growlithe", hp:HP140, type:FIRE, retreatCost:4) {
 	move "Grand Flame" , {
 		text "120 Attach 2 [R] energy from your discard pile to one of your Pokémon"
 		energyCost R,R,R
-		
+		 onAttack{
+                  damage 120
+                  afterDamage{
+                    def list = my.discard.search (max: 3, basicEnergyFilter(R))
+          					def pcs = my.all.select("To?")
+          					list.each {attachEnergy(pcs, it)}
+                  }
+                }
+
 	}
 	move "Heat Tackle" , {
 		text "190 This Pokémon does 50 damage to itself."
 		energyCost R,R,R,R
+		onAttack{
+		    damage 190
+		    damage 50, self
+		}
 	}
 };
 case DARUMAKA_23:
 return basic (this, hp:HP080, type:FIRE, retreatCost:2) {
 	weakness WATER
 	move "Flame Charge" , {
-		text "10 Search your deck for a"
+		text "10 Search your deck for a [R] Energy card and attach it to this Pokémon. Then, shuffle your deck."
 		energyCost C
+		onAttack{
+		    damage 10
+                  afterDamage{
+                    attachEnergyFrom(type: FIRE, my.deck, self)
+                  }
+		}
 	}
 	move "Flop" , {
 		text "20 damage"
 		energyCost C,C
+		onAttack{
+		    damage 20
+		}
 	}
 };
 case DARMANITAN_24:
 return 	evolution (this, from:"Darumaka", hp:HP130, type:FIRE, retreatCost:3) {
 	weakness WATER
 	move "Find Wildfire" , {
-		text "Search your deck for up to 3"
+		text "Search your deck for up to 3 [R] Energy cards, reveal them, and put them into your hand. Then shuffle your deck."
 		energyCost C
+		onAttack{
+		    my.deck.search(max:3,"Select up to 3 [R] Energy cards",energyFilter(R)).showToOpponent("The selected [R] Energy cards").moveTo(my.hand)
+					shuffleDeck()
+
+		}
 	}
 	move "Flare Blitz" , {
-		text "110 Discard all"
+		text "110 Discard all [R] Energy from this Pokémon"
 		energyCost R,R
+		onAttack{
+		    damage 110
+		    self.cards.filterByType(ENERGY).filterByEnergyType(R).discard()
+		}
 	}
 };
 case VOLCANION_25:
