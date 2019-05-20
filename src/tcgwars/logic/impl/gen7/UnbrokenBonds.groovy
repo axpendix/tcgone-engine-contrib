@@ -974,18 +974,42 @@ return 	evolution (this, from:"Torracat", hp:HP160, type:FIRE, retreatCost:2) {
 	weakness WATER
 	bwAbility "Strong Cheer" , {
 		text "Your Pokémon's attacks do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance). You can't apply more than 1 Strong Cheer Ability at a time."
+	    delayedA {
+              after PROCESS_ATTACK_EFFECTS, {
+                if(ef.attacker.owner == self.owner){
+                  bg.dm().each {
+                    if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value) {//if not strong cheer has been used before
+                      bc "Strong Cheer +30"
+                      it.dmg += hp(30)
+                      
+                    }
+                  }
+                }
+              }
+						}
 	}
 	move "Flamethrower" , {
 		text "90 Discard an Energy from this Pokémon."
 		energyCost R,C
+		onAttack{
+		    damage 90
+		    discardSelfEnergy C
+		}
 	}
 };
 case SALANDIT_30:
 return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
 	weakness WATER
 	move "Grass Fire" , {
-		text "10 Discard a"
+		text "10 Discard a [G] Energy from the defending Pokémon"
 		energyCost R
+		onAttack{
+		    damage 10
+		    afterDamage{
+		        assert opp.active.cards.energyCount(G)
+		        opp.active..cards..filterByEnergyType(G).select("Discard").discard()
+		    }
+		}
 	}
 };
 case SALAZZLE_31:
@@ -993,10 +1017,22 @@ return 	evolution (this, from:"Salandit", hp:HP100, type:FIRE, retreatCost:1) {
 	weakness WATER
 	bwAbility "Roast Reveal" , {
 		text "Once during your turn (before your attack), you may discard a [R] Energy card from your hand. If you do, draw 3 cards."
+		actionA{
+		assert my.hand.filterByBasicEnergyType(R)
+							assert lastTurn != bg().turnCount : "Already used"
+							bc "Used Heat Factory Prism Star"
+							lastTurn = bg().turnCount
+							my.hand.filterByBasicEnergyType(R).select("Choose the card to discard.").discard()
+							draw 3
+		}
+
 	}
 	move "Combustion" , {
 		text "60 damage"
 		energyCost R,C
+		onAttack{
+		    damage 60
+		}
 	}
 };
 case BLACEPHALON_32:
