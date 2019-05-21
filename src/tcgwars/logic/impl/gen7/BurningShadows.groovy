@@ -1648,7 +1648,8 @@ public enum BurningShadows implements CardInfo {
 					text "170 damage. This attack's damage isn't affected by Weakness or Resistance. This Pokémon can't attack during your next turn."
 					energyCost F, F, C, C
 					onAttack {
-						noWrDamage(100, defending)
+						noWrDamage(170, defending)
+						cantAttackNextTurn self
 					}
 				}
 
