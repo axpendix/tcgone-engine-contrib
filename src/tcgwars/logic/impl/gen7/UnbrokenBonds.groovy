@@ -864,6 +864,7 @@ return basic (this, hp:HP080, type:FIRE, retreatCost:2) {
 		    damage 10
                   afterDamage{
                     attachEnergyFrom(type: FIRE, my.deck, self)
+                    shuffleDeck()
                   }
 		}
 	}
@@ -909,6 +910,7 @@ return basic (this, hp:HP120, type:FIRE, retreatCost:2) {
                         attachEnergyFrom(type: FIRE, my.deck, my.all)
                         attachEnergyFrom(type: FIRE, my.deck, my.all)
                     }
+                    shuffleDeck()
                   }
 		    
 		}
@@ -1063,6 +1065,10 @@ return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 	move "Bubble" , {
 		text "10 Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 		energyCost W
+		onAttack{
+		    damage 10
+		    flip{apply PARALYZED}
+		}
 	}
 };
 case WARTORTLE_34:
@@ -1070,10 +1076,23 @@ return 	evolution (this, from:"Squirtle", hp:HP070, type:WATER, retreatCost:2) {
 	weakness GRASS
 	bwAbility "Solid Shell" , {
 		text "This Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
+		delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+                if(it.to == self && it.notNoEffect && it.dmg.value) {
+                     bc "Solid Shell -30"
+                    it.dmg -= hp(30)
+                  }
+            }
+          }
+
 	}
 	move "Aqua Slash" , {
 		text "60 This Pokémon can't attack during your next turn."
 		energyCost W,W
+		onAttack{
+		    damage 60
+		    cantAttackNextTurn self
+		}
 	}
 };
 case BLASTOISE_GX_35:
@@ -1081,14 +1100,54 @@ return 	evolution (this, from:"Wartortle", hp:HP240, type:WATER, retreatCost:3) 
 	weakness GRASS
 	bwAbility "Solid Shell" , {
 		text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+			delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+                if(it.to == self && it.notNoEffect && it.dmg.value) {
+                     bc "Solid Shell -30"
+                    it.dmg -= hp(30)
+                  }
+            }
+          }
 	}
 	move "Rocket Splash" , {
-		text "60Ã Shuffle any amount of"
+		text "60Ã Shuffle any amount of [W] Energy from your Pokémon into your deck. This attack does 60 damage for each card you shuffled into your deck in this way"
 		energyCost W,W
+		onAttack{
+		    def count=0
+						def toBeMoved=new CardList()
+						while (1) {
+							def tar = my.all.findAll {it.cards.filterByEnergyType(R).findAll {!toBeMoved.contains(it)}.notEmpty()}
+							if (!tar) break
+							def pcs = tar.select("Pokemon that has [R] energy to put in the Lost Zone. Cancel to stop", false)
+							if (!pcs) break
+							def dd = pcs.cards.filterByEnergyType(R).findAll {!toBeMoved.contains(it)}.select("[R] Energy to put in the Lost Zone")
+							toBeMoved.addAll(dd)
+							count++
+						}
+						damage 50*count
+						afterDamage {
+						    toBeMoved.moveTo(my.deck)
+						    shuffleDeck()
+						}
+		}
 	}
 	move "Giant Geyser GX" , {
-		text "Attach any number of"
+		text "Attach any number of [W] Energy cards from your hand to your pokemon in any way you like. (You can't use more than 1 GX attack in a game.)"
 		energyCost W
+		attackRequirement{
+			gxCheck()
+			}
+			onAttack{
+			    gxPerform()
+			    def tar = my.hand.filterByBasicEnergyType(W)
+      						if(tar){
+      							tar.select(min:0, max:tar.size(), "Select the ones you want to attach").each{
+      								attachEnergy(my.all.select("Attach $it to?"), it)
+      							}
+      						}
+
+			}
+		
 	}
 };
 case POLIWAG_36:
@@ -1096,10 +1155,18 @@ return basic (this, hp:HP050, type:WATER, retreatCost:1) {
 	weakness GRASS
 	bwAbility "Round &#8216;n' Round" , {
 		text "You can use this Ability only if you go second. Once during your first turn (before your attack), you may leave your opponent's Active Pokémon Confused."
+		actionA {
+					assert bg.turnCount%2 == 0 : "You went first"
+					apply CONFUSED
+					}
+
 	}
 	move "Watering" , {
 		text "10 damage"
 		energyCost W
+		onAttack{
+		    damage 10
+		}
 	}
 };
 case POLIWAG_37:
@@ -1108,6 +1175,7 @@ return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 	move "Call for Family" , {
 		text "Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
 		energyCost C
+		callForFamily(basic:true,1,delegate)
 	}
 };
 case POLIWHIRL_38:
@@ -1116,10 +1184,18 @@ return 	evolution (this, from:"Poliwag", hp:HP090, type:WATER, retreatCost:2) {
 	move "Bubble" , {
 		text "20 Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.\n"
 		energyCost W
+		onAttack{
+		    damage 20
+		    flip{apply PARALYZED}
+		    
+		}
 	}
 	move "Knuckle Punch" , {
 		text "40 damage"
 		energyCost C,C
+		onAttack{
+		    damage 40
+		}
 	}
 };
 case POLIWRATH_39:
@@ -1128,10 +1204,19 @@ return 	evolution (this, from:"Poliwhirl", hp:HP150, type:WATER, retreatCost:3) 
 	move "Knuckle Punch" , {
 		text "50\n"
 		energyCost C,C
+		onAttack{
+		    damage 50
+		}
 	}
 	move "Swirly Rush" , {
 		text "90+ If Poliwag and Poliwhirl are on your Bench, this attack does 90 more damage."
 		energyCost W,C,C
+		onAttack{
+		    damage 90
+		    if(self.owner.pbg.bench.findAll({it.name=="Poliwag"}) && self.owner.pbg.bench.findAll({it.name=="Poliwirl"})){
+		        damage 90
+		    }
+		}
 	}
 };
 case TENTACOOL_40:
@@ -1140,6 +1225,12 @@ return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 	move "Bubble Jutsu" , {
 		text "10+ If you played Janine from your hand during this turn, this attack does 50 more damage."
 		energyCost C
+		onAttack{
+		    damage 10
+		    if(bg.em().retrieveObject("Janine") == bg.turnCount){
+				damage 50
+			}
+		}
 	}
 };
 case TENTACRUEL_41:
