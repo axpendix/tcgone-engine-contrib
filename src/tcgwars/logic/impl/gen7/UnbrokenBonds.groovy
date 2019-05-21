@@ -1020,7 +1020,7 @@ return 	evolution (this, from:"Salandit", hp:HP100, type:FIRE, retreatCost:1) {
 		actionA{
 		assert my.hand.filterByBasicEnergyType(R)
 							assert lastTurn != bg().turnCount : "Already used"
-							bc "Used Heat Factory Prism Star"
+							bc "Used Roast Reveal"
 							lastTurn = bg().turnCount
 							my.hand.filterByBasicEnergyType(R).select("Choose the card to discard.").discard()
 							draw 3
