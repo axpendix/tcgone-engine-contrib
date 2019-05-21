@@ -1039,12 +1039,22 @@ case BLACEPHALON_32:
 return basic (this, hp:HP120, type:FIRE, retreatCost:2) {
 	weakness WATER
 	move "Blazer" , {
-		text "10+ Turn 1 of your face-down Prize cards face up. If it's a"
+		text "10+ Turn 1 of your face-down Prize cards face up. If it's a [R] Energy card, this attack does 50 more damage. (That prize card remains face up for the rest of the game)"
 		energyCost R
+		onAttack{
+		    damage 10
+		    damage 50*my.prizeCardSet.select("Reveal a prize card").filterByBasicEnergyType(R).size
+		}
 	}
 	move "Fireball Circus" , {
-		text "50Ã Discard any number of"
+		text "50Ã Discard any number of [R] Energy cards from your hand. This attack does 50 damage for each card discarded in this way."
 		energyCost R,R,R
+		attackRequirement{
+						assert my.hand.filterByBasicEnergyType(R) : "No [R] Energy cards in hand"
+					}
+		onAttack{
+		    damage 50*my.hand.filterByBasicEnergyType(R).select("discard [R] Energy cards for 50 damage").discard().size()
+		}
 	}
 };
 case SQUIRTLE_33:
