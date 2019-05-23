@@ -1009,7 +1009,7 @@ return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
 		    damage 10
 		    afterDamage{
 		        assert opp.active.cards.energyCount(G)
-		        opp.active..cards..filterByEnergyType(G).select("Discard").discard()
+		        opp.active.cards.filterByEnergyType(G).select("Discard").discard()
 		    }
 		}
 	}
@@ -1021,11 +1021,9 @@ return 	evolution (this, from:"Salandit", hp:HP100, type:FIRE, retreatCost:1) {
 		text "Once during your turn (before your attack), you may discard a [R] Energy card from your hand. If you do, draw 3 cards."
 		actionA{
 		assert my.hand.filterByBasicEnergyType(R)
-							assert lastTurn != bg().turnCount : "Already used"
-							bc "Used Roast Reveal"
-							lastTurn = bg().turnCount
 							my.hand.filterByBasicEnergyType(R).select("Choose the card to discard.").discard()
 							draw 3
+							powerUsed()
 		}
 
 	}
@@ -1116,11 +1114,11 @@ return 	evolution (this, from:"Wartortle", hp:HP240, type:WATER, retreatCost:3) 
 		    def count=0
 						def toBeMoved=new CardList()
 						while (1) {
-							def tar = my.all.findAll {it.cards.filterByEnergyType(R).findAll {!toBeMoved.contains(it)}.notEmpty()}
+							def tar = my.all.findAll {it.cards.filterByEnergyType(W).findAll {!toBeMoved.contains(it)}.notEmpty()}
 							if (!tar) break
-							def pcs = tar.select("Pokemon that has [R] energy to put in the Lost Zone. Cancel to stop", false)
+							def pcs = tar.select("Pokemon that has [W] energy to put in the Lost Zone. Cancel to stop", false)
 							if (!pcs) break
-							def dd = pcs.cards.filterByEnergyType(R).findAll {!toBeMoved.contains(it)}.select("[R] Energy to put in the Lost Zone")
+							def dd = pcs.cards.filterByEnergyType(W).findAll {!toBeMoved.contains(it)}.select("[W] Energy to shuffle into your deck")
 							toBeMoved.addAll(dd)
 							count++
 						}
@@ -1239,10 +1237,29 @@ return 	evolution (this, from:"Tentacool", hp:HP100, type:WATER, retreatCost:1) 
 	move "Wicked Tentacles" , {
 		text "Move an Energy from 1 of your opponent's Pokémon to another of their Pokémon. If you do, put 3 damage counters on the Pokémon you moved the Energy to.\n"
 		energyCost C
+		attackRequirement{
+		    assert opp.all.findAll{it.cards.filterByType(ENERGY)}
+		    assert opp.bench
+		}
+		onAttack{
+		    def bothAll = new PcsList();
+					  opp.all.each{
+					    bothAll.add(it)
+					  }
+					  def pcs = bothAll.findAll{itcards.filterByType(ENERGY)}.select("Choose the pokémon to move the energy from")
+					  def tar = bothAll.findAll{it != pcs}.select("Select the pokémon to recieve the energy")
+					    energySwitch(pcs,tar, pcs.cards.filterByType(ENERGY).select("Choose the energy to move"))
+					    tar.damage+=hp(30)
+
+		}
 	}
 	move "Wrap" , {
 		text "60 Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
 		energyCost C,C,C
+		onAttack{
+		    damage 60
+		    flip{apply PARALYZED}
+		}
 	}
 };
 case SLOWPOKE_42:
@@ -1251,10 +1268,16 @@ return basic (this, hp:HP070, type:WATER, retreatCost:2) {
 	move "Growl" , {
 		text "During your opponent's next turn, the Defending Pokémon's attacks do 20 less damage (before applying Weakness and Resistance).\n"
 		energyCost W
+		onAttack{
+		    reduceDamageNextTurn(hp(20), thisMove)
+		}
 	}
 	move "Tail Whap" , {
 		text "20 damage"
 		energyCost C,C
+		onAttack{
+		    damage 20
+		}
 	}
 };
 case SLOWBRO_43:
@@ -1263,10 +1286,16 @@ return 	evolution (this, from:"Slowpoke", hp:HP120, type:WATER, retreatCost:2) {
 	move "Yawn" , {
 		text "Your opponent's Active Pokémon is now Asleep.\n"
 		energyCost W
+		onAttack{
+		    apply ASLEEP
+		}
 	}
 	move "Three Strikes" , {
 		text "100Ã Flip 3 coins. This attack does 100 damage for each heads. If all of them are tails, you lose this game."
 		energyCost W,C,C
+		onAttack{
+		    flip 3,{},{},[0:{bg.getGame().endGame(opp.active.owner, WinCondition.OTHER)},1:{damage 100},2:{damage 200},3:{damage 300}]
+		}
 	}
 };
 case SEEL_44:
@@ -1275,6 +1304,9 @@ return basic (this, hp:HP080, type:WATER, retreatCost:2) {
 	move "Horn Attack" , {
 		text "30 damage"
 		energyCost C,C
+		onAttack{
+		    damage 30
+		}
 	}
 };
 case DEWGONG_45:
@@ -1283,10 +1315,23 @@ return 	evolution (this, from:"Seel", hp:HP120, type:WATER, retreatCost:2) {
 	move "Tail Whap" , {
 		text "60\n"
 		energyCost C,C
+		onAttack{
+		    damage 60
+		}
 	}
 	move "Dual Blizzard" , {
 		text "Discard 2 Energy from this Pokémon. This attack does 60 damage to 2 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 		energyCost C,C,C
+		onAttack{
+		    multiSelect(opp.all,2).each{
+								directDamage 60, it
+							}
+
+		}
+		afterDamage{
+							discardSelfEnergy C,C
+						}
+
 	}
 };
 case KRABBY_46:
@@ -1295,10 +1340,16 @@ return basic (this, hp:HP070, type:WATER, retreatCost:1) {
 	move "Stampede" , {
 		text "10\n"
 		energyCost C
+		onAttack{
+		    damage 10
+		}
 	}
 	move "Vice Grip" , {
 		text "20 damage"
 		energyCost W,C
+		onAttack{
+		    damage 20
+		}
 	}
 };
 case KINGLER_47:
@@ -1307,10 +1358,17 @@ return 	evolution (this, from:"Krabby", hp:HP130, type:WATER, retreatCost:4) {
 	move "Bubble Beam" , {
 		text "80 Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.\n"
 		energyCost W,C,C
+		onAttack{
+		    damage 80
+		    flip{apply PARALYZED}
+		}
 	}
 	move "Massive Rend" , {
 		text "130 damage"
 		energyCost W,C,C,C
+		onAttack{
+		    damage 130
+		}
 	}
 };
 case GOLDEEN_48:
@@ -1319,6 +1377,10 @@ return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 	move "Elegant Swim" , {
 		text "10 Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
 		energyCost W
+		onAttack{
+		    damage 10
+		    flip {preventAllEffectsNextTurn()}
+		}
 	}
 };
 case SEAKING_49:
@@ -1327,6 +1389,16 @@ return 	evolution (this, from:"Goldeen", hp:HP100, type:WATER, retreatCost:1) {
 	move "Enhanced Horn" , {
 		text "30Ã Flip 2 coins. This attack does 30 damage for each heads. If this Pokémon has a Pokémon Tool card attached to it, flip 6 coins instead."
 		energyCost W
+		onAttack{
+		    flip 2, {
+							damage 30
+						}
+		    if(self.cards.filterByType(POKEMON_TOOL)){
+		        flip 4, {
+		            damage 30
+		        }
+		    }
+		}
 	}
 };
 case KYUREM_50:
