@@ -1405,12 +1405,22 @@ case KYUREM_50:
 return basic (this, hp:HP130, type:WATER, retreatCost:2) {
 	weakness METAL
 	move "Call Forth Cold" , {
-		text "Search your deck for a"
+		text "Search your deck for a [W] Energy cared and attach it to this Pokémon. Then, shuffle your deck."
 		energyCost C
+		onAttack{
+		    attachEnergyFrom(type: WATER, my.deck, self)
+                    shuffleDeck()
+		}
 	}
 	move "Hail Prison" , {
-		text "110 Discard 2"
+		text "110 Discard 2 [W] Energy from this Pokémon. Your opponent's Active Pokemon is now Paralyzed"
 		energyCost W,W,C
+		onAttack{
+		    damage 110
+		    discardSelfEnergy W,W
+		    apply PARALYZED
+		    
+		}
 	}
 };
 case FROAKIE_51:
@@ -1419,6 +1429,12 @@ return basic (this, hp:HP060, type:WATER, retreatCost:1) {
 	move "Quick Attack" , {
 		text "10+ Flip a coin. If heads, this attack does 20 more damage."
 		energyCost C
+		onAttack{
+		    damage 10
+		    flip {
+		        damage 20
+		    }
+		}
 	}
 };
 case FROGADIER_52:
@@ -1427,6 +1443,22 @@ return 	evolution (this, from:"Froakie", hp:HP080, type:WATER, retreatCost:1) {
 	move "Afterimage Strike" , {
 		text "20 If any damage is done to this Pokémon by attacks during your opponent's next turn, flip a coin. If heads, prevent that damage."
 		energyCost C
+		onAttack{
+		    damage 20
+		    delayed {
+					 before APPLY_ATTACK_DAMAGES, {
+					     flip{
+                if(it.to == self && it.notNoEffect && it.dmg.value) {
+                     bc "Afterimage Strike prevents damage!"
+                    it.dmg = hp(0)
+                  }
+					     }
+            }     
+					      unregisterAfter 1
+					      after EVOLVE, self, {unregister()}
+					    }
+		}
+		
 	}
 };
 case PYUKUMUKU_53:
@@ -1435,10 +1467,29 @@ return basic (this, hp:HP070, type:WATER, retreatCost:1) {
 	move "Call for Family" , {
 		text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck.\n"
 		energyCost C
+		attackRequirement {
+							assert bench.notFull
+							assert deck.notEmpty
+						}
+						onAttack {
+							int count = bench.freeBenchCount>=2?2:1
+							deck.search (max: count, cardTypeFilter(BASIC)).each {
+								deck.remove(it)
+								benchPCS(it)
+							}
+							shuffleDeck()
+						}
+
 	}
 	move "Surprise Fist" , {
 		text "60+ You and your opponent play Rock-Paper-Scissors. If you win, this attack does 60 more damage."
 		energyCost W,C,C
+		onAttack{
+		    damage 60
+		    flip{
+		        damage 60
+		    }
+		}
 	}
 };
 case PIKACHU_54:
@@ -1448,6 +1499,9 @@ return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
 	move "Pika Ball" , {
 		text "30 damage"
 		energyCost L,C
+		onAttack{
+		    damage 30
+		}
 	}
 };
 case RAICHU_55:
