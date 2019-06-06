@@ -916,7 +916,7 @@ public enum UnbrokenBonds implements CardInfo {
 						assert my.deck
 					}
 					onAttack {
-						my.deck.search(max:3,"Select up to 3 [R] Energy cards",basicEnergyFilter(R).moveTo(my.hand)
+						my.deck.search(max:3,"Select up to 3 [R] Energy cards",basicEnergyFilter(R)).moveTo(my.hand)
 						shuffleDeck()
 					}
 				}
