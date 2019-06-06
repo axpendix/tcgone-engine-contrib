@@ -1732,7 +1732,6 @@ public enum UnbrokenBonds implements CardInfo {
 				}
 				move "Nasty Goo Mix GX", {
 					text "Your opponent's Active Pokémon is now Paralyzed and Poisoned. If this Pokémon has at least 4 extra Energy attached to it (in addition to this attack's cost), put 15 damage counters instead of 1 on that Pokémon between turns. (You can't use more than 1 GX attack in a game.)"
-					energyCost 
 					attackRequirement {}
 					onAttack {
 						
@@ -2878,7 +2877,6 @@ public enum UnbrokenBonds implements CardInfo {
 				resistance P, MINUS20
 				move "Ram", {
 					text "10 damage. "
-					energyCost 
 					attackRequirement {}
 					onAttack {
 						damage 10
