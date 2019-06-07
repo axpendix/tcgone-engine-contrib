@@ -113,9 +113,12 @@ public enum DetectivePikachu implements CardInfo {
 				move "Find a Friend", {
 					text "Search your deck for a [G] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
 					energyCost G
-					attackRequirement {}
+					attackRequirement {
+						assert deck
+					}
 					onAttack {
-						
+						deck.search("Search your deck for a [G] Pokémon", pokemonTypeFilter(G)).moveTo(hand)
+						shuffleDeck()
 					}
 				}
 				
@@ -126,6 +129,11 @@ public enum DetectivePikachu implements CardInfo {
 				bwAbility "Table Service", {
 					text "Once during your turn (before your attack), you may heal 30 damage from 1 of your Pokémon."
 					actionA {
+						checkLastTurn()
+						def list=my.all.findAll{it.numberOfDamageCounters}
+						assert list
+						powerUsed()
+						heal 30, list.select(), SRC_ABILITY
 					}
 				}
 				move "Punch and Run", {
@@ -134,6 +142,7 @@ public enum DetectivePikachu implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+						switchYourActive()
 					}
 				}
 				
@@ -147,6 +156,7 @@ public enum DetectivePikachu implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+						applyAfterDamage(ASLEEP)
 					}
 				}
 				
@@ -160,6 +170,7 @@ public enum DetectivePikachu implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+						damage 10,self
 					}
 				}
 				
@@ -181,6 +192,7 @@ public enum DetectivePikachu implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 180
+						damage 50,self
 					}
 				}
 				
@@ -190,7 +202,15 @@ public enum DetectivePikachu implements CardInfo {
 				weakness W
 				bwAbility "Security Guard", {
 					text "As long as this Pokémon is your Active Pokémon, all of your Pokémon take 30 less damage from your opponent's attacks (after applying Weakness and Resistance)."
-					actionA {
+					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each {
+								if(self.active && it.to.owner==self.owner && it.from.owner!=it.to.owner && ef.attacker.owner!=self.owner && it.notNoEffect && it.notZero){
+									bc "Security Guard -30"
+									it.dmg -= hp(30)
+								}
+							}
+						}
 					}
 				}
 				move "Sharp Fang", {
@@ -212,6 +232,7 @@ public enum DetectivePikachu implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+						afterDamage {apply(CONFUSED,self)}
 					}
 				}
 				
@@ -222,9 +243,11 @@ public enum DetectivePikachu implements CardInfo {
 				move "Hold Still", {
 					text "Heal 10 damage from this Pokémon."
 					energyCost W
-					attackRequirement {}
+					attackRequirement {
+						assert self.numberOfDamageCounters
+					}
 					onAttack {
-						
+						heal 10, self
 					}
 				}
 				
@@ -234,7 +257,15 @@ public enum DetectivePikachu implements CardInfo {
 				weakness G
 				bwAbility "Evasion Jutsu", {
 					text "If any damage is done to this Pokémon by attacks, flip a coin. If heads, prevent that damage."
-					actionA {
+					delayedA (priority: BEFORE_LAST) {
+						before APPLY_ATTACK_DAMAGES, {
+							def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
+							if(entry){
+								flip "Evasion Jutsu", {
+									entry.dmg=hp(0)
+								}
+							}
+						}
 					}
 				}
 				move "Furious Shurikens", {
@@ -242,7 +273,7 @@ public enum DetectivePikachu implements CardInfo {
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
-						
+						multiDamage(opp.all,2,50)
 					}
 				}
 				
@@ -254,9 +285,11 @@ public enum DetectivePikachu implements CardInfo {
 				move "Scout", {
 					text "Your opponent reveals their hand."
 					energyCost L
-					attackRequirement {}
+					attackRequirement {
+						assert opp.hand
+					}
 					onAttack {
-						
+						opp.hand.showToMe("Opponent's hand")
 					}
 				}
 				move "Surprise Attack", {
@@ -264,7 +297,7 @@ public enum DetectivePikachu implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 80
+						flip{damage 80}
 					}
 				}
 				
@@ -274,7 +307,15 @@ public enum DetectivePikachu implements CardInfo {
 				weakness P
 				bwAbility "Pantomime", {
 					text "When you play this Pokémon from your hand onto your Bench during your turn, you may switch 1 of your face-down Prize cards with the top card of your deck."
-					actionA {
+					onActivate{
+						if(it==PLAY_FROM_HAND && my.prizeCardSet.faceDownCards && my.deck && confirm("Use Pantomime?")){
+							powerUsed()
+							def c1 = my.prizeCardSet.faceDownCards.select(hidden:true).first()
+							def c2 = my.deck.remove(0)
+							my.deck.add(0,c1)
+							my.prizeCardSet.add(c2)
+							bc "Swapped a face-down prize and top card of the deck"
+						}
 					}
 				}
 				move "Juggling", {
@@ -282,7 +323,7 @@ public enum DetectivePikachu implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+						flip 4,{damage 20}
 					}
 				}
 				
@@ -296,6 +337,7 @@ public enum DetectivePikachu implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+						amnesia(delegate)
 					}
 				}
 				move "Break Burn", {
@@ -304,6 +346,7 @@ public enum DetectivePikachu implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 130
+						discardSelfEnergy(P,P)
 					}
 				}
 				
@@ -314,9 +357,12 @@ public enum DetectivePikachu implements CardInfo {
 				move "Directing Traffic", {
 					text "Look at the top 5 cards of your deck and put them back in any order."
 					energyCost F
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						
+						def list=rearrange(deck.subList(0,5), "Rearrange top 5 cards in your deck")
+						deck.setSubList(0, list)
 					}
 				}
 				move "Cross Chop", {
@@ -325,6 +371,7 @@ public enum DetectivePikachu implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
+						flip{damage 60}
 					}
 				}
 				
@@ -338,7 +385,7 @@ public enum DetectivePikachu implements CardInfo {
 					energyCost Y
 					attackRequirement {}
 					onAttack {
-						
+						my.all.each{heal 10,it}
 					}
 				}
 				
@@ -353,6 +400,7 @@ public enum DetectivePikachu implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+						flip{damage 30}
 					}
 				}
 				
@@ -365,7 +413,7 @@ public enum DetectivePikachu implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+						flipUntilTails {damage 20}
 					}
 				}
 				
@@ -376,9 +424,15 @@ public enum DetectivePikachu implements CardInfo {
 				move "Copy Anything", {
 					text "Choose 1 of your opponent's Pokémon's attacks and use it as this attack. If this Pokémon doesn't have the necessary Energy to use that attack, this attack does nothing."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert defending.topPokemonCard.moves : "No moves to perform"
+					}
 					onAttack {
-						
+						def move=choose(defending.topPokemonCard.moves+["End Turn (Skip)"], "Choose 1 of the Defending Pokémon's attacks. (Do not select a move if you don't have necessary energy or it will fail) ")
+						if(move instanceof String) return
+						def bef=blockingEffect(BETWEEN_TURNS)
+						attack (move as Move)
+						bef.unregisterItself(bg().em())
 					}
 				}
 				
@@ -392,6 +446,7 @@ public enum DetectivePikachu implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 150
+						whirlwind()
 					}
 				}
 				
