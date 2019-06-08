@@ -884,7 +884,7 @@ public enum TeamUp implements CardInfo {
                     def topDeck = my.deck.subList(0,7)
                     topDeck.showToMe("The top 7 cards of your deck.")
                     topDeck.showToOpponent("The top 7 cards of your opponent's deck.")
-                    def engCards = topDeck.filterByType(ENERGY)
+                    def engCards = topDeck.filterByEnergyType(W)
                     damage 30*engCards.size()
                     afterDamage{
                       topDeck.getExcludedList(engCards).discard()
@@ -3257,7 +3257,7 @@ public enum TeamUp implements CardInfo {
           onPlay {
             my.hand.filterByType(POKEMON).findAll{it.asPokemonCard().types.contains(D)}.select("Choose the pokémon to discard").discard()
             def choice = 1
-            if(!opp.all.findAll{it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)}){
+            if(!opp.all.findAll{it.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)}){
               choice = 2
             }
             else{
@@ -3266,8 +3266,10 @@ public enum TeamUp implements CardInfo {
               }
             }
             if(choice == 1){
-              def tar = opp.all.findAll{it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)}.select("Choose the pokémon from which discard a Pokémon Tool or Special Energy")
-              tar.cards.findAll{it.cardTypes.is(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)}.select("Choose the card to dicard").discard()
+              def tar = opp.all.findAll{it.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)}.select("Choose the pokémon from which discard a Pokémon Tool or Special Energy")
+              targeted(tar, Source.TRAINER_CARD) {
+                tar.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY).select("Choose the card to dicard").discard()
+              }
             }
             else{
               discard bg.stadiumInfoStruct.stadiumCard
@@ -3275,7 +3277,7 @@ public enum TeamUp implements CardInfo {
           }
           playRequirement{
             assert my.hand.filterByType(POKEMON).findAll{it.asPokemonCard().types.contains(D)}: "There is no [D] pokémon in your hand"
-            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)} || bg.stadiumInfoStruct : "There is no cards to discard"
+            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)} || bg.stadiumInfoStruct : "There is no cards to discard"
           }
         };
         case ELECTROCHARGER_139:
