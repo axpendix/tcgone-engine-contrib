@@ -1587,9 +1587,15 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Never Give Up", {
 					text "You can use this attack only if you have at least 3 more Prize cards remaining than your opponent. Attach all [L] Energy cards from your discard pile to your Pokémon in any way you like."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.prizeCardSet.size()-opp.prizeCardSet.size()>=3
+						assert my.discard.filterByEnergyType(L) : "No [L] in discard"
+					}
 					onAttack {
-						
+						def list=my.discard.filterByEnergyType(L)
+						list.select(max:list.size()).each {
+							attachEnergy(my.all.select("Attach $it to"),it)
+						}
 					}
 				}
 				move "Head Bolt", {
@@ -1612,6 +1618,9 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+						if(my.bench){
+							damage 10,my.bench.select("Do 10 damage")
+						}
 					}
 				}
 				move "Electric Trap", {
@@ -1619,7 +1628,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 30
+						damage 30*my.all.findAll{it.numberOfDamageCounters}.size()
 					}
 				}
 				
@@ -1630,7 +1639,13 @@ public enum UnbrokenBonds implements CardInfo {
 				resistance M, MINUS20
 				bwAbility "Dedechange", {
 					text "When you play this Pokémon from your hand onto your Bench during your turn, you may discard your hand and draw 6 cards. You can't use more than 1 Dedechange Ability each turn."
-					actionA {
+					onActivate {
+						if(it==PLAY_FROM_HAND && bg.em().retrieveObject("Dedechange")!=bg.turnCount && confirm("Use Dedechange?")){
+							bg.em().storeObject("Dedechange",bg.turnCount)
+							powerUsed()
+							my.hand.discard()
+							draw 6
+						}
 					}
 				}
 				move "Static Shock", {
@@ -1644,9 +1659,15 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Tingly Return GX", {
 					text "50 damage. Your opponent’s Active Pokémon is now Paralyzed. Put this Pokémon and all cards attached to it into your hand. (You can’t use more than 1 GX attack in a game.)"
 					energyCost L, C
-					attackRequirement {}
+					attackRequirement {gxCheck()}
 					onAttack {
+						gxPerform()
 						damage 50
+						afterDamage {
+							apply PARALYZED
+							self.cards.moveTo(hand)
+							removePCS(self)
+						}
 					}
 				}
 				
@@ -1656,8 +1677,9 @@ public enum UnbrokenBonds implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				bwAbility "Battery", {
-					text "Attach to Vikavolt or Vikavolt-GX as a Special Energy card."
+					text "Once during your turn (before your attack), you may attach this card from your hand to 1 of your Vikavolt or Vikavolt-GX as a Special Energy card. This card provides 2 [L] Energy only while it’s attached to a Pokémon."
 					actionA {
+						// TODO
 					}
 				}
 				move "Pierce", {
