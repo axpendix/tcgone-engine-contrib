@@ -1698,7 +1698,9 @@ public enum UnbrokenBonds implements CardInfo {
 				resistance M, MINUS20
 				bwAbility "Stealthy Body", {
 					text "If there is any Stadium card in play, this Pokémon has no Weakness."
-					actionA {
+					getterA (GET_WEAKNESSES, self) {h->
+						if(bg.stadiumInfoStruct)
+							h.object.clear()
 					}
 				}
 				move "Electricannon", {
@@ -1707,6 +1709,10 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 120
+						if(confirm("You may discard all [L] Energy from this Pokémon. If you do, this attack does 100 more damage.")){
+							discardAllSelfEnergy(L)
+							damage 100
+						}
 					}
 				}
 				
@@ -1721,6 +1727,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+						discardDefendingSpecialEnergy(delegate)
 					}
 				}
 				move "Discharge", {
@@ -1728,7 +1735,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
-						damage 50
+						damage 50*discardAllSelfEnergy(L).size()
 					}
 				}
 				
@@ -1741,7 +1748,8 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
-						
+						extraPoison 7
+						apply POISONED
 					}
 				}
 				move "Poison Absorption", {
@@ -1754,9 +1762,14 @@ public enum UnbrokenBonds implements CardInfo {
 				}
 				move "Nasty Goo Mix GX", {
 					text "Your opponent's Active Pokémon is now Paralyzed and Poisoned. If this Pokémon has at least 4 extra Energy attached to it (in addition to this attack's cost), put 15 damage counters instead of 1 on that Pokémon between turns. (You can't use more than 1 GX attack in a game.)"
-					attackRequirement {}
+					attackRequirement {gxCheck()}
 					onAttack {
-						
+						gxPerform()
+						if(self.cards.energySufficient(thisMove.energyCost + [C,C,C,C])){
+							extraPoison 14
+						}
+						apply POISONED
+						apply PARALYZED
 					}
 				}
 				
@@ -1769,7 +1782,9 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+						flip {
+							apply PARALYZED
+						}
 					}
 				}
 				move "Tail Smack", {
@@ -1791,6 +1806,10 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+						flip {
+							applyAfterDamage PARALYZED
+						}
+						increasedBaseDamageNextTurn("Heavy Choke", hp(120))
 					}
 				}
 				move "Heavy Choke", {
@@ -1821,6 +1840,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+						if(defending.isSPC(POISONED)) damage 50
 					}
 				}
 				
@@ -1843,6 +1863,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+						removeDamageCounterEqualToDamageDone()
 					}
 				}
 				
