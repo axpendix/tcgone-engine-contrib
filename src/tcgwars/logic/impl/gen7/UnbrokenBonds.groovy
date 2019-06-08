@@ -515,7 +515,7 @@ public enum UnbrokenBonds implements CardInfo {
 						checkLastTurn()
 						powerUsed()
 						flip {
-							apply(choose([ASLEEP,BURNED,CONFUSED,POISONED], ["Asleep", "Burned", "Confused", "Poisoned"], "Apply to Your opponent's Active Pokémon"), opp.active, Source.SRC_ABILITY)
+							apply(choose([ASLEEP,BURNED,CONFUSED,POISONED], ["Asleep", "Burned", "Confused", "Poisoned"], "Apply to Your opponent's Active Pokémon") as SpecialConditionType, opp.active, Source.SRC_ABILITY)
 						}
 					}
 				}
@@ -864,7 +864,7 @@ public enum UnbrokenBonds implements CardInfo {
 					onAttack {
 						damage 120
 						afterDamage {
-							def list = my.discard.search (max: 2, basicEnergyFilter(R))
+							def list = my.discard.filterByEnergyType(R).select(count:2)
 							def pcs = my.all.select("To?")
 							list.each {attachEnergy(pcs, it)}
 						}
@@ -1317,8 +1317,8 @@ public enum UnbrokenBonds implements CardInfo {
 							bothAll.add(it)
 						}
 						def pcs = bothAll.findAll{it.cards.filterByType(ENERGY)}.select("Choose the pokémon to move the energy from")
-						def tar = bothAll.findAll{it != pcs}.select("Select the pokémon to recieve the energy")
-						energySwitch(pcs,tar, pcs.cards.filterByType(ENERGY).select("Choose the energy to move"))
+						def tar = bothAll.findAll{it != pcs}.select("Select the pokémon to receive the energy")
+						energySwitch(pcs,tar, pcs.cards.filterByType(ENERGY).select("Choose the energy to move").first())
 						directDamage 30, tar
 					}
 				}
@@ -1874,7 +1874,11 @@ public enum UnbrokenBonds implements CardInfo {
 				resistance F, MINUS20
 				bwAbility "Sound Veil", {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may prevent all effects of your opponent’s attacks, including damage, done to this Pokémon until the end of your opponent’s next turn."
-					actionA {
+					onActivate {
+						if(it==PLAY_FROM_HAND && confirm("Use Sound Veil?")){
+							powerUsed()
+							new PreventAllEffectsNextTurn(self).run(bg())
+						}
 					}
 				}
 				move "Severe Poison", {
@@ -1883,6 +1887,10 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
+						afterDamage {
+							extraPoison 3
+							apply POISONED
+						}
 					}
 				}
 				
@@ -1893,7 +1901,19 @@ public enum UnbrokenBonds implements CardInfo {
 				resistance F, MINUS20
 				bwAbility "Swelling Spite", {
 					text "When this Pokémon is Knocked Out, search your deck for up to 2 Haunter and put them onto your Bench. Then, shuffle your deck."
-					actionA {
+					delayedA {
+						before (KNOCKOUT,self) {
+							if(self.owner.pbg.deck.notEmpty && self.owner.pbg.bench.notFull) {
+								bc "Swelling Spite activates"
+								bg.deterministicCurrentThreadPlayerType = self.owner
+								my.deck.select("When this Pokémon is Knocked Out, search your deck for up to 2 Haunter and put them onto your Bench. Then, shuffle your deck.", {it.name=="Haunter"}).each {
+									my.deck.remove(it);
+									benchPCS(it)
+								}
+								shuffleDeck()
+								bg.clearDeterministicCurrentThreadPlayerType()
+							}
+						}
 					}
 				}
 				move "Will-O-Wisp", {
@@ -1915,7 +1935,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+						apply POISONED
 					}
 				}
 				
@@ -1929,7 +1949,8 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+						apply POISONED
+						opp.bench.each {directDamage 10,it}
 					}
 				}
 				
@@ -1940,7 +1961,14 @@ public enum UnbrokenBonds implements CardInfo {
 				resistance F, MINUS20
 				bwAbility "Shadow Pain", {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put 6 damage counters on your opponent's Pokémon-GX and Pokémon-EX in any way you like."
-					actionA {
+					onActivate {
+						def list = {opp.all.findAll {it.pokemonGX || it.pokemonEX}}
+						if(it==PLAY_FROM_HAND && list() && confirm("Use Shadow Pain?")){
+							powerUsed()
+							(1..6).each {
+								if(list()) directDamage(10, list().select("Put a damage counter on"))
+							}
+						}
 					}
 				}
 				move "Twilight Poison", {
@@ -1949,6 +1977,10 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+						afterDamage {
+							apply ASLEEP
+							apply POISONED
+						}
 					}
 				}
 				
@@ -1961,7 +1993,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+						apply ASLEEP
 					}
 				}
 				move "Psypunch", {
@@ -1979,7 +2011,16 @@ public enum UnbrokenBonds implements CardInfo {
 				weakness P
 				bwAbility "Hypnotic Pendulum", {
 					text "When your opponent's Active Pokémon is Knocked Out, flip a coin. If heads, choose which of your opponent's Benched Pokémon becomes their new Active Pokémon."
-					actionA {
+					delayedA (priority:BEFORE_LAST) {
+						before KNOCKOUT, {
+							Knockout kef = ef as Knockout
+							if(kef.pokemonToBeKnockedOut.owner != self.owner && kef.pokemonToBeKnockedOut.active && kef.pokemonToBeKnockedOut.owner.pbg.bench.notEmpty){
+								powerUsed()
+								flip "Hypnotic Pendulum", {
+									kef.nextActive = kef.pokemonToBeKnockedOut.owner.pbg.bench.select("Hypnotic Pendulum: select new active pokemon", self.owner)
+								}
+							}
+						}
 					}
 				}
 				move "Stir the Brain", {
@@ -1987,7 +2028,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
-						damage 30
+						damage 30+10*opp.hand.size()
 					}
 				}
 				
@@ -2000,7 +2041,8 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+						apply CONFUSED
+						apply CONFUSED,self
 					}
 				}
 				
@@ -2010,7 +2052,16 @@ public enum UnbrokenBonds implements CardInfo {
 				weakness P
 				bwAbility "Detention Gas", {
 					text "As long as this Pokémon is your Active Pokémon, put 1 damage counter on each of your opponent's Basic Pokémon between turns."
-					actionA {
+					delayedA {
+						after BETWEEN_TURNS, {
+							boolean flag = 1
+							all.each {
+								if(self.active && it.owner != self.owner && it.basic) {
+									if(flag) {bc "Detention Gas activates"; flag = 0}
+									directDamage 10, it
+								}
+							}
+						}
 					}
 				}
 				move "Splattering Sludge", {
@@ -2019,6 +2070,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+						opp.bench.each{if(it.numberOfDamageCounters) damage 20,it}
 					}
 				}
 				
@@ -2028,7 +2080,11 @@ public enum UnbrokenBonds implements CardInfo {
 				weakness P
 				bwAbility "Mind Report", {
 					text "When you play this Pokémon from your hand onto your Bench during your turn, you may put a Supporter card from your discard pile on top of your deck."
-					actionA {
+					onActivate {
+						if(it==PLAY_FROM_HAND && my.discard.filterByType(SUPPORTER) && confirm("Use Mind Report?")){
+							powerUsed()
+							my.discard.filterByType(SUPPORTER).select("Mind Report: Put to top of your deck").moveTo(addToTop:true, my.deck)
+						}
 					}
 				}
 				move "Psyshock", {
@@ -2036,7 +2092,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
-						damage 70
+						shredDamage 70
 					}
 				}
 				
@@ -2046,7 +2102,13 @@ public enum UnbrokenBonds implements CardInfo {
 				weakness P
 				bwAbility "Bench Barrier", {
 					text "Prevent all damage done to your Benched Pokémon by your opponent's attacks."
-					actionA {
+					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each {if(it.to.owner==self.owner && it.to.benched && it.dmg.value){
+								bc "Bench Barrier reduces damage"
+								it.dmg=hp(0)
+							}}
+						}
 					}
 				}
 				move "Psypower", {
@@ -2054,7 +2116,9 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+						(1..3).each {
+							if(opp.all) directDamage(10, opp.all.select("Put a damage counter on"))
+						}
 					}
 				}
 				
@@ -2068,7 +2132,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+						if(opp.all) directDamage(10, opp.all.select("Put a damage counter on"))
 					}
 				}
 				
@@ -2080,6 +2144,12 @@ public enum UnbrokenBonds implements CardInfo {
 				bwAbility "Mysterious Message", {
 					text "Once during your turn (before your attack), you may draw cards until you have 7 cards in your hand. If you drew any cards in this way, this Pokémon is Knocked Out."
 					actionA {
+						assert my.hand.size() < 7
+						assert my.deck
+						checkLastTurn()
+						powerUsed()
+						draw 7-my.hand.size()
+						new Knockout(self).run(bg)
 					}
 				}
 				move "Hypnoblast", {
@@ -2088,6 +2158,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+						applyAfterDamage ASLEEP
 					}
 				}
 				
@@ -2098,17 +2169,22 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Caturday", {
 					text "Draw a card. If you do, this Pokémon is now Asleep."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						
+						draw 1
+						apply ASLEEP,self
 					}
 				}
 				move "Ear Kinesis", {
 					text "This attack does 20 damage to 1 of your opponent's Benched Pokémon for each damage counter on that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost P, C, C
-					attackRequirement {}
+					attackRequirement {
+						assert opp.bench.findAll{it.numberOfDamageCounters}
+					}
 					onAttack {
-						
+						opp.bench.each{damage 20*it.numberOfDamageCounters,it}
 					}
 				}
 				
@@ -2119,9 +2195,12 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Caturday", {
 					text "Draw 3 cards. If you do, this Pokémon is now Asleep."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck
+					}
 					onAttack {
-						
+						draw 3
+						apply ASLEEP,self
 					}
 				}
 				move "Perplexing Eyes", {
@@ -2130,6 +2209,21 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+						def pcs = defending
+						afterDamage { delayed {
+							def ef
+							register {
+								ef = getter(GET_WEAKNESSES, pcs) { Holder<List<Weakness>> h ->
+									h.object = h.object.collect { it = it.copy(); it.type = PSYCHIC; it }
+								}
+							}
+							after EVOLVE, pcs, {unregister()}
+							after FALL_BACK, pcs, {unregister()}
+							unregister {
+								ef.unregister()
+							}
+							unregisterAfter 3
+						} }
 					}
 				}
 				
