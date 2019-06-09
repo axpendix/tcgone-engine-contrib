@@ -2235,6 +2235,13 @@ public enum UnbrokenBonds implements CardInfo {
 				bwAbility "Resetting Hole", {
 					text "Once during your turn (before your attack), if this Pokémon is on your Bench, you may discard any Stadium card in play. If you do, discard this Pokémon and all cards attached to it."
 					actionA {
+						checkLastTurn()
+						assert bg.stadiumInfoStruct
+						assert self.benched
+						powerUsed()
+						discard bg.stadiumInfoStruct.stadiumCard
+						self.cards.discard()
+						removePCS self
 					}
 				}
 				move "Red Knuckles", {
@@ -2243,6 +2250,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+						if(defending.topPokemonCard.cardTypes.is(ULTRA_BEAST)) damage 60
 					}
 				}
 				
@@ -2256,6 +2264,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+						if(my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1) damage 90
 					}
 				}
 				move "Hundred-Blows Impact", {
@@ -2269,9 +2278,25 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Acme of Heroism GX", {
 					text "200 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), and if it would be Knocked Out by damage from an opponent's attack during their next turn, it is not Knocked Out, and its remaining HP becomes 10. (You can't use more than 1 GX attack in a game.)"
 					energyCost F, F, C
-					attackRequirement {}
+					attackRequirement {gxCheck()}
 					onAttack {
+						gxPerform()
 						damage 200
+						if(self.cards.energySufficient(thisMove.energyCost + C)){
+							bc "$self will endure a lethal hit next turn"
+							delayed {
+								before KNOCKOUT, self, {
+									if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
+										self.damage = self.fullHP - hp(10)
+										bc "$self endured the hit!"
+										prevent()
+									}
+								}
+								unregisterAfter 2
+								after EVOLVE, self, {unregister()}
+								after SWITCH, self, {unregister()}
+							}
+						}
 					}
 				}
 				
@@ -2284,7 +2309,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+						draw 1
 					}
 				}
 				move "Rolling Tackle", {
@@ -2305,7 +2330,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 30
+						flip 4,{damage 30}
 					}
 				}
 				move "Sand Tomb", {
@@ -2314,6 +2339,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
+						cantRetreat defending
 					}
 				}
 				
@@ -2323,8 +2349,7 @@ public enum UnbrokenBonds implements CardInfo {
 				weakness G
 				bwAbility "Underground Work", {
 					text "If you discard this Pokémon with the effect of Giovanni's Exile, discard the top card of your opponent's deck."
-					actionA {
-					}
+					// impl in Giovanni's Exile
 				}
 				move "Hook", {
 					text "10 damage. "
@@ -2345,6 +2370,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+						if(bg.stadiumInfoStruct) damage 60
 					}
 				}
 				
@@ -2357,7 +2383,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						
+						flip{preventAllDamageNextTurn()}
 					}
 				}
 				move "Rock Throw", {
@@ -2387,6 +2413,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
+						damage 30,self
 					}
 				}
 				
@@ -2399,6 +2426,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
+						dontApplyResistance()
 						damage 100
 					}
 				}
@@ -2407,7 +2435,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost F, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 180
+						damage 180-20*defending.retreatCost
 					}
 				}
 				
@@ -2420,7 +2448,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+						increasedBaseDamageNextTurn("Beat",hp(70))
 					}
 				}
 				move "Beat", {
@@ -2441,7 +2469,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 50
+						flipUntilTails {damage 50}
 					}
 				}
 				move "Assault Boom", {
@@ -2450,6 +2478,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+						if(defending.cards.hasType(POKEMON_TOOL)) damage 70
 					}
 				}
 				
@@ -2463,6 +2492,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+						whirlwind()
 					}
 				}
 				
@@ -2494,9 +2524,15 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Dirty Work", {
 					text "Discard the top card of your opponent's deck. If you played Giovanni's Exile from your hand during this turn, discard the top 5 cards instead."
 					energyCost C, C
-					attackRequirement {}
+					attackRequirement {
+						assert opp.deck
+					}
 					onAttack {
-						
+						if(bg.em().retrieveObject("GIOVANNI_S_EXILE_174")==bg.turnCount) {
+							opp.deck.subList(0,5).discard()
+						} else {
+							opp.deck.subList(0,1).discard()
+						}
 					}
 				}
 				move "Horn Attack", {
@@ -2518,6 +2554,9 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
+						if(defending.basic){
+							cantAttackNextTurn(defending)
+						}
 					}
 				}
 				move "Break Ground", {
@@ -2526,6 +2565,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 160
+						my.bench.each{damage 20,it}
 					}
 				}
 				
@@ -2569,7 +2609,9 @@ public enum UnbrokenBonds implements CardInfo {
 				weakness G
 				bwAbility "Free Flight", {
 					text "If this Pokémon has no Energy attached to it, this Pokémon has no Retreat Cost."
-					actionA {
+					getterA (GET_RETREAT_COST, self) {h->
+						if(self.cards.filterByType(ENERGY).isEmpty())
+							h.object=0
 					}
 				}
 				move "Shinobi Strike", {
@@ -2591,9 +2633,11 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Collect", {
 					text "Draw 3 cards."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert deck
+					}
 					onAttack {
-						
+						draw 3
 					}
 				}
 				move "Poison Jab", {
@@ -2602,6 +2646,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+						applyAfterDamage POISONED
 					}
 				}
 				
@@ -2611,6 +2656,12 @@ public enum UnbrokenBonds implements CardInfo {
 				bwAbility "Bratty Kick", {
 					text "Once during your turn (before your attack), you may flip a coin. If heads, put 3 damage counters on 1 of your opponent's Pokémon. If you use this Ability, your turn ends."
 					actionA {
+						checkLastTurn()
+						powerUsed()
+						flip {
+							directDamage 30, opp.all.select()
+						}
+						bg().gm().betweenTurns()
 					}
 				}
 				
@@ -2621,9 +2672,11 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Finishing Combo", {
 					text "You can use this attack only if your Hitmonlee used Special Combo during your last turn. This attack does 60 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost F
-					attackRequirement {}
+					attackRequirement {
+						assert my.lastTurnMove == "Special Combo"
+					}
 					onAttack {
-						
+						opp.all.each {damage 60,it}
 					}
 				}
 				move "Spinning Attack", {
@@ -2644,6 +2697,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
+						dontApplyResistance()
 						damage 10
 					}
 				}
@@ -2657,7 +2711,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						
+						damage 30, opp.all.select()
 					}
 				}
 				move "Power Cyclone", {
@@ -2666,6 +2720,9 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
+						afterDamage {
+							moveEnergy(self, my.bench)
+						}
 					}
 				}
 				
@@ -2687,6 +2744,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+						if(my.prizeCardSet.size() > opp.prizeCardSet.size()) damage 60
 					}
 				}
 				
@@ -2700,6 +2758,8 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+						int diff = opp.all.size() - my.all.size()
+						if(diff>0) damage 50*diff
 					}
 				}
 				move "Magnum Punch", {
@@ -2717,7 +2777,8 @@ public enum UnbrokenBonds implements CardInfo {
 				weakness G
 				bwAbility "Wall of Stone", {
 					text "If your opponent has 3 or fewer Prize cards remaining, this Pokémon's maximum HP is 200."
-					actionA {
+					getterA (GET_FULL_HP, self) { Holder h->
+						if(self.owner.opposite.pbg.prizeCardSet.size() <= 3) h.object = hp(200)
 					}
 				}
 				move "Top Down", {
@@ -2726,6 +2787,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 110
+						flipUntilTails {if(opp.deck) opp.deck.subList(0,1).discard()}
 					}
 				}
 				
@@ -2740,14 +2802,29 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+						my.all.each{damage 30*it.cards.energyCount(D)}
 					}
 				}
 				move "Dark Union GX", {
 					text "Put 2 in any combination of [D] Pokémon-GX and [D] Pokémon-EX from your discard pile onto your Bench. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), attach 2 Energy cards from your discard pile to each Pokémon that you put onto your Bench in this way. (You can't use more than 1 GX attack in a game.)"
 					energyCost D, C
-					attackRequirement {}
+					def cl1 = {my.discard.findAll{it.cardTypes.isIn(POKEMON_GX, POKEMON_EX) && it.asPokemonCard().types.contains(D)}}
+					attackRequirement {
+						gxCheck()
+						assert cl1() : "No [D] Pokemon-GX or Pokemon-EX in your discard pile"
+						assert my.bench.notFull : "Bench full"
+					}
 					onAttack {
-						
+						gxPerform()
+						def tar = cl1().select(count:Math.min(2,my.bench.freeBenchCount),"Put to bench").collect{
+							my.discard.remove(it)
+							benchPCS(it)
+						}
+						tar = new PcsList(tar)
+						if(self.cards.energySufficient(thisMove.energyCost + C)){
+							tar.remove(attachEnergyFrom(count: 2, my.discard, tar)[1])
+							attachEnergyFrom(count: 2, my.discard, tar)
+						}
 					}
 				}
 				
@@ -2761,7 +2838,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						
+						astonish(1)
 					}
 				}
 				
@@ -2772,7 +2849,13 @@ public enum UnbrokenBonds implements CardInfo {
 				resistance F, MINUS20
 				bwAbility "Ruler of the Night", {
 					text "As long as this Pokémon is your Active Pokémon, your opponent can't play any Pokémon Tool, Special Energy, or Stadium cards from their hand."
-					actionA {
+					delayedA {
+						before PLAY_TRAINER, {
+							if (ef.cardToPlay.cardTypes.isIn(STADIUM,SPECIAL_ENERGY,POKEMON_TOOL) && bg.currentTurn == self.owner.opposite && self.active) {
+								wcu "Ruler of the Night prevents playing this card"
+								prevent()
+							}
+						}
 					}
 				}
 				move "Feather Storm", {
@@ -2781,14 +2864,19 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
+						multiDamage(opp.bench.findAll{it.pokemonGX || it.pokemonEX},2,30)
 					}
 				}
 				move "Unfair GX", {
 					text "Your opponent reveals their hand. Discard 2 cards from it. (You can't use more than 1 GX attack in a game.)"
 					energyCost C, C
-					attackRequirement {}
+					attackRequirement {
+						gxCheck()
+						assert opp.hand
+					}
 					onAttack {
-						
+						opp.hand.select(count:2,"Opponent's hand. Discard 2").discard()
+						gxPerform()
 					}
 				}
 				
@@ -3623,7 +3711,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 60
+						flip 4,{damage 60}
 					}
 				}
 				
@@ -3917,9 +4005,28 @@ public enum UnbrokenBonds implements CardInfo {
 			case GIOVANNI_S_EXILE_174:
 			return supporter (this) {
 				text "Discard up to 2 of your Benched Pokémon that have no damage counters on them and all cards attached to them."
+				def list = {my.bench.findAll {it.numberOfDamageCounters==0}}
 				onPlay {
+					def cl1 = {PokemonCardSet pcs->
+						if(pcs) {
+							pcs.abilities.each {
+								if(it.key.active && it.key.name == "Underground Work") {
+									bc "Underground Work activates"
+									if(opp.deck) opp.deck.subList(0,1).discard()
+								}
+							}
+							pcs.cards.discard()
+							removePCS(pcs)
+						}
+					}
+					cl1(list().select("Discard"))
+					if(list()){
+						cl1(list().select("Discard (or cancel)",false))
+					}
+					bg.em().storeObject("GIOVANNI_S_EXILE_174", bg.turnCount)
 				}
 				playRequirement{
+					assert list() : "You got no benched pokemon with no damage counters"
 				}
 			};
 			case GREEN_S_EXPLORATION_175:
@@ -4002,9 +4109,25 @@ public enum UnbrokenBonds implements CardInfo {
 			case POWER_PLANT_183:
 			return stadium (this) {
 				text "Pokémon-GX and Pokémon-EX in play (both yours and your opponent's) have no Abilities."
+				def effect1
+				def effect2
 				onPlay {
+					effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
+						if ((h.effect.target.pokemonEX || h.effect.target.pokemonGX) && h.effect.ability instanceof BwAbility) {
+							h.object=true
+						}
+					}
+					effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+						if ((h.effect.target as Card).cardTypes.is(POKEMON_GX) || (h.effect.target as Card).cardTypes.is(POKEMON_EX)) {
+							h.object=true
+						}
+					}
+					new CheckAbilities().run(bg)
 				}
 				onRemoveFromPlay{
+					effect1.unregister()
+					effect2.unregister()
+					new CheckAbilities().run(bg)
 				}
 			};
 			case RED_S_CHALLENGE_184:
@@ -4012,24 +4135,43 @@ public enum UnbrokenBonds implements CardInfo {
 				text "You can play this card only if you discard 2 other cards from your hand." +
 					"Search your deck for a card and put it into your hand. Then, shuffle your deck."
 				onPlay {
+					my.hand.getExcludedList(thisCard).select(count:2, "Discard").discard()
+					my.deck.select("Put to hand").moveTo(hidden:true,hand)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.hand.getExcludedList(thisCard).size() >= 2 : "Not enough cards in hand"
+					assert deck : "Empty deck"
 				}
 			};
 			case SAMSON_OAK_185:
 			return supporter (this) {
 				text "Draw 2 cards. If both Active Pokémon are the same type, draw 2 more cards."
 				onPlay {
+					draw 2
+					if(my.active.types.containsAny(opp.active.types)) draw 2
 				}
 				playRequirement{
+					assert deck
 				}
 			};
 			case STEALTHY_HOOD_186:
 			return pokemonTool (this) {
 				text "Prevent all effects of your opponent's Abilities done to the Pokémon this card is attached to. Remove any such existing effects."
+				def eff
 				onPlay {reason->
+					// TODO implement properly after source refactoring and/or RichSource captivation
+					eff = delayed {
+						before null, self, SRC_ABILITY, {
+							if(bg.currentTurn != self.owner) {
+								bc "Stealty Hood prevents effect"
+								prevent()
+							}
+						}
+					}
 				}
 				onRemoveFromPlay {
+					eff.unregister()
 				}
 				allowAttach {to->
 				}
@@ -4038,8 +4180,10 @@ public enum UnbrokenBonds implements CardInfo {
 			return itemCard (this) {
 				text "Put a card from your opponent’s discard pile into their hand."
 				onPlay {
+					opp.discard.select("Put card into opponent's hand").moveTo(opp.hand)
 				}
 				playRequirement{
+					assert opp.discard : "No cards in opponent discard"
 				}
 			};
 			case ULTRA_FOREST_KARTENVOY_188:

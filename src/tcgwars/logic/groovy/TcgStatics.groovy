@@ -1068,18 +1068,26 @@ class TcgStatics {
 		}
 	}
 
-	static attachEnergyFrom (params=[:], CardList from, def to){
+	static Tuple attachEnergyFrom (params=[:], CardList from, def to){
 		if(to instanceof PcsList && to.empty) return
-		def list
-		def info = "Attach ${params.type ?: ''} ${params.basic ? 'Basic' : ''} Energy"
+		Integer count = params.count ?: null
+		Integer max = params.max ?: 1
+		CardList list
+		String tostr = "";
+		if(to instanceof PcsList) {
+			tostr += "one of "+to.collect{it.name}.join(", ")
+		} else {
+			tostr += to
+		}
+		def info = "Attach ${params.type ?: ''} ${params.basic ? 'Basic' : ''} Energy to $tostr."
 		def filter = { Card card ->
 			card.cardTypes.is(ENERGY) && (!params.basic || card.cardTypes.is(BASIC_ENERGY)) && (!params.type || card.asEnergyCard().containsTypePlain(params.type))
 		}
 		if(from instanceof DeckCardList){
-			list = from.search (info, filter)
+			list = from.search (max: count?:max, info, filter)
 			shuffleDeck()
 		} else if (from instanceof CardList && from.find(filter)) {
-			list = from.select(min: params.may?0:1, info, filter)
+			list = from.findAll(filter).select(min: params.may?0:null, count:count, max:max, info)
 		}
 		if(list) {
 			if(to instanceof PcsList){
@@ -1089,8 +1097,11 @@ class TcgStatics {
 			if(from.persistentName == "Hand"){
 				reason = PLAY_FROM_HAND
 			}
-			attachEnergy(to, list.first(), reason)
+			list.each{
+				attachEnergy(to, it, reason)
+			}
 		}
+		new Tuple(list,to)
 	}
 
 	static void gxPerform(){
