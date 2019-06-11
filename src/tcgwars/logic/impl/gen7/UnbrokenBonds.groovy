@@ -2978,6 +2978,14 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+						delayed {
+							def pcs = defending
+							after KNOCKOUT, pcs, {
+								bc "$self can do 120 more damage next turn"
+								doMoreDamageNextTurn(thisMove, 120, self)
+							}
+							unregisterAfter 1
+						}
 					}
 				}
 				
@@ -3014,7 +3022,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 50
+						damage 50*defending.retreatCost
 					}
 				}
 				move "Crunch", {
@@ -3023,6 +3031,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 100
+						discardDefendingEnergy()
 					}
 				}
 				
@@ -3036,7 +3045,13 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+						def list = all.findAll{it!=self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value}
+						def tar = new PcsList()
+						int min = list.get(0).remainingHP.value
+						while(list.get(0).remainingHP.value==min){
+							tar.add(list.remove(0))
+						}
+						new Knockout(tar.select("Knock Out")).run(bg)
 					}
 				}
 				move "Mist Slash", {
@@ -3044,7 +3059,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost D, D
 					attackRequirement {}
 					onAttack {
-						damage 70
+						swiftDamage(70,defending)
 					}
 				}
 				
@@ -3058,7 +3073,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						
+						apply CONFUSED
 					}
 				}
 				
@@ -3070,9 +3085,27 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Hypnotic Reign", {
 					text "Your opponent reveals their hand. You may discard a Pokémon you find there and use one of that Pokémon’s non-GX attacks as this attack."
 					energyCost D
-					attackRequirement {}
+					attackRequirement {
+						assert opp.hand
+					}
 					onAttack {
-						
+						opp.hand.showToMe("Opponent's hand")
+						if(opp.hand.filterByType(POKEMON)){
+							def tmp = opp.hand.filterByType(POKEMON).select(min:0, "You may discard a Pokémon you find there and use one of that Pokémon’s non-GX attacks as this attack.")
+							if(tmp){
+								def card = tmp.first()
+								bc "$card was chosen"
+								discard card
+								def moves = card.asPokemonCard().moves.findAll{!it.name.contains("GX")}
+								if(moves){
+									def move = choose(moves, "Choose attack")
+									bc "$move was chosen"
+									def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+									attack (move as Move)
+									bef.unregisterItself(bg().em())
+								}
+							}
+						}
 					}
 				}
 				move "Dark Pressure", {
@@ -3081,6 +3114,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
+						if(opp.deck) discard opp.deck.get(0)
 					}
 				}
 				
@@ -3095,6 +3129,9 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+						afterDamage {
+							attachEnergyFrom(type: M, my.deck, self)
+						}
 					}
 				}
 				move "Heavy Impact", {
@@ -3108,9 +3145,20 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Full Metal Wall GX", {
 					text "For the rest of this game, your [M] Pokémon take 30 less damage from your opponent's attacks (after applying Weakness and Resistance). If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack's cost), discard all Energy from your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)"
 					energyCost C
-					attackRequirement {}
+					attackRequirement {gxCheck()}
 					onAttack {
-						
+						gxPerform()
+						delayed {
+							before APPLY_ATTACK_DAMAGES, {
+								bg.dm().each {if(it.to.owner==self.owner && it.to.types.contains(M) && it.from.owner!=it.to.owner && it.notZero && it.notNoEffect){
+									bc "Full Metal Wall -30"
+									it.dmg-=hp(30)
+								}}
+							}
+						}
+						if(self.cards.energySufficient(thisMove.energyCost + C)){
+							opp.active.cards.filterByType(ENERGY).discard()
+						}
 					}
 				}
 				
@@ -3134,7 +3182,15 @@ public enum UnbrokenBonds implements CardInfo {
 				resistance P, MINUS20
 				bwAbility "Hair Wall", {
 					text "Your [M] Pokémon take 10 less damage from your opponent's attacks (after applying Weakness and Resistance)."
-					actionA {
+					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each {
+								if(it.to.owner == self.owner && it.to.types.contains(M) && it.dmg.value && it.notNoEffect) {
+									bc "Hair Wall -10"
+									it.dmg -= hp(10)
+								}
+							}
+						}
 					}
 				}
 				move "Hammer In", {
@@ -3156,7 +3212,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost M
 					attackRequirement {}
 					onAttack {
-						
+						reduceDamageNextTurn(hp(30),thisMove)
 					}
 				}
 				move "Metal Claw", {
@@ -3178,7 +3234,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost M
 					attackRequirement {}
 					onAttack {
-						
+						reduceDamageNextTurn(hp(30),thisMove)
 					}
 				}
 				move "Headbutt", {
@@ -3201,6 +3257,16 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
+						delayed (priority: LAST) {
+							before APPLY_ATTACK_DAMAGES, {
+								if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
+									bc "Extra-Tight activates"
+									directDamage(80, ef.attacker as PokemonCardSet)
+								}
+							}
+							unregisterAfter 2
+							after SWITCH, self, {unregister()}
+						}
 					}
 				}
 				move "Giga Impact", {
@@ -3209,6 +3275,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 160
+						cantAttackNextTurn(self)
 					}
 				}
 				
@@ -3231,6 +3298,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
+						// TODO
 					}
 				}
 				
@@ -3241,7 +3309,8 @@ public enum UnbrokenBonds implements CardInfo {
 				resistance P, MINUS20
 				bwAbility "Fast-Flight Configuration", {
 					text "If your opponent has any Pokémon-GX or Pokémon-EX in play, this Pokémon has no Retreat Cost."
-					actionA {
+					getterA (GET_RETREAT_COST, BEFORE_LAST, self) { h->
+						if(self.owner.opposite.pbg.all.find{it.pokemonEX||it.pokemonGX}) h.object = 0
 					}
 				}
 				move "Splitting Beam", {
@@ -3250,6 +3319,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+						multiDamage(opp.bench,2,30)
 					}
 				}
 				
@@ -3264,6 +3334,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+						if(defending.types.contains(M))damage 40
 					}
 				}
 				
@@ -3275,6 +3346,12 @@ public enum UnbrokenBonds implements CardInfo {
 				bwAbility "Metal Eater", {
 					text "Once during your turn (before your attack), you may discard a [M] Pokémon from your hand. If you do, heal 100 damage from this Pokémon."
 					actionA {
+						checkLastTurn()
+						assert my.hand.findAll(pokemonTypeFilter(M)) : "No [M} pokemon in hand"
+						assert self.numberOfDamageCounters : "$self is not damaged"
+						powerUsed()
+						my.hand.findAll(pokemonTypeFilter(M)).select("Discard").discard()
+						heal(100,self)
 					}
 				}
 				move "Heavy Impact", {
@@ -3294,9 +3371,15 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Fairy Song", {
 					text "Search your deck for up to 2 [Y] Energy cards and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.bench.notEmpty()
+						assert my.deck.notEmpty()
+					}
 					onAttack {
-						
+						deck.search (max:2,basicEnergyFilter(Y)).each {
+							attachEnergy(my.bench.select("Attach $it to"),it)
+						}
+						shuffleDeck()
 					}
 				}
 				move "Kaleidostorm", {
@@ -3305,14 +3388,32 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 150
+						afterDamage {
+							while(1){
+								def pl=(my.all.findAll {it.cards.energyCount(C)})
+								if(!pl) break;
+								def src =pl.select("source for energy (cancel to stop)", false)
+								if(!src) break;
+								def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
+
+								def tar=my.all.select("Target for energy (cancel to stop)", false)
+								if(!tar) break;
+								energySwitch(src, tar, card)
+							}
+						}
 					}
 				}
 				move "Magical Miracle GX", {
 					text "200 damage. If this Pokémon has at least 3 extra [Y] Energy attached to it (in addition to this attack's cost), your opponent shuffles their hand into their deck. (You can’t use more than 1 GX attack in a game.)"
 					energyCost Y, Y, Y
-					attackRequirement {}
+					attackRequirement {gxCheck()}
 					onAttack {
 						damage 200
+						gxPerform()
+						if(self.cards.energySufficient(thisMove.energyCost + Y+Y+Y)){
+							opp.hand.moveTo(opp.deck)
+							shuffleDeck(null, TargetPlayer.OPPONENT)
+						}
 					}
 				}
 				
@@ -3322,6 +3423,14 @@ public enum UnbrokenBonds implements CardInfo {
 				bwAbility "Excitable Draw", {
 					text "Once during your turn (before your attack), you may flip a coin. If heads, shuffle your hand into your deck and then draw 6 cards. If you use this Ability, your turn ends."
 					actionA {
+						checkLastTurn()
+						powerUsed()
+						flip {
+							my.hand.moveTo(my.deck)
+							shuffleDeck()
+							draw 6
+						}
+						bg.gm().betweenTurns()
 					}
 				}
 				
@@ -3335,7 +3444,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						flip 2,{damage 10}
 					}
 				}
 				
@@ -3349,7 +3458,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10+30*my.all.findAll {it.cards.energyCount(Y)}.size()
 					}
 				}
 				
@@ -3363,7 +3472,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+						flipUntilTails {damage 20}
 					}
 				}
 				
@@ -3375,9 +3484,11 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Orb Polish", {
 					text "Put 3 Energy cards from your discard pile into your hand."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.discard.filterByType(ENERGY)
+					}
 					onAttack {
-						
+						my.discard.filterByType(ENERGY).select(count:3,"Put to hand").moveTo(hand)
 					}
 				}
 				move "Sleepy Ball", {
@@ -3386,6 +3497,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
+						applyAfterDamage ASLEEP
 					}
 				}
 				
@@ -3400,6 +3512,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+						reduceDamageFromDefendingNextTurn(hp(30),thisMove,defending)
 					}
 				}
 				
@@ -3411,9 +3524,12 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Energy Present", {
 					text "Attach an Energy card from your hand to 1 of your Benched Pokémon."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.bench.notEmpty
+						assert my.hand.filterByType(ENERGY)
+					}
 					onAttack {
-						
+						attachEnergyFrom(hand,bench)
 					}
 				}
 				move "Magical Shot", {
@@ -3433,6 +3549,9 @@ public enum UnbrokenBonds implements CardInfo {
 				bwAbility "Fairy Feast", {
 					text "Once during your turn (before your attack), you may heal 30 damage from each of your [Y] Pokémon."
 					actionA {
+						checkLastTurn()
+						powerUsed()
+						my.all.each {if(it.types.contains(Y)) heal(30,it,SRC_ABILITY)}
 					}
 				}
 				move "Magical Shot", {
@@ -3455,6 +3574,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+						reduceDamageNextTurn(hp(10),thisMove)
 					}
 				}
 				
@@ -3465,7 +3585,15 @@ public enum UnbrokenBonds implements CardInfo {
 				resistance D, MINUS20
 				bwAbility "Fluffy Cotton", {
 					text "If any damage is done to this Pokémon by attacks, flip a coin. If heads, prevent that damage."
-					actionA {
+					delayedA (priority: BEFORE_LAST) {
+						before APPLY_ATTACK_DAMAGES, {
+							def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
+							if(entry){
+								flip "Fluffy Cotton", {
+									entry.dmg=hp(0)
+								}
+							}
+						}
 					}
 				}
 				move "Energy Blow", {
@@ -3473,15 +3601,20 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost Y
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10+30*self.cards.energyCount(C)
 					}
 				}
 				move "Toy Box GX", {
 					text "Search your deck for up to 5 cards and put them into your hand. Then, shuffle your deck. (You can’t use more than 1 GX attack in a game.)"
 					energyCost Y
-					attackRequirement {}
+					attackRequirement {
+						gxCheck()
+						assert deck
+					}
 					onAttack {
-						
+						gxPerform()
+						deck.search(max:5,"Put to hand",{true}).moveTo(hidden:true,hand)
+						shuffleDeck()
 					}
 				}
 				
@@ -3493,9 +3626,11 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Nap", {
 					text "Heal 20 damage from this Pokémon."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert self.numberOfDamageCounters
+					}
 					onAttack {
-						
+						heal 20,self
 					}
 				}
 				move "Fairy Wind", {
@@ -3515,9 +3650,16 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Pungent Aroma", {
 					text "Flip 2 coins. If either of them is heads, your opponent reveals their hand. For each heads, choose a card you find there. Your opponent shuffles those cards into their deck."
 					energyCost Y
-					attackRequirement {}
+					attackRequirement {
+						assert opp.deck
+					}
 					onAttack {
-						
+						flip 2,{
+							if(opp.hand) {
+								opp.hand.select("Opponent's hand. Shuffle a card into their deck.").moveTo(opp.deck)
+								shuffleDeck(null, TargetPlayer.OPPONENT)
+							}
+						}
 					}
 				}
 				move "Miraculous Cologne", {
@@ -3526,6 +3668,11 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+						flip {
+							def list=[ASLEEP,CONFUSED,PARALYZED,POISONED,BURNED]
+							SpecialConditionType spc=choose(list, list.collect({it.toString()})) as SpecialConditionType
+							afterDamage {apply spc, defending}
+						}
 					}
 				}
 				
@@ -3552,6 +3699,9 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+						if(defending.realEvolution){
+							switchYourActive()
+						}
 					}
 				}
 				
@@ -3588,6 +3738,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+						flip {afterDamage{discardDefendingEnergy();discardDefendingEnergy()}}
 					}
 				}
 				
@@ -3598,9 +3749,12 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Caturday", {
 					text "Draw 2 cards. If you do, this Pokémon is now Asleep."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert deck
+					}
 					onAttack {
-						
+						draw 2
+						apply ASLEEP,self
 					}
 				}
 				move "Tail Whap", {
@@ -3618,7 +3772,17 @@ public enum UnbrokenBonds implements CardInfo {
 				weakness F
 				bwAbility "Gathering of Cats", {
 					text "Ignore all Energy in the attack costs of each of your Pokémon in play that has the Caturday attack."
-					actionA {
+					getterA GET_MOVE_LIST, {h->
+						PokemonCardSet pcs = h.effect.target
+						if(pcs.owner==self.owner && h.object.find{it.name=='Caturday'}){
+							def list=[]
+							for(move in h.object){
+								def copy=move.shallowCopy()
+								copy.energyCost.retainAll()
+								list.add(copy)
+							}
+							h.object=list
+						}
 					}
 				}
 				move "Claw Slash", {
@@ -3637,6 +3801,8 @@ public enum UnbrokenBonds implements CardInfo {
 				bwAbility "Cat Walk", {
 					text "Once during your turn (before your attack), if 1 of your Pokémon-GX or Pokémon-EX was Knocked Out during your opponent's last turn, you may search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck. You can't use more than 1 Cat Walk Ability each turn."
 					actionA {
+						assert my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1: "No Pokémon has been Knocked Out during your opponent’s last turn"
+						assert my.lastKnockoutCardTypes?.contains(POKEMON_GX)||my.lastKnockoutCardTypes?.contains(POKEMON_EX) : "The Pokémon Knocked Out was not GX or EX"
 					}
 				}
 				move "Vengeance", {
@@ -3645,14 +3811,18 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+						int dmg=my.discard.filterByType(POKEMON).size()*20
+						damage Math.min(180,dmg)
 					}
 				}
 				move "Slash Back GX", {
 					text "150 damage. Switch this Pokémon with 1 of your Benched Pokémon. (You can’t use more than 1 GX attack in a game.)"
 					energyCost C, C, C
-					attackRequirement {}
+					attackRequirement {gxCheck()}
 					onAttack {
 						damage 150
+						gxPerform()
+						switchYourActive()
 					}
 				}
 				
@@ -3674,7 +3844,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+						flip 2,{damage 20}
 					}
 				}
 				
@@ -3688,7 +3858,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 60
+						flip 3,{damage 60}
 					}
 				}
 				move "Accelerating Stab", {
@@ -3697,6 +3867,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
+						cantUseAttack(thisMove,self)
 					}
 				}
 				
@@ -3710,6 +3881,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+						flipThenApplySC PARALYZED
 					}
 				}
 				
@@ -3722,6 +3894,12 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
+						targeted(defending){
+							def dd = defending.cards.filterByType(POKEMON_TOOL).discard()
+							if(dd){
+								afterDamage{healAll(self)}
+							}
+						}
 						damage 40
 					}
 				}
@@ -3741,9 +3919,12 @@ public enum UnbrokenBonds implements CardInfo {
 				move "Digicharge", {
 					text "Flip 3 coins. For each heads, search your deck for an Energy card, reveal it, and put it into your hand. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert deck
+					}
 					onAttack {
-						
+						flip 3,{my.deck.search ("Put Energy Card to hand",cardTypeFilter(ENERGY)).moveTo(hand)}
+						shuffleDeck()
 					}
 				}
 				move "Sharp Point", {
@@ -3764,7 +3945,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+						draw 1
 					}
 				}
 				move "Ram", {
@@ -3785,7 +3966,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+						draw 2
 					}
 				}
 				move "Spinning Attack", {
@@ -3804,6 +3985,11 @@ public enum UnbrokenBonds implements CardInfo {
 				bwAbility "Crazy Code", {
 					text "As often as you like during your turn (before your attack), you may attach a Special Energy card from your hand to 1 of your Pokémon."
 					actionA {
+						assert hand.filterByType(SPECIAL_ENERGY).notEmpty
+						powerUsed()
+						def list=hand.filterByType(SPECIAL_ENERGY).select()
+						def pcs=my.all.select()
+						attachEnergy(pcs, list.first(), PLAY_FROM_HAND)
 					}
 				}
 				move "Tantrum", {
@@ -3812,6 +3998,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 120
+						afterDamage {apply CONFUSED,self}
 					}
 				}
 				
@@ -3821,7 +4008,15 @@ public enum UnbrokenBonds implements CardInfo {
 				weakness F
 				bwAbility "Lazy Eating", {
 					text "Between turns, heal 10 damage from this Pokémon."
-					actionA {
+					delayedA (anytime:true) {
+						def lastExecId = null
+						anytime BETWEEN_TURNS, {
+							if (lastExecId != e.executionId && self.numberOfDamageCounters) {
+								bc "Lazy Eating activates"
+								heal(10, self, SRC_ABILITY)
+								lastExecId = e.executionId
+							}
+						}
 					}
 				}
 				move "Big Counter", {
@@ -3830,6 +4025,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
+						if(defending.topPokemonCard.cardTypes.is(TAG_TEAM)) damage 120
 					}
 				}
 				
@@ -3842,15 +4038,18 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+						draw 1
+						apply ASLEEP,self
 					}
 				}
 				move "Boing Boing Tail", {
 					text "This attack does 60 damage to 1 of your opponent's Pokémon-GX or Pokémon-EX. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost C, C, C
-					attackRequirement {}
+					attackRequirement {
+						assert opp.all.find{it.pokemonGX||it.pokemonEX}
+					}
 					onAttack {
-						
+						damage 60,opp.all.findAll{it.pokemonGX||it.pokemonEX}.select("Deal 60 damage")
 					}
 				}
 				
@@ -3864,6 +4063,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+						astonish(self.lastEvolved==bg.turnCount?2:1)
 					}
 				}
 				move "Lunge Out", {
@@ -3881,6 +4081,13 @@ public enum UnbrokenBonds implements CardInfo {
 				bwAbility "Playhouse Heal", {
 					text "Once during your turn (before your attack), you may flip a coin. If heads, heal 60 damage from 1 of your Pokémon. If you use this Ability, your turn ends."
 					actionA {
+						checkLastTurn()
+						assert my.all.find{it.numberOfDamageCounters} : "All is well"
+						powerUsed()
+						flip {
+							heal 60, my.all.findAll{it.numberOfDamageCounters}.select("Heal"), SRC_ABILITY
+						}
+						bg.gm().betweenTurns()
 					}
 				}
 				
@@ -3894,7 +4101,9 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+						my.hand.moveTo(my.deck)
+						shuffleDeck()
+						draw opp.hand.size()
 					}
 				}
 				move "Tone-Deaf", {
@@ -3903,6 +4112,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+						applyAfterDamage CONFUSED
 					}
 				}
 				
