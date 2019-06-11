@@ -4406,6 +4406,7 @@ public enum UnbrokenBonds implements CardInfo {
 				text "You can play this card only if you have more Prize cards remaining than your opponent." +
 					"During this turn, you can play 3 Supporter cards (including this card)."
 				onPlay {
+					// TODO
 				}
 				playRequirement{
 					assert my.prizeCardSet.size()>opp.prizeCardSet.size()
@@ -4414,18 +4415,45 @@ public enum UnbrokenBonds implements CardInfo {
 			case MARTIAL_ARTS_DOJO_179:
 			return stadium (this) {
 				text "The attacks of non-Ultra Beast Pokémon that have any basic [F] Energy attached to them (both yours and your opponent's) do 10 more damage to the opponent's Active Pokémon (before applying Weakness and Resistance). If the attacking player has more Prize cards remaining than their opponent, those attacks do 40 more damage instead."
+				def eff
 				onPlay {
+					eff=delayed{
+						after PROCESS_ATTACK_EFFECTS,{
+							bg.dm().each{
+								if(it.from.topPokemonCard.cardTypes.isNot(ULTRA_BEAST)&&it.from.cards.filterByBasicEnergyType(F)&&it.from.owner!=it.to.owner&&it.to.active&&it.notZero){
+									int am=it.from.owner.pbg.prizeCardSet.size()>it.to.owner.pbg.prizeCardSet.size()?40:10
+									bc "Martial Arts Dojo +$am"
+									it.dmg+=hp(am)
+								}
+							}
+						}
+					}
 				}
 				onRemoveFromPlay{
+					eff.unregister()
 				}
 			};
 			case METAL_CORE_BARRIER_180:
 			return pokemonTool (this) {
 				text "If this card is attached to 1 of your Pokémon, discard it at the end of your opponent's turn." +
 					"The [M] Pokémon this card is attached to takes 70 less damage from your opponent's attacks (after applying Weakness and Resistance)."
+				def eff
 				onPlay {reason->
+					eff=delayed{
+						before APPLY_ATTACK_DAMAGES,{
+							if(self.types.contains(M)&&bg.currentTurn!=self.owner){
+								bg.dm().each{if(it.from.owner!=it.to.owner&&it.to==self&&it.notZero&&it.notNoEffect){
+									it.dmg-=hp(70)
+									bc "Metal Core Barrier -70"
+								}}
+							}
+						}
+						unregister {discard thisCard}
+						unregisterAfter 2
+					}
 				}
 				onRemoveFromPlay {
+					eff.unregister()
 				}
 			};
 			case MOLAYNE_181:
@@ -4433,16 +4461,24 @@ public enum UnbrokenBonds implements CardInfo {
 				text "You can play this card only if you discard 2 [M] Energy cards from your hand." +
 					"Shuffle a Trainer card from your discard pile into your deck."
 				onPlay {
+					my.hand.filterByEnergyType(M).select(count:2,"Discard").discard()
+					my.discard.filterByType(TRAINER).select("Shuffle to deck").moveTo(deck)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.hand.filterByEnergyType(M).size()>=2:"Not enough [M] energy in hand"
+					assert my.discard.filterByType(TRAINER):"No Trainer in discard"
 				}
 			};
 			case POKEGEAR_3_0_182:
 			return itemCard (this) {
 				text "Look at the top 7 cards of your deck. You may reveal a Supporter card you find there and put it into your hand. Shuffle the other cards back into your deck."
 				onPlay {
+					deck.subList(0,7).select(max:0,"Select a supporter to put to hand",cardTypeFilter(SUPPORTER)).moveTo(hand)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert deck
 				}
 			};
 			case POWER_PLANT_183:
@@ -4527,6 +4563,18 @@ public enum UnbrokenBonds implements CardInfo {
 			return supporter (this) {
 				text "During this turn, damage from your Ultra Beasts' attacks isn't affected by any effects on your opponent's Active Pokémon."
 				onPlay {
+					delayed {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each{if(it.from==ef.attacker && ef.attacker.topPokemonCard.cardTypes.is(ULTRA_BEAST)){
+								it.flags.add(DamageManager.DamageFlag.NO_DEFENDING_EFFECT)
+								bc "Ultra Forest Kartenvoy kicks in"
+							}}
+						}
+						unregister {
+							bc "Ultra Forest Kartenvoy fades out"
+						}
+						unregisterAfter 1
+					}
 				}
 				playRequirement{
 				}
@@ -4548,12 +4596,27 @@ public enum UnbrokenBonds implements CardInfo {
 					"This card provides [C][C][C] Energy only while it is attached to an Evolution Pokémon." +
 					"If this card is attached to anything other than an Evolution Pokémon, discard this card."
 				onPlay {reason->
+					delayed {
+						unregisterAfter 1
+						unregister {discard thisCard}
+					}
 				}
 				onRemoveFromPlay {
 				}
 				onMove {to->
+					if(!to.realEvolution) discard thisCard
 				}
 				allowAttach {to->
+					to.realEvolution
+				}
+				getEnergyTypesOverride {
+					if(self == null){
+						return [[C] as Set]
+					} else if (!self.realEvolution) {
+						discard thisCard
+					} else {
+						return [[C] as Set,[C] as Set,[C] as Set]
+					}
 				}
 			};
 			case PHEROMOSA_BUZZWOLE_GX_191:
