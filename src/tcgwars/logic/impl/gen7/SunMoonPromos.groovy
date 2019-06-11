@@ -2420,15 +2420,13 @@ public enum SunMoonPromos implements CardInfo {
 					energyCost M
 					attackRequirement{
 						gxCheck()
-						assert my.discard.filterByType(ENERGY).filterByEnergyType(M) : "there is no [M] Energy card in your discard pile"
+						assert my.discard.filterByEnergyType(M) : "there is no [M] Energy card in your discard pile"
 					}
 					onAttack{
 						gxPerform()
-						my.discard.filterByType(ENERGY).filterByEnergyType(M).each{
-							if(confirm("Attach $it to $self ? ")){
-								attachEnergy(self,it)
-
-							}
+						def list = my.discard.filterByEnergyType(M)
+						list.select(max:list.size(),"Attach to $self").each{
+							attachEnergy(self,it)
 						}
 					}
 				}
