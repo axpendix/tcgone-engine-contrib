@@ -2901,7 +2901,16 @@ public enum UnbrokenBonds implements CardInfo {
 				resistance P, MINUS20
 				bwAbility "Greedy Evolution", {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may look at the top 6 cards of your deck and attach any number of [D] Energy cards you find there to this Pokémon. Shuffle the other cards back into your deck."
-					actionA {
+					onActivate {r->
+						if(r==PLAY_FROM_HAND && my.deck && confirm("Use Greedy Evolution?")){
+							powerUsed()
+							def list=my.deck.subList(0,6).showToMe("Top 6 cards of your deck").filterByEnergyType(D)
+							if(list){
+								list.select(min:0,max:list.size(),"Attach any of them to $self").each{
+									attachEnergy(self,it)
+								}
+							}
+						}
 					}
 				}
 				move "Bad Fangs", {
@@ -2909,7 +2918,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 60
+						damage 60+20*self.cards.energyCount(D)
 					}
 				}
 				
@@ -2919,6 +2928,9 @@ public enum UnbrokenBonds implements CardInfo {
 				bwAbility "Building Spite", {
 					text "Once during your turn (before your attack), you may put 1 damage counter on this Pokémon."
 					actionA {
+						checkLastTurn()
+						powerUsed()
+						directDamage 10,self
 					}
 				}
 				move "Anguish Cry", {
@@ -2926,7 +2938,7 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10+30*self.numberOfDamageCounters
 					}
 				}
 				
@@ -2937,7 +2949,13 @@ public enum UnbrokenBonds implements CardInfo {
 				resistance P, MINUS20
 				bwAbility "Intimidating Fang", {
 					text "As long as this Pokémon is your Active Pokémon, your opponent's Active Pokémon's attacks do 20 less damage (before applying Weakness and Resistance)."
-					actionA {
+					delayedA {
+						after PROCESS_ATTACK_EFFECTS, {
+							bg.dm().each {if(self.active && it.from.active && it.from.owner!=self.owner && it.dmg.value && it.notNoEffect){
+								bc "Intimidating Fang -20"
+								it.dmg -= hp(20)
+							}}
+						}
 					}
 				}
 				move "Gnaw", {
@@ -2982,6 +3000,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+						cantRetreat defending
 					}
 				}
 				
