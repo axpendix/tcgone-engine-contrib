@@ -113,7 +113,9 @@ public enum EffectType {
 	GET_ABILITIES,
 	GET_BENCH_SIZE,
 	GET_EXTRA_POISON,
-	
+	GET_BURN_DAMAGE,
+	GET_MAX_SUPPORTER_PER_TURN,
+
 	/*
 	 * abilities
 	 */

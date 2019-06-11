@@ -51,6 +51,8 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 	public String lastSwitchedOutName = "";
 	//turn last healed by a non-zero amount
 	public int lastHealedTurn = -1;
+	//turn of last pokemon tool attachment
+	public int lastPokemonToolAttachedTurn = -1;
 	//equals to bg.tc if is slated to knockout by damage of an attack
 	public int KOBYDMG = 0;
 	//last abilities map

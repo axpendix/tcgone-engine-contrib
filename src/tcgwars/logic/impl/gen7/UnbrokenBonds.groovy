@@ -1678,8 +1678,30 @@ public enum UnbrokenBonds implements CardInfo {
 				resistance M, MINUS20
 				bwAbility "Battery", {
 					text "Once during your turn (before your attack), you may attach this card from your hand to 1 of your Vikavolt or Vikavolt-GX as a Special Energy card. This card provides 2 [L] Energy only while it’s attached to a Pokémon."
-					actionA {
-						// TODO
+				}
+				globalAbility {Card thisCard->
+					def lastTurn=0
+					action("$thisCard: Battery", [TargetPlayer.fromPlayerType(thisCard.player)]) {
+						assert thisCard.player.pbg.discard.contains(thisCard) : "Not in hand (try other one)"
+						assert bg.turnCount!=lastTurn : "Already used"
+						assert checkGlobalAbility(thisCard) : "Blocked"
+						def list = thisCard.player.pbg.all.findAll{it.name.contains("Vikavolt")}
+						assert list : "No Vikavolt"
+						bc "$thisCard used Battery"
+						my.hand.remove(thisCard)
+						def pcs = list.select("Attach to?")
+						def pkmnCard = thisCard
+						def energyCard
+						energyCard = specialEnergy(new CustomCardInfo(CHARJABUG_58).setCardTypes(ENERGY, SPECIAL_ENERGY), [[L],[L]]) {
+							onPlay {}
+							onRemoveFromPlay {
+								bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
+							}
+						}
+						energyCard.player = thisCard.player
+						bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
+						attachEnergy(pcs, energyCard)
+						bc "$energyCard is now a Special Energy Card that provides 2 [L] energy attached to $pcs"
 					}
 				}
 				move "Pierce", {
@@ -3298,7 +3320,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
-						// TODO
+						if(self.lastPokemonToolAttachedTurn == bg.turnCount) damage 70
 					}
 				}
 				
@@ -4406,7 +4428,18 @@ public enum UnbrokenBonds implements CardInfo {
 				text "You can play this card only if you have more Prize cards remaining than your opponent." +
 					"During this turn, you can play 3 Supporter cards (including this card)."
 				onPlay {
-					// TODO
+					delayed {
+						def eff
+						register {
+							eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
+								if(h.effect.playerType == thisCard.player && h.object < 3) h.object = 3
+							}
+						}
+						unregister {
+							eff.unregister()
+						}
+						unregisterAfter 1
+					}
 				}
 				playRequirement{
 					assert my.prizeCardSet.size()>opp.prizeCardSet.size()
