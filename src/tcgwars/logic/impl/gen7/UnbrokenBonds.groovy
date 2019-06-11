@@ -4123,7 +4123,25 @@ public enum UnbrokenBonds implements CardInfo {
 				resistance F, MINUS20
 				bwAbility "Force Canceler", {
 					text "As long as this Pokémon is your Active Pokémon, prevent all effects of your opponent's GX attacks, including damage, done to your Pokémon."
-					actionA {
+					delayedA {
+						def flag = 0
+						before ATTACK_MAIN, {
+							flag = ef.move.name.contains('GX')
+						}
+						before null, null, Source.ATTACK, {
+							if (flag && self.active && self.owner.opposite.pbg.active.pokemonGX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+								bc "$name prevents effect"
+								prevent()
+							}
+						}
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each {
+								if(flag && self.active && it.to.owner == self.owner && it.notNoEffect && it.from.pokemonGX){
+									it.dmg = hp(0)
+									bc "$name prevents damage"
+								}
+							}
+						}
 					}
 				}
 				move "Power Cyclone", {
@@ -4132,14 +4150,21 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 110
+						afterDamage{moveEnergy(self,my.bench)}
 					}
 				}
 				move "Discovery GX", {
 					text "Count your Prize cards and put them into your hand. Then, take that many cards from the top of your deck and put them face down as your Prize cards. If you don't have that many cards in your deck, this attack does nothing. (You can't use more than 1 GX attack in a game.)"
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						gxCheck()
+						assert deck.size()>=my.prizeCardSet.size() : "Deck doesn't contain enough cards"
+					}
 					onAttack {
-						
+						gxPerform()
+						int cnt = my.prizeCardSet.size()
+						my.prizeCardSet.moveTo(my.hand)
+						(1..cnt).each{deck.subList(0,cnt).moveTo(hidden:true,my.prizeCardSet)}
 					}
 				}
 				
@@ -4147,9 +4172,27 @@ public enum UnbrokenBonds implements CardInfo {
 			case BEAST_BRINGER_164:
 			return pokemonTool (this) {
 				text "If you have exactly 6 Prize cards remaining, and if your opponent's Active Pokémon-GX or Pokémon-EX is Knocked Out by damage from an attack of the Ultra Beast this card is attached to, take 1 more Prize card."
+				def eff
 				onPlay {reason->
+					eff = delayed (priority: LAST) {
+						def power=false
+						after APPLY_ATTACK_DAMAGES, {
+							power= (ef.attacker==self && ef.attacker.topPokemonCard.cardTypes.is(ULTRA_BEAST) && self.owner.pbg.prizeCardSet.size()==6)
+						}
+						before KNOCKOUT, {
+							if(ef.pokemonToBeKnockedOut.owner==self.owner.opposite
+									&& ef.pokemonToBeKnockedOut.active
+									&& (ef.pokemonToBeKnockedOut.pokemonGX || ef.pokemonToBeKnockedOut.pokemonEX)
+									&& ef.byDamageFromAttack
+									&& power){
+								bc "Beast Bringer: take 1 more Prize card"
+								bg.em().run(new TakePrize(self.owner, ef.pokemonToBeKnockedOut))
+							}
+						}
+					}
 				}
 				onRemoveFromPlay {
+					eff.unregister()
 				}
 				allowAttach {to->
 				}
@@ -4158,32 +4201,68 @@ public enum UnbrokenBonds implements CardInfo {
 			return itemCard (this) {
 				text "Look at the top 3 cards of your opponent's deck and choose 1 of them. Your opponent shuffles the other cards back into their deck. Then, put the card you chose on top of their deck."
 				onPlay {
+					def card = opp.deck.subList(0,3).select("Look at the top 3 cards of your opponent's deck and choose 1 of them. Your opponent shuffles the other cards back into their deck. Then, put the card you chose on top of their deck.").first()
+					opp.deck.remove(card)
+					shuffleDeck(null, TargetPlayer.OPPONENT)
+					opp.deck.add(0, card)
 				}
 				playRequirement{
+					assert opp.deck
 				}
 			};
 			case DEVOLUTION_SPRAY_Z_166:
 			return itemCard (this) {
 				text "Devolve 1 of your evolved Pokémon by shuffling any number of Evolution cards on it into your deck. (That Pokémon can't evolve this turn.)"
 				onPlay {
+					def pcs = my.all.findAll{it.evolution}.select("Pokemon to devolve")
+					def pkmn = []
+					pkmn.addAll(pcs.pokemonCards)
+					pkmn.remove(pcs.topPokemonCard)
+					def stage = pkmn.size()>1 ? pkmn.select("Choose stage to devolve to").first() : pkmn.first()
+					for(PokemonCard t7:pcs.pokemonCards){
+						if (t7 == stage) break
+						new CardList(t7).moveTo(deck)
+						devolve(pcs, t7)
+						if(!pcs.inPlay) break // DED
+					}
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.all.findAll{it.evolution} : "You have no evolved pokemon in play"
 				}
 			};
 			case DUSK_STONE_167:
 			return itemCard (this) {
 				text "Search your deck for a Mismagius, Honchkrow, Chandelure, or Aegislash, including Pokémon-GX, that evolves from 1 of your Pokémon in play, and put it onto that Pokémon to evolve it. Then, shuffle your deck. You can use this card during your first turn or on a Pokémon that was put into play this turn."
 				onPlay {
+					deck.search{['Mismagius','Mismagius-GX','Honchkrow','Honchkrow-GX','Chandelure','Chandelure-GX','Aegislash','Aegislash-GX'].contains(it.name) && it.cardTypes.is(EVOLUTION)}.each{card->
+						def pcs = my.all.findAll{card.predecessor == it.name}.select("To Evolve")
+						evolve(pcs, card, OTHER)
+					}
+					shuffleDeck()
 				}
 				playRequirement{
+					assert deck
+					assert my.all.find{it.name=='Misdreavus'||it.name=='Murkrow'||it.name=='Lampent'||it.name=='Doublade'}
 				}
 			};
 			case DUST_ISLAND_168:
 			return stadium (this) {
 				text "Whenever either player switches their Poisoned Active Pokémon with 1 of their Benched Pokémon with the effect of a Trainer card, the new Active Pokémon is now affected by that Special Condition."
+				def eff
 				onPlay {
+					eff = delayed {
+						def flag = 0
+						before SWITCH, null, TRAINER_CARD, {
+							flag = ef.fallenBack.isSPC(POISONED)
+						}
+						after SWITCH, null, TRAINER_CARD, {
+							if(flag) {apply(POISONED, ef.switchedOut, TRAINER_CARD)}
+						}
+					}
 				}
 				onRemoveFromPlay{
+					eff.unregister()
 				}
 			};
 			case ELECTROMAGNETIC_RADAR_169:
@@ -4191,44 +4270,73 @@ public enum UnbrokenBonds implements CardInfo {
 				text "You can play this card only if you discard 2 other cards from your hand." +
 					"Search your deck for up to 2 in any combination of [L] Pokémon-GX and [L] Pokémon-EX, reveal them, and put them into your hand. Then, shuffle your deck."
 				onPlay {
+					my.hand.getExcludedList(thisCard).select(count:2,"Discard").discard()
+					deck.search(max:2,"Search your deck for up to 2 in any combination of [L] Pokémon-GX and [L] Pokémon-EX",{it.cardTypes.pokemon && it.cardTypes.isIn(POKEMON_EX,POKEMON_GX) && it.types.contains(L)}).moveTo(hand)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.hand.getExcludedList(thisCard).size() >= 2
+					assert deck
 				}
 			};
 			case ENERGY_SPINNER_170:
 			return itemCard (this) {
 				text "Search your deck for a basic Energy card, reveal it, and put it into your hand. If you go second and it's your first turn, search for up to 3 basic Energy cards instead of 1. Then, shuffle your deck."
 				onPlay {
+					deck.search(max:bg.turnCount==2?3:1,cardTypeFilter(BASIC_ENERGY)).moveTo(hand)
 				}
 				playRequirement{
+					assert deck
 				}
 			};
 			case FAIRY_CHARM_ABILITY_171:
 			return pokemonTool (this) {
 				text "Prevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's Pokémon-GX and Pokémon-EX that have Abilities."
+				def eff
 				onPlay {reason->
+					eff=delayed{
+						before APPLY_ATTACK_DAMAGES,{
+							bg.dm().each{
+								if(self.types.contains(Y)&&it.to==self&&it.from.owner!=self.owner&&(it.from.pokemonGX||it.from.pokemonEX)&&it.notZero&&it.notNoEffect&&it.from.hasModernAbility()){
+									it.dmg=hp(0)
+									bc "Fairy Charm Ability prevents damage"
+								}
+							}
+						}
+					}
 				}
 				onRemoveFromPlay {
-				}
-				allowAttach {to->
+					eff.unregister()
 				}
 			};
 			case FAIRY_CHARM_LIGHTNING_172:
 			return pokemonTool (this) {
 				text "Prevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's [L] Pokémon-GX and [L] Pokémon-EX."
+				def eff
 				onPlay {reason->
+					eff=delayed{
+						before APPLY_ATTACK_DAMAGES,{
+							bg.dm().each{
+								if(self.types.contains(Y)&&it.to==self&&it.from.owner!=self.owner&&(it.from.pokemonGX||it.from.pokemonEX)&&it.notZero&&it.notNoEffect&&it.from.types.contains(L)){
+									it.dmg=hp(0)
+									bc "Fairy Charm Lightning prevents damage"
+								}
+							}
+						}
+					}
 				}
 				onRemoveFromPlay {
-				}
-				allowAttach {to->
+					eff.unregister()
 				}
 			};
 			case FIRE_CRYSTAL_173:
 			return itemCard (this) {
 				text "Put 3 [R] Energy cards from your discard pile into your hand."
 				onPlay {
+					my.discard.filterByEnergyType(R).select(count:3).moveTo(hand)
 				}
 				playRequirement{
+					assert my.discard.filterByEnergyType(R)
 				}
 			};
 			case GIOVANNI_S_EXILE_174:
@@ -4263,8 +4371,11 @@ public enum UnbrokenBonds implements CardInfo {
 				text "You can play this card only if you have no Pokémon with Abilities in play." +
 					"Search your deck for up to 2 Trainer cards, reveal them, and put them into your hand. Then, shuffle your deck."
 				onPlay {
+					deck.search(max:2,cardTypeFilter(TRAINER)).moveTo(hand)
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.all.findAll{it.hasModernAbility()}.size()==0
 				}
 			};
 			case JANINE_176:
@@ -4283,8 +4394,8 @@ public enum UnbrokenBonds implements CardInfo {
 			return supporter (this) {
 				text "Your opponent's Active Pokémon is now Confused and Poisoned."
 				onPlay {
-					apply CONFUSED, opp.active, Source.TRAINER_CARD
-					apply POISONED, opp.active, Source.TRAINER_CARD
+					apply CONFUSED, opp.active, TRAINER_CARD
+					apply POISONED, opp.active, TRAINER_CARD
 					bg.em().storeObject("KOGA_S_TRAP_TURN", bg.turnCount)
 				}
 				playRequirement{
@@ -4297,6 +4408,7 @@ public enum UnbrokenBonds implements CardInfo {
 				onPlay {
 				}
 				playRequirement{
+					assert my.prizeCardSet.size()>opp.prizeCardSet.size()
 				}
 			};
 			case MARTIAL_ARTS_DOJO_179:
@@ -4314,8 +4426,6 @@ public enum UnbrokenBonds implements CardInfo {
 				onPlay {reason->
 				}
 				onRemoveFromPlay {
-				}
-				allowAttach {to->
 				}
 			};
 			case MOLAYNE_181:
@@ -4402,8 +4512,6 @@ public enum UnbrokenBonds implements CardInfo {
 				onRemoveFromPlay {
 					eff.unregister()
 				}
-				allowAttach {to->
-				}
 			};
 			case SURPRISE_BOX_187:
 			return itemCard (this) {
@@ -4427,8 +4535,11 @@ public enum UnbrokenBonds implements CardInfo {
 			return supporter (this) {
 				text "Attach up to 2 [R] Energy cards from your hand to 1 of your Pokémon. If you do, draw 3 cards."
 				onPlay {
+					attachEnergyFrom(max:2,type:R,my.hand,my.all)
+					draw 3
 				}
 				playRequirement{
+					assert my.hand.filterByEnergyType(R)
 				}
 			};
 			case TRIPLE_ACCELERATION_ENERGY_190:
