@@ -1428,8 +1428,8 @@ public enum SunMoon implements CardInfo {
 						text "Your opponent's Active Pokémon is now Poisoned. Put 3 damage counters instead of 1 on that Pokémon between turns."
 						energyCost P
 						onAttack {
-							extraPoison(2)
 							apply(POISONED)
+							extraPoison(2)
 						}
 					}
 					move "Surprise Strike", {

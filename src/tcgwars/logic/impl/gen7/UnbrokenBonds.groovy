@@ -35,7 +35,7 @@ import tcgwars.logic.util.*;
  */
 public enum UnbrokenBonds implements CardInfo {
 	
-	PHEROMOSA_BUZZWOLE_GX_1 ("Pheromosa & Buzzwole-GX", 1, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _GRASS_]),
+	PHEROMOSA_BUZZWOLE_GX_1 ("Pheromosa & Buzzwole-GX", 1, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, ULTRA_BEAST, _GRASS_]),
 	CATERPIE_2 ("Caterpie", 2, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
 	METAPOD_3 ("Metapod", 3, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
 	BUTTERFREE_4 ("Butterfree", 4, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
@@ -53,7 +53,7 @@ public enum UnbrokenBonds implements CardInfo {
 	TANGELA_16 ("Tangela", 16, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
 	TANGROWTH_17 ("Tangrowth", 17, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
 	GRUBBIN_18 ("Grubbin", 18, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
-	KARTANA_19 ("Kartana", 19, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+	KARTANA_19 ("Kartana", 19, Rarity.HOLORARE, [POKEMON, BASIC, ULTRA_BEAST, _GRASS_]),
 	RESHIRAM_CHARIZARD_GX_20 ("Reshiram & Charizard-GX", 20, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _FIRE_]),
 	GROWLITHE_21 ("Growlithe", 21, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
 	ARCANINE_22 ("Arcanine", 22, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
@@ -66,7 +66,7 @@ public enum UnbrokenBonds implements CardInfo {
 	INCINEROAR_29 ("Incineroar", 29, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
 	SALANDIT_30 ("Salandit", 30, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
 	SALAZZLE_31 ("Salazzle", 31, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-	BLACEPHALON_32 ("Blacephalon", 32, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
+	BLACEPHALON_32 ("Blacephalon", 32, Rarity.RARE, [POKEMON, BASIC, ULTRA_BEAST, _FIRE_]),
 	SQUIRTLE_33 ("Squirtle", 33, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
 	WARTORTLE_34 ("Wartortle", 34, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
 	BLASTOISE_GX_35 ("Blastoise-GX", 35, Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_GX, STAGE2, _WATER_]),
@@ -140,7 +140,7 @@ public enum UnbrokenBonds implements CardInfo {
 	LANDORUS_103 ("Landorus", 103, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
 	CRABRAWLER_104 ("Crabrawler", 104, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
 	CRABOMINABLE_105 ("Crabominable", 105, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-	STAKATAKA_106 ("Stakataka", 106, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
+	STAKATAKA_106 ("Stakataka", 106, Rarity.HOLORARE, [POKEMON, BASIC, ULTRA_BEAST, _FIGHTING_]),
 	GRENINJA_ZOROARK_GX_107 ("Greninja & Zoroark-GX", 107, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DARKNESS_]),
 	MURKROW_108 ("Murkrow", 108, Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
 	HONCHKROW_GX_109 ("Honchkrow-GX", 109, Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, _DARKNESS_]),
@@ -197,7 +197,7 @@ public enum UnbrokenBonds implements CardInfo {
 	PURUGLY_160 ("Purugly", 160, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
 	HAPPINY_161 ("Happiny", 161, Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
 	CHATOT_162 ("Chatot", 162, Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
-	CELESTEELA_GX_163 ("Celesteela-GX", 163, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, _COLORLESS_]),
+	CELESTEELA_GX_163 ("Celesteela-GX", 163, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, ULTRA_BEAST, _COLORLESS_]),
 	BEAST_BRINGER_164 ("Beast Bringer", 164, Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
 	CHIP_CHIP_ICE_AXE_165 ("Chip-Chip Ice Axe", 165, Rarity.UNCOMMON, [TRAINER, ITEM]),
 	DEVOLUTION_SPRAY_Z_166 ("Devolution Spray Z", 166, Rarity.UNCOMMON, [TRAINER, ITEM]),
@@ -225,8 +225,8 @@ public enum UnbrokenBonds implements CardInfo {
 	ULTRA_FOREST_KARTENVOY_188 ("Ultra Forest Kartenvoy", 188, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
 	WELDER_189 ("Welder", 189, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
 	TRIPLE_ACCELERATION_ENERGY_190 ("Triple Acceleration Energy", 190, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-	PHEROMOSA_BUZZWOLE_GX_191 ("Pheromosa & Buzzwole-GX", 191, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _GRASS_]),
-	PHEROMOSA_BUZZWOLE_GX_192 ("Pheromosa & Buzzwole-GX", 192, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _GRASS_]),
+	PHEROMOSA_BUZZWOLE_GX_191 ("Pheromosa & Buzzwole-GX", 191, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, ULTRA_BEAST, _GRASS_]),
+	PHEROMOSA_BUZZWOLE_GX_192 ("Pheromosa & Buzzwole-GX", 192, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, ULTRA_BEAST, _GRASS_]),
 	VENOMOTH_GX_193 ("Venomoth-GX", 193, Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, _GRASS_]),
 	RESHIRAM_CHARIZARD_GX_194 ("Reshiram & Charizard-GX", 194, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _FIRE_]),
 	DEDENNE_GX_195 ("Dedenne-GX", 195, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, _LIGHTNING_]),
@@ -242,14 +242,14 @@ public enum UnbrokenBonds implements CardInfo {
 	GARDEVOIR_SYLVEON_GX_205 ("Gardevoir & Sylveon-GX", 205, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _FAIRY_]),
 	WHIMSICOTT_GX_206 ("Whimsicott-GX", 206, Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, _FAIRY_]),
 	PERSIAN_GX_207 ("Persian-GX", 207, Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, _COLORLESS_]),
-	CELESTEELA_GX_208 ("Celesteela-GX", 208, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, _COLORLESS_]),
+	CELESTEELA_GX_208 ("Celesteela-GX", 208, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, ULTRA_BEAST, _COLORLESS_]),
 	GREEN_S_EXPLORATION_209 ("Green’s Exploration", 209, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
 	JANINE_210 ("Janine", 210, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
 	KOGA_S_TRAP_211 ("Koga’s Trap", 211, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
 	MOLAYNE_212 ("Molayne", 212, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
 	RED_S_CHALLENGE_213 ("Red's Challenge", 213, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
 	WELDER_214 ("Welder", 214, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
-	PHEROMOSA_BUZZWOLE_GX_215 ("Pheromosa & Buzzwole-GX", 215, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _GRASS_]),
+	PHEROMOSA_BUZZWOLE_GX_215 ("Pheromosa & Buzzwole-GX", 215, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, ULTRA_BEAST, _GRASS_]),
 	VENOMOTH_GX_216 ("Venomoth-GX", 216, Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, _GRASS_]),
 	RESHIRAM_CHARIZARD_GX_217 ("Reshiram & Charizard-GX", 217, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _FIRE_]),
 	BLASTOISE_GX_218 ("Blastoise-GX", 218, Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_GX, STAGE2, _WATER_]),
@@ -262,7 +262,7 @@ public enum UnbrokenBonds implements CardInfo {
 	GARDEVOIR_SYLVEON_GX_225 ("Gardevoir & Sylveon-GX", 225, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _FAIRY_]),
 	WHIMSICOTT_GX_226 ("Whimsicott-GX", 226, Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, _FAIRY_]),
 	PERSIAN_GX_227 ("Persian-GX", 227, Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, _COLORLESS_]),
-	CELESTEELA_GX_228 ("Celesteela-GX", 228, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, _COLORLESS_]),
+	CELESTEELA_GX_228 ("Celesteela-GX", 228, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, ULTRA_BEAST, _COLORLESS_]),
 	BEAST_BRINGER_229 ("Beast Bringer", 229, Rarity.SECRET, [TRAINER, ITEM, POKEMON_TOOL]),
 	ELECTROMAGNETIC_RADAR_230 ("Electromagnetic Radar", 230, Rarity.SECRET, [TRAINER, ITEM]),
 	FIRE_CRYSTAL_231 ("Fire Crystal", 231, Rarity.SECRET, [TRAINER, ITEM]),
@@ -340,7 +340,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 190
-						decreasedBaseDamageNextTurn(self, "Elegant Sole", hp(130))
+						afterDamage {decreasedBaseDamageNextTurn(self, "Elegant Sole", hp(130))}
 					}
 				}
 				move "Beast Game GX", {
@@ -1136,10 +1136,10 @@ public enum UnbrokenBonds implements CardInfo {
 					text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
-							if(it.to == self && it.notNoEffect && it.dmg.value) {
+							bg.dm().each{if(it.to == self && it.notNoEffect && it.dmg.value) {
 								bc "Solid Shell -30"
 								it.dmg -= hp(30)
-							}
+							}}
 						}
 					}
 				}
@@ -1161,10 +1161,10 @@ public enum UnbrokenBonds implements CardInfo {
 					text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
 					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
-							if(it.to == self && it.notNoEffect && it.dmg.value) {
+							bg.dm().each{if(it.to == self && it.notNoEffect && it.dmg.value) {
 								bc "Solid Shell -30"
 								it.dmg -= hp(30)
-							}
+							}}
 						}
 					}
 				}
@@ -1770,8 +1770,8 @@ public enum UnbrokenBonds implements CardInfo {
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
-						extraPoison 7
 						apply POISONED
+						extraPoison 7
 					}
 				}
 				move "Poison Absorption", {
@@ -1787,11 +1787,11 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {gxCheck()}
 					onAttack {
 						gxPerform()
+						apply POISONED
+						apply PARALYZED
 						if(self.cards.energySufficient(thisMove.energyCost + [C,C,C,C])){
 							extraPoison 14
 						}
-						apply POISONED
-						apply PARALYZED
 					}
 				}
 				
@@ -1910,8 +1910,8 @@ public enum UnbrokenBonds implements CardInfo {
 					onAttack {
 						damage 60
 						afterDamage {
-							extraPoison 3
 							apply POISONED
+							extraPoison 3
 						}
 					}
 				}
@@ -3825,6 +3825,13 @@ public enum UnbrokenBonds implements CardInfo {
 					actionA {
 						assert my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1: "No Pokémon has been Knocked Out during your opponent’s last turn"
 						assert my.lastKnockoutCardTypes?.contains(POKEMON_GX)||my.lastKnockoutCardTypes?.contains(POKEMON_EX) : "The Pokémon Knocked Out was not GX or EX"
+						assert my.deck : "Empty deck"
+						checkLastTurn()
+						assert bg.em().retrieveObject("Cat Walk") != bg.turnCount : "Already used one Cat Walk ability this turn"
+						powerUsed()
+						bg.em().storeObject("Cat Walk", bg.turnCount)
+						deck.select(min:1,max:2,"Put to hand").moveTo(hidden:true,hand)
+						shuffleDeck()
 					}
 				}
 				move "Vengeance", {
@@ -4507,7 +4514,7 @@ public enum UnbrokenBonds implements CardInfo {
 			return itemCard (this) {
 				text "Look at the top 7 cards of your deck. You may reveal a Supporter card you find there and put it into your hand. Shuffle the other cards back into your deck."
 				onPlay {
-					deck.subList(0,7).select(max:0,"Select a supporter to put to hand",cardTypeFilter(SUPPORTER)).moveTo(hand)
+					deck.subList(0,7).select(min:0,"Select a supporter to put to hand",cardTypeFilter(SUPPORTER)).moveTo(hand)
 					shuffleDeck()
 				}
 				playRequirement{
