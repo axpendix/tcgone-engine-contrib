@@ -1184,7 +1184,7 @@ public enum UnbrokenBonds implements CardInfo {
 							toBeMoved.addAll(dd)
 							count++
 						}
-						damage 50*count
+						damage 60*count
 						afterDamage {
 							toBeMoved.moveTo(my.deck)
 							shuffleDeck()
