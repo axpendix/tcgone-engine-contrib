@@ -1110,7 +1110,7 @@ public enum UnbrokenBonds implements CardInfo {
 						assert my.hand.filterByBasicEnergyType(R) : "No [R] Energy cards in hand"
 					}
 					onAttack {
-						damage 50*my.hand.filterByBasicEnergyType(R).select("Discard [R] Energy cards for 50 damage").discard().size()
+						damage 50*my.hand.filterByBasicEnergyType(R).select(max:my.hand.size(),"Discard [R] Energy cards for 50 damage").discard().size()
 					}
 				}
 				
