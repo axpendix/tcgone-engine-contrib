@@ -2206,7 +2206,7 @@ public enum UnbrokenBonds implements CardInfo {
 						assert opp.bench.findAll{it.numberOfDamageCounters}
 					}
 					onAttack {
-						opp.bench.each{damage 20*it.numberOfDamageCounters,it}
+						if(opp.bench) damage 20*it.numberOfDamageCounters, opp.bench.select()
 					}
 				}
 				
