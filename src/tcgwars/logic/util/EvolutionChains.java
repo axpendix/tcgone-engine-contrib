@@ -253,6 +253,9 @@ public class EvolutionChains {
     ADD("Treecko", "Grovyle", "Sceptile-GX");
     ADD("Larvitar", "Pupitar", "Tyranitar-GX");
     ADD("Mareep", "Flaaffy", "Ampharos-GX");
+
+    // SM
+    ADD("Squirtle", "Wartortle", "Blastoise-GX");
   }
   
   private static void ADD(CardInfo...a){
