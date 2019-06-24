@@ -2392,7 +2392,9 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						if(bg.stadiumInfoStruct) damage 60
+						if(bg.stadiumInfoStruct.stadiumCard.player == self.owner){
+							damage 60
+						}
 					}
 				}
 				
