@@ -2875,10 +2875,16 @@ public enum UnbrokenBonds implements CardInfo {
 				bwAbility "Ruler of the Night", {
 					text "As long as this Pokémon is your Active Pokémon, your opponent can't play any Pokémon Tool, Special Energy, or Stadium cards from their hand."
 					delayedA {
+						before ATTACH_ENERGY, {
+							if (ef.reason == PLAY_FROM_HAND && ef.card instanceof SpecialEnergyCard){
+							wcu "Ruler of the Night prevents playing this card"
+							prevent()
+							}
+						}
 						before PLAY_TRAINER, {
-							if (ef.cardToPlay.cardTypes.isIn(STADIUM,SPECIAL_ENERGY,POKEMON_TOOL) && bg.currentTurn == self.owner.opposite && self.active) {
-								wcu "Ruler of the Night prevents playing this card"
-								prevent()
+							if (ef.cardToPlay.cardTypes.is(STADIUM) || ef.cardToPlay.cardTypes.is(POKEMON_TOOL)){
+							wcu "Ruler of the Night prevents playing this card"
+							prevent()
 							}
 						}
 					}
