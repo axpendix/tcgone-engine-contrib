@@ -1780,6 +1780,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 120
+						if(defending.isSPC(POISONED)) healAfterDamage(100, self)
 					}
 				}
 				move "Nasty Goo Mix GX", {
