@@ -2654,7 +2654,7 @@ public enum BurningShadows implements CardInfo {
 					targeted (pcs, TRAINER_CARD) {
 						sw opp.active, pcs
 						if(my.bench) {
-							sw my.active, my.bench.select("New active")
+							sw my.active, my.bench.select("New active"), TRAINER_CARD
 						}
 					}
 				}

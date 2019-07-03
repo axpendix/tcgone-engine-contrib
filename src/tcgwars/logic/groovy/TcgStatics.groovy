@@ -444,8 +444,8 @@ class TcgStatics {
 	static cantRetreat(PokemonCardSet target, Source source=Source.ATTACK, boolean benchingEitherEndsEffect=false){
 		new CantRetreat(target, source, benchingEitherEndsEffect).run(bg())
 	}
-	static sw (PokemonCardSet old, PokemonCardSet newp) {
-		bg().em().run(new Switch(old,newp))
+	static sw (PokemonCardSet old, PokemonCardSet newp, Source source=Source.ATTACK) {
+		bg().em().run(new Switch(old,newp,source))
 	}
 	static discardStadium(){
 		if (bg().stadiumInfoStruct?.stadiumCard){
