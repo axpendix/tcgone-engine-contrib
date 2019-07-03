@@ -4254,7 +4254,7 @@ public enum UnbrokenBonds implements CardInfo {
 				text "Devolve 1 of your evolved Pokémon by shuffling any number of Evolution cards on it into your deck. (That Pokémon can't evolve this turn.)"
 				onPlay {
 					def pcs = my.all.findAll{it.evolution}.select("Pokemon to devolve")
-					def pkmn = []
+					def pkmn = new PcsList()
 					pkmn.addAll(pcs.pokemonCards)
 					pkmn.remove(pcs.topPokemonCard)
 					def stage = pkmn.size()>1 ? pkmn.select("Choose stage to devolve to").first() : pkmn.first()

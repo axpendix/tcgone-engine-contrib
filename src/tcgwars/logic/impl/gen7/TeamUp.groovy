@@ -2422,7 +2422,7 @@ public enum TeamUp implements CardInfo {
         };
         case BRONZOR_100:
         return basic (this, hp:HP050, type:METAL, retreatCost:1) {
-            weakness FIGHTING
+            weakness FIRE
             resistance PSYCHIC, MINUS20
             bwAbility "Evolutionary Advantage" , {
                 text "If you go second, this Pokémon can evolve during your first turn."
@@ -3199,7 +3199,7 @@ public enum TeamUp implements CardInfo {
             onPlay {
                 eff=delayed{
                     before KNOCKOUT, {
-                        if(ef.pokemonToBeKnockedOut.types.contains(D) && ef.pokemonToBeKnockedOut.cards.energyCount(D)){
+                        if(ef.byDamageFromAttack && ef.pokemonToBeKnockedOut.types.contains(D) && ef.pokemonToBeKnockedOut.cards.energyCount(D)){
                             bc "Black Market Prism Star prevents taking one prize card for "+ef.pokemonToBeKnockedOut
                             blockingEffect(TAKE_PRIZE).setUnregisterImmediately(true)
                         }
