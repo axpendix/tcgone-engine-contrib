@@ -207,7 +207,8 @@ public enum SunMoonPromos implements CardInfo {
 	PERSIAN_SM182("Persian", 182, Rarity.PROMO, [POKEMON,POKEMON,_COLORLESS_,STAGE1,EVOLUTION]),
 	PIKACHU_SM183("Pikachu", 183, Rarity.PROMO, [POKEMON,POKEMON,_LIGHTNING_,BASIC]),
 	EEVEE_SM184("Eevee", 184, Rarity.PROMO, [POKEMON,POKEMON,_COLORLESS_,BASIC]),
-	TYPHLOSION_SM185("Typhlosion", 185, Rarity.PROMO, [POKEMON,POKEMON,_FIRE_,STAGE2,EVOLUTION]);
+	TYPHLOSION_SM185("Typhlosion", 185, Rarity.PROMO, [POKEMON,POKEMON,_FIRE_,STAGE2,EVOLUTION]),
+	FLAREON_SM186("Flareon", 186, Rarity.PROMO, [POKEMON,POKEMON,_FIRE_,STAGE1,EVOLUTION]);
 
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -2500,6 +2501,27 @@ public enum SunMoonPromos implements CardInfo {
 						damage 100
 						afterDamage{
 							apply BURNED
+						}
+					}
+				}
+			};
+		case FLAREON_SM186:
+			return evolution (this,from : "Eevee", hp:HP110, type:FIRE, retreatCost:2) {
+				weakness WATER
+				move "Bite", {
+					text "20 Damage"
+					energyCost C
+					onAttack {
+					    damage 20
+					}
+				}
+				move "Fire Spin", {
+					text "130 damage. Discard 2 [R] Energy from this Pokémon."
+					energyCost R, R, C
+					onAttack {
+						damage 130
+						afterDamage{
+							discardSelfEnergy R,R
 						}
 					}
 				}
