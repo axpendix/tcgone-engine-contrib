@@ -2204,10 +2204,11 @@ public enum UnbrokenBonds implements CardInfo {
 					text "This attack does 20 damage to 1 of your opponent's Benched Pokémon for each damage counter on that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost P, C, C
 					attackRequirement {
-						assert opp.bench.findAll{it.numberOfDamageCounters}
+						assert opp.bench.findAll{it.numberOfDamageCounters} : "Opponent does not have a damaged Pokemon"
 					}
 					onAttack {
-						if(opp.bench) damage 20*it.numberOfDamageCounters, opp.bench.select()
+						def pcs = opp.bench.findAll{it.numberOfDamageCounters}.select("Deal damage to")
+						damage 20*pcs.numberOfDamageCounters, pcs
 					}
 				}
 				
@@ -2393,7 +2394,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						if(bg.stadiumInfoStruct.stadiumCard.player == self.owner){
+						if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner){
 							damage 60
 						}
 					}
@@ -2876,15 +2877,15 @@ public enum UnbrokenBonds implements CardInfo {
 					text "As long as this Pokémon is your Active Pokémon, your opponent can't play any Pokémon Tool, Special Energy, or Stadium cards from their hand."
 					delayedA {
 						before ATTACH_ENERGY, {
-							if (ef.reason == PLAY_FROM_HAND && ef.card instanceof SpecialEnergyCard){
-							wcu "Ruler of the Night prevents playing this card"
-							prevent()
+							if (ef.reason == PLAY_FROM_HAND && ef.card instanceof SpecialEnergyCard && bg.currentTurn == self.owner.opposite && self.active){
+								wcu "Ruler of the Night prevents playing this card"
+								prevent()
 							}
 						}
 						before PLAY_TRAINER, {
-							if (ef.cardToPlay.cardTypes.is(STADIUM) || ef.cardToPlay.cardTypes.is(POKEMON_TOOL)){
-							wcu "Ruler of the Night prevents playing this card"
-							prevent()
+							if (ef.cardToPlay.cardTypes.isIn(STADIUM,POKEMON_TOOL) && bg.currentTurn == self.owner.opposite && self.active) {
+								wcu "Ruler of the Night prevents playing this card"
+								prevent()
 							}
 						}
 					}
