@@ -588,7 +588,7 @@ public enum UnbrokenBonds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						applyAfterDamage(CONFUSED)
+						applyAfterDamage(POISONED)
 					}
 				}
 				
