@@ -193,6 +193,7 @@ public enum SunMoonPromos implements CardInfo {
 	DEOXYS_SM164("Deoxys", 164, Rarity.PROMO, [POKEMON,_PSYCHIC_,BASIC]),
 	ULTRA_NECROZMA_SM165("Ultra Necrozma", 165, Rarity.PROMO, [POKEMON,_DRAGON_,BASIC,ULTRA_BEAST]),
 	MAGIKARP_WAILORD_GX_SM166("Magikarp & Wailord-GX", 166, Rarity.PROMO, [POKEMON_GX,POKEMON,_WATER_,BASIC,TAG_TEAM]),
+	DETECTIVE_PIKACHU_SM170("Detective Pikachu", 170, Rarity.PROMO, [POKEMON,POKEMON,_LIGHTNING_,BASIC]),
 	FLAREON_GX_SM171("Flareon-GX", 171, Rarity.PROMO, [POKEMON_GX,POKEMON,_FIRE_,STAGE1,EVOLUTION]),
 	VAPOREON_GX_SM172("Vaporeon-GX", 172, Rarity.PROMO, [POKEMON_GX,POKEMON,_WATER_,STAGE1,EVOLUTION]),
 	JOLTEON_GX_SM173("Jolteon-GX", 173, Rarity.PROMO, [POKEMON_GX,POKEMON,_LIGHTNING_,STAGE1,EVOLUTION]),
@@ -208,7 +209,12 @@ public enum SunMoonPromos implements CardInfo {
 	PIKACHU_SM183("Pikachu", 183, Rarity.PROMO, [POKEMON,POKEMON,_LIGHTNING_,BASIC]),
 	EEVEE_SM184("Eevee", 184, Rarity.PROMO, [POKEMON,POKEMON,_COLORLESS_,BASIC]),
 	TYPHLOSION_SM185("Typhlosion", 185, Rarity.PROMO, [POKEMON,POKEMON,_FIRE_,STAGE2,EVOLUTION]),
-	FLAREON_SM186("Flareon", 186, Rarity.PROMO, [POKEMON,POKEMON,_FIRE_,STAGE1,EVOLUTION]);
+	FLAREON_SM186("Flareon", 186, Rarity.PROMO, [POKEMON,POKEMON,_FIRE_,STAGE1,EVOLUTION]),
+	KANGASKHAN_GX_SM188("Kangaskhan-GX", 188, Rarity.PROMO, [POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
+	DETECTIVE_PIKACHU_SM190("Detective Pikachu", 190, Rarity.PROMO, [POKEMON,POKEMON,_LIGHTNING_,BASIC]),
+	BULBASAUR_SM198("Bulbasaur", 198, Rarity.PROMO, [POKEMON,POKEMON,_GRASS_,BASIC]),
+	PSYDUCK_SM199("Psyduck", 199, Rarity.PROMO, [POKEMON,POKEMON,_WATER_,BASIC]),
+	SNUBBULL_SM200("Snubbull", 200, Rarity.PROMO, [POKEMON,POKEMON,_FAIRY_,BASIC]);
 
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -2226,6 +2232,9 @@ public enum SunMoonPromos implements CardInfo {
 		case MAGIKARP_WAILORD_GX_SM166:
 			return copy(TeamUp.MAGIKARP_WAILORD_GX_160, this);
 
+		case DETECTIVE_PIKACHU_SM170
+			return copy(DetectivePikachu.DETECTIVE_PIKACHU_10, this);
+
 		case FLAREON_GX_SM171:
 			return 	evolution (this, from:"Eevee", hp:HP210, type:FIRE, retreatCost:2) {
 				weakness WATER
@@ -2523,6 +2532,105 @@ public enum SunMoonPromos implements CardInfo {
 						afterDamage{
 							discardSelfEnergy R,R
 						}
+					}
+				}
+			};
+		case KANGASKHAN_GX_SM188:
+			return basic (this, hp:HP180, type:COLORLESS, retreatCost:3) {
+				weakness FIGHTING
+				move "Split Spiral Punch" , {
+					text "20 damage. Your opponent’s Active Pokémon is now Confused."
+					energyCost C
+					onAttack{
+						damage 20
+						applyAfterDamage CONFUSED
+					}
+				}
+				move "Enraged Strike" , {
+					text "80+ damage. If your opponent’s Active Pokémon is Confused, this attack does 80 more damage."
+					energyCost C, C, C
+					onAttack{
+						damage 80
+						if(opp.active.isSPC(CONFUSED)) damage 80
+					}
+				}
+				move "Family Combo GX" , {
+					text "150 damage. Draw 5 cards."
+					energyCost C, C, C
+					attackRequirement{
+						gxCheck()
+					}
+					onAttack{
+						gxPerform()
+						damage 150
+						draw 5
+					}
+				}
+			};
+		case DETECTIVE_PIKACHU_SM190:
+			return basic (this, hp:HP090, type:LIGHTNING, retreatCost:2) {
+				weakness FIGHTING
+				resistance METAL, MINUS20
+				move "Coffee Break", {
+					text "Heal 30 damage from this pokemon"
+					energyCost C
+					onAttack {
+						heal 30, self
+					}
+				}
+				move "Corkscrew Punch", {
+					text "20 damage."
+					energyCost C, C
+					onAttack {
+						damage 20
+					}
+				}
+			};
+		case BULBASAUR_SM198:
+			return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
+				weakness FIRE
+				move "Ram", {
+					text "10 damage"
+					energyCost C
+					onAttack {
+						damage 10
+					}
+				}
+				move "Vine Whip", {
+					text "50 damage."
+					energyCost G, G, C
+					onAttack {
+						damage 50
+					}
+				}
+			};
+		case PSYDUCK_SM199:
+			return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
+				weakness GRASS
+				move "Scratch", {
+					text "30 damage"
+					energyCost W, C
+					onAttack {
+						damage 30
+					}
+				}
+			};
+		case SNUBBULL_SM200:
+			return basic (this, hp:HP060, type:FAIRY, retreatCost:1) {
+				weakness METAL
+				resistance DARKNESS MINUS20
+				move "Bite", {
+					text "10 damage"
+					energyCost Y
+					onAttack {
+						damage 10
+					}
+				}
+				move "Paralyzing Gaze", {
+					text "Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
+					energyCost C, C
+					onAttack {
+						flipThenApplySC PARALYZED
 					}
 				}
 			};
