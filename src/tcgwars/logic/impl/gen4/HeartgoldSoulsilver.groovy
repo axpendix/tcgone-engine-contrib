@@ -508,13 +508,17 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				move "Acceleration Bolt", {
 					text "30 damage. Search your deck for up to 2 basic Energy cards and attach them to 1 of your Pokémon. Shuffle your deck afterward."
 					energyCost L
-					attackRequirement {
-						assert my.deck
-					}
 					onAttack {
 						damage 30
-						//TODO: AMPHAROS_14 Acceleration Bolt effect
-						//my.deck.search(max:2,"Choose up to 2 basic Energy to attach.",cardTypeFilter(BASIC_ENERGY)).
+						afterDamage{
+							if(my.deck) {
+								def list = my.deck.search (max: 2, cardTypeFilter(BASIC_ENERGY))
+								def tar = my.all.select("Choose target")
+								list.each {attachEnergy(tar, it)}
+								shuffleDeck()
+							  	}
+							}
+						}
 					}
 				}
 				move "Thunder", {
@@ -539,10 +543,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						//TODO: fix this
-						//afterDamage{
-						//	heal it.dmg
-						//}
+						removeDamageCounterEqualToDamageDone()
 					}
 				}
 				move "Poisonous Saliva", {
@@ -588,6 +589,14 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				pokeBody "Sweet Sleeping Face", {
 					text "As long as Cleffa is Asleep, prevent all damage done to Cleffa by attacks."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each {
+								if(self.isSPC(ASLEEP) && it.to == self && it.dmg.value && it.notNoEffect) {
+									bc "Damage is prevented because $self is Asleep"
+									it.dmg = hp(0)
+								}
+							}
+						}
 					}
 				}
 				move "Eeeeeeek", {
@@ -595,7 +604,10 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost ()
 					attackRequirement {}
 					onAttack {
-						damage 0
+						shuffleDeck(hand)
+						hand.clear()
+						draw 6
+						apply ASLEEP, self
 					}
 				}
 				
@@ -608,7 +620,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						attachEnergyFrom(my.discard,self)
+						attachEnergyFrom(my.discard,self)
 					}
 				}
 				move "Big Eggsplosion", {
@@ -616,7 +629,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip self.cards.energyCount(C), {damage 40}
 					}
 				}
 				
@@ -630,7 +643,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						draw 2
 					}
 				}
 				move "Spin Turn", {
@@ -638,7 +651,11 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						if(my.bench) {
+							def pcs = my.bench.select("Select the new active pokemon")
+           					sw my.active, pcs
+						}
 					}
 				}
 				
@@ -651,7 +668,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						opp.all.each {damage 20,it}
 					}
 				}
 				move "Surf", {
@@ -659,7 +676,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 80
 					}
 				}
 				
@@ -670,20 +687,24 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				move "Find a Friend", {
 					text "Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 0
+					attackRequirement {
+						assert deck.notEmpty
 					}
+					onAttack {
+						my.deck.search(count : 1, "Search your deck for a Pokémon", cardTypeFilter(POKEMON)).showToOpponent("Selected Pokémon").moveTo(my.hand)
+						shuffleDeck()
+					}
+
 				}
 				move "Quick Blow", {
 					text "Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {damage 20}
 					}
-				}
-				
+				}	
 			};
 			case GRANBULL_22:
 			return evolution (this, from:"Snubbull", hp:HP090, type:COLORLESS, retreatCost:3) {
@@ -693,7 +714,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
+						damage 20, self
+						if(my.bench) {
+							def pcs = my.bench.select("Select the new active pokemon")
+           					sw my.active, pcs
+						}
 					}
 				}
 				move "Chomp", {
@@ -701,7 +727,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40+10*self.numberOfDamageCounters
 					}
 				}
 				
@@ -712,6 +738,10 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				pokePower "Sleep Pendulum", {
 					text "Once during your turn , you may flip a coin. If heads, the Defending Pokémon is now Asleep. This power can’t be used if Hypno is affected by a Special Condition."
 					actionA {
+						checkLastTurn()
+						assert !(self.specialConditions) : "$self is affected by a Special Condition."
+						powerUsed()
+						flipThenApplySC ASLEEP
 					}
 				}
 				move "Psychic Shot", {
@@ -719,7 +749,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						if(opp.bench) damage 30, opp.bench.select()
 					}
 				}
 				
@@ -732,7 +763,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flipThenApplySC PARALYZED
 					}
 				}
 				move "Ice Blade", {
@@ -740,7 +772,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30, opp.all.select()
 					}
 				}
 				
