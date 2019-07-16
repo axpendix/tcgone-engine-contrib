@@ -516,7 +516,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
 								def tar = my.all.select("Choose target")
 								list.each {attachEnergy(tar, it)}
 								shuffleDeck()
-							  	}
 							}
 						}
 					}
