@@ -2232,7 +2232,7 @@ public enum SunMoonPromos implements CardInfo {
 		case MAGIKARP_WAILORD_GX_SM166:
 			return copy(TeamUp.MAGIKARP_WAILORD_GX_160, this);
 
-		case DETECTIVE_PIKACHU_SM170
+		case DETECTIVE_PIKACHU_SM170:
 			return copy(DetectivePikachu.DETECTIVE_PIKACHU_10, this);
 
 		case FLAREON_GX_SM171:
