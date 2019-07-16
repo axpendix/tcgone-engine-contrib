@@ -575,10 +575,10 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					onAttack {
 						damage 60
 						if(opp.bench){
-					    afterDamage{
-					      sw defending, opp.bench.oppSelect("New active")
-					    }
-					  }
+							afterDamage{
+							sw defending, opp.bench.oppSelect("New active")
+							}
+					  	}
 					}
 				}
 				
@@ -1465,6 +1465,10 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				pokePower "RETURN", {
 					text "Once during your turn, when you put Unown from your hand onto your Bench, you may return all Energy attached to 1 of your Pokémon to your hand."
 					actionA {
+						if(it==PLAY_FROM_HAND && confirm("Use Return?")){
+							powerUsed()
+							// Implement Return
+						}
 					}
 				}
 				move "Hidden Power", {
@@ -1472,7 +1476,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				
@@ -1483,6 +1487,11 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				pokePower "FLASH", {
 					text "Once during your turn, when you put Unown from your hand onto your Bench, you may look at the top 5 cards of your deck and put them back on top of your deck in any order."
 					actionA {
+						if(it==PLAY_FROM_HAND && confirm("Use Flash?") && my.deck.notEmpty){
+							powerUsed()
+							def list=rearrange(deck.subList(0,5), "Rearrange top 5 cards in your deck")
+							deck.setSubList(0, list)
+						}
 					}
 				}
 				move "Hidden Power", {
@@ -1490,7 +1499,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				
@@ -1503,15 +1512,15 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 2, {damage 40}
 					}
 				}
 				move "Expand", {
-					text "50 damage. ."
+					text "50 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 50
 					}
 				}
 				
@@ -1524,7 +1533,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -1537,7 +1546,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				move "Happy Punch", {
@@ -1545,7 +1554,10 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {
+							afterDamage{heal 30, self}
+						}
 					}
 				}
 				
@@ -1559,7 +1571,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Razor Leaf", {
@@ -1567,7 +1579,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -1576,11 +1588,11 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
 				weakness F
 				move "Minimize", {
-					text "."
+					text "During your opponent’s next turn, any damage done to Clefairy by attacks is reduced by 20 (after applying Weakness and Resistance)."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						reduceDamageNextTurn(hp(20),thisMove)
 					}
 				}
 				move "Slap", {
@@ -1588,7 +1600,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				
@@ -1601,7 +1613,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Flare", {
@@ -1609,7 +1621,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -1620,17 +1632,21 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				move "Sleep Inducer", {
 					text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon. The new Defending Pokémon is now Asleep."
 					energyCost P
-					attackRequirement {}
-					onAttack {
-						damage 0
-					}
+						attackRequirement {
+							assert opp.bench
+						}
+						onAttack {
+							sw opp.active, opp.bench.select()
+							apply ASLEEP, opp.active
+						}
+
 				}
 				move "Gentle Slap", {
 					text "20 damage. "
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -1643,7 +1659,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flipUntilTails {damage 10}
 					}
 				}
 				
@@ -1654,9 +1670,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				move "Show Off", {
 					text "Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck.notEmpty
+					}
 					onAttack {
-						damage 0
+							my.deck.search(max: 2, cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
+							shuffleDeck()
 					}
 				}
 				move "Psyshot", {
@@ -1664,7 +1683,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -1677,7 +1696,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Combustion", {
@@ -1685,7 +1704,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
 					}
 				}
 				
@@ -1699,7 +1718,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						apply ASLEEP
 					}
 				}
 				move "Tackle", {
@@ -1707,7 +1726,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -1721,7 +1740,13 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						afterDamage{
+							if(my.bench) {
+								def pcs = my.bench.select("Select the new active pokemon")
+								sw my.active, pcs
+							}
+						}
 					}
 				}
 				
@@ -1734,7 +1759,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						applyAfterDamage ASLEEP
 					}
 				}
 				
@@ -1747,7 +1773,9 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						shuffleDeck(hand)
+						hand.clear()
+						draw opp.hand.size()
 					}
 				}
 				move "Lick", {
@@ -1755,7 +1783,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {applyAfterDamage PARALYZED}
 					}
 				}
 				
@@ -1768,7 +1797,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						sandAttack(thisMove)
 					}
 				}
 				move "Suffocating Gas", {
@@ -1776,7 +1806,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -1790,7 +1820,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Comet Punch", {
@@ -1798,7 +1828,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip 4, {damage 10}
 					}
 				}
 				
@@ -1811,7 +1841,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				
@@ -1821,11 +1851,17 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness F
 				resistance M, MINUS20
 				move "Static Electricity", {
-					text "and attach them to Mareep. Shuffle your deck afterward."
+					text "Search your deck for a number of [L] Energy cards up to the number of Mareep in play (both yours and your opponent’s) and attach them to Mareep. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.deck : "There is no cards in your deck"
+					}
 					onAttack {
-						damage 0
+						def mareepInPlay = my.all.findAll {it.name=="Mareep"}.size() + opp.all.findAll {it.name=="Mareep"}.size()
+						my.deck.search(max : mareepInPlay,"Search your deck for up to $mareepInPlay [L] Energy cards",basicEnergyFilter(L)).each{
+							attachEnergy(self,it)
+						}
+						shuffleDeck()
 					}
 				}
 				move "Ram", {
@@ -1833,7 +1869,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -1846,7 +1882,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						flip {damage 10}
 					}
 				}
 				move "Tail Slap", {
@@ -1854,7 +1891,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
 					}
 				}
 				
@@ -1867,7 +1904,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
+						afterDamage {draw 1}
 					}
 				}
 				move "Dig Claws", {
@@ -1875,7 +1913,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -1888,7 +1926,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Double-edge Claw", {
@@ -1896,7 +1934,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						damage 10, self
 					}
 				}
 				
@@ -1910,7 +1949,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10*self.numberOfDamageCounters
 					}
 				}
 				
@@ -1924,7 +1963,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Quick Attack", {
@@ -1932,7 +1971,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
+						flip {damage 10}
 					}
 				}
 				
@@ -1946,7 +1986,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip{preventAllDamageNextTurn()}
 					}
 				}
 				move "Rollout", {
@@ -1954,7 +1994,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				
@@ -1965,9 +2005,10 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				move "Scout", {
 					text "Look at your opponent’s hand."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+							assert opp.hand : "Opponent has no cards in hand."}
 					onAttack {
-						damage 0
+							opp.hand.showToMe("Opponent's hand")
 					}
 				}
 				move "Scratch", {
@@ -1975,7 +2016,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				
@@ -1988,7 +2029,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {damage 20}
 					}
 				}
 				
@@ -1999,9 +2040,11 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				move "Roar", {
 					text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert opp.bench : "There are no pokemon on your opponent's bench"
+					}
 					onAttack {
-						damage 0
+						sw defending, opp.bench.oppSelect("New active")
 					}
 				}
 				move "Sharp Fang", {
@@ -2009,7 +2052,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -2022,7 +2065,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Spider Web", {
@@ -2030,7 +2073,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 0
+						cantRetreat defending
 					}
 				}
 				
@@ -2043,7 +2086,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -2055,9 +2098,11 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				move "Cure Kernels", {
 					text "Remove 2 damage counters from 1 of your Pokémon."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.all.findAll{it.numberOfDamageCounters} : "There are no damaged pokemon to heal"
+						}
 					onAttack {
-						damage 0
+						heal 20, my.all.findAll{it.numberOfDamageCounters}.select("Heal")
 					}
 				}
 				move "Seed Bomb", {
@@ -2065,7 +2110,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -2078,7 +2123,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				move "Wave Splash", {
@@ -2086,7 +2131,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 20
 					}
 				}
 				
@@ -2099,15 +2144,16 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flipThenApplySC Burned
 					}
 				}
 				move "Ember", {
-					text "30 damage. Energy attached to Vulpix."
-					energyCost R, C, R
+					text "30 damage. Flip a coin. If tails, discard a [R] Energy attached to Vulpix."
+					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flip {} {discardSelfEnergy(R)}
 					}
 				}
 				
@@ -2121,7 +2167,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						flip {cantAttackNextTurn defending}
 					}
 				}
 				move "Watering", {
@@ -2129,7 +2175,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 10
 					}
 				}
 				
