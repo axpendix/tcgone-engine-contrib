@@ -3267,7 +3267,7 @@ RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
 						draw 5
 					}
 					def a2 = {
-						sw my.active, my.bench.select("New active")
+						sw my.active, my.bench.select("New active"), TRAINER_CARD
 					}
 				  if(!my.bench){
 						a1()
