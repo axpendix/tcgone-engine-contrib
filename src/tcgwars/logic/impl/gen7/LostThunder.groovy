@@ -3502,8 +3502,11 @@ public enum LostThunder implements CardInfo {
 				move "Sweet Scent" , {
 					text "Heal 30 damage from 1 of your Pokémon."
 					energyCost C
+					attackRequirement {
+						assert my.all.findAll{it.numberOfDamageCounters} : "There are no damaged pokemon to heal"
+						}
 					onAttack{
-						heal 30, self
+						heal 30, my.all.findAll{it.numberOfDamageCounters}.select("Heal")
 					}
 				}
 			};
