@@ -2300,6 +2300,7 @@ public enum SunMoonPromos implements CardInfo {
 							gxCheck()
 						}
 						onAttack{
+							gxPerform()
 							my.all.each{
 								if(it.topPokemonCard.types.contains(W)){
 									heal 10*it.numberOfDamageCounters, it

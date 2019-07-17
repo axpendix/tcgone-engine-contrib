@@ -491,7 +491,7 @@ public enum UnbrokenBonds implements CardInfo {
 							if(opp.hand.findAll{it.cardTypes.is(BASIC)}){
 								def card = opp.hand.findAll{it.cardTypes.is(BASIC)}.select("select the pokémon to put on the bench").first()
 								opp.hand.remove(card)
-								benchPCS(card, OTHER, OPPONENT)
+								benchPCS(card, OTHER, TargetPlayer.OPPONENT)
 							}
 						}
 					}
@@ -4232,8 +4232,6 @@ public enum UnbrokenBonds implements CardInfo {
 				}
 				onRemoveFromPlay {
 					eff.unregister()
-				}
-				allowAttach {to->
 				}
 			};
 			case CHIP_CHIP_ICE_AXE_165:
