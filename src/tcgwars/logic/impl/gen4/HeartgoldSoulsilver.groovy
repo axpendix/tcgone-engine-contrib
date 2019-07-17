@@ -2273,7 +2273,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					shuffleDeck()
 				}
 				playRequirement{
-					asser my.deck : "No cards in deck"
+					assert my.deck : "No cards in deck"
 				}
 			};
 			case POKEMON_COMMUNICATION_98:
@@ -2294,7 +2294,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					shuffleDeck()
 				}
 				playRequirement{
-					asser my.deck : "No cards in deck"
+					assert my.deck : "No cards in deck"
 				}
 			};
 			case PROFESSOR_OAK_S_NEW_THEORY_101:
