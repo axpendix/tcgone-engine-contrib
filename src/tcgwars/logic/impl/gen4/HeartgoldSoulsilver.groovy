@@ -2309,6 +2309,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 						after ATTACH_ENERGY, {
 							if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite)
 								directDamage 10, ef.resolvedTarget
+						}
 					}
 				}
 				move "Lightning Crush", {
