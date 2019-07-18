@@ -127,18 +127,18 @@ public enum HeartgoldSoulsilver implements CardInfo {
 	WOOPER_88 ("Wooper", 88, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
 	BILL_89 ("Bill", 89, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
 	COPYCAT_90 ("Copycat", 90, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-	ENERGY_SWITCH_91 ("Energy Switch", 91, Rarity.UNCOMMON, [TRAINER]),
+	ENERGY_SWITCH_91 ("Energy Switch", 91, Rarity.UNCOMMON, [TRAINER, ITEM]),
 	FISHERMAN_92 ("Fisherman", 92, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-	FULL_HEAL_93 ("Full Heal", 93, Rarity.UNCOMMON, [TRAINER]),
-	MOOMOO_MILK_94 ("Moomoo Milk", 94, Rarity.UNCOMMON, [TRAINER]),
-	POKE_BALL_95 ("Poké Ball", 95, Rarity.UNCOMMON, [TRAINER]),
-	POKEGEAR_3_0_96 ("Pokégear 3.0", 96, Rarity.UNCOMMON, [TRAINER]),
+	FULL_HEAL_93 ("Full Heal", 93, Rarity.UNCOMMON, [TRAINER, ITEM]),
+	MOOMOO_MILK_94 ("Moomoo Milk", 94, Rarity.UNCOMMON, [TRAINER, ITEM]),
+	POKE_BALL_95 ("Poké Ball", 95, Rarity.UNCOMMON, [TRAINER, ITEM]),
+	POKEGEAR_3_0_96 ("Pokégear 3.0", 96, Rarity.UNCOMMON, [TRAINER, ITEM]),
 	POKEMON_COLLECTOR_97 ("Pokémon Collector", 97, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-	POKEMON_COMMUNICATION_98 ("Pokémon Communication", 98, Rarity.UNCOMMON, [TRAINER]),
-	POKEMON_REVERSAL_99 ("Pokémon Reversal", 99, Rarity.UNCOMMON, [TRAINER]),
+	POKEMON_COMMUNICATION_98 ("Pokémon Communication", 98, Rarity.UNCOMMON, [TRAINER, ITEM]),
+	POKEMON_REVERSAL_99 ("Pokémon Reversal", 99, Rarity.UNCOMMON, [TRAINER, ITEM]),
 	PROFESSOR_ELM_S_TRAINING_METHOD_100 ("Professor Elm's Training Method", 100, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
 	PROFESSOR_OAK_S_NEW_THEORY_101 ("Professor Oak's New Theory", 101, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-	SWITCH_102 ("Switch", 102, Rarity.UNCOMMON, [TRAINER]),
+	SWITCH_102 ("Switch", 102, Rarity.UNCOMMON, [TRAINER, ITEM]),
 	DOUBLE_COLORLESS_ENERGY_103 ("Double Colorless Energy", 103, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
 	RAINBOW_ENERGY_104 ("Rainbow Energy", 104, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
 	AMPHAROS_PRIME_105 ("Ampharos Prime", 105, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
@@ -352,7 +352,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Vulpix", hp:HP090, type:FIRE, retreatCost:1) {
 				weakness W
 				pokePower "Roast Reveal", {
-					text "Once during your turn , you may discard a [R] Energy card from your hand. If you do, draw 3 cards. This power can’t be used if Ninetales is affected by a Special Condition."
+					text "Once during your turn, you may discard a [R] Energy card from your hand. If you do, draw 3 cards. This power can’t be used if Ninetales is affected by a Special Condition."
 					actionA {
 						checkLastTurn()
 						checkNoSPC()
@@ -377,7 +377,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				pokePower "Night Sight", {
-					text "Once during your turn , you may draw a card. This power can’t be used if Noctowl is affected by a Special Condition."
+					text "Once during your turn, you may draw a card. This power can’t be used if Noctowl is affected by a Special Condition."
 					actionA {
 						checkLastTurn()
 						checkNoSPC()
@@ -753,7 +753,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Drowzee", hp:HP090, type:PSYCHIC, retreatCost:2) {
 				weakness P
 				pokePower "Sleep Pendulum", {
-					text "Once during your turn , you may flip a coin. If heads, the Defending Pokémon is now Asleep. This power can’t be used if Hypno is affected by a Special Condition."
+					text "Once during your turn, you may flip a coin. If heads, the Defending Pokémon is now Asleep. This power can’t be used if Hypno is affected by a Special Condition."
 					actionA {
 						checkLastTurn()
 						checkNoSPC()
@@ -2208,7 +2208,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			case COPYCAT_90:
 				return copy(TeamRocketReturns.COPYCAT_83, this);
 			case ENERGY_SWITCH_91:
-				return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
+				return copy(BlackWhite.ENERGY_SWITCH_94, this);
 			case FISHERMAN_92:
 				return supporter (this) {
 					text "Search your discard pile for 4 basic Energy cards, show them to your opponent, and put them into your hand."
@@ -2220,7 +2220,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					}
 				}
 			case FULL_HEAL_93:
-			return basicTrainer (this) {
+			return itemCard (this) {
 				text "Remove all Special Conditions from your Active Pokémon."
 				onPlay {
 					clearSpecialCondition(my.active,Source.TRAINER_CARD)
@@ -2230,7 +2230,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				}
 			};
 			case MOOMOO_MILK_94:
-			return basicTrainer (this) {
+			return itemCard (this) {
 				text "Choose 1 of your Pokémon. Flip 2 coins. For each heads, remove 3 damage counters from that Pokémon."
 				onPlay {
 					def tar = my.all.findAll{(it.numberOfDamageCounters != 0)}
@@ -2242,29 +2242,9 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				playRequirement{}
 			};
 			case POKE_BALL_95:
-			return basicTrainer (this) {
-				text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-				onPlay {
-					flip {
-						my.deck.search(count : 1, "Search your deck for a Pokémon", cardTypeFilter(POKEMON)).showToOpponent("Selected Pokémon").moveTo(my.hand)
-						shuffleDeck()
-					}
-				}
-				playRequirement{
-					assert my.deck : "No cards in deck"
-				}
-			};
+				return copy(BlackWhite.POKE_BALL_97, this);
 			case POKEGEAR_3_0_96:
-			return basicTrainer (this) {
-				text "Look at the top 7 cards of your deck. Choose a Supporter card you find there, show it to your opponent, and put it into your hand. Shuffle the other cards back into your deck."
-				onPlay {
-					my.deck.subList(0,7).select(min:0,"Select a supporter to put into your hand",cardTypeFilter(SUPPORTER)).moveTo(hand)
-					shuffleDeck()
-				}
-				playRequirement{
-					assert my.deck : "No cards in deck"
-				}
-			};
+				return copy (UnbrokenBonds.POKEGEAR_3_0_182, this);
 			case POKEMON_COLLECTOR_97:
 			return supporter (this) {
 				text "Search your deck for up to 3 Basic Pokémon, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
@@ -2277,15 +2257,9 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				}
 			};
 			case POKEMON_COMMUNICATION_98:
-			return basicTrainer (this) {
-				text "Choose 1 Pokémon in your hand, show it to your opponent, and put it on top of your deck. If you do, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+				return copy(BlackWhite.POKEMON_COMMUNICATION_99, this);
 			case POKEMON_REVERSAL_99:
-				return copy(FireRedLeafGreen.POKEMON_REVERSAL_97, this);
+				return copy(KalosStarterSet.POKEMON_CATCHER_36, this);
 			case PROFESSOR_ELM_S_TRAINING_METHOD_100:
 			return supporter (this) {
 				text "Search your deck for an Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
@@ -2332,6 +2306,9 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				pokeBody "Conductivity", {
 					text "Whenever your opponent attaches an Energy card from his or her hand to 1 of his or her Pokémon, put 1 damage counter on that Pokémon."
 					delayedA {
+						after ATTACH_ENERGY, {
+							if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite)
+								directDamage 10, ef.resolvedTarget
 					}
 				}
 				move "Lightning Crush", {
@@ -2339,7 +2316,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 40
+						flip {damage 40} {discardDefendingEnergy()}
 					}
 				}
 				
@@ -2350,6 +2328,17 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				pokePower "Blissful Nurse", {
 					text "Once during your turn, when you play Blissey from your hand to evolve 1 of your Pokémon, you may remove all damage counters from all your Pokémon. If you do, discard all Energy attached to those Pokémon that had any damage counters on them."
 					actionA {
+						if(it==PLAY_FROM_HAND && my.all.findAll{it.numberOfDamageCounters} && confirm("Use Blissful Nurse?")){
+							powerUsed()
+							my.all.each {
+								if(it.numberOfDamageCounters) {
+									heal it.damage.value, it
+									if(it.damage.value == 0) {
+										it.cards.filterByType(ENERGY).discard()
+									}
+								}
+							}
+						}
 					}
 				}
 				move "Strength", {
@@ -2357,7 +2346,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
 					}
 				}
 				
@@ -2367,8 +2356,16 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness W
 				resistance L, MINUS20
 				pokeBody "Exoskeleton", {
-					text "Any damage done to Donphan by attacks is reduced by 20 ."
+					text "Any damage done to Donphan by attacks is reduced by 20 (after applying Weakness and Resistance)."
 					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each{
+								if(it.to == self && it.notNoEffect && it.dmg.value) {
+									bc "Exoskeleton -20"
+									it.dmg -= hp(20)
+								}
+							}
+						}
 					}
 				}
 				move "Earthquake", {
@@ -2376,7 +2373,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60
+						my.bench.each {damage 10, it}
 					}
 				}
 				move "Heavy Impact", {
@@ -2384,7 +2382,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost F, F, F
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 90
 					}
 				}
 				
@@ -2393,8 +2391,11 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Croconaw", hp:HP140, type:WATER, retreatCost:3) {
 				weakness G
 				pokePower "Rain Dance", {
-					text "As often as you like during your turn , you may attach a Energy card from your hand to 1 of your Pokémon. This power can’t be used if Feraligatr is affected by a Special Condition."
+					text "As often as you like during your turn , you may attach a [W] Energy card from your hand to 1 of your [W] Pokémon. This power can’t be used if Feraligatr is affected by a Special Condition."
 					actionA {
+						checkNoSPC()
+						assert my.hand.findAll(basicEnergyFilter(W)) : "No water energy in hand"
+						attachEnergyFrom(may: true, type: W, my.hand, my.bench.findAll {it.types.contains(W)})
 					}
 				}
 				move "Hydro Crunch", {
@@ -2402,7 +2403,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W, W, W, W
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 60 + 10*defending.numberOfDamageCounters
 					}
 				}
 				
@@ -2412,8 +2413,18 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness R
 				resistance W, MINUS20
 				pokePower "Leaf Trans", {
-					text "As often as you like during your turn , you may move a Energy attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Meganium is affected by a Special Condition."
+					text "As often as you like during your turn, you may move a [G] Energy attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Meganium is affected by a Special Condition."
 					actionA {
+						checkNoSPC()
+						assert my.all.findAll {it.cards.energyCount(G)>0}
+						assert my.all.size()>=2
+						powerUsed()
+						def src=my.all.findAll {it.cards.energyCount(G)>0}.select("Source for [G]")
+						def card=src.cards.filterByEnergyType(G).select("Card to move").first()
+						def tar=my.all
+						tar.remove(src)
+						tar=tar.select("Target for [G]")
+						energySwitch(src, tar, card)
 					}
 				}
 				move "Solarbeam", {
@@ -2421,7 +2432,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 80
 					}
 				}
 				
@@ -2430,8 +2441,14 @@ public enum HeartgoldSoulsilver implements CardInfo {
 			return evolution (this, from:"Quilava", hp:HP140, type:FIRE, retreatCost:2) {
 				weakness W
 				pokePower "Afterburner", {
-					text "Once during your turn , you may search your discard pile for a Fire Energy card and attach it to 1 of your Pokémon. If you do, put 1 damage counter on that Pokémon. This power can’t be used if Typhlosion is affected by a Special Condition."
+					text "Once during your turn , you may search your discard pile for a [R] Energy card and attach it to 1 of your Pokémon. If you do, put 1 damage counter on that Pokémon. This power can’t be used if Typhlosion is affected by a Special Condition."
 					actionA {
+						checkNoSPC()
+						assert my.discard.filterByEnergyType(R) : "No fire energy in discard"
+						def pcs = my.all.select()
+						def card = my.discard.filterByEnergyType(R).select()
+						attachEnergy(pcs, card)
+						directDamage(10, pcs)
 					}
 				}
 				move "Flare Destroy", {
@@ -2439,7 +2456,9 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
+						discardSelfEnergy C
+						discardDefendingEnergy()
 					}
 				}
 				
@@ -2607,11 +2626,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Thrash", {
-					text "30+ damage. If heads, this attack does 30 damage plus 20 more damage. If tails, Gyarados does 20 damage to itself."
+					text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 20 more damage. If tails, Gyarados does 20 damage to itself."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 30
+						flip {damaage 20} {damage 20, self}
 					}
 				}
 				move "Heavy Storm", {
@@ -2619,17 +2639,19 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost W, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 0
+						damage 70
 					}
 				}
 				
 			};
 			case ALPH_LITHOGRAPH_ONE:
-			return basicTrainer (this) {
+			return itemCard (this) {
 				text "LOOK AT YOUR OPPONENTS HAND!"
 				onPlay {
+					opp.hand.showToMe("Opponent's hand")
 				}
 				playRequirement{
+					assert opp.hand : "Opponent has no cards in hand."}
 				}
 			};
 				default:
