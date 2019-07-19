@@ -1,8 +1,10 @@
 # TCG ONE Engine Contrib
 
-TCG ONE's engine contribution repository. 
+This is TCG ONE's engine contribution repository. 
 It is mainly used for storing open source card implementations. 
 You are welcome to submit pull requests!
+
+Please [read the wiki](https://github.com/axpendix/tcgone-engine-contrib/wiki) to understand about the engine.
 
 ### About TCG ONE
 
@@ -26,9 +28,9 @@ It went live on 18 July 2013 and is being actively developed and maintained. [mo
 1. [Please join our Discord #dev room](https://discord.gg/JZP2qzU), ask any questions regarding implementations or contribution in there
 1. Decide on what you're going to contribute. You can investigate [some bug reports](https://forum.tcgone.net/c/bug-reports) or work on missing sets.
 1. Please fork this repository, commit your changes then submit a pull request to `master`.
-2. I review your request and merge your changes to master. Please see and adhere to **Repository Rules** below 
-3. After your changes are merged to `master`, go to <https://dev.tcgone.net> and test your changes.
-4. After you've submitted several good standing commits, I'll add you as a contributor and give you **developer** role in our Discord server; you'll be able to push directly to `master` branch!
+1. I review your request and merge your changes to master. Please read and adhere to **Repository Rules** below or your request might be rejected.
+1. After your changes are merged to `master`, go to <https://dev.tcgone.net> and test your changes, fix any bugs that you encounter with additional commits.
+1. After you've submitted several good standing commits, I'll add you as a contributor so you'll be able to push directly to `master` branch. You will also get **developer** role in our Discord server and become a TCG ONE staff member!
 
 ### Repository Rules
 
