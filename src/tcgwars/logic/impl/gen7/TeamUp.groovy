@@ -2261,8 +2261,11 @@ public enum TeamUp implements CardInfo {
                 onAttack{
                   damage 60
                   afterDamage{
-                    if(opp.hand){
-                      opp.hand.oppSelect("Which card to discard?").discard()
+                    if(opp.hand.size() <= 2){
+                        opp.hand.discard()
+                    }
+                    else {
+                        opp.hand.oppSelect(count:2, "Which cards to discard?").discard()
                     }
                   }
                 }
@@ -2272,7 +2275,7 @@ public enum TeamUp implements CardInfo {
                 energyCost D,D,C,C
                 onAttack{
                   damage 170
-                  apply CONFUSED, self
+                  afterDamage{apply CONFUSED, self}
                 }
             }
         };
