@@ -1,5 +1,0 @@
-image: appropriate/curl
-
-build_deploy:
-  stage: deploy
-  script: 'curl -sS -H "Host: dev-restart.tcgone.net" -H "x-gitlab-token: $BUILD_TOKEN" --max-time 900 --connect-timeout 150 dev.tcgone.net'
