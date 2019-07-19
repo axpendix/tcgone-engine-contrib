@@ -2652,7 +2652,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					opp.hand.showToMe("Opponent's hand")
 				}
 				playRequirement{
-					assert opp.hand : "Opponent has no cards in hand."}
+					assert opp.hand : "Opponent has no cards in hand."
 				}
 			};
 				default:
