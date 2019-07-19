@@ -356,9 +356,9 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					actionA {
 						checkLastTurn()
 						checkNoSPC()
-						assert my.hand.filterByType(ENERGY)
+						assert my.hand.filterByEnergyType(R) : "No Fire Energy in hand"
 						powerUsed()
-						my.hand.filterByType(FIRE).select("Discard an Energy card").discard()
+						my.hand.filterByEnergyType(R).select("Discard a Fire Energy card").discard()
 						draw 3
 					}
 				}
@@ -480,7 +480,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 						checkLastTurn()
 						checkNoSPC()
 						powerUsed()
-						def playerDeck = Choose([0,1],["Your Deck", "Opponent's Deck"], "Whose deck do you want to look at")
+						def playerDeck = choose([0,1],["Your Deck", "Opponent's Deck"], "Whose deck do you want to look at")
 						if (playerDeck == 0) {
 							def list=rearrange(my.deck.subList(0,3), "Arrange top 3 cards in your deck")
 							deck.setSubList(0, list)
@@ -631,10 +631,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
 				move "Energy Absorbtion", {
 					text "Search your discard pile for up to 2 Energy cards and attach them to Exeggutor."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.discard.filterByType(ENERGY) : "No Energy in discard"
+					}
 					onAttack {
-						attachEnergyFrom(my.discard,self)
-						attachEnergyFrom(my.discard,self)
+						attachEnergyFrom(may: true, my.discard, self)
+						attachEnergyFrom(may: true, my.discard, self)
 					}
 				}
 				move "Big Eggsplosion", {
@@ -758,16 +760,16 @@ public enum HeartgoldSoulsilver implements CardInfo {
 						checkLastTurn()
 						checkNoSPC()
 						powerUsed()
-						flipThenApplySC ASLEEP
+						flip {apply(ASLEEP, opp.active, SRC_ABILITY)}
 					}
 				}
 				move "Psychic Shot", {
-					text "30 damage. Does 30 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance to Benched Pokémon.)"
+					text "30 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance to Benched Pokémon.)"
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
 						damage 30
-						if(opp.bench) {damage 30, opp.bench.select()}
+						if(opp.bench) {damage 10, opp.bench.select()}
 					}
 				}
 				
@@ -812,7 +814,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						swiftDamage 40
+						swiftDamage(40, defending)
 					}
 				}
 				
@@ -1449,7 +1451,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					onAttack {
 						damage 30
 						applyAfterDamage ASLEEP
-						applyAfterDamage ASLEEP, self
+						afterDamage{apply ASLEEP, self}
 					}
 				}
 				move "Madkinesis", {
@@ -2396,7 +2398,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					actionA {
 						checkNoSPC()
 						assert my.hand.findAll(basicEnergyFilter(W)) : "No water energy in hand"
-						attachEnergyFrom(may: true, type: W, my.hand, my.bench.findAll {it.types.contains(W)})
+						attachEnergyFrom(may: true, type: W, my.hand, my.all.findAll {it.types.contains(W)})
 					}
 				}
 				move "Hydro Crunch", {
@@ -2632,7 +2634,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-						flip {damaage 20} {damage 20, self}
+						flip {damage 20} {damage 20, self}
 					}
 				}
 				move "Heavy Storm", {
