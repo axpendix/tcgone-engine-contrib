@@ -20,6 +20,7 @@ It went live on 18 July 2013 and is being actively developed and maintained. [mo
 - Open sourcing the entire project is a really big task due to its complexity. For now, you will only be able to test your changes remotely (not on your local machine). I plan to restructure and open source the entire game engine gradually.
 - After every push to `master` branch, our CI system will automatically rebuild the code and update the commit status with the log. If everything goes well, it will deploy to <https://dev.tcgone.net>, our staging dev server, which can be used to test cards before going to production. It is a special UI that allows searching and adding any card directly into play. Try it now!
 - If the build fails, you can check the logs via the status icon near every commit, first click the icon then click 'details'. A 'successful' build does not mean the code works, due to the dynamic nature of Groovy. Therefore, please test ALL cards by invoking ALL of their effects on [the dev server](https://dev.tcgone.net).
+- [The production server](https://play.tcgone.net) is rolled out manually, therefore your changes will not be immediately visible in production.
 
 ### Instructions for a New Contributor
 
