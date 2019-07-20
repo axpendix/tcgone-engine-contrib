@@ -42,10 +42,10 @@ It went live on 18 July 2013 and is being actively developed and maintained. [mo
 
 ### What to do next?
 
-We usually have a lot of bugs to sort out, please go to <https://forum.tcgone.net/c/bug-reports> then start hunting them!
+1. We usually have a lot of bugs to sort out, please go to <https://forum.tcgone.net/c/bug-reports> then start hunting them!
 
-Other than that, you may start looking at the missing sets (gen3 and gen4 mostly) and start coding!
+2. Start implementing Pokemod expansions under [pokemod package](https://github.com/axpendix/tcgone-engine-contrib/tree/master/src/tcgwars/logic/impl/pokemod).
 
-[old-repo](https://gitlab.com/tcgone/engine-card-impl)
+3. Other than that, you may start looking at the missing [gen4 sets](https://github.com/axpendix/tcgone-engine-contrib/tree/master/src/tcgwars/logic/impl/gen4) and start coding!
 
-[deprecated-contribution-guide](https://forum.tcgone.net/t/card-implementation-guide/26)
+[return-to-contribution-guide](https://forum.tcgone.net/t/26)
