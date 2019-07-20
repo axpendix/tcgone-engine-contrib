@@ -12,10 +12,9 @@ The modded cards slightly differ from its original counterparts, therefore we ne
 
 For all `Pokemod*.groovy` files, do the following;
 
-1. Append collection number to all enum names. Example: `ALAKAZAM` to `ALAKAZAM_1`. Remember to change them in below get implementation also.  
-1. Change `getCollection` method to either return `POKEMOD_BASE_SET, POKEMOD_JUNGLE, POKEMOD_FOSSIL, POKEMOD_TEAM_ROCKET` .
+1. Append collection number to all enum names for those who don't have it. Example: `ALAKAZAM` to `ALAKAZAM_1`. Remember to change them inside `getImplementation()` also.
 1. Add NEW cards to enum constants.
-1. For UNMODIFIED cards, replace `getImplementation` method with a copy from original set, like: `return copy(BaseSet.XYZ, this)` . This is to prevent duplication of code.
+1. For UNMODIFIED cards, replace the section inside `getImplementation()` with a copy statement to get its copy from original set, like: `return copy(BaseSet.XYZ, this)` . This prevents duplication of code.
 1. For MODIFIED cards, edit the code to apply the modification. ZF_Goku can help pointing out what has changed.
 1. For NEW cards, implement them from scratch following [the guidelines](https://github.com/axpendix/tcgone-engine-contrib).
 
