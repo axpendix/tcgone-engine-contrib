@@ -232,7 +232,16 @@ public enum TeamUp implements CardInfo {
     ELECTROCHARGER_193("Electrocharger", 193, Rarity.SECRET, [TRAINER,ITEM]),
     JUDGE_WHISTLE_194("Judge Whistle", 194, Rarity.SECRET, [TRAINER,ITEM]),
     METAL_GOGGLES_195("Metal Goggles", 195, Rarity.SECRET, [TRAINER,ITEM,POKEMON_TOOL]),
-    POKEMON_COMMUNICATION_196("Pokémon Communication", 196, Rarity.UNCOMMON, [TRAINER,ITEM]);
+    POKEMON_COMMUNICATION_196("Pokémon Communication", 196, Rarity.UNCOMMON, [TRAINER,ITEM]),
+    GRASS_ENERGY_197 ("Grass Energy", 197, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+    FIRE_ENERGY_198 ("Fire Energy", 198, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+    WATER_ENERGY_199 ("Water Energy", 199, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+    LIGHTNING_ENERGY_200 ("Lightning Energy", 200, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+    PSYCHIC_ENERGY_201 ("Psychic Energy", 201, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+    FIGHTING_ENERGY_202 ("Fighting Energy", 202, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+    DARKNESS_ENERGY_203 ("Darkness Energy", 203, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+    METAL_ENERGY_204 ("Metal Energy", 204, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+    FAIRY_ENERGY_205 ("Fairy Energy", 205, Rarity.COMMON, [BASIC_ENERGY, ENERGY]);
 
  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -3740,6 +3749,24 @@ public enum TeamUp implements CardInfo {
             return copy(BlackWhite.POKEMON_COMMUNICATION_99, this)
 //          return copy (POKEMON_COMMUNICATION_152, this);
 
+        case GRASS_ENERGY_197:
+            return basicEnergy (this, G);
+        case FIRE_ENERGY_198:
+            return basicEnergy (this, R);
+        case WATER_ENERGY_199:
+            return basicEnergy (this, W);
+        case LIGHTNING_ENERGY_200:
+            return basicEnergy (this, L);
+        case PSYCHIC_ENERGY_201:
+            return basicEnergy (this, P);
+        case FIGHTING_ENERGY_202:
+            return basicEnergy (this, F);
+        case DARKNESS_ENERGY_203:
+            return basicEnergy (this, D);
+        case METAL_ENERGY_204:
+            return basicEnergy (this, M);
+        case FAIRY_ENERGY_205:
+            return basicEnergy (this, Y);
         default:
             return null;
     }
