@@ -540,7 +540,7 @@ public enum UnbrokenBonds implements CardInfo {
 						assert my.deck : "There is no more card in your deck"
 					}
 					onAttack {
-						deck.subList(0,7).select("Put to hand").moveTo(my.hand)
+						deck.subList(0,7).select("Put to hand").moveTo(hidden:true,hand)
 						shuffleDeck()
 					}
 				}
