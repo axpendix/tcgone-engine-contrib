@@ -1932,7 +1932,7 @@ public enum UnbrokenBonds implements CardInfo {
 								bc "Swelling Spite activates"
 								bg.deterministicCurrentThreadPlayerType = self.owner
 								def count = Math.min(my.bench.freeBenchCount, 2)
-								my.deck.select(min:0, max:count, "When this Pokémon is Knocked Out, search your deck for up to 2 Haunter and put them onto your Bench. Then, shuffle your deck.", {it.name=="Haunter"}).each {
+								my.deck.search(max:count, "When this Pokémon is Knocked Out, search your deck for up to 2 Haunter and put them onto your Bench. Then, shuffle your deck.", {it.name=="Haunter"}).each {
 									my.deck.remove(it);
 									benchPCS(it)
 								}
