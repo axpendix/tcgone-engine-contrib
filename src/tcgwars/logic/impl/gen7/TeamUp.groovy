@@ -2057,7 +2057,7 @@ public enum TeamUp implements CardInfo {
             bwAbility "Adventurous Appetite" , {
                 text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may look at the top 6 cards of your opponent's deck and discard any number of Item cards you find there. Your opponent shuffles the other cards back into their deck."
                 onActivate {r->
-      						if(r==PLAY_FROM_HAND && confirm('Use Adventurous Appetite?')){
+      						if(r==PLAY_FROM_HAND && opp.deck.notEmpty && confirm('Use Adventurous Appetite?')){
       							powerUsed()
       							opp.deck.subList(0,6).showToMe("Top 6 cards of your opponent's deck")
                     def tar = opp.deck.subList(0,6).filterByType(ITEM)

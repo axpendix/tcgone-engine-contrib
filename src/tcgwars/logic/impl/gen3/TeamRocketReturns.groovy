@@ -229,21 +229,15 @@ public enum TeamRocketReturns implements CardInfo {
 				weakness FIGHTING
 				pokeBody "Darkest Impulse", {
 					text "As long as Dark Ampharos is in play, whenever your opponent plays an Evolution card from his or her hand to evolve 1 of his or her Pokémon, put 2 damage counters on that Pokémon. You can’t use more than 1 Darkest Impulse Poké-Body each turn."
-					def eff
-					onActivate {
-						eff = delayed {
-							after EVOLVE_STANDARD, {
-								if(ef.pokemonToBeEvolved.owner != self.owner){
-									checkLastTurn()
-									powerUsed()
-									bc "Darkest Impulse"
-									directDamage(20, ef.pokemonToBeEvolved, TRAINER_CARD)
-								}
+					delayedA {
+						after EVOLVE_STANDARD, {
+							PokemonCardSet pcs = ef.pokemonToBeEvolved
+							if(pcs.owner != self.owner && bg.em().retrieveObject("Darkest Impulse") != (pcs.id+bg.turnCount)){
+								powerUsed()
+								bg.em().storeObject("Darkest Impulse", pcs.id+bg.turnCount)
+								directDamage(20, pcs, TRAINER_CARD)
 							}
 						}
-					}
-					onDeactivate{
-						eff.unregister()
 					}
 				}
 				move "Ram", {
@@ -796,7 +790,7 @@ public enum TeamRocketReturns implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
-						if(defending.pokemonEX) damage 50
+						if(defending.EX) damage 50
 					}
 				}
 
