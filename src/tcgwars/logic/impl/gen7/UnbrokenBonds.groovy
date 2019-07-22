@@ -865,7 +865,7 @@ public enum UnbrokenBonds implements CardInfo {
 						damage 120
 						afterDamage {
 							def list = my.discard.filterByEnergyType(R).select(count:2)
-							def pcs = my.all.select("To?")
+							def pcs = my.bench.select("To?")
 							list.each {attachEnergy(pcs, it)}
 						}
 					}
