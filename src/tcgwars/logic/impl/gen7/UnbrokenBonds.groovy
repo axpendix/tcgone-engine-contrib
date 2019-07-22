@@ -1928,7 +1928,7 @@ public enum UnbrokenBonds implements CardInfo {
 					text "When this Pokémon is Knocked Out, search your deck for up to 2 Haunter and put them onto your Bench. Then, shuffle your deck."
 					delayedA {
 						before (KNOCKOUT,self) {
-							if(self.owner.pbg.deck.notEmpty && self.owner.pbg.bench.notFull) {
+							if(self.owner.pbg.deck.notEmpty) {
 								bc "Swelling Spite activates"
 								bg.deterministicCurrentThreadPlayerType = self.owner
 								def count = Math.min(my.bench.freeBenchCount, 2)
