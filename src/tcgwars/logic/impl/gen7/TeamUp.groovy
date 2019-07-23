@@ -1498,7 +1498,8 @@ public enum TeamUp implements CardInfo {
                 text "Once during your turn (before your attack), you may search your deck for a Pokémon that isn't a Pokémon-GX or Pokémon-EX, reveal it, and put it into your hand. Then, shuffle your deck."
                 actionA{
                   checkLastTurn()
-                  assert my.deck : "There is no more card in your deck"
+                  assert my.deck : "There are no more cards in your deck"
+                  powerUsed()
                   my.deck.search("Select one Pokémon that isn't a Pokémon-GX or Pokémon-EX",{it.cardTypes.is(POKEMON) && !it.cardTypes.is(POKEMON_GX) && !it.cardTypes.is(POKEMON_EX)}).moveTo(my.hand)
                   shuffleDeck()
                 }
