@@ -1902,7 +1902,7 @@ public enum GuardiansRising implements CardInfo {
               if(r==PLAY_FROM_HAND && opp.bench.notEmpty && confirm('Use Bloodthirsty Eyes?')) {
                 powerUsed()
                 def pcs = opp.bench.select('New defending')
-                sw opp.active, pcs
+                sw opp.active, pcs, SRC_ABILITY
               }
             }
           }
