@@ -49,7 +49,7 @@ public class EvolutionChains {
 //  static HashMap<String, HashSet<String>> map=new HashMap<String, HashSet<String>>();
 //  private static HashMap<String, String> map2=new HashMap<String, String>();
   private static Map<String, List<String>> map2=new THashMap<>();
-  
+
   static{
     //BASE SET
     ADD(BULBASAUR,IVYSAUR,VENUSAUR);
@@ -60,21 +60,21 @@ public class EvolutionChains {
     ADD(MACHOP,MACHOKE,MACHAMP);
     ADD(ABRA,KADABRA,ALAKAZAM);
     ADD(NIDORAN_MALE,NIDORINO,NIDOKING);
-    
+
     //JUNGLE
     ADD(NIDORAN_FEMALE,NIDORINA,NIDOQUEEN);
     ADD(PIDGEY,PIDGEOTTO,PIDGEOT);
     ADD(BELLSPROUT,WEEPINBELL,VICTREEBEL);
     ADD(ODDISH,GLOOM,VILEPLUME);
     ADD(CATERPIE,METAPOD,BUTTERFREE);
-    
+
     //FOSSIL
     ADD(DRATINI,DRAGONAIR,DRAGONITE);
     ADD(BaseSet.GASTLY,BaseSet.HAUNTER,GENGAR);
     ADD(MYSTERIOUS_FOSSIL,KABUTO,KABUTOPS);
     ADD(MYSTERIOUS_FOSSIL,OMANYTE,OMASTAR);
     ADD(GEODUDE,GRAVELER,GOLEM);
-    
+
     //TEAM ROCKET
     ADD(ABRA, TeamRocket.DARK_KADABRA, TeamRocket.DARK_ALAKAZAM);
     ADD(SQUIRTLE, TeamRocket.DARK_WARTORTLE, TeamRocket.DARK_BLASTOISE);
@@ -121,7 +121,7 @@ public class EvolutionChains {
     ADD(HOPPIP_112, SKIPLOOM_60, JUMPLUFF_17);
     ADD(BURIED_FOSSIL_47, KABUTO, KABUTOPS);
     ADD(BURIED_FOSSIL_47, OMANYTE, OMASTAR);
-    
+
     //RS
     ADD(ARON_25, LAIRON_36, AGGRON_1);
     ADD(WURMPLE_78, SILCOON_43, BEAUTIFLY_2);
@@ -257,7 +257,7 @@ public class EvolutionChains {
     // SM
     ADD("Squirtle", "Wartortle", "Blastoise-GX");
   }
-  
+
   private static void ADD(CardInfo...a){
     ADD(java.util.Arrays.stream(a).map(CardInfo::getName).toArray(String[]::new));
   }
@@ -268,7 +268,7 @@ public class EvolutionChains {
         map2.put(a[2], new ArrayList<String>());
       }
       map2.get(a[2]).add(a[1]);
-      
+
       if (map2.get(a[1])==null) {
         map2.put(a[1], new ArrayList<String>());
       }
@@ -295,7 +295,7 @@ public class EvolutionChains {
 //      ADD(a[1],a[2]);
 //    }
   }
-  
+
   public static List<String> getBasicsFromStage2(String stage2){
     List<String> stage1s = map2.get(stage2), basicsFinal=new ArrayList<String>();
     if (stage1s==null||stage1s.isEmpty()) {
@@ -310,5 +310,5 @@ public class EvolutionChains {
     }
     return basicsFinal;
   }
-  
+
 }
