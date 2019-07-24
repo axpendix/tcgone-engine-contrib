@@ -608,7 +608,7 @@ public enum TeamUp implements CardInfo {
               src.select(count:2,"Discard").discard()
               def pcs = opp.bench.select("New active")
               targeted (pcs, SRC_ABILITY) {
-                sw(opp.active,pcs)
+                sw(opp.active, pcs, SRC_ABILITY)
               }
             }
           }
