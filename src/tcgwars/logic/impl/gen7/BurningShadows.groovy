@@ -2654,7 +2654,7 @@ public enum BurningShadows implements CardInfo {
           onPlay {
             def pcs = opp.bench.select("New active")
             targeted (pcs, TRAINER_CARD) {
-              sw opp.active, pcs
+              sw opp.active, pcs, TRAINER_CARD
               if(my.bench) {
                 sw my.active, my.bench.select("New active"), TRAINER_CARD
               }
