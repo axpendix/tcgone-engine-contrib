@@ -1727,7 +1727,7 @@ public enum BurningShadows implements CardInfo {
 							delayed{
 								before APPLY_ATTACK_DAMAGES, {
 								      bg.dm().each{
-									if(it.to == self){
+									if(it.to == self && it.notNoEffect){
 									  bc "Stance prevents all damage"
 									  it.dmg=hp(0)
 									}
@@ -1747,7 +1747,7 @@ public enum BurningShadows implements CardInfo {
 								}
 								unregisterAfter 2
 							}
-            }
+            					}
 					}
 				}
 				move "Submarine Blow", {
