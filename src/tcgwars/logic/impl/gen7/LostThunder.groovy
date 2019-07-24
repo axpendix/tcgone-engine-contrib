@@ -4048,7 +4048,7 @@ public enum LostThunder implements CardInfo {
             if(opp.bench && my.hand.findAll({it.name=="Custom Catcher"}).size()>=2) {
               if(confirm("Use another Custom Catcher and switch your opponent active?") || toDraw == 0){
                 my.hand.findAll({it.name=="Custom Catcher" && it!= thisCard}).subList(0,1).discard()
-                sw opp.active, opp.bench.select("Choose the new active")
+                sw opp.active, opp.bench.select("Choose the new active"), TRAINER_CARD
                 return
               }
             }
