@@ -2283,7 +2283,7 @@ public enum CrimsonInvasion implements CardInfo {
           onPlay {
             if(opp.bench){
               def pcs = opp.bench.select("Switch")
-              sw opp.active, pcs
+              sw opp.active, pcs, TRAINER_CARD
             }
           }
           playRequirement{
