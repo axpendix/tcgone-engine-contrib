@@ -1722,21 +1722,23 @@ public enum BurningShadows implements CardInfo {
 				bwAbility "Stance", {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may prevent all effects of your opponent's attacks, including damage, done to this Pokémon until the end of your opponent's next turn."
 					onActivate {r->
-            if(r==PLAY_FROM_HAND && confirm("Use Stance?")){
+            					if(r==PLAY_FROM_HAND && confirm("Use Stance?")){
 							powerUsed()
 							delayed{
 								before APPLY_ATTACK_DAMAGES, {
-		              bg.dm().each{
-		                if(it.to == self){
-		                  bc "Stance prevent all damage"
-		                  it.dmg=hp(0)
-		                }
-		              }
-		            }
+								      bg.dm().each{
+									if(it.to == self){
+									  bc "Stance prevents all damage"
+									  it.dmg=hp(0)
+									}
+								      }
+								    }
 								before null, self, Source.ATTACK, {
-									bc "Stance prevents effect"
-									prevent()
-								}
+									if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+									    bc "Stance prevents effects"
+									    prevent()
+									}
+								    }
 								after ENERGY_SWITCH, {
 									def efs = (ef as EnergySwitch)
 									if(efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
