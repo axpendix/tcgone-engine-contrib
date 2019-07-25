@@ -554,7 +554,7 @@ public enum ForbiddenLight implements CardInfo {
             actionA {
               checkLastTurn()
               powerUsed()
-              apply BURNED, opp.active
+              apply BURNED, opp.active, SRC_ABILITY
             }
           }
           move "Fire Spin", {
@@ -695,7 +695,7 @@ public enum ForbiddenLight implements CardInfo {
             onActivate {reason ->
               if(reason == PLAY_FROM_HAND && confirm("Gale Shuriken")){
                 powerUsed()
-                directDamage 20,opp.all.select()
+                directDamage 20, opp.all.select(), SRC_ABILITY
               }
             }
           }
@@ -716,7 +716,7 @@ public enum ForbiddenLight implements CardInfo {
             onActivate {reason ->
               if(reason == PLAY_FROM_HAND && confirm("Shuriken Flurry")){
                 powerUsed()
-                directDamage 30,opp.all.select()
+                directDamage 30, opp.all.select(), SRC_ABILITY
               }
             }
           }
@@ -888,7 +888,7 @@ public enum ForbiddenLight implements CardInfo {
               assert my.hand.filterByEnergyType(W) : "There is no [W] energy in your hand"
               powerUsed()
               my.hand.filterByEnergyType(W).select().discard()
-              if(opp.bench) sw opp.active, opp.bench.oppSelect("New active")
+              if(opp.bench) sw opp.active, opp.bench.oppSelect("New active"), SRC_ABILITY
             }
           }
           move "Sauna Blast", {
@@ -1219,7 +1219,7 @@ public enum ForbiddenLight implements CardInfo {
               before (KNOCKOUT,self) {
                 if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                   def pcs = self.owner.opposite.pbg.all.oppSelect("choose the Pokémon to put 3 damage counters on")
-                  directDamage 30, pcs
+                  directDamage 30, pcs, SRC_ABILITY
                 }
               }
             }
@@ -1351,7 +1351,7 @@ public enum ForbiddenLight implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
                   bc "Poison Point"
-                  apply POISONED, (ef.attacker as PokemonCardSet)
+                  apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
                 }
               }
               after SWITCH, self, {unregister()}

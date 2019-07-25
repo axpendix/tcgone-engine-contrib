@@ -904,9 +904,9 @@ public enum LostThunder implements CardInfo {
             onActivate{r->
               if(r==PLAY_FROM_HAND) {
                 if(confirm("Use Hazardous Evolution?")) {
-                  apply POISONED, opp.active
+                  apply POISONED, opp.active, SRC_ABILITY
                   extraPoison 2
-                  apply PARALYZED, opp.active
+                  apply PARALYZED, opp.active, SRC_ABILITY
                 }
               }
 
@@ -1572,7 +1572,7 @@ public enum LostThunder implements CardInfo {
               assert self.active : "$self is not your active"
               assert opp.bench : "No opponent bench"
               powerUsed()
-              sw opp.active, opp.bench.oppSelect("Select the new active.")
+              sw opp.active, opp.bench.oppSelect("Select the new active."), SRC_ABILITY
             }
           }
           move "Aurora Gain" , {
@@ -2402,7 +2402,7 @@ public enum LostThunder implements CardInfo {
               benchPCS(thisCard)
               if(thisCard.player.opposite.pbg.bench){
                 multiSelect(thisCard.player.opposite.pbg.bench,2).each{
-                  directDamage 10, it
+                  directDamage 10, it, SRC_ABILITY
                 }
               }
             }
@@ -4048,7 +4048,7 @@ public enum LostThunder implements CardInfo {
             if(opp.bench && my.hand.findAll({it.name=="Custom Catcher"}).size()>=2) {
               if(confirm("Use another Custom Catcher and switch your opponent active?") || toDraw == 0){
                 my.hand.findAll({it.name=="Custom Catcher" && it!= thisCard}).subList(0,1).discard()
-                sw opp.active, opp.bench.select("Choose the new active")
+                sw opp.active, opp.bench.select("Choose the new active"), TRAINER_CARD
                 return
               }
             }
@@ -4397,7 +4397,7 @@ public enum LostThunder implements CardInfo {
                 if(self.types.contains(P) && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                   bc "Spell Tag activates"
                   for(int i=0;i<4;i++){
-                    if(self.owner.opposite.pbg.all) directDamage 10, self.owner.opposite.pbg.all.select("Put 1 damage counter to", true, self.owner)
+                    if(self.owner.opposite.pbg.all) directDamage 10, self.owner.opposite.pbg.all.select("Put 1 damage counter to", true, self.owner), TRAINER_CARD
                   }
                 }
               }
