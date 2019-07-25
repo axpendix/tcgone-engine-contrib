@@ -1090,7 +1090,7 @@ public enum DragonMajesty implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
                   bc "Rough Skin activates"
-                  directDamage(30, ef.attacker)
+                  directDamage(30, ef.attacker, SRC_ABILITY)
                 }
               }
             }
@@ -1378,7 +1378,7 @@ public enum DragonMajesty implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value}) && self.active && self.types.contains(N)){
                   bc "Dragon Talon activates"
-                  directDamage(30, ef.attacker)
+                  directDamage(30, ef.attacker, TRAINER_CARD)
                 }
               }
             }
