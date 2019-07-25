@@ -2015,7 +2015,10 @@ public enum TeamUp implements CardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && confirm('Use Twilight Eyes?')){
                 powerUsed()
-                discardDefendingEnergy()
+                def tar = opp.active.findAll({it.cards.filterByType(ENERGY)})
+                if(tar){
+                  tar.select().cards.filterByType(ENERGY).select().discard()
+                }
               }
             }
           }
