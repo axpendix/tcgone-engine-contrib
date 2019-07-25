@@ -2916,7 +2916,7 @@ public enum TeamUp implements CardInfo {
             energyCost C,C,C,C
             onAttack{
               damage 120
-              if(defending.evolution){
+              if(defending.realEvolution){
                 damage 120
               }
             }
