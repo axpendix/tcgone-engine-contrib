@@ -330,7 +330,7 @@ public enum CelestialStorm implements CardInfo {
               assert opp.bench
               powerUsed()
               flip {
-                sw opp.active, opp.bench.select("New active.")
+                sw opp.active, opp.bench.select("New active."), SRC_ABILITY
               }
             }
           }
@@ -640,7 +640,7 @@ public enum CelestialStorm implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
                   bc "Poison Point"
-                  apply POISONED, (ef.attacker as PokemonCardSet)
+                  apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
                 }
               }
               after SWITCH, self, {unregister()}
@@ -663,7 +663,7 @@ public enum CelestialStorm implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
                   bc "Poison Point"
-                  apply POISONED, (ef.attacker as PokemonCardSet)
+                  apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
                 }
               }
               after SWITCH, self, {unregister()}
@@ -2659,7 +2659,7 @@ public enum CelestialStorm implements CardInfo {
               assert self.active : "$self is not your active pokémon"
               assert opp.bench : "There is no pokémon on your opponent's bench to switch"
               powerUsed()
-              sw self.owner.opposite.pbg.active, self.owner.opposite.pbg.bench.select("Choose the new active")
+              sw self.owner.opposite.pbg.active, self.owner.opposite.pbg.bench.select("Choose the new active"), SRC_ABILITY
             }
           }
           move "Dragon Claw" , {
