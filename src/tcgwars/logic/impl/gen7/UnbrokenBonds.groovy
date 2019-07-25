@@ -2084,7 +2084,7 @@ public enum UnbrokenBonds implements CardInfo {
                 all.each {
                   if(self.active && it.owner != self.owner && it.basic) {
                     if(flag) {bc "Detention Gas activates"; flag = 0}
-                    directDamage 10, it
+                    directDamage 10, it, SRC_ABILITY
                   }
                 }
               }
@@ -2688,7 +2688,7 @@ public enum UnbrokenBonds implements CardInfo {
               checkLastTurn()
               powerUsed()
               flip {
-                directDamage 30, opp.all.select()
+                directDamage 30, opp.all.select(), SRC_ABILITY
               }
               bg().gm().betweenTurns()
             }
