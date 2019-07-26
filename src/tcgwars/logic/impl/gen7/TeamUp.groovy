@@ -2099,7 +2099,7 @@ public enum TeamUp implements CardInfo {
             energyCost D,C,C,C
             onAttack{
               damage 130
-              if(defending.pokemonEX && defending.pokemonGX){
+              if(defending.pokemonEX || defending.pokemonGX){
                 damage 100
               }
             }
