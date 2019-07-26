@@ -2171,7 +2171,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip {}, {discardSelfEnergy(R)}
+              flip {} {discardSelfEnergy(R)}
             }
           }
 
@@ -2635,7 +2635,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip {damage 20}, {damage 20, self}
+              flip {damage 20} {damage 20, self}
             }
           }
           move "Heavy Storm", {
