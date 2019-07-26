@@ -482,11 +482,11 @@ public enum HeartgoldSoulsilver implements CardInfo {
               powerUsed()
               def playerDeck = choose([0,1],["Your Deck", "Opponent's Deck"], "Whose deck do you want to look at")
               if (playerDeck == 0) {
-                def list=rearrange(my.deck.subList(0,3), "Arrange top 3 cards in your deck")
+                def list=rearrange(my.deck.subList(0,3), "Arrange top 3 cards in your deck (rightmost card is on top)")
                 deck.setSubList(0, list)
               }
               else {
-                def list=rearrange(opp.deck.subList(0,3), "Arrange top 3 cards in your opponent's deck")
+                def list=rearrange(opp.deck.subList(0,3), "Arrange top 3 cards in your opponent's deck (rightmost card is on top)")
                 deck.setSubList(0, list)
               }
             }
@@ -1118,7 +1118,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
           weakness G
           move "Recover", {
             text "Discard a [W] Energy attached to Corsola and remove all damage counters from Corsola."
-            energyCost W, W
+            energyCost W
             attackRequirement {}
             onAttack {
               discardSelfEnergy(W)
@@ -1164,12 +1164,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
           resistance F, MINUS20
           move "Snowy Present", {
             text "Draw a card for each [W] Energy attached to all of your Pokémon."
-            energyCost W, W
+            energyCost W
             attackRequirement {
               assert my.deck
             }
             onAttack {
-              my.all.each {draw it.cards.energyCount(W)}
+              draw my.all.findAll{it.cards.filterByEnergyType(W)}.size()
             }
           }
           move "Hail", {
@@ -1301,7 +1301,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
           resistance F, MINUS20
           move "Group Swim", {
             text "Search your deck for a [W] Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-            energyCost W, W
+            energyCost W
             attackRequirement {
               assert my.deck.notEmpty : "No cards in deck"
             }
@@ -1391,7 +1391,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
 
         };
       case QUILAVA_49:
-        return evolution (this, from:"Cydnaquil", hp:HP080, type:FIRE, retreatCost:1) {
+        return evolution (this, from:"Cyndaquil", hp:HP080, type:FIRE, retreatCost:1) {
           weakness W
           move "Flare", {
             text "30 damage. "
@@ -1505,10 +1505,10 @@ public enum HeartgoldSoulsilver implements CardInfo {
           weakness P
           pokePower "FLASH", {
             text "Once during your turn, when you put Unown from your hand onto your Bench, you may look at the top 5 cards of your deck and put them back on top of your deck in any order."
-            actionA {
-              if(it==PLAY_FROM_HAND && confirm("Use Flash?") && my.deck.notEmpty){
+            onActivate {reason ->
+              if(reason == PLAY_FROM_HAND && confirm("Use Flash?") && my.deck.notEmpty){
                 powerUsed()
-                def list=rearrange(deck.subList(0,5), "Rearrange top 5 cards in your deck")
+                def list=rearrange(deck.subList(0,5), "Rearrange top 5 cards in your deck (rightmost card is on top)")
                 deck.setSubList(0, list)
               }
             }
@@ -1535,11 +1535,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
             }
           }
           move "Expand", {
-            text "50 damage."
+            text "50 damage. During your opponent’s next turn, any damage done to Wigglytuff by attacks is reduced by 10 (after applying Weakness and Resistance)."
             energyCost C, C, C
             attackRequirement {}
             onAttack {
               damage 50
+              reduceDamageNextTurn(hp(10),thisMove)
             }
           }
 
@@ -1573,7 +1574,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 20
+              damage 30
               flip {heal 30, self}
             }
           }
@@ -2161,7 +2162,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             energyCost R
             attackRequirement {}
             onAttack {
-              flipThenApplySC Burned
+              flipThenApplySC BURNED
             }
           }
           move "Ember", {
@@ -2170,7 +2171,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip {} {discardSelfEnergy(R)}
+              flip {}, {discardSelfEnergy(R)}
             }
           }
 
@@ -2215,7 +2216,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
         return supporter (this) {
           text "Search your discard pile for 4 basic Energy cards, show them to your opponent, and put them into your hand."
           onPlay {
-            my.discard.filterByType(BASIC_ENERGY).select(max:4).moveTo(my.hand)
+            my.discard.filterByType(BASIC_ENERGY).select(count:4).moveTo(my.hand)
           }
           playRequirement {
             assert my.discard.hasType(BASIC_ENERGY) : "No Basic Energy in Discard"
@@ -2244,9 +2245,9 @@ public enum HeartgoldSoulsilver implements CardInfo {
           playRequirement{}
         };
       case POKE_BALL_95:
-        return copy(BlackWhite.POKE_BALL_97, this);
+        return copy (BlackWhite.POKE_BALL_97, this)
       case POKEGEAR_3_0_96:
-        return copy (UnbrokenBonds.POKEGEAR_3_0_182, this);
+        return copy (UnbrokenBonds.POKEGEAR_3_0_182, this)
       case POKEMON_COLLECTOR_97:
         return supporter (this) {
           text "Search your deck for up to 3 Basic Pokémon, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
@@ -2259,9 +2260,9 @@ public enum HeartgoldSoulsilver implements CardInfo {
           }
         };
       case POKEMON_COMMUNICATION_98:
-        return copy(BlackWhite.POKEMON_COMMUNICATION_99, this);
+        return copy (BlackWhite.POKEMON_COMMUNICATION_99, this)
       case POKEMON_REVERSAL_99:
-        return copy(KalosStarterSet.POKEMON_CATCHER_36, this);
+        return copy (KalosStarterSet.POKEMON_CATCHER_36, this)
       case PROFESSOR_ELM_S_TRAINING_METHOD_100:
         return supporter (this) {
           text "Search your deck for an Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
@@ -2286,7 +2287,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
           }
         };
       case SWITCH_102:
-        return copy(FireRedLeafGreen.SWITCH_102, this);
+        return copy (FireRedLeafGreen.SWITCH_102, this)
       case DOUBLE_COLORLESS_ENERGY_103:
         return specialEnergy (this, [[C],[C]]) {
           text "Double Colorless Energy Provides 2 Colorless Energy."
@@ -2330,8 +2331,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
           weakness F
           pokePower "Blissful Nurse", {
             text "Once during your turn, when you play Blissey from your hand to evolve 1 of your Pokémon, you may remove all damage counters from all your Pokémon. If you do, discard all Energy attached to those Pokémon that had any damage counters on them."
-            actionA {
-              if(it==PLAY_FROM_HAND && my.all.findAll{it.numberOfDamageCounters} && confirm("Use Blissful Nurse?")){
+            onActivate {reason ->
+              if(reason == PLAY_FROM_HAND && my.all.findAll{it.numberOfDamageCounters} && confirm("Use Blissful Nurse?")){
                 powerUsed()
                 my.all.each {
                   if(it.numberOfDamageCounters) {
@@ -2634,7 +2635,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip {damage 20} {damage 20, self}
+              flip {damage 20}, {damage 20, self}
             }
           }
           move "Heavy Storm", {
