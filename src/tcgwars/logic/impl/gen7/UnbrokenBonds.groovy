@@ -4206,7 +4206,7 @@ public enum UnbrokenBonds implements CardInfo {
               gxPerform()
               int cnt = my.prizeCardSet.size()
               my.prizeCardSet.moveTo(my.hand)
-              (1..cnt).each{deck.subList(0,cnt).moveTo(hidden:true,my.prizeCardSet)}
+              deck.subList(0,cnt).moveTo(hidden:true,my.prizeCardSet)
             }
           }
 
