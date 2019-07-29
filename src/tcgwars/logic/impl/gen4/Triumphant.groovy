@@ -127,14 +127,14 @@ public enum Triumphant implements CardInfo {
   SEEKER_88 ("Seeker", 88, Rarity.UNCOMMON, [TRAINER]),
   TWINS_89 ("Twins", 89, Rarity.UNCOMMON, [TRAINER]),
   RESCUE_ENERGY_90 ("Rescue Energy", 90, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  ABSOL_PRIME_91 ("Absol Prime", 91, Rarity.ULTRARARE, [BASIC, POKEMON, _DARKNESS_]),
-  CELEBI_PRIME_92 ("Celebi Prime", 92, Rarity.ULTRARARE, [BASIC, POKEMON, _GRASS_]),
-  ELECTRODE_PRIME_93 ("Electrode Prime", 93, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  GENGAR_PRIME_94 ("Gengar Prime", 94, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
-  MACHAMP_PRIME_95 ("Machamp Prime", 95, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  MAGNEZONE_PRIME_96 ("Magnezone Prime", 96, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
-  MEW_PRIME_97 ("Mew Prime", 97, Rarity.ULTRARARE, [BASIC, POKEMON, _PSYCHIC_]),
-  YANMEGA_PRIME_98 ("Yanmega Prime", 98, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  ABSOL_91 ("Absol", 91, Rarity.ULTRARARE, [BASIC, POKEMON, _DARKNESS_]),
+  CELEBI_92 ("Celebi", 92, Rarity.ULTRARARE, [BASIC, POKEMON, _GRASS_]),
+  ELECTRODE_93 ("Electrode", 93, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  GENGAR_94 ("Gengar", 94, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
+  MACHAMP_95 ("Machamp", 95, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+  MAGNEZONE_96 ("Magnezone", 96, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
+  MEW_97 ("Mew", 97, Rarity.ULTRARARE, [BASIC, POKEMON, _PSYCHIC_]),
+  YANMEGA_98 ("Yanmega", 98, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
   DARKRAI_AND_CRESSELIA_LEGEND_99 ("Darkrai & Cresselia LEGEND", 99, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
   DARKRAI_AND_CRESSELIA_LEGEND_100 ("Darkrai & Cresselia LEGEND", 100, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
   PALKIA_AND_DIALGA_LEGEND_101 ("Palkia & Dialga LEGEND", 101, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
@@ -1912,7 +1912,7 @@ public enum Triumphant implements CardInfo {
           allowAttach {to->
           }
         };
-      case ABSOL_PRIME_91:
+      case ABSOL_91:
         return basic (this, hp:HP080, type:DARKNESS, retreatCost:1) {
           weakness F
           resistance P, MINUS20
@@ -1931,7 +1931,7 @@ public enum Triumphant implements CardInfo {
           }
 
         };
-      case CELEBI_PRIME_92:
+      case CELEBI_92:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R
           pokePower "Forest Breath", {
@@ -1949,7 +1949,7 @@ public enum Triumphant implements CardInfo {
           }
 
         };
-      case ELECTRODE_PRIME_93:
+      case ELECTRODE_93:
         return evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:1) {
           weakness F
           resistance M, MINUS20
@@ -1968,7 +1968,7 @@ public enum Triumphant implements CardInfo {
           }
 
         };
-      case GENGAR_PRIME_94:
+      case GENGAR_94:
         return evolution (this, from:"Haunter", hp:HP130, type:PSYCHIC, retreatCost:0) {
           weakness D
           resistance C, MINUS20
@@ -1995,7 +1995,7 @@ public enum Triumphant implements CardInfo {
           }
 
         };
-      case MACHAMP_PRIME_95:
+      case MACHAMP_95:
         return evolution (this, from:"Machoke", hp:HP150, type:FIGHTING, retreatCost:3) {
           weakness P
           pokePower "Fighting Tag", {
@@ -2021,7 +2021,7 @@ public enum Triumphant implements CardInfo {
           }
 
         };
-      case MAGNEZONE_PRIME_96:
+      case MAGNEZONE_96:
         return evolution (this, from:"Magneton", hp:HP140, type:LIGHTNING, retreatCost:3) {
           weakness F
           resistance M, MINUS20
@@ -2040,7 +2040,7 @@ public enum Triumphant implements CardInfo {
           }
 
         };
-      case MEW_PRIME_97:
+      case MEW_97:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:0) {
           weakness P
           pokeBody "Lost Link", {
@@ -2058,7 +2058,7 @@ public enum Triumphant implements CardInfo {
           }
 
         };
-      case YANMEGA_PRIME_98:
+      case YANMEGA_98:
         return evolution (this, from:"Yanma", hp:HP110, type:GRASS, retreatCost:0) {
           weakness L
           resistance F, MINUS20
