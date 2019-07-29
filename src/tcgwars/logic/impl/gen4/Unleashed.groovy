@@ -120,12 +120,12 @@ public enum Unleashed implements CardInfo {
   POKEMON_CIRCULATOR_81 ("Pokémon Circulator", 81, Rarity.UNCOMMON, [TRAINER]),
   RARE_CANDY_82 ("Rare Candy", 82, Rarity.UNCOMMON, [TRAINER]),
   SUPER_SCOOP_UP_83 ("Super Scoop Up", 83, Rarity.UNCOMMON, [TRAINER]),
-  CROBAT_PRIME_84 ("Crobat Prime", 84, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
-  KINGDRA_PRIME_85 ("Kingdra Prime", 85, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-  LANTURN_PRIME_86 ("Lanturn Prime", 86, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  STEELIX_PRIME_87 ("Steelix Prime", 87, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
-  TYRANITAR_PRIME_88 ("Tyranitar Prime", 88, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
-  URSARING_PRIME_89 ("Ursaring Prime", 89, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  CROBAT_84 ("Crobat", 84, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
+  KINGDRA_85 ("Kingdra", 85, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+  LANTURN_86 ("Lanturn", 86, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  STEELIX_87 ("Steelix", 87, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
+  TYRANITAR_88 ("Tyranitar", 88, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
+  URSARING_89 ("Ursaring", 89, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
   ENTEI_AND_RAIKOU_LEGEND_90 ("Entei & Raikou LEGEND", 90, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
   ENTEI_AND_RAIKOU_LEGEND_91 ("Entei & Raikou LEGEND", 91, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
   RAIKOU_AND_SUICUNE_LEGEND_92 ("Raikou & Suicune LEGEND", 92, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
@@ -1676,7 +1676,7 @@ public enum Unleashed implements CardInfo {
           playRequirement{
           }
         };
-      case CROBAT_PRIME_84:
+      case CROBAT_84:
         return evolution (this, from:"Golbat", hp:HP130, type:PSYCHIC, retreatCost:0) {
           weakness L
           resistance F, MINUS20
@@ -1698,7 +1698,7 @@ public enum Unleashed implements CardInfo {
           }
 
         };
-      case KINGDRA_PRIME_85:
+      case KINGDRA_85:
         return evolution (this, from:"Seadra", hp:HP130, type:WATER, retreatCost:1) {
           weakness L
           pokePower "Spray Splash", {
@@ -1716,7 +1716,7 @@ public enum Unleashed implements CardInfo {
           }
 
         };
-      case LANTURN_PRIME_86:
+      case LANTURN_86:
         return evolution (this, from:"Chinchou", hp:HP110, type:LIGHTNING, retreatCost:2) {
           weakness F
           pokePower "Underwater Dive", {
@@ -1734,7 +1734,7 @@ public enum Unleashed implements CardInfo {
           }
 
         };
-      case STEELIX_PRIME_87:
+      case STEELIX_87:
         return evolution (this, from:"Onix", hp:HP140, type:METAL, retreatCost:4) {
           weakness R
           resistance P, MINUS20
@@ -1761,7 +1761,7 @@ public enum Unleashed implements CardInfo {
           }
 
         };
-      case TYRANITAR_PRIME_88:
+      case TYRANITAR_88:
         return evolution (this, from:"Pupitar", hp:HP160, type:DARKNESS, retreatCost:3) {
           weakness F
           resistance P, MINUS20
@@ -1791,7 +1791,7 @@ public enum Unleashed implements CardInfo {
           }
 
         };
-      case URSARING_PRIME_89:
+      case URSARING_89:
         return evolution (this, from:"Teddiursa", hp:HP110, type:COLORLESS, retreatCost:3) {
           weakness F
           pokeBody "Berserk", {
