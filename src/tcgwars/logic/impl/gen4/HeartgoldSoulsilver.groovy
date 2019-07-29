@@ -553,7 +553,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
             onAttack {
               damage 80
               flipTails{damage 20, self}
-              }
             }
           }
 
