@@ -141,12 +141,12 @@ public enum HeartgoldSoulsilver implements CardInfo {
   SWITCH_102 ("Switch", 102, Rarity.UNCOMMON, [TRAINER, ITEM]),
   DOUBLE_COLORLESS_ENERGY_103 ("Double Colorless Energy", 103, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   RAINBOW_ENERGY_104 ("Rainbow Energy", 104, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  AMPHAROS_PRIME_105 ("Ampharos Prime", 105, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
-  BLISSEY_PRIME_106 ("Blissey Prime", 106, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  DONPHAN_PRIME_107 ("Donphan Prime", 107, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  FERALIGATR_PRIME_108 ("Feraligatr Prime", 108, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-  MEGANIUM_PRIME_109 ("Meganium Prime", 109, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  TYPHLOSION_PRIME_110 ("Typhlosion Prime", 110, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
+  AMPHAROS_105 ("Ampharos", 105, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
+  BLISSEY_106 ("Blissey", 106, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  DONPHAN_107 ("Donphan", 107, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  FERALIGATR_108 ("Feraligatr", 108, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+  MEGANIUM_109 ("Meganium", 109, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  TYPHLOSION_110 ("Typhlosion Prime", 110, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
   HO_OH_LEGEND_111 ("Ho-Oh LEGEND", 111, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
   HO_OH_LEGEND_112 ("Ho-Oh LEGEND", 112, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
   LUGIA_LEGEND_113 ("Lugia LEGEND", 113, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
@@ -2314,7 +2314,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             }
           }
         };
-      case AMPHAROS_PRIME_105:
+      case AMPHAROS_105:
         return evolution (this, from:"Flaaffy", hp:HP140, type:LIGHTNING, retreatCost:2) {
           weakness F
           resistance M, MINUS20
@@ -2338,7 +2338,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
           }
 
         };
-      case BLISSEY_PRIME_106:
+      case BLISSEY_106:
         return evolution (this, from:"Chansey", hp:HP130, type:COLORLESS, retreatCost:2) {
           weakness F
           pokePower "Blissful Nurse", {
@@ -2367,7 +2367,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
           }
 
         };
-      case DONPHAN_PRIME_107:
+      case DONPHAN_107:
         return evolution (this, from:"Phanpy", hp:HP120, type:FIGHTING, retreatCost:2) {
           weakness W
           resistance L, MINUS20
@@ -2403,7 +2403,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
           }
 
         };
-      case FERALIGATR_PRIME_108:
+      case FERALIGATR_108:
         return evolution (this, from:"Croconaw", hp:HP140, type:WATER, retreatCost:3) {
           weakness G
           pokePower "Rain Dance", {
@@ -2424,7 +2424,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
           }
 
         };
-      case MEGANIUM_PRIME_109:
+      case MEGANIUM_109:
         return evolution (this, from:"Bayleef", hp:HP150, type:GRASS, retreatCost:2) {
           weakness R
           resistance W, MINUS20
@@ -2453,7 +2453,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
           }
 
         };
-      case TYPHLOSION_PRIME_110:
+      case TYPHLOSION_110:
         return evolution (this, from:"Quilava", hp:HP140, type:FIRE, retreatCost:2) {
           weakness W
           pokePower "Afterburner", {

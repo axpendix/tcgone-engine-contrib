@@ -43,9 +43,9 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
   WOBBUFFET_HGSS04 ("Wobbuffet", 4, Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]),
   HOOTHOOT_HGSS05 ("Hoothoot", 5, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
   NOCTOWL_HGSS06 ("Noctowl", 6, Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  FERALIGATR_PRIME_HGSS07 ("Feraligatr Prime", 7, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-  MEGANIUM_PRIME_HGSS08 ("Meganium Prime", 8, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  TYPHLOSION_PRIME_HGSS09 ("Typhlosion Prime", 9, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
+  FERALIGATR_HGSS07 ("Feraligatr", 7, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+  MEGANIUM_HGSS08 ("Meganium", 8, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  TYPHLOSION_HGSS09 ("Typhlosion", 9, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
   LATIAS_HGSS10 ("Latias", 10, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
   LATIOS_HGSS11 ("Latios", 11, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
   CLEFFA_HGSS12 ("Cleffa", 12, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
@@ -237,7 +237,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
           }
 
         };
-      case FERALIGATR_PRIME_HGSS07:
+      case FERALIGATR_HGSS07:
         return evolution (this, from:"Croconaw", hp:HP140, type:WATER, retreatCost:3) {
           weakness G
           pokePower "Rain Dance", {
@@ -255,7 +255,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
           }
 
         };
-      case MEGANIUM_PRIME_HGSS08:
+      case MEGANIUM_HGSS08:
         return evolution (this, from:"Bayleef", hp:HP150, type:GRASS, retreatCost:2) {
           weakness R
           resistance W, MINUS20
@@ -274,7 +274,7 @@ public enum HeartgoldSoulsilverPromos implements CardInfo {
           }
 
         };
-      case TYPHLOSION_PRIME_HGSS09:
+      case TYPHLOSION_HGSS09:
         return evolution (this, from:"Quilava", hp:HP140, type:FIRE, retreatCost:2) {
           weakness W
           pokePower "Afterburner", {
