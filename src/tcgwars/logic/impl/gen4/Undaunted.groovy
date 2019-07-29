@@ -117,12 +117,12 @@ public enum Undaunted implements CardInfo {
   TEAM_ROCKET_S_TRICKERY_78 ("Team Rocket's Trickery", 78, Rarity.UNCOMMON, [TRAINER]),
   DARKNESS_ENERGY_79 ("Darkness Energy", 79, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   METAL_ENERGY_80 ("Metal Energy", 80, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  ESPEON_PRIME_81 ("Espeon Prime", 81, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  HOUNDOOM_PRIME_82 ("Houndoom Prime", 82, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  RAICHU_PRIME_83 ("Raichu Prime", 83, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  SCIZOR_PRIME_84 ("Scizor Prime", 84, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
-  SLOWKING_PRIME_85 ("Slowking Prime", 85, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  UMBREON_PRIME_86 ("Umbreon Prime", 86, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  ESPEON_81 ("Espeon", 81, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  HOUNDOOM_82 ("Houndoom", 82, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  RAICHU_83 ("Raichu", 83, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  SCIZOR_84 ("Scizor", 84, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
+  SLOWKING_85 ("Slowking", 85, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  UMBREON_86 ("Umbreon", 86, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
   KYOGRE_AND_GROUDON_LEGEND_87 ("Kyogre & Groudon LEGEND", 87, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
   KYOGRE_AND_GROUDON_LEGEND_88 ("Kyogre & Groudon LEGEND", 88, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
   RAYQUAZA_AND_DEOXYS_LEGEND_89 ("Rayquaza & Deoxys LEGEND", 89, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
@@ -1655,7 +1655,7 @@ public enum Undaunted implements CardInfo {
           allowAttach {to->
           }
         };
-      case ESPEON_PRIME_81:
+      case ESPEON_81:
         return evolution (this, from:"Eevee", hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness P
           pokeBody "Evolution Memories", {
@@ -1673,7 +1673,7 @@ public enum Undaunted implements CardInfo {
           }
 
         };
-      case HOUNDOOM_PRIME_82:
+      case HOUNDOOM_82:
         return evolution (this, from:"Houndour", hp:HP110, type:DARKNESS, retreatCost:1) {
           weakness F
           resistance P, MINUS20
@@ -1692,7 +1692,7 @@ public enum Undaunted implements CardInfo {
           }
 
         };
-      case RAICHU_PRIME_83:
+      case RAICHU_83:
         return evolution (this, from:"Pikachu", hp:HP100, type:LIGHTNING, retreatCost:1) {
           weakness F
           resistance M, MINUS20
@@ -1711,7 +1711,7 @@ public enum Undaunted implements CardInfo {
           }
 
         };
-      case SCIZOR_PRIME_84:
+      case SCIZOR_84:
         return evolution (this, from:"Scyther", hp:HP100, type:METAL, retreatCost:2) {
           weakness R
           resistance P, MINUS20
@@ -1730,7 +1730,7 @@ public enum Undaunted implements CardInfo {
           }
 
         };
-      case SLOWKING_PRIME_85:
+      case SLOWKING_85:
         return evolution (this, from:"Slowpoke", hp:HP100, type:PSYCHIC, retreatCost:2) {
           weakness P
           pokePower "Opponent’s Choice", {
@@ -1748,7 +1748,7 @@ public enum Undaunted implements CardInfo {
           }
 
         };
-      case UMBREON_PRIME_86:
+      case UMBREON_86:
         return evolution (this, from:"Eevee", hp:HP100, type:DARKNESS, retreatCost:1) {
           weakness F
           resistance P, MINUS20
