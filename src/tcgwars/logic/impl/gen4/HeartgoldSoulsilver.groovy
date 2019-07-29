@@ -494,11 +494,11 @@ public enum HeartgoldSoulsilver implements CardInfo {
               powerUsed()
               def playerDeck = choose([0,1],["Your Deck", "Opponent's Deck"], "Whose deck do you want to look at")
               if (playerDeck == 0) {
-                def list=rearrange(my.deck.subList(0,3), "Arrange top 3 cards in your deck (rightmost card is on top)")
+                def list=rearrange(my.deck.subList(0,3), "Arrange top 3 cards in your deck (leftmost card is on top)")
                 deck.setSubList(0, list)
               }
               else {
-                def list=rearrange(opp.deck.subList(0,3), "Arrange top 3 cards in your opponent's deck (rightmost card is on top)")
+                def list=rearrange(opp.deck.subList(0,3), "Arrange top 3 cards in your opponent's deck (leftmost card is on top)")
                 deck.setSubList(0, list)
               }
             }
@@ -1482,8 +1482,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              def numWater = self.findAll{it.cards.filterByEnergyType(W)}.size()
-              damage 20*self.cards.filterByEnergyType(W).select(max:numWater, "Select up to $numWater energies").moveTo(deck).size()
+              def numWater = self.cards.findAll{it.cards.filterByEnergyType(W)}.size()
+              damage 20*self.cards.filterByEnergyType(W).select(min:0, max:numWater, "Select any number of energies").moveTo(deck).size()
               shuffleDeck()
             }
           }
@@ -1520,7 +1520,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             onActivate {reason ->
               if(reason == PLAY_FROM_HAND && my.deck.notEmpty && confirm("Use Flash?")){
                 powerUsed()
-                def list=rearrange(deck.subList(0,5), "Rearrange top 5 cards in your deck (rightmost card is on top)")
+                def list=rearrange(deck.subList(0,5), "Rearrange top 5 cards in your deck (leftmost card is on top)")
                 deck.setSubList(0, list)
               }
             }
@@ -2459,11 +2459,14 @@ public enum HeartgoldSoulsilver implements CardInfo {
           pokePower "Afterburner", {
             text "Once during your turn , you may search your discard pile for a [R] Energy card and attach it to 1 of your Pokémon. If you do, put 1 damage counter on that Pokémon. This power can’t be used if Typhlosion is affected by a Special Condition."
             actionA {
+              checkLastTurn()
               checkNoSPC()
               assert my.discard.filterByEnergyType(R) : "No fire energy in discard"
+              powerUsed()
               def pcs = my.all.select()
-              def card = my.discard.filterByEnergyType(R).select()
-              attachEnergy(pcs, card)
+              my.discard.filterByEnergyType(R).select().each{
+                attachEnergy(pcs, it)
+              }
               directDamage(10, pcs)
             }
           }
