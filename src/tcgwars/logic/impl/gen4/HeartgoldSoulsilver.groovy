@@ -320,7 +320,19 @@ public enum HeartgoldSoulsilver implements CardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              //TODO: implement damage increase
+              afterDamage {
+                delayed {
+                  after PROCESS_ATTACK_EFFECTS, {
+                    bg.dm().each {
+                      if(it.dmg.value){
+                        bc "${thisMove.name} increases damage"
+                        it.dmg+=20
+                      }
+                    }
+                  }
+                  unregisterAfter 2
+                }
+              }
             }
           }
 
@@ -540,8 +552,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             attackRequirement {}
             onAttack {
               damage 80
-              flipTails{
-                damage 20, self
+              flipTails{damage 20, self}
               }
             }
           }
@@ -1421,7 +1432,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip {applyAfterDamage POISONED} {applyAfterDamage PARALYZED}
+              flip 1, {applyAfterDamage POISONED}, {applyAfterDamage PARALYZED}
             }
           }
 
@@ -1468,12 +1479,13 @@ public enum HeartgoldSoulsilver implements CardInfo {
         return evolution (this, from:"Staryu", hp:HP090, type:WATER, retreatCost:0) {
           weakness L
           move "Cosmic Cyclone", {
-            text "20× damage. Energy attached to your Pokémon as you like. This attack does 20 damage times the number of Energy you chose. Shuffle those cards back into your deck."
-            energyCost W, W
+            text "20× damage. Choose as many [W] Energy attached to your Pokémon as you like. This attack does 20 damage times the number of Energy you chose. Shuffle those cards back into your deck."
+            energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
-              //TODO: Implement Comsic Cyclone
+              def numWater = self.findAll{it.cards.filterByEnergyType(W)}.size()
+              damage 20*self.cards.filterByEnergyType(W).select(max:numWater, "Select up to $numWater energies").moveTo(deck).size()
+              shuffleDeck()
             }
           }
 
@@ -1483,12 +1495,13 @@ public enum HeartgoldSoulsilver implements CardInfo {
           weakness P
           pokePower "RETURN", {
             text "Once during your turn, when you put Unown from your hand onto your Bench, you may return all Energy attached to 1 of your Pokémon to your hand."
-            actionA {
-              if(it==PLAY_FROM_HAND && confirm("Use Return?")){
-                powerUsed()
-                // TODO: Implement Return
-              }
-            }
+             onActivate {reason ->
+               if(reason == PLAY_FROM_HAND && my.all.findAll{it.cards.filterByType(ENERGY)}.size() && confirm("Use Return?")){
+                 powerUsed()
+                 def tar = my.all.findAll {it.cards.filterByType(ENERGY)}.select()
+                 tar.cards.filterByType(ENERGY).moveTo(my.hand)
+               }
+             }
           }
           move "Hidden Power", {
             text "10 damage. "
@@ -1506,7 +1519,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
           pokePower "FLASH", {
             text "Once during your turn, when you put Unown from your hand onto your Bench, you may look at the top 5 cards of your deck and put them back on top of your deck in any order."
             onActivate {reason ->
-              if(reason == PLAY_FROM_HAND && confirm("Use Flash?") && my.deck.notEmpty){
+              if(reason == PLAY_FROM_HAND && my.deck.notEmpty && confirm("Use Flash?")){
                 powerUsed()
                 def list=rearrange(deck.subList(0,5), "Rearrange top 5 cards in your deck (rightmost card is on top)")
                 deck.setSubList(0, list)
@@ -2171,7 +2184,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip {} {discardSelfEnergy(R)}
+              flip 1, {}, {discardSelfEnergy(R)}
             }
           }
 
@@ -2635,7 +2648,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip {damage 20} {damage 20, self}
+              flip 1, {damage 20}, {damage 20, self}
             }
           }
           move "Heavy Storm", {
