@@ -1179,7 +1179,11 @@ public enum HeartgoldSoulsilver implements CardInfo {
               assert my.deck
             }
             onAttack {
-              draw my.all.findAll{it.cards.energyCount(W)}.size()
+              def count=0
+              my.all.findAll{it.cards.energyCount(W)}.each{
+                count+=it.cards.energyCount(W)
+              }
+              draw count
             }
           }
           move "Hail", {
