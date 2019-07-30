@@ -1482,8 +1482,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              def numWater = self.cards.findAll{it.cards.filterByEnergyType(W)}.size()
-              damage 20*self.cards.filterByEnergyType(W).select(min:0, max:numWater, "Select any number of energies").moveTo(deck).size()
+              def numWater = self.cards.filterByEnergyType(L).size()
+              damage 20*self.cards.filterByEnergyType(W).select(min:0, max:numWater, "Select any number of energies").moveTo(my.deck).size()
               shuffleDeck()
             }
           }
