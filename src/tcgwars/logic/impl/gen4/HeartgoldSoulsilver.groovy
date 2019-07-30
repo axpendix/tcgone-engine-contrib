@@ -1179,7 +1179,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
               assert my.deck
             }
             onAttack {
-              draw my.all.findAll{it.cards.filterByEnergyType(W)}.size()
+              draw my.all.findAll{it.cards.energyCount(W)}.size()
             }
           }
           move "Hail", {
@@ -1482,8 +1482,9 @@ public enum HeartgoldSoulsilver implements CardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              def numWater = self.cards.filterByEnergyType(W).size()
-              damage 20*self.cards.filterByEnergyType(W).select(min:0, max:numWater, "Select any number of energies").moveTo(my.deck).size()
+              def selectedCards = self.cards.filterByEnergyType(W).select(min:0, max:self.cards.filterByEnergyType(W).size())
+              damage 20*selectedCards.energyCount(W)
+              afterDamage{ selectedCards.moveTo(my.deck) }
               shuffleDeck()
             }
           }
