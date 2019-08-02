@@ -4011,8 +4011,11 @@ public enum UnifiedMinds implements CardInfo {
 			return supporter (this) {
 				text "Search your deck for up to 3 Supporter cards, reveal them, and put them into your hand. Then, shuffle your deck."
 				onPlay {
+            deck.search(max:3,cardTypeFilter(SUPPORTER)).moveTo(hand)
+            shuffleDeck()
 				}
 				playRequirement{
+          assert my.deck : "There are no cards in your deck"
 				}
 			};
 			case NORMALIUM_Z_TACKLE_203:
@@ -4027,14 +4030,17 @@ public enum UnifiedMinds implements CardInfo {
 				allowAttach {to->
 				}
 			};
-			case POKE_MANIAC_204:
-			return supporter (this) {
-				text "Search your deck for up to 3 Pokémon that have a Retreat Cost of exactly 4, reveal them, and put them into your hand. Then, shuffle your deck."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      case POKE_MANIAC_204:
+        return supporter (this) {
+          text "Search your deck for up to 3 Pokémon that have a Retreat Cost of exactly 4, reveal them, and put them into your hand. Then, shuffle your deck."
+          onPlay {
+            deck.search(max:3,"Select up to 3 Pokemon with a Retreat Cost of 4",{it.cardTypes.is(POKEMON) && it.retreatCost == 4}).moveTo(hand)
+            shuffleDeck()
+          }
+          playRequirement{
+            assert my.deck : "There are no cards in your deck"
+          }
+        };
 			case POKEMON_RESEARCH_LAB_205:
 			return stadium (this) {
 				text "Once during each player’s turn, that player may search their deck for up to 2 Pokémon that evolve from Unidentified Fossil, put those Pokémon onto their Bench, and shuffle their deck. If a player searches their deck in this way, their turn ends."
@@ -4044,12 +4050,15 @@ public enum UnifiedMinds implements CardInfo {
 				}
 			};
 			case RESET_STAMP_206:
-			return itemCard (this) {
-				text "Your opponent shuffles their hand into their deck and draws a card for each of their remaining Prize cards."
-				onPlay {
-				}
-				playRequirement{
-				}
+        return itemCard (this) {
+          text "Your opponent shuffles their hand into their deck and draws a card for each of their remaining Prize cards."
+          onPlay {
+              opp.hand.moveTo(opp.deck)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
+              draw opp.prizeCardSet.size(), TargetPlayer.OPPONENT
+          }
+          playRequirement{
+          }
 			};
 			case SLUMBERING_FOREST_207:
 			return stadium (this) {
@@ -4063,18 +4072,26 @@ public enum UnifiedMinds implements CardInfo {
 			return itemCard (this) {
 				text "Flip 2 coins. For each heads, search your deck for a Stadium card, reveal it, and put it into your hand. Then, shuffle your deck."
 				onPlay {
+          flip 2, {deck.search(cardTypeFilter(STADIUM)).moveTo(hand)}
+          shuffleDeck()
 				}
 				playRequirement{
+          assert my.deck : "There are no cards in your deck"
 				}
 			};
 			case TAG_SWITCH_209:
-			return itemCard (this) {
-				text "Move up to 2 Energy from 1 of your TAG TEAM Pokémon to another of your Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+        return itemCard (this) {
+          text "Move up to 2 Energy from 1 of your TAG TEAM Pokémon to another of your Pokémon."
+          onPlay {
+            def pcs = my.all.findAll {it.cardTypes.isIn(TAG_TEAM) && it.cards.filterByType(ENERGY)}.select("Move energy from")
+            def tar = my.all.findAll {it != pcs}.select("To?")
+            def eng = pcs.select(max:2, "Select which energy to move").each{energySwitch(pcs,tar,it)
+          }
+          playRequirement{
+            assert my.all.findAll {it.cardTypes.isIn(TAG_TEAM) && it.cards.filterByType(ENERGY)} : "No valid target"
+            assert my.all.size() >= 2 : "You only have one Pokemon in play"
+          }
+			  };
 			case UNIDENTIFIED_FOSSIL_210:
 			return itemCard (this) {
 				text "Play this card as if it were a 60-HP [C] Basic Pokémon. At any time during your turn (before your attack), you may discard this card from play." +
