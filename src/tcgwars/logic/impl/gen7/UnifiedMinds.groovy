@@ -4085,7 +4085,7 @@ public enum UnifiedMinds implements CardInfo {
           onPlay {
             def pcs = my.all.findAll {it.cardTypes.isIn(TAG_TEAM) && it.cards.filterByType(ENERGY)}.select("Move energy from")
             def tar = my.all.findAll {it != pcs}.select("To?")
-            def eng = pcs.select(max:2, "Select which energy to move").each{energySwitch(pcs,tar,it)
+            def eng = pcs.select(max:2, "Select which energy to move").each{energySwitch(pcs,tar,it)}
           }
           playRequirement{
             assert my.all.findAll {it.cardTypes.isIn(TAG_TEAM) && it.cards.filterByType(ENERGY)} : "No valid target"
