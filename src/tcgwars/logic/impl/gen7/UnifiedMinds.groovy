@@ -293,8 +293,7 @@ public enum UnifiedMinds implements CardInfo {
 	U_TURN_BOARD_255 ("U-Turn Board", 255, Rarity.SECRET, [TRAINER, ITEM, POKEMON_TOOL]),
 	VIRIDIAN_FOREST_256 ("Viridian Forest", 256, Rarity.SECRET, [TRAINER, STADIUM]),
 	RECYCLE_ENERGY_257 ("Recycle Energy", 257, Rarity.SECRET, [ENERGY, SPECIAL_ENERGY]),
-	WEAKNESS_GUARD_ENERGY_258 ("Weakness Guard Energy", 258, Rarity.SECRET, [ENERGY, SPECIAL_ENERGY]),
-;
+	WEAKNESS_GUARD_ENERGY_258 ("Weakness Guard Energy", 258, Rarity.SECRET, [ENERGY, SPECIAL_ENERGY]);
 	
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 	
@@ -4126,7 +4125,7 @@ public enum UnifiedMinds implements CardInfo {
 			return copy (RECYCLE_ENERGY_212, this);
 			case WEAKNESS_GUARD_ENERGY_258:
 			return copy (WEAKNESS_GUARD_ENERGY_213, this);
-				default:
+			default:
 			return null;
 		}
 	}
