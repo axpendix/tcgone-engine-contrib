@@ -35,7 +35,7 @@ import tcgwars.logic.util.*;
  * @author axpendix@hotmail.com
  */
 public enum UnifiedMinds implements CardInfo {
-	
+
 	ROWLET_ALOLAN_EXEGGUTOR_GX_1 ("Rowlet & Alolan Exeggutor-GX", 1, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _GRASS_]),
 	YANMA_2 ("Yanma", 2, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
 	YANMEGA_3 ("Yanmega", 3, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
@@ -294,9 +294,9 @@ public enum UnifiedMinds implements CardInfo {
 	VIRIDIAN_FOREST_256 ("Viridian Forest", 256, Rarity.SECRET, [TRAINER, STADIUM]),
 	RECYCLE_ENERGY_257 ("Recycle Energy", 257, Rarity.SECRET, [ENERGY, SPECIAL_ENERGY]),
 	WEAKNESS_GUARD_ENERGY_258 ("Weakness Guard Energy", 258, Rarity.SECRET, [ENERGY, SPECIAL_ENERGY]);
-	
+
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
-	
+
 	protected CardTypeSet cardTypes;
 	protected String name;
 	protected Rarity rarity;
@@ -351,12 +351,26 @@ public enum UnifiedMinds implements CardInfo {
 			return basic (this, hp:HP270, type:G, retreatCost:3) {
 				weakness R
 				move "Super Growth", {
-					text " damage. Search your deck for a card that evolves from 1 of your [G] Pokémon and put it onto that Pokémon to evolve it. If that Pokémon is now a Stage 1 Pokémon, search your deck for a Stage 2 Pokémon that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
-					energyCost 
+					text "Search your deck for a card that evolves from 1 of your [G] Pokémon and put it onto that Pokémon to evolve it. If that Pokémon is now a Stage 1 Pokémon, search your deck for a Stage 2 Pokémon that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
+					energyCost
 					attackRequirement {}
 					onAttack {
-						damage 
-					}
+            // TODO:
+            def names = my.all.findAll(pokemonTypeFilter(G)).collect{ it.name }
+            def sel = deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
+            if (sel) {
+              def opts = my.all.findAll({it.name==sel.first().predecessor})
+              def pcs = opts.select("Evolve which one?")
+              evolve(pcs, sel.first(), OTHER)
+            }
+            if (sel.cardTypes.is(STAGE1)) {
+              def sel = deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
+              def opts = my.all.findAll({it.name==sel.first().predecessor})
+              def pcs = opts.select("Evolve which one?")
+              evolve(pcs, sel.first(), OTHER)
+            }
+            shuffleDeck()
+          }
 				}
 				move "Calming Hurricane", {
 					text "150 damage. Heal 30 damage from this Pokémon."
@@ -364,17 +378,26 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 150
+            heal 30, self
 					}
 				}
 				move "Tropical Hour GX", {
 					text "200 damage. If this Pokémon has at least 3 extra Energy attached to it (in addition to this attack's cost), your opponent shuffles all Energy from all of their Pokémon into their deck. (You can't use more than 1 GX attack in a game.)"
 					energyCost G, G, G
-					attackRequirement {}
-					onAttack {
-						damage 200
-					}
+					attackRequirement { gxCheck() }
+          onAttack {
+            damage 200
+            gxPerform()
+            if (self.cards.energySufficient(thisMove.energyCost + C,C,C)){
+              afterDamage{
+                opp.all.each{
+                  it.cards.filterByType(ENERGY).moveTo(opp.deck)
+                }
+                shuffleDeck(null, TargetPlayer.OPPONENT)
+              }
+            }
+          }
 				}
-				
 			};
 			case YANMA_2:
 			return basic (this, hp:HP070, type:G, retreatCost:1) {
@@ -395,7 +418,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
 					}
 				}
-				
 			};
 			case YANMEGA_3:
 			return evolution (this, from:"Yanma", hp:HP120, type:G, retreatCost:1) {
@@ -416,17 +438,25 @@ public enum UnifiedMinds implements CardInfo {
 						damage 100
 					}
 				}
-				
 			};
 			case CELEBI_4:
 			return basic (this, hp:HP080, type:G, retreatCost:1) {
 				weakness R
 				move "Time Spiral", {
-					text " damage. Devolve 1 of your opponent's evolved Pokémon by removing the highest Stage Evolution card from it. Your opponent shuffles that card into their deck."
+					text "Devolve 1 of your opponent's evolved Pokémon by removing the highest Stage Evolution card from it. Your opponent shuffles that card into their deck."
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 
+            def list = opp.all.findAll { it.evolution }
+            assert list
+            def pcs = list.select("Devolve (or cancel)", false)
+            assert pcs
+            def top=pcs.topPokemonCard
+            bc "$top Devolved"
+            pcs.cards.remove(top)
+            opp.deck.add(top)
+            shuffleDeck(null, TargetPlayer.OPPONENT)
+            devolve(pcs, top)
 					}
 				}
 				move "Mind Bend", {
@@ -435,33 +465,37 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            apply CONFUSED
 					}
 				}
-				
 			};
 			case SHROOMISH_5:
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
 				weakness R
 				move "Poison Powder", {
-					text " damage. Your opponent's Active Pokémon is now Poisoned."
+					text "Your opponent's Active Pokémon is now Poisoned."
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 
+						apply POISONED
 					}
 				}
-				
 			};
 			case SEWADDLE_6:
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
 				weakness R
 				move "Multiply", {
-					text " damage. Search your deck for up to 2 Sewaddle and put them onto your Bench. Then, shuffle your deck."
+					text "Search your deck for up to 2 Sewaddle and put them onto your Bench. Then, shuffle your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
-					}
+            def maxSpace = Math.min(my.bench.freeBenchCount, 2)
+            my.deck.search(max:maxSpace, "Select $maxSpace Sewaddle Pokémon to put onto your Bench", { it.name == "Sewaddle" }).each{
+              my.deck.remove(it);
+              benchPCS(it)
+            }
+            shuffleDeck()
+          }
 				}
 				move "Gnaw", {
 					text "10 damage. "
@@ -471,33 +505,47 @@ public enum UnifiedMinds implements CardInfo {
 						damage 10
 					}
 				}
-				
 			};
 			case SEWADDLE_7:
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
 				weakness R
 				bwAbility "Swaddling Leaves", {
 					text "This Pokémon takes 10 less damage from attacks (after applying Weakness and Resistance)."
-					actionA {
-					}
+					delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to == self && it.dmg.value && it.notNoEffect) {
+                  bc "Swaddling Leaves -10"
+                  it.dmg -= hp(10)
+                }
+              }
+            }
+          }
 				}
 				move "Surprise Attack", {
 					text "20 damage. Flip a coin. If tails, this attack does nothing."
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 20
+						flip { damage 20 }
 					}
 				}
-				
 			};
 			case SWADLOON_8:
 			return evolution (this, from:"Sewaddle", hp:HP070, type:G, retreatCost:2) {
 				weakness R
 				bwAbility "Swaddling Leaves", {
 					text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
-					actionA {
-					}
+					delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to==self && it.dmg.value && it.notNoEffect) {
+                  bc "Swaddling Leaves -30"
+                  it.dmg -= hp(30)
+                }
+              }
+            }
+          }
 				}
 				move "Bug Bite", {
 					text "10 damage. "
@@ -507,15 +555,24 @@ public enum UnifiedMinds implements CardInfo {
 						damage 10
 					}
 				}
-				
 			};
 			case LEAVANNY_9:
 			return evolution (this, from:"Swadloon", hp:HP120, type:G, retreatCost:1) {
 				weakness R
 				bwAbility "Blanket Weaver", {
 					text "Your [G] Pokémon take 40 less damage from your opponent's attacks (after applying Weakness and Resistance). You can't apply more than 1 Blanket Weaver Ability at a time."
-					actionA {
-					}
+					delayedA {
+            checkLastTurn()
+            before APPLY_ATTACK_DAMAGES, {
+              powerUsed()
+              bg.dm().each {
+                if (self.active && it.to.owner==self.owner && it.from.owner!=it.to.owner && ef.attacker.owner!=self.owner && it.notNoEffect && it.notZero && it.to.types.contains(G)) {
+                  bc "Blanket Weaver -40"
+                  it.dmg -= hp(40)
+                }
+              }
+            }
+          }
 				}
 				move "Razor Leaf", {
 					text "70 damage. "
@@ -525,7 +582,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 70
 					}
 				}
-				
 			};
 			case DWEBBLE_10:
 			return basic (this, hp:HP070, type:G, retreatCost:2) {
@@ -538,15 +594,22 @@ public enum UnifiedMinds implements CardInfo {
 						damage 10
 					}
 				}
-				
 			};
 			case CRUSTLE_11:
 			return evolution (this, from:"Dwebble", hp:HP120, type:G, retreatCost:3) {
 				weakness R
-				bwAbility "Swaddling Leaves", {
+				bwAbility "Shell Armor", {
 					text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
-					actionA {
-					}
+					delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each{
+                if(it.to == self && it.notNoEffect && it.dmg.value) {
+                  bc "Shell Armor -30"
+                  it.dmg -= hp(30)
+                }
+              }
+            }
+          }
 				}
 				move "Fury Cutter", {
 					text "50+ damage. Flip 3 coins. If 1 of them is heads, this attack does 40 more damage. If 2 of them are heads, this attack does 80 more damage. If all of them are heads, this attack does 150 more damage."
@@ -554,9 +617,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            flip 3,{},{}, [ 1:{damage 10}, 2:{damage 80}, 3:{damage 150} ]
 					}
 				}
-				
 			};
 			case KARRABLAST_12:
 			return basic (this, hp:HP070, type:G, retreatCost:2) {
@@ -567,30 +630,41 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            damage 10, self
 					}
 				}
-				
 			};
 			case FOONGUS_13:
 			return basic (this, hp:HP040, type:G, retreatCost:1) {
 				weakness R
 				move "Spore", {
-					text " damage. Your opponent’s Active Pokémon is now Asleep."
+					text "Your opponent’s Active Pokémon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						apply ASLEEP
 					}
 				}
-				
 			};
 			case AMOONGUSS_14:
 			return evolution (this, from:"Foongus", hp:HP100, type:G, retreatCost:2) {
 				weakness R
 				bwAbility "Bursting Spores", {
 					text "Whenever you play a Pokémon that has the Spore attack from your hand during your turn, you may leave your opponent's Active Pokémon Asleep and Poisoned."
-					actionA {
-					}
+					delayedA {
+            before PLAY_BASIC_POKEMON, {
+              if(ef.cardToPlay.moves.find{ it.name == "Spore" }) {
+                apply POISONED, opp.active
+                apply ASLEEP, opp.active
+              }
+            }
+            before PLAY_EVOLUTION, {
+              if(ef.cardToPlay.moves.find{ it.name == "Spore" }) {
+                apply POISONED, opp.active
+                apply ASLEEP, opp.active
+              }
+            }
+          }
 				}
 				move "Venoshock", {
 					text "20+ damage. If your opponent's Active Pokémon is Poisoned, this attack does 70 more damage."
@@ -598,19 +672,21 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            if (defending.isSPC(POISONED)) damage 70
 					}
 				}
-				
 			};
 			case FOMANTIS_15:
 			return basic (this, hp:HP070, type:G, retreatCost:1) {
 				weakness R
 				move "Sweet Scent", {
-					text " damage. Heal 30 damage from 1 of your Pokémon."
+					text "Heal 30 damage from 1 of your Pokémon."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+            assert my.all.findAll {it.numberOfDamageCounters}
+          }
 					onAttack {
-						damage 
+						heal 30, my.all.findAll { it.numberOfDamageCounters }.select()
 					}
 				}
 				move "Leafage", {
@@ -621,17 +697,16 @@ public enum UnifiedMinds implements CardInfo {
 						damage 10
 					}
 				}
-				
 			};
 			case LURANTIS_16:
 			return evolution (this, from:"Fomantis", hp:HP110, type:G, retreatCost:1) {
 				weakness R
 				move "Petal Blizzard", {
-					text " damage. This attack does 10 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+					text "This attack does 10 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						opp.all.each { damage 10, it }
 					}
 				}
 				move "Sol Slice", {
@@ -640,9 +715,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            if (self.cards.energyCount(R)) damage 50
 					}
 				}
-				
 			};
 			case BOUNSWEET_17:
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
@@ -663,7 +738,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
 					}
 				}
-				
 			};
 			case STEENEE_18:
 			return evolution (this, from:"Bounsweet", hp:HP090, type:G, retreatCost:2) {
@@ -673,7 +747,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 30
+						flip 2, { damage 30 }
 					}
 				}
 				move "Leaf Step", {
@@ -684,7 +758,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 60
 					}
 				}
-				
 			};
 			case TSAREENA_19:
 			return evolution (this, from:"Steenee", hp:HP140, type:G, retreatCost:2) {
@@ -692,6 +765,9 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Queenly Reward", {
 					text "Once during your turn (before your attack), you may attach a [G] Energy card from your discard pile to your Active Pokémon."
 					actionA {
+            assert my.discard.filterByEnergyType(GRASS) : "There is no [G] Energy card in your discard pile."
+            attachEnergyFrom(type:G, my.discard, my.active)
+            powerUsed()
 					}
 				}
 				move "High Jump Kick", {
@@ -702,17 +778,16 @@ public enum UnifiedMinds implements CardInfo {
 						damage 90
 					}
 				}
-				
 			};
 			case DHELMISE_20:
 			return basic (this, hp:HP100, type:G, retreatCost:1) {
 				weakness R
 				move "Sea Creeper Net", {
-					text " damage. Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
+					text " Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						callForFamily(basic:true, 1, delegate)
 					}
 				}
 				move "Spinning Attack", {
@@ -723,7 +798,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 40
 					}
 				}
-				
 			};
 			case MAGMAR_21:
 			return basic (this, hp:HP080, type:R, retreatCost:2) {
@@ -734,9 +808,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            sandAttack(thisMove)
 					}
 				}
-				
 			};
 			case MAGMORTAR_22:
 			return evolution (this, from:"Magmar", hp:HP130, type:R, retreatCost:3) {
@@ -747,6 +821,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            sandAttack(thisMove)
 					}
 				}
 				move "Flamethrower", {
@@ -755,9 +830,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 120
+            discardSelfEnergy C
 					}
 				}
-				
 			};
 			case NUMEL_23:
 			return basic (this, hp:HP090, type:R, retreatCost:4) {
@@ -776,9 +851,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
+            discardSelfEnergy C
 					}
 				}
-				
 			};
 			case CAMERUPT_24:
 			return evolution (this, from:"Numel", hp:HP140, type:R, retreatCost:4) {
@@ -797,17 +872,31 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 150
+            discardSelfEnergy C, C
 					}
 				}
-				
 			};
 			case HEATRAN_GX_25:
 			return basic (this, hp:HP190, type:R, retreatCost:3) {
 				weakness W
 				bwAbility "Burning Road", {
 					text "Once during your turn (before your attack), if this Pokémon was on the Bench and became your Active Pokémon this turn, you may move any number of [R] Energy attached to your Pokémon to this Pokémon."
-					actionA {
-					}
+					delayedA{
+              after SWITCH, {
+                checkLastTurn()
+                if (self.active && bg.currentTurn == self.owner && confirm("Use Burning Road?")) {
+                  powerUsed()
+                  while(1) {
+                    def pl = (my.all.findAll { it.cards.filterByEnergyType(R) && it!=self })
+                    if (!pl) break;
+                    def src=pl.select("Source for energy (cancel to stop moving)", false)
+                    if (!src) break;
+                    def card = src.cards.filterByEnergyType(R).select("[R] Energy Card to move to Heatran-GX").first()
+                    energySwitch(src, self, card)
+                  }
+                }
+              }
+          }
 				}
 				move "Steaming Stomp", {
 					text "130 damage. "
@@ -820,22 +909,26 @@ public enum UnifiedMinds implements CardInfo {
 				move "Hot Burn GX", {
 					text "50x damage. This attack does 50 damage times the amount of [R] Energy attached to this Pokémon. (You can't use more than 1 GX attack in a game.)"
 					energyCost R
-					attackRequirement {}
+					attackRequirement {
+            gxCheck()
+          }
 					onAttack {
-						damage 50
+            gxPerform()
+            damage 50 * self.cards.energyCount(R)
 					}
 				}
-				
 			};
 			case VICTINI_26:
 			return basic (this, hp:HP070, type:R, retreatCost:1) {
 				weakness W
 				move "Victory Sign", {
-					text " damage. Search your deck for up to 2 basic Energy cards of different types and attach them to your Pokémon in any way you like. Then, shuffle your deck."
+					text "Search your deck for up to 2 basic Energy cards of different types and attach them to your Pokémon in any way you like. Then, shuffle your deck."
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage 
+						attachEnergyFrom(basic:true, my.deck, my.all)
+            attachEnergyFrom(basic:true, my.deck, my.all)
+            shuffleDeck()
 					}
 				}
 				move "Flare", {
@@ -846,20 +939,21 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
 					}
 				}
-				
 			};
 			case LITWICK_27:
 			return basic (this, hp:HP060, type:R, retreatCost:1) {
 				weakness W
 				move "Find a Friend", {
-					text " damage. Search your deck for a [R] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
+					text "Search your deck for a [R] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
 					energyCost R
-					attackRequirement {}
-					onAttack {
-						damage 
-					}
+					attackRequirement{
+            assert my.deck : "There is no more cards in your deck."
+          }
+          onAttack{
+            my.deck.search("Select a [R] Pokémon to put into your hand",pokemonTypeFilter(R)).moveTo(my.hand)
+            shuffleDeck()
+          }
 				}
-				
 			};
 			case LITWICK_28:
 			return copy (LITWICK_27, this);
@@ -872,9 +966,10 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            discardSelfEnergy C
 					}
 				}
-				
+
 			};
 			case CHANDELURE_30:
 			return evolution (this, from:"Lampent", hp:HP140, type:R, retreatCost:2) {
@@ -885,9 +980,20 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            def list = my.deck.subList(0, 5).filterByType(POKEMON)
+            def num = list.size()
+            if (num)  damage 50 * num
+
+            def list = my.deck.subList(0, 5).discard()
+            def firePokemon = list.findAll(pokemonTypeFilter(R))
+            def benchCount = 0
+            multiSelect(firePokemon).each {
+              benchPCS(it)
+              benchCount += 1
+            }
+            my.deck.subList(0, 5 - benchCount).discard()
 					}
 				}
-				
 			};
 			case FLETCHINDER_31:
 			return evolution (this, from:"Fletchling", hp:HP080, type:R, retreatCost:1) {
@@ -898,9 +1004,12 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            afterDamage {
+              attachEnergyFrom(type: R, my.deck, self)
+              shuffleDeck()
+            }
 					}
 				}
-				
 			};
 			case TALONFLAME_32:
 			return evolution (this, from:"Fletchinder", hp:HP130, type:R, retreatCost:0) {
@@ -911,6 +1020,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            apply BURNED
 					}
 				}
 				move "Flare Raid", {
@@ -919,9 +1029,14 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 100
+            afterDamage {
+              discardSelfEnergy(C)
+            }
+            if (opp.bench) {
+              damage 50, opp.bench.select("Do 50 damage to which of your opponent's Pokémon?")
+            }
 					}
 				}
-				
 			};
 			case SALANDIT_33:
 			return basic (this, hp:HP070, type:R, retreatCost:1) {
@@ -934,7 +1049,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 10
 					}
 				}
-				
 			};
 			case SALAZZLE_34:
 			return evolution (this, from:"Salandit", hp:HP100, type:R, retreatCost:1) {
@@ -947,7 +1061,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 70
 					}
 				}
-				
 			};
 			case SLOWPOKE_PSYDUCK_GX_35:
 			return basic (this, hp:HP250, type:W, retreatCost:2) {
@@ -957,18 +1070,23 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
-						damage 40
+						damage 40 * my.hand.filterByType(SUPPORTER).select(max: 60).discard().size()
 					}
 				}
 				move "Thrilling Times GX", {
 					text "10+ damage. Flip a coin. If heads, this attack does 100 more damage. If this Pokémon has at least 6 extra [W] Energy attached to it (in addition to this attack's cost), flip 10 coins instead, and this attack does 100 more damage for each heads. (You can't use more than 1 GX attack in a game.)"
 					energyCost W, W
-					attackRequirement {}
+					attackRequirement { gxCheck() }
 					onAttack {
-						damage 10
-					}
+            gxPerform()
+            damage 10
+            if (self.cards.energySufficient(thisMove.energyCost + W,W,W,W,W,W)) {
+              flip 10, { damage 100 }
+            } else {
+              flip 1, { damage 100 }
+            }
+          }
 				}
-				
 			};
 			case LAPRAS_36:
 			return basic (this, hp:HP110, type:W, retreatCost:1) {
@@ -976,6 +1094,12 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Mermaid’s Call", {
 					text "Once during your turn (before your attack), you may put a Misty’s Favor card from your discard pile into your hand."
 					actionA {
+            checkLastTurn()
+            def cards = my.discard.findAll{ it.name == "Misty's Request" }
+            assert cards
+            powerUsed()
+
+            cards.select("Choose the card to put in your hand").moveTo(my.hand)
 					}
 				}
 				move "Surf", {
@@ -986,7 +1110,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 90
 					}
 				}
-				
 			};
 			case SNORUNT_37:
 			return basic (this, hp:HP050, type:W, retreatCost:1) {
@@ -999,7 +1122,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
 					}
 				}
-				
 			};
 			case FROSLASS_38:
 			return evolution (this, from:"Snorunt", hp:HP080, type:W, retreatCost:1) {
@@ -1009,8 +1131,12 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 20
-					}
+            if (confirm("How many damage counters would you like to add to Froslass?  Each damage counter added will increase the damage to the defending Pokemon by 20 damage.")) {
+              def num = choose([0, 1, 2, 3, 4, 5, 6, 7])
+              damage 20 * num
+              directDamage 10 * num, self
+            }
+          }
 				}
 				move "Icy Wind", {
 					text "40 damage. Your opponent’s Active Pokémon is now Asleep."
@@ -1018,9 +1144,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            apply ASLEEP
 					}
 				}
-				
 			};
 			case FINNEON_39:
 			return basic (this, hp:HP050, type:W, retreatCost:1) {
@@ -1033,7 +1159,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 10
 					}
 				}
-				
 			};
 			case LUMINEON_40:
 			return evolution (this, from:"Finneon", hp:HP090, type:W, retreatCost:0) {
@@ -1044,9 +1169,12 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            afterDamage {
+              assert opp.bench
+              moveEnergy(opp.active, opp.bench)
+            }
 					}
 				}
-				
 			};
 			case SNOVER_41:
 			return basic (this, hp:HP090, type:W, retreatCost:4) {
@@ -1057,9 +1185,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            apply ASLEEP
 					}
 				}
-				
 			};
 			case ABOMASNOW_42:
 			return evolution (this, from:"Snover", hp:HP140, type:W, retreatCost:4) {
@@ -1070,6 +1198,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+            applyAfterDamage {
+              if (opp.active.cards.filterByEnergyType(W)) apply PARALYZED
+            }
 					}
 				}
 				move "Wild Tackle", {
@@ -1078,19 +1209,22 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 140
+            damage 20, self
 					}
 				}
-				
 			};
 			case BASCULIN_43:
 			return basic (this, hp:HP080, type:W, retreatCost:1) {
 				weakness G
 				move "Swarming Bites", {
-					text " damage. This attack does 20 damage for each Basculin you have in play to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+					text "This attack does 20 damage for each Basculin you have in play to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						onAttack {
+              def count = my.bench.findAll({ it.name == "Basculin" }).size()
+              damage 20 * count, opp.bench.select()
+            }
 					}
 				}
 				move "Tackle", {
@@ -1101,7 +1235,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
 					}
 				}
-				
 			};
 			case TIRTOUGA_44:
 			return evolution (this, from:"UnidentifiedFossil", hp:HP100, type:W, retreatCost:3) {
@@ -1122,15 +1255,15 @@ public enum UnifiedMinds implements CardInfo {
 						damage 60
 					}
 				}
-				
 			};
 			case CARRACOSTA_45:
 			return evolution (this, from:"Tirtouga", hp:HP160, type:W, retreatCost:3) {
 				weakness G
 				bwAbility "Ancient Custom", {
-					text "Pokémon Tool cards attached to your opponent's Pokémon have no effect."
-					actionA {
-					}
+          text "Pokemon Tool cards attached to your opponent's Pokemon have no effect"
+          delayedA {
+            // TODO: LYSANDRE_LABS_111?
+          }
 				}
 				move "Aqua Impact", {
 					text "80+ damage. This attack does 20 more damage for each [C] in your opponent's Active Pokémon's Retreat Cost."
@@ -1138,9 +1271,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
+            damage 20 * opp.active.retreatCost
 					}
 				}
-				
 			};
 			case CRYOGONAL_46:
 			return basic (this, hp:HP090, type:W, retreatCost:1) {
@@ -1150,36 +1283,42 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage 10
+						delayed {
+              before PLAY_TRAINER, {
+                if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
+                  wcu "Frozen Lock prevents playing this Item card."
+                  prevent()
+                }
+              }
+              unregisterAfter 2
+            }
 					}
 				}
-				
 			};
 			case KELDEO_GX_47:
 			return basic (this, hp:HP170, type:W, retreatCost:2) {
 				weakness G
 				bwAbility "Pure Heart", {
 					text "Prevent all effects of attacks, including damage, done to this Pokémon by your opponent's Pokémon-GX or Pokémon-EX."
-					actionA {
-					}
+					safeguardForExAndGx("Holy Heart", self, delegate)
 				}
 				move "Sonic Edge", {
 					text "110 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						damage 110
+						directDamage 110, self.owner.opposite.pbg.active
 					}
 				}
 				move "Resolute Blade GX", {
 					text "50x damage. This attack does 50 damage for each of your opponent's Benched Pokémon. (You can't use more than 1 GX attack in a game.)"
 					energyCost W, W, C
-					attackRequirement {}
+					attackRequirement { gxCheck() }
 					onAttack {
-						damage 50
+						gxPerform()
+            damage 50 * opp.bench.size()
 					}
 				}
-				
 			};
 			case DEWPIDER_48:
 			return basic (this, hp:HP060, type:W, retreatCost:1) {
@@ -1200,28 +1339,30 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
 					}
 				}
-				
 			};
 			case ARAQUANID_49:
 			return evolution (this, from:"Dewpider", hp:HP100, type:W, retreatCost:1) {
 				weakness G
 				move "Tangle Drag", {
-					text " damage. Switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
+					text " Switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 
-					}
+					attackRequirement{
+            assert opp.bench
+          }
+          onAttack{
+            sw defending, opp.bench.select("Choose the new active.")
+          }
 				}
 				move "Sticky Web", {
 					text "80 damage. During your opponent's next turn, the Defending Pokémon's attacks cost [C] more, and its Retreat Cost is [C] more."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-						damage 80
-					}
+            damage 80
+            defendingAttacksCostsMore(opp.active, C)
+            defendingRetreatsCostsMore(opp.active, C)
+          }
 				}
-				
 			};
 			case WIMPOD_50:
 			return basic (this, hp:HP070, type:W, retreatCost:1) {
@@ -1232,37 +1373,42 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            sandAttack(thisMove)
 					}
 				}
-				
 			};
 			case GOLISOPOD_51:
 			return evolution (this, from:"Wimpod", hp:HP140, type:W, retreatCost:4) {
 				weakness G
 				bwAbility "Emergency Exit", {
 					text "If this Pokémon has 2 or fewer Energy attached to it, it has no Retreat Cost."
-					actionA {
-					}
+					getterA (GET_RETREAT_COST, BEFORE_LAST, self) { h->
+            if (h.effect.target.cards.energyCount(C) <= 2) {
+              h.object = 0
+            }
+          }
 				}
 				move "First Impression", {
 					text "120+ damage. If this Pokémon was on the Bench and became your Active Pokémon this turn, this attack does 60 more damage."
 					energyCost W, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 120
-					}
+            damage 120
+            if (wasSwitchedOutThisTurn(self)) {
+              damage 60
+            }
+          }
 				}
-				
 			};
 			case PYUKUMUKU_52:
 			return basic (this, hp:HP080, type:W, retreatCost:1) {
 				weakness G
 				move "Collect", {
-					text " damage. Draw a card."
+					text "Draw a card."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						draw 1
 					}
 				}
 				move "Rain Splash", {
@@ -1273,7 +1419,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 30
 					}
 				}
-				
 			};
 			case TAPU_FINI_53:
 			return basic (this, hp:HP120, type:W, retreatCost:1) {
@@ -1288,13 +1433,15 @@ public enum UnifiedMinds implements CardInfo {
 				}
 				move "Nature Wave", {
 					text "100 damage. If your opponent has any Ultra Beasts in play, this attack can be used for [C]."
-					energyCost W, W, C
-					attackRequirement {}
+					energyCost C
+					attackRequirement {
+            def ultraBeasts = opp.all.findAll it.topPokemonCard.cardTypes.is(ULTRA_BEAST)
+						if (!ultraBeasts) assert self.cards.energySufficient(W, W, C) : "Not enough energy. Opponent does not have any Ultra Beasts in play."
+          }
 					onAttack {
 						damage 100
 					}
 				}
-				
 			};
 			case RAICHU_ALOLAN_RAICHU_GX_54:
 			return basic (this, hp:HP260, type:L, retreatCost:2) {
@@ -1305,29 +1452,36 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
-						damage 80
-					}
+            damage 80
+            if (wasSwitchedOutThisTurn(self)) {
+              damage 80
+              apply PARALYZED
+            }
+          }
 				}
 				move "Lightning Ride GX", {
 					text "150+ damage. Switch this Pokémon with 1 of your Benched Pokémon. If this Pokémon has at least 2 extra [L] Energy attached to it (in addition to this attack’s cost), this attack does 100 more damage. (You can’t use more than 1 GX attack in a game.)"
 					energyCost L, L, C
-					attackRequirement {}
-					onAttack {
-						damage 150
-					}
+					attackRequirement { gxCheck() }
+          onAttack {
+            gxPerform()
+            switchYourActive()
+            if (self.cards.energySufficient(thisMove.energyCost + L, L )){
+              damage 100
+            }
+          }
 				}
-				
 			};
 			case PIKACHU_55:
 			return basic (this, hp:HP060, type:L, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Meal Time", {
-					text " damage. Flip a coin until you get tails. For each heads, draw a card."
+					text "Flip a coin until you get tails. For each heads, draw a card."
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						damage 
+						flipUntilTails { draw 1 }
 					}
 				}
 				move "Gnaw", {
@@ -1338,7 +1492,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
 					}
 				}
-				
 			};
 			case PIKACHU_56:
 			return basic (this, hp:HP070, type:L, retreatCost:1) {
@@ -1360,19 +1513,24 @@ public enum UnifiedMinds implements CardInfo {
 						damage 50
 					}
 				}
-				
 			};
 			case ALOLAN_RAICHU_57:
 			return evolution (this, from:"Pikachu", hp:HP110, type:L, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Electro Rain", {
-					text " damage. Discard any amount of [L] Energy from this Pokémon. Then, for each Energy you discarded in this way, choose 1 of your opponent's Pokémon and do 30 damage to it. (You can choose the same Pokémon more than once.) This damage isn't affected by Weakness or Resistance."
+					text "Discard any amount of [L] Energy from this Pokémon. Then, for each Energy you discarded in this way, choose 1 of your opponent's Pokémon and do 30 damage to it. (You can choose the same Pokémon more than once.) This damage isn't affected by Weakness or Resistance."
 					energyCost L
-					attackRequirement {}
-					onAttack {
-						damage 
-					}
+					attackRequirement {
+            my.active.filterByBasicEnergyType(L)
+          }
+          onAttack {
+            def discardCount = self.cards.filterByBasicEnergyType(L).select(min:0, max:60,"Do 30 damage to an Opponent's Pokémon for each [L] energy discarded.").discard().size()
+
+            (1..discardCount).each {
+              damage 30, opp.all.select()
+            }
+          }
 				}
 				move "Electric Ball", {
 					text "90 damage. "
@@ -1382,21 +1540,21 @@ public enum UnifiedMinds implements CardInfo {
 						damage 90
 					}
 				}
-				
 			};
 			case MAGNEMITE_58:
 			return basic (this, hp:HP060, type:L, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Supersonic", {
-					text " damage. Your opponent’s Active Pokémon is now Confused."
+					text "Your opponent’s Active Pokémon is now Confused."
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						damage 
+						afterDamage {
+              apply CONFUSED
+            }
 					}
 				}
-				
 			};
 			case MAGNETON_59:
 			return evolution (this, from:"Magnemite", hp:HP090, type:L, retreatCost:2) {
@@ -1415,10 +1573,9 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 40
+						flip 3, { damage 40 }
 					}
 				}
-				
 			};
 			case MAGNEZONE_60:
 			return evolution (this, from:"Magneton", hp:HP160, type:L, retreatCost:3) {
@@ -1426,8 +1583,9 @@ public enum UnifiedMinds implements CardInfo {
 				resistance M, MINUS20
 				bwAbility "Double Type", {
 					text "As long as this Pokémon is in play, it is [L] and [M] type."
-					actionA {
-					}
+					getterA GET_POKEMON_TYPE, self, { h->
+            h.object.add(M)
+          }
 				}
 				move "Magnetic Bolt", {
 					text "120 damage. Put a Trainer card from your discard pile into your hand."
@@ -1435,65 +1593,71 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 120
+            my.discard.filterByType(TRAINER).select().moveTo(my.hand)
 					}
 				}
-				
 			};
 			case JOLTIK_61:
 			return basic (this, hp:HP040, type:L, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Jolt", {
-					text " damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
+					text "Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						flip { apply PARALYZED }
 					}
 				}
-				
 			};
 			case GALVANTULA_62:
 			return evolution (this, from:"Joltik", hp:HP090, type:L, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Live Wire", {
-					text " damage. This attack does 50 damage to 1 of your opponent's Pokémon. Also apply Weakness and Resistance for Benched Pokémon."
+					text " This attack does 50 damage to 1 of your opponent's Pokémon. Also apply Weakness and Resistance for Benched Pokémon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
-					}
+            def pcs = opp.all.select()
+            new ResolvedDamage(hp(50), self, pcs, Source.ATTACK, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
+
+            bg.dm().applyWeakness()
+            bg.dm().applyResistance()
+            def damage = bg.dm().getTotalDamage(self, pcs)
+            bg.dm().clearDamages()
+            bg.em().run(new DirectDamage(damage, pcs))
+          }
 				}
-				
 			};
 			case TYNAMO_63:
 			return basic (this, hp:HP030, type:L, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Wild River", {
-					text " damage. Switch this Pokémon with 1 of your Benched Pokémon."
+					text "Switch this Pokémon with 1 of your Benched Pokémon."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 
-					}
+					attackRequirement {
+            assert my.bench : "There is no Pokémon on your bench."
+          }
+          onAttack {
+            sw self, my.bench.select("Select the new active Pokemon.")
+          }
 				}
-				
 			};
 			case TYNAMO_64:
 			return basic (this, hp:HP040, type:L, retreatCost:1) {
 				weakness F
 				resistance M, MINUS20
 				move "Generate Electricity", {
-					text " damage. Search your deck for a [L] Energy card and attach it to this Pokémon. Then, shuffle your deck."
+					text "Search your deck for a [L] Energy card and attach it to this Pokémon. Then, shuffle your deck."
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						damage 
-					}
+            attachEnergyFrom(type: L, my.deck, self)
+            shuffleDeck()
+          }
 				}
-				
 			};
 			case EELEKTRIK_65:
 			return evolution (this, from:"Tynamo", hp:HP090, type:L, retreatCost:2) {
@@ -1504,18 +1668,30 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						damage 30
+						damage 30 * discardAllSelfEnergy(L).size()
 					}
 				}
-				
 			};
 			case EELEKTROSS_66:
 			return evolution (this, from:"Eelektrik", hp:HP150, type:L, retreatCost:3) {
 				weakness F
 				resistance M, MINUS20
 				bwAbility "Electric Swamp", {
-					text "Play this Pokémon onto your Bench."
-					actionA {
+					text "If this Pokémon is in your hand and you have 4 or more Lightning Energy in play, you may use this Ability. Put this Pokémon onto your Bench. Then, you may move as many Lightning Energy from your other Pokémon to this Pokémon in any way you like."
+          // TODO: modify this so an evolution can be played without evolving
+          onActivate {reason ->
+						if(reason == PLAY_FROM_HAND && self.benched && confirm("Use Electric Swamp?")) {
+							powerUsed()
+							while(1){
+								def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=self})
+								if(!pl) break;
+								def src=pl.select("Source for energy (cancel to stop)", false)
+								if(!src) break;
+								def card=src.cards.filterByEnergyType(L).select("Card to move").first()
+								energySwitch(src, self, card)
+							}
+							sw my.active, self
+						}
 					}
 				}
 				move "Hover Over", {
@@ -1524,9 +1700,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 130
+            cantRetreat defending
 					}
 				}
-				
 			};
 			case STUNFISK_67:
 			return basic (this, hp:HP090, type:L, retreatCost:1) {
@@ -1537,10 +1713,12 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 30
+            damage 30
+						if (defending.getRemainingHP().value > attacking.getRemainingHP().value) {
+              damage 30
+            }
 					}
 				}
-				
 			};
 			case THUNDURUS_68:
 			return basic (this, hp:HP120, type:L, retreatCost:1) {
@@ -1552,6 +1730,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            if (my.bench.find({ it.name == "Tornadus" })) damage 50
 					}
 				}
 				move "Raging Thunder", {
@@ -1560,9 +1739,11 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 120
+            if (my.bench) {
+              damage 40, my.bench.select("Do 40 damage to one of your Benched Pokemon.")
+            }
 					}
 				}
-				
 			};
 			case TAPU_KOKO_69:
 			return basic (this, hp:HP120, type:L, retreatCost:1) {
@@ -1582,9 +1763,12 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 100
+            if (defending.topPokemonCard.cardTypes.is(ULTRA_BEAST)) {
+              damage 100
+              discardSelfEnergy(C, C)
+            }
 					}
 				}
-				
 			};
 			case XURKITREE_70:
 			return basic (this, hp:HP120, type:L, retreatCost:2) {
@@ -1596,6 +1780,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            if (opp.prizeCardSet.size() == 3) damage 90
 					}
 				}
 				move "Signal Beam", {
@@ -1604,27 +1789,41 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            apply CONFUSED
 					}
 				}
-				
+
 			};
 			case MEWTWO_MEW_GX_71:
 			return basic (this, hp:HP270, type:P, retreatCost:2) {
 				weakness P
 				bwAbility "Perfection", {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
-					actionA {
+          getterA (GET_MOVE_LIST, self) { holder->
+						self.owner.pbg.discard.each {
+							if (it.cardTypes.is(POKEMON_GX) || it.cardTypes.is(POKEMON_EX)) {
+								holder.object.addAll(it.moves)
+							}
+						}
+            self.owner.pbg.bench.each {
+							if (it.cardTypes.is(POKEMON_GX) || it.cardTypes.is(POKEMON_EX)) {
+								holder.object.addAll(it.moves)
+							}
+						}
 					}
 				}
 				move "Miraculous Duo GX", {
 					text "200 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack’s cost), heal all damage from all of your Pokémon. (You can’t use more than 1 GX attack in a game.)"
 					energyCost P, P, C
-					attackRequirement {}
+					attackRequirement { gxCheck() }
 					onAttack {
 						damage 200
+            gxPerform()
+            if (self.cards.energySufficient(thisMove.energyCost + C)) {
+              my.all.each {heal it.damage.value, it}
+            }
 					}
 				}
-				
 			};
 			case ESPEON_DEOXYS_GX_72:
 			return basic (this, hp:HP260, type:P, retreatCost:2) {
@@ -1635,17 +1834,26 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            def psychicCount = my.bench.findAll { it.types.contains(P) }.size
+            damage 30 * psychicCount
 					}
 				}
 				move "Cross Division GX", {
-					text " damage. Put 10 damage counters on your opponent's Pokémon in any way you like. If this Pokémon has at least 3 extra Energy attached to it (in addition to this attack's cost), put 20 damage counters on them instead. (You can’t use more than 1 GX attack in a game.)"
+					text " Put 10 damage counters on your opponent's Pokémon in any way you like. If this Pokémon has at least 3 extra Energy attached to it (in addition to this attack's cost), put 20 damage counters on them instead. (You can’t use more than 1 GX attack in a game.)"
 					energyCost P, C, C
-					attackRequirement {}
+					attackRequirement { gxCheck() }
 					onAttack {
-						damage 
+            gxPerform()
+            def damageValue = 10
+            if (self.cards.energySufficient(thisMove.energyCost + C,C, C)){
+                damageValue = 20
+            }
+						(1..10).each {
+              directDamage $damageValue, opp.all.select("Do $directDamage damage to which pokémon?")
+            }
 					}
 				}
-				
+
 			};
 			case EXEGGCUTE_73:
 			return basic (this, hp:HP050, type:P, retreatCost:1) {
@@ -1656,9 +1864,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            heal 10, self
 					}
 				}
-				
 			};
 			case EXEGGUTOR_74:
 			return evolution (this, from:"Exeggcute", hp:HP140, type:P, retreatCost:3) {
@@ -1669,6 +1877,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            apply CONFUSED
 					}
 				}
 				move "Full Clean", {
@@ -1677,21 +1886,26 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 180
+            my.hand.discard()
 					}
 				}
-				
 			};
 			case ALOLAN_MAROWAK_75:
 			return evolution (this, from:"Cubone", hp:HP120, type:P, retreatCost:2) {
 				weakness D
 				resistance F, MINUS20
 				move "Spirit Smash", {
-					text " damage. Discard the top card of your opponent's deck. If the card you discarded is a Pokémon, this attack does damage equal to that Pokémon’s HP to your opponent's Active Pokémon."
-					energyCost 
+					text "Discard the top card of your opponent's deck. If the card you discarded is a Pokémon, this attack does damage equal to that Pokémon’s HP to your opponent's Active Pokémon."
+					energyCost
 					attackRequirement {}
 					onAttack {
-						damage 
-					}
+            def card = opp.deck.subList(0, 1)
+            card.showToMe("Top card of your opponent's deck to be discarded.")
+            if (opp.deck.subList(0, 1).cardTypes.is(POKEMON)) {
+              damage opp.active.hp.value
+            }
+            card.discard()
+          }
 				}
 				move "Bone Beatdown", {
 					text "60 damage. "
@@ -1701,7 +1915,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 60
 					}
 				}
-				
 			};
 			case JYNX_76:
 			return basic (this, hp:HP080, type:P, retreatCost:1) {
@@ -1709,7 +1922,18 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Ominous Posture", {
 					text "Once during your turn (before your attack), you may move 1 damage counter from 1 of your Pokémon to another of your Pokémon."
 					actionA {
-					}
+            assert all.find({ it.numberOfDamageCounters > 0 })
+            checkLastTurn()
+            powerUsed()
+            def source = all.findAll { it.numberOfDamageCounters > 0 }.select("Source for damage counter")
+            def target = all
+            all.remove(source)
+            target = target.select("Target for damage counter")
+            source.damage-=hp(10)
+            target.damage+=hp(10)
+            bc "Swapped a damage counter from $source to $target"
+            checkFaint()
+          }
 				}
 				move "Attract Smack", {
 					text "30 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
@@ -1717,44 +1941,66 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            flip { apply PARALYZED }
 					}
 				}
-				
 			};
 			case WYNAUT_77:
 			return basic (this, hp:HP060, type:P, retreatCost:0) {
 				bwAbility "Peppy Pick", {
 					text "Once during your turn (before your attack), you may flip a coin. If heads, choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck. If you use this Ability, your turn ends."
 					actionA {
+            flip { astonish() }
+            bg.gm().betweenTurns()
 					}
 				}
-				
 			};
 			case LATIOS_GX_78:
 			return basic (this, hp:HP170, type:P, retreatCost:0) {
 				weakness P
 				bwAbility "Power Bind", {
 					text "If you have 4 or fewer Pokémon in play, this Pokémon can't attack."
-					actionA {
-					}
 				}
 				move "Tag Purge", {
 					text "120 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from TAG TEAM Pokémon."
 					energyCost P, C, C
-					attackRequirement {}
-					onAttack {
-						damage 120
-					}
+					attackRequirement {
+            assert my.all.size() <= 4 : "Power Bind prevents this Pokémon from attacking"
+          }
+          onAttack{
+            damage 120
+            delayed{
+                before APPLY_ATTACK_DAMAGES, {
+                  bg.dm().each {
+                    if (it.to == self && it.from.topPokemonCard.cardTypes.is(TAG_TEAM) && it.dmg.value && it.notNoEffect) {
+                      bc "Paranormal prevents damage from TAG TEAM Pokémon"
+                      it.dmg = hp(0)
+                    }
+                  }
+                }
+              unregisterAfter 2
+            }
+          }
 				}
 				move "Clear Vision GX", {
-					text " damage. For the rest of this game, your opponent can't use any GX attacks. (You can't use more than 1 GX attack in a game.)"
+					text " For the rest of this game, your opponent can't use any GX attacks. (You can't use more than 1 GX attack in a game.)"
 					energyCost P
-					attackRequirement {}
+					attackRequirement {
+						gxCheck()
+            assert my.all.size() <= 4 : "Power Bind prevents this Pokémon from attacking"
+          }
 					onAttack {
-						damage 
+						gxPerform()
+						delayed{
+							before ATTACK_MAIN, {
+								if (ef.move.name.contains('GX')) {
+									bc "Clear Vision GX prevents you from using any GX attacks for the rest of the game."
+									prevent()
+								}
+							}
+						}
 					}
 				}
-				
 			};
 			case JIRACHI_GX_79:
 			return basic (this, hp:HP160, type:P, retreatCost:1) {
@@ -1762,25 +2008,28 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Psychic Zone", {
 					text "Don't apply [P] Weakness when Pokémon (both yours and your opponent's) take damage from attacks."
 					actionA {
+            // TODO:
 					}
 				}
 				move "Star Search", {
-					text " damage. Search your deck for an Energy card and attach it to 1 of your [P] Pokémon. Then, shuffle your deck."
+					text "Search your deck for an Energy card and attach it to 1 of your [P] Pokémon. Then, shuffle your deck."
 					energyCost P
-					attackRequirement {}
-					onAttack {
-						damage 
-					}
+					attackRequirement { assert my.deck : "There are no more cards in your deck." }
+          onAttack {
+            attachEnergyFrom(basic: true, type:P, my.deck, my.all.findAll { it.types.contains(P) }
+            shuffleDeck()
+          }
 				}
 				move "Star Shield GX", {
 					text "100 damage. Prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn. (You can’t use more than 1 GX attack in a game.)"
 					energyCost P, P, P
-					attackRequirement {}
-					onAttack {
-						damage 100
-					}
+					attackRequirement { gxCheck() }
+          onAttack {
+            gxPerform()
+            damage 100
+            preventAllEffectsNextTurn()
+          }
 				}
-				
 			};
 			case DRIFLOON_80:
 			return basic (this, hp:HP070, type:P, retreatCost:1) {
@@ -1794,7 +2043,7 @@ public enum UnifiedMinds implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case DRIFBLIM_81:
 			return evolution (this, from:"Drifloon", hp:HP100, type:P, retreatCost:1) {
@@ -1803,7 +2052,12 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Tag Transport", {
 					text "Once during your turn (before your attack), you may switch your Active TAG TEAM Pokémon with 1 of your Benched Pokémon."
 					actionA {
-					}
+            assert my.active.cardTypes.is(TAG_TEAM)
+            checkLastTurn()
+            assert my.bench.notEmpty
+            powerUsed()
+            sw my.active, my.bench.select(my.bench.select("Select a new active Pokemon.")
+          }
 				}
 				move "Spinning Attack", {
 					text "70 damage. "
@@ -1813,18 +2067,17 @@ public enum UnifiedMinds implements CardInfo {
 						damage 70
 					}
 				}
-				
 			};
 			case SKORUPI_82:
 			return basic (this, hp:HP070, type:P, retreatCost:2) {
 				weakness P
 				move "Knock Off", {
-					text " damage. Discard a random card from your opponent's hand."
+					text "Discard a random card from your opponent's hand."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 
-					}
+            opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToMe("Selected card").showToOpponent("This card will be discarded.").discard()
+          }
 				}
 				move "Bug Bite", {
 					text "40 damage. "
@@ -1834,7 +2087,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 40
 					}
 				}
-				
 			};
 			case UXIE_83:
 			return basic (this, hp:HP070, type:P, retreatCost:1) {
@@ -1842,6 +2094,7 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Secret Territory", {
 					text "If you have Mesprit and Azelf in play, apply Weakness for each Pokémon (both yours and your opponent's) as ×4 instead."
 					actionA {
+            // TODO:
 					}
 				}
 				move "Psyshot", {
@@ -1852,18 +2105,22 @@ public enum UnifiedMinds implements CardInfo {
 						damage 30
 					}
 				}
-				
 			};
 			case MESPRIT_84:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
 				weakness P
 				move "First Contact", {
-					text " damage. Search your deck for up to 3 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
+					text "Search your deck for up to 3 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 
-					}
+            def maxSpace = Math.min(my.bench.freeBenchCount, 3)
+            my.deck.search(max:maxSpace, "Select $maxSpace Basic Pokémon to put onto your Bench", { it.cardTypes.is(BASIC) }).each{
+              my.deck.remove(it);
+              benchPCS(it)
+            }
+            shuffleDeck()
+          }
 				}
 				move "Mumble", {
 					text "20 damage. "
@@ -1873,20 +2130,20 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
 					}
 				}
-				
 			};
 			case AZELF_85:
 			return basic (this, hp:HP070, type:P, retreatCost:1) {
 				weakness P
 				move "Psypower", {
-					text " damage. Put 3 damage counters on your opponent’s Pokémon in any way you like."
+					text " Put 3 damage counters on your opponent’s Pokémon in any way you like."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
-					}
+            (1..3).each {
+              if (opp.all) directDamage(10, opp.all.select("Choose an Opponent's Pokemon to put a damage counter on."))
+            }
+          }
 				}
-				
 			};
 			case GIRATINA_86:
 			return basic (this, hp:HP130, type:P, retreatCost:1) {
@@ -1894,8 +2151,11 @@ public enum UnifiedMinds implements CardInfo {
 				resistance F, MINUS20
 				bwAbility "Dimension Breach", {
 					text "When you play this Pokémon from your hand onto your Bench during your turn, you may discard a Special Energy from your opponent's Active Pokémon."
-					actionA {
-					}
+					onActivate {
+            if (it == PLAY_FROM_HAND && confirm("Use Dimension Breach?")) {
+              discardDefendingSpecialEnergy(delegate)
+            }
+          }
 				}
 				move "Fade to Black", {
 					text "70 damage. Your opponent’s Active Pokémon is now Confused."
@@ -1903,9 +2163,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+            apply CONFUSED
 					}
 				}
-				
 			};
 			case CRESSELIA_87:
 			return basic (this, hp:HP130, type:P, retreatCost:2) {
@@ -1916,6 +2176,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
+            heal 30, self
 					}
 				}
 				move "Luminous Blade", {
@@ -1924,33 +2185,46 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 130
+            afterDamage{
+              discardSelfEnergy P
+            }
 					}
 				}
-				
 			};
 			case MUNNA_88:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
 				weakness P
 				move "Future Sight", {
-					text " damage. Look at the top 4 cards of either player's deck and put them back in any order."
+					text "Look at the top 4 cards of either player's deck and put them back in any order."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						rearrangeEitherPlayersDeck(delegate, 4)
 					}
 				}
-				
 			};
 			case MUSHARNA_89:
 			return evolution (this, from:"Munna", hp:HP100, type:P, retreatCost:2) {
 				weakness P
 				move "Rest Well", {
-					text " damage. Both Active Pokémon are now Asleep. During your next turn, this Pokémon's attacks do 100 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+					text " Both Active Pokémon are now Asleep. During your next turn, this Pokémon's attacks do 100 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
-					}
+            apply ASLEEP, self
+            apply ASLEEP
+            delayed {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each{
+                  if (it.from == self && it.to.owner == self.owner.opposite && it.dmg.value){
+                    bc "Rest Well +100"
+                    it.dmg += hp(100)
+                  }
+                }
+              }
+              unregisterAfter 1
+            }
+          }
 				}
 				move "Zen Headbutt", {
 					text "50 damage. "
@@ -1960,7 +2234,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 50
 					}
 				}
-				
 			};
 			case ELGYEM_90:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -1971,9 +2244,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            applyAfterDamage(CONFUSED)
 					}
 				}
-				
 			};
 			case BEHEEYEM_91:
 			return evolution (this, from:"Elgyem", hp:HP080, type:P, retreatCost:1) {
@@ -1992,21 +2265,36 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
+            self.cards.moveTo(my.deck)
+						removePCS(self)
+						shuffleDeck()
+
+						delayed {
+							before PLAY_TRAINER, {
+								if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
+									wcu "Mysterious Noise prevents playing any Item cards this turn."
+									prevent()
+								}
+							}
+							unregisterAfter 2
+						}
 					}
 				}
-				
 			};
 			case HONEDGE_92:
 			return basic (this, hp:HP050, type:P, retreatCost:1) {
 				weakness D
 				resistance F, MINUS20
 				move "Lucky Find", {
-					text " damage. Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck."
+					text " Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 
-					}
+					attackRequirement {
+            assert my.deck.notEmpty
+          }
+          onAttack {
+            my.deck.search("Search your deck for an Item card", cardTypeFilter(ITEM)).moveTo(my.hand)
+            shuffleDeck()
+          }
 				}
 				move "Pierce", {
 					text "20 damage. "
@@ -2016,7 +2304,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
 					}
 				}
-				
 			};
 			case HONEDGE_93:
 			return basic (this, hp:HP070, type:P, retreatCost:3) {
@@ -2027,10 +2314,9 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						noWrDamage 10, defending
 					}
 				}
-				
 			};
 			case DOUBLADE_94:
 			return evolution (this, from:"Honedge", hp:HP090, type:P, retreatCost:3) {
@@ -2041,10 +2327,9 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 30
+						noWrDamage 30, defending
 					}
 				}
-				
 			};
 			case AEGISLASH_95:
 			return evolution (this, from:"Doublade", hp:HP130, type:P, retreatCost:3) {
@@ -2052,7 +2337,13 @@ public enum UnifiedMinds implements CardInfo {
 				resistance F, MINUS20
 				bwAbility "Durable Blade", {
 					text "If this Pokémon is Knocked Out by damage from an opponent's attack, put it into your hand instead of the discard pile. (Discard all cards attached to it.)"
-					actionA {
+					delayedA {
+						before (KNOCKOUT, self) {
+							bc "Durable Blade activates"
+							bg.deterministicCurrentThreadPlayerType = self.owner
+							self.topPokemonCard.moveTo(hand)
+							bg.clearDeterministicCurrentThreadPlayerType()
+						}
 					}
 				}
 				move "Trash Slash", {
@@ -2060,10 +2351,9 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage Math.min(damage 10 * my.discard.filterByType(ITEM).size(), 130)
 					}
 				}
-				
 			};
 			case MAREANIE_96:
 			return basic (this, hp:HP070, type:P, retreatCost:2) {
@@ -2076,7 +2366,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 10
 					}
 				}
-				
 			};
 			case TOXAPEX_97:
 			return evolution (this, from:"Mareanie", hp:HP110, type:P, retreatCost:2) {
@@ -2089,7 +2378,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 70
 					}
 				}
-				
 			};
 			case SALANDIT_98:
 			return basic (this, hp:HP070, type:P, retreatCost:1) {
@@ -2110,7 +2398,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 30
 					}
 				}
-				
 			};
 			case SALAZZLE_99:
 			return evolution (this, from:"Salandit", hp:HP110, type:P, retreatCost:1) {
@@ -2131,7 +2418,7 @@ public enum UnifiedMinds implements CardInfo {
 						damage 90
 					}
 				}
-				
+
 			};
 			case COSMOG_100:
 			return basic (this, hp:HP040, type:P, retreatCost:0) {
@@ -2144,7 +2431,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 10
 					}
 				}
-				
 			};
 			case NECROZMA_101:
 			return basic (this, hp:HP130, type:P, retreatCost:2) {
@@ -2155,6 +2441,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            reduceDamageNextTurn(hp(30), thisMove)
 					}
 				}
 				move "Special Laser", {
@@ -2163,9 +2450,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 100
+            if (defending.cards.filterByType(SPECIAL_ENERGY)) damage 60
 					}
 				}
-				
 			};
 			case POIPOLE_102:
 			return basic (this, hp:HP070, type:P, retreatCost:1) {
@@ -2184,9 +2471,11 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            if (my.prizeCardSet.size() == 1 && opp.prizeCardSet.size() == 1) {
+              damage 130
+						}
 					}
 				}
-				
 			};
 			case ONIX_103:
 			return basic (this, hp:HP110, type:F, retreatCost:4) {
@@ -2197,9 +2486,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            reduceDamageNextTurn(hp(20), thisMove)
 					}
 				}
-				
 			};
 			case STEELIX_104:
 			return evolution (this, from:"Onix", hp:HP170, type:F, retreatCost:4) {
@@ -2207,9 +2496,15 @@ public enum UnifiedMinds implements CardInfo {
 				move "Ground Stream", {
 					text "20 damage. Attach 2 [F] Energy cards from your discard pile to this Pokémon."
 					energyCost F
-					attackRequirement {}
+					attackRequirement {
+						assert my.discard.filterByEnergyType(F) : "there are no [F] Energy cards in your discard pile."
+					}
 					onAttack {
 						damage 20
+            def list = my.discard.filterByEnergyType(F)
+						list.select(max:2, "Attach to $self").each{
+							attachEnergy(self, it)
+						}
 					}
 				}
 				move "Gigaton Shake", {
@@ -2218,19 +2513,19 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 220
+            cantAttackNextTurn my.all
 					}
 				}
-				
 			};
 			case CUBONE_105:
 			return basic (this, hp:HP060, type:F, retreatCost:1) {
 				weakness G
 				move "Growl", {
-					text " damage. During your opponent's next turn, the Defending Pokémon's attacks do 20 less damage (before applying Weakness and Resistance)."
+					text " During your opponent's next turn, the Defending Pokémon's attacks do 20 less damage (before applying Weakness and Resistance)."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						reduceDamageNextTurn(hp(20), thisMove)
 					}
 				}
 				move "Bonemerang", {
@@ -2238,17 +2533,25 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+						flip 2, { damage 20 }
 					}
 				}
-				
 			};
 			case AERODACTYL_GX_106:
 			return evolution (this, from:"UnidentifiedFossil", hp:HP210, type:F, retreatCost:0) {
 				weakness G
 				bwAbility "Primal Winds", {
 					text "As long as this Pokémon is your Active Pokémon, your opponent's Basic Pokémon's attacks cost [C] more."
-					actionA {
+					getterA GET_MOVE_LIST, { h ->
+						if (self.active && h.effect.target.owner == self.owner.opposite && h.effect.target.basic) {
+							def list = []
+							for (move in h.object) {
+								def copy = move.shallowCopy()
+								copy.energyCost.add(C)
+								list.add(copy)
+							}
+							h.object=list
+						}
 					}
 				}
 				move "Boulder Crush", {
@@ -2262,23 +2565,30 @@ public enum UnifiedMinds implements CardInfo {
 				move "Wild Dive GX", {
 					text "50x damage. This attack does 50 damage times the amount of Energy attached to your opponent’s Active Pokémon. (You can’t use more than 1 GX attack in a game.)"
 					energyCost F
-					attackRequirement {}
+					attackRequirement {
+						gxCheck()
+					}
 					onAttack {
-						damage 50
+						gxPerform()
+            damage 50 * defending.cards.energyCount(C)
 					}
 				}
-				
+
 			};
 			case HERACROSS_107:
 			return basic (this, hp:HP100, type:F, retreatCost:1) {
 				weakness P
 				move "Turn the Tables", {
-					text " damage. If 1 of your opponent's Pokémon used a GX attack during their last turn, your opponent shuffles their Active Pokémon and all cards attached to it into their deck."
+					text " If 1 of your opponent's Pokémon used a GX attack during their last turn, your opponent shuffles their Active Pokémon and all cards attached to it into their deck."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 
-					}
+					attackRequirement {
+            assert opp.lastTurnMove.contains("GX")
+          }
+          onAttack {
+            defending.cards.moveTo(opp.deck)
+            removePCS(defending)
+            shuffleDeck(null, TargetPlayer.OPPONENT)
+          }
 				}
 				move "Tackle", {
 					text "70 damage. "
@@ -2288,17 +2598,16 @@ public enum UnifiedMinds implements CardInfo {
 						damage 70
 					}
 				}
-				
 			};
 			case BRELOOM_108:
 			return evolution (this, from:"Shroomish", hp:HP120, type:F, retreatCost:2) {
 				weakness P
 				move "Spore", {
-					text " damage. Your opponent’s Active Pokémon is now Asleep."
+					text " Your opponent’s Active Pokémon is now Asleep."
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 
+						apply ASLEEP
 					}
 				}
 				move "Pre-Dawn Strike", {
@@ -2307,9 +2616,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            if (self.isSPC(ASLEEP)) damage 90
 					}
 				}
-				
 			};
 			case MEDITITE_109:
 			return basic (this, hp:HP060, type:F, retreatCost:1) {
@@ -2320,20 +2629,23 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            cantUseAttack(thisMove, self)
 					}
 				}
-				
+
 			};
 			case MEDICHAM_110:
 			return evolution (this, from:"Meditite", hp:HP110, type:F, retreatCost:1) {
 				weakness P
 				move "Pure Power", {
-					text " damage. Put 4 damage counters on your opponent's Pokémon in any way you like."
+					text " Put 4 damage counters on your opponent's Pokémon in any way you like."
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 
-					}
+            (1..4).each {
+              directDamage 10, opp.all.select("Put 1 damage counter to which pokémon?")
+            }
+          }
 				}
 				move "Master Strike", {
 					text "60+ damage. If this Pokémon has a Karate Belt card attached to it, this attack does 60 more damage."
@@ -2341,19 +2653,21 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
+            if (self.cards.findAll { it.name=="Karate Belt" }) damage 60
 					}
 				}
-				
 			};
 			case RELICANTH_111:
 			return basic (this, hp:HP090, type:F, retreatCost:1) {
 				weakness G
 				move "Deep Sea Boring", {
-					text " damage. Search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck."
+					text " Search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert deck
+					}
 					onAttack {
-						damage 
+            deck.search(count:1, cardTypeFilter(TRAINER_CARD)).moveTo(hand)
 					}
 				}
 				move "Water Pulse", {
@@ -2362,9 +2676,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            apply ASLEEP
 					}
 				}
-				
 			};
 			case GIBLE_112:
 			return basic (this, hp:HP060, type:F, retreatCost:1) {
@@ -2385,7 +2699,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 30
 					}
 				}
-				
 			};
 			case GABITE_113:
 			return evolution (this, from:"Gible", hp:HP090, type:F, retreatCost:1) {
@@ -2406,14 +2719,22 @@ public enum UnifiedMinds implements CardInfo {
 						damage 40
 					}
 				}
-				
 			};
 			case GARCHOMP_114:
 			return evolution (this, from:"Gabite", hp:HP150, type:F, retreatCost:0) {
 				weakness G
 				bwAbility "Avenging Aura", {
 					text "If you have more Prize cards remaining than your opponent, this Pokémon's attacks do 80 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
-					actionA {
+					delayedA{
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each {
+								def plusDmg = 80
+								if (my.prizeCardSet.size() > opp.prizeCardSet.size()) {
+									bc "Avenging Aura +$plusDmg"
+									it.dmg += hp(plusDmg)
+								}
+							}
+						}
 					}
 				}
 				move "Over Slice", {
@@ -2422,9 +2743,12 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
+            if (confirm("Discard an Energy card attached to Garchomp to do 40 more damage?")) {
+							discardSelfEnergy C
+							damage 40
+						}
 					}
 				}
-				
 			};
 			case RIOLU_115:
 			return basic (this, hp:HP060, type:F, retreatCost:1) {
@@ -2437,7 +2761,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
 					}
 				}
-				
 			};
 			case RIOLU_116:
 			return copy (RIOLU_115, this);
@@ -2446,8 +2769,16 @@ public enum UnifiedMinds implements CardInfo {
 				weakness P
 				bwAbility "Tag Coach", {
 					text "Your TAG TEAM Pokémon take 20 less damage from your opponent's attacks (after applying Weakness and Resistance)."
-					actionA {
-					}
+					delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if(it.to.owner == self.owner && it.dmg.value && it.notNoEffect && it.to.cardTypes.is(TAG_TEAM)) {
+                  bc "Tag Coach -20"
+                  it.dmg -= hp(20)
+                }
+              }
+            }
+          }
 				}
 				move "Mach Cross", {
 					text "90 damage. "
@@ -2457,7 +2788,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 90
 					}
 				}
-				
 			};
 			case DRILBUR_118:
 			return basic (this, hp:HP070, type:F, retreatCost:2) {
@@ -2470,17 +2800,18 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
 					}
 				}
-				
 			};
 			case EXCADRILL_119:
 			return evolution (this, from:"Drilbur", hp:HP120, type:F, retreatCost:2) {
 				weakness G
 				move "Rototiller", {
-					text " damage. Shuffle 4 cards from your discard pile into your deck."
+					text " Shuffle 4 cards from your discard pile into your deck."
 					energyCost F
-					attackRequirement {}
+					attackRequirement {
+            assert my.discard : "There are no cards in your discard pile."
+          }
 					onAttack {
-						damage 
+						my.discard.select(count:4, "select the card you want to put in your hand.").moveTo(my.deck)
 					}
 				}
 				move "Slash", {
@@ -2491,7 +2822,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 90
 					}
 				}
-				
 			};
 			case ARCHEN_120:
 			return evolution (this, from:"UnidentifiedFossil", hp:HP080, type:F, retreatCost:1) {
@@ -2502,10 +2832,10 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 20
+            damage 20
+						flip { damage 20 }
 					}
 				}
-				
 			};
 			case ARCHEOPS_121:
 			return evolution (this, from:"Archen", hp:HP130, type:F, retreatCost:1) {
@@ -2517,6 +2847,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            switchYourActive()
 					}
 				}
 				move "Hyper Beam", {
@@ -2525,9 +2856,11 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
+            afterDamage {
+              discardDefendingEnergy()
+            }
 					}
 				}
-				
 			};
 			case TERRAKION_122:
 			return basic (this, hp:HP140, type:F, retreatCost:4) {
@@ -2538,6 +2871,14 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+
+						def bonusDamage = 150
+						my.bench.each {
+							if (it.numberOfDamageCounters == 0) {
+								bonusDamage = 0
+							}
+						}
+						damage $bonusDamage
 					}
 				}
 				move "Boulder Crush", {
@@ -2548,17 +2889,19 @@ public enum UnifiedMinds implements CardInfo {
 						damage 110
 					}
 				}
-				
+
 			};
 			case MELOETTA_123:
 			return basic (this, hp:HP090, type:F, retreatCost:1) {
 				weakness P
 				move "Tag Cheer", {
-					text " damage. Attach an Energy card from your hand to 1 of your TAG TEAM Pokémon."
+					text " Attach an Energy card from your hand to 1 of your TAG TEAM Pokémon."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						assert my.hand.filterByType(ENERGY) : "There is no Energy Card in your hand"
+					}
 					onAttack {
-						damage 
+						attachEnergyFrom(my.hand, my.filterByType(TAG_TEAM))
 					}
 				}
 				move "Shooting Star Pirouette", {
@@ -2566,28 +2909,44 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 30
+            damage 30
+						flipUntilTails { damage 30 }
 					}
 				}
-				
 			};
 			case ZYGARDE_124:
 			return basic (this, hp:HP090, type:F, retreatCost:1) {
 				weakness G
 				bwAbility "Cellular Companions", {
 					text "As long as this Pokémon is on your Bench, your Zygarde's and Zygarde-GX's attacks do 20 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
-					actionA {
-					}
+					delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each{
+                if(!self.active && it.to == self) {
+                  if (it.from.name == "Zygarde" || it.from.name == "Zygarde-GX") {
+                    bc "Cellular Companions +20"
+                    it.dmg += hp(20)
+                  }
+                }
+              }
+            }
+          }
 				}
 				move "Boost Fang", {
 					text "20 damage. Attach a [F] Energy card from your discard pile to 1 of your Benched Pokémon."
 					energyCost F
 					attackRequirement {}
+					attackRequirement {
+						assert my.discard.filterByEnergyType(F) : "there are no [F] Energy cards in your discard pile."
+					}
 					onAttack {
 						damage 20
+            def list = my.discard.filterByEnergyType(F)
+						list.select(max:1, "Attach a [F] to one of your benched").each{
+							attachEnergy(self, my.discard, my.bench)
+						}
 					}
 				}
-				
 			};
 			case UMBREON_DARKRAI_GX_125:
 			return basic (this, hp:HP270, type:D, retreatCost:2) {
@@ -2599,17 +2958,33 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 150
+						damage (opp.bench.findAll{it.pokemonGX || it.pokemonEX}, 30)
 					}
 				}
 				move "Dark Moon GX", {
-					text " damage. Your opponent can’t play any Trainer cards from their hand during their next turn. If this Pokémon has at least 5 extra [D] Energy attached to it (in addition to this attack’s cost), your opponent's Active Pokémon is Knocked Out. (You can’t use more than 1 GX attack in a game.)"
+					text " Your opponent can’t play any Trainer cards from their hand during their next turn. If this Pokémon has at least 5 extra [D] Energy attached to it (in addition to this attack’s cost), your opponent's Active Pokémon is Knocked Out. (You can’t use more than 1 GX attack in a game.)"
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+						gxCheck()
+					}
 					onAttack {
-						damage 
+						gxPerform()
+
+						delayed{
+					    	before PLAY_TRAINER, {
+								if (bg.currentTurn == self.owner.opposite) {
+									wcu "Dark Moon GX prevents playing trainer cards"
+									prevent()
+								}
+							}
+							unregisterAfter 2
+						}
+
+						if (self.cards.energySufficient(thisMove.energyCost + D, D, D, D, D)){
+							new Knockout(defending)
+						}
 					}
 				}
-				
 			};
 			case MEGA_SABLEYE_TYRANITAR_GX_126:
 			return basic (this, hp:HP280, type:D, retreatCost:4) {
@@ -2621,28 +2996,41 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 210
+						delayed {
+							if (defending.isPokemonGX || defending.isPokemonEX) {
+								def pcs = defending
+								after KNOCKOUT, pcs, {
+									bg.em().run(new TakePrize(self.owner, pcs))
+								}
+								unregisterAfter 1
+							}
+						}
 					}
 				}
 				move "Gigafall GX", {
 					text "250 damage. If this Pokémon has at least 5 extra Energy attached to it (in addition to this attack's cost), discard the top 15 cards of your opponent's deck. (You can't use more than 1 GX attack in a game.)"
 					energyCost D, D, D, D, C
-					attackRequirement {}
+					attackRequirement { gxCheck() }
 					onAttack {
 						damage 250
+            gxPerform()
+
+						if (self.cards.energySufficient(thisMove.energyCost + C, C, C, C, C)){
+							opp.deck.subList(0, 10).discard()
+						}
 					}
 				}
-				
 			};
 			case ALOLAN_GRIMER_127:
 			return basic (this, hp:HP080, type:D, retreatCost:2) {
 				weakness F
 				resistance P, MINUS20
 				move "Collect", {
-					text " damage. Draw 2 cards."
-					energyCost 
+					text " Draw 2 cards."
+					energyCost
 					attackRequirement {}
 					onAttack {
-						damage 
+						draw 2
 					}
 				}
 				move "Sludge Bomb", {
@@ -2653,21 +3041,21 @@ public enum UnifiedMinds implements CardInfo {
 						damage 30
 					}
 				}
-				
 			};
 			case MURKROW_128:
 			return basic (this, hp:HP070, type:D, retreatCost:1) {
 				weakness L
 				resistance F, MINUS20
 				move "Astonish", {
-					text " damage. Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck."
+					text " Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck."
 					energyCost D
-					attackRequirement {}
+					attackRequirement {
+            assert opp.hand
+          }
 					onAttack {
-						damage 
+						astonish()
 					}
 				}
-				
 			};
 			case MURKROW_129:
 			return basic (this, hp:HP070, type:D, retreatCost:1) {
@@ -2681,18 +3069,17 @@ public enum UnifiedMinds implements CardInfo {
 						damage 10
 					}
 				}
-				
 			};
 			case HONCHKROW_130:
 			return evolution (this, from:"Murkrow", hp:HP110, type:D, retreatCost:1) {
 				weakness L
 				resistance F, MINUS20
 				move "Sharpshooting", {
-					text " damage. This attack does 30 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+					text " This attack does 30 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						damage 30, opp.all.select()
 					}
 				}
 				move "Dark Cutter", {
@@ -2703,7 +3090,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 60
 					}
 				}
-				
 			};
 			case SNEASEL_131:
 			return basic (this, hp:HP070, type:D, retreatCost:1) {
@@ -2717,7 +3103,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 30
 					}
 				}
-				
 			};
 			case WEAVILE_GX_132:
 			return evolution (this, from:"Sneasel", hp:HP200, type:D, retreatCost:1) {
@@ -2726,6 +3111,7 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Shadow Connection", {
 					text "As often as you like during your turn (before your attack), you may move a basic [D] Energy from 1 of your Pokémon to another of your Pokémon."
 					actionA {
+            moveEnergy(my.all, my.all.findAll{ it.basic })
 					}
 				}
 				move "Claw Slash", {
@@ -2737,14 +3123,15 @@ public enum UnifiedMinds implements CardInfo {
 					}
 				}
 				move "Nocturnal Maneuvers GX", {
-					text " damage. Search your deck for any number of Basic Pokémon and put them onto your Bench. Then, shuffle your deck. (You can’t use more than 1 GX attack in a game.)"
+					text " Search your deck for any number of Basic Pokémon and put them onto your Bench. Then, shuffle your deck. (You can’t use more than 1 GX attack in a game.)"
 					energyCost C
-					attackRequirement {}
+					attackRequirement { gxCheck() }
 					onAttack {
-						damage 
+						gxPerform()
+            def maxSpace = Math.min(my.bench.freeBenchCount, 5)
+            callForFamily(basic:true, $maxSpace, delegate)
 					}
 				}
-				
 			};
 			case SABLEYE_133:
 			return basic (this, hp:HP080, type:D, retreatCost:1) {
@@ -2754,9 +3141,19 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+
+						delayed (priority: LAST) {
+							before APPLY_ATTACK_DAMAGES, {
+								if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})) {
+									bc "Mirror Gem activates"
+									directDamage(80, ef.attacker as PokemonCardSet)
+								}
+							}
+							unregisterAfter 2
+							after SWITCH, self, {unregister()}
+						}
 					}
 				}
-				
 			};
 			case DRAPION_134:
 			return evolution (this, from:"Skorupi", hp:HP140, type:D, retreatCost:4) {
@@ -2768,6 +3165,21 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            flip 4, {}, {}, [
+              1:{ damage 50 },
+              2:{
+                damage 100
+                apply POISONED
+              },
+              3:{
+                damage 150
+                apply POISONED
+              },
+              4:{
+                damage 200
+                apply POISONED
+              }
+            ]
 					}
 				}
 				move "Slicing Blade", {
@@ -2778,21 +3190,25 @@ public enum UnifiedMinds implements CardInfo {
 						damage 120
 					}
 				}
-				
 			};
 			case PURRLOIN_135:
 			return basic (this, hp:HP070, type:D, retreatCost:1) {
 				weakness F
 				resistance P, MINUS20
 				move "Cleaning Up", {
-					text " damage. Discard a Pokémon Tool card from 1 of your opponent's Pokémon."
+					text " Discard a Pokémon Tool card from 1 of your opponent's Pokémon."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+            assert opp.all.filterByType(POKEMON_TOOL) : "There are no Pokemon Tool cards attached to your opponent's Pokemon."
+          }
 					onAttack {
-						damage 
+						def target = opp.all.findAll{ it.cards.filterByType(POKEMON_TOOL) }.select("Choose the pokémon from which discard a Pokémon Tool card")
+
+            targeted(target, Source.TRAINER_CARD) {
+              tar.cards.filterByType(POKEMON_TOOL).select("Choose the Tool card to discard").discard()
+            }
 					}
 				}
-				
 			};
 			case LIEPARD_136:
 			return evolution (this, from:"Purrloin", hp:HP100, type:D, retreatCost:1) {
@@ -2812,20 +3228,22 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
+            if(defending.basic) {
+							cantAttackNextTurn(defending)
+						}
 					}
 				}
-				
 			};
 			case SCRAGGY_137:
 			return basic (this, hp:HP070, type:D, retreatCost:2) {
 				weakness F
 				resistance P, MINUS20
 				move "Swagger", {
-					text " damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+					text " Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						flip { discardDefendingEnergy() }
 					}
 				}
 				move "Whap Down", {
@@ -2836,7 +3254,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 50
 					}
 				}
-				
 			};
 			case SCRAFTY_138:
 			return evolution (this, from:"Scraggy", hp:HP110, type:D, retreatCost:2) {
@@ -2848,6 +3265,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            damage 40 * my.prizeCardSet.size()
 					}
 				}
 				move "Headbang", {
@@ -2858,7 +3276,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 70
 					}
 				}
-				
 			};
 			case YVELTAL_139:
 			return basic (this, hp:HP130, type:D, retreatCost:2) {
@@ -2870,6 +3287,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            if (bg.stadiumInfoStruct) { damage 20 }
 					}
 				}
 				move "Shadow Impact", {
@@ -2878,9 +3296,10 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 120
+            directDamage 30, my.all.select()
 					}
 				}
-				
+
 			};
 			case HOOPA_140:
 			return basic (this, hp:HP130, type:D, retreatCost:2) {
@@ -2892,6 +3311,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            opp.all.each { if (it.hasModernAbility()) damage 20 }
 					}
 				}
 				move "Mind Shock", {
@@ -2899,10 +3319,9 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 80
+						noWrDamage 80
 					}
 				}
-				
 			};
 			case MAWILE_GX_141:
 			return basic (this, hp:HP170, type:M, retreatCost:1) {
@@ -2910,7 +3329,11 @@ public enum UnifiedMinds implements CardInfo {
 				resistance P, MINUS20
 				bwAbility "Captivating Wink", {
 					text "When you play this Pokémon from your hand onto your Bench during your turn, you may have your opponent reveal their hand and put any number of Basic Pokémon you find there onto their Bench."
-					actionA {
+          onActivate {
+						if (it == PLAY_FROM_HAND && confirm("Use Captivating Wink?")) {
+							opp.hand.showToMe("Opponent's hand")
+              opp.hand.findAll { it.basic }.select(max: opp.bench.freeBenchCount).moveTo(opp.bench)
+						}
 					}
 				}
 				move "Wily Bite", {
@@ -2919,17 +3342,19 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            damage 30 * opp.bench.size()
 					}
 				}
 				move "Big Eater GX", {
-					text " damage. Your opponent reveals their hand. Discard all Supporter cards you find there. (You can't use more than 1 GX attack in a game.)"
+					text " Your opponent reveals their hand. Discard all Supporter cards you find there. (You can't use more than 1 GX attack in a game.)"
 					energyCost M, C
-					attackRequirement {}
+					attackRequirement { gxCheck() }
 					onAttack {
-						damage 
+            gxPerform()
+            opp.hand.showToMe("Opponent's hand")
+						opp.hand.filterByType(SUPPORTER).discard()
 					}
 				}
-				
 			};
 			case ESCAVALIER_142:
 			return evolution (this, from:"Karrablast", hp:HP130, type:M, retreatCost:3) {
@@ -2938,7 +3363,9 @@ public enum UnifiedMinds implements CardInfo {
 				move "Discerning Spear", {
 					text "80 damage. If your opponent's Active Pokémon has no damage counters on it before this attack does damage, this attack does nothing."
 					energyCost M
-					attackRequirement {}
+					attackRequirement {
+            assert defending.numberOfDamageCounters
+          }
 					onAttack {
 						damage 80
 					}
@@ -2951,21 +3378,19 @@ public enum UnifiedMinds implements CardInfo {
 						damage 90
 					}
 				}
-				
 			};
 			case COTTONEE_143:
 			return basic (this, hp:HP060, type:Y, retreatCost:1) {
 				weakness M
 				resistance D, MINUS20
 				move "Dust Gathering", {
-					text " damage. Draw a card."
+					text " Draw a card."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						draw 1
 					}
 				}
-				
 			};
 			case WHIMSICOTT_144:
 			return evolution (this, from:"Cottonee", hp:HP080, type:Y, retreatCost:0) {
@@ -2973,7 +3398,12 @@ public enum UnifiedMinds implements CardInfo {
 				resistance D, MINUS20
 				bwAbility "Prowl", {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may search your deck for a card and put it into your hand. Then, shuffle your deck."
-					actionA {
+					onActivate {r->
+						if (r==PLAY_FROM_HAND && my.deck && confirm("Use Prowl?")) {
+							powerUsed()
+							my.deck.select(count:1).moveTo(hidden: true, my.hand)
+              shuffleDeck()
+						}
 					}
 				}
 				move "Gust", {
@@ -2984,7 +3414,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 40
 					}
 				}
-				
 			};
 			case DEDENNE_145:
 			return basic (this, hp:HP070, type:Y, retreatCost:1) {
@@ -2993,22 +3422,26 @@ public enum UnifiedMinds implements CardInfo {
 				move "Return", {
 					text "20 damage. You may draw cards until you have 6 cards in your hand."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
+					attackRequirement {
+            assert my.deck
+            assert my.hand.size() < 6
+          }
+          onAttack {
+            if(confirm("Draw cards until you have 6 cards in your hand?")) {
+              draw (6 - my.hand.size())
+            }
+          }
 				}
-				
 			};
 			case GARCHOMP_GIRATINA_GX_146:
 			return basic (this, hp:HP270, type:N, retreatCost:3) {
 				weakness Y
 				move "Linear Attack", {
-					text " damage. This attack does 40 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+					text " This attack does 40 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						damage 40, opp.all.select()
 					}
 				}
 				move "Calamitous Slash", {
@@ -3017,17 +3450,22 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 160
+            if (opp.active.numberOfDamageCounters) damage 80
 					}
 				}
 				move "GG End GX", {
-					text " damage. Discard 1 of your opponent's Pokémon and all cards attached to it. If this Pokémon has at least 3 extra [F] Energy attached to it (in addition to this attack’s cost), discard 2 of your opponent's Pokémon instead. (You can’t use more than 1 GX attack in a game.)"
+					text " Discard 1 of your opponent's Pokémon and all cards attached to it. If this Pokémon has at least 3 extra [F] Energy attached to it (in addition to this attack’s cost), discard 2 of your opponent's Pokémon instead. (You can’t use more than 1 GX attack in a game.)"
 					energyCost F, P, P
-					attackRequirement {}
+					attackRequirement { gxCheck() }
 					onAttack {
-						damage 
+						gxPerform()
+            def discardCount = 1
+            if (self.cards.energySufficient(thisMove.energyCost + F, F, F)) {
+                discardCount = 2
+            }
+            opp.all.select(count:$discardCount, "Select $discardCount Pokemon to discard").discard()
 					}
 				}
-				
 			};
 			case DRATINI_147:
 			return basic (this, hp:HP060, type:N, retreatCost:2) {
@@ -3038,17 +3476,21 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip { preventAllEffectsNextTurn() }
 					}
 				}
-				
+
 			};
 			case DRATINI_148:
 			return basic (this, hp:HP060, type:N, retreatCost:2) {
 				weakness Y
 				bwAbility "Aqua Lift", {
 					text "If this Pokémon has any [W] Energy attached to it, it has no Retreat Cost."
-					actionA {
-					}
+					getterA (GET_RETREAT_COST, BEFORE_LAST,self) { h->
+            if(h.effect.target.cards.energyCount(W)) {
+              h.object = 0
+            }
+          }
 				}
 				move "Jump On", {
 					text "10+ damage. Flip a coin. If heads, this attack does 30 more damage."
@@ -3056,22 +3498,36 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip { damage 30 }
 					}
 				}
-				
+
 			};
 			case DRAGONAIR_149:
 			return evolution (this, from:"Dratini", hp:HP090, type:N, retreatCost:2) {
 				weakness Y
-				move "Twister", {
-					text "30 damage. Flip 2 coins. For each heads, discard an Energy from your opponent's Active Pokémon. If both of them are tails, this attack does nothing."
-					energyCost L, W
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				
+				move "Twister" , {
+          text "30 damage. Flip 2 coins. For each heads, discard an Energy from your opponent's Active Pokémon. If both of them are tails, this attack does nothing."
+          energyCost L, W
+          onAttack{
+          flip 2, {}, {}, [
+            2:{ damage 30;
+              afterDamage{
+                discardDefendingEnergy()
+                discardDefendingEnergy()
+              }
+            },
+            1:{
+              damage 30
+              afterDamage{
+                discardDefendingEnergy()
+              }
+            },
+            0:{
+              bc "$thisMove failed"
+            }
+          ]}
+        }
 			};
 			case DRAGONAIR_150:
 			return evolution (this, from:"Dratini", hp:HP100, type:N, retreatCost:2) {
@@ -3090,9 +3546,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+            discardDefendingEnergy()
 					}
 				}
-				
 			};
 			case DRAGONITE_151:
 			return evolution (this, from:"Dragonair", hp:HP160, type:N, retreatCost:2) {
@@ -3100,6 +3556,7 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Hurricane Charge", {
 					text "Once during your turn (before your attack), you may attach a [W] Energy card, a [L] Energy card, or 1 of each from your hand to your Pokémon in any way you like."
 					actionA {
+            // TODO:
 					}
 				}
 				move "Dragon Impact", {
@@ -3108,9 +3565,10 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 170
+            discardSelfEnergy C, C, C
 					}
 				}
-				
+
 			};
 			case DRAGONITE_GX_152:
 			return evolution (this, from:"Dragonair", hp:HP250, type:N, retreatCost:2) {
@@ -3129,27 +3587,36 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 270
+            discardSelfEnergy C, C, C
 					}
 				}
 				move "Mach Delivery GX", {
-					text " damage. You may discard any number of cards from your hand until you have 9 or fewer. Draw cards until you have 10 cards in your hand. (You can't use more than 1 GX attack in a game.)"
+					text " You may discard any number of cards from your hand until you have 9 or fewer. Draw cards until you have 10 cards in your hand. (You can't use more than 1 GX attack in a game.)"
 					energyCost C
-					attackRequirement {}
+					attackRequirement { gxCheck() }
 					onAttack {
-						damage 
-					}
+						gxPerform()
+            if (my.hand) {
+							def minimumDiscard = my.hand.size() - 9
+
+							if (minimumDiscard < 0) {
+								minimumDiscard = 0
+							}
+              my.hand.select(min:minimumDiscard, "Choose the cards to discard").discard()
+            }
+						draw 10 - my.hand.size()
+          }
 				}
-				
 			};
 			case LATIAS_153:
 			return basic (this, hp:HP120, type:N, retreatCost:1) {
 				weakness Y
 				move "Energy Arrow", {
-					text " damage. This attack does 20 damage times the amount of Energy attached to 1 of your opponent's Pokémon to that Pokémon. This damage isn't affected by Weakness or Resistance."
+					text " This attack does 20 damage times the amount of Energy attached to 1 of your opponent's Pokémon to that Pokémon. This damage isn't affected by Weakness or Resistance."
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						damage 
+            noWrDamage 20 * defending.cards.energyCount(C), opp.all.select("Select the Pokémon to target.")
 					}
 				}
 				move "Speed Wing", {
@@ -3160,7 +3627,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 100
 					}
 				}
-				
 			};
 			case AXEW_154:
 			return basic (this, hp:HP060, type:N, retreatCost:1) {
@@ -3168,6 +3634,7 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Unnerve", {
 					text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
 					actionA {
+            // TODO:
 					}
 				}
 				move "Gnaw", {
@@ -3178,7 +3645,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
 					}
 				}
-				
 			};
 			case FRAXURE_155:
 			return evolution (this, from:"Axew", hp:HP090, type:N, retreatCost:2) {
@@ -3189,6 +3655,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            reduceDamageNextTurn(hp(30), thisMove)
 					}
 				}
 				move "Guillotine", {
@@ -3199,7 +3666,7 @@ public enum UnifiedMinds implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case HAXORUS_156:
 			return evolution (this, from:"Fraxure", hp:HP150, type:N, retreatCost:3) {
@@ -3207,6 +3674,7 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Grind Up", {
 					text "Once during your turn (before your attack), you may discard any Stadium card in play. If you do, attach up to 3 in any combination of [R] and [M] Energy cards from your hand to this Pokémon."
 					actionA {
+            // TODO:
 					}
 				}
 				move "Powerful Axe", {
@@ -3215,30 +3683,36 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            // TODO:
 					}
 				}
-				
+
 			};
 			case DRUDDIGON_157:
 			return basic (this, hp:HP120, type:N, retreatCost:2) {
 				weakness Y
 				move "Drag Off", {
-					text " damage. Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. This attack does 30 damage to the new Active Pokémon."
+					text " Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. This attack does 30 damage to the new Active Pokémon."
 					energyCost C, C
 					attackRequirement {}
-					onAttack {
-						damage 
-					}
+					onAttack{
+            def target = defending
+            if (opp.bench) {
+              target = opp.bench.select("Select the new active")
+              sw defending, target
+            }
+            damage 30, target
+          }
 				}
 				move "Dragon Tail", {
 					text "100x damage. Flip 2 coins. This attack does 100 damage for each heads."
 					energyCost R, W, C
 					attackRequirement {}
 					onAttack {
-						damage 100
+						flip { damage 100 }
+            flip { damage 100 }
 					}
 				}
-				
 			};
 			case NOIBAT_158:
 			return basic (this, hp:HP060, type:N, retreatCost:1) {
@@ -3249,19 +3723,19 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            discardSelfEnergy C
 					}
 				}
-				
 			};
 			case NOIVERN_159:
 			return evolution (this, from:"Noibat", hp:HP120, type:N, retreatCost:0) {
 				weakness Y
 				move "Boomburst", {
-					text " damage. This attack does 20 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+					text " This attack does 20 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						opp.all.each { damage 20, it }
 					}
 				}
 				move "Dragon Pulse", {
@@ -3270,9 +3744,10 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 120
+            my.deck.subList(0,1).discard()
 					}
 				}
-				
+
 			};
 			case NAGANADEL_GX_160:
 			return evolution (this, from:"Poipole", hp:HP210, type:N, retreatCost:1) {
@@ -3280,36 +3755,38 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Ultra Conversion", {
 					text "Once during your turn (before your attack), you may discard an Ultra Beast card from your hand. If you do, draw 3 cards."
 					actionA {
+            // TODO:
 					}
 				}
 				move "Venom Shot", {
-					text " damage. Discard 2 Energy from this Pokémon. This attack does 170 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+					text " Discard 2 Energy from this Pokémon. This attack does 170 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost P, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 
+            // TODO:
 					}
 				}
 				move "Injection GX", {
-					text " damage. Add a card from your opponent's discard pile to their Prize cards face down. (You can't use more than 1 GX attack in a game.)"
+					text " Add a card from your opponent's discard pile to their Prize cards face down. (You can't use more than 1 GX attack in a game.)"
 					energyCost L
-					attackRequirement {}
+					attackRequirement { gxCheck() }
 					onAttack {
-						damage 
+            gxPerform()
+						damage
 					}
 				}
-				
 			};
 			case LICKITUNG_161:
 			return basic (this, hp:HP100, type:C, retreatCost:4) {
 				weakness F
 				move "Heavy Draw", {
-					text " damage. Draw a card for each of your Pokémon in play that has a Retreat Cost of exactly 4."
+					text "Draw a card for each of your Pokémon in play that has a Retreat Cost of exactly 4."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
-					}
+            def numberOfCards = my.all.findAll{ it.retreatCost == 4 }.size()
+            draw numberOfCards
+          }
 				}
 				move "Tongue Slap", {
 					text "40 damage. "
@@ -3319,7 +3796,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 40
 					}
 				}
-				
 			};
 			case LICKILICKY_162:
 			return evolution (this, from:"Lickitung", hp:HP130, type:C, retreatCost:4) {
@@ -3337,20 +3813,22 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 90
+						discardRandomCardFromOpponentsHand()
+            opp.deck.subList(0, 1).discard()
+            discardDefendingEnergy()
 					}
 				}
-				
+
 			};
 			case KANGASKHAN_163:
 			return basic (this, hp:HP130, type:C, retreatCost:2) {
 				weakness F
 				move "Double Draw", {
-					text " damage. Draw 2 cards."
+					text "Draw 2 cards."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						draw 2
 					}
 				}
 				move "Tag Impact", {
@@ -3358,20 +3836,20 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 50
+            damage 50 * my.all.filterByType(TAG_TEAM).size()
 					}
 				}
-				
+
 			};
 			case TAUROS_164:
 			return basic (this, hp:HP110, type:C, retreatCost:1) {
 				weakness F
 				move "Call for Family", {
-					text " damage. Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
+					text " Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						callForFamily(basic:true, 1, delegate)
 					}
 				}
 				move "Berserker Tackle", {
@@ -3380,9 +3858,10 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
+            damage 10, self
 					}
 				}
-				
+
 			};
 			case HOOTHOOT_165:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -3394,21 +3873,21 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            discardSelfEnergy C
 					}
 				}
-				
 			};
 			case NOCTOWL_166:
 			return evolution (this, from:"Hoothoot", hp:HP090, type:C, retreatCost:1) {
 				weakness L
 				resistance F, MINUS20
 				move "Blindside", {
-					text " damage. This attack does 60 damage to 1 of your opponent's Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+					text " This attack does 60 damage to 1 of your opponent's Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 
-					}
+            damage 60, opp.bench.findAll{ it.numberOfDamageCounters }.select()
+          }
 				}
 				move "Slashing Claw", {
 					text "60 damage. "
@@ -3418,17 +3897,26 @@ public enum UnifiedMinds implements CardInfo {
 						damage 60
 					}
 				}
-				
 			};
 			case SLAKOTH_167:
 			return basic (this, hp:HP050, type:C, retreatCost:2) {
 				weakness F
 				move "Lazy Howl", {
-					text " damage. During your opponent's next turn, if they attach an Energy card from their hand to the Defending Pokémon, their turn ends."
+					text "During your opponent's next turn, if they attach an Energy card from their hand to the Defending Pokémon, their turn ends."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+            delayed {
+              before ATTACH_ENERGY, defending {
+                if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite) {
+                  wcu "Lazy Howl ends the turn"
+                  bg.gm().betweenTurns()
+                }
+              }
+              unregisterAfter 2
+              after SWITCH, defending, {unregister()}
+              after EVOLVE, defending, {unregister()}
+            }
 					}
 				}
 				move "Hang Down", {
@@ -3439,7 +3927,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
 					}
 				}
-				
 			};
 			case SLAKOTH_168:
 			return basic (this, hp:HP070, type:C, retreatCost:3) {
@@ -3458,19 +3945,19 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
+            cantAttackNextTurn self
 					}
 				}
-				
 			};
 			case VIGOROTH_169:
 			return evolution (this, from:"Slakoth", hp:HP090, type:C, retreatCost:1) {
 				weakness F
 				move "Roar", {
-					text " damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
+					text " Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						whirlwind()
 					}
 				}
 				move "Slash", {
@@ -3481,25 +3968,42 @@ public enum UnifiedMinds implements CardInfo {
 						damage 70
 					}
 				}
-				
 			};
 			case SLAKING_170:
 			return evolution (this, from:"Vigoroth", hp:HP180, type:C, retreatCost:4) {
 				weakness F
 				bwAbility "Counterattack", {
-					text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 2 damage counters on the Attacking Pokémon."
-					actionA {
-					}
+					text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 4 damage counters on the Attacking Pokémon."
+					delayedA (priority: LAST) {
+            before APPLY_ATTACK_DAMAGES, {
+              if (self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to == self && it.dmg.value })) {
+                bc "Counterattack activates"
+                directDamage(40, ef.attacker)
+              }
+            }
+          }
 				}
 				move "Dynamic Swing", {
 					text "100+ damage. You may do 100 more damage. If you do, during your opponent's next turn, this Pokémon takes 100 more damage from attacks (after applying Weakness and Resistance)."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 100
-					}
+            damage 100
+            delayed{
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each{
+                  if (it.to==self && it.dmg.value) {
+                    bc "+100 to Slaking (Dynamic Swing)"
+                    it.dmg+=hp(100)
+                  }
+                }
+                unregisterAfter 2
+                after SWITCH, self, { unregister() }
+                after EVOLVE, self, { unregister() }
+              }
+            }
+          }
 				}
-				
 			};
 			case BIDOOF_171:
 			return basic (this, hp:HP070, type:C, retreatCost:2) {
@@ -3517,18 +4021,26 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 60
+						flip { damage 60 }
 					}
 				}
-				
 			};
 			case BIBAREL_172:
 			return evolution (this, from:"Bidoof", hp:HP120, type:C, retreatCost:2) {
 				weakness F
 				bwAbility "Unaware", {
 					text "Prevent all effects of your opponent's attacks, except damage, done to this Pokémon."
-					actionA {
-					}
+					delayedA {
+            before null, null, ATTACK, {
+              if (ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                if (pcs != null && pcs.owner == self.owner) {
+                  bc "Unaware prevents all effects done to $self"
+                  prevent()
+                }
+              }
+            }
+          }
 				}
 				move "Amnesia", {
 					text "60 damage. Choose 1 of your opponent's Active Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
@@ -3536,18 +4048,26 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
+            amnesia delegate
 					}
 				}
-				
 			};
 			case MUNCHLAX_173:
 			return basic (this, hp:HP060, type:C, retreatCost:0) {
 				bwAbility "Snack Search", {
 					text "Once during your turn (before your attack), you may flip a coin. If heads, put a card from your discard pile on top of your deck. If you use this Ability, your turn ends."
 					actionA {
+            checkLastTurn()
+            assert my.discard
+            flip{
+              def target = my.discard.select()
+              my.deck.addAll(0, target)
+              my.discard.removeAll(tar)
+            }
+            powerUsed()
+            bg.gm().betweenTurns()
 					}
 				}
-				
 			};
 			case PIDOVE_174:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -3569,7 +4089,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
 					}
 				}
-				
 			};
 			case TRANQUILL_175:
 			return evolution (this, from:"Pidove", hp:HP080, type:C, retreatCost:1) {
@@ -3589,9 +4108,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            discardSelfEnergy C
 					}
 				}
-				
 			};
 			case UNFEZANT_176:
 			return evolution (this, from:"Tranquill", hp:HP140, type:C, retreatCost:1) {
@@ -3611,9 +4130,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
+            // TODO:
 					}
 				}
-				
 			};
 			case AUDINO_177:
 			return basic (this, hp:HP090, type:C, retreatCost:1) {
@@ -3621,7 +4140,11 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Hearing", {
 					text "Once during your turn (before your attack), if this Pokémon is your Active Pokémon, you may draw a card."
 					actionA {
-					}
+            checkLastTurn()
+            assert self.active : "Audino is not your Active Pokémon"
+            powerUsed()
+            draw 1
+          }
 				}
 				move "Drain Slap", {
 					text "30 damage. Heal 30 damage from this Pokémon."
@@ -3629,9 +4152,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            heal 30, self
 					}
 				}
-				
 			};
 			case TORNADUS_178:
 			return basic (this, hp:HP120, type:C, retreatCost:1) {
@@ -3651,9 +4174,11 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
+            if (my.bench.find({ it.name == "Thundurus" })) {
+              opp.all.each { damage 20, it }
+            }
 					}
 				}
-				
 			};
 			case FLETCHLING_179:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -3667,7 +4192,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 10
 					}
 				}
-				
 			};
 			case YUNGOOS_180:
 			return basic (this, hp:HP070, type:C, retreatCost:1) {
@@ -3680,7 +4204,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 30
 					}
 				}
-				
 			};
 			case GUMSHOOS_181:
 			return evolution (this, from:"Yungoos", hp:HP100, type:C, retreatCost:1) {
@@ -3690,20 +4213,23 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 90
+            if (ef.defender.pokemonGX || ef.defender.pokemonEX)) {
+              damage 30
+            } else {
+              damage 90
+            }
 					}
 				}
-				
 			};
 			case ORANGURU_182:
 			return basic (this, hp:HP120, type:C, retreatCost:3) {
 				weakness F
 				move "Sage’s Riddle", {
-					text " damage. Put a Pokémon from your hand face down in front of you. Your opponent guesses the type of that Pokémon, and then you reveal it. If your opponent guessed right, they draw 4 cards. If they guessed wrong, you draw 4 cards. Return the Pokémon to your hand."
+					text " Put a Pokémon from your hand face down in front of you. Your opponent guesses the type of that Pokémon, and then you reveal it. If your opponent guessed right, they draw 4 cards. If they guessed wrong, you draw 4 cards. Return the Pokémon to your hand."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						// TODO:
 					}
 				}
 				move "Gentle Slap", {
@@ -3714,7 +4240,6 @@ public enum UnifiedMinds implements CardInfo {
 						damage 80
 					}
 				}
-				
 			};
 			case TYPE_NULL_183:
 			return basic (this, hp:HP100, type:C, retreatCost:1) {
@@ -3733,9 +4258,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            flip { damage 30 }
 					}
 				}
-				
 			};
 			case SILVALLY_184:
 			return evolution (this, from:"TypeNull", hp:HP130, type:C, retreatCost:2) {
@@ -3746,6 +4271,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            damage 50 * bg.lastTurnTakePrize
 					}
 				}
 				move "Air Slash", {
@@ -3754,27 +4280,31 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 120
+            discardSelfEnergy C
 					}
 				}
-				
 			};
 			case KOMALA_185:
 			return basic (this, hp:HP090, type:C, retreatCost:1) {
 				weakness F
 				bwAbility "Drowsing", {
 					text "If this Pokémon remains Asleep between turns, put 6 damage counters on your opponent's Active Pokémon."
-					actionA {
-					}
+					delayedA {
+            after BETWEEN_TURNS, {
+              if (my.active.isSPC(ASLEEP)) {
+                opp.active.damage += hp(60)
+              }
+            }
+          }
 				}
 				move "Snooze", {
-					text " damage. This Pokémon is now Asleep."
+					text " This Pokémon is now Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 
+						apply ASLEEP
 					}
 				}
-				
 			};
 			case BLAINE_S_QUIZ_SHOW_186:
 			return supporter (this) {
@@ -4238,5 +4768,4 @@ public enum UnifiedMinds implements CardInfo {
 			return null;
 		}
 	}
-	
 }
