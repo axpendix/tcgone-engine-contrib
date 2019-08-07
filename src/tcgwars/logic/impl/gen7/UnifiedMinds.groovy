@@ -4213,7 +4213,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-            if (ef.defender.pokemonGX || ef.defender.pokemonEX)) {
+            if (ef.defender.pokemonGX || ef.defender.pokemonEX) {
               damage 30
             } else {
               damage 90
