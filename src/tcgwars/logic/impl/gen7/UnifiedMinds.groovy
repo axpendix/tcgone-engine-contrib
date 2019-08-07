@@ -357,17 +357,17 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
             // TODO:
             def names = my.all.findAll(pokemonTypeFilter(G)).collect{ it.name }
-            def sel = deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
-            if (sel) {
-              def opts = my.all.findAll({it.name==sel.first().predecessor})
+            def sel_1 = deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
+            if (sel_1) {
+              def opts = my.all.findAll({it.name==sel_1.first().predecessor})
               def pcs = opts.select("Evolve which one?")
-              evolve(pcs, sel.first(), OTHER)
+              evolve(pcs, sel_1.first(), OTHER)
             }
-            if (sel.cardTypes.is(STAGE1)) {
-              def sel = deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
-              def opts = my.all.findAll({it.name==sel.first().predecessor})
+            if (sel_1.cardTypes.is(STAGE1)) {
+              def sel_2 = deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
+              def opts = my.all.findAll({it.name==sel_2.first().predecessor})
               def pcs = opts.select("Evolve which one?")
-              evolve(pcs, sel.first(), OTHER)
+              evolve(pcs, sel_2.first(), OTHER)
             }
             shuffleDeck()
           }
@@ -982,9 +982,9 @@ public enum UnifiedMinds implements CardInfo {
 						damage 10
             def list = my.deck.subList(0, 5).filterByType(POKEMON)
             def num = list.size()
-            if (num)  damage 50*num
+            if (num)  damage 60*num
 
-            def list = my.deck.subList(0, 5).discard()
+            list.discard()
             def firePokemon = list.findAll(pokemonTypeFilter(R))
             def benchCount = 0
             multiSelect(firePokemon).each {
