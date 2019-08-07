@@ -2351,7 +2351,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage Math.min(damage 10*my.discard.filterByType(ITEM).size(), 130)
+            damage Math.min(10*my.discard.filterByType(ITEM).size(), 130)
 					}
 				}
 			};
