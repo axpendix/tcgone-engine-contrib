@@ -914,7 +914,7 @@ public enum UnifiedMinds implements CardInfo {
           }
 					onAttack {
             gxPerform()
-            damage 50 * self.cards.energyCount(R)
+            damage 50*self.cards.energyCount(R)
 					}
 				}
 			};
@@ -982,7 +982,7 @@ public enum UnifiedMinds implements CardInfo {
 						damage 10
             def list = my.deck.subList(0, 5).filterByType(POKEMON)
             def num = list.size()
-            if (num)  damage 50 * num
+            if (num)  damage 50*num
 
             def list = my.deck.subList(0, 5).discard()
             def firePokemon = list.findAll(pokemonTypeFilter(R))
@@ -1070,7 +1070,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
-						damage 40 * my.hand.filterByType(SUPPORTER).select(max: 60).discard().size()
+						damage 40*my.hand.filterByType(SUPPORTER).select(max: 60).discard().size()
 					}
 				}
 				move "Thrilling Times GX", {
@@ -1133,8 +1133,8 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
             if (confirm("How many damage counters would you like to add to Froslass?  Each damage counter added will increase the damage to the defending Pokemon by 20 damage.")) {
               def num = choose([0, 1, 2, 3, 4, 5, 6, 7])
-              damage 20 * num
-              directDamage 10 * num, self
+              damage 20*num
+              directDamage 10*num, self
             }
           }
 				}
@@ -1223,7 +1223,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
 						onAttack {
               def count = my.bench.findAll({ it.name == "Basculin" }).size()
-              damage 20 * count, opp.bench.select()
+              damage 20*count, opp.bench.select()
             }
 					}
 				}
@@ -1271,7 +1271,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
-            damage 20 * opp.active.retreatCost
+            damage 20*opp.active.retreatCost
 					}
 				}
 			};
@@ -1316,7 +1316,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement { gxCheck() }
 					onAttack {
 						gxPerform()
-            damage 50 * opp.bench.size()
+            damage 50*opp.bench.size()
 					}
 				}
 			};
@@ -1668,7 +1668,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						damage 30 * discardAllSelfEnergy(L).size()
+						damage 30*discardAllSelfEnergy(L).size()
 					}
 				}
 			};
@@ -1835,7 +1835,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
 						damage 10
             def psychicCount = my.bench.findAll { it.types.contains(P) }.size
-            damage 30 * psychicCount
+            damage 30*psychicCount
 					}
 				}
 				move "Cross Division GX", {
@@ -2016,7 +2016,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost P
 					attackRequirement { assert my.deck : "There are no more cards in your deck." }
           onAttack {
-            attachEnergyFrom(basic: true, type:P, my.deck, my.all.findAll { it.types.contains(P) }
+            attachEnergyFrom(basic: true, type:P, my.deck, my.all.findAll { it.types.contains(P) })
             shuffleDeck()
           }
 				}
@@ -2056,7 +2056,7 @@ public enum UnifiedMinds implements CardInfo {
             checkLastTurn()
             assert my.bench.notEmpty
             powerUsed()
-            sw my.active, my.bench.select(my.bench.select("Select a new active Pokemon.")
+            sw my.active, my.bench.select(my.bench.select("Select a new active Pokemon."))
           }
 				}
 				move "Spinning Attack", {
@@ -2351,7 +2351,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage Math.min(damage 10 * my.discard.filterByType(ITEM).size(), 130)
+						damage Math.min(damage 10*my.discard.filterByType(ITEM).size(), 130)
 					}
 				}
 			};
@@ -2570,7 +2570,7 @@ public enum UnifiedMinds implements CardInfo {
 					}
 					onAttack {
 						gxPerform()
-            damage 50 * defending.cards.energyCount(C)
+            damage 50*defending.cards.energyCount(C)
 					}
 				}
 
@@ -3265,7 +3265,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-            damage 40 * my.prizeCardSet.size()
+            damage 40*my.prizeCardSet.size()
 					}
 				}
 				move "Headbang", {
@@ -3342,7 +3342,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-            damage 30 * opp.bench.size()
+            damage 30*opp.bench.size()
 					}
 				}
 				move "Big Eater GX", {
@@ -3616,7 +3616,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-            noWrDamage 20 * defending.cards.energyCount(C), opp.all.select("Select the Pokémon to target.")
+            noWrDamage 20*defending.cards.energyCount(C), opp.all.select("Select the Pokémon to target.")
 					}
 				}
 				move "Speed Wing", {
@@ -3836,7 +3836,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-            damage 50 * my.all.filterByType(TAG_TEAM).size()
+            damage 50*my.all.filterByType(TAG_TEAM).size()
 					}
 				}
 
@@ -4271,7 +4271,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-            damage 50 * bg.lastTurnTakePrize
+            damage 50*bg.lastTurnTakePrize
 					}
 				}
 				move "Air Slash", {
