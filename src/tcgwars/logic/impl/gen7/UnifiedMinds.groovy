@@ -3691,11 +3691,12 @@ public enum UnifiedMinds implements CardInfo {
             if (confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})?")) {
               discard bg.stadiumInfoStruct.stadiumCard
               def card = 0
-              while (int i < 3 && (my.hand.filterByEnergyType(R) || my.hand.filterByEnergyType(M))) {
+              def attach = 0
+              while (attach < 3 && (my.hand.filterByEnergyType(R) || my.hand.filterByEnergyType(M))) {
                 card = my.hand.findAll {it.filterByEnergyType(R) || it.filterByEnergyType(M)}.select("Select a Fire or Metal Energy")
                 if(!card) break;
                 attachEnergyFrom(card, my.all)
-                i++
+                attach++
               }
             }
 					}
