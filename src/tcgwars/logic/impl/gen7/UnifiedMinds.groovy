@@ -436,6 +436,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 100
+            discardSelfEnergy C
 					}
 				}
 			};
@@ -465,7 +466,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-            apply CONFUSED
+            applyAfterDamage CONFUSED
 					}
 				}
 			};
@@ -566,7 +567,7 @@ public enum UnifiedMinds implements CardInfo {
             before APPLY_ATTACK_DAMAGES, {
               powerUsed()
               bg.dm().each {
-                if (self.active && it.to.owner==self.owner && it.from.owner!=it.to.owner && ef.attacker.owner!=self.owner && it.notNoEffect && it.notZero && it.to.types.contains(G)) {
+                if (it.to.owner==self.owner && it.from.owner!=it.to.owner && ef.attacker.owner!=self.owner && it.notNoEffect && it.notZero && it.to.types.contains(G)) {
                   bc "Blanket Weaver -40"
                   it.dmg -= hp(40)
                 }
@@ -765,6 +766,7 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Queenly Reward", {
 					text "Once during your turn (before your attack), you may attach a [G] Energy card from your discard pile to your Active Pokémon."
 					actionA {
+            checkLastTurn()
             assert my.discard.filterByEnergyType(GRASS) : "There is no [G] Energy card in your discard pile."
             attachEnergyFrom(type:G, my.discard, my.active)
             powerUsed()
@@ -881,21 +883,18 @@ public enum UnifiedMinds implements CardInfo {
 				weakness W
 				bwAbility "Burning Road", {
 					text "Once during your turn (before your attack), if this Pokémon was on the Bench and became your Active Pokémon this turn, you may move any number of [R] Energy attached to your Pokémon to this Pokémon."
-					delayedA{
-              after SWITCH, {
-                checkLastTurn()
-                if (self.active && bg.currentTurn == self.owner && confirm("Use Burning Road?")) {
-                  powerUsed()
-                  while(1) {
-                    def pl = (my.all.findAll { it.cards.filterByEnergyType(R) && it!=self })
-                    if (!pl) break;
-                    def src=pl.select("Source for energy (cancel to stop moving)", false)
-                    if (!src) break;
-                    def card = src.cards.filterByEnergyType(R).select("[R] Energy Card to move to Heatran-GX").first()
-                    energySwitch(src, self, card)
-                  }
-                }
-              }
+					actionA {
+            checkLastTurn()
+            assert wasSwitchedOutThisTurn(self)
+            powerUsed()
+            while(1) {
+              def pl = (my.all.findAll { it.cards.filterByEnergyType(R) && it!=self })
+              if (!pl) break;
+              def src=pl.select("Source for energy (cancel to stop moving)", false)
+              if (!src) break;
+              def card = src.cards.filterByEnergyType(R).select("[R] Energy Card to move to Heatran-GX").first()
+              energySwitch(src, self, card)
+            }
           }
 				}
 				move "Steaming Stomp", {
@@ -1020,7 +1019,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
-            apply BURNED
+            applyAfterDamage BURNED
 					}
 				}
 				move "Flare Raid", {
@@ -1070,7 +1069,8 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
-						damage 40*my.hand.filterByType(SUPPORTER).select(max: 60).discard().size()
+            def supporterCount = my.hand.filterByType(SUPPORTER).size()
+						damage 40*my.hand.filterByType(SUPPORTER).select(max: supporterCount).discard().size()
 					}
 				}
 				move "Thrilling Times GX", {
@@ -1144,7 +1144,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
-            apply ASLEEP
+            applyAfterDamage ASLEEP
 					}
 				}
 			};
@@ -1185,7 +1185,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-            apply ASLEEP
+            applyAfterDamage ASLEEP
 					}
 				}
 			};
@@ -1307,7 +1307,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-						directDamage 110, self.owner.opposite.pbg.active
+						shredDamage 110
 					}
 				}
 				move "Resolute Blade GX", {
@@ -1455,7 +1455,7 @@ public enum UnifiedMinds implements CardInfo {
             damage 80
             if (wasSwitchedOutThisTurn(self)) {
               damage 80
-              apply PARALYZED
+              applyAfterDamage PARALYZED
             }
           }
 				}
@@ -1465,6 +1465,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement { gxCheck() }
           onAttack {
             gxPerform()
+            damage 150
             switchYourActive()
             if (self.cards.energySufficient(thisMove.energyCost + L, L )){
               damage 100
@@ -1522,14 +1523,16 @@ public enum UnifiedMinds implements CardInfo {
 					text "Discard any amount of [L] Energy from this Pokémon. Then, for each Energy you discarded in this way, choose 1 of your opponent's Pokémon and do 30 damage to it. (You can choose the same Pokémon more than once.) This damage isn't affected by Weakness or Resistance."
 					energyCost L
 					attackRequirement {
-            my.active.filterByBasicEnergyType(L)
+            assert self.cards.filterByEnergyType(L)
           }
           onAttack {
-            def discardCount = self.cards.filterByBasicEnergyType(L).select(min:0, max:60,"Do 30 damage to an Opponent's Pokémon for each [L] energy discarded.").discard().size()
+            def numL = self.cards.filterByEnergyType(L).size()
+            def toDiscard = self.cards.filterByEnergyType(L).select(min:0, max:numL,"Do 30 damage to an Opponent's Pokémon for each [L] energy discarded.")
 
-            (1..discardCount).each {
+            (1..toDiscard.size()).each {
               damage 30, opp.all.select()
             }
+            afterDamage{toDiscard.discard()}
           }
 				}
 				move "Electric Ball", {
@@ -1789,7 +1792,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-            apply CONFUSED
+            applyAfterDamage CONFUSED
 					}
 				}
 
@@ -1844,12 +1847,12 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement { gxCheck() }
 					onAttack {
             gxPerform()
-            def damageValue = 10
+            def numCounters = 10
             if (self.cards.energySufficient(thisMove.energyCost + C,C, C)){
-                damageValue = 20
+                numCounters = 20
             }
-						(1..10).each {
-              directDamage $damageValue, opp.all.select("Do $directDamage damage to which pokémon?")
+						(1..numCounters).each {
+              directDamage 10, opp.all.select("Add a damage counter to a pokémon?")
             }
 					}
 				}
@@ -1877,7 +1880,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-            apply CONFUSED
+            applyAfterDamage CONFUSED
 					}
 				}
 				move "Full Clean", {
@@ -1886,7 +1889,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 180
-            my.hand.discard()
+            afterDamage{my.hand.discard()}
 					}
 				}
 			};
@@ -1902,7 +1905,7 @@ public enum UnifiedMinds implements CardInfo {
             def card = opp.deck.subList(0, 1)
             card.showToMe("Top card of your opponent's deck to be discarded.")
             if (opp.deck.subList(0, 1).cardTypes.is(POKEMON)) {
-              damage opp.active.hp.value
+              damage card.hp.value
             }
             card.discard()
           }
@@ -1941,7 +1944,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
 					}
 				}
 			};
@@ -2163,7 +2166,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
-            apply CONFUSED
+            applyAfterDamage CONFUSED
 					}
 				}
 			};
@@ -2496,9 +2499,7 @@ public enum UnifiedMinds implements CardInfo {
 				move "Ground Stream", {
 					text "20 damage. Attach 2 [F] Energy cards from your discard pile to this Pokémon."
 					energyCost F
-					attackRequirement {
-						assert my.discard.filterByEnergyType(F) : "there are no [F] Energy cards in your discard pile."
-					}
+					attackRequirement {}
 					onAttack {
 						damage 20
             def list = my.discard.filterByEnergyType(F)
@@ -2676,7 +2677,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-            apply ASLEEP
+            applyAfterDamage ASLEEP
 					}
 				}
 			};
@@ -2811,7 +2812,7 @@ public enum UnifiedMinds implements CardInfo {
             assert my.discard : "There are no cards in your discard pile."
           }
 					onAttack {
-						my.discard.select(count:4, "select the card you want to put in your hand.").moveTo(my.deck)
+						my.discard.select(count:4, "Select cards to shuffle into your deck").moveTo(my.deck)
 					}
 				}
 				move "Slash", {
@@ -2871,14 +2872,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-
-						def bonusDamage = 150
-						my.bench.each {
-							if (it.numberOfDamageCounters == 0) {
-								bonusDamage = 0
-							}
-						}
-						damage $bonusDamage
+            if ( my.bench.findAll{it.numberOfDamageCounters}.size() == my.bench.size() ) damage 150
 					}
 				}
 				move "Boulder Crush", {
@@ -2936,9 +2930,6 @@ public enum UnifiedMinds implements CardInfo {
 					text "20 damage. Attach a [F] Energy card from your discard pile to 1 of your Benched Pokémon."
 					energyCost F
 					attackRequirement {}
-					attackRequirement {
-						assert my.discard.filterByEnergyType(F) : "there are no [F] Energy cards in your discard pile."
-					}
 					onAttack {
 						damage 20
             def list = my.discard.filterByEnergyType(F)
@@ -2958,7 +2949,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 150
-						damage (opp.bench.findAll{it.pokemonGX || it.pokemonEX}, 30)
+						damage (opp.bench.findAll{it.pokemonGX || it.pokemonEX}, 60)
 					}
 				}
 				move "Dark Moon GX", {
@@ -3016,7 +3007,7 @@ public enum UnifiedMinds implements CardInfo {
             gxPerform()
 
 						if (self.cards.energySufficient(thisMove.energyCost + C, C, C, C, C)){
-							opp.deck.subList(0, 10).discard()
+							opp.deck.subList(0, 15).discard()
 						}
 					}
 				}
@@ -3111,7 +3102,7 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Shadow Connection", {
 					text "As often as you like during your turn (before your attack), you may move a basic [D] Energy from 1 of your Pokémon to another of your Pokémon."
 					actionA {
-            moveEnergy(my.all, my.all.findAll{ it.basic })
+            moveEnergy(basic: true, type: D, my.all, my.all)
 					}
 				}
 				move "Claw Slash", {
@@ -3128,8 +3119,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement { gxCheck() }
 					onAttack {
 						gxPerform()
-            def maxSpace = Math.min(my.bench.freeBenchCount, 5)
-            callForFamily(basic:true, $maxSpace, delegate)
+            callForFamily(basic:true, my.bench.freeBenchCount, delegate)
 					}
 				}
 			};
@@ -3164,7 +3154,6 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 50
             flip 4, {}, {}, [
               1:{ damage 50 },
               2:{
@@ -3203,10 +3192,7 @@ public enum UnifiedMinds implements CardInfo {
           }
 					onAttack {
 						def target = opp.all.findAll{ it.cards.filterByType(POKEMON_TOOL) }.select("Choose the pokémon from which discard a Pokémon Tool card")
-
-            targeted(target, Source.TRAINER_CARD) {
-              tar.cards.filterByType(POKEMON_TOOL).select("Choose the Tool card to discard").discard()
-            }
+            target.cards.filterByType(POKEMON_TOOL).select("Choose the Tool card to discard").discard()
 					}
 				}
 			};
@@ -3265,7 +3251,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-            damage 40*my.prizeCardSet.size()
+            damage 20*my.prizeCardSet.size()
 					}
 				}
 				move "Headbang", {
@@ -3422,10 +3408,7 @@ public enum UnifiedMinds implements CardInfo {
 				move "Return", {
 					text "20 damage. You may draw cards until you have 6 cards in your hand."
 					energyCost C
-					attackRequirement {
-            assert my.deck
-            assert my.hand.size() < 6
-          }
+					attackRequirement {}
           onAttack {
             if(confirm("Draw cards until you have 6 cards in your hand?")) {
               draw (6 - my.hand.size())
@@ -3463,7 +3446,7 @@ public enum UnifiedMinds implements CardInfo {
             if (self.cards.energySufficient(thisMove.energyCost + F, F, F)) {
                 discardCount = 2
             }
-            opp.all.select(count:$discardCount, "Select $discardCount Pokemon to discard").discard()
+            opp.all.select(count:discardCount, "Select $discardCount Pokemon to discard").discard()
 					}
 				}
 			};
@@ -3616,7 +3599,8 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-            noWrDamage 20*defending.cards.energyCount(C), opp.all.select("Select the Pokémon to target.")
+            def tar = opp.all.select("Select the Pokémon to target.")
+            noWrDamage 20*tar.cards.energyCount(C), tar
 					}
 				}
 				move "Speed Wing", {
@@ -3989,17 +3973,22 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
             damage 100
-            delayed{
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each{
-                  if (it.to==self && it.dmg.value) {
-                    bc "+100 to Slaking (Dynamic Swing)"
-                    it.dmg+=hp(100)
+            if (confirm("Do 100 extra damage?") {
+              damage 100
+              afterDamage{
+                delayed{
+                  before APPLY_ATTACK_DAMAGES, {
+                    bg.dm().each{
+                      if (it.to==self && it.dmg.value) {
+                        bc "+100 to Slaking (Dynamic Swing)"
+                        it.dmg+=hp(100)
+                      }
+                    }
+                    unregisterAfter 2
+                    after SWITCH, self, { unregister() }
+                    after EVOLVE, self, { unregister() }
                   }
                 }
-                unregisterAfter 2
-                after SWITCH, self, { unregister() }
-                after EVOLVE, self, { unregister() }
               }
             }
           }
@@ -4062,7 +4051,7 @@ public enum UnifiedMinds implements CardInfo {
             flip{
               def target = my.discard.select()
               my.deck.addAll(0, target)
-              my.discard.removeAll(tar)
+              my.discard.removeAll(target)
             }
             powerUsed()
             bg.gm().betweenTurns()
