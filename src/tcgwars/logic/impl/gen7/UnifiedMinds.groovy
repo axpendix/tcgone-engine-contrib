@@ -560,6 +560,20 @@ public enum UnifiedMinds implements CardInfo {
 			case LEAVANNY_9:
 			return evolution (this, from:"Swadloon", hp:HP120, type:G, retreatCost:1) {
 				weakness R
+        bwAbility "Blanket Weaver", {
+					text "Your [G] Pokémon take 40 less damage from your opponent's attacks (after applying Weakness and Resistance). You can't apply more than 1 Blanket Weaver Ability at a time."
+					delayedA {
+            after APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to.owner==self.owner && it.to.types.contains(G) && it.from.owner!=it.to.owner && ef.attacker.owner!=self.owner && it.notNoEffect && it.notZero && it.to bg.em().retrieveObject("Blanket Weaver") != bg.turnCount) {//if Blanket Weaver hasn't been used yet
+                  bc "Blanket Weaver -40"
+                  it.dmg -= hp(40)
+                  bg.em().storeObject("Blanket Weaver", bg.turnCount)
+                }
+              }
+            }
+          }
+        }
 				bwAbility "Blanket Weaver", {
 					text "Your [G] Pokémon take 40 less damage from your opponent's attacks (after applying Weakness and Resistance). You can't apply more than 1 Blanket Weaver Ability at a time."
 					delayedA {
@@ -3539,7 +3553,15 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Hurricane Charge", {
 					text "Once during your turn (before your attack), you may attach a [W] Energy card, a [L] Energy card, or 1 of each from your hand to your Pokémon in any way you like."
 					actionA {
-            // TODO:
+            checkLastTurn()
+            assert my.hand.filterByEnergyType(W) || my.hand.filterByEnergyType(L) : "No Water or Lightning Energy to attach"
+            powerUsed()
+            if( my.hand.filterByEnergyType(W) ) {
+              attachEnergyFrom(may: true, type: W, my.hand, my.all)
+            }
+            if( my.hand.filterByEnergyType(L) ) {
+              attachEnergyFrom(may: true, type: L, my.hand, my.all)
+            }
 					}
 				}
 				move "Dragon Impact", {
@@ -3616,11 +3638,16 @@ public enum UnifiedMinds implements CardInfo {
 			return basic (this, hp:HP060, type:N, retreatCost:1) {
 				weakness Y
 				bwAbility "Unnerve", {
-					text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
-					actionA {
-            // TODO:
-					}
-				}
+            text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
+            delayedA {
+              before null, self, Source.TRAINER_CARD, {
+                if (bg.currentThreadPlayerType != self.owner){
+                  bc "Unnerve prevents effect of item"
+                  prevent()
+                }
+              }
+            }
+          }
 				move "Gnaw", {
 					text "20 damage. "
 					energyCost R, M
@@ -3658,7 +3685,19 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Grind Up", {
 					text "Once during your turn (before your attack), you may discard any Stadium card in play. If you do, attach up to 3 in any combination of [R] and [M] Energy cards from your hand to this Pokémon."
 					actionA {
-            // TODO:
+            checkLastTurn()
+            assert bg.stadiumInfoStruct : "No stadium in play"
+            powerUsed()
+            if (confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})?")) {
+              discard bg.stadiumInfoStruct.stadiumCard
+              def num = Math.min(my.hand.filterByEnergyType(R) + my.hand.filterByEnergyType(M), 3)
+              def card = 0
+              (1..num) {
+                card = my.hand.findAll {it.filterByEnergyType(R) || it.filterByEnergyType(M)}.select("Select a Fire or Metal Energy")
+                if(!card) break;
+                attachEnergyFrom(card, my.all)
+              }
+            }
 					}
 				}
 				move "Powerful Axe", {
@@ -3667,7 +3706,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-            // TODO:
+            damage 40*self.cards.filterByType(BASIC_ENERGY).size()
 					}
 				}
 
@@ -3739,24 +3778,37 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Ultra Conversion", {
 					text "Once during your turn (before your attack), you may discard an Ultra Beast card from your hand. If you do, draw 3 cards."
 					actionA {
-            // TODO:
-					}
+              checkLastTurn()
+              assert my.hand.findAll{it.cardTypes.is(ULTRA_BEAST)} : "No Ultra Beast in hand"
+              assert my.deck : "No cards in deck"
+              powerUsed()
+              my.hand.findAll{it.cardTypes.is(ULTRA_BEAST)}.select("Discard").discard()
+              draw 3
+            }
 				}
 				move "Venom Shot", {
 					text " Discard 2 Energy from this Pokémon. This attack does 170 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost P, C, C, C
 					attackRequirement {}
 					onAttack {
-            // TODO:
+            damage 170, opp.all.select("Which pokemon?")
+            discardSelfEnergy C, C
 					}
 				}
 				move "Injection GX", {
 					text " Add a card from your opponent's discard pile to their Prize cards face down. (You can't use more than 1 GX attack in a game.)"
 					energyCost L
-					attackRequirement { gxCheck() }
+					attackRequirement { 
+            assert opp.discard : "No cards in opponent's discard"
+            gxCheck() 
+          }
 					onAttack {
             gxPerform()
-						damage
+						def card = opp.discard.select("Select card to add to opponent's prizes").showToOpponent("This card from your discard is now in your prizes").first()
+            opp.discard.remove(card)
+            opp.prizeCardSet.add(card)
+            opp.prizeCardSet.shuffle()
+            bc "Added 1 card to prizes and shuffled them"
 					}
 				}
 			};
@@ -4119,7 +4171,14 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
-            // TODO:
+            if (confirm("Shuffle all cards attached to each player's active Pokemon into their decks?")) {
+              afterDamage{
+                my.active.cards.findAll{ !it.cardTypes.is(POKEMON) }.moveTo(my.deck)
+                shuffleDeck() 
+                opp.active.cards.findAll{ !it.cardTypes.is(POKEMON) }.moveTo(opp.deck)
+                shuffleDeck(null, TargetPlayer.OPPONENT)    
+              }
+            }
 					}
 				}
 			};
