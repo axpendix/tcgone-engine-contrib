@@ -565,7 +565,7 @@ public enum UnifiedMinds implements CardInfo {
 					delayedA {
             after APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to.owner==self.owner && it.to.types.contains(G) && it.from.owner!=it.to.owner && ef.attacker.owner!=self.owner && it.notNoEffect && it.notZero && it.to bg.em().retrieveObject("Blanket Weaver") != bg.turnCount) {//if Blanket Weaver hasn't been used yet
+                if (it.to.types.contains(G) && ef.attacker.owner != self.owner && it.notNoEffect && it.dmg.value && bg.em().retrieveObject("Blanket Weaver") != bg.turnCount) {//if Blanket Weaver hasn't been used yet
                   bc "Blanket Weaver -40"
                   it.dmg -= hp(40)
                   bg.em().storeObject("Blanket Weaver", bg.turnCount)
