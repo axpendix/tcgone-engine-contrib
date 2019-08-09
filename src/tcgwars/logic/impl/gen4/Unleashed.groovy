@@ -190,8 +190,14 @@ public enum Unleashed implements CardInfo {
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P
           pokePower "Stardust Song", {
-            text "Once during your turn, when you put Jirachi from you hand onto your Bench, you may flip 3 coins. For each heads, search your discard pile for a Energy card and attach it to Jirachi."
+            text "Once during your turn, when you put Jirachi from you hand onto your Bench, you may flip 3 coins. For each heads, search your discard pile for a [P] Energy card and attach it to Jirachi."
             actionA {
+              onActivate {reason ->
+                if(reason == PLAY_FROM_HAND && my.discard.findAll{it.cards.filterByEnergyType(P)}.size() && confirm("Use Stardust Song?")){
+                  powerUsed()
+                  flip 3, {attachEnergyFrom(type: P, my.discard, self)}
+                }
+              }
             }
           }
           move "Time Hollow", {
@@ -199,7 +205,12 @@ public enum Unleashed implements CardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              opp.all.findAll{ it.evolution }.select(min:0, max:self.cards.energyCount(C), "Choose which Pokemon to devolve").each{
+                def top=defending.topPokemonCard
+                bc "$top Devolved"
+                moveCard(top, opp.hand)
+                devolve(defending, top)
+              }
             }
           }
 
@@ -212,15 +223,19 @@ public enum Unleashed implements CardInfo {
             energyCost R, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              def list = my.deck.subList(0,3).discard()
+              def numEnergy = list.filterByType(ENERGY).size()
+              damage 50*numEnergy
+              bc "Discarded $numEnergy Energy cards"
             }
           }
           move "Mantle Bazooka", {
-            text "100 damage. Energy attached to Magmortar."
-            energyCost R, R, C, C, R
+            text "100 damage. Discard 2 [R] Energy attached to Magmortar."
+            energyCost R, R, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 100
+              discardSelfEnergy R, R
             }
           }
 
@@ -233,7 +248,9 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              shuffleDeck(hand)
+              hand.clear()
+              draw 5
             }
           }
           move "Wave Splash", {
@@ -241,7 +258,7 @@ public enum Unleashed implements CardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -250,8 +267,13 @@ public enum Unleashed implements CardInfo {
         return evolution (this, from:"Metang", hp:HP130, type:PSYCHIC, retreatCost:4) {
           weakness P
           pokeBody "Psychic Float", {
-            text "If you have any Energy attached to your Active Pokémon, the Retreat Cost for that Pokémon is 0."
+            text "If you have any [P] Energy attached to your Active Pokémon, the Retreat Cost for that Pokémon is 0."
             delayedA {
+              getterA (GET_RETREAT_COST,BEFORE_LAST) {h->
+                if(h.effect.target.owner == self.owner && h.effect.target.cards.energyCount(P)) {
+                  h.object = 0
+                }
+              }
             }
           }
           move "Pulse Blast", {
@@ -259,15 +281,17 @@ public enum Unleashed implements CardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
             }
           }
           move "Double Leg Hammer", {
             text "Choose 2 of your opponent’s Benched Pokémon. This attack does 40 damage to each of them."
             energyCost P, P, P
-            attackRequirement {}
+            attackRequirement {
+              assert opp.bench : "No Pokemon on your opponent's bench"
+            }
             onAttack {
-              damage 0
+              damage 40, opp.bench.select(min: 1, max: 2)
             }
           }
 
@@ -277,8 +301,13 @@ public enum Unleashed implements CardInfo {
           weakness D
           resistance C, MINUS20
           pokePower "Magical Trans", {
-            text "Once during your turn , you may move a Energy attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Mismagius is affected by a Special Condition."
+            text "Once during your turn , you may move a [P] Energy attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Mismagius is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.all.size() > 1 && my.all.findAll{ it.cards.filterByEnergyType(P) } : "Insufficent targets"
+              powerUsed()
+              moveEnergy(type: P, my.all, my.all)
             }
           }
           move "Psychic Pulse", {
@@ -286,7 +315,8 @@ public enum Unleashed implements CardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              opp.bench.findAll{ it.cards.numberOfDamageCounters }.each{ damage 10 }
             }
           }
 
@@ -299,7 +329,7 @@ public enum Unleashed implements CardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              switchYourActive()
             }
           }
           move "Ink Bomb", {
@@ -307,7 +337,8 @@ public enum Unleashed implements CardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              sandAttack(thisMove)
             }
           }
 
