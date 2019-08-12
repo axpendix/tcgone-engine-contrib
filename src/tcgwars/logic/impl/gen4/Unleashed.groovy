@@ -813,7 +813,7 @@ public enum Unleashed implements CardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              flip (damage 20}
+              flip {damage 20}
             }
           }
           move "Hyper Beam", {
