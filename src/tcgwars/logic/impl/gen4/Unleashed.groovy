@@ -347,16 +347,21 @@ public enum Unleashed implements CardInfo {
         return evolution (this, from:"Poliwhirl", hp:HP120, type:WATER, retreatCost:2) {
           weakness L
           pokePower "Leap Frog", {
-            text "Once during your turn , you may choose a Pokémon on your Bench and switch it with your Active Pokémon. This power can’t be used if Politoed is affected by a Special Condition."
+            text "Once during your turn , you may choose a [W] Pokémon on your Bench and switch it with your Active Pokémon. This power can’t be used if Politoed is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.bench.findAll{it.types.contains(W)} "No benched Water Pokemon"
+              powerUsed()
+              sw my.active, my.bench.findAll{it.types.contains(W)}.select()
             }
           }
           move "Big Chorus", {
-            text "Pokémon you have in play. This attack does 30 damage times the number of heads."
-            energyCost W, C, C, W
+            text "Flip a coin for each [W] Pokémon you have in play. This attack does 30 damage times the number of heads."
+            energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip my.all.findAll{it.types.contains(W)}.size(), {damage 30}
             }
           }
 
@@ -367,15 +372,29 @@ public enum Unleashed implements CardInfo {
           resistance F, MINUS20
           pokePower "Celebration Wind", {
             text "Once during your turn, when you put Shaymin from you hand onto your Bench, you may move as many Energy cards attached to your Pokémon as you like to any of your other Pokémon."
-            actionA {
-            }
+            onActivate {r->
+              if(r==PLAY_FROM_HAND && confirm('Use Celebration Wind?')){
+                powerUsed()
+                while(1){
+                  def pl=(my.all.findAll {it.cards.filterByType(ENERGY)})
+                  if(!pl) break;
+                  def src =pl.select("Source for energy (cancel to stop)", false)
+                  if(!src) break;
+                  def card=src.cards.filterByType(ENERGY).select("Energy to move").first()
+
+                  def tar=my.all.select("Target for energy (cancel to stop)", false)
+                  if(!tar) break;
+                  energySwitch(src, tar, card)
+                }
+              }
           }
           move "Energy Bloom", {
             text "30 damage. Remove 3 damage counters from each of your Pokémon that has any Energy attached to it."
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              my.all.findAll{it.cards.energyCount()}.each {heal 30, it}
             }
           }
 
@@ -384,11 +403,11 @@ public enum Unleashed implements CardInfo {
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:2) {
           weakness W
           move "Push Over", {
-            text "Energy attached to Sudowoodo."
-            energyCost F, F
+            text "Does 20 damage times the amount of [F] Energy attached to Sudowoodo."
+            energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20*self.cards.energyCount(F)
             }
           }
           move "Rumble", {
@@ -396,7 +415,8 @@ public enum Unleashed implements CardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              cantRetreat defending
             }
           }
 
@@ -409,7 +429,8 @@ public enum Unleashed implements CardInfo {
             energyCost G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              removeDamageCounterEqualToDamageDone()
             }
           }
           move "Land Crush", {
@@ -417,7 +438,7 @@ public enum Unleashed implements CardInfo {
             energyCost G, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
             }
           }
 
@@ -431,7 +452,7 @@ public enum Unleashed implements CardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20*defending.cards.energyCount()
             }
           }
           move "Confuse Ray", {
@@ -439,7 +460,8 @@ public enum Unleashed implements CardInfo {
             energyCost P, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip {applyAfterDamage CONFUSED}
             }
           }
 
@@ -452,7 +474,7 @@ public enum Unleashed implements CardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {damage 50}
             }
           }
           move "Paralyze Poison", {
@@ -460,7 +482,9 @@ public enum Unleashed implements CardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              applyAfterDamage POISONED
+              flip {applyAfterDamage PARALYZED}
             }
           }
 
@@ -469,16 +493,22 @@ public enum Unleashed implements CardInfo {
         return evolution (this, from:"Wartortle", hp:HP130, type:WATER, retreatCost:3) {
           weakness L
           pokePower "Wash Out", {
-            text "As often as you like , you may move a Energy attached to 1 of your Benched Pokémon to your Active Pokémon. This power can’t be used if Blastoise is affected by a Special Condition."
+            text "As often as you like (before your attack), you may move a [W] Energy attached to 1 of your Benched Pokémon to your Active Pokémon. This power can’t be used if Blastoise is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              assert my.bench : "You don't have Pokémon on your bench"
+              moveEnergy(type:W, my.bench, my.active)
             }
           }
           move "Hydro Launcher", {
-            text "Energy attached to Blastoise to your hand. Choose 1 of your opponent’s Pokémon. This attack does 100 damage to that Pokémon."
-            energyCost W, W, C, C, W
+            text "Return 2 [W] Energy attached to Blastoise to your hand. Choose 1 of your opponent’s Pokémon. This attack does 100 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost W, W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 100, opp.all.select()
+              afterDamage{
+                //TODO: return 2 [W] energy
+              }
             }
           }
 
@@ -492,7 +522,8 @@ public enum Unleashed implements CardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              applyAfterDamage CONFUSED
             }
           }
           move "Hurricane Wing", {
@@ -500,7 +531,7 @@ public enum Unleashed implements CardInfo {
             energyCost P, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 4, {damage 30}
             }
           }
 
@@ -514,7 +545,7 @@ public enum Unleashed implements CardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
           move "Repeating Drill", {
@@ -522,7 +553,7 @@ public enum Unleashed implements CardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 5, {damage 20}
             }
           }
 
@@ -531,8 +562,13 @@ public enum Unleashed implements CardInfo {
         return evolution (this, from:"Buizel", hp:HP080, type:WATER, retreatCost:0) {
           weakness L
           pokePower "Water Acceleration", {
-            text "Once during your turn , you may attach a Water Energy card from you hand to Floatzel. This power can’t be used if Floatzel is affected by a Special Condition."
+            text "Once during your turn (before your attack), you may attach a [W] Energy card from your hand to Floatzel. This power can’t be used if Floatzel is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.hand.filterByEnergyType(W) : "No Water Energy in your hand"
+              powerUsed()
+              attachEnergyFrom(type: W, my.hand, self)
             }
           }
           move "Waterfall", {
@@ -540,7 +576,7 @@ public enum Unleashed implements CardInfo {
             energyCost W, W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
             }
           }
 
@@ -553,7 +589,7 @@ public enum Unleashed implements CardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30, opp.all.select()
             }
           }
           move "Stream Pump", {
@@ -561,7 +597,11 @@ public enum Unleashed implements CardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              if(confirm("Return an Energy card from $self to your hand?")) {
+                damage 30
+                afterDamage{self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)}
+              }
             }
           }
 
@@ -574,7 +614,8 @@ public enum Unleashed implements CardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {applyAfterDamage CONFUSED}
             }
           }
           move "Reflect Energy", {
@@ -582,7 +623,10 @@ public enum Unleashed implements CardInfo {
             energyCost L, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              afterDamage {
+                moveEnergy(self, my.bench)
+              }
             }
           }
 
@@ -591,11 +635,14 @@ public enum Unleashed implements CardInfo {
         return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness P
           move "Bulk Up", {
-            text "30 damage. ."
+            text "30 damage. During your next turn, each of Lucario’s attacks does 30 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              delayed {
+                doMoreDamageNextTurn(thisMove, 30, self)
+              }
             }
           }
           move "Magnum Punch", {
@@ -603,7 +650,7 @@ public enum Unleashed implements CardInfo {
             energyCost F, F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
             }
           }
 
@@ -612,11 +659,14 @@ public enum Unleashed implements CardInfo {
         return evolution (this, from:"Vulpix", hp:HP090, type:FIRE, retreatCost:1) {
           weakness W
           move "Heat Acceleration", {
-            text "Energy cards and attach them to 1 of your Pokémon."
-            energyCost R, R
+            text "Search your discard pile for up to 3 [R] Energy cards and attach them to 1 of your Pokémon."
+            energyCost R
             attackRequirement {}
             onAttack {
-              damage 0
+              def tar = my.all.select("Attach energy to?")
+              my.discard.filterByEnergyType(R).select(min:0,max:3).each{
+                attachEnergy(tar, it)
+              }
             }
           }
           move "Searing Flame", {
@@ -624,7 +674,8 @@ public enum Unleashed implements CardInfo {
             energyCost R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              applyAfterDamage BURNED
             }
           }
 
@@ -637,7 +688,8 @@ public enum Unleashed implements CardInfo {
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              damage 20, opp.bench.select()
             }
           }
           move "Dynamic Punch", {
@@ -645,7 +697,11 @@ public enum Unleashed implements CardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              flip {
+                damage 40
+                applyAfterDamage CONFUSED
+              }
             }
           }
 
@@ -658,7 +714,7 @@ public enum Unleashed implements CardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
           move "Bebop Punch", {
@@ -666,7 +722,8 @@ public enum Unleashed implements CardInfo {
             energyCost F, F
             attackRequirement {}
             onAttack {
-              damage 0
+              tar = opp.all.select()
+              filpUntilTails {damage 50, tar)
             }
           }
 
@@ -675,8 +732,20 @@ public enum Unleashed implements CardInfo {
         return evolution (this, from:"Roselia", hp:HP090, type:GRASS, retreatCost:1) {
           weakness R
           pokePower "Energy Signal", {
-            text "When you attach a Energy card or Energy card from your hand to Roserade during your turn, you may use this power. If you attach a Energy card, the Defending Pokémon is now Confused. If you attach a Energy card, the Defending Pokémon is now Poisoned. This power can’t be used if Roserade is affected by a Special Condition."
-            actionA {
+            text "When you attach a [G] Energy card or [P] Energy card from your hand to Roserade during your turn, you may use this power. If you attach a [G] Energy card, the Defending Pokémon is now Confused. If you attach a [P] Energy card, the Defending Pokémon is now Poisoned. This power can’t be used if Roserade is affected by a Special Condition."
+            delayedA{
+              before ATTACH_ENERGY, {
+                if (ef.reason == PLAY_FROM_HAND && (ef.card.asEnergyCard().containsType(G) || ef.card.asEnergyCard().containsType(P)) && bg.currentTurn == self.owner && checkNoSPC() && confirm("Use Energy Signal?")) {
+                  if (ef.card.asEnergyCard().containsType(G)) {
+                    bc "Energy Signal inflicts Confusion"
+                    apply CONFUSED, defending
+                  }
+                  if (ef.card.asEnergyCard().containsType(P)) {
+                    bc "Energy Signal inflicts Poison"
+                    apply POISONED, defending
+                  }
+                }
+              }
             }
           }
           move "Power Blow", {
@@ -684,7 +753,7 @@ public enum Unleashed implements CardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20*self.cards.energyCount()
             }
           }
 
@@ -694,11 +763,12 @@ public enum Unleashed implements CardInfo {
           weakness R
           resistance P, MINUS20
           move "Guard Press", {
-            text "40 damage. ."
+            text "40 damage. During your opponent’s next turn, any damage done to Steelix by attacks is reduced by 20 (after applying Weakness and Resistance)."
             energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              reduceDamageNextTurn(hp(20),thisMove)
             }
           }
           move "Steel Swing", {
@@ -706,7 +776,7 @@ public enum Unleashed implements CardInfo {
             energyCost M, M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {damage 80}
             }
           }
 
@@ -716,7 +786,10 @@ public enum Unleashed implements CardInfo {
           weakness W
           pokePower "Hot Snort", {
             text "Once during your turn, when you put Torkoal from you hand onto your Bench, you may flip a coin. If heads, the Defending Pokémon is now Burned."
-            actionA {
+            onActivate {r->
+              if(r==PLAY_FROM_HAND && confirm('Use Hot Snort?')){
+                flip {apply BURNED, defending}
+              }
             }
           }
           move "Flare", {
@@ -724,7 +797,7 @@ public enum Unleashed implements CardInfo {
             energyCost R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -738,7 +811,8 @@ public enum Unleashed implements CardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip (damage 20}
             }
           }
           move "Hyper Beam", {
@@ -746,7 +820,8 @@ public enum Unleashed implements CardInfo {
             energyCost D, D, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              discardDefendingEnergy()
             }
           }
 
@@ -759,7 +834,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
           move "Cross Chop", {
@@ -767,7 +842,8 @@ public enum Unleashed implements CardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip {damage 30}
             }
           }
 
@@ -779,6 +855,11 @@ public enum Unleashed implements CardInfo {
           pokePower "Sunny Heal", {
             text "Once during your turn , you may remove 1 damage counter from your Active Pokémon. This power can’t be used if Cherrim is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.active.numberOfDamageCounters()
+              powerUsed()
+              heal 10, my.active
             }
           }
           move "Seed Bomb", {
@@ -786,7 +867,7 @@ public enum Unleashed implements CardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -799,7 +880,8 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              draw 6 - my.hand.size
             }
           }
 
@@ -813,7 +895,8 @@ public enum Unleashed implements CardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              cantRetreat defending
             }
           }
 
@@ -827,7 +910,7 @@ public enum Unleashed implements CardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
           move "Sleep Powder", {
@@ -835,7 +918,8 @@ public enum Unleashed implements CardInfo {
             energyCost G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip {applyAfterDamage ASLEEP}
             }
           }
 
@@ -848,7 +932,8 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it, OTHER) }
+              shuffleDeck()
             }
           }
           move "Poison Sting", {
@@ -856,7 +941,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              apply POISONED
             }
           }
 
@@ -865,11 +950,11 @@ public enum Unleashed implements CardInfo {
         return evolution (this, from:"Beldum", hp:HP080, type:PSYCHIC, retreatCost:3) {
           weakness P
           move "Energy Crane", {
-            text "Energy cards and attach them to your Pokémon in any way you like."
-            energyCost P, P
+            text "Search your discard pile for up to 2 [P] Energy cards and attach them to your Pokémon in any way you like."
+            energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              (1..2).each {attachEnergyFrom(may: true, type: P, my.discard, my.all)}
             }
           }
           move "Psypunch", {
@@ -877,7 +962,7 @@ public enum Unleashed implements CardInfo {
             energyCost P, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
             }
           }
 
@@ -891,7 +976,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              callForFamily(basic:true,2,delegate)
             }
           }
           move "Tag Team Boost", {
@@ -899,7 +984,8 @@ public enum Unleashed implements CardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if(my.bench.findAll{it.name == "Plusle"}) damage 20
             }
           }
 
@@ -908,11 +994,14 @@ public enum Unleashed implements CardInfo {
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness W
           move "Flare Bonus", {
-            text "Energy card from your hand. Then, draw 3 cards."
-            energyCost C, R
+            text "Discard a [R] Energy card from your hand. Then, draw 3 cards."
+            energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              if (my.hand.filterByBasicEnergyType(R)) {
+                my.hand.filterByBasicEnergyType(R).select("Discard").discard()
+                draw 3
+              }
             }
           }
           move "Combustion", {
@@ -920,7 +1009,7 @@ public enum Unleashed implements CardInfo {
             energyCost R, R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
             }
           }
 
@@ -934,7 +1023,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              draw 2
             }
           }
           move "Thunder Jolt", {
@@ -942,7 +1031,8 @@ public enum Unleashed implements CardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {}, {damage 10, self}
             }
           }
 
@@ -955,7 +1045,8 @@ public enum Unleashed implements CardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              applyAfterDamage ASLEEP
             }
           }
           move "Light Punch", {
@@ -963,7 +1054,7 @@ public enum Unleashed implements CardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -974,7 +1065,10 @@ public enum Unleashed implements CardInfo {
           resistance L, MINUS20
           pokeBody "Boost Gas", {
             text "If Pupitar has any Energy attached to it, the Retreat Cost of Pupitar is 0."
-            delayedA {
+            getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {h->
+              if(self.cards.filterByType(ENERGY)) {
+                h.object = 0
+              }
             }
           }
           move "Rage", {
@@ -982,10 +1076,9 @@ public enum Unleashed implements CardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20 + 10*self.numberOfDamageCounters()
             }
           }
-
         };
       case PUPITAR_39:
         return evolution (this, from:"Larvitar", hp:HP080, type:FIGHTING, retreatCost:1) {
@@ -996,7 +1089,7 @@ public enum Unleashed implements CardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
           move "Speed Attack", {
@@ -1004,7 +1097,7 @@ public enum Unleashed implements CardInfo {
             energyCost F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
             }
           }
 
@@ -1017,7 +1110,8 @@ public enum Unleashed implements CardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              damage 10, opp.bench.select()
             }
           }
           move "Razor Fin", {
@@ -1025,7 +1119,7 @@ public enum Unleashed implements CardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
             }
           }
 
@@ -1038,7 +1132,7 @@ public enum Unleashed implements CardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
           move "Crimson Bull", {
@@ -1046,7 +1140,8 @@ public enum Unleashed implements CardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 3, {damage 30}
+              afterDamage {apply CONFUSED, self}
             }
           }
 
@@ -1059,7 +1154,7 @@ public enum Unleashed implements CardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20, opp.all.select()
             }
           }
           move "Surf", {
@@ -1067,7 +1162,7 @@ public enum Unleashed implements CardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
             }
           }
 
@@ -1080,7 +1175,9 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              if (defending.cards.energyCount()) {
+                moveEnergy(defending, opp.bench)
+              }
             }
           }
           move "Tail Smash", {
@@ -1088,7 +1185,7 @@ public enum Unleashed implements CardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {damage 30}
             }
           }
 
@@ -1101,7 +1198,8 @@ public enum Unleashed implements CardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              switchYourActive(may: true)
             }
           }
 
@@ -1114,7 +1212,8 @@ public enum Unleashed implements CardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              damage 10, opp.bench.select()
             }
           }
 
@@ -1122,13 +1221,14 @@ public enum Unleashed implements CardInfo {
       case CARNIVINE_46:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
-          resistance W, MINUS30
+          resistance W, MINUS20
           move "Drawup Power", {
             text "Search your deck for an Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              my.deck.search(max: 1, cardTypeFilter(ENERGY)).moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Spit Up", {
@@ -1136,7 +1236,7 @@ public enum Unleashed implements CardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1150,7 +1250,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -1163,7 +1263,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Lightning Ball", {
@@ -1171,7 +1271,7 @@ public enum Unleashed implements CardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1184,7 +1284,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Fin Smack", {
@@ -1192,7 +1292,7 @@ public enum Unleashed implements CardInfo {
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {damage 20}
             }
           }
 
@@ -1206,7 +1306,8 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              opp.deck.subList(0,1).discard()
+              heal 20, self
             }
           }
           move "Reckless Charge", {
@@ -1214,7 +1315,8 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              damage 10, self
             }
           }
 
@@ -1228,7 +1330,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Knuckle Punch", {
@@ -1236,7 +1338,7 @@ public enum Unleashed implements CardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1249,7 +1351,7 @@ public enum Unleashed implements CardInfo {
             energyCost R
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Magma Punch", {
@@ -1257,7 +1359,7 @@ public enum Unleashed implements CardInfo {
             energyCost R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1270,7 +1372,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Karate Chop", {
@@ -1278,7 +1380,7 @@ public enum Unleashed implements CardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40 - 10*self.numberOfDamageCounters()
             }
           }
 
@@ -1292,7 +1394,7 @@ public enum Unleashed implements CardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10, opp.all.select()
             }
           }
 
@@ -1306,7 +1408,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Teleport", {
@@ -1314,7 +1416,7 @@ public enum Unleashed implements CardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              switchYourActive()
             }
           }
 
@@ -1324,7 +1426,12 @@ public enum Unleashed implements CardInfo {
           weakness G
           pokeBody "Energy Healer", {
             text "Whenever you attach an Energy card from you hand to 1 of your Pokémon, remove 1 damage counter from that Pokémon."
-            delayedA {
+            delayedA{
+              before ATTACH_ENERGY, {
+                if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner) {
+                  heal 10, it
+                }
+              }
             }
           }
           move "Boundless Power", {
@@ -1332,7 +1439,8 @@ public enum Unleashed implements CardInfo {
             energyCost F, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              cantAttackNextTurn self
             }
           }
 
@@ -1345,7 +1453,8 @@ public enum Unleashed implements CardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip 2, {damage 20}
             }
           }
 
@@ -1358,7 +1467,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              callForFamily(basic: true, 1, delegate)
             }
           }
           move "Razor Fin", {
@@ -1366,7 +1475,7 @@ public enum Unleashed implements CardInfo {
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1379,7 +1488,7 @@ public enum Unleashed implements CardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Water Arrow", {
@@ -1387,7 +1496,7 @@ public enum Unleashed implements CardInfo {
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20, opp.all.select()
             }
           }
 
@@ -1400,7 +1509,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Double Chop", {
@@ -1408,7 +1517,7 @@ public enum Unleashed implements CardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {damage 20}
             }
           }
 
@@ -1421,7 +1530,8 @@ public enum Unleashed implements CardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 3, {damage 20}
+              applyAfterDamage CONFUSED
             }
           }
 
