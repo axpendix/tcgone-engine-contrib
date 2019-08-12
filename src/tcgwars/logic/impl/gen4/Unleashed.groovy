@@ -1033,7 +1033,7 @@ public enum Unleashed implements CardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip {}, {damage 10, self}
+              flip 1, {}, {damage 10, self}
             }
           }
 
