@@ -387,6 +387,7 @@ public enum Unleashed implements CardInfo {
                   energySwitch(src, tar, card)
                 }
               }
+            }
           }
           move "Energy Bloom", {
             text "30 damage. Remove 3 damage counters from each of your Pokémon that has any Energy attached to it."
