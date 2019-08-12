@@ -351,7 +351,7 @@ public enum Unleashed implements CardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.bench.findAll{it.types.contains(W)} "No benched Water Pokemon"
+              assert my.bench.findAll{it.types.contains(W)} : "No benched Water Pokemon"
               powerUsed()
               sw my.active, my.bench.findAll{it.types.contains(W)}.select()
             }
