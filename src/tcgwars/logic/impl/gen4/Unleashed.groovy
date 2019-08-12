@@ -724,7 +724,7 @@ public enum Unleashed implements CardInfo {
             attackRequirement {}
             onAttack {
               tar = opp.all.select()
-              flipUntilTails {damage 50, tar)
+              flipUntilTails {damage 50, tar}
             }
           }
 
