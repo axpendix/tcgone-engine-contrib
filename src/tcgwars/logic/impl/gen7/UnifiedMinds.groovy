@@ -1,4 +1,4 @@
-package tcgwars.logic.impl.gen;
+package tcgwars.logic.impl.gen7;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -574,21 +574,6 @@ public enum UnifiedMinds implements CardInfo {
             }
           }
         }
-				bwAbility "Blanket Weaver", {
-					text "Your [G] Pokémon take 40 less damage from your opponent's attacks (after applying Weakness and Resistance). You can't apply more than 1 Blanket Weaver Ability at a time."
-					delayedA {
-            checkLastTurn()
-            before APPLY_ATTACK_DAMAGES, {
-              powerUsed()
-              bg.dm().each {
-                if (it.to.owner==self.owner && it.from.owner!=it.to.owner && ef.attacker.owner!=self.owner && it.notNoEffect && it.notZero && it.to.types.contains(G)) {
-                  bc "Blanket Weaver -40"
-                  it.dmg -= hp(40)
-                }
-              }
-            }
-          }
-				}
 				move "Razor Leaf", {
 					text "70 damage. "
 					energyCost G, C
