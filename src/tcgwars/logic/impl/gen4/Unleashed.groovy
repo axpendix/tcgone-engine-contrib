@@ -825,7 +825,6 @@ public enum Unleashed implements CardInfo {
               discardDefendingEnergy()
             }
           }
-
         };
       case URSARING_27:
         return evolution (this, from:"Teddiursa", hp:HP100, type:COLORLESS, retreatCost:3) {
