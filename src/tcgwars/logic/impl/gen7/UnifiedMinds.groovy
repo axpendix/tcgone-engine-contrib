@@ -1432,8 +1432,8 @@ public enum UnifiedMinds implements CardInfo {
 					text "100 damage. If your opponent has any Ultra Beasts in play, this attack can be used for [C]."
 					energyCost C
 					attackRequirement {
-            def ultraBeasts = opp.all.findAll it.topPokemonCard.cardTypes.is(ULTRA_BEAST)
-						if (!ultraBeasts) assert self.cards.energySufficient(W, W, C) : "Not enough energy. Opponent does not have any Ultra Beasts in play."
+            def ultraBeasts = opp.all.findAll { it.topPokemonCard.cardTypes.is(ULTRA_BEAST) }
+						if (!ultraBeasts) assert self.cards.energySufficient(W, W, C) : "Not enough energy. Opponent does not have any Ultra Beasts in play so full energy requirement must be satisfied."
           }
 					onAttack {
 						damage 100
