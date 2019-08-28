@@ -1285,7 +1285,7 @@ public enum UnifiedMinds implements CardInfo {
 						delayed {
               before PLAY_TRAINER, {
                 if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
-                  wcu "Frozen Lock prevents playing this Item card."
+                  wcu "Cryogonal's Frozen Lock prevents playing this Item card."
                   prevent()
                 }
               }
