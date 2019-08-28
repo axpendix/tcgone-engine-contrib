@@ -1220,10 +1220,8 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						onAttack {
-              def count = my.bench.findAll({ it.name == "Basculin" }).size()
-              damage 20*count, opp.bench.select()
-            }
+            def count = my.bench.findAll({ it.name == "Basculin" }).size()
+            damage 20*count, opp.bench.select()
 					}
 				}
 				move "Tackle", {
