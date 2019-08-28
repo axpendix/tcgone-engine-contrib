@@ -563,7 +563,7 @@ public enum UnifiedMinds implements CardInfo {
         bwAbility "Blanket Weaver", {
 					text "Your [G] Pokémon take 40 less damage from your opponent's attacks (after applying Weakness and Resistance). You can't apply more than 1 Blanket Weaver Ability at a time."
 					delayedA {
-            after APPLY_ATTACK_DAMAGES, {
+            before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
                 if (it.to.types.contains(G) && ef.attacker.owner != self.owner && it.notNoEffect && it.dmg.value && bg.em().retrieveObject("Blanket Weaver") != bg.turnCount) {//if Blanket Weaver hasn't been used yet
                   bc "Blanket Weaver -40"
@@ -948,7 +948,7 @@ public enum UnifiedMinds implements CardInfo {
             assert my.deck : "There is no more cards in your deck."
           }
           onAttack{
-            my.deck.search("Select a [R] Pokémon to put into your hand",pokemonTypeFilter(R)).moveTo(my.hand)
+            my.deck.search("Select a [R] Pokémon to put into your hand", pokemonTypeFilter(R)).moveTo(my.hand)
             shuffleDeck()
           }
 				}
@@ -1094,7 +1094,7 @@ public enum UnifiedMinds implements CardInfo {
 					text "Once during your turn (before your attack), you may put a Misty’s Favor card from your discard pile into your hand."
 					actionA {
             checkLastTurn()
-            def cards = my.discard.findAll{ it.name == "Misty's Request" }
+            def cards = my.discard.findAll{ it.name == "Misty's Favor" }
             assert cards
             powerUsed()
 
@@ -1130,7 +1130,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-            if (confirm("How many damage counters would you like to add to Froslass?  Each damage counter added will increase the damage to the defending Pokemon by 20 damage.")) {
+            if (confirm("Would you like to add damage counters to this Pokemon to increase damage by 20? (Max 7)")) {
               def num = choose([0, 1, 2, 3, 4, 5, 6, 7])
               damage 20*num
               directDamage 10*num, self
@@ -1220,10 +1220,8 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						onAttack {
-              def count = my.bench.findAll({ it.name == "Basculin" }).size()
-              damage 20*count, opp.bench.select()
-            }
+            def count = my.bench.findAll({ it.name == "Basculin" }).size()
+            damage 20*count, opp.bench.select()
 					}
 				}
 				move "Tackle", {
@@ -1285,7 +1283,7 @@ public enum UnifiedMinds implements CardInfo {
 						delayed {
               before PLAY_TRAINER, {
                 if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
-                  wcu "Frozen Lock prevents playing this Item card."
+                  wcu "Cryogonal's Frozen Lock prevents playing this Item card."
                   prevent()
                 }
               }
@@ -1299,7 +1297,7 @@ public enum UnifiedMinds implements CardInfo {
 				weakness G
 				bwAbility "Pure Heart", {
 					text "Prevent all effects of attacks, including damage, done to this Pokémon by your opponent's Pokémon-GX or Pokémon-EX."
-					safeguardForExAndGx("Holy Heart", self, delegate)
+					safeguardForExAndGx("Pure Heart", self, delegate)
 				}
 				move "Sonic Edge", {
 					text "110 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
@@ -1349,7 +1347,7 @@ public enum UnifiedMinds implements CardInfo {
             assert opp.bench
           }
           onAttack{
-            sw defending, opp.bench.select("Choose the new active.")
+            sw defending, opp.bench.select("Choose your opponent's new active Pokémon.")
           }
 				}
 				move "Sticky Web", {
@@ -1434,8 +1432,8 @@ public enum UnifiedMinds implements CardInfo {
 					text "100 damage. If your opponent has any Ultra Beasts in play, this attack can be used for [C]."
 					energyCost C
 					attackRequirement {
-            def ultraBeasts = opp.all.findAll it.topPokemonCard.cardTypes.is(ULTRA_BEAST)
-						if (!ultraBeasts) assert self.cards.energySufficient(W, W, C) : "Not enough energy. Opponent does not have any Ultra Beasts in play."
+            def ultraBeasts = opp.all.findAll { it.topPokemonCard.cardTypes.is(ULTRA_BEAST) }
+						if (!ultraBeasts) assert self.cards.energySufficient(W, W, C) : "Not enough energy. Opponent does not have any Ultra Beasts in play so full energy requirement must be satisfied."
           }
 					onAttack {
 						damage 100
@@ -1466,7 +1464,7 @@ public enum UnifiedMinds implements CardInfo {
             gxPerform()
             damage 150
             switchYourActive()
-            if (self.cards.energySufficient(thisMove.energyCost + L, L )){
+            if (self.cards.energySufficient(thisMove.energyCost + [L, L] )) {
               damage 100
             }
           }
@@ -1526,7 +1524,7 @@ public enum UnifiedMinds implements CardInfo {
           }
           onAttack {
             def numL = self.cards.filterByEnergyType(L).size()
-            def toDiscard = self.cards.filterByEnergyType(L).select(min:0, max:numL,"Do 30 damage to an Opponent's Pokémon for each [L] energy discarded.")
+            def toDiscard = self.cards.filterByEnergyType(L).select(min:0, max:numL, "Do 30 damage to an Opponent's Pokémon for each [L] energy discarded.")
 
             (1..toDiscard.size()).each {
               damage 30, opp.all.select()
