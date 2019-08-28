@@ -948,7 +948,7 @@ public enum UnifiedMinds implements CardInfo {
             assert my.deck : "There is no more cards in your deck."
           }
           onAttack{
-            my.deck.search("Select a [R] Pokémon to put into your hand",pokemonTypeFilter(R)).moveTo(my.hand)
+            my.deck.search("Select a [R] Pokémon to put into your hand", pokemonTypeFilter(R)).moveTo(my.hand)
             shuffleDeck()
           }
 				}
