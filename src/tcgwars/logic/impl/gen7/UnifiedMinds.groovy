@@ -1094,7 +1094,7 @@ public enum UnifiedMinds implements CardInfo {
 					text "Once during your turn (before your attack), you may put a Misty’s Favor card from your discard pile into your hand."
 					actionA {
             checkLastTurn()
-            def cards = my.discard.findAll{ it.name == "Misty's Request" }
+            def cards = my.discard.findAll{ it.name == "Misty's Favor" }
             assert cards
             powerUsed()
 
