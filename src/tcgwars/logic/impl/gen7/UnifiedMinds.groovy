@@ -1524,7 +1524,7 @@ public enum UnifiedMinds implements CardInfo {
           }
           onAttack {
             def numL = self.cards.filterByEnergyType(L).size()
-            def toDiscard = self.cards.filterByEnergyType(L).select(min:0, max:numL,"Do 30 damage to an Opponent's Pokémon for each [L] energy discarded.")
+            def toDiscard = self.cards.filterByEnergyType(L).select(min:0, max:numL, "Do 30 damage to an Opponent's Pokémon for each [L] energy discarded.")
 
             (1..toDiscard.size()).each {
               damage 30, opp.all.select()
