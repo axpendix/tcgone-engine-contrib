@@ -1130,7 +1130,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-            if (confirm("How many damage counters would you like to add to Froslass?  Each damage counter added will increase the damage to the defending Pokemon by 20 damage.")) {
+            if (confirm("Would you like to add damage counters to this Pokemon to increase damage by 20? (Max 7)")) {
               def num = choose([0, 1, 2, 3, 4, 5, 6, 7])
               damage 20*num
               directDamage 10*num, self
