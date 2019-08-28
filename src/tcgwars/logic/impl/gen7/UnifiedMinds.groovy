@@ -1347,7 +1347,7 @@ public enum UnifiedMinds implements CardInfo {
             assert opp.bench
           }
           onAttack{
-            sw defending, opp.bench.select("Choose the new active.")
+            sw defending, opp.bench.select("Choose your opponent's new active Pokémon.")
           }
 				}
 				move "Sticky Web", {
