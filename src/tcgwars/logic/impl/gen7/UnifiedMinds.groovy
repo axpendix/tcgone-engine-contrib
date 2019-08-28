@@ -1464,7 +1464,7 @@ public enum UnifiedMinds implements CardInfo {
             gxPerform()
             damage 150
             switchYourActive()
-            if (self.cards.energySufficient(thisMove.energyCost + L, L )){
+            if (self.cards.energySufficient(thisMove.energyCost + [L, L] )) {
               damage 100
             }
           }
