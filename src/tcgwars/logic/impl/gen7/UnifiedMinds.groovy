@@ -1297,7 +1297,7 @@ public enum UnifiedMinds implements CardInfo {
 				weakness G
 				bwAbility "Pure Heart", {
 					text "Prevent all effects of attacks, including damage, done to this Pokémon by your opponent's Pokémon-GX or Pokémon-EX."
-					safeguardForExAndGx("Holy Heart", self, delegate)
+					safeguardForExAndGx("Pure Heart", self, delegate)
 				}
 				move "Sonic Edge", {
 					text "110 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
