@@ -1714,9 +1714,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
             damage 30
-						if (defending.getRemainingHP().value > attacking.getRemainingHP().value) {
-              damage 30
-            }
+						if (defending.getRemainingHP() > self.getRemainingHP()) damage 30
 					}
 				}
 			};
