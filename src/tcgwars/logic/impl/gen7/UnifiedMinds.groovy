@@ -2848,7 +2848,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
             damage 20
-						flip { damage 20 }
+						flip 2, { damage 20 }
 					}
 				}
 			};
