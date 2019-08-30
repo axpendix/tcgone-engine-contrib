@@ -978,18 +978,23 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-            def list = my.deck.subList(0, 5).filterByType(POKEMON)
-            def num = list.size()
-            if (num)  damage 60*num
 
-            list.discard()
-            def firePokemon = list.findAll(pokemonTypeFilter(R))
-            def benchCount = 0
-            multiSelect(firePokemon).each {
-              benchPCS(it)
-              benchCount += 1
+            def pokemonToDiscard = my.deck.subList(0, 5).filterByType(POKEMON)
+            if (pokemonToDiscard.size()) {
+              damage 60*pokemonToDiscard.size()
             }
-            my.deck.subList(0, 5 - benchCount).discard()
+
+            pokemonToDiscard.discard()
+
+            def availableBenchSpace = 5 - my.bench.size()
+            def firePokemon = pokemonToDiscard.findAll(pokemonTypeFilter(R))
+
+            def maxSelect = Math.min(firePokemon.size(), availableBenchSpace)
+            multiSelect(firePokemon, maxSelect).each {
+              benchPCS(it)
+            }
+
+            my.deck.subList(0, 5 - pokemonToDiscard.size()).discard()
 					}
 				}
 			};
