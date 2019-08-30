@@ -3339,7 +3339,9 @@ public enum UnifiedMinds implements CardInfo {
           onActivate {
 						if (it == PLAY_FROM_HAND && confirm("Use Captivating Wink?")) {
 							opp.hand.showToMe("Opponent's hand")
-              opp.hand.findAll { it.basic }.select(max: opp.bench.freeBenchCount).moveTo(opp.bench)
+              def basicPokemon = opp.hand.findAll{ it.basic }
+              def maximumAllowed = Math.min(basicPokemon.size(), opp.bench.freeBenchCount)
+              basicPokemon.select(min: 0, max: maximumAllowed).moveTo(opp.bench)
 						}
 					}
 				}
