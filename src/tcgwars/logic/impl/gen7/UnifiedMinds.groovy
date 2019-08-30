@@ -3793,7 +3793,7 @@ public enum UnifiedMinds implements CardInfo {
               assert my.hand.findAll{it.cardTypes.is(ULTRA_BEAST)} : "No Ultra Beast in hand"
               assert my.deck : "No cards in deck"
               powerUsed()
-              my.hand.findAll{it.cardTypes.is(ULTRA_BEAST)}.select("Discard").discard()
+              my.hand.findAll{it.cardTypes.is(ULTRA_BEAST)}.select("Discard an Ultra Beast card").discard()
               draw 3
             }
 				}
