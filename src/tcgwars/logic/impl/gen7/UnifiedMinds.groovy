@@ -4298,7 +4298,7 @@ public enum UnifiedMinds implements CardInfo {
 				}
 			};
 			case SILVALLY_184:
-			return evolution (this, from:"TypeNull", hp:HP130, type:C, retreatCost:2) {
+			return evolution (this, from:"Type: Null", hp:HP130, type:C, retreatCost:2) {
 				weakness F
 				move "Avenging Heart", {
 					text "30+ damage. This attack does 50 more damage for each Prize card your opponent took on their last turn."
