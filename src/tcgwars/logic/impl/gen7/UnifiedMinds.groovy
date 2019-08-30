@@ -3953,16 +3953,16 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-            delayed {
-              before ATTACH_ENERGY, defending {
-                if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite) {
-                  wcu "Lazy Howl ends the turn"
-                  bg.gm().betweenTurns()
+            targeted (defending) {
+              delayed {
+                before ATTACH_ENERGY, defending {
+                  if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite) {
+                    wcu "Lazy Howl ends the turn"
+                    bg.gm().betweenTurns()
+                  }
                 }
+                unregisterAfter 2
               }
-              unregisterAfter 2
-              after SWITCH, defending, {unregister()}
-              after EVOLVE, defending, {unregister()}
             }
 					}
 				}
