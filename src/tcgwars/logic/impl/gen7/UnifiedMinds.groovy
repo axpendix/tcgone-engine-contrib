@@ -388,9 +388,9 @@ public enum UnifiedMinds implements CardInfo {
           onAttack {
             damage 200
             gxPerform()
-            if (self.cards.energySufficient(thisMove.energyCost + C,C,C)){
+            if (self.cards.energySufficient(thisMove.energyCost + [C, C, C])){
               afterDamage{
-                opp.all.each{
+                opp.all.each {
                   it.cards.filterByType(ENERGY).moveTo(opp.deck)
                 }
                 shuffleDeck(null, TargetPlayer.OPPONENT)
@@ -922,10 +922,23 @@ public enum UnifiedMinds implements CardInfo {
 				move "Victory Sign", {
 					text "Search your deck for up to 2 basic Energy cards of different types and attach them to your Pokémon in any way you like. Then, shuffle your deck."
 					energyCost R
-					attackRequirement {}
+					attackRequirement {
+            assert my.deck : "There are no more cards in your deck"
+          }
 					onAttack {
-						attachEnergyFrom(basic:true, my.deck, my.all)
-            attachEnergyFrom(basic:true, my.deck, my.all)
+            my.deck.select(min:0, max:2, "Select up to 2 different types of basic Energy cards", cardTypeFilter(BASIC_ENERGY), self.owner,
+                {
+                  CardList list->
+                    for(Type t1:Type.values()) {
+                      if (list.findAll{ it.asEnergyCard().containsTypePlain(t1) }.size() >= 2) {
+                        return false
+                      }
+                    }
+                    return true
+                }).each {
+                  attachEnergy(my.all.select("Attach $it to which Pokémon?"), it)
+                }
+
             shuffleDeck()
 					}
 				}
@@ -978,18 +991,23 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-            def list = my.deck.subList(0, 5).filterByType(POKEMON)
-            def num = list.size()
-            if (num)  damage 60*num
 
-            list.discard()
-            def firePokemon = list.findAll(pokemonTypeFilter(R))
-            def benchCount = 0
-            multiSelect(firePokemon).each {
-              benchPCS(it)
-              benchCount += 1
+            def pokemonToDiscard = my.deck.subList(0, 5).filterByType(POKEMON)
+            if (pokemonToDiscard.size()) {
+              damage 60*pokemonToDiscard.size()
             }
-            my.deck.subList(0, 5 - benchCount).discard()
+
+            pokemonToDiscard.discard()
+
+            def availableBenchSpace = 5 - my.bench.size()
+            def firePokemon = pokemonToDiscard.findAll(pokemonTypeFilter(R))
+
+            def maxSelect = Math.min(firePokemon.size(), availableBenchSpace)
+            multiSelect(firePokemon, maxSelect).each {
+              benchPCS(it)
+            }
+
+            my.deck.subList(0, 5 - pokemonToDiscard.size()).discard()
 					}
 				}
 			};
@@ -2954,8 +2972,7 @@ public enum UnifiedMinds implements CardInfo {
 						damage 150
             def gxEx = opp.bench.findAll{ it.pokemonGX || it.pokemonEX }
             if (opp.bench && exGx) {
-              def selected = gxEx.select("Deal 60 damage to which Pokémon?")
-              damage 60, selected
+              noWrDamage 60, gxEx.select("Deal 60 damage to which Pokémon?")
             }
           }
 				}
@@ -3600,7 +3617,7 @@ public enum UnifiedMinds implements CardInfo {
 							if (minimumDiscard < 0) {
 								minimumDiscard = 0
 							}
-              my.hand.select(min:minimumDiscard, "Choose the cards to discard").discard()
+              my.hand.select(min:minimumDiscard, max: my.hand.size(), "Choose the cards to discard").discard()
             }
 						draw 10 - my.hand.size()
           }
@@ -3776,7 +3793,7 @@ public enum UnifiedMinds implements CardInfo {
               assert my.hand.findAll{it.cardTypes.is(ULTRA_BEAST)} : "No Ultra Beast in hand"
               assert my.deck : "No cards in deck"
               powerUsed()
-              my.hand.findAll{it.cardTypes.is(ULTRA_BEAST)}.select("Discard").discard()
+              my.hand.findAll{it.cardTypes.is(ULTRA_BEAST)}.select("Discard an Ultra Beast card").discard()
               draw 3
             }
 				}
@@ -3792,9 +3809,9 @@ public enum UnifiedMinds implements CardInfo {
 				move "Injection GX", {
 					text " Add a card from your opponent's discard pile to their Prize cards face down. (You can't use more than 1 GX attack in a game.)"
 					energyCost L
-					attackRequirement { 
+					attackRequirement {
             assert opp.discard : "No cards in opponent's discard"
-            gxCheck() 
+            gxCheck()
           }
 					onAttack {
             gxPerform()
@@ -4019,10 +4036,10 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
             damage 100
-            if (confirm("Do 100 extra damage?") {
+            if (confirm("Do 100 extra damage?")) {
               damage 100
-              afterDamage{
-                delayed{
+              afterDamage {
+                delayed {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each{
                       if (it.to==self && it.dmg.value) {
@@ -4168,9 +4185,9 @@ public enum UnifiedMinds implements CardInfo {
             if (confirm("Shuffle all cards attached to each player's active Pokemon into their decks?")) {
               afterDamage{
                 my.active.cards.findAll{ !it.cardTypes.is(POKEMON) }.moveTo(my.deck)
-                shuffleDeck() 
+                shuffleDeck()
                 opp.active.cards.findAll{ !it.cardTypes.is(POKEMON) }.moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)    
+                shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }
 					}
@@ -4255,7 +4272,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-            if (ef.defender.pokemonGX || ef.defender.pokemonEX) {
+            if (defending.pokemonGX || defending.pokemonEX) {
               damage 30
             } else {
               damage 90
@@ -4363,7 +4380,7 @@ public enum UnifiedMinds implements CardInfo {
           onPlay {
             eff = delayed {
               before CHECK_ATTACK_REQUIREMENTS, {
-                if(ef.attacker.hp <= 40) {
+                if (ef.attacker.remainingHP <= 40) {
                   wcu "Blizzard Town prevents attack"
                   prevent()
                 }
@@ -4422,7 +4439,9 @@ public enum UnifiedMinds implements CardInfo {
           text "Draw 2 cards. If your Active Pokémon is a TAG TEAM Pokémon, draw 2 more cards."
           onPlay {
             draw 2
-            if(my.active.cardTypes.isIn(TAG_TEAM)) {draw 2}
+            if (my.active.topPokemonCard.cardTypes.is(TAG_TEAM) {
+              draw 2
+            }
           }
           playRequirement{
             assert my.deck
@@ -4526,7 +4545,7 @@ public enum UnifiedMinds implements CardInfo {
             heal 50, my.active
           }
           playRequirement{
-            assert my.active.cardTypes.isIn(POKEMON_GX) : "Active Pokemon is no"
+            assert my.active.topPokemonCard.cardTypes.is(POKEMON_GX) : "Your Active Pokémon is not a Pokémon-GX."
             assert my.active.numberOfDamageCounters : "There is no damage to heal"
           }
         };
