@@ -786,10 +786,7 @@ public enum UnifiedMinds implements CardInfo {
 				move "Sea Creeper Net", {
 					text " Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-						callForFamily(basic:true, 1, delegate)
-					}
+					callForFamily(basic:true, 1, delegate)
 				}
 				move "Spinning Attack", {
 					text "40 damage. "
