@@ -3862,10 +3862,10 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-            damage 50*my.all.filterByType(TAG_TEAM).size()
+            def tagTeams = my.all.findAll { it.cardTypes.isIn(TAG_TEAM) }
+            damage 50*tagTeams.size()
 					}
 				}
-
 			};
 			case TAUROS_164:
 			return basic (this, hp:HP110, type:C, retreatCost:1) {
