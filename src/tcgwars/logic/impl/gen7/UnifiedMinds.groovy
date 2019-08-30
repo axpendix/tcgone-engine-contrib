@@ -4036,10 +4036,10 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
             damage 100
-            if (confirm("Do 100 extra damage?") {
+            if (confirm("Do 100 extra damage?")) {
               damage 100
-              afterDamage{
-                delayed{
+              afterDamage {
+                delayed {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each{
                       if (it.to==self && it.dmg.value) {
