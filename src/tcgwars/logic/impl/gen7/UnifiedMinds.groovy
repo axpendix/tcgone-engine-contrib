@@ -4528,7 +4528,7 @@ public enum UnifiedMinds implements CardInfo {
             heal 50, my.active
           }
           playRequirement{
-            assert my.active.cardTypes.isIn(POKEMON_GX) : "Active Pokemon is no"
+            assert my.active.topPokemonCard.cardTypes.is(POKEMON_GX) : "Your Active Pokémon is not a Pokémon-GX."
             assert my.active.numberOfDamageCounters : "There is no damage to heal"
           }
         };
