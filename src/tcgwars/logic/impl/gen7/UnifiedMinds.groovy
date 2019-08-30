@@ -3697,13 +3697,11 @@ public enum UnifiedMinds implements CardInfo {
             powerUsed()
             if (confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})?")) {
               discard bg.stadiumInfoStruct.stadiumCard
-              def card = 0
-              def attach = 0
-              while (attach < 3 && (my.hand.filterByEnergyType(R) || my.hand.filterByEnergyType(M))) {
-                card = my.hand.findAll {it.filterByEnergyType(R) || it.filterByEnergyType(M)}.select("Select a Fire or Metal Energy")
-                if(!card) break;
-                attachEnergyFrom(card, my.all)
-                attach++
+
+              my.hand.findAll{
+                it.cardTypes.isEnergy() && (it.asEnergyCard().containsTypePlain(M) || it.asEnergyCard().containsTypePlain(R))
+              }.select(min: 0, max: 3, "Attach a [R] or [M] card to Haxorus.").each{
+                attachEnergy(self, it)
               }
             }
 					}
@@ -3713,8 +3711,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost R, M
 					attackRequirement {}
 					onAttack {
-						damage 10
-            damage 40*self.cards.filterByType(BASIC_ENERGY).size()
+            damage 10+40*self.cards.filterByType(BASIC_ENERGY).size()
 					}
 				}
 
