@@ -2952,8 +2952,12 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 150
-						damage (opp.bench.findAll{it.pokemonGX || it.pokemonEX}, 60)
-					}
+            def gxEx = opp.bench.findAll{ it.pokemonGX || it.pokemonEX }
+            if (opp.bench && exGx) {
+              def selected = gxEx.select("Deal 60 damage to which Pokémon?")
+              damage 60, selected
+            }
+          }
 				}
 				move "Dark Moon GX", {
 					text " Your opponent can’t play any Trainer cards from their hand during their next turn. If this Pokémon has at least 5 extra [D] Energy attached to it (in addition to this attack’s cost), your opponent's Active Pokémon is Knocked Out. (You can’t use more than 1 GX attack in a game.)"
@@ -2974,7 +2978,7 @@ public enum UnifiedMinds implements CardInfo {
 							unregisterAfter 2
 						}
 
-						if (self.cards.energySufficient(thisMove.energyCost + D, D, D, D, D)){
+						if (self.cards.energySufficient( thisMove.energyCost + [D, D, D, D, D] )) {
 							new Knockout(defending)
 						}
 					}
