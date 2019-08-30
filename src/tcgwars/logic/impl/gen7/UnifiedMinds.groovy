@@ -4329,8 +4329,8 @@ public enum UnifiedMinds implements CardInfo {
 					text "If this Pokémon remains Asleep between turns, put 6 damage counters on your opponent's Active Pokémon."
 					delayedA {
             after BETWEEN_TURNS, {
-              if (my.active.isSPC(ASLEEP)) {
-                opp.active.damage += hp(60)
+              if (self.isSPC(ASLEEP)) {
+                directDamage 60
               }
             }
           }
@@ -4340,7 +4340,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						apply ASLEEP
+						apply ASLEEP, self
 					}
 				}
 			};
