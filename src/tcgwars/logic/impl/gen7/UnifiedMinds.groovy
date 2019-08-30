@@ -922,10 +922,23 @@ public enum UnifiedMinds implements CardInfo {
 				move "Victory Sign", {
 					text "Search your deck for up to 2 basic Energy cards of different types and attach them to your Pokémon in any way you like. Then, shuffle your deck."
 					energyCost R
-					attackRequirement {}
+					attackRequirement {
+            assert my.deck : "There are no more cards in your deck"
+          }
 					onAttack {
-						attachEnergyFrom(basic:true, my.deck, my.all)
-            attachEnergyFrom(basic:true, my.deck, my.all)
+            my.deck.select(min:0, max:2, "Select up to 2 different types of basic Energy cards", cardTypeFilter(BASIC_ENERGY), self.owner,
+                {
+                  CardList list->
+                    for(Type t1:Type.values()) {
+                      if (list.findAll{ it.asEnergyCard().containsTypePlain(t1) }.size() >= 2) {
+                        return false
+                      }
+                    }
+                    return true
+                }).each {
+                  attachEnergy(my.all.select("Attach $it to which Pokémon?"), it)
+                }
+
             shuffleDeck()
 					}
 				}
