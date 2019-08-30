@@ -1832,7 +1832,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-            def psychicCount = my.bench.findAll { it.types.contains(P) }.size
+            def psychicCount = my.bench.findAll { it.types.contains(P) }.size()
             damage 30*psychicCount
 					}
 				}
@@ -1843,7 +1843,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
             gxPerform()
             def numCounters = 10
-            if (self.cards.energySufficient(thisMove.energyCost + C,C, C)){
+            if (self.cards.energySufficient(thisMove.energyCost + [C,C,C])) {
                 numCounters = 20
             }
 						(1..numCounters).each {
