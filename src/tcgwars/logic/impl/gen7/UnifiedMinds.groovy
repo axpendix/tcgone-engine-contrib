@@ -1963,7 +1963,7 @@ public enum UnifiedMinds implements CardInfo {
 					text "120 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from TAG TEAM Pokémon."
 					energyCost P, C, C
 					attackRequirement {
-            assert my.all.size() <= 4 : "Power Bind prevents this Pokémon from attacking"
+            assert my.all.size() > 4 : "Power Bind prevents this Pokémon from attacking"
           }
           onAttack{
             damage 120
@@ -1985,7 +1985,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost P
 					attackRequirement {
 						gxCheck()
-            assert my.all.size() <= 4 : "Power Bind prevents this Pokémon from attacking"
+            assert my.all.size() > 4 : "Power Bind prevents this Pokémon from attacking"
           }
 					onAttack {
 						gxPerform()
