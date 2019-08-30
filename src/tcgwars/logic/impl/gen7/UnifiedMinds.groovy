@@ -3206,14 +3206,14 @@ public enum UnifiedMinds implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				move "Cleaning Up", {
-					text " Discard a Pokémon Tool card from 1 of your opponent's Pokémon."
+					text "Discard a Pokémon Tool card from 1 of your opponent's Pokémon."
 					energyCost C
 					attackRequirement {
-            assert opp.all.filterByType(POKEMON_TOOL) : "There are no Pokemon Tool cards attached to your opponent's Pokemon."
+            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL)} : "There are no Pokemon Tool cards attached to your opponent's Pokemon."
           }
 					onAttack {
 						def target = opp.all.findAll{ it.cards.filterByType(POKEMON_TOOL) }.select("Choose the pokémon from which discard a Pokémon Tool card")
-            target.cards.filterByType(POKEMON_TOOL).select("Choose the Tool card to discard").discard()
+            target.select("Choose the Pokémon Tool card to discard").cards.filterByType(POKEMON_TOOL).discard()
 					}
 				}
 			};
