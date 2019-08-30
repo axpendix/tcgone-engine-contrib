@@ -3600,7 +3600,7 @@ public enum UnifiedMinds implements CardInfo {
 							if (minimumDiscard < 0) {
 								minimumDiscard = 0
 							}
-              my.hand.select(min:minimumDiscard, "Choose the cards to discard").discard()
+              my.hand.select(min:minimumDiscard, max: my.hand.size(), "Choose the cards to discard").discard()
             }
 						draw 10 - my.hand.size()
           }
