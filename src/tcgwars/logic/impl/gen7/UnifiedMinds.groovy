@@ -786,10 +786,7 @@ public enum UnifiedMinds implements CardInfo {
 				move "Sea Creeper Net", {
 					text " Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-						callForFamily(basic:true, 1, delegate)
-					}
+					callForFamily(basic:true, 1, delegate)
 				}
 				move "Spinning Attack", {
 					text "40 damage. "
@@ -2678,13 +2675,14 @@ public enum UnifiedMinds implements CardInfo {
 			return basic (this, hp:HP090, type:F, retreatCost:1) {
 				weakness G
 				move "Deep Sea Boring", {
-					text " Search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck."
+					text "Search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck."
 					energyCost C
 					attackRequirement {
-						assert deck
+						assert deck.notEmpty : "Empty deck"
 					}
 					onAttack {
-            deck.search(count:1, cardTypeFilter(TRAINER_CARD)).moveTo(hand)
+            my.deck.search(count:1, "Choose a Trainer card", cardTypeFilter(TRAINER_CARD)).showToOpponent("Chosen card").moveTo(my.hand)
+            shuffleDeck()
 					}
 				}
 				move "Water Pulse", {
@@ -2789,7 +2787,7 @@ public enum UnifiedMinds implements CardInfo {
 					delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if(it.to.owner == self.owner && it.dmg.value && it.notNoEffect && it.to.cardTypes.is(TAG_TEAM)) {
+                if(it.to.owner == self.owner && it.dmg.value && it.notNoEffect && it.to.topPokemonCard.cardTypes.is(TAG_TEAM)) {
                   bc "Tag Coach -20"
                   it.dmg -= hp(20)
                 }
@@ -2850,7 +2848,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
             damage 20
-						flip { damage 20 }
+						flip 2, { damage 20 }
 					}
 				}
 			};
@@ -3130,7 +3128,7 @@ public enum UnifiedMinds implements CardInfo {
 					}
 				}
 				move "Claw Slash", {
-					text "130 damage. "
+					text "130 damage."
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
@@ -3138,12 +3136,12 @@ public enum UnifiedMinds implements CardInfo {
 					}
 				}
 				move "Nocturnal Maneuvers GX", {
-					text " Search your deck for any number of Basic Pokémon and put them onto your Bench. Then, shuffle your deck. (You can’t use more than 1 GX attack in a game.)"
+					text "Search your deck for any number of Basic Pokémon and put them onto your Bench. Then, shuffle your deck. (You can’t use more than 1 GX attack in a game.)"
 					energyCost C
 					attackRequirement { gxCheck() }
+          callForFamily(basic:true, my.bench.freeBenchCount, delegate)
 					onAttack {
 						gxPerform()
-            callForFamily(basic:true, my.bench.freeBenchCount, delegate)
 					}
 				}
 			};
@@ -3209,14 +3207,14 @@ public enum UnifiedMinds implements CardInfo {
 				weakness F
 				resistance P, MINUS20
 				move "Cleaning Up", {
-					text " Discard a Pokémon Tool card from 1 of your opponent's Pokémon."
+					text "Discard a Pokémon Tool card from 1 of your opponent's Pokémon."
 					energyCost C
 					attackRequirement {
-            assert opp.all.filterByType(POKEMON_TOOL) : "There are no Pokemon Tool cards attached to your opponent's Pokemon."
+            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL)} : "There are no Pokemon Tool cards attached to your opponent's Pokemon."
           }
 					onAttack {
 						def target = opp.all.findAll{ it.cards.filterByType(POKEMON_TOOL) }.select("Choose the pokémon from which discard a Pokémon Tool card")
-            target.cards.filterByType(POKEMON_TOOL).select("Choose the Tool card to discard").discard()
+            target.select("Choose the Pokémon Tool card to discard").cards.filterByType(POKEMON_TOOL).discard()
 					}
 				}
 			};
@@ -3329,7 +3327,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						noWrDamage 80
+						noWrDamage 80, defending
 					}
 				}
 			};
@@ -3342,7 +3340,9 @@ public enum UnifiedMinds implements CardInfo {
           onActivate {
 						if (it == PLAY_FROM_HAND && confirm("Use Captivating Wink?")) {
 							opp.hand.showToMe("Opponent's hand")
-              opp.hand.findAll { it.basic }.select(max: opp.bench.freeBenchCount).moveTo(opp.bench)
+              def basicPokemon = opp.hand.findAll{ it.basic }
+              def maximumAllowed = Math.min(basicPokemon.size(), opp.bench.freeBenchCount)
+              basicPokemon.select(min: 0, max: maximumAllowed).moveTo(opp.bench)
 						}
 					}
 				}
@@ -3467,7 +3467,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
 						gxPerform()
             def discardCount = 1
-            if (self.cards.energySufficient(thisMove.energyCost + F, F, F)) {
+            if (self.cards.energySufficient(thisMove.energyCost + [F, F, F])) {
                 discardCount = 2
             }
             opp.all.select(count:discardCount, "Select $discardCount Pokemon to discard").discard()
@@ -3700,13 +3700,11 @@ public enum UnifiedMinds implements CardInfo {
             powerUsed()
             if (confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})?")) {
               discard bg.stadiumInfoStruct.stadiumCard
-              def card = 0
-              def attach = 0
-              while (attach < 3 && (my.hand.filterByEnergyType(R) || my.hand.filterByEnergyType(M))) {
-                card = my.hand.findAll {it.filterByEnergyType(R) || it.filterByEnergyType(M)}.select("Select a Fire or Metal Energy")
-                if(!card) break;
-                attachEnergyFrom(card, my.all)
-                attach++
+
+              my.hand.findAll{
+                it.cardTypes.isEnergy() && (it.asEnergyCard().containsTypePlain(M) || it.asEnergyCard().containsTypePlain(R))
+              }.select(min: 0, max: 3, "Attach a [R] or [M] card to Haxorus.").each{
+                attachEnergy(self, it)
               }
             }
 					}
@@ -3716,8 +3714,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost R, M
 					attackRequirement {}
 					onAttack {
-						damage 10
-            damage 40*self.cards.filterByType(BASIC_ENERGY).size()
+            damage 10+40*self.cards.filterByType(BASIC_ENERGY).size()
 					}
 				}
 
@@ -3894,10 +3891,7 @@ public enum UnifiedMinds implements CardInfo {
 				move "Call for Family", {
 					text " Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-						callForFamily(basic:true, 1, delegate)
-					}
+					callForFamily(basic:true, 1, delegate)
 				}
 				move "Berserker Tackle", {
 					text "60 damage. This Pokémon does 10 damage to itself."
@@ -3953,16 +3947,16 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-            delayed {
-              before ATTACH_ENERGY, defending {
-                if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite) {
-                  wcu "Lazy Howl ends the turn"
-                  bg.gm().betweenTurns()
+            targeted (defending) {
+              delayed {
+                before ATTACH_ENERGY, defending {
+                  if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite) {
+                    wcu "Lazy Howl ends the turn"
+                    bg.gm().betweenTurns()
+                  }
                 }
+                unregisterAfter 2
               }
-              unregisterAfter 2
-              after SWITCH, defending, {unregister()}
-              after EVOLVE, defending, {unregister()}
             }
 					}
 				}
