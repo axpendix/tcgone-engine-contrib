@@ -2786,7 +2786,7 @@ public enum UnifiedMinds implements CardInfo {
 					delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if(it.to.owner == self.owner && it.dmg.value && it.notNoEffect && it.to.cardTypes.is(TAG_TEAM)) {
+                if(it.to.owner == self.owner && it.dmg.value && it.notNoEffect && it.to.topPokemonCard.cardTypes.is(TAG_TEAM)) {
                   bc "Tag Coach -20"
                   it.dmg -= hp(20)
                 }
