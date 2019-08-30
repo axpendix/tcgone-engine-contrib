@@ -3326,7 +3326,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						noWrDamage 80
+						noWrDamage 80, defending
 					}
 				}
 			};
