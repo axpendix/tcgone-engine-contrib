@@ -1714,9 +1714,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
             damage 30
-						if (defending.getRemainingHP().value > attacking.getRemainingHP().value) {
-              damage 30
-            }
+						if (defending.getRemainingHP() > self.getRemainingHP()) damage 30
 					}
 				}
 			};
@@ -1834,7 +1832,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
-            def psychicCount = my.bench.findAll { it.types.contains(P) }.size
+            def psychicCount = my.bench.findAll { it.types.contains(P) }.size()
             damage 30*psychicCount
 					}
 				}
@@ -1845,7 +1843,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
             gxPerform()
             def numCounters = 10
-            if (self.cards.energySufficient(thisMove.energyCost + C,C, C)){
+            if (self.cards.energySufficient(thisMove.energyCost + [C,C,C])) {
                 numCounters = 20
             }
 						(1..numCounters).each {
@@ -1965,7 +1963,7 @@ public enum UnifiedMinds implements CardInfo {
 					text "120 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from TAG TEAM Pokémon."
 					energyCost P, C, C
 					attackRequirement {
-            assert my.all.size() <= 4 : "Power Bind prevents this Pokémon from attacking"
+            assert my.all.size() > 4 : "Power Bind prevents this Pokémon from attacking"
           }
           onAttack{
             damage 120
@@ -1987,7 +1985,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost P
 					attackRequirement {
 						gxCheck()
-            assert my.all.size() <= 4 : "Power Bind prevents this Pokémon from attacking"
+            assert my.all.size() > 4 : "Power Bind prevents this Pokémon from attacking"
           }
 					onAttack {
 						gxPerform()
@@ -2869,7 +2867,10 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-            if ( my.bench.findAll{it.numberOfDamageCounters}.size() == my.bench.size() ) damage 150
+            def numberOfDamagedBench = my.bench.findAll{it.numberOfDamageCounters}.size()
+            if ( my.bench.size() > 0 && numberOfDamagedBench == my.bench.size() )  {
+              damage 150
+            }
 					}
 				}
 				move "Boulder Crush", {
@@ -2930,9 +2931,11 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
 						damage 20
             def list = my.discard.filterByEnergyType(F)
-						list.select(max:1, "Attach a [F] to one of your benched").each{
-							attachEnergy(self, my.discard, my.bench)
-						}
+            if (list.size() > 0) {
+              list.select(max:1, "Attach a [F] to one of your benched").each{
+                attachEnergy(self, my.discard, my.bench)
+              }
+            }
 					}
 				}
 			};
@@ -4295,7 +4298,7 @@ public enum UnifiedMinds implements CardInfo {
 				}
 			};
 			case SILVALLY_184:
-			return evolution (this, from:"TypeNull", hp:HP130, type:C, retreatCost:2) {
+			return evolution (this, from:"Type: Null", hp:HP130, type:C, retreatCost:2) {
 				weakness F
 				move "Avenging Heart", {
 					text "30+ damage. This attack does 50 more damage for each Prize card your opponent took on their last turn."
