@@ -388,9 +388,9 @@ public enum UnifiedMinds implements CardInfo {
           onAttack {
             damage 200
             gxPerform()
-            if (self.cards.energySufficient(thisMove.energyCost + C,C,C)){
+            if (self.cards.energySufficient(thisMove.energyCost + [C, C, C])){
               afterDamage{
-                opp.all.each{
+                opp.all.each {
                   it.cards.filterByType(ENERGY).moveTo(opp.deck)
                 }
                 shuffleDeck(null, TargetPlayer.OPPONENT)
