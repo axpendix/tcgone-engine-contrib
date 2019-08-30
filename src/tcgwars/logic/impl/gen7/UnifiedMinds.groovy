@@ -3127,7 +3127,7 @@ public enum UnifiedMinds implements CardInfo {
 					}
 				}
 				move "Claw Slash", {
-					text "130 damage. "
+					text "130 damage."
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
@@ -3135,12 +3135,12 @@ public enum UnifiedMinds implements CardInfo {
 					}
 				}
 				move "Nocturnal Maneuvers GX", {
-					text " Search your deck for any number of Basic Pokémon and put them onto your Bench. Then, shuffle your deck. (You can’t use more than 1 GX attack in a game.)"
+					text "Search your deck for any number of Basic Pokémon and put them onto your Bench. Then, shuffle your deck. (You can’t use more than 1 GX attack in a game.)"
 					energyCost C
 					attackRequirement { gxCheck() }
+          callForFamily(basic:true, my.bench.freeBenchCount, delegate)
 					onAttack {
 						gxPerform()
-            callForFamily(basic:true, my.bench.freeBenchCount, delegate)
 					}
 				}
 			};
