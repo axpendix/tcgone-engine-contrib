@@ -2954,8 +2954,7 @@ public enum UnifiedMinds implements CardInfo {
 						damage 150
             def gxEx = opp.bench.findAll{ it.pokemonGX || it.pokemonEX }
             if (opp.bench && exGx) {
-              def selected = gxEx.select("Deal 60 damage to which Pokémon?")
-              damage 60, selected
+              noWrDamage 60, gxEx.select("Deal 60 damage to which Pokémon?")
             }
           }
 				}
