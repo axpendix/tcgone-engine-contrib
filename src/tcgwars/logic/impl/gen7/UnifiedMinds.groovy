@@ -2867,7 +2867,10 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
-            if ( my.bench.findAll{it.numberOfDamageCounters}.size() == my.bench.size() ) damage 150
+            def numberOfDamagedBench = my.bench.findAll{it.numberOfDamageCounters}.size()
+            if ( my.bench.size() > 0 && numberOfDamagedBench == my.bench.size() )  {
+              damage 150
+            }
 					}
 				}
 				move "Boulder Crush", {
