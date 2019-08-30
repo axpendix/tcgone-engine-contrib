@@ -3809,9 +3809,9 @@ public enum UnifiedMinds implements CardInfo {
 				move "Injection GX", {
 					text " Add a card from your opponent's discard pile to their Prize cards face down. (You can't use more than 1 GX attack in a game.)"
 					energyCost L
-					attackRequirement { 
+					attackRequirement {
             assert opp.discard : "No cards in opponent's discard"
-            gxCheck() 
+            gxCheck()
           }
 					onAttack {
             gxPerform()
@@ -4185,9 +4185,9 @@ public enum UnifiedMinds implements CardInfo {
             if (confirm("Shuffle all cards attached to each player's active Pokemon into their decks?")) {
               afterDamage{
                 my.active.cards.findAll{ !it.cardTypes.is(POKEMON) }.moveTo(my.deck)
-                shuffleDeck() 
+                shuffleDeck()
                 opp.active.cards.findAll{ !it.cardTypes.is(POKEMON) }.moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)    
+                shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }
 					}
