@@ -2995,7 +2995,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
 						damage 210
 						delayed {
-							if (defending.isPokemonGX || defending.isPokemonEX) {
+							if (defending.pokemonGX || defending.pokemonEX) {
 								def pcs = defending
 								after KNOCKOUT, pcs, {
 									bg.em().run(new TakePrize(self.owner, pcs))
@@ -3013,7 +3013,7 @@ public enum UnifiedMinds implements CardInfo {
 						damage 250
             gxPerform()
 
-						if (self.cards.energySufficient(thisMove.energyCost + C, C, C, C, C)){
+						if (self.cards.energySufficient(thisMove.energyCost + [C, C, C, C, C] )) {
 							opp.deck.subList(0, 15).discard()
 						}
 					}
