@@ -2896,7 +2896,7 @@ public enum UnifiedMinds implements CardInfo {
 						assert my.hand.filterByType(ENERGY) : "There is no Energy Card in your hand"
 					}
 					onAttack {
-						attachEnergyFrom(my.hand, my.filterByType(TAG_TEAM))
+						attachEnergyFrom(my.hand, my.all.findAll { it.cardTypes.isIn(TAG_TEAM) })
 					}
 				}
 				move "Shooting Star Pirouette", {
