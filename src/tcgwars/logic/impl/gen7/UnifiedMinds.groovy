@@ -3891,10 +3891,7 @@ public enum UnifiedMinds implements CardInfo {
 				move "Call for Family", {
 					text " Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-						callForFamily(basic:true, 1, delegate)
-					}
+					callForFamily(basic:true, 1, delegate)
 				}
 				move "Berserker Tackle", {
 					text "60 damage. This Pokémon does 10 damage to itself."
