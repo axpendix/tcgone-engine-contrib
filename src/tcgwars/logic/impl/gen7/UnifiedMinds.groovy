@@ -1218,7 +1218,9 @@ public enum UnifiedMinds implements CardInfo {
 				move "Swarming Bites", {
 					text "This attack does 20 damage for each Basculin you have in play to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+            assert bench.notEmpty
+          }
 					onAttack {
             def count = my.bench.findAll({ it.name == "Basculin" }).size()
             damage 20*count, opp.bench.select()
@@ -2150,8 +2152,9 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Dimension Breach", {
 					text "When you play this Pokémon from your hand onto your Bench during your turn, you may discard a Special Energy from your opponent's Active Pokémon."
 					onActivate {
-            if (it == PLAY_FROM_HAND && confirm("Use Dimension Breach?")) {
-              discardDefendingSpecialEnergy(delegate)
+            def specialEnergies = opp.active.cards.filterByType(CardType.SPECIAL_ENERGY)
+            if (it == PLAY_FROM_HAND && specialEnergies && confirm("Use Dimension Breach?")) {
+              specialEnergies.select("Discard a Special Energy from your Opponent's Active Pokémon").discard()
             }
           }
 				}
@@ -2893,7 +2896,7 @@ public enum UnifiedMinds implements CardInfo {
 						assert my.hand.filterByType(ENERGY) : "There is no Energy Card in your hand"
 					}
 					onAttack {
-						attachEnergyFrom(my.hand, my.filterByType(TAG_TEAM))
+						attachEnergyFrom(my.hand, my.all.findAll { it.cardTypes.isIn(TAG_TEAM) })
 					}
 				}
 				move "Shooting Star Pirouette", {
@@ -2949,8 +2952,12 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 150
-						damage (opp.bench.findAll{it.pokemonGX || it.pokemonEX}, 60)
-					}
+            def gxEx = opp.bench.findAll{ it.pokemonGX || it.pokemonEX }
+            if (opp.bench && exGx) {
+              def selected = gxEx.select("Deal 60 damage to which Pokémon?")
+              damage 60, selected
+            }
+          }
 				}
 				move "Dark Moon GX", {
 					text " Your opponent can’t play any Trainer cards from their hand during their next turn. If this Pokémon has at least 5 extra [D] Energy attached to it (in addition to this attack’s cost), your opponent's Active Pokémon is Knocked Out. (You can’t use more than 1 GX attack in a game.)"
@@ -2971,7 +2978,7 @@ public enum UnifiedMinds implements CardInfo {
 							unregisterAfter 2
 						}
 
-						if (self.cards.energySufficient(thisMove.energyCost + D, D, D, D, D)){
+						if (self.cards.energySufficient( thisMove.energyCost + [D, D, D, D, D] )) {
 							new Knockout(defending)
 						}
 					}
@@ -2988,7 +2995,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
 						damage 210
 						delayed {
-							if (defending.isPokemonGX || defending.isPokemonEX) {
+							if (defending.pokemonGX || defending.pokemonEX) {
 								def pcs = defending
 								after KNOCKOUT, pcs, {
 									bg.em().run(new TakePrize(self.owner, pcs))
@@ -3006,7 +3013,7 @@ public enum UnifiedMinds implements CardInfo {
 						damage 250
             gxPerform()
 
-						if (self.cards.energySufficient(thisMove.energyCost + C, C, C, C, C)){
+						if (self.cards.energySufficient(thisMove.energyCost + [C, C, C, C, C] )) {
 							opp.deck.subList(0, 15).discard()
 						}
 					}
@@ -3859,10 +3866,10 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-            damage 50*my.all.filterByType(TAG_TEAM).size()
+            def tagTeams = my.all.findAll { it.cardTypes.isIn(TAG_TEAM) }
+            damage 50*tagTeams.size()
 					}
 				}
-
 			};
 			case TAUROS_164:
 			return basic (this, hp:HP110, type:C, retreatCost:1) {
@@ -4210,7 +4217,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
 						damage 80
             if (my.bench.find({ it.name == "Thundurus" })) {
-              opp.all.each { damage 20, it }
+              opp.bench.each { damage 20, it }
             }
 					}
 				}
@@ -4326,8 +4333,8 @@ public enum UnifiedMinds implements CardInfo {
 					text "If this Pokémon remains Asleep between turns, put 6 damage counters on your opponent's Active Pokémon."
 					delayedA {
             after BETWEEN_TURNS, {
-              if (my.active.isSPC(ASLEEP)) {
-                opp.active.damage += hp(60)
+              if (self.isSPC(ASLEEP)) {
+                directDamage 60
               }
             }
           }
@@ -4337,7 +4344,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						apply ASLEEP
+						apply ASLEEP, self
 					}
 				}
 			};
