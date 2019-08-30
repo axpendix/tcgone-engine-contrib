@@ -4363,7 +4363,7 @@ public enum UnifiedMinds implements CardInfo {
           onPlay {
             eff = delayed {
               before CHECK_ATTACK_REQUIREMENTS, {
-                if(ef.attacker.hp <= 40) {
+                if (ef.attacker.remainingHP <= 40) {
                   wcu "Blizzard Town prevents attack"
                   prevent()
                 }
