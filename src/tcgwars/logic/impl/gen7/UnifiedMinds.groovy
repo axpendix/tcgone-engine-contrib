@@ -2675,13 +2675,14 @@ public enum UnifiedMinds implements CardInfo {
 			return basic (this, hp:HP090, type:F, retreatCost:1) {
 				weakness G
 				move "Deep Sea Boring", {
-					text " Search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck."
+					text "Search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck."
 					energyCost C
 					attackRequirement {
-						assert deck
+						assert deck.notEmpty : "Empty deck"
 					}
 					onAttack {
-            deck.search(count:1, cardTypeFilter(TRAINER_CARD)).moveTo(hand)
+            my.deck.search(count:1, "Choose a Trainer card", cardTypeFilter(TRAINER_CARD)).showToOpponent("Chosen card").moveTo(my.hand)
+            shuffleDeck()
 					}
 				}
 				move "Water Pulse", {
