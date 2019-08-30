@@ -4422,7 +4422,9 @@ public enum UnifiedMinds implements CardInfo {
           text "Draw 2 cards. If your Active Pokémon is a TAG TEAM Pokémon, draw 2 more cards."
           onPlay {
             draw 2
-            if(my.active.cardTypes.isIn(TAG_TEAM)) {draw 2}
+            if (my.active.topPokemonCard.cardTypes.is(TAG_TEAM) {
+              draw 2
+            }
           }
           playRequirement{
             assert my.deck
