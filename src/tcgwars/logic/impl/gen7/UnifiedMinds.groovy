@@ -4210,7 +4210,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
 						damage 80
             if (my.bench.find({ it.name == "Thundurus" })) {
-              opp.all.each { damage 20, it }
+              opp.bench.each { damage 20, it }
             }
 					}
 				}
