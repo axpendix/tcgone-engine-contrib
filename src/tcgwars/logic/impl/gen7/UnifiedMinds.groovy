@@ -4681,14 +4681,7 @@ public enum UnifiedMinds implements CardInfo {
           }
 			  };
 			case UNIDENTIFIED_FOSSIL_210:
-			return itemCard (this) {
-				text "Play this card as if it were a 60-HP [C] Basic Pokémon. At any time during your turn (before your attack), you may discard this card from play." +
-					"This card can't retreat."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+			  return copy(UltraPrism.UNIDENTIFIED_FOSSIL_134, this);
 			case U_TURN_BOARD_211:
 			return pokemonTool (this) {
 				text "The Retreat Cost of the Pokémon this card is attached to is [C] less." +
