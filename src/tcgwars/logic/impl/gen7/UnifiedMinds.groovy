@@ -4686,12 +4686,17 @@ public enum UnifiedMinds implements CardInfo {
 			return pokemonTool (this) {
 				text "The Retreat Cost of the Pokémon this card is attached to is [C] less." +
 					"If this card is discarded from play, put it into your hand instead of the discard pile."
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				allowAttach {to->
-				}
+				def eff
+        onPlay {reason->
+          eff = getter GET_RETREAT_COST, self, {h ->
+            h.object -= 1
+          }
+        }
+        onRemoveFromPlay {
+          eff.unregister()
+          new CardList(thisCard).moveTo(my.hand)
+          prevent()
+        }
 			};
 			case RECYCLE_ENERGY_212:
 			return specialEnergy (this, [[C]]) {
