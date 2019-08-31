@@ -137,7 +137,7 @@ public enum UnifiedMinds implements CardInfo {
 	SALAZZLE_99 ("Salazzle", 99, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
 	COSMOG_100 ("Cosmog", 100, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
 	NECROZMA_101 ("Necrozma", 101, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
-	POIPOLE_102 ("Poipole", 102, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
+	POIPOLE_102 ("Poipole", 102, Rarity.COMMON, [POKEMON, BASIC, ULTRA_BEAST, _PSYCHIC_]),
 	ONIX_103 ("Onix", 103, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
 	STEELIX_104 ("Steelix", 104, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
 	CUBONE_105 ("Cubone", 105, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
@@ -195,7 +195,7 @@ public enum UnifiedMinds implements CardInfo {
 	DRUDDIGON_157 ("Druddigon", 157, Rarity.COMMON, [POKEMON, BASIC, _DRAGON_]),
 	NOIBAT_158 ("Noibat", 158, Rarity.COMMON, [POKEMON, BASIC, _DRAGON_]),
 	NOIVERN_159 ("Noivern", 159, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _DRAGON_]),
-	NAGANADEL_GX_160 ("Naganadel-GX", 160, Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, _DRAGON_]),
+	NAGANADEL_GX_160 ("Naganadel-GX", 160, Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, ULTRA_BEAST, _DRAGON_]),
 	LICKITUNG_161 ("Lickitung", 161, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
 	LICKILICKY_162 ("Lickilicky", 162, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
 	KANGASKHAN_163 ("Kangaskhan", 163, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
@@ -2354,10 +2354,10 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Durable Blade", {
 					text "If this Pokémon is Knocked Out by damage from an opponent's attack, put it into your hand instead of the discard pile. (Discard all cards attached to it.)"
 					delayedA {
-						before (KNOCKOUT, self) {
+						after (KNOCKOUT, self) {
 							bc "Durable Blade activates"
 							bg.deterministicCurrentThreadPlayerType = self.owner
-							self.topPokemonCard.moveTo(hand)
+              moveCard(self.topPokemonCard, self.owner.hand)
 							bg.clearDeterministicCurrentThreadPlayerType()
 						}
 					}
@@ -3340,9 +3340,12 @@ public enum UnifiedMinds implements CardInfo {
           onActivate {
 						if (it == PLAY_FROM_HAND && confirm("Use Captivating Wink?")) {
 							opp.hand.showToMe("Opponent's hand")
-              def basicPokemon = opp.hand.findAll{ it.basic }
-              def maximumAllowed = Math.min(basicPokemon.size(), opp.bench.freeBenchCount)
-              basicPokemon.select(min: 0, max: maximumAllowed).moveTo(opp.bench)
+
+              if (opp.hand.findAll{it.cardTypes.is(BASIC)}) {
+                def basicPokemon = opp.hand.findAll{ it.cardTypes.is(BASIC) }
+                def maximumAllowed = Math.min(basicPokemon.size(), opp.bench.freeBenchCount)
+                basicPokemon.select(min: 0, max: maximumAllowed).moveTo(opp.bench)
+              }
 						}
 					}
 				}
@@ -4678,14 +4681,7 @@ public enum UnifiedMinds implements CardInfo {
           }
 			  };
 			case UNIDENTIFIED_FOSSIL_210:
-			return itemCard (this) {
-				text "Play this card as if it were a 60-HP [C] Basic Pokémon. At any time during your turn (before your attack), you may discard this card from play." +
-					"This card can't retreat."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+			  return copy(UltraPrism.UNIDENTIFIED_FOSSIL_134, this);
 			case U_TURN_BOARD_211:
 			return pokemonTool (this) {
 				text "The Retreat Cost of the Pokémon this card is attached to is [C] less." +
