@@ -3464,7 +3464,7 @@ public enum UnifiedMinds implements CardInfo {
 					}
 				}
 				move "GG End GX", {
-					text " Discard 1 of your opponent's Pokémon and all cards attached to it. If this Pokémon has at least 3 extra [F] Energy attached to it (in addition to this attack’s cost), discard 2 of your opponent's Pokémon instead. (You can’t use more than 1 GX attack in a game.)"
+					text "Discard 1 of your opponent's Pokémon and all cards attached to it. If this Pokémon has at least 3 extra [F] Energy attached to it (in addition to this attack’s cost), discard 2 of your opponent's Pokémon instead. (You can’t use more than 1 GX attack in a game.)"
 					energyCost F, P, P
 					attackRequirement { gxCheck() }
 					onAttack {
@@ -3473,7 +3473,9 @@ public enum UnifiedMinds implements CardInfo {
             if (self.cards.energySufficient(thisMove.energyCost + [F, F, F])) {
                 discardCount = 2
             }
-            opp.all.select(count:discardCount, "Select $discardCount Pokemon to discard").discard()
+            for (int i = 0; i < discard; i++) {
+              opp.all.select("Select $discardCount Pokemon to discard").discard()
+            }
 					}
 				}
 			};
