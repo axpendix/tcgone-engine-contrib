@@ -1251,7 +1251,7 @@ public enum UnifiedMinds implements CardInfo {
 				}
 			};
 			case TIRTOUGA_44:
-			return evolution (this, from:"UnidentifiedFossil", hp:HP100, type:W, retreatCost:3) {
+			return evolution (this, from:"Unidentified Fossil", hp:HP100, type:W, retreatCost:3) {
 				weakness G
 				move "Shell Attack", {
 					text "20 damage. "
@@ -2552,7 +2552,7 @@ public enum UnifiedMinds implements CardInfo {
 				}
 			};
 			case AERODACTYL_GX_106:
-			return evolution (this, from:"UnidentifiedFossil", hp:HP210, type:F, retreatCost:0) {
+			return evolution (this, from:"Unidentified Fossil", hp:HP210, type:F, retreatCost:0) {
 				weakness G
 				bwAbility "Primal Winds", {
 					text "As long as this Pokémon is your Active Pokémon, your opponent's Basic Pokémon's attacks cost [C] more."
@@ -2839,7 +2839,7 @@ public enum UnifiedMinds implements CardInfo {
 				}
 			};
 			case ARCHEN_120:
-			return evolution (this, from:"UnidentifiedFossil", hp:HP080, type:F, retreatCost:1) {
+			return evolution (this, from:"Unidentified Fossil", hp:HP080, type:F, retreatCost:1) {
 				weakness L
 				resistance F, MINUS20
 				move "Endeavor", {
@@ -3464,7 +3464,7 @@ public enum UnifiedMinds implements CardInfo {
 					}
 				}
 				move "GG End GX", {
-					text " Discard 1 of your opponent's Pokémon and all cards attached to it. If this Pokémon has at least 3 extra [F] Energy attached to it (in addition to this attack’s cost), discard 2 of your opponent's Pokémon instead. (You can’t use more than 1 GX attack in a game.)"
+					text "Discard 1 of your opponent's Pokémon and all cards attached to it. If this Pokémon has at least 3 extra [F] Energy attached to it (in addition to this attack’s cost), discard 2 of your opponent's Pokémon instead. (You can’t use more than 1 GX attack in a game.)"
 					energyCost F, P, P
 					attackRequirement { gxCheck() }
 					onAttack {
@@ -3473,7 +3473,9 @@ public enum UnifiedMinds implements CardInfo {
             if (self.cards.energySufficient(thisMove.energyCost + [F, F, F])) {
                 discardCount = 2
             }
-            opp.all.select(count:discardCount, "Select $discardCount Pokemon to discard").discard()
+            for (int i = 0; i < discard; i++) {
+              opp.all.select("Select $discardCount Pokemon to discard").discard()
+            }
 					}
 				}
 			};
@@ -4520,7 +4522,7 @@ public enum UnifiedMinds implements CardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Viridian Forest") {
+            actions=action("Stadium: Giant Hearth") {
               assert my.deck : "There are no more cards in your deck"
               assert my.hand : "You don't have cards in your hand"
               assert lastTurn != bg().turnCount : "Already used"
@@ -4686,12 +4688,17 @@ public enum UnifiedMinds implements CardInfo {
 			return pokemonTool (this) {
 				text "The Retreat Cost of the Pokémon this card is attached to is [C] less." +
 					"If this card is discarded from play, put it into your hand instead of the discard pile."
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				allowAttach {to->
-				}
+				def eff
+        onPlay {reason->
+          eff = getter GET_RETREAT_COST, self, {h ->
+            h.object -= 1
+          }
+        }
+        onRemoveFromPlay {
+          eff.unregister()
+          new CardList(thisCard).moveTo(my.hand)
+          prevent()
+        }
 			};
 			case RECYCLE_ENERGY_212:
 			return specialEnergy (this, [[C]]) {
