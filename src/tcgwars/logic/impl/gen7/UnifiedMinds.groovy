@@ -4520,7 +4520,7 @@ public enum UnifiedMinds implements CardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Viridian Forest") {
+            actions=action("Stadium: Giant Hearth") {
               assert my.deck : "There are no more cards in your deck"
               assert my.hand : "You don't have cards in your hand"
               assert lastTurn != bg().turnCount : "Already used"
