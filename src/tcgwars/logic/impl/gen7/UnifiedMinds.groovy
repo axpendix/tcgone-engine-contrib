@@ -1251,7 +1251,7 @@ public enum UnifiedMinds implements CardInfo {
 				}
 			};
 			case TIRTOUGA_44:
-			return evolution (this, from:"UnidentifiedFossil", hp:HP100, type:W, retreatCost:3) {
+			return evolution (this, from:"Unidentified Fossil", hp:HP100, type:W, retreatCost:3) {
 				weakness G
 				move "Shell Attack", {
 					text "20 damage. "
@@ -2552,7 +2552,7 @@ public enum UnifiedMinds implements CardInfo {
 				}
 			};
 			case AERODACTYL_GX_106:
-			return evolution (this, from:"UnidentifiedFossil", hp:HP210, type:F, retreatCost:0) {
+			return evolution (this, from:"Unidentified Fossil", hp:HP210, type:F, retreatCost:0) {
 				weakness G
 				bwAbility "Primal Winds", {
 					text "As long as this Pokémon is your Active Pokémon, your opponent's Basic Pokémon's attacks cost [C] more."
@@ -2839,7 +2839,7 @@ public enum UnifiedMinds implements CardInfo {
 				}
 			};
 			case ARCHEN_120:
-			return evolution (this, from:"UnidentifiedFossil", hp:HP080, type:F, retreatCost:1) {
+			return evolution (this, from:"Unidentified Fossil", hp:HP080, type:F, retreatCost:1) {
 				weakness L
 				resistance F, MINUS20
 				move "Endeavor", {
