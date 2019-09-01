@@ -446,11 +446,13 @@ public enum UnifiedMinds implements CardInfo {
 				move "Time Spiral", {
 					text "Devolve 1 of your opponent's evolved Pokémon by removing the highest Stage Evolution card from it. Your opponent shuffles that card into their deck."
 					energyCost G
-					attackRequirement {}
+					attackRequirement {
+            assert opp.all.findAll { it.evolution } : "The opponent does not have an evolved Pokémon in play"
+          }
 					onAttack {
             def list = opp.all.findAll { it.evolution }
             assert list
-            def pcs = list.select("Devolve (or cancel)", false)
+            def pcs = list.select("Devolve one of your opponent's evolved Pokémon")
             assert pcs
             def top=pcs.topPokemonCard
             bc "$top Devolved"
