@@ -4661,9 +4661,25 @@ public enum UnifiedMinds implements CardInfo {
 			case SLUMBERING_FOREST_207:
 			return stadium (this) {
 				text "If a Pokémon is Asleep, its owner flips 2 coins instead of 1 for that Special Condition between turns. If either of them is tails, that Pokémon is still Asleep."
-				onPlay {
-				}
-				onRemoveFromPlay{
+				def eff
+        onPlay {
+          eff = delayed {
+            before ASLEEP_SPC, null, null, BETWEEN_TURNS, {
+              if(ef.target == self.owner.opposite.pbg.active){ //MARK parentEvent
+                flip "Asleep (Slumbering Forest)", 2, {}, {}, [2:{
+                  ef.unregisterItself(bg.em());
+                },1:{
+                  bc "$self is still asleep."
+                },0:{
+                  bc "$self is still asleep."
+                }]
+                prevent()
+              }
+            }
+          }
+        }
+				onRemoveFromPlay {
+          eff.unregister()
 				}
 			};
 			case STADIUM_NAV_208:
