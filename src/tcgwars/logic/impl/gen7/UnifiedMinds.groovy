@@ -446,11 +446,13 @@ public enum UnifiedMinds implements CardInfo {
 				move "Time Spiral", {
 					text "Devolve 1 of your opponent's evolved Pokémon by removing the highest Stage Evolution card from it. Your opponent shuffles that card into their deck."
 					energyCost G
-					attackRequirement {}
+					attackRequirement {
+            assert opp.all.findAll { it.evolution } : "The opponent does not have an evolved Pokémon in play"
+          }
 					onAttack {
             def list = opp.all.findAll { it.evolution }
             assert list
-            def pcs = list.select("Devolve (or cancel)", false)
+            def pcs = list.select("Devolve one of your opponent's evolved Pokémon")
             assert pcs
             def top=pcs.topPokemonCard
             bc "$top Devolved"
@@ -1275,8 +1277,53 @@ public enum UnifiedMinds implements CardInfo {
 				weakness G
 				bwAbility "Ancient Custom", {
           text "Pokemon Tool cards attached to your opponent's Pokemon have no effect"
-          delayedA {
-            // TODO: LYSANDRE_LABS_111?
+          def eff
+          onActivate {
+            eff = delayed {
+              def disable={card,pcs->
+                def dset = bg.em().retrieveObject("Tool Concealment dset") as Set
+                if(!dset.contains(card)){
+                  card.removeFromPlay(bg, pcs)
+                  dset.add(card)
+                }
+              }
+              after PLAY_POKEMON_TOOL, {disable(ef.cardToPlay,ef.target)}
+              after PLAY_POKEMON_TOOL_FLARE, {disable(ef.cardToPlay,ef.target)}
+            }
+
+            def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) + 1
+            if (count == 1){
+              def dset = bg.em().retrieveObject("Tool Concealment dset") as Set ?: [] as Set
+              all.each {
+                def pcs = it
+                it.cards.filterByType(POKEMON_TOOL).each {
+                  if(!dset.contains(it)){
+                    it.removeFromPlay(bg, pcs)
+                    dset.add(it)
+                  }
+                }
+              }
+              bg.em().storeObject("Tool Concealment dset", dset)
+            }
+            bg.em().storeObject("Tool Concealment count", count)
+          }
+          onDeactivate {
+            eff.unregister()
+
+            def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) - 1
+            if(count == 0){
+              def dset = bg.em().retrieveObject("Tool Concealment dset") as Set
+              all.each {
+                def pcs = it
+                it.cards.filterByType(POKEMON_TOOL).each {
+                  if(dset.contains(it)){
+                    it.play(bg, pcs)
+                    dset.remove(it)
+                  }
+                }
+              }
+            }
+            if(count >= 0) bg.em().storeObject("Tool Concealment count", count)
           }
 				}
 				move "Aqua Impact", {
@@ -1373,8 +1420,31 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
             damage 80
-            defendingAttacksCostsMore(opp.active, C)
             defendingRetreatsCostsMore(opp.active, C)
+
+            // Increase opponent's attack's energy cost by 1
+            delayed {
+              def eff
+              register {
+                eff = getter GET_MOVE_LIST, {h->
+                  if(self.active && h.effect.target.owner == self.owner.opposite){
+                    def list=[]
+                    for(move in h.object){
+                      def copy=move.shallowCopy()
+                      copy.energyCost.add(C)
+                      list.add(copy)
+                    }
+                    h.object=list
+                  }
+                }
+              }
+              unregister {
+                eff.unregister()
+              }
+              unregisterAfter 2
+              after SWITCH, pcs, {unregister()}
+              after EVOLVE, pcs, {unregister()}
+            }
           }
 				}
 			};
@@ -1859,16 +1929,24 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement { gxCheck() }
 					onAttack {
             gxPerform()
-            def numCounters = 10
-            if (self.cards.energySufficient(thisMove.energyCost + [C,C,C])) {
-                numCounters = 20
+
+            def maxHpRemaining = 0
+            opp.all.each {
+              maxHpRemaining += it.getRemainingHP().value
             }
-						(1..numCounters).each {
-              directDamage 10, opp.all.select("Add a damage counter to a pokémon?")
+            def maxHpCounters = maxHpRemaining / 10
+
+            def counters = 10
+            if (self.cards.energySufficient(thisMove.energyCost + [C,C,C])) {
+                counters = 20
+            }
+
+            def countersToPlace = Math.min(counters, maxHpCounters)
+						(1..countersToPlace).each {
+              directDamage 10, opp.all.select("Add damage counter $it/$countersToPlace to a pokémon?")
             }
 					}
 				}
-
 			};
 			case EXEGGCUTE_73:
 			return basic (this, hp:HP050, type:P, retreatCost:1) {
@@ -2166,10 +2244,12 @@ public enum UnifiedMinds implements CardInfo {
 				resistance F, MINUS20
 				bwAbility "Dimension Breach", {
 					text "When you play this Pokémon from your hand onto your Bench during your turn, you may discard a Special Energy from your opponent's Active Pokémon."
-					onActivate {
-            def specialEnergies = opp.active.cards.filterByType(CardType.SPECIAL_ENERGY)
-            if (it == PLAY_FROM_HAND && specialEnergies && confirm("Use Dimension Breach?")) {
-              specialEnergies.select("Discard a Special Energy from your Opponent's Active Pokémon").discard()
+					onActivate { reason ->
+            def target = opp.active.findAll({it.cards.filterByType(SPECIAL_ENERGY)})
+
+            if (reason == PLAY_FROM_HAND && self.benched && target && confirm("Use Dimension Breach?")) {
+              powerUsed()
+              target.select("Discard a Special Energy from your Opponent's Active Pokémon").cards.filterByType(SPECIAL_ENERGY).select().discard()
             }
           }
 				}
@@ -3470,7 +3550,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
 						gxPerform()
             def discardCount = 1
-            if (self.cards.energySufficient(thisMove.energyCost + [F, F, F])) {
+            if (self.cards.energySufficient(thisMove.energyCost + F + F + F)) {
                 discardCount = 2
             }
             for (int i = 0; i < discard; i++) {
@@ -4349,8 +4429,8 @@ public enum UnifiedMinds implements CardInfo {
 					text "If this Pokémon remains Asleep between turns, put 6 damage counters on your opponent's Active Pokémon."
 					delayedA {
             after BETWEEN_TURNS, {
-              if (self.isSPC(ASLEEP)) {
-                directDamage 60
+              if (self.owner.pbg.active.isSPC(ASLEEP)) {
+                directDamage 60, self.owner.opposite.pbg.active
               }
             }
           }
@@ -4379,7 +4459,7 @@ public enum UnifiedMinds implements CardInfo {
           onPlay {
             eff = delayed {
               before CHECK_ATTACK_REQUIREMENTS, {
-                if (ef.attacker.remainingHP <= 40) {
+                if (ef.attacker.remainingHP.value <= 40) {
                   wcu "Blizzard Town prevents attack"
                   prevent()
                 }
@@ -4653,9 +4733,25 @@ public enum UnifiedMinds implements CardInfo {
 			case SLUMBERING_FOREST_207:
 			return stadium (this) {
 				text "If a Pokémon is Asleep, its owner flips 2 coins instead of 1 for that Special Condition between turns. If either of them is tails, that Pokémon is still Asleep."
-				onPlay {
-				}
-				onRemoveFromPlay{
+				def eff
+        onPlay {
+          eff = delayed {
+            before ASLEEP_SPC, null, null, BETWEEN_TURNS, {
+              if(ef.target == self.owner.opposite.pbg.active){ //MARK parentEvent
+                flip "Asleep (Slumbering Forest)", 2, {}, {}, [2:{
+                  ef.unregisterItself(bg.em());
+                },1:{
+                  bc "$self is still asleep."
+                },0:{
+                  bc "$self is still asleep."
+                }]
+                prevent()
+              }
+            }
+          }
+        }
+				onRemoveFromPlay {
+          eff.unregister()
 				}
 			};
 			case STADIUM_NAV_208:
