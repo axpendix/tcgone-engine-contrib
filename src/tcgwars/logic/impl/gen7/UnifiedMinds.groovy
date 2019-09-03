@@ -2246,11 +2246,12 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Dimension Breach", {
 					text "When you play this Pokémon from your hand onto your Bench during your turn, you may discard a Special Energy from your opponent's Active Pokémon."
 					onActivate { reason ->
-            def target = opp.active.findAll({it.cards.filterByType(SPECIAL_ENERGY)})
-
-            if (reason == PLAY_FROM_HAND && self.benched && target && confirm("Use Dimension Breach?")) {
+            if (reason == PLAY_FROM_HAND && self.benched && confirm("Use Dimension Breach?")) {
               powerUsed()
-              target.select("Discard a Special Energy from your Opponent's Active Pokémon").cards.filterByType(SPECIAL_ENERGY).select().discard()
+              def target = opp.active.findAll({it.cards.filterByType(SPECIAL_ENERGY)})
+              if (tar) {
+                target.select().cards.filterByType(SPECIAL_ENERGY).select().discard()
+              }
             }
           }
 				}
