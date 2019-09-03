@@ -3554,8 +3554,8 @@ public enum UnifiedMinds implements CardInfo {
             if (self.cards.energySufficient(thisMove.energyCost + F + F + F)) {
                 discardCount = 2
             }
-            for (int i = 0; i < discard; i++) {
-              opp.all.select("Select $discardCount Pokemon to discard").discard()
+            for (int i = 0; i < discardCount; i++) {
+              opp.all.select("Select $i/$discardCount Pokemon to discard").discard()
             }
 					}
 				}
