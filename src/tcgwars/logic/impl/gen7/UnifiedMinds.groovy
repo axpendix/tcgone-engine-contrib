@@ -4738,13 +4738,13 @@ public enum UnifiedMinds implements CardInfo {
         onPlay {
           eff = delayed {
             before ASLEEP_SPC, null, null, BETWEEN_TURNS, {
-              if(ef.target == self.owner.opposite.pbg.active){ //MARK parentEvent
+              if (ef.target == self.owner.opposite.pbg.active) { //MARK parentEvent
                 flip "Asleep (Slumbering Forest)", 2, {}, {}, [2:{
                   ef.unregisterItself(bg.em());
                 },1:{
-                  bc "$self is still asleep."
+                  bc "$ef.target is still asleep."
                 },0:{
-                  bc "$self is still asleep."
+                  bc "$ef.target is still asleep."
                 }]
                 prevent()
               }
