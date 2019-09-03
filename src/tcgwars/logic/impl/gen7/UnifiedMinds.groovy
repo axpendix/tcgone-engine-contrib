@@ -2146,7 +2146,7 @@ public enum UnifiedMinds implements CardInfo {
             checkLastTurn()
             assert my.bench.notEmpty
             powerUsed()
-            sw my.active, my.bench.select(my.bench.select("Select a new active Pokemon."))
+            sw my.active, my.bench.select("Select a new active Pokemon.")
           }
 				}
 				move "Spinning Attack", {
@@ -2306,17 +2306,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
             apply ASLEEP, self
             apply ASLEEP
-            delayed {
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each{
-                  if (it.from == self && it.to.owner == self.owner.opposite && it.dmg.value){
-                    bc "Rest Well +100"
-                    it.dmg += hp(100)
-                  }
-                }
-              }
-              unregisterAfter 2
-            }
+            doMoreDamageNextTurn(thisMove, 100)
           }
 				}
 				move "Zen Headbutt", {
@@ -3010,11 +3000,9 @@ public enum UnifiedMinds implements CardInfo {
 					delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if(!self.active && it.to == self) {
-                  if (it.from.name == "Zygarde" || it.from.name == "Zygarde-GX") {
-                    bc "Cellular Companions +20"
-                    it.dmg += hp(20)
-                  }
+                if(!self.active && it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value && (it.from.name == "Zygarde" || it.from.name == "Zygarde-GX")) {
+                  bc "Cellular Companions +20"
+                  it.dmg += hp(20)
                 }
               }
             }
@@ -3026,9 +3014,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-            def list = my.discard.filterByEnergyType(F)
-            if (list.size() > 0) {
-              list.select(max:1, "Attach a [F] to one of your benched").each{
+            def fightingInDiscard = my.discard.filterByEnergyType(F)
+            if (fightingInDiscard) {
+              fightingInDiscard.select("Attach a [F] to one of your benched").each{
                 attachEnergy(self, my.discard, my.bench)
               }
             }
@@ -3962,7 +3950,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-            def tagTeams = my.all.findAll { it.cardTypes.isIn(TAG_TEAM) }
+            def tagTeams = my.all.findAll { it.topPokemonCard.cardTypes.is(TAG_TEAM) }
             damage 50*tagTeams.size()
 					}
 				}
@@ -4515,7 +4503,7 @@ public enum UnifiedMinds implements CardInfo {
           text "Draw 2 cards. If your Active Pokémon is a TAG TEAM Pokémon, draw 2 more cards."
           onPlay {
             draw 2
-            if (my.active.topPokemonCard.cardTypes.is(TAG_TEAM) {
+            if (my.active.topPokemonCard.cardTypes.is(TAG_TEAM)) {
               draw 2
             }
           }
@@ -4647,7 +4635,7 @@ public enum UnifiedMinds implements CardInfo {
           onPlay {
             def cards = my.deck.subList(0,6)
             cards.select(count:2,"Choose 2 cards to put in your hand").moveTo(my.hand)
-            cards.discard
+            my.deck.subList(0,4).discard()
           }
           playRequirement{
             assert my.deck : "There are no cards in your deck"
@@ -4768,7 +4756,7 @@ public enum UnifiedMinds implements CardInfo {
           onPlay {
             def pcs = my.all.findAll {it.topPokemonCard.cardTypes.is(TAG_TEAM) && it.cards.filterByType(ENERGY)}.select("Move energy from")
             def tar = my.all.findAll {it != pcs}.select("To?")
-            def eng = pcs.select(max:2, "Select which energy to move").each{energySwitch(pcs,tar,it)}
+            pcs.cards.filterByType(ENERGY).select(max:2, "Select which energy to move").each{energySwitch(pcs,tar,it)}
           }
           playRequirement{
             assert my.all.findAll {it.topPokemonCard.cardTypes.is(TAG_TEAM) && it.cards.filterByType(ENERGY)} : "No valid target"
