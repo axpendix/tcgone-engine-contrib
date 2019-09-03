@@ -1935,7 +1935,7 @@ public enum UnifiedMinds implements CardInfo {
             opp.all.each {
               maxHpRemaining += it.getRemainingHP().value
             }
-            def maxHpCounters = maxHpRemaining / 10
+            def maxHpCounters = (maxHpRemaining / 10).intValueExact()
 
             def counters = 10
             if (self.cards.energySufficient(thisMove.energyCost + [C,C,C])) {
