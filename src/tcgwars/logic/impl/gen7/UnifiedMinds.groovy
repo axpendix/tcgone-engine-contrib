@@ -2142,7 +2142,7 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Tag Transport", {
 					text "Once during your turn (before your attack), you may switch your Active TAG TEAM Pokémon with 1 of your Benched Pokémon."
 					actionA {
-            assert my.active.cardTypes.is(TAG_TEAM)
+            assert my.active.topPokemonCard.cardTypes.isIn(TAG_TEAM)
             checkLastTurn()
             assert my.bench.notEmpty
             powerUsed()
@@ -2315,7 +2315,7 @@ public enum UnifiedMinds implements CardInfo {
                   }
                 }
               }
-              unregisterAfter 1
+              unregisterAfter 2
             }
           }
 				}
@@ -4515,7 +4515,7 @@ public enum UnifiedMinds implements CardInfo {
           text "Draw 2 cards. If your Active Pokémon is a TAG TEAM Pokémon, draw 2 more cards."
           onPlay {
             draw 2
-            if (my.active.topPokemonCard.cardTypes.is(TAG_TEAM) {
+            if (my.active.topPokemonCard.cardTypes.isIn(TAG_TEAM) {
               draw 2
             }
           }
@@ -4766,12 +4766,12 @@ public enum UnifiedMinds implements CardInfo {
         return itemCard (this) {
           text "Move up to 2 Energy from 1 of your TAG TEAM Pokémon to another of your Pokémon."
           onPlay {
-            def pcs = my.all.findAll {it.cardTypes.isIn(TAG_TEAM) && it.cards.filterByType(ENERGY)}.select("Move energy from")
+            def pcs = my.all.findAll {it.topPokemonCard.cardTypes.isIn(TAG_TEAM) && it.cards.filterByType(ENERGY)}.select("Move energy from")
             def tar = my.all.findAll {it != pcs}.select("To?")
             def eng = pcs.select(max:2, "Select which energy to move").each{energySwitch(pcs,tar,it)}
           }
           playRequirement{
-            assert my.all.findAll {it.cardTypes.isIn(TAG_TEAM) && it.cards.filterByType(ENERGY)} : "No valid target"
+            assert my.all.findAll {it.topPokemonCard.cardTypes.isIn(TAG_TEAM) && it.cards.filterByType(ENERGY)} : "No valid target"
             assert my.all.size() >= 2 : "You only have one Pokemon in play"
           }
 			  };
