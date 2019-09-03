@@ -998,10 +998,11 @@ public enum UnifiedMinds implements CardInfo {
             topFiveCards.discard()
 
             def firePokemon = pokemonInTopFive.filterByType(_FIRE_)
-
-            def maxSelect = Math.min(firePokemon.size(), my.bench.freeBenchCount)
-            multiSelect(firePokemon, maxSelect).each {
-              benchPCS(it)
+            if (firePokemon.size()) {
+              pokemonInTopFive.filterByType(_FIRE_).select(max: my.bench.freeBenchCount, min: 0).each {
+                my.discard.remove(it);
+                benchPCS(it);
+              }
             }
 					}
 				}
