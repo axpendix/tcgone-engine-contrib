@@ -2187,7 +2187,11 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Secret Territory", {
 					text "If you have Mesprit and Azelf in play, apply Weakness for each Pokémon (both yours and your opponent's) as ×4 instead."
 					actionA {
-            // TODO:
+            getterA (GET_WEAKNESSES) {h->
+              if(h.effect.target.owner == self.owner.opposite && h.effect.target.basic && h.effect.target.active && my.all.find({it.name == "Azelf"}) && ({it.name == "Mespirit") {
+                h.object == x4
+              }
+            }
 					}
 				}
 				move "Psyshot", {
