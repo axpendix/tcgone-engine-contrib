@@ -2582,9 +2582,11 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
-            def list = my.discard.filterByEnergyType(F)
-						list.select(max:2, "Attach to $self").each{
-							attachEnergy(self, it)
+            def fightingInDiscard = my.discard.filterByEnergyType(F)
+            if (fightingInDiscard) {
+              fightingInDiscard.select(max:2, "Attach to $self").each{
+                attachEnergy(self, it)
+              }
 						}
 					}
 				}
