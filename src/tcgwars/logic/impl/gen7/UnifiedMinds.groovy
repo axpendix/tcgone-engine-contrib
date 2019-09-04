@@ -1417,14 +1417,17 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
             damage 80
-            defendingRetreatsCostsMore(opp.active, C)
-
-            // Increase opponent's attack's energy cost by 1
             delayed {
-              def eff
+              def eff1 // Retreat Cost increase
+              def eff2 // Attack Cost increase
               register {
-                eff = getter GET_MOVE_LIST, {h->
-                  if(self.active && h.effect.target.owner == self.owner.opposite){
+                eff1 = getter GET_RETREAT_COST {h->
+                  if (h.effect.target.owner == self.owner.opposite) {
+                    h.object += 1
+                  }
+                }
+                eff2 = getter GET_MOVE_LIST, {h->
+                  if (h.effect.target.owner == self.owner.opposite) {
                     def list=[]
                     for(move in h.object){
                       def copy=move.shallowCopy()
@@ -1436,7 +1439,8 @@ public enum UnifiedMinds implements CardInfo {
                 }
               }
               unregister {
-                eff.unregister()
+                eff1.unregister()
+                eff2.unregister()
               }
               unregisterAfter 2
               after SWITCH, pcs, {unregister()}
@@ -1931,7 +1935,7 @@ public enum UnifiedMinds implements CardInfo {
             opp.all.each {
               maxHpRemaining += it.getRemainingHP().value
             }
-            def maxHpCounters = maxHpRemaining / 10
+            def maxHpCounters = (maxHpRemaining / 10).intValueExact()
 
             def counters = 10
             if (self.cards.energySufficient(thisMove.energyCost + [C,C,C])) {
@@ -2242,11 +2246,12 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Dimension Breach", {
 					text "When you play this Pokémon from your hand onto your Bench during your turn, you may discard a Special Energy from your opponent's Active Pokémon."
 					onActivate { reason ->
-            def target = opp.active.findAll({it.cards.filterByType(SPECIAL_ENERGY)})
-
-            if (reason == PLAY_FROM_HAND && self.benched && target && confirm("Use Dimension Breach?")) {
+            if (reason == PLAY_FROM_HAND && self.benched && confirm("Use Dimension Breach?")) {
               powerUsed()
-              target.select("Discard a Special Energy from your Opponent's Active Pokémon").cards.filterByType(SPECIAL_ENERGY).select().discard()
+              def target = opp.active.findAll({it.cards.filterByType(SPECIAL_ENERGY)})
+              if (tar) {
+                target.select().cards.filterByType(SPECIAL_ENERGY).select().discard()
+              }
             }
           }
 				}
@@ -3550,8 +3555,8 @@ public enum UnifiedMinds implements CardInfo {
             if (self.cards.energySufficient(thisMove.energyCost + F + F + F)) {
                 discardCount = 2
             }
-            for (int i = 0; i < discard; i++) {
-              opp.all.select("Select $discardCount Pokemon to discard").discard()
+            for (int i = 0; i < discardCount; i++) {
+              opp.all.select("Select $i/$discardCount Pokemon to discard").discard()
             }
 					}
 				}
@@ -4734,13 +4739,13 @@ public enum UnifiedMinds implements CardInfo {
         onPlay {
           eff = delayed {
             before ASLEEP_SPC, null, null, BETWEEN_TURNS, {
-              if(ef.target == self.owner.opposite.pbg.active){ //MARK parentEvent
+              if (ef.target == self.owner.opposite.pbg.active) { //MARK parentEvent
                 flip "Asleep (Slumbering Forest)", 2, {}, {}, [2:{
                   ef.unregisterItself(bg.em());
                 },1:{
-                  bc "$self is still asleep."
+                  bc "$ef.target is still asleep."
                 },0:{
-                  bc "$self is still asleep."
+                  bc "$ef.target is still asleep."
                 }]
                 prevent()
               }
