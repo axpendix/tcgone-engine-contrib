@@ -2296,9 +2296,7 @@ public enum UnifiedMinds implements CardInfo {
 					text "Look at the top 4 cards of either player's deck and put them back in any order."
 					energyCost C
 					attackRequirement {}
-					onAttack {
-						rearrangeEitherPlayersDeck(delegate, 4)
-					}
+				  rearrangeEitherPlayersDeck(delegate, 4)
 				}
 			};
 			case MUSHARNA_89:
@@ -2353,19 +2351,20 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
-            self.cards.moveTo(my.deck)
-						removePCS(self)
-						shuffleDeck()
-
-						delayed {
-							before PLAY_TRAINER, {
-								if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
-									wcu "Mysterious Noise prevents playing any Item cards this turn."
-									prevent()
-								}
-							}
-							unregisterAfter 2
-						}
+            
+            afterDamage{
+              shuffleDeck(self.cards)
+              removePCS(self)
+              delayed {
+                before PLAY_TRAINER, {
+                  if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
+                    wcu "Mysterious Noise prevents playing any Item cards this turn."
+                    prevent()
+                  }
+                }
+                unregisterAfter 2
+              }
+            }
 					}
 				}
 			};
@@ -2761,11 +2760,9 @@ public enum UnifiedMinds implements CardInfo {
 				move "Deep Sea Boring", {
 					text "Search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {
-						assert deck.notEmpty : "Empty deck"
-					}
+					attackRequirement {	}
 					onAttack {
-            my.deck.search(count:1, "Choose a Trainer card", cardTypeFilter(TRAINER_CARD)).showToOpponent("Chosen card").moveTo(my.hand)
+            my.deck.search(max:1, "Choose a Trainer card", cardTypeFilter(TRAINER)).showToOpponent("Chosen card").moveTo(my.hand)
             shuffleDeck()
 					}
 				}
@@ -2992,11 +2989,11 @@ public enum UnifiedMinds implements CardInfo {
 				move "Tag Cheer", {
 					text " Attach an Energy card from your hand to 1 of your TAG TEAM Pokémon."
 					energyCost C
-					attackRequirement {
-						assert my.hand.filterByType(ENERGY) : "There is no Energy Card in your hand"
-					}
+					attackRequirement {}
 					onAttack {
-						attachEnergyFrom(my.hand, my.all.findAll { it.cardTypes.isIn(TAG_TEAM) })
+            if(my.hand.filterByType(ENERGY) && my.all.findAll { it.topPokemonCard.cardTypes.is(TAG_TEAM) }({
+						  attachEnergyFrom(my.hand, my.all.findAll { it.topPokemonCard.cardTypes.is(TAG_TEAM) })
+            }
 					}
 				}
 				move "Shooting Star Pirouette", {
@@ -4034,16 +4031,16 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-            targeted (defending) {
-              delayed {
-                before ATTACH_ENERGY, defending {
-                  if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite) {
-                    wcu "Lazy Howl ends the turn"
-                    bg.gm().betweenTurns()
-                  }
+            delayed {
+              after ATTACH_ENERGY {
+                if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.isActive()) {
+                  wcu "Lazy Howl ends the turn"
+                  bg.gm().betweenTurns()
                 }
-                unregisterAfter 2
               }
+              unregisterAfter 2
+              after EVOLVE,defending, {unregister()}
+              after SWITCH,defending, {unregister()}
             }
 					}
 				}
