@@ -2306,7 +2306,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
             apply ASLEEP, self
             apply ASLEEP
-            doMoreDamageNextTurn(thisMove, 100)
+            doMoreDamageNextTurn(thisMove, 100, self)
           }
 				}
 				move "Zen Headbutt", {
@@ -2594,7 +2594,17 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 220
-            cantAttackNextTurn my.all
+            afterDamage{
+              delayed {
+                before CHECK_ATTACK_REQUIREMENTS, {
+                  if(ef.attacker.owner == self.owner) {
+                    wcu "Gigaton Shake prevents attack"
+                    prevent()
+                  }
+                }
+                unregisterAfter 3
+              }
+            }
 					}
 				}
 			};
@@ -3016,8 +3026,8 @@ public enum UnifiedMinds implements CardInfo {
 						damage 20
             def fightingInDiscard = my.discard.filterByEnergyType(F)
             if (fightingInDiscard) {
-              fightingInDiscard.select("Attach a [F] to one of your benched").each{
-                attachEnergy(self, my.discard, my.bench)
+              fightingInDiscard.select().each{
+                attachEnergy(my.bench.select("Attach Energy to?"), it)
               }
             }
 					}
