@@ -13,7 +13,6 @@ import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
 import java.util.*;
-import org.apache.commons.lang.WordUtils;
 import tcgwars.entity.*;
 import tcgwars.logic.*;
 import tcgwars.logic.card.*;
@@ -352,7 +351,6 @@ public enum UnifiedMinds implements CardInfo {
 				weakness R
 				move "Super Growth", {
 					text "Search your deck for a card that evolves from 1 of your [G] Pokémon and put it onto that Pokémon to evolve it. If that Pokémon is now a Stage 1 Pokémon, search your deck for a Stage 2 Pokémon that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
-					energyCost
 					attackRequirement {}
 					onAttack {
             // TODO:
@@ -1093,7 +1091,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
             gxPerform()
             damage 10
-            if (self.cards.energySufficient(thisMove.energyCost + W,W,W,W,W,W)) {
+            if (self.cards.energySufficient(thisMove.energyCost + [W,W,W,W,W,W])) {
               flip 10, { damage 100 }
             } else {
               flip 1, { damage 100 }
@@ -1420,14 +1418,16 @@ public enum UnifiedMinds implements CardInfo {
             delayed {
               def eff1 // Retreat Cost increase
               def eff2 // Attack Cost increase
+              def pcs
               register {
-                eff1 = getter GET_RETREAT_COST {h->
-                  if (h.effect.target.owner == self.owner.opposite) {
+                pcs = defending
+                eff1 = getter GET_RETREAT_COST, {h->
+                  if (h.effect.target.owner == pcs) {
                     h.object += 1
                   }
                 }
                 eff2 = getter GET_MOVE_LIST, {h->
-                  if (h.effect.target.owner == self.owner.opposite) {
+                  if (h.effect.target.owner == pcs) {
                     def list=[]
                     for(move in h.object){
                       def copy=move.shallowCopy()
@@ -1990,7 +1990,6 @@ public enum UnifiedMinds implements CardInfo {
 				resistance F, MINUS20
 				move "Spirit Smash", {
 					text "Discard the top card of your opponent's deck. If the card you discarded is a Pokémon, this attack does damage equal to that Pokémon’s HP to your opponent's Active Pokémon."
-					energyCost
 					attackRequirement {}
 					onAttack {
             def card = opp.deck.subList(0, 1)
@@ -2246,11 +2245,10 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Dimension Breach", {
 					text "When you play this Pokémon from your hand onto your Bench during your turn, you may discard a Special Energy from your opponent's Active Pokémon."
 					onActivate { reason ->
-            if (reason == PLAY_FROM_HAND && self.benched && confirm("Use Dimension Breach?")) {
+            if (reason == PLAY_FROM_HAND && self.benched && opp.active.cards.filterByType(SPECIAL_ENERGY) && confirm("Use Dimension Breach?")) {
               powerUsed()
-              def target = opp.active.findAll({it.cards.filterByType(SPECIAL_ENERGY)})
-              if (tar) {
-                target.select().cards.filterByType(SPECIAL_ENERGY).select().discard()
+              targeted(opp.active, SRC_ABILITY){
+                opp.active.cards.filterByType(SPECIAL_ENERGY).select("Discard").discard()
               }
             }
           }
@@ -2351,7 +2349,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
-            
+
             afterDamage{
               shuffleDeck(self.cards)
               removePCS(self)
@@ -3048,8 +3046,8 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
 						damage 150
             def gxEx = opp.bench.findAll{ it.pokemonGX || it.pokemonEX }
-            if (opp.bench && exGx) {
-              noWrDamage 60, gxEx.select("Deal 60 damage to which Pokémon?")
+            if (gxEx) {
+              damage 60, gxEx.select("Deal 60 damage to which Pokémon?")
             }
           }
 				}
@@ -3119,7 +3117,6 @@ public enum UnifiedMinds implements CardInfo {
 				resistance P, MINUS20
 				move "Collect", {
 					text " Draw 2 cards."
-					energyCost
 					attackRequirement {}
 					onAttack {
 						draw 2
@@ -3549,11 +3546,13 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
 						gxPerform()
             def discardCount = 1
-            if (self.cards.energySufficient(thisMove.energyCost + F + F + F)) {
+            if (self.cards.energySufficient(thisMove.energyCost + [F + F + F])) {
                 discardCount = 2
             }
-            for (int i = 0; i < discardCount; i++) {
-              opp.all.select("Select $i/$discardCount Pokemon to discard").discard()
+            for (int i = 0; i < discardCount && opp.all; i++) {
+              def pcs =opp.all.select("Select $i/$discardCount Pokemon to discard")
+              pcs.cards.discard()
+              removePCS(pcs)
             }
 					}
 				}
@@ -4447,6 +4446,7 @@ public enum UnifiedMinds implements CardInfo {
 			return supporter (this) {
 				text "Put a Pokémon from your hand face down in front of you and tell your opponent the name of an attack it has. Your opponent guesses the name of that Pokémon, and then you reveal it. If your opponent guessed right, they draw 4 cards. If they guessed wrong, you draw 4 cards. Return the Pokémon to your hand."
 				onPlay {
+          // TODO
 				}
 				playRequirement{
 				}
@@ -4736,16 +4736,14 @@ public enum UnifiedMinds implements CardInfo {
         onPlay {
           eff = delayed {
             before ASLEEP_SPC, null, null, BETWEEN_TURNS, {
-              if (ef.target == self.owner.opposite.pbg.active) { //MARK parentEvent
-                flip "Asleep (Slumbering Forest)", 2, {}, {}, [2:{
-                  ef.unregisterItself(bg.em());
-                },1:{
-                  bc "$ef.target is still asleep."
-                },0:{
-                  bc "$ef.target is still asleep."
-                }]
-                prevent()
-              }
+              flip "Asleep (Slumbering Forest)", 2, {}, {}, [2:{
+                ef.unregisterItself(bg.em());
+              },1:{
+                bc "$ef.target is still asleep."
+              },0:{
+                bc "$ef.target is still asleep."
+              }]
+              prevent()
             }
           }
         }
@@ -4791,8 +4789,7 @@ public enum UnifiedMinds implements CardInfo {
         }
         onRemoveFromPlay {
           eff.unregister()
-          new CardList(thisCard).moveTo(my.hand)
-          prevent()
+          new CardList(thisCard).moveTo(thisCard.player.pbg.hand)
         }
 			};
 			case RECYCLE_ENERGY_212:
