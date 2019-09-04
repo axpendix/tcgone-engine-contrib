@@ -2991,7 +2991,7 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-            if(my.hand.filterByType(ENERGY) && my.all.findAll { it.topPokemonCard.cardTypes.is(TAG_TEAM) }({
+            if(my.hand.filterByType(ENERGY) && my.all.findAll { it.topPokemonCard.cardTypes.is(TAG_TEAM) }){
 						  attachEnergyFrom(my.hand, my.all.findAll { it.topPokemonCard.cardTypes.is(TAG_TEAM) })
             }
 					}
