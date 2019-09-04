@@ -4032,15 +4032,15 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
             delayed {
-              after ATTACH_ENERGY {
+              after ATTACH_ENERGY, {
                 if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.isActive()) {
                   wcu "Lazy Howl ends the turn"
                   bg.gm().betweenTurns()
                 }
               }
               unregisterAfter 2
-              after EVOLVE,defending, {unregister()}
-              after SWITCH,defending, {unregister()}
+              after EVOLVE, defending, {unregister()}
+              after SWITCH, defending, {unregister()}
             }
 					}
 				}
