@@ -1684,7 +1684,7 @@ public enum UnbrokenBonds implements CardInfo {
           globalAbility {Card thisCard->
             def lastTurn=0
             action("Battery", [TargetPlayer.fromPlayerType(thisCard.player)]) {
-              def text "Once during your turn (before your attack), you may attach this card from your hand to 1 of your Vikavolt or Vikavolt-GX as a Special Energy card. This card provides 2 [L] Energy only while it’s attached to a Pokémon."
+              def text="Once during your turn (before your attack), you may attach this card from your hand to 1 of your Vikavolt or Vikavolt-GX as a Special Energy card. This card provides 2 [L] Energy only while it’s attached to a Pokémon."
               assert thisCard.player.pbg.hand.contains(thisCard) : "Not in hand (try other one)"
               assert bg.turnCount!=lastTurn : "Already used"
               assert checkGlobalAbility(thisCard) : "Blocked"
