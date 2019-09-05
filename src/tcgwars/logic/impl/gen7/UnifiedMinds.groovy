@@ -2189,7 +2189,11 @@ public enum UnifiedMinds implements CardInfo {
 					actionA {
             getterA (GET_WEAKNESSES) {h->
               if(self.owner.pbg.all.find{it.name == "Azelf"} && self.owner.pbg.all.find{it.name == "Mespirit"}) {
-                h.object == x4
+                h.object = h.object?.collect{
+                  def weakness = it.copy()
+                  weakness.feature = "X4"
+                  weakness
+                }
               }
             }
 					}
