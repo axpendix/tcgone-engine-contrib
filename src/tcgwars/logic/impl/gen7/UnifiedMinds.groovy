@@ -2100,9 +2100,10 @@ public enum UnifiedMinds implements CardInfo {
 				weakness P
 				bwAbility "Psychic Zone", {
 					text "Don't apply [P] Weakness when Pokémon (both yours and your opponent's) take damage from attacks."
-					actionA {
-            // TODO:
-					}
+          getterA (GET_WEAKNESSES) { h ->
+            def list = h.object as List<Weakness>
+            list.removeAll(list.findAll{ it.type == P })
+          }
 				}
 				move "Star Search", {
 					text "Search your deck for an Energy card and attach it to 1 of your [P] Pokémon. Then, shuffle your deck."
