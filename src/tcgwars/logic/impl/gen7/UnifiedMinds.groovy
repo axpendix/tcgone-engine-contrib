@@ -3090,7 +3090,7 @@ public enum UnifiedMinds implements CardInfo {
 						}
 
 						if (self.cards.energySufficient( thisMove.energyCost + [D, D, D, D, D] )) {
-							new Knockout(defending)
+							new Knockout(defending).run(bg)
 						}
 					}
 				}
