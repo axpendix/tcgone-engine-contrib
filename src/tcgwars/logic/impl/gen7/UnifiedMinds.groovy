@@ -1779,14 +1779,14 @@ public enum UnifiedMinds implements CardInfo {
             assert checkGlobalAbility(thisCard) : "Blocked"
             bc "$thisCard used Electric Swamp"
             my.hand.remove(thisCard)
-            benchPCS(thisCard)
+            def pcs = benchPCS(thisCard)
             while(1){
-              def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=thisCard})
+              def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=pcs})
               if(!pl) break;
               def src=pl.select("Source for energy (cancel to stop)", false)
               if(!src) break;
               def card=src.cards.filterByEnergyType(L).select("Card to move").first()
-              energySwitch(src, thisCard, card)
+              energySwitch(src, pcs, card)
             }
           }
         }
