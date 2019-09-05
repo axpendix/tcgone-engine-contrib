@@ -2188,7 +2188,7 @@ public enum UnifiedMinds implements CardInfo {
 					text "If you have Mesprit and Azelf in play, apply Weakness for each Pokémon (both yours and your opponent's) as ×4 instead."
 					actionA {
             getterA (GET_WEAKNESSES) {h->
-              if(h.effect.target.owner == self.owner.opposite && h.effect.target.basic && h.effect.target.active && my.all.find({it.name == "Azelf"}) && ({it.name == "Mespirit") {
+              if(self.owner.pbg.all.find{it.name == "Azelf"} && self.owner.pbg.all.find{it.name == "Mespirit"}) {
                 h.object == x4
               }
             }
