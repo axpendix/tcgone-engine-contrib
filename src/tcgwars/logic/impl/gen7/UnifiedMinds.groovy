@@ -2100,9 +2100,10 @@ public enum UnifiedMinds implements CardInfo {
 				weakness P
 				bwAbility "Psychic Zone", {
 					text "Don't apply [P] Weakness when Pokémon (both yours and your opponent's) take damage from attacks."
-					actionA {
-            // TODO:
-					}
+          getterA (GET_WEAKNESSES) { h ->
+            def list = h.object as List<Weakness>
+            list.removeAll(list.findAll{ it.type == P })
+          }
 				}
 				move "Star Search", {
 					text "Search your deck for an Energy card and attach it to 1 of your [P] Pokémon. Then, shuffle your deck."
@@ -4721,11 +4722,44 @@ public enum UnifiedMinds implements CardInfo {
 			case POKEMON_RESEARCH_LAB_205:
 			return stadium (this) {
 				text "Once during each player’s turn, that player may search their deck for up to 2 Pokémon that evolve from Unidentified Fossil, put those Pokémon onto their Bench, and shuffle their deck. If a player searches their deck in this way, their turn ends."
-				onPlay {
-				}
-				onRemoveFromPlay{
-				}
+				def lastTurn=0
+        def actions=[]
+        onPlay {
+          actions=action("Stadium: Pokemon Research Lab") {
+            assert my.deck.notEmpty
+            assert lastTurn != bg().turnCount : "Already used"
+            bc "Used Pokemon Research Lab already"
+            lastTurn = bg().turnCount
+
+            self.owner.pbg.deck.search(count: 2, "Search for a card that evolve from Unidentified Fossil",
+              { it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil" }).moveTo(self.owner.hand)
+          }
+        }
+        onRemoveFromPlay{
+          actions.each { bg().gm().unregisterAction(it) }
+        }
 			};
+
+      move "Grand Bloom GX", {
+        text "For each of your Benched Basic Pokémon, search your deck for a card that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck. (You can’t use more than 1 GX attack in a game.)"
+        energyCost G
+        attackRequirement {
+          gxCheck()
+          assert my.bench.notEmpty : "This is your only pokemon"
+          assert my.deck.notEmpty
+        }
+        onAttack {
+          gxPerform()
+          my.bench.findAll{it.basic}.each{pcs->
+            def nam = pcs.name
+            def sel=self.owner.pbg.deck.search(count:1, "Search for a card that evolve from $nam",
+              {it.cardTypes.is(EVOLUTION) && it.predecessor==pcs.name})
+            if(sel){
+              evolve(pcs, sel.first(), OTHER)
+            }
+          }
+          shuffleDeck()
+        }
 			case RESET_STAMP_206:
         return itemCard (this) {
           text "Your opponent shuffles their hand into their deck and draws a card for each of their remaining Prize cards."
