@@ -1764,24 +1764,32 @@ public enum UnifiedMinds implements CardInfo {
 			return evolution (this, from:"Eelektrik", hp:HP150, type:L, retreatCost:3) {
 				weakness F
 				resistance M, MINUS20
-				bwAbility "Electric Swamp", {
-					text "If this Pokémon is in your hand and you have 4 or more Lightning Energy in play, you may use this Ability. Put this Pokémon onto your Bench. Then, you may move as many Lightning Energy from your other Pokémon to this Pokémon in any way you like."
-          // TODO: modify this so an evolution can be played without evolving
-          onActivate {reason ->
-						if(reason == PLAY_FROM_HAND && self.benched && confirm("Use Electric Swamp?")) {
-							powerUsed()
-							while(1){
-								def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=self})
-								if(!pl) break;
-								def src=pl.select("Source for energy (cancel to stop)", false)
-								if(!src) break;
-								def card=src.cards.filterByEnergyType(L).select("Card to move").first()
-								energySwitch(src, self, card)
-							}
-							sw my.active, self
-						}
-					}
-				}
+        globalAbility {Card thisCard->
+          def lastTurn=0
+          action("$thisCard: Electric Swamp", [TargetPlayer.fromPlayerType(thisCard.player)]) {
+            def text="If this Pokémon is in your hand and you have 4 or more Lightning Energy in play, you may use this Ability. Put this Pokémon onto your Bench. Then, you may move as many Lightning Energy from your other Pokémon to this Pokémon in any way you like."
+            def lightningCount=0
+            thisCard.player.pbg.all.findAll{it.cards.energyCount(L)}.each{
+              lightningCount+=it.cards.energyCount(L)
+            }
+            assert thisCard.player.pbg.hand.contains(thisCard) : "Not in hand"
+            assert thisCard.player.pbg.bench.notFull : "Bench full"
+            assert lightningCount >= 4 : "Not enough Lightning Energy in play"
+            assert bg.turnCount!=lastTurn : "Already used"
+            assert checkGlobalAbility(thisCard) : "Blocked"
+            bc "$thisCard used Electric Swamp"
+            my.hand.remove(thisCard)
+            benchPCS(thisCard)
+            while(1){
+              def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=self})
+              if(!pl) break;
+              def src=pl.select("Source for energy (cancel to stop)", false)
+              if(!src) break;
+              def card=src.cards.filterByEnergyType(L).select("Card to move").first()
+              energySwitch(src, self, card)
+            }
+          }
+        }
 				move "Hover Over", {
 					text "130 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
 					energyCost L, C, C, C
