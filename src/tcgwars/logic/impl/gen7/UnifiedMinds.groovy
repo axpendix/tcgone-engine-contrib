@@ -3565,7 +3565,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
 						gxPerform()
             def discardCount = 1
-            if (self.cards.energySufficient(thisMove.energyCost + [F + F + F])) {
+            if (self.cards.energySufficient(thisMove.energyCost + [F, F, F])) {
                 discardCount = 2
             }
             for (int i = 0; i < discardCount && opp.all; i++) {
