@@ -4762,6 +4762,7 @@ public enum UnifiedMinds implements CardInfo {
           }
           shuffleDeck()
         }
+      }
 			case RESET_STAMP_206:
         return itemCard (this) {
           text "Your opponent shuffles their hand into their deck and draws a card for each of their remaining Prize cards."
