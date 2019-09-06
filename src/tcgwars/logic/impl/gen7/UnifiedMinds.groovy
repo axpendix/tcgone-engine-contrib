@@ -19,7 +19,6 @@ import tcgwars.logic.card.*;
 import tcgwars.logic.card.energy.*;
 import tcgwars.logic.card.pokemon.*;
 import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.card.move.*;
 import tcgwars.logic.effect.*;
 import tcgwars.logic.effect.ability.*;
 import tcgwars.logic.effect.ability.Ability.*;
@@ -28,6 +27,7 @@ import tcgwars.logic.effect.basic.*;
 import tcgwars.logic.effect.blocking.*;
 import tcgwars.logic.effect.event.*;
 import tcgwars.logic.effect.getter.*;
+import tcgwars.logic.effect.move.*;
 import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
@@ -4694,7 +4694,7 @@ public enum UnifiedMinds implements CardInfo {
               flipUntilTails{damage 40}
             }
           }
-          eff1=getter GET_MOVE_LIST, self, {h->
+          eff = getter GET_MOVE_LIST, self, {h->
             if (h.object.findAll{it.name == "Tackle"}) { h.object.add(m) }
           }
 				}
