@@ -4759,28 +4759,6 @@ public enum UnifiedMinds implements CardInfo {
           actions.each { bg().gm().unregisterAction(it) }
         }
 			};
-
-      move "Grand Bloom GX", {
-        text "For each of your Benched Basic Pokémon, search your deck for a card that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck. (You can’t use more than 1 GX attack in a game.)"
-        energyCost G
-        attackRequirement {
-          gxCheck()
-          assert my.bench.notEmpty : "This is your only pokemon"
-          assert my.deck.notEmpty
-        }
-        onAttack {
-          gxPerform()
-          my.bench.findAll{it.basic}.each{pcs->
-            def nam = pcs.name
-            def sel=self.owner.pbg.deck.search(count:1, "Search for a card that evolve from $nam",
-              {it.cardTypes.is(EVOLUTION) && it.predecessor==pcs.name})
-            if(sel){
-              evolve(pcs, sel.first(), OTHER)
-            }
-          }
-          shuffleDeck()
-        }
-      }
 			case RESET_STAMP_206:
         return itemCard (this) {
           text "Your opponent shuffles their hand into their deck and draws a card for each of their remaining Prize cards."
