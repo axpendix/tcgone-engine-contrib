@@ -1415,37 +1415,9 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
             damage 80
-            delayed {
-              def eff1 // Retreat Cost increase
-              def eff2 // Attack Cost increase
-              def pcs
-              register {
-                pcs = defending
-                eff1 = getter GET_RETREAT_COST, {h->
-                  if (h.effect.target.owner == pcs) {
-                    h.object += 1
-                  }
-                }
-                eff2 = getter GET_MOVE_LIST, {h->
-                  if (h.effect.target.owner == pcs) {
-                    def list=[]
-                    for(move in h.object){
-                      def copy=move.shallowCopy()
-                      copy.energyCost.add(C)
-                      list.add(copy)
-                    }
-                    h.object=list
-                  }
-                }
-              }
-              unregister {
-                eff1.unregister()
-                eff2.unregister()
-              }
-              unregisterAfter 2
-              after SWITCH, pcs, {unregister()}
-              after EVOLVE, pcs, {unregister()}
-            }
+            afterDamage{
+              defendingAttacksCostsMore (defending, [C])
+              defendingRetreatsCostsMore (defending, [C])
           }
 				}
 			};
