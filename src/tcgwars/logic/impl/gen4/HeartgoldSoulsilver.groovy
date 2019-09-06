@@ -1326,7 +1326,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
                 register {
                   pcs = defending
                   eff = getter GET_MOVE_LIST, {h->
-                    if (h.effect.target.owner == pcs) {
+                    if (h.effect.target == pcs) {
                       def list=[]
                       for(move in h.object){
                         def copy=move.shallowCopy()
