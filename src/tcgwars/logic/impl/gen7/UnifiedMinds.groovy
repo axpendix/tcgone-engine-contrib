@@ -1893,20 +1893,20 @@ public enum UnifiedMinds implements CardInfo {
 				weakness P
 				bwAbility "Perfection", {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
-          delayedA {
-            getterA (GET_MOVE_LIST, self) { holder->
-              def moves = []
+          getterA (GET_MOVE_LIST, self) { holder->
+            if (self.owner.pbg.discard) {
               self.owner.pbg.discard.each {
                 if (it.cardTypes.is(POKEMON_GX) || it.cardTypes.is(POKEMON_EX)) {
-                  moves.plus(it.moves)
+                  holder.object.plus(it.moves)
                 }
               }
+            }
+            if (self.owner.pbg.bench) {
               self.owner.pbg.bench.each {
                 if (it.cardTypes.is(POKEMON_GX) || it.cardTypes.is(POKEMON_EX)) {
-                  moves.plus(it.moves)
+                  holder.object.plus(it.moves)
                 }
               }
-              holder.object = moves
             }
 					}
 				}
