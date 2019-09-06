@@ -1418,6 +1418,7 @@ public enum UnifiedMinds implements CardInfo {
             afterDamage{
               defendingAttacksCostsMore (defending, [C])
               defendingRetreatsCostsMore (defending, [C])
+            }
           }
 				}
 			};
