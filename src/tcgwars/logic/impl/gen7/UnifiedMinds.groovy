@@ -1866,22 +1866,14 @@ public enum UnifiedMinds implements CardInfo {
 				weakness P
 				bwAbility "Perfection", {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
-          getterA (GET_MOVE_LIST, self) { holder->
-            if (self.owner.pbg.discard) {
-              self.owner.pbg.discard.each {
-                if (it.cardTypes.is(POKEMON_GX) || it.cardTypes.is(POKEMON_EX)) {
-                  holder.object.plus(it.moves)
-                }
-              }
+          getterA (GET_MOVE_LIST, self) {holder->
+            my.bench.findAll{it.topPokemonCard.cardTypes.isIn(POKEMON_GX) || it.topPokemonCard.cardTypes.isIn(POKEMON_EX)}.each {
+              holder.object.addAll(it.topPokemonCard.moves)
             }
-            if (self.owner.pbg.bench) {
-              self.owner.pbg.bench.each {
-                if (it.cardTypes.is(POKEMON_GX) || it.cardTypes.is(POKEMON_EX)) {
-                  holder.object.plus(it.moves)
-                }
-              }
+            my.discard.findAll{it.cardTypes.isIn(POKEMON_GX) || it.cardTypes.isIn(POKEMON_EX)}.each {
+              holder.object.addAll(it.topPokemonCard.moves)
             }
-					}
+          }
 				}
 				move "Miraculous Duo GX", {
 					text "200 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack’s cost), heal all damage from all of your Pokémon. (You can’t use more than 1 GX attack in a game.)"
