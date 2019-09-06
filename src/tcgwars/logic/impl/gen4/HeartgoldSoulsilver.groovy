@@ -1320,7 +1320,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             attackRequirement {}
             onAttack {
               apply ASLEEP, self
-              defendingAttacksCostsMore(defending, C)
+              defendingAttacksCostsMore(defending, [C])
             }
           }
         };
