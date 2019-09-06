@@ -1320,27 +1320,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             attackRequirement {}
             onAttack {
               apply ASLEEP, self
-              delayed {
-                def eff
-                def pcs
-                register {
-                  pcs = defending
-                  eff = getter GET_MOVE_LIST, {h->
-                    if (h.effect.target == pcs) {
-                      def list=[]
-                      for(move in h.object){
-                        def copy=move.shallowCopy()
-                        copy.energyCost.add(C)
-                        list.add(copy)
-                      }
-                      h.object=list
-                    }
-                  }
-                }
-                unregisterAfter 2
-                after SWITCH, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-              }
+              defendingAttacksCostsMore(defending, C)
             }
           }
         };
