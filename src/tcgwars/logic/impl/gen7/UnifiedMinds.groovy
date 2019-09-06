@@ -4741,8 +4741,13 @@ public enum UnifiedMinds implements CardInfo {
             bc "Used Pokemon Research Lab already"
             lastTurn = bg().turnCount
 
-            self.owner.pbg.deck.search(count: 2, "Search for a card that evolve from Unidentified Fossil",
-              { it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil" }).moveTo(self.owner.hand)
+            deck.search(count: 2, "Search for a card that evolve from Unidentified Fossil", {
+              it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil"
+              }.each {
+                deck.remove(it)
+                benchPCS(it)
+              }
+            )
           }
         }
         onRemoveFromPlay{
