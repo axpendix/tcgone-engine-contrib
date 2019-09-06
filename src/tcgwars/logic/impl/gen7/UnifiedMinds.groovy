@@ -4752,7 +4752,6 @@ public enum UnifiedMinds implements CardInfo {
                 deck.remove(it)
                 benchPCS(it)
               }
-            )
             shuffleDeck()
           }
         }
