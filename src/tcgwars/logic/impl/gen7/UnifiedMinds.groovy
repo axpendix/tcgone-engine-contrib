@@ -4748,11 +4748,12 @@ public enum UnifiedMinds implements CardInfo {
 
             deck.search(count: 2, "Search for a card that evolve from Unidentified Fossil", {
               it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil"
-              }.each {
+              }).each {
                 deck.remove(it)
                 benchPCS(it)
               }
             )
+            shuffleDeck()
           }
         }
         onRemoveFromPlay{
