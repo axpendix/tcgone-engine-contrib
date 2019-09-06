@@ -1011,8 +1011,10 @@ class TcgStatics {
 			delayed {
 				def eff
 				register {
-					eff = getter (GET_RETREAT_COST, NORMAL, pcs) {h->
-						h.object += 1
+					eff = getter (GET_RETREAT_COST) {h->
+            if (h.effect.target.owner == self.owner.opposite && h.effect.target.active) {
+              h.object += 1
+            }
 					}
 					bc "Retreat cost of $pcs will cost 1 more energy during the next turn."
 				}
