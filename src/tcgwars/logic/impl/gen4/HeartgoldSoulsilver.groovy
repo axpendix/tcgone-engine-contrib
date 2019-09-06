@@ -1304,6 +1304,14 @@ public enum HeartgoldSoulsilver implements CardInfo {
           pokeBody "Sweet Sleeping Face", {
             text "As long as Igglybuff is Asleep, prevent all damage done to Igglybuff by attacks."
             delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if(self.isSPC(ASLEEP) && it.to == self && it.dmg.value && it.notNoEffect) {
+                    bc "Damage is prevented because $self is Asleep"
+                    it.dmg = hp(0)
+                  }
+                }
+              }
             }
           }
           move "Graffiti", {
@@ -1311,10 +1319,30 @@ public enum HeartgoldSoulsilver implements CardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              apply ASLEEP, self
+              delayed {
+                def eff
+                def pcs
+                register {
+                  pcs = defending
+                  eff = getter GET_MOVE_LIST, {h->
+                    if (h.effect.target.owner == pcs) {
+                      def list=[]
+                      for(move in h.object){
+                        def copy=move.shallowCopy()
+                        copy.energyCost.add(C)
+                        list.add(copy)
+                      }
+                      h.object=list
+                    }
+                  }
+                }
+                unregisterAfter 2
+                after SWITCH, pcs, {unregister()}
+                after EVOLVE, pcs, {unregister()}
+              }
             }
           }
-
         };
       case MANTINE_45:
         return basic (this, hp:HP080, type:WATER, retreatCost:1) {
