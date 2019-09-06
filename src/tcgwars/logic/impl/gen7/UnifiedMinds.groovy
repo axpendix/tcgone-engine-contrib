@@ -19,6 +19,7 @@ import tcgwars.logic.card.*;
 import tcgwars.logic.card.energy.*;
 import tcgwars.logic.card.pokemon.*;
 import tcgwars.logic.card.trainer.*;
+import tcgwars.logic.card.move.*;
 import tcgwars.logic.effect.*;
 import tcgwars.logic.effect.ability.*;
 import tcgwars.logic.effect.ability.Ability.*;
@@ -1871,7 +1872,7 @@ public enum UnifiedMinds implements CardInfo {
               holder.object.addAll(it.topPokemonCard.moves)
             }
             my.discard.findAll{it.cardTypes.isIn(POKEMON_GX) || it.cardTypes.isIn(POKEMON_EX)}.each {
-              holder.object.addAll(it.topPokemonCard.moves)
+              holder.object.addAll(it.moves)
             }
           }
 				}
