@@ -1893,19 +1893,21 @@ public enum UnifiedMinds implements CardInfo {
 				weakness P
 				bwAbility "Perfection", {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
-          getterA (GET_MOVE_LIST, self) { holder->
-            def moves = []
-						self.owner.pbg.discard.each {
-							if (it.cardTypes.is(POKEMON_GX) || it.cardTypes.is(POKEMON_EX)) {
-								moves.plus(it.moves)
-							}
-						}
-            self.owner.pbg.bench.each {
-							if (it.cardTypes.is(POKEMON_GX) || it.cardTypes.is(POKEMON_EX)) {
-                moves.plus(it.moves)
-							}
-						}
-            holder.object = moves
+          delayedA {
+            getterA (GET_MOVE_LIST, self) { holder->
+              def moves = []
+              self.owner.pbg.discard.each {
+                if (it.cardTypes.is(POKEMON_GX) || it.cardTypes.is(POKEMON_EX)) {
+                  moves.plus(it.moves)
+                }
+              }
+              self.owner.pbg.bench.each {
+                if (it.cardTypes.is(POKEMON_GX) || it.cardTypes.is(POKEMON_EX)) {
+                  moves.plus(it.moves)
+                }
+              }
+              holder.object = moves
+            }
 					}
 				}
 				move "Miraculous Duo GX", {
@@ -3090,7 +3092,7 @@ public enum UnifiedMinds implements CardInfo {
 						}
 
 						if (self.cards.energySufficient( thisMove.energyCost + [D, D, D, D, D] )) {
-							new Knockout(defending)
+							new Knockout(defending).run(bg)
 						}
 					}
 				}
@@ -3439,7 +3441,10 @@ public enum UnifiedMinds implements CardInfo {
               if (opp.hand.findAll{it.cardTypes.is(BASIC)}) {
                 def basicPokemon = opp.hand.findAll{ it.cardTypes.is(BASIC) }
                 def maximumAllowed = Math.min(basicPokemon.size(), opp.bench.freeBenchCount)
-                basicPokemon.select(min: 0, max: maximumAllowed).moveTo(opp.bench)
+                basicPokemon.select(min: 0, max: maximumAllowed).each {
+                  opp.hand.remove(it)
+                  benchPCS(it, OTHER, TargetPlayer.OPPONENT)
+                }
               }
 						}
 					}
@@ -3565,7 +3570,7 @@ public enum UnifiedMinds implements CardInfo {
 					onAttack {
 						gxPerform()
             def discardCount = 1
-            if (self.cards.energySufficient(thisMove.energyCost + [F + F + F])) {
+            if (self.cards.energySufficient(thisMove.energyCost + [F, F, F])) {
                 discardCount = 2
             }
             for (int i = 0; i < discardCount && opp.all; i++) {
@@ -4741,8 +4746,13 @@ public enum UnifiedMinds implements CardInfo {
             bc "Used Pokemon Research Lab already"
             lastTurn = bg().turnCount
 
-            self.owner.pbg.deck.search(count: 2, "Search for a card that evolve from Unidentified Fossil",
-              { it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil" }).moveTo(self.owner.hand)
+            deck.search(count: 2, "Search for a card that evolve from Unidentified Fossil", {
+              it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil"
+              }.each {
+                deck.remove(it)
+                benchPCS(it)
+              }
+            )
           }
         }
         onRemoveFromPlay{
