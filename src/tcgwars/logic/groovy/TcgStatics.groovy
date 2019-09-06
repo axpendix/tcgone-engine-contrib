@@ -35,6 +35,7 @@ import static tcgwars.logic.effect.EffectType.DAMAGE
 import static tcgwars.logic.effect.EffectType.ENERGY_SWITCH
 import static tcgwars.logic.effect.EffectType.EVOLVE
 import static tcgwars.logic.effect.EffectType.GET_MOVE_LIST
+import static tcgwars.logic.effect.EffectType.GET_RETREAT_COST
 import static tcgwars.logic.effect.EffectType.GET_WEAKNESSES
 import static tcgwars.logic.effect.EffectType.KNOCKOUT
 import static tcgwars.logic.effect.EffectType.MEGA_EVOLUTION_RULE
@@ -1011,11 +1012,9 @@ class TcgStatics {
 			delayed {
 				def eff
 				register {
-          eff = getter (GET_RETREAT_COST) {
-              if (it.effect.target.owner == self.owner.opposite && it.effect.target.active) {
-                it.object += 1
-              }
-            }
+          eff = getter (GET_RETREAT_COST, NORMAL, pcs) {h->
+            h.object += 1
+          }
 					bc "Retreat cost of $pcs will cost 1 more energy during the next turn."
 				}
 				unregister {
