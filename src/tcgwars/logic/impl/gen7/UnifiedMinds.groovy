@@ -4681,11 +4681,24 @@ public enum UnifiedMinds implements CardInfo {
 				text "If the Pokémon this card is attached to has the Tackle attack, it can use the GX attack on this card. (You still need the necessary Energy to use this attack.)" +
 					"[C][C][C][C] Barreling Blitz GX 200+" +
 					"Flip a coin until you get tails. This attack does 40 more damage for each heads. (You can't use more than 1 GX attack in a game.)"
-				onPlay {reason->
+				def eff
+        onPlay {reason->
+          def m = move "Barreling Blitz GX", {
+            text "200+ damage. Flip a coin until you get tails. This attack does 40 more damage for each heads. (You can't use more than 1 GX attack in a game.)"
+            energyCost C, C, C, C
+            attackRequirement {gxCheck()}
+            onAttack {
+              gxPerform()
+              damage 200
+              flipUntilTails{damage 40}
+            }
+          }
+          eff1=getter GET_MOVE_LIST, self, {h->
+            if (h.object.findAll{it.name == "Tackle"}) { h.object.add(m) }
+          }
 				}
 				onRemoveFromPlay {
-				}
-				allowAttach {to->
+          eff.unregister()
 				}
 			};
       case POKE_MANIAC_204:
