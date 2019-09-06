@@ -1000,6 +1000,8 @@ class TcgStatics {
 					eff.unregister()
 				}
 				unregisterAfter 2
+        after SWITCH, pcs, {unregister()}
+        after EVOLVE, pcs, {unregister()}
 			}
 		}
 	}
@@ -1018,6 +1020,8 @@ class TcgStatics {
 					eff.unregister()
 				}
 				unregisterAfter 2
+        after SWITCH, pcs, {unregister()}
+        after EVOLVE, pcs, {unregister()}
 			}
 		}
 	}
