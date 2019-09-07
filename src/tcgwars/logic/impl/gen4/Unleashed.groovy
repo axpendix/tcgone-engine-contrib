@@ -975,9 +975,7 @@ public enum Unleashed implements CardInfo {
             text "Search you deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
             energyCost C
             attackRequirement {}
-            onAttack {
-              callForFamily(basic:true,2,delegate)
-            }
+            callForFamily(basic:true,2,delegate)
           }
           move "Tag Team Boost", {
             text "10 damage. If Plusle is on your Bench, this attack does 10 damage plus 20 more damage."
@@ -1466,9 +1464,7 @@ public enum Unleashed implements CardInfo {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
             attackRequirement {}
-            onAttack {
-              callForFamily(basic: true, 1, delegate)
-            }
+            callForFamily(basic: true, 1, delegate)
           }
           move "Razor Fin", {
             text "20 damage. "
@@ -1545,7 +1541,8 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              heal 40, self
+              cantRetreat(self)
             }
           }
           move "Flap", {
@@ -1553,7 +1550,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -1566,7 +1563,7 @@ public enum Unleashed implements CardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Shell Attack", {
@@ -1574,7 +1571,7 @@ public enum Unleashed implements CardInfo {
             energyCost W, W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
             }
           }
 
@@ -1586,16 +1583,15 @@ public enum Unleashed implements CardInfo {
             text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
             energyCost C
             attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(basic: true, 2, delegate)
           }
           move "Mystifying Horns", {
             text "30 damage. The Defending Pokémon is now Confused."
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              applyAfterDamage CONFUSED
             }
           }
 
@@ -1608,7 +1604,8 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              damage 10, self
             }
           }
 
@@ -1618,11 +1615,14 @@ public enum Unleashed implements CardInfo {
           weakness R
           resistance F, MINUS20
           move "Green Call", {
-            text "Pokémon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
-            energyCost G, G
+            text "Flip 2 coins. For each heads, search your deck for a [G] Pokémon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
+            energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {
+                my.deck.search(max:2,"Choose up to 2 [G] pokemon to put in your hand.",{it.cardTypes.is(POKEMON) && it.types.contains(G)}).showToOpponent("Selected cards").moveTo(my.hand)
+                shuffleDeck()
+              }
             }
           }
           move "Gust", {
@@ -1630,7 +1630,7 @@ public enum Unleashed implements CardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1644,7 +1644,8 @@ public enum Unleashed implements CardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              heal 10, self
             }
           }
           move "Ram", {
@@ -1652,7 +1653,7 @@ public enum Unleashed implements CardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1661,11 +1662,14 @@ public enum Unleashed implements CardInfo {
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness W
           move "Fireworks", {
-            text "20 damage. Energy attached to Vulpix."
-            energyCost R, R
+            text "20 damage. Flip a coin. If tails, discard a [R] Energy attached to Vulpix."
+            energyCost R
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              afterDamage{
+                flip 1, {} {discardSelfEnergy(R)}
+              }
             }
           }
 
@@ -1678,7 +1682,10 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              def nam=self.name
+              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
+              if(tar) evolve(self, tar.first(), OTHER)
+              shuffleDeck()
             }
           }
           move "Sting", {
@@ -1686,7 +1693,7 @@ public enum Unleashed implements CardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -1700,7 +1707,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Double Attack", {
@@ -1708,17 +1715,22 @@ public enum Unleashed implements CardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              if(opp.bench){
+                multiSelect(opp.bench, 2).each{
+                  targeted(it){ damage 10, it }
+                }
+              }
             }
           }
 
         };
       case CHEERLEADER_S_CHEER_71:
         return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 3 cards. Your opponent may draw a card."
+          text "Draw 3 cards. Your opponent may draw a card."
           onPlay {
           }
           playRequirement{
+            assert my.deck : "No cards in deck"
           }
         };
       case DUAL_BALL_72:
@@ -1731,7 +1743,7 @@ public enum Unleashed implements CardInfo {
         };
       case EMCEE_S_CHATTER_73:
         return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nFlip a coin. If heads, draw 3 cards. If tails, draw 2 cards."
+          text "Flip a coin. If heads, draw 3 cards. If tails, draw 2 cards."
           onPlay {
           }
           playRequirement{
