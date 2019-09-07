@@ -1868,7 +1868,7 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Perfection", {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
           getterA (GET_MOVE_LIST, self) {holder->
-            if (holder.effect.target.owner == self.owner) {
+            if (holder.effect.target.owner == self.owner && holder.effect.target == self) {
               my.bench.findAll{it.topPokemonCard.cardTypes.isIn(POKEMON_GX) || it.topPokemonCard.cardTypes.isIn(POKEMON_EX)}.each {
                 holder.object.addAll(it.topPokemonCard.moves)
               }
