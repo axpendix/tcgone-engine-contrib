@@ -4726,7 +4726,8 @@ public enum UnifiedMinds implements CardInfo {
             bc "Used Pokemon Research Lab already"
             lastTurn = bg().turnCount
 
-            deck.search(count: 2, "Search for a card that evolve from Unidentified Fossil", {
+            def maxSpace = Math.min(my.bench.freeBenchCount, 2)
+            deck.search(max: maxSpace, "Search for $maxSpace card(s) that evolve from Unidentified Fossil to place onto your bench", {
               it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil"
               }).each {
                 deck.remove(it)
