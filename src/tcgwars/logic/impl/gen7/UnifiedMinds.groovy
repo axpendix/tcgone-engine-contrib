@@ -2167,10 +2167,9 @@ public enum UnifiedMinds implements CardInfo {
 				weakness P
 				bwAbility "Secret Territory", {
 					text "If you have Mesprit and Azelf in play, apply Weakness for each Pokémon (both yours and your opponent's) as ×4 instead."
-					actionA {
-            getterA (GET_WEAKNESSES) {h->
+            getterA (GET_WEAKNESSES) { h->
               if(self.owner.pbg.all.find{it.name == "Azelf"} && self.owner.pbg.all.find{it.name == "Mespirit"}) {
-                h.object = h.object?.collect{
+                h.object = h.object?.collect {
                   def weakness = it.copy()
                   weakness.feature = "X4"
                   weakness
@@ -4727,7 +4726,8 @@ public enum UnifiedMinds implements CardInfo {
             bc "Used Pokemon Research Lab already"
             lastTurn = bg().turnCount
 
-            deck.search(count: 2, "Search for a card that evolve from Unidentified Fossil", {
+            def maxSpace = Math.min(my.bench.freeBenchCount, 2)
+            deck.search(max: maxSpace, "Search for $maxSpace card(s) that evolve from Unidentified Fossil to place onto your bench", {
               it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil"
               }).each {
                 deck.remove(it)
