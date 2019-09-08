@@ -2176,7 +2176,7 @@ public enum UnifiedMinds implements CardInfo {
                 }
               }
             }
-					}
+					
 				}
 				move "Psyshot", {
 					text "30 damage. "
