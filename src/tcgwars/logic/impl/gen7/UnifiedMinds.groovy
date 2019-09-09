@@ -353,23 +353,21 @@ public enum UnifiedMinds implements CardInfo {
 				move "Super Growth", {
 					text "Search your deck for a card that evolves from 1 of your [G] Pokémon and put it onto that Pokémon to evolve it. If that Pokémon is now a Stage 1 Pokémon, search your deck for a Stage 2 Pokémon that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
 					attackRequirement {
-            assert bench.notEmpty
             assert deck.notEmpty
-            assert my.bench.findAll { it.types.contains(G) } : "No [G] Pokemon found on bench"
+            assert my.all.findAll { it.types.contains(G) } : "No [G] Pokemon found"
           }
 					onAttack {
             def names = my.all.findAll { it.types.contains(G) }.collect{ it.name }
-            def sel_1 = deck.search ("Select a Pokémon that evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
+            def sel_1 = deck.search ("Select a Pokémon that evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)}).first()
             if (sel_1) {
-              def opts = my.all.findAll { it.name==sel_1.first().predecessor }
-              def pcs = opts.select("Evolve which one?")
-              evolve(pcs, sel_1.first(), OTHER)
-            }
-            if (sel_1.cardTypes.is(STAGE1)) {
-              def sel_2 = deck.search ("Select a Pokémon that evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
-              def opts = my.all.findAll { it.name==sel_2.first().predecessor }
-              def pcs = opts.select("Evolve which one?")
-              evolve(pcs, sel_2.first(), OTHER)
+              def pcs = my.all.findAll { it.name==sel_1.predecessor }.select("Evolve which one?")
+              evolve(pcs, sel_1, OTHER)
+              if (sel_1.cardTypes.is(STAGE1)) {
+                def sel_2 = deck.search ("Select a Pokémon that evolves from ${sel_1.name}", {it.cardTypes.is(EVOLUTION) && it.predecessor == sel_1.name}).first()
+                if(sel_2){
+                  evolve(pcs, sel_2, OTHER)
+                }
+              }
             }
             shuffleDeck()
           }
@@ -1870,26 +1868,10 @@ public enum UnifiedMinds implements CardInfo {
 				weakness P
 				bwAbility "Perfection", {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
-          actionA {
-            def gxEx = my.bench.findAll{ it.pokemonGX || it.pokemonEX }
-            gxEx.addAll(my.discard.filterByType(POKEMON_GX, POKEMON_EX))
-
-            if (gxEx) {
-              def selected = gxEx.select("You may select a Pokémon you find in your discard/bench and use one of that Pokémon’s attacks")
-              if (selected) {
-                def moves = selected.cards.filterByType(POKEMON).first().moves
-
-                if (moves) {
-                  def move = choose(moves, "Choose an attack. (Do not select a move if you don't have necessary energy or it will fail)")
-                  bc "$move was chosen"
-                  def bef=blockingEffect(BETWEEN_TURNS)
-                  attack (move as Move)
-                  bef.unregisterItself(bg().em())
-                  bg.gm().betweenTurns()
-                }
-              }
-            } else {
-              bc "There are no Pokémon-GX or Pokémon-EX found in the Bench or discard"
+          getterA (GET_MOVE_LIST) {h->
+            if(bg.currentTurn==h.effect.target.owner){
+              h.object.addAll(my.bench.findAll{ it.pokemonGX || it.pokemonEX }.collect{it.topPokemonCard.moves})
+              h.object.addAll(my.discard.filterByType(POKEMON_GX, POKEMON_EX).collect{it.asPokemonCard().moves})
             }
           }
 				}
