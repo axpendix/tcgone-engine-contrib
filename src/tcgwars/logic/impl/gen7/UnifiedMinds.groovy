@@ -352,7 +352,11 @@ public enum UnifiedMinds implements CardInfo {
 				weakness R
 				move "Super Growth", {
 					text "Search your deck for a card that evolves from 1 of your [G] Pokémon and put it onto that Pokémon to evolve it. If that Pokémon is now a Stage 1 Pokémon, search your deck for a Stage 2 Pokémon that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
-					attackRequirement {}
+					attackRequirement {
+            assert bench.notFull
+            assert deck.notEmpty
+            assert my.bench.findAll(it.types.contains(G))
+          }
 					onAttack {
             def names = my.all.findAll(it.types.contains(G)).collect{ it.name }
             def sel_1 = deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
