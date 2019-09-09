@@ -32,6 +32,8 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
+ * @author Thomas Luong
+ * @author vandergus
  * @author axpendix@hotmail.com
  */
 public enum UnifiedMinds implements CardInfo {
@@ -221,11 +223,11 @@ public enum UnifiedMinds implements CardInfo {
 	TYPE_NULL_183 ("Type: Null", 183, Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
 	SILVALLY_184 ("Silvally", 184, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
 	KOMALA_185 ("Komala", 185, Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
-	BLAINE_S_QUIZ_SHOW_186 ("Blaine's Quiz Show", 186, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+	BLAINE_S_QUIZ_SHOW_186 ("Blaine's Quiz Show", 186, Rarity.UNCOMMON, [TRAINER, SUPPORTER, NOT_IMPLEMENTED]),
 	BLIZZARD_TOWN_187 ("Blizzard Town", 187, Rarity.UNCOMMON, [TRAINER, STADIUM]),
 	BLUE_S_TACTICS_188 ("Blue’s Tactics", 188, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
 	BUG_CATCHER_189 ("Bug Catcher", 189, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-	CHANNELER_190 ("Channeler", 190, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+	CHANNELER_190 ("Channeler", 190, Rarity.UNCOMMON, [TRAINER, SUPPORTER, NOT_IMPLEMENTED]),
 	CHERISH_BALL_191 ("Cherish Ball", 191, Rarity.UNCOMMON, [TRAINER, ITEM]),
 	COACH_TRAINER_192 ("Coach Trainer", 192, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
 	DARK_CITY_193 ("Dark City", 193, Rarity.UNCOMMON, [TRAINER, STADIUM]),
@@ -4359,7 +4361,7 @@ public enum UnifiedMinds implements CardInfo {
             def type = oppChoose(Type.valuesPokemon(), "Sage's Riddle: Your opponent picked a Pokemon card from their hand and wants you to guess that pokemon's type now. If you guess right, you will draw 4 cards, else your opponent will draw 4 cards. Anyway, the card will be returned to your opponent's hand")
             bc "Guess: $type, actual card was $card, actual card types: ${card.types}"
             card.showToOpponent("This was the card opponent picked")
-            draw(4, card.first().asPokemonCard().types.contains(type) ? OPPONENT : SELF)
+            draw(4, card.first().asPokemonCard().types.contains(type) ? TargetPlayer.OPPONENT : TargetPlayer.SELF)
 					}
 				}
 				move "Gentle Slap", {
@@ -4491,6 +4493,7 @@ public enum UnifiedMinds implements CardInfo {
 			return supporter (this) {
 				text "Remove all effects of attacks on you and each of your Pokémon."
 				onPlay {
+          // this is not doable
 				}
 				playRequirement{
 				}
@@ -4834,7 +4837,8 @@ public enum UnifiedMinds implements CardInfo {
         }
         onRemoveFromPlay {
           eff.unregister()
-          new CardList(thisCard).moveTo(thisCard.player.pbg.hand)
+          if(thisCard.player.pbg.discard.contains(thisCard)) // if in discard, move it back to hand
+            new CardList(thisCard).moveTo(thisCard.player.pbg.hand)
         }
 			};
 			case RECYCLE_ENERGY_212:
