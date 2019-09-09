@@ -1875,7 +1875,7 @@ public enum UnifiedMinds implements CardInfo {
             gxEx.addAll(my.discard.findAll{ it.pokemonGX || it.pokemonEX })
 
             if (gxEx) {
-              def tmp = gxEx.select(min: 0, max: 1, "You may select a Pokémon you find in your discard/bench and use one of that Pokémon’s attacks")
+              def tmp = gxEx.select("You may select a Pokémon you find in your discard/bench and use one of that Pokémon’s attacks")
               if (tmp) {
                 def card = tmp.first()
                 bc "$card was chosen"
