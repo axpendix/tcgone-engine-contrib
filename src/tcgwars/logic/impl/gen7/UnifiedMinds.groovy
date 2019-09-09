@@ -1868,16 +1868,9 @@ public enum UnifiedMinds implements CardInfo {
 			case MEWTWO_MEW_GX_71:
 			return basic (this, hp:HP270, type:P, retreatCost:2) {
 				weakness P
-				move "Perfection", {
+				bwAbility "Perfection", {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
-          attackRequirement {
-            def discardHasGxEx = my.discard.filterByType(POKEMON_GX, POKEMON_EX)
-
-            def benchHasGxEx = my.bench.findAll{ it.pokemonGX || it.pokemonEX }
-
-            assert discardHasGxEx || benchHasGxEx
-          }
-          onAttack {
+          actionA {
             def gxEx = my.bench.findAll{ it.pokemonGX || it.pokemonEX }
             gxEx.addAll(my.discard.findAll{ it.pokemonGX || it.pokemonEX })
 
@@ -1887,15 +1880,16 @@ public enum UnifiedMinds implements CardInfo {
                 def moves = selected.cards.filterByType(POKEMON).first().moves
 
                 if (moves) {
-                  def move = choose(moves, "Choose an attack")
+                  def move = choose(moves, "Choose an attack. (Do not select a move if you don't have necessary energy or it will fail)")
                   bc "$move was chosen"
-                  def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+                  def bef=blockingEffect(BETWEEN_TURNS)
                   attack (move as Move)
                   bef.unregisterItself(bg().em())
+                  bg.gm().betweenTurns()
                 }
               }
             } else {
-              bc "There are no Pokémon-GX or Pokémon-EX found in the Bench or"
+              bc "There are no Pokémon-GX or Pokémon-EX found in the Bench or discard"
             }
           }
 				}
