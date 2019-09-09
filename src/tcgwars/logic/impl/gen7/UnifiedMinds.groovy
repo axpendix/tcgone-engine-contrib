@@ -355,19 +355,19 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {
             assert bench.notFull
             assert deck.notEmpty
-            assert my.bench.findAll(it.types.contains(G))
+            assert my.bench.findAll { it.types.contains(G) }
           }
 					onAttack {
-            def names = my.all.findAll(it.types.contains(G)).collect{ it.name }
+            def names = my.all.findAll { it.types.contains(G) }.collect{ it.name }
             def sel_1 = deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
             if (sel_1) {
-              def opts = my.all.findAll({it.name==sel_1.first().predecessor})
+              def opts = my.all.findAll { it.name==sel_1.first().predecessor }
               def pcs = opts.select("Evolve which one?")
               evolve(pcs, sel_1.first(), OTHER)
             }
             if (sel_1.cardTypes.is(STAGE1)) {
               def sel_2 = deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
-              def opts = my.all.findAll({it.name==sel_2.first().predecessor})
+              def opts = my.all.findAll { it.name==sel_2.first().predecessor }
               def pcs = opts.select("Evolve which one?")
               evolve(pcs, sel_2.first(), OTHER)
             }
