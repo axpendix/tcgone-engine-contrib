@@ -1875,9 +1875,9 @@ public enum UnifiedMinds implements CardInfo {
             gxEx.addAll(my.discard.findAll{ it.pokemonGX || it.pokemonEX })
 
             if (gxEx) {
-              def card = gxEx.select("You may select a Pokémon you find in your discard/bench and use one of that Pokémon’s attacks")
-              if (card) {
-                def moves = card.moves
+              def selected = gxEx.select("You may select a Pokémon you find in your discard/bench and use one of that Pokémon’s attacks")
+              if (selected) {
+                def moves = selected.cards.filterByType(POKEMON).first().moves
 
                 if (moves) {
                   def move = choose(moves, "Choose an attack")
