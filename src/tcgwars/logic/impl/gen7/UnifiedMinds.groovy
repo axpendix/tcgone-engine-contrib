@@ -1872,7 +1872,7 @@ public enum UnifiedMinds implements CardInfo {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
           actionA {
             def gxEx = my.bench.findAll{ it.pokemonGX || it.pokemonEX }
-            gxEx.addAll(discard.findAll{ it.pokemonGX || it.pokemonEX })
+            gxEx.addAll(my.discard.findAll{ it.pokemonGX || it.pokemonEX })
 
             if (gxEx) {
               def tmp = gxEx.select(min: 0, "You may select a Pokémon you find in your discard/bench and use one of that Pokémon’s attacks")
