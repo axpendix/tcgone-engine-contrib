@@ -4706,7 +4706,7 @@ public enum UnifiedMinds implements CardInfo {
 					"Flip a coin until you get tails. This attack does 40 more damage for each heads. (You can't use more than 1 GX attack in a game.)"
 				def eff
         onPlay {reason->
-          def m = move "Barreling Blitz GX", {
+          def m = Move "Barreling Blitz GX", {
             text "200+ damage. Flip a coin until you get tails. This attack does 40 more damage for each heads. (You can't use more than 1 GX attack in a game.)"
             energyCost C, C, C, C
             attackRequirement {gxCheck()}
