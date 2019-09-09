@@ -354,8 +354,7 @@ public enum UnifiedMinds implements CardInfo {
 					text "Search your deck for a card that evolves from 1 of your [G] Pokémon and put it onto that Pokémon to evolve it. If that Pokémon is now a Stage 1 Pokémon, search your deck for a Stage 2 Pokémon that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
 					attackRequirement {}
 					onAttack {
-            // TODO:
-            def names = my.all.findAll(pokemonTypeFilter(G)).collect{ it.name }
+            def names = my.all.findAll(it.types.contains(G)).collect{ it.name }
             def sel_1 = deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
             if (sel_1) {
               def opts = my.all.findAll({it.name==sel_1.first().predecessor})
@@ -1869,10 +1868,10 @@ public enum UnifiedMinds implements CardInfo {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
           getterA (GET_MOVE_LIST, self) {holder->
             if (holder.effect.target.owner == self.owner && holder.effect.target == self) {
-              my.bench.findAll{it.topPokemonCard.cardTypes.isIn(POKEMON_GX) || it.topPokemonCard.cardTypes.isIn(POKEMON_EX)}.each {
+              holder.effect.owner.bench.findAll{it.topPokemonCard.cardTypes.isIn(POKEMON_GX) || it.topPokemonCard.cardTypes.isIn(POKEMON_EX)}.each {
                 holder.object.addAll(it.topPokemonCard.moves)
               }
-              my.discard.findAll{it.cardTypes.isIn(POKEMON_GX) || it.cardTypes.isIn(POKEMON_EX)}.each {
+              holder.effect.owner.discard.findAll{it.cardTypes.isIn(POKEMON_GX) || it.cardTypes.isIn(POKEMON_EX)}.each {
                 holder.object.addAll(it.moves)
               }
             }
@@ -2168,7 +2167,7 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Secret Territory", {
 					text "If you have Mesprit and Azelf in play, apply Weakness for each Pokémon (both yours and your opponent's) as ×4 instead."
             getterA (GET_WEAKNESSES) { h->
-              if(self.owner.pbg.all.find{it.name == "Azelf"} && self.owner.pbg.all.find{it.name == "Mespirit"}) {
+              if(self.owner.pbg.all.find{it.name == "Azelf"} && self.owner.pbg.all.find{it.name == "Mesprit"}) {
                 h.object = h.object?.collect {
                   def weakness = it.copy()
                   weakness.feature = "X4"
@@ -2176,7 +2175,7 @@ public enum UnifiedMinds implements CardInfo {
                 }
               }
             }
-					
+
 				}
 				move "Psyshot", {
 					text "30 damage. "
@@ -4734,6 +4733,7 @@ public enum UnifiedMinds implements CardInfo {
                 benchPCS(it)
               }
             shuffleDeck()
+            bg.gm().betweenTurns()
           }
         }
         onRemoveFromPlay{
