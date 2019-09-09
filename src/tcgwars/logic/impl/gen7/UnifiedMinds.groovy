@@ -4837,34 +4837,35 @@ public enum UnifiedMinds implements CardInfo {
         }
         onRemoveFromPlay {
           eff.unregister()
-          if(thisCard.player.pbg.discard.contains(thisCard)) // if in discard, move it back to hand
-            new CardList(thisCard).moveTo(thisCard.player.pbg.hand)
+          if(thisCard.player.pbg.discard.contains(thisCard)){ // if in discard, move it back to hand
+            moveCard(thisCard, thisCard.player.pbg.hand)
+          }
         }
 			};
 			case RECYCLE_ENERGY_212:
 			return specialEnergy (this, [[C]]) {
 				text "This card provides [C] Energy." +
 					"If this card is discarded from play, put it into your hand instead of the discard pile."
-				onPlay {reason->
-				}
+				onPlay {reason->}
 				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
+          if(thisCard.player.pbg.discard.contains(thisCard)){ // if in discard, move it back to hand
+            moveCard(suppressLog: true, thisCard, thisCard.player.pbg.hand)
+            bc "Recycle Energy has recycled" // it deserves its own log entry
+          }
+        }
 			};
 			case WEAKNESS_GUARD_ENERGY_213:
 			return specialEnergy (this, [[C]]) {
 				text "This card provides [C] Energy." +
 					"The Pokémon this card is attached to has no Weakness."
+        def eff
 				onPlay {reason->
+          eff = getter (GET_WEAKNESSES, self) { h->
+            h.object.clear()
+          }
 				}
 				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
+          eff.unregister()
 				}
 			};
 			case ROWLET_ALOLAN_EXEGGUTOR_GX_214:
@@ -4952,13 +4953,7 @@ public enum UnifiedMinds implements CardInfo {
 			case U_TURN_BOARD_255:
 			return copy (U_TURN_BOARD_211, this);
 			case VIRIDIAN_FOREST_256:
-			return stadium (this) {
-				text "Once during each player’s turn, that player may discard a card from their hand. If they do, that player searches their deck for a basic Energy card, reveals it, and puts it into their hand. Then, that player shuffles their deck."
-				onPlay {
-				}
-				onRemoveFromPlay{
-				}
-			};
+      return copy(TeamUp.VIRIDIAN_FOREST_156, this)
 			case RECYCLE_ENERGY_257:
 			return copy (RECYCLE_ENERGY_212, this);
 			case WEAKNESS_GUARD_ENERGY_258:
