@@ -4555,12 +4555,28 @@ public enum UnifiedMinds implements CardInfo {
 				text "If the Pokémon this card is attached to has the Air Slash attack, it can use the GX attack on this card. (You still need the necessary Energy to use this attack.)" +
 					"[C][C][C][C] Speeding Skystrike GX 180" +
 					"Prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn. (You can't use more than 1 GX attack in a game.)"
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				allowAttach {to->
-				}
+        def eff
+        onPlay {reason->
+          def moveBody = {
+            text ""
+            energyCost C, C, C, C
+            attackRequirement {gxCheck()}
+            onAttack {
+              gxPerform()
+              damage 180
+              preventAllEffectsNextTurn()
+            }
+          }
+          Move move=new Move("Speeding Skystrike GX")
+          moveBody.delegate=new MoveBuilder(thisMove:move)
+          c.call()
+          eff = getter GET_MOVE_LIST, self, {h->
+            if (h.object.findAll{it.name == "Air Slash"}) { h.object.add(move) }
+          }
+        }
+        onRemoveFromPlay {
+          eff.unregister()
+        }
 			};
       case GIANT_BOMB_196:
         return pokemonTool (this) {
