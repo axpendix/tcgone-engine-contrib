@@ -1873,7 +1873,7 @@ public enum UnifiedMinds implements CardInfo {
           attackRequirement {
             def discardHasGxEx = my.discard.filterByType(POKEMON_GX, POKEMON_EX)
 
-            def benchHasGxEx = my.bench.filterByType(POKEMON_GX, POKEMON_EX)
+            def benchHasGxEx = my.bench.cards.filterByType(POKEMON_GX, POKEMON_EX)
 
             assert discardHasGxEx || benchHasGxEx
           }
