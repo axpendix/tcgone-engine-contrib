@@ -352,7 +352,11 @@ public enum UnifiedMinds implements CardInfo {
 				weakness R
 				move "Super Growth", {
 					text "Search your deck for a card that evolves from 1 of your [G] Pokémon and put it onto that Pokémon to evolve it. If that Pokémon is now a Stage 1 Pokémon, search your deck for a Stage 2 Pokémon that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
-					attackRequirement {}
+					attackRequirement {
+            assert bench.notFull
+            assert deck.notEmpty
+            assert my.bench.findAll(it.types.contains(G))
+          }
 					onAttack {
             def names = my.all.findAll(it.types.contains(G)).collect{ it.name }
             def sel_1 = deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
@@ -1866,13 +1870,15 @@ public enum UnifiedMinds implements CardInfo {
 				weakness P
 				bwAbility "Perfection", {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
-          getterA (GET_MOVE_LIST, self) {holder->
-            if (holder.effect.target.owner == self.owner && holder.effect.target == self) {
-              holder.effect.owner.bench.findAll{it.topPokemonCard.cardTypes.isIn(POKEMON_GX) || it.topPokemonCard.cardTypes.isIn(POKEMON_EX)}.each {
-                holder.object.addAll(it.topPokemonCard.moves)
-              }
-              holder.effect.owner.discard.findAll{it.cardTypes.isIn(POKEMON_GX) || it.cardTypes.isIn(POKEMON_EX)}.each {
-                holder.object.addAll(it.moves)
+          actionA {
+            getterA (GET_MOVE_LIST, self) {holder->
+              if (holder.effect.target.owner == self.owner && self.active) {
+                my.bench.findAll{it.topPokemonCard.cardTypes.isIn(POKEMON_GX) || it.topPokemonCard.cardTypes.isIn(POKEMON_EX)}.each {
+                  holder.object.addAll(it.topPokemonCard.moves)
+                }
+                my.discard.findAll{it.cardTypes.isIn(POKEMON_GX) || it.cardTypes.isIn(POKEMON_EX)}.each {
+                  holder.object.addAll(it.moves)
+                }
               }
             }
           }
