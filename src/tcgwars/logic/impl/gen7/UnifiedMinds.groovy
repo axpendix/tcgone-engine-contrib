@@ -355,19 +355,19 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {
             assert bench.notFull
             assert deck.notEmpty
-            assert my.bench.findAll(it.types.contains(G))
+            assert my.bench.findAll { it.types.contains(G) }
           }
 					onAttack {
-            def names = my.all.findAll(it.types.contains(G)).collect{ it.name }
+            def names = my.all.findAll { it.types.contains(G) }.collect{ it.name }
             def sel_1 = deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
             if (sel_1) {
-              def opts = my.all.findAll({it.name==sel_1.first().predecessor})
+              def opts = my.all.findAll { it.name==sel_1.first().predecessor }
               def pcs = opts.select("Evolve which one?")
               evolve(pcs, sel_1.first(), OTHER)
             }
             if (sel_1.cardTypes.is(STAGE1)) {
               def sel_2 = deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
-              def opts = my.all.findAll({it.name==sel_2.first().predecessor})
+              def opts = my.all.findAll { it.name==sel_2.first().predecessor }
               def pcs = opts.select("Evolve which one?")
               evolve(pcs, sel_2.first(), OTHER)
             }
@@ -1871,13 +1871,22 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Perfection", {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
           actionA {
-            getterA (GET_MOVE_LIST, self) {holder->
-              if (holder.effect.target.owner == self.owner && self.active) {
-                my.bench.findAll{it.topPokemonCard.cardTypes.isIn(POKEMON_GX) || it.topPokemonCard.cardTypes.isIn(POKEMON_EX)}.each {
-                  holder.object.addAll(it.topPokemonCard.moves)
-                }
-                my.discard.findAll{it.cardTypes.isIn(POKEMON_GX) || it.cardTypes.isIn(POKEMON_EX)}.each {
-                  holder.object.addAll(it.moves)
+            def gxEx = my.bench.findAll{ it.pokemonGX || it.pokemonEX }
+            gxEx.addAll(discard.findAll{ it.pokemonGX || it.pokemonEX })
+
+            if (gxEx) {
+              def tmp = gxEx.select(min: 0, "You may select a Pokémon you find in your discard/bench and use one of that Pokémon’s attacks")
+              if (tmp) {
+                def card = tmp.first()
+                bc "$card was chosen"
+                def moves = card.asPokemonCard().moves
+
+                if (moves) {
+                  def move = choose(moves, "Choose an attack")
+                  bc "$move was chosen"
+                  def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+                  attack (move as Move)
+                  bef.unregisterItself(bg().em())
                 }
               }
             }
