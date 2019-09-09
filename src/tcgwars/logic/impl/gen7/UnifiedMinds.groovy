@@ -2167,7 +2167,7 @@ public enum UnifiedMinds implements CardInfo {
 				bwAbility "Secret Territory", {
 					text "If you have Mesprit and Azelf in play, apply Weakness for each Pokémon (both yours and your opponent's) as ×4 instead."
             getterA (GET_WEAKNESSES) { h->
-              if(self.owner.pbg.all.find{it.name == "Azelf"} && self.owner.pbg.all.find{it.name == "Mespirit"}) {
+              if(self.owner.pbg.all.find{it.name == "Azelf"} && self.owner.pbg.all.find{it.name == "Mesprit"}) {
                 h.object = h.object?.collect {
                   def weakness = it.copy()
                   weakness.feature = "X4"
