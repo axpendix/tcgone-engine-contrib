@@ -1871,9 +1871,7 @@ public enum UnifiedMinds implements CardInfo {
 				move "Perfection", {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
           attackRequirement {
-            def gxEx = my.bench.findAll{ it.pokemonGX || it.pokemonEX }
-            gxEx.addAll(my.discard.findAll{ it.pokemonGX || it.pokemonEX })
-            assert gxEx
+            assert my.bench.findAll{ it.pokemonGX || it.pokemonEX } || my.discard.findAll{ it.pokemonGX || it.pokemonEX }
           }
           onAttack {
             def gxEx = my.bench.findAll{ it.pokemonGX || it.pokemonEX }
