@@ -1868,7 +1868,7 @@ public enum UnifiedMinds implements CardInfo {
 				weakness P
 				bwAbility "Perfection", {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
-          getterA (GET_MOVE_LIST) {h->
+          getterA (GET_MOVE_LIST, self) {h->
             if(bg.currentTurn==h.effect.target.owner){
               h.object.addAll(my.bench.findAll{ it.pokemonGX || it.pokemonEX }.collect{it.topPokemonCard.moves})
               h.object.addAll(my.discard.filterByType(POKEMON_GX, POKEMON_EX).collect{it.asPokemonCard().moves})
@@ -4682,7 +4682,7 @@ public enum UnifiedMinds implements CardInfo {
 					"Flip a coin until you get tails. This attack does 40 more damage for each heads. (You can't use more than 1 GX attack in a game.)"
 				def eff
         onPlay {reason->
-          def m = Move "Barreling Blitz GX", {
+          def moveBody = {
             text "200+ damage. Flip a coin until you get tails. This attack does 40 more damage for each heads. (You can't use more than 1 GX attack in a game.)"
             energyCost C, C, C, C
             attackRequirement {gxCheck()}
@@ -4692,8 +4692,11 @@ public enum UnifiedMinds implements CardInfo {
               flipUntilTails{damage 40}
             }
           }
+          Move move=new Move("Barreling Blitz GX")
+          moveBody.delegate=new MoveBuilder(thisMove:move)
+          c.call()
           eff = getter GET_MOVE_LIST, self, {h->
-            if (h.object.findAll{it.name == "Tackle"}) { h.object.add(m) }
+            if (h.object.findAll{it.name == "Tackle"}) { h.object.add(move) }
           }
 				}
 				onRemoveFromPlay {
