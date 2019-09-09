@@ -1868,9 +1868,14 @@ public enum UnifiedMinds implements CardInfo {
 			case MEWTWO_MEW_GX_71:
 			return basic (this, hp:HP270, type:P, retreatCost:2) {
 				weakness P
-				bwAbility "Perfection", {
+				move "Perfection", {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
-          actionA {
+          attackRequirement {
+            def gxEx = my.bench.findAll{ it.pokemonGX || it.pokemonEX }
+            gxEx.addAll(my.discard.findAll{ it.pokemonGX || it.pokemonEX })
+            assert gxEx
+          }
+          onAttack {
             def gxEx = my.bench.findAll{ it.pokemonGX || it.pokemonEX }
             gxEx.addAll(my.discard.findAll{ it.pokemonGX || it.pokemonEX })
 
