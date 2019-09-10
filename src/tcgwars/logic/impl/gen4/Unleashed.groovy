@@ -1846,7 +1846,8 @@ public enum Unleashed implements CardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              apply POISONED
+              extraPoison 3
             }
           }
           move "Skill Dive", {
@@ -1854,7 +1855,7 @@ public enum Unleashed implements CardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30, opp.all.select()
             }
           }
 
@@ -1865,14 +1866,22 @@ public enum Unleashed implements CardInfo {
           pokePower "Spray Splash", {
             text "Once during your turn , you may put 1 damage counter on 1 of your opponent’s Pokémon. This power can’t be used if Kingdra is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              powerUsed()
+              directDamage(10, opp.all.select())
             }
           }
           move "Dragon Steam", {
-            text "60 damage. Pokémon in play, this attack’s base damage is 20 instead of 60."
+            text "60 damage. If your opponent has any [R] Pokémon in play, this attack’s base damage is 20 instead of 60."
             energyCost W, R
             attackRequirement {}
             onAttack {
-              damage 0
+              if(opp.all.findAll {it.types.contains(R)}) { 
+                damage 20
+              } else {
+                damage 60
+              }
             }
           }
 
@@ -1881,8 +1890,23 @@ public enum Unleashed implements CardInfo {
         return evolution (this, from:"Chinchou", hp:HP110, type:LIGHTNING, retreatCost:2) {
           weakness F
           pokePower "Underwater Dive", {
-            text "Once during your turn , you may use this power. Lanturn’s type is until the end of your turn. This power can’t be used if Lanturn is affected by a Special Condition."
+            text "Once during your turn , you may use this power. Lanturn’s type is [W] until the end of your turn. This power can’t be used if Lanturn is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              powerUsed()
+              delayed {
+                def eff
+                register {
+                  eff = getterA GET_POKEMON_TYPE, self, { h->
+                    h.object = W
+                  }
+                }
+                unregister {
+                  eff.unregister()
+                }
+                unregisterAfter 1
+              }
             }
           }
           move "Powerful Spark", {
@@ -1890,7 +1914,11 @@ public enum Unleashed implements CardInfo {
             energyCost L, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              def energyCount = 0
+              my.all.each {
+                energyCount += it.cards.energyCount(C)
+              }
+              damage 40+10*energyCount
             }
           }
 
