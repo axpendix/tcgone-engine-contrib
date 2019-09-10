@@ -1,4 +1,6 @@
 package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen5;
+package tcgwars.logic.impl.gen7;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1737,58 +1739,73 @@ public enum Unleashed implements CardInfo {
         return basicTrainer (this) {
           text "Flip 2 coins. For each heads, search your deck for a Basic Pokémon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
           onPlay {
+            flip 2, {
+              my.deck.search ("Search your deck for a Basic Pokémon", cardTypeFilter(BASIC)).showToOpponent("Selected Pokémon").moveTo(my.hand)
+            }
+            shuffleDeck()
           }
           playRequirement{
+            assert my.deck.notEmpty
           }
         };
       case EMCEE_S_CHATTER_73:
         return basicTrainer (this) {
           text "Flip a coin. If heads, draw 3 cards. If tails, draw 2 cards."
           onPlay {
+            flip 1, {draw 3} {draw 2}
           }
           playRequirement{
+            assert my.deck.notEmpty
           }
         };
       case ENERGY_RETURNER_74:
         return basicTrainer (this) {
-          text "Search your discard pile for 4 basic Energy cards, show them to your opponent, ans shuffle them into your deck."
+          text "Search your discard pile for 4 basic Energy cards, show them to your opponent, and shuffle them into your deck."
           onPlay {
+            my.discard.filterByType(BASIC_ENERGY).select(count:4).showToOpponent("Energy being shuffled into your opponent's deck").moveTo(my.deck)
+            shuffleDeck()
           }
           playRequirement{
+            assert my.discard.filterByType(BASIC_ENERGY) : "No basic Energy in your discard"
           }
         };
       case ENGINEER_S_ADJUSTMENTS_75:
         return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDiscard an Energy card from your hand. Then, draw 4 cards."
+          text "Discard an Energy card from your hand. Then, draw 4 cards."
           onPlay {
+            my.hand.filterByType(ENERGY).select("Select as Energy to discard.").discard()
+            draw 4
           }
           playRequirement{
+            assert my.hand.filterByType(ENERGY) : "No Energy card in hand"
+            assert my.deck : "No cards in deck"
           }
         };
       case GOOD_ROD_76:
         return basicTrainer (this) {
           text "Flip a coin. If heads, search your discard pile for a Pokémon, show it to your opponent, and put it on top of your deck. If tails, search your discard pile for a Trainer card, show it to your opponent, and put it on top of your deck."
           onPlay {
+            flip 1, {
+              my.discard.filterByType(POKEMON).select("Select a Pokemon").showToOpponent("Selected Pokemon").moveTo(addToTop:true, my.deck)
+            } {
+              my.discard.filterByType(TRAINER).select("Select a Trainer card").showToOpponent("Selected Trainer card").moveTo(addToTop:true, my.deck)
+            }
           }
           playRequirement{
+            assert my.discard.filterByType(POKEMON,TRAINER) : "No Pokemon or Trainer in your discard"
           }
         };
       case INTERVIEWER_S_QUESTIONS_77:
         return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at the top 8 cards of your deck. Choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Shuffle the other cards back into your deck."
+          text "Look at the top 8 cards of your deck. Choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Shuffle the other cards back into your deck."
           onPlay {
           }
           playRequirement{
+            assert my.deck : "No cards in deck"
           }
         };
       case JUDGE_78:
-        return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck and draws 4 cards."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (ForbiddenLight.JUDGE_108, this);
       case LIFE_HERB_79:
         return basicTrainer (this) {
           text "Flip a coin. If heads, choose 1 of your Pokémon, and remove all Special Conditions and 6 damage counters from that Pokémon (all if there are less than 6)."
@@ -1799,36 +1816,27 @@ public enum Unleashed implements CardInfo {
         };
       case PLUSPOWER_80:
         return basicTrainer (this) {
-          text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
+          text "During this turn, your Pokémon’s attacks do 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
           onPlay {
+            delayed {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {if(it.to.active && it.from.owner==thisCard.player && it.to.owner!=it.from.owner && it.dmg.value){
+                  bc "Plus Power +10"
+                  it.dmg += hp(20)
+                }}
+              }
+              unregisterAfter 1
+            }
           }
           playRequirement{
           }
         };
       case POKEMON_CIRCULATOR_81:
-        return basicTrainer (this) {
-          text "Your opponent switches his or her Active Pokémon with 1 of his or her Benched Pokémon."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (SunMoon.REPEL_130, this);
       case RARE_CANDY_82:
-        return basicTrainer (this) {
-          text "Choose 1 of your Basic Pokémon in play. If you have a Stage 1 or Stage 2 card that evolve from that Pokémon in your hand, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.) (If you choose a Stage 2 Pokémon in your hand, put that Pokémon on the Basic Pokémon instead of a Stage 1 Pokémon.)"
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(DarkExplorers.RARE_CANDY_100, this)
       case SUPER_SCOOP_UP_83:
-        return basicTrainer (this) {
-          text "Flip a coin. If heads, return 1 of your Pokémon and all cards attached to it to your hand."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (BlackWhite.SUPER_SCOOP_UP_103, this)
       case CROBAT_84:
         return evolution (this, from:"Golbat", hp:HP130, type:PSYCHIC, retreatCost:0) {
           weakness L
