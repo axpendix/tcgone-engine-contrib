@@ -1872,7 +1872,7 @@ public enum UnifiedMinds implements CardInfo {
 					text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
           getterA (GET_MOVE_LIST, self) {h->
             self.owner.pbg.bench.findAll {it.pokemonGX || it.pokemonEX}.each {
-              h.object.addAll(it.moves)
+              h.object.addAll(it.topPokemonCard.moves)
             }
             self.owner.pbg.discard.each {
               if(it.cardTypes.isIn(POKEMON_EX,POKEMON_GX)) {
