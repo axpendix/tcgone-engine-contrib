@@ -1873,12 +1873,12 @@ public enum UnifiedMinds implements CardInfo {
           getterA (GET_MOVE_LIST, self) {h->
             self.owner.pbg.bench.each {
               if(it.topPokemonCard.cardTypes.isIn(POKEMON_EX, POKEMON_GX)) {
-                holder.object.addAll(it.moves)
+                h.object.addAll(it.moves)
               }
             }
             self.owner.pbg.discard.each {
               if(it.cardTypes.isIn(POKEMON_EX, POKEMON_GX)) {
-                holder.object.addAll(it.moves)
+                h.object.addAll(it.moves)
               }
             }
           }
