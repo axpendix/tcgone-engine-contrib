@@ -4446,9 +4446,14 @@ public enum UnifiedMinds implements CardInfo {
 			return supporter (this) {
 				text "Put a Pokémon from your hand face down in front of you and tell your opponent the name of an attack it has. Your opponent guesses the name of that Pokémon, and then you reveal it. If your opponent guessed right, they draw 4 cards. If they guessed wrong, you draw 4 cards. Return the Pokémon to your hand."
 				onPlay {
-          // TODO
+            def card = my.hand.filterByType(POKEMON).select()
+            def type = oppChoose(Type.valuesPokemon(), "Blaine's Quiz Show: Your opponent picked a Pokemon card from their hand and wants you to guess that pokemon's type now. If you guess right, you will draw 4 cards, else your opponent will draw 4 cards. Anyway, the card will be returned to your opponent's hand")
+            bc "Guess: $type, actual card was $card, actual card types: ${card.types}"
+            card.showToOpponent("This was the card opponent picked")
+            draw(4, card.first().asPokemonCard().types.contains(type) ? TargetPlayer.OPPONENT : TargetPlayer.SELF)
 				}
 				playRequirement{
+          assert my.hand.hasType(POKEMON)
 				}
 			};
 			case BLIZZARD_TOWN_187:
