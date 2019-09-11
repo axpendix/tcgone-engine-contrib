@@ -1810,8 +1810,15 @@ public enum Unleashed implements CardInfo {
         return basicTrainer (this) {
           text "Flip a coin. If heads, choose 1 of your Pokémon, and remove all Special Conditions and 6 damage counters from that Pokémon (all if there are less than 6)."
           onPlay {
+            flip 1, {
+              my.all.findAll {it.numberOfDamageCounters || it.specialConditions}.select("Choose Pokemon to be healed").each{
+                heal 60, it
+                clearSpecialCondition(it, Source.TRAINER_CARD)
+              }
+            }
           }
           playRequirement{
+            assert my.all.findAll {it.numberOfDamageCounters || it.specialConditions} : "No valid targets"
           }
         };
       case PLUSPOWER_80:
@@ -1822,7 +1829,7 @@ public enum Unleashed implements CardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {if(it.to.active && it.from.owner==thisCard.player && it.to.owner!=it.from.owner && it.dmg.value){
                   bc "Plus Power +10"
-                  it.dmg += hp(20)
+                  it.dmg += hp(10)
                 }}
               }
               unregisterAfter 1
@@ -1930,6 +1937,18 @@ public enum Unleashed implements CardInfo {
           pokeBody "Perfect Metal", {
             text "Steelix can’t be affected by any Special Conditions"
             delayedA {
+              before APPLY_SPECIAL_CONDITION, {
+                if(e.getTarget(bg)==self){
+                  bc "Perfect Metal prevents special conditions"
+                  prevent()
+                }
+              }
+            }
+            onActivate {
+              if(self.specialConditions){
+                bc "Perfect Metal clears special conditions"
+                clearSpecialCondition(self, SRC_ABILITY)
+              }
             }
           }
           move "Energy Stream", {
@@ -1937,7 +1956,10 @@ public enum Unleashed implements CardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              afterDamage{
+                attachEnergyFrom(my.discard, self)
+              }
             }
           }
           move "Gaia Crush", {
@@ -1945,21 +1967,26 @@ public enum Unleashed implements CardInfo {
             energyCost M, M, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 100
+              afterDamage{
+                if(bg.stadiumInfoStruct && confirm("Discard the stadium?")) {
+                  discard(bg.stadiumInfoStruct.stadiumCard)
+                }
+              }
             }
           }
-
         };
       case TYRANITAR_88:
         return evolution (this, from:"Pupitar", hp:HP160, type:DARKNESS, retreatCost:3) {
           weakness F
           resistance P, MINUS20
           move "Darkness Howl", {
-            text "Pokémon)."
-            energyCost D, D
+            text "This attack does 20 damage to each Pokémon in play (both yours and your opponent’s) (excluding any [D] Pokémon). (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost D
             attackRequirement {}
             onAttack {
-              damage 0
+              my.all.findAll{!it.types.contains(D)}.each{damage 20, it}
+              opp.all.findAll{!it.types.contains(D)}.each{damage 20, it}
             }
           }
           move "Power Claw", {
@@ -1967,7 +1994,7 @@ public enum Unleashed implements CardInfo {
             energyCost D, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              shredDamage 60
             }
           }
           move "Megaton Tail", {
@@ -1975,7 +2002,10 @@ public enum Unleashed implements CardInfo {
             energyCost D, D, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 120
+              afterDamage{
+                my.deck.sublist(0,3).discard()
+              }
             }
           }
 
@@ -1984,8 +2014,18 @@ public enum Unleashed implements CardInfo {
         return evolution (this, from:"Teddiursa", hp:HP110, type:COLORLESS, retreatCost:3) {
           weakness F
           pokeBody "Berserk", {
-            text "If Ursaring has any damage counters on it, each of Ursaring’s attacks does 60 more damage ."
+            text "If Ursaring has any damage counters on it, each of Ursaring’s attacks does 60 more damage."
             delayedA {
+              after PROCESS_ATTACK_EFFECTS,{
+                if(self.numberOfDamageCounters){
+                  bg.dm().each{
+                    if(it.from == self && it.dmg.value) {
+                      bc "Berserk +60"
+                      it.dmg += hp(60)
+                    }
+                  }
+                }
+              }
             }
           }
           move "Hammer Arm", {
@@ -1993,7 +2033,8 @@ public enum Unleashed implements CardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              afterDamage{opp.deck.sublist(0,1).discard()}
             }
           }
           move "Megaton Lariat", {
@@ -2001,7 +2042,7 @@ public enum Unleashed implements CardInfo {
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
             }
           }
 
@@ -2257,8 +2298,10 @@ public enum Unleashed implements CardInfo {
         return basicTrainer (this) {
           text "SHUFFLE YOUR DECK!"
           onPlay {
+            shuffleDeck()
           }
           playRequirement{
+            assert my.deck : "No cards in deck"
           }
         };
       default:
