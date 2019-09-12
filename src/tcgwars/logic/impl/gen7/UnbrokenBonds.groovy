@@ -1691,7 +1691,6 @@ public enum UnbrokenBonds implements CardInfo {
               def list = thisCard.player.pbg.all.findAll{it.name.contains("Vikavolt") || it.name.contains("Vikavolt-GX")}
               assert list : "No Vikavolt or Vikavolt-GX in play"
               bc "$thisCard used Battery"
-              my.hand.remove(thisCard)
               def pcs = list.select("Attach to?")
               def pkmnCard = thisCard
               def energyCard
