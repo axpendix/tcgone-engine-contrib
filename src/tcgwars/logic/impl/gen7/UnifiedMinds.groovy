@@ -885,7 +885,8 @@ public enum UnifiedMinds implements CardInfo {
 					text "Once during your turn (before your attack), if this Pokémon was on the Bench and became your Active Pokémon this turn, you may move any number of [R] Energy attached to your Pokémon to this Pokémon."
 					actionA {
             checkLastTurn()
-            assert wasSwitchedOutThisTurn(self)
+            assert wasSwitchedOutThisTurn(self) : "$self was not became Active this turn"
+						assert my.all.findAll { it.cards.filterByEnergyType(R) && it!=self } : "No other pokemon that has [R] attached"
             powerUsed()
             while(1) {
               def pl = (my.all.findAll { it.cards.filterByEnergyType(R) && it!=self })
@@ -2340,10 +2341,10 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
-
             afterDamage{
-              shuffleDeck(self.cards)
-              removePCS(self)
+							self.cards.moveTo(my.deck)
+							removePCS(self)
+              shuffleDeck()
               delayed {
                 before PLAY_TRAINER, {
                   if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
@@ -3205,10 +3206,18 @@ public enum UnifiedMinds implements CardInfo {
 				move "Nocturnal Maneuvers GX", {
 					text "Search your deck for any number of Basic Pokémon and put them onto your Bench. Then, shuffle your deck. (You can’t use more than 1 GX attack in a game.)"
 					energyCost C
-					attackRequirement { gxCheck() }
-          callForFamily(basic:true, my.bench.freeBenchCount, delegate)
+					attackRequirement {
+						gxCheck()
+						assert my.deck.notEmpty
+						assert my.bench.notFull
+					}
 					onAttack {
 						gxPerform()
+						deck.search (max: my.bench.freeBenchCount,{it.cardTypes.is(BASIC)}).each{
+							deck.remove(it)
+							benchPCS(it)
+						}
+						shuffleDeck()
 					}
 				}
 			};
