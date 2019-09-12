@@ -377,7 +377,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Calming Hurricane", {
             text "150 damage. Heal 30 damage from this Pokémon."
             energyCost G, G, C
-            attackRequirement {}
             onAttack {
               damage 150
               heal 30, self
@@ -407,7 +406,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Tackle", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -415,7 +413,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Cutting Wind", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -427,7 +424,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Tackle", {
             text "50 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -435,7 +431,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Air Slash", {
             text "100 damage. Discard an Energy from this Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 100
               discardSelfEnergy C
@@ -467,7 +462,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Mind Bend", {
             text "20 damage. Your opponent’s Active Pokémon is now Confused."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 20
               applyAfterDamage CONFUSED
@@ -480,7 +474,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Poison Powder", {
             text "Your opponent's Active Pokémon is now Poisoned."
             energyCost G
-            attackRequirement {}
             onAttack {
               apply POISONED
             }
@@ -492,7 +485,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Multiply", {
             text "Search your deck for up to 2 Sewaddle and put them onto your Bench. Then, shuffle your deck."
             energyCost C
-            attackRequirement {}
             onAttack {
               def maxSpace = Math.min(my.bench.freeBenchCount, 2)
               my.deck.search(max:maxSpace, "Select $maxSpace Sewaddle Pokémon to put onto your Bench", { it.name == "Sewaddle" }).each{
@@ -505,7 +497,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Gnaw", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -530,7 +521,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Surprise Attack", {
             text "20 damage. Flip a coin. If tails, this attack does nothing."
             energyCost G
-            attackRequirement {}
             onAttack {
               flip { damage 20 }
             }
@@ -555,7 +545,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Bug Bite", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -581,7 +570,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Razor Leaf", {
             text "70 damage. "
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -593,7 +581,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Dig Claws", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -618,7 +605,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Fury Cutter", {
             text "50+ damage. Flip 3 coins. If 1 of them is heads, this attack does 40 more damage. If 2 of them are heads, this attack does 80 more damage. If all of them are heads, this attack does 150 more damage."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               flip 3,{},{}, [ 1:{damage 10}, 2:{damage 80}, 3:{damage 150} ]
@@ -631,7 +617,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Take Down", {
             text "20 damage. This Pokémon does 10 damage to itself."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
               damage 10, self
@@ -644,7 +629,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Spore", {
             text "Your opponent’s Active Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply ASLEEP
             }
@@ -673,7 +657,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Venoshock", {
             text "20+ damage. If your opponent's Active Pokémon is Poisoned, this attack does 70 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               if (defending.isSPC(POISONED)) damage 70
@@ -696,7 +679,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Leafage", {
             text "10 damage. "
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -708,7 +690,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Petal Blizzard", {
             text "This attack does 10 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
-            attackRequirement {}
             onAttack {
               opp.all.each { damage 10, it }
             }
@@ -716,7 +697,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Sol Slice", {
             text "50+ damage. If this Pokémon has any [R] Energy attached to it, this attack does 50 more damage."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 50
               if (self.cards.energyCount(R)) damage 50
@@ -729,7 +709,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Splash", {
             text "10 damage. "
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -737,7 +716,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Spinning Attack", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -749,7 +727,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Double Slap", {
             text "30x damage. Flip 2 coins. This attack does 30 damage for each heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flip 2, { damage 30 }
             }
@@ -757,7 +734,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Leaf Step", {
             text "60 damage. "
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -778,7 +754,6 @@ public enum UnifiedMinds implements CardInfo {
           move "High Jump Kick", {
             text "90 damage. "
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -795,7 +770,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Spinning Attack", {
             text "40 damage. "
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -807,7 +781,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Smoke Bomb", {
             text "10 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack doesn’t happen."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
               sandAttack(thisMove)
@@ -820,7 +793,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Smoke Bomb", {
             text "50 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack doesn’t happen."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 50
               sandAttack(thisMove)
@@ -829,7 +801,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Flamethrower", {
             text "120 damage. Discard an Energy from this Pokémon."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 120
               discardSelfEnergy C
@@ -842,7 +813,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Tackle", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -850,7 +820,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Flamethrower", {
             text "80 damage. Discard an Energy from this Pokémon."
             energyCost R, C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               discardSelfEnergy C
@@ -863,7 +832,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Tackle", {
             text "50 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -871,7 +839,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Strong Flare", {
             text "150 damage. Discard 2 Energy from this Pokémon."
             energyCost R, C, C, C
-            attackRequirement {}
             onAttack {
               damage 150
               discardSelfEnergy C, C
@@ -901,7 +868,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Steaming Stomp", {
             text "130 damage. "
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 130
             }
@@ -947,7 +913,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Flare", {
             text "20 damage. "
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -976,7 +941,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Fireworks", {
             text "40 damage. Discard an Energy from this Pokémon."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 40
               discardSelfEnergy C
@@ -990,7 +954,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Spirit Burner", {
             text "10+ damage. Discard the top 5 cards of your deck. This attack does 60 more damage for each Pokémon you discarded in this way. Then, put any number of [R] Pokémon you discarded in this way onto your Bench."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
 
@@ -1016,7 +979,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Flame Charge", {
             text "20 damage. Search your deck for a [R] Energy card and attach it to this Pokémon. Then, shuffle your deck."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 20
               afterDamage {
@@ -1032,7 +994,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Heat Wave", {
             text "40 damage. Your opponent’s Active Pokémon is now Burned."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 40
               applyAfterDamage BURNED
@@ -1041,7 +1002,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Flare Raid", {
             text "100 damage. Discard an Energy from this Pokémon. This attack does 50 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 100
               afterDamage {
@@ -1059,7 +1019,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Live Coal", {
             text "10 damage. "
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1071,7 +1030,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Fire Claws", {
             text "70 damage. "
             energyCost R, R
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -1083,7 +1041,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Ditch and Splash", {
             text "40x damage. Discard any number of Supporter cards from your hand. This attack does 40 damage for each card you discarded in this way."
             energyCost W, W
-            attackRequirement {}
             onAttack {
               def supporterCount = my.hand.filterByType(SUPPORTER).size()
               damage 40*my.hand.filterByType(SUPPORTER).select(max: supporterCount).discard().size()
@@ -1121,7 +1078,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Surf", {
             text "90 damage. "
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -1133,7 +1089,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Icicle", {
             text "20 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1145,7 +1100,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Spiteful Sigh", {
             text "20x damage. Put up to 7 damage counters on this Pokémon. This attack does 20 damage for each damage counter you placed in this way."
             energyCost W
-            attackRequirement {}
             onAttack {
               if (confirm("Would you like to add damage counters to this Pokemon to increase damage by 20? (Max 7)")) {
                 def num = choose([0, 1, 2, 3, 4, 5, 6, 7])
@@ -1157,7 +1111,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Icy Wind", {
             text "40 damage. Your opponent’s Active Pokémon is now Asleep."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 40
               applyAfterDamage ASLEEP
@@ -1170,7 +1123,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Gust", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1182,7 +1134,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Neon Trickery", {
             text "50 damage. You may move an Energy from your opponent's Active Pokémon to 1 of their Benched Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 50
               afterDamage {
@@ -1198,7 +1149,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Powder Snow", {
             text "10 damage. Your opponent’s Active Pokémon is now Asleep."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
               applyAfterDamage ASLEEP
@@ -1211,7 +1161,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Quick Freeze", {
             text "70 damage. If your opponent's Active Pokémon has any [W] Energy attached to it, it is now Paralyzed."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               applyAfterDamage {
@@ -1222,7 +1171,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Wild Tackle", {
             text "140 damage. This Pokémon does 20 damage to itself."
             energyCost W, W, C, C
-            attackRequirement {}
             onAttack {
               damage 140
               damage 20, self
@@ -1246,7 +1194,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Tackle", {
             text "20 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1258,7 +1205,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Shell Attack", {
             text "20 damage. "
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1266,7 +1212,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Boulder Crush", {
             text "60 damage. "
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -1329,7 +1274,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Aqua Impact", {
             text "80+ damage. This attack does 20 more damage for each [C] in your opponent's Active Pokémon's Retreat Cost."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               damage 20*opp.active.retreatCost
@@ -1342,7 +1286,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Frozen Lock", {
             text "10 damage. Your opponent can't play any Item cards from their hand during their next turn."
             energyCost W
-            attackRequirement {}
             onAttack {
               delayed {
                 before PLAY_TRAINER, {
@@ -1366,7 +1309,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Sonic Edge", {
             text "110 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               shredDamage 110
             }
@@ -1387,7 +1329,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Rain Splash", {
             text "10 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1395,7 +1336,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Bite", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1417,7 +1357,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Sticky Web", {
             text "80 damage. During your opponent's next turn, the Defending Pokémon's attacks cost [C] more, and its Retreat Cost is [C] more."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               afterDamage{
@@ -1433,7 +1372,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Sand Attack", {
             text "10 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack doesn’t happen."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
               sandAttack(thisMove)
@@ -1454,7 +1392,6 @@ public enum UnifiedMinds implements CardInfo {
           move "First Impression", {
             text "120+ damage. If this Pokémon was on the Bench and became your Active Pokémon this turn, this attack does 60 more damage."
             energyCost W, C, C, C
-            attackRequirement {}
             onAttack {
               damage 120
               if (wasSwitchedOutThisTurn(self)) {
@@ -1469,7 +1406,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -1477,7 +1413,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Rain Splash", {
             text "30 damage. "
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1489,7 +1424,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Razor Fin", {
             text "20 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1513,7 +1447,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Tandem Shock", {
             text "80+ damage. If this Pokémon was on the Bench and became your Active Pokémon this turn, this attack does 80 more damage, and your opponent's Active Pokémon is now Paralyzed."
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
               damage 80
               if (wasSwitchedOutThisTurn(self)) {
@@ -1543,7 +1476,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Meal Time", {
             text "Flip a coin until you get tails. For each heads, draw a card."
             energyCost L
-            attackRequirement {}
             onAttack {
               flipUntilTails { draw 1 }
             }
@@ -1551,7 +1483,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Gnaw", {
             text "20 damage. "
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1564,7 +1495,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Tail Whap", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1572,7 +1502,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Electric Ball", {
             text "50 damage. "
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -1601,7 +1530,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Electric Ball", {
             text "90 damage. "
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -1614,7 +1542,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Supersonic", {
             text "Your opponent’s Active Pokémon is now Confused."
             energyCost L
-            attackRequirement {}
             onAttack {
               afterDamage {
                 apply CONFUSED
@@ -1629,7 +1556,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Lightning Ball", {
             text "20 damage. "
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1637,7 +1563,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Tri Attack", {
             text "40x damage. Flip 3 coins. This attack does 40 damage for each heads."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               flip 3, { damage 40 }
             }
@@ -1656,7 +1581,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Magnetic Bolt", {
             text "120 damage. Put a Trainer card from your discard pile into your hand."
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
               damage 120
               my.discard.filterByType(TRAINER).select().moveTo(my.hand)
@@ -1670,7 +1594,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Jolt", {
             text "Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip { apply PARALYZED }
             }
@@ -1683,7 +1606,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Live Wire", {
             text " This attack does 50 damage to 1 of your opponent's Pokémon. Also apply Weakness and Resistance for Benched Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               def pcs = opp.all.select()
               new ResolvedDamage(hp(50), self, pcs, Source.ATTACK, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
@@ -1718,7 +1640,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Generate Electricity", {
             text "Search your deck for a [L] Energy card and attach it to this Pokémon. Then, shuffle your deck."
             energyCost L
-            attackRequirement {}
             onAttack {
               attachEnergyFrom(type: L, my.deck, self)
               shuffleDeck()
@@ -1732,7 +1653,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Overspark", {
             text "30x damage. Discard all [L] Energy from this Pokémon. This attack does 30 damage for each card you discarded in this way."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 30*discardAllSelfEnergy(L).size()
             }
@@ -1771,7 +1691,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Hover Over", {
             text "130 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost L, C, C, C
-            attackRequirement {}
             onAttack {
               damage 130
               cantRetreat defending
@@ -1785,7 +1704,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Trap Bolt", {
             text "30+ damage. If, before doing damage, your opponent's Active Pokémon has more remaining HP than this Pokémon, this attack does 30 more damage."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 30
               if (defending.getRemainingHP() > self.getRemainingHP()) damage 30
@@ -1799,7 +1717,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Thunderous Gale", {
             text "20+ damage. If Tornadus is on your Bench, this attack does 50 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               if (my.bench.find({ it.name == "Tornadus" })) damage 50
@@ -1808,7 +1725,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Raging Thunder", {
             text "120 damage. This attack does 40 damage to 1 of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
               damage 120
               if (my.bench) {
@@ -1824,7 +1740,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Electro Ball", {
             text "30 damage. "
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1832,7 +1747,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Nature Dive", {
             text "100+ damage. If your opponent's Active Pokémon is an Ultra Beast, this attack does 100 more damage, and discard 2 Energy from this Pokémon."
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
               damage 100
               if (defending.topPokemonCard.cardTypes.is(ULTRA_BEAST)) {
@@ -1849,7 +1763,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Three Mirrors", {
             text "30+ damage. If your opponent has exactly 3 Prize cards remaining, this attack does 90 more damage."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 30
               if (opp.prizeCardSet.size() == 3) damage 90
@@ -1858,7 +1771,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Signal Beam", {
             text "50 damage. Your opponent’s Active Pokémon is now Confused."
             energyCost L, L
-            attackRequirement {}
             onAttack {
               damage 50
               applyAfterDamage CONFUSED
@@ -1901,7 +1813,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Psychic Club", {
             text "10+ damage. This attack does 30 more damage for each of your Benched [P] Pokémon."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 10
               def psychicCount = my.bench.findAll { it.types.contains(P) }.size()
@@ -1939,7 +1850,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Leech Seed", {
             text "10 damage. Heal 10 damage from this Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               heal 10, self
@@ -1952,7 +1862,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Mind Bend", {
             text "30 damage. Your opponent’s Active Pokémon is now Confused."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30
               applyAfterDamage CONFUSED
@@ -1961,7 +1870,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Full Clean", {
             text "180 damage. Discard your hand."
             energyCost P, P, C
-            attackRequirement {}
             onAttack {
               damage 180
               afterDamage{my.hand.discard()}
@@ -1974,7 +1882,6 @@ public enum UnifiedMinds implements CardInfo {
           resistance F, MINUS20
           move "Spirit Smash", {
             text "Discard the top card of your opponent's deck. If the card you discarded is a Pokémon, this attack does damage equal to that Pokémon’s HP to your opponent's Active Pokémon."
-            attackRequirement {}
             onAttack {
               def card = opp.deck.subList(0, 1)
               card.showToMe("Top card of your opponent's deck to be discarded.")
@@ -1987,7 +1894,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Bone Beatdown", {
             text "60 damage. "
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -2015,7 +1921,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Attract Smack", {
             text "30 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip { applyAfterDamage PARALYZED }
@@ -2121,7 +2026,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Ram", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2145,7 +2049,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Spinning Attack", {
             text "70 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -2157,7 +2060,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Knock Off", {
             text "Discard a random card from your opponent's hand."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToMe("Selected card").showToOpponent("This card will be discarded.").discard()
             }
@@ -2165,7 +2067,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Bug Bite", {
             text "40 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -2190,7 +2091,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Psyshot", {
             text "30 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -2202,7 +2102,6 @@ public enum UnifiedMinds implements CardInfo {
           move "First Contact", {
             text "Search your deck for up to 3 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
             energyCost P
-            attackRequirement {}
             onAttack {
               def maxSpace = Math.min(my.bench.freeBenchCount, 3)
               my.deck.search(max:maxSpace, "Select $maxSpace Basic Pokémon to put onto your Bench", { it.cardTypes.is(BASIC) }).each{
@@ -2215,7 +2114,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Mumble", {
             text "20 damage. "
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2227,7 +2125,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Psypower", {
             text " Put 3 damage counters on your opponent’s Pokémon in any way you like."
             energyCost C
-            attackRequirement {}
             onAttack {
               (1..3).each {
                 if (opp.all) directDamage(10, opp.all.select("Choose an Opponent's Pokemon to put a damage counter on."))
@@ -2253,7 +2150,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Fade to Black", {
             text "70 damage. Your opponent’s Active Pokémon is now Confused."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               applyAfterDamage CONFUSED
@@ -2266,7 +2162,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Aurora Gain", {
             text "60 damage. Heal 30 damage from this Pokémon."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               heal 30, self
@@ -2275,7 +2170,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Luminous Blade", {
             text "130 damage. Discard a [P] Energy from this Pokémon."
             energyCost P, P, C, C
-            attackRequirement {}
             onAttack {
               damage 130
               afterDamage{
@@ -2290,7 +2184,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Future Sight", {
             text "Look at the top 4 cards of either player's deck and put them back in any order."
             energyCost C
-            attackRequirement {}
             rearrangeEitherPlayersDeck(delegate, 4)
           }
         };
@@ -2300,7 +2193,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Rest Well", {
             text " Both Active Pokémon are now Asleep. During your next turn, this Pokémon's attacks do 100 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply ASLEEP, self
               apply ASLEEP
@@ -2310,7 +2202,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Zen Headbutt", {
             text "50 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -2322,7 +2213,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Psybeam", {
             text "10 damage. Your opponent’s Active Pokémon is now Confused."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 10
               applyAfterDamage(CONFUSED)
@@ -2335,7 +2225,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Psypunch", {
             text "20 damage. "
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2343,7 +2232,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Mysterious Noise", {
             text "90 damage. Shuffle this Pokémon and all cards attached to it into your deck. Your opponent can't play any Item cards from their hand during their next turn."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 90
               afterDamage{
@@ -2381,7 +2269,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Pierce", {
             text "20 damage. "
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2394,7 +2281,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Slashing Cutter", {
             text "10 damage. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost C
-            attackRequirement {}
             onAttack {
               noWrDamage 10, defending
             }
@@ -2407,7 +2293,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Slashing Cutter", {
             text "30 damage. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost C
-            attackRequirement {}
             onAttack {
               noWrDamage 30, defending
             }
@@ -2431,7 +2316,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Trash Slash", {
             text "10x damage. This attack does 10 damage for each Item card in your discard pile. You can't do more than 130 damage in this way."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage Math.min(10*my.discard.filterByType(ITEM).size(), 130)
             }
@@ -2443,7 +2327,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Peck", {
             text "10 damage. "
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2455,7 +2338,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Spike Shot", {
             text "70 damage. "
             energyCost P, P
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -2467,7 +2349,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Suffocating Gas", {
             text "10 damage. "
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2475,7 +2356,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Gnaw", {
             text "30 damage. "
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -2487,7 +2367,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Smack", {
             text "40 damage. "
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -2495,7 +2374,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Slashing Claw", {
             text "90 damage. "
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -2508,7 +2386,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Splash", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2520,7 +2397,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Barrier Attack", {
             text "30 damage. During your opponent’s next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               reduceDamageNextTurn(hp(30), thisMove)
@@ -2529,7 +2405,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Special Laser", {
             text "100+ damage. If this Pokémon has any Special Energy attached to it, this attack does 60 more damage."
             energyCost P, P, C
-            attackRequirement {}
             onAttack {
               damage 100
               if (defending.cards.filterByType(SPECIAL_ENERGY)) damage 60
@@ -2542,7 +2417,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Belt", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2550,7 +2424,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Last Scene", {
             text "50+ damage. If each player has exactly 1 Prize card remaining, this attack does 130 more damage."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               if (my.prizeCardSet.size() == 1 && opp.prizeCardSet.size() == 1) {
@@ -2565,7 +2438,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Bedrock Press", {
             text "20 damage. During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 20
               reduceDamageNextTurn(hp(20), thisMove)
@@ -2578,7 +2450,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Ground Stream", {
             text "20 damage. Attach 2 [F] Energy cards from your discard pile to this Pokémon."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 20
               def fightingInDiscard = my.discard.filterByEnergyType(F)
@@ -2592,7 +2463,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Gigaton Shake", {
             text "220 damage. During your next turn, your Pokémon can't attack. (This includes Pokémon that come into play on that turn.)"
             energyCost F, C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 220
               afterDamage{
@@ -2615,7 +2485,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Growl", {
             text " During your opponent's next turn, the Defending Pokémon's attacks do 20 less damage (before applying Weakness and Resistance)."
             energyCost C
-            attackRequirement {}
             onAttack {
               reduceDamageNextTurn(hp(20), thisMove)
             }
@@ -2623,7 +2492,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Bonemerang", {
             text "20x damage. Flip 2 coins. This attack does 20 damage for each heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flip 2, { damage 20 }
             }
@@ -2649,7 +2517,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Boulder Crush", {
             text "120 damage. "
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 120
             }
@@ -2685,7 +2552,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Tackle", {
             text "70 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -2697,7 +2563,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Spore", {
             text " Your opponent’s Active Pokémon is now Asleep."
             energyCost G
-            attackRequirement {}
             onAttack {
               apply ASLEEP
             }
@@ -2705,7 +2570,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Pre-Dawn Strike", {
             text "30+ damage. If your opponent’s Active Pokémon is Asleep, this attack does 90 more damage."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 30
               if (defending.isSPC(ASLEEP)) damage 90
@@ -2718,7 +2582,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Spirited Headbutt", {
             text "40 damage. This Pokémon can't use Spirited Headbutt during your next turn."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 40
               cantUseAttack(thisMove, self)
@@ -2732,7 +2595,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Pure Power", {
             text " Put 4 damage counters on your opponent's Pokémon in any way you like."
             energyCost F
-            attackRequirement {}
             onAttack {
               (1..4).each {
                 directDamage 10, opp.all.select("Put 1 damage counter to which pokémon?")
@@ -2742,7 +2604,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Master Strike", {
             text "60+ damage. If this Pokémon has a Karate Belt card attached to it, this attack does 60 more damage."
             energyCost F, F
-            attackRequirement {}
             onAttack {
               damage 60
               if (self.cards.findAll { it.name=="Karate Belt" }) damage 60
@@ -2764,7 +2625,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Water Pulse", {
             text "30 damage. Your opponent’s Active Pokémon is now Asleep."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               applyAfterDamage ASLEEP
@@ -2777,7 +2637,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Stampede", {
             text "10 damage. "
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2785,7 +2644,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Headbutt Bounce", {
             text "30 damage. "
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -2797,7 +2655,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Corkscrew Punch", {
             text "20 damage. "
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2805,7 +2662,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Sharp Scythe", {
             text "40 damage. "
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -2831,7 +2687,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Over Slice", {
             text "80+ damage. You may discard an Energy from this Pokémon. If you do, this attack does 40 more damage."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 80
               if (confirm("Discard an Energy card attached to Garchomp to do 40 more damage?")) {
@@ -2847,7 +2702,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Kick", {
             text "20 damage. "
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2874,7 +2728,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Mach Cross", {
             text "90 damage. "
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -2886,7 +2739,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Dig Claws", {
             text "20 damage. "
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2908,7 +2760,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Slash", {
             text "90 damage. "
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -2921,7 +2772,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Endeavor", {
             text "20+ damage. Flip 2 coins. This attack does 20 more damage for each heads."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
               flip 2, { damage 20 }
@@ -2935,7 +2785,6 @@ public enum UnifiedMinds implements CardInfo {
           move "U-turn", {
             text "40 damage. Switch this Pokémon with 1 of your Benched Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 40
               switchYourActive()
@@ -2944,7 +2793,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Hyper Beam", {
             text "80 damage. Discard an Energy from your opponent’s Active Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 80
               afterDamage {
@@ -2959,7 +2807,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Cavern Counter", {
             text "50+ damage. If all of your Benched Pokémon have at least 1 damage counter on them, this attack does 150 more damage."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               def numberOfDamagedBench = my.bench.findAll{it.numberOfDamageCounters}.size()
@@ -2971,7 +2818,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Boulder Crush", {
             text "110 damage. "
             energyCost F, F, C, C
-            attackRequirement {}
             onAttack {
               damage 110
             }
@@ -2984,7 +2830,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Tag Cheer", {
             text " Attach an Energy card from your hand to 1 of your TAG TEAM Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               if(my.hand.filterByType(ENERGY) && my.all.findAll { it.topPokemonCard.cardTypes.is(TAG_TEAM) }){
                 attachEnergyFrom(my.hand, my.all.findAll { it.topPokemonCard.cardTypes.is(TAG_TEAM) })
@@ -2994,7 +2839,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Shooting Star Pirouette", {
             text "30+ damage. Flip a coin until you get tails. This attack does 30 more damage for each heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               flipUntilTails { damage 30 }
@@ -3020,7 +2864,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Boost Fang", {
             text "20 damage. Attach a [F] Energy card from your discard pile to 1 of your Benched Pokémon."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 20
               def fightingInDiscard = my.discard.filterByEnergyType(F)
@@ -3039,7 +2882,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Black Lance", {
             text "150 damage. This attack does 60 damage to 1 of your opponent’s Benched Pokémon-GX or Benched Pokémon-EX. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost D, D, C
-            attackRequirement {}
             onAttack {
               damage 150
               def gxEx = opp.bench.findAll{ it.pokemonGX || it.pokemonEX }
@@ -3080,7 +2922,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Greedy Crush", {
             text "210 damage. If your opponent's Pokémon-GX or Pokémon-EX is Knocked Out by damage from this attack, take 1 more Prize card."
             energyCost D, D, D, D, C
-            attackRequirement {}
             onAttack {
               damage 210
               delayed {
@@ -3114,7 +2955,6 @@ public enum UnifiedMinds implements CardInfo {
           resistance P, MINUS20
           move "Collect", {
             text " Draw 2 cards."
-            attackRequirement {}
             onAttack {
               draw 2
             }
@@ -3122,7 +2962,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Sludge Bomb", {
             text "30 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -3150,7 +2989,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Peck", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -3163,7 +3001,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Sharpshooting", {
             text " This attack does 30 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30, opp.all.select()
             }
@@ -3171,7 +3008,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Dark Cutter", {
             text "60 damage. "
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -3184,7 +3020,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Slash", {
             text "30 damage. "
             energyCost D, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -3203,7 +3038,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Claw Slash", {
             text "130 damage."
             energyCost D, D, C
-            attackRequirement {}
             onAttack {
               damage 130
             }
@@ -3231,7 +3065,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Mirror Gem", {
             text "10 damage. During your opponent's next turn, if this Pokémon is damaged by an attack (even if it is Knocked Out), put 8 damage counters on the Attacking Pokémon."
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 10
 
@@ -3255,7 +3088,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Cross Poison", {
             text "50x damage. Flip 4 coins. This attack does 50 damage for each heads. If at least 2 of them are heads, your opponent's Active Pokémon is now Poisoned."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               flip 4, {}, {}, [
                 1:{ damage 50 },
@@ -3277,7 +3109,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Slicing Blade", {
             text "120 damage. "
             energyCost D, D, C, C
-            attackRequirement {}
             onAttack {
               damage 120
             }
@@ -3306,7 +3137,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Scratch", {
             text "40 damage. "
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -3314,7 +3144,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Shadow Scratch", {
             text "90 damage. If the Defending Pokémon is a Basic Pokémon, it can't attack during your opponent's next turn."
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
               damage 90
               if(defending.basic) {
@@ -3330,7 +3159,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Swagger", {
             text " Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip { discardDefendingEnergy() }
             }
@@ -3338,7 +3166,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Whap Down", {
             text "50 damage. "
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -3351,7 +3178,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Turf Raid", {
             text "20+ damage. This attack does 20 more damage for each of your remaining Prize cards."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               damage 20*my.prizeCardSet.size()
@@ -3360,7 +3186,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Headbang", {
             text "70 damage. "
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -3373,7 +3198,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Blow Through", {
             text "20+ damage. If there is any Stadium card in play, this attack does 20 more damage."
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 20
               if (bg.stadiumInfoStruct) { damage 20 }
@@ -3382,7 +3206,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Shadow Impact", {
             text "120 damage. Put 3 damage counters on 1 of your Pokémon."
             energyCost D, D, C
-            attackRequirement {}
             onAttack {
               damage 120
               directDamage 30, my.all.select()
@@ -3397,7 +3220,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Evil Admonition", {
             text "10+ damage. This attack does 20 more damage for each of your opponent's Pokémon that has an Ability."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               opp.all.each { if (it.hasModernAbility()) damage 20 }
@@ -3406,7 +3228,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Mind Shock", {
             text "80 damage. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               noWrDamage 80, defending
             }
@@ -3436,7 +3257,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Wily Bite", {
             text "10+ damage. This attack does 30 more damage for each of your opponent's Benched Pokémon."
             energyCost M, C
-            attackRequirement {}
             onAttack {
               damage 10
               damage 30*opp.bench.size()
@@ -3470,7 +3290,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Iron Lance", {
             text "90 damage. "
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -3483,7 +3302,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Dust Gathering", {
             text " Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -3506,7 +3324,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Gust", {
             text "40 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -3519,7 +3336,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Return", {
             text "20 damage. You may draw cards until you have 6 cards in your hand."
             energyCost C
-            attackRequirement {}
             onAttack {
               if(confirm("Draw cards until you have 6 cards in your hand?")) {
                 draw (6 - my.hand.size())
@@ -3533,7 +3349,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Linear Attack", {
             text " This attack does 40 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 40, opp.all.select()
             }
@@ -3541,7 +3356,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Calamitous Slash", {
             text "160+ damage. If your opponent's Active Pokémon already has any damage counters on it, this attack does 80 more damage."
             energyCost F, P, C
-            attackRequirement {}
             onAttack {
               damage 160
               if (opp.active.numberOfDamageCounters) damage 80
@@ -3571,7 +3385,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Agility", {
             text "10 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 10
               flip { preventAllEffectsNextTurn() }
@@ -3593,7 +3406,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Jump On", {
             text "10+ damage. Flip a coin. If heads, this attack does 30 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 10
               flip { damage 30 }
@@ -3633,7 +3445,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Tail Whap", {
             text "20 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -3641,7 +3452,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Destructive Whirlpool", {
             text "70 damage. Discard an Energy from your opponent’s Active Pokémon."
             energyCost L, W, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               discardDefendingEnergy()
@@ -3668,7 +3478,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Dragon Impact", {
             text "170 damage. Discard 3 Energy from this Pokémon."
             energyCost L, W, C, C
-            attackRequirement {}
             onAttack {
               damage 170
               discardSelfEnergy C, C, C
@@ -3682,7 +3491,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Dragon Claw", {
             text "130 damage. "
             energyCost L, W, C
-            attackRequirement {}
             onAttack {
               damage 130
             }
@@ -3690,7 +3498,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Sky Judgment", {
             text "270 damage. Discard 3 Energy from this Pokémon."
             energyCost C, C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 270
               discardSelfEnergy C, C, C
@@ -3720,7 +3527,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Energy Arrow", {
             text " This attack does 20 damage times the amount of Energy attached to 1 of your opponent's Pokémon to that Pokémon. This damage isn't affected by Weakness or Resistance."
             energyCost P
-            attackRequirement {}
             onAttack {
               def tar = opp.all.select("Select the Pokémon to target.")
               noWrDamage 20*tar.cards.energyCount(C), tar
@@ -3729,7 +3535,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Speed Wing", {
             text "100 damage. "
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 100
             }
@@ -3752,7 +3557,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Gnaw", {
             text "20 damage. "
             energyCost R, M
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -3764,7 +3568,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Guard Press", {
             text "30 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               reduceDamageNextTurn(hp(30), thisMove)
@@ -3773,7 +3576,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Guillotine", {
             text "70 damage. "
             energyCost R, M, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -3803,7 +3605,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Powerful Axe", {
             text "10+ damage. This attack does 40 more damage times the amount of basic Energy attached to this Pokémon."
             energyCost R, M
-            attackRequirement {}
             onAttack {
               damage 10+40*self.cards.filterByType(BASIC_ENERGY).size()
             }
@@ -3816,7 +3617,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Drag Off", {
             text " Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. This attack does 30 damage to the new Active Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack{
               def target = defending
               if (opp.bench) {
@@ -3829,7 +3629,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Dragon Tail", {
             text "100x damage. Flip 2 coins. This attack does 100 damage for each heads."
             energyCost R, W, C
-            attackRequirement {}
             onAttack {
               flip { damage 100 }
               flip { damage 100 }
@@ -3842,7 +3641,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Air Slash", {
             text "50 damage. Discard an Energy from this Pokémon."
             energyCost D, P
-            attackRequirement {}
             onAttack {
               damage 50
               discardSelfEnergy C
@@ -3855,7 +3653,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Boomburst", {
             text " This attack does 20 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
-            attackRequirement {}
             onAttack {
               opp.all.each { damage 20, it }
             }
@@ -3863,7 +3660,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Dragon Pulse", {
             text "120 damage. Discard the top card of your deck."
             energyCost D, P, C
-            attackRequirement {}
             onAttack {
               damage 120
               my.deck.subList(0,1).discard()
@@ -3888,7 +3684,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Venom Shot", {
             text " Discard 2 Energy from this Pokémon. This attack does 170 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost P, C, C, C
-            attackRequirement {}
             onAttack {
               damage 170, opp.all.select("Which pokemon?")
               discardSelfEnergy C, C
@@ -3917,7 +3712,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Heavy Draw", {
             text "Draw a card for each of your Pokémon in play that has a Retreat Cost of exactly 4."
             energyCost C
-            attackRequirement {}
             onAttack {
               def numberOfCards = my.all.findAll{ it.retreatCost == 4 }.size()
               draw numberOfCards
@@ -3926,7 +3720,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Tongue Slap", {
             text "40 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -3938,7 +3731,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Rollout", {
             text "40 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -3946,7 +3738,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Licks Go Crazy", {
             text "90 damage. Discard a random card from your opponent's hand, discard the top card of your opponent's deck, and discard an Energy from your opponent’s Active Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 90
               discardRandomCardFromOpponentsHand()
@@ -3962,7 +3753,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Double Draw", {
             text "Draw 2 cards."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 2
             }
@@ -3970,7 +3760,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Tag Impact", {
             text "50x damage. This attack does 50 damage for each of your TAG TEAM Pokémon in play."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               def tagTeams = my.all.findAll { it.topPokemonCard.cardTypes.is(TAG_TEAM) }
               damage 50*tagTeams.size()
@@ -3988,7 +3777,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Berserker Tackle", {
             text "60 damage. This Pokémon does 10 damage to itself."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 60
               damage 10, self
@@ -4003,7 +3791,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Air Slash", {
             text "30 damage. Discard an Energy from this Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               discardSelfEnergy C
@@ -4017,7 +3804,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Blindside", {
             text " This attack does 60 damage to 1 of your opponent's Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 60, opp.bench.findAll{ it.numberOfDamageCounters }.select()
             }
@@ -4025,7 +3811,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Slashing Claw", {
             text "60 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -4037,7 +3822,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Lazy Howl", {
             text "During your opponent's next turn, if they attach an Energy card from their hand to the Defending Pokémon, their turn ends."
             energyCost C
-            attackRequirement {}
             onAttack {
               delayed {
                 after ATTACH_ENERGY, {
@@ -4055,7 +3839,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Hang Down", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -4067,7 +3850,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Scratch", {
             text "30 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -4075,7 +3857,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Boundless Power", {
             text "60 damage. This Pokémon can’t attack during your next turn."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               cantAttackNextTurn self
@@ -4088,7 +3869,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Roar", {
             text " Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               whirlwind()
             }
@@ -4096,7 +3876,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Slash", {
             text "70 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -4119,7 +3898,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Dynamic Swing", {
             text "100+ damage. You may do 100 more damage. If you do, during your opponent's next turn, this Pokémon takes 100 more damage from attacks (after applying Weakness and Resistance)."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 100
               if (confirm("Do 100 extra damage?")) {
@@ -4149,7 +3927,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Tackle", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -4157,7 +3934,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Hyper Fang", {
             text "60 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               flip { damage 60 }
             }
@@ -4183,7 +3959,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Amnesia", {
             text "60 damage. Choose 1 of your opponent's Active Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               amnesia delegate
@@ -4214,7 +3989,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Glide", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -4222,7 +3996,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Flap", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -4235,7 +4008,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Glide", {
             text "20 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -4243,7 +4015,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Air Slash", {
             text "40 damage. Discard an Energy from this Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 40
               discardSelfEnergy C
@@ -4257,7 +4028,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Gust", {
             text "40 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -4265,7 +4035,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Downburst", {
             text "90 damage. You may have each player shuffle all cards attached to their Active Pokémon into their deck."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 90
               if (confirm("Shuffle all cards attached to each player's active Pokemon into their decks?")) {
@@ -4294,7 +4063,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Drain Slap", {
             text "30 damage. Heal 30 damage from this Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               heal 30, self
@@ -4308,7 +4076,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Knuckle Punch", {
             text "20 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -4316,7 +4083,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Thunderous Tornado", {
             text "80 damage. If Thundurus is on your Bench, this attack does 20 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               if (my.bench.find({ it.name == "Thundurus" })) {
@@ -4332,7 +4098,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Flap", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -4344,7 +4109,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Cavernous Chomp", {
             text "30 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -4356,7 +4120,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Alert Headbutt", {
             text "90 damage. If your opponent's Active Pokémon is a Pokémon-GX or Pokémon-EX, this attack's base damage is 30."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               if (defending.pokemonGX || defending.pokemonEX) {
                 damage 30
@@ -4386,7 +4149,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Gentle Slap", {
             text "80 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
             }
@@ -4398,7 +4160,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Smash Kick", {
             text "20 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -4406,7 +4167,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Quick Blow", {
             text "30+ damage. Flip a coin. If heads, this attack does 30 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip { damage 30 }
@@ -4419,7 +4179,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Avenging Heart", {
             text "30+ damage. This attack does 50 more damage for each Prize card your opponent took on their last turn."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               damage 50*bg.lastTurnTakePrize
@@ -4428,7 +4187,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Air Slash", {
             text "120 damage. Discard an Energy from this Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 120
               discardSelfEnergy C
@@ -4451,7 +4209,6 @@ public enum UnifiedMinds implements CardInfo {
           move "Snooze", {
             text " This Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply ASLEEP, self
             }
