@@ -4597,7 +4597,7 @@ public enum UnifiedMinds implements CardInfo {
           }
           Move move=new Move("Speeding Skystrike GX")
           moveBody.delegate=new MoveBuilder(thisMove:move)
-          c.call()
+					moveBody.call()
           eff = getter GET_MOVE_LIST, self, {h->
             if (h.object.findAll{it.name == "Air Slash"}) { h.object.add(move) }
           }
@@ -4738,7 +4738,7 @@ public enum UnifiedMinds implements CardInfo {
           }
           Move move=new Move("Barreling Blitz GX")
           moveBody.delegate=new MoveBuilder(thisMove:move)
-          c.call()
+					moveBody.call()
           eff = getter GET_MOVE_LIST, self, {h->
             if (h.object.findAll{it.name == "Tackle"}) { h.object.add(move) }
           }
