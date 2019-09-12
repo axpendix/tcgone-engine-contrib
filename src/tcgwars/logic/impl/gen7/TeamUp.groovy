@@ -3199,8 +3199,7 @@ public enum TeamUp implements CardInfo {
         return supporter(this) {
           text "Look at the top 7 cards of your deck. You may reveal up to 2 Trainer cards you find there and put them into your hand. Shuffle the other cards back into your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            my.deck.subList(0,7).showToMe("top 7 cards of your deck")
-            my.deck.subList(0,7).filterByType(TRAINER).select(max:2,"Choose 2 Trainer cards to put in your hand").showToOpponent("Chosen cards").moveTo(my.hand)
+            my.deck.subList(0,7).select(min:0,max:2,"Top 7 cards of your deck. Choose up to 2 Trainer cards to put in your hand",cardTypeFilter(TRAINER)).moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{

@@ -954,6 +954,9 @@ public enum UnifiedMinds implements CardInfo {
           move "Spirit Burner", {
             text "10+ damage. Discard the top 5 cards of your deck. This attack does 60 more damage for each Pokémon you discarded in this way. Then, put any number of [R] Pokémon you discarded in this way onto your Bench."
             energyCost R
+            attackRequirement {
+              assert deck.notEmpty
+            }
             onAttack {
               damage 10
 
@@ -963,9 +966,9 @@ public enum UnifiedMinds implements CardInfo {
 
               topFiveCards.discard()
 
-              def firePokemon = pokemonInTopFive.filterByType(_FIRE_)
-              if (firePokemon.size()) {
-                pokemonInTopFive.filterByType(_FIRE_).select(max: my.bench.freeBenchCount, min: 0).each {
+              def firePokemon = pokemonInTopFive.findAll{it.types.contains(R)}
+              if (firePokemon && my.bench.freeBenchCount) {
+                firePokemon.select(max: my.bench.freeBenchCount, min: 0).each {
                   my.discard.remove(it);
                   benchPCS(it);
                 }
