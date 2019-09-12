@@ -1700,7 +1700,7 @@ public enum UltraPrism implements CardInfo {
             actionA {
               checkLastTurn()
               assert my.deck
-              assert my.all.findAll({it.name.contains("Garchomp")})
+              assert my.all.findAll({it.name == "Garchomp"})
               powerUsed()
               my.deck.select(count:1).moveTo(hidden: true,my.hand)
               shuffleDeck()

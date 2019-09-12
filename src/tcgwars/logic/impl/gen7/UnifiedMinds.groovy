@@ -1282,7 +1282,7 @@ public enum UnifiedMinds implements CardInfo {
             eff = delayed {
               def disable={card,pcs->
                 def dset = bg.em().retrieveObject("Tool Concealment dset") as Set
-                if(!dset.contains(card)){
+                if(!dset.contains(card) && card.player != self.owner){
                   card.removeFromPlay(bg, pcs)
                   dset.add(card)
                 }
@@ -1294,7 +1294,7 @@ public enum UnifiedMinds implements CardInfo {
             def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) + 1
             if (count == 1){
               def dset = bg.em().retrieveObject("Tool Concealment dset") as Set ?: [] as Set
-              all.each {
+              opp.all.each {
                 def pcs = it
                 it.cards.filterByType(POKEMON_TOOL).each {
                   if(!dset.contains(it)){
@@ -2037,13 +2037,18 @@ public enum UnifiedMinds implements CardInfo {
 				weakness P
 				bwAbility "Power Bind", {
 					text "If you have 4 or fewer Pokémon in play, this Pokémon can't attack."
+					delayedA {
+						before CHECK_ATTACK_REQUIREMENTS, {
+							if(ef.attacker == self && my.all.size() <= 4) {
+								wcu "Power Bind prevents this Pokémon from attacking"
+								prevent()
+							}
+						}
+					}
 				}
 				move "Tag Purge", {
 					text "120 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from TAG TEAM Pokémon."
 					energyCost P, C, C
-					attackRequirement {
-            assert my.all.size() > 4 : "Power Bind prevents this Pokémon from attacking"
-          }
           onAttack{
             damage 120
             delayed{
@@ -2703,7 +2708,7 @@ public enum UnifiedMinds implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-            if (self.isSPC(ASLEEP)) damage 90
+            if (defending.isSPC(ASLEEP)) damage 90
 					}
 				}
 			};
@@ -3943,8 +3948,9 @@ public enum UnifiedMinds implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
+						damage 90
 						discardRandomCardFromOpponentsHand()
-            opp.deck.subList(0, 1).discard()
+            if(opp.deck) opp.deck.subList(0, 1).discard()
             discardDefendingEnergy()
 					}
 				}
@@ -4190,13 +4196,13 @@ public enum UnifiedMinds implements CardInfo {
 					text "Once during your turn (before your attack), you may flip a coin. If heads, put a card from your discard pile on top of your deck. If you use this Ability, your turn ends."
 					actionA {
             checkLastTurn()
-            assert my.discard
+            assert my.discard : "Empty discard"
+						powerUsed()
             flip{
               def target = my.discard.select()
               my.deck.addAll(0, target)
               my.discard.removeAll(target)
             }
-            powerUsed()
             bg.gm().betweenTurns()
 					}
 				}
