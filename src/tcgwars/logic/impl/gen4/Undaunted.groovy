@@ -277,6 +277,7 @@ public enum Undaunted implements CardInfo {
               damage 30
               afterDamage {
                 if(startingDamage == 0 && defending.numberOfDamageCounters > 0) apply PARALYZED
+              }
             }
           }
           move "Poison Jab", {
