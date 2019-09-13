@@ -188,6 +188,11 @@ public enum Undaunted implements CardInfo {
           pokePower "Hustle Step", {
             text "Once during your turn , you may remove 1 damage counter from each of your Pokémon. This power can’t be used if Bellossom is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.all.findAll{it.numberOfDamageCounters} : "No damage on your Pokemon"
+              powerUsed()
+              may.all.each{ heal 10, it, SRC_ABILITY }
             }
           }
           move "Dance ’til Dawn", {
@@ -195,7 +200,8 @@ public enum Undaunted implements CardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 3, {damage 30}
+              afterDamage{ apply ASLEEP, self }
             }
           }
 
@@ -208,7 +214,17 @@ public enum Undaunted implements CardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              def numMoved = 0
+              while(1) {
+                def pcs = my.all.findAll{it.numberOfDamageCounters}.select("Choose the pokémon to move the damage counter from", false)
+                if(!pcs) break;
+                def tar = opp.all.select("Select the pokémon to recieve the damage counter", false)
+                if(!tar) break;
+                pcs.damage-=hp(10)
+                tar.damage+=hp(10)
+                numMoved++
+                if(numMoved >= 4) break;
+              }
             }
           }
           move "Psybeam", {
@@ -216,7 +232,8 @@ public enum Undaunted implements CardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              afterDamage{ flipThenApplySC CONFUSED }
             }
           }
 
@@ -226,11 +243,12 @@ public enum Undaunted implements CardInfo {
           weakness R
           resistance P, MINUS20
           move "Mirror Shot", {
-            text "30 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, this attack does nothing."
+            text "30 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              sandAttack(thisMove)
             }
           }
           move "Everyone Explode Now", {
@@ -238,7 +256,10 @@ public enum Undaunted implements CardInfo {
             energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30*my.all.findAll{it.name=='Pineco' || it.name=='Forretress'}.size()
+              my.all.findAll{it.name=='Pineco' || it.name=='Forretress'}.each{
+                damage 30, it
+              }
             }
           }
 
@@ -248,11 +269,14 @@ public enum Undaunted implements CardInfo {
           weakness W
           resistance L, MINUS20
           move "Ninja Fang", {
-            text "30 damage. , the Defending Pokémon is now Paralyzed."
+            text "30 damage. If, before Gliscor does damage, the Defending Pokémon has no damage counters on it and is then damaged by this attack (after applying Weakness and Resistance), the Defending Pokémon is now Paralyzed."
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              def startingDamage = defending.numberOfDamageCounters
+              damage 30
+              afterDamage {
+                if(startingDamage == 0 && defending.numberOfDamageCounters > 0) apply PARALYZED
             }
           }
           move "Poison Jab", {
@@ -260,7 +284,8 @@ public enum Undaunted implements CardInfo {
             energyCost F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              applyAfterDamage POISONED
             }
           }
 
@@ -270,11 +295,12 @@ public enum Undaunted implements CardInfo {
           weakness F
           resistance P, MINUS20
           move "Fire Counterattack", {
-            text "20 damage. Pokémon in play, this attack does 20 damage plus 60 more damage."
-            energyCost D, F
+            text "20 damage. If your opponent has any [F] Pokémon in play, this attack does 20 damage plus 60 more damage."
+            energyCost D
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(opp.all.findAll{it.types.contains(F)}.size()) damage 60
             }
           }
           move "Dark Roar", {
@@ -282,7 +308,10 @@ public enum Undaunted implements CardInfo {
             energyCost D, D
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              afterDamage {
+                opp.hand.oppSelect(count:1, "Which cards to discard?").discard()
+              }
             }
           }
 
@@ -295,15 +324,19 @@ public enum Undaunted implements CardInfo {
             energyCost R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              applyAfterDamage BURNED
             }
           }
           move "Lava Flow", {
-            text "60 damage. Energy card you discarded."
-            energyCost R, R, C, R, R
+            text "60 damage. You may discard any number of [R] Energy cards attached to Magcargo. If you do , this attack does 60 damage plus 20 more damage for each [R] Energy card you discarded."
+            energyCost R, R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              def fireToDiscard = self.cards.filterByEnergyType(R).select(min:0, max:self.cards.filterByEnergyType(R).size())
+              damage 20*fireToDiscard.size()
+              afterDamage{ fireToDiscard.discard() }
             }
           }
 
@@ -317,7 +350,7 @@ public enum Undaunted implements CardInfo {
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
             }
           }
           move "Metal Claw", {
@@ -325,7 +358,7 @@ public enum Undaunted implements CardInfo {
             energyCost M, M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
             }
           }
 
