@@ -370,6 +370,18 @@ public enum Undaunted implements CardInfo {
           pokePower "Portrait", {
             text "Once during your turn , if Smeargle is your Active Pokémon, you may look at your opponent’s hand. If you do, choose a Supporter card you find there and use the effect of that card as the effect of this power. This power can’t be used if Smeargle is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert self.isActive() : "$self is not active"
+              powerUsed()
+              if(opp.hand.hasType(SUPPORTER)){
+                def card=opp.hand.select(min:1, "Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
+                bg.deterministicCurrentThreadPlayerType=self.owner
+                bg.em().run(new PlayTrainer(card))
+                bg.clearDeterministicCurrentThreadPlayerType()
+              } else {
+                opp.hand.showToMe("Opponent's hand")
+              }
             }
           }
           move "Tail Rap", {
@@ -377,7 +389,7 @@ public enum Undaunted implements CardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {damage 20}
             }
           }
 
@@ -391,7 +403,12 @@ public enum Undaunted implements CardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              my.all.findAll{ it.numberOfDamageCounters }.each {
+                heal it.numberOfDamageCounters, it
+              }
+              self.cards.moveTo(my.deck)
+              removePCS(self)
+              shuffleDeck()
             }
           }
           move "Air Cutter", {
@@ -399,7 +416,7 @@ public enum Undaunted implements CardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 1, {damage 80}
             }
           }
 
@@ -413,7 +430,10 @@ public enum Undaunted implements CardInfo {
             energyCost D
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              afterDamage {
+                
+              }
             }
           }
           move "Quick Blow", {
@@ -421,7 +441,8 @@ public enum Undaunted implements CardInfo {
             energyCost D, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip 1, {damage 30}
             }
           }
 
@@ -431,7 +452,7 @@ public enum Undaunted implements CardInfo {
           weakness L
           resistance F, MINUS20
           pokeBody "Retreat Aid", {
-            text "As long as Dodrio is on your Bench, your Active Pokémon’s Retreat Cost is less."
+            text "As long as Dodrio is on your Bench, your Active Pokémon’s Retreat Cost is [C][C] less."
             delayedA {
             }
           }
