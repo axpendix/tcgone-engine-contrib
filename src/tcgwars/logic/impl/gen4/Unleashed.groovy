@@ -320,7 +320,7 @@ public enum Unleashed implements CardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              opp.bench.findAll{ it.numberOfDamageCounters }.each{ damage 10 }
+              opp.bench.findAll{ it.numberOfDamageCounters }.each{ damage 10, it }
             }
           }
 
