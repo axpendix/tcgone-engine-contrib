@@ -193,12 +193,10 @@ public enum Unleashed implements CardInfo {
           weakness P
           pokePower "Stardust Song", {
             text "Once during your turn, when you put Jirachi from you hand onto your Bench, you may flip 3 coins. For each heads, search your discard pile for a [P] Energy card and attach it to Jirachi."
-            actionA {
-              onActivate {reason ->
-                if(reason == PLAY_FROM_HAND && my.discard.findAll{it.cards.filterByEnergyType(P)}.size() && confirm("Use Stardust Song?")){
-                  powerUsed()
-                  flip 3, {attachEnergyFrom(type: P, my.discard, self)}
-                }
+            onActivate {reason ->
+              if(reason == PLAY_FROM_HAND && my.discard.findAll{it.cards.filterByEnergyType(P)}.size() && confirm("Use Stardust Song?")){
+                powerUsed()
+                flip 3, {attachEnergyFrom(type: P, my.discard, self)}
               }
             }
           }
@@ -207,11 +205,11 @@ public enum Unleashed implements CardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              opp.all.findAll{ it.evolution }.select(min:0, max:self.cards.energyCount(C), "Choose which Pokemon to devolve").each{
-                def top=defending.topPokemonCard
+              opp.all.findAll{ it.evolution }.select(max:self.cards.energyCount(C), "Choose which Pokemon to devolve").each{
+                def top=it.topPokemonCard
                 bc "$top Devolved"
                 moveCard(top, opp.hand)
-                devolve(defending, top)
+                devolve(it, top)
               }
             }
           }
@@ -289,11 +287,15 @@ public enum Unleashed implements CardInfo {
           move "Double Leg Hammer", {
             text "Choose 2 of your opponent’s Benched Pokémon. This attack does 40 damage to each of them."
             energyCost P, P, P
-            attackRequirement {
-              assert opp.bench : "No Pokemon on your opponent's bench"
-            }
+            attackRequirement {}
             onAttack {
-              damage 40, opp.bench.select(min: 1, max: 2)
+              if(opp.bench){
+                multiSelect(opp.bench, 2).each{
+                  targeted(it){
+                    damage 40, it
+                  }
+                }
+              }
             }
           }
 
@@ -318,7 +320,7 @@ public enum Unleashed implements CardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              opp.bench.findAll{ it.cards.numberOfDamageCounters }.each{ damage 10 }
+              opp.bench.findAll{ it.numberOfDamageCounters }.each{ damage 10 }
             }
           }
 
