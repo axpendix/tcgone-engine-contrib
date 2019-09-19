@@ -245,6 +245,8 @@ public class EvolutionChains {
     ADD("Unidentified Fossil", "Tyrunt", "Tyrantrum");
     ADD("Unidentified Fossil", "Kabuto", "Kabutops");
     ADD("Unidentified Fossil", "Omanyte", "Omastar");
+    ADD("Unidentified Fossil", "Archen", "Archeops");
+    ADD("Unidentified Fossil", "Tirtouga", "Carracosta");
     ADD("Seedot", "Nuzleaf", "Shiftry-GX");
     ADD("Torchic", "Combusken", "Blaziken-GX");
     ADD("Dratini", "Dragonair", "Dragonite-GX");
