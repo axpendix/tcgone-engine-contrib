@@ -104,11 +104,10 @@ public enum HiddenFates implements CardInfo {
 	MOLTRES_ZAPDOS_ARTICUNO_GX_66 ("Moltres & Zapdos & Articuno-GX", 66, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _COLORLESS_]),
 	GIOVANNI_S_EXILE_67 ("Giovanni's Exile", 67, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
 	JESSIE_JAMES_68 ("Jessie & James", 68, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
-	MOLTRES_ZAPDOS_ARTICUNO_GX_69 ("Moltres & Zapdos & Articuno-GX", 69, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _COLORLESS_]),
-;
-	
+	MOLTRES_ZAPDOS_ARTICUNO_GX_69 ("Moltres & Zapdos & Articuno-GX", 69, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _COLORLESS_]);
+
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
-	
+
 	protected CardTypeSet cardTypes;
 	protected String name;
 	protected Rarity rarity;
