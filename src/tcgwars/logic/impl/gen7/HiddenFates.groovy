@@ -35,7 +35,7 @@ import tcgwars.logic.util.*;
  * @author luongthomasdev@gmail.com
  */
 public enum HiddenFates implements CardInfo {
-	
+
 	CATERPIE_1 ("Caterpie", 1, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
 	METAPOD_2 ("Metapod", 2, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
 	BUTTERFREE_3 ("Butterfree", 3, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
@@ -169,7 +169,7 @@ public enum HiddenFates implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case METAPOD_2:
 			return evolution (this, from:"Caterpie", hp:HP090, type:G, retreatCost:2) {
@@ -182,7 +182,7 @@ public enum HiddenFates implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case BUTTERFREE_3:
 			return evolution (this, from:"Metapod", hp:HP130, type:G, retreatCost:1) {
@@ -195,7 +195,7 @@ public enum HiddenFates implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case PARAS_4:
 			return basic (this, hp:HP070, type:G, retreatCost:1) {
@@ -216,7 +216,7 @@ public enum HiddenFates implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case SCYTHER_5:
 			return basic (this, hp:HP100, type:G, retreatCost:1) {
@@ -237,7 +237,7 @@ public enum HiddenFates implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case PINSIR_GX_6:
 			return basic (this, hp:HP180, type:G, retreatCost:2) {
@@ -258,7 +258,7 @@ public enum HiddenFates implements CardInfo {
 						damage 160
 					}
 				}
-				
+
 			};
 			case CHARMANDER_7:
 			return basic (this, hp:HP070, type:R, retreatCost:1) {
@@ -279,7 +279,7 @@ public enum HiddenFates implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case CHARMELEON_8:
 			return evolution (this, from:"Charmander", hp:HP100, type:R, retreatCost:1) {
@@ -300,7 +300,7 @@ public enum HiddenFates implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case CHARIZARD_GX_9:
 			return evolution (this, from:"Charmeleon", hp:HP250, type:R, retreatCost:3) {
@@ -321,7 +321,7 @@ public enum HiddenFates implements CardInfo {
 						damage 300
 					}
 				}
-				
+
 			};
 			case MAGMAR_10:
 			return basic (this, hp:HP090, type:R, retreatCost:2) {
@@ -334,7 +334,7 @@ public enum HiddenFates implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case PSYDUCK_11:
 			return basic (this, hp:HP060, type:W, retreatCost:1) {
@@ -347,7 +347,7 @@ public enum HiddenFates implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case SLOWPOKE_12:
 			return basic (this, hp:HP070, type:W, retreatCost:2) {
@@ -357,10 +357,10 @@ public enum HiddenFates implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case STARYU_13:
 			return basic (this, hp:HP050, type:W, retreatCost:1) {
@@ -373,7 +373,7 @@ public enum HiddenFates implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case STARMIE_GX_14:
 			return evolution (this, from:"Staryu", hp:HP190, type:W, retreatCost:0) {
@@ -402,7 +402,7 @@ public enum HiddenFates implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case MAGIKARP_15:
 			return basic (this, hp:HP030, type:W, retreatCost:1) {
@@ -415,7 +415,7 @@ public enum HiddenFates implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case GYARADOS_GX_16:
 			return evolution (this, from:"Magikarp", hp:HP230, type:W, retreatCost:3) {
@@ -436,7 +436,7 @@ public enum HiddenFates implements CardInfo {
 						damage 240
 					}
 				}
-				
+
 			};
 			case LAPRAS_17:
 			return basic (this, hp:HP120, type:W, retreatCost:2) {
@@ -449,7 +449,7 @@ public enum HiddenFates implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case VAPOREON_18:
 			return evolution (this, from:"Eevee", hp:HP120, type:W, retreatCost:3) {
@@ -470,7 +470,7 @@ public enum HiddenFates implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case PIKACHU_19:
 			return basic (this, hp:HP070, type:L, retreatCost:1) {
@@ -492,7 +492,7 @@ public enum HiddenFates implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case RAICHU_GX_20:
 			return evolution (this, from:"Pikachu", hp:HP210, type:L, retreatCost:1) {
@@ -514,7 +514,7 @@ public enum HiddenFates implements CardInfo {
 						damage 200
 					}
 				}
-				
+
 			};
 			case VOLTORB_21:
 			return basic (this, hp:HP050, type:L, retreatCost:1) {
@@ -528,7 +528,7 @@ public enum HiddenFates implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case ELECTRODE_22:
 			return evolution (this, from:"Voltorb", hp:HP100, type:L, retreatCost:1) {
@@ -550,7 +550,7 @@ public enum HiddenFates implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case JOLTEON_23:
 			return evolution (this, from:"Eevee", hp:HP090, type:L, retreatCost:0) {
@@ -569,7 +569,7 @@ public enum HiddenFates implements CardInfo {
 						damage 90
 					}
 				}
-				
+
 			};
 			case ZAPDOS_24:
 			return basic (this, hp:HP120, type:L, retreatCost:2) {
@@ -580,7 +580,7 @@ public enum HiddenFates implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Sky-High Claws", {
@@ -591,7 +591,7 @@ public enum HiddenFates implements CardInfo {
 						damage 100
 					}
 				}
-				
+
 			};
 			case EKANS_25:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -604,7 +604,7 @@ public enum HiddenFates implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case EKANS_26:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -617,7 +617,7 @@ public enum HiddenFates implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case ARBOK_27:
 			return evolution (this, from:"Ekans", hp:HP120, type:P, retreatCost:2) {
@@ -635,7 +635,7 @@ public enum HiddenFates implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case KOFFING_28:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -648,7 +648,7 @@ public enum HiddenFates implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case WEEZING_29:
 			return evolution (this, from:"Koffing", hp:HP120, type:P, retreatCost:3) {
@@ -666,7 +666,7 @@ public enum HiddenFates implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case JYNX_30:
 			return basic (this, hp:HP100, type:P, retreatCost:1) {
@@ -687,7 +687,7 @@ public enum HiddenFates implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case MEWTWO_GX_31:
 			return basic (this, hp:HP180, type:P, retreatCost:2) {
@@ -708,7 +708,7 @@ public enum HiddenFates implements CardInfo {
 						damage 120
 					}
 				}
-				
+
 			};
 			case MEW_32:
 			return basic (this, hp:HP080, type:P, retreatCost:1) {
@@ -721,7 +721,7 @@ public enum HiddenFates implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case GEODUDE_33:
 			return basic (this, hp:HP070, type:F, retreatCost:2) {
@@ -734,7 +734,7 @@ public enum HiddenFates implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case GRAVELER_34:
 			return evolution (this, from:"Geodude", hp:HP100, type:F, retreatCost:3) {
@@ -752,10 +752,10 @@ public enum HiddenFates implements CardInfo {
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case GOLEM_35:
 			return evolution (this, from:"Graveler", hp:HP170, type:F, retreatCost:4) {
@@ -776,7 +776,7 @@ public enum HiddenFates implements CardInfo {
 						damage 140
 					}
 				}
-				
+
 			};
 			case ONIX_GX_36:
 			return basic (this, hp:HP200, type:F, retreatCost:4) {
@@ -805,7 +805,7 @@ public enum HiddenFates implements CardInfo {
 						damage 200
 					}
 				}
-				
+
 			};
 			case CUBONE_37:
 			return basic (this, hp:HP060, type:F, retreatCost:2) {
@@ -815,10 +815,10 @@ public enum HiddenFates implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case CLEFAIRY_38:
 			return basic (this, hp:HP060, type:Y, retreatCost:1) {
@@ -829,7 +829,7 @@ public enum HiddenFates implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Pound", {
@@ -840,7 +840,7 @@ public enum HiddenFates implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case CLEFAIRY_39:
 			return basic (this, hp:HP060, type:Y, retreatCost:1) {
@@ -862,7 +862,7 @@ public enum HiddenFates implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case CLEFABLE_40:
 			return evolution (this, from:"Clefairy", hp:HP120, type:Y, retreatCost:2) {
@@ -884,7 +884,7 @@ public enum HiddenFates implements CardInfo {
 						damage 90
 					}
 				}
-				
+
 			};
 			case JIGGLYPUFF_41:
 			return basic (this, hp:HP070, type:Y, retreatCost:1) {
@@ -906,7 +906,7 @@ public enum HiddenFates implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case WIGGLYTUFF_GX_42:
 			return evolution (this, from:"Jigglypuff", hp:HP210, type:Y, retreatCost:2) {
@@ -928,7 +928,7 @@ public enum HiddenFates implements CardInfo {
 						damage 130
 					}
 				}
-				
+
 			};
 			case MR_MIME_43:
 			return basic (this, hp:HP090, type:Y, retreatCost:1) {
@@ -939,7 +939,7 @@ public enum HiddenFates implements CardInfo {
 					energyCost Y
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Double Slap", {
@@ -950,7 +950,7 @@ public enum HiddenFates implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case MOLTRES_ZAPDOS_ARTICUNO_GX_44:
 			return basic (this, hp:HP300, type:C, retreatCost:3) {
@@ -969,10 +969,10 @@ public enum HiddenFates implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case FARFETCH_D_45:
 			return basic (this, hp:HP080, type:C, retreatCost:1) {
@@ -986,7 +986,7 @@ public enum HiddenFates implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case CHANSEY_46:
 			return basic (this, hp:HP130, type:C, retreatCost:2) {
@@ -999,7 +999,7 @@ public enum HiddenFates implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case KANGASKHAN_47:
 			return basic (this, hp:HP120, type:C, retreatCost:2) {
@@ -1012,7 +1012,7 @@ public enum HiddenFates implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case EEVEE_48:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -1022,7 +1022,7 @@ public enum HiddenFates implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Spin Tackle", {
@@ -1033,7 +1033,7 @@ public enum HiddenFates implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case EEVEE_49:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -1046,7 +1046,7 @@ public enum HiddenFates implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case SNORLAX_50:
 			return basic (this, hp:HP150, type:C, retreatCost:3) {
@@ -1059,7 +1059,7 @@ public enum HiddenFates implements CardInfo {
 						damage 100
 					}
 				}
-				
+
 			};
 			case BILL_S_ANALYSIS_51:
 			return supporter (this) {
@@ -1196,5 +1196,5 @@ public enum HiddenFates implements CardInfo {
 			return null;
 		}
 	}
-	
+
 }
