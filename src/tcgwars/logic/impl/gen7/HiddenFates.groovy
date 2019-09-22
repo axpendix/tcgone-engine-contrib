@@ -249,8 +249,11 @@ public enum HiddenFates implements CardInfo {
         move "Guillotine GX", {
           text "160 damage. (You can’t use more than 1 GX attack in a game.)"
           energyCost G, G, C
-          attackRequirement {}
+          attackRequirement {
+            gxCheck()
+          }
           onAttack {
+            gxPerform()
             damage 160
           }
         }
@@ -309,8 +312,11 @@ public enum HiddenFates implements CardInfo {
         move "Flare Blitz GX", {
           text "300 damage. (You can’t use more than 1 GX attack in a game.)"
           energyCost R, R, C, C
-          attackRequirement {}
+          attackRequirement {
+            gxCheck()
+          }
           onAttack {
+            gxPerform()
             damage 300
           }
         }
@@ -347,7 +353,7 @@ public enum HiddenFates implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            apply ASLEEP
           }
         }
       };
@@ -360,6 +366,7 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip{ applyAfterDamage PARALYZED }
           }
         }
       };
@@ -372,6 +379,8 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            attachEnergyFrom(type:W, my.discard, my.all.select())
+            attachEnergyFrom(type:W, my.discard, my.all.select())
           }
         }
         move "Spinning Attack", {
@@ -385,9 +394,12 @@ public enum HiddenFates implements CardInfo {
         move "Hydro Pump GX", {
           text "40+ damage. This attack does 40 more damage times the amount of [W] Energy attached to this Pokémon. (You can't use more than 1 GX attack in a game.)"
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            gxCheck()
+          }
           onAttack {
-            damage 40
+            gxPerform()
+            damage 40+40*self.cards.energyCount(W)
           }
         }
       };
@@ -417,8 +429,11 @@ public enum HiddenFates implements CardInfo {
         move "Hyper Beam GX", {
           text "240 damage. (You can’t use more than 1 GX attack in a game.)"
           energyCost W, W, W, C
-          attackRequirement {}
+          attackRequirement {
+            gxCheck()
+          }
           onAttack {
+            gxPerform()
             damage 240
           }
         }
@@ -452,6 +467,7 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 80
+            heal 30, self
           }
         }
       };
@@ -491,8 +507,11 @@ public enum HiddenFates implements CardInfo {
         move "Spark Ball GX", {
           text "200 damage. (You can’t use more than 1 GX attack in a game.)"
           energyCost L, L, C
-          attackRequirement {}
+          attackRequirement {
+            gxCheck()
+          }
           onAttack {
+            gxPerform()
             damage 200
           }
         }
@@ -528,6 +547,7 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            flip 2, {damage 30}
           }
         }
       };
@@ -537,7 +557,11 @@ public enum HiddenFates implements CardInfo {
         resistance M, MINUS20
         bwAbility "Electromagnetic Wall", {
           text "As long as this Pokémon is your Active Pokémon, whenever your opponent attaches an Energy from his or her hand to 1 of his or her Pokémon, put 3 damage counters on that Pokémon."
-          actionA {
+          delayedA {
+            after ATTACH_ENERGY, {
+              if(self.active && ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite)
+                directDamage 30, ef.resolvedTarget
+            }
           }
         }
         move "Thunderbolt", {
@@ -546,6 +570,9 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 90
+            afterDamage{
+              discardAllSelfEnergy(null)
+            }
           }
         }
       };
@@ -556,9 +583,16 @@ public enum HiddenFates implements CardInfo {
         move "Hurricane Call", {
           text "Flip 4 coins. For each heads, search your deck for a [L] Energy card and attach it to 1 of your Pokémon-GX or Pokémon-EX. Then, shuffle your deck."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert deck
+          }
           onAttack {
-
+            flip 4, {
+              deck.search (basicEnergyFilter(L)).each {
+                attachEnergy(my.all.findAll {it.pokemonGX || it.pokemonEX},it)
+              }
+            }
+            shuffleDeck()
           }
         }
         move "Sky-High Claws", {
@@ -579,6 +613,7 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { discardDefendingEnergy() }
           }
         }
       };
@@ -599,7 +634,14 @@ public enum HiddenFates implements CardInfo {
         weakness P
         bwAbility "Last Pattern", {
           text "If this Pokémon is Knocked Out by damage from an opponent's attack, discard 2 random cards from your opponent's hand."
-          actionA {
+          delayedA {
+            after (KNOCKOUT, self) {
+              bc "Last Pattern activates"
+              bg.deterministicCurrentThreadPlayerType = self.owner
+              astonish()
+              astonish()
+              bg.clearDeterministicCurrentThreadPlayerType()
+            }
           }
         }
         move "Rocket Tail", {
@@ -608,6 +650,9 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            if(my.discard.find{it.name=="Jessie & James"}) {
+              damage 80
+            }
           }
         }
       };
@@ -629,6 +674,7 @@ public enum HiddenFates implements CardInfo {
         bwAbility "Surrender Now", {
           text "Once during your turn, if this Pokémon is discarded with the effect of Jessie & James, you may have your opponent discard a card from their hand. (They discard that card after the effect of Jessie & James.)"
           actionA {
+            // TODO:
           }
         }
         move "Tackle", {
@@ -674,9 +720,15 @@ public enum HiddenFates implements CardInfo {
         move "Psycrush GX", {
           text "120 damage. Discard all Energy from your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)"
           energyCost P, P, C
-          attackRequirement {}
+          attackRequirement {
+            gxCheck()
+          }
           onAttack {
+            gxPerform()
             damage 120
+            targeted (defending) {
+              opp.active.cards.filterByType(ENERGY).discard()
+            }
           }
         }
       };
@@ -720,7 +772,8 @@ public enum HiddenFates implements CardInfo {
           energyCost F, F, C, C
           attackRequirement {}
           onAttack {
-
+            discardSelfEnergy F,F
+            damage 80, opp.all.select()
           }
         }
       };
@@ -733,6 +786,9 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            damage 20, opp.bench.select()
+            damage 20, opp.bench.select()
+            damage 20, opp.bench.select()
           }
         }
         move "Land Crush", {
@@ -753,6 +809,7 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip{ applyAfterDamage PARALYZED }
           }
         }
         move "Heavy Impact", {
@@ -766,9 +823,13 @@ public enum HiddenFates implements CardInfo {
         move "Rocky Avalanche GX", {
           text "200 damage. During your opponent's next turn, this Pokémon takes 100 less damage from attacks (after applying Weakness and Resistance). (You can’t use more than 1 GX attack in a game.)"
           energyCost F, C, C, C, C
-          attackRequirement {}
+          attackRequirement {
+            gxCheck()
+          }
           onAttack {
+            gxPerform()
             damage 200
+            reduceDamageNextTurn(hp(100), thisMove)
           }
         }
       };
@@ -780,7 +841,7 @@ public enum HiddenFates implements CardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            damage 20, opp.all.select()
           }
         }
       };
@@ -793,7 +854,10 @@ public enum HiddenFates implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip {
+              my.deck.search(count:1,"Choose a Supporter card",cardTypeFilter(SUPPORTER)).showToOpponent("Chosen card").moveTo(my.hand)
+              shuffleDeck()
+            }
           }
         }
         move "Pound", {
@@ -878,14 +942,19 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 100
+            flipUntilTails{damage 30}
           }
         }
         move "Lovely Star GX", {
           text "130 damage. Heal all damage from this Pokémon. (You can't use more than 1 GX attack in a game.)"
           energyCost Y, Y, C
-          attackRequirement {}
+          attackRequirement {
+            gxCheck()
+          }
           onAttack {
+            gxPerform()
             damage 130
+            healAll self
           }
         }
       };
@@ -898,7 +967,8 @@ public enum HiddenFates implements CardInfo {
           energyCost Y
           attackRequirement {}
           onAttack {
-
+            draw self
+            draw OPPONENT
           }
         }
         move "Double Slap", {
@@ -906,7 +976,8 @@ public enum HiddenFates implements CardInfo {
           energyCost Y, Y
           attackRequirement {}
           onAttack {
-            damage 40
+            flip { damage 40 }
+            flip { damage 40 }
           }
         }
       };
@@ -925,9 +996,20 @@ public enum HiddenFates implements CardInfo {
         move "Sky Legends GX", {
           text "Shuffle this Pokémon and all cards attached to it into your deck. If this Pokémon has at least 1 extra [R], [W], and [L] Energy attached to it (in addition to this attack's cost), this attack does 110 damage to 3 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) (You can't use more than 1 GX attack in a game.)"
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            gxCheck()
+          }
           onAttack {
+            gxPerform()
+            if (self.cards.energySufficient(thisMove.energyCost + [R,W,L])) {
+              damage 110, opp.all.select()
+              damage 110, opp.all.select()
+              damage 110, opp.all.select()
+            }
 
+            self.cards.moveTo(my.deck)
+            removePCS(self)
+            shuffleDeck()
           }
         }
       };
@@ -953,6 +1035,7 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 80
+            damage 20, self
           }
         }
       };
@@ -965,6 +1048,7 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            flipUntilTails { damage 40 }
           }
         }
       };
@@ -976,7 +1060,7 @@ public enum HiddenFates implements CardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            opp.hand.showToMe("Opponent's hand")
           }
         }
         move "Spin Tackle", {
@@ -985,6 +1069,7 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flipTails {damage 10,self}
           }
         }
       };
@@ -1016,39 +1101,42 @@ public enum HiddenFates implements CardInfo {
       return supporter (this) {
         text "Look at the top 7 cards of your deck. You may reveal up to 2 Trainer cards you find there and put them into your hand. Shuffle the other cards back into your deck."
         onPlay {
+          deck.subList(0,7).select(min:0,max:2,"Select 2 supporters to put to hand",cardTypeFilter(SUPPORTER)).moveTo(hand)
+            shuffleDeck()
         }
         playRequirement{
+          assert deck
         }
       };
       case BLAINE_S_LAST_STAND_52:
-      return supporter (this) {
-        text "You can play this card only when it is the last card in your hand." +
-          "Draw 2 cards for each [R] Pokémon you have in play."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy (BLAINE_S_LAST_STAND_58, this);
       case BROCK_S_GRIT_53:
-      return supporter (this) {
-        text "Shuffle 6 in any combination of Pokémon and basic Energy cards from your discard pile into your deck."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy (BROCKS_GRIT_135, this)
       case BROCK_S_PEWTER_CITY_GYM_54:
       return stadium (this) {
         text "Onix-GX (both yours and your opponent's) take 40 less damage from the opponent's attacks (after applying Weakness and Resistance)."
+        def eff
         onPlay {
+          eff = delayed {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each{
+                if((it.to.name == "Onix-GX" && it.dmg.value && it.notNoEffect && it.from.owner != it.to.owner ){
+                  bc "Brock's Pewter City Gym -40"
+                  it.dmg -= hp(40)
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case BROCK_S_TRAINING_55:
       return supporter (this) {
         text "Attach an Energy card from your hand to 1 of your Geodude, Graveler, Golem, Onix-GX, Cubone, Rhyhorn, Rhydon, or Sudowoodo."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1060,6 +1148,7 @@ public enum HiddenFates implements CardInfo {
         onPlay {
         }
         playRequirement{
+          // TODO
         }
       };
       case GIOVANNI_S_EXILE_57:
@@ -1068,6 +1157,7 @@ public enum HiddenFates implements CardInfo {
         onPlay {
         }
         playRequirement{
+          // TODO
         }
       };
       case JESSIE_JAMES_58:
@@ -1076,6 +1166,7 @@ public enum HiddenFates implements CardInfo {
         onPlay {
         }
         playRequirement{
+          // TODO
         }
       };
       case KOGA_S_TRAP_59:
@@ -1084,6 +1175,7 @@ public enum HiddenFates implements CardInfo {
         onPlay {
         }
         playRequirement{
+          // TODO
         }
       };
       case LT_SURGE_S_STRATEGY_60:
@@ -1093,6 +1185,7 @@ public enum HiddenFates implements CardInfo {
         onPlay {
         }
         playRequirement{
+          // TODO
         }
       };
       case MISTY_S_CERULEAN_CITY_GYM_61:
@@ -1101,6 +1194,7 @@ public enum HiddenFates implements CardInfo {
         onPlay {
         }
         onRemoveFromPlay{
+          // TODO
         }
       };
       case MISTY_S_DETERMINATION_62:
@@ -1109,6 +1203,7 @@ public enum HiddenFates implements CardInfo {
         onPlay {
         }
         playRequirement{
+          // TODO
         }
       };
       case MISTY_S_WATER_COMMAND_63:
@@ -1117,14 +1212,20 @@ public enum HiddenFates implements CardInfo {
         onPlay {
         }
         playRequirement{
+          // TODO
         }
       };
       case POKEMON_CENTER_LADY_64:
       return supporter (this) {
         text "Heal 60 damage and remove all Special Conditions from 1 of your Pokémon."
         onPlay {
+          def list = my.all.findAll{(it.numberOfDamageCounters || it.specialConditions)}
+          def pcs = list.select("Heal which one")
+          heal 60, pcs, TRAINER_CARD
+          clearSpecialCondition pcs, TRAINER_CARD
         }
         playRequirement{
+          assert my.all.findAll{(it.numberOfDamageCounters || it.specialConditions)} : "There are no Pokemon to be healed"
         }
       };
       case SABRINA_S_SUGGESTION_65:
@@ -1133,6 +1234,7 @@ public enum HiddenFates implements CardInfo {
         onPlay {
         }
         playRequirement{
+          // TODO
         }
       };
       case MOLTRES_ZAPDOS_ARTICUNO_GX_66:
