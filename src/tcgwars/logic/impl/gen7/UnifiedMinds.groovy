@@ -2410,7 +2410,7 @@ public enum UnifiedMinds implements CardInfo {
             energyCost P, P, C
             onAttack {
               damage 100
-              if (defending.cards.filterByType(SPECIAL_ENERGY)) damage 60
+              if (self.cards.filterByType(SPECIAL_ENERGY)) damage 60
             }
           }
         };
