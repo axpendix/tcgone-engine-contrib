@@ -1,19 +1,21 @@
 package tcgwars.logic.impl.gen;
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
+import java.util.*;
+
+import org.apache.commons.lang.WordUtils;
+
 import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
-import static tcgwars.logic.groovy.TcgStatics.*
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.card.HP.*;
+import static tcgwars.logic.card.Resistance.ResistanceType.*
+import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.EffectType.*;
 import static tcgwars.logic.effect.Source.*;
-import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
-import static tcgwars.logic.card.Resistance.ResistanceType.*
+import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.groovy.TcgStatics.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
 import tcgwars.entity.*;
 import tcgwars.logic.*;
 import tcgwars.logic.card.*;
@@ -1146,20 +1148,16 @@ public enum HiddenFates implements CardInfo {
         text "You can play this card only if you have 4 or fewer other cards in your hand." +
           "Draw a card for each of your opponent's Pokémon in play."
         onPlay {
+          opp.all.each {
+              draw 1
+          }
         }
         playRequirement{
-          // TODO
+          assert my.hand.size() <= 4
         }
       };
       case GIOVANNI_S_EXILE_57:
-      return supporter (this) {
-        text "Discard up to 2 of your Benched Pokémon that have no damage counters on them and all cards attached to them."
-        onPlay {
-        }
-        playRequirement{
-          // TODO
-        }
-      };
+      return copy(GIOVANNI_S_EXILE_174, this);
       case JESSIE_JAMES_58:
       return supporter (this) {
         text "Each player discards 2 cards from their hand. Your opponent discards first."
@@ -1170,49 +1168,61 @@ public enum HiddenFates implements CardInfo {
         }
       };
       case KOGA_S_TRAP_59:
-      return supporter (this) {
-        text "Your opponent's Active Pokémon is now Confused and Poisoned."
-        onPlay {
-        }
-        playRequirement{
-          // TODO
-        }
-      };
+      return copy(KOGA_S_TRAP_177, this);
       case LT_SURGE_S_STRATEGY_60:
-      return supporter (this) {
-        text "You can play this card only if you have more Prize cards remaining than your opponent." +
-          "During this turn, you can play 3 Supporter cards (including this card)."
-        onPlay {
-        }
-        playRequirement{
-          // TODO
-        }
-      };
+      return copy(LT_SURGE_S_STRATEGY_178, this);
       case MISTY_S_CERULEAN_CITY_GYM_61:
       return stadium (this) {
         text "The attacks of Starmie-GX (both yours and your opponent's) do 40 more damage to the opponent's Active Pokémon (before applying Weakness and Resistance)."
+        def eff
         onPlay {
+          eff = delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              bg.dm().each{
+                if(it.from.name == "Starmie-GX" && it.dmg.value && it.from.owner == it.to.owner.opposite && it.to.active){
+                  bc "Misty's Cerulean City Gym +40"
+                  it.dmg += hp(40)
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay{
-          // TODO
+          eff.unregister()
         }
       };
       case MISTY_S_DETERMINATION_62:
       return supporter (this) {
         text "Discard a card from your hand. If you do, look at the top 8 cards of your deck and put 1 of them into your hand. Shuffle the other cards back into your deck."
         onPlay {
+          my.hand.getExcludedList(thisCard).select("Select a card to discard.").discard()
+          def cards = my.deck.subList(0,8)
+          cards.select(count:1,"Choose 2 cards to put in your hand").moveTo(my.hand)
+          shuffleDeck()
         }
         playRequirement{
-          // TODO
+          assert my.hand.getExcludedList(thisCard)
         }
       };
       case MISTY_S_WATER_COMMAND_63:
       return supporter (this) {
         text "Move any number of [W] Energy from your Pokémon to your Psyduck, Horsea, Staryu, Starmie-GX, Magikarp, Gyarados, or Lapras in any way you like."
+        def eligible = ["Psyduck", "Horsea", "Staryu", "Starmie-GX", "Magikarp", "Gyarados", "Lapras"]
         onPlay {
+          while(1){
+            def pl=(my.all.findAll {it.cards.energyCount(W)})
+            if(!pl) break;
+            def src =pl.select("Source for energy (cancel to stop)", false)
+            if(!src) break;
+            def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
+
+            def tar=my.all.findAll{ eligible.contains(it.name) }.select("Target for energy (cancel to stop)", false)
+            if(!tar) break;
+            energySwitch(src, tar, card)
+          }
         }
         playRequirement{
-          // TODO
+          assert my.all.findAll{ eligible.contains(it.name) }
         }
       };
       case POKEMON_CENTER_LADY_64:
@@ -1229,14 +1239,7 @@ public enum HiddenFates implements CardInfo {
         }
       };
       case SABRINA_S_SUGGESTION_65:
-      return supporter (this) {
-        text "Your opponent reveals their hand. You may choose a Supporter card you find there and use the effect of that card as the effect of this card."
-        onPlay {
-        }
-        playRequirement{
-          // TODO
-        }
-      };
+      return copy(SABRINAS_SUGGESTION_154, this);
       case MOLTRES_ZAPDOS_ARTICUNO_GX_66:
       return copy (MOLTRES_ZAPDOS_ARTICUNO_GX_44, this);
       case GIOVANNI_S_EXILE_67:
