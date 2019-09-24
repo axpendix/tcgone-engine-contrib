@@ -1111,9 +1111,9 @@ public enum HiddenFates implements CardInfo {
         }
       };
       case BLAINE_S_LAST_STAND_52:
-      return copy (BLAINE_S_LAST_STAND_58, this);
+      return copy (DragonMajesty.BLAINE_S_LAST_STAND_58, this);
       case BROCK_S_GRIT_53:
-      return copy (BROCKS_GRIT_135, this)
+      return copy (TeamUp.BROCKS_GRIT_135, this)
       case BROCK_S_PEWTER_CITY_GYM_54:
       return stadium (this) {
         text "Onix-GX (both yours and your opponent's) take 40 less damage from the opponent's attacks (after applying Weakness and Resistance)."
@@ -1157,7 +1157,7 @@ public enum HiddenFates implements CardInfo {
         }
       };
       case GIOVANNI_S_EXILE_57:
-      return copy(GIOVANNI_S_EXILE_174, this);
+      return copy(UnbrokenBonds.GIOVANNI_S_EXILE_174, this);
       case JESSIE_JAMES_58:
       return supporter (this) {
         text "Each player discards 2 cards from their hand. Your opponent discards first."
@@ -1168,9 +1168,9 @@ public enum HiddenFates implements CardInfo {
         }
       };
       case KOGA_S_TRAP_59:
-      return copy(KOGA_S_TRAP_177, this);
+      return copy(UnbrokenBonds.KOGA_S_TRAP_177, this);
       case LT_SURGE_S_STRATEGY_60:
-      return copy(LT_SURGE_S_STRATEGY_178, this);
+      return copy(UnbrokenBonds.LT_SURGE_S_STRATEGY_178, this);
       case MISTY_S_CERULEAN_CITY_GYM_61:
       return stadium (this) {
         text "The attacks of Starmie-GX (both yours and your opponent's) do 40 more damage to the opponent's Active Pokémon (before applying Weakness and Resistance)."
@@ -1239,7 +1239,7 @@ public enum HiddenFates implements CardInfo {
         }
       };
       case SABRINA_S_SUGGESTION_65:
-      return copy(SABRINAS_SUGGESTION_154, this);
+      return copy(TeamUp.SABRINAS_SUGGESTION_154, this);
       case MOLTRES_ZAPDOS_ARTICUNO_GX_66:
       return copy (MOLTRES_ZAPDOS_ARTICUNO_GX_44, this);
       case GIOVANNI_S_EXILE_67:
