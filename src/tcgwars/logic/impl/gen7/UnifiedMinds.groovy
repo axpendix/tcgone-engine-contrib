@@ -4549,7 +4549,7 @@ public enum UnifiedMinds implements CardInfo {
         return itemCard (this) {
           text "Your opponent shuffles their hand into their deck and draws a card for each of their remaining Prize cards."
           onPlay {
-            opp.hand.moveTo(opp.deck)
+            opp.hand.moveTo(hidden:true, opp.deck)
             shuffleDeck(null, TargetPlayer.OPPONENT)
             draw opp.prizeCardSet.size(), TargetPlayer.OPPONENT
           }
