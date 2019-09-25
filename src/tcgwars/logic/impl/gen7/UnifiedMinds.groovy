@@ -2854,7 +2854,7 @@ public enum UnifiedMinds implements CardInfo {
           bwAbility "Cellular Companions", {
             text "As long as this Pokémon is on your Bench, your Zygarde's and Zygarde-GX's attacks do 20 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
             delayedA {
-              before APPLY_ATTACK_DAMAGES, {
+              after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
                   if(!self.active && it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value && (it.from.name == "Zygarde" || it.from.name == "Zygarde-GX")) {
                     bc "Cellular Companions +20"
