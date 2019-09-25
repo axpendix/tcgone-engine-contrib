@@ -1889,7 +1889,7 @@ public enum UnifiedMinds implements CardInfo {
               def topCard = opp.deck.subList(0, 1)
               topCard.showToMe("Top card of your opponent's deck")
               if (topCard.filterByType(POKEMON)) {
-                damage topCard.flatten().asPokemonCard().hp.value
+                damage topCard.each{it.asPokemonCard().hp.value}
               }
               topCard.discard()
             }
