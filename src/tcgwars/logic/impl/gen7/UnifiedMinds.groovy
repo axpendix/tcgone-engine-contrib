@@ -1886,12 +1886,12 @@ public enum UnifiedMinds implements CardInfo {
           move "Spirit Smash", {
             text "Discard the top card of your opponent's deck. If the card you discarded is a Pokémon, this attack does damage equal to that Pokémon’s HP to your opponent's Active Pokémon."
             onAttack {
-              def card = opp.deck.subList(0, 1)
-              card.showToMe("Top card of your opponent's deck to be discarded.")
-              if (opp.deck.subList(0, 1).cardTypes.is(POKEMON)) {
-                damage card.hp.value
+              def topCard = opp.deck.subList(0, 1)
+              topCard.showToMe("Top card of your opponent's deck")
+              if (topCard.filterByType(POKEMON)) {
+                damage topCard.asPokemonCard().hp.value
               }
-              card.discard()
+              topCard.discard()
             }
           }
           move "Bone Beatdown", {
