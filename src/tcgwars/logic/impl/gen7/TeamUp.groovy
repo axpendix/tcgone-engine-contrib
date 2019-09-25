@@ -2323,7 +2323,7 @@ public enum TeamUp implements CardInfo {
               assert my.deck : "There is no card in your deck"
             }
             onAttack{
-              my.deck.search(max:2,"Choose 2 card to put in your hand",{true}).moveTo(my.hand)
+              my.deck.search(max:2,"Choose 2 card to put in your hand",{true}).moveTo(hidden: true, my.hand)
             }
           }
           move "Dark Strike" , {
