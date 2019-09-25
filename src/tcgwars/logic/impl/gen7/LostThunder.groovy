@@ -4122,7 +4122,7 @@ public enum LostThunder implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if(self.types.contains(Y)){
                   bg.dm().each {
-                    if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(G) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
+                    if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(G) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value && it.notNoEffect){
                       bc "Fairy Charm [G] prevent damage from [G] Pokémon-GX and [G] Pokémon-EX"
                       it.dmg = hp(0)
                     }
@@ -4144,7 +4144,7 @@ public enum LostThunder implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if(self.types.contains(Y)){
                   bg.dm().each {
-                    if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(P) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
+                    if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(P) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value && it.notNoEffect){
                       bc "Fairy Charm [P] prevent damage from [P] Pokémon-GX and [P] Pokémon-EX"
                       it.dmg = hp(0)
                     }
@@ -4166,7 +4166,7 @@ public enum LostThunder implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if(self.types.contains(Y)){
                   bg.dm().each {
-                    if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(F) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
+                    if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(F) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value && it.notNoEffect){
                       bc "Fairy Charm [F] prevent damage from [F] Pokémon-GX and [F] Pokémon-EX"
                       it.dmg = hp(0)
                     }
@@ -4188,7 +4188,7 @@ public enum LostThunder implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if(self.types.contains(Y)){
                   bg.dm().each {
-                    if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(N) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value){
+                    if(it.to==self && it.from.owner!=self.owner && it.from.types.contains(N) && (it.from.pokemonGX || it.from.pokemonEX) && it.dmg.value && it.notNoEffect){
                       bc "Fairy Charm [N] prevent damage from [N] Pokémon-GX and [N] Pokémon-EX"
                       it.dmg = hp(0)
                     }
