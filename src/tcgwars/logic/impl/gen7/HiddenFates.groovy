@@ -1,4 +1,4 @@
-package tcgwars.logic.impl.gen;
+package tcgwars.logic.impl.gen7;
 
 import tcgwars.logic.impl.gen7.TeamUp;
 import tcgwars.logic.impl.gen7.DragonMajesty;
