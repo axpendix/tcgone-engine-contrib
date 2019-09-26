@@ -4250,20 +4250,18 @@ public enum UnbrokenBonds implements CardInfo {
             assert opp.deck
           }
         };
-      case DEVOLUTION_SPRAY_Z_166:
+        case DEVOLUTION_SPRAY_Z_166:
         return itemCard (this) {
           text "Devolve 1 of your evolved Pokémon by shuffling any number of Evolution cards on it into your deck. (That Pokémon can't evolve this turn.)"
           onPlay {
             def pcs = my.all.findAll{it.evolution}.select("Pokemon to devolve")
-            def pkmn = new PcsList()
-            pkmn.addAll(pcs.pokemonCards)
-            pkmn.remove(pcs.topPokemonCard)
-            def stage = pkmn.size()>1 ? pkmn.select("Choose stage to devolve to").first() : pkmn.first()
-            for(PokemonCard t7:pcs.pokemonCards){
-              if (t7 == stage) break
-              new CardList(t7).moveTo(deck)
-              devolve(pcs, t7)
-              if(!pcs.inPlay) break // DED
+            def top = pcs.topPokemonCard
+            bc "$top devolved"
+            devolve(pcs, top)
+            while(pcs.evolution && confirm("Devolve the next evolution?")){
+              top = pcs.topPokemonCard
+              bc "$top devolved"
+              devolve(pcs, top)
             }
             shuffleDeck()
           }
