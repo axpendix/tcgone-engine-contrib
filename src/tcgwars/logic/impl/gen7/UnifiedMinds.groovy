@@ -2005,9 +2005,8 @@ public enum UnifiedMinds implements CardInfo {
           move "Star Search", {
             text "Search your deck for an Energy card and attach it to 1 of your [P] Pokémon. Then, shuffle your deck."
             energyCost P
-            attackRequirement { assert my.deck : "There are no more cards in your deck." }
             onAttack {
-              attachEnergyFrom(basic: true, type:P, my.deck, my.all.findAll { it.types.contains(P) })
+              attachEnergyFrom(my.deck, my.all.findAll { it.types.contains(P) })
               shuffleDeck()
             }
           }
