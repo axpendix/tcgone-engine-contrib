@@ -4256,10 +4256,12 @@ public enum UnbrokenBonds implements CardInfo {
           onPlay {
             def pcs = my.all.findAll{it.evolution}.select("Pokemon to devolve")
             def top = pcs.topPokemonCard
+            top.moveTo(deck)
             bc "$top devolved"
             devolve(pcs, top)
             while(pcs.evolution && confirm("Devolve the next evolution?")){
               top = pcs.topPokemonCard
+              top.moveTo(deck)
               bc "$top devolved"
               devolve(pcs, top)
             }
