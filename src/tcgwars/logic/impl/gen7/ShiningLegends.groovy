@@ -1038,13 +1038,11 @@ public enum ShiningLegends implements CardInfo {
                     bc "$top Devolved"
                     moveCard(top, opp.hand)
                     devolve(defending, top)
-                    }
                   }
                 }
               }
             }
           }
-
         };
       case GOLETT_43:
         return basic (this, hp:HP090, type:DARKNESS, retreatCost:3) {
