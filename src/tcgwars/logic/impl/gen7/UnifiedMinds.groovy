@@ -849,19 +849,20 @@ public enum UnifiedMinds implements CardInfo {
         return basic (this, hp:HP190, type:R, retreatCost:3) {
           weakness W
           bwAbility "Burning Road", {
-            text "Once during your turn (before your attack), if this Pokémon was on the Bench and became your Active Pokémon this turn, you may move any number of [R] Energy attached to your Pokémon to this Pokémon."
-            actionA {
-              checkLastTurn()
-              assert wasSwitchedOutThisTurn(self) : "$self was not became Active this turn"
-              assert my.all.findAll { it.cards.filterByEnergyType(R) && it!=self } : "No other pokemon that has [R] attached"
-              powerUsed()
-              while(1) {
-                def pl = (my.all.findAll { it.cards.filterByEnergyType(R) && it!=self })
-                if (!pl) break;
-                def src=pl.select("Source for energy (cancel to stop moving)", false)
-                if (!src) break;
-                def card = src.cards.filterByEnergyType(R).select("[R] Energy Card to move to Heatran-GX").first()
-                energySwitch(src, self, card)
+            text "Once during your turn, when this Pokémon moves from your Bench to become your Active Pokémon, you may move any number of [R] Energy from your other Pokémon to it."
+            delayedA{
+              after SWITCH, {
+                if(bg.em().retrieveObject("Burning_Road") != bg.turnCount && self.active && bg.currentTurn == self.owner){
+                  bg.em().storeObject("Burning_Road", bg.turnCount)
+                  while(1){
+                    def pl=(my.all.findAll {it.cards.filterByEnergyType(R) && it!=self})
+                    if(!pl) break;
+                    def src=pl.select("Source for energy (cancel to stop moving)", false)
+                    if(!src) break;
+                    def card=src.cards.filterByEnergyType(R).select("Card to move").first()
+                    energySwitch(src, self, card)
+                  }
+                }
               }
             }
           }
