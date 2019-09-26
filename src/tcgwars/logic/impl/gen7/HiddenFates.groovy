@@ -4,8 +4,8 @@ import tcgwars.logic.impl.gen7.TeamUp;
 import tcgwars.logic.impl.gen7.DragonMajesty;
 import tcgwars.logic.impl.gen7.UnbrokenBonds;
 import tcgwars.logic.impl.gen6.Evolutions;
-import tcgwars.logic.impl.gen6.FlashFire;
-import tcgwars.logic.impl.gen6.BreakPoint;
+import tcgwars.logic.impl.gen6.Flashfire;
+import tcgwars.logic.impl.gen6.Breakpoint;
 
 import java.util.*;
 
