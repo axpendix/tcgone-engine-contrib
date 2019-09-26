@@ -4259,7 +4259,7 @@ public enum UnbrokenBonds implements CardInfo {
             moveCard(top, my.deck)
             bc "$top devolved"
             devolve(pcs, top)
-            while(pcs.evolution && confirm("Devolve the next evolution?")){
+            while(pcs.evolution && confirm("$top was devolved. Devolve the next evolution?")){
               top = pcs.topPokemonCard
               moveCard(top, my.deck)
               bc "$top devolved"

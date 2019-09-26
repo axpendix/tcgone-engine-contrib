@@ -1031,17 +1031,13 @@ public enum ShiningLegends implements CardInfo {
             onAttack {
               damage 10
               afterDamage {
-                if(defending.evolution) {
+                def top
+                while(defending.evolution) {
                   targeted (defending) {
-                    def top=defending.topPokemonCard
+                    top=defending.topPokemonCard
                     bc "$top Devolved"
                     moveCard(top, opp.hand)
                     devolve(defending, top)
-                    if(defending.evolution) {
-                      top=defending.topPokemonCard
-                      bc "$top Devolved"
-                      moveCard(top, opp.hand)
-                      devolve(defending, top)
                     }
                   }
                 }
