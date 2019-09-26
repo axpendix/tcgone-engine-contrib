@@ -2311,7 +2311,7 @@ public enum UnifiedMinds implements CardInfo {
               before (KNOCKOUT, self) {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                   bc "Durable Blade activates"
-                  moveCard(self.topPokemonCard, self.owner.hand)
+                  moveCard(self.topPokemonCard, self.owner.pbg.hand)
                 }
               }
             }
