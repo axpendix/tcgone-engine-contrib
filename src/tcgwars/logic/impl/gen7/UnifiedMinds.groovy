@@ -2676,12 +2676,13 @@ public enum UnifiedMinds implements CardInfo {
           bwAbility "Avenging Aura", {
             text "If you have more Prize cards remaining than your opponent, this Pokémon's attacks do 80 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
             delayedA{
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  def plusDmg = 80
-                  if (my.prizeCardSet.size() > opp.prizeCardSet.size()) {
-                    bc "Avenging Aura +$plusDmg"
-                    it.dmg += hp(plusDmg)
+              after PROCESS_ATTACK_EFFECTS, {
+                if (my.prizeCardSet.size() > opp.prizeCardSet.size()) {
+                  bg.dm().each {
+                    if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                      bc "Avenging Aura +80"
+                      it.dmg += hp(80)
+                    }
                   }
                 }
               }
