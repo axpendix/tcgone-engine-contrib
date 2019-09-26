@@ -1,5 +1,12 @@
 package tcgwars.logic.impl.gen;
 
+import tcgwars.logic.impl.gen7.TeamUp;
+import tcgwars.logic.impl.gen7.DragonMajesty;
+import tcgwars.logic.impl.gen7.UnbrokenBonds;
+import tcgwars.logic.impl.gen6.Evolutions;
+import tcgwars.logic.impl.gen6.FlashFire;
+import tcgwars.logic.impl.gen6.BreakPoint;
+
 import java.util.*;
 
 import org.apache.commons.lang.WordUtils;
