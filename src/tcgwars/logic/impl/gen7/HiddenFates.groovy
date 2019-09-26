@@ -788,9 +788,11 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            damage 20, opp.bench.select()
-            damage 20, opp.bench.select()
-            damage 20, opp.bench.select()
+            if(opp.bench){
+              multiSelect(opp.bench, 3).each{
+                targeted(it){ damage 20, it }
+              }
+            }
           }
         }
         move "Land Crush", {
@@ -978,8 +980,7 @@ public enum HiddenFates implements CardInfo {
           energyCost Y, Y
           attackRequirement {}
           onAttack {
-            flip { damage 40 }
-            flip { damage 40 }
+            flip 2, { damage 40 }
           }
         }
       };
@@ -1004,14 +1005,18 @@ public enum HiddenFates implements CardInfo {
           onAttack {
             gxPerform()
             if (self.cards.energySufficient(thisMove.energyCost + [R,W,L])) {
-              damage 110, opp.all.select()
-              damage 110, opp.all.select()
-              damage 110, opp.all.select()
+              if(opp.bench){
+                multiSelect(opp.bench, 3).each{
+                  targeted(it){ damage 110, it }
+                }
+              }
             }
 
-            self.cards.moveTo(my.deck)
-            removePCS(self)
-            shuffleDeck()
+            afterDamage{
+              self.cards.moveTo(my.deck)
+              removePCS(self)
+              shuffleDeck()
+            }
           }
         }
       };
@@ -1071,7 +1076,7 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            flipTails {damage 10,self}
+            flipTails {damage 10, self}
           }
         }
       };
@@ -1099,21 +1104,12 @@ public enum HiddenFates implements CardInfo {
           }
         }
       };
-      case BILL_S_ANALYSIS_51:
-      return supporter (this) {
-        text "Look at the top 7 cards of your deck. You may reveal up to 2 Trainer cards you find there and put them into your hand. Shuffle the other cards back into your deck."
-        onPlay {
-          deck.subList(0,7).select(min:0,max:2,"Select 2 supporters to put to hand",cardTypeFilter(SUPPORTER)).moveTo(hand)
-            shuffleDeck()
-        }
-        playRequirement{
-          assert deck
-        }
-      };
+      case BILL_S_ANALYSIS_51:        
+      return copy (TeamUp.BILL_S_ANALYSIS_133, this);
       case BLAINE_S_LAST_STAND_52:
       return copy (DragonMajesty.BLAINE_S_LAST_STAND_58, this);
       case BROCK_S_GRIT_53:
-      return copy (TeamUp.BROCKS_GRIT_135, this)
+      return copy (TeamUp.BROCKS_GRIT_135, this);
       case BROCK_S_PEWTER_CITY_GYM_54:
       return stadium (this) {
         text "Onix-GX (both yours and your opponent's) take 40 less damage from the opponent's attacks (after applying Weakness and Resistance)."
@@ -1138,33 +1134,28 @@ public enum HiddenFates implements CardInfo {
       return supporter (this) {
         text "Attach an Energy card from your hand to 1 of your Geodude, Graveler, Golem, Onix-GX, Cubone, Rhyhorn, Rhydon, or Sudowoodo."
         onPlay {
-          // TODO
+          def tar = my.all.findAll{['Geodude', 'Graveler', 'Golem', 'Onix-GX', 'Cubone', 'Rhyhorn', 'Rhydon', 'Sudowoodo'].contains(it.topPokemonCard.name)}.select("Select the Pokémon to which you want to attach Energy.")
+            attachEnergyFrom(my.hand, tar)
         }
         playRequirement{
+          assert my.all.findAll{['Geodude', 'Graveler', 'Golem', 'Onix-GX', 'Cubone', 'Rhyhorn', 'Rhydon', 'Sudowoodo'].contains(it.topPokemonCard.name)} : "No valid targets"
+          assert my.hand.filterByType(ENERGY) : "No energy in hand"
         }
       };
       case ERIKA_S_HOSPITALITY_56:
-      return supporter (this) {
-        text "You can play this card only if you have 4 or fewer other cards in your hand." +
-          "Draw a card for each of your opponent's Pokémon in play."
-        onPlay {
-          opp.all.each {
-              draw 1
-          }
-        }
-        playRequirement{
-          assert my.hand.size() <= 4
-        }
-      };
+      return copy (TeamUp.ERIKAS_HOSPITALITY_140, this);
       case GIOVANNI_S_EXILE_57:
       return copy(UnbrokenBonds.GIOVANNI_S_EXILE_174, this);
       case JESSIE_JAMES_58:
       return supporter (this) {
         text "Each player discards 2 cards from their hand. Your opponent discards first."
         onPlay {
+          opp.hand.select(count:2, "Choose two cards to discard").showToMe("Opponent's discarded cards").discard()
+          my.hand.select(count:2, "Choose teo cards to discard").showToOpp("Opponent's discarded cards").discard()
+          // Todo: add src so that it can work with Weezing
         }
         playRequirement{
-          // TODO
+          assert opp.hand || my.hand.getExcludedList(thisCard) : "No cards to discard"
         }
       };
       case KOGA_S_TRAP_59:
@@ -1192,18 +1183,7 @@ public enum HiddenFates implements CardInfo {
         }
       };
       case MISTY_S_DETERMINATION_62:
-      return supporter (this) {
-        text "Discard a card from your hand. If you do, look at the top 8 cards of your deck and put 1 of them into your hand. Shuffle the other cards back into your deck."
-        onPlay {
-          my.hand.getExcludedList(thisCard).select("Select a card to discard.").discard()
-          def cards = my.deck.subList(0,8)
-          cards.select(count:1,"Choose 2 cards to put in your hand").moveTo(my.hand)
-          shuffleDeck()
-        }
-        playRequirement{
-          assert my.hand.getExcludedList(thisCard)
-        }
-      };
+      return copy(BreakPoint.MISTY_S_DETERMINATION_104, this);
       case MISTY_S_WATER_COMMAND_63:
       return supporter (this) {
         text "Move any number of [W] Energy from your Pokémon to your Psyduck, Horsea, Staryu, Starmie-GX, Magikarp, Gyarados, or Lapras in any way you like."
@@ -1214,7 +1194,7 @@ public enum HiddenFates implements CardInfo {
             if(!pl) break;
             def src =pl.select("Source for energy (cancel to stop)", false)
             if(!src) break;
-            def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
+            def card=src.cards.select.filterByEnergyType(W)("Energy to move").first()
 
             def tar=my.all.findAll{ eligible.contains(it.name) }.select("Target for energy (cancel to stop)", false)
             if(!tar) break;
@@ -1222,22 +1202,12 @@ public enum HiddenFates implements CardInfo {
           }
         }
         playRequirement{
-          assert my.all.findAll{ eligible.contains(it.name) }
+          assert my.all.findAll{ eligible.contains(it.name) } : "No valid targets"
+          assert my.all.findAll {it.cards.energyCount(W)} : "No Water energy in play"
         }
       };
       case POKEMON_CENTER_LADY_64:
-      return supporter (this) {
-        text "Heal 60 damage and remove all Special Conditions from 1 of your Pokémon."
-        onPlay {
-          def list = my.all.findAll{(it.numberOfDamageCounters || it.specialConditions)}
-          def pcs = list.select("Heal which one")
-          heal 60, pcs, TRAINER_CARD
-          clearSpecialCondition pcs, TRAINER_CARD
-        }
-        playRequirement{
-          assert my.all.findAll{(it.numberOfDamageCounters || it.specialConditions)} : "There are no Pokemon to be healed"
-        }
-      };
+      return copy(FlashFire.POKEMON_CENTER_LADY_93, this);
       case SABRINA_S_SUGGESTION_65:
       return copy(TeamUp.SABRINAS_SUGGESTION_154, this);
       case MOLTRES_ZAPDOS_ARTICUNO_GX_66:
