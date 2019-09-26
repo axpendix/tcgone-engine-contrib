@@ -2308,11 +2308,11 @@ public enum UnifiedMinds implements CardInfo {
           bwAbility "Durable Blade", {
             text "If this Pokémon is Knocked Out by damage from an opponent's attack, put it into your hand instead of the discard pile. (Discard all cards attached to it.)"
             delayedA {
-              after (KNOCKOUT, self) {
-                bc "Durable Blade activates"
-                bg.deterministicCurrentThreadPlayerType = self.owner
-                moveCard(self.topPokemonCard, self.owner.hand)
-                bg.clearDeterministicCurrentThreadPlayerType()
+              before (KNOCKOUT, self) {
+                if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+                  bc "Durable Blade activates"
+                  moveCard(self.topPokemonCard, self.owner.hand)
+                }
               }
             }
           }
