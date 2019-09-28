@@ -4296,7 +4296,7 @@ public enum UnbrokenBonds implements CardInfo {
               def extraPoison
               before SWITCH, null, TRAINER_CARD, {
                 flag = ef.fallenBack.isSPC(POISONED)
-                getterA (GET_EXTRA_POISON) {h->
+                getter (GET_EXTRA_POISON) {h->
                   if(h.effect.target.owner == bg.currentTurn) {
                     extraPoison = h.object
                   }
@@ -4304,7 +4304,7 @@ public enum UnbrokenBonds implements CardInfo {
               }
               after SWITCH, null, TRAINER_CARD, {
                 if(flag) {apply(POISONED, ef.switchedOut, TRAINER_CARD)}
-                getterA (GET_EXTRA_POISON) {h->
+                getter (GET_EXTRA_POISON) {h->
                   if(h.effect.target.owner == bg.currentTurn) {
                     h.object = extraPoison
                   }
