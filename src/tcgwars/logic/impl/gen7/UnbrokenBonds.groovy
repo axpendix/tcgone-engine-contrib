@@ -4293,11 +4293,22 @@ public enum UnbrokenBonds implements CardInfo {
           onPlay {
             eff = delayed {
               def flag = 0
+              def extraPoison
               before SWITCH, null, TRAINER_CARD, {
                 flag = ef.fallenBack.isSPC(POISONED)
+                getterA (GET_EXTRA_POISON) {h->
+                  if(h.effect.target.owner == bg.currentTurn) {
+                    extraPoison = h.object
+                  }
+                }
               }
               after SWITCH, null, TRAINER_CARD, {
                 if(flag) {apply(POISONED, ef.switchedOut, TRAINER_CARD)}
+                getterA (GET_EXTRA_POISON) {h->
+                  if(h.effect.target.owner == bg.currentTurn) {
+                    h.object = extraPoison
+                  }
+                }
               }
             }
           }
