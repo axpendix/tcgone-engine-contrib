@@ -388,8 +388,10 @@ public enum HiddenFates implements CardInfo {
           attackRequirement {}
           onAttack {
             damage 40
-            attachEnergyFrom(type:W, my.discard, my.all.select())
-            attachEnergyFrom(type:W, my.discard, my.all.select())
+            afterDamage{
+              if(my.discard.filterByEnergyType(W)) { attachEnergyFrom(type:W, my.discard, my.all.select()) }
+              if(my.discard.filterByEnergyType(W)) { attachEnergyFrom(type:W, my.discard, my.all.select()) }
+            }
           }
         }
         move "Spinning Attack", {
@@ -569,7 +571,7 @@ public enum HiddenFates implements CardInfo {
           delayedA {
             after ATTACH_ENERGY, {
               if(self.active && ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite)
-                directDamage 30, ef.resolvedTarget
+                directDamage 20, ef.resolvedTarget
             }
           }
         }
@@ -596,12 +598,14 @@ public enum HiddenFates implements CardInfo {
             assert deck
           }
           onAttack {
-            flip 4, {
-              deck.search (basicEnergyFilter(L)).each {
-                attachEnergy(my.all.findAll {it.pokemonGX || it.pokemonEX},it)
+            if(my.all.findAll {it.pokemonGX || it.pokemonEX}) {
+              flip 4, {
+                deck.search (basicEnergyFilter(L)).each {
+                  attachEnergy(my.all.findAll {it.pokemonGX || it.pokemonEX}.select("Attach energy to?"),it)
+                }
               }
+              shuffleDeck()
             }
-            shuffleDeck()
           }
         }
         move "Sky-High Claws", {
@@ -1111,7 +1115,7 @@ public enum HiddenFates implements CardInfo {
           }
         }
       };
-      case BILL_S_ANALYSIS_51:        
+      case BILL_S_ANALYSIS_51:
       return copy (TeamUp.BILL_S_ANALYSIS_133, this);
       case BLAINE_S_LAST_STAND_52:
       return copy (DragonMajesty.BLAINE_S_LAST_STAND_58, this);
