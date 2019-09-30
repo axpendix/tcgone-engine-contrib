@@ -1126,7 +1126,7 @@ public enum HiddenFates implements CardInfo {
         }
       };
       case BILL_S_ANALYSIS_51:
-      return copy (TeamUp.BILL_S_ANALYSIS_133, this);
+      return copy (TeamUp.BILLS_ANALYSIS_133, this);
       case BLAINE_S_LAST_STAND_52:
       return copy (DragonMajesty.BLAINE_S_LAST_STAND_58, this);
       case BROCK_S_GRIT_53:
@@ -1173,8 +1173,8 @@ public enum HiddenFates implements CardInfo {
         onPlay {
           def key = "jessie_james_discarded_cards"
           def list = []
-          list.addAll(opp.hand.select(count:2, "Choose two cards to discard").showToMe("Opponent's discarded cards").discard())
-          list.addAll(my.hand.select(count:2, "Choose teo cards to discard").showToOpp("Opponent's discarded cards").discard())
+          list.addAll(opp.hand.oppSelect(count:2, "Choose two cards to discard").discard())
+          list.addAll(my.hand.getExcludedList(thisCard).select(count:2, "Choose teo cards to discard").discard())
           bg.em().retrieveAndStore(key, {it ?: []})
           list.each {card -> 
             bg.em().retrieveAndStore(key, {it.add(card); it})
