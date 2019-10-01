@@ -448,7 +448,7 @@ public class CardList extends ArrayList<Card> {
   }
   public void shuffle(){
     if(autosort) throw new IllegalStateException("Autosort is active");
-    Collections.shuffle(this, LUtils.RANDOM);
+    Collections.shuffle(this, Battleground.getInstance().rng);
   }
   public CardList reverse(){
     return new CardList(DefaultGroovyMethods.reverse(this));
