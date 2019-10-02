@@ -1167,9 +1167,7 @@ public enum UnifiedMinds implements CardInfo {
             energyCost W, C, C
             onAttack {
               damage 70
-              applyAfterDamage {
-                if (opp.active.cards.filterByEnergyType(W)) apply PARALYZED
-              }
+              if (opp.active.cards.filterByEnergyType(W)) applyAfterDamage PARALYZED
             }
           }
           move "Wild Tackle", {
