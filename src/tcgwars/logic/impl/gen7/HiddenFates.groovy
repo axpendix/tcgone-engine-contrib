@@ -1,15 +1,9 @@
 package tcgwars.logic.impl.gen7;
 
-import tcgwars.logic.impl.gen7.TeamUp;
-import tcgwars.logic.impl.gen7.DragonMajesty;
-import tcgwars.logic.impl.gen7.UnbrokenBonds;
-import tcgwars.logic.impl.gen6.Evolutions;
-import tcgwars.logic.impl.gen6.Flashfire;
-import tcgwars.logic.impl.gen6.Breakpoint;
+import tcgwars.logic.impl.gen7.*;
+import tcgwars.logic.impl.gen6.*;
 
 import java.util.*;
-
-import org.apache.commons.lang.WordUtils;
 
 import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.card.HP.*;
@@ -42,6 +36,7 @@ import tcgwars.logic.util.*;
 
 /**
  * @author luongthomasdev@gmail.com
+ * @author axpendix@hotmail.com
  */
 public enum HiddenFates implements CardInfo {
 
@@ -992,8 +987,8 @@ public enum HiddenFates implements CardInfo {
           energyCost Y
           attackRequirement {}
           onAttack {
-            draw self
-            draw OPPONENT
+            draw 1, TargetPlayer.SELF
+            draw 1, TargetPlayer.OPPONENT
           }
         }
         move "Double Slap", {
@@ -1028,7 +1023,7 @@ public enum HiddenFates implements CardInfo {
             if (self.cards.energySufficient(thisMove.energyCost + [R,W,L])) {
               if(opp.bench){
                 multiSelect(opp.bench, 3).each{
-                  targeted(it){ damage 110, it }
+                  damage 110, it
                 }
               }
             }
@@ -1139,7 +1134,7 @@ public enum HiddenFates implements CardInfo {
           eff = delayed {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if((it.to.name == "Onix-GX" && it.dmg.value && it.notNoEffect && it.from.owner != it.to.owner ){
+                if(it.to.name == "Onix-GX" && it.dmg.value && it.notNoEffect && it.from.owner != it.to.owner ){
                   bc "Brock's Pewter City Gym -40"
                   it.dmg -= hp(40)
                 }
@@ -1176,7 +1171,7 @@ public enum HiddenFates implements CardInfo {
           list.addAll(opp.hand.oppSelect(count:2, "Choose two cards to discard").discard())
           list.addAll(my.hand.getExcludedList(thisCard).select(count:2, "Choose teo cards to discard").discard())
           bg.em().retrieveAndStore(key, {it ?: []})
-          list.each {card -> 
+          list.each {card ->
             bg.em().retrieveAndStore(key, {it.add(card); it})
             // setup a non-ending delayed effect that tracks all moved cards
             // if the cards are moved back to somewhere other than discard, they must not be counted as discarded by j&j anymore.
@@ -1218,7 +1213,7 @@ public enum HiddenFates implements CardInfo {
         }
       };
       case MISTY_S_DETERMINATION_62:
-      return copy(BreakPoint.MISTY_S_DETERMINATION_104, this);
+      return copy(Breakpoint.MISTY_S_DETERMINATION_104, this);
       case MISTY_S_WATER_COMMAND_63:
       return supporter (this) {
         text "Move any number of [W] Energy from your Pokémon to your Psyduck, Horsea, Staryu, Starmie-GX, Magikarp, Gyarados, or Lapras in any way you like."
@@ -1229,7 +1224,7 @@ public enum HiddenFates implements CardInfo {
             if(!pl) break;
             def src =pl.select("Source for energy (cancel to stop)", false)
             if(!src) break;
-            def card=src.cards.select.filterByEnergyType(W)("Energy to move").first()
+            def card=src.cards.filterByEnergyType(W).select("Energy to move").first()
 
             def tar=my.all.findAll{ eligible.contains(it.name) }.select("Target for energy (cancel to stop)", false)
             if(!tar) break;
@@ -1242,7 +1237,7 @@ public enum HiddenFates implements CardInfo {
         }
       };
       case POKEMON_CENTER_LADY_64:
-      return copy(FlashFire.POKEMON_CENTER_LADY_93, this);
+      return copy(Flashfire.POKEMON_CENTER_LADY_93, this);
       case SABRINA_S_SUGGESTION_65:
       return copy(TeamUp.SABRINAS_SUGGESTION_154, this);
       case MOLTRES_ZAPDOS_ARTICUNO_GX_66:
