@@ -1889,21 +1889,23 @@ public enum BaseSet implements CardInfo {
       case POKEMON_BREEDER: //TODO: Use the implementation of Rare Candy (admin: they are not the same!)
         return basicTrainer (this) {
           text "Put a Stage 2 Evolution card from your hand on the matching Basic Pokémon. You can only play this card when you would be allowed to evolve that Pokémon anyway."
+          def stage2_to_basic = {
+            def map = [:]
+            my.hand.filterByType(STAGE2).each{
+              def basic_names = bg.gm().getBasicsFromStage2(it.name)
+              def basics = my.all.findAll{basic_names.contains(it.name)}
+              if(basics) map.put(it, basics)
+            }
+            map
+          }
           onPlay {
-            def stage2 = my.hand.filterByType(STAGE2).findAll{
-              def basic_name = EvolutionChains.getBasicsFromStage2(it.name)
-              my.all.find{basic_name == it.name}
-            }.select().first()
-            def basic_name = EvolutionChains.getBasicsFromStage2(stage2.name)
-            def basic = my.all.findAll{basic_name == it.name}.select("To Evolve?")
+            def map = stage2_to_basic()
+            def stage2 = new CardList(map.keySet()).select().first()
+            def basic = map.get(stage2).select("To Evolve?")
             evolve(basic, stage2)
-
           }
           playRequirement{
-            assert my.hand.filterByType(STAGE2) : "No Stage 2 in hand"
-            def basic_names = my.hand.filterByType(STAGE2).collect{EvolutionChains.getBasicsFromStage2(it.name)}
-            def basics = my.all.findAll{basic_names.contains(it.name)}
-            assert basics : "No matching basic pokemon found"
+            assert stage2_to_basic : "No matching Stage 2 card in hand"
           }
         };
       case POKEMON_TRADER:

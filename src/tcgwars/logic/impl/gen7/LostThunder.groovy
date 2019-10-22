@@ -460,7 +460,7 @@ public enum LostThunder implements CardInfo {
               assert my.hand.filterByType(STAGE2) : "You have no Stage 2 in hand"
               def tar = my.all.findAll {it.basic}.select("Choose the pokemon to be evolved")
               def possibleEvolutions = my.hand.filterByType(STAGE2).findAll{
-                EvolutionChains.getBasicsFromStage2(it.name).contains(tar.name)
+                bg.gm().getBasicsFromStage2(it.name).contains(tar.name)
               }
               assert possibleEvolutions : "There is no Stage 2 in hand $tar can evolve to"
               powerUsed()
