@@ -2344,7 +2344,7 @@ public enum SunMoonPromos implements CardInfo {
           }
         };
       case EEVEE_GX_SM174:
-        return basic (this, hp:HP150, type:COLORLESS, retreatCost:1) {
+        return basic (this, hp:HP160, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
           bwAbility "Ascension DNA" , {
             text "Once during your turn (before your attack), if you have a Pokémon in your hand that evolves from Eevee, you may put that card onto this Pokémon to evolve it. Before evolving, heal all damage from this Pokémon. You can't use this Ability during your first turn or on the turn this Pokémon was put into play."
