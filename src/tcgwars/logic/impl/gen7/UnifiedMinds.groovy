@@ -1289,6 +1289,7 @@ public enum UnifiedMinds implements CardInfo {
             text "10 damage. Your opponent can't play any Item cards from their hand during their next turn."
             energyCost W
             onAttack {
+              damage 10
               delayed {
                 before PLAY_TRAINER, {
                   if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
