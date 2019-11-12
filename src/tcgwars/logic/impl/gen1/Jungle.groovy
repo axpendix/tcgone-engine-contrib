@@ -93,7 +93,7 @@ public enum Jungle implements CardInfo {
   JIGGLYPUFF ("Jigglypuff", 54, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   MANKEY ("Mankey", 55, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
   MEOWTH ("Meowth", 56, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  NIDORAN_FEMALE ("Nidoran ♀", 57, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  NIDORAN_FEMALE ("Nidoran♀", 57, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   ODDISH ("Oddish", 58, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   PARAS ("Paras", 59, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   PIKACHU ("Pikachu", 60, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
@@ -841,7 +841,7 @@ public enum Jungle implements CardInfo {
 
         };
       case NIDORINA:
-        return evolution (this, from:"Nidoran ♀", hp:HP070, type:GRASS, retreatCost:1) {
+        return evolution (this, from:"Nidoran♀", hp:HP070, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
           move "Supersonic", {
             text "Flip a coin. If heads, the Defending Pokémon is now Confused."
@@ -1282,14 +1282,14 @@ public enum Jungle implements CardInfo {
             }
           }
           move "Call for Family", {
-            text "earch your deck for a Basic Pokémon named Nidoran ♂ or Nidoran ♀ and put it onto your Bench. Shuffle your deck afterward. (You can’t use this attack if your Bench is full.)"
+            text "Search your deck for a Basic Pokémon named Nidoran♂ or Nidoran♀ and put it onto your Bench. Shuffle your deck afterward. (You can’t use this attack if your Bench is full.)"
             energyCost G, G
             attackRequirement {
               assert deck.notEmpty
               assert my.bench.notFull
             }
             onAttack {
-              deck.search (count: 1,{it.cardTypes.is(BASIC) && (it.name == "Nidoran ♂" || it.name == "Nidoran ♀")}).each {
+              deck.search (count: 1,{it.cardTypes.is(BASIC) && (it.name == "Nidoran♂" || it.name == "Nidoran♀")}).each {
                 deck.remove(it)
                 benchPCS(it)
               }

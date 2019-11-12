@@ -89,7 +89,7 @@ public enum PokemodBaseSet implements CardInfo {
   MACHOP_52 ("Machop", 52, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
   MAGNEMITE_53 ("Magnemite", 53, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
   METAPOD_54 ("Metapod", 54, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  NIDORAN_MALE_55 ("Nidoran ♂", 55, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  NIDORAN_MALE_55 ("Nidoran♂", 55, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   ONIX_56 ("Onix", 56, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
   PIDGEY_57 ("Pidgey", 57, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   PIKACHU_58 ("Pikachu", 58, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),

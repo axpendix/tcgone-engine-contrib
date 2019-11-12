@@ -90,7 +90,7 @@ public enum BaseSet implements CardInfo {
   MACHOP ("Machop", 52, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
   MAGNEMITE ("Magnemite", 53, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
   METAPOD ("Metapod", 54, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  NIDORAN_MALE ("Nidoran ♂", 55, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  NIDORAN_MALE ("Nidoran♂", 55, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   ONIX ("Onix", 56, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
   PIDGEY ("Pidgey", 57, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   PIKACHU ("Pikachu", 58, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
@@ -1136,7 +1136,7 @@ public enum BaseSet implements CardInfo {
 
         };
       case NIDORINO:
-        return evolution (this, from:"Nidoran ♂", hp:HP060, type:GRASS, retreatCost:1) {
+        return evolution (this, from:"Nidoran♂", hp:HP060, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
           move "Double Kick", {
             text "30× damage. Flip 2 coins. This attack does 30 damage times the number of heads."

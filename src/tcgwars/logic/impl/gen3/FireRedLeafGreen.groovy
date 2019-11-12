@@ -105,8 +105,8 @@ public enum FireRedLeafGreen implements CardInfo {
   MAGIKARP_67 ("Magikarp", 67, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   MAGNEMITE_68 ("Magnemite", 68, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
   MEOWTH_69 ("Meowth", 69, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  NIDORAN_FEMALE_70 ("Nidoran ♀", 70, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  NIDORAN_MALE_71 ("Nidoran ♂", 71, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  NIDORAN_FEMALE_70 ("Nidoran♀", 70, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  NIDORAN_MALE_71 ("Nidoran♂", 71, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   PARAS_72 ("Paras", 72, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   PIDGEY_73 ("Pidgey", 73, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   PIKACHU_74 ("Pikachu", 74, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
@@ -393,7 +393,7 @@ public enum FireRedLeafGreen implements CardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(it.from.owner == self.owner && (it.from.name == "Nidoran ♂" || it.from.name == "Nidoran ♀" || it.from.name == "Nidorino" || it.from.name == "Nidorina"|| it.from.name == "Nidoqueen")) {
+                  if(it.from.owner == self.owner && (it.from.name == "Nidoran♂" || it.from.name == "Nidoran♀" || it.from.name == "Nidorino" || it.from.name == "Nidorina"|| it.from.name == "Nidoqueen")) {
                     bc "Power Gene +10"
                     it.dmg += hp(10)
                   }
@@ -427,7 +427,7 @@ public enum FireRedLeafGreen implements CardInfo {
             text "As long as Nidoqueen is in play, the Retreat Cost for Nidoran Female, Nidorina, Nidoran Male, Nidorino and Nidoking is 0."
             delayedA {
               eff = getter (GET_RETREAT_COST, BEFORE_LAST) {
-                if (it.effect.target.name == "Nidoran ♂" || it.effect.target.name == "Nidoran ♀" || it.effect.target.name == "Nidorino" || it.effect.target.name == "Nidorina" || it.effect.target.name == "Nidoking") {
+                if (it.effect.target.name == "Nidoran♂" || it.effect.target.name == "Nidoran♀" || it.effect.target.name == "Nidorino" || it.effect.target.name == "Nidorina" || it.effect.target.name == "Nidoking") {
                   it.object = 0
                 }
               }
@@ -1190,7 +1190,7 @@ public enum FireRedLeafGreen implements CardInfo {
 
         };
       case NIDORINA_40:
-        return evolution (this, from:"Nidoran ♀", hp:HP080, type:GRASS, retreatCost:1) {
+        return evolution (this, from:"Nidoran♀", hp:HP080, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
           move "Scratch", {
             text "20 damage."
@@ -1213,7 +1213,7 @@ public enum FireRedLeafGreen implements CardInfo {
 
         };
       case NIDORINO_41:
-        return evolution (this, from:"Nidoran ♂", hp:HP070, type:GRASS, retreatCost:1) {
+        return evolution (this, from:"Nidoran♂", hp:HP070, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
           move "Double Stab", {
             text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
@@ -1900,7 +1900,7 @@ public enum FireRedLeafGreen implements CardInfo {
               assert my.bench.notFull
             }
             onAttack {
-              deck.search (count: 1,{it.cardTypes.is(BASIC) && (it.name == "Nidoran ♀" || it.name == "Nidoran ♂")}).each {
+              deck.search (count: 1,{it.cardTypes.is(BASIC) && (it.name == "Nidoran♀" || it.name == "Nidoran♂")}).each {
                 deck.remove(it)
                 benchPCS(it)
               }

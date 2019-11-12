@@ -92,7 +92,7 @@ public enum PokemodJungle implements CardInfo {
   JIGGLYPUFF_54 ("Jigglypuff", 54, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   MANKEY_55 ("Mankey", 55, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
   MEOWTH_56 ("Meowth", 56, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  NIDORAN_FEMALE_57 ("Nidoran ♀", 57, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  NIDORAN_FEMALE_57 ("Nidoran♀", 57, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   ODDISH_58 ("Oddish", 58, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   PARAS_59 ("Paras", 59, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   PIKACHU_60 ("Pikachu", 60, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
