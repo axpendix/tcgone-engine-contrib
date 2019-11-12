@@ -1828,22 +1828,10 @@ public enum UnifiedMinds implements CardInfo {
             attackRequirement { gxCheck() }
             onAttack {
               gxPerform()
-
-              def maxHpRemaining = 0
-              opp.all.each {
-                maxHpRemaining += it.getRemainingHP().value
-              }
-              def maxHpCounters = (maxHpRemaining / 10).intValueExact()
-
-              def counters = 10
-              if (self.cards.energySufficient(thisMove.energyCost + [C,C,C])) {
-                counters = 20
-              }
-
-              def countersToPlace = Math.min(counters, maxHpCounters)
-              (1..countersToPlace).each {
-                directDamage 10, opp.all.select("Add damage counter $it/$countersToPlace to a pokémon?")
-              }
+              int counters = (self.cards.energySufficient(thisMove.energyCost + [C,C,C])) ? 20 : 10
+              (1..counters).each { if(opp.all) {
+                directDamage 10, opp.all.select("Add damage counter $it/$counters to a pokémon?"), Source.ATTACK
+              }}
             }
           }
         };
