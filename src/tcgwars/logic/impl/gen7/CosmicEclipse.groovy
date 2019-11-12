@@ -35,7 +35,7 @@ import tcgwars.logic.util.*;
  * @author axpendix@hotmail.com
  */
 public enum CosmicEclipse implements CardInfo {
-	
+
 	VENUSAUR_SNIVY_GX_1 ("Venusaur & Snivy-GX", 1, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _GRASS_]),
 	ODDISH_2 ("Oddish", 2, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
 	GLOOM_3 ("Gloom", 3, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
@@ -306,11 +306,10 @@ public enum CosmicEclipse implements CardInfo {
 	MARTIAL_ARTS_DOJO_268 ("Martial Arts Dojo", 268, Rarity.SECRET, [TRAINER, STADIUM]),
 	POWER_PLANT_269 ("Power Plant", 269, Rarity.SECRET, [TRAINER, STADIUM]),
 	TAG_CALL_270 ("Tag Call", 270, Rarity.SECRET, [TRAINER, ITEM]),
-	DRAW_ENERGY_271 ("Draw Energy", 271, Rarity.SECRET, [ENERGY, SPECIAL_ENERGY]),
-;
-	
+	DRAW_ENERGY_271 ("Draw Energy", 271, Rarity.SECRET, [ENERGY, SPECIAL_ENERGY]);
+
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
-	
+
 	protected CardTypeSet cardTypes;
 	protected String name;
 	protected Rarity rarity;
@@ -382,10 +381,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case ODDISH_2:
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
@@ -395,10 +394,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case GLOOM_3:
 			return evolution (this, from:"Oddish", hp:HP080, type:G, retreatCost:2) {
@@ -411,7 +410,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case VILEPLUME_GX_4:
 			return evolution (this, from:"Gloom", hp:HP240, type:G, retreatCost:2) {
@@ -437,7 +436,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case TANGELA_5:
 			return basic (this, hp:HP070, type:G, retreatCost:2) {
@@ -447,10 +446,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case TANGROWTH_6:
 			return evolution (this, from:"Tangela", hp:HP140, type:G, retreatCost:3) {
@@ -471,7 +470,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case SUNKERN_7:
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
@@ -484,7 +483,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case SUNFLORA_8:
 			return evolution (this, from:"Sunkern", hp:HP090, type:G, retreatCost:1) {
@@ -494,7 +493,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Solar Beam", {
@@ -505,7 +504,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case HERACROSS_9:
 			return basic (this, hp:HP130, type:G, retreatCost:3) {
@@ -526,7 +525,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case LILEEP_10:
 			return evolution (this, from:"UnidentifiedFossil", hp:HP090, type:G, retreatCost:2) {
@@ -536,7 +535,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Seed Bomb", {
@@ -547,7 +546,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case CRADILY_11:
 			return evolution (this, from:"Lileep", hp:HP150, type:G, retreatCost:3) {
@@ -565,7 +564,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 110
 					}
 				}
-				
+
 			};
 			case TROPIUS_12:
 			return basic (this, hp:HP120, type:G, retreatCost:2) {
@@ -575,7 +574,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Leaf Drain", {
@@ -586,7 +585,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case KRICKETOT_13:
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
@@ -596,7 +595,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Bug Bite", {
@@ -607,7 +606,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case KRICKETUNE_14:
 			return evolution (this, from:"Kricketot", hp:HP100, type:G, retreatCost:2) {
@@ -620,7 +619,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case DEERLING_15:
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
@@ -633,7 +632,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case SAWSBUCK_16:
 			return evolution (this, from:"Deerling", hp:HP100, type:G, retreatCost:2) {
@@ -651,7 +650,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case ROWLET_17:
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
@@ -661,7 +660,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Tackle", {
@@ -672,7 +671,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case ROWLET_18:
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
@@ -682,10 +681,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case DARTRIX_19:
 			return evolution (this, from:"Rowlet", hp:HP080, type:G, retreatCost:1) {
@@ -706,7 +705,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case DECIDUEYE_20:
 			return evolution (this, from:"Dartrix", hp:HP140, type:G, retreatCost:1) {
@@ -716,7 +715,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Tracking Shot", {
@@ -727,7 +726,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case BUZZWOLE_21:
 			return basic (this, hp:HP130, type:G, retreatCost:2) {
@@ -745,7 +744,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case CHARIZARD_BRAIXEN_GX_22:
 			return basic (this, hp:HP270, type:R, retreatCost:3) {
@@ -763,10 +762,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case PONYTA_23:
 			return basic (this, hp:HP070, type:R, retreatCost:1) {
@@ -776,7 +775,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Flare", {
@@ -787,7 +786,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case RAPIDASH_24:
 			return evolution (this, from:"Ponyta", hp:HP100, type:R, retreatCost:0) {
@@ -808,7 +807,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case FLAREON_25:
 			return evolution (this, from:"Eevee", hp:HP110, type:R, retreatCost:2) {
@@ -826,7 +825,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 90
 					}
 				}
-				
+
 			};
 			case SLUGMA_26:
 			return basic (this, hp:HP080, type:R, retreatCost:3) {
@@ -836,10 +835,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case MAGCARGO_27:
 			return evolution (this, from:"Slugma", hp:HP120, type:R, retreatCost:3) {
@@ -849,7 +848,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Flamethrower", {
@@ -860,7 +859,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case ENTEI_28:
 			return basic (this, hp:HP130, type:R, retreatCost:2) {
@@ -881,7 +880,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 100
 					}
 				}
-				
+
 			};
 			case TORKOAL_29:
 			return basic (this, hp:HP110, type:R, retreatCost:2) {
@@ -891,7 +890,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Kindle", {
@@ -902,7 +901,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 100
 					}
 				}
-				
+
 			};
 			case VICTINI_30:
 			return basic (this, hp:HP070, type:R, retreatCost:1) {
@@ -920,7 +919,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case TEPIG_31:
 			return basic (this, hp:HP080, type:R, retreatCost:2) {
@@ -941,7 +940,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case PIGNITE_32:
 			return evolution (this, from:"Tepig", hp:HP110, type:R, retreatCost:4) {
@@ -962,7 +961,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case EMBOAR_33:
 			return evolution (this, from:"Pignite", hp:HP170, type:R, retreatCost:4) {
@@ -980,7 +979,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 160
 					}
 				}
-				
+
 			};
 			case LARVESTA_34:
 			return basic (this, hp:HP080, type:R, retreatCost:3) {
@@ -1001,7 +1000,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case VOLCARONA_GX_35:
 			return evolution (this, from:"Larvesta", hp:HP210, type:R, retreatCost:3) {
@@ -1024,10 +1023,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case LITLEO_36:
 			return basic (this, hp:HP070, type:R, retreatCost:2) {
@@ -1048,7 +1047,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case PYROAR_37:
 			return evolution (this, from:"Litleo", hp:HP130, type:R, retreatCost:2) {
@@ -1069,7 +1068,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 140
 					}
 				}
-				
+
 			};
 			case BLASTOISE_PIPLUP_GX_38:
 			return basic (this, hp:HP270, type:W, retreatCost:3) {
@@ -1090,7 +1089,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 100
 					}
 				}
-				
+
 			};
 			case ALOLAN_VULPIX_39:
 			return basic (this, hp:HP060, type:W, retreatCost:1) {
@@ -1102,13 +1101,13 @@ public enum CosmicEclipse implements CardInfo {
 				}
 				move "Gnaw", {
 					text "10 damage. "
-					energyCost 
+					energyCost
 					attackRequirement {}
 					onAttack {
 						damage 10
 					}
 				}
-				
+
 			};
 			case PSYDUCK_40:
 			return basic (this, hp:HP060, type:W, retreatCost:1) {
@@ -1129,7 +1128,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case GOLDUCK_41:
 			return evolution (this, from:"Psyduck", hp:HP110, type:W, retreatCost:1) {
@@ -1150,7 +1149,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case VAPOREON_42:
 			return evolution (this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
@@ -1168,7 +1167,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case SNEASEL_43:
 			return basic (this, hp:HP070, type:W, retreatCost:1) {
@@ -1181,7 +1180,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case WEAVILE_44:
 			return evolution (this, from:"Sneasel", hp:HP090, type:W, retreatCost:0) {
@@ -1191,7 +1190,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Slashing Claw", {
@@ -1202,7 +1201,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 110
 					}
 				}
-				
+
 			};
 			case WAILMER_45:
 			return basic (this, hp:HP120, type:W, retreatCost:3) {
@@ -1215,7 +1214,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case WAILORD_46:
 			return evolution (this, from:"Wailmer", hp:HP200, type:W, retreatCost:4) {
@@ -1236,7 +1235,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 140
 					}
 				}
-				
+
 			};
 			case SNORUNT_47:
 			return basic (this, hp:HP060, type:W, retreatCost:2) {
@@ -1249,7 +1248,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case GLALIE_48:
 			return evolution (this, from:"Snorunt", hp:HP120, type:W, retreatCost:3) {
@@ -1270,7 +1269,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 120
 					}
 				}
-				
+
 			};
 			case SPHEAL_49:
 			return basic (this, hp:HP060, type:W, retreatCost:2) {
@@ -1291,7 +1290,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case SPHEAL_50:
 			return basic (this, hp:HP070, type:W, retreatCost:2) {
@@ -1304,7 +1303,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case SEALEO_51:
 			return evolution (this, from:"Spheal", hp:HP100, type:W, retreatCost:3) {
@@ -1325,7 +1324,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 90
 					}
 				}
-				
+
 			};
 			case WALREIN_52:
 			return evolution (this, from:"Sealeo", hp:HP160, type:W, retreatCost:4) {
@@ -1346,7 +1345,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 120
 					}
 				}
-				
+
 			};
 			case KYOGRE_53:
 			return basic (this, hp:HP130, type:W, retreatCost:3) {
@@ -1356,7 +1355,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Swirling Waves", {
@@ -1367,7 +1366,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 130
 					}
 				}
-				
+
 			};
 			case PIPLUP_54:
 			return basic (this, hp:HP060, type:W, retreatCost:1) {
@@ -1380,7 +1379,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case PRINPLUP_55:
 			return evolution (this, from:"Piplup", hp:HP080, type:W, retreatCost:2) {
@@ -1398,10 +1397,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost W, W, W
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case EMPOLEON_56:
 			return evolution (this, from:"Prinplup", hp:HP160, type:W, retreatCost:2) {
@@ -1411,7 +1410,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Aquafall", {
@@ -1422,7 +1421,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 130
 					}
 				}
-				
+
 			};
 			case PHIONE_57:
 			return basic (this, hp:HP070, type:W, retreatCost:1) {
@@ -1440,7 +1439,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case TYMPOLE_58:
 			return basic (this, hp:HP060, type:W, retreatCost:1) {
@@ -1453,7 +1452,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case DUCKLETT_59:
 			return basic (this, hp:HP060, type:W, retreatCost:1) {
@@ -1467,7 +1466,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case SWANNA_60:
 			return evolution (this, from:"Ducklett", hp:HP110, type:W, retreatCost:1) {
@@ -1478,7 +1477,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Air Slash", {
@@ -1489,7 +1488,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case BLACK_KYUREM_61:
 			return basic (this, hp:HP130, type:W, retreatCost:3) {
@@ -1510,7 +1509,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 100
 					}
 				}
-				
+
 			};
 			case WISHIWASHI_62:
 			return basic (this, hp:HP180, type:W, retreatCost:3) {
@@ -1528,7 +1527,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 130
 					}
 				}
-				
+
 			};
 			case WISHIWASHI_GX_63:
 			return basic (this, hp:HP130, type:W, retreatCost:1) {
@@ -1546,10 +1545,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case DEWPIDER_64:
 			return basic (this, hp:HP060, type:W, retreatCost:1) {
@@ -1570,7 +1569,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case ARAQUANID_65:
 			return evolution (this, from:"Dewpider", hp:HP100, type:W, retreatCost:2) {
@@ -1591,7 +1590,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case PIKACHU_66:
 			return basic (this, hp:HP070, type:L, retreatCost:1) {
@@ -1602,7 +1601,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Volt Tackle", {
@@ -1613,7 +1612,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case RAICHU_67:
 			return evolution (this, from:"Pikachu", hp:HP120, type:L, retreatCost:2) {
@@ -1624,7 +1623,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Powerful Spark", {
@@ -1635,7 +1634,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case MAGNEMITE_68:
 			return basic (this, hp:HP060, type:L, retreatCost:1) {
@@ -1649,7 +1648,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case MAGNETON_69:
 			return evolution (this, from:"Magnemite", hp:HP080, type:L, retreatCost:2) {
@@ -1668,7 +1667,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case JOLTEON_70:
 			return evolution (this, from:"Eevee", hp:HP100, type:L, retreatCost:1) {
@@ -1687,7 +1686,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case CHINCHOU_71:
 			return basic (this, hp:HP060, type:L, retreatCost:1) {
@@ -1698,7 +1697,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Razor Fin", {
@@ -1709,7 +1708,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case LANTURN_72:
 			return evolution (this, from:"Chinchou", hp:HP110, type:L, retreatCost:2) {
@@ -1728,7 +1727,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case TOGEDEMARU_73:
 			return basic (this, hp:HP080, type:L, retreatCost:1) {
@@ -1739,7 +1738,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Random Spark", {
@@ -1747,10 +1746,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case TOGEDEMARU_74:
 			return basic (this, hp:HP070, type:L, retreatCost:1) {
@@ -1764,7 +1763,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case SOLGALEO_LUNALA_GX_75:
 			return basic (this, hp:HP270, type:P, retreatCost:2) {
@@ -1785,7 +1784,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 200
 					}
 				}
-				
+
 			};
 			case KOFFING_76:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -1803,7 +1802,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case WEEZING_77:
 			return evolution (this, from:"Koffing", hp:HP100, type:P, retreatCost:2) {
@@ -1821,7 +1820,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 90
 					}
 				}
-				
+
 			};
 			case NATU_78:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -1832,10 +1831,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case XATU_79:
 			return evolution (this, from:"Natu", hp:HP080, type:P, retreatCost:2) {
@@ -1846,7 +1845,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Life Drain", {
@@ -1854,10 +1853,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case RALTS_80:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -1867,7 +1866,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Ram", {
@@ -1878,7 +1877,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case KIRLIA_81:
 			return evolution (this, from:"Ralts", hp:HP080, type:P, retreatCost:1) {
@@ -1888,7 +1887,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Spiral Kick", {
@@ -1899,7 +1898,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case GALLADE_82:
 			return evolution (this, from:"Kirlia", hp:HP160, type:P, retreatCost:2) {
@@ -1917,7 +1916,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 120
 					}
 				}
-				
+
 			};
 			case DUSKULL_83:
 			return basic (this, hp:HP040, type:P, retreatCost:1) {
@@ -1933,10 +1932,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case DUSCLOPS_84:
 			return evolution (this, from:"Duskull", hp:HP090, type:P, retreatCost:3) {
@@ -1950,7 +1949,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case DUSKNOIR_85:
 			return evolution (this, from:"Dusclops", hp:HP160, type:P, retreatCost:3) {
@@ -1969,7 +1968,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case ROTOM_86:
 			return basic (this, hp:HP070, type:P, retreatCost:1) {
@@ -1980,7 +1979,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Energy Assist", {
@@ -1988,10 +1987,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case WOOBAT_87:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2002,7 +2001,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Air Cutter", {
@@ -2013,7 +2012,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case SWOOBAT_88:
 			return evolution (this, from:"Woobat", hp:HP090, type:P, retreatCost:1) {
@@ -2024,7 +2023,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Charming Stamp", {
@@ -2032,10 +2031,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case GOLETT_89:
 			return basic (this, hp:HP090, type:P, retreatCost:3) {
@@ -2049,7 +2048,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case GOLURK_90:
 			return evolution (this, from:"Golett", hp:HP140, type:P, retreatCost:4) {
@@ -2071,7 +2070,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 160
 					}
 				}
-				
+
 			};
 			case SKRELP_91:
 			return basic (this, hp:HP060, type:P, retreatCost:2) {
@@ -2081,10 +2080,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case DRAGALGE_92:
 			return evolution (this, from:"Skrelp", hp:HP120, type:P, retreatCost:1) {
@@ -2094,7 +2093,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Sharp Fin", {
@@ -2105,7 +2104,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case PHANTUMP_93:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2127,7 +2126,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case TREVENANT_94:
 			return evolution (this, from:"Phantump", hp:HP120, type:P, retreatCost:2) {
@@ -2149,7 +2148,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 120
 					}
 				}
-				
+
 			};
 			case ORICORIO_GX_95:
 			return basic (this, hp:HP170, type:P, retreatCost:1) {
@@ -2176,7 +2175,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 100
 					}
 				}
-				
+
 			};
 			case MIMIKYU_96:
 			return basic (this, hp:HP070, type:P, retreatCost:1) {
@@ -2185,7 +2184,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Mischievous Hands", {
@@ -2193,10 +2192,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case MIMIKYU_97:
 			return basic (this, hp:HP070, type:P, retreatCost:1) {
@@ -2213,7 +2212,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case DHELMISE_98:
 			return basic (this, hp:HP130, type:P, retreatCost:3) {
@@ -2224,7 +2223,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Buster Swing", {
@@ -2235,7 +2234,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 100
 					}
 				}
-				
+
 			};
 			case COSMOG_99:
 			return basic (this, hp:HP050, type:P, retreatCost:1) {
@@ -2245,10 +2244,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case COSMOG_100:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2266,7 +2265,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case COSMOEM_101:
 			return evolution (this, from:"Cosmog", hp:HP090, type:P, retreatCost:3) {
@@ -2276,10 +2275,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case LUNALA_102:
 			return evolution (this, from:"Cosmoem", hp:HP160, type:P, retreatCost:2) {
@@ -2298,7 +2297,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 130
 					}
 				}
-				
+
 			};
 			case MARSHADOW_103:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2309,10 +2308,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case BLACEPHALON_104:
 			return basic (this, hp:HP110, type:P, retreatCost:2) {
@@ -2323,10 +2322,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case ONIX_105:
 			return basic (this, hp:HP110, type:F, retreatCost:4) {
@@ -2336,7 +2335,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Tail Smash", {
@@ -2347,7 +2346,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 100
 					}
 				}
-				
+
 			};
 			case NOSEPASS_106:
 			return basic (this, hp:HP080, type:F, retreatCost:3) {
@@ -2357,7 +2356,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Zap Cannon", {
@@ -2368,7 +2367,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case TRAPINCH_107:
 			return basic (this, hp:HP050, type:F, retreatCost:1) {
@@ -2378,7 +2377,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Sand Spray", {
@@ -2389,7 +2388,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case TRAPINCH_108:
 			return basic (this, hp:HP060, type:F, retreatCost:1) {
@@ -2402,7 +2401,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case VIBRAVA_109:
 			return evolution (this, from:"Trapinch", hp:HP080, type:F, retreatCost:1) {
@@ -2420,7 +2419,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case FLYGON_GX_110:
 			return evolution (this, from:"Vibrava", hp:HP240, type:F, retreatCost:2) {
@@ -2446,7 +2445,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 220
 					}
 				}
-				
+
 			};
 			case ANORITH_111:
 			return evolution (this, from:"UnidentifiedFossil", hp:HP090, type:F, retreatCost:1) {
@@ -2467,7 +2466,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case ARMALDO_112:
 			return evolution (this, from:"Anorith", hp:HP150, type:F, retreatCost:2) {
@@ -2488,7 +2487,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 100
 					}
 				}
-				
+
 			};
 			case GROUDON_113:
 			return basic (this, hp:HP130, type:F, retreatCost:3) {
@@ -2498,7 +2497,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Trembling Ground", {
@@ -2509,7 +2508,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 130
 					}
 				}
-				
+
 			};
 			case DRILBUR_114:
 			return basic (this, hp:HP070, type:F, retreatCost:2) {
@@ -2519,7 +2518,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Mud-Slap", {
@@ -2530,7 +2529,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case EXCADRILL_115:
 			return evolution (this, from:"Drilbur", hp:HP140, type:F, retreatCost:4) {
@@ -2551,7 +2550,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 120
 					}
 				}
-				
+
 			};
 			case PALPITOAD_116:
 			return evolution (this, from:"Tympole", hp:HP090, type:F, retreatCost:2) {
@@ -2564,7 +2563,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case SEISMITOAD_117:
 			return evolution (this, from:"Palpitoad", hp:HP160, type:F, retreatCost:3) {
@@ -2582,7 +2581,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case THROH_118:
 			return basic (this, hp:HP120, type:F, retreatCost:2) {
@@ -2595,7 +2594,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case PANCHAM_119:
 			return basic (this, hp:HP070, type:F, retreatCost:2) {
@@ -2608,7 +2607,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case PANGORO_120:
 			return evolution (this, from:"Pancham", hp:HP130, type:F, retreatCost:2) {
@@ -2629,7 +2628,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 90
 					}
 				}
-				
+
 			};
 			case CRABRAWLER_121:
 			return basic (this, hp:HP080, type:F, retreatCost:2) {
@@ -2650,7 +2649,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case CRABOMINABLE_122:
 			return evolution (this, from:"Crabrawler", hp:HP140, type:F, retreatCost:4) {
@@ -2668,7 +2667,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case ROCKRUFF_123:
 			return basic (this, hp:HP060, type:F, retreatCost:1) {
@@ -2678,7 +2677,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Rock Throw", {
@@ -2689,7 +2688,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case LYCANROC_124:
 			return evolution (this, from:"Rockruff", hp:HP120, type:F, retreatCost:2) {
@@ -2707,7 +2706,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case PASSIMIAN_125:
 			return basic (this, hp:HP110, type:F, retreatCost:1) {
@@ -2728,7 +2727,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case SANDYGAST_126:
 			return basic (this, hp:HP080, type:F, retreatCost:2) {
@@ -2749,7 +2748,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case PALOSSAND_127:
 			return evolution (this, from:"Sandygast", hp:HP140, type:F, retreatCost:4) {
@@ -2770,7 +2769,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 150
 					}
 				}
-				
+
 			};
 			case ALOLAN_MEOWTH_128:
 			return basic (this, hp:HP070, type:D, retreatCost:1) {
@@ -2781,7 +2780,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Hook", {
@@ -2792,7 +2791,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case ALOLAN_PERSIAN_GX_129:
 			return evolution (this, from:"AlolanMeowth", hp:HP200, type:D, retreatCost:2) {
@@ -2816,10 +2815,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case ALOLAN_GRIMER_130:
 			return basic (this, hp:HP080, type:D, retreatCost:2) {
@@ -2841,7 +2840,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case ALOLAN_MUK_131:
 			return evolution (this, from:"AlolanGrimer", hp:HP140, type:D, retreatCost:4) {
@@ -2863,7 +2862,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 110
 					}
 				}
-				
+
 			};
 			case CARVANHA_132:
 			return basic (this, hp:HP050, type:D, retreatCost:1) {
@@ -2877,7 +2876,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case ABSOL_133:
 			return basic (this, hp:HP100, type:D, retreatCost:1) {
@@ -2888,7 +2887,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Dirty Throw", {
@@ -2899,7 +2898,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case PAWNIARD_134:
 			return basic (this, hp:HP060, type:D, retreatCost:1) {
@@ -2910,7 +2909,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Sting", {
@@ -2921,7 +2920,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case BISHARP_135:
 			return evolution (this, from:"Pawniard", hp:HP120, type:D, retreatCost:1) {
@@ -2943,7 +2942,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case GUZZLORD_136:
 			return basic (this, hp:HP150, type:D, retreatCost:4) {
@@ -2954,7 +2953,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Red Banquet", {
@@ -2965,7 +2964,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 120
 					}
 				}
-				
+
 			};
 			case ALOLAN_SANDSHREW_137:
 			return basic (this, hp:HP060, type:M, retreatCost:1) {
@@ -2973,10 +2972,10 @@ public enum CosmicEclipse implements CardInfo {
 				resistance P, MINUS20
 				move "Run Around", {
 					text "Switch this Pokémon with 1 of your Benched Pokémon."
-					energyCost 
+					energyCost
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Metal Claw", {
@@ -2987,7 +2986,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case ALOLAN_SANDSLASH_138:
 			return evolution (this, from:"AlolanSandshrew", hp:HP120, type:M, retreatCost:1) {
@@ -2995,7 +2994,7 @@ public enum CosmicEclipse implements CardInfo {
 				resistance P, MINUS20
 				move "Curve Strike", {
 					text "30 damage. Flip a coin. If heads, prevent all damage done to this Pokémon by attacks during your opponent's next turn."
-					energyCost 
+					energyCost
 					attackRequirement {}
 					onAttack {
 						damage 30
@@ -3009,7 +3008,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case STEELIX_139:
 			return evolution (this, from:"Onix", hp:HP170, type:M, retreatCost:4) {
@@ -3031,7 +3030,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 100
 					}
 				}
-				
+
 			};
 			case MAWILE_140:
 			return basic (this, hp:HP070, type:M, retreatCost:1) {
@@ -3042,7 +3041,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Dark Clamp", {
@@ -3053,7 +3052,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case PROBOPASS_141:
 			return evolution (this, from:"Nosepass", hp:HP130, type:M, retreatCost:3) {
@@ -3075,7 +3074,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case SOLGALEO_142:
 			return evolution (this, from:"Cosmoem", hp:HP170, type:M, retreatCost:3) {
@@ -3094,7 +3093,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 180
 					}
 				}
-				
+
 			};
 			case TOGEPI_CLEFFA_IGGLYBUFF_GX_143:
 			return basic (this, hp:HP240, type:Y, retreatCost:2) {
@@ -3113,10 +3112,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost Y, Y
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case CLEFAIRY_144:
 			return basic (this, hp:HP050, type:Y, retreatCost:1) {
@@ -3130,7 +3129,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case ALOLAN_NINETALES_145:
 			return evolution (this, from:"AlolanVulpix", hp:HP110, type:Y, retreatCost:1) {
@@ -3138,13 +3137,13 @@ public enum CosmicEclipse implements CardInfo {
 				resistance D, MINUS20
 				move "Rubbish Blizzard", {
 					text "10x damage. This attack does 10 damage for each Pokémon Tool card in your discard pile."
-					energyCost 
+					energyCost
 					attackRequirement {}
 					onAttack {
 						damage 10
 					}
 				}
-				
+
 			};
 			case AZURILL_146:
 			return basic (this, hp:HP060, type:Y, retreatCost:0) {
@@ -3153,7 +3152,7 @@ public enum CosmicEclipse implements CardInfo {
 					actionA {
 					}
 				}
-				
+
 			};
 			case COTTONEE_147:
 			return basic (this, hp:HP040, type:Y, retreatCost:1) {
@@ -3167,7 +3166,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case WHIMSICOTT_148:
 			return evolution (this, from:"Cottonee", hp:HP070, type:Y, retreatCost:0) {
@@ -3178,7 +3177,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost Y
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Lost March", {
@@ -3189,7 +3188,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case FLABEBE_149:
 			return basic (this, hp:HP030, type:Y, retreatCost:1) {
@@ -3200,10 +3199,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case FLABEBE_150:
 			return basic (this, hp:HP040, type:Y, retreatCost:1) {
@@ -3214,10 +3213,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost Y
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case FLOETTE_151:
 			return evolution (this, from:"Flabebe", hp:HP070, type:Y, retreatCost:1) {
@@ -3236,7 +3235,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case FLORGES_152:
 			return evolution (this, from:"Floette", hp:HP130, type:Y, retreatCost:2) {
@@ -3255,7 +3254,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case SWIRLIX_153:
 			return basic (this, hp:HP060, type:Y, retreatCost:1) {
@@ -3269,7 +3268,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case SLURPUFF_154:
 			return evolution (this, from:"Swirlix", hp:HP110, type:Y, retreatCost:2) {
@@ -3280,7 +3279,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost Y
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Sweet Panic", {
@@ -3291,7 +3290,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 110
 					}
 				}
-				
+
 			};
 			case SYLVEON_155:
 			return evolution (this, from:"Eevee", hp:HP110, type:Y, retreatCost:2) {
@@ -3313,7 +3312,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case ARCEUS_DIALGA_PALKIA_GX_156:
 			return basic (this, hp:HP280, type:N, retreatCost:3) {
@@ -3331,10 +3330,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost M
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case RESHIRAM_ZEKROM_GX_157:
 			return basic (this, hp:HP270, type:N, retreatCost:3) {
@@ -3352,10 +3351,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost R, R, L, L
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case NAGANADEL_GUZZLORD_GX_158:
 			return basic (this, hp:HP280, type:N, retreatCost:3) {
@@ -3378,10 +3377,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case DRAMPA_159:
 			return basic (this, hp:HP120, type:N, retreatCost:1) {
@@ -3402,7 +3401,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case JANGMO_O_160:
 			return basic (this, hp:HP060, type:N, retreatCost:1) {
@@ -3415,7 +3414,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case JANGMO_O_161:
 			return basic (this, hp:HP070, type:N, retreatCost:2) {
@@ -3436,7 +3435,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case HAKAMO_O_162:
 			return evolution (this, from:"Jangmoo", hp:HP080, type:N, retreatCost:2) {
@@ -3454,7 +3453,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case KOMMO_O_163:
 			return evolution (this, from:"Hakamoo", hp:HP160, type:N, retreatCost:2) {
@@ -3475,7 +3474,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 90
 					}
 				}
-				
+
 			};
 			case ULTRA_NECROZMA_164:
 			return basic (this, hp:HP110, type:N, retreatCost:2) {
@@ -3493,7 +3492,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 170
 					}
 				}
-				
+
 			};
 			case MEGA_LOPUNNY_JIGGLYPUFF_GX_165:
 			return basic (this, hp:HP240, type:C, retreatCost:1) {
@@ -3511,10 +3510,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case EEVEE_166:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -3524,7 +3523,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Bite", {
@@ -3535,7 +3534,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case EEVEE_167:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -3545,7 +3544,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Tackle", {
@@ -3556,7 +3555,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case IGGLYBUFF_168:
 			return basic (this, hp:HP060, type:C, retreatCost:0) {
@@ -3565,7 +3564,7 @@ public enum CosmicEclipse implements CardInfo {
 					actionA {
 					}
 				}
-				
+
 			};
 			case AIPOM_169:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -3583,7 +3582,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case AMBIPOM_170:
 			return evolution (this, from:"Aipom", hp:HP100, type:C, retreatCost:1) {
@@ -3593,7 +3592,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Bye-Bye Throw", {
@@ -3604,7 +3603,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case TEDDIURSA_171:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -3625,7 +3624,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case URSARING_172:
 			return evolution (this, from:"Teddiursa", hp:HP140, type:C, retreatCost:3) {
@@ -3646,7 +3645,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 120
 					}
 				}
-				
+
 			};
 			case ZANGOOSE_173:
 			return basic (this, hp:HP100, type:C, retreatCost:1) {
@@ -3667,7 +3666,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case LILLIPUP_174:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -3677,7 +3676,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Tackle", {
@@ -3688,7 +3687,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case HERDIER_175:
 			return evolution (this, from:"Lillipup", hp:HP100, type:C, retreatCost:2) {
@@ -3698,7 +3697,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Headbutt Bounce", {
@@ -3709,7 +3708,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case STOUTLAND_176:
 			return evolution (this, from:"Herdier", hp:HP150, type:C, retreatCost:3) {
@@ -3727,7 +3726,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 110
 					}
 				}
-				
+
 			};
 			case RUFFLET_177:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -3741,7 +3740,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case BRAVIARY_178:
 			return evolution (this, from:"Rufflet", hp:HP130, type:C, retreatCost:1) {
@@ -3763,7 +3762,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 140
 					}
 				}
-				
+
 			};
 			case HELIOPTILE_179:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -3773,7 +3772,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Rear Kick", {
@@ -3784,7 +3783,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case HELIOLISK_180:
 			return evolution (this, from:"Helioptile", hp:HP100, type:C, retreatCost:1) {
@@ -3805,7 +3804,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case STUFFUL_181:
 			return basic (this, hp:HP080, type:C, retreatCost:2) {
@@ -3818,7 +3817,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case BEWEAR_182:
 			return evolution (this, from:"Stufful", hp:HP120, type:C, retreatCost:2) {
@@ -3836,7 +3835,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 120
 					}
 				}
-				
+
 			};
 			case TYPE_NULL_183:
 			return basic (this, hp:HP110, type:C, retreatCost:2) {
@@ -3849,7 +3848,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case SILVALLY_GX_184:
 			return evolution (this, from:"TypeNull", hp:HP210, type:C, retreatCost:2) {
@@ -3872,10 +3871,10 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case BEASTITE_185:
 			return pokemonTool (this) {
@@ -4125,7 +4124,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case CHARIZARD_BRAIXEN_GX_212:
 			return copy (CHARIZARD_BRAIXEN_GX_22, this);
@@ -4275,5 +4274,5 @@ public enum CosmicEclipse implements CardInfo {
 			return null;
 		}
 	}
-	
+
 }
