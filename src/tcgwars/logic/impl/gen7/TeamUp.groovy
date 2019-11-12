@@ -444,7 +444,7 @@ public enum TeamUp implements CardInfo {
             text "Put 2 damage counters on your opponent's Confused Pokémon between turns."
             delayedA {
               before BETWEEN_TURNS, {
-                if(self.owner.opposite.pbg.active.isSPC(CONFUSED)){
+                if(self.owner.opposite.pbg.active?.isSPC(CONFUSED)){
                   directDamage 20, self.owner.opposite.pbg.active
                 }
               }

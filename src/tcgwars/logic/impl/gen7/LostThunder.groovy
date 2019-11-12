@@ -2584,7 +2584,7 @@ public enum LostThunder implements CardInfo {
         return basic (this, hp:HP110, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
           move "Nightcap" , {
-            text "You can use this attack only if your opponent has exactly 2 Prize cards remaining. Choose 1 of your opponent's Pokémon's attacks and use it as this attack.\n"
+            text "You can use this attack only if your opponent has exactly 2 Prize cards remaining. Choose 1 of your opponent's Pokémon's attacks and use it as this attack."
             energyCost P
             attackRequirement {
               assert opp.prizeCardSet.size() == 2 : "Your opponent has not exactly 2 Prize cards remaining."
@@ -2601,7 +2601,6 @@ public enum LostThunder implements CardInfo {
               def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
               attack (move as Move)
               bef.unregisterItself(bg().em())
-              gxPerform()
             }
           }
           move "Void Tentacles" , {
