@@ -4651,13 +4651,14 @@ public enum UnbrokenBonds implements CardInfo {
           text "This card can only be attached to Evolution Pokémon. If this card is attached to 1 of your Pokémon, discard it at the end of the turn." +
             "This card provides [C][C][C] Energy only while it is attached to an Evolution Pokémon." +
             "If this card is attached to anything other than an Evolution Pokémon, discard this card."
+          def eff
           onPlay {reason->
-            delayed {
-              unregisterAfter 1
-              unregister {discard thisCard}
+            eff = delayed (priority: BEFORE_LAST) {
+              before BETWEEN_TURNS, {discard thisCard}
             }
           }
           onRemoveFromPlay {
+            eff.unregister()
           }
           onMove {to->
             if(!to.realEvolution) discard thisCard
