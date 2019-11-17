@@ -1554,7 +1554,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						if (my.hand.filterByType(ENERGY)}) {
+						if (my.hand.filterByType(ENERGY)) {
 							attachEnergyFrom(my.hand, my.all)
 						}
 					}
