@@ -2353,7 +2353,7 @@ public enum CosmicEclipse implements CardInfo {
 							}
 						}
 						effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, { Holder h ->
-							if (h.effect.target.numberOfDamageCounters && h.effect.target as Card).cardTypes.is(POKEMON_GX)) {
+							if (h.effect.target.numberOfDamageCounters && (h.effect.target as Card).cardTypes.is(POKEMON_GX)) {
 								h.object=true
 							}
 						}
