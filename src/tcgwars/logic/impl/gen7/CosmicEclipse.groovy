@@ -2322,7 +2322,7 @@ public enum CosmicEclipse implements CardInfo {
 					}
 					onAttack {
 						if (my.hand.hasType(SUPPORTER)) {
-							def card = my.hand.select("Select a supporter to copy it's effect as this attack.", cardTypeFilter(SUPPORTER)).first()
+							def card = my.hand.findAll(cardTypeFilter(SUPPORTER)).select("Select a supporter to copy it's effect as this attack.").first()
 							bg.deterministicCurrentThreadPlayerType=self.owner
 							bg.em().run(new PlayTrainer(card))
 							bg.clearDeterministicCurrentThreadPlayerType()
