@@ -2955,6 +2955,7 @@ public enum CosmicEclipse implements CardInfo {
 								}
 								h.object=list
 							}
+            }
 					}
 				}
 				move "Voltage Claw", {
