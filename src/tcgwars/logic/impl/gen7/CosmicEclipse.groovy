@@ -3518,7 +3518,7 @@ public enum CosmicEclipse implements CardInfo {
 					text "Put a card from your hand in the Lost Zone. If you do, draw 3 cards."
 					energyCost Y
 					attackRequirement {
-						my.hand : "Your hand is empty."
+						assert my.hand : "Your hand is empty."
 					}
 					onAttack {
 						my.hand.select("Choose a card to send to the Lost Zone to draw 3 cards").moveTo(my.lostZone)
