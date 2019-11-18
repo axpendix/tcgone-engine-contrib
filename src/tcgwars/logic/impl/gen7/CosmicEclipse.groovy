@@ -3738,7 +3738,7 @@ public enum CosmicEclipse implements CardInfo {
 						assert my.hand.findAll(cardTypeFilter(POKEMON)) : "There are no pokemon in your hand"
 						assert self.numberOfDamageCounters : "$self is not damaged"
 						powerUsed()
-						my.hand.findAll(cardTypeFilter(POKEMON))).select("Discard a Pokemon to heal 60").discard()
+						my.hand.findAll(cardTypeFilter(POKEMON)).select("Discard a Pokemon to heal 60").discard()
 						heal(60, self)
 					}
 				}
