@@ -2194,7 +2194,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						if !(my.discard.findAll(cardTypeFilter(SUPPORTER)).size() > 0) {
+						if (my.discard.findAll(cardTypeFilter(SUPPORTER)).size() == 0) {
 							damage 160
 						}
 					}
