@@ -2024,7 +2024,7 @@ public enum CosmicEclipse implements CardInfo {
 						checkLastTurn()
 						powerUsed()
 
-						if confirm("Discard 3 cards to evolve Duskull?") {
+						if(confirm("Discard 3 cards to evolve Duskull?")) {
 							my.hand.select(count:3, "Discard 3 cards to evolve Duskull").discard()
 
 							deck.search ("Evolves from ${self.name}", {
