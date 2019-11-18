@@ -1619,8 +1619,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-
-						count = my.all.findAll { it.name == "Wishiwashi" or it.name == "Wishiwashi-GX" }.size()
+						def count = my.all.findAll { it.name == "Wishiwashi" || it.name == "Wishiwashi-GX" }.size()
 						damage count*20
 					}
 				}
