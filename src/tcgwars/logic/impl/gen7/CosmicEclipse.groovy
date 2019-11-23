@@ -370,7 +370,7 @@ public enum CosmicEclipse implements CardInfo {
 					text "Once during your turn, if this Pokémon is your Active Pokémon, when you attach a [G] Energy card from your hand to it, you may switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
 					delayedA {
 						before ATTACH_ENERGY, self, {
-							if (self.active && opp.bench && ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == G bg.em().retrieveObject("Shining_Vine") != bg.turnCount) {
+							if (self.active && opp.bench && ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == G && bg.em().retrieveObject("Shining_Vine") != bg.turnCount) {
 								sw(opp.active, opp.bench.select())
 							}
 						}
