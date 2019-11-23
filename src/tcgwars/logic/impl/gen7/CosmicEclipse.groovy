@@ -4664,8 +4664,8 @@ public enum CosmicEclipse implements CardInfo {
 				text "Discard up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX from your hand. Draw 3 cards for each card you discarded in this way."
 				onPlay {
 					def tar = my.hand.findAll {
-						it.cardTypes.is(POKEMON) && !it.cardTypes.is(POKEMON_GX) && !it.cardTypes.is(POKEMON_EX)}
-					}.select(max: 2)
+						it.cardTypes.is(POKEMON) && !it.cardTypes.is(POKEMON_GX) && !it.cardTypes.is(POKEMON_EX)
+          }.select(max: 2)
 
 					draw 3*tar.size()
 					tar.discard()
