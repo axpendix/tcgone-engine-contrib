@@ -4613,7 +4613,7 @@ public enum CosmicEclipse implements CardInfo {
 					shuffleDeck()
 				}
 				playRequirement {
-					my.bench.notFull : "Bench is full"
+					assert my.bench.notFull : "Bench is full"
 				}
 			};
 			case RED_BLUE_202:
