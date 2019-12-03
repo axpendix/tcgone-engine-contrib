@@ -4554,9 +4554,23 @@ public enum CosmicEclipse implements CardInfo {
 				text "Search your deck for a Stadium card, reveal it, and put it into your hand. Then, shuffle your deck." +
 					"When you play this card, you may discard 2 other cards from your hand. If you do, you may also search for a Pokémon Tool card and a Special Energy card in this way."
 				onPlay {
-					// TODO
+          def toDiscard = false
+
+					if (my.hand.getExcludedList(thisCard).size() >= 2 && confirm("Discard 2 cards to be able to search for a Pokémon Tool card and a Special Energy card?")) {
+						toDiscard = my.hand.getExcludedList(thisCard).select(count:2, "Discard a card to discard.")
+					}
+
+					if (toDiscard) {
+						toDiscard.discard()
+
+            my.deck.search(max: 3, "Select a Pokémon Tool card and a Special Energy card", {it.cardTypes.is(STADIUM) || it.cardTypes.is(SPECIAL_ENERGY)}, { CardList list ->
+              list.filterByType(STADIUM).size() <= 1 && list.filterByType(SPECIAL_ENERGY).size() <= 1
+            }).showToOpponent("Selected cards").moveTo(my.hand)
+            shuffleDeck()
+          }
 				}
 				playRequirement{
+          assert my.deck : "Deck is empty"
 				}
 			};
 			case ISLAND_CHALLENGE_AMULET_194:
