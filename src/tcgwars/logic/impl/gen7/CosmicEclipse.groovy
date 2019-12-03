@@ -4480,9 +4480,12 @@ public enum CosmicEclipse implements CardInfo {
 			return supporter (this) {
 				text "Discard the top 7 cards of your deck. If any of those cards are Item cards, put them into your hand."
 				onPlay {
-					// TODO
+					def topFiveCards = my.deck.subList(0, 5)
+          def items = topFiveCards.filterByType(ITEM).moveTo(my.hand)
+          topFiveCards.disard()
 				}
 				playRequirement{
+          assert my.deck
 				}
 			};
 			case CYNTHIA_CAITLIN_189:
