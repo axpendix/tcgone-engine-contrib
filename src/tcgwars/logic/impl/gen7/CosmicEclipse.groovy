@@ -4557,7 +4557,7 @@ public enum CosmicEclipse implements CardInfo {
           def toDiscard = false
 
 					if (my.hand.getExcludedList(thisCard).size() >= 2 && confirm("Discard 2 cards to be able to search for a Pokémon Tool card and a Special Energy card?")) {
-						toDiscard = my.hand.getExcludedList(thisCard).select(count:2, "Discard a card to discard.")
+						toDiscard = my.hand.getExcludedList(thisCard).select(count:2, "Select cards to discard.")
 					}
 
 					if (toDiscard) {
@@ -4738,9 +4738,37 @@ public enum CosmicEclipse implements CardInfo {
 				text "Search your deck for a Pokémon-GX that evolves from 1 of your Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck. (You can't use this card during your first turn or on a Pokémon that was put into play this turn.)" +
 					"When you play this card, you may discard 2 other cards from your hand. If you do, search your deck for up to 2 basic Energy cards and attach them to the Pokémon you evolved in this way."
 				onPlay {
-					// TODO
+          def toDiscard = false
+
+					if (my.hand.getExcludedList(thisCard).size() >= 2 && confirm("Discard 2 cards to be able to search for up to 2 basic Energy cards and attach to the Pokemon to be evolved?")) {
+						toDiscard = my.hand.getExcludedList(thisCard).select(count:2, "Select cards to discard.")
+            toDiscard.discard()
+					}
+
+          def names = my.all.collect { it.name }
+          def sel = deck.search ("Evolves from $names", {
+            it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor) && (it.cardTypes.is(POKEMON_EX) || it.cardTypes.is(POKEMON_GX))
+          })
+          if (sel) {
+            def opts = my.all.findAll ({
+              it.name==sel.first().predecessor && it.turnCount < bg.turnCount
+            })
+            def pcs = opts.select("Evolve which one?")
+            if (pcs) {
+              evolve(pcs, sel.first(), OTHER)
+
+              if (toDiscard) {
+                attachEnergyFrom(basic:true, my.deck, pcs)
+                attachEnergyFrom(basic:true, my.deck, pcs)
+              }
+            }
+          }
+
+          shuffleDeck()
 				}
 				playRequirement{
+          assert my.deck : "Deck is empty"
+          assert bg.turnCount > 2 : "Cannot use this card during your first turn."
 				}
 			};
 			case ROLLER_SKATER_203:
