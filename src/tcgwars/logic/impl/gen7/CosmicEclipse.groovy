@@ -395,7 +395,7 @@ public enum CosmicEclipse implements CardInfo {
 					onAttack {
 						gxPerform()
 						opp.all.each {
-							it.damage, 50
+							damage 50, it
 						}
 
 						if (self.cards.energySufficient(thisMove.energyCost + C + C)) {
