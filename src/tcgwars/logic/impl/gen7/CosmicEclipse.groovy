@@ -395,7 +395,7 @@ public enum CosmicEclipse implements CardInfo {
 					onAttack {
 						gxPerform()
 						opp.all.each {
-							it.damage, 50
+							damage 50, it
 						}
 
 						if (self.cards.energySufficient(thisMove.energyCost + C + C)) {
@@ -3811,8 +3811,19 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost R, L
 					attackRequirement {}
 					onAttack {
-						damage 90
-						// TODO:
+						def count = 0
+						while (count < 3) {
+							def tar = my.all.findAll {
+								it.cards.filterByEnergyType(R).notEmpty() ||
+								it.cards.filterByEnergyType(L).notEmpty()
+							}
+							if (!tar) break
+							def pcs = tar.select("Select Pokemon that have [R] or [L] energy to discard. Cancel to stop", false)
+							if (!pcs) break
+							pcs.cards.filterByEnergyType(R).select("[R] Energy to discard").discard()
+							count++
+						}
+						damage 90*count
 					}
 				}
 				move "Cross Break GX", {
