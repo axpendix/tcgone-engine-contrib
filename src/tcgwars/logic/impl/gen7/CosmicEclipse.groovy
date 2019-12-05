@@ -508,8 +508,21 @@ public enum CosmicEclipse implements CardInfo {
 					text "During your next turn, ignore all Energy in the attack costs of [G] Pokémon and [R] Pokémon. (This includes Pokémon that come into play on that turn.)"
 					energyCost C, C
 					attackRequirement {}
+					def eff
 					onAttack {
-
+						eff = getterA GET_MOVE_LIST, { h->
+              PokemonCardSet pcs = h.effect.target
+              if (pcs.owner == self.owner && h.object.find { it.types.contains(G) || it.types.contains(R) }) {
+                def list = []
+                for (move in h.object){
+                  def copy = move.shallowCopy()
+                  copy.energyCost.retainAll()
+                  list.add(copy)
+                }
+                h.object=list
+              }
+							unregisterAfter 3
+            }
 					}
 				}
 				move "Solar Beam", {
@@ -760,16 +773,15 @@ public enum CosmicEclipse implements CardInfo {
 				weakness R
 				bwAbility "Beast Boost", {
 					text "This Pokémon's attacks do 20 more damage to your opponent's Active Pokémon for each Prize card you have taken (before applying Weakness and Resistance)."
-					delayedA{
+					delayedA {
 						before APPLY_ATTACK_DAMAGES, {
 							bg.dm().each {
-
-								def plusDmg = damage 20*opp.prizeCardSet.takenCount
-								if(it.from == self && plusDmg && it.dmg.value && it.notNoEffect) {
+								def plusDmg = damage 20*my.prizeCardSet.takenCount
+								if (it.from == self && plusDmg && it.dmg.value && it.notNoEffect) {
 									bc "Beast Boost +$plusDmg"
 									it.dmg += hp(plusDmg)
-					}
-				}
+								}
+							}
 						}
 					}
 				}
@@ -804,16 +816,16 @@ public enum CosmicEclipse implements CardInfo {
 					}
 					onAttack {
 						gxPerform()
-						attachEnergyFrom(my.discard, my.all)
-						attachEnergyFrom(my.discard, my.all)
-						attachEnergyFrom(my.discard, my.all)
-						attachEnergyFrom(my.discard, my.all)
-						attachEnergyFrom(my.discard, my.all)
-						if(self.cards.energySufficient(thisMove.energyCost + C)){
+						attachEnergyFrom(basic:true, my.discard, my.all)
+						attachEnergyFrom(basic:true, my.discard, my.all)
+						attachEnergyFrom(basic:true, my.discard, my.all)
+						attachEnergyFrom(basic:true, my.discard, my.all)
+						attachEnergyFrom(basic:true, my.discard, my.all)
+						if (self.cards.energySufficient(thisMove.energyCost + C)) {
 							apply BURNED
 							apply CONFUSED
+						}
 					}
-				}
 				}
 			};
 			case PONYTA_23:
@@ -1166,7 +1178,7 @@ public enum CosmicEclipse implements CardInfo {
 						damage 150
 						def tar = my.hand.filterByBasicEnergyType(W)
 						if (tar) {
-							tar.select(min:0, max:tar.size(), "Select the ones you want to attach").each {
+							tar.select(min:0, max:3, "Select the ones you want to attach").each {
 								def selected = my.all.select("Attach the [W] Energy to?")
 								attachEnergy(selected, it)
 								heal 50, selected
@@ -1265,9 +1277,7 @@ public enum CosmicEclipse implements CardInfo {
 				weakness G
 				bwAbility "Vitality Cheer", {
 					text "Your Pokémon-GX in play that evolve from Eevee get +60 HP. You can't apply more than 1 Vitality Cheer Ability at a time."
-					actionA {
-						// TODO:
-					}
+					// TODO:
 				}
 				move "Refreshing Rain", {
 					text "60 damage. Heal 30 damage from each of your Pokémon."
@@ -1542,8 +1552,16 @@ public enum CosmicEclipse implements CardInfo {
 					text "Choose an attack from 1 of this Pokémon's previous Evolutions and use it as this attack."
 					energyCost C
 					attackRequirement {}
+					def eff
 					onAttack {
-						// TODO
+						eff = getter (GET_MOVE_LIST,self) {holder->
+              for (card in holder.effect.target.cards.filterByType(POKEMON)){
+                if (card != holder.effect.target.topPokemonCard) {
+                  holder.object.addAll(card.moves)
+                }
+              }
+            }
+						unregisterAfter 1
 					}
 				}
 				move "Aquafall", {
@@ -1749,7 +1767,7 @@ public enum CosmicEclipse implements CardInfo {
 					onAttack {
 						damage 80
 						delayed {
-							before APPLY_ATTACK_DAMAGES, {
+							after APPLY_ATTACK_DAMAGES, {
 								bg.dm().each {
 									if(it.to == defending && it.dmg.value && it.notNoEffect) {
 										bc "Liquidation +60"
@@ -1915,7 +1933,6 @@ public enum CosmicEclipse implements CardInfo {
 				move "Call for Family", {
 					text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {}
 					callForFamily(basic: true, 2, delegate)
 				}
 				move "Random Spark", {
@@ -1967,14 +1984,14 @@ public enum CosmicEclipse implements CardInfo {
 							if (bg.em().retrieveObject("LILLIE_S_FULL_FORCE_TURN") == bg.turnCount) {
 								delayed {
 									before null, null, Source.ATTACK, {
-										if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+										if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && it.to.owner != self.owner) {
 											bc "$name prevents effect"
 											prevent()
 										}
 									}
 									before APPLY_ATTACK_DAMAGES, {
 										bg.dm().each {
-											if (it.to.owner == self.owner && it.notNoEffect) {
+											if (it.to.owner == self.owner && it.notNoEffect && it.to.owner != self.owner) {
 												it.dmg = hp(0)
 												bc "$name prevents damage"
 											}
@@ -1992,8 +2009,8 @@ public enum CosmicEclipse implements CardInfo {
 				weakness P
 				bwAbility "Blow-Away Bomb", {
 					text "Once during your turn, when you discard this Pokémon with the effect of Roxie, you may put 1 damage counter on each of your opponent's Pokémon. (Place damage counters after the effect of Roxie.)"
-					actionA {
-						// TODO
+					bwAbility {
+						// The implementation is in Roxie
 					}
 				}
 				move "Poison Gas", {
@@ -2011,8 +2028,8 @@ public enum CosmicEclipse implements CardInfo {
 				weakness P
 				bwAbility "Blow-Away Bomb", {
 					text "Once during your turn, when you discard this Pokémon with the effect of Roxie, you may put 1 damage counter on each of your opponent's Pokémon. (Place damage counters after the effect of Roxie.)"
-					actionA {
-						// TODO
+					bwAbility {
+						// The implementation is in Roxie
 					}
 				}
 				move "Balloon Burst", {
@@ -2033,7 +2050,6 @@ public enum CosmicEclipse implements CardInfo {
 				move "Future Sight", {
 					text "Look at the top 4 cards of either player's deck and put them back in any order."
 					energyCost P
-					attackRequirement {}
 					rearrangeEitherPlayersDeck(delegate, 4)
 				}
 			};
@@ -2176,7 +2192,7 @@ public enum CosmicEclipse implements CardInfo {
 							if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite ) {
 								bc "Grim Marking activates"
 								(1..4).each {
-									if (opp.all) directDamage(10, opp.all.select("Choose an Opponent's Pokemon to put a damage counter on."))
+									if (opp.all) directDamage(10, self.owner.opposite.pbg.all.select("Choose an Opponent's Pokemon to put a damage counter on."))
 								}
 							}
 						}
@@ -2440,7 +2456,7 @@ public enum CosmicEclipse implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						multiSelect(opp.all, 2).each {
-							targeted(it) { directDamage 10, it }
+							targeted(it) { directDamage 20, it }
 						}
 					}
 				}
@@ -2595,15 +2611,13 @@ public enum CosmicEclipse implements CardInfo {
 						assert opp.active.moves.findAll { !it.name.contains("GX") } : "No moves to perform"
 					}
 					onAttack {
-						if (opp.active.moves.findAll { !it.name.contains("GX") }) {
-							def moves = defending.topPokemonCard.moves.findAll { !it.name.contains("GX") }
-							if (moves) {
-								def move = choose(moves + ["End Turn (Skip)"], "Choose a non-GX attack to use.")
-								bc "$move was chosen"
-								def bef = blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-								attack (move as Move)
-								bef.unregisterItself(bg().em())
-							}
+						def list = defending.topPokemonCard.moves.findAll { !it.name.contains("GX") }
+						if (list) {
+							def selected = choose(list + ["End Turn (Skip)"], "Choose a non-GX attack to use.")
+							bc "$selected was chosen"
+							def bef = blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+							attack (selected as Move)
+							bef.unregisterItself(bg().em())
 						}
 					}
 				}
@@ -2617,8 +2631,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						def maxCountersToPlace = 4
-						if (opp.prizeCardSet.size() == 3) maxCountersToPlace = 12
+						int maxCountersToPlace = (opp.prizeCardSet.size() == 3) ?? 12 : 4
 
 						(1..maxCountersToPlace).each {
 							directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ($it countesr out of $max)")
@@ -2917,7 +2930,7 @@ public enum CosmicEclipse implements CardInfo {
 						checkLastTurn()
 						assert my.deck
 						powerUsed()
-						def tar = my.deck.select("Choose 1 card to put on top of your deck").first()
+						def tar = my.deck.select(min: 0, max: 1, "Choose 1 card to put on top of your deck").first()
 						my.deck.remove(tar)
 						my.deck.add(0, tar)
 					}
@@ -3173,7 +3186,7 @@ public enum CosmicEclipse implements CardInfo {
 						before null, self, Source.ATTACK, {
 							if (self.owner.pbg.all.findAll { it.name=="Alolan Persian-GX" }) {
 								def oppActive = self.owner.opposite.pbg.active
-								def isValidTarget = (oppActive.topPokemonCard.is(TAG_TEAM) || oppActive.topPokemonCard.is(ULTRA_BEAST) || oppActive.cards.filterByType(SPECIAL_ENERGY))
+								def isValidTarget = (oppActive.topPokemonCard.cardTypes.isIn(TAG_TEAM, ULTRA_BEAST) || oppActive.cards.filterByType(SPECIAL_ENERGY))
 
 								if (isValidTarget && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
 									bc "Smug Face prevents effect"
@@ -3239,7 +3252,7 @@ public enum CosmicEclipse implements CardInfo {
 				}
 			};
 			case ALOLAN_MUK_131:
-			return evolution (this, from:"AlolanGrimer", hp:HP140, type:D, retreatCost:4) {
+			return evolution (this, from:"Alolan Grimer", hp:HP140, type:D, retreatCost:4) {
 				weakness F
 				resistance P, MINUS20
 				move "Panic Poison", {
@@ -3401,7 +3414,7 @@ public enum CosmicEclipse implements CardInfo {
 				}
 			};
 			case ALOLAN_SANDSLASH_138:
-			return evolution (this, from:"AlolanSandshrew", hp:HP120, type:M, retreatCost:1) {
+			return evolution (this, from:"Alolan Sandshrew", hp:HP120, type:M, retreatCost:1) {
 				weakness R
 				resistance P, MINUS20
 				move "Curve Strike", {
@@ -3500,11 +3513,13 @@ public enum CosmicEclipse implements CardInfo {
 				resistance P, MINUS20
 				bwAbility "Armor of the Sunne", {
 					text "If you have Lunala in play, your Solgaleo and Lunala take 50 less damage from your opponent's attacks (after applying Weakness and Resistance). You can't apply more than 1 Armor of the Sunne Ability at a time."
-					before APPLY_ATTACK_DAMAGES, {
-						bg.dm().each {
-							if (my.all.find({ it.name == "Lunala" }) && it.to.owner == self.owner && it.dmg.value && it.notNoEffect && (it.to.topPokemonCard.name == "Solgaleo" || it.to.topPokemonCard.name == "Lunala")) {
-								bc "Armor of the Sunne -50"
-								it.dmg -= hp(50)
+					delayedA {
+						before APPLY_ATTACK_DAMAGES, {
+							bg.dm().each {
+								if (my.all.find({ it.name == "Lunala" }) && it.to.owner == self.owner && it.dmg.value && it.notNoEffect && (it.to.topPokemonCard.name == "Solgaleo" || it.to.topPokemonCard.name == "Lunala")) {
+									bc "Armor of the Sunne -50"
+									it.dmg -= hp(50)
+								}
 							}
 						}
 					}
@@ -3541,7 +3556,7 @@ public enum CosmicEclipse implements CardInfo {
 					onAttack {
 						gxPerform()
 
-						if (self.cards.energySufficient(thisMove.energyCost + [(Y + Y + Y + Y + Y) + (Y + Y + Y + Y + Y) + (Y + Y + Y + Y)])) {
+						if (self.cards.energySufficient(thisMove.energyCost + Y+Y+Y+Y+Y + Y+Y+Y+Y+Y + Y+Y+Y+Y)) {
 							opp.bench.each {
 								it.cards.moveTo(opp.deck)
 				  	  }
@@ -3571,15 +3586,16 @@ public enum CosmicEclipse implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
-						self.cards.moveTo(hand)
-						removePCS(self)
-
+						afterDamage {
+							self.cards.moveTo(hand)
+							removePCS(self)
+						}
 						// TODO: Add ability to play Poke doll as new active
 					}
 				}
 			};
 			case ALOLAN_NINETALES_145:
-			return evolution (this, from:"AlolanVulpix", hp:HP110, type:Y, retreatCost:1) {
+			return evolution (this, from:"Alolan Vulpix", hp:HP110, type:Y, retreatCost:1) {
 				weakness M
 				resistance D, MINUS20
 				move "Rubbish Blizzard", {
@@ -3631,7 +3647,12 @@ public enum CosmicEclipse implements CardInfo {
 						assert my.hand : "Your hand is empty."
 					}
 					onAttack {
-						my.hand.select("Choose a card to send to the Lost Zone to draw 3 cards").moveTo(my.lostZone)
+						def card = my.hand.select("Choose a card to send to the Lost Zone to draw 3 cards")
+
+						if (card) {
+							card.moveTo(my.lostZone)
+							draw 3
+						}
 					}
 				}
 				move "Lost March", {
@@ -3673,7 +3694,7 @@ public enum CosmicEclipse implements CardInfo {
 				}
 			};
 			case FLOETTE_151:
-			return evolution (this, from:"Flabebe", hp:HP070, type:Y, retreatCost:1) {
+			return evolution (this, from:"Flabébé", hp:HP070, type:Y, retreatCost:1) {
 				weakness M
 				resistance D, MINUS20
 				bwAbility "Flower Picking", {
@@ -3701,10 +3722,13 @@ public enum CosmicEclipse implements CardInfo {
 				resistance D, MINUS20
 				bwAbility "Flower Picking", {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may choose 2 random cards from your opponent's hand. Your opponent reveals those cards and shuffles them into their deck."
-					actionA {
-						// TODO
+					onActivate {r->
+						if (r == PLAY_FROM_HAND && my.deck && confirm("Use Flower Picking?")) {
+							powerUsed()
+							opp.hand.select(hidden: true, count:2).moveTo(hidden: false, opp.deck)
+							shuffleDeck(null, TargetPlayer.OPPONENT)
+						}
 					}
-				}
 				move "Petal Dance", {
 					text "60x damage. Flip 3 coins. This attack does 60 damage for each heads. This Pokémon is now Confused."
 					energyCost Y, C
@@ -3814,13 +3838,16 @@ public enum CosmicEclipse implements CardInfo {
 						def count = 0
 						while (count < 3) {
 							def tar = my.all.findAll {
-								it.cards.filterByEnergyType(R).notEmpty() ||
-								it.cards.filterByEnergyType(L).notEmpty()
+								it.cards.filterByType(BASIC_ENERGY).filterByEnergyType(R).notEmpty() ||
+								it.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L).notEmpty()
 							}
 							if (!tar) break
-							def pcs = tar.select("Select Pokemon that have [R] or [L] energy to discard. Cancel to stop", false)
+							def pcs = tar.select("Select a Pokémon that has a [R] or [L] energy to discard. Cancel to stop", false)
 							if (!pcs) break
-							pcs.cards.filterByEnergyType(R).select("[R] Energy to discard").discard()
+							pcs.cards.filterByType(BASIC_ENERGY).findAll {
+								it.filterByEnergyType(R).notEmpty() ||
+								it.filterByEnergyType(L).notEmpty()
+							}.select("Select which [R] or [L] to discard?")
 							count++
 						}
 						damage 90*count
@@ -3841,7 +3868,7 @@ public enum CosmicEclipse implements CardInfo {
 
 							if (bg.em().retrieveObject("N_S_RESOLVE_TURN") == bg.turnCount) {
 								def targets = opp.bench
-								opp.bench.remove(firstTarget)
+								targets.remove(firstTarget)
 								damage 170, targets.select("Which other Pokemon to do 170 damage to?")
 							}
 						}
@@ -3881,7 +3908,7 @@ public enum CosmicEclipse implements CardInfo {
 						my.prizeCardSet.allVisible = true
             bc "Chaotic Order GX revealed their owner's prize cards"
 
-						if (self.cards.energySufficient(thisMove.energyCost + [P + D] )) {
+						if (self.cards.energySufficient(thisMove.energyCost + P + D )) {
 							bg.em().run(new TakePrize(self.owner,self))
 							bg.em().run(new TakePrize(self.owner,self))
 						}
@@ -3905,7 +3932,14 @@ public enum CosmicEclipse implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
-						// TODO:
+						int differentTypes = 0
+						for (Type t1:Type.values()) {
+							if (self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(t1))
+								differentTypes++
+						}
+						if (differentTypes >= 2) {
+							damage 70
+						}
 					}
 				}
 			};
@@ -3942,7 +3976,7 @@ public enum CosmicEclipse implements CardInfo {
 				}
 			};
 			case HAKAMO_O_162:
-			return evolution (this, from:"Jangmoo", hp:HP080, type:N, retreatCost:2) {
+			return evolution (this, from:"Jangmo-o", hp:HP080, type:N, retreatCost:2) {
 				weakness Y
 				bwAbility "Fighter’s Roar", {
 					text "If your opponent’s Active Pokémon is a Pokémon-GX or Pokémon-EX, this Pokémon can evolve during the turn you play it."
@@ -3964,7 +3998,7 @@ public enum CosmicEclipse implements CardInfo {
 				}
 			};
 			case KOMMO_O_163:
-			return evolution (this, from:"Hakamoo", hp:HP160, type:N, retreatCost:2) {
+			return evolution (this, from:"Hakamo-o", hp:HP160, type:N, retreatCost:2) {
 				weakness Y
 				move "Shout of Power", {
 					text "60 damage. Attach a basic Energy card from your discard pile to 1 of your Benched Pokémon."
@@ -4111,9 +4145,7 @@ public enum CosmicEclipse implements CardInfo {
 					text "Once during your turn (before your attack), you may put the top card of your opponent's deck on the bottom of their deck without looking at it."
 					actionA {
 						assert opp.deck : "There are no cards in your opponent's deck"
-					}
-					onPlay {
-            opp.deck.subList(0, 1).moveTo(opp.deck)
+						opp.deck.subList(0, 1).moveTo(opp.deck)
 					}
 				}
 				move "Tail Smack", {
@@ -4253,7 +4285,7 @@ public enum CosmicEclipse implements CardInfo {
 				weakness F
 				bwAbility "Arf Arf Bark", {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may discard an Energy from your opponent's Active Pokémon. If this Pokémon is your Active Pokémon and is Knocked Out by damage from an opponent's attack, you may discard an Energy from your opponent's Active Pokémon."
-					onActivate { r->
+					onActivate { r ->
 						if (r==PLAY_FROM_HAND && my.deck && confirm("Use Arf Arf Bark?")) {
 							if(opp.active.cards.filterByType(ENERGY)) {
 								opp.active.cards.filterByType(ENERGY).select("Discard which energy?").discard()
@@ -4264,8 +4296,8 @@ public enum CosmicEclipse implements CardInfo {
 						before (KNOCKOUT,self) {
 							if (self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
 								bc "Arf Arf Bark activates"
-								if (opp.active.cards.filterByType(ENERGY)) {
-									opp.active.cards.filterByType(ENERGY).select("Discard which energy?").discard()
+								if (self.owner.opposite.pbg.active.cards.filterByType(ENERGY)) {
+									self.owner.opposite.pbg.active.cards.filterByType(ENERGY).select("Discard which energy?").discard()
 								}
 							}
 						}
@@ -4407,7 +4439,7 @@ public enum CosmicEclipse implements CardInfo {
 				}
 			};
 			case SILVALLY_GX_184:
-			return evolution (this, from:"TypeNull", hp:HP210, type:C, retreatCost:2) {
+			return evolution (this, from:"Type: Null", hp:HP210, type:C, retreatCost:2) {
 				weakness F
 				bwAbility "Disk Reload", {
 					text "Once during your turn (before your attack), you may draw cards until you have 5 cards in your hand."
@@ -4469,10 +4501,25 @@ public enum CosmicEclipse implements CardInfo {
 			return supporter (this) {
 				text "Discard 3 cards from the top of each player’s deck." +
 					"When you play this card, you may discard 3 other cards from your hand. If you do, each player discards their Benched Pokémon until they have 3 Benched Pokémon. Your opponent discards first."
+				def eff
 				onPlay {
-					// TODO:
+					opp.deck.subList(0, 3).moveTo(opp.discard)
+          my.deck.subList(0, 3).moveTo(my.discard)
+
+					if (my.hand.getExcludedList(thisCard).size() >= 3 && confirm("Discard 3 cards to force your opponent to discard their Benched Pokémon until they have 3 Benched Pokémon?")) {
+						toDiscard = my.hand.getExcludedList(thisCard).select(count:3, "Select cards to discard.")
+						eff = getterA (GET_BENCH_SIZE) {h->
+							if (h.effect.playerType == self.owner.opposite) {
+								h.object = Math.min(h.object as Integer, 3)
+							}
+						}
+
+						self.owner.opposite.pbg.triggerBenchSizeCheck()
+						eff.unregister()
+						self.owner.opposite.pbg.triggerBenchSizeCheck()
+					}
 				}
-				playRequirement{
+				playRequirement {
 				}
 			};
 			case CHAOTIC_SWELL_187:
@@ -4481,7 +4528,8 @@ public enum CosmicEclipse implements CardInfo {
 				def eff
 				onPlay {
 					eff = delayed {
-						after PLAY_STADIUM, {
+						before PLAY_STADIUM, {
+
 							discard bg.stadiumInfoStruct.stadiumCard
 						}
 					}
@@ -4494,9 +4542,9 @@ public enum CosmicEclipse implements CardInfo {
 			return supporter (this) {
 				text "Discard the top 7 cards of your deck. If any of those cards are Item cards, put them into your hand."
 				onPlay {
-					def topFiveCards = my.deck.subList(0, 5)
-          def items = topFiveCards.filterByType(ITEM).moveTo(my.hand)
-          topFiveCards.disard()
+					def topCards = my.deck.subList(0, 7)
+          def items = topCards.filterByType(ITEM).moveTo(my.hand)
+					my.deck.subList(0, 7 - items.size()).discard()
 				}
 				playRequirement{
           assert my.deck
@@ -4514,7 +4562,7 @@ public enum CosmicEclipse implements CardInfo {
 					}
 
 					def supporters = my.discard.filterByType(SUPPORTER).findAll {
-						it.name != "Cynthia & Caitlyn"
+						it.name != "Cynthia & Caitlin"
 					}
 
 					if (supporters) {
@@ -4584,18 +4632,22 @@ public enum CosmicEclipse implements CardInfo {
 					if (toDiscard) {
 						toDiscard.discard()
 
-            my.deck.search(max: 3, "Select a Pokémon Tool card and a Special Energy card", {it.cardTypes.is(STADIUM) || it.cardTypes.is(SPECIAL_ENERGY)}, { CardList list ->
-              list.filterByType(STADIUM).size() <= 1 && list.filterByType(SPECIAL_ENERGY).size() <= 1
+            my.deck.search(max: 2, "Select a Pokémon Tool card and a Special Energy card", {it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(SPECIAL_ENERGY)}, { CardList list ->
+              list.filterByType(POKEMON_TOOL).size() <= 1 && list.filterByType(SPECIAL_ENERGY).size() <= 1
             }).showToOpponent("Selected cards").moveTo(my.hand)
-            shuffleDeck()
           }
+					my.deck.search("Select a Stadium card", {
+						it.cardTypes.is(STADIUM)
+					}).showToOpponent("Selected Stadium card").moveTo(my.hand)
+
+					shuffleDeck()
 				}
 				playRequirement{
           assert my.deck : "Deck is empty"
 				}
 			};
 			case ISLAND_CHALLENGE_AMULET_194:
-			return PokémonTool (this) {
+			return pokemonTool (this) {
 				text "The Pokémon-GX or Pokémon-EX this card is attached to gets -100 HP, and when it is Knocked Out by damage from an opponent’s attack, that player takes 1 fewer Prize card."
 				def eff
 				def effPrize
@@ -4622,8 +4674,10 @@ public enum CosmicEclipse implements CardInfo {
 			return itemCard (this) {
 				text "Shuffle a Pokémon and a Pokémon Tool card from your discard pile into your deck."
 				onPlay {
-					my.discard.filterByType(POKEMON_TOOL).select().moveTo(my.deck)
-					my.discard.filterByType(POKEMON).select().moveTo(my.deck)
+					my.discard.search(max: 2, "Select a Pokémon Tool card and a Pokémon to shuffle into your deck.", {it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(POKEMON)}, { CardList list ->
+						list.filterByType(POKEMON_TOOL).size() <= 1 && list.filterByType(POKEMON).size() <= 1
+					}).showToOpponent("Selected cards").moveTo(my.deck)
+					shuffleDeck()
 				}
 				playRequirement {
 					assert (my.discard.filterByType(POKEMON_TOOL) || my.discard.filterByType(POKEMON)) : "No Pokémon or Pokémon Tool cards in your discard."
@@ -4690,7 +4744,8 @@ public enum CosmicEclipse implements CardInfo {
 									}
 								}
 								acl = action("Discard Lillie's PokéDoll", [TargetPlayer.SELF]) {
-									self.cards.moveTo(my.deck)
+									self.cards.getExcludedList(self.topPokemonCard).discard()
+              		moveCard(self.topPokemonCard, my.deck)
 									removePCS(self)
 									shuffleDeck()
 								}
@@ -4714,25 +4769,49 @@ public enum CosmicEclipse implements CardInfo {
 				text "Switch your Active Pokémon with 1 of your Benched Pokémon." +
 					"When you play this card, you may discard 2 other cards from your hand. If you do, heal 120 damage from the Pokémon you moved to your Bench."
 				onPlay {
-					// TODO
+					if (my.hand.getExcludedList(thisCard).size() >= 2 && confirm("Discard 2 cards to be able to heal the Pokémon you moved to the bench?")) {
+						my.hand.getExcludedList(thisCard).select(count:2, "Select cards to discard.")discard()
+						heal 120, my.active
+					}
+					sw my.active, my.bench.select("Select the new active")
 				}
-				playRequirement{
+				playRequirement {
+					assert my.bench
 				}
 			};
 			case MISTY_LORELEI_199:
 			return supporter (this) {
 				text "Search your deck for up to 3 [W] Energy cards, reveal them, and put them into your hand. Then, shuffle your deck." +
 					"When you play this card, you may discard 5 other cards from your hand. If you do, during this turn, your [W] Pokémon can use their GX attacks even if you have used your GX attack."
+				def eff
 				onPlay {
-					// TODO
+					my.deck.search(max:3,"Select up to 3 [W] Energy cards",basicEnergyFilter(W)).moveTo(my.hand)
+          shuffleDeck()
+
+					if (my.hand.getExcludedList(thisCard).size() >= 5 && confirm("Discard 5 cards to allow [W] to use their GX attack this turn (even if GX attack has already been used)?")) {
+						my.hand.getExcludedList(thisCard).select(count:5, "Discard 5 cards").discard()
+						eff = delayed {
+							before ATTACK_MAIN, {
+								if (it.from.topPokemonCard.types.contains(W) && ef.move.name.contains('GX')) {
+									bg.em().storeObject("gx_"+my.owner, 0)
+								}
+							}
+						}
+						unregister {
+							eff.unregister()
+						}
+						unregisterAfter 1
+					}
 				}
 				playRequirement{
+					assert my.deck
 				}
 			};
 			case N_S_RESOLVE_200:
 			return supporter (this) {
 				text "Discard the top 6 cards of your deck. If any of those cards are basic Energy cards, attach them to 1 of your Benched [N] Pokémon."
 				onPlay {
+					bg.em().storeObject("N_S_RESOLVE_TURN", bg.turnCount)
 					def list = my.deck.subList(0, 6).filterByType(BASIC_ENERGY)
 					def num = list.size()
 					if (num) {
@@ -4748,10 +4827,28 @@ public enum CosmicEclipse implements CardInfo {
 			};
 			case PROFESSOR_OAK_S_SETUP_201:
 			return supporter (this) {
-				text ""
+				text "Search your deck for up to 3 Basic Pokémon of different types and put them onto your Bench. Then, shuffle your deck."
+
+				text "Search your deck for up to 3 different types of Basic Pokémon cards (excluding Baby Pokémon), show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+					def maxSpace = Math.min(my.bench.freeBenchCount, 3)
+					my.deck.select(min:0, max:my.bench.size(), "Select up to $maxSpace Basic Pokémon of different types", cardTypeFilter(BASIC), thisCard.player, { CardList list ->
+						TypeSet typeSet=new TypeSet()
+						for (card in list) {
+							if (typeSet.containsAny(card.asPokemonCard().types)) {
+								return false
+							}
+							typeSet.addAll(card.asPokemonCard().types)
+						}
+						return true
+					}).each {
+						my.deck.remove(it);
+						benchPCS(it)
+					}
+					shuffleDeck()
 				}
 				playRequirement{
+					assert my.deck
 				}
 			};
 			case RED_BLUE_202:
@@ -4799,7 +4896,7 @@ public enum CosmicEclipse implements CardInfo {
 					def selected = my.hand.getExcludedList(thisCard).select("Select a card to discard.")
 					draw 2
 
-					if (selected.cardTypes.is(ENERGY)) {
+					if (selected.first().cardTypes.is(ENERGY)) {
 						draw 2
 					}
 					selected.discard()
@@ -4826,15 +4923,25 @@ public enum CosmicEclipse implements CardInfo {
 			case ROXIE_205:
 			return supporter (this) {
 				text "Discard up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX from your hand. Draw 3 cards for each card you discarded in this way."
+				def list = my.hand.findAll ({ !it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) })
 				onPlay {
-					def cards = my.hand.findAll ({ !it.cardTypes(POKEMON_EX) || !it.cardTypes(POKEMON_GX) })
-					cards.select(max:2, "Select up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX to discard.").each {
+					cards.select(max:2, "Select up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX to discard.").each { PokemonCardSet pcs ->
+						pcs.abilities.each {
+							if (it.key.active && it.key.name == "Blow-Away Bomb") {
+								bc "Blow-Away Bomb activates"
+								opp.all.each { target ->
+									directDamage 10, target
+								}
+							}
+						}
+
 						it.discard()
 						draw 3
 					}
 				}
 				playRequirement{
 					assert my.hand
+					assert list() : "You do not have any non-GX/EX in your hand"
 				}
 			};
 			case TAG_CALL_206:
