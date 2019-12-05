@@ -4529,9 +4529,10 @@ public enum CosmicEclipse implements CardInfo {
 				def eff
 				onPlay {
 					eff = delayed {
-						before PLAY_STADIUM, {
-
-							discard bg.stadiumInfoStruct.stadiumCard
+						after PLAY_STADIUM, {
+              if (!ef.cardToPlay.name.contains("Chaotic Swell")) {
+							  discard bg.stadiumInfoStruct.stadiumCard
+              }
 						}
 					}
 				}
