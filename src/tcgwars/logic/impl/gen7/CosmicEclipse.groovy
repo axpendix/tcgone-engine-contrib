@@ -3722,13 +3722,14 @@ public enum CosmicEclipse implements CardInfo {
 				resistance D, MINUS20
 				bwAbility "Flower Picking", {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may choose 2 random cards from your opponent's hand. Your opponent reveals those cards and shuffles them into their deck."
-					onActivate {r->
+					onActivate { r->
 						if (r == PLAY_FROM_HAND && my.deck && confirm("Use Flower Picking?")) {
 							powerUsed()
 							opp.hand.select(hidden: true, count:2).moveTo(hidden: false, opp.deck)
 							shuffleDeck(null, TargetPlayer.OPPONENT)
 						}
 					}
+        }
 				move "Petal Dance", {
 					text "60x damage. Flip 3 coins. This attack does 60 damage for each heads. This Pokémon is now Confused."
 					energyCost Y, C
