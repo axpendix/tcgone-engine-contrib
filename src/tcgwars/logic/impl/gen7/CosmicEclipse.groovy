@@ -4531,7 +4531,7 @@ public enum CosmicEclipse implements CardInfo {
 					eff = delayed {
 						after PLAY_STADIUM, {
               if (!ef.cardToPlay.name.contains("Chaotic Swell")) {
-							  discard bg.stadiumInfoStruct.stadiumCard
+                discard ef.cardToPlay
               }
 						}
 					}
