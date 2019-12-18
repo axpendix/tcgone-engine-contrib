@@ -142,7 +142,7 @@ public enum CosmicEclipse implements CardInfo {
 	COSMOEM_101 ("Cosmoem", 101, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
 	LUNALA_102 ("Lunala", 102, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
 	MARSHADOW_103 ("Marshadow", 103, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
-	BLACEPHALON_104 ("Blacephalon", 104, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	BLACEPHALON_104 ("Blacephalon", 104, Rarity.HOLORARE, [POKEMON, BASIC, ULTRA_BEAST, _PSYCHIC_]),
 	ONIX_105 ("Onix", 105, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
 	NOSEPASS_106 ("Nosepass", 106, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
 	TRAPINCH_107 ("Trapinch", 107, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
@@ -196,13 +196,13 @@ public enum CosmicEclipse implements CardInfo {
 	SYLVEON_155 ("Sylveon", 155, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FAIRY_]),
 	ARCEUS_DIALGA_PALKIA_GX_156 ("Arceus & Dialga & Palkia-GX", 156, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DRAGON_]),
 	RESHIRAM_ZEKROM_GX_157 ("Reshiram & Zekrom-GX", 157, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DRAGON_]),
-	NAGANADEL_GUZZLORD_GX_158 ("Naganadel & Guzzlord-GX", 158, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DRAGON_]),
+	NAGANADEL_GUZZLORD_GX_158 ("Naganadel & Guzzlord-GX", 158, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, ULTRA_BEAST, _DRAGON_]),
 	DRAMPA_159 ("Drampa", 159, Rarity.RARE, [POKEMON, BASIC, _DRAGON_]),
 	JANGMO_O_160 ("Jangmo-o", 160, Rarity.COMMON, [POKEMON, BASIC, _DRAGON_]),
 	JANGMO_O_161 ("Jangmo-o", 161, Rarity.COMMON, [POKEMON, BASIC, _DRAGON_]),
 	HAKAMO_O_162 ("Hakamo-o", 162, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _DRAGON_]),
 	KOMMO_O_163 ("Kommo-o", 163, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _DRAGON_]),
-	ULTRA_NECROZMA_164 ("Ultra Necrozma", 164, Rarity.HOLORARE, [POKEMON, BASIC, _DRAGON_]),
+	ULTRA_NECROZMA_164 ("Ultra Necrozma", 164, Rarity.HOLORARE, [POKEMON, BASIC, ULTRA_BEAST, _DRAGON_]),
 	MEGA_LOPUNNY_JIGGLYPUFF_GX_165 ("Mega Lopunny & Jigglypuff-GX", 165, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _COLORLESS_]),
 	EEVEE_166 ("Eevee", 166, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
 	EEVEE_167 ("Eevee", 167, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
@@ -261,8 +261,8 @@ public enum CosmicEclipse implements CardInfo {
 	ARCEUS_DIALGA_PALKIA_GX_220 ("Arceus & Dialga & Palkia-GX", 220, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DRAGON_]),
 	ARCEUS_DIALGA_PALKIA_GX_221 ("Arceus & Dialga & Palkia-GX", 221, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DRAGON_]),
 	RESHIRAM_ZEKROM_GX_222 ("Reshiram & Zekrom-GX", 222, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DRAGON_]),
-	NAGANADEL_GUZZLORD_GX_223 ("Naganadel & Guzzlord-GX", 223, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DRAGON_]),
-	NAGANADEL_GUZZLORD_GX_224 ("Naganadel & Guzzlord-GX", 224, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DRAGON_]),
+	NAGANADEL_GUZZLORD_GX_223 ("Naganadel & Guzzlord-GX", 223, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, ULTRA_BEAST, _DRAGON_]),
+	NAGANADEL_GUZZLORD_GX_224 ("Naganadel & Guzzlord-GX", 224, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, ULTRA_BEAST, _DRAGON_]),
 	MEGA_LOPUNNY_JIGGLYPUFF_GX_225 ("Mega Lopunny & Jigglypuff-GX", 225, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _COLORLESS_]),
 	MEGA_LOPUNNY_JIGGLYPUFF_GX_226 ("Mega Lopunny & Jigglypuff-GX", 226, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _COLORLESS_]),
 	SILVALLY_GX_227 ("Silvally-GX", 227, Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, _COLORLESS_]),
@@ -298,7 +298,7 @@ public enum CosmicEclipse implements CardInfo {
 	ALOLAN_PERSIAN_GX_257 ("Alolan Persian-GX", 257, Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, _DARKNESS_]),
 	ARCEUS_DIALGA_PALKIA_GX_258 ("Arceus & Dialga & Palkia-GX", 258, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DRAGON_]),
 	RESHIRAM_ZEKROM_GX_259 ("Reshiram & Zekrom-GX", 259, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DRAGON_]),
-	NAGANADEL_GUZZLORD_GX_260 ("Naganadel & Guzzlord-GX", 260, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DRAGON_]),
+	NAGANADEL_GUZZLORD_GX_260 ("Naganadel & Guzzlord-GX", 260, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, ULTRA_BEAST, _DRAGON_]),
 	MEGA_LOPUNNY_JIGGLYPUFF_GX_261 ("Mega Lopunny & Jigglypuff-GX", 261, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _COLORLESS_]),
 	SILVALLY_GX_262 ("Silvally-GX", 262, Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, _COLORLESS_]),
 	GIANT_HEARTH_263 ("Giant Hearth", 263, Rarity.SECRET, [TRAINER, STADIUM]),
@@ -816,15 +816,15 @@ public enum CosmicEclipse implements CardInfo {
 					}
 					onAttack {
 						gxPerform()
-						attachEnergyFrom(basic:true, my.discard, my.all)
-						attachEnergyFrom(basic:true, my.discard, my.all)
-						attachEnergyFrom(basic:true, my.discard, my.all)
-						attachEnergyFrom(basic:true, my.discard, my.all)
-						attachEnergyFrom(basic:true, my.discard, my.all)
 						if (self.cards.energySufficient(thisMove.energyCost + C)) {
 							apply BURNED
 							apply CONFUSED
 						}
+						attachEnergyFrom(basic:true, my.discard, my.all)
+						attachEnergyFrom(basic:true, my.discard, my.all)
+						attachEnergyFrom(basic:true, my.discard, my.all)
+						attachEnergyFrom(basic:true, my.discard, my.all)
+						attachEnergyFrom(basic:true, my.discard, my.all)
 					}
 				}
 			};
@@ -1940,7 +1940,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						damage 20 opp.all.select("Deal 20 damage to?")
+						damage 20, opp.all.select("Deal 20 damage to?")
 					}
 				}
 			};
@@ -3698,11 +3698,11 @@ public enum CosmicEclipse implements CardInfo {
 				weakness M
 				resistance D, MINUS20
 				bwAbility "Flower Picking", {
-					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may choose 2 random cards from your opponent's hand. Your opponent reveals those cards and shuffles them into their deck."
+					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck."
 					onActivate {r->
 						if (r == PLAY_FROM_HAND && my.deck && confirm("Use Flower Picking?")) {
 							powerUsed()
-							opp.hand.select(hidden: true, count:2).moveTo(hidden: false, opp.deck)
+							opp.hand.select(hidden: true, count:1).moveTo(hidden: false, opp.deck)
 							shuffleDeck(null, TargetPlayer.OPPONENT)
 						}
 					}
@@ -4032,7 +4032,7 @@ public enum CosmicEclipse implements CardInfo {
 					text "This Pokémon can't attack unless your opponent has 2 or fewer Prize cards remaining."
 					delayedA {
 						before CHECK_ATTACK_REQUIREMENTS, {
-							if (self.owner.opposite.pbg.prizeCardSet.size() > 2) {
+							if (bg.currentTurn == self.owner && self.owner.opposite.pbg.prizeCardSet.size() > 2) {
 								wcu "Ultra Burst prevents Ultra Necrozma from attacking."
 								prevent()
 							}
@@ -4146,7 +4146,9 @@ public enum CosmicEclipse implements CardInfo {
 					text "Once during your turn (before your attack), you may put the top card of your opponent's deck on the bottom of their deck without looking at it."
 					actionA {
 						assert opp.deck : "There are no cards in your opponent's deck"
-						opp.deck.subList(0, 1).moveTo(opp.deck)
+						checkLastTurn()
+						powerUsed()
+						opp.deck.subList(0, 1).moveTo(hidden:true, opp.deck)
 					}
 				}
 				move "Tail Smack", {
@@ -4676,6 +4678,10 @@ public enum CosmicEclipse implements CardInfo {
 			return itemCard (this) {
 				text "Shuffle a Pokémon and a Pokémon Tool card from your discard pile into your deck."
 				onPlay {
+					my.deck.search(max: 2, "Select a Pokémon Tool card and a Special Energy card", {it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(SPECIAL_ENERGY)}, { CardList list ->
+              list.filterByType(POKEMON_TOOL).size() <= 1 && list.filterByType(SPECIAL_ENERGY).size() <= 1
+            }).showToOpponent("Selected cards").moveTo(my.hand)
+
 					my.discard.search(max: 2, "Select a Pokémon Tool card and a Pokémon to shuffle into your deck.", {it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(POKEMON)}, { CardList list ->
 						list.filterByType(POKEMON_TOOL).size() <= 1 && list.filterByType(POKEMON).size() <= 1
 					}).showToOpponent("Selected cards").moveTo(my.deck)
