@@ -3736,7 +3736,7 @@ public enum CosmicEclipse implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						flip 3, { damage 60 }
-						apply CONFUSED
+						apply CONFUSED, self
 					}
 				}
 			};
