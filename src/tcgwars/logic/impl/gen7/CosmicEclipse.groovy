@@ -1554,14 +1554,16 @@ public enum CosmicEclipse implements CardInfo {
 					attackRequirement {}
 					def eff
 					onAttack {
-						eff = getter (GET_MOVE_LIST,self) {holder->
-              for (card in holder.effect.target.cards.filterByType(POKEMON)){
-                if (card != holder.effect.target.topPokemonCard) {
-                  holder.object.addAll(card.moves)
+            delayed {
+              eff = getter (GET_MOVE_LIST, elf) { holder->
+                for (card in holder.effect.target.cards.filterByType(POKEMON)) {
+                  if (card != holder.effect.target.topPokemonCard) {
+                    holder.object.addAll(card.moves)
+                  }
                 }
               }
+              unregisterAfter 1
             }
-						unregisterAfter 1
 					}
 				}
 				move "Aquafall", {
@@ -2608,7 +2610,7 @@ public enum CosmicEclipse implements CardInfo {
 					text "Choose 1 of your opponent's Active Pokémon's non-GX attacks and use it as this attack."
 					energyCost P, C, C
 					attackRequirement {
-						assert opp.active.moves.findAll { !it.name.contains("GX") } : "No moves to perform"
+						assert opp.active.topPokemonCard.moves.findAll { !it.name.contains("GX") } : "No moves to perform"
 					}
 					onAttack {
 						def list = defending.topPokemonCard.moves.findAll { !it.name.contains("GX") }
@@ -2631,7 +2633,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						int maxCountersToPlace = (opp.prizeCardSet.size() == 3) ? 12 : 4
+						def maxCountersToPlace = (opp.prizeCardSet.size() == 3) ? 12 : 4
 
 						(1..maxCountersToPlace).each {
 							directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ($it countesr out of $max)")
@@ -2694,7 +2696,7 @@ public enum CosmicEclipse implements CardInfo {
 						assert my.deck : "There are no cards in your deck"
 					}
 					onAttack {
-						flip 2, { my.deck.search(cardTypeFilter(STADIUM)).moveTo(hand) }
+						my.deck.search(cardTypeFilter(STADIUM)).moveTo(hand)
 						shuffleDeck()
 					}
 				}
@@ -3617,7 +3619,7 @@ public enum CosmicEclipse implements CardInfo {
 						powerUsed()
 
 						flip {
-							attachEnergyFrom(basic:true, my.discard,self)
+							attachEnergyFrom(basic:true, my.discard, my.active)
 						}
 						bg.gm().betweenTurns()
 					}
@@ -3736,7 +3738,7 @@ public enum CosmicEclipse implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						flip 3, { damage 60 }
-						apply CONFUSED
+						apply CONFUSED, self
 					}
 				}
 			};
@@ -4510,7 +4512,7 @@ public enum CosmicEclipse implements CardInfo {
           my.deck.subList(0, 3).moveTo(my.discard)
 
 					if (my.hand.getExcludedList(thisCard).size() >= 3 && confirm("Discard 3 cards to force your opponent to discard their Benched Pokémon until they have 3 Benched Pokémon?")) {
-						toDiscard = my.hand.getExcludedList(thisCard).select(count:3, "Select cards to discard.")
+						def toDiscard = my.hand.getExcludedList(thisCard).select(count:3, "Select cards to discard.")
 						eff = getterA (GET_BENCH_SIZE) {h->
 							if (h.effect.playerType == self.owner.opposite) {
 								h.object = Math.min(h.object as Integer, 3)
