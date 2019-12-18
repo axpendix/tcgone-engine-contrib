@@ -2633,7 +2633,7 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						int maxCountersToPlace = (opp.prizeCardSet.size() == 3) ? 12 : 4
+						def maxCountersToPlace = (opp.prizeCardSet.size() == 3) ? 12 : 4
 
 						(1..maxCountersToPlace).each {
 							directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ($it countesr out of $max)")
