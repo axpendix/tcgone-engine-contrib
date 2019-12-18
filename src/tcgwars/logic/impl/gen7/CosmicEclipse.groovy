@@ -3617,7 +3617,7 @@ public enum CosmicEclipse implements CardInfo {
 						powerUsed()
 
 						flip {
-							attachEnergyFrom(basic:true, my.discard,self)
+							attachEnergyFrom(basic:true, my.discard, my.active)
 						}
 						bg.gm().betweenTurns()
 					}
