@@ -1554,14 +1554,16 @@ public enum CosmicEclipse implements CardInfo {
 					attackRequirement {}
 					def eff
 					onAttack {
-						eff = getter (GET_MOVE_LIST,self) {holder->
-              for (card in holder.effect.target.cards.filterByType(POKEMON)){
-                if (card != holder.effect.target.topPokemonCard) {
-                  holder.object.addAll(card.moves)
+            delayed {
+              eff = getter (GET_MOVE_LIST, elf) { holder->
+                for (card in holder.effect.target.cards.filterByType(POKEMON)) {
+                  if (card != holder.effect.target.topPokemonCard) {
+                    holder.object.addAll(card.moves)
+                  }
                 }
               }
+              unregisterAfter 1
             }
-						unregisterAfter 1
 					}
 				}
 				move "Aquafall", {
