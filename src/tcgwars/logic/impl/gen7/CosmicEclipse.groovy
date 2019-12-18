@@ -2694,7 +2694,7 @@ public enum CosmicEclipse implements CardInfo {
 						assert my.deck : "There are no cards in your deck"
 					}
 					onAttack {
-						flip 2, { my.deck.search(cardTypeFilter(STADIUM)).moveTo(hand) }
+						my.deck.search(cardTypeFilter(STADIUM)).moveTo(hand)
 						shuffleDeck()
 					}
 				}
