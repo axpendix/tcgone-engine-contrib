@@ -2610,7 +2610,7 @@ public enum CosmicEclipse implements CardInfo {
 					text "Choose 1 of your opponent's Active Pokémon's non-GX attacks and use it as this attack."
 					energyCost P, C, C
 					attackRequirement {
-						assert opp.active.moves.findAll { !it.name.contains("GX") } : "No moves to perform"
+						assert opp.active.topPokemonCard.moves.findAll { !it.name.contains("GX") } : "No moves to perform"
 					}
 					onAttack {
 						def list = defending.topPokemonCard.moves.findAll { !it.name.contains("GX") }
