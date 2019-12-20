@@ -3893,9 +3893,9 @@ public enum CosmicEclipse implements CardInfo {
 							def pcs = tar.select("Select a Pokémon that has a [R] or [L] energy to discard. Cancel to stop", false)
 							if (!pcs) break
 							pcs.cards.filterByType(BASIC_ENERGY).findAll {
-								it.filterByEnergyType(R).notEmpty() ||
-								it.filterByEnergyType(L).notEmpty()
-							}.select("Select which [R] or [L] to discard?")
+								it.asEnergyCard().containsTypePlain(R) ||
+                it.asEnergyCard().containsTypePlain(L)
+							}.select("Select which [R] or [L] to discard?").discard()
 							count++
 						}
 						damage 90*count
