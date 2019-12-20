@@ -4485,7 +4485,6 @@ public enum CosmicEclipse implements CardInfo {
 						checkLastTurn()
 						powerUsed()
 						draw 5-my.hand.size()
-						new Knockout(self).run(bg)
 					}
 				}
 				move "Brave Buddies", {
@@ -4501,16 +4500,14 @@ public enum CosmicEclipse implements CardInfo {
 					text "If your opponent’s Active Pokémon is an Ultra Beast, it is Knocked Out. (You can’t use more than 1 GX attack in a game.)"
 					energyCost C, C
 					attackRequirement {
+						gxCheck()
 						assert defending.topPokemonCard.cardTypes.is(ULTRA_BEAST) : "Opponent's active is not an Ultra Beast"
-						gxPerform()
 					}
 					onAttack {
-						gxCheck()
-						if (defending.topPokemonCard.cardTypes.is(ULTRA_BEAST)) {
+						gxPerform()
 							new Knockout(defending).run(bg)
 						}
 					}
-				}
 			};
 			case BEASTITE_185:
 			return pokemonTool (this) {
