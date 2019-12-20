@@ -435,7 +435,12 @@ public enum CosmicEclipse implements CardInfo {
 				bwAbility "Fragrant Flower Garden", {
 					text "Once during your turn (before your attack), you may heal 30 damage from each of your Pokémon."
 					actionA {
+						checkLastTurn()
+						powerUsed()
+						my.all.each {
+							heal(30, it, SRC_ABILITY)
 					}
+				}
 				}
 				move "Massive Bloom", {
 					text "180- damage. This attack does 10 less damage for each damage counter on this Pokémon."
