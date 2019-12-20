@@ -2641,7 +2641,7 @@ public enum CosmicEclipse implements CardInfo {
 						def maxCountersToPlace = (opp.prizeCardSet.size() == 3) ? 12 : 4
 
 						(1..maxCountersToPlace).each {
-							directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ($it countesr out of $max)")
+							directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ($it counters out of $maxCountersToPlace)")
 						}
 					}
 				}
