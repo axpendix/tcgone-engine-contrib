@@ -4799,7 +4799,6 @@ public enum CosmicEclipse implements CardInfo {
 									self.cards.getExcludedList(self.topPokemonCard).discard()
               		moveCard(self.topPokemonCard, my.deck)
 									removePCS(self)
-									shuffleDeck()
 								}
 							}
 							onDeactivate{
