@@ -411,9 +411,12 @@ public enum CosmicEclipse implements CardInfo {
 					text "Heal 30 damage from 1 of your Pokémon."
 					energyCost C
 					attackRequirement {}
-					onAttack {
-
-					}
+					attackRequirement {
+            assert my.all.findAll{it.numberOfDamageCounters} : "There are no damaged pokemon to heal"
+          }
+          onAttack{
+            heal 30, my.all.findAll{it.numberOfDamageCounters}.select("Heal")
+          }
 				}
 			};
 			case GLOOM_3:
@@ -1686,8 +1689,17 @@ public enum CosmicEclipse implements CardInfo {
 				weakness L
 				bwAbility "Scatter", {
 					text "At the end of your opponent's turn, if this Pokémon has any damage counters on it, flip a coin. If tails, shuffle this Pokémon and all cards attached to it into your deck."
-					actionA {
-						// TODO
+          def eff
+					delayedA {
+            after APPLY_ATTACK_DAMAGES, {
+              if (self.numberOfDamageCounters && bg.currentTurn != self.owner) {
+                flip {
+                  self.cards.moveTo(self.owner.pbg.deck)
+                  removePCS(self)
+                  shuffleDeck()
+                }
+              }
+            }
 					}
 				}
 				move "Hydro Splash", {
@@ -1725,12 +1737,14 @@ public enum CosmicEclipse implements CardInfo {
 						my.deck.subList(0, 12).showToMe("Top 12 cards of your deck")
 						def basics = my.deck.subList(0, 12).filterByType(BASIC)
 						if (basics) {
-							while (my.bench.notFull) {
-								def selected = basics.select(min:0, max:basics.size(), "Select the Basic Pokémon you'd like to bench.")
-								selected.each {
-									benchPCS(it)
-								}
-							}
+              def maxSpace = Math.min(my.bench.freeBenchCount, basics.size())
+
+              def selected = basics.selected(min:0, max:maxSpace, "Select the Basic Pokémon you'd like to bench")
+
+              selected.each {
+                benchPCS(it)
+                my.deck.remove(it)
+              }
 						}
 						shuffleDeck()
 					}
@@ -3879,9 +3893,9 @@ public enum CosmicEclipse implements CardInfo {
 							def pcs = tar.select("Select a Pokémon that has a [R] or [L] energy to discard. Cancel to stop", false)
 							if (!pcs) break
 							pcs.cards.filterByType(BASIC_ENERGY).findAll {
-								it.filterByEnergyType(R).notEmpty() ||
-								it.filterByEnergyType(L).notEmpty()
-							}.select("Select which [R] or [L] to discard?")
+								it.asEnergyCard().containsTypePlain(R) ||
+                it.asEnergyCard().containsTypePlain(L)
+							}.select("Select which [R] or [L] to discard?").discard()
 							count++
 						}
 						damage 90*count
@@ -4016,7 +4030,7 @@ public enum CosmicEclipse implements CardInfo {
 					text "If your opponent’s Active Pokémon is a Pokémon-GX or Pokémon-EX, this Pokémon can evolve during the turn you play it."
 					delayedA {
 						before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
-							if (opp.active.PokémonGX || opp.active.PokémonEX) {
+							if (self.owner.opposite.pbg.active.PokémonGX || self.owner.opposite.pbg.active.PokémonEX) {
 								prevent()
 							}
 						}
@@ -4708,7 +4722,11 @@ public enum CosmicEclipse implements CardInfo {
 			return itemCard (this) {
 				text "Shuffle a Pokémon and a Pokémon Tool card from your discard pile into your deck."
 				onPlay {
-					my.discard.search(max: 2, "Select a Pokémon Tool card and a Pokémon to shuffle into your deck.", {it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(POKEMON)}, { CardList list ->
+          def eligible = my.discard.findAll {
+            (POKEMON_TOOL) || it.cardTypes.is(POKEMON)
+          }
+
+					eligible.select(min: 0, max: 2, "Select a Pokémon Tool card and a Pokémon to shuffle into your deck.", { CardList list ->
 						list.filterByType(POKEMON_TOOL).size() <= 1 && list.filterByType(POKEMON).size() <= 1
 					}).showToOpponent("Selected cards").moveTo(my.deck)
 					shuffleDeck()
@@ -4781,7 +4799,6 @@ public enum CosmicEclipse implements CardInfo {
 									self.cards.getExcludedList(self.topPokemonCard).discard()
               		moveCard(self.topPokemonCard, my.deck)
 									removePCS(self)
-									shuffleDeck()
 								}
 							}
 							onDeactivate{
@@ -4830,11 +4847,11 @@ public enum CosmicEclipse implements CardInfo {
 									bg.em().storeObject("gx_"+my.owner, 0)
 								}
 							}
+              unregisterAfter 1
+              unregister {
+                eff.unregister()
+              }
 						}
-						unregister {
-							eff.unregister()
-						}
-						unregisterAfter 1
 					}
 				}
 				playRequirement{
@@ -4862,12 +4879,10 @@ public enum CosmicEclipse implements CardInfo {
 			case PROFESSOR_OAK_S_SETUP_201:
 			return supporter (this) {
 				text "Search your deck for up to 3 Basic Pokémon of different types and put them onto your Bench. Then, shuffle your deck."
-
-				text "Search your deck for up to 3 different types of Basic Pokémon cards (excluding Baby Pokémon), show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
 					def maxSpace = Math.min(my.bench.freeBenchCount, 3)
-					my.deck.select(min:0, max:my.bench.size(), "Select up to $maxSpace Basic Pokémon of different types", cardTypeFilter(BASIC), thisCard.player, { CardList list ->
-						TypeSet typeSet=new TypeSet()
+					my.deck.select(min:0, max:maxSpace, "Select up to $maxSpace Basic Pokémon of different types", cardTypeFilter(BASIC), thisCard.player, { CardList list ->
+						TypeSet typeSet = new TypeSet()
 						for (card in list) {
 							if (typeSet.containsAny(card.asPokemonCard().types)) {
 								return false
