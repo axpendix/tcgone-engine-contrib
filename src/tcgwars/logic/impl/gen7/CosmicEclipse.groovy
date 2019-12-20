@@ -439,8 +439,8 @@ public enum CosmicEclipse implements CardInfo {
 						powerUsed()
 						my.all.each {
 							heal(30, it, SRC_ABILITY)
+						}
 					}
-				}
 				}
 				move "Massive Bloom", {
 					text "180- damage. This attack does 10 less damage for each damage counter on this Pokémon."
@@ -3846,8 +3846,8 @@ public enum CosmicEclipse implements CardInfo {
 										}
 									}
 								}
-					}
-				}
+							}
+						}
 
 						if (self.cards.energySufficient( thisMove.energyCost + W )) {
 							delayed {
@@ -4505,9 +4505,9 @@ public enum CosmicEclipse implements CardInfo {
 					}
 					onAttack {
 						gxPerform()
-							new Knockout(defending).run(bg)
-						}
+						new Knockout(defending).run(bg)
 					}
+				}
 			};
 			case BEASTITE_185:
 			return pokemonTool (this) {
