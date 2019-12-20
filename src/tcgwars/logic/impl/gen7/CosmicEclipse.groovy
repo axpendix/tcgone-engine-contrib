@@ -4837,11 +4837,11 @@ public enum CosmicEclipse implements CardInfo {
 									bg.em().storeObject("gx_"+my.owner, 0)
 								}
 							}
+              unregisterAfter 1
+              unregister {
+                eff.unregister()
+              }
 						}
-						unregister {
-							eff.unregister()
-						}
-						unregisterAfter 1
 					}
 				}
 				playRequirement{
