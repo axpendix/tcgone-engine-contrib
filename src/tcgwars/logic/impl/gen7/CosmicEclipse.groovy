@@ -1728,12 +1728,14 @@ public enum CosmicEclipse implements CardInfo {
 						my.deck.subList(0, 12).showToMe("Top 12 cards of your deck")
 						def basics = my.deck.subList(0, 12).filterByType(BASIC)
 						if (basics) {
-							while (my.bench.notFull) {
-								def selected = basics.select(min:0, max:basics.size(), "Select the Basic Pokémon you'd like to bench.")
-								selected.each {
-									benchPCS(it)
-								}
-							}
+              def maxSpace = Math.min(my.bench.freeBenchCount, basics.size())
+
+              def selected = basics.selected(min:0, max:maxSpace, "Select the Basic Pokémon you'd like to bench")
+
+              selected.each {
+                benchPCS(it)
+                my.deck.remove(it)
+              }
 						}
 						shuffleDeck()
 					}
