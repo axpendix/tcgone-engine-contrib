@@ -2620,7 +2620,7 @@ public enum CosmicEclipse implements CardInfo {
 					onAttack {
 						def list = defending.topPokemonCard.moves.findAll { !it.name.contains("GX") }
 						if (list) {
-							def selected = choose(list + ["End Turn (Skip)"], "Choose a non-GX attack to use.")
+							def selected = choose(list, "Choose a non-GX attack to use.")
 							bc "$selected was chosen"
 							def bef = blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
 							attack (selected as Move)
