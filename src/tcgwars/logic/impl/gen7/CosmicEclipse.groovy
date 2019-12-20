@@ -1560,7 +1560,7 @@ public enum CosmicEclipse implements CardInfo {
 					def eff
 					onAttack {
             delayed {
-              eff = getter (GET_MOVE_LIST, elf) { holder->
+              eff = getter (GET_MOVE_LIST, self) { holder->
                 for (card in holder.effect.target.cards.filterByType(POKEMON)) {
                   if (card != holder.effect.target.topPokemonCard) {
                     holder.object.addAll(card.moves)
