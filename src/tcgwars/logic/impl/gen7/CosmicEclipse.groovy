@@ -4030,7 +4030,7 @@ public enum CosmicEclipse implements CardInfo {
 					text "If your opponent’s Active Pokémon is a Pokémon-GX or Pokémon-EX, this Pokémon can evolve during the turn you play it."
 					delayedA {
 						before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
-							if (opp.active.PokémonGX || opp.active.PokémonEX) {
+							if (self.owner.opposite.pbg.active.PokémonGX || self.owner.opposite.pbg.active.PokémonEX) {
 								prevent()
 							}
 						}
