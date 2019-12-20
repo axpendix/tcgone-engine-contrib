@@ -435,6 +435,11 @@ public enum CosmicEclipse implements CardInfo {
 				bwAbility "Fragrant Flower Garden", {
 					text "Once during your turn (before your attack), you may heal 30 damage from each of your Pokémon."
 					actionA {
+						checkLastTurn()
+						powerUsed()
+						my.all.each {
+							heal(30, it, SRC_ABILITY)
+						}
 					}
 				}
 				move "Massive Bloom", {
@@ -1555,7 +1560,7 @@ public enum CosmicEclipse implements CardInfo {
 					def eff
 					onAttack {
             delayed {
-              eff = getter (GET_MOVE_LIST, elf) { holder->
+              eff = getter (GET_MOVE_LIST, self) { holder->
                 for (card in holder.effect.target.cards.filterByType(POKEMON)) {
                   if (card != holder.effect.target.topPokemonCard) {
                     holder.object.addAll(card.moves)
@@ -2615,7 +2620,7 @@ public enum CosmicEclipse implements CardInfo {
 					onAttack {
 						def list = defending.topPokemonCard.moves.findAll { !it.name.contains("GX") }
 						if (list) {
-							def selected = choose(list + ["End Turn (Skip)"], "Choose a non-GX attack to use.")
+							def selected = choose(list, "Choose a non-GX attack to use.")
 							bc "$selected was chosen"
 							def bef = blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
 							attack (selected as Move)
@@ -2636,7 +2641,7 @@ public enum CosmicEclipse implements CardInfo {
 						def maxCountersToPlace = (opp.prizeCardSet.size() == 3) ? 12 : 4
 
 						(1..maxCountersToPlace).each {
-							directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ($it countesr out of $max)")
+							directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ($it counters out of $maxCountersToPlace)")
 						}
 					}
 				}
@@ -3825,8 +3830,34 @@ public enum CosmicEclipse implements CardInfo {
 				move "Altered Creation GX", {
 					text "For the rest of this game, your Pokémon’s attacks do 30 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance). If this Pokémon has at least 1 extra [W] Energy attached to it (in addition to this attack's cost), when your opponent’s Active Pokémon is Knocked Out by damage from those attacks, take 1 more Prize card. (You can't use more than 1 GX attack in a game.)"
 					energyCost M
-					attackRequirement {}
+					attackRequirement {
+						gxCheck()
+					}
 					onAttack {
+						gxPerform()
+
+						afterDamage {
+							delayed {
+								before APPLY_ATTACK_DAMAGES, {
+									bg.dm().each {
+										if (it.from.owner == self.owner && it.notNoEffect && it.dmg.value && it.to.active) {
+											bc "Altered Creation GX +30"
+											it.dmg += hp(30)
+										}
+									}
+								}
+							}
+						}
+
+						if (self.cards.energySufficient( thisMove.energyCost + W )) {
+							delayed {
+								def pcs = defending
+								after KNOCKOUT, pcs, {
+									bc "Altered Creation GX allows 1 extra prize."
+									bg.em().run(new TakePrize(self.owner, pcs))
+								}
+							}
+						}
 					}
 				}
 			};
@@ -4034,7 +4065,7 @@ public enum CosmicEclipse implements CardInfo {
 					text "This Pokémon can't attack unless your opponent has 2 or fewer Prize cards remaining."
 					delayedA {
 						before CHECK_ATTACK_REQUIREMENTS, {
-							if (bg.currentTurn == self.owner && self.owner.opposite.pbg.prizeCardSet.size() > 2) {
+							if (self.active && bg.currentTurn == self.owner && self.owner.opposite.pbg.prizeCardSet.size() > 2) {
 								wcu "Ultra Burst prevents Ultra Necrozma from attacking."
 								prevent()
 							}
@@ -4454,7 +4485,6 @@ public enum CosmicEclipse implements CardInfo {
 						checkLastTurn()
 						powerUsed()
 						draw 5-my.hand.size()
-						new Knockout(self).run(bg)
 					}
 				}
 				move "Brave Buddies", {
@@ -4470,14 +4500,12 @@ public enum CosmicEclipse implements CardInfo {
 					text "If your opponent’s Active Pokémon is an Ultra Beast, it is Knocked Out. (You can’t use more than 1 GX attack in a game.)"
 					energyCost C, C
 					attackRequirement {
+						gxCheck()
 						assert defending.topPokemonCard.cardTypes.is(ULTRA_BEAST) : "Opponent's active is not an Ultra Beast"
-						gxPerform()
 					}
 					onAttack {
-						gxCheck()
-						if (defending.topPokemonCard.cardTypes.is(ULTRA_BEAST)) {
-							new Knockout(defending).run(bg)
-						}
+						gxPerform()
+						new Knockout(defending).run(bg)
 					}
 				}
 			};
@@ -4680,10 +4708,6 @@ public enum CosmicEclipse implements CardInfo {
 			return itemCard (this) {
 				text "Shuffle a Pokémon and a Pokémon Tool card from your discard pile into your deck."
 				onPlay {
-					my.deck.search(max: 2, "Select a Pokémon Tool card and a Special Energy card", {it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(SPECIAL_ENERGY)}, { CardList list ->
-              list.filterByType(POKEMON_TOOL).size() <= 1 && list.filterByType(SPECIAL_ENERGY).size() <= 1
-            }).showToOpponent("Selected cards").moveTo(my.hand)
-
 					my.discard.search(max: 2, "Select a Pokémon Tool card and a Pokémon to shuffle into your deck.", {it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(POKEMON)}, { CardList list ->
 						list.filterByType(POKEMON_TOOL).size() <= 1 && list.filterByType(POKEMON).size() <= 1
 					}).showToOpponent("Selected cards").moveTo(my.deck)
