@@ -3830,8 +3830,34 @@ public enum CosmicEclipse implements CardInfo {
 				move "Altered Creation GX", {
 					text "For the rest of this game, your Pokémon’s attacks do 30 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance). If this Pokémon has at least 1 extra [W] Energy attached to it (in addition to this attack's cost), when your opponent’s Active Pokémon is Knocked Out by damage from those attacks, take 1 more Prize card. (You can't use more than 1 GX attack in a game.)"
 					energyCost M
-					attackRequirement {}
+					attackRequirement {
+						gxCheck()
+					}
 					onAttack {
+						gxPerform()
+
+						afterDamage {
+							delayed {
+								before APPLY_ATTACK_DAMAGES, {
+									bg.dm().each {
+										if (it.from.owner == self.owner && it.notNoEffect && it.dmg.value && it.to.active) {
+											bc "Altered Creation GX +30"
+											it.dmg += hp(30)
+										}
+									}
+								}
+					}
+				}
+
+						if (self.cards.energySufficient( thisMove.energyCost + W )) {
+							delayed {
+								def pcs = defending
+								after KNOCKOUT, pcs, {
+									bc "Altered Creation GX allows 1 extra prize."
+									bg.em().run(new TakePrize(self.owner, pcs))
+								}
+							}
+						}
 					}
 				}
 			};
