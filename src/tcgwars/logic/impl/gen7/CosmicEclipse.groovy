@@ -1689,8 +1689,17 @@ public enum CosmicEclipse implements CardInfo {
 				weakness L
 				bwAbility "Scatter", {
 					text "At the end of your opponent's turn, if this Pokémon has any damage counters on it, flip a coin. If tails, shuffle this Pokémon and all cards attached to it into your deck."
-					actionA {
-						// TODO
+          def eff
+					delayedA {
+            after APPLY_ATTACK_DAMAGES, {
+              if (self.numberOfDamageCounters && bg.currentTurn != self.owner) {
+                flip {
+                  self.cards.moveTo(self.owner.pbg.deck)
+                  removePCS(self)
+                  shuffleDeck()
+                }
+              }
+            }
 					}
 				}
 				move "Hydro Splash", {
