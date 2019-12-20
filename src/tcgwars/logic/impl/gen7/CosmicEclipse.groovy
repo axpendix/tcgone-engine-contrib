@@ -4065,7 +4065,7 @@ public enum CosmicEclipse implements CardInfo {
 					text "This Pokémon can't attack unless your opponent has 2 or fewer Prize cards remaining."
 					delayedA {
 						before CHECK_ATTACK_REQUIREMENTS, {
-							if (bg.currentTurn == self.owner && self.owner.opposite.pbg.prizeCardSet.size() > 2) {
+							if (self.active && bg.currentTurn == self.owner && self.owner.opposite.pbg.prizeCardSet.size() > 2) {
 								wcu "Ultra Burst prevents Ultra Necrozma from attacking."
 								prevent()
 							}
