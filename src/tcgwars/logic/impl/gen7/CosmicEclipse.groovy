@@ -4865,12 +4865,10 @@ public enum CosmicEclipse implements CardInfo {
 			case PROFESSOR_OAK_S_SETUP_201:
 			return supporter (this) {
 				text "Search your deck for up to 3 Basic Pokémon of different types and put them onto your Bench. Then, shuffle your deck."
-
-				text "Search your deck for up to 3 different types of Basic Pokémon cards (excluding Baby Pokémon), show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
 					def maxSpace = Math.min(my.bench.freeBenchCount, 3)
-					my.deck.select(min:0, max:my.bench.size(), "Select up to $maxSpace Basic Pokémon of different types", cardTypeFilter(BASIC), thisCard.player, { CardList list ->
-						TypeSet typeSet=new TypeSet()
+					my.deck.select(min:0, max:maxSpace, "Select up to $maxSpace Basic Pokémon of different types", cardTypeFilter(BASIC), thisCard.player, { CardList list ->
+						TypeSet typeSet = new TypeSet()
 						for (card in list) {
 							if (typeSet.containsAny(card.asPokemonCard().types)) {
 								return false
