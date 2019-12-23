@@ -1739,7 +1739,7 @@ public enum CosmicEclipse implements CardInfo {
 						if (basics) {
               def maxSpace = Math.min(my.bench.freeBenchCount, basics.size())
 
-              def selected = basics.selected(min:0, max:maxSpace, "Select the Basic Pokémon you'd like to bench")
+              def selected = basics.select(min:0, max:maxSpace, "Select the Basic Pokémon you'd like to bench")
 
               selected.each {
                 benchPCS(it)
