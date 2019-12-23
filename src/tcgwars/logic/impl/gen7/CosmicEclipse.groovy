@@ -3847,11 +3847,13 @@ public enum CosmicEclipse implements CardInfo {
 					attackRequirement {
 						gxCheck()
 					}
+          def eff1
+          def eff2
 					onAttack {
 						gxPerform()
 
 						afterDamage {
-							delayed {
+							def eff1 = delayed {
 								before APPLY_ATTACK_DAMAGES, {
 									bg.dm().each {
 										if (it.from.owner == self.owner && it.notNoEffect && it.dmg.value && it.to.active) {
@@ -3864,7 +3866,7 @@ public enum CosmicEclipse implements CardInfo {
 						}
 
 						if (self.cards.energySufficient( thisMove.energyCost + W )) {
-							delayed {
+							def eff2 = delayed {
 								def pcs = defending
 								after KNOCKOUT, pcs, {
 									bc "Altered Creation GX allows 1 extra prize."
