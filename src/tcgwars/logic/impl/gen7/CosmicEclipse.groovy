@@ -3626,7 +3626,6 @@ public enum CosmicEclipse implements CardInfo {
 				resistance D, MINUS20
 				move "Rubbish Blizzard", {
 					text "10x damage. This attack does 10 damage for each Pokémon Tool card in your discard pile."
-					energyCost
 					attackRequirement {}
 					onAttack {
 						damage 10*my.discard.filterByType(POKEMON_TOOL).size()
