@@ -3908,18 +3908,16 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost R, R, L, L
 					attackRequirement {
 						gxCheck()
-						assert opp.bench : "Opponent does not have any benched Pokemon."
+						assert opp.bench : "Opponent does not have any benched Pokémon."
 					}
 					onAttack {
 						gxPerform()
 						if (opp.bench) {
-							def firstTarget = opp.bench.select("Which Pokemon to do 170 damage to?")
+							def firstTarget = opp.bench.select("Which Pokémon to do 170 damage to?")
 							damage 170, firstTarget
 
 							if (bg.em().retrieveObject("N_S_RESOLVE_TURN") == bg.turnCount) {
-								def targets = opp.bench
-								targets.remove(firstTarget)
-								damage 170, targets.select("Which other Pokemon to do 170 damage to?")
+								damage 170, opp.bench.getExcludedList(firstTarget).select("Which other Pokémon to do 170 damage to?")
 							}
 						}
 					}
