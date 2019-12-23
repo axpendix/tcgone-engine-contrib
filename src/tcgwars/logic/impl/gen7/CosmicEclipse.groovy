@@ -4557,7 +4557,7 @@ public enum CosmicEclipse implements CardInfo {
 
 					if (my.hand.getExcludedList(thisCard).size() >= 3 && confirm("Discard 3 cards to force your opponent to discard their Benched Pokémon until they have 3 Benched Pokémon?")) {
 						def toDiscard = my.hand.getExcludedList(thisCard).select(count:3, "Select cards to discard.")
-						eff = getterA (GET_BENCH_SIZE) {h->
+						eff = getter (GET_BENCH_SIZE) {h->
 							if (h.effect.playerType == self.owner.opposite) {
 								h.object = Math.min(h.object as Integer, 3)
 							}
