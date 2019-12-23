@@ -3425,7 +3425,6 @@ public enum CosmicEclipse implements CardInfo {
 				resistance P, MINUS20
 				move "Run Around", {
 					text "Switch this Pokémon with 1 of your Benched Pokémon."
-					energyCost
 					attackRequirement {}
 					onAttack {
 						switchYourActive()
