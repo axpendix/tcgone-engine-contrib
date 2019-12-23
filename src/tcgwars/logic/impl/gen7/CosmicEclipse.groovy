@@ -456,9 +456,15 @@ public enum CosmicEclipse implements CardInfo {
 				move "Allergic Explosion GX", {
 					text "50 damage. Your opponent's Active Pokémon is now Burned, Paralyzed, and Poisoned. (You can't use more than 1 GX attack in a game.)"
 					energyCost G
-					attackRequirement {}
+					attackRequirement {
+            gxCheck()
+          }
 					onAttack {
+            gxPerform()
 						damage 50
+            apply BURNED
+            apply PARALYZED
+            apply POISONED
 					}
 				}
 			};
