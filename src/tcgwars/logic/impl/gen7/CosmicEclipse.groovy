@@ -1234,7 +1234,6 @@ public enum CosmicEclipse implements CardInfo {
 				}
 				move "Gnaw", {
 					text "10 damage."
-					energyCost
 					attackRequirement {}
 					onAttack {
 						damage 10
