@@ -59,7 +59,7 @@ public enum CosmicEclipse implements CardInfo {
 	ROWLET_18 ("Rowlet", 18, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
 	DARTRIX_19 ("Dartrix", 19, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
 	DECIDUEYE_20 ("Decidueye", 20, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
-	BUZZWOLE_21 ("Buzzwole", 21, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+	BUZZWOLE_21 ("Buzzwole", 21, Rarity.HOLORARE, [POKEMON, BASIC, ULTRA_BEAST, _GRASS_]),
 	CHARIZARD_BRAIXEN_GX_22 ("Charizard & Braixen-GX", 22, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _FIRE_]),
 	PONYTA_23 ("Ponyta", 23, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
 	RAPIDASH_24 ("Rapidash", 24, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
@@ -456,9 +456,15 @@ public enum CosmicEclipse implements CardInfo {
 				move "Allergic Explosion GX", {
 					text "50 damage. Your opponent's Active Pokémon is now Burned, Paralyzed, and Poisoned. (You can't use more than 1 GX attack in a game.)"
 					energyCost G
-					attackRequirement {}
+					attackRequirement {
+            gxCheck()
+          }
 					onAttack {
+            gxPerform()
 						damage 50
+            apply BURNED
+            apply PARALYZED
+            apply POISONED
 					}
 				}
 			};
@@ -1228,7 +1234,6 @@ public enum CosmicEclipse implements CardInfo {
 				}
 				move "Gnaw", {
 					text "10 damage."
-					energyCost
 					attackRequirement {}
 					onAttack {
 						damage 10
@@ -1691,7 +1696,7 @@ public enum CosmicEclipse implements CardInfo {
 					text "At the end of your opponent's turn, if this Pokémon has any damage counters on it, flip a coin. If tails, shuffle this Pokémon and all cards attached to it into your deck."
           def eff
 					delayedA {
-            after APPLY_ATTACK_DAMAGES, {
+            after BETWEEN_TURNS, {
               if (self.numberOfDamageCounters && bg.currentTurn != self.owner) {
                 flip {
                   self.cards.moveTo(self.owner.pbg.deck)
@@ -1739,7 +1744,7 @@ public enum CosmicEclipse implements CardInfo {
 						if (basics) {
               def maxSpace = Math.min(my.bench.freeBenchCount, basics.size())
 
-              def selected = basics.selected(min:0, max:maxSpace, "Select the Basic Pokémon you'd like to bench")
+              def selected = basics.select(min:0, max:maxSpace, "Select the Basic Pokémon you'd like to bench")
 
               selected.each {
                 benchPCS(it)
@@ -3419,7 +3424,6 @@ public enum CosmicEclipse implements CardInfo {
 				resistance P, MINUS20
 				move "Run Around", {
 					text "Switch this Pokémon with 1 of your Benched Pokémon."
-					energyCost
 					attackRequirement {}
 					onAttack {
 						switchYourActive()
@@ -3440,7 +3444,6 @@ public enum CosmicEclipse implements CardInfo {
 				resistance P, MINUS20
 				move "Curve Strike", {
 					text "30 damage. Flip a coin. If heads, prevent all damage done to this Pokémon by attacks during your opponent's next turn."
-					energyCost
 					attackRequirement {}
 					onAttack {
 						damage 30
@@ -3621,7 +3624,6 @@ public enum CosmicEclipse implements CardInfo {
 				resistance D, MINUS20
 				move "Rubbish Blizzard", {
 					text "10x damage. This attack does 10 damage for each Pokémon Tool card in your discard pile."
-					energyCost
 					attackRequirement {}
 					onAttack {
 						damage 10*my.discard.filterByType(POKEMON_TOOL).size()
@@ -3847,11 +3849,13 @@ public enum CosmicEclipse implements CardInfo {
 					attackRequirement {
 						gxCheck()
 					}
+          def eff1
+          def eff2
 					onAttack {
 						gxPerform()
 
 						afterDamage {
-							delayed {
+							def eff1 = delayed {
 								before APPLY_ATTACK_DAMAGES, {
 									bg.dm().each {
 										if (it.from.owner == self.owner && it.notNoEffect && it.dmg.value && it.to.active) {
@@ -3864,7 +3868,7 @@ public enum CosmicEclipse implements CardInfo {
 						}
 
 						if (self.cards.energySufficient( thisMove.energyCost + W )) {
-							delayed {
+							def eff2 = delayed {
 								def pcs = defending
 								after KNOCKOUT, pcs, {
 									bc "Altered Creation GX allows 1 extra prize."
@@ -3906,18 +3910,16 @@ public enum CosmicEclipse implements CardInfo {
 					energyCost R, R, L, L
 					attackRequirement {
 						gxCheck()
-						assert opp.bench : "Opponent does not have any benched Pokemon."
+						assert opp.bench : "Opponent does not have any benched Pokémon."
 					}
 					onAttack {
 						gxPerform()
 						if (opp.bench) {
-							def firstTarget = opp.bench.select("Which Pokemon to do 170 damage to?")
+							def firstTarget = opp.bench.select("Which Pokémon to do 170 damage to?")
 							damage 170, firstTarget
 
 							if (bg.em().retrieveObject("N_S_RESOLVE_TURN") == bg.turnCount) {
-								def targets = opp.bench
-								targets.remove(firstTarget)
-								damage 170, targets.select("Which other Pokemon to do 170 damage to?")
+								damage 170, opp.bench.getExcludedList(firstTarget).select("Which other Pokémon to do 170 damage to?")
 							}
 						}
 					}
@@ -4030,7 +4032,7 @@ public enum CosmicEclipse implements CardInfo {
 					text "If your opponent’s Active Pokémon is a Pokémon-GX or Pokémon-EX, this Pokémon can evolve during the turn you play it."
 					delayedA {
 						before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
-							if (self.owner.opposite.pbg.active.PokémonGX || self.owner.opposite.pbg.active.PokémonEX) {
+							if (self.owner.opposite.pbg.active.pokemonGX || self.owner.opposite.pbg.active.pokemonEX) {
 								prevent()
 							}
 						}
@@ -4555,7 +4557,7 @@ public enum CosmicEclipse implements CardInfo {
 
 					if (my.hand.getExcludedList(thisCard).size() >= 3 && confirm("Discard 3 cards to force your opponent to discard their Benched Pokémon until they have 3 Benched Pokémon?")) {
 						def toDiscard = my.hand.getExcludedList(thisCard).select(count:3, "Select cards to discard.")
-						eff = getterA (GET_BENCH_SIZE) {h->
+						eff = getter (GET_BENCH_SIZE) {h->
 							if (h.effect.playerType == self.owner.opposite) {
 								h.object = Math.min(h.object as Integer, 3)
 							}
