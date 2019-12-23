@@ -3446,7 +3446,6 @@ public enum CosmicEclipse implements CardInfo {
 				resistance P, MINUS20
 				move "Curve Strike", {
 					text "30 damage. Flip a coin. If heads, prevent all damage done to this Pokémon by attacks during your opponent's next turn."
-					energyCost
 					attackRequirement {}
 					onAttack {
 						damage 30
