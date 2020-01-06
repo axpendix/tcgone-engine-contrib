@@ -2044,9 +2044,7 @@ public enum CosmicEclipse implements CardInfo {
           weakness P
           bwAbility "Blow-Away Bomb", {
             text "Once during your turn, when you discard this Pokémon with the effect of Roxie, you may put 1 damage counter on each of your opponent's Pokémon. (Place damage counters after the effect of Roxie.)"
-            bwAbility {
-              // The implementation is in Roxie
-            }
+            // The implementation is in Roxie
           }
           move "Poison Gas", {
             text "10 damage. Your opponent's Active Pokémon is now Poisoned."
@@ -2063,9 +2061,7 @@ public enum CosmicEclipse implements CardInfo {
           weakness P
           bwAbility "Blow-Away Bomb", {
             text "Once during your turn, when you discard this Pokémon with the effect of Roxie, you may put 1 damage counter on each of your opponent's Pokémon. (Place damage counters after the effect of Roxie.)"
-            bwAbility {
-              // The implementation is in Roxie
-            }
+            // The implementation is in Roxie
           }
           move "Balloon Burst", {
             text "90 damage. Discard this Pokémon and all cards attached to it."
@@ -4991,24 +4987,21 @@ public enum CosmicEclipse implements CardInfo {
       case ROXIE_205:
         return supporter (this) {
           text "Discard up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX from your hand. Draw 3 cards for each card you discarded in this way."
-          def list = my.hand.findAll ({ !it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) })
+          def list = { my.hand.findAll ({ !it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) }) }
           onPlay {
-            cards.select(max:2, "Select up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX to discard.").each { PokemonCardSet pcs ->
-              pcs.abilities.each {
-                if (it.key.active && it.key.name == "Blow-Away Bomb") {
+            list().select(max:2, "Select up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX to discard.").discard().each {
+              draw 3
+              it.abilities.each {
+                if (it.name == "Blow-Away Bomb" && confirm("Use Blow-Away Bomb?")) {
                   bc "Blow-Away Bomb activates"
                   opp.all.each { target ->
                     directDamage 10, target
                   }
                 }
               }
-
-              it.discard()
-              draw 3
             }
           }
           playRequirement{
-            assert my.hand
             assert list() : "You do not have any non-GX/EX in your hand"
           }
         };
