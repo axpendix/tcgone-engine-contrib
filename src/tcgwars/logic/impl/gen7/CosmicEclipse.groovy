@@ -2612,15 +2612,13 @@ public enum CosmicEclipse implements CardInfo {
             actionA {
               checkLastTurn()
               assert my.deck
+              assert my.all.find{it.name == 'Solgaleo'} : "You don't have Solgaleo in play"
               powerUsed()
-
-              if (my.all.find({ it.name == "Solgaleo" })) {
-                my.deck.search (max: 2, cardTypeFilter(BASIC_ENERGY)).each {
-                  def tar = my.all.findAll({ it.name == "Solgaleo" || it.name == "Lunala" })
-                  attachEnergy(tar.select("Attach this Energy to which Pokémon?"), it)
-                }
-                shuffleDeck()
+              my.deck.search (max: 2, cardTypeFilter(BASIC_ENERGY)).each {
+                def tar = my.all.findAll({ it.name == "Solgaleo" || it.name == "Lunala" })
+                attachEnergy(tar.select("Attach this Energy to which Pokémon?"), it)
               }
+              shuffleDeck()
             }
           }
           move "Lunar Blast", {
