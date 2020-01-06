@@ -3539,9 +3539,10 @@ public enum CosmicEclipse implements CardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (my.all.find({ it.name == "Lunala" }) && it.to.owner == self.owner && it.dmg.value && it.notNoEffect && (it.to.topPokemonCard.name == "Solgaleo" || it.to.topPokemonCard.name == "Lunala")) {
+                  if (self.owner.pbg.all.find({ it.name == "Lunala" }) && it.from.owner != self.owner && it.to.owner == self.owner && it.dmg.value && it.notNoEffect && (it.to.name == "Solgaleo" || it.to.name == "Lunala") && bg.em().retrieveObject("Armor of the Sunne") != bg.turnCount) {
                     bc "Armor of the Sunne -50"
                     it.dmg -= hp(50)
+                    bg.em().storeObject("Armor of the Sunne", bg.turnCount)
                   }
                 }
               }
