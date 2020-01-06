@@ -1576,15 +1576,17 @@ public enum CosmicEclipse implements CardInfo {
             attackRequirement {}
             def eff
             onAttack {
-              delayed {
-                eff = getter (GET_MOVE_LIST, self) { holder->
-                  for (card in holder.effect.target.cards.filterByType(POKEMON)) {
-                    if (card != holder.effect.target.topPokemonCard) {
-                      holder.object.addAll(card.moves)
-                    }
-                  }
+              def moves = []
+              for (card in self.cards.filterByType(POKEMON)) {
+                if (card != self.topPokemonCard) {
+                  moves += card.moves
                 }
-                unregisterAfter 1
+              }
+              if(moves) {
+                def move=choose(moves, moves.collect({it.name}), "Choose a move to perform")
+                def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+                attack (move as Move)
+                bef.unregisterItself(bg().em())
               }
             }
           }
@@ -4736,17 +4738,13 @@ public enum CosmicEclipse implements CardInfo {
         return itemCard (this) {
           text "Shuffle a Pokémon and a Pokémon Tool card from your discard pile into your deck."
           onPlay {
-            def eligible = my.discard.findAll {
-              (POKEMON_TOOL) || it.cardTypes.is(POKEMON)
-            }
-
-            eligible.select(min: 0, max: 2, "Select a Pokémon Tool card and a Pokémon to shuffle into your deck.", { CardList list ->
+            my.discard.filterByType(POKEMON_TOOL, POKEMON).select(max: 2, "Select a Pokémon Tool card and a Pokémon to shuffle into your deck.", { CardList list ->
               list.filterByType(POKEMON_TOOL).size() <= 1 && list.filterByType(POKEMON).size() <= 1
-            }).showToOpponent("Selected cards").moveTo(my.deck)
+            }).moveTo(my.deck)
             shuffleDeck()
           }
           playRequirement {
-            assert (my.discard.filterByType(POKEMON_TOOL) || my.discard.filterByType(POKEMON)) : "No Pokémon or Pokémon Tool cards in your discard."
+            assert my.discard.filterByType(POKEMON_TOOL, POKEMON) : "No Pokémon or Pokémon Tool cards in your discard."
           }
         };
       case LILLIE_S_FULL_FORCE_196:
