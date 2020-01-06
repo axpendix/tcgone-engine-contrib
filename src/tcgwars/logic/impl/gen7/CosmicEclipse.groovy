@@ -4564,23 +4564,26 @@ public enum CosmicEclipse implements CardInfo {
             "When you play this card, you may discard 3 other cards from your hand. If you do, each player discards their Benched Pokémon until they have 3 Benched Pokémon. Your opponent discards first."
           def eff
           onPlay {
-            opp.deck.subList(0, 3).moveTo(opp.discard)
-            my.deck.subList(0, 3).moveTo(my.discard)
+            if(opp.deck) opp.deck.subList(0, 3).moveTo(opp.discard)
+            if(my.deck) my.deck.subList(0, 3).moveTo(my.discard)
 
-            if (my.hand.getExcludedList(thisCard).size() >= 3 && confirm("Discard 3 cards to force your opponent to discard their Benched Pokémon until they have 3 Benched Pokémon?")) {
-              def toDiscard = my.hand.getExcludedList(thisCard).select(count:3, "Select cards to discard.")
+            if (my.hand.getExcludedList(thisCard).size() >= 3 && confirm("Discard 3 cards to force both players to discard their Benched Pokémon until they have 3 Benched Pokémon?")) {
+              my.hand.getExcludedList(thisCard).select(count:3, "Select cards to discard.").discard()
+
               eff = getter (GET_BENCH_SIZE) {h->
-                if (h.effect.playerType == self.owner.opposite) {
-                  h.object = Math.min(h.object as Integer, 3)
-                }
+                h.object = 3
               }
 
-              self.owner.opposite.pbg.triggerBenchSizeCheck()
+              thisCard.player.opposite.pbg.triggerBenchSizeCheck()
+              thisCard.player.pbg.triggerBenchSizeCheck()
               eff.unregister()
-              self.owner.opposite.pbg.triggerBenchSizeCheck()
+              thisCard.player.opposite.pbg.triggerBenchSizeCheck()
+              thisCard.player.pbg.triggerBenchSizeCheck()
+
             }
           }
           playRequirement {
+            assert my.deck || opp.deck
           }
         };
       case CHAOTIC_SWELL_187:
