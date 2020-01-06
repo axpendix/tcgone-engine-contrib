@@ -4714,17 +4714,21 @@ public enum CosmicEclipse implements CardInfo {
           def effPrize
           onPlay {reason->
             eff = getter (GET_FULL_HP, self) {h->
-              def types = self.topPokemonCard.cardTypes
-              if (types.is(POKEMON_GX) || types.is(POKEMON_EX)) {
+              if (self.pokemonEX || self.pokemonGX) {
                 h.object -= hp(100)
-
-                effPrize = delayed {
-                  before KNOCKOUT, self, {
+              }
+            }
+            effPrize = delayed (priority: BEFORE_LAST) {
+              before KNOCKOUT, self, {
+                if (self.pokemonEX || self.pokemonGX) {
+                  if(ef.byDamageFromAttack) {
+                    bc "$thisCard blocks taking one prize card"
                     blockingEffect(TAKE_PRIZE).setUnregisterImmediately(true)
                   }
                 }
               }
             }
+            checkFaint()
           }
           onRemoveFromPlay {
             eff.unregister()
