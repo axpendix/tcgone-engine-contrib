@@ -2020,20 +2020,21 @@ public enum CosmicEclipse implements CardInfo {
                 if (bg.em().retrieveObject("LILLIE_S_FULL_FORCE_TURN") == bg.turnCount) {
                   delayed {
                     before null, null, Source.ATTACK, {
-                      if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && it.to.owner != self.owner) {
+                      def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                      if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
                         bc "$name prevents effect"
                         prevent()
                       }
                     }
                     before APPLY_ATTACK_DAMAGES, {
                       bg.dm().each {
-                        if (it.to.owner == self.owner && it.notNoEffect && it.to.owner != self.owner) {
+                        if (it.to.owner == self.owner && it.notNoEffect && bg.currentTurn==self.owner.opposite) {
                           it.dmg = hp(0)
                           bc "$name prevents damage"
                         }
                       }
                     }
-                    unregisterAfter 3
+                    unregisterAfter 2
                   }
                 }
               }
