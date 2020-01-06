@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen7;
 
 import tcgwars.logic.effect.gm.Attack
+import tcgwars.logic.effect.gm.PlayStadium
 import tcgwars.logic.effect.gm.PlayTrainer
 
 import static tcgwars.logic.card.HP.*;
@@ -565,6 +566,7 @@ public enum CosmicEclipse implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            if(opp.all.find{it.tagTeam}) damage 70
 					}
 				}
 			};
@@ -665,6 +667,13 @@ public enum CosmicEclipse implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            if(hand.size() == 1) {
+              damage 100
+            } else if (hand.size() == 3){
+              applyAfterDamage CONFUSED
+            } else if (hand.size() == 6) {
+              opp.bench.each{ damage 30, it }
+            }
 					}
 				}
 			};
@@ -3849,16 +3858,15 @@ public enum CosmicEclipse implements CardInfo {
 					attackRequirement {
 						gxCheck()
 					}
-          def eff1
           def eff2
 					onAttack {
 						gxPerform()
 
 						afterDamage {
-							eff1 = delayed {
-								before APPLY_ATTACK_DAMAGES, {
+							delayed { // a permanent delayed effect
+								after PROCESS_ATTACK_EFFECTS, {
 									bg.dm().each {
-										if (it.from.owner == self.owner && it.notNoEffect && it.dmg.value && it.to.active) {
+										if (it.from.owner == self.owner && it.dmg.value && it.to.active && it.to.owner != self.owner) {
 											bc "Altered Creation GX +30"
 											it.dmg += hp(30)
 										}
@@ -3868,11 +3876,20 @@ public enum CosmicEclipse implements CardInfo {
 						}
 
 						if (self.cards.energySufficient( thisMove.energyCost + W )) {
-							eff2 = delayed {
-								def pcs = defending
-								after KNOCKOUT, pcs, {
-									bc "Altered Creation GX allows 1 extra prize."
-									bg.em().run(new TakePrize(self.owner, pcs))
+              bc "For the rest of the game, knockouts  will bring 1 more prize card"
+							delayed {
+                def pt = self.owner
+                def flag = false
+                before KNOCKOUT, {
+                  def pcs = ef.pokemonToBeKnockedOut
+                  flag = pcs.owner != pt && ef.byDamageFromAttack && pcs.active
+                }
+								after KNOCKOUT, {
+                  if(flag) {
+                    flag = false
+                    bc "Altered Creation GX allows 1 extra prize."
+                    bg.em().run(new TakePrize(pt, ef.pokemonToBeKnockedOut))
+                  }
 								}
 							}
 						}
@@ -3914,14 +3931,11 @@ public enum CosmicEclipse implements CardInfo {
 					}
 					onAttack {
 						gxPerform()
-						if (opp.bench) {
-							def firstTarget = opp.bench.select("Which Pokémon to do 170 damage to?")
-							damage 170, firstTarget
-
-							if (bg.em().retrieveObject("N_S_RESOLVE_TURN") == bg.turnCount) {
-								damage 170, opp.bench.getExcludedList(firstTarget).select("Which other Pokémon to do 170 damage to?")
-							}
-						}
+            if (bg.em().retrieveObject("N_S_RESOLVE_TURN") == bg.turnCount) {
+              multiDamage(opp.bench, 2, 170)
+            } else {
+              damage 170, opp.bench.select()
+            }
 					}
 				}
 			};
@@ -4578,14 +4592,16 @@ public enum CosmicEclipse implements CardInfo {
 				onPlay {
 					eff = delayed {
 						after PLAY_STADIUM, {
-              if (!ef.cardToPlay.name.contains("Chaotic Swell")) {
-                discard ef.cardToPlay
-              }
+              discard ef.cardToPlay
+              unregister() // this ensures self effect to be correctly unregistered
 						}
 					}
 				}
 				onRemoveFromPlay {
-					eff.unregister()
+          // only unregister when there is no PlayStadium in the stack
+          if( !bg.em().currentEffectStack.find{it instanceof PlayStadium} ) {
+            eff.unregister()
+          }
 				}
 			};
 			case CLAY_188:
