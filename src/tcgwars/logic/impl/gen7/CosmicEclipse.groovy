@@ -3216,26 +3216,21 @@ public enum CosmicEclipse implements CardInfo {
             text "Prevent all effects of attacks, including damage, done to this Pokémon by your opponent's TAG TEAM Pokémon and Ultra Beasts, and by your opponent's Pokémon that have any Special Energy attached to them."
             delayedA {
               before null, self, Source.ATTACK, {
-                if (self.owner.pbg.all.findAll { it.name=="Alolan Persian-GX" }) {
-                  def oppActive = self.owner.opposite.pbg.active
-                  def isValidTarget = (oppActive.topPokemonCard.cardTypes.isIn(TAG_TEAM, ULTRA_BEAST) || oppActive.cards.filterByType(SPECIAL_ENERGY))
+                def oppActive = self.owner.opposite.pbg.active
+                def isValidTarget = (oppActive.topPokemonCard.cardTypes.isIn(TAG_TEAM, ULTRA_BEAST) || oppActive.cards.filterByType(SPECIAL_ENERGY))
 
-                  if (isValidTarget && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
-                    bc "Smug Face prevents effect"
-                    prevent()
-                  }
+                if (isValidTarget && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+                  bc "Smug Face prevents effect"
+                  prevent()
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
-                if (self.owner.pbg.all.findAll { it.name=="Alolan Persian-GX" }) {
-                  bc "Smug Face: Alolan Persian is in play"
-                  bg.dm().each {
-                    def isValidTarget = (it.from.topPokemonCard.is(TAG_TEAM) || it.from.topPokemonCard.is(ULTRA_BEAST) || it.from.cards.filterByType(SPECIAL_ENERGY))
+                bg.dm().each {
+                  def isValidTarget = (it.from.topPokemonCard.is(TAG_TEAM) || it.from.topPokemonCard.is(ULTRA_BEAST) || it.from.cards.filterByType(SPECIAL_ENERGY))
 
-                    if (it.to == self && it.notNoEffect && isValidTarget) {
-                      it.dmg = hp(0)
-                      bc "Smug Face prevents damage"
-                    }
+                  if (it.to == self && it.notNoEffect && it.from.owner != self.owner && isValidTarget) {
+                    it.dmg = hp(0)
+                    bc "Smug Face prevents damage"
                   }
                 }
               }
