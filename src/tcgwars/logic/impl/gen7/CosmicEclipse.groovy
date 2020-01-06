@@ -4852,22 +4852,23 @@ public enum CosmicEclipse implements CardInfo {
         return supporter (this) {
           text "Search your deck for up to 3 [W] Energy cards, reveal them, and put them into your hand. Then, shuffle your deck." +
             "When you play this card, you may discard 5 other cards from your hand. If you do, during this turn, your [W] Pokémon can use their GX attacks even if you have used your GX attack."
-          def eff
           onPlay {
             my.deck.search(max:3,"Select up to 3 [W] Energy cards",basicEnergyFilter(W)).moveTo(my.hand)
             shuffleDeck()
 
             if (my.hand.getExcludedList(thisCard).size() >= 5 && confirm("Discard 5 cards to allow [W] to use their GX attack this turn (even if GX attack has already been used)?")) {
               my.hand.getExcludedList(thisCard).select(count:5, "Discard 5 cards").discard()
-              eff = delayed {
-                before ATTACK_MAIN, {
-                  if (it.from.topPokemonCard.types.contains(W) && ef.move.name.contains('GX')) {
-                    bg.em().storeObject("gx_"+my.owner, 0)
+              if(isGxPerformed()) {
+                delayed {
+                  before CHECK_ATTACK_REQUIREMENTS, {
+                    if (ef.attacker.types.contains(W) && ef.move.name.contains('GX')) {
+                      bg.em().storeObject("gx_"+thisCard.player, null)
+                    }
                   }
-                }
-                unregisterAfter 1
-                unregister {
-                  eff.unregister()
+                  unregisterAfter 1
+                  unregister {
+                    bg.em().storeObject("gx_"+thisCard.player, 1) // in case attack fails for other reasons
+                  }
                 }
               }
             }
