@@ -1906,8 +1906,20 @@ public enum CosmicEclipse implements CardInfo {
           resistance M, MINUS20
           bwAbility "Speed Cheer", {
             text "The attacks of your Pokémon-GX in play that evolve from Eevee cost [C] less. You can't apply more than 1 Speed Cheer Ability at a time."
-            actionA {
-              // TODO
+            getterA (GET_MOVE_LIST, BEFORE_LAST) { h ->
+              def pcs = h.effect.target
+              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.predecessor == "Eevee") {
+                def list = []
+                for (move in h.object) {
+                  def copy = move.shallowCopy()
+                  //reduce energy cost by [C]
+                  if (copy.energyCost.contains(C)) {
+                    copy.energyCost.remove(C)
+                  }
+                  list.add(copy)
+                }
+                h.object = list
+              }
             }
           }
           move "Head Bolt", {
@@ -3609,7 +3621,6 @@ public enum CosmicEclipse implements CardInfo {
             onAttack {
               damage 60
               afterDamage {
-                self.cards.moveTo(hand)
                 def doll = my.hand.find{it.name=="Lillie's Poké Doll"}
                 if(doll && confirm("Play Lillie's Poké Doll from your hand as your new Active Pokémon?")) {
                   def eff = getter (GET_BENCH_SIZE, LAST) {h->
@@ -3623,6 +3634,7 @@ public enum CosmicEclipse implements CardInfo {
                   eff.unregister()
                   self.owner.pbg.triggerBenchSizeCheck()
                 }
+                self.cards.moveTo(hand)
                 removePCS(self)
 
               }
@@ -4651,23 +4663,44 @@ public enum CosmicEclipse implements CardInfo {
           }
         };
       case DRAGONIUM_Z_DRAGON_CLAW_190:
-        return PokémonTool (this) {
-          text ""
+        return pokemonTool (this) {
+          text "If the Pokémon this card is attached to has the Dragon Claw attack, it can use the GX attack on this card. (You still need the necessary Energy to use this attack.)" +
+            "[C][C][C] Destructive Drake GX: 80×\n" +
+            "Discard all basic Energy from this Pokémon. This attack does 80 damage for each card you discarded in this way. (You can’t use more than 1 GX attack in a game.)"
+          def eff
           onPlay {reason->
-            // TODO
+            def moveBody = {
+              text ""
+              energyCost C, C, C
+              attackRequirement {
+                gxCheck()
+                assert self.cards.filterByType(BASIC_ENERGY) : "No basic energy on $self"
+              }
+              onAttack {
+                gxPerform()
+                damage 80*self.cards.filterByType(BASIC_ENERGY).discard().size()
+              }
+            }
+            Move move=new Move("Destructive Drake GX")
+            moveBody.delegate=new MoveBuilder(thisMove:move)
+            moveBody.call()
+            eff = getter GET_MOVE_LIST, self, {h->
+              if (h.object.findAll{it.name == "Dragon Claw"}) { h.object.add(move) }
+            }
           }
           onRemoveFromPlay {
-          }
-          allowAttach {to->
+            eff.unregister()
           }
         };
       case ERIKA_191:
         return supporter (this) {
           text "Each player may draw up to 3 cards. You draw first."
           onPlay {
-            // TODO
+            draw choose([0,1,2,3], ["0","1","2","3"], "Draw how many cards?", 3)
+            draw oppChoose([0,1,2,3], ["0","1","2","3"], "Opponent played Erika. Draw how many cards?", 3), TargetPlayer.OPPONENT
           }
           playRequirement{
+            assert my.deck || opp.deck
           }
         };
       case GREAT_CATCHER_192:
