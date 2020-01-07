@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen7;
 
 import tcgwars.logic.effect.gm.Attack
+import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayStadium
 import tcgwars.logic.effect.gm.PlayTrainer
 
@@ -3216,18 +3217,14 @@ public enum CosmicEclipse implements CardInfo {
             delayedA {
               before null, self, Source.ATTACK, {
                 def oppActive = self.owner.opposite.pbg.active
-                def isValidTarget = (oppActive.topPokemonCard.cardTypes.isIn(TAG_TEAM, ULTRA_BEAST) || oppActive.cards.filterByType(SPECIAL_ENERGY))
-
-                if (isValidTarget && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+                if ((oppActive.topPokemonCard.cardTypes.isIn(TAG_TEAM, ULTRA_BEAST) || oppActive.cards.hasType(SPECIAL_ENERGY)) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
                   bc "Smug Face prevents effect"
                   prevent()
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  def isValidTarget = (it.from.topPokemonCard.is(TAG_TEAM) || it.from.topPokemonCard.is(ULTRA_BEAST) || it.from.cards.filterByType(SPECIAL_ENERGY))
-
-                  if (it.to == self && it.notNoEffect && it.from.owner != self.owner && isValidTarget) {
+                  if (it.to == self && it.notNoEffect && it.from.owner != self.owner && (it.from.topPokemonCard.isIn(TAG_TEAM, ULTRA_BEAST) || it.from.cards.hasType(SPECIAL_ENERGY))) {
                     it.dmg = hp(0)
                     bc "Smug Face prevents damage"
                   }
@@ -3613,9 +3610,22 @@ public enum CosmicEclipse implements CardInfo {
               damage 60
               afterDamage {
                 self.cards.moveTo(hand)
+                def doll = my.hand.find{it.name=="Lillie's Poké Doll"}
+                if(doll && confirm("Play Lillie's Poké Doll from your hand as your new Active Pokémon?")) {
+                  def eff = getter (GET_BENCH_SIZE, LAST) {h->
+                    h.object += 1
+                  }
+                  self.owner.pbg.triggerBenchSizeCheck()
+                  def tmp = self.owner.pbg.all.findAll{it.name=="Lillie's Poké Doll"}
+                  bg.em().run(new PlayCard(doll))
+                  def pcs = self.owner.pbg.all.find{it.name=="Lillie's Poké Doll" && !tmp.contains(it)}
+                  sw(self, pcs)
+                  eff.unregister()
+                  self.owner.pbg.triggerBenchSizeCheck()
+                }
                 removePCS(self)
+
               }
-              // TODO: Add ability to play Poke doll as new active
             }
           }
         };
