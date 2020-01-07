@@ -523,28 +523,34 @@ public enum CosmicEclipse implements CardInfo {
           move "Solar Power", {
             text "During your next turn, ignore all Energy in the attack costs of [G] Pokémon and [R] Pokémon. (This includes Pokémon that come into play on that turn.)"
             energyCost C, C
-            attackRequirement {}
-            def eff
             onAttack {
-              eff = getterA GET_MOVE_LIST, { h->
-                PokemonCardSet pcs = h.effect.target
-                if (pcs.owner == self.owner && h.object.find { it.types.contains(G) || it.types.contains(R) }) {
-                  def list = []
-                  for (move in h.object){
-                    def copy = move.shallowCopy()
-                    copy.energyCost.retainAll()
-                    list.add(copy)
+              delayed {
+                def eff
+                register {
+                  eff = getter GET_MOVE_LIST, { h->
+                    PokemonCardSet pcs = h.effect.target
+                    if (pcs.owner == self.owner && h.object.find { it.types.contains(G) || it.types.contains(R) }) {
+                      def list = []
+                      for (move in h.object){
+                        def copy = move.shallowCopy()
+                        copy.energyCost.retainAll()
+                        list.add(copy)
+                      }
+                      h.object=list
+                    }
                   }
-                  h.object=list
+                }
+                unregister {
+                  eff.unregister()
                 }
                 unregisterAfter 3
+                after SWITCH, self, {unregister()}
               }
             }
           }
           move "Solar Beam", {
             text "80 damage."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 80
             }
@@ -901,8 +907,16 @@ public enum CosmicEclipse implements CardInfo {
           weakness W
           bwAbility "Power Cheer", {
             text "The attacks of your Pokémon-GX in play that evolve from Eevee do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance). You can't apply more than 1 Power Cheer Ability at a time."
-            actionA {
-
+            delayedA {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each{
+                  if(it.from.owner == self.owner && it.from.pokemonGX && it.from.topPokemonCard.predecessor == "Eevee" && it.to.active && it.to.owner != self.owner && it.dmg.value && bg.em().retrieveObject("Power Cheer") != bg.turnCount) {
+                    it.dmg += hp(30)
+                    bc "Power Cheer +30"
+                    bg.em().storeObject("Power Cheer", bg.turnCount)
+                  }
+                }
+              }
             }
           }
           move "Flamethrower", {
@@ -1300,7 +1314,13 @@ public enum CosmicEclipse implements CardInfo {
           weakness G
           bwAbility "Vitality Cheer", {
             text "Your Pokémon-GX in play that evolve from Eevee get +60 HP. You can't apply more than 1 Vitality Cheer Ability at a time."
-            // TODO:
+            getterA (GET_FULL_HP) {h->
+              def pcs = h.effect.target
+              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.predecessor == "Eevee" && bg.em().retrieveObject("Vitality Cheer") != bg.turnCount) {
+                h.object += hp(60)
+                bg.em().storeObject("Vitality Cheer", bg.turnCount)
+              }
+            }
           }
           move "Refreshing Rain", {
             text "60 damage. Heal 30 damage from each of your Pokémon."
@@ -1908,7 +1928,7 @@ public enum CosmicEclipse implements CardInfo {
             text "The attacks of your Pokémon-GX in play that evolve from Eevee cost [C] less. You can't apply more than 1 Speed Cheer Ability at a time."
             getterA (GET_MOVE_LIST, BEFORE_LAST) { h ->
               def pcs = h.effect.target
-              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.predecessor == "Eevee") {
+              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.predecessor == "Eevee" && bg.em().retrieveObject("Speed Cheer") != bg.turnCount) {
                 def list = []
                 for (move in h.object) {
                   def copy = move.shallowCopy()
@@ -1919,6 +1939,7 @@ public enum CosmicEclipse implements CardInfo {
                   list.add(copy)
                 }
                 h.object = list
+                bg.em().storeObject("Speed Cheer", bg.turnCount)
               }
             }
           }
@@ -5064,7 +5085,17 @@ public enum CosmicEclipse implements CardInfo {
         return supporter (this) {
           text "The next time you flip any number of coins for the effect of an attack, Ability, or Trainer card this turn, choose heads or tails for the first coin flip."
           onPlay {
-            // TODO
+            delayed {
+              def doit = {
+                boolean res = choose([true,false],["HEADS","TAILS"],"A coin flip is about to be flipped. Choose HEADS or TAILS")
+                bc "Will effect: ${res?'HEADS':'TAILS'}"
+                bg.deterministicCoinFlipQueue.offer(res)
+                unregister()
+              }
+              before COIN_FLIP, {doit()}
+              before COIN_FLIP_GETTER, {doit()}
+              unregisterAfter 1
+            }
           }
           playRequirement{
           }
