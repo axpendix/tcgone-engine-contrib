@@ -2055,7 +2055,7 @@ public enum CosmicEclipse implements CardInfo {
                   delayed {
                     before null, null, Source.ATTACK, {
                       def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                      if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
+                      if (pcs && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
                         bc "$name prevents effect"
                         prevent()
                       }
@@ -3257,7 +3257,8 @@ public enum CosmicEclipse implements CardInfo {
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (it.to == self && it.notNoEffect && it.from.owner != self.owner && (it.from.topPokemonCard.isIn(TAG_TEAM, ULTRA_BEAST) || it.from.cards.hasType(SPECIAL_ENERGY))) {
+                  def valid = it.from.topPokemonCard.cardTypes.is(TAG_TEAM) || it.from.topPokemonCard.cardTypes.is(ULTRA_BEAST) || it.from.cards.hasType(SPECIAL_ENERGY)
+                  if (it.to == self && it.dmg.value && it.notNoEffect && it.from.owner != self.owner && valid) {
                     it.dmg = hp(0)
                     bc "Smug Face prevents damage"
                   }
@@ -4630,8 +4631,10 @@ public enum CosmicEclipse implements CardInfo {
           onPlay {
             eff = delayed {
               after PLAY_STADIUM, {
-                discard ef.cardToPlay
-                unregister() // this ensures self effect to be correctly unregistered
+                if (!ef.cardToPlay.name.contains("Chaotic Swell")) {
+                  discard ef.cardToPlay
+                  unregister() // this ensures self effect to be correctly unregistered
+                }
               }
             }
           }
@@ -4803,9 +4806,9 @@ public enum CosmicEclipse implements CardInfo {
         return itemCard (this) {
           text "Shuffle a Pokémon and a Pokémon Tool card from your discard pile into your deck."
           onPlay {
-            my.discard.filterByType(POKEMON_TOOL, POKEMON).select(max: 2, "Select a Pokémon Tool card and a Pokémon to shuffle into your deck.", { CardList list ->
+            my.discard.search(max: 2, "Select a Pokémon Tool card and a Pokémon to shuffle into your deck.", { it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(POKEMON) }, { CardList list ->
               list.filterByType(POKEMON_TOOL).size() <= 1 && list.filterByType(POKEMON).size() <= 1
-            }).moveTo(my.deck)
+            }).showToOpponent("Selected cards").moveTo(my.deck)
             shuffleDeck()
           }
           playRequirement {
@@ -4921,7 +4924,7 @@ public enum CosmicEclipse implements CardInfo {
                 delayed {
                   before CHECK_ATTACK_REQUIREMENTS, {
                     if (ef.attacker.types.contains(W) && ef.move.name.contains('GX')) {
-                      bg.em().storeObject("gx_"+thisCard.player, null)
+                      bg.em().storeObject("gx_"+thisCard.player, 0)
                     }
                   }
                   unregisterAfter 1
@@ -5050,7 +5053,7 @@ public enum CosmicEclipse implements CardInfo {
       case ROXIE_205:
         return supporter (this) {
           text "Discard up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX from your hand. Draw 3 cards for each card you discarded in this way."
-          def list = { my.hand.findAll ({ !it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) }) }
+          def list = { my.hand.findAll ({ !it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) && it.cardTypes.isIn(POKEMON) }) }
           onPlay {
             list().select(max:2, "Select up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX to discard.").discard().each {
               draw 3
