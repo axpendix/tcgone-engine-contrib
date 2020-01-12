@@ -4924,7 +4924,7 @@ public enum CosmicEclipse implements CardInfo {
                 delayed {
                   before CHECK_ATTACK_REQUIREMENTS, {
                     if (ef.attacker.types.contains(W) && ef.move.name.contains('GX')) {
-                      bg.em().storeObject("gx_"+thisCard.player, null)
+                      bg.em().storeObject("gx_"+thisCard.player, 0)
                     }
                   }
                   unregisterAfter 1
