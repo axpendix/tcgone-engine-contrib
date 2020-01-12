@@ -4921,14 +4921,16 @@ public enum CosmicEclipse implements CardInfo {
             if (my.hand.getExcludedList(thisCard).size() >= 5 && confirm("Discard 5 cards to allow [W] to use their GX attack this turn (even if GX attack has already been used)?")) {
               my.hand.getExcludedList(thisCard).select(count:5, "Discard 5 cards").discard()
               if(isGxPerformed()) {
-                bc "GX already performed, getting ready to reset counter"
+                bc "GX already performed, resetting counter"
+                bg.em().storeObject("gx_"+thisCard.player, 0)
                 delayed {
                   before CHECK_ATTACK_REQUIREMENTS, {
-                    if (ef.attacker.types.contains(W) ) {
-                      bc "Attacker types contains W"
-                      if (ef.move.name.contains('GX')) {
-                        bc "ef move name contains 'GX'"
-                        bg.em().storeObject("gx_"+thisCard.player, 0)
+                    if (!ef.attacker.types.contains(W) ) {
+                      bc "Attacker types doesn't contains W"
+                      if (!ef.move.name.contains('GX')) {
+                        bc "ef move name doesn't contains 'GX'"
+                        prevent()
+                        bc "GX Move prevented from occurring"
                       }
                     }
                   }
