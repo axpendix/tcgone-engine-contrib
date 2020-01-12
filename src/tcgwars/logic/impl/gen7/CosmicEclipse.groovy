@@ -4926,11 +4926,9 @@ public enum CosmicEclipse implements CardInfo {
                 delayed {
                   before CHECK_ATTACK_REQUIREMENTS, {
                     if (!ef.attacker.types.contains(W) ) {
-                      bc "Attacker types doesn't contains W"
                       if (ef.move.name.contains('GX')) {
-                        bc "ef move name contains 'GX'"
                         prevent()
-                        bc "GX Move prevented from occurring"
+                        bc "GX move already used"
                       }
                     }
                   }
