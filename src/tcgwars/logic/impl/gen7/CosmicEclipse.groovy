@@ -3257,7 +3257,8 @@ public enum CosmicEclipse implements CardInfo {
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (it.to == self && it.notNoEffect && it.from.owner != self.owner && (it.from.topPokemonCard.isIn(TAG_TEAM, ULTRA_BEAST) || it.from.cards.hasType(SPECIAL_ENERGY))) {
+                  def valid = it.from.topPokemonCard.cardTypes.is(TAG_TEAM) || it.from.topPokemonCard.cardTypes.is(ULTRA_BEAST) || it.from.cards.hasType(SPECIAL_ENERGY)
+                  if (it.to == self && it.dmg.value && it.notNoEffect && it.from.owner != self.owner && valid) {
                     it.dmg = hp(0)
                     bc "Smug Face prevents damage"
                   }
