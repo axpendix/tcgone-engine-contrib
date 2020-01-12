@@ -5052,7 +5052,7 @@ public enum CosmicEclipse implements CardInfo {
       case ROXIE_205:
         return supporter (this) {
           text "Discard up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX from your hand. Draw 3 cards for each card you discarded in this way."
-          def list = { my.hand.findAll ({ !it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) }) }
+          def list = { my.hand.findAll ({ !it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) && it.cardTypes.isIn(POKEMON) }) }
           onPlay {
             list().select(max:2, "Select up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX to discard.").discard().each {
               draw 3
