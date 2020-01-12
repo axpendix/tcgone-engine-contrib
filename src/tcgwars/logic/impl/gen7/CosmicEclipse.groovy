@@ -4630,8 +4630,10 @@ public enum CosmicEclipse implements CardInfo {
           onPlay {
             eff = delayed {
               after PLAY_STADIUM, {
-                discard ef.cardToPlay
-                unregister() // this ensures self effect to be correctly unregistered
+                if (!ef.cardToPlay.name.contains("Chaotic Swell")) {
+                  discard ef.cardToPlay
+                  unregister() // this ensures self effect to be correctly unregistered
+                }
               }
             }
           }
