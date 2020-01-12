@@ -4805,9 +4805,9 @@ public enum CosmicEclipse implements CardInfo {
         return itemCard (this) {
           text "Shuffle a Pokémon and a Pokémon Tool card from your discard pile into your deck."
           onPlay {
-            my.discard.filterByType(POKEMON_TOOL, POKEMON).select(max: 2, "Select a Pokémon Tool card and a Pokémon to shuffle into your deck.", { CardList list ->
+            my.discard.search(max: 2, "Select a Pokémon Tool card and a Pokémon to shuffle into your deck.", { it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(POKEMON) }, { CardList list ->
               list.filterByType(POKEMON_TOOL).size() <= 1 && list.filterByType(POKEMON).size() <= 1
-            }).moveTo(my.deck)
+            }).showToOpponent("Selected cards").moveTo(my.deck)
             shuffleDeck()
           }
           playRequirement {
