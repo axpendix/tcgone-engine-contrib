@@ -2055,7 +2055,7 @@ public enum CosmicEclipse implements CardInfo {
                   delayed {
                     before null, null, Source.ATTACK, {
                       def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                      if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
+                      if (pcs && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
                         bc "$name prevents effect"
                         prevent()
                       }
