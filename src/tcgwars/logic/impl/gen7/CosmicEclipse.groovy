@@ -4804,10 +4804,10 @@ public enum CosmicEclipse implements CardInfo {
         };
       case LANA_S_FISHING_ROD_195:
         return itemCard (this) {
-          text "Shuffle a Pokémon and a Pokémon Tool card from your discard pile into your deck."
+          text "Shuffle a Pokémon and a Pokémon Tool card from your discard pilef into your deck."
           onPlay {
-            my.discard.filterByType(POKEMON_TOOL).select(max: 1, "Select a Pokémon Tool card to shuffle into your deck.").showToOpponent("Selected cards").moveTo(my.deck)
-            my.discard.filterByType(POKEMON).select(max: 1, "Select a Pokémon to shuffle into your deck.").showToOpponent("Selected cards").moveTo(my.deck)
+            my.discard.filterByType(POKEMON_TOOL).select(count: 1, "Select a Pokémon Tool card to shuffle into your deck.").showToOpponent("Selected cards").moveTo(my.deck)
+            my.discard.filterByType(POKEMON).select(count: 1, "Select a Pokémon to shuffle into your deck.").showToOpponent("Selected cards").moveTo(my.deck)
             shuffleDeck()
           }
           playRequirement {
