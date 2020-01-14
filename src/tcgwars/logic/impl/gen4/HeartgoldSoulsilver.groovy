@@ -270,7 +270,9 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Fairy Power", {
             text "Return 1 of your Pokémon and all cards attached to it to your hand."
             energyCost C, C
-            attackRequirement {}
+            attackRequirement {
+              assert my.all.size() > 1
+            }
             onAttack {
               def pcs = my.all.select()
               pcs.cards.moveTo(hand)
@@ -471,8 +473,8 @@ public enum HeartgoldSoulsilver implements CardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(!self.active && it.to == self){
-                    bc "Solid Unit prevent all damage"
+                  if(self.benched && it.to == self){
+                    bc "Shell Barricade prevents all damage"
                     it.dmg=hp(0)
                   }
                 }
@@ -605,11 +607,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              if(opp.bench){
-                afterDamage{
-                  sw defending, opp.bench.oppSelect("New active")
-                }
-              }
+              whirlwind()
             }
           }
 
@@ -622,7 +620,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if(self.isSPC(ASLEEP) && it.to == self && it.dmg.value && it.notNoEffect) {
-                    bc "Damage is prevented because $self is Asleep"
+                    bc "Sweet Sleeping Face: Damage was prevented"
                     it.dmg = hp(0)
                   }
                 }
@@ -652,7 +650,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
               assert my.discard.filterByType(ENERGY) : "No Energy in discard"
             }
             onAttack {
-              attachEnergyFrom(may: true, my.discard, self)
+              attachEnergyFrom(my.discard, self)
               attachEnergyFrom(may: true, my.discard, self)
             }
           }
@@ -894,7 +892,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if(self.isSPC(ASLEEP) && it.to == self && it.dmg.value && it.notNoEffect) {
-                    bc "Damage is prevented because $self is Asleep"
+                    bc "Sweet Sleeping Face: Damage was prevented"
                     it.dmg = hp(0)
                   }
                 }
@@ -960,7 +958,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if(self.isSPC(ASLEEP) && it.to == self && it.dmg.value && it.notNoEffect) {
-                    bc "Damage is prevented because $self is Asleep"
+                    bc "Sweet Sleeping Face: Damage was prevented"
                     it.dmg = hp(0)
                   }
                 }
@@ -971,7 +969,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
             text "Move an Energy card attached to 1 of your opponent’s Pokémon to another of your opponent’s Pokémon. Smoochum is now Asleep."
             energyCost ()
             attackRequirement {
-              assert opp.all.findAll{it.cards.filterByType(ENERGY)}
+              assert opp.all.findAll{it.cards.filterByType(ENERGY)} : "Opponent has no energy attached"
               assert opp.bench
             }
             onAttack {
@@ -999,7 +997,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
               checkNoSPC()
               assert my.deck.notEmpty
               powerUsed()
-              my.deck.search (pokemonTypeFilter(G)).showToOpponent("Selected card.").moveTo(my.hand)
+              my.deck.search (pokemonTypeFilter(G)).moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -1043,7 +1041,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if(self.isSPC(ASLEEP) && it.to == self && it.dmg.value && it.notNoEffect) {
-                    bc "Damage is prevented because $self is Asleep"
+                    bc "Sweet Sleeping Face: Damage was prevented"
                     it.dmg = hp(0)
                   }
                 }
@@ -1307,7 +1305,7 @@ public enum HeartgoldSoulsilver implements CardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if(self.isSPC(ASLEEP) && it.to == self && it.dmg.value && it.notNoEffect) {
-                    bc "Damage is prevented because $self is Asleep"
+                    bc "Sweet Sleeping Face: Damage was prevented"
                     it.dmg = hp(0)
                   }
                 }
