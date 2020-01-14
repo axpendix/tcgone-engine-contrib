@@ -2505,143 +2505,53 @@ public enum HeartgoldSoulsilver implements CardInfo {
           weakness W
           resistance F, MINUS20
           pokeBody "Sacred Rainbow", {
-            text "All Energy attached to Ho-Oh LEGEND are Energy instead of their usual type."
-            delayedA {
-            }
-          }
-          move "", {
-            text "Put this card from your hand onto your Bench only with the other half of Ho-Oh LEGEND."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+            text "All Energy attached to Ho-Oh LEGEND are [R] Energy instead of their usual type."
+            getterA GET_ENERGY_TYPES, { holder->
+              if( holder.effect.target == self ) {
+                int count = holder.object.size()
+                holder.object = [(1..count).collect{[FIRE] as Set}]
+              }
             }
           }
           move "Bright Wing", {
             text "100 damage. Discard an Energy attached to Ho-Oh LEGEND."
             energyCost R, R, R, R
-            attackRequirement {}
             onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+              damage 100
+              discardSelfEnergy(C)
             }
           }
 
         };
       case HO_OH_LEGEND_112:
-        return copy (HO_OH_LEGEND_111, this)
-        /*basic (this, hp:HP140, type:FIRE, retreatCost:2) {
-					weakness W
-					resistance F, MINUS20
-					pokeBody "Sacred Rainbow", {
-						text "All Energy attached to Ho-Oh LEGEND are Energy instead of their usual type."
-						delayedA {
-						}
-					}
-					move "", {
-						text "Put this card from your hand onto your Bench only with the other half of Ho-Oh LEGEND."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Bright Wing", {
-						text "100 damage. Discard an Energy attached to Ho-Oh LEGEND."
-						energyCost R, R, R, R
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "", {
-						text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
+        return copy(HO_OH_LEGEND_111, this)
       case LUGIA_LEGEND_113:
         return basic (this, hp:HP130, type:WATER, retreatCost:1) {
           weakness L
           resistance F, MINUS20
           pokePower "Ocean Grow", {
             text "Once during your turn, when you put Lugia LEGEND into play, you may look at the top 5 cards of your deck and attach all Energy cards you find there to Lugia LEGEND. Discard the other cards."
-            actionA {
-            }
-          }
-          move "", {
-            text "Put this card from your hand onto your Bench only with the other half of Lugia LEGEND."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+            onActivate { r->
+              if(r==PLAY_FROM_HAND && my.deck && confirm("Use Ocean Grow? Once during your turn, when you put Lugia LEGEND into play, you may look at the top 5 cards of your deck and attach all Energy cards you find there to Lugia LEGEND. Discard the other cards.")){
+                powerUsed()
+                my.deck.subList(0,5).showToMe("Top 5 cards of your deck. All energy cards will be attached to $self").each{
+                  if(it.cardTypes.is(ENERGY)) attachEnergy(self,it)
+                  else discard it
+                }
+              }
             }
           }
           move "Elemental Blast", {
             text "200 damage. Discard a Fire Energy, a Water Energy, and a Lightning Energy attached to Lugia LEGEND."
-            energyCost F, W, L
-            attackRequirement {}
+            energyCost R, W, L
             onAttack {
-              damage 0
+              damage 200
+              discardSelfEnergy(R,W,L)
             }
           }
-          move "", {
-            text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case LUGIA_LEGEND_114:
-        return copy (LUGIA_LEGEND_113, this)
-        /*basic (this, hp:HP130, type:WATER, retreatCost:1) {
-					weakness L
-					resistance F, MINUS20
-					pokePower "Ocean Grow", {
-						text "Once during your turn, when you put Lugia LEGEND into play, you may look at the top 5 cards of your deck and attach all Energy cards you find there to Lugia LEGEND. Discard the other cards."
-						actionA {
-						}
-					}
-					move "", {
-						text "Put this card from your hand onto your Bench only with the other half of Lugia LEGEND."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Elemental Blast", {
-						text "200 damage. Discard a Fire Energy, a Water Energy, and a Lightning Energy attached to Lugia LEGEND."
-						energyCost F, W, L
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "", {
-						text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
+        return copy(LUGIA_LEGEND_113, this)
       case GRASS_ENERGY_115:
         return basicEnergy (this, GRASS);
       case FIRE_ENERGY_116:

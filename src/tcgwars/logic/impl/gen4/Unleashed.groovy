@@ -2053,97 +2053,42 @@ public enum Unleashed implements CardInfo {
         return basic (this, hp:HP140, type:[FIRE, L], retreatCost:0) {
           weakness W
           weakness F
-          move "", {
-            text "Put this card from your hand onto your Bench only with the other half of Entei & Raikou LEGEND."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
           move "Detonation Spin", {
             text "90 damage. Discard a Fire Energy attached to Entei & Raikou LEGEND."
-            energyCost F, C
+            energyCost R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 90
+              discardSelfEnergy(R)
             }
           }
           move "Thunder Fall", {
-            text ". This attack’s damage isn’t affected by Weakness or Resistance."
+            text "Discard all Energy attached to Entei & Raikou LEGEND. This attack does 80 damage to each Pokémon that has any Poké-Powers (both yours and your opponent's). This attack's damage isn't affected by Weakness or Resistance."
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+              discardAllSelfEnergy(null)
+              all.each{
+                if (it.abilities.keySet().find{it instanceof PokePower})
+                  noWrDamage 80, it
+              }
             }
           }
 
         };
       case ENTEI_AND_RAIKOU_LEGEND_91:
         return copy (ENTEI_AND_RAIKOU_LEGEND_90, this)
-        /*basic (this, hp:HP140, type:[FIRE, L], retreatCost:0) {
-					weakness W
-					weakness F
-					move "", {
-						text "Put this card from your hand onto your Bench only with the other half of Entei & Raikou LEGEND."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Detonation Spin", {
-						text "90 damage. Discard a Fire Energy attached to Entei & Raikou LEGEND."
-						energyCost F, C
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Thunder Fall", {
-						text ". This attack’s damage isn’t affected by Weakness or Resistance."
-						energyCost L, C
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "", {
-						text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
       case RAIKOU_AND_SUICUNE_LEGEND_92:
         return basic (this, hp:HP160, type:[WATER, L], retreatCost:1) {
           weakness L
           weakness F
-          move "", {
-            text "Put this card from your hand onto your Bench only with the other half of Raikou & Suicune LEGEND."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
           move "Thunderbolt Spear", {
             text "150 damage. Raikou & Suicune LEGEND does 50 damage to itself and don’t apply Weakness to this damage."
             energyCost L, L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 150
+              noWeaknessDamage 50, self
             }
           }
           move "Aurora Gain", {
@@ -2151,151 +2096,45 @@ public enum Unleashed implements CardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+              damage 50
+              afterDamage {heal 50,self}
             }
           }
 
         };
       case RAIKOU_AND_SUICUNE_LEGEND_93:
         return copy (RAIKOU_AND_SUICUNE_LEGEND_92, this)
-        /*basic (this, hp:HP160, type:[WATER, L], retreatCost:1) {
-					weakness L
-					weakness F
-					move "", {
-						text "Put this card from your hand onto your Bench only with the other half of Raikou & Suicune LEGEND."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Thunderbolt Spear", {
-						text "150 damage. Raikou & Suicune LEGEND does 50 damage to itself and don’t apply Weakness to this damage."
-						energyCost L, L, C
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Aurora Gain", {
-						text "50 damage. Remove 5 damage counters from Raikou & Suicune LEGEND."
-						energyCost W, C, C
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "", {
-						text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
       case SUICUNE_AND_ENTEI_LEGEND_94:
-        return basic (this, hp:HP160, type:[WATER, R], retreatCost:1) {
+        return basic (this, hp:HP160, type:[WATER, FIRE], retreatCost:1) {
           weakness W
           weakness L
-          move "", {
-            text "Put this card from your hand onto your Bench only with the other half of Suicune & Entei LEGEND."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "Put this card from your hand onto your Bench only with the other half of Suicune & Entei LEGEND. When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards"
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
           move "Torrent Blade", {
-            text "Energy attached to Suicune & Entei LEGEND to your hand. Choose 1 of your opponent’s Benched Pokémon. This attack does 100 damage to that Pokémon."
-            energyCost W, W, C, W
-            attackRequirement {}
+            text "Return 2 [W] Energy attached to Suicune & Entei LEGEND to your hand. Choose one of your opponent's Benched Pokémon. This attack does 100 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost W, W, C
+            attackRequirement {
+              assert opp.bench
+            }
             onAttack {
-              damage 0
+              damage 100, opp.bench.select()
+              afterDamage {
+                // this works for cards, where as it should work for energy
+                self.cards.filterByEnergyType(W).select(count:2).moveTo(my.hand)
+              }
             }
           }
           move "Bursting Inferno", {
             text "80 damage. The Defending Pokémon is now Burned."
-            energyCost F, C, C
+            energyCost R, C, C
             attackRequirement {}
             onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+              damage 80
+              applyAfterDamage BURNED
             }
           }
 
         };
       case SUICUNE_AND_ENTEI_LEGEND_95:
         return copy (SUICUNE_AND_ENTEI_LEGEND_94, this)
-        /*basic (this, hp:HP160, type:[WATER, R], retreatCost:1) {
-					weakness W
-					weakness L
-					move "", {
-						text "Put this card from your hand onto your Bench only with the other half of Suicune & Entei LEGEND."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "", {
-						text "Put this card from your hand onto your Bench only with the other half of Suicune & Entei LEGEND. When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards"
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Torrent Blade", {
-						text "Energy attached to Suicune & Entei LEGEND to your hand. Choose 1 of your opponent’s Benched Pokémon. This attack does 100 damage to that Pokémon."
-						energyCost W, W, C, W
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Bursting Inferno", {
-						text "80 damage. The Defending Pokémon is now Burned."
-						energyCost F, C, C
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "", {
-						text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
       case ALPH_LITHOGRAPH_TWO:
         return basicTrainer (this) {
           text "SHUFFLE YOUR DECK!"
