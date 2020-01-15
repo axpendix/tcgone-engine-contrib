@@ -1021,14 +1021,12 @@ public enum HiddenFates implements CardInfo {
           onAttack {
             gxPerform()
             if (self.cards.energySufficient(thisMove.energyCost + [R,W,L])) {
-              if(opp.bench){
-                multiSelect(opp.bench, 3).each{
-                  damage 110, it
-                }
+              multiSelect(opp.all, 3).each{
+                damage 110, it
               }
             }
 
-            afterDamage{
+            afterDamage {
               self.cards.moveTo(my.deck)
               removePCS(self)
               shuffleDeck()
