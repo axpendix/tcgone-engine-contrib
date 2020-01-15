@@ -212,10 +212,11 @@ public enum SunMoonPromos implements CardInfo {
   FLAREON_SM186("Flareon", 186, Rarity.PROMO, [POKEMON,POKEMON,_FIRE_,STAGE1,EVOLUTION]),
   KANGASKHAN_GX_SM188("Kangaskhan-GX", 188, Rarity.PROMO, [POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
   DETECTIVE_PIKACHU_SM190("Detective Pikachu", 190, Rarity.PROMO, [POKEMON,POKEMON,_LIGHTNING_,BASIC]),
+  GRENINJA_GX_SM197 ("Greninja-GX", SM197, Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_GX, STAGE2, _WATER_]),
   BULBASAUR_SM198("Bulbasaur", 198, Rarity.PROMO, [POKEMON,POKEMON,_GRASS_,BASIC]),
   PSYDUCK_SM199("Psyduck", 199, Rarity.PROMO, [POKEMON,POKEMON,_WATER_,BASIC]),
-  SNUBBULL_SM200("Snubbull", 200, Rarity.PROMO, [POKEMON,POKEMON,_FAIRY_,BASIC]);
-
+  SNUBBULL_SM200("Snubbull", 200, Rarity.PROMO, [POKEMON,POKEMON,_FAIRY_,BASIC]),
+  TREVENANT_DUSKNOIR_GX_SM217 ("Trevenant & Dusknoir-GX", SM217, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _PSYCHIC_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -2635,6 +2636,47 @@ public enum SunMoonPromos implements CardInfo {
             }
           }
         };
+      case TREVENANT_DUSKNOIR_GX_SM217:
+			return basic (this, hp:HP270, type:P, retreatCost:3) {
+				weakness D
+				resistance F, MINUS20
+				move "Night Watch", {
+					text "150 damage. Choose 2 random cards from your opponent's hand. Your opponent reveals those cards and shuffles them into their deck."
+					energyCost P, P, P
+					attackRequirement {}
+					onAttack {
+						damage 150
+            def number = Math.min(2, opp.hand.size())
+            opp.hand.select(hidden: true, count:number).moveTo(hidden: true, opp.deck)
+            shuffleDeck(null, TargetPlayer.OPPONENT)
+					}
+				}
+				move "Pale Moon GX", {
+					text "At the end of your opponent’s next turn, the Defending Pokémon will be Knocked Out. If this Pokémon has at least 1 extra [P] Energy attached to it (in addition to this attack's cost), discard all Energy from your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)"
+					energyCost P, C
+					attackRequirement { gxCheck() }
+					onAttack {
+            gxPerform()
+
+            if (self.cards.energySufficient( thisMove.energyCost + P )) {
+              opp.active.cards.filterByType(ENERGY).discard()
+            }
+
+            def pcs = defending
+            delayed {
+              before BETWEEN_TURNS, {
+                if (bg.currentTurn == self.owner.opposite) {
+                  bc "Pale Moon GX's effect occurs."
+                  new Knockout(pcs).run(bg)
+                }
+              }
+              unregisterAfter 2
+              after SWITCH, pcs, {unregister()}
+              after EVOLVE, pcs, {unregister()}
+            }
+					}
+				}
+			};
       default:
         return null;
     }
