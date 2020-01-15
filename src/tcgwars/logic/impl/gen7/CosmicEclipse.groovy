@@ -5164,13 +5164,7 @@ public enum CosmicEclipse implements CardInfo {
       case N_S_RESOLVE_232:
         return copy (N_S_RESOLVE_200, this);
       case PROFESSOR_OAK_S_SETUP_233:
-        return supporter (this) {
-          text "Search your deck for up to 3 Basic Pokémon of different types and put them onto your Bench. Then, shuffle your deck."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (PROFESSOR_OAK_S_SETUP_201, this);
       case RED_BLUE_234:
         return copy (RED_BLUE_202, this);
       case ROLLER_SKATER_235:
