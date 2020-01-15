@@ -3,6 +3,8 @@ package tcgwars.logic.impl.gen7
 import tcgwars.logic.effect.Source
 import tcgwars.logic.impl.gen5.BlackWhitePromos;
 
+import tcgwars.logic.*;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;

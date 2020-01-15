@@ -4,7 +4,6 @@ import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayStadium
 import tcgwars.logic.effect.gm.PlayTrainer
-import tcgwars.logic.TargetPlayer
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
