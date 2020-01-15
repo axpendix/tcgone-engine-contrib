@@ -176,7 +176,7 @@ public enum CosmicEclipse implements CardInfo {
   ABSOL_133 ("Absol", 133, Rarity.UNCOMMON, [POKEMON, BASIC, _DARKNESS_]),
   PAWNIARD_134 ("Pawniard", 134, Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
   BISHARP_135 ("Bisharp", 135, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
-  GUZZLORD_136 ("Guzzlord", 136, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
+  GUZZLORD_136 ("Guzzlord", 136, Rarity.HOLORARE, [POKEMON, BASIC, ULTRA_BEAST, _DARKNESS_]),
   ALOLAN_SANDSHREW_137 ("Alolan Sandshrew", 137, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
   ALOLAN_SANDSLASH_138 ("Alolan Sandslash", 138, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
   STEELIX_139 ("Steelix", 139, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
@@ -233,7 +233,7 @@ public enum CosmicEclipse implements CardInfo {
   DRAGONIUM_Z_DRAGON_CLAW_190 ("Dragonium Z: Dragon Claw", 190, Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
   ERIKA_191 ("Erika", 191, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   GREAT_CATCHER_192 ("Great Catcher", 192, Rarity.UNCOMMON, [TRAINER, ITEM]),
-  GUZMA_HALA_193 ("Guzma & Hala", 193, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  GUZMA_HALA_193 ("Guzma & Hala", 193, Rarity.UNCOMMON, [TRAINER, SUPPORTER, TAG_TEAM]),
   ISLAND_CHALLENGE_AMULET_194 ("Island Challenge Amulet", 194, Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
   LANA_S_FISHING_ROD_195 ("Lana's Fishing Rod", 195, Rarity.UNCOMMON, [TRAINER, ITEM]),
   LILLIE_S_FULL_FORCE_196 ("Lillie's Full Force", 196, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
@@ -269,7 +269,7 @@ public enum CosmicEclipse implements CardInfo {
   MEGA_LOPUNNY_JIGGLYPUFF_GX_226 ("Mega Lopunny & Jigglypuff-GX", 226, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _COLORLESS_]),
   SILVALLY_GX_227 ("Silvally-GX", 227, Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, _COLORLESS_]),
   CYNTHIA_CAITLIN_228 ("Cynthia & Caitlin", 228, Rarity.ULTRARARE, [TRAINER, SUPPORTER, TAG_TEAM]),
-  GUZMA_HALA_229 ("Guzma & Hala", 229, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
+  GUZMA_HALA_229 ("Guzma & Hala", 229, Rarity.ULTRARARE, [TRAINER, SUPPORTER, TAG_TEAM]),
   LILLIE_S_FULL_FORCE_230 ("Lillie's Full Force", 230, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
   MALLOW_LANA_231 ("Mallow & Lana", 231, Rarity.ULTRARARE, [TRAINER, SUPPORTER, TAG_TEAM]),
   N_S_RESOLVE_232 ("N's Resolve", 232, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
@@ -3942,7 +3942,7 @@ public enum CosmicEclipse implements CardInfo {
             onAttack {
               def count = 0
               while (count < 3) {
-                def tar = my.all.findAll {
+                def tar = my.bench.findAll {
                   it.cards.filterByType(BASIC_ENERGY).filterByEnergyType(R).notEmpty() ||
                     it.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L).notEmpty()
                 }
@@ -4743,6 +4743,7 @@ public enum CosmicEclipse implements CardInfo {
             shuffleDeck()
           }
           playRequirement{
+            assert opp.bench.findAll { it.pokemonGX || it.pokemonEX }
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "Not enough cards in hand"
           }
         };
@@ -4932,7 +4933,6 @@ public enum CosmicEclipse implements CardInfo {
                   }
                   unregisterAfter 1
                   unregister {
-                    bc "Unregistering now"
                     bg.em().storeObject("gx_"+thisCard.player, 1) // in case attack fails for other reasons
                   }
                 }
@@ -5164,13 +5164,7 @@ public enum CosmicEclipse implements CardInfo {
       case N_S_RESOLVE_232:
         return copy (N_S_RESOLVE_200, this);
       case PROFESSOR_OAK_S_SETUP_233:
-        return supporter (this) {
-          text "Search your deck for up to 3 Basic Pokémon of different types and put them onto your Bench. Then, shuffle your deck."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (PROFESSOR_OAK_S_SETUP_201, this);
       case RED_BLUE_234:
         return copy (RED_BLUE_202, this);
       case ROLLER_SKATER_235:
