@@ -4933,7 +4933,6 @@ public enum CosmicEclipse implements CardInfo {
                   }
                   unregisterAfter 1
                   unregister {
-                    bc "Unregistering now"
                     bg.em().storeObject("gx_"+thisCard.player, 1) // in case attack fails for other reasons
                   }
                 }
