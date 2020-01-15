@@ -4743,6 +4743,7 @@ public enum CosmicEclipse implements CardInfo {
             shuffleDeck()
           }
           playRequirement{
+            assert opp.bench.findAll { it.pokemonGX || it.pokemonEX }
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "Not enough cards in hand"
           }
         };
