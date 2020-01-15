@@ -2588,6 +2588,47 @@ public enum SunMoonPromos implements CardInfo {
             }
           }
         };
+      case GRENINJA_GX_SM197:
+			return evolution (this, from:"Frogadier", hp:HP230, type:W, retreatCost:1) {
+				weakness G
+				bwAbility "Elusive Master", {
+					text "Once during your turn (before your attack), if this Pokémon is the last card in your hand, you may play it onto your Bench. If you do, draw 3 cards."
+					actionA {
+            checkLastTurn()
+            assert my.hand.size() == 1
+            assert my.bench.notFull
+            powerUsed()
+
+            def card = opp.hand.first()
+            my.hand.remove(card)
+            benchPCS(card)
+
+            draw 3
+					}
+				}
+				move "Mist Slash", {
+					text "130 damage. This attack's damage isn't affected by Weakness, Resistance, or any other effects on your opponent's Active Pokémon."
+					energyCost W, C
+					attackRequirement {}
+					onAttack {
+            swiftDamage(130, defending)
+					}
+				}
+				move "Dark Mist GX", {
+					text "Put 1 of your opponent's Benched Pokémon and all cards attached to it into your opponent’s hand. (You can’t use more than 1 GX attack in a game.)"
+					energyCost W
+					attackRequirement {
+            gxCheck()
+            assert opp.bench.notEmpty
+          }
+					onAttack {
+            gxPerform()
+            def pcs = opp.bench.select()
+            pcs.cards.moveTo(opp.hand)
+            removePCS(pcs)
+					}
+				}
+			};
       case BULBASAUR_SM198:
         return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
           weakness FIRE
