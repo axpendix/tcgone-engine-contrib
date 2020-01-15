@@ -2690,8 +2690,10 @@ public enum SunMoonPromos implements CardInfo {
 					onAttack {
 						damage 150
             def number = Math.min(2, opp.hand.size())
-            opp.hand.select(hidden: true, count:number).moveTo(hidden: true, opp.deck)
+            if (number > 0) {
+              opp.hand.select(hidden: true, count:number).moveTo(hidden: true, opp.deck)
             shuffleDeck(null, TargetPlayer.OPPONENT)
+            }
 					}
 				}
 				move "Pale Moon GX", {
