@@ -4,6 +4,7 @@ import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayStadium
 import tcgwars.logic.effect.gm.PlayTrainer
+import tcgwars.logic.TargetPlayer
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1631,7 +1632,7 @@ public enum CosmicEclipse implements CardInfo {
               checkLastTurn()
               powerUsed()
               if (confirm("Force your opponent to switch their Active Pokémon with one of their benched Pokémon?")) {
-                whirlwind()
+                sw(opp.active, opp.bench.oppSelect("New Active Pokemon"))
                 self.cards.getExcludedList(self.topPokemonCard).discard()
                 moveCard(self.topPokemonCard, my.deck)
                 removePCS(self)
