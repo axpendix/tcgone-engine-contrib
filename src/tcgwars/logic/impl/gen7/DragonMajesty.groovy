@@ -521,6 +521,7 @@ public enum DragonMajesty implements CardInfo {
               gxCheck()
             }
             onAttack{
+              gxPerform()
               opp.all.each{
                 damage 40, it
               }
