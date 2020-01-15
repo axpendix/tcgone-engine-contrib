@@ -3942,7 +3942,7 @@ public enum CosmicEclipse implements CardInfo {
             onAttack {
               def count = 0
               while (count < 3) {
-                def tar = my.all.findAll {
+                def tar = my.bench.findAll {
                   it.cards.filterByType(BASIC_ENERGY).filterByEnergyType(R).notEmpty() ||
                     it.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L).notEmpty()
                 }
