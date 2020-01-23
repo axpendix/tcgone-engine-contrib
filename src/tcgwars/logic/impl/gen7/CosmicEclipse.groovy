@@ -1316,7 +1316,7 @@ public enum CosmicEclipse implements CardInfo {
             text "Your Pokémon-GX in play that evolve from Eevee get +60 HP. You can't apply more than 1 Vitality Cheer Ability at a time."
             getterA (GET_FULL_HP) {h->
               def pcs = h.effect.target
-              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.predecessor == "Eevee" && bg.em().retrieveObject("Vitality Cheer") != bg.turnCount) {
+              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.cardTypes.is(EVOLUTION) && pcs.topPokemonCard.predecessor == "Eevee" && bg.em().retrieveObject("Vitality Cheer") != bg.turnCount) {
                 h.object += hp(60)
                 bg.em().storeObject("Vitality Cheer", bg.turnCount)
               }
@@ -1627,15 +1627,14 @@ public enum CosmicEclipse implements CardInfo {
           bwAbility "Whirlpool Suction", {
             text "Once during your turn (before your attack), if this Pokémon is on your Bench, you may have your opponent switch their Active Pokémon with 1 of their Benched Pokémon. If you do, discard all cards attached to this Pokémon and put it on the bottom of your deck."
             actionA {
-              assert self.benched
               checkLastTurn()
+              assert self.benched
+              assert opp.bench
               powerUsed()
-              if (confirm("Force your opponent to switch their Active Pokémon with one of their benched Pokémon?")) {
-                sw(opp.active, opp.bench.oppSelect("New Active Pokemon"))
-                self.cards.getExcludedList(self.topPokemonCard).discard()
-                moveCard(self.topPokemonCard, my.deck)
-                removePCS(self)
-              }
+              sw(opp.active, opp.bench.oppSelect("New Active Pokemon"))
+              self.cards.getExcludedList(self.topPokemonCard).discard()
+              self.cards.moveTo(my.deck)
+              removePCS(self)
             }
           }
           move "Rain Splash", {
@@ -2533,22 +2532,15 @@ public enum CosmicEclipse implements CardInfo {
           bwAbility "Shadow Box", {
             text "Pokémon-GX that have any damage counters on them (both yours and your opponent's) have no Abilities."
             def effect1
-            def effect2
             onActivate {
               effect1 = getter IS_ABILITY_BLOCKED, { Holder h ->
                 if (h.effect.target.numberOfDamageCounters && h.effect.target.pokemonGX && h.effect.ability instanceof BwAbility) {
                   h.object=true
                 }
               }
-              effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, { Holder h ->
-                if (h.effect.target.numberOfDamageCounters && (h.effect.target as Card).cardTypes.is(POKEMON_GX)) {
-                  h.object=true
-                }
-              }
             }
             onDeactivate {
               effect1.unregister()
-              effect2.unregister()
             }
           }
           move "Tail Trickery", {
@@ -4602,8 +4594,8 @@ public enum CosmicEclipse implements CardInfo {
             "When you play this card, you may discard 3 other cards from your hand. If you do, each player discards their Benched Pokémon until they have 3 Benched Pokémon. Your opponent discards first."
           def eff
           onPlay {
-            if(opp.deck) opp.deck.subList(0, 3).moveTo(opp.discard)
-            if(my.deck) my.deck.subList(0, 3).moveTo(my.discard)
+            if(opp.deck) opp.deck.subList(0, 3).discard()
+            if(my.deck) my.deck.subList(0, 3).discard()
 
             if (my.hand.getExcludedList(thisCard).size() >= 3 && confirm("Discard 3 cards to force both players to discard their Benched Pokémon until they have 3 Benched Pokémon?")) {
               my.hand.getExcludedList(thisCard).select(count:3, "Select cards to discard.").discard()
@@ -4649,9 +4641,8 @@ public enum CosmicEclipse implements CardInfo {
         return supporter (this) {
           text "Discard the top 7 cards of your deck. If any of those cards are Item cards, put them into your hand."
           onPlay {
-            def topCards = my.deck.subList(0, 7)
-            def items = topCards.filterByType(ITEM).moveTo(my.hand)
-            my.deck.subList(0, 7 - items.size()).discard()
+            def cards = my.deck.subList(0, 7).discard()
+            cards.filterByType(ITEM).moveTo(my.hand)
           }
           playRequirement{
             assert my.deck
@@ -4877,7 +4868,7 @@ public enum CosmicEclipse implements CardInfo {
                   }
                   acl = action("Discard Lillie's PokéDoll", [TargetPlayer.SELF]) {
                     self.cards.getExcludedList(self.topPokemonCard).discard()
-                    moveCard(self.topPokemonCard, my.deck)
+                    self.cards.moveTo(my.deck)
                     removePCS(self)
                   }
                 }

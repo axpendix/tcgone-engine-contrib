@@ -852,7 +852,7 @@ public enum UnifiedMinds implements CardInfo {
             text "Once during your turn, when this Pokémon moves from your Bench to become your Active Pokémon, you may move any number of [R] Energy from your other Pokémon to it."
             delayedA{
               after SWITCH, {
-                if(bg.em().retrieveObject("Burning_Road") != bg.turnCount && self.active && bg.currentTurn == self.owner){
+                if(bg.em().retrieveObject("Burning_Road") != bg.turnCount && self.active && bg.currentTurn == self.owner && confirm("Use Burning Road?")){
                   bg.em().storeObject("Burning_Road", bg.turnCount)
                   while(1){
                     def pl=(my.all.findAll {it.cards.filterByEnergyType(R) && it!=self})
@@ -4428,8 +4428,9 @@ public enum UnifiedMinds implements CardInfo {
           text "Look at the top 6 cards of your deck and put 2 of them into your hand. Discard the other cards."
           onPlay {
             def cards = my.deck.subList(0,6)
-            cards.select(count:2,"Choose 2 cards to put in your hand").moveTo(my.hand)
-            my.deck.subList(0,4).discard()
+            def moved = cards.select(count:2,"Choose 2 cards to put in your hand").moveTo(my.hand)
+            cards.removeAll(moved)
+            cards.discard()
           }
           playRequirement{
             assert my.deck : "There are no cards in your deck"
@@ -4581,12 +4582,12 @@ public enum UnifiedMinds implements CardInfo {
         return itemCard (this) {
           text "Move up to 2 Energy from 1 of your TAG TEAM Pokémon to another of your Pokémon."
           onPlay {
-            def pcs = my.all.findAll {it.topPokemonCard.cardTypes.is(TAG_TEAM) && it.cards.filterByType(ENERGY)}.select("Move energy from")
+            def pcs = my.all.findAll {it.tagTeam && it.cards.filterByType(ENERGY)}.select("Move energy from")
             def tar = my.all.findAll {it != pcs}.select("To?")
             pcs.cards.filterByType(ENERGY).select(max:2, "Select which energy to move").each{energySwitch(pcs,tar,it)}
           }
           playRequirement{
-            assert my.all.findAll {it.topPokemonCard.cardTypes.is(TAG_TEAM) && it.cards.filterByType(ENERGY)} : "No valid target"
+            assert my.all.findAll {it.tagTeam && it.cards.filterByType(ENERGY)} : "No valid target"
             assert my.all.size() >= 2 : "You only have one Pokemon in play"
           }
         };
