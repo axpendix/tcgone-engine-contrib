@@ -328,7 +328,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Jet Punch", {
             text "30 damage. This attack does 30 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 30
               if(opp.bench) damage 30, opp.bench.select()
@@ -337,7 +336,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Elegant Sole", {
             text "190 damage. During your next turn, this Pokémon's Elegant Sole attack's base damage is 60."
             energyCost G, G, C
-            attackRequirement {}
             onAttack {
               damage 190
               afterDamage {decreasedBaseDamageNextTurn(self, "Elegant Sole", hp(130))}
@@ -385,7 +383,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Hook", {
             text "10 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -410,7 +407,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Bug Bite", {
             text "30 damage. "
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -436,7 +432,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Solar Beam", {
             text "70 damage. "
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -449,7 +444,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Stun Spore", {
             text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               flipThenApplySC PARALYZED
             }
@@ -457,7 +451,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Seed Bomb", {
             text "20 damage. "
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -470,7 +463,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Hook", {
             text "10 damage. "
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -499,7 +491,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Drool", {
             text "30 damage. "
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -522,7 +513,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Giant Bloom", {
             text "90 damage. Heal 30 damage from this Pokémon."
             energyCost G, G, C
-            attackRequirement {}
             onAttack {
               damage 90
               afterDamage {heal 30, self}
@@ -547,7 +537,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Flop", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -560,7 +549,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Psybeam", {
             text "10 damage. Your opponent's Active Pokémon is now Confused."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
               applyAfterDamage(CONFUSED)
@@ -585,7 +573,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Poison Powder", {
             text "30 damage. Your opponent's Active Pokémon is now Poisoned."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 30
               applyAfterDamage(POISONED)
@@ -599,7 +586,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Shinobi Mastery", {
             text "110+ damage. If you played Koga's Trap from your hand during this turn, this attack does 90 more damage. If you played Janine from your hand during this turn, prevent all damage done to this Pokémon by attacks from Basic Pokémon during your opponent's next turn."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 110
               if(bg.em().retrieveObject("KOGA_S_TRAP_TURN")==bg.turnCount){
@@ -633,7 +619,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Razor Leaf", {
             text "20 damage. "
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -646,7 +631,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Burning Venom", {
             text "Your opponent's Active Pokémon is now Burned and Poisoned."
             energyCost G
-            attackRequirement {}
             onAttack {
               apply BURNED
               apply POISONED
@@ -655,7 +639,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Ram", {
             text "30 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -668,7 +651,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Reactive Poison", {
             text "10+ damage. This attack does 60 more damage for each Special Condition affecting your opponent's Active Pokémon."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10+60*defending.specialConditions.size()
             }
@@ -676,7 +658,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Gastro Acid", {
             text "90 damage. The Defending Pokémon has no Abilities until the end of your next turn."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 90
               def pcs = opp.active
@@ -716,7 +697,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Gentle Slap", {
             text "30 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -729,7 +709,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Bind Down", {
             text "30 damage. The Defending Pokémon can't retreat during your opponent's next turn."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 30
               cantRetreat defending
@@ -738,7 +717,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Chlorowhip", {
             text "90 damage. If this Pokémon has at least 2 [G] Energy attached to it, heal 60 damage from this Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 90
               if(self.cardTypes.energyCount(G) >= 2){
@@ -765,7 +743,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Corkscrew Punch", {
             text "30 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -778,7 +755,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Big Cut", {
             text "10+ damage. If you have exactly 4 Prize cards remaining, this attack does 120 more damage."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
               if(my.prizeCardSet.size() == 4){
@@ -789,7 +765,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "False Swipe", {
             text "Flip a coin. If heads, put damage counters on your opponent's Active Pokémon until its remaining HP is 10."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               flip {
                 directDamage opp.active.remainingHP.value - 10, opp.active
@@ -804,7 +779,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Outrage", {
             text "30+ damage. This attack does 10 more damage for each damage counter on this Pokémon."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 30+10*self.numberOfDamageCounters
             }
@@ -812,7 +786,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Flare Strike", {
             text "230 damage. This Pokémon can't use Flare Strike during your next turn."
             energyCost R, R, R, C
-            attackRequirement {}
             onAttack {
               damage 230
               cantUseAttack(thisMove, self)
@@ -839,7 +812,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Live Coal", {
             text "10 damage. "
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -847,7 +819,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Combustion", {
             text "30 damage. "
             energyCost R, R
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -860,7 +831,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Grand Flame", {
             text "120 damage. Attach 2 [R] Energy cards from your discard pile to 1 of your Benched Pokémon."
             energyCost R, R, R
-            attackRequirement {}
             onAttack {
               damage 120
               afterDamage {
@@ -875,7 +845,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Heat Tackle", {
             text "190 damage. This Pokémon does 50 damage to itself."
             energyCost R, R, R, R
-            attackRequirement {}
             onAttack {
               damage 190
               damage 50, self
@@ -889,7 +858,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Flame Charge", {
             text "10 damage. Search your deck for a [R] Energy card and attach it to this Pokémon. Then, shuffle your deck."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               afterDamage {
@@ -901,7 +869,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Flop", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -925,7 +892,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Flare Blitz", {
             text "110 damage. Discard all [R] Energy from this Pokémon."
             energyCost R, R
-            attackRequirement {}
             onAttack {
               damage 110
               discardAllSelfEnergy(R)
@@ -954,7 +920,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "High-Heat Blast", {
             text "50+ damage. If you have at least 4 [R] Energy in play, this attack does 60 more damage."
             energyCost R, R
-            attackRequirement {}
             onAttack {
               damage 50
               int c=0
@@ -970,7 +935,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Singe", {
             text "Your opponent's Active Pokémon is now Burned."
             energyCost R
-            attackRequirement {}
             onAttack {
               apply BURNED
             }
@@ -994,7 +958,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Big Bite", {
             text "60 damage. The Defending Pokémon can't retreat during your opponent's next turn."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               cantRetreat defending
@@ -1008,7 +971,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Fire Fang", {
             text "20 damage. Your opponent's Active Pokémon is now Burned."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 20
               applyAfterDamage BURNED
@@ -1038,7 +1000,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Flamethrower", {
             text "90 damage. Discard an Energy from this Pokémon."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 90
               discardSelfEnergy C
@@ -1052,7 +1013,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Grass Fire", {
             text "10 damage. Discard a [G] Energy from your opponent's Active Pokémon."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
               afterDamage {
@@ -1083,7 +1043,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Combustion", {
             text "60 damage. "
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -1096,7 +1055,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Blazer", {
             text "10+ damage. Turn 1 of your face-down Prize cards face up. If it's a [R] Energy card, this attack does 50 more damage. (That Prize card remains face up for the rest of the game.)"
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
               def sel = my.prizeCardSet.select(hidden:true, "Reveal a prize card")
@@ -1123,7 +1081,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Bubble", {
             text "10 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
               flip{apply PARALYZED}
@@ -1148,7 +1105,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Aqua Slash", {
             text "60 damage. This Pokémon can’t attack during your next turn."
             energyCost W, W
-            attackRequirement {}
             onAttack {
               damage 60
               cantAttackNextTurn self
@@ -1173,7 +1129,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Rocket Splash", {
             text "60x damage. Shuffle any amount of [W] Energy from your Pokémon into your deck. This attack does 60 damage for each card you shuffled into your deck in this way."
             energyCost W, W
-            attackRequirement {}
             onAttack {
               def count=0
               def toBeMoved=new CardList()
@@ -1224,7 +1179,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Watering", {
             text "10 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1247,7 +1201,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Bubble", {
             text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 20
               flip{applyAfterDamage PARALYZED}
@@ -1256,7 +1209,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Knuckle Punch", {
             text "40 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -1269,7 +1221,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Knuckle Punch", {
             text "50 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -1277,7 +1228,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Swirly Rush", {
             text "90+ damage. If Poliwag and Poliwhirl are on your Bench, this attack does 90 more damage."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 90
               if(my.bench.find{it.name=="Poliwag"} && my.bench.find{it.name=="Poliwirl"}){
@@ -1293,7 +1243,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Bubble Jutsu", {
             text "10+ damage. If you played Janine from your hand during this turn, this attack does 50 more damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               if(bg.em().retrieveObject("JANINE_TURN")==bg.turnCount){
@@ -1327,7 +1276,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Wrap", {
             text "60 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               flip{applyAfterDamage PARALYZED}
@@ -1341,7 +1289,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Growl", {
             text "During your opponent’s next turn, the Defending Pokémon’s attacks do 20 less damage (before applying Weakness and Resistance)."
             energyCost W
-            attackRequirement {}
             onAttack {
               reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
             }
@@ -1349,7 +1296,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Tail Whap", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1362,7 +1308,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Yawn", {
             text "Your opponent's Active Pokémon is now Asleep."
             energyCost W
-            attackRequirement {}
             onAttack {
               apply ASLEEP
             }
@@ -1370,7 +1315,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Three Strikes", {
             text "100x damage. Flip 3 coins. This attack does 100 damage for each heads. If all of them are tails, you lose this game."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               flip 3,{},{},[0:{bg.getGame().endGame(opp.active.owner, WinCondition.OTHER)},1:{damage 100},2:{damage 200},3:{damage 300}]
             }
@@ -1383,7 +1327,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Horn Attack", {
             text "30 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1396,7 +1339,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Tail Whap", {
             text "60 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -1404,7 +1346,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Dual Blizzard", {
             text "Discard 2 Energy from this Pokémon. This attack does 60 damage to 2 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               discardSelfEnergy C,C
               multiSelect(opp.all,2).each{ damage 60, it }
@@ -1418,7 +1359,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Stampede", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1426,7 +1366,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Vice Grip", {
             text "20 damage. "
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1439,7 +1378,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Bubble Beam", {
             text "80 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               flip{applyAfterDamage PARALYZED}
@@ -1448,7 +1386,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Massive Rend", {
             text "130 damage. "
             energyCost W, C, C, C
-            attackRequirement {}
             onAttack {
               damage 130
             }
@@ -1461,7 +1398,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Elegant Swim", {
             text "10 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
               flip {preventAllEffectsNextTurn()}
@@ -1475,7 +1411,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Enhanced Horn", {
             text "30x damage. Flip 2 coins. This attack does 30 damage for each heads. If this Pokémon has a Pokémon Tool card attached to it, flip 6 coins instead."
             energyCost W
-            attackRequirement {}
             onAttack {
               flip self.cards.filterByType(POKEMON_TOOL) ? 6 : 2, { damage 30 }
             }
@@ -1499,7 +1434,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Hail Prison", {
             text "110 damage. Discard 2 [W] Energy from this Pokémon. Your opponent's Active Pokémon is now Paralyzed."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               damage 110
               discardSelfEnergy W,W
@@ -1514,7 +1448,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Quick Attack", {
             text "10+ damage. Flip a coin. If heads, this attack does 20 more damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               flip { damage 20 }
@@ -1528,7 +1461,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Afterimage Strike", {
             text "20 damage. If any damage is done to this Pokémon by attacks during your opponent's next turn, flip a coin. If heads, prevent that damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
               delayed {
@@ -1560,7 +1492,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Surprise Fist", {
             text "60+ damage. You and your opponent play Rock-Paper-Scissors. If you win, this attack does 60 more damage."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               flip {damage 60}
@@ -1575,7 +1506,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Pika Ball", {
             text "30 damage. "
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1603,7 +1533,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Head Bolt", {
             text "110 damage. "
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
               damage 110
             }
@@ -1617,7 +1546,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Raging Thunder", {
             text "30 damage. This attack does 10 damage to 1 of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30
               if(my.bench){
@@ -1628,7 +1556,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Electric Trap", {
             text "30x damage. This attack does 30 damage for each of your Pokémon that has any damage counters on it."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30*my.all.findAll{it.numberOfDamageCounters}.size()
             }
@@ -1653,7 +1580,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Static Shock", {
             text "50 damage. "
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -1709,7 +1635,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Pierce", {
             text "60 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -1730,7 +1655,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Electricannon", {
             text "120+ damage. You may discard all [L] Energy from this Pokémon. If you do, this attack does 100 more damage."
             energyCost L, L, L, C
-            attackRequirement {}
             onAttack {
               damage 120
               if(confirm("You may discard all [L] Energy from this Pokémon. If you do, this attack does 100 more damage.")){
@@ -1748,7 +1672,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Crushing Claw", {
             text "20 damage. Discard a Special Energy from your opponent's Active Pokémon."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 20
               discardDefendingSpecialEnergy(delegate)
@@ -1757,7 +1680,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Discharge", {
             text "50x damage. Discard all [L] Energy from this Pokémon. This attack does 50 damage for each card you discarded in this way."
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
               damage 50*discardAllSelfEnergy(L).size()
             }
@@ -1770,7 +1692,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Severe Poison", {
             text "Your opponent's Active Pokémon is now Poisoned. Put 8 damage counters instead of 1 on that Pokémon between turns."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               apply POISONED
               extraPoison 7
@@ -1779,7 +1700,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Poison Absorption", {
             text "120 damage. If your opponent's Active Pokémon is Poisoned, heal 100 damage from this Pokémon."
             energyCost P, C, C, C
-            attackRequirement {}
             onAttack {
               damage 120
               if(defending.isSPC(POISONED)) healAfterDamage(100, self)
@@ -1805,7 +1725,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Glare", {
             text "Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {
                 apply PARALYZED
@@ -1815,7 +1734,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Tail Smack", {
             text "20 damage. "
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1828,7 +1746,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Wrap", {
             text "30 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30
               flip {
@@ -1840,7 +1757,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Heavy Choke", {
             text "50+ damage. If this Pokémon used Wrap during your last turn, this attack does 120 more damage."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -1854,7 +1770,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Bite", {
             text "10 damage. "
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1862,7 +1777,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Venoshock", {
             text "20+ damage. If your opponent's Active Pokémon is Poisoned, this attack does 50 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               if(defending.isSPC(POISONED)) damage 50
@@ -1877,7 +1791,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Bite", {
             text "20 damage. "
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1885,7 +1798,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Leech Life", {
             text "40 damage. Heal from this Pokémon the same amount of damage you did to your opponent's Active Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               removeDamageCounterEqualToDamageDone()
@@ -1909,7 +1821,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Severe Poison", {
             text "60 damage. Your opponent’s Active Pokémon is now Poisoned. Put 4 damage counters instead of 1 on that Pokémon between turns."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               afterDamage {
@@ -1945,7 +1856,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Will-O-Wisp", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1959,7 +1869,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Smog", {
             text "Your opponent's Active Pokémon is now Poisoned."
             energyCost P
-            attackRequirement {}
             onAttack {
               apply POISONED
             }
@@ -1973,7 +1882,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Sinister Fog", {
             text "Your opponent's Active Pokémon is now Poisoned. Put 1 damage counter on each of your opponent's Benched Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
               apply POISONED
               opp.bench.each {directDamage 10,it}
@@ -2000,7 +1908,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Twilight Poison", {
             text "70 damage. Your opponent's Active Pokémon is now Asleep and Poisoned."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               afterDamage {
@@ -2017,7 +1924,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Hypnosis", {
             text "Your opponent's Active Pokémon is now Asleep."
             energyCost P
-            attackRequirement {}
             onAttack {
               apply ASLEEP
             }
@@ -2025,7 +1931,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Psypunch", {
             text "30 damage. "
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -2052,7 +1957,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Stir the Brain", {
             text "30+ damage. This attack does 10 more damage for each card in your opponent's hand."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 30+10*opp.hand.size()
             }
@@ -2065,7 +1969,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Foul Odor", {
             text "Both Active Pokémon are now Confused."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply CONFUSED
               apply CONFUSED,self
@@ -2093,7 +1996,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Splattering Sludge", {
             text "40 damage. This attack does 20 damage to each of your opponent's Benched Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 40
               opp.bench.each{if(it.numberOfDamageCounters) damage 20,it}
@@ -2116,7 +2018,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Psyshock", {
             text "70 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               shredDamage 70
             }
@@ -2140,7 +2041,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Psypower", {
             text "Put 3 damage counters on your opponent's Pokémon in any way you like."
             energyCost C
-            attackRequirement {}
             onAttack {
               (1..3).each {
                 if(opp.all) directDamage(10, opp.all.select("Put a damage counter on"))
@@ -2156,7 +2056,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Ominous Eyes", {
             text "Put 1 damage counter on 1 of your opponent's Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
               if(opp.all) directDamage(10, opp.all.select("Put a damage counter on"))
             }
@@ -2181,7 +2080,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Hypnoblast", {
             text "70 damage. Your opponent's Active Pokémon is now Asleep."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               applyAfterDamage ASLEEP
@@ -2233,7 +2131,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Perplexing Eyes", {
             text "70 damage. The Defending Pokémon’s Weakness is now [P] until the end of your next turn. (The amount of Weakness doesn’t change.)"
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               def pcs = defending
@@ -2274,7 +2171,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Red Knuckles", {
             text "10+ damage. If your opponent's Active Pokémon is an Ultra Beast, this attack does 60 more damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               if(defending.topPokemonCard.cardTypes.is(ULTRA_BEAST)) damage 60
@@ -2288,7 +2184,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Revenge", {
             text "30+ damage. If any of your Pokémon were Knocked Out by damage from an opponent's attack during their last turn, this attack does 90 more damage."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 30
               if(my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1) damage 90
@@ -2297,7 +2192,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Hundred-Blows Impact", {
             text "160 damage. "
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
               damage 160
             }
@@ -2334,7 +2228,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -2342,7 +2235,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Rolling Tackle", {
             text "30 damage. "
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -2355,7 +2247,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Continuous Scratch", {
             text "30x damage. Flip 4 coins. This attack does 30 damage for each heads."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip 4,{damage 30}
             }
@@ -2363,7 +2254,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Sand Tomb", {
             text "90 damage. The Defending Pokémon can't retreat during your opponent's next turn."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 90
               cantRetreat defending
@@ -2381,7 +2271,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Hook", {
             text "10 damage. "
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2394,7 +2283,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Home Ground", {
             text "30+ damage. If you have any Stadium card in play, this attack does 60 more damage."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 30
               if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner){
@@ -2410,7 +2298,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Defense Curl", {
             text "Flip a coin. If heads, prevent all damage done to this Pokémon by attacks during your opponent's next turn."
             energyCost F
-            attackRequirement {}
             onAttack {
               flip{preventAllDamageNextTurn()}
             }
@@ -2418,7 +2305,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Rock Throw", {
             text "40 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -2431,7 +2317,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Rolling Rocks", {
             text "50 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -2439,7 +2324,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Double-Edge", {
             text "90 damage. This Pokémon does 30 damage to itself."
             energyCost F, C, C, C
-            attackRequirement {}
             onAttack {
               damage 90
               damage 30,self
@@ -2453,7 +2337,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Steamroller", {
             text "100 damage. This attack's damage isn't affected by Resistance."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               dontApplyResistance()
               damage 100
@@ -2462,7 +2345,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Heavy Slam", {
             text "180- damage. This attack does 20 less damage for each [C] in your opponent's Active Pokémon's Retreat Cost."
             energyCost F, C, C, C
-            attackRequirement {}
             onAttack {
               damage 180-20*defending.retreatCost
             }
@@ -2475,7 +2357,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Focus Energy", {
             text "During your next turn, this Pokémon's Beat attack's base damage is 80."
             energyCost C
-            attackRequirement {}
             onAttack {
               increasedBaseDamageNextTurn("Beat",hp(70))
             }
@@ -2483,7 +2364,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Beat", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2496,7 +2376,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Bone Rush", {
             text "50x damage. Flip a coin until you get tails. This attack does 50 damage for each heads."
             energyCost F
-            attackRequirement {}
             onAttack {
               flipUntilTails {damage 50}
             }
@@ -2504,7 +2383,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Assault Boom", {
             text "70+ damage. If your opponent's Active Pokémon has a Pokémon Tool card attached to it, this attack does 70 more damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               if(defending.cards.hasType(POKEMON_TOOL)) damage 70
@@ -2518,7 +2396,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Push Down", {
             text "20 damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 20
               whirlwind()
@@ -2532,7 +2409,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Horn Attack", {
             text "30 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -2540,7 +2416,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Boulder Crush", {
             text "80 damage. "
             energyCost F, C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
             }
@@ -2567,7 +2442,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Horn Attack", {
             text "90 damage. "
             energyCost F, C, C, C
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -2580,7 +2454,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Hefty Cannon", {
             text "90 damage. If the Defending Pokémon is a Basic Pokémon, it can't attack during your opponent's next turn."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 90
               if(defending.basic){
@@ -2591,7 +2464,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Break Ground", {
             text "160 damage. This attack does 20 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F, C, C, C
-            attackRequirement {}
             onAttack {
               damage 160
               my.bench.each{damage 20,it}
@@ -2605,7 +2477,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Mud Bomb", {
             text "30 damage. "
             energyCost W, W
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -2618,7 +2489,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Water Gun", {
             text "20 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2626,7 +2496,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Surf", {
             text "120 damage. "
             energyCost W, W, W
-            attackRequirement {}
             onAttack {
               damage 120
             }
@@ -2646,7 +2515,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Shinobi Strike", {
             text "30+ damage. If you played Janine from your hand during this turn, this attack does 90 more damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               if(bg.em().retrieveObject("JANINE_TURN")==bg.turnCount){
@@ -2672,7 +2540,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Poison Jab", {
             text "70 damage. Your opponent's Active Pokémon is now Poisoned."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               applyAfterDamage POISONED
@@ -2711,7 +2578,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Spinning Attack", {
             text "50 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -2724,7 +2590,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Feint", {
             text "10 damage. This attack's damage isn't affected by Resistance."
             energyCost C
-            attackRequirement {}
             onAttack {
               dontApplyResistance()
               damage 10
@@ -2738,7 +2603,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Linear Attack", {
             text "This attack does 30 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 30, opp.all.select()
             }
@@ -2746,7 +2610,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Power Cyclone", {
             text "60 damage. Move an Energy from this Pokémon to 1 of your Benched Pokémon."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 60
               afterDamage {
@@ -2762,7 +2625,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Corkscrew Punch", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2770,7 +2632,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Knuckle Blast", {
             text "30+ damage. If you have more Prize cards remaining than your opponent, this attack does 60 more damage."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               if(my.prizeCardSet.size() > opp.prizeCardSet.size()) damage 60
@@ -2784,7 +2645,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Fight Alone", {
             text "30+ damage. If you have fewer Pokémon in play than your opponent, this attack does 50 more damage for each Pokémon fewer you have in play."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               int diff = opp.all.size() - my.all.size()
@@ -2794,7 +2654,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Magnum Punch", {
             text "80 damage. "
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 80
             }
@@ -2813,7 +2672,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Top Down", {
             text "110 damage. Flip a coin until you get tails. For each heads, discard the top card of your opponent's deck."
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
               damage 110
               flipUntilTails {if(opp.deck) opp.deck.subList(0,1).discard()}
@@ -2828,7 +2686,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Dark Pulse", {
             text "30+ damage. This attack does 30 more damage times the amount of [D] Energy attached to all of your Pokémon."
             energyCost D, C
-            attackRequirement {}
             onAttack {
               damage 30
               my.all.each{damage 30*it.cards.energyCount(D)}
@@ -2865,7 +2722,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Astonish", {
             text "Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck."
             energyCost D
-            attackRequirement {}
             onAttack {
               astonish(1)
             }
@@ -2896,7 +2752,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Feather Storm", {
             text "90 damage. This attack does 30 damage to 2 of your opponent's Benched Pokémon-GX and Pokémon-EX. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
               damage 90
               multiDamage(opp.bench.findAll{it.pokemonGX || it.pokemonEX},2,30)
@@ -2923,7 +2778,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Gnaw", {
             text "10 damage. "
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2951,7 +2805,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Bad Fangs", {
             text "60+ damage. This attack does 20 more damage times the amount of [D] Energy attached to this Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 60+20*self.cards.energyCount(D)
             }
@@ -2971,7 +2824,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Anguish Cry", {
             text "10+ damage. This attack does 30 more damage for each damage counter on this Pokémon."
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 10+30*self.numberOfDamageCounters
             }
@@ -2996,7 +2848,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Gnaw", {
             text "10 damage. "
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -3010,7 +2861,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Grandiose Fangs", {
             text "30 damage. If your opponent's Pokémon is Knocked Out by damage from this attack, this Pokémon's attacks do 120 more damage to your opponent's Active Pokémon during your next turn (before applying Weakness and Resistance)."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               delayed {
@@ -3032,7 +2882,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Bite", {
             text "20 damage. "
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -3040,7 +2889,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Corner", {
             text "50 damage. The Defending Pokémon can't retreat during your opponent's next turn."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               cantRetreat defending
@@ -3055,7 +2903,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Chomp Chomp Panic", {
             text "50x damage. This attack does 50 damage for each [C] in your opponent's Active Pokémon's Retreat Cost."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 50*defending.retreatCost
             }
@@ -3063,7 +2910,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Crunch", {
             text "100 damage. Discard an Energy from your opponent's Active Pokémon."
             energyCost D, C, C, C
-            attackRequirement {}
             onAttack {
               damage 100
               discardDefendingEnergy()
@@ -3078,7 +2924,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Bring Down", {
             text "The Pokémon that has the least HP remaining, except for this Pokémon, is Knocked Out. (If multiple Pokémon are tied, choose one.)"
             energyCost C, C
-            attackRequirement {}
             onAttack {
               def list = all.findAll{it!=self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value}
               def tar = new PcsList()
@@ -3092,7 +2937,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Mist Slash", {
             text "70 damage. This attack's damage isn't affected by Weakness, Resistance, or any other effects on your opponent's Active Pokémon."
             energyCost D, D
-            attackRequirement {}
             onAttack {
               swiftDamage(70,defending)
             }
@@ -3106,7 +2950,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Perplex", {
             text "Your opponent's Active Pokémon is now Confused."
             energyCost D
-            attackRequirement {}
             onAttack {
               apply CONFUSED
             }
@@ -3146,7 +2989,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Dark Pressure", {
             text "80 damage. Discard the top card of your opponent's deck."
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               if(opp.deck) discard opp.deck.get(0)
@@ -3161,7 +3003,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Steel Fist", {
             text "50 damage. Search your deck for a [M] Energy card and attach it to this Pokémon. Then, shuffle your deck."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 50
               afterDamage {
@@ -3172,7 +3013,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Heavy Impact", {
             text "150 damage. "
             energyCost M, M, C, C
-            attackRequirement {}
             onAttack {
               damage 150
             }
@@ -3204,7 +3044,6 @@ public enum UnbrokenBonds implements CardInfo {
           resistance P, MINUS20
           move "Ram", {
             text "10 damage. "
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -3231,7 +3070,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Hammer In", {
             text "40 damage. "
             energyCost M, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -3245,7 +3083,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Rigidify", {
             text "During your opponent’s next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
             energyCost M
-            attackRequirement {}
             onAttack {
               reduceDamageNextTurn(hp(30),thisMove)
             }
@@ -3253,7 +3090,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Metal Claw", {
             text "20 damage. "
             energyCost M, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -3267,7 +3103,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Rigidify", {
             text "During your opponent’s next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
             energyCost M
-            attackRequirement {}
             onAttack {
               reduceDamageNextTurn(hp(30),thisMove)
             }
@@ -3275,7 +3110,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Headbutt", {
             text "70 damage. "
             energyCost M, M, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -3289,7 +3123,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Extra-Tight Press", {
             text "80 damage. During your opponent's next turn, if this Pokémon is damaged by an attack (even if this Pokémon is Knocked Out), put 8 damage counters on the Attacking Pokémon."
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               delayed (priority: LAST) {
@@ -3307,7 +3140,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Giga Impact", {
             text "160 damage. This Pokémon can’t attack during your next turn."
             energyCost M, C, C, C
-            attackRequirement {}
             onAttack {
               damage 160
               cantAttackNextTurn(self)
@@ -3322,7 +3154,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Low Sweep", {
             text "40 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -3330,7 +3161,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Rush Up", {
             text "60+ damage. If you attached a Pokémon Tool card from your hand to this Pokémon during this turn, this attack does 70 more damage."
             energyCost M, M
-            attackRequirement {}
             onAttack {
               damage 60
               if(self.lastPokemonToolAttachedTurn == bg.turnCount) damage 70
@@ -3351,7 +3181,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Splitting Beam", {
             text "30 damage. This attack does 30 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               multiDamage(opp.bench,2,30)
@@ -3366,7 +3195,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Steel Melt", {
             text "10+ damage. If your opponent's Active Pokémon is a [M] Pokémon, this attack does 40 more damage."
             energyCost M
-            attackRequirement {}
             onAttack {
               damage 10
               if(defending.types.contains(M))damage 40
@@ -3392,7 +3220,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Heavy Impact", {
             text "130 damage. "
             energyCost M, C, C, C
-            attackRequirement {}
             onAttack {
               damage 130
             }
@@ -3420,7 +3247,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Kaleidostorm", {
             text "150 damage. Move any number of Energy from your Pokémon to your other Pokémon in any way you like."
             energyCost Y, Y, C
-            attackRequirement {}
             onAttack {
               damage 150
               afterDamage {
@@ -3477,7 +3303,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Double Slap", {
             text "10x damage. Flip 2 coins. This attack does 10 damage for each heads."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip 2,{damage 10}
             }
@@ -3491,7 +3316,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Moon-Watching Dance", {
             text "10+ damage. This attack does 30 more damage for each of your Pokémon that has any [Y] Energy attached to it."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10+30*my.all.findAll {it.cards.energyCount(Y)}.size()
             }
@@ -3505,7 +3329,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Ball Roll", {
             text "20x damage. Flip a coin until you get tails. This attack does 20 damage for each heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flipUntilTails {damage 20}
             }
@@ -3529,7 +3352,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Sleepy Ball", {
             text "80 damage. Your opponent's Active Pokémon is now Asleep."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               applyAfterDamage ASLEEP
@@ -3544,7 +3366,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Daunt", {
             text "10 damage. During your opponent's next turn, the Defending Pokémon’s attacks do 30 less damage (before applying Weakness and Resistance)."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               reduceDamageFromDefendingNextTurn(hp(30),thisMove,defending)
@@ -3570,7 +3391,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Magical Shot", {
             text "30 damage. "
             energyCost Y, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -3592,7 +3412,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Magical Shot", {
             text "70 damage. "
             energyCost Y, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -3606,7 +3425,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Expand", {
             text "10 damage. During your opponent's next turn, this Pokémon takes 10 less damage from attacks (after applying Weakness and Resistance)."
             energyCost Y
-            attackRequirement {}
             onAttack {
               damage 10
               reduceDamageNextTurn(hp(10),thisMove)
@@ -3634,7 +3452,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Energy Blow", {
             text "10+ damage. This attack does 30 more damage times the amount of Energy attached to this Pokémon."
             energyCost Y
-            attackRequirement {}
             onAttack {
               damage 10+30*self.cards.energyCount(C)
             }
@@ -3671,7 +3488,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Fairy Wind", {
             text "10 damage. "
             energyCost Y
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -3700,7 +3516,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Miraculous Cologne", {
             text "30 damage. Flip a coin. If heads, choose a Special Condition. Your opponent's Active Pokémon is now affected by that Special Condition."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip {
@@ -3718,7 +3533,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Gnaw", {
             text "30 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -3731,7 +3545,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Escaping Incisors", {
             text "70 damage. If your opponent's Active Pokémon is an Evolution Pokémon, switch this Pokémon with 1 of your Benched Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 70
               if(defending.realEvolution){
@@ -3748,7 +3561,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Glide", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -3756,7 +3568,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Speed Dive", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -3770,7 +3581,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Drill Run Double", {
             text "70 damage. Flip a coin. If heads, discard 2 Energy from your opponent's Active Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 70
               flip {afterDamage{discardDefendingEnergy();discardDefendingEnergy()}}
@@ -3795,7 +3605,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Tail Whap", {
             text "30 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -3823,7 +3632,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Claw Slash", {
             text "90 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -3850,7 +3658,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Vengeance", {
             text "10+ damage. This attack does 20 more damage for each Pokémon in your discard pile. You can't add more than 180 damage in this way."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 10
               int dmg=my.discard.filterByType(POKEMON).size()*20
@@ -3876,7 +3683,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Peck", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -3884,7 +3690,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Double Peck", {
             text "20x damage. Flip 2 coins. This attack does 20 damage for each heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flip 2,{damage 20}
             }
@@ -3898,7 +3703,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Tri Attack", {
             text "60x damage. Flip 3 coins. This attack does 60 damage for each heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flip 3,{damage 60}
             }
@@ -3906,7 +3710,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Accelerating Stab", {
             text "90 damage. This Pokémon can’t use Accelerating Stab during your next turn."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 90
               cantUseAttack(thisMove,self)
@@ -3920,7 +3723,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Lick", {
             text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               flipThenApplySC PARALYZED
@@ -3934,7 +3736,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Eat Up", {
             text "40 damage. Before doing damage, discard all Pokémon Tool cards from your opponent's Active Pokémon. If you discarded a Pokémon Tool card in this way, heal all damage from this Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               targeted(defending){
                 def dd = defending.cards.filterByType(POKEMON_TOOL).discard()
@@ -3948,7 +3749,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Tonguenado", {
             text "60x damage. Flip 4 coins. This attack does 60 damage for each heads."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               flip 4,{damage 60}
             }
@@ -3972,7 +3772,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Sharp Point", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -3985,7 +3784,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Quick Draw", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -3993,7 +3791,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Ram", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -4006,7 +3803,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Double Draw", {
             text "Draw 2 cards."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 2
             }
@@ -4014,7 +3810,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Spinning Attack", {
             text "30 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -4037,7 +3832,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Tantrum", {
             text "120 damage. This Pokémon is now Confused."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 120
               afterDamage {apply CONFUSED,self}
@@ -4064,7 +3858,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Big Counter", {
             text "60+ damage. If your opponent's Active Pokémon is a TAG TEAM, this attack does 120 more damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               if(defending.topPokemonCard.cardTypes.is(TAG_TEAM)) damage 120
@@ -4078,7 +3871,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Caturday", {
             text "Draw a card. If you do, this Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
               apply ASLEEP,self
@@ -4102,7 +3894,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Stray Cat Dash", {
             text "30 damage. Discard a random card from your opponent's hand. If this Pokémon evolved from Glameow during this turn, discard 2 cards instead of 1."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               astonish(self.lastEvolved==bg.turnCount?2:1)
@@ -4111,7 +3902,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Lunge Out", {
             text "80 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
             }
@@ -4141,7 +3931,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Mimic", {
             text "Shuffle your hand into your deck. Then, draw a card for each card in your opponent's hand."
             energyCost C
-            attackRequirement {}
             onAttack {
               my.hand.moveTo(my.deck)
               shuffleDeck()
@@ -4151,7 +3940,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Tone-Deaf", {
             text "10 damage. Your opponent's Active Pokémon is now Confused."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               applyAfterDamage CONFUSED
@@ -4189,7 +3977,6 @@ public enum UnbrokenBonds implements CardInfo {
           move "Power Cyclone", {
             text "110 damage. Move an Energy from this Pokémon to 1 of your Benched Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 110
               afterDamage{moveEnergy(self,my.bench)}

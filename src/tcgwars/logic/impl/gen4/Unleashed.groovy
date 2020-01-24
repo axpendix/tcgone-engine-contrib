@@ -203,7 +203,6 @@ public enum Unleashed implements CardInfo {
           move "Time Hollow", {
             text "Choose a number of your opponent’s Stage 1 or Stage 2 Evolved Pokémon up to the amount of Energy attached to Jirachi. Remove the highest Stage Evolution card from each of those Pokémon and put those cards back into your opponent’s hand."
             energyCost P
-            attackRequirement {}
             onAttack {
               opp.all.findAll{ it.evolution }.select(max:self.cards.energyCount(C), "Choose which Pokemon to devolve").each{
                 def top=it.topPokemonCard
@@ -221,7 +220,6 @@ public enum Unleashed implements CardInfo {
           move "Hard Crush", {
             text "Discard the top 3 cards from your deck. This attack does 50 damage times the number of Energy cards you discarded."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               def list = my.deck.subList(0,3).discard()
               def numEnergy = list.filterByType(ENERGY).size()
@@ -232,7 +230,6 @@ public enum Unleashed implements CardInfo {
           move "Mantle Bazooka", {
             text "100 damage. Discard 2 [R] Energy attached to Magmortar."
             energyCost R, R, C, C
-            attackRequirement {}
             onAttack {
               damage 100
               discardSelfEnergy R, R
@@ -246,7 +243,6 @@ public enum Unleashed implements CardInfo {
           move "Deep Sea Swirl", {
             text "Shuffle your hand into your deck. Then, draw 5 cards."
             energyCost C
-            attackRequirement {}
             onAttack {
               shuffleDeck(hand)
               hand.clear()
@@ -256,7 +252,6 @@ public enum Unleashed implements CardInfo {
           move "Wave Splash", {
             text "20 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -279,7 +274,6 @@ public enum Unleashed implements CardInfo {
           move "Pulse Blast", {
             text "60 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -287,7 +281,6 @@ public enum Unleashed implements CardInfo {
           move "Double Leg Hammer", {
             text "Choose 2 of your opponent’s Benched Pokémon. This attack does 40 damage to each of them."
             energyCost P, P, P
-            attackRequirement {}
             onAttack {
               if(opp.bench){
                 multiSelect(opp.bench, 2).each{
@@ -317,7 +310,6 @@ public enum Unleashed implements CardInfo {
           move "Psychic Pulse", {
             text "30 damage. Does 10 damage to each of your opponent’s Benched Pokémon that has any damage counters on it."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 30
               opp.bench.findAll{ it.numberOfDamageCounters }.each{ damage 10, it }
@@ -331,7 +323,6 @@ public enum Unleashed implements CardInfo {
           move "Switch Cannon", {
             text "Switch Octillery with 1 of your Benched Pokémon."
             energyCost W
-            attackRequirement {}
             onAttack {
               switchYourActive()
             }
@@ -339,7 +330,6 @@ public enum Unleashed implements CardInfo {
           move "Ink Bomb", {
             text "50 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               sandAttack(thisMove)
@@ -363,7 +353,6 @@ public enum Unleashed implements CardInfo {
           move "Big Chorus", {
             text "Flip a coin for each [W] Pokémon you have in play. This attack does 30 damage times the number of heads."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               flip my.all.findAll{it.types.contains(W)}.size(), {damage 30}
             }
@@ -396,7 +385,6 @@ public enum Unleashed implements CardInfo {
           move "Energy Bloom", {
             text "30 damage. Remove 3 damage counters from each of your Pokémon that has any Energy attached to it."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 30
               my.all.findAll{it.cards.energyCount()}.each {heal 30, it}
@@ -410,7 +398,6 @@ public enum Unleashed implements CardInfo {
           move "Push Over", {
             text "Does 20 damage times the amount of [F] Energy attached to Sudowoodo."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 20*self.cards.energyCount(F)
             }
@@ -418,7 +405,6 @@ public enum Unleashed implements CardInfo {
           move "Rumble", {
             text "40 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               cantRetreat defending
@@ -432,7 +418,6 @@ public enum Unleashed implements CardInfo {
           move "Giga Drain", {
             text "40 damage. Remove from Torterra the number of damage counters equal to the damage you did to the Defending Pokémon."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               removeDamageCounterEqualToDamageDone()
@@ -441,7 +426,6 @@ public enum Unleashed implements CardInfo {
           move "Land Crush", {
             text "80 damage. "
             energyCost G, C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
             }
@@ -455,7 +439,6 @@ public enum Unleashed implements CardInfo {
           move "Psywave", {
             text "20× damage. Does 20 damage times the amount of Energy attached to the Defending Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 20*defending.cards.energyCount()
             }
@@ -463,7 +446,6 @@ public enum Unleashed implements CardInfo {
           move "Confuse Ray", {
             text "50 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               flip {applyAfterDamage CONFUSED}
@@ -477,7 +459,6 @@ public enum Unleashed implements CardInfo {
           move "Twineedle", {
             text "50× damage. Flip 2 coins. This attack does 50 damage times the number of heads."
             energyCost G
-            attackRequirement {}
             onAttack {
               flip 2, {damage 50}
             }
@@ -485,7 +466,6 @@ public enum Unleashed implements CardInfo {
           move "Paralyze Poison", {
             text "20 damage. The Defending Pokémon is now Poisoned. Flip a coin. If heads, the Defending Pokémon is also Paralyzed."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 20
               applyAfterDamage POISONED
@@ -508,7 +488,6 @@ public enum Unleashed implements CardInfo {
           move "Hydro Launcher", {
             text "Return 2 [W] Energy attached to Blastoise to your hand. Choose 1 of your opponent’s Pokémon. This attack does 100 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W, W, C, C
-            attackRequirement {}
             onAttack {
               damage 100, opp.all.select()
               afterDamage{
@@ -525,7 +504,6 @@ public enum Unleashed implements CardInfo {
           move "Supersonic", {
             text "30 damage. The Defending Pokémon is now Confused."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 30
               applyAfterDamage CONFUSED
@@ -534,7 +512,6 @@ public enum Unleashed implements CardInfo {
           move "Hurricane Wing", {
             text "Flip 4 coins. This attack does 30 damage times the number of heads."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               flip 4, {damage 30}
             }
@@ -548,7 +525,6 @@ public enum Unleashed implements CardInfo {
           move "Wing Attack", {
             text "30 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -556,7 +532,6 @@ public enum Unleashed implements CardInfo {
           move "Repeating Drill", {
             text "20× damage. Flip 5 coins. This attack does 20 damage times the number of heads."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               flip 5, {damage 20}
             }
@@ -579,7 +554,6 @@ public enum Unleashed implements CardInfo {
           move "Waterfall", {
             text "60 damage. "
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -592,7 +566,6 @@ public enum Unleashed implements CardInfo {
           move "Water Arrow", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 30, opp.all.select()
             }
@@ -600,7 +573,6 @@ public enum Unleashed implements CardInfo {
           move "Stream Pump", {
             text "50 damage. You may do 50 damage plus 30 more damage. If you do, return an Energy card attached to Kingdra to your hand."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               if(confirm("Return an Energy card from $self to your hand?")) {
@@ -617,7 +589,6 @@ public enum Unleashed implements CardInfo {
           move "Confuse Ray", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 20
               flip {applyAfterDamage CONFUSED}
@@ -626,7 +597,6 @@ public enum Unleashed implements CardInfo {
           move "Reflect Energy", {
             text "60 damage. Move an Energy card attached to Lanturn to 1 of your Benched Pokémon."
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               afterDamage {
@@ -642,7 +612,6 @@ public enum Unleashed implements CardInfo {
           move "Bulk Up", {
             text "30 damage. During your next turn, each of Lucario’s attacks does 30 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30
               delayed {
@@ -653,7 +622,6 @@ public enum Unleashed implements CardInfo {
           move "Magnum Punch", {
             text "50 damage. "
             energyCost F, F
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -666,7 +634,6 @@ public enum Unleashed implements CardInfo {
           move "Heat Acceleration", {
             text "Search your discard pile for up to 3 [R] Energy cards and attach them to 1 of your Pokémon."
             energyCost R
-            attackRequirement {}
             onAttack {
               def tar = my.all.select("Attach energy to?")
               my.discard.filterByEnergyType(R).select(min:0,max:3).each{
@@ -677,7 +644,6 @@ public enum Unleashed implements CardInfo {
           move "Searing Flame", {
             text "30 damage. The Defending Pokémon is now Burned."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 30
               applyAfterDamage BURNED
@@ -691,7 +657,6 @@ public enum Unleashed implements CardInfo {
           move "Steamroll", {
             text "40 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 40
               damage 20, opp.bench.select()
@@ -700,7 +665,6 @@ public enum Unleashed implements CardInfo {
           move "Dynamic Punch", {
             text "60 damage. Flip a coin. If heads, this attack does 60 damage plus 40 more damage and the Defending Pokémon is now Confused."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               flip {
@@ -717,7 +681,6 @@ public enum Unleashed implements CardInfo {
           move "Low Kick", {
             text "30 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -725,7 +688,6 @@ public enum Unleashed implements CardInfo {
           move "Bebop Punch", {
             text "Choose 1 of your opponent’s Pokémon. Flip a coin until you get tails. This attack does 50 damage times the number of heads to that Pokémon."
             energyCost F, F
-            attackRequirement {}
             onAttack {
               tar = opp.all.select()
               flipUntilTails {damage 50, tar}
@@ -756,7 +718,6 @@ public enum Unleashed implements CardInfo {
           move "Power Blow", {
             text "Does 20 damage times the amount of Energy attached to Roserade."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 20*self.cards.energyCount()
             }
@@ -770,7 +731,6 @@ public enum Unleashed implements CardInfo {
           move "Guard Press", {
             text "40 damage. During your opponent’s next turn, any damage done to Steelix by attacks is reduced by 20 (after applying Weakness and Resistance)."
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               reduceDamageNextTurn(hp(20),thisMove)
@@ -779,7 +739,6 @@ public enum Unleashed implements CardInfo {
           move "Steel Swing", {
             text "Flip 2 coins. This attack does 80 damage times the number of heads."
             energyCost M, M, C, C
-            attackRequirement {}
             onAttack {
               flip 2, {damage 80}
             }
@@ -800,7 +759,6 @@ public enum Unleashed implements CardInfo {
           move "Flare", {
             text "30 damage. "
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -814,7 +772,6 @@ public enum Unleashed implements CardInfo {
           move "Tail Crush", {
             text "40 damage. Flip a coin. If heads, this attack does 40 damage plus 20 more damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               flip {damage 20}
@@ -823,7 +780,6 @@ public enum Unleashed implements CardInfo {
           move "Hyper Beam", {
             text "80 damage. Discard an Energy card attached to the Defending Pokémon."
             energyCost D, D, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               discardDefendingEnergy()
@@ -836,7 +792,6 @@ public enum Unleashed implements CardInfo {
           move "Confront", {
             text "20 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -844,7 +799,6 @@ public enum Unleashed implements CardInfo {
           move "Cross Chop", {
             text "50 damage. Flip a coin. If heads, this attack does 50 damage plus 30 more damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               flip {damage 30}
@@ -869,7 +823,6 @@ public enum Unleashed implements CardInfo {
           move "Seed Bomb", {
             text "30 damage. "
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -882,7 +835,6 @@ public enum Unleashed implements CardInfo {
           move "Return", {
             text "10 damage. Draw cards until you have 6 cards in your hand."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               draw 6 - my.hand.size
@@ -897,7 +849,6 @@ public enum Unleashed implements CardInfo {
           move "Mean Look", {
             text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 20
               cantRetreat defending
@@ -912,7 +863,6 @@ public enum Unleashed implements CardInfo {
           move "Razor Leaf", {
             text "30 damage. "
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -920,7 +870,6 @@ public enum Unleashed implements CardInfo {
           move "Sleep Powder", {
             text "50 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               flip {applyAfterDamage ASLEEP}
@@ -934,7 +883,6 @@ public enum Unleashed implements CardInfo {
           move "Speed Evolution", {
             text "Search your deck for a card that evolves from Kakuna and put it onto Kakuna. (This counts as evolving Kakuna.) Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
             onAttack {
               deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it, OTHER) }
               shuffleDeck()
@@ -943,7 +891,6 @@ public enum Unleashed implements CardInfo {
           move "Poison Sting", {
             text "The Defending Pokémon is now Poisoned."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply POISONED
             }
@@ -956,7 +903,6 @@ public enum Unleashed implements CardInfo {
           move "Energy Crane", {
             text "Search your discard pile for up to 2 [P] Energy cards and attach them to your Pokémon in any way you like."
             energyCost P
-            attackRequirement {}
             onAttack {
               (1..2).each {attachEnergyFrom(may: true, type: P, my.discard, my.all)}
             }
@@ -964,7 +910,6 @@ public enum Unleashed implements CardInfo {
           move "Psypunch", {
             text "50 damage. "
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -978,13 +923,11 @@ public enum Unleashed implements CardInfo {
           move "Call for Family", {
             text "Search you deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
             callForFamily(basic:true,2,delegate)
           }
           move "Tag Team Boost", {
             text "10 damage. If Plusle is on your Bench, this attack does 10 damage plus 20 more damage."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 10
               if(my.bench.findAll{it.name == "Plusle"}) damage 20
@@ -998,7 +941,6 @@ public enum Unleashed implements CardInfo {
           move "Flare Bonus", {
             text "Discard a [R] Energy card from your hand. Then, draw 3 cards."
             energyCost C
-            attackRequirement {}
             onAttack {
               if (my.hand.filterByBasicEnergyType(R)) {
                 my.hand.filterByBasicEnergyType(R).select("Discard").discard()
@@ -1009,7 +951,6 @@ public enum Unleashed implements CardInfo {
           move "Combustion", {
             text "40 damage. "
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -1023,7 +964,6 @@ public enum Unleashed implements CardInfo {
           move "Collect", {
             text "Draw 2 cards."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 2
             }
@@ -1031,7 +971,6 @@ public enum Unleashed implements CardInfo {
           move "Thunder Jolt", {
             text "20 damage. Flip a coin. If tails, Plusle does 10 damage to itself."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 20
               flip 1, {}, {damage 10, self}
@@ -1045,7 +984,6 @@ public enum Unleashed implements CardInfo {
           move "Hypnoblast", {
             text "20 damage. The Defending Pokémon is now Asleep."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 20
               applyAfterDamage ASLEEP
@@ -1054,7 +992,6 @@ public enum Unleashed implements CardInfo {
           move "Light Punch", {
             text "30 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1076,7 +1013,6 @@ public enum Unleashed implements CardInfo {
           move "Rage", {
             text "Does 20 damage plus 10 more damage for each damage counter on Pupitar."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20 + 10*self.numberOfDamageCounters()
             }
@@ -1089,7 +1025,6 @@ public enum Unleashed implements CardInfo {
           move "Hammer In", {
             text "30 damage. "
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1097,7 +1032,6 @@ public enum Unleashed implements CardInfo {
           move "Speed Attack", {
             text "50 damage. "
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -1110,7 +1044,6 @@ public enum Unleashed implements CardInfo {
           move "Muddy Water", {
             text "20 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 20
               damage 10, opp.bench.select()
@@ -1119,7 +1052,6 @@ public enum Unleashed implements CardInfo {
           move "Razor Fin", {
             text "50 damage. "
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -1132,7 +1064,6 @@ public enum Unleashed implements CardInfo {
           move "Smash Kick", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1140,7 +1071,6 @@ public enum Unleashed implements CardInfo {
           move "Crimson Bull", {
             text "Flip 3 coins. This attack does 30 damage times the number of heads. Tauros is now Confused."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flip 3, {damage 30}
               afterDamage {apply CONFUSED, self}
@@ -1154,7 +1084,6 @@ public enum Unleashed implements CardInfo {
           move "Water Arrow", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 20, opp.all.select()
             }
@@ -1162,7 +1091,6 @@ public enum Unleashed implements CardInfo {
           move "Surf", {
             text "50 damage. "
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -1175,7 +1103,6 @@ public enum Unleashed implements CardInfo {
           move "Tail Code", {
             text "Move an Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               if (defending.cards.energyCount()) {
                 moveEnergy(defending, opp.bench)
@@ -1185,7 +1112,6 @@ public enum Unleashed implements CardInfo {
           move "Tail Smash", {
             text "30 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flip {damage 30}
             }
@@ -1198,7 +1124,6 @@ public enum Unleashed implements CardInfo {
           move "Reaction", {
             text "10 damage. You may switch Beldum with 1 of your Benched Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 10
               switchYourActive(may: true)
@@ -1212,7 +1137,6 @@ public enum Unleashed implements CardInfo {
           move "Muddy Water", {
             text "10 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
               damage 10, opp.bench.select()
@@ -1227,7 +1151,6 @@ public enum Unleashed implements CardInfo {
           move "Drawup Power", {
             text "Search your deck for an Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
             onAttack {
               my.deck.search(max: 1, cardTypeFilter(ENERGY)).moveTo(my.hand)
               shuffleDeck()
@@ -1236,7 +1159,6 @@ public enum Unleashed implements CardInfo {
           move "Spit Up", {
             text "20 damage. "
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1250,7 +1172,6 @@ public enum Unleashed implements CardInfo {
           move "Tackle", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1263,7 +1184,6 @@ public enum Unleashed implements CardInfo {
           move "Ram", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1271,7 +1191,6 @@ public enum Unleashed implements CardInfo {
           move "Lightning Ball", {
             text "20 damage. "
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1284,7 +1203,6 @@ public enum Unleashed implements CardInfo {
           move "Beat", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1292,7 +1210,6 @@ public enum Unleashed implements CardInfo {
           move "Fin Smack", {
             text "Flip 2 coins. This attack does 20 damage times the number of heads."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               flip 2, {damage 20}
             }
@@ -1306,7 +1223,6 @@ public enum Unleashed implements CardInfo {
           move "Mountain Eater", {
             text "Discard the top card of your opponent’s deck. Then, remove 2 damage counters from Larvitar."
             energyCost C
-            attackRequirement {}
             onAttack {
               opp.deck.subList(0,1).discard()
               heal 20, self
@@ -1315,7 +1231,6 @@ public enum Unleashed implements CardInfo {
           move "Reckless Charge", {
             text "20 damage. Larvitar does 10 damage to itself."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
               damage 10, self
@@ -1330,7 +1245,6 @@ public enum Unleashed implements CardInfo {
           move "Bite", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1338,7 +1252,6 @@ public enum Unleashed implements CardInfo {
           move "Knuckle Punch", {
             text "20 damage. "
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1351,7 +1264,6 @@ public enum Unleashed implements CardInfo {
           move "Live Coal", {
             text "10 damage. "
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1359,7 +1271,6 @@ public enum Unleashed implements CardInfo {
           move "Magma Punch", {
             text "20 damage. "
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1372,7 +1283,6 @@ public enum Unleashed implements CardInfo {
           move "Punch", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1380,7 +1290,6 @@ public enum Unleashed implements CardInfo {
           move "Karate Chop", {
             text "40- damage. Does 40 damage minus 10 damage for each damage counter on Mankey."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 40 - 10*self.numberOfDamageCounters()
             }
@@ -1394,7 +1303,6 @@ public enum Unleashed implements CardInfo {
           move "Sharpshooting", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 10, opp.all.select()
             }
@@ -1408,7 +1316,6 @@ public enum Unleashed implements CardInfo {
           move "Peck", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1416,7 +1323,6 @@ public enum Unleashed implements CardInfo {
           move "Teleport", {
             text "Switch Natu with 1 of your Benched Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
               switchYourActive()
             }
@@ -1439,7 +1345,6 @@ public enum Unleashed implements CardInfo {
           move "Boundless Power", {
             text "80 damage. Onix can’t attack during your next turn."
             energyCost F, C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               cantAttackNextTurn self
@@ -1453,7 +1358,6 @@ public enum Unleashed implements CardInfo {
           move "Swing Around", {
             text "20 damage. Flip 2 coins. This attack does 20 damage plus 20 more damage for each heads."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip 2, {damage 20}
@@ -1467,13 +1371,11 @@ public enum Unleashed implements CardInfo {
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
             callForFamily(basic: true, 1, delegate)
           }
           move "Razor Fin", {
             text "20 damage. "
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1486,7 +1388,6 @@ public enum Unleashed implements CardInfo {
           move "Rain Splash", {
             text "10 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1494,7 +1395,6 @@ public enum Unleashed implements CardInfo {
           move "Water Arrow", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 20, opp.all.select()
             }
@@ -1507,7 +1407,6 @@ public enum Unleashed implements CardInfo {
           move "Kick", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1515,7 +1414,6 @@ public enum Unleashed implements CardInfo {
           move "Double Chop", {
             text "Flip 2 coins. This attack does 20 damage times the number of heads."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               flip 2, {damage 20}
             }
@@ -1528,7 +1426,6 @@ public enum Unleashed implements CardInfo {
           move "Petal Dance", {
             text "Flip 3 coins. This attack does 20 damage times the number of heads. Roselia is now Confused."
             energyCost G
-            attackRequirement {}
             onAttack {
               flip 3, {damage 20}
               applyAfterDamage CONFUSED
@@ -1543,7 +1440,6 @@ public enum Unleashed implements CardInfo {
           move "Roost", {
             text "Remove 4 damage counters from Spearow. Spearow can’t retreat during you next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               heal 40, self
               cantRetreat(self)
@@ -1552,7 +1448,6 @@ public enum Unleashed implements CardInfo {
           move "Flap", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1565,7 +1460,6 @@ public enum Unleashed implements CardInfo {
           move "Rain Splash", {
             text "10 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1573,7 +1467,6 @@ public enum Unleashed implements CardInfo {
           move "Shell Attack", {
             text "40 damage. "
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -1586,13 +1479,11 @@ public enum Unleashed implements CardInfo {
           move "Call for Family", {
             text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
             callForFamily(basic: true, 2, delegate)
           }
           move "Mystifying Horns", {
             text "30 damage. The Defending Pokémon is now Confused."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               applyAfterDamage CONFUSED
@@ -1606,7 +1497,6 @@ public enum Unleashed implements CardInfo {
           move "Take Down", {
             text "20 damage. Teddiursa does 10 damage to itself."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
               damage 10, self
@@ -1621,7 +1511,6 @@ public enum Unleashed implements CardInfo {
           move "Green Call", {
             text "Flip 2 coins. For each heads, search your deck for a [G] Pokémon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
             energyCost G
-            attackRequirement {}
             onAttack {
               flip 2, {
                 my.deck.search(max:2,"Choose up to 2 [G] pokemon to put in your hand.",{it.cardTypes.is(POKEMON) && it.types.contains(G)}).showToOpponent("Selected cards").moveTo(my.hand)
@@ -1632,7 +1521,6 @@ public enum Unleashed implements CardInfo {
           move "Gust", {
             text "20 damage. "
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1646,7 +1534,6 @@ public enum Unleashed implements CardInfo {
           move "Leech Seed", {
             text "10 damage. , remove 1 damage counter from Turtwig."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
               heal 10, self
@@ -1655,7 +1542,6 @@ public enum Unleashed implements CardInfo {
           move "Ram", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1668,7 +1554,6 @@ public enum Unleashed implements CardInfo {
           move "Fireworks", {
             text "20 damage. Flip a coin. If tails, discard a [R] Energy attached to Vulpix."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 20
               afterDamage{
@@ -1684,7 +1569,6 @@ public enum Unleashed implements CardInfo {
           move "Speed Evolution", {
             text "Search your deck for a card that evolves from Weedle and put it onto Weedle. (This counts as evolving Weedle.) Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
             onAttack {
               def nam=self.name
               def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
@@ -1695,7 +1579,6 @@ public enum Unleashed implements CardInfo {
           move "Sting", {
             text "10 damage. "
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1709,7 +1592,6 @@ public enum Unleashed implements CardInfo {
           move "Glide", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1717,7 +1599,6 @@ public enum Unleashed implements CardInfo {
           move "Double Attack", {
             text "Choose 2 of your opponent’s Benched Pokémon. This attack does 10 damage to each of them."
             energyCost P
-            attackRequirement {}
             onAttack {
               if(opp.bench){
                 multiSelect(opp.bench, 2).each{
@@ -1853,7 +1734,6 @@ public enum Unleashed implements CardInfo {
           move "Severe Poison", {
             text "The Defending Pokémon is now Poisoned. Put 4 damage counters instead of 1 on that Pokémon between turns."
             energyCost P
-            attackRequirement {}
             onAttack {
               apply POISONED
               extraPoison 3
@@ -1862,7 +1742,6 @@ public enum Unleashed implements CardInfo {
           move "Skill Dive", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon. (Dont’ apply Weakness and Resistance for Benched Pokémon.)"
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 30, opp.all.select()
             }
@@ -1884,7 +1763,6 @@ public enum Unleashed implements CardInfo {
           move "Dragon Steam", {
             text "60 damage. If your opponent has any [R] Pokémon in play, this attack’s base damage is 20 instead of 60."
             energyCost W, R
-            attackRequirement {}
             onAttack {
               if(opp.all.findAll {it.types.contains(R)}) { 
                 damage 20
@@ -1921,7 +1799,6 @@ public enum Unleashed implements CardInfo {
           move "Powerful Spark", {
             text "40+ damage. Does 40 damage plus 10 more damage for each Energy attached to all of your Pokémon."
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
               def energyCount = 0
               my.all.each {
@@ -1956,7 +1833,6 @@ public enum Unleashed implements CardInfo {
           move "Energy Stream", {
             text "30 damage. Search your discard pile for an Energy card and attach it to Steelix."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               afterDamage{
@@ -1967,7 +1843,6 @@ public enum Unleashed implements CardInfo {
           move "Gaia Crush", {
             text "100 damage. You may discard any Stadium card in play."
             energyCost M, M, C, C, C
-            attackRequirement {}
             onAttack {
               damage 100
               afterDamage{
@@ -1985,7 +1860,6 @@ public enum Unleashed implements CardInfo {
           move "Darkness Howl", {
             text "This attack does 20 damage to each Pokémon in play (both yours and your opponent’s) (excluding any [D] Pokémon). (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost D
-            attackRequirement {}
             onAttack {
               my.all.findAll{!it.types.contains(D)}.each{damage 20, it}
               opp.all.findAll{!it.types.contains(D)}.each{damage 20, it}
@@ -1994,7 +1868,6 @@ public enum Unleashed implements CardInfo {
           move "Power Claw", {
             text "60 damage. This attack’s damage isn’t affected by Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
               shredDamage 60
             }
@@ -2002,7 +1875,6 @@ public enum Unleashed implements CardInfo {
           move "Megaton Tail", {
             text "120 damage. Discard the top 3 cards of your deck."
             energyCost D, D, C, C
-            attackRequirement {}
             onAttack {
               damage 120
               afterDamage{
@@ -2033,7 +1905,6 @@ public enum Unleashed implements CardInfo {
           move "Hammer Arm", {
             text "30 damage. Discard the top card from your opponent’s deck."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               afterDamage{opp.deck.sublist(0,1).discard()}
@@ -2042,7 +1913,6 @@ public enum Unleashed implements CardInfo {
           move "Megaton Lariat", {
             text "60 damage. "
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -2056,7 +1926,6 @@ public enum Unleashed implements CardInfo {
           move "Detonation Spin", {
             text "90 damage. Discard a Fire Energy attached to Entei & Raikou LEGEND."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 90
               discardSelfEnergy(R)
@@ -2065,7 +1934,6 @@ public enum Unleashed implements CardInfo {
           move "Thunder Fall", {
             text "Discard all Energy attached to Entei & Raikou LEGEND. This attack does 80 damage to each Pokémon that has any Poké-Powers (both yours and your opponent's). This attack's damage isn't affected by Weakness or Resistance."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               discardAllSelfEnergy(null)
               all.each{
@@ -2085,7 +1953,6 @@ public enum Unleashed implements CardInfo {
           move "Thunderbolt Spear", {
             text "150 damage. Raikou & Suicune LEGEND does 50 damage to itself and don’t apply Weakness to this damage."
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
               damage 150
               noWeaknessDamage 50, self
@@ -2094,7 +1961,6 @@ public enum Unleashed implements CardInfo {
           move "Aurora Gain", {
             text "50 damage. Remove 5 damage counters from Raikou & Suicune LEGEND."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               afterDamage {heal 50,self}
@@ -2125,7 +1991,6 @@ public enum Unleashed implements CardInfo {
           move "Bursting Inferno", {
             text "80 damage. The Defending Pokémon is now Burned."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               applyAfterDamage BURNED

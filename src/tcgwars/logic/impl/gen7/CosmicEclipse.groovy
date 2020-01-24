@@ -383,7 +383,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Forest Dump", {
             text "160 damage."
             energyCost G, C, C, C
-            attackRequirement {}
             onAttack {
               damage 160
             }
@@ -412,7 +411,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Sweet Scent", {
             text "Heal 30 damage from 1 of your Pokémon."
             energyCost C
-            attackRequirement {}
             attackRequirement {
               assert my.all.findAll{it.numberOfDamageCounters} : "There are no damaged pokemon to heal"
             }
@@ -427,7 +425,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Sleep Powder", {
             text "20 damage. Your opponent's Active Pokémon is now Asleep."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 20
               apply ASLEEP
@@ -450,7 +447,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Massive Bloom", {
             text "180- damage. This attack does 10 less damage for each damage counter on this Pokémon."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 180 - (10*self.numberOfDamageCounters)
             }
@@ -476,7 +472,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Toxic", {
             text "Your opponent's Active Pokémon is now Poisoned. Put 2 damage counters instead of 1 on that Pokémon between turns."
             energyCost G
-            attackRequirement {}
             onAttack {
               apply POISONED
               extraPoison 1
@@ -489,7 +484,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Grass Knot", {
             text "10+ damage. This attack does 30 more damage for each [C] in your opponent's Active Pokémon's Retreat Cost."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
               damage 30*opp.active.retreatCost
@@ -498,7 +492,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Slam", {
             text "80x damage. Flip 2 coins. This attack does 80 damage for each heads."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               flip 2, { damage 80 }
             }
@@ -510,7 +503,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Leech Seed", {
             text "10 damage. Heal 10 damage from this Pokémon."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
               heal 10, self
@@ -562,7 +554,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Lunge Out", {
             text "20 damage."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -570,7 +561,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Riled Horn", {
             text "50+ damage. If your opponent has any TAG TEAM Pokémon in play, this attack does 70 more damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               if(opp.all.find{it.tagTeam}) damage 70
@@ -583,7 +573,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Confuse Ray", {
             text "Your opponent's Active Pokémon is now Confused."
             energyCost G
-            attackRequirement {}
             onAttack {
               apply CONFUSED
             }
@@ -591,7 +580,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Seed Bomb", {
             text "60 damage."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -614,7 +602,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Poison Tentacles", {
             text "110 damage. Your opponent’s Active Pokémon is now Poisoned."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 110
               apply POISONED
@@ -638,7 +625,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Leaf Drain", {
             text "50 damage. Heal 30 damage from this Pokémon."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 50
               heal 30, self
@@ -651,7 +637,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -659,7 +644,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Bug Bite", {
             text "10 damage."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -671,7 +655,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Improvisational Performance", {
             text "30+ damage. If you have exactly 1 card in your hand, this attack does 100 more damage. If you have exactly 3 cards in your hand, your opponent's Active Pokémon is now Confused. If you have exactly 6 cards in your hand, this attack does 30 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 30
               if(hand.size() == 1) {
@@ -690,7 +673,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Tackle", {
             text "20 damage."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -710,7 +692,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Bounce", {
             text "60 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 60
 
@@ -728,7 +709,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Hide and Seek", {
             text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
             energyCost G
-            attackRequirement {}
             onAttack {
               flip { preventAllEffectsNextTurn() }
             }
@@ -736,7 +716,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Tackle", {
             text "30 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -748,7 +727,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Skill Dive", {
             text "This attack does 10 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10, opp.all.select("Choose the targeted Pokémon to do 10 damage to.")
             }
@@ -760,7 +738,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Leafage", {
             text "20 damage."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -768,7 +745,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Wing Flick", {
             text "30 damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               whirlwind()
@@ -781,7 +757,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Skill Dive", {
             text "This attack does 40 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 40, opp.all.select()
             }
@@ -818,7 +793,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Touchdown", {
             text "60 damage. Heal 30 damage from this Pokémon."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 60
               heal 30, self
@@ -831,7 +805,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Brilliant Flare", {
             text "180 damage. You may search your deck for up to 3 cards and put them into your hand. Then, shuffle your deck."
             energyCost R, R, R, C
-            attackRequirement {}
             onAttack {
               damage 180
               deck.select(min:0, max:3, "Put to hand").moveTo(hidden:true, hand)
@@ -875,7 +848,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Flare", {
             text "10 damage."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -887,7 +859,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Overrun", {
             text "30 damage. This attack does 30 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 30
               if (opp.bench) damage 30, opp.bench.select()
@@ -896,7 +867,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Flame Tail", {
             text "60 damage."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -922,7 +892,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Flamethrower", {
             text "90 damage. Discard an Energy from this Pokémon."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 90
               discardSelfEnergy C
@@ -935,7 +904,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Singe", {
             text "Your opponent's Active Pokémon is now Burned."
             energyCost R
-            attackRequirement {}
             onAttack {
               apply BURNED
             }
@@ -947,7 +915,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Stomp Off", {
             text "Discard the top 2 cards of your opponent’s deck."
             energyCost R
-            attackRequirement {}
             onAttack {
               opp.deck.subList(0, 2).discard()
             }
@@ -955,7 +922,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Flamethrower", {
             text "80 damage. Discard an Energy from this Pokémon."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 80
               discardSelfEnergy C
@@ -968,7 +934,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Rally Back", {
             text "30+ damage. If any of your Pokémon were Knocked Out by damage from an opponent's attack during their last turn, this attack does 90 more damage."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 30
               if (my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1) damage 90
@@ -977,7 +942,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Fire Mane", {
             text "100 damage."
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 100
             }
@@ -999,7 +963,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Kindle", {
             text "100 damage. Discard an Energy from this Pokémon. If you do, discard an Energy from your opponent's Active Pokémon."
             energyCost R, R, R
-            attackRequirement {}
             onAttack {
               damage 100
               if(confirm("Would you like to discard an Energy card attached to Torkoal? If you do, you may discard an Energy attached to the Defending Pokémon.")) {
@@ -1025,7 +988,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Combustion", {
             text "30 damage."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1037,7 +999,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Live Coal", {
             text "10 damage."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1045,7 +1006,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Rollout", {
             text "40 damage."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -1057,7 +1017,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Tackle", {
             text "30 damage."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1065,7 +1024,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Heat Crash", {
             text "60 damage."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -1094,7 +1052,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Heat Blast", {
             text "160 damage."
             energyCost R, C, C, C
-            attackRequirement {}
             onAttack {
               damage 160
             }
@@ -1106,7 +1063,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Ram", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1114,7 +1070,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Combustion", {
             text "50 damage."
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -1136,7 +1091,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Backfire", {
             text "160 damage. Put 2 [R] Energy attached to this Pokémon into your hand."
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 160
               afterDamage {
@@ -1167,7 +1121,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Tackle", {
             text "10 damage."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1175,7 +1128,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Flame Tail", {
             text "20 damage."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1187,7 +1139,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Swirling Inferno", {
             text "70 damage. Discard all Pokémon Tool cards and Special Energy from each of your opponent's Pokémon."
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 70
               opp.all.each {
@@ -1199,7 +1150,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Heat Blast", {
             text "140 damage."
             energyCost R, R, R, C
-            attackRequirement {}
             onAttack {
               damage 140
             }
@@ -1211,7 +1161,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Splash Maker", {
             text "150 damage. You may attach up to 3 [W] Energy cards from your hand to your Pokémon in any way you like. If you do, heal 50 damage from those Pokémon for each card you attached to them in this way."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               damage 150
               def tar = my.hand.filterByBasicEnergyType(W)
@@ -1258,7 +1207,6 @@ public enum CosmicEclipse implements CardInfo {
           }
           move "Gnaw", {
             text "10 damage."
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1270,7 +1218,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Scratch", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1278,7 +1225,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Confusion Wave", {
             text "20 damage. Both Active Pokémon are now Confused."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 20
               apply CONFUSED
@@ -1292,7 +1238,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Scratch", {
             text "30 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1300,7 +1245,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Energy Loop", {
             text "80 damage. Put an Energy attached to this Pokémon into your hand."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 80
               afterDamage{
@@ -1325,7 +1269,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Refreshing Rain", {
             text "60 damage. Heal 30 damage from each of your Pokémon."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               my.all.each {
@@ -1340,7 +1283,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Agility", {
             text "10 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 10
               flip { preventAllEffectsNextTurn() }
@@ -1364,7 +1306,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Slashing Claw", {
             text "110 damage."
             energyCost D, D, C
-            attackRequirement {}
             onAttack {
               damage 110
             }
@@ -1376,7 +1317,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Wave Splash", {
             text "30 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1388,7 +1328,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Heavy Impact", {
             text "90 damage."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -1396,7 +1335,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Hydro Splash", {
             text "140 damage."
             energyCost W, W, C, C
-            attackRequirement {}
             onAttack {
               damage 140
             }
@@ -1408,7 +1346,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Continuous Headbutt", {
             text "20x damage. Flip a coin until you get tails. This attack does 20 damage for each heads."
             energyCost W
-            attackRequirement {}
             onAttack {
               flipUntilTails { damage 20 }
             }
@@ -1420,7 +1357,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Ice Fang", {
             text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed, and discard an Energy from that Pokémon."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 30
               flip {
@@ -1432,7 +1368,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Frosty Typhoon", {
             text "120 damage. This Pokémon can't use Frosty Typhoon during your next turn."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 120
               cantUseAttack(thisMove, self)
@@ -1445,7 +1380,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Rollout", {
             text "10 damage."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1453,7 +1387,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Icy Snow", {
             text "20 damage."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1465,7 +1398,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Body Slam", {
             text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip { apply PARALYZED }
@@ -1478,7 +1410,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Rollout", {
             text "20 damage."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1486,7 +1417,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Ice Ball", {
             text "90 damage."
             energyCost W, C, C, C
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -1518,7 +1448,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Blizzard", {
             text "120 damage. This attack does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W, C, C, C
-            attackRequirement {}
             onAttack {
               damage 120
               opp.all.each { damage 10, it }
@@ -1531,7 +1460,6 @@ public enum CosmicEclipse implements CardInfo {
           move "High Water", {
             text "Attach 2 [W] Energy cards from your discard pile to 1 of your Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               afterDamage {
                 if(my.bench.notEmpty){
@@ -1545,7 +1473,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Swirling Waves", {
             text "130 damage. Discard an Energy from this Pokémon."
             energyCost W, W, C, C
-            attackRequirement {}
             onAttack {
               damage 130
               discardSelfEnergy C
@@ -1558,7 +1485,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Bubble Hold", {
             text "80 damage. If the Defending Pokémon is a Basic Pokémon, it can't attack during your opponent's next turn."
             energyCost W, W, W
-            attackRequirement {}
             onAttack {
               damage 80
               if (defending.basic) {
@@ -1573,7 +1499,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Water Drip", {
             text "20 damage."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1581,7 +1506,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Direct Dive", {
             text "Discard all Energy from this Pokémon. This attack does 100 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W, W, W
-            attackRequirement {}
             onAttack {
               discardAllSelfEnergy()
               damage 100, opp.all.select()
@@ -1594,7 +1518,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Recall", {
             text "Choose an attack from 1 of this Pokémon's previous Evolutions and use it as this attack."
             energyCost C
-            attackRequirement {}
             def eff
             onAttack {
               def moves = []
@@ -1614,7 +1537,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Aquafall", {
             text "130 damage. Discard all Energy from this Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 130
               discardAllSelfEnergy()
@@ -1640,7 +1562,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Rain Splash", {
             text "10 damage."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1652,7 +1573,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Flail Around", {
             text "10x damage. Flip 3 coins. This attack does 10 damage for each heads."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip 3, { damage 10 }
             }
@@ -1665,7 +1585,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Aerial Ace", {
             text "10+ damage. Flip a coin. If heads, this attack does 30 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 10
               flip { damage 30 }
@@ -1679,7 +1598,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Tailwind", {
             text "Attach an Energy card from your hand to 1 of your Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               if (my.hand.filterByType(ENERGY)) {
                 attachEnergyFrom(my.hand, my.all)
@@ -1689,7 +1607,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Air Slash", {
             text "70 damage. Discard an Energy from this Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 70
               discardSelfEnergy(C)
@@ -1702,7 +1619,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Frozen Wings", {
             text "30 damage. Discard a Special Energy from your opponent's Active Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               discardDefendingSpecialEnergy(delegate)
@@ -1711,7 +1627,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Dazzling Blizzard", {
             text "100+ damage. If you have any Stadium card in play, this attack does 100 more damage."
             energyCost W, W, C, C
-            attackRequirement {}
             onAttack {
               damage 100
               if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner) {
@@ -1740,7 +1655,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Hydro Splash", {
             text "130 damage."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               damage 130
             }
@@ -1752,7 +1666,6 @@ public enum CosmicEclipse implements CardInfo {
           move "School Storm", {
             text "20x damage. This attack does 20 damage for each of your Wishiwashi and Wishiwashi-GX in play."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               def count = my.all.findAll { it.name == "Wishiwashi" || it.name == "Wishiwashi-GX" }.size()
               damage count*20
@@ -1791,7 +1704,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Ram", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1799,7 +1711,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Wave Splash", {
             text "40 damage."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -1811,7 +1722,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Headstrike", {
             text "40 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -1819,7 +1729,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Liquidation", {
             text "80 damage. During your next turn, the Defending Pokémon takes 60 more damage from attacks (after applying Weakness and Resistance)."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               delayed {
@@ -1845,7 +1754,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Nuzzle", {
             text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
             energyCost L
-            attackRequirement {}
             onAttack {
               flip { apply PARALYZED}
             }
@@ -1853,7 +1761,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Volt Tackle", {
             text "70 damage. This Pokémon does 10 damage to itself."
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
               damage 70
               damage 10, self
@@ -1867,7 +1774,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Nuzzle", {
             text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip { apply PARALYZED }
             }
@@ -1875,7 +1781,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Powerful Spark", {
             text "20x damage. This attack does 20 damage times the amount of [L] Energy attached to all of your Pokémon."
             energyCost L
-            attackRequirement {}
             onAttack {
               my.all.each{ damage 20*it.cards.energyCount(L) }
             }
@@ -1888,7 +1793,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Mirror Shot", {
             text "10 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack doesn't happen."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 10
               sandAttack(thisMove)
@@ -1913,7 +1817,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Magnetic Blast", {
             text "50 damage."
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -1945,7 +1848,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Head Bolt", {
             text "70 damage."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -1958,7 +1860,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Scout", {
             text "Your opponent reveals their hand."
             energyCost C
-            attackRequirement {}
             onAttack {
               opp.hand.showToMe("Opponent's hand")
             }
@@ -1966,7 +1867,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Razor Fin", {
             text "10 damage."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1986,7 +1886,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Swirling Flow", {
             text "50 damage. You may have your opponent shuffle their deck."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 50
               if (confirm("Force the opponent to shuffle their deck?")) {
@@ -2007,7 +1906,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Random Spark", {
             text "This attack does 20 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 20, opp.all.select("Deal 20 damage to?")
             }
@@ -2020,7 +1918,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Thunder Shock", {
             text "30 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip { apply PARALYZED}
@@ -2033,7 +1930,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Cosmic Burn", {
             text "230 damage. This Pokémon can't use Cosmic Burn during your next turn."
             energyCost P, P, P, C
-            attackRequirement {}
             onAttack {
               damage 230
               cantUseAttack(thisMove, self)
@@ -2084,7 +1980,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Poison Gas", {
             text "10 damage. Your opponent's Active Pokémon is now Poisoned."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 10
               apply POISONED
@@ -2101,7 +1996,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Balloon Burst", {
             text "90 damage. Discard this Pokémon and all cards attached to it."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 90
               self.cards.discard()
@@ -2126,7 +2020,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Creepy Wind", {
             text "Your opponent's Active Pokémon is now Confused."
             energyCost P
-            attackRequirement {}
             onAttack {
               apply CONFUSED
             }
@@ -2134,7 +2027,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Life Drain", {
             text "Flip a coin. If heads, put damage counters on your opponent's Active Pokémon until its remaining HP is 10."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               flip {
                 directDamage opp.active.remainingHP.value - 10, opp.active
@@ -2148,7 +2040,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Teleport", {
             text "Switch this Pokémon with 1 of your Benched Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               switchYourActive()
             }
@@ -2156,7 +2047,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Ram", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2168,7 +2058,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Hypnosis", {
             text "Your opponent's Active Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply ASLEEP
             }
@@ -2176,7 +2065,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Spiral Kick", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2194,7 +2082,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Power Cyclone", {
             text "120 damage. Move an Energy from this Pokémon to 1 of your Benched Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 120
               afterDamage { moveEnergy(self, my.bench) }
@@ -2227,7 +2114,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Ominous Eyes", {
             text "Put 2 damage counters on 1 of your opponent's Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
               directDamage 20, opp.all.select("Select a Pokémon to put 2 damage counters on.")
             }
@@ -2240,7 +2126,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Disable", {
             text "20 damage. Choose 1 of your opponent's Active Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 20
               amnesia delegate
@@ -2267,7 +2152,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Psych Up", {
             text "60 damage. During your next turn, this Pokémon's Psych Up attack does 60 more damage (before applying Weakness and Resistance)."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 60
               increasedBaseDamageNextTurn("Psych Up", hp(60))
@@ -2292,7 +2176,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Energy Assist", {
             text "Attach 2 basic Energy cards from your discard pile to your Benched Pokémon in any way you like."
             energyCost P
-            attackRequirement {}
             onAttack {
               if (my.bench) {
                 attachEnergyFrom(basic:true, my.discard, my.bench.select())
@@ -2308,7 +2191,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Nasal Suction", {
             text "The Defending Pokémon can't retreat during your opponent's next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               cantRetreat defending
             }
@@ -2316,7 +2198,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Air Cutter", {
             text "30 damage. Flip a coin. If tails, this attack does nothing."
             energyCost P
-            attackRequirement {}
             onAttack {
               flip { damage 30 }
             }
@@ -2329,7 +2210,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Supersonic", {
             text "Your opponent's Active Pokémon is now Confused."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply CONFUSED
             }
@@ -2337,7 +2217,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Charming Stamp", {
             text "Your opponent chooses 1 of their own Pokémon. This attack does 90 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost P
-            attackRequirement {}
             onAttack {
               def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.bench, "Opponent used Charming Stamp. Select a Pokémon to have 90 damage dealt to it.", 1)
               opp.bench.findAll { !list.contains(it) }.each {
@@ -2353,7 +2232,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Return", {
             text "10 damage. You may draw cards until you have 5 cards in your hand."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 10
 
@@ -2370,7 +2248,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Rock Tumble", {
             text "40 damage. This attack's damage isn't affected by Resistance."
             energyCost P
-            attackRequirement {}
             onAttack {
               dontApplyResistance()
               damage 40
@@ -2379,7 +2256,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Fist of Antiquity", {
             text "160 damage. If you have any Supporter cards in your discard pile, this attack does nothing."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               if (my.discard.findAll(cardTypeFilter(SUPPORTER)).size() == 0) {
                 damage 160
@@ -2393,7 +2269,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Poison Breath", {
             text "Your opponent’s Active Pokémon is now Poisoned."
             energyCost P
-            attackRequirement {}
             onAttack {
               apply POISONED
             }
@@ -2405,7 +2280,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Poison Cultivation", {
             text "If your opponent's Active Pokémon is Poisoned, put 10 damage counters instead of 1 on that Pokémon between turns."
             energyCost P
-            attackRequirement {}
             onAttack {
               if (defending.isSPC(POISONED)) extraPoison 10
             }
@@ -2413,7 +2287,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Sharp Fin", {
             text "40 damage."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -2426,7 +2299,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Mumble", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2434,7 +2306,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Spooky Shot", {
             text "20 damage."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2447,7 +2318,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Perplexing Forest", {
             text "20 damage. You may have your opponent switch their Active Pokémon with 1 of their Benched Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
               if (confirm("Have your opponent switch their Pokemon with 1 of their benched Pokemon?"))
@@ -2457,7 +2327,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Shadow Impact", {
             text "120 damage. Put 4 damage counters on 1 of your Pokémon."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 120
               directDamage 40, my.all.select()
@@ -2481,7 +2350,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Razor Wing", {
             text "80 damage."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 80
             }
@@ -2519,7 +2387,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Mischievous Hands", {
             text "Choose 2 of your opponent's Pokémon and put 2 damage counters on each of them."
             energyCost P
-            attackRequirement {}
             onAttack {
               multiSelect(opp.all, 2).each {
                 targeted(it) { directDamage 20, it }
@@ -2546,7 +2413,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Tail Trickery", {
             text "20 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Confused."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip { apply CONFUSED }
@@ -2560,7 +2426,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Seaweed Grab", {
             text "Put a Trainer card from your discard pile into your hand."
             energyCost C
-            attackRequirement {}
             onAttack {
               my.discard.filterByType(TRAINER).select().moveTo(my.hand)
             }
@@ -2568,7 +2433,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Buster Swing", {
             text "100 damage. This attack's damage isn't affected by Resistance."
             energyCost P, P, C
-            attackRequirement {}
             onAttack {
               dontApplyResistance()
               damage 100
@@ -2612,7 +2476,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Surprise Attack", {
             text "10 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip { damage 10 }
             }
@@ -2624,7 +2487,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Stiffen", {
             text "During your opponent's next turn, this Pokémon takes 40 less damage from attacks (after applying Weakness and Resistance)."
             energyCost C
-            attackRequirement {}
             onAttack {
               reduceDamageFromDefendingNextTurn(hp(40), thisMove, defending)
             }
@@ -2651,7 +2513,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Lunar Blast", {
             text "130 damage."
             energyCost P, P, C
-            attackRequirement {}
             onAttack {
               damage 130
             }
@@ -2686,7 +2547,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Fireworks Bomb", {
             text "Put 4 damage counters on your opponent's Pokémon in any way you like. If your opponent has exactly 3 Prize cards remaining, put 12 damage counters on them instead."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               def maxCountersToPlace = (opp.prizeCardSet.size() == 3) ? 12 : 4
 
@@ -2712,7 +2572,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Tail Smash", {
             text "100 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               flip { damage 100 }
             }
@@ -2734,7 +2593,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Zap Cannon", {
             text "50 damage. This Pokémon can't use Zap Cannon during your next turn."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               cantUseAttack(thisMove, self)
@@ -2758,7 +2616,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Sand Spray", {
             text "10 damage."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2770,7 +2627,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Dig", {
             text "30 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip {
@@ -2806,7 +2662,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Flap", {
             text "40 damage."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -2831,7 +2686,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Desert Hurricane", {
             text "120+ damage. If there is any Stadium card in play, this attack does 120 more damage. Then, discard that Stadium card."
             energyCost F, F, F
-            attackRequirement {}
             onAttack {
               damage 120
               if (bg.stadiumInfoStruct) {
@@ -2858,7 +2712,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Bug Bite", {
             text "40 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -2866,7 +2719,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Claw Slash", {
             text "80 damage."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 80
             }
@@ -2878,7 +2730,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Ancient Blast", {
             text "20+ damage. This attack does 50 more damage for each Unidentified Fossil card in your discard pile."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               damage 50*my.discard.findAll({it.name == "Unidentified Fossil"}).size()
@@ -2887,7 +2738,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Mach Claw", {
             text "100 damage. This attack's damage isn't affected by Resistance."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               dontApplyResistance()
               damage 100
@@ -2910,7 +2760,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Trembling Ground", {
             text "130 damage. This Pokémon can’t use Trembling Ground during your next turn."
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
               damage 130
               cantUseAttack(thisMove, self)
@@ -2933,7 +2782,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Mud-Slap", {
             text "10 damage."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2945,7 +2793,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Eleventh Hour Tackle", {
             text "30+ damage. If there are 3 or fewer cards in your deck, this attack does 150 more damage."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 30
               if (my.deck.size() < 4) damage 150
@@ -2954,7 +2801,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Drill Bazooka", {
             text "120 damage. Discard the top 4 cards of your deck."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 120
               my.deck.subList(0, 4).discard()
@@ -2967,7 +2813,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Mini Earthquake", {
             text "60 damage. This attack does 10 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 60
               if (my.bench) {
@@ -2995,7 +2840,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Tremulous Fist", {
             text "80+ damage. This attack does 30 more damage for each of your Benched Pokémon that has any damage counters on it."
             energyCost F, C, C, C
-            attackRequirement {}
             onAttack {
               def count = my.bench.findAll{ it.numberOfDamageCounters }.size()
               damage 80 + 30*count
@@ -3008,7 +2852,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Reverse Shoulder Throw", {
             text "30+ damage. If your Benched Pokémon have any damage counters on them, this attack does 90 more damage."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 30
               if (my.bench.findAll{ it.numberOfDamageCounters }) {
@@ -3023,7 +2866,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Punch", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -3035,7 +2877,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Light Punch", {
             text "40 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -3043,7 +2884,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Magnum Punch", {
             text "90 damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -3055,7 +2895,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Jab", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -3063,7 +2902,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Confront", {
             text "30 damage."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -3088,7 +2926,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Freezing Punch", {
             text "80+ damage. If this Pokémon has any [W] Energy attached to it, this attack does 80 more damage."
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
               damage 80
               if (self.cards.energyCount(W)) damage 80
@@ -3111,7 +2948,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Rock Throw", {
             text "40 damage."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -3141,7 +2977,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Voltage Claw", {
             text "60+ damage. If your opponent’s Active Pokémon has any Special Energy attached to it, this attack does 70 more damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               if (defending.cards.filterByType(SPECIAL_ENERGY)) damage 70
@@ -3154,7 +2989,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Spike Draw", {
             text "20 damage. Draw 2 cards."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 20
               draw 2
@@ -3163,7 +2997,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Seismic Toss", {
             text "70 damage."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -3175,7 +3008,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Astonish", {
             text "10 damage. Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 10
               astonish()
@@ -3184,7 +3016,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Hook", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -3196,7 +3027,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Guard Press", {
             text "80 damage. During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
@@ -3205,7 +3035,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Earthquake", {
             text "150 damage. This attack does 20 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F, C, C, C
-            attackRequirement {}
             onAttack {
               damage 150
               my.bench.each { damage 20, it }
@@ -3219,7 +3048,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Swagger", {
             text "Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
             energyCost D
-            attackRequirement {}
             onAttack {
               flip { discardDefendingEnergy() }
             }
@@ -3227,7 +3055,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Hook", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -3261,7 +3088,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Claw Slash", {
             text "120 damage."
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
               damage 120
             }
@@ -3285,7 +3111,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Melt", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -3293,7 +3118,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Nasty Goo", {
             text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
             energyCost D, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip { apply PARALYZED }
@@ -3307,7 +3131,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Panic Poison", {
             text "20 damage. Your opponent's Active Pokémon is now Burned, Confused, and Poisoned."
             energyCost D, C
-            attackRequirement {}
             onAttack {
               damage 20
               apply BURNED
@@ -3318,7 +3141,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Sludge Bomb", {
             text "110 damage."
             energyCost D, D, C
-            attackRequirement {}
             onAttack {
               damage 110
             }
@@ -3331,7 +3153,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Agility", {
             text "10 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 10
               flip { preventAllEffectsNextTurn() }
@@ -3345,7 +3166,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Ominous News", {
             text "Discard a Special Energy from 1 of your opponent's Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               def targets = opp.all.findAll ({ it.cards.filterByType(SPECIAL_ENERGY) })
               if (targets) {
@@ -3374,7 +3194,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Bag Slash", {
             text "Your opponent reveals their hand. Discard an Item card you find there."
             energyCost C
-            attackRequirement {}
             onAttack {
               opp.hand.showToMe("Opponent's hand")
               opp.hand.filterByType(ITEM).discard()
@@ -3383,7 +3202,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Sting", {
             text "20 damage."
             energyCost D, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -3396,7 +3214,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Corner", {
             text "30 damage. The Defending Pokémon can't retreat during your opponent's next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30
               cantRetreat defending
@@ -3405,7 +3222,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Slashing Strike", {
             text "80 damage. This Pokémon can't use Slashing Strike during your next turn."
             energyCost D, C
-            attackRequirement {}
             onAttack {
               damage 80
               cantUseAttack(thisMove, self)
@@ -3419,7 +3235,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Mountain Munch", {
             text "Discard the top card of your opponent's deck."
             energyCost D
-            attackRequirement {}
             onAttack {
               opp.deck.subList(0, 1).discard()
             }
@@ -3427,7 +3242,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Red Banquet", {
             text "120 damage. If your opponent's Pokémon is Knocked Out by damage from this attack, take 1 more Prize card."
             energyCost D, D, C, C
-            attackRequirement {}
             onAttack {
               damage 120
               gxPerform()
@@ -3447,7 +3261,6 @@ public enum CosmicEclipse implements CardInfo {
           resistance P, MINUS20
           move "Run Around", {
             text "Switch this Pokémon with 1 of your Benched Pokémon."
-            attackRequirement {}
             onAttack {
               switchYourActive()
             }
@@ -3455,7 +3268,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Metal Claw", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -3467,7 +3279,6 @@ public enum CosmicEclipse implements CardInfo {
           resistance P, MINUS20
           move "Curve Strike", {
             text "30 damage. Flip a coin. If heads, prevent all damage done to this Pokémon by attacks during your opponent's next turn."
-            attackRequirement {}
             onAttack {
               damage 30
               flip { preventAllDamageNextTurn() }
@@ -3476,7 +3287,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Reinforced Needle", {
             text "60+ damage. If this Pokémon has a Pokémon Tool card attached to it, this attack does 60 more damage."
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               if (self.cards.filterByType(POKEMON_TOOL)) damage 60
@@ -3490,7 +3300,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Thumping Fall", {
             text "50x damage. Discard any number of Pokémon with a Retreat Cost of exactly 4 from your hand. This attack does 50 damage for each card you discarded in this way."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               def heavyPokemon = my.hand.findAll(cardTypeFilter(POKEMON)).findAll({ it.retreatCost == 4 })
               def selected = heavyPokemon.select(max: heavyPokemon.size(), "Discard any number of Pokemon with a Retreat Cost of 4 to do 50 damage more.")
@@ -3502,7 +3311,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Iron Tail", {
             text "100x damage. Flip a coin until you get tails. This attack does 100 damage for each heads."
             energyCost M, C, C, C
-            attackRequirement {}
             onAttack {
               flipUntilTails { damage 100 }
             }
@@ -3515,7 +3323,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Dual Calling", {
             text "Search your deck for up to 2 TAG TEAM cards, reveal them, and put them into your hand. Then, shuffle your deck."
             energyCost C
-            attackRequirement {}
             onAttack {
               my.deck.search(max:2, "Search your deck for up to 2 TAG TEAM cards", cardTypeFilter(TAG_TEAM)).moveTo(my.hand)
               shuffleDeck()
@@ -3524,7 +3331,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Dark Clamp", {
             text "20 damage. The Defending Pokémon can't retreat during your opponent's next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
               cantRetreat defending
@@ -3538,7 +3344,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Hard Press", {
             text "60 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               flip { apply PARALYZED }
@@ -3547,7 +3352,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Triple Nose", {
             text "80+ damage. Flip 3 coins. This attack does 40 more damage for each heads."
             energyCost M, C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               flip 3, { damage 40 }
@@ -3575,7 +3379,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Sol Fangs", {
             text "180 damage. Discard 2 Energy from this Pokémon."
             energyCost M, M, C, C
-            attackRequirement {}
             onAttack {
               damage 180
               discardSelfEnergy(C, C)
@@ -3589,7 +3392,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Rolling Panic", {
             text "120+ damage. Flip a coin until you get tails. This attack does 30 more damage for each heads."
             energyCost Y, Y, C
-            attackRequirement {}
             onAttack {
               damage 120
               flipUntilTails { damage 30 }
@@ -3631,7 +3433,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Doll Swap", {
             text "60 damage. Put this Pokémon and all cards attached to it into your hand. If you do, you may play Lillie's Poké Doll from your hand as your new Active Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               afterDamage {
@@ -3661,7 +3462,6 @@ public enum CosmicEclipse implements CardInfo {
           resistance D, MINUS20
           move "Rubbish Blizzard", {
             text "10x damage. This attack does 10 damage for each Pokémon Tool card in your discard pile."
-            attackRequirement {}
             onAttack {
               damage 10*my.discard.filterByType(POKEMON_TOOL).size()
             }
@@ -3690,7 +3490,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Lost March", {
             text "20x damage. This attack does 20 damage for each of your Pokémon, except {*} (Prism Star) Pokémon, in the Lost Zone."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20*my.lostZone.findAll{ it.cardTypes.is(POKEMON) && !it.cardTypes.is(PRISM_STAR) }.size()
             }
@@ -3718,7 +3517,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Lost March", {
             text "20x damage. This attack does 20 damage for each of your Pokémon, except {*} (Prism Star) Pokémon, in the Lost Zone."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20*my.lostZone.findAll{ it.cardTypes.is(POKEMON) && !it.cardTypes.is(PRISM_STAR) }.size()
             }
@@ -3747,7 +3545,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Petal Blizzard", {
             text "This attack does 10 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost Y
-            attackRequirement {}
             onAttack {
               opp.all.each { damage 10, it }
             }
@@ -3770,7 +3567,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Magical Shot", {
             text "30 damage."
             energyCost Y, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -3793,7 +3589,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Petal Dance", {
             text "60x damage. Flip 3 coins. This attack does 60 damage for each heads. This Pokémon is now Confused."
             energyCost Y, C
-            attackRequirement {}
             onAttack {
               flip 3, { damage 60 }
               apply CONFUSED, self
@@ -3807,7 +3602,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Cotton Guard", {
             text "10 damage. During your opponent's next turn, this Pokémon takes 10 less damage from attacks (after applying Weakness and Resistance)."
             energyCost Y
-            attackRequirement {}
             onAttack {
               damage 10
               reduceDamageFromDefendingNextTurn(hp(10), thisMove, defending)
@@ -3821,7 +3615,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Olfactory Enchantment", {
             text "Your opponent's Active Pokémon is now Confused."
             energyCost Y
-            attackRequirement {}
             onAttack {
               apply CONFUSED
             }
@@ -3829,7 +3622,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Sweet Panic", {
             text "110 damage. If your opponent's Active Pokémon isn't Confused, this attack does nothing."
             energyCost Y
-            attackRequirement {}
             onAttack {
               if (defending.isSPC(CONFUSED)) {
                 damage 110
@@ -3846,7 +3638,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Moonblast", {
             text "30 damage. During your opponent's next turn, the Defending Pokémon’s attacks do 30 less damage (before applying Weakness and Resistance)."
             energyCost Y
-            attackRequirement {}
             onAttack {
               damage 30
               reduceDamageFromDefendingNextTurn(hp(30), thisMove, defending)
@@ -3855,7 +3646,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Beloved Pulse", {
             text "80+ damage. If you played a TAG TEAM Supporter card from your hand during this turn, this attack does 80 more damage."
             energyCost Y, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               // TODO: edit it to include only tag team supporters
@@ -3930,7 +3720,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Fabled Flarebolts", {
             text "90x damage. Discard up to 3 in any combination of basic [R] and basic [L] Energy cards from your Benched Pokémon. This attack does 90 damage for each card you discarded in this way."
             energyCost R, L
-            attackRequirement {}
             onAttack {
               def count = 0
               while (count < 3) {
@@ -3984,7 +3773,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Jet Pierce", {
             text "180 damage."
             energyCost D, P, C
-            attackRequirement {}
             onAttack {
               damage 180
             }
@@ -4013,7 +3801,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Dragon Claw", {
             text "20 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -4021,7 +3808,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Dragon Arcana", {
             text "70+ damage. If this Pokémon has 2 or more different types of basic Energy attached to it, this attack does 70 more damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               int differentTypes = 0
@@ -4041,7 +3827,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Raging Claws", {
             text "20+ damage. This attack does 10 more damage for each damage counter on this Pokémon."
             energyCost F, L
-            attackRequirement {}
             onAttack {
               damage 20+10*self.numberOfDamageCounters
             }
@@ -4053,7 +3838,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Gnaw", {
             text "10 damage."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -4061,7 +3845,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Dragon Headbutt", {
             text "50 damage."
             energyCost F, L, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -4083,7 +3866,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Dragonslice", {
             text "30 damage."
             energyCost F, L
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -4095,7 +3877,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Shout of Power", {
             text "60 damage. Attach a basic Energy card from your discard pile to 1 of your Benched Pokémon."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 60
               if (my.discard.filterByType(BASIC_ENERGY)) {
@@ -4106,7 +3887,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Scaly Uppercut", {
             text "90+ damage. You may discard a Pokémon Tool card from this Pokémon. If you do, this attack does 90 more damage."
             energyCost F, L
-            attackRequirement {}
             onAttack {
               damage 90
               if (self.cards.filterByType(POKEMON_TOOL) && confirm("Discard a Pokemon Tool card from this Pokemon to do 90 more damage?")) {
@@ -4133,7 +3913,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Luster of Downfall", {
             text "170 damage. Discard an Energy from your opponent's Active Pokémon."
             energyCost M, P
-            attackRequirement {}
             onAttack {
               damage 170
               discardDefendingEnergy()
@@ -4146,7 +3925,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Jumping Balloon", {
             text "60+ damage. This attack does 60 more damage for each of your opponent's Pokémon-GX and Pokémon-EX in play."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               damage 60*opp.all.findAll { it.pokemonGX || it.pokemonEX }.size()
@@ -4183,7 +3961,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Bite", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -4210,7 +3987,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Tackle", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -4245,7 +4021,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Tail Smack", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -4257,7 +4032,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Nice-Nice Catch", {
             text "Draw 2 cards."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 2
             }
@@ -4279,7 +4053,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Scratch", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -4287,7 +4060,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Slash", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -4299,7 +4071,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Hammer In", {
             text "50 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -4307,7 +4078,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Heavy Hold", {
             text "120 damage. The Defending Pokémon can't attack during your opponent's next turn."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 120
               cantAttackNextTurn defending
@@ -4320,7 +4090,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Corkscrew Punch", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -4328,7 +4097,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Brutal Edge", {
             text "20+ damage. This attack does 10 more damage for each damage counter on your opponent's Active Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20+10*defending.numberOfDamageCounters
             }
@@ -4340,7 +4108,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Baby-Doll Eyes", {
             text "The Defending Pokémon can't retreat during your opponent's next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               cantRetreat(defending)
             }
@@ -4348,7 +4115,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Tackle", {
             text "40 damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -4360,7 +4126,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Work Up", {
             text "During your next turn, this Pokémon's attacks do 60 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
             energyCost C
-            attackRequirement {}
             onAttack {
               doMoreDamageNextTurn(thisMove, 60, self)
             }
@@ -4368,7 +4133,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Headbutt Bounce", {
             text "60 damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -4400,7 +4164,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Overrun", {
             text "110 damage. This attack does 30 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 110
               if (opp.bench) damage 30, opp.bench.select()
@@ -4414,7 +4177,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Fury Attack", {
             text "10x damage. Flip 3 coins. This attack does 10 damage for each heads."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip 3, {damage 10}
             }
@@ -4427,7 +4189,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Clutch", {
             text "30 damage. The Defending Pokémon can't retreat during your opponent's next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30
               cantRetreat defending
@@ -4436,7 +4197,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Aero Fall", {
             text "140 damage. Discard 2 Energy from this Pokémon."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 140
               discardSelfEnergy(C, C)
@@ -4449,7 +4209,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Tail Whip", {
             text "Flip a coin. If heads, the Defending Pokémon can't attack during your opponent's next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip { cantAttackNextTurn defending }
             }
@@ -4457,7 +4216,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Rear Kick", {
             text "30 damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -4469,7 +4227,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Parabolic Counter", {
             text "30+ damage. If your opponent has any [L] Pokémon in play, this attack does 90 more damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30
               if (opp.all.findAll { it.types.contains(L) }) {
@@ -4480,7 +4237,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Zap Kick", {
             text "80 damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
             }
@@ -4492,7 +4248,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Continuous Tumble", {
             text "10+ damage. Flip a coin until you get tails. This attack does 30 more damage for each heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 10
               flipUntilTails { damage 30 }
@@ -4513,7 +4268,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Lariat", {
             text "120 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               flip { damage 120 }
             }
@@ -4525,7 +4279,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Air Slash", {
             text "50 damage. Discard an Energy from this Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 50
               discardSelfEnergy C
@@ -4548,7 +4301,6 @@ public enum CosmicEclipse implements CardInfo {
           move "Brave Buddies", {
             text "50+ damage. If you played a Supporter card from your hand during this turn, this attack does 70 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 50
               if (bg.em().retrieveObject("last_supporter_play_turn") == bg.turnCount) damage 70

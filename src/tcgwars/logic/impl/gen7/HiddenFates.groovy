@@ -168,7 +168,6 @@ public enum HiddenFates implements CardInfo {
         move "Tackle", {
           text "10 damage. "
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -181,7 +180,6 @@ public enum HiddenFates implements CardInfo {
         move "Tackle", {
           text "30 damage. "
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -193,7 +191,6 @@ public enum HiddenFates implements CardInfo {
         move "Gust", {
           text "80 damage. "
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -205,7 +202,6 @@ public enum HiddenFates implements CardInfo {
         move "Scratch", {
           text "10 damage. "
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -213,7 +209,6 @@ public enum HiddenFates implements CardInfo {
         move "Slash", {
           text "20 damage. "
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -225,7 +220,6 @@ public enum HiddenFates implements CardInfo {
         move "Slash", {
           text "10 damage. "
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -233,7 +227,6 @@ public enum HiddenFates implements CardInfo {
         move "Sharp Scythe", {
           text "30 damage. "
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -245,7 +238,6 @@ public enum HiddenFates implements CardInfo {
         move "Superpowered Horns", {
           text "110 damage. "
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 110
           }
@@ -268,7 +260,6 @@ public enum HiddenFates implements CardInfo {
         move "Gnaw", {
           text "10 damage. "
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -276,7 +267,6 @@ public enum HiddenFates implements CardInfo {
         move "Flare", {
           text "20 damage. "
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -288,7 +278,6 @@ public enum HiddenFates implements CardInfo {
         move "Slash", {
           text "30 damage. "
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -296,7 +285,6 @@ public enum HiddenFates implements CardInfo {
         move "Flamethrower", {
           text "80 damage. "
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -308,7 +296,6 @@ public enum HiddenFates implements CardInfo {
         move "Flamethrower", {
           text "140 damage. "
           energyCost R, R, C, C
-          attackRequirement {}
           onAttack {
             damage 140
           }
@@ -331,7 +318,6 @@ public enum HiddenFates implements CardInfo {
         move "Fire Punch", {
           text "50 damage. "
           energyCost R, R
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -343,7 +329,6 @@ public enum HiddenFates implements CardInfo {
         move "Headache", {
           text "20 damage. "
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -355,7 +340,6 @@ public enum HiddenFates implements CardInfo {
         move "Yawn", {
           text "Your opponent's Active Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             apply ASLEEP
           }
@@ -367,7 +351,6 @@ public enum HiddenFates implements CardInfo {
         move "Numbing Water", {
           text "10 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip{ applyAfterDamage PARALYZED }
@@ -380,7 +363,6 @@ public enum HiddenFates implements CardInfo {
         move "Star Stream", {
           text "40 damage. Attach 2 [W] Energy cards from your discard pile to 1 of your Pokémon."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 40
             afterDamage{
@@ -392,7 +374,6 @@ public enum HiddenFates implements CardInfo {
         move "Spinning Attack", {
           text "100 damage. "
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -415,7 +396,6 @@ public enum HiddenFates implements CardInfo {
         move "Splash", {
           text "10 damage. "
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -427,7 +407,6 @@ public enum HiddenFates implements CardInfo {
         move "Dragon Rage", {
           text "130 damage. "
           energyCost W, W, W, C
-          attackRequirement {}
           onAttack {
             damage 130
           }
@@ -450,7 +429,6 @@ public enum HiddenFates implements CardInfo {
         move "Aqua Wave", {
           text "80 damage. "
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -462,7 +440,6 @@ public enum HiddenFates implements CardInfo {
         move "Water Gun", {
           text "30 damage. "
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -470,7 +447,6 @@ public enum HiddenFates implements CardInfo {
         move "Bubble Drain", {
           text "80 damage. Heal 30 damage from this Pokémon."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 80
             heal 30, self
@@ -484,7 +460,6 @@ public enum HiddenFates implements CardInfo {
         move "Quick Attack", {
           text "10 damage. "
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -492,7 +467,6 @@ public enum HiddenFates implements CardInfo {
         move "Electro Ball", {
           text "60 damage. "
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -505,7 +479,6 @@ public enum HiddenFates implements CardInfo {
         move "Thunderbolt", {
           text "120 damage. "
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 120
           }
@@ -529,7 +502,6 @@ public enum HiddenFates implements CardInfo {
         move "Lightning Ball", {
           text "20 damage. "
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -542,7 +514,6 @@ public enum HiddenFates implements CardInfo {
         move "Lightning Ball", {
           text "30 damage. "
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -550,7 +521,6 @@ public enum HiddenFates implements CardInfo {
         move "Electroblast", {
           text "60+ damage. Flip 2 coins. This attack does 30 more damage for each heads."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             flip 2, {damage 30}
@@ -573,7 +543,6 @@ public enum HiddenFates implements CardInfo {
         move "Thunderbolt", {
           text "90 damage. Discard all Energy from this Pokémon."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 90
             afterDamage{
@@ -606,7 +575,6 @@ public enum HiddenFates implements CardInfo {
         move "Sky-High Claws", {
           text "100 damage. "
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -618,7 +586,6 @@ public enum HiddenFates implements CardInfo {
         move "Wrap", {
           text "10 damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
             flip { discardDefendingEnergy() }
@@ -631,7 +598,6 @@ public enum HiddenFates implements CardInfo {
         move "Tail Whap", {
           text "30 damage. "
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -655,7 +621,6 @@ public enum HiddenFates implements CardInfo {
         move "Rocket Tail", {
           text "50+ damage. If Jessie & James is in your discard pile, this attack does 80 more damage."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             if(my.discard.find{it.name=="Jessie & James"}) {
@@ -670,7 +635,6 @@ public enum HiddenFates implements CardInfo {
         move "Tackle", {
           text "20 damage. "
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -698,7 +662,6 @@ public enum HiddenFates implements CardInfo {
         move "Tackle", {
           text "40 damage. "
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -710,7 +673,6 @@ public enum HiddenFates implements CardInfo {
         move "Slap", {
           text "10 damage. "
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -718,7 +680,6 @@ public enum HiddenFates implements CardInfo {
         move "Lovely Kiss", {
           text "30 damage. "
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -730,7 +691,6 @@ public enum HiddenFates implements CardInfo {
         move "Super Psy Bolt", {
           text "110 damage. "
           energyCost P, P, C
-          attackRequirement {}
           onAttack {
             damage 110
           }
@@ -756,7 +716,6 @@ public enum HiddenFates implements CardInfo {
         move "Psyshot", {
           text "50 damage. "
           energyCost P, P
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -768,7 +727,6 @@ public enum HiddenFates implements CardInfo {
         move "Tackle", {
           text "10 damage. "
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -780,7 +738,6 @@ public enum HiddenFates implements CardInfo {
         move "Tackle", {
           text "30 damage. "
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -788,7 +745,6 @@ public enum HiddenFates implements CardInfo {
         move "Mudslide", {
           text "Discard 2 [F] Energy from this Pokémon. This attack does 80 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, F, C, C
-          attackRequirement {}
           onAttack {
             discardSelfEnergy F,F
             damage 80, opp.all.select()
@@ -801,7 +757,6 @@ public enum HiddenFates implements CardInfo {
         move "Rock Slide", {
           text "60 damage. This attack does 20 damage to 3 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             if(opp.bench){
@@ -814,7 +769,6 @@ public enum HiddenFates implements CardInfo {
         move "Land Crush", {
           text "140 damage. "
           energyCost F, F, C, C
-          attackRequirement {}
           onAttack {
             damage 140
           }
@@ -826,7 +780,6 @@ public enum HiddenFates implements CardInfo {
         move "Bind", {
           text "30 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 30
             flip{ applyAfterDamage PARALYZED }
@@ -835,7 +788,6 @@ public enum HiddenFates implements CardInfo {
         move "Heavy Impact", {
           text "150 damage. "
           energyCost F, C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 150
           }
@@ -859,7 +811,6 @@ public enum HiddenFates implements CardInfo {
         move "Sharpshooting", {
           text "This attack does 20 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20, opp.all.select()
           }
@@ -872,7 +823,6 @@ public enum HiddenFates implements CardInfo {
         move "Lead", {
           text "Flip a coin. If heads, search your deck for a Supporter card, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip {
               my.deck.search(count:1,"Choose a Supporter card",cardTypeFilter(SUPPORTER)).showToOpponent("Chosen card").moveTo(my.hand)
@@ -883,7 +833,6 @@ public enum HiddenFates implements CardInfo {
         move "Pound", {
           text "10 damage. "
           energyCost Y
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -896,7 +845,6 @@ public enum HiddenFates implements CardInfo {
         move "Pound", {
           text "10 damage. "
           energyCost Y
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -904,7 +852,6 @@ public enum HiddenFates implements CardInfo {
         move "Moon Dance", {
           text "30 damage. "
           energyCost Y, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -917,7 +864,6 @@ public enum HiddenFates implements CardInfo {
         move "Pound", {
           text "40 damage. "
           energyCost Y, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -925,7 +871,6 @@ public enum HiddenFates implements CardInfo {
         move "Moon Impact", {
           text "90 damage. "
           energyCost Y, Y, C
-          attackRequirement {}
           onAttack {
             damage 90
           }
@@ -938,7 +883,6 @@ public enum HiddenFates implements CardInfo {
         move "Singing Voice", {
           text "10 damage. "
           energyCost Y
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -946,7 +890,6 @@ public enum HiddenFates implements CardInfo {
         move "Rollout", {
           text "30 damage. "
           energyCost Y, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -959,7 +902,6 @@ public enum HiddenFates implements CardInfo {
         move "Rolling Rush", {
           text "100+ damage. Flip a coin until you get tails. This attack does 30 more damage for each heads."
           energyCost Y, Y, C
-          attackRequirement {}
           onAttack {
             damage 100
             flipUntilTails{damage 30}
@@ -985,7 +927,6 @@ public enum HiddenFates implements CardInfo {
         move "Happy Mime", {
           text "Each player draws a card."
           energyCost Y
-          attackRequirement {}
           onAttack {
             draw 1, TargetPlayer.SELF
             draw 1, TargetPlayer.OPPONENT
@@ -994,7 +935,6 @@ public enum HiddenFates implements CardInfo {
         move "Double Slap", {
           text "40x damage. Flip 2 coins. This attack does 40 damage for each heads."
           energyCost Y, Y
-          attackRequirement {}
           onAttack {
             flip 2, { damage 40 }
           }
@@ -1007,7 +947,6 @@ public enum HiddenFates implements CardInfo {
         move "Trinity Burn", {
           text "210 damage. "
           energyCost R, L, W, C
-          attackRequirement {}
           onAttack {
             damage 210
           }
@@ -1041,7 +980,6 @@ public enum HiddenFates implements CardInfo {
         move "Leek Slap", {
           text "30 damage. "
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1053,7 +991,6 @@ public enum HiddenFates implements CardInfo {
         move "Double-Edge", {
           text "80 damage. This Pokémon does 20 damage to itself."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 80
             damage 20, self
@@ -1066,7 +1003,6 @@ public enum HiddenFates implements CardInfo {
         move "Parental Fury", {
           text "40x damage. Flip a coin until you get tails. This attack does 40 damage for each heads."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 40
             flipUntilTails { damage 40 }
@@ -1079,7 +1015,6 @@ public enum HiddenFates implements CardInfo {
         move "Curiosity", {
           text "Your opponent reveals their hand."
           energyCost C
-          attackRequirement {}
           onAttack {
             opp.hand.showToMe("Opponent's hand")
           }
@@ -1087,7 +1022,6 @@ public enum HiddenFates implements CardInfo {
         move "Spin Tackle", {
           text "30 damage. Flip a coin. If tails, this Pokémon does 10 damage to itself."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             flipTails {damage 10, self}
@@ -1100,7 +1034,6 @@ public enum HiddenFates implements CardInfo {
         move "Gnaw", {
           text "20 damage. "
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1112,7 +1045,6 @@ public enum HiddenFates implements CardInfo {
         move "Incredible Snore", {
           text "100 damage. "
           energyCost C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 100
           }

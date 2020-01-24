@@ -227,7 +227,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Sharp Fang", {
             text "50 damage. "
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -235,7 +234,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Fire Mane", {
             text "90 damage. "
             energyCost R, C, C, C
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -248,7 +246,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Waterfall", {
             text "40 damage. "
             energyCost W, W
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -256,7 +253,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Bubblebeam", {
             text "60 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               flip {applyAfterDamage PARALYZED}
@@ -282,7 +278,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Moon Impact", {
             text "40 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -296,7 +291,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Hydro Splash", {
             text "50 damage. "
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -304,7 +298,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Hyper Beam", {
             text "80 damage. Discard an Energy card attached to the Defending Pokémon."
             energyCost W, W, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               afterDamage {discardDefendingEnergy()}
@@ -318,7 +311,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Triple Kick", {
             text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
             energyCost F
-            attackRequirement {}
             onAttack {
               flip 3,{damage 20}
             }
@@ -326,7 +318,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Close Combat", {
             text "60 damage. During your opponent’s next turn, any damage done to Hitmontop by attacks is increased by 20 (after applying Weakness and Resistance)."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               afterDamage {
@@ -353,7 +344,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Mass Attack", {
             text "10x damage. Does 10 damage times the number of Pokémon in play (both yours and your opponent's). "
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10*all.size()
             }
@@ -361,7 +351,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Leaf Guard", {
             text "30 damage. During your opponent’s next turn, any damage done to Jumpluff by attacks is reduced by 30 (after applying Weakness and Resistance)."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 30
               reduceDamageNextTurn(hp(30),thisMove)
@@ -386,7 +375,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Will-o’-the-wisp", {
             text "60 damage. "
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -409,7 +397,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Extrasensory", {
             text "40 damage. If you have the same number of cards in your hand as your opponent, this attack does 40 damage plus 40 more damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               if(my.hand.size() == opp.hand.size()) {
@@ -426,7 +413,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Muddy Water", {
             text "40 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               damage(20,opp.bench.select("20 damage to "))
@@ -435,7 +421,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Mud Shot", {
             text "60 damage. "
             energyCost F, C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -449,7 +434,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Iron Tail", {
             text "30× damage. Flip a coin until you get tails. This attack does 30 damage times the number of heads."
             energyCost C
-            attackRequirement {}
             onAttack {
               flipUntilTails {damage 30}
             }
@@ -457,7 +441,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Thunderbolt", {
             text "100 damage. Discard all Energy attached to Raichu."
             energyCost L, L
-            attackRequirement {}
             onAttack {
               damage 100
               discardAllSelfEnergy(null)
@@ -484,7 +467,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Poison Jab", {
             text "30 damage. The Defending Pokémon is now Poisoned."
             energyCost F, F
-            attackRequirement {}
             onAttack {
               damage 30
               applyAfterDamage POISONED
@@ -515,7 +497,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Psyshock", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip {applyAfterDamage PARALYZED}
@@ -529,7 +510,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Double Return", {
             text "Flip a coin. If heads, this attack does 20 damage times the number of damage counters on Wobbuffet."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               flip{damage 20*self.numberOfDamageCounters}
             }
@@ -558,7 +538,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Thunder", {
             text "80 damage. Flip a coin. If tails, Ampharos does 20 damage to itself."
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               flipTails{damage 20, self}
@@ -572,7 +551,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Leech Life", {
             text "30 damage. Remove from Ariados the number of damage counters equal to the damage you did to the Defending Pokémon."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 30
               removeDamageCounterEqualToDamageDone()
@@ -581,7 +559,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Poisonous Saliva", {
             text "50 damage. The Defending Pokémon is now Poisoned."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               applyAfterDamage POISONED
@@ -596,7 +573,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Cure Powder", {
             text "Remove 3 damage counters from each of your Pokémon."
             energyCost G
-            attackRequirement {}
             onAttack {
               my.all.each{heal 30, it}
             }
@@ -604,7 +580,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Whirlwind", {
             text "60 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               whirlwind()
@@ -630,7 +605,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Eeeeeeek", {
             text "Shuffle your hand into your deck, then draw 6 cards. Cleffa is now Asleep."
             energyCost ()
-            attackRequirement {}
             onAttack {
               shuffleDeck(hand)
               hand.clear()
@@ -657,7 +631,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Big Eggsplosion", {
             text "40× damage. Flip a coin for each Energy attached to Exeggutor. This attack does 40 damage times the number of heads."
             energyCost P
-            attackRequirement {}
             onAttack {
               flip self.cards.energyCount(C), {damage 40}
             }
@@ -671,7 +644,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Collect", {
             text "Draw 2 cards."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 2
             }
@@ -679,7 +651,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Spin Turn", {
             text "20 damage. Switch Farfetch’d with 1 of your Benched Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
               afterDamage{
@@ -698,7 +669,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Spinning Tail", {
             text "This attack does 20 damage to each of your opponent’s Pokémon."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               opp.all.each {damage 20,it}
             }
@@ -706,7 +676,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Surf", {
             text "80 damage. "
             energyCost W, W, C, C
-            attackRequirement {}
             onAttack {
               damage 80
             }
@@ -731,7 +700,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Quick Blow", {
             text "Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {damage 20}
@@ -744,7 +712,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Timid Tackle", {
             text "50 damage. Granbull does 20 damage to itself. Switch Granbull with 1 of your Benched Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 50
               damage 20, self
@@ -759,7 +726,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Chomp", {
             text "40+ damage. Does 40 damage plus 10 more damage for each damage counter on Granbull."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 40+10*self.numberOfDamageCounters
             }
@@ -781,7 +747,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Psychic Shot", {
             text "30 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance to Benched Pokémon.)"
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               if(opp.bench) {damage 10, opp.bench.select()}
@@ -795,7 +760,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Ice Beam", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {applyAfterDamage PARALYZED}
@@ -804,7 +768,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Ice Blade", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
             energyCost W, W
-            attackRequirement {}
             onAttack {
               damage 30, opp.all.select()
             }
@@ -818,7 +781,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Quick Draw", {
             text "10 damage. Draw 3 cards."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
               afterDamage{draw 3}
@@ -827,7 +789,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Swift", {
             text "40 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               swiftDamage(40, defending)
             }
@@ -841,7 +802,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Sleep Powder", {
             text "30 damage. The Defending Pokémon is now Asleep."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 30
               applyAfterDamage(ASLEEP)
@@ -850,7 +810,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Giant Bloom", {
             text "60 damage. Remove 2 damage counters from Meganium."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               afterDamage{heal 20, self}
@@ -864,7 +823,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Sharpen Claws", {
             text "Flip 3 coins. For each heads, discard a card from your opponent’s hand without looking."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip 3, {
                 if(opp.hand) {
@@ -876,7 +834,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Sneaky Attack", {
             text "30 damage. If Persian has any [D] Energy attached to it, this attack does 30 damage plus 30 more."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               if(self.cards.energyCount(D)) {damage 30}
@@ -934,7 +891,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Poison Sting", {
             text "30 damage. The Defending Pokémon is now Poisoned."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 30
               applyAfterDamage(POISONED)
@@ -943,7 +899,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Fury Swipes", {
             text "30× damage. Flip 3 coins. This attack does 30 damage times the number of heads."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               flip 3, {damage 30}
             }
@@ -1004,7 +959,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Blade Arms", {
             text "40 damage. "
             energyCost G, G, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -1017,7 +971,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Magma Punch", {
             text "50 damage. "
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -1025,7 +978,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Fire Spin", {
             text "120 damage. Discard 2 Energy attached to Typhlosion."
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 120
               discardSelfEnergy(C,C)
@@ -1051,7 +1003,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Mischievous Punch", {
             text "30 damage. This attack’s damage isn’t affected by Weakness or Resistance. Tyrogue is now Asleep."
             energyCost ()
-            attackRequirement {}
             onAttack {
               noWrDamage(30, defending)
               afterDamage{apply ASLEEP, self}
@@ -1065,7 +1016,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Super Poison Breath", {
             text "The Defending Pokémon is now Poisoned."
             energyCost P
-            attackRequirement {}
             onAttack {
               apply POISONED
             }
@@ -1073,7 +1023,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Super Explosion", {
             text "90 damage. Weezing does 90 damage to itself, and don’t apply Weakness to this damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 90
               noWeaknessDamage(90, self)
@@ -1088,7 +1037,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Hammer In", {
             text "20 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1096,7 +1044,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Razor Leaf", {
             text "50 damage. "
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -1109,7 +1056,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Energy Link", {
             text "10 damage. Search your discard pile for an Energy card and attach it to Blissey."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               afterDamage {
@@ -1120,7 +1066,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Double-edge", {
             text "80 damage. Blissey does 40 damage to itself."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               damage 40, self
@@ -1134,7 +1079,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Recover", {
             text "Discard a [W] Energy attached to Corsola and remove all damage counters from Corsola."
             energyCost W
-            attackRequirement {}
             onAttack {
               discardSelfEnergy(W)
               healAll self
@@ -1143,7 +1087,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Hyper Cannon", {
             text "20 damage. Flip 2 coins. If both of them are heads, this attack does 20 damage plus 50 more damage."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {flip {damage 50}}
@@ -1157,7 +1100,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Wave Splash", {
             text "30 damage. "
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1165,7 +1107,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Big Bite", {
             text "50 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               afterDamage{cantRetreat(defending)}
@@ -1194,7 +1135,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Hail", {
             text "This attack does 10 damage to each of your opponent’s Pokémon."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               opp.all.each {damage 10, it}
             }
@@ -1208,7 +1148,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Rock Hurl", {
             text "50 damage. This attack’s damage isn’t affected by Resistance."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               dontApplyResistance()
@@ -1217,7 +1156,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Double Spin", {
             text "Flip 2 coins. This attack does 70 damage times the number of heads."
             energyCost F, F, C, C
-            attackRequirement {}
             onAttack {
               flip 2, {damage 70}
             }
@@ -1230,7 +1168,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Glare", {
             text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               flipThenApplySC(PARALYZED)
             }
@@ -1238,7 +1175,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Fade Out", {
             text "20 damage. Return Dunsparce and all cards attached to it to your hand."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
               afterDamage {
@@ -1257,7 +1193,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Thunder Spear", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 20, opp.all.select()
             }
@@ -1265,7 +1200,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Thundershock", {
             text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               flip {applyAfterDamage PARALYZED}
@@ -1289,7 +1223,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Double Headbutt", {
             text "30 damage. Flip 2 coins. This attack does 30 damage plus 20 more damage for each heads."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip 2, {damage 20}
@@ -1315,7 +1248,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Graffiti", {
             text "Igglybuff is now Asleep. During your opponent’s next turn, the attack cost of each of the Defending Pokémon’s attacks is 1 Colorless Energy more."
             energyCost ()
-            attackRequirement {}
             onAttack {
               apply ASLEEP, self
               defendingAttacksCostsMore(defending, [C])
@@ -1340,7 +1272,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Aqua Slash", {
             text "40 damage. Mantine can’t attack during your next turn."
             energyCost W, W
-            attackRequirement {}
             onAttack {
               damage 40
               afterDamage{cantAttackNextTurn(self)}
@@ -1365,7 +1296,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Sharpen", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1387,7 +1317,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Body Slam", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip {applyAfterDamage PARALYZED}
@@ -1401,7 +1330,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Sleep Drain", {
             text "The Defending Pokémon is now Asleep. Remove 4 damage counters from Parasect."
             energyCost G
-            attackRequirement {}
             onAttack {
               apply ASLEEP
               heal 40, self
@@ -1410,7 +1338,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Slash", {
             text "60 damage. "
             energyCost G, G, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -1423,7 +1350,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Flare", {
             text "30 damage. "
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1431,7 +1357,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Flamethrower", {
             text "60 damage. Discard an Energy attached to Quilava."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               discardSelfEnergy C
@@ -1445,7 +1370,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Offensive Needle", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned. If tails, the Defending Pokémon is now Paralyzed."
             energyCost W, W
-            attackRequirement {}
             onAttack {
               damage 30
               flip 1, {applyAfterDamage POISONED}, {applyAfterDamage PARALYZED}
@@ -1460,7 +1384,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Knock Away", {
             text "20 damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 20
               flip {damage 10}
@@ -1474,7 +1397,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Big Yawn", {
             text "30 damage. Both Slowbro and the Defending Pokémon are now Asleep."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 30
               applyAfterDamage ASLEEP
@@ -1484,7 +1406,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Madkinesis", {
             text "Does 30 damage plus 20 more damage for each Psychic Energy attached to Slowbro."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30 + 20 * self.cards.energyCount(P)
             }
@@ -1497,7 +1418,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Cosmic Cyclone", {
             text "20× damage. Choose as many [W] Energy attached to your Pokémon as you like. This attack does 20 damage times the number of Energy you chose. Shuffle those cards back into your deck."
             energyCost W
-            attackRequirement {}
             onAttack {
               def selectedCards = self.cards.filterByEnergyType(W).select(min:0, max:self.cards.filterByEnergyType(W).size())
               damage 20*selectedCards.energyCount(W)
@@ -1523,7 +1443,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Hidden Power", {
             text "10 damage. "
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1546,7 +1465,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Hidden Power", {
             text "10 damage. "
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1559,7 +1477,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Double Slap", {
             text "Flip 2 coins. This attack does 40 damage times the number of heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flip 2, {damage 40}
             }
@@ -1567,7 +1484,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Expand", {
             text "50 damage. During your opponent’s next turn, any damage done to Wigglytuff by attacks is reduced by 10 (after applying Weakness and Resistance)."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               reduceDamageNextTurn(hp(10),thisMove)
@@ -1581,7 +1497,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Tackle", {
             text "20 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1594,7 +1509,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Pound", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1602,7 +1516,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Happy Punch", {
             text "30 damage. Flip a coin. If heads, remove 3 damage counters from Chansey."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip {heal 30, self}
@@ -1617,7 +1530,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Tackle", {
             text "10 damage. "
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1625,7 +1537,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Razor Leaf", {
             text "20 damage. "
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1638,7 +1549,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Minimize", {
             text "During your opponent’s next turn, any damage done to Clefairy by attacks is reduced by 20 (after applying Weakness and Resistance)."
             energyCost C
-            attackRequirement {}
             onAttack {
               reduceDamageNextTurn(hp(20),thisMove)
             }
@@ -1646,7 +1556,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Slap", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1659,7 +1568,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Beat", {
             text "10 damage. "
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1667,7 +1575,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Flare", {
             text "20 damage. "
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1692,7 +1599,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Gentle Slap", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1705,7 +1611,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Continuous Eggsplosion", {
             text "10× damage. Flip a coin until you get tails. This attack does 10 damage times the number of heads."
             energyCost C
-            attackRequirement {}
             onAttack {
               flipUntilTails {damage 10}
             }
@@ -1729,7 +1634,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Psyshot", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1742,7 +1646,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Bite", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1750,7 +1653,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Combustion", {
             text "40 damage. "
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -1764,7 +1666,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Hypnosis", {
             text "The Defending Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply ASLEEP
             }
@@ -1772,7 +1673,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Tackle", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1786,7 +1686,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Bounce", {
             text "10 damage. You may switch Hoppip with 1 of your Benched Pokémon."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
               afterDamage{
@@ -1805,7 +1704,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Hypnoblast", {
             text "20 damage. The Defending Pokémon is now Asleep."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               applyAfterDamage ASLEEP
@@ -1819,7 +1717,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Mimic", {
             text "Shuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent’s hand."
             energyCost C
-            attackRequirement {}
             onAttack {
               shuffleDeck(hand)
               hand.clear()
@@ -1829,7 +1726,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Lick", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {applyAfterDamage PARALYZED}
@@ -1843,7 +1739,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Smokescreen", {
             text "10 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               sandAttack(thisMove)
@@ -1852,7 +1747,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Suffocating Gas", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1866,7 +1760,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Ram", {
             text "10 damage. "
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1874,7 +1767,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Comet Punch", {
             text "Flip 4 coins. This attack does 10 damage times the number of heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flip 4, {damage 10}
             }
@@ -1887,7 +1779,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Splash", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1915,7 +1806,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Ram", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1928,7 +1818,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Water Splash", {
             text "10 damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
               flip {damage 10}
@@ -1937,7 +1826,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Tail Slap", {
             text "30 damage. "
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1950,7 +1838,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Pay Day", {
             text "10 damage. Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               afterDamage {draw 1}
@@ -1959,7 +1846,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Dig Claws", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1972,7 +1858,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Scratch", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1980,7 +1865,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Double-edge Claw", {
             text "30 damage. Paras does 10 damage to itself."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 20
               damage 10, self
@@ -1995,7 +1879,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Flail", {
             text "10× damage. Does 10 damage times the number of damage counters on Phanpy."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10*self.numberOfDamageCounters
             }
@@ -2009,7 +1892,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Tail Slap", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2017,7 +1899,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Quick Attack", {
             text "20 damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {damage 10}
@@ -2032,7 +1913,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Defense Curl", {
             text "Flip a coin. If heads, prevent all damage done to Sandshrew by attacks during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip{preventAllDamageNextTurn()}
             }
@@ -2040,7 +1920,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Rollout", {
             text "10 damage. "
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2062,7 +1941,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Scratch", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2075,7 +1953,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Whimsy Tackle", {
             text "20 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {damage 20}
             }
@@ -2098,7 +1975,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Sharp Fang", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2111,7 +1987,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Hang Down", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2119,7 +1994,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Spider Web", {
             text "The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost G
-            attackRequirement {}
             onAttack {
               cantRetreat defending
             }
@@ -2132,7 +2006,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Spinning Attack", {
             text "20 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2156,7 +2029,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Seed Bomb", {
             text "20 damage. "
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2169,7 +2041,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Gnaw", {
             text "10 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2177,7 +2048,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Wave Splash", {
             text "20 damage. "
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2190,7 +2060,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Singe", {
             text "Flip a coin. If heads, the Defending Pokémon is now Burned."
             energyCost R
-            attackRequirement {}
             onAttack {
               flipThenApplySC BURNED
             }
@@ -2198,7 +2067,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Ember", {
             text "30 damage. Flip a coin. If tails, discard a [R] Energy attached to Vulpix."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip 1, {}, {discardSelfEnergy(R)}
@@ -2213,7 +2081,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Tail Whip", {
             text "Flip a coin. If heads, the Defending Pokémon can’t attack during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {cantAttackNextTurn defending}
             }
@@ -2221,7 +2088,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Watering", {
             text "10 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2348,7 +2214,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Lightning Crush", {
             text "40 damage. Flip a coin. If heads, this attack does 40 damage plus 40 more damage. If tails, discard an Energy attached to the Defending Pokémon."
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               flip {damage 40} {discardDefendingEnergy()}
@@ -2378,7 +2243,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Strength", {
             text "60 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -2405,7 +2269,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Earthquake", {
             text "60 damage. Does 10 damage to each of your Benched Pokémon."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 60
               my.bench.each {damage 10, it}
@@ -2414,7 +2277,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Heavy Impact", {
             text "90 damage. "
             energyCost F, F, F
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -2435,7 +2297,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Hydro Crunch", {
             text "Does 60 damage plus 10 more damage for each damage counter on the Defending Pokémon."
             energyCost W, W, W, W
-            attackRequirement {}
             onAttack {
               damage 60 + 10*defending.numberOfDamageCounters
             }
@@ -2464,7 +2325,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Solarbeam", {
             text "80 damage. "
             energyCost G, G, C, C
-            attackRequirement {}
             onAttack {
               damage 80
             }
@@ -2491,7 +2351,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Flare Destroy", {
             text "70 damage. Discard an Energy card attached to Typhlosion and discard an Energy card attached to the Defending Pokémon."
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 70
               discardSelfEnergy C
@@ -2575,7 +2434,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Thrash", {
             text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 20 more damage. If tails, Gyarados does 20 damage to itself."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30
               flip 1, {damage 20}, {damage 20, self}
@@ -2584,7 +2442,6 @@ public enum HeartgoldSoulsilver implements CardInfo {
           move "Heavy Storm", {
             text "70 damage. "
             energyCost W, C, C, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
