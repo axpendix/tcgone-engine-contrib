@@ -109,14 +109,14 @@ public enum Unleashed implements CardInfo {
   VULPIX_68 ("Vulpix", 68, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
   WEEDLE_69 ("Weedle", 69, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   ZUBAT_70 ("Zubat", 70, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  CHEERLEADER_S_CHEER_71 ("Cheerleader's Cheer", 71, Rarity.UNCOMMON, [TRAINER]),
+  CHEERLEADER_S_CHEER_71 ("Cheerleader's Cheer", 71, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   DUAL_BALL_72 ("Dual Ball", 72, Rarity.UNCOMMON, [TRAINER]),
-  EMCEE_S_CHATTER_73 ("Emcee's Chatter", 73, Rarity.UNCOMMON, [TRAINER]),
+  EMCEE_S_CHATTER_73 ("Emcee's Chatter", 73, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ENERGY_RETURNER_74 ("Energy Returner", 74, Rarity.UNCOMMON, [TRAINER]),
-  ENGINEER_S_ADJUSTMENTS_75 ("Engineer's Adjustments", 75, Rarity.UNCOMMON, [TRAINER]),
+  ENGINEER_S_ADJUSTMENTS_75 ("Engineer's Adjustments", 75, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   GOOD_ROD_76 ("Good Rod", 76, Rarity.UNCOMMON, [TRAINER]),
-  INTERVIEWER_S_QUESTIONS_77 ("Interviewer's Questions", 77, Rarity.UNCOMMON, [TRAINER]),
-  JUDGE_78 ("Judge", 78, Rarity.UNCOMMON, [TRAINER]),
+  INTERVIEWER_S_QUESTIONS_77 ("Interviewer's Questions", 77, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  JUDGE_78 ("Judge", 78, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   LIFE_HERB_79 ("Life Herb", 79, Rarity.UNCOMMON, [TRAINER]),
   PLUSPOWER_80 ("PlusPower", 80, Rarity.UNCOMMON, [TRAINER]),
   POKEMON_CIRCULATOR_81 ("Pokémon Circulator", 81, Rarity.UNCOMMON, [TRAINER]),
@@ -1610,7 +1610,7 @@ public enum Unleashed implements CardInfo {
 
         };
       case CHEERLEADER_S_CHEER_71:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "Draw 3 cards. Your opponent may draw a card."
           onPlay {
           }
@@ -1632,7 +1632,7 @@ public enum Unleashed implements CardInfo {
           }
         };
       case EMCEE_S_CHATTER_73:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "Flip a coin. If heads, draw 3 cards. If tails, draw 2 cards."
           onPlay {
             flip 1, {draw 3} {draw 2}
@@ -1653,7 +1653,7 @@ public enum Unleashed implements CardInfo {
           }
         };
       case ENGINEER_S_ADJUSTMENTS_75:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "Discard an Energy card from your hand. Then, draw 4 cards."
           onPlay {
             my.hand.filterByType(ENERGY).select("Select as Energy to discard.").discard()
@@ -1679,7 +1679,7 @@ public enum Unleashed implements CardInfo {
           }
         };
       case INTERVIEWER_S_QUESTIONS_77:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "Look at the top 8 cards of your deck. Choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Shuffle the other cards back into your deck."
           onPlay {
           }
@@ -1764,7 +1764,7 @@ public enum Unleashed implements CardInfo {
             text "60 damage. If your opponent has any [R] Pokémon in play, this attack’s base damage is 20 instead of 60."
             energyCost W, R
             onAttack {
-              if(opp.all.findAll {it.types.contains(R)}) { 
+              if(opp.all.findAll {it.types.contains(R)}) {
                 damage 20
               } else {
                 damage 60
