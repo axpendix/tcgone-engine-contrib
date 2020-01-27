@@ -138,6 +138,19 @@ public enum Unleashed implements CardInfo {
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
+  static SimpleDeck chaosControl() {
+    def d = new SimpleDeck("Chaos Control Theme Deck")
+    d.map=[(HeartgoldSoulsilver.FIGHTING_ENERGY_120):10,(Unleashed.MISDREAVUS_54):4,(Unleashed.ZUBAT_70):2,(Unleashed.BELDUM_44):4,(Unleashed.INTERVIEWER_S_QUESTIONS_77):2,(Unleashed.LARVITAR_51):4,(Unleashed.GOOD_ROD_76):2,(Unleashed.LIFE_HERB_79):2,(Unleashed.METANG_33):2,(Unleashed.MISMAGIUS_5):1,(HeartgoldSoulsilver.POKE_BALL_95):2,(Unleashed.RIOLU_60):4,(Unleashed.ENGINEER_S_ADJUSTMENTS_75):2,(Unleashed.TYRANITAR_26):1,(Unleashed.LUCARIO_19):1,(HeartgoldSoulsilver.PSYCHIC_ENERGY_119):11,(HeartgoldSoulsilver.DARKNESS_ENERGY_121):3,(Unleashed.PUPITAR_38):2,(Unleashed.POKEMON_CIRCULATOR_81):1]
+    d.format=GameFormat.HGGS_ON
+    d
+  }
+  static SimpleDeck steelSentinel() {
+    def d = new SimpleDeck("Steel Sentinel Theme Deck")
+    d.map=[(HeartgoldSoulsilver.FIGHTING_ENERGY_120):9,(Unleashed.STEELIX_24):1,(Unleashed.ONIX_57):4,(Unleashed.ROSELIA_61):4,(Unleashed.CHEERLEADER_S_CHEER_71):2,(Unleashed.CHERRIM_28):2,(Unleashed.TURTWIG_67):2,(Unleashed.TAUROS_41):2,(Unleashed.ENERGY_RETURNER_74):2,(Unleashed.LIFE_HERB_79):2,(Unleashed.MANKEY_53):4,(Unleashed.PRIMEAPE_22):1,(HeartgoldSoulsilver.POKE_BALL_95):1,(HeartgoldSoulsilver.GRASS_ENERGY_115):12,(HeartgoldSoulsilver.SWITCH_102):2,(Unleashed.ROSERADE_23):1,(HeartgoldSoulsilver.METAL_ENERGY_122):3,(Unleashed.CHERUBI_47):4,(HeartgoldSoulsilver.BILL_89):2]
+    d.format=GameFormat.HGGS_ON
+    d
+  }
+
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;

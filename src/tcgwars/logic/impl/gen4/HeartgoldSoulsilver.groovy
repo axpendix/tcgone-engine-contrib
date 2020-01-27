@@ -1,4 +1,4 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.impl.gen5.BlackWhite
 import tcgwars.logic.impl.gen3.TeamRocketReturns
@@ -170,6 +170,25 @@ public enum HeartgoldSoulsilver implements CardInfo {
   ALPH_LITHOGRAPH_ONE ("Alph Lithograph", 124, Rarity.HOLORARE, [TRAINER]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+
+  static SimpleDeck growthClash() {
+    def d = new SimpleDeck("Growth Clash Theme Deck")
+    d.map=[(HeartgoldSoulsilver.FIGHTING_ENERGY_120):11,(HeartgoldSoulsilver.MEOWTH_75):2,(HeartgoldSoulsilver.POKE_BALL_95):1,(HeartgoldSoulsilver.SANDSLASH_29):1,(HeartgoldSoulsilver.MEGANIUM_26):1,(HeartgoldSoulsilver.POKEMON_REVERSAL_99):2,(HeartgoldSoulsilver.FURRET_21):1,(HeartgoldSoulsilver.METAPOD_46):2,(HeartgoldSoulsilver.PROFESSOR_OAK_S_NEW_THEORY_101):1,(HeartgoldSoulsilver.POKEMON_COMMUNICATION_98):2,(HeartgoldSoulsilver.GRASS_ENERGY_115):13,(HeartgoldSoulsilver.CATERPIE_57):4,(HeartgoldSoulsilver.SENTRET_80):4,(HeartgoldSoulsilver.SANDSHREW_79):4,(HeartgoldSoulsilver.SWITCH_102):2,(HeartgoldSoulsilver.BAYLEEF_35):2,(HeartgoldSoulsilver.MOOMOO_MILK_94):1,(HeartgoldSoulsilver.CHIKORITA_59):4,(HeartgoldSoulsilver.BILL_89):2]
+    d.format=GameFormat.HGGS_ON
+    d
+  }
+  static SimpleDeck emberSpark() {
+    def d = new SimpleDeck("Ember Spark Theme Deck")
+    d.map=[(HeartgoldSoulsilver.ARCANINE_1):1,(HeartgoldSoulsilver.FIRE_ENERGY_116):14,(HeartgoldSoulsilver.PIKACHU_78):2,(HeartgoldSoulsilver.NOCTOWL_8):1,(HeartgoldSoulsilver.CYNDAQUIL_61):4,(HeartgoldSoulsilver.FLAAFFY_42):2,(HeartgoldSoulsilver.POKEMON_REVERSAL_99):2,(HeartgoldSoulsilver.PROFESSOR_OAK_S_NEW_THEORY_101):2,(HeartgoldSoulsilver.MAREEP_73):4,(HeartgoldSoulsilver.POKEMON_COMMUNICATION_98):2,(HeartgoldSoulsilver.SWITCH_102):2,(HeartgoldSoulsilver.LIGHTNING_ENERGY_118):10,(HeartgoldSoulsilver.HOOTHOOT_66):4,(HeartgoldSoulsilver.COPYCAT_90):1,(HeartgoldSoulsilver.QUILAVA_49):2,(HeartgoldSoulsilver.TYPHLOSION_32):1,(HeartgoldSoulsilver.GROWLITHE_65):4,(HeartgoldSoulsilver.MOOMOO_MILK_94):2]
+    d.format=GameFormat.HGGS_ON
+    d
+  }
+  static SimpleDeck mindFlood() {
+    def d = new SimpleDeck("Mind Flood Theme Deck")
+    d.map=[(HeartgoldSoulsilver.SLOWBRO_52):2,(HeartgoldSoulsilver.SLOWPOKE_81):4,(HeartgoldSoulsilver.FERALIGATR_20):1,(HeartgoldSoulsilver.HYPNO_23):1,(HeartgoldSoulsilver.WATER_ENERGY_117):13,(HeartgoldSoulsilver.FULL_HEAL_93):1,(HeartgoldSoulsilver.PROFESSOR_ELM_S_TRAINING_METHOD_100):2,(HeartgoldSoulsilver.TOTODILE_86):4,(HeartgoldSoulsilver.PROFESSOR_OAK_S_NEW_THEORY_101):2,(HeartgoldSoulsilver.EXEGGUTOR_18):1,(HeartgoldSoulsilver.DROWZEE_62):4,(HeartgoldSoulsilver.MOOMOO_MILK_94):2,(HeartgoldSoulsilver.CROCONAW_38):2,(HeartgoldSoulsilver.JYNX_69):2,(HeartgoldSoulsilver.EXEGGCUTE_63):4,(HeartgoldSoulsilver.PSYCHIC_ENERGY_119):11,(HeartgoldSoulsilver.POKE_BALL_95):2,(HeartgoldSoulsilver.BILL_89):2]
+    d.format=GameFormat.HGGS_ON
+    d
+  }
 
   protected CardTypeSet cardTypes;
   protected String name;
