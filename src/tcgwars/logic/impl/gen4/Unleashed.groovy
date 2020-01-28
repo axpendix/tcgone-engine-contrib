@@ -828,7 +828,7 @@ public enum Unleashed implements CardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.active.numberOfDamageCounters()
+              assert my.active.numberOfDamageCounters
               powerUsed()
               heal 10, my.active
             }
@@ -850,7 +850,7 @@ public enum Unleashed implements CardInfo {
             energyCost C
             onAttack {
               damage 10
-              draw 6 - my.hand.size
+              draw 6 - my.hand.size()
             }
           }
 
@@ -1027,7 +1027,7 @@ public enum Unleashed implements CardInfo {
             text "Does 20 damage plus 10 more damage for each damage counter on Pupitar."
             energyCost C, C
             onAttack {
-              damage 20 + 10*self.numberOfDamageCounters()
+              damage 20 + 10*self.numberOfDamageCounters
             }
           }
         };
@@ -1304,7 +1304,7 @@ public enum Unleashed implements CardInfo {
             text "40- damage. Does 40 damage minus 10 damage for each damage counter on Mankey."
             energyCost F, C
             onAttack {
-              damage 40 - 10*self.numberOfDamageCounters()
+              damage 40 - 10*self.numberOfDamageCounters
             }
           }
 
@@ -1350,7 +1350,7 @@ public enum Unleashed implements CardInfo {
             delayedA{
               before ATTACH_ENERGY, {
                 if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner) {
-                  heal 10, it
+                  heal 10, h.effect.getResolvedTarget(bg, e)
                 }
               }
             }
@@ -1570,7 +1570,7 @@ public enum Unleashed implements CardInfo {
             onAttack {
               damage 20
               afterDamage{
-                flip 1, {} {discardSelfEnergy(R)}
+                flip 1, {}, {discardSelfEnergy(R)}
               }
             }
           }
@@ -1648,7 +1648,7 @@ public enum Unleashed implements CardInfo {
         return supporter (this) {
           text "Flip a coin. If heads, draw 3 cards. If tails, draw 2 cards."
           onPlay {
-            flip 1, {draw 3} {draw 2}
+            flip 1, {draw 3}, {draw 2}
           }
           playRequirement{
             assert my.deck.notEmpty
@@ -1683,7 +1683,7 @@ public enum Unleashed implements CardInfo {
           onPlay {
             flip 1, {
               my.discard.filterByType(POKEMON).select("Select a Pokemon").showToOpponent("Selected Pokemon").moveTo(addToTop:true, my.deck)
-            } {
+            }, {
               my.discard.filterByType(TRAINER).select("Select a Trainer card").showToOpponent("Selected Trainer card").moveTo(addToTop:true, my.deck)
             }
           }
@@ -1695,6 +1695,8 @@ public enum Unleashed implements CardInfo {
         return supporter (this) {
           text "Look at the top 8 cards of your deck. Choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Shuffle the other cards back into your deck."
           onPlay {
+            my.deck.subList(0, 8).select(max: 8, "Top cards of your deck. Put Energy cards to your hand", cardTypeFilter(ENERGY)).moveTo(my.hand)
+            shuffleDeck()
           }
           playRequirement{
             assert my.deck : "No cards in deck"
@@ -1798,8 +1800,9 @@ public enum Unleashed implements CardInfo {
               delayed {
                 def eff
                 register {
-                  eff = getterA GET_POKEMON_TYPE, self, { h->
-                    h.object = W
+                  eff = getter GET_POKEMON_TYPE, self, { h->
+                    h.object.clear()
+                    h.object.add(W)
                   }
                 }
                 unregister {
@@ -1920,7 +1923,7 @@ public enum Unleashed implements CardInfo {
             energyCost C, C, C
             onAttack {
               damage 30
-              afterDamage{opp.deck.sublist(0,1).discard()}
+              afterDamage{if(opp.deck) opp.deck.subList(0,1).discard()}
             }
           }
           move "Megaton Lariat", {
