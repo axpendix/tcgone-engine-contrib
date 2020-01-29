@@ -4306,21 +4306,27 @@ public enum LostThunder implements CardInfo {
         };
       case MIXED_HERBS_184:
         return itemCard (this) {
-          text "You may play 2 Mixed Herbs cards at once.If you played 1 card, remove a Special Condition from your Active Pokémon.If you played 2 cards, heal 90 damage and remove all Special Conditions from your Active Pokémon. (This effect works one time for 2 cards.)\nYou may play as many Item cards as you like during your turn (before your attack)."
+          text "You may play 2 Mixed Herbs cards at once. " +
+            "If you played 1 card, remove a Special Condition from your Active Pokémon. " +
+            "If you played 2 cards, heal 90 damage and remove all Special Conditions from your Active Pokémon. (This effect works one time for 2 cards.)"
           onPlay {
-            if(my.hand.findAll({it.name=="Mixed Herbs"}).size()>=2) {
-              if(confirm("Use another Mixed Herbs?")){
-                my.hand.findAll({it.name=="Mixed Herbs" && it!= thisCard}).subList(0,1).discard()
-                heal 90, my.active
-                clearSpecialCondition(my.active, Source.TRAINER_CARD)
-                return
-              }
+            if(my.hand.filterByNameEquals("Mixed Herbs").size()>=2 && choose([1,2],["Play 1","Play 2"],
+              "Mixed Herbs. If you play 1 card, remove a Special Condition from your Active Pokémon. " +
+                "If you play 2 cards, heal 90 damage and remove all Special Conditions from your Active Pokémon.") == 2) {
+              my.hand.findAll({it.name=="Mixed Herbs" && it!= thisCard}).subList(0,1).discard()
+              heal 90, my.active
+              clearSpecialCondition(my.active, Source.TRAINER_CARD)
+            } else {
+              SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove");
+              clearSpecialCondition(my.active, TRAINER_CARD, [spc])
             }
-            SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove");
-            clearSpecialCondition(my.active, TRAINER_CARD, [spc])
           }
           playRequirement{
-            assert my.active.numberOfDamageCounters || my.active.specialConditions
+            if(my.hand.filterByNameEquals("Mixed Herbs").size()>=2) {
+              assert my.active.numberOfDamageCounters || my.active.specialConditions : "Your pokemon is fine"
+            } else {
+              assert my.active.specialConditions : "Your pokemon is fine"
+            }
           }
         };
       case MOOMOO_MILK_185:
