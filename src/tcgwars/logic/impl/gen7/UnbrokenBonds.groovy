@@ -1475,7 +1475,7 @@ public enum UnbrokenBonds implements CardInfo {
                   }
                 }
                 after SWITCH, self, {unregister()}
-                unregisterAfter 1
+                unregisterAfter 2
               }
             }
           }
