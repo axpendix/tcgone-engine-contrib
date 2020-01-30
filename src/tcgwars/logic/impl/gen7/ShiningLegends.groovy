@@ -15,12 +15,9 @@ import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
-import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
-
-import java.util.*
 
 import tcgwars.logic.*;
 import tcgwars.logic.card.*
@@ -30,7 +27,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum ShiningLegends implements CardInfo {
+public enum ShiningLegends implements LogicCardInfo {
 
   BULBASAUR_1 ("Bulbasaur", 1, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   IVYSAUR_2 ("Ivysaur", 2, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),

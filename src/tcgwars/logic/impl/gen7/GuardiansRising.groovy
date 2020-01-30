@@ -18,8 +18,6 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*
-
 import tcgwars.logic.*;
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.ability.*
@@ -29,7 +27,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum GuardiansRising implements CardInfo {
+public enum GuardiansRising implements LogicCardInfo {
 
   BELLSPROUT_1 ("Bellsprout", 1, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   WEEPINBELL_2 ("Weepinbell", 2, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),

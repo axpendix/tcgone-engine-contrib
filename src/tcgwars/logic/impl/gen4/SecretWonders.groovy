@@ -23,7 +23,6 @@ import tcgwars.logic.card.pokemon.*;
 import tcgwars.logic.card.trainer.*;
 import tcgwars.logic.effect.*;
 import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
 import tcgwars.logic.effect.advanced.*;
 import tcgwars.logic.effect.basic.*;
 import tcgwars.logic.effect.blocking.*;
@@ -35,7 +34,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum SecretWonders implements CardInfo {
+public enum SecretWonders implements LogicCardInfo {
 
   AMPHAROS_1 ("Ampharos", 1, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
   BLASTOISE_2 ("Blastoise", 2, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),

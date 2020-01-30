@@ -14,7 +14,6 @@ import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
 import java.util.*;
-import org.apache.commons.lang.WordUtils;
 import tcgwars.entity.*;
 import tcgwars.logic.*;
 import tcgwars.logic.card.*;
@@ -23,7 +22,6 @@ import tcgwars.logic.card.pokemon.*;
 import tcgwars.logic.card.trainer.*;
 import tcgwars.logic.effect.*;
 import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
 import tcgwars.logic.effect.advanced.*;
 import tcgwars.logic.effect.basic.*;
 import tcgwars.logic.effect.blocking.*;
@@ -35,7 +33,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum Arceus implements CardInfo {
+public enum Arceus implements LogicCardInfo {
 
   CHARIZARD_1 ("Charizard", 1, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
   FROSLASS_2 ("Froslass", 2, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),

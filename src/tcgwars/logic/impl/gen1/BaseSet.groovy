@@ -12,17 +12,11 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
 import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
+import tcgwars.logic.card.*
+import tcgwars.logic.card.pokemon.*
 import tcgwars.logic.effect.*;
 import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
 import tcgwars.logic.effect.advanced.*;
 import tcgwars.logic.effect.basic.*;
 import tcgwars.logic.effect.blocking.*;
@@ -34,7 +28,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum BaseSet implements CardInfo {
+public enum BaseSet implements LogicCardInfo {
 
   ALAKAZAM ("Alakazam", 1, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
   BLASTOISE ("Blastoise", 2, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),

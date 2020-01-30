@@ -1,7 +1,5 @@
 package tcgwars.logic.util;
 
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
 import tcgwars.logic.Battleground;
 import tcgwars.logic.PlayerType;
 import tcgwars.logic.card.*;
@@ -63,7 +61,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     set.setAutosort(true);
     damage = HP.HP000;
     this.owner = owner;
-    this.specialConditions = new THashSet<>();
+    this.specialConditions = new HashSet<>();
     this.id = UUID.randomUUID().toString();
 //		this.evolutionChain = new HashMap<PokemonCard, PokemonCard>();
   }
@@ -123,26 +121,6 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   public CardList cards() {
     return set;
-  }
-
-  public List<Type> getAggregatedTypeImages(){
-    List<Type> list = new ArrayList<Type>();
-    for (Iterator<Card> iterator = cards().iterator(); iterator.hasNext();) {
-      Card card = iterator.next();
-      if(card.getCardTypes().isEnergy()){
-        try {
-          Set<List<Type>> energyTypes = TcgStatics.bg().em().activateGetter(new GetEnergyTypes(card, this));
-          list.addAll(LUtils.generateTypeImages(energyTypes));
-        } catch (Exception e) {
-          try {
-            list.addAll(LUtils.generateTypeImages(card.asEnergyCard().getEnergyTypes()));
-          } catch (Exception e2) {
-            LUtils.logger.error("error while generating type images", e2);
-          }
-        }
-      }
-    }
-    return list;
   }
 
   public List<EnergyCard> getEnergyCards(){
@@ -230,14 +208,14 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 //		evolutionChain.put(getTopPokemonCard(), evolution);
 //		set.add(evolution);
 //	}
-//	
+//
 //	public PokemonCard removeTopEvolutionChain(){
 //		PokemonCard pokemonCard = getTopPokemonCard();
 //		evolutionChain.remove(pokemonCard);
 //		set.remove(pokemonCard);
 //		return pokemonCard;
 //	}
-//	
+//
 //	public Map<PokemonCard, PokemonCard> getEvolutionChain() {
 //		return evolutionChain;
 //	}
@@ -333,7 +311,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   }
   public Map<Ability, PokemonCard> getLastAbilities() {
     // copying this map is very important. If not done, then a second call to CheckAbilities removes the currently processing Ability from the map, leading to ConcurrentModificationException.
-    return lastAbilities != null ? new THashMap<>(lastAbilities) : null;
+    return lastAbilities != null ? new HashMap<>(lastAbilities) : null;
   }
 
   public boolean isTeamPlasma(){

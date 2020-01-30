@@ -12,29 +12,14 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
+import tcgwars.logic.card.*
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
  */
-public enum DetectivePikachu implements CardInfo {
+public enum DetectivePikachu implements LogicCardInfo {
 
   BULBASAUR_1 ("Bulbasaur", 1, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
   LUDICOLO_2 ("Ludicolo", 2, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),

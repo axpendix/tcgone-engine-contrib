@@ -13,31 +13,17 @@ import static tcgwars.logic.effect.Source.*;
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
-import static tcgwars.logic.card.Weakness.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
 import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
+import tcgwars.logic.card.*
 import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
+import tcgwars.logic.effect.ability.*
 import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
  */
-public enum Unleashed implements CardInfo {
+public enum Unleashed implements LogicCardInfo {
 
   JIRACHI_1 ("Jirachi", 1, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
   MAGMORTAR_2 ("Magmortar", 2, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),

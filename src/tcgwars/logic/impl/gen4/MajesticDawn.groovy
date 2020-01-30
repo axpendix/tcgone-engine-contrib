@@ -5,37 +5,16 @@ import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
-import static tcgwars.logic.effect.EffectPriority.*
-import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
+import tcgwars.logic.card.*
 import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
  */
-public enum MajesticDawn implements CardInfo {
+public enum MajesticDawn implements LogicCardInfo {
 
   ARTICUNO_1 ("Articuno", 1, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
   CRESSELIA_2 ("Cresselia", 2, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),

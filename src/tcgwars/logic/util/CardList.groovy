@@ -6,7 +6,6 @@ import tcgwars.logic.card.energy.BasicEnergyCard
 import tcgwars.logic.effect.basic.EnergySufficientGetter
 import tcgwars.logic.effect.basic.MoveCard
 import tcgwars.logic.groovy.TcgStatics
-import org.springframework.data.annotation.PersistenceConstructor;
 
 import tcgwars.logic.Battleground;
 import tcgwars.logic.card.Card;
@@ -34,7 +33,6 @@ public class CardList extends ArrayList<Card> {
   protected CardListType type = CardListType.TEMPORARY;
   protected String persistentName;
 
-  @PersistenceConstructor
   public CardList() {
     super();
   }

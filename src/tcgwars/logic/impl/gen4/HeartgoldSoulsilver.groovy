@@ -5,7 +5,6 @@ import tcgwars.logic.impl.gen3.TeamRocketReturns
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
 import tcgwars.logic.impl.gen7.UnbrokenBonds
 import tcgwars.logic.impl.gen6.KalosStarterSet
-import tcgwars.logic.impl.gen6.Xy
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -14,35 +13,19 @@ import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
-import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
-import static tcgwars.logic.card.Weakness.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
 import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
+import tcgwars.logic.card.*
+import tcgwars.logic.effect.*
 import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
  */
-public enum HeartgoldSoulsilver implements CardInfo {
+public enum HeartgoldSoulsilver implements LogicCardInfo {
 
   ARCANINE_1 ("Arcanine", 1, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
   AZUMARILL_2 ("Azumarill", 2, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),

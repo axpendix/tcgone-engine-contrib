@@ -1,56 +1,16 @@
-package tcgwars.logic.impl.pokemod;
+package tcgwars.logic.impl.pokemod
 
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.EnergyCard;
-import tcgwars.logic.card.pokemon.BabyPokemonCard;
-import tcgwars.logic.card.pokemon.BasicPokemonCard;
-import tcgwars.logic.card.pokemon.EvolutionPokemonCard;
-import tcgwars.logic.card.pokemon.PokemonCard;
-import tcgwars.logic.card.trainer.BasicTrainerCard;
-import tcgwars.logic.card.trainer.StadiumTrainerCard;
-import tcgwars.logic.client.*;
-import tcgwars.logic.client.CardSelectUIRequestBuilder.CustomCardFilter;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.Ability.ActivationReason;
-import tcgwars.logic.effect.ability.ActivateAbilities;
-import tcgwars.logic.effect.ability.PokemonPower;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.BlockingEffect;
-import tcgwars.logic.effect.blocking.CantAttackNextTurn;
-import tcgwars.logic.effect.blocking.CantEvolve;
-import tcgwars.logic.effect.event.Event;
-import tcgwars.logic.effect.event.EventManager;
-import tcgwars.logic.effect.event.Phase;
-import tcgwars.logic.effect.getter.AbstractGetterEffect;
-import tcgwars.logic.effect.getter.CoinFlipGetter;
-import tcgwars.logic.effect.getter.GetEnergyCardCount;
-import tcgwars.logic.effect.getter.GetPokemonType;
-import tcgwars.logic.effect.gm.AttachEnergy;
-import tcgwars.logic.effect.gm.Attack;
-import tcgwars.logic.effect.special.ApplySpecialCondition;
-import tcgwars.logic.effect.special.ClearSpecialCondition;
-import tcgwars.logic.effect.special.SpecialConditionType;
-import tcgwars.logic.groovy.TcgStatics;
-import tcgwars.logic.impl.gen1.BaseSet;
-import tcgwars.logic.impl.gen1.Fossil;
-import tcgwars.logic.impl.gen1.VendingMachine;
-import tcgwars.logic.impl.gen2.Aquapolis;
-import tcgwars.logic.util.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import tcgwars.logic.card.*
+import tcgwars.logic.util.*
 
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.groovy.TcgBuilders.copy;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.card.Type.*
 
 /**
  * @author axpendix@hotmail.com
  */
-public enum PokemodWizardsBlackStarPromos implements CardInfo {
+public enum PokemodWizardsBlackStarPromos implements LogicCardInfo {
 
   PIKACHU_1 ("Pikachu", 1, Rarity.PROMO, BASIC, POKEMON, _LIGHTNING_),
   ELECTABUZZ_2 ("Electabuzz", 2, Rarity.PROMO, BASIC, POKEMON, _LIGHTNING_),
@@ -142,7 +102,7 @@ public enum PokemodWizardsBlackStarPromos implements CardInfo {
 
   @Override
   public Collection getCollection() {
-    return Collection.POKEMOD_WIZARDS_BLACK_STAR_PROMOS;
+    return Collection.POKEMOD_PROMOS;
   }
 
   @Override
@@ -157,9 +117,7 @@ public enum PokemodWizardsBlackStarPromos implements CardInfo {
 
   @Override
   public Card getImplementation() {
-    switch (this) {
     return null;
-    }
   }
 
 }

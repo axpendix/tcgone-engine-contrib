@@ -1,44 +1,27 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
 
-import tcgwars.logic.impl.gen7.*;
-import tcgwars.logic.impl.gen6.*;
 
-import java.util.*;
+import tcgwars.logic.impl.gen6.*
 
 import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Resistance.ResistanceType.*
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.effect.EffectPriority.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 
-import tcgwars.entity.*;
 import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
+import tcgwars.logic.card.*
 import tcgwars.logic.util.*;
 
 /**
  * @author luongthomasdev@gmail.com
  * @author axpendix@hotmail.com
  */
-public enum HiddenFates implements CardInfo {
+public enum HiddenFates implements LogicCardInfo {
 
   CATERPIE_1 ("Caterpie", 1, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
   METAPOD_2 ("Metapod", 2, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),

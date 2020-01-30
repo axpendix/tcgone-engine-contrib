@@ -1,6 +1,6 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
 
-import tcgwars.logic.effect.gm.Attack
+
 import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayStadium
 import tcgwars.logic.effect.gm.PlayTrainer
@@ -17,29 +17,18 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
 import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
+import tcgwars.logic.card.*
 import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
  */
-public enum CosmicEclipse implements CardInfo {
+public enum CosmicEclipse implements LogicCardInfo {
 
   VENUSAUR_SNIVY_GX_1 ("Venusaur & Snivy-GX", 1, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _GRASS_]),
   ODDISH_2 ("Oddish", 2, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),

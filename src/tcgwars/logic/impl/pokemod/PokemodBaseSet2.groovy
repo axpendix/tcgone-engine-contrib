@@ -13,7 +13,7 @@ import static tcgwars.logic.groovy.TcgBuilders.copy
 /**
  * @author axpendix@hotmail.com
  */
-public enum PokemodBaseSet2 implements CardInfo {
+public enum PokemodBaseSet2 implements LogicCardInfo {
 
   ALAKAZAM_1 ("Alakazam", 1, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
   BLASTOISE_2 ("Blastoise", 2, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),

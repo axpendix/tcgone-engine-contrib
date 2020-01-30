@@ -1,6 +1,6 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
 
-import tcgwars.logic.effect.gm.Attack
+
 import tcgwars.logic.effect.gm.PlayTrainer
 
 import static tcgwars.logic.card.HP.*;
@@ -15,21 +15,11 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import tcgwars.entity.*;
 import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
+import tcgwars.logic.card.*
 import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
@@ -37,7 +27,7 @@ import tcgwars.logic.util.*;
  * @author axpendix@hotmail.com
  * @author itrezad@gmail.com
  */
-public enum LostThunder implements CardInfo {
+public enum LostThunder implements LogicCardInfo {
 
 
   TANGELA_1("Tangela", 1, Rarity.COMMON, [POKEMON,_GRASS_,BASIC]),

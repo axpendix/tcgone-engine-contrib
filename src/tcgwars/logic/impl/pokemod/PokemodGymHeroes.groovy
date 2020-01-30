@@ -1,35 +1,16 @@
 package tcgwars.logic.impl.pokemod
 
-import tcgwars.logic.GameFormat
-import tcgwars.logic.PlayerType
-import tcgwars.logic.TargetPlayer
+
 import tcgwars.logic.card.*
-import tcgwars.logic.effect.Source
-import tcgwars.logic.effect.basic.ApplyDamages
-import tcgwars.logic.effect.basic.TakePrize
-import tcgwars.logic.effect.gm.Attack
-import tcgwars.logic.effect.special.SpecialConditionType
-import tcgwars.logic.groovy.TcgStatics
-import tcgwars.logic.impl.gen1.BaseSet
-import tcgwars.logic.impl.gen1.Jungle
 import tcgwars.logic.util.*
 
 import static tcgwars.logic.card.CardType.*
-import static tcgwars.logic.card.HP.*
 import static tcgwars.logic.card.Type.*
-import static tcgwars.logic.effect.EffectPriority.*
-import static tcgwars.logic.effect.EffectType.*
-import static tcgwars.logic.effect.Source.TRAINER_CARD
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
-import static tcgwars.logic.effect.special.SpecialConditionType.*
-import static tcgwars.logic.groovy.TcgBuilders.*
-import static tcgwars.logic.groovy.TcgStatics.*
 
 /**
  * @author axpendix@hotmail.com
  */
-public enum PokemodGymHeroes implements CardInfo {
+public enum PokemodGymHeroes implements LogicCardInfo {
 
   BLAINE_S_MOLTRES_1 ("Blaine's Moltres", 1, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _FIRE_]),
   BROCK_S_RHYDON_2 ("Brock's Rhydon", 2, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, OWNERS_POKEMON, _FIGHTING_]),

@@ -11,13 +11,10 @@ import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
-
-import java.util.*
 
 import tcgwars.logic.card.*
 import tcgwars.logic.card.pokemon.*
@@ -27,7 +24,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum SunMoonPromos implements CardInfo {
+public enum SunMoonPromos implements LogicCardInfo {
 
   ROWLET_SM01 ("Rowlet", 1, Rarity.PROMO, [BASIC, POKEMON, _GRASS_]),
   LITTEN_SM02 ("Litten", 2, Rarity.PROMO, [BASIC, POKEMON, _FIRE_]),

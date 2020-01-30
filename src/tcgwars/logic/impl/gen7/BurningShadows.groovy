@@ -11,12 +11,9 @@ import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
-import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
-
-import java.util.*
 
 import tcgwars.logic.*;
 import tcgwars.logic.card.*
@@ -28,7 +25,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum BurningShadows implements CardInfo {
+public enum BurningShadows implements LogicCardInfo {
 
   CATERPIE_1 ("Caterpie", 1, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   METAPOD_2 ("Metapod", 2, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),

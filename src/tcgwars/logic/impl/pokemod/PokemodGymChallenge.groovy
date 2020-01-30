@@ -1,38 +1,16 @@
 package tcgwars.logic.impl.pokemod
 
-import tcgwars.logic.Action
-import tcgwars.logic.GameFormat
-import tcgwars.logic.TargetPlayer
+
 import tcgwars.logic.card.*
-import tcgwars.logic.effect.DummyEffect
-import tcgwars.logic.effect.Source
-import tcgwars.logic.effect.ability.CheckAbilities
-import tcgwars.logic.effect.ability.PokemonPower
-import tcgwars.logic.effect.basic.DiscardEnergy
-import tcgwars.logic.effect.basic.Knockout
-import tcgwars.logic.effect.basic.Move
-import tcgwars.logic.effect.gm.PlayTrainer
-import tcgwars.logic.impl.gen1.BaseSet
-import tcgwars.logic.util.CardList
 import tcgwars.logic.util.CardTypeSet
-import tcgwars.logic.util.SimpleDeck
 
 import static tcgwars.logic.card.CardType.*
-import static tcgwars.logic.card.HP.*
 import static tcgwars.logic.card.Type.*
-import static tcgwars.logic.effect.EffectPriority.*
-import static tcgwars.logic.effect.EffectType.*
-import static tcgwars.logic.effect.Source.TRAINER_CARD
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
-import static tcgwars.logic.effect.special.SpecialConditionType.*
-import static tcgwars.logic.groovy.TcgBuilders.*
-import static tcgwars.logic.groovy.TcgStatics.*
 
 /**
  * @author axpendix@hotmail.com
  */
-public enum PokemodGymChallenge implements CardInfo {
+public enum PokemodGymChallenge implements LogicCardInfo {
 
   BLAINE_S_ARCANINE_1 ("Blaine's Arcanine", 1, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, OWNERS_POKEMON, _FIRE_]),
   BLAINE_S_CHARIZARD_2 ("Blaine's Charizard", 2, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, OWNERS_POKEMON, _FIRE_]),

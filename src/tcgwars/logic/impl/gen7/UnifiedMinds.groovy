@@ -12,23 +12,10 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import tcgwars.entity.*;
 import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.move.*;
-import tcgwars.logic.effect.special.*;
+import tcgwars.logic.card.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.util.*;
 
 /**
@@ -36,7 +23,7 @@ import tcgwars.logic.util.*;
  * @author vandergus
  * @author axpendix@hotmail.com
  */
-public enum UnifiedMinds implements CardInfo {
+public enum UnifiedMinds implements LogicCardInfo {
 
   ROWLET_ALOLAN_EXEGGUTOR_GX_1 ("Rowlet & Alolan Exeggutor-GX", 1, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _GRASS_]),
   YANMA_2 ("Yanma", 2, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
