@@ -19,7 +19,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum Fossil implements LogicCardInfo {
+public enum FossilNG implements LogicCardInfo {
 
   AERODACTYL_1 ("Aerodactyl", 1, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
   ARTICUNO_2 ("Articuno", 2, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
@@ -142,7 +142,7 @@ public enum Fossil implements LogicCardInfo {
   protected Rarity rarity;
   protected int collectionLineNo;
 
-  Fossil(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  FossilNG(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;

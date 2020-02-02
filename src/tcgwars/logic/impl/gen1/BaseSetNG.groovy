@@ -28,7 +28,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum BaseSet implements LogicCardInfo {
+public enum BaseSetNG implements LogicCardInfo {
 
   ALAKAZAM ("Alakazam", 1, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
   BLASTOISE ("Blastoise", 2, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
@@ -238,7 +238,7 @@ public enum BaseSet implements LogicCardInfo {
   protected Rarity rarity;
   protected int collectionLineNo;
 
-  BaseSet(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  BaseSetNG(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;

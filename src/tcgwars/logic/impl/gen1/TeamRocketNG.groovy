@@ -21,7 +21,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum TeamRocket implements LogicCardInfo {
+public enum TeamRocketNG implements LogicCardInfo {
 
   DARK_ALAKAZAM_1 ("Dark Alakazam", 1, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
   DARK_ARBOK_2 ("Dark Arbok", 2, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
@@ -171,7 +171,7 @@ public enum TeamRocket implements LogicCardInfo {
   protected Rarity rarity;
   protected int collectionLineNo;
 
-  TeamRocket(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  TeamRocketNG(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;

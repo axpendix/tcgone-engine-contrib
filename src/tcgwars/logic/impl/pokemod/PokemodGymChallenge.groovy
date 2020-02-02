@@ -196,9 +196,7 @@ public enum PokemodGymChallenge implements LogicCardInfo {
 
   @Override
   public Card getImplementation() {
-    switch (this) {
     return null;
-    }
   }
 
 }

@@ -19,7 +19,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum Jungle implements LogicCardInfo {
+public enum JungleNG implements LogicCardInfo {
 
   CLEFABLE_1 ("Clefable", 1, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
   ELECTRODE_2 ("Electrode", 2, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
@@ -144,7 +144,7 @@ public enum Jungle implements LogicCardInfo {
   protected Rarity rarity;
   protected int collectionLineNo;
 
-  Jungle(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  JungleNG(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;

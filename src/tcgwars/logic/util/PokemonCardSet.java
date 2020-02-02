@@ -1,5 +1,8 @@
 package tcgwars.logic.util;
 
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
+import tcgwars.common.TWCommon;
 import tcgwars.logic.Battleground;
 import tcgwars.logic.PlayerType;
 import tcgwars.logic.card.*;
@@ -23,7 +26,7 @@ import static tcgwars.logic.card.CardType.EVOLUTION;
 public class PokemonCardSet implements PokemonStack, Serializable {
 
   /**
-   * This list is automatically sorted (see {@link CardList#autosort}).
+   * This list is automatically sorted (see {@link CardList#setAutosort(boolean)}).
    * The order is roughly: evolution cards, basic pokemon, trainers, energy.
    */
   private CardList set;
@@ -61,7 +64,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     set.setAutosort(true);
     damage = HP.HP000;
     this.owner = owner;
-    this.specialConditions = new HashSet<>();
+    this.specialConditions = new THashSet<>();
     this.id = UUID.randomUUID().toString();
 //		this.evolutionChain = new HashMap<PokemonCard, PokemonCard>();
   }
@@ -123,6 +126,50 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return set;
   }
 
+  private List<Type> lastAggregatedTypeImages = new ArrayList<>();
+  private LUtils.ChangeDetector lastAggregatedTypeImagesChangeDetector = new LUtils.ChangeDetector();
+
+  public List<Type> getAggregatedTypeImages(){
+    if(Battleground.getInstance() == null) return lastAggregatedTypeImages;
+    boolean hadError = false;
+    List<EnergyCard> energyCards = new ArrayList<>();
+    for (Iterator<Card> iterator = cards().iterator(); iterator.hasNext();) {
+      try {
+        Card card = iterator.next();
+        if (card.getCardTypes().isEnergy()) {
+          energyCards.add(card.asEnergyCard());
+        }
+      } catch (java.util.ConcurrentModificationException e) { // a race condition with backend, just ignore it and it'll catch up
+        hadError = true;
+      } catch (Exception e){
+        LUtils.logger.error("error while getting cards", e);
+        hadError = true;
+      }
+    }
+    if(!hadError && lastAggregatedTypeImagesChangeDetector.isChanged(energyCards)){
+      List<Type> list = new ArrayList<>();
+      for (EnergyCard card : energyCards) {
+        try {
+          List<Type> typeImagesOverride = card.getTypeImagesOverride();
+          if(typeImagesOverride != null){
+            list.addAll(typeImagesOverride);
+            continue;
+          }
+          List<Set<Type>> energyTypes = TcgStatics.bg().em().activateGetter(new GetEnergyTypes(card, this));
+          list.addAll(TWCommon.generateTypeImages(energyTypes));
+        } catch (Exception e) {
+          try {
+            list.addAll(TWCommon.generateTypeImages(card.asEnergyCard().getEnergyTypes()));
+          } catch (Exception e2) {
+            LUtils.logger.error("error while generating type images", e2);
+          }
+        }
+      }
+      lastAggregatedTypeImages = list;
+    }
+    return lastAggregatedTypeImages;
+  }
+
   public List<EnergyCard> getEnergyCards(){
     List<EnergyCard> list = new ArrayList<EnergyCard>();
     for (Iterator<Card> iterator = cards().iterator(); iterator.hasNext();) {
@@ -178,18 +225,17 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     this.owner = owner;
   }
 
-  //	@Override
-//	public boolean equals(Object obj) {
-//		if (obj instanceof PokemonCardSet) {
-//			return ((PokemonCardSet) obj).place.equals(this.place);
-//		}
-//		return false;
-//	}
-//
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    PokemonCardSet that = (PokemonCardSet) o;
+    return Objects.equals(id, that.id);
+  }
+
   @Override
   public int hashCode() {
-    return id.hashCode();
-//		return place.name().hashCode();
+    return Objects.hash(id);
   }
 
   public void setDamage(HP damage) {
@@ -311,7 +357,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   }
   public Map<Ability, PokemonCard> getLastAbilities() {
     // copying this map is very important. If not done, then a second call to CheckAbilities removes the currently processing Ability from the map, leading to ConcurrentModificationException.
-    return lastAbilities != null ? new HashMap<>(lastAbilities) : null;
+    return lastAbilities != null ? new THashMap<>(lastAbilities) : new THashMap<>();
   }
 
   public boolean isTeamPlasma(){
@@ -333,6 +379,13 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   public String toString() {
     return getName();
 //		return "\n\tPokemonCardSet [set=" + cards() + ", damage=" + damage + "]" ;
+  }
+
+  public String getShortId(){
+    return id.substring(0,6);
+  }
+  public String getNameWithShortId(){
+    return getName()+" ("+getShortId()+")";
   }
 
 //	public void setCards(CardList set) {

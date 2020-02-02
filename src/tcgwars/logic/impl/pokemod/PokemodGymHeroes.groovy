@@ -196,9 +196,7 @@ public enum PokemodGymHeroes implements LogicCardInfo {
 
   @Override
   public Card getImplementation() {
-    switch (this) {
     return null;
-    }
   }
 
 }

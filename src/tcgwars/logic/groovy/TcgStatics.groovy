@@ -707,7 +707,7 @@ class TcgStatics {
   static void preventAllDamageFromCustomPokemonNextTurn(Move thisMove, PokemonCardSet self, Predicate<PokemonCardSet> predicate){
     delayed {
       before APPLY_ATTACK_DAMAGES, {
-        bg.dm().each { //self.owner.opposite.pbg.active
+        bg.dm().each {
           if(it.to == self && it.notNoEffect && it.from != it.to && predicate.test(it.from) && bg.currentTurn==self.owner.opposite ){
             it.dmg = hp(0)
             bc "$thisMove prevents damage"
@@ -719,7 +719,7 @@ class TcgStatics {
       after SWITCH, self, {unregister()}
     }
   }
-  static callForFamily(params=[:],int count,Object delegate){
+  static callForFamily(Map params=[:],int count,Object delegate){
     delegate.attackRequirement {
       assert my.deck.notEmpty
       assert my.bench.notFull
