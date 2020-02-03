@@ -2192,7 +2192,7 @@ public enum SunMoon implements LogicCardInfo {
 
         }
       case SNUBBULL_90:
-        return basic (this, hp:HP090, type:FAIRY, retreatCost:1) {
+        return basic (this, hp:HP070, type:FAIRY, retreatCost:1) {
           weakness METAL
           resistance DARKNESS, MINUS20
           move "Reckless Charge", {
