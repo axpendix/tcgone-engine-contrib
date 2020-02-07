@@ -3179,7 +3179,7 @@ public enum CelestialStorm implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              before BETWEEN_TURNS, {
+              before BEGIN_TURN, {
                 def once = true
                 all.each {
                   if(it.pokemonEX || it.pokemonGX){

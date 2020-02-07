@@ -4177,7 +4177,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Drowsing", {
             text "If this Pokémon remains Asleep between turns, put 6 damage counters on your opponent's Active Pokémon."
             delayedA {
-              after BETWEEN_TURNS, {
+              before BEGIN_TURN, {
                 if (self.owner.pbg.active.isSPC(ASLEEP)) {
                   directDamage 60, self.owner.opposite.pbg.active
                 }
@@ -4538,7 +4538,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              before ASLEEP_SPC, null, null, BETWEEN_TURNS, {
+              before ASLEEP_SPC, null, null, BEGIN_TURN, {
                 flip "Asleep (Slumbering Forest)", 2, {}, {}, [2:{
                   ef.unregisterItself(bg.em());
                 },1:{

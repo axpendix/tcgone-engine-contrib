@@ -1917,7 +1917,7 @@ public enum UltraPrism implements LogicCardInfo {
                       unregister()
                     }
                   }
-                  before ASLEEP_SPC, null, null, BETWEEN_TURNS, {
+                  before ASLEEP_SPC, null, null, BEGIN_TURN, {
                     if(ef.target == self.owner.opposite.pbg.active){ //MARK parentEvent
                       flip "Asleep (Abyssal Sleep)", 2, {}, {}, [2:{
                         ef.unregisterItself(bg.em());
@@ -2475,10 +2475,11 @@ public enum UltraPrism implements LogicCardInfo {
               gxPerform()
               damage 150
               afterDamage {
-                delayed {
-                  before DRAW_CARD, {
-                    ef.playerType = self.owner
-                    bg.currentTurn = self.owner
+                delayed (priority: BEFORE_LAST) {
+                  before BETWEEN_TURNS, {
+                    prevent()
+                    bg.turnCount += 1
+                    draw 1
                     bc "Timeless GX started a new turn!"
                     unregister()
                   }

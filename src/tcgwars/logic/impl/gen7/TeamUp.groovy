@@ -430,8 +430,9 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Panic Spores" , {
             text "Put 2 damage counters on your opponent's Confused Pokémon between turns."
             delayedA {
-              before BETWEEN_TURNS, {
+              before BEGIN_TURN, {
                 if(self.owner.opposite.pbg.active?.isSPC(CONFUSED)){
+                  bc "Panic Spores"
                   directDamage 20, self.owner.opposite.pbg.active
                 }
               }

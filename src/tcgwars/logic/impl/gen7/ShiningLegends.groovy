@@ -244,7 +244,7 @@ public enum ShiningLegends implements LogicCardInfo {
                     unregister()
                   }
                 }
-                before ASLEEP_SPC, null, null, BETWEEN_TURNS, {
+                before ASLEEP_SPC, null, null, BEGIN_TURN, {
                   if(ef.target == defending){ //MARK parentEvent
                     flip "Asleep (Hibernation Spore)", 2, {}, {}, [2:{
                       ef.unregisterItself(bg.em());

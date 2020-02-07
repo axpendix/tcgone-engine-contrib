@@ -2050,8 +2050,8 @@ public enum GuardiansRising implements LogicCardInfo {
               self.cards.filterByType(ENERGY).moveTo(my.hand)
               def pcs = defending
               delayed {
-                after BETWEEN_TURNS, {
-                  if(turnCount + 2 <= bg.turnCount){
+                before BETWEEN_TURNS, {
+                  if(turnCount + 1 <= bg.turnCount){
                     if(all.contains(pcs)){
                       bc "Doom News kicks in"
                       new Knockout(pcs).run(bg)

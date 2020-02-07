@@ -2027,14 +2027,15 @@ public enum ForbiddenLight implements LogicCardInfo {
               gxPerform()
               damage 150
               afterDamage{
-                bg.turnCount += 1
-                delayed{
+                delayed (priority: BEFORE_LAST) {
                   before BETWEEN_TURNS, {
                     prevent()
+                    bg.turnCount += 1
+                    draw 1
+                    bc "Timeless GX started a new turn!"
                     unregister()
                   }
                 }
-                draw 1
               }
             }
           }
