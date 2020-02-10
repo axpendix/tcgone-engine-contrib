@@ -69,6 +69,7 @@ public enum CardType {
   HAS_ANCIENT_TRAIT(110),
   POKEMON_V(111),
   VMAX(112),
+  G_SPEC(113),
 
 	NOT_IMPLEMENTED(201),
 
