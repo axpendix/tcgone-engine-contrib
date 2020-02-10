@@ -12,7 +12,7 @@ import org.apache.commons.lang.WordUtils;
 public enum CardType {
 
 	TOP(-100),
-	
+
 	POKEMON(10),
 	ENERGY(20),
 	TRAINER(30),
@@ -67,7 +67,9 @@ public enum CardType {
 	TEAM_PLASMA(108),
 	ACE_SPEC(109),
   HAS_ANCIENT_TRAIT(110),
-	
+  POKEMON_V(111),
+  VMAX(112),
+
 	NOT_IMPLEMENTED(201),
 
 	;
@@ -78,7 +80,7 @@ public enum CardType {
 	CardType(int priority) {
 		this.priority = priority;
 	}
-	
+
 	CardType(int priority, String label) {
 		this.priority = priority;
 		this.label = label;
@@ -93,7 +95,7 @@ public enum CardType {
 		if(label!=null) return label;
 		else return WordUtils.capitalizeFully(this.name().toLowerCase(Locale.ENGLISH), "_".toCharArray()).replaceAll("_", " ");
 	}
-	
+
 	public Type toElementalType(){
 		switch (this) {
 			case _GRASS_:
@@ -122,7 +124,7 @@ public enum CardType {
 				return null;
 		}
 	}
-	
+
 	public static class CardTypeComparator implements Comparator<CardType>, Serializable {
 
 		@Override
