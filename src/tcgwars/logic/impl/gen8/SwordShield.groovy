@@ -324,7 +324,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case ROSELIA_2:
 			return basic (this, hp:HP070, type:G, retreatCost:1) {
@@ -337,7 +336,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case ROSELIA_3:
 			return basic (this, hp:HP070, type:G, retreatCost:1) {
@@ -358,7 +356,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case ROSERADE_4:
 			return evolution (this, from:"Roselia", hp:HP120, type:G, retreatCost:1) {
@@ -379,7 +376,6 @@ public enum SwordShield implements CardInfo {
 						damage 90
 					}
 				}
-
 			};
 			case COTTONEE_5:
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
@@ -392,7 +388,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case WHIMSICOTT_6:
 			return evolution (this, from:"Cottonee", hp:HP100, type:G, retreatCost:1) {
@@ -413,7 +408,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case MARACTUS_7:
 			return basic (this, hp:HP110, type:G, retreatCost:2) {
@@ -434,7 +428,6 @@ public enum SwordShield implements CardInfo {
 						damage 60
 					}
 				}
-
 			};
 			case DURANT_8:
 			return basic (this, hp:HP110, type:G, retreatCost:1) {
@@ -447,7 +440,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case DHELMISE_V_9:
 			return basic (this, hp:HP220, type:G, retreatCost:2) {
@@ -468,7 +460,6 @@ public enum SwordShield implements CardInfo {
 						damage 200
 					}
 				}
-
 			};
 			case GROOKEY_10:
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
@@ -481,7 +472,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case GROOKEY_11:
 			return basic (this, hp:HP070, type:G, retreatCost:1) {
@@ -502,7 +492,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case THWACKEY_12:
 			return evolution (this, from:"Grookey", hp:HP100, type:G, retreatCost:2) {
@@ -523,7 +512,6 @@ public enum SwordShield implements CardInfo {
 						damage 60
 					}
 				}
-
 			};
 			case THWACKEY_13:
 			return evolution (this, from:"Grookey", hp:HP100, type:G, retreatCost:2) {
@@ -544,7 +532,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case RILLABOOM_14:
 			return evolution (this, from:"Thwackey", hp:HP170, type:G, retreatCost:3) {
@@ -562,7 +549,6 @@ public enum SwordShield implements CardInfo {
 						damage 140
 					}
 				}
-
 			};
 			case RILLABOOM_15:
 			return evolution (this, from:"Thwackey", hp:HP190, type:G, retreatCost:4) {
@@ -583,7 +569,6 @@ public enum SwordShield implements CardInfo {
 						damage 180
 					}
 				}
-
 			};
 			case BLIPBUG_16:
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
@@ -596,7 +581,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case BLIPBUG_17:
 			return basic (this, hp:HP040, type:G, retreatCost:1) {
@@ -604,12 +588,8 @@ public enum SwordShield implements CardInfo {
 				move "Call for Family", {
 					text "Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-
+					callForFamily(basic: true, 1, delegate)
 					}
-				}
-
 			};
 			case DOTTLER_18:
 			return evolution (this, from:"Blipbug", hp:HP070, type:G, retreatCost:2) {
@@ -630,7 +610,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case ORBEETLE_19:
 			return evolution (this, from:"Dottler", hp:HP130, type:G, retreatCost:1) {
@@ -648,7 +627,6 @@ public enum SwordShield implements CardInfo {
 						damage 90
 					}
 				}
-
 			};
 			case GOSSIFLEUR_20:
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
@@ -656,10 +634,7 @@ public enum SwordShield implements CardInfo {
 				move "Call for Family", {
 					text "Search your deck for up to 3 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-
-					}
+					callForFamily(basic: true, 3, delegate)
 				}
 				move "Razor Leaf", {
 					text "10 damage. "
@@ -669,7 +644,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case ELDEGOSS_21:
 			return evolution (this, from:"Gossifleur", hp:HP080, type:G, retreatCost:1) {
@@ -690,7 +664,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case VULPIX_22:
 			return basic (this, hp:HP070, type:R, retreatCost:1) {
@@ -703,7 +676,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case NINETALES_23:
 			return evolution (this, from:"Vulpix", hp:HP120, type:R, retreatCost:1) {
@@ -724,7 +696,6 @@ public enum SwordShield implements CardInfo {
 						damage 70
 					}
 				}
-
 			};
 			case TORKOAL_V_24:
 			return basic (this, hp:HP210, type:R, retreatCost:4) {
@@ -745,7 +716,6 @@ public enum SwordShield implements CardInfo {
 						damage 120
 					}
 				}
-
 			};
 			case VICTINI_V_25:
 			return basic (this, hp:HP190, type:R, retreatCost:2) {
@@ -766,7 +736,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case HEATMOR_26:
 			return basic (this, hp:HP110, type:R, retreatCost:1) {
@@ -787,7 +756,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case SALANDIT_27:
 			return basic (this, hp:HP070, type:R, retreatCost:1) {
@@ -800,7 +768,6 @@ public enum SwordShield implements CardInfo {
 
 					}
 				}
-
 			};
 			case SALAZZLE_28:
 			return evolution (this, from:"Salandit", hp:HP120, type:R, retreatCost:1) {
@@ -821,7 +788,6 @@ public enum SwordShield implements CardInfo {
 						damage 120
 					}
 				}
-
 			};
 			case TURTONATOR_29:
 			return basic (this, hp:HP130, type:R, retreatCost:3) {
@@ -842,7 +808,6 @@ public enum SwordShield implements CardInfo {
 						damage 150
 					}
 				}
-
 			};
 			case SCORBUNNY_30:
 			return basic (this, hp:HP060, type:R, retreatCost:1) {
@@ -855,7 +820,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case SCORBUNNY_31:
 			return basic (this, hp:HP070, type:R, retreatCost:1) {
@@ -876,7 +840,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case RABOOT_32:
 			return evolution (this, from:"Scorbunny", hp:HP090, type:R, retreatCost:1) {
@@ -897,7 +860,6 @@ public enum SwordShield implements CardInfo {
 						damage 70
 					}
 				}
-
 			};
 			case RABOOT_33:
 			return evolution (this, from:"Scorbunny", hp:HP090, type:R, retreatCost:1) {
@@ -918,7 +880,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case CINDERACE_34:
 			return evolution (this, from:"Raboot", hp:HP170, type:R, retreatCost:1) {
@@ -936,7 +897,6 @@ public enum SwordShield implements CardInfo {
 						damage 190
 					}
 				}
-
 			};
 			case CINDERACE_35:
 			return evolution (this, from:"Raboot", hp:HP170, type:R, retreatCost:1) {
@@ -957,7 +917,6 @@ public enum SwordShield implements CardInfo {
 						damage 160
 					}
 				}
-
 			};
 			case CINDERACE_36:
 			return evolution (this, from:"Raboot", hp:HP170, type:R, retreatCost:1) {
@@ -978,7 +937,6 @@ public enum SwordShield implements CardInfo {
 						damage 160
 					}
 				}
-
 			};
 			case SIZZLIPEDE_37:
 			return basic (this, hp:HP070, type:R, retreatCost:1) {
@@ -999,7 +957,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case SIZZLIPEDE_38:
 			return basic (this, hp:HP070, type:R, retreatCost:1) {
@@ -1012,7 +969,6 @@ public enum SwordShield implements CardInfo {
 						damage 40
 					}
 				}
-
 			};
 			case CENTISKORCH_39:
 			return evolution (this, from:"Sizzlipede", hp:HP130, type:R, retreatCost:3) {
@@ -1033,7 +989,6 @@ public enum SwordShield implements CardInfo {
 						damage 110
 					}
 				}
-
 			};
 			case SHELLDER_40:
 			return basic (this, hp:HP070, type:W, retreatCost:1) {
@@ -1046,7 +1001,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case CLOYSTER_41:
 			return evolution (this, from:"Shellder", hp:HP130, type:W, retreatCost:2) {
@@ -1067,7 +1021,6 @@ public enum SwordShield implements CardInfo {
 						damage 100
 					}
 				}
-
 			};
 			case KRABBY_42:
 			return basic (this, hp:HP080, type:W, retreatCost:2) {
@@ -1088,7 +1041,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case KRABBY_43:
 			return basic (this, hp:HP080, type:W, retreatCost:2) {
@@ -1101,7 +1053,6 @@ public enum SwordShield implements CardInfo {
 						damage 120
 					}
 				}
-
 			};
 			case KINGLER_44:
 			return evolution (this, from:"Krabby", hp:HP130, type:W, retreatCost:2) {
@@ -1122,7 +1073,6 @@ public enum SwordShield implements CardInfo {
 						damage 90
 					}
 				}
-
 			};
 			case GOLDEEN_45:
 			return basic (this, hp:HP070, type:W, retreatCost:1) {
@@ -1135,7 +1085,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case GOLDEEN_46:
 			return basic (this, hp:HP070, type:W, retreatCost:1) {
@@ -1156,7 +1105,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case SEAKING_47:
 			return evolution (this, from:"Goldeen", hp:HP110, type:W, retreatCost:2) {
@@ -1177,7 +1125,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case LAPRAS_48:
 			return basic (this, hp:HP130, type:W, retreatCost:3) {
@@ -1190,7 +1137,6 @@ public enum SwordShield implements CardInfo {
 						damage 70
 					}
 				}
-
 			};
 			case LAPRAS_V_49:
 			return basic (this, hp:HP210, type:W, retreatCost:2) {
@@ -1211,7 +1157,6 @@ public enum SwordShield implements CardInfo {
 						damage 210
 					}
 				}
-
 			};
 			case LAPRAS_VMAX_50:
 			return evolution (this, from:"LaprasV", hp:HP320, type:W, retreatCost:3) {
@@ -1224,7 +1169,6 @@ public enum SwordShield implements CardInfo {
 						damage 90
 					}
 				}
-
 			};
 			case QWILFISH_51:
 			return basic (this, hp:HP090, type:W, retreatCost:1) {
@@ -1242,7 +1186,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case MANTINE_52:
 			return basic (this, hp:HP110, type:W, retreatCost:1) {
@@ -1263,7 +1206,6 @@ public enum SwordShield implements CardInfo {
 						damage 60
 					}
 				}
-
 			};
 			case KELDEO_V_53:
 			return basic (this, hp:HP210, type:W, retreatCost:2) {
@@ -1284,7 +1226,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case SOBBLE_54:
 			return basic (this, hp:HP060, type:W, retreatCost:1) {
@@ -1297,7 +1238,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case SOBBLE_55:
 			return basic (this, hp:HP070, type:W, retreatCost:1) {
@@ -1318,7 +1258,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case DRIZZILE_56:
 			return evolution (this, from:"Sobble", hp:HP090, type:W, retreatCost:1) {
@@ -1336,7 +1275,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case DRIZZILE_57:
 			return evolution (this, from:"Sobble", hp:HP090, type:W, retreatCost:1) {
@@ -1357,7 +1295,6 @@ public enum SwordShield implements CardInfo {
 						damage 40
 					}
 				}
-
 			};
 			case INTELEON_58:
 			return evolution (this, from:"Drizzile", hp:HP160, type:W, retreatCost:1) {
@@ -1375,7 +1312,6 @@ public enum SwordShield implements CardInfo {
 						damage 120
 					}
 				}
-
 			};
 			case INTELEON_59:
 			return evolution (this, from:"Drizzile", hp:HP160, type:W, retreatCost:1) {
@@ -1396,7 +1332,6 @@ public enum SwordShield implements CardInfo {
 						damage 100
 					}
 				}
-
 			};
 			case CHEWTLE_60:
 			return basic (this, hp:HP080, type:W, retreatCost:2) {
@@ -1417,7 +1352,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case DREDNAW_61:
 			return evolution (this, from:"Chewtle", hp:HP130, type:W, retreatCost:3) {
@@ -1438,7 +1372,6 @@ public enum SwordShield implements CardInfo {
 						damage 130
 					}
 				}
-
 			};
 			case CRAMORANT_62:
 			return basic (this, hp:HP110, type:W, retreatCost:1) {
@@ -1459,7 +1392,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case SNOM_63:
 			return basic (this, hp:HP050, type:W, retreatCost:1) {
@@ -1472,7 +1404,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case FROSMOTH_64:
 			return evolution (this, from:"Snom", hp:HP090, type:W, retreatCost:2) {
@@ -1490,7 +1421,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case PIKACHU_65:
 			return basic (this, hp:HP060, type:L, retreatCost:1) {
@@ -1511,7 +1441,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case RAICHU_66:
 			return evolution (this, from:"Pikachu", hp:HP130, type:L, retreatCost:1) {
@@ -1532,7 +1461,6 @@ public enum SwordShield implements CardInfo {
 						damage 120
 					}
 				}
-
 			};
 			case CHINCHOU_67:
 			return basic (this, hp:HP070, type:L, retreatCost:1) {
@@ -1545,7 +1473,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case CHINCHOU_68:
 			return basic (this, hp:HP060, type:L, retreatCost:1) {
@@ -1566,7 +1493,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case LANTURN_69:
 			return evolution (this, from:"Chinchou", hp:HP120, type:L, retreatCost:2) {
@@ -1587,7 +1513,6 @@ public enum SwordShield implements CardInfo {
 						damage 90
 					}
 				}
-
 			};
 			case JOLTIK_70:
 			return basic (this, hp:HP050, type:L, retreatCost:1) {
@@ -1600,7 +1525,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case GALVANTULA_71:
 			return evolution (this, from:"Joltik", hp:HP100, type:L, retreatCost:1) {
@@ -1613,7 +1537,6 @@ public enum SwordShield implements CardInfo {
 						damage 60
 					}
 				}
-
 			};
 			case TAPU_KOKO_V_72:
 			return basic (this, hp:HP200, type:L, retreatCost:0) {
@@ -1634,7 +1557,6 @@ public enum SwordShield implements CardInfo {
 						damage 200
 					}
 				}
-
 			};
 			case YAMPER_73:
 			return basic (this, hp:HP070, type:L, retreatCost:1) {
@@ -1655,7 +1577,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case YAMPER_74:
 			return basic (this, hp:HP070, type:L, retreatCost:1) {
@@ -1676,7 +1597,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case BOLTUND_75:
 			return evolution (this, from:"Yamper", hp:HP130, type:L, retreatCost:1) {
@@ -1697,7 +1617,6 @@ public enum SwordShield implements CardInfo {
 						damage 90
 					}
 				}
-
 			};
 			case BOLTUND_76:
 			return evolution (this, from:"Yamper", hp:HP120, type:L, retreatCost:0) {
@@ -1718,7 +1637,6 @@ public enum SwordShield implements CardInfo {
 						damage 160
 					}
 				}
-
 			};
 			case PINCURCHIN_77:
 			return basic (this, hp:HP080, type:L, retreatCost:2) {
@@ -1731,7 +1649,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case MORPEKO_78:
 			return basic (this, hp:HP090, type:L, retreatCost:1) {
@@ -1744,7 +1661,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case MORPEKO_V_79:
 			return basic (this, hp:HP170, type:L, retreatCost:2) {
@@ -1765,7 +1681,6 @@ public enum SwordShield implements CardInfo {
 						damage 150
 					}
 				}
-
 			};
 			case MORPEKO_VMAX_80:
 			return evolution (this, from:"MorpekoV", hp:HP300, type:L, retreatCost:1) {
@@ -1778,7 +1693,6 @@ public enum SwordShield implements CardInfo {
 						damage 180
 					}
 				}
-
 			};
 			case GALARIAN_PONYTA_81:
 			return basic (this, hp:HP070, type:P, retreatCost:1) {
@@ -1792,7 +1706,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case GALARIAN_RAPIDASH_82:
 			return evolution (this, from:"GalarianPonyta", hp:HP100, type:P, retreatCost:1) {
@@ -1811,7 +1724,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case GASTLY_83:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -1825,7 +1737,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case HAUNTER_84:
 			return evolution (this, from:"Gastly", hp:HP070, type:P, retreatCost:1) {
@@ -1847,7 +1758,6 @@ public enum SwordShield implements CardInfo {
 						damage 40
 					}
 				}
-
 			};
 			case GENGAR_85:
 			return evolution (this, from:"Haunter", hp:HP110, type:P, retreatCost:2) {
@@ -1866,7 +1776,6 @@ public enum SwordShield implements CardInfo {
 						damage 90
 					}
 				}
-
 			};
 			case WOBBUFFET_V_86:
 			return basic (this, hp:HP220, type:P, retreatCost:3) {
@@ -1888,7 +1797,6 @@ public enum SwordShield implements CardInfo {
 						damage 70
 					}
 				}
-
 			};
 			case MUNNA_87:
 			return basic (this, hp:HP070, type:P, retreatCost:1) {
@@ -1910,7 +1818,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case MUSHARNA_88:
 			return evolution (this, from:"Munna", hp:HP120, type:P, retreatCost:3) {
@@ -1932,7 +1839,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case SINISTEA_89:
 			return basic (this, hp:HP030, type:P, retreatCost:1) {
@@ -1946,7 +1852,6 @@ public enum SwordShield implements CardInfo {
 
 					}
 				}
-
 			};
 			case POLTEAGEIST_90:
 			return evolution (this, from:"Sinistea", hp:HP060, type:P, retreatCost:1) {
@@ -1968,7 +1873,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case INDEEDEE_V_91:
 			return basic (this, hp:HP180, type:P, retreatCost:2) {
@@ -1987,7 +1891,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case DIGLETT_92:
 			return basic (this, hp:HP060, type:F, retreatCost:1) {
@@ -2000,7 +1903,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case DUGTRIO_93:
 			return evolution (this, from:"Diglett", hp:HP090, type:F, retreatCost:1) {
@@ -2013,7 +1915,6 @@ public enum SwordShield implements CardInfo {
 						damage 60
 					}
 				}
-
 			};
 			case HITMONLEE_94:
 			return basic (this, hp:HP120, type:F, retreatCost:1) {
@@ -2034,7 +1935,6 @@ public enum SwordShield implements CardInfo {
 						damage 80
 					}
 				}
-
 			};
 			case HITMONCHAN_95:
 			return basic (this, hp:HP120, type:F, retreatCost:1) {
@@ -2055,7 +1955,6 @@ public enum SwordShield implements CardInfo {
 						damage 60
 					}
 				}
-
 			};
 			case RHYHORN_96:
 			return basic (this, hp:HP100, type:F, retreatCost:3) {
@@ -2076,7 +1975,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case RHYHORN_97:
 			return basic (this, hp:HP090, type:F, retreatCost:2) {
@@ -2097,7 +1995,6 @@ public enum SwordShield implements CardInfo {
 						damage 70
 					}
 				}
-
 			};
 			case RHYDON_98:
 			return evolution (this, from:"Rhyhorn", hp:HP120, type:F, retreatCost:4) {
@@ -2118,7 +2015,6 @@ public enum SwordShield implements CardInfo {
 						damage 100
 					}
 				}
-
 			};
 			case RHYPERIOR_99:
 			return evolution (this, from:"Rhydon", hp:HP190, type:F, retreatCost:4) {
@@ -2139,7 +2035,6 @@ public enum SwordShield implements CardInfo {
 						damage 120
 					}
 				}
-
 			};
 			case SUDOWOODO_100:
 			return basic (this, hp:HP100, type:F, retreatCost:1) {
@@ -2160,7 +2055,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case BALTOY_101:
 			return basic (this, hp:HP070, type:F, retreatCost:1) {
@@ -2181,7 +2075,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case BALTOY_102:
 			return basic (this, hp:HP060, type:F, retreatCost:1) {
@@ -2194,7 +2087,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case CLAYDOL_103:
 			return evolution (this, from:"Baltoy", hp:HP120, type:F, retreatCost:2) {
@@ -2215,7 +2107,6 @@ public enum SwordShield implements CardInfo {
 						damage 200
 					}
 				}
-
 			};
 			case REGIROCK_V_104:
 			return basic (this, hp:HP220, type:F, retreatCost:3) {
@@ -2236,7 +2127,6 @@ public enum SwordShield implements CardInfo {
 						damage 190
 					}
 				}
-
 			};
 			case MUDBRAY_105:
 			return basic (this, hp:HP080, type:F, retreatCost:2) {
@@ -2257,7 +2147,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case MUDSDALE_106:
 			return evolution (this, from:"Mudbray", hp:HP150, type:F, retreatCost:3) {
@@ -2270,7 +2159,6 @@ public enum SwordShield implements CardInfo {
 						damage 120
 					}
 				}
-
 			};
 			case SILICOBRA_107:
 			return basic (this, hp:HP080, type:F, retreatCost:2) {
@@ -2283,7 +2171,6 @@ public enum SwordShield implements CardInfo {
 
 					}
 				}
-
 			};
 			case SILICOBRA_108:
 			return basic (this, hp:HP070, type:F, retreatCost:1) {
@@ -2304,7 +2191,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case SANDACONDA_109:
 			return evolution (this, from:"Silicobra", hp:HP140, type:F, retreatCost:2) {
@@ -2325,7 +2211,6 @@ public enum SwordShield implements CardInfo {
 						damage 100
 					}
 				}
-
 			};
 			case SANDACONDA_110:
 			return evolution (this, from:"Silicobra", hp:HP130, type:F, retreatCost:2) {
@@ -2343,7 +2228,6 @@ public enum SwordShield implements CardInfo {
 						damage 60
 					}
 				}
-
 			};
 			case CLOBBOPUS_111:
 			return basic (this, hp:HP060, type:F, retreatCost:2) {
@@ -2356,7 +2240,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case CLOBBOPUS_112:
 			return basic (this, hp:HP080, type:F, retreatCost:2) {
@@ -2369,7 +2252,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case GRAPPLOCT_113:
 			return evolution (this, from:"Clobbopus", hp:HP130, type:F, retreatCost:2) {
@@ -2390,7 +2272,6 @@ public enum SwordShield implements CardInfo {
 						damage 130
 					}
 				}
-
 			};
 			case STONJOURNER_114:
 			return basic (this, hp:HP120, type:F, retreatCost:2) {
@@ -2403,7 +2284,6 @@ public enum SwordShield implements CardInfo {
 						damage 70
 					}
 				}
-
 			};
 			case STONJOURNER_V_115:
 			return basic (this, hp:HP220, type:F, retreatCost:3) {
@@ -2424,7 +2304,6 @@ public enum SwordShield implements CardInfo {
 						damage 150
 					}
 				}
-
 			};
 			case STONJOURNER_VMAX_116:
 			return evolution (this, from:"StonjournerV", hp:HP330, type:F, retreatCost:3) {
@@ -2445,7 +2324,6 @@ public enum SwordShield implements CardInfo {
 						damage 200
 					}
 				}
-
 			};
 			case GALARIAN_ZIGZAGOON_117:
 			return basic (this, hp:HP070, type:D, retreatCost:1) {
@@ -2463,7 +2341,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case GALARIAN_LINOONE_118:
 			return evolution (this, from:"GalarianZigzagoon", hp:HP100, type:D, retreatCost:2) {
@@ -2484,7 +2361,6 @@ public enum SwordShield implements CardInfo {
 						damage 70
 					}
 				}
-
 			};
 			case GALARIAN_OBSTAGOON_119:
 			return evolution (this, from:"GalarianLinoone", hp:HP160, type:D, retreatCost:2) {
@@ -2502,7 +2378,6 @@ public enum SwordShield implements CardInfo {
 						damage 90
 					}
 				}
-
 			};
 			case SABLEYE_V_120:
 			return basic (this, hp:HP170, type:D, retreatCost:2) {
@@ -2523,7 +2398,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case SKORUPI_121:
 			return basic (this, hp:HP080, type:D, retreatCost:2) {
@@ -2544,7 +2418,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case DRAPION_122:
 			return evolution (this, from:"Skorupi", hp:HP140, type:D, retreatCost:3) {
@@ -2565,7 +2438,6 @@ public enum SwordShield implements CardInfo {
 						damage 130
 					}
 				}
-
 			};
 			case CROAGUNK_123:
 			return basic (this, hp:HP070, type:D, retreatCost:1) {
@@ -2586,7 +2458,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case TOXICROAK_124:
 			return evolution (this, from:"Croagunk", hp:HP110, type:D, retreatCost:1) {
@@ -2604,7 +2475,6 @@ public enum SwordShield implements CardInfo {
 						damage 70
 					}
 				}
-
 			};
 			case NICKIT_125:
 			return basic (this, hp:HP070, type:D, retreatCost:1) {
@@ -2617,7 +2487,6 @@ public enum SwordShield implements CardInfo {
 
 					}
 				}
-
 			};
 			case THIEVUL_126:
 			return evolution (this, from:"Nickit", hp:HP100, type:D, retreatCost:1) {
@@ -2638,7 +2507,6 @@ public enum SwordShield implements CardInfo {
 						damage 90
 					}
 				}
-
 			};
 			case GALARIAN_MEOWTH_127:
 			return basic (this, hp:HP070, type:M, retreatCost:1) {
@@ -2660,7 +2528,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case GALARIAN_PERRSERKER_128:
 			return evolution (this, from:"GalarianMeowth", hp:HP120, type:M, retreatCost:2) {
@@ -2679,7 +2546,6 @@ public enum SwordShield implements CardInfo {
 						damage 70
 					}
 				}
-
 			};
 			case MAWILE_129:
 			return basic (this, hp:HP090, type:M, retreatCost:1) {
@@ -2701,7 +2567,6 @@ public enum SwordShield implements CardInfo {
 						damage 40
 					}
 				}
-
 			};
 			case FERROSEED_130:
 			return basic (this, hp:HP070, type:M, retreatCost:2) {
@@ -2715,7 +2580,6 @@ public enum SwordShield implements CardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case FERROTHORN_131:
 			return evolution (this, from:"Ferroseed", hp:HP130, type:M, retreatCost:2) {
@@ -2737,7 +2601,6 @@ public enum SwordShield implements CardInfo {
 						damage 100
 					}
 				}
-
 			};
 			case GALARIAN_STUNFISK_132:
 			return basic (this, hp:HP120, type:M, retreatCost:2) {
@@ -2756,7 +2619,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case PAWNIARD_133:
 			return basic (this, hp:HP070, type:M, retreatCost:1) {
@@ -2778,7 +2640,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case BISHARP_134:
 			return evolution (this, from:"Pawniard", hp:HP120, type:M, retreatCost:2) {
@@ -2800,7 +2661,6 @@ public enum SwordShield implements CardInfo {
 						damage 60
 					}
 				}
-
 			};
 			case CORVIKNIGHT_135:
 			return evolution (this, from:"Corvisquire", hp:HP170, type:M, retreatCost:2) {
@@ -2822,7 +2682,6 @@ public enum SwordShield implements CardInfo {
 						damage 130
 					}
 				}
-
 			};
 			case CUFANT_136:
 			return basic (this, hp:HP100, type:M, retreatCost:3) {
@@ -2836,7 +2695,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case COPPERAJAH_137:
 			return evolution (this, from:"Cufant", hp:HP190, type:M, retreatCost:4) {
@@ -2858,7 +2716,6 @@ public enum SwordShield implements CardInfo {
 						damage 220
 					}
 				}
-
 			};
 			case ZACIAN_V_138:
 			return basic (this, hp:HP220, type:M, retreatCost:2) {
@@ -2877,7 +2734,6 @@ public enum SwordShield implements CardInfo {
 						damage 230
 					}
 				}
-
 			};
 			case ZAMAZENTA_V_139:
 			return basic (this, hp:HP230, type:M, retreatCost:2) {
@@ -2896,7 +2752,6 @@ public enum SwordShield implements CardInfo {
 						damage 130
 					}
 				}
-
 			};
 			case SNORLAX_140:
 			return basic (this, hp:HP150, type:C, retreatCost:4) {
@@ -2917,7 +2772,6 @@ public enum SwordShield implements CardInfo {
 						damage 130
 					}
 				}
-
 			};
 			case SNORLAX_V_141:
 			return basic (this, hp:HP220, type:C, retreatCost:4) {
@@ -2938,7 +2792,6 @@ public enum SwordShield implements CardInfo {
 						damage 170
 					}
 				}
-
 			};
 			case SNORLAX_VMAX_142:
 			return evolution (this, from:"SnorlaxV", hp:HP340, type:C, retreatCost:4) {
@@ -2951,7 +2804,6 @@ public enum SwordShield implements CardInfo {
 						damage 60
 					}
 				}
-
 			};
 			case HOOTHOOT_143:
 			return basic (this, hp:HP070, type:C, retreatCost:1) {
@@ -2973,7 +2825,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case NOCTOWL_144:
 			return evolution (this, from:"Hoothoot", hp:HP110, type:C, retreatCost:1) {
@@ -2995,7 +2846,6 @@ public enum SwordShield implements CardInfo {
 
 					}
 				}
-
 			};
 			case MINCCINO_145:
 			return basic (this, hp:HP070, type:C, retreatCost:1) {
@@ -3016,7 +2866,6 @@ public enum SwordShield implements CardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case MINCCINO_146:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -3029,7 +2878,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case CINCCINO_147:
 			return evolution (this, from:"Minccino", hp:HP090, type:C, retreatCost:1) {
@@ -3047,7 +2895,6 @@ public enum SwordShield implements CardInfo {
 						damage 40
 					}
 				}
-
 			};
 			case ORANGURU_148:
 			return basic (this, hp:HP120, type:C, retreatCost:2) {
@@ -3065,7 +2912,6 @@ public enum SwordShield implements CardInfo {
 						damage 70
 					}
 				}
-
 			};
 			case DRAMPA_149:
 			return basic (this, hp:HP130, type:C, retreatCost:2) {
@@ -3078,7 +2924,6 @@ public enum SwordShield implements CardInfo {
 						damage 80
 					}
 				}
-
 			};
 			case ROOKIDEE_150:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -3100,7 +2945,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case CORVISQUIRE_151:
 			return evolution (this, from:"Rookidee", hp:HP080, type:C, retreatCost:1) {
@@ -3122,7 +2966,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case WOOLOO_152:
 			return basic (this, hp:HP070, type:C, retreatCost:1) {
@@ -3135,7 +2978,6 @@ public enum SwordShield implements CardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case WOOLOO_153:
 			return basic (this, hp:HP070, type:C, retreatCost:1) {
@@ -3156,7 +2998,6 @@ public enum SwordShield implements CardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case DUBWOOL_154:
 			return evolution (this, from:"Wooloo", hp:HP130, type:C, retreatCost:2) {
@@ -3177,7 +3018,6 @@ public enum SwordShield implements CardInfo {
 						damage 120
 					}
 				}
-
 			};
 			case CRAMORANT_V_155:
 			return basic (this, hp:HP200, type:C, retreatCost:1) {
@@ -3199,7 +3039,6 @@ public enum SwordShield implements CardInfo {
 
 					}
 				}
-
 			};
 			case AIR_BALLOON_156:
 			return pokemonTool (this) {
