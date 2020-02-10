@@ -223,7 +223,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           pokeBody "Smooth Dust", {
             text "As long as Butterfree is your Active Pokémon, remove 1 damage counter from each of your Pokémon between turns."
             delayedA {
-              before BETWEEN_TURNS, {
+              before BEGIN_TURN, {
                 if(self.active){
                   self.owner.pbg.all.each{
                     if(it.numberOfDamageCounters){
@@ -595,7 +595,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           pokeBody "Rest Up", {
             text "If Snorlax remains Asleep between turns, remove 2 damage counters from Snorlax (remove 1 of there is only 1)."
             delayedA {
-              after BETWEEN_TURNS, {
+              before BEGIN_TURN, {
                 if(self.isSPC(ASLEEP)){
                   heal 20, self
                 }
@@ -648,13 +648,14 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           weakness FIRE
           pokeBody "Acid Sampler", {
             text "As long as Victreebel is your Active Pokémon, put 1 damage counter on each Defending Pokémon between turns. Acid Sampler stops working if your other Active Pokémon is not a Victreebel."
-            delayedA {
-              before BETWEEN_TURNS, {
-                if(self.active){
-                  directDamage 10, self.owner.opposite.pbg.active
-                }
-              }
-            }
+            // does not work by rule
+//            delayedA {
+//              before BEGIN_TURN, {
+//                if(self.active){
+//                  directDamage 10, self.owner.opposite.pbg.active
+//                }
+//              }
+//            }
           }
           move "Acid", {
             text "50 damage. The Defending Pokémon can’t retreat until the end of your opponent’s next turn."
@@ -853,7 +854,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           pokeBody "Eerie Aura", {
             text "As long as Hypno is your Active Pokémon, put 2 damage counters on each Pokémon that remains Asleep between turns."
             delayedA {
-              after BETWEEN_TURNS, {
+              before BEGIN_TURN, {
                 if(my.active.isSPC(ASLEEP)){
                   my.active.damage += hp(20)
                 }

@@ -203,11 +203,16 @@ public enum Unleashed implements LogicCardInfo {
             text "Choose a number of your opponent’s Stage 1 or Stage 2 Evolved Pokémon up to the amount of Energy attached to Jirachi. Remove the highest Stage Evolution card from each of those Pokémon and put those cards back into your opponent’s hand."
             energyCost P
             onAttack {
-              opp.all.findAll{ it.evolution }.select(max:self.cards.energyCount(C), "Choose which Pokemon to devolve").each{
-                def top=it.topPokemonCard
+              int max = self.cards.energyCount(C)
+              while (max-- > 0) {
+                def tar = opp.all.findAll{ it.evolution }
+                if(!tar) break
+                def pcs = tar.select("Choose which Pokemon to devolve", false)
+                if(!pcs) break
+                def top=pcs.topPokemonCard
                 bc "$top Devolved"
                 moveCard(top, opp.hand)
-                devolve(it, top)
+                devolve(pcs, top)
               }
             }
           }
@@ -489,8 +494,8 @@ public enum Unleashed implements LogicCardInfo {
             energyCost W, W, C, C
             onAttack {
               damage 100, opp.all.select()
-              afterDamage{
-                //TODO: return 2 [W] energy
+              afterDamage {
+                self.cards.filterByEnergyType(W).select(count:2, "Return to hand").moveTo(my.hand)
               }
             }
           }
@@ -1586,7 +1591,7 @@ public enum Unleashed implements LogicCardInfo {
         };
       case ZUBAT_70:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
-          weakness P
+          weakness L
           resistance F, MINUS20
           move "Glide", {
             text "10 damage. "

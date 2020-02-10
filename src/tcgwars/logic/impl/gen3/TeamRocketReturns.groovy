@@ -1368,7 +1368,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           pokeBody "Methane Leak", {
             text "As long as Dark Weezing is your Active Pokémon, put 1 damage counter on each Pokémon that remains Poisoned between turns."
             delayedA {
-              before BETWEEN_TURNS, {
+              before BEGIN_TURN, {
                 if(self.active){
                   if(my.active.isSPC(POISONED)) directDamage 10, my.active
                   if(opp.active.isSPC(POISONED)) directDamage 10, opp.active
@@ -2552,9 +2552,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
                   }
                 }
               }
-              after BETWEEN_TURNS, {
+              before BETWEEN_TURNS, {
                 discard thisCard
-                unregister()
               }
               after EVOLVE, {check(self)} //some pokemon evolve into different type
             }
@@ -2831,7 +2830,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           pokeBody "Dark Healer", {
             text "As long as Rocket’s Snorlax ex has any [D] Energy attached to it, remove 1 damage counter from Rocket’s Snorlax ex between turns."
             delayedA {
-              after BETWEEN_TURNS, {
+              before BEGIN_TURN, {
                 if(self.cards.energyCount(D)){
                   heal 10, self
                 }

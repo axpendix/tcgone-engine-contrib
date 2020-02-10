@@ -1917,7 +1917,7 @@ public enum UltraPrism implements LogicCardInfo {
                       unregister()
                     }
                   }
-                  before ASLEEP_SPC, null, null, BETWEEN_TURNS, {
+                  before ASLEEP_SPC, null, null, BEGIN_TURN, {
                     if(ef.target == self.owner.opposite.pbg.active){ //MARK parentEvent
                       flip "Asleep (Abyssal Sleep)", 2, {}, {}, [2:{
                         ef.unregisterItself(bg.em());
@@ -2475,10 +2475,11 @@ public enum UltraPrism implements LogicCardInfo {
               gxPerform()
               damage 150
               afterDamage {
-                delayed {
-                  before DRAW_CARD, {
-                    ef.playerType = self.owner
-                    bg.currentTurn = self.owner
+                delayed (priority: BEFORE_LAST) {
+                  before BETWEEN_TURNS, {
+                    prevent()
+                    bg.turnCount += 1
+                    draw 1
                     bc "Timeless GX started a new turn!"
                     unregister()
                   }
@@ -2891,11 +2892,11 @@ public enum UltraPrism implements LogicCardInfo {
           text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nYou can play this card only if your Active Pokémon is a [W] or [M] Pokémon.\nYour opponent chooses 2 Benched Pokémon and shuffles the others, and all cards attached to them, into their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           // This card was erratad, old version reads: You can’t play this card if you don’t have any [W] or [M] Pokémon in play.
           onPlay {
-            def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.bench, "Opponent played Cyrus. Select 2 pokemon to keep on your bench. Rest will be shuffled to your deck", 2)
+            def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.bench, "Opponent played Cyrus Prism Star. Select 2 pokemon to KEEP on your bench. YOUR OTHER REMAINING BENCHED POKEMON will be shuffled into your deck", 2)
             opp.bench.findAll{!list.contains(it)}.each{
               it.cards.moveTo(opp.deck)
               removePCS(it)
-              shuffleDeck()
+              shuffleDeck(null, TargetPlayer.OPPONENT)
             }
           }
           playRequirement{

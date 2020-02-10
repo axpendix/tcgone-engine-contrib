@@ -1974,7 +1974,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           bwAbility "Detention Gas", {
             text "As long as this Pokémon is your Active Pokémon, put 1 damage counter on each of your opponent's Basic Pokémon between turns."
             delayedA {
-              after BETWEEN_TURNS, {
+              before BEGIN_TURN, {
                 boolean flag = 1
                 all.each {
                   if(self.active && it.owner != self.owner && it.basic) {
@@ -3838,7 +3838,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Between turns, heal 10 damage from this Pokémon."
             delayedA (anytime:true) {
               def lastExecId = null
-              anytime BETWEEN_TURNS, {
+              before BEGIN_TURN, {
                 if (lastExecId != e.executionId && self.numberOfDamageCounters) {
                   bc "Lazy Eating activates"
                   heal(10, self, SRC_ABILITY)

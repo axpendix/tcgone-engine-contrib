@@ -1237,7 +1237,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               damage 80
               afterDamage{
-                self.cards.filterByType(ENERGY)select("Select an Energy move back into your hand.").moveTo(my.hand)
+                self.cards.filterByType(ENERGY).select("Select an Energy move back into your hand.").moveTo(my.hand)
               }
             }
           }
@@ -3403,14 +3403,15 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
 
               afterDamage {
-                bg.turnCount += 1
-                delayed {
+                delayed (priority: BEFORE_LAST) {
                   before BETWEEN_TURNS, {
                     prevent()
+                    bg.turnCount += 1
+                    draw 1
+                    bc "Supreme Puff GX started a new turn!"
                     unregister()
                   }
                 }
-                draw 1
               }
             }
           }
@@ -4484,15 +4485,14 @@ public enum CosmicEclipse implements LogicCardInfo {
           text "Search your deck for a Stadium card, reveal it, and put it into your hand. Then, shuffle your deck." +
             "When you play this card, you may discard 2 other cards from your hand. If you do, you may also search for a Pokémon Tool card and a Special Energy card in this way."
           onPlay {
-            def toDiscard = false
+            def discarded = false
 
             if (my.hand.getExcludedList(thisCard).size() >= 2 && confirm("Discard 2 cards to be able to search for a Pokémon Tool card and a Special Energy card?")) {
-              toDiscard = my.hand.getExcludedList(thisCard).select(count:2, "Select cards to discard.")
+              my.hand.getExcludedList(thisCard).select(count:2, "Select cards to discard.").discard()
+              discarded = true
             }
 
-            if (toDiscard) {
-              toDiscard.discard()
-
+            if (discarded) {
               my.deck.search(max: 2, "Select a Pokémon Tool card and a Special Energy card", {it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(SPECIAL_ENERGY)}, { CardList list ->
                 list.filterByType(POKEMON_TOOL).size() <= 1 && list.filterByType(SPECIAL_ENERGY).size() <= 1
               }).showToOpponent("Selected cards").moveTo(my.hand)

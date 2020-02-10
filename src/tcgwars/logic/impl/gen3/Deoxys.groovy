@@ -2606,7 +2606,7 @@ public enum Deoxys implements LogicCardInfo {
               before RETREAT, self, {
                 prevent()
               }
-              after BETWEEN_TURNS, {
+              before BETWEEN_TURNS, {
                 discard thisCard
                 unregister()
               }
@@ -2644,10 +2644,6 @@ public enum Deoxys implements LogicCardInfo {
           }
           onPlay {reason->
             eff = delayed {
-              after BETWEEN_TURNS, {
-                discard thisCard
-                unregister()
-              }
               after EVOLVE, {check(self)}
             }
           }

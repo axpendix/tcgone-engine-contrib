@@ -1,54 +1,21 @@
 package tcgwars.logic.groovy
 
-import tcgwars.logic.card.energy.SpecialEnergyCard
+import tcgwars.logic.card.energy.*
 import tcgwars.logic.effect.ability.Ability.ActivationReason
-import tcgwars.logic.effect.blocking.BlockingEffect
-import tcgwars.logic.effect.blocking.CantAttackNextTurn
-import tcgwars.logic.effect.blocking.CantEvolve
-import tcgwars.logic.effect.blocking.CantPlayEnergy
-import tcgwars.logic.effect.blocking.CantRetreat
-import tcgwars.logic.effect.blocking.CantUseAttack
-import tcgwars.logic.effect.getter.IsGlobalAbilityBlocked
-import tcgwars.logic.effect.gm.AttachEnergy
-import tcgwars.logic.effect.gm.Attack
-import tcgwars.logic.client.Choice
-import tcgwars.logic.client.ConfirmUIRequestBuilder
-import tcgwars.logic.client.MakeChoiceUIRequestBuilder
-import tcgwars.logic.client.RearrangeCardsUIRequestBuilder
-import tcgwars.logic.util.BenchSet
-import tcgwars.logic.util.CardList
-import tcgwars.logic.util.DeckCardList
-import tcgwars.logic.util.LUtils
-import tcgwars.logic.util.PcsList
-import tcgwars.logic.util.PokemonCardSet
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.gm.*
+import tcgwars.logic.client.*
+import tcgwars.logic.util.*
 
 import java.util.function.Predicate
 
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.card.Type.*
-import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
-import static tcgwars.logic.effect.EffectPriority.LAST
-import static tcgwars.logic.effect.EffectPriority.NORMAL
-import static tcgwars.logic.effect.EffectType.APPLY_ATTACK_DAMAGES
-import static tcgwars.logic.effect.EffectType.ATTACH_ENERGY
-import static tcgwars.logic.effect.EffectType.DAMAGE
-import static tcgwars.logic.effect.EffectType.ENERGY_SWITCH
-import static tcgwars.logic.effect.EffectType.EVOLVE
-import static tcgwars.logic.effect.EffectType.GET_MOVE_LIST
-import static tcgwars.logic.effect.EffectType.GET_RETREAT_COST
-import static tcgwars.logic.effect.EffectType.GET_WEAKNESSES
-import static tcgwars.logic.effect.EffectType.KNOCKOUT
-import static tcgwars.logic.effect.EffectType.MEGA_EVOLUTION_RULE
-import static tcgwars.logic.effect.EffectType.PLAY_BASIC_POKEMON
-import static tcgwars.logic.effect.EffectType.PLAY_TRAINER
-import static tcgwars.logic.effect.EffectType.PROCESS_ATTACK_EFFECTS
-import static tcgwars.logic.effect.EffectType.REMOVE_DAMAGE_COUNTER
-import static tcgwars.logic.effect.EffectType.REMOVE_FROM_PLAY
-import static tcgwars.logic.effect.EffectType.RETREAT
-import static tcgwars.logic.effect.EffectType.SWITCH
-import static tcgwars.logic.effect.Source.SRC_ANCIENT_TRAIT
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
+import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.groovy.TcgBuilders.delayed
 import static tcgwars.logic.groovy.TcgBuilders.getter
 import static tcgwars.logic.groovy.TcgStatics.*

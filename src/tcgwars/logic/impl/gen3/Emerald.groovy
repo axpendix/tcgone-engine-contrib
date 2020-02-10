@@ -1858,10 +1858,10 @@ public enum Emerald implements LogicCardInfo {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAt any time between turns, if the Pokémon this card is attached to is affected by any Special Conditions, remove all of them. Then, discard Lum Berry."
           def eff
           onPlay {reason->
-            //TODO : decide when use the lum berry
-            eff=delayed{
-              before BETWEEN_TURNS,{
+            eff=delayed(anytime:true){
+              before BEGIN_TURN,{
                 if(self.specialConditions) {
+                  bc "Lum Berry activates"
                   clearSpecialCondition(self,Source.TRAINER_CARD)
                   discard thisCard
                 }
@@ -1899,9 +1899,10 @@ public enum Emerald implements LogicCardInfo {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAt any time between turns, if the Pokémon this card is attached to has at least 2 damage counters on it, remove 2 damage counters from it. Then, discard Oran Berry."
           def eff
           onPlay {reason->
-            eff=delayed{
-              before BETWEEN_TURNS,{
+            eff=delayed(anytime:true){
+              before BEGIN_TURN,{
                 if(self.numberOfDamageCounters >= 2) {
+                  bc "Oran Berry activates"
                   heal 20, self
                   discard thisCard
                 }
