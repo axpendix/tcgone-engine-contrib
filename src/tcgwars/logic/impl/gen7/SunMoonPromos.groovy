@@ -2660,7 +2660,7 @@ public enum SunMoonPromos implements LogicCardInfo {
       case SNUBBULL_SM200:
         return basic (this, hp:HP060, type:FAIRY, retreatCost:1) {
           weakness METAL
-          resistance DARKNESS MINUS20
+          resistance DARKNESS, MINUS20
           move "Bite", {
             text "10 damage"
             energyCost Y
