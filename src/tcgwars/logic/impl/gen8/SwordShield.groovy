@@ -309,11 +309,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP180, type:G, retreatCost:1) {
 				weakness R
 				move "Find a Friend", {
-					text " damage. Search your deck for up to 2 Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
+					text "Search your deck for up to 2 Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Line Force", {
@@ -343,11 +343,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:G, retreatCost:1) {
 				weakness R
 				move "Sweet Scent", {
-					text " damage. Heal 30 damage from 1 of your Pokémon."
+					text "Heal 30 damage from 1 of your Pokémon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Sting", {
@@ -398,11 +398,11 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Cottonee", hp:HP100, type:G, retreatCost:1) {
 				weakness R
 				move "Cotton Ride", {
-					text " damage. Flip a coin. If heads, your opponent shuffles their Active Pokémon and all attached cards into their deck."
+					text "Flip a coin. If heads, your opponent shuffles their Active Pokémon and all attached cards into their deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Leaf Step", {
@@ -508,11 +508,11 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Grookey", hp:HP100, type:G, retreatCost:2) {
 				weakness R
 				move "Taunt", {
-					text " damage. Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
+					text "Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Double Hit", {
@@ -602,11 +602,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP040, type:G, retreatCost:1) {
 				weakness R
 				move "Call for Family", {
-					text " damage. Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
+					text "Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 
@@ -615,11 +615,11 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Blipbug", hp:HP070, type:G, retreatCost:2) {
 				weakness R
 				move "Reflect", {
-					text " damage. During your opponent's next turn, this Pokémon takes 40 less damage from attacks (after applying Weakness and Resistance)."
+					text "During your opponent's next turn, this Pokémon takes 40 less damage from attacks (after applying Weakness and Resistance)."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Ram", {
@@ -654,11 +654,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
 				weakness R
 				move "Call for Family", {
-					text " damage. Search your deck for up to 3 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
+					text "Search your deck for up to 3 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Razor Leaf", {
@@ -675,11 +675,11 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Gossifleur", hp:HP080, type:G, retreatCost:1) {
 				weakness R
 				move "Blessing of Fluff", {
-					text " damage. Search your deck for up to 3 [G] Energy cards and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
+					text "Search your deck for up to 3 [G] Energy cards and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Leafage", {
@@ -751,11 +751,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP190, type:R, retreatCost:2) {
 				weakness W
 				move "Spreading Flames", {
-					text " damage. Attach up to 3 [R] Energy cards from your discard pile to your Pokémon in any way you like."
+					text "Attach up to 3 [R] Energy cards from your discard pile to your Pokémon in any way you like."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Energy Burst", {
@@ -793,11 +793,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:R, retreatCost:1) {
 				weakness W
 				move "Smog", {
-					text " damage. Your opponent’s Active Pokémon is now Poisoned."
+					text "Your opponent’s Active Pokémon is now Poisoned."
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 
@@ -1018,11 +1018,11 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Sizzlipede", hp:HP130, type:R, retreatCost:3) {
 				weakness W
 				move "Hundred Foot Flames", {
-					text " damage. For each [R] Energy attached to this Pokémon, discard the top card of your opponent’s deck."
+					text "For each [R] Energy attached to this Pokémon, discard the top card of your opponent’s deck."
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Searing Flame", {
@@ -1073,11 +1073,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP080, type:W, retreatCost:2) {
 				weakness L
 				move "Aqua Shower", {
-					text " damage. This attack does 10 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+					text "This attack does 10 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Vise Grip", {
@@ -1141,11 +1141,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:W, retreatCost:1) {
 				weakness L
 				move "Collect", {
-					text " damage. Draw a card."
+					text "Draw a card."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Waterfall", {
@@ -1162,11 +1162,11 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Goldeen", hp:HP110, type:W, retreatCost:2) {
 				weakness L
 				move "Ripping Horn", {
-					text " damage. Flip 3 coins. For each heads, discard an Energy from your opponent’s Active Pokémon."
+					text "Flip 3 coins. For each heads, discard an Energy from your opponent’s Active Pokémon."
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Pierce", {
@@ -1196,11 +1196,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP210, type:W, retreatCost:2) {
 				weakness L
 				move "Body Surf", {
-					text " damage. Attach a [W] Energy card from your hand to this Pokémon. If you do, switch it with 1 of your Benched Pokémon."
+					text "Attach a [W] Energy card from your hand to this Pokémon. If you do, switch it with 1 of your Benched Pokémon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Ocean Loop", {
@@ -1248,11 +1248,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP110, type:W, retreatCost:1) {
 				weakness L
 				move "Water Reserve", {
-					text " damage. Search your deck for up to 3 [W] Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
+					text "Search your deck for up to 3 [W] Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Wave Splash", {
@@ -1444,11 +1444,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP110, type:W, retreatCost:1) {
 				weakness L
 				move "Water Arrow", {
-					text " damage. This attack does 20 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+					text "This attack does 20 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Water Gun", {
@@ -1496,11 +1496,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP060, type:L, retreatCost:1) {
 				weakness F
 				move "Charge", {
-					text " damage. Search your deck for a [L] Energy card and attach it to this Pokémon. Then, shuffle your deck."
+					text "Search your deck for a [L] Energy card and attach it to this Pokémon. Then, shuffle your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Electro Ball", {
@@ -1551,11 +1551,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP060, type:L, retreatCost:1) {
 				weakness F
 				move "Luring Glow", {
-					text " damage. Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
+					text "Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Lightning Ball", {
@@ -1640,11 +1640,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:L, retreatCost:1) {
 				weakness F
 				move "Roar", {
-					text " damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
+					text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Static Shock", {
@@ -1873,11 +1873,11 @@ public enum SwordShield implements CardInfo {
 				weakness D
 				resistance F, MINUS20
 				move "Gritty Comeback", {
-					text " damage. Switch all damage counters on this Pokémon with those on your opponent’s Active Pokémon."
+					text "Switch all damage counters on this Pokémon with those on your opponent’s Active Pokémon."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Shadow Bind", {
@@ -1895,11 +1895,11 @@ public enum SwordShield implements CardInfo {
 				weakness D
 				resistance F, MINUS20
 				move "Moonlight", {
-					text " damage. Heal 30 damage from this Pokémon."
+					text "Heal 30 damage from this Pokémon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Psychic Sphere", {
@@ -1917,11 +1917,11 @@ public enum SwordShield implements CardInfo {
 				weakness D
 				resistance F, MINUS20
 				move "Sleepy Pulse", {
-					text " damage. Your opponent’s Active Pokémon is now Asleep. During Pokémon Checkup, your opponent flips 2 coins instead of 1. If either of them is tails, that Pokémon is still Asleep."
+					text "Your opponent’s Active Pokémon is now Asleep. During Pokémon Checkup, your opponent flips 2 coins instead of 1. If either of them is tails, that Pokémon is still Asleep."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Super Hypnoblast", {
@@ -1939,11 +1939,11 @@ public enum SwordShield implements CardInfo {
 				weakness D
 				resistance F, MINUS20
 				move "Teatime", {
-					text " damage. Each player draws 2 cards."
+					text "Each player draws 2 cards."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 
@@ -1953,11 +1953,11 @@ public enum SwordShield implements CardInfo {
 				weakness D
 				resistance F, MINUS20
 				move "Teatime", {
-					text " damage. Each player draws 2 cards."
+					text "Each player draws 2 cards."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Poltergeist", {
@@ -2082,11 +2082,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP090, type:F, retreatCost:2) {
 				weakness G
 				move "Stomp Off", {
-					text " damage. Discard the top 2 cards of your opponent’s deck."
+					text "Discard the top 2 cards of your opponent’s deck."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Land Crush", {
@@ -2145,11 +2145,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP100, type:F, retreatCost:1) {
 				weakness G
 				move "Double Draw", {
-					text " damage. Draw 2 cards."
+					text "Draw 2 cards."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Flail", {
@@ -2276,11 +2276,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP080, type:F, retreatCost:2) {
 				weakness G
 				move "Sand Attack", {
-					text " damage. During your opponent's next turn, if the Defending Pokémon tries to attack, your opponent flips a coin. If tails, that attack doesn't happen."
+					text "During your opponent's next turn, if the Defending Pokémon tries to attack, your opponent flips a coin. If tails, that attack doesn't happen."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 
@@ -2375,11 +2375,11 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Clobbopus", hp:HP130, type:F, retreatCost:2) {
 				weakness P
 				move "Octolock", {
-					text " damage. Until this Grapploct leaves the Active Spot, the Defending Pokémon's attacks cost [C][C] more, and the Defending Pokémon can't retreat. This effect can't be applied more than once."
+					text "Until this Grapploct leaves the Active Spot, the Defending Pokémon's attacks cost [C][C] more, and the Defending Pokémon can't retreat. This effect can't be applied more than once."
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Tough Swing", {
@@ -2430,11 +2430,11 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"StonjournerV", hp:HP330, type:F, retreatCost:3) {
 				weakness G
 				move "Stone Gift", {
-					text " damage. Attach a [F] Energy card from your hand to 1 of your Pokémon. If you do, heal 120 damage from that Pokémon."
+					text "Attach a [F] Energy card from your hand to 1 of your Pokémon. If you do, heal 120 damage from that Pokémon."
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Max Rockfall", {
@@ -2508,11 +2508,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP170, type:D, retreatCost:2) {
 				weakness G
 				move "Lode Search", {
-					text " damage. Put a Trainer card from your discard pile into your hand."
+					text "Put a Trainer card from your discard pile into your hand."
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Crazy Claws", {
@@ -2529,11 +2529,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP080, type:D, retreatCost:2) {
 				weakness F
 				move "Poison Sting", {
-					text " damage. Your opponent’s Active Pokémon is now Poisoned."
+					text "Your opponent’s Active Pokémon is now Poisoned."
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Slashing Claw", {
@@ -2610,11 +2610,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:D, retreatCost:1) {
 				weakness G
 				move "Instigate", {
-					text " damage. Your opponent shuffles their hand and puts it on the bottom of their deck. If they put any cards on the bottom of their deck in this way, they draw 3 cards."
+					text "Your opponent shuffles their hand and puts it on the bottom of their deck. If they put any cards on the bottom of their deck in this way, they draw 3 cards."
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 
@@ -2645,11 +2645,11 @@ public enum SwordShield implements CardInfo {
 				weakness R
 				resistance G, MINUS20
 				move "Hone Claws", {
-					text " damage. During your next turn, this Pokémon’s Slash attack does 60 more damage (before applying Weakness and Resistance)."
+					text "During your next turn, this Pokémon’s Slash attack does 60 more damage (before applying Weakness and Resistance)."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Slash", {
@@ -2686,11 +2686,11 @@ public enum SwordShield implements CardInfo {
 				weakness R
 				resistance G, MINUS20
 				move "Find a Friend", {
-					text " damage. Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
+					text "Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Crunch", {
@@ -2958,11 +2958,11 @@ public enum SwordShield implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Send Back", {
-					text " damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
+					text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Wing Attack", {
@@ -2988,11 +2988,11 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Carry Off", {
-					text " damage. Choose 1 of your opponent's Benched Pokémon. They shuffle that Pokémon and all attached cards into their deck. Then, shuffle this Pokémon and all attached cards into your deck."
+					text "Choose 1 of your opponent's Benched Pokémon. They shuffle that Pokémon and all attached cards into their deck. Then, shuffle this Pokémon and all attached cards into your deck."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 
@@ -3001,11 +3001,11 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:C, retreatCost:1) {
 				weakness F
 				move "Glance", {
-					text " damage. Look at the top card of your opponent’s deck."
+					text "Look at the top card of your opponent’s deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Tail Slap", {
@@ -3184,19 +3184,19 @@ public enum SwordShield implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Beak Catch", {
-					text " damage. Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
+					text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 				move "Spit Shot", {
-					text " damage. Discard all Energy from this Pokémon. This attack does 160 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+					text "Discard all Energy from this Pokémon. This attack does 160 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage
+
 					}
 				}
 
