@@ -37,7 +37,7 @@ public enum Collection {
 	EXPEDITION(171, "EXP", "gen2.Expedition"),
 	AQUAPOLIS(172, "AQP", "gen2.Aquapolis"),
 	SKYRIDGE(173, "SKR", "gen2.Skyridge"),
-	
+
 	//EX
 	RUBY_SAPPHIRE(211, "Ruby & Sapphire", "RS", "gen3.RubySapphire"),
 	SANDSTORM(212, "SS", "gen3.Sandstorm"),
@@ -143,7 +143,10 @@ public enum Collection {
 	UNIFIED_MINDS(424, "UNM", "gen7.UnifiedMinds"),
 	HIDDEN_FATES(425, "HIF", "gen7.HiddenFates"),
 	SHINY_VAULT(426, "SMA", "gen7.ShinyVault"),
-	COSMIC_ECLIPSE(427, "CEC", "gen7.CosmicEclipse"),
+  COSMIC_ECLIPSE(427, "CEC", "gen7.CosmicEclipse"),
+
+  // Sword & Shield
+  SWORD_SHIELD(430, "SSH", "gen8.SwordShield"),
 
 	//POKEMOD
 	POKEMOD_BASE_SET(911, "MODBS", "pokemod.PokemodBaseSet"),
@@ -188,11 +191,11 @@ public enum Collection {
 	public String getShortName(){
 		return shortName;
 	}
-	
+
 	public String getName(){
 		return toString();
 	}
-	
+
 	public int getCardCount() {
 		return cards().length;
 	}
@@ -205,17 +208,17 @@ public enum Collection {
 	public String toString(){
 		return fullName==null?WordUtils.capitalizeFully(this.name(), "_".toCharArray()).replaceAll("_", " "):fullName;
 	}
-	
+
 	public CardInfo[] cards() {
 		if(enumClass == null) return new CardInfo[0];
 		Object[] xCardInfos=enumClass.getEnumConstants();
 		return (CardInfo[]) xCardInfos ;
 	}
-	
+
 	public List<CardInfo> cardList(){
 		return Arrays.asList(cards());
 	}
-	
+
 	public Class getEnumClass() {
 		return enumClass;
 	}
