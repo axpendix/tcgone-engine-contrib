@@ -251,8 +251,7 @@ public enum SwordShield implements CardInfo {
 	AIR_BALLOON_213 ("Air Balloon", 213, Rarity.SECRET, [TRAINER, ITEM, POKEMON_TOOL]),
 	METAL_SAUCER_214 ("Metal Saucer", 214, Rarity.SECRET, [TRAINER, ITEM]),
 	ORDINARY_ROD_215 ("Ordinary Rod", 215, Rarity.SECRET, [TRAINER, ITEM]),
-	QUICK_BALL_216 ("Quick Ball", 216, Rarity.SECRET, [TRAINER, ITEM]),
-;
+	QUICK_BALL_216 ("Quick Ball", 216, Rarity.SECRET, [TRAINER, ITEM]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
