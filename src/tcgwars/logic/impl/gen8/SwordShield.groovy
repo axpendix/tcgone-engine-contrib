@@ -32,7 +32,7 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
- * @author axpendix@hotmail.com
+ * @author (Lithogen) luongthomasdev@gmail.com
  */
 public enum SwordShield implements CardInfo {
 
