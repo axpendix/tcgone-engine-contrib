@@ -311,10 +311,13 @@ public enum SwordShield implements CardInfo {
 				move "Find a Friend", {
 					text "Search your deck for up to 2 Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
 					energyCost G
-					attackRequirement {}
-					onAttack {
-
-					}
+					attackRequirement {
+            assert deck.notEmpty
+          }
+          onAttack {
+            my.deck.search(count: 2, cardTypeFilter(POKEMON)).showToOpponent("Selected Pokémon").moveTo(my.hand)
+            shuffleDeck()
+          }
 				}
 				move "Line Force", {
 					text "50+ damage. This attack does 20 more damage for each of your Benched Pokémon."
@@ -322,6 +325,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            damage 20*my.bench.size()
 					}
 				}
 			};
@@ -334,6 +338,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            heal 10, self
 					}
 				}
 			};
@@ -343,10 +348,12 @@ public enum SwordShield implements CardInfo {
 				move "Sweet Scent", {
 					text "Heal 30 damage from 1 of your Pokémon."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-
-					}
+					attackRequirement {
+            assert my.all.findAll { it.numberOfDamageCounters }
+          }
+          onAttack {
+            heal 30, my.all.findAll { it.numberOfDamageCounters }.select()
+          }
 				}
 				move "Sting", {
 					text "20 damage."
@@ -366,6 +373,8 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            apply POISONED
+            flip { apply PARALYZED }
 					}
 				}
 				move "Mega Drain", {
@@ -374,6 +383,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
+            heal 30, self
 					}
 				}
 			};
@@ -397,7 +407,11 @@ public enum SwordShield implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            flip {
+              defending.cards.moveTo(opp.deck)
+              removePCS(defending)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
+            }
 					}
 				}
 				move "Leaf Step", {
@@ -425,7 +439,7 @@ public enum SwordShield implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 60
+            flip self.cards.energyCount(C), { damage 60 }
 					}
 				}
 			};
@@ -438,6 +452,9 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            if (my.bench.find({ it.name == "Durant" })) {
+              opp.bench.each { damage 60, it }
+            }
 					}
 				}
 			};
@@ -450,6 +467,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            if (my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1 && my.lastKnockoutTypes && my.lastKnockoutTypes.contains(G)) damage 90
 					}
 				}
 				move "Giga Hammer", {
@@ -458,6 +476,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 200
+            cantUseAttack(thisMove, self)
 					}
 				}
 			};
@@ -469,7 +488,7 @@ public enum SwordShield implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 10
+            flip 3, { damage 10 }
 					}
 				}
 			};
@@ -499,9 +518,11 @@ public enum SwordShield implements CardInfo {
 				move "Taunt", {
 					text "Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+            assert opp.bench
+          }
 					onAttack {
-
+            sw(opp.active, opp.bench.select())
 					}
 				}
 				move "Double Hit", {
@@ -509,7 +530,7 @@ public enum SwordShield implements CardInfo {
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
-						damage 60
+            flip 2, { damage 60 }
 					}
 				}
 			};
@@ -530,6 +551,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            flip { damage 30 }
 					}
 				}
 			};
@@ -539,6 +561,13 @@ public enum SwordShield implements CardInfo {
 				bwAbility "Voltage Beat", {
 					text "Once during your turn, you may search your deck for up to 2 [G] Energy cards and attach them to 1 of your Pokémon. Then, shuffle your deck."
 					actionA {
+            checkLastTurn()
+            assert my.deck : "There are no more cards in your deck"
+            powerUsed()
+            def list = my.deck.search (max: 2, basicEnergyFilter(G))
+            def pcs = my.all.select("Attach to?")
+            list.each { attachEnergy(pcs, it) }
+            shuffleDeck()
 					}
 				}
 				move "Hammer In", {
@@ -559,6 +588,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
+            opp.bench.each { damage 10, it }
 					}
 				}
 				move "Drum Beating", {
@@ -567,6 +597,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 180
+            cantUseAttack(thisMove, self)
 					}
 				}
 			};
@@ -589,7 +620,7 @@ public enum SwordShield implements CardInfo {
 					text "Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
 					energyCost C
 					callForFamily(basic: true, 1, delegate)
-					}
+        }
 			};
 			case DOTTLER_18:
 			return evolution (this, from:"Blipbug", hp:HP070, type:G, retreatCost:2) {
@@ -599,7 +630,7 @@ public enum SwordShield implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            reduceDamageNextTurn(hp(40),thisMove)
 					}
 				}
 				move "Ram", {
@@ -617,6 +648,14 @@ public enum SwordShield implements CardInfo {
 				bwAbility "Bug’s Radar", {
 					text "Once during your turn, you may look at the top 3 cards of your opponent’s deck and put them back in any order."
 					actionA {
+            checkLastTurn()
+            assert opp.deck : "Opponent's deck is empty"
+            powerUsed()
+
+            def rearrangedCards = rearrange(opp.deck.subList(0, 3))
+            opp.deck.setSubList(0, rearrangedCards)
+
+            bc "Rearranged top $count cards of opponent's (${opp.owner.getPlayerUsername(bg)}) deck."
 					}
 				}
 				move "Brainwave", {
@@ -625,6 +664,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
+            extraEnergyDamage(3, hp(10) , P, thisMove)
 					}
 				}
 			};
@@ -651,10 +691,14 @@ public enum SwordShield implements CardInfo {
 				move "Blessing of Fluff", {
 					text "Search your deck for up to 3 [G] Energy cards and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-
-					}
+					attackRequirement {
+            assert my.deck
+          }
+          onAttack {
+            my.deck.filterByEnergyType(G).select(max: 3).each {
+              attachEnergy(my.bench.select("Attach"), it)
+            }
+          }
 				}
 				move "Leafage", {
 					text "30 damage."
@@ -686,6 +730,9 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            afterDamage {
+              attachEnergyFrom(type: R, my.discard, self)
+            }
 					}
 				}
 				move "Fire Mane", {
@@ -706,6 +753,11 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
+            def cards = my.deck.subList(0, 1)
+            if (cards.filterByEnergyType(R)) {
+              damage 90
+            }
+            cards.discard()
 					}
 				}
 				move "Steam Crush", {
@@ -714,6 +766,8 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 120
+            discardDefendingEnergy()
+            discardDefendingEnergy()
 					}
 				}
 			};
@@ -723,17 +777,22 @@ public enum SwordShield implements CardInfo {
 				move "Spreading Flames", {
 					text "Attach up to 3 [R] Energy cards from your discard pile to your Pokémon in any way you like."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-
-					}
+					attackRequirement {
+            assert my.discard.filterByEnergyType(R) : "No [R] in discard"
+          }
+          onAttack {
+            def list=my.discard.filterByEnergyType(R)
+            list.select(max:3).each {
+              attachEnergy(my.all.select("Attach $it to"),it)
+            }
+          }
 				}
 				move "Energy Burst", {
 					text "30x damage. This attack does 30 damage for each Energy attached to both Active Pokémon."
 					energyCost R, R
 					attackRequirement {}
 					onAttack {
-						damage 30
+            damage 30*(self.cards.energyCount(C)+defending.cards.energyCount(C))
 					}
 				}
 			};
@@ -746,6 +805,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            apply BURNED
 					}
 				}
 				move "Fire Claws", {
@@ -765,7 +825,7 @@ public enum SwordShield implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-
+            apply CONFUSED
 					}
 				}
 			};
@@ -778,6 +838,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            apply BURNED
 					}
 				}
 				move "Bright Flame", {
@@ -786,6 +847,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 120
+            discardSelfEnergy(C, C)
 					}
 				}
 			};
@@ -806,6 +868,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 150
+            discardSelfEnergy(C, C)
 					}
 				}
 			};
@@ -895,6 +958,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 190
+            discardSelfEnergy(C, C)
 					}
 				}
 			};
@@ -907,6 +971,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            apply BURNED
 					}
 				}
 				move "Burning Kick", {
@@ -915,6 +980,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 160
+            discardAllSelfEnergy(null)
 					}
 				}
 			};
@@ -935,6 +1001,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 160
+            flip 1, {}, { discardSelfEnergy(C, C) }
 					}
 				}
 			};
@@ -966,7 +1033,7 @@ public enum SwordShield implements CardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-						damage 40
+            flipUntilTails { damage 40 }
 					}
 				}
 			};
@@ -978,7 +1045,7 @@ public enum SwordShield implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-
+            opp.deck.subList(0, self.cards.energyCount(G)).discard()
 					}
 				}
 				move "Searing Flame", {
@@ -987,6 +1054,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 110
+            apply BURNED
 					}
 				}
 			};
@@ -999,6 +1067,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip { damage 20 }
 					}
 				}
 			};
@@ -1011,6 +1080,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            flip { apply PARALYZED }
 					}
 				}
 				move "Tidal Wave", {
@@ -1030,7 +1100,7 @@ public enum SwordShield implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-
+            opp.all.each { damage 10, it }
 					}
 				}
 				move "Vise Grip", {
@@ -1050,7 +1120,7 @@ public enum SwordShield implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 120
+            flip 2,{},{},[2:{damage 120},1:{bc "$thisMove failed"},0:{bc "$thisMove failed"}]
 					}
 				}
 			};
@@ -1063,6 +1133,9 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            if (opp.deck) {
+              opp.deck.subList(0,1).discard()
+            }
 					}
 				}
 				move "Claw Rend", {
@@ -1071,6 +1144,8 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 90
+            if (opp.active.numberOfDamageCounters)
+              damage 60
 					}
 				}
 			};
@@ -1094,7 +1169,7 @@ public enum SwordShield implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            draw 1
 					}
 				}
 				move "Waterfall", {
@@ -1114,7 +1189,7 @@ public enum SwordShield implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-
+            flip 3, { discardDefendingEnergy() }
 					}
 				}
 				move "Pierce", {
@@ -1135,6 +1210,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+            // TODO:
 					}
 				}
 			};
@@ -2680,6 +2756,7 @@ public enum SwordShield implements CardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 130
+            // discardSelfEnergy(C, C)
 					}
 				}
 			};
