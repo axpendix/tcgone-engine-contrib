@@ -349,7 +349,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Sting", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -381,7 +381,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
 				weakness R
 				move "Attach", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -401,7 +401,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Leaf Step", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -413,7 +413,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP110, type:G, retreatCost:2) {
 				weakness R
 				move "Zzzt", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -477,7 +477,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:G, retreatCost:1) {
 				weakness R
 				move "Scratch", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -485,7 +485,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Beat", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -517,7 +517,7 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Grookey", hp:HP100, type:G, retreatCost:2) {
 				weakness R
 				move "Beat", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -542,7 +542,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Hammer In", {
-					text "140 damage. "
+					text "140 damage."
 					energyCost G, G, G, C
 					attackRequirement {}
 					onAttack {
@@ -574,7 +574,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
 				weakness R
 				move "Gnaw", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -603,7 +603,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Ram", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -637,7 +637,7 @@ public enum SwordShield implements CardInfo {
 					callForFamily(basic: true, 3, delegate)
 				}
 				move "Razor Leaf", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -657,7 +657,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Leafage", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -669,7 +669,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:R, retreatCost:1) {
 				weakness W
 				move "Flare", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost R
 					attackRequirement {}
 					onAttack {
@@ -689,7 +689,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Fire Mane", {
-					text "70 damage. "
+					text "70 damage."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -749,7 +749,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Fire Claws", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost R, R
 					attackRequirement {}
 					onAttack {
@@ -793,7 +793,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP130, type:R, retreatCost:3) {
 				weakness W
 				move "Tackle", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -825,7 +825,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:R, retreatCost:1) {
 				weakness W
 				move "Tackle", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -833,7 +833,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Flare", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -853,7 +853,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Magnum Kick", {
-					text "70 damage. "
+					text "70 damage."
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
@@ -865,7 +865,7 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Scorbunny", hp:HP090, type:R, retreatCost:1) {
 				weakness W
 				move "Kick", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -873,7 +873,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Heat Blast", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost R, R
 					attackRequirement {}
 					onAttack {
@@ -942,7 +942,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:R, retreatCost:1) {
 				weakness W
 				move "Bite", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -950,7 +950,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Combustion", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
@@ -1014,7 +1014,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Tidal Wave", {
-					text "100 damage. "
+					text "100 damage."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1034,7 +1034,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Vise Grip", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1078,7 +1078,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:W, retreatCost:1) {
 				weakness L
 				move "Horn Attack", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1098,7 +1098,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Waterfall", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1118,7 +1118,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Pierce", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1199,7 +1199,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Wave Splash", {
-					text "60 damage. "
+					text "60 damage."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -1211,7 +1211,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP210, type:W, retreatCost:2) {
 				weakness L
 				move "Wave Splash", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1231,7 +1231,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP060, type:W, retreatCost:1) {
 				weakness L
 				move "Water Gun", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1243,7 +1243,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:W, retreatCost:1) {
 				weakness L
 				move "Pound", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1251,7 +1251,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Water Gun", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1268,7 +1268,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Water Drip", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1280,7 +1280,7 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Sobble", hp:HP090, type:W, retreatCost:1) {
 				weakness L
 				move "Rain Splash", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1288,7 +1288,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Wave Splash", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1337,7 +1337,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP080, type:W, retreatCost:2) {
 				weakness L
 				move "Bite", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1345,7 +1345,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Water Gun", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1385,7 +1385,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Water Gun", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost W, W
 					attackRequirement {}
 					onAttack {
@@ -1397,7 +1397,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP050, type:W, retreatCost:1) {
 				weakness M
 				move "Ram", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1414,7 +1414,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Aurora Beam", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1434,7 +1434,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Electro Ball", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1446,7 +1446,7 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Pikachu", hp:HP130, type:L, retreatCost:1) {
 				weakness F
 				move "Pain-Full Punch", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1454,7 +1454,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Mach Bolt", {
-					text "120 damage. "
+					text "120 damage."
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
@@ -1466,7 +1466,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:L, retreatCost:1) {
 				weakness F
 				move "Gentle Slap", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1486,7 +1486,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Lightning Ball", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1498,7 +1498,7 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Chinchou", hp:HP120, type:L, retreatCost:2) {
 				weakness F
 				move "Ram", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1518,7 +1518,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP050, type:L, retreatCost:1) {
 				weakness F
 				move "Flop", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1570,7 +1570,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Static Shock", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1582,7 +1582,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:L, retreatCost:1) {
 				weakness F
 				move "Bite", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1590,7 +1590,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Zap Kick", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1622,7 +1622,7 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Yamper", hp:HP120, type:L, retreatCost:0) {
 				weakness F
 				move "Bite", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1751,7 +1751,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Spooky Shot", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1811,7 +1811,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Psychic Sphere", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1896,7 +1896,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP060, type:F, retreatCost:1) {
 				weakness G
 				move "Scratch", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1908,7 +1908,7 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Diglett", hp:HP090, type:F, retreatCost:1) {
 				weakness G
 				move "Mud Bomb", {
-					text "60 damage. "
+					text "60 damage."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1920,7 +1920,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP120, type:F, retreatCost:1) {
 				weakness P
 				move "Low Sweep", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1948,7 +1948,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Mach Cross", {
-					text "60 damage. "
+					text "60 damage."
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
@@ -1960,7 +1960,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP100, type:F, retreatCost:3) {
 				weakness G
 				move "Horn Attack", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1968,7 +1968,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Hammer In", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -1988,7 +1988,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Land Crush", {
-					text "70 damage. "
+					text "70 damage."
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
@@ -2000,7 +2000,7 @@ public enum SwordShield implements CardInfo {
 			return evolution (this, from:"Rhyhorn", hp:HP120, type:F, retreatCost:4) {
 				weakness G
 				move "Horn Drill", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -2060,7 +2060,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:F, retreatCost:1) {
 				weakness G
 				move "Beam", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2068,7 +2068,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Sand Spray", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
@@ -2080,7 +2080,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP060, type:F, retreatCost:1) {
 				weakness G
 				move "Spinning Attack", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -2132,7 +2132,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP080, type:F, retreatCost:2) {
 				weakness G
 				move "Stampede", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2140,7 +2140,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Rear Kick", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -2176,7 +2176,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:F, retreatCost:1) {
 				weakness G
 				move "Headbutt", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2184,7 +2184,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Tail Whap", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
@@ -2204,7 +2204,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Skull Bash", {
-					text "100 damage. "
+					text "100 damage."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -2245,7 +2245,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP080, type:F, retreatCost:2) {
 				weakness P
 				move "Punch", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
@@ -2297,7 +2297,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Mega Kick", {
-					text "150 damage. "
+					text "150 damage."
 					energyCost F, F, F
 					attackRequirement {}
 					onAttack {
@@ -2317,7 +2317,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Max Rockfall", {
-					text "200 damage. "
+					text "200 damage."
 					energyCost F, F, F
 					attackRequirement {}
 					onAttack {
@@ -2354,7 +2354,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Hammer In", {
-					text "70 damage. "
+					text "70 damage."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -2411,7 +2411,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Slashing Claw", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -2443,7 +2443,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:D, retreatCost:1) {
 				weakness F
 				move "Stampede", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2451,7 +2451,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Lunge Out", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -2500,7 +2500,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Darkness Fang", {
-					text "90 damage. "
+					text "90 damage."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -2521,7 +2521,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Slash", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -2539,7 +2539,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Metal Claw", {
-					text "70 damage. "
+					text "70 damage."
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
@@ -2573,7 +2573,7 @@ public enum SwordShield implements CardInfo {
 				weakness R
 				resistance G, MINUS20
 				move "Rollout", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2625,7 +2625,7 @@ public enum SwordShield implements CardInfo {
 				weakness R
 				resistance G, MINUS20
 				move "Cut Up", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2633,7 +2633,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Metal Claw", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -2654,7 +2654,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Slicing Blade", {
-					text "60 damage. "
+					text "60 damage."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -2667,7 +2667,7 @@ public enum SwordShield implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Peck", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2757,7 +2757,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP150, type:C, retreatCost:4) {
 				weakness F
 				move "Rolling Tackle", {
-					text "80 damage. "
+					text "80 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -2765,7 +2765,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Heavy Impact", {
-					text "130 damage. "
+					text "130 damage."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -2818,7 +2818,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Wing Attack", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2831,7 +2831,7 @@ public enum SwordShield implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Wing Attack", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2871,7 +2871,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
 				weakness F
 				move "Tail Whap", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2905,7 +2905,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Whap Down", {
-					text "70 damage. "
+					text "70 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -2930,7 +2930,7 @@ public enum SwordShield implements CardInfo {
 				weakness L
 				resistance F, MINUS20
 				move "Flap", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2938,7 +2938,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Glide", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2959,7 +2959,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Drill Peck", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2983,7 +2983,7 @@ public enum SwordShield implements CardInfo {
 			return basic (this, hp:HP070, type:C, retreatCost:1) {
 				weakness F
 				move "Tackle", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2991,7 +2991,7 @@ public enum SwordShield implements CardInfo {
 					}
 				}
 				move "Headbutt", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
