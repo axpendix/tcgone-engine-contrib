@@ -208,7 +208,7 @@ public enum PokemodBaseSet implements CardInfo {
 		return name();
 	}
 
-	@Override
+	// @Override
 	public Card getImplementation() {
 		switch (this) {
 			case ALAKAZAM_1:
