@@ -312,7 +312,7 @@ public enum SwordShield implements CardInfo {
 		return name();
 	}
 
-	// @Override
+	@Override
 	public Card getImplementation() {
 		switch (this) {
 			case CELEBI_V_1:
