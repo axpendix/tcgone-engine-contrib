@@ -3391,8 +3391,8 @@ public enum SwordShield implements CardInfo {
             pcs.cards.filterByType(ENERGY).select("Discard").moveTo(opp.hand)
           }
         }
-        playRequirement{
-          assert opp.all.findAll {it.cards.energyCount(C)
+        playRequirement {
+          assert opp.all.findAll { it.cards.energyCount(C) }
         }
 			};
 			case VITALITY_BAND_185:
