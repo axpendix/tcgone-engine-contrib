@@ -1147,7 +1147,9 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost W, W, W, W
 					onAttack {
 						damage 70
-            // TODO:
+            afterDamage {
+              opp.active.cards.filterByType(ENERGY).select(max: 2, "Choose the energy to discard").moveTo(opp.hand)
+            }
 					}
 				}
 			};
@@ -1180,7 +1182,7 @@ public enum SwordShield implements LogicCardInfo {
 				}
 			};
 			case LAPRAS_VMAX_50:
-			return evolution (this, from:"LaprasV", hp:HP320, type:W, retreatCost:3) {
+			return evolution (this, from:"Lapras V", hp:HP320, type:W, retreatCost:3) {
 				weakness L
 				move "G-Max Pump", {
 					text "90+ damage. This attack does 30 more damage for each [W] Energy attached to this Pokémon."
@@ -1717,15 +1719,15 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost L, L, C
 					onAttack {
 						damage 150
-            if (confirm("Discard an Energy card attached to Morpeko V to switch with a benched Pokémon?")) {
-              discardSelfEnergy C
+            discardSelfEnergy C
+            if (my.bench) {
               sw self, my.bench.select()
             }
 					}
 				}
 			};
 			case MORPEKO_VMAX_80:
-			return evolution (this, from:"MorpekoV", hp:HP300, type:L, retreatCost:1) {
+			return evolution (this, from:"Morpeko V", hp:HP300, type:L, retreatCost:1) {
 				weakness F
 				move "Max Discharge", {
 					text "180 damage. This attack also does 20 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
@@ -1739,7 +1741,7 @@ public enum SwordShield implements LogicCardInfo {
 			case GALARIAN_PONYTA_81:
 			return basic (this, hp:HP070, type:P, retreatCost:1) {
 				weakness D
-				resistance F, MINUS20
+				resistance F, MINUS30
 				move "Psy Bolt", {
 					text "10 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
 					energyCost P
@@ -1750,9 +1752,9 @@ public enum SwordShield implements LogicCardInfo {
 				}
 			};
 			case GALARIAN_RAPIDASH_82:
-			return evolution (this, from:"GalarianPonyta", hp:HP100, type:P, retreatCost:1) {
+			return evolution (this, from:"Galarian Ponyta", hp:HP100, type:P, retreatCost:1) {
 				weakness D
-				resistance F, MINUS20
+				resistance F, MINUS30
 				bwAbility "Pastel Veil", {
 					text "Your Pokémon recover from all Special Conditions and can't be affected by any Special Conditions."
 					def pastelVeil = {
@@ -1787,20 +1789,21 @@ public enum SwordShield implements LogicCardInfo {
 			case GASTLY_83:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
 				weakness D
-				resistance F, MINUS20
+				resistance F, MINUS30
 				move "Fade Out", {
 					text "20 damage. Put this Pokémon and all attached cards into your hand."
 					energyCost P
 					onAttack {
 						damage 20
-            // TODO:
+            self.cards.moveTo(my.hand)
+            removePCS(self)
 					}
 				}
 			};
 			case HAUNTER_84:
 			return evolution (this, from:"Gastly", hp:HP070, type:P, retreatCost:1) {
 				weakness D
-				resistance F, MINUS20
+				resistance F, MINUS30
 				move "Nightmare", {
 					text "20 damage. Your opponent’s Active Pokémon is now Asleep."
 					energyCost C
@@ -1820,7 +1823,7 @@ public enum SwordShield implements LogicCardInfo {
 			case GENGAR_85:
 			return evolution (this, from:"Haunter", hp:HP110, type:P, retreatCost:2) {
 				weakness D
-				resistance F, MINUS20
+				resistance F, MINUS30
 				bwAbility "Life Shaker", {
 					text "As often as you like during your turn, you may move 1 damage counter from 1 of your [P] Pokémon to another of your [P] Pokémon."
 					actionA {
@@ -1847,7 +1850,7 @@ public enum SwordShield implements LogicCardInfo {
 			case WOBBUFFET_V_86:
 			return basic (this, hp:HP220, type:P, retreatCost:3) {
 				weakness D
-				resistance F, MINUS20
+				resistance F, MINUS30
 				move "Gritty Comeback", {
 					text "Switch all damage counters on this Pokémon with those on your opponent’s Active Pokémon."
 					energyCost C, C
@@ -1872,7 +1875,7 @@ public enum SwordShield implements LogicCardInfo {
 			case MUNNA_87:
 			return basic (this, hp:HP070, type:P, retreatCost:1) {
 				weakness D
-				resistance F, MINUS20
+				resistance F, MINUS30
 				move "Moonlight", {
 					text "Heal 30 damage from this Pokémon."
 					energyCost C
@@ -1891,13 +1894,32 @@ public enum SwordShield implements LogicCardInfo {
 			case MUSHARNA_88:
 			return evolution (this, from:"Munna", hp:HP120, type:P, retreatCost:3) {
 				weakness D
-				resistance F, MINUS20
+				resistance F, MINUS30
 				move "Sleepy Pulse", {
 					text "Your opponent’s Active Pokémon is now Asleep. During Pokémon Checkup, your opponent flips 2 coins instead of 1. If either of them is tails, that Pokémon is still Asleep."
 					energyCost C
 					onAttack {
-
-					}
+            apply ASLEEP, defending
+            delayed {
+              after CLEAR_SPECIAL_CONDITION, defending, {
+                if(ef.types.contains(ASLEEP)){
+                  unregister()
+                }
+              }
+              before ASLEEP_SPC, null, null, BEGIN_TURN, {
+                if(ef.target == defending){ //MARK parentEvent
+                  flip "Asleep (Sleepy Pulse)", 2, {}, {}, [2:{
+                    ef.unregisterItself(bg.em());
+                  },1:{
+                    bc "$self is still asleep."
+                  },0:{
+                    bc "$self is still asleep."
+                  }]
+                  prevent()
+                }
+              }
+            }
+          }
 				}
 				move "Super Hypnoblast", {
 					text "10+ damage. If your opponent’s Active Pokémon is Asleep, this attack does 120 more damage."
@@ -1910,7 +1932,7 @@ public enum SwordShield implements LogicCardInfo {
 			case SINISTEA_89:
 			return basic (this, hp:HP030, type:P, retreatCost:1) {
 				weakness D
-				resistance F, MINUS20
+				resistance F, MINUS30
 				move "Teatime", {
 					text "Each player draws 2 cards."
 					energyCost C
@@ -1923,7 +1945,7 @@ public enum SwordShield implements LogicCardInfo {
 			case POLTEAGEIST_90:
 			return evolution (this, from:"Sinistea", hp:HP060, type:P, retreatCost:1) {
 				weakness D
-				resistance F, MINUS20
+				resistance F, MINUS30
 				move "Teatime", {
 					text "Each player draws 2 cards."
 					energyCost C
@@ -1944,7 +1966,7 @@ public enum SwordShield implements LogicCardInfo {
 			case INDEEDEE_V_91:
 			return basic (this, hp:HP180, type:P, retreatCost:2) {
 				weakness D
-				resistance F, MINUS20
+				resistance F, MINUS30
 				bwAbility "Watch Over", {
 					text "Once during your turn, you may heal 20 damage from your Active Pokémon."
 					actionA {
@@ -2259,7 +2281,8 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost C
 					onAttack {
 						damage 10
-            // TODO:
+            increasedBaseDamageNextTurn("Coil", hp(120))
+            increasedBaseDamageNextTurn("Skull Bash", hp(120))
 					}
 				}
 				move "Skull Bash", {
@@ -2273,10 +2296,18 @@ public enum SwordShield implements LogicCardInfo {
 			case SANDACONDA_110:
 			return evolution (this, from:"Silicobra", hp:HP130, type:F, retreatCost:2) {
 				weakness G
-				bwAbility "", {
-					text ""
-					actionA {
-					}
+				bwAbility "Sand Sac", {
+					text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+					delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to==self && it.dmg.value && it.notNoEffect) {
+                  bc "Sand Sac -30"
+                  it.dmg -= hp(30)
+                }
+              }
+            }
+          }
 				}
 				move "Power Press", {
 					text "60+ damage. If this Pokémon has at least 1 extra [F] Energy attached (in addition to this attack's cost), this attack does 70 more damage."
@@ -2315,9 +2346,46 @@ public enum SwordShield implements LogicCardInfo {
 				move "Octolock", {
 					text "Until this Grapploct leaves the Active Spot, the Defending Pokémon's attacks cost [C][C] more, and the Defending Pokémon can't retreat. This effect can't be applied more than once."
 					energyCost F, F
-					onAttack {
-            // TODO:
-					}
+          onAttack {
+            targeted (defending) {
+              delayed {
+                def eff1
+                def eff2
+
+                register {
+                  eff1 = delayed {
+                    before RETREAT, {
+                      if (ef.retreater.owner==self.owner.opposite && self.active) {
+                        wcu "Octolock prevents retreating"
+                        prevent()
+                      }
+                    }
+                  }
+                  // Add to Energy cost
+                  if (bg.em().retrieveObject("Octolock")) {
+                    eff2 = getter (GET_MOVE_LIST, NORMAL, pcs) {h->
+                        def list=[]
+                        for (move in h.object) {
+                          def copy=move.shallowCopy()
+                          copy.energyCost.addAll([C, C])
+                          list.add(copy)
+                        }
+                        h.object=list
+                      }
+                      bc "Attacks of $pcs will cost $energies more during next turn"
+                    bg.em().storeObject("Octolock", True)
+                  }
+                }
+                unregister {
+                  eff1.unregister()
+                  eff2.unregister()
+                  bg.em().storeObject("Octolock", False)
+                }
+                after SWITCH, defending, {unregister()}
+                after EVOLVE, defending, {unregister()}
+              }
+            }
+          }
 				}
 				move "Tough Swing", {
 					text "130 damage. This attack’s damage isn’t affected by Resistance."
@@ -2359,7 +2427,7 @@ public enum SwordShield implements LogicCardInfo {
 				}
 			};
 			case STONJOURNER_VMAX_116:
-			return evolution (this, from:"StonjournerV", hp:HP330, type:F, retreatCost:3) {
+			return evolution (this, from:"Stonjourner V", hp:HP330, type:F, retreatCost:3) {
 				weakness G
 				move "Stone Gift", {
 					text "Attach a [F] Energy card from your hand to 1 of your Pokémon. If you do, heal 120 damage from that Pokémon."
@@ -2403,7 +2471,7 @@ public enum SwordShield implements LogicCardInfo {
 				}
 			};
 			case GALARIAN_LINOONE_118:
-			return evolution (this, from:"GalarianZigzagoon", hp:HP100, type:D, retreatCost:2) {
+			return evolution (this, from:"Galarian Zigzagoon", hp:HP100, type:D, retreatCost:2) {
 				weakness G
 				move "Night Slash", {
 					text "20 damage. Switch this Pokémon with 1 of your Benched Pokémon."
@@ -2424,7 +2492,7 @@ public enum SwordShield implements LogicCardInfo {
 				}
 			};
 			case GALARIAN_OBSTAGOON_119:
-			return evolution (this, from:"GalarianLinoone", hp:HP160, type:D, retreatCost:2) {
+			return evolution (this, from:"Galarian Linoone", hp:HP160, type:D, retreatCost:2) {
 				weakness G
 				bwAbility "Untamed Shout", {
 					text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put 3 damage counters on 1 of your opponent's Pokémon."
@@ -2441,7 +2509,9 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost D, C
 					onAttack {
 						damage 90
-            preventAllDamageFromCustomPokemonNextTurn(thisMove, self, {it.basic})
+            afterDamage {
+              preventAllDamageFromCustomPokemonNextTurn(thisMove, self, {it.basic})
+            }
 					}
 				}
 			};
@@ -2452,7 +2522,9 @@ public enum SwordShield implements LogicCardInfo {
 					text "Put a Trainer card from your discard pile into your hand."
 					energyCost D
 					onAttack {
-            my.discard.filterByType(TRAINER).select().moveTo(my.hand)
+            if (my.discard.filterByType(TRAINER)) {
+              my.discard.filterByType(TRAINER).select().moveTo(my.hand)
+            }
 					}
 				}
 				move "Crazy Claws", {
@@ -2522,10 +2594,13 @@ public enum SwordShield implements LogicCardInfo {
 			case TOXICROAK_124:
 			return evolution (this, from:"Croagunk", hp:HP110, type:D, retreatCost:1) {
 				weakness F
-				bwAbility "", {
-					text ""
-					actionA {
-					}
+				bwAbility "More Poison", {
+					text "Put 2 more damage counters on your opponent’s Poisoned Pokémon during Pokémon Checkup."
+					getterA (GET_EXTRA_POISON) {h->
+            if (h.effect.target.owner != self.owner) {
+              h.object += 1
+            }
+          }
 				}
 				move "Poison Claws", {
 					text "70 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Poisoned."
@@ -2543,7 +2618,11 @@ public enum SwordShield implements LogicCardInfo {
 					text "Your opponent shuffles their hand and puts it on the bottom of their deck. If they put any cards on the bottom of their deck in this way, they draw 3 cards."
 					energyCost D
 					onAttack {
-            // TODO:
+            if (opp.hand.size()) {
+              opp.hand.shuffle()
+              opp.hand.moveTo(hidden:true, opp.deck)
+              draw 3, TargetPlayer.OPPONENT
+            }
 					}
 				}
 			};
@@ -2555,7 +2634,7 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost D
 					onAttack {
 						damage 20
-            // TODO:
+            opp.hand.select("Choose 1 card to put on the bottom of their deck").moveTo(opp.deck)
 					}
 				}
 				move "Darkness Fang", {
@@ -2569,7 +2648,7 @@ public enum SwordShield implements LogicCardInfo {
 			case GALARIAN_MEOWTH_127:
 			return basic (this, hp:HP070, type:M, retreatCost:1) {
 				weakness R
-				resistance G, MINUS20
+				resistance G, MINUS30
 				move "Hone Claws", {
 					text "During your next turn, this Pokémon’s Slash attack does 60 more damage (before applying Weakness and Resistance)."
 					energyCost C
@@ -2586,13 +2665,23 @@ public enum SwordShield implements LogicCardInfo {
 				}
 			};
 			case GALARIAN_PERRSERKER_128:
-			return evolution (this, from:"GalarianMeowth", hp:HP120, type:M, retreatCost:2) {
+			return evolution (this, from:"Galarian Meowth", hp:HP120, type:M, retreatCost:2) {
 				weakness R
-				resistance G, MINUS20
-				bwAbility "", {
+				resistance G, MINUS30
+				bwAbility "Steely Spirit", {
 					text "Your [M] Pokémon's attacks do 20 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
-					actionA {
-					}
+					delayedA {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker.owner == self.owner && ef.attacker.types.contains(M)) {
+                bg.dm().each {
+                  if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                    bc "Steely Spirit +20"
+                    it.dmg += hp(20)
+                  }
+                }
+              }
+            }
+          }
 				}
 				move "Metal Claw", {
 					text "70 damage."
@@ -2605,7 +2694,7 @@ public enum SwordShield implements LogicCardInfo {
 			case MAWILE_129:
 			return basic (this, hp:HP090, type:M, retreatCost:1) {
 				weakness R
-				resistance G, MINUS20
+				resistance G, MINUS30
 				move "Find a Friend", {
 					text "Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
 					energyCost C
@@ -2630,7 +2719,7 @@ public enum SwordShield implements LogicCardInfo {
 			case FERROSEED_130:
 			return basic (this, hp:HP070, type:M, retreatCost:2) {
 				weakness R
-				resistance G, MINUS20
+				resistance G, MINUS30
 				move "Rollout", {
 					text "10 damage."
 					energyCost C
@@ -2642,7 +2731,7 @@ public enum SwordShield implements LogicCardInfo {
 			case FERROTHORN_131:
 			return evolution (this, from:"Ferroseed", hp:HP130, type:M, retreatCost:2) {
 				weakness R
-				resistance G, MINUS20
+				resistance G, MINUS30
 				move "Triple Smash", {
 					text "30x damage. Flip 3 coins. This attack does 30 damage for each heads."
 					energyCost C
@@ -2667,7 +2756,7 @@ public enum SwordShield implements LogicCardInfo {
 			case GALARIAN_STUNFISK_132:
 			return basic (this, hp:HP120, type:M, retreatCost:2) {
 				weakness R
-				resistance G, MINUS20
+				resistance G, MINUS30
 				bwAbility "Snap Trap", {
 					text "If this Pokémon is in the Active Spot and is damaged by an opponent’s attack (even if it is Knocked Out), discard an Energy from the Attacking Pokémon."
 					delayedA {
@@ -2676,7 +2765,7 @@ public enum SwordShield implements LogicCardInfo {
                 bg.dm().each{
                   if(it.to == self && self.active && it.notNoEffect && it.dmg.value) {
                     bc "Galarian Stunfisk's Snap Trap triggered, discarding an Energy from the Attacking Pokémon"
-                    discardOpponentEnergy(ef.attacker)
+                    discardOpponentEnergy(Target.OPP_ACTIVE)
                   }
                 }
               }
@@ -2694,7 +2783,7 @@ public enum SwordShield implements LogicCardInfo {
 			case PAWNIARD_133:
 			return basic (this, hp:HP070, type:M, retreatCost:1) {
 				weakness R
-				resistance G, MINUS20
+				resistance G, MINUS30
 				move "Cut Up", {
 					text "10 damage."
 					energyCost C
@@ -2713,7 +2802,7 @@ public enum SwordShield implements LogicCardInfo {
 			case BISHARP_134:
 			return evolution (this, from:"Pawniard", hp:HP120, type:M, retreatCost:2) {
 				weakness R
-				resistance G, MINUS20
+				resistance G, MINUS30
 				move "Charge Order", {
 					text "30+ damage. This attack does 30 more damage for each of your Benched Pawniard."
 					energyCost C
@@ -2732,7 +2821,7 @@ public enum SwordShield implements LogicCardInfo {
 			case CORVIKNIGHT_135:
 			return evolution (this, from:"Corvisquire", hp:HP170, type:M, retreatCost:2) {
 				weakness L
-				resistance F, MINUS20
+				resistance F, MINUS30
 				move "Peck", {
 					text "50 damage."
 					energyCost C
@@ -2757,10 +2846,11 @@ public enum SwordShield implements LogicCardInfo {
                         it.dmg-=hp(100)
                       }
                     }
-                    unregisterAfter 2
-                    after SWITCH, self, { unregister() }
-                    after EVOLVE, self, { unregister() }
                   }
+
+                  unregisterAfter 2
+                  after SWITCH, self, { unregister() }
+                  after EVOLVE, self, { unregister() }
                 }
               }
             }
@@ -2770,7 +2860,7 @@ public enum SwordShield implements LogicCardInfo {
 			case CUFANT_136:
 			return basic (this, hp:HP100, type:M, retreatCost:3) {
 				weakness R
-				resistance G, MINUS20
+				resistance G, MINUS30
 				move "Stomp", {
 					text "20+ damage. Flip a coin. If heads, this attack does 20 more damage."
 					energyCost M, M
@@ -2783,7 +2873,7 @@ public enum SwordShield implements LogicCardInfo {
 			case COPPERAJAH_137:
 			return evolution (this, from:"Cufant", hp:HP190, type:M, retreatCost:4) {
 				weakness R
-				resistance G, MINUS20
+				resistance G, MINUS30
 				move "Dig Drain", {
 					text "60 damage. Heal 30 damage from this Pokémon."
 					energyCost M, M
@@ -2803,21 +2893,19 @@ public enum SwordShield implements LogicCardInfo {
 			case ZACIAN_V_138:
 			return basic (this, hp:HP220, type:M, retreatCost:2) {
 				weakness R
-				resistance G, MINUS20
+				resistance G, MINUS30
 				bwAbility "Intrepid Sword", {
 					text "Once during your turn, you may look at the top 3 cards of your deck and attach any number of [M] Energy cards you find there to this Pokémon. Put the other cards into your hand. If you use this Ability, your turn ends."
-					onActivate {r->
+					actionA {
             if (confirm("Use Intrepid Sword?")) {
-              powerUsed()
-              def list = my.deck.subList(0, 3).showToMe("Top 3 cards of your deck").filterByEnergyType(M)
-              if (list) {
-                list.select(min:0, max:list.size(), "Attach any of them to $self").each {
+              def topCards = my.deck.subList(0, 3).showToMe("Top 3 cards of your deck")
+              def metalEnergies = topCards.filterByEnergyType(M)
+              if (metalEnergies) {
+                def selectedEnergies = metalEnergies.select(min:0, max:metalEnergies.size(), "Attach any of them to $self")
+                selectedEnergies.each {
                   attachEnergy(self, it)
-                  it.remove()
                 }
-                list.each {
-                  it.moveTo(my.hand)
-                }
+                my.deck.subList(0,3).getExcludedList(selectedEnergies).moveTo(hidden: true, my.hand)
               }
               bg.gm().betweenTurns()
             }
@@ -2835,13 +2923,13 @@ public enum SwordShield implements LogicCardInfo {
 			case ZAMAZENTA_V_139:
 			return basic (this, hp:HP230, type:M, retreatCost:2) {
 				weakness R
-				resistance G, MINUS20
+				resistance G, MINUS30
 				bwAbility "Dauntless Shield", {
 					text "Prevent all damage done to this Pokémon by attacks from your opponent's Pokémon VMAX."
 					delayedA{
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if(it.to == self && it.from.cardTypes.is(VMAX) && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
+                if(it.to == self && it.from.topPokemonCard.cardTypes.is(VMAX) && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
                   bc "Dauntless Shield prevents damage from Pokémon VMAX"
                   it.dmg = hp(0)
                 }
@@ -2897,7 +2985,7 @@ public enum SwordShield implements LogicCardInfo {
 				}
 			};
 			case SNORLAX_VMAX_142:
-			return evolution (this, from:"SnorlaxV", hp:HP340, type:C, retreatCost:4) {
+			return evolution (this, from:"Snorlax V", hp:HP340, type:C, retreatCost:4) {
 				weakness F
 				move "G-Max Fall", {
 					text "60+ damage. This attack does 30 more damage for each of your Benched Pokémon."
@@ -2910,7 +2998,7 @@ public enum SwordShield implements LogicCardInfo {
 			case HOOTHOOT_143:
 			return basic (this, hp:HP070, type:C, retreatCost:1) {
 				weakness L
-				resistance F, MINUS20
+				resistance F, MINUS30
 				move "Send Back", {
 					text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
 					energyCost C
@@ -2932,7 +3020,7 @@ public enum SwordShield implements LogicCardInfo {
 			case NOCTOWL_144:
 			return evolution (this, from:"Hoothoot", hp:HP110, type:C, retreatCost:1) {
 				weakness L
-				resistance F, MINUS20
+				resistance F, MINUS30
 				move "Wing Attack", {
 					text "40 damage."
 					energyCost C, C
@@ -2947,7 +3035,13 @@ public enum SwordShield implements LogicCardInfo {
             assert opp.bench
           }
 					onAttack {
-            // TODO:
+            def tar = opp.bench.select("Choose a Benched Pokémon to shuffle back into the deck")
+            tar.cards.moveTo(opp.deck)
+            shuffleDeck(null, TargetPlayer.OPPONENT)
+
+            self.cards.moveTo(my.deck)
+            shuffleDeck()
+            removePCS(self)
 					}
 				}
 			};
@@ -2987,7 +3081,8 @@ public enum SwordShield implements LogicCardInfo {
 					text "You must discard a card from your hand in order to use this Ability. Once during your turn, you may draw 2 cards."
 					actionA {
             checkLastTurn()
-            assert hand.notEmpty()
+            assert my.deck
+            assert my.hand.notEmpty()
             powerUsed()
             hand.select("Discard").discard()
             draw 2
@@ -3012,9 +3107,8 @@ public enum SwordShield implements LogicCardInfo {
             assert my.hand && my.deck
             powerUsed()
 
-            my.deck.first().moveTo(my.hand)
-            def tar = my.hand.select()
-            my.deck.addAll(0, tar)
+            my.hand.select().moveTo(addToTop: true, my.deck)
+            my.deck.subList(1,2).moveTo(my.hand) // Card placed on top, get the one underneath
 					}
 				}
 				move "Whap Down", {
@@ -3040,7 +3134,7 @@ public enum SwordShield implements LogicCardInfo {
 			case ROOKIDEE_150:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
 				weakness L
-				resistance F, MINUS20
+				resistance F, MINUS30
 				move "Flap", {
 					text "10 damage."
 					energyCost C
@@ -3059,7 +3153,7 @@ public enum SwordShield implements LogicCardInfo {
 			case CORVISQUIRE_151:
 			return evolution (this, from:"Rookidee", hp:HP080, type:C, retreatCost:1) {
 				weakness L
-				resistance F, MINUS20
+				resistance F, MINUS30
 				move "Pluck", {
 					text "20 damage. Before doing damage, discard all Pokémon Tools from your opponent's Active Pokémon."
 					energyCost C
@@ -3131,7 +3225,7 @@ public enum SwordShield implements LogicCardInfo {
 			case CRAMORANT_V_155:
 			return basic (this, hp:HP200, type:C, retreatCost:1) {
 				weakness L
-				resistance F, MINUS20
+				resistance F, MINUS30
 				move "Beak Catch", {
 					text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
 					energyCost C
@@ -3146,10 +3240,8 @@ public enum SwordShield implements LogicCardInfo {
 					text "Discard all Energy from this Pokémon. This attack does 160 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost C, C, C
 					onAttack {
+            discardAllSelfEnergy(null)
             damage 160, opp.all.select()
-            afterDamage {
-              discardAllSelfEnergy(null)
-            }
 					}
 				}
 			};
@@ -3243,12 +3335,18 @@ public enum SwordShield implements LogicCardInfo {
 			return pokemonTool (this) {
 				text "If the Pokémon this card is attached to is Knocked Out by damage from an opponent’s attack, draw cards until you have 7 cards in your hand."
 				onPlay {reason->
-          // TODO:
-				}
-				onRemoveFromPlay {
-				}
-				allowAttach {to->
-				}
+          eff = delayed {
+            before (KNOCKOUT, self) {
+              if (self.types.contains(P) && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+                bc "Lucky Egg activates"
+                draw (7-self.owner.pbg.hand.size())
+              }
+            }
+          }
+        }
+        onRemoveFromPlay {
+          eff.unregister()
+        }
 			};
 			case LUM_BERRY_168:
 			return copy(Emerald.LUM_BERRY_78, this);
@@ -3259,7 +3357,7 @@ public enum SwordShield implements LogicCardInfo {
           if (opp.hand.size()) {
             opp.hand.shuffle()
             opp.hand.moveTo(hidden:true, opp.deck)
-            draw 4
+            draw 4, TargetPlayer.OPPONENT
           }
           if (my.hand.size()) {
             my.hand.shuffle()
@@ -3336,9 +3434,8 @@ public enum SwordShield implements LogicCardInfo {
 				text "You can play this card only if you discard another card from your hand." +
 					"Search your deck for a Basic Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
 				onPlay {
-          my.deck.search ("Search your deck for a Basic Pokémon and put it onto your Bench", cardTypeFilter(BASIC)).each {
-            it.moveTo(my.hand)
-          }
+          my.hand.getExcludedList(thisCard).discard()
+          my.deck.search ("Search your deck for a Basic Pokémon and put it onto your Bench", cardTypeFilter(BASIC)).moveTo(my.hand)
           shuffleDeck()
 				}
 				playRequirement{
@@ -3352,12 +3449,12 @@ public enum SwordShield implements LogicCardInfo {
 			return itemCard (this) {
 				text "Draw cards until you have 6 cards in your hand. Your turn ends."
 				onPlay {
-          draw (6-my.hand.size())
+          draw (6-my.hand.getExcludedList(thisCard).size())
           bg.gm().betweenTurns()
 				}
 				playRequirement{
           assert my.deck
-          assert my.hand.size() < 6
+          assert my.hand.getExcludedList(thisCard).size() < 6
 				}
 			};
 			case SITRUS_BERRY_182:
@@ -3424,7 +3521,7 @@ public enum SwordShield implements LogicCardInfo {
             my.hand.getExcludedList(thisCard).select("Discard").discard()
           }
 				}
-        playRequirement {
+        allowAttach {to->
           assert my.hand.getExcludedList(thisCard).size() >= 1
         }
 			};
