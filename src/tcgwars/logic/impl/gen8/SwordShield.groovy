@@ -44,7 +44,7 @@ import tcgwars.logic.util.*;
 /**
  * @author (Lithogen) luongthomasdev@gmail.com
  */
-public enum SwordShield implements CardInfo {
+public enum SwordShield implements LogicCardInfo {
 
 	CELEBI_V_1 ("Celebi V", 1, Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
 	ROSELIA_2 ("Roselia", 2, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
