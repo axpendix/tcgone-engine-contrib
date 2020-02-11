@@ -4583,13 +4583,6 @@ public enum CosmicEclipse implements LogicCardInfo {
                       wcu "Cannot retreat"
                       prevent()
                     }
-                    before APPLY_SPECIAL_CONDITION, {
-                      def pcs=e.getTarget(bg)
-                      if(pcs==self){
-                        bc "Lillie's PokéDoll is unaffected by Special Conditions"
-                        prevent()
-                      }
-                    }
                     before TAKE_PRIZE, {
                       if(ef.pcs==self) {
                         prevent()
