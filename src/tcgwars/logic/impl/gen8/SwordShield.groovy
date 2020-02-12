@@ -325,7 +325,7 @@ public enum SwordShield implements LogicCardInfo {
             assert deck.notEmpty
           }
           onAttack {
-            my.deck.search(count: 2, cardTypeFilter(POKEMON)).showToOpponent("Selected Pokémon").moveTo(my.hand)
+            my.deck.search(max: 2, cardTypeFilter(POKEMON)).showToOpponent("Selected Pokémon").moveTo(my.hand)
             shuffleDeck()
           }
 				}
@@ -640,7 +640,7 @@ public enum SwordShield implements LogicCardInfo {
             def rearrangedCards = rearrange(opp.deck.subList(0, 3))
             opp.deck.setSubList(0, rearrangedCards)
 
-            bc "Rearranged top $count cards of opponent's (${opp.owner.getPlayerUsername(bg)}) deck."
+            bc "Rearranged top 3 cards of opponent's (${opp.owner.getPlayerUsername(bg)}) deck."
 					}
 				}
 				move "Brainwave", {
@@ -848,6 +848,7 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost R
 					onAttack {
 						damage 30
+            discardSelfEnergy(R)
 					}
 				}
 			};
@@ -877,6 +878,8 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost R
 					onAttack {
 						damage 20
+            attachEnergyFrom(type: R, my.deck, self)
+            shuffleDeck()
 					}
 				}
 				move "Magnum Kick", {
@@ -910,8 +913,14 @@ public enum SwordShield implements LogicCardInfo {
 				weakness W
 				bwAbility "Libero", {
 					text "Once during your turn, when this Pokémon moves from your Bench to the Active Spot, you may attach up to 2 [R] Energy cards from your discard pile to it."
-					actionA {
-					}
+          delayedA{
+            after SWITCH, {
+              if (bg.em().retrieveObject("Libero") != bg.turnCount && self.active && bg.currentTurn == self.owner && confirm("Use Libero?")) {
+                bg.em().storeObject("Libero", bg.turnCount)
+                attachEnergyFrom(max: 2, type: FIRE, my.discard, self)
+              }
+            }
+          }
 				}
 				move "Flare Striker", {
 					text "190 damage. Discard 2 Energy from this Pokémon."
@@ -950,6 +959,9 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost R
 					onAttack {
 						damage 40
+            afterDamage {
+              attachEnergyFrom(type: FIRE, my.discard, self)
+            }
 					}
 				}
 				move "Bright Flame", {
@@ -997,7 +1009,7 @@ public enum SwordShield implements LogicCardInfo {
 					text "For each [R] Energy attached to this Pokémon, discard the top card of your opponent’s deck."
 					energyCost R
 					onAttack {
-            opp.deck.subList(0, self.cards.energyCount(G)).discard()
+            opp.deck.subList(0, self.cards.energyCount(R)).discard()
 					}
 				}
 				move "Searing Flame", {
@@ -3210,7 +3222,7 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost C
 					onAttack {
 						damage 30
-            reduceDamageNextTurn(hp(30),thisMove)reduceDamageNextTurn
+            reduceDamageNextTurn(hp(30),thisMove)
 					}
 				}
 				move "Double-Edge", {
@@ -3522,7 +3534,7 @@ public enum SwordShield implements LogicCardInfo {
           }
 				}
         allowAttach {to->
-          assert my.hand.getExcludedList(thisCard).size() >= 1
+          to.owner.pbg.hand.hand.getExcludedList(thisCard).size() >= 1
         }
 			};
 			case DHELMISE_V_187:
