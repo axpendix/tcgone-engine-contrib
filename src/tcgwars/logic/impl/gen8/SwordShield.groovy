@@ -3346,6 +3346,7 @@ public enum SwordShield implements LogicCardInfo {
 			case LUCKY_EGG_167:
 			return pokemonTool (this) {
 				text "If the Pokémon this card is attached to is Knocked Out by damage from an opponent’s attack, draw cards until you have 7 cards in your hand."
+        def eff
 				onPlay {reason->
           eff = delayed {
             before (KNOCKOUT, self) {
@@ -3446,7 +3447,7 @@ public enum SwordShield implements LogicCardInfo {
 				text "You can play this card only if you discard another card from your hand." +
 					"Search your deck for a Basic Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
 				onPlay {
-          my.hand.getExcludedList(thisCard).discard()
+          my.hand.select("Which card to discard").discard()
           my.deck.search ("Search your deck for a Basic Pokémon and put it onto your Bench", cardTypeFilter(BASIC)).moveTo(my.hand)
           shuffleDeck()
 				}
@@ -3534,7 +3535,7 @@ public enum SwordShield implements LogicCardInfo {
           }
 				}
         allowAttach {to->
-          to.owner.pbg.hand.hand.getExcludedList(thisCard).size() >= 1
+          to.owner.pbg.hand.getExcludedList(thisCard).size() >= 1
         }
 			};
 			case DHELMISE_V_187:
