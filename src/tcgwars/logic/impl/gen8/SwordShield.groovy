@@ -797,7 +797,7 @@ public enum SwordShield implements LogicCardInfo {
 					text "Your opponent’s Active Pokémon is now Poisoned."
 					energyCost R
 					onAttack {
-            apply CONFUSED
+            apply POISONED
 					}
 				}
 			};
@@ -848,7 +848,7 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost R
 					onAttack {
 						damage 30
-            discardSelfEnergy(R)
+            discardSelfEnergy(C)
 					}
 				}
 			};
@@ -2917,7 +2917,12 @@ public enum SwordShield implements LogicCardInfo {
                 selectedEnergies.each {
                   attachEnergy(self, it)
                 }
-                my.deck.subList(0,3).getExcludedList(selectedEnergies).moveTo(hidden: true, my.hand)
+                def nonSelectedSize = 3 - selectedEnergies.size()
+                if (nonSelectedSize) {
+                  my.deck.subList(0, nonSelectedSize).getExcludedList(selectedEnergies).moveTo(hidden: true, my.hand)
+                }
+              } else {
+                my.deck.subList(0,3).moveTo(hidden: true, my.hand)
               }
               bg.gm().betweenTurns()
             }
@@ -3334,7 +3339,6 @@ public enum SwordShield implements LogicCardInfo {
 			return itemCard (this) {
 				text "Heal 120 damage from 1 of your Pokémon that has at least 2 Energy attached. If you healed any damage in this way, discard 2 Energy from it."
 				onPlay {
-          self.cards.energyCount(P)
           def pcs = my.all.findAll{it.numberOfDamageCounters && it.cards.energyCount() >= 2}.select("Choose the pokémon to heal")
           heal 120, pcs
           pcs.cards.filterByType(ENERGY).select(count: 2, "Discard which Energy?").discard()
@@ -3350,7 +3354,7 @@ public enum SwordShield implements LogicCardInfo {
 				onPlay {reason->
           eff = delayed {
             before (KNOCKOUT, self) {
-              if (self.types.contains(P) && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                 bc "Lucky Egg activates"
                 draw (7-self.owner.pbg.hand.size())
               }
