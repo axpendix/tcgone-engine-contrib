@@ -1841,9 +1841,9 @@ public enum SwordShield implements LogicCardInfo {
 				bwAbility "Life Shaker", {
 					text "As often as you like during your turn, you may move 1 damage counter from 1 of your [P] Pokémon to another of your [P] Pokémon."
 					actionA {
-            assert my.find({ it.numberOfDamageCounters > 0 && it.types.contains(P) })
-            def source = my.findAll { it.numberOfDamageCounters > 0 && it.types.contains(P) }.select("Source for damage counter")
-            def target = my.findAll { it.types.contains(P) }
+            assert my.all.find({ it.numberOfDamageCounters > 0 && it.types.contains(P) })
+            def source = my.all.findAll { it.numberOfDamageCounters > 0 && it.types.contains(P) }.select("Source for damage counter")
+            def target = my.all.findAll { it.types.contains(P) }
             my.remove(source)
             target = target.select("Target for damage counter")
             source.damage-=hp(10)
@@ -2335,7 +2335,11 @@ public enum SwordShield implements LogicCardInfo {
 					text "60+ damage. If this Pokémon has at least 1 extra [F] Energy attached (in addition to this attack's cost), this attack does 70 more damage."
 					energyCost F, F
 					onAttack {
-						damage 60
+            if (self.cards.energySufficient(thisMove.energyCost + F)) {
+              damage 70+60
+            } else {
+              damage 60
+            }
 					}
 				}
 			};
@@ -2403,7 +2407,6 @@ public enum SwordShield implements LogicCardInfo {
                 bg.em().storeObject("Octolock", False)
               }
               after SWITCH, defending, {unregister()}
-              after EVOLVE, defending, {unregister()}
             }
           }
 				}
@@ -2783,11 +2786,11 @@ public enum SwordShield implements LogicCardInfo {
 					text "If this Pokémon is in the Active Spot and is damaged by an opponent’s attack (even if it is Knocked Out), discard an Energy from the Attacking Pokémon."
 					delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              if(ef.attacker.owner != self.owner) {
+              if (ef.attacker.owner != self.owner) {
                 bg.dm().each{
-                  if(it.to == self && self.active && it.notNoEffect && it.dmg.value) {
+                  if (it.to == self && self.active && it.notNoEffect && it.dmg.value) {
                     bc "Galarian Stunfisk's Snap Trap triggered, discarding an Energy from the Attacking Pokémon"
-                    discardOpponentEnergy(Target.active)
+                    discardSelfEnergy()
                   }
                 }
               }
@@ -3368,7 +3371,7 @@ public enum SwordShield implements LogicCardInfo {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                 bc "Lucky Egg activates"
                 def count = 7-self.owner.pbg.hand.size()
-                draw count, TargetPlayer.SELF
+                draw count, TargetPlayer.OPPONENT // Targets the player being attacked (holding the lucky egg)
               }
             }
           }
