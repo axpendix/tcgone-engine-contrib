@@ -333,8 +333,7 @@ public enum SwordShield implements LogicCardInfo {
 					text "50+ damage. This attack does 20 more damage for each of your Benched Pokémon."
 					energyCost G, C
 					onAttack {
-						damage 50
-            damage 20*my.bench.size()
+            damage 50+20*my.bench.size()
 					}
 				}
 			};
@@ -1160,7 +1159,9 @@ public enum SwordShield implements LogicCardInfo {
 					onAttack {
 						damage 70
             afterDamage {
-              opp.active.cards.filterByType(ENERGY).select(max: 2, "Choose the energy to discard").moveTo(opp.hand)
+              if (opp.active.cards.filterByType(ENERGY)) {
+                opp.active.cards.filterByType(ENERGY).select(max: 2, "Choose the energy to discard").moveTo(opp.hand)
+              }
             }
 					}
 				}
@@ -1173,7 +1174,6 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost C
 					attackRequirement {
             assert my.hand.filterByEnergyType(W)
-            assert my.bench
           }
           onAttack {
             attachEnergyFrom(type:W, my.hand, self)
@@ -1374,7 +1374,7 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost W, C
 					onAttack {
 						damage 100
-            if (confirm("Remove energy from opponent's Active?")) {
+            if (opp.active.cards.filterByType(ENERGY) && confirm("Remove energy from opponent's Active?")) {
               opp.active.cards.filterByType(ENERGY).select("Choose the energy to discard").moveTo(opp.hand)
             }
 					}
@@ -1807,8 +1807,10 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost P
 					onAttack {
 						damage 20
-            self.cards.moveTo(my.hand)
-            removePCS(self)
+            afterDamage {
+              self.cards.moveTo(hand)
+              removePCS(self)
+            }
 					}
 				}
 			};
@@ -1839,10 +1841,10 @@ public enum SwordShield implements LogicCardInfo {
 				bwAbility "Life Shaker", {
 					text "As often as you like during your turn, you may move 1 damage counter from 1 of your [P] Pokémon to another of your [P] Pokémon."
 					actionA {
-            assert all.find({ it.numberOfDamageCounters > 0 && it.types.contains(P) })
-            def source = all.findAll { it.numberOfDamageCounters > 0 && it.types.contains(P) }.select("Source for damage counter")
-            def target = all.findAll { it.types.contains(P) }
-            all.remove(source)
+            assert my.find({ it.numberOfDamageCounters > 0 && it.types.contains(P) })
+            def source = my.findAll { it.numberOfDamageCounters > 0 && it.types.contains(P) }.select("Source for damage counter")
+            def target = my.findAll { it.types.contains(P) }
+            my.remove(source)
             target = target.select("Target for damage counter")
             source.damage-=hp(10)
             target.damage+=hp(10)
@@ -1949,8 +1951,12 @@ public enum SwordShield implements LogicCardInfo {
 					text "Each player draws 2 cards."
 					energyCost C
 					onAttack {
-            draw 2, TargetPlayer.SELF
-            draw 2, TargetPlayer.OPPONENT
+            if (my.deck) {
+              draw 2, TargetPlayer.SELF
+            }
+            if (opp.deck) {
+              draw 2, TargetPlayer.OPPONENT
+            }
 					}
 				}
 			};
@@ -1962,8 +1968,12 @@ public enum SwordShield implements LogicCardInfo {
 					text "Each player draws 2 cards."
 					energyCost C
 					onAttack {
-            draw 2, TargetPlayer.SELF
-            draw 2, TargetPlayer.OPPONENT
+            if (my.deck) {
+              draw 2, TargetPlayer.SELF
+            }
+            if (opp.deck) {
+              draw 2, TargetPlayer.OPPONENT
+            }
 					}
 				}
 				move "Poltergeist", {
@@ -2155,7 +2165,7 @@ public enum SwordShield implements LogicCardInfo {
 					text "10x damage. This attack does 10 damage for each damage counter on this Pokémon."
 					energyCost C
 					onAttack {
-						damage 10+10*self.numberOfDamageCounters
+						damage 10*self.numberOfDamageCounters
 					}
 				}
 			};
@@ -2359,43 +2369,41 @@ public enum SwordShield implements LogicCardInfo {
 					text "Until this Grapploct leaves the Active Spot, the Defending Pokémon's attacks cost [C][C] more, and the Defending Pokémon can't retreat. This effect can't be applied more than once."
 					energyCost F, F
           onAttack {
-            targeted (defending) {
-              delayed {
-                def eff1
-                def eff2
+            delayed {
+              def eff1
+              def eff2
 
-                register {
-                  eff1 = delayed {
-                    before RETREAT, {
-                      if (ef.retreater.owner==self.owner.opposite && self.active) {
-                        wcu "Octolock prevents retreating"
-                        prevent()
-                      }
+              register {
+                eff1 = delayed {
+                  before RETREAT, {
+                    if (ef.retreater.owner==self.owner.opposite && self.active) {
+                      wcu "Octolock prevents retreating"
+                      prevent()
                     }
                   }
-                  // Add to Energy cost
-                  if (bg.em().retrieveObject("Octolock")) {
-                    eff2 = getter (GET_MOVE_LIST, NORMAL, pcs) {h->
-                        def list=[]
-                        for (move in h.object) {
-                          def copy=move.shallowCopy()
-                          copy.energyCost.addAll([C, C])
-                          list.add(copy)
-                        }
-                        h.object=list
+                }
+                // Add to Energy cost
+                if (bg.em().retrieveObject("Octolock")) {
+                  eff2 = getter (GET_MOVE_LIST, NORMAL, pcs) {h->
+                      def list=[]
+                      for (move in h.object) {
+                        def copy=move.shallowCopy()
+                        copy.energyCost.addAll([C, C])
+                        list.add(copy)
                       }
-                      bc "Attacks of $pcs will cost $energies more during next turn"
-                    bg.em().storeObject("Octolock", True)
-                  }
+                      h.object=list
+                    }
+                    bc "Attacks of $pcs will cost $energies more during next turn"
+                  bg.em().storeObject("Octolock", True)
                 }
-                unregister {
-                  eff1.unregister()
-                  eff2.unregister()
-                  bg.em().storeObject("Octolock", False)
-                }
-                after SWITCH, defending, {unregister()}
-                after EVOLVE, defending, {unregister()}
               }
+              unregister {
+                eff1.unregister()
+                eff2.unregister()
+                bg.em().storeObject("Octolock", False)
+              }
+              after SWITCH, defending, {unregister()}
+              after EVOLVE, defending, {unregister()}
             }
           }
 				}
@@ -2610,7 +2618,7 @@ public enum SwordShield implements LogicCardInfo {
 					text "Put 2 more damage counters on your opponent’s Poisoned Pokémon during Pokémon Checkup."
 					getterA (GET_EXTRA_POISON) {h->
             if (h.effect.target.owner != self.owner) {
-              h.object += 1
+              h.object += 2
             }
           }
 				}
@@ -2646,7 +2654,9 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost D
 					onAttack {
 						damage 20
-            opp.hand.select("Choose 1 card to put on the bottom of their deck").moveTo(opp.deck)
+            if (opp.hand) {
+              opp.hand.select("Choose 1 card to put on the bottom of their deck").moveTo(opp.deck)
+            }
 					}
 				}
 				move "Darkness Fang", {
@@ -2777,7 +2787,7 @@ public enum SwordShield implements LogicCardInfo {
                 bg.dm().each{
                   if(it.to == self && self.active && it.notNoEffect && it.dmg.value) {
                     bc "Galarian Stunfisk's Snap Trap triggered, discarding an Energy from the Attacking Pokémon"
-                    discardOpponentEnergy(Target.OPP_ACTIVE)
+                    discardOpponentEnergy(Target.active)
                   }
                 }
               }
@@ -2788,6 +2798,7 @@ public enum SwordShield implements LogicCardInfo {
 					text "30+ damage. Flip a coin until you get tails. This attack does 30 more damage for each heads."
 					energyCost M, C
 					onAttack {
+            damage 30
             flipUntilTails { damage 30 }
 					}
 				}
@@ -3356,7 +3367,7 @@ public enum SwordShield implements LogicCardInfo {
             before (KNOCKOUT, self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                 bc "Lucky Egg activates"
-                draw (7-self.owner.pbg.hand.size())
+                draw (7-self.owner.pbg.hand.size()), TargetPlayer.SELF
               }
             }
           }
