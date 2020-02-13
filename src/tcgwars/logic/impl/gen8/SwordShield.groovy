@@ -1844,7 +1844,7 @@ public enum SwordShield implements LogicCardInfo {
             assert my.all.find({ it.numberOfDamageCounters > 0 && it.types.contains(P) })
             def source = my.all.findAll { it.numberOfDamageCounters > 0 && it.types.contains(P) }.select("Source for damage counter")
             def target = my.all.findAll { it.types.contains(P) }
-            my.remove(source)
+            target.remove(source)
             target = target.select("Target for damage counter")
             source.damage-=hp(10)
             target.damage+=hp(10)
@@ -2406,7 +2406,7 @@ public enum SwordShield implements LogicCardInfo {
                 eff2.unregister()
                 bg.em().storeObject("Octolock", False)
               }
-              after SWITCH, defending, {unregister()}
+              after SWITCH, self, {unregister()}
             }
           }
 				}
@@ -2790,7 +2790,7 @@ public enum SwordShield implements LogicCardInfo {
                 bg.dm().each{
                   if (it.to == self && self.active && it.notNoEffect && it.dmg.value) {
                     bc "Galarian Stunfisk's Snap Trap triggered, discarding an Energy from the Attacking Pokémon"
-                    discardSelfEnergy()
+                    discardDefendingEnergy(Target.OPP_ACTIVE) // This will discard stunfisk's energy but I don't know the other values for Target
                   }
                 }
               }
