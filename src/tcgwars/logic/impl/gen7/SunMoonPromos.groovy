@@ -2683,13 +2683,14 @@ public enum SunMoonPromos implements LogicCardInfo {
 				move "Night Watch", {
 					text "150 damage. Choose 2 random cards from your opponent's hand. Your opponent reveals those cards and shuffles them into their deck."
 					energyCost P, P, P
-					attackRequirement {}
 					onAttack {
 						damage 150
-            def number = Math.min(2, opp.hand.size())
-            if (number > 0) {
-              opp.hand.select(hidden: true, count:number).moveTo(hidden: true, opp.deck)
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            afterDamage {
+              def number = Math.min(2, opp.hand.size())
+              if (number > 0) {
+                opp.hand.select(hidden: true, count:number).showToMe("Choosen cards").moveTo(opp.deck)
+                shuffleDeck(null, TargetPlayer.OPPONENT)
+              }
             }
 					}
 				}

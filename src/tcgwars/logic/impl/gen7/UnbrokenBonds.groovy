@@ -4199,7 +4199,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert my.all.findAll{it.hasModernAbility()}.size()==0
+            assert !my.all.find{it.hasModernAbility()}
           }
         };
       case JANINE_176:
@@ -4322,13 +4322,18 @@ public enum UnbrokenBonds implements LogicCardInfo {
           def effect1
           def effect2
           onPlay {
-            effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if ((h.effect.target.pokemonEX || h.effect.target.pokemonGX) && h.effect.ability instanceof BwAbility) {
-                h.object=true
+            effect1 = getter(GET_ABILITIES, BEFORE_LAST) {h->
+              if (h.effect.target.pokemonEX || h.effect.target.pokemonGX) {
+                h.object.clear()
               }
             }
+//            effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
+//              if ((h.effect.target.pokemonEX || h.effect.target.pokemonGX) && h.effect.ability instanceof BwAbility) {
+//                h.object=true
+//              }
+//            }
             effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-              if ((h.effect.target as Card).cardTypes.is(POKEMON_GX) || (h.effect.target as Card).cardTypes.is(POKEMON_EX)) {
+              if ((h.effect.target as Card).cardTypes.isIn(POKEMON_GX, POKEMON_EX)) {
                 h.object=true
               }
             }
