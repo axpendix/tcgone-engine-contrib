@@ -35,7 +35,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum PokemodBaseSet implements CardInfo {
+public enum PokemodBaseSet implements LogicCardInfo {
 
 	ALAKAZAM_1 ("Alakazam", 1, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
 	BLASTOISE_2 ("Blastoise", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
@@ -207,7 +207,7 @@ public enum PokemodBaseSet implements CardInfo {
 		return name();
 	}
 
-	// @Override
+	@Override
 	public Card getImplementation() {
 		switch (this) {
 			case ALAKAZAM_1:

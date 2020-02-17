@@ -656,8 +656,8 @@ public enum UnbrokenBonds implements LogicCardInfo {
               delayed {
                 def eff=null
                 register {
-                  eff=getter(GET_ABILITIES, BEFORE_LAST, pcs) {holder->
-                    holder.object.clear()
+                  eff=getter(GET_ABILITIES, BEFORE_LAST, pcs) {h->
+                    h.object.keySet().removeIf{it instanceof BwAbility}
                   }
                 }
                 unregister {
@@ -4324,7 +4324,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onPlay {
             effect1 = getter(GET_ABILITIES, BEFORE_LAST) {h->
               if (h.effect.target.pokemonEX || h.effect.target.pokemonGX) {
-                h.object.clear()
+                h.object.keySet().removeIf{it instanceof BwAbility}
               }
             }
 //            effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
