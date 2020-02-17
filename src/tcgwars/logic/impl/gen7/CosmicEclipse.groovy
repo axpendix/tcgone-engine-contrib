@@ -3233,7 +3233,6 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost D, D, C, C
             onAttack {
               damage 120
-              gxPerform()
               delayed {
                 def pcs = defending
                 after KNOCKOUT, pcs, {
