@@ -2284,8 +2284,15 @@ public enum UnifiedMinds implements LogicCardInfo {
             delayedA {
               before (KNOCKOUT, self) {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
-                  bc "Durable Blade activates"
-                  moveCard(self.topPokemonCard, self.owner.pbg.hand)
+                  def pcs=self
+                  def list=pcs.cards.filterByType(POKEMON)
+                  delayed(inline: true){
+                    after KNOCKOUT, pcs, {
+                      bc "Durable Blade activates"
+                      list.moveTo(pcs.owner.pbg.hand)
+                      owner.delegate.unregister()
+                    }
+                  }
                 }
               }
             }
