@@ -362,8 +362,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             delayedA {
               after ATTACH_ENERGY, self, {
                 checkLastTurn()
-                if (ef.reason==PLAY_FROM_HAND && ef.card.containsTypePlain(G) && opp.bench && confirm("Use Shining Vine?")) {
-                  sw(opp.active, opp.bench.select())
+                if (self.active && ef.reason==PLAY_FROM_HAND && ef.card.containsTypePlain(G) && opp.bench && confirm("Use Shining Vine?")) {
+                  sw(opp.active, opp.bench.select(), SRC_ABILITY)
                   powerUsed()
                 }
               }
@@ -2132,7 +2132,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite ) {
                   bc "Grim Marking activates"
                   (1..4).each {
-                    if (opp.all) directDamage(10, self.owner.opposite.pbg.all.select("Choose an Opponent's Pokemon to put a damage counter on."))
+                    if (opp.all) directDamage(10, self.owner.opposite.pbg.all.select("Grim Marking: Choose an Opponent's Pokemon to put a damage counter on.", self.owner))
                   }
                 }
               }
