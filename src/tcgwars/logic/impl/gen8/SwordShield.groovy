@@ -3466,7 +3466,7 @@ public enum SwordShield implements LogicCardInfo {
 				text "You can play this card only if you discard another card from your hand." +
 					"Search your deck for a Basic Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
 				onPlay {
-          my.hand.select("Which card to discard").discard()
+          my.hand.getExcludedList(thisCard).select("Select a card to discard").discard()
           my.deck.search ("Search your deck for a Basic Pokémon and put it onto your Bench", cardTypeFilter(BASIC)).moveTo(my.hand)
           shuffleDeck()
 				}
