@@ -498,8 +498,10 @@ class TcgStatics {
     delayed {
       after PROCESS_ATTACK_EFFECTS, {
         if(ef.attacker == pcs && ef.move.name == atkname) {
-          bc "-"+minus.value+" damage from last turn"
-          bg.dm().find{it.from == pcs && it.dmg.value}.dmg -= minus
+          bg.dm().findAll{it.from == pcs && it.to.owner != pcs.owner && it.dmg.value}.each{
+            bc "-"+minus.value+" damage from last turn"
+            it.dmg -= minus
+          }
         }
       }
       after SWITCH, pcs, {unregister()}
