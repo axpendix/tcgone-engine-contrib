@@ -3394,9 +3394,10 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               gxPerform()
 
-              if (self.cards.energySufficient(thisMove.energyCost + Y+Y+Y+Y+Y + Y+Y+Y+Y+Y + Y+Y+Y+Y)) {
+              if (self.cards.energySufficient(thisMove.energyCost + [Y,Y,Y,Y,Y , Y,Y,Y,Y,Y , Y,Y,Y,Y])) {
                 opp.bench.each {
                   it.cards.moveTo(opp.deck)
+                  removePCS(it)
                 }
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
