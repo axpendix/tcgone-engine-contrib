@@ -4628,7 +4628,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               my.hand.getExcludedList(thisCard).select(count:2, "Select cards to discard.")discard()
               heal 120, my.active
             }
-            sw my.active, my.bench.select("Select the new active")
+            sw my.active, my.bench.select("Select the new active"), Source.TRAINER_CARD
           }
           playRequirement {
             assert my.bench
