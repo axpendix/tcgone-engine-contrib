@@ -4072,16 +4072,16 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onPlay {
             eff = delayed {
               boolean flag = false
-              int extraPoison = 0
+              int extraPoisonCount = 0
               before SWITCH, null, TRAINER_CARD, {
                 flag = ef.fallenBack.isSPC(POISONED)
                 if(flag) {
-                  extraPoison = bg.em().retrieveObject("extra_poison_counter_"+ef.fallenBack.hashCode()) ?: 0
+                  extraPoisonCount = bg.em().retrieveObject("extra_poison_counter_"+ef.fallenBack.hashCode()) ?: 0
                 }
               }
               after SWITCH, null, TRAINER_CARD, {
                 if(flag) {apply(POISONED, ef.switchedOut, TRAINER_CARD)}
-                if(extraPoison) extraPoison(extraPoison)
+                if(extraPoisonCount) extraPoison(extraPoisonCount)
               }
             }
           }
