@@ -7,6 +7,7 @@ import tcgwars.logic.impl.gen5.DarkExplorers;
 import tcgwars.logic.impl.gen5.EmergingPowers;
 import tcgwars.logic.impl.gen6.Flashfire;
 import tcgwars.logic.impl.gen6.KalosStarterSet;
+import tcgwars.logic.impl.gen7.SunMoon;
 import tcgwars.logic.impl.gen7.UltraPrism;
 import tcgwars.logic.impl.gen7.UnbrokenBonds;
 
