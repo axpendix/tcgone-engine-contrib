@@ -3414,10 +3414,10 @@ public enum SwordShield implements LogicCardInfo {
 					"• Shuffle up to 2 Pokémon from your discard pile into your deck." +
 					"• Shuffle up to 2 basic Energy cards from your discard pile into your deck."
 				onPlay {
-          def energies = 0
-          def pokemon = 0
+          def energies
+          def pokemon
 
-          while (energies == 0 && pokemon == 0) {
+          while (!energies && !pokemon) {
             if (my.discard.filterByType(BASIC_ENERGY)) {
               energies = my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 2, "Select up to 2 Basic Energy cards to shuffle into your deck.")
             }
