@@ -32,7 +32,6 @@ import tcgwars.logic.card.pokemon.*;
 import tcgwars.logic.card.trainer.*;
 import tcgwars.logic.effect.*;
 import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
 import tcgwars.logic.effect.advanced.*;
 import tcgwars.logic.effect.basic.*;
 import tcgwars.logic.effect.blocking.*;
@@ -158,7 +157,7 @@ public enum SwordShield implements LogicCardInfo {
 	SANDACONDA_110 ("Sandaconda", 110, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
 	CLOBBOPUS_111 ("Clobbopus", 111, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
 	CLOBBOPUS_112 ("Clobbopus", 112, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
-	GRAPPLOCT_113 ("Grapploct", 113, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+	GRAPPLOCT_113 ("Grapploct", 113, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_, NOT_IMPLEMENTED]),
 	STONJOURNER_114 ("Stonjourner", 114, Rarity.RARE, [POKEMON, BASIC, _FIGHTING_]),
 	STONJOURNER_V_115 ("Stonjourner V", 115, Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _FIGHTING_]),
 	STONJOURNER_VMAX_116 ("Stonjourner VMAX", 116, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _FIGHTING_]),
@@ -177,7 +176,7 @@ public enum SwordShield implements LogicCardInfo {
 	MAWILE_129 ("Mawile", 129, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
 	FERROSEED_130 ("Ferroseed", 130, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
 	FERROTHORN_131 ("Ferrothorn", 131, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-	GALARIAN_STUNFISK_132 ("Galarian Stunfisk", 132, Rarity.UNCOMMON, [POKEMON, BASIC, _METAL_]),
+	GALARIAN_STUNFISK_132 ("Galarian Stunfisk", 132, Rarity.UNCOMMON, [POKEMON, BASIC, _METAL_, NOT_IMPLEMENTED]),
 	PAWNIARD_133 ("Pawniard", 133, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
 	BISHARP_134 ("Bisharp", 134, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
 	CORVIKNIGHT_135 ("Corviknight", 135, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _METAL_]),
@@ -2374,17 +2373,19 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost F, F
           onAttack {
             delayed {
+              after SWITCH, self, {unregister()}
+              before RETREAT, {
+                if (ef.retreater.owner==self.owner.opposite && self.active) {
+                  wcu "Octolock prevents retreating"
+                  prevent()
+                }
+              }
+
               def eff1
               def eff2
 
               register {
                 eff1 = delayed {
-                  before RETREAT, {
-                    if (ef.retreater.owner==self.owner.opposite && self.active) {
-                      wcu "Octolock prevents retreating"
-                      prevent()
-                    }
-                  }
                 }
                 // Add to Energy cost
                 if (bg.em().retrieveObject("Octolock")) {
