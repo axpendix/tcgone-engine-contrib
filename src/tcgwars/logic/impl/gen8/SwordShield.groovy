@@ -3548,7 +3548,7 @@ public enum SwordShield implements LogicCardInfo {
               if(ef.attacker==self) bg.dm().each {
                 if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value) {
                   it.dmg += hp(10)
-                  bc "Vitality Band +10"
+                  bc "Vitality Band +10 HP"
                 }
               }
             }
