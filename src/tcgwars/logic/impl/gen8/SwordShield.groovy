@@ -3405,10 +3405,11 @@ public enum SwordShield implements LogicCardInfo {
 			return itemCard (this) {
 				text "Attach a [M] Energy card from your discard pile to 1 of your Benched [M] Pokémon."
 				onPlay {
-          attachEnergyFrom(type: M, my.discard, my.bench.findAll {it.types.contains(M)})
+          attachEnergyFrom(basic: true, type: M, my.discard, my.bench.findAll {it.types.contains(M)})
         }
         playRequirement{
-          assert my.discard.filterByEnergyType(M) && my.bench.findAll {it.types.contains(M)}
+          assert my.discard.findAll(basicEnergyFilter(M))
+          assert my.bench.findAll {it.types.contains(M)}
         }
 			};
 			case ORDINARY_ROD_171:
