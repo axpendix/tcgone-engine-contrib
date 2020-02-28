@@ -1176,8 +1176,10 @@ public enum SwordShield implements LogicCardInfo {
           }
           onAttack {
             attachEnergyFrom(type:W, my.hand, self)
-            def tar = my.bench.select("Select the Pokémon to switch with Lapras V")
-            sw self, tar
+            if (bench) {
+              def tar = my.bench.select("Select the Pokémon to switch with Lapras V")
+              sw self, tar
+            }
           }
 				}
 				move "Ocean Loop", {
@@ -3394,7 +3396,7 @@ public enum SwordShield implements LogicCardInfo {
           }
           if (my.hand.size()) {
             my.hand.shuffle()
-            my.hand.moveTo(hidden:true, my.deck)
+            my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
             draw 5
           }
 				}
