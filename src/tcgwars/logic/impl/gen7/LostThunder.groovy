@@ -1353,7 +1353,7 @@ public enum LostThunder implements LogicCardInfo {
           bwAbility "Wild Dash" , {
             text "If your opponent has any Pokémon-GX or Pokémon-EX in play, this Pokémon has no Retreat Cost."
             getterA (GET_RETREAT_COST,BEFORE_LAST ,self) {h->
-              if(self.owner.opposite.pbg.all.findAll{it.pokemonGX || it.pokemonGX}) {
+              if(self.owner.opposite.pbg.all.findAll{it.pokemonEX || it.pokemonGX}) {
                 h.object = 0
               }
             }
