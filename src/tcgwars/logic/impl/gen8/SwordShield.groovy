@@ -7,6 +7,7 @@ import tcgwars.logic.impl.gen5.DarkExplorers;
 import tcgwars.logic.impl.gen5.EmergingPowers;
 import tcgwars.logic.impl.gen6.Flashfire;
 import tcgwars.logic.impl.gen6.KalosStarterSet;
+import tcgwars.logic.impl.gen7.SunMoon;
 import tcgwars.logic.impl.gen7.UltraPrism;
 import tcgwars.logic.impl.gen7.UnbrokenBonds;
 
@@ -3320,16 +3321,7 @@ public enum SwordShield implements LogicCardInfo {
 			case ENERGY_RETRIEVAL_160:
 			return copy(BlackWhite.ENERGY_RETRIEVAL_92, this)
 			case ENERGY_SEARCH_161:
-			return itemCard (this) {
-				text "Search your deck for a basic Energy card, reveal it, and put it into your hand. Then, shuffle your deck."
-				onPlay {
-          deck.search(max:1, cardTypeFilter(BASIC_ENERGY)).moveTo(hand)
-          shuffleDeck()
-        }
-        playRequirement{
-          assert deck
-        }
-			};
+			return copy(BlackWhite.ENERGY_SEARCH_93, this);
 			case ENERGY_SWITCH_162:
 			return copy(BlackWhite.ENERGY_SWITCH_94, this);
 			case EVOLUTION_INCENSE_163:
@@ -3346,12 +3338,7 @@ public enum SwordShield implements LogicCardInfo {
 			case GREAT_BALL_164:
 			return copy(EmergingPowers.GREAT_BALL_93, this);
 			case HOP_165:
-			return supporter (this) {
-				text "Draw 3 cards."
-				onPlay {
-          draw 3
-				}
-			};
+			return copy(SunMoon.HAU_120, this);
 			case HYPER_POTION_166:
 			return itemCard (this) {
 				text "Heal 120 damage from 1 of your Pokémon that has at least 2 Energy attached. If you healed any damage in this way, discard 2 Energy from it."
@@ -3461,19 +3448,7 @@ public enum SwordShield implements LogicCardInfo {
 			case POKEMON_CENTER_LADY_176:
 			return copy(Flashfire.POKEMON_CENTER_LADY_93, this);
 			case POTION_177:
-			return itemCard (this) {
-				text "Heal 30 damage from 1 of your Pokémon."
-        onPlay {
-          def tar = my.all.findAll{it.numberOfDamageCounters}
-          if (tar) {
-            def pcs = tar.select()
-            heal 30, pcs
-          }
-        }
-        playRequirement {
-          my.all.findAll{it.numberOfDamageCounters}
-        }
-			};
+			return copy(BlackWhite.POTION_100, this);
 			case PROFESSOR_S_RESEARCH_178:
 			return copy(BaseSetNG.PROFESSOR_OAK, this);
 			case QUICK_BALL_179:
