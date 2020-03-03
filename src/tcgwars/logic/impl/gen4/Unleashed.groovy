@@ -1617,9 +1617,13 @@ public enum Unleashed implements LogicCardInfo {
         return supporter (this) {
           text "Draw 3 cards. Your opponent may draw a card."
           onPlay {
+            draw 3
+            if (opp.deck && oppConfirm("Draw a card?")) {
+              draw 1, TargetPlayer.OPPONENT
+            }
           }
           playRequirement{
-            assert my.deck : "No cards in deck"
+            assert my.deck : "No cards left in your deck"
           }
         };
       case DUAL_BALL_72:

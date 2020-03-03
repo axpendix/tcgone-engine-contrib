@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen4;
 
+import tcgwars.logic.impl.gen4.Unleashed;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -1630,13 +1632,7 @@ public enum CallOfLegends implements LogicCardInfo {
 
         };
       case CHEERLEADER_S_CHEER_76:
-        return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 3 cards. Your opponent may draw a card."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+      return copy(Unleashed.CHEERLEADER_S_CHEER_71, this);
       case COPYCAT_77:
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent’s hand."
