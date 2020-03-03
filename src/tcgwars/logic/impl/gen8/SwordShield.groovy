@@ -3376,11 +3376,10 @@ public enum SwordShield implements LogicCardInfo {
 			return supporter (this) {
 				text "Each player shuffles their hand and puts it on the bottom of their deck. If either player put any cards on the bottom of their deck in this way, you draw 5 cards, and your opponent draws 4 cards."
 				onPlay {
-          if (opp.hand.size()) {
-            opp.hand.shuffle()
-            opp.hand.moveTo(hidden:true, opp.deck)
-            draw 4, TargetPlayer.OPPONENT
-          }
+          opp.hand.shuffle()
+          opp.hand.moveTo(hidden:true, opp.deck)
+          draw 4, TargetPlayer.OPPONENT
+
           if (my.hand.size()) {
             my.hand.shuffle()
             my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
