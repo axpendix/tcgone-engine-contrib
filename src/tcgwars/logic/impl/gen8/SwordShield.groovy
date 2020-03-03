@@ -2929,7 +2929,8 @@ public enum SwordShield implements LogicCardInfo {
 					actionA {
             if (confirm("Use Intrepid Sword?")) {
               def topCards = my.deck.subList(0, 3).showToMe("Top 3 cards of your deck")
-              def metalEnergies = topCards.filterByEnergyType(M)
+              def metalEnergies = topCards.filterByBasicEnergyType(W)
+
               if (metalEnergies) {
                 def selectedEnergies = metalEnergies.select(min:0, max:metalEnergies.size(), "Attach any of them to $self")
                 selectedEnergies.each {
