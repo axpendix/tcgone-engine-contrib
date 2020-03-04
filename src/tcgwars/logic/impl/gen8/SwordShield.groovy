@@ -1733,9 +1733,12 @@ public enum SwordShield implements LogicCardInfo {
 					energyCost L, L, C
 					onAttack {
 						damage 150
-            discardSelfEnergy C
-            if (my.bench) {
-              sw self, my.bench.select()
+
+            afterDamage {
+              discardSelfEnergy C
+              if (my.bench) {
+                sw self, my.bench.select()
+              }
             }
 					}
 				}
