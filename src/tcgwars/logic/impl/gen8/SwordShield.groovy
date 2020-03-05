@@ -3146,7 +3146,7 @@ public enum SwordShield implements LogicCardInfo {
             assert my.hand && my.deck
             powerUsed()
 
-            my.hand.select().moveTo(addToTop: true, my.deck)
+            my.hand.select().moveTo(addToTop: true, hidden: true, my.deck)
             my.deck.subList(1,2).moveTo(my.hand) // Card placed on top, get the one underneath
 					}
 				}
