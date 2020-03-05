@@ -2598,7 +2598,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             assert my.bench.notFull
             powerUsed()
 
-            def card = opp.hand.first()
+            def card = my.hand.first()
             my.hand.remove(card)
             benchPCS(card)
 
