@@ -181,7 +181,7 @@ public enum CelestialStorm implements LogicCardInfo {
   RARE_CANDY_142("Rare Candy", 142, Rarity.UNCOMMON, [TRAINER,ITEM]),
   SHRINE_OF_PUNISHMENT_143("Shrine of Punishment", 143, Rarity.UNCOMMON, [TRAINER,STADIUM]),
   SKY_PILLAR_144("Sky Pillar", 144, Rarity.UNCOMMON, [TRAINER,STADIUM]),
-  STEVENS_RESOLVE_145("Steven's' Resolve", 145, Rarity.HOLORARE, [TRAINER,SUPPORTER]),
+  STEVENS_RESOLVE_145("Steven's Resolve", 145, Rarity.HOLORARE, [TRAINER,SUPPORTER]),
   SUPER_SCOOP_UP_146("Super Scoop Up", 146, Rarity.UNCOMMON, [TRAINER,ITEM]),
   SWITCH_147("Switch", 147, Rarity.UNCOMMON, [TRAINER,ITEM]),
   TATE_LIZA_148("Tate & Liza", 148, Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
