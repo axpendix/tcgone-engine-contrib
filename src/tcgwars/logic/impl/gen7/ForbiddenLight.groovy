@@ -1303,7 +1303,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.bench
-              assert my.discard.filterByEnergyType(P)
+              assert my.discard.filterByBasicEnergyType(P)
               powerUsed()
               attachEnergyFrom(type : P, my.discard, my.bench)
             }
