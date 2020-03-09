@@ -1082,7 +1082,7 @@ public enum HiddenFates implements LogicCardInfo {
           def key = "jessie_james_discarded_cards"
           def list = []
           list.addAll(opp.hand.oppSelect(count:2, "Choose two cards to discard").discard())
-          list.addAll(my.hand.getExcludedList(thisCard).select(count:2, "Choose teo cards to discard").discard())
+          list.addAll(my.hand.getExcludedList(thisCard).select(count:2, "Choose two cards to discard").discard())
           bg.em().retrieveAndStore(key, {it ?: []})
           list.each {card ->
             bg.em().retrieveAndStore(key, {it.add(card); it})
