@@ -1305,7 +1305,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               assert my.bench
               assert my.discard.filterByBasicEnergyType(P)
               powerUsed()
-              attachEnergyFrom(type : P, my.discard, my.bench)
+              attachEnergyFrom(basic: true, type : P, my.discard, my.bench)
             }
           }
           move "Psychic Sphere", {
