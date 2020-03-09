@@ -2930,7 +2930,7 @@ public enum SwordShield implements LogicCardInfo {
 				bwAbility "Intrepid Sword", {
 					text "Once during your turn, you may look at the top 3 cards of your deck and attach any number of [M] Energy cards you find there to this Pokémon. Put the other cards into your hand. If you use this Ability, your turn ends."
 					actionA {
-            if (confirm("Use Intrepid Sword?")) {
+            if (my.deck && confirm("Use Intrepid Sword?")) {
               def topCards = my.deck.subList(0, 3).showToMe("Top 3 cards of your deck")
               def metalEnergies = topCards.filterByBasicEnergyType(M)
 
