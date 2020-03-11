@@ -1690,7 +1690,7 @@ public enum Unleashed implements LogicCardInfo {
         return supporter (this) {
           text "Look at the top 8 cards of your deck. Choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Shuffle the other cards back into your deck."
           onPlay {
-            my.deck.subList(0, 8).select(max: 8, "Top cards of your deck. Put Energy cards to your hand", cardTypeFilter(ENERGY)).moveTo(my.hand)
+            my.deck.subList(0, 8).select(min:0, max: 8, "Top cards of your deck. Put Energy cards to your hand", cardTypeFilter(ENERGY)).moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
