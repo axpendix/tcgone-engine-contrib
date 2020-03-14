@@ -223,7 +223,8 @@ public enum SunMoonPromos implements LogicCardInfo {
   PIKACHU_SM206("Pikachu", 206, Rarity.Promo, [POKEMON,POKEMON,_LIGHTNING_,BASIC]),
   SUDOWOODO_SM207("Sudowoodo", 207, Rarity.Promo, [POKEMON,POKEMON,_FIGHTING,BASIC]),  
   TREVENANT_DUSKNOIR_GX_SM217 ("Trevenant & Dusknoir-GX", 217, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _PSYCHIC_]);
-
+  ALOLAN_SANDSLASH_GX_SM236 ("Alolan Sandslash-GX", 236, Rarity.PROMO, [POKEMON, STAGE1, EVOLUTION, POKEMON_GX, TAG_TEAM, _WATER_]);
+  
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
@@ -2888,6 +2889,32 @@ public enum SunMoonPromos implements LogicCardInfo {
 					}
 				}
 			};
+      case ALOLAN_SANDSLASH_GX_SM236:
+        return evolution (this, from:"Alolan Sandshrew" hp:HP200, type:W, retreatCost:2) {
+        weakness M
+          bwAbility "Spiky Shield", {
+          text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
+          before APPLY_ATTACK_DAMAGES,{
+                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value >= 10}) && self.active){
+                directDamage(30, ef.attacker, ABILITY)
+                }
+           }
+         }   
+        move "Frost Breath", { 
+        energyCost W, C, C
+          onAttack {
+            damage 120
+          }
+        }
+          move "Spiky Storm-GX", {
+            text "This attack does 100 damage to each of your opponent's Pokémon that has any damage counters on it. (You can't use more than 1 GX attack in a game.)"  
+            energyCost W, C, C
+            attackRequirement { gxCheck() }
+					  onAttack {
+            gxPerform()
+            opp.bench.each{if(it.numberOfDamageCounters) damage 100,it}  
+            }
+          };
       default:
         return null;
     }
