@@ -2725,17 +2725,21 @@ public enum SunMoonPromos implements LogicCardInfo {
             delayedA {
               before PLAY_BASIC_POKEMON, {
                 if(ef.cardToPlay.moves.find{ it.name == "Spore" }) {
+                  if(bg.currentTurn == self.owner) {
                   apply POISONED, opp.active
                   apply ASLEEP, opp.active
-                }
+                 }
+                }   
               }
               before PLAY_EVOLUTION, {
                 if(ef.cardToPlay.moves.find{ it.name == "Spore" }) {
+                  if(bg.currentTurn == self.owner) {
                   apply POISONED, opp.active
                   apply ASLEEP, opp.active
-                }
-              }
-            }
+                  }
+                 }
+               }
+             }
           }
           move "Venoshock", {
             text "20+ damage. If your opponent's Active Pokémon is Poisoned, this attack does 70 more damage."
