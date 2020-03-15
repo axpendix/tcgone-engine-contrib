@@ -221,9 +221,10 @@ public enum SunMoonPromos implements LogicCardInfo {
   NECROZMA_SM204("Necrozma", 204, Rarity.Promo, [POKEMON,POKEMON,_PSYCHIC_,BASIC]),
   TERRAKION_SM205("Terrakion", 205, Rarity.Promo, [POKEMON,POKEMON,_FIGHTING_,BASIC]),
   PIKACHU_SM206("Pikachu", 206, Rarity.Promo, [POKEMON,POKEMON,_LIGHTNING_,BASIC]),
-  SUDOWOODO_SM207("Sudowoodo", 207, Rarity.Promo, [POKEMON,POKEMON,_FIGHTING,BASIC]),  
+  SUDOWOODO_SM207("Sudowoodo", 207, Rarity.Promo, [POKEMON,POKEMON,_FIGHTING,BASIC]),
+  PORYGON_Z_GX_SM216("Porygon-Z-GX", 216, Rarity.PROMO, [POKEMON, STAGE2, EVOLUTION, POKEMON_GX, _COLORLESS_]), 
   TREVENANT_DUSKNOIR_GX_SM217 ("Trevenant & Dusknoir-GX", 217, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _PSYCHIC_]);
-  ALOLAN_SANDSLASH_GX_SM236 ("Alolan Sandslash-GX", 236, Rarity.PROMO, [POKEMON, STAGE1, EVOLUTION, POKEMON_GX, TAG_TEAM, _WATER_]);
+  ALOLAN_SANDSLASH_GX_SM236 ("Alolan Sandslash-GX", 236, Rarity.PROMO, [POKEMON, STAGE1, EVOLUTION, POKEMON_GX, _WATER_]);
   
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -2844,7 +2845,41 @@ public enum SunMoonPromos implements LogicCardInfo {
         }
        }
       };
-    
+      case PORYGON_Z_GX_SM216:
+        return evolution (this, from:"Porygon2", hp:HP240, type:C, retreatCost:2) {
+          weakness F
+          bwAbility "Troubleshooting", {
+            text "Once during your turn (before your attack), you may discard a special energy from this pokemon. If you do, heal 80 damage from this Pokémon."
+            actionA {
+              checkLastTurn()
+              assert self.findAll(cardTypeFilter(SPECIAL)) : "There are no special energy attached"
+              assert self.numberOfDamageCounters : "$self is not damaged"
+              powerUsed()
+              my.hand.findAll(cardTypeFilter(POKEMON)).select("Discard a Pokemon to heal 80").discard()
+              heal(80, self)
+            }
+          }
+          move "Abnormal Overheating", {
+            text "This Pokemon is now burned"
+            energyCost C, C, C
+            onAttack {
+              damage 160
+              afterDamage {apply BURNED, self}
+            }
+          }
+          move "Critical Error-Gx", {
+            text "Search your deck for up to 10 cards and discard them. Then shuffle your deck. (You can't use more than 1 gx attack in a game)."
+            energyCost C
+            attackRequirement { gxCheck() 
+            assert my.deck : "There is no cards in your deck"
+                              }
+            onAttack {
+              gxPerform()
+              my.deck.search(max:10,"Choose up to 10 to discard",cardTypeFilter(card)).discard()
+              shuffleDeck()
+            }
+          }
+        };
       case TREVENANT_DUSKNOIR_GX_SM217:
 			return basic (this, hp:HP270, type:P, retreatCost:3) {
 				weakness D
@@ -2913,8 +2948,9 @@ public enum SunMoonPromos implements LogicCardInfo {
 					  onAttack {
             gxPerform()
             opp.bench.each{if(it.numberOfDamageCounters) damage 100,it}  
-            }
-          };
+         }
+      };
+      
       default:
         return null;
     }
