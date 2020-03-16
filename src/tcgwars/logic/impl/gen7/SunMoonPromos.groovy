@@ -222,10 +222,10 @@ public enum SunMoonPromos implements LogicCardInfo {
   TERRAKION_SM205("Terrakion", 205, Rarity.PROMO, [POKEMON,POKEMON,_FIGHTING_,BASIC]),
   PIKACHU_SM206("Pikachu", 206, Rarity.PROMO, [POKEMON,POKEMON,_LIGHTNING_,BASIC]),
   SUDOWOODO_SM207("Sudowoodo", 207, Rarity.PROMO, [POKEMON,POKEMON,_FIGHTING,BASIC]),
-  PORYGON_Z_GX_SM216("Porygon-Z-GX", 216, Rarity.PROMO, [POKEMON, STAGE2, EVOLUTION, POKEMON_GX, _COLORLESS_]), 
+  PORYGON_Z_GX_SM216("Porygon-Z-GX", 216, Rarity.PROMO, [POKEMON, STAGE2, EVOLUTION, POKEMON_GX, _COLORLESS_]),
   TREVENANT_DUSKNOIR_GX_SM217 ("Trevenant & Dusknoir-GX", 217, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _PSYCHIC_]);
   ALOLAN_SANDSLASH_GX_SM236 ("Alolan Sandslash-GX", 236, Rarity.PROMO, [POKEMON, STAGE1, EVOLUTION, POKEMON_GX, _WATER_]);
-  
+
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
@@ -2692,7 +2692,7 @@ public enum SunMoonPromos implements LogicCardInfo {
            text "30+ damage. This attack does 10 more damage for each damage counter on this Pokémon."
            energyCost R, C
            onAttack {
-             damage 30+10*self.numberOfDamageCounters            
+             damage 30+10*self.numberOfDamageCounters
           }
          }
          move "Flare Strike", {
@@ -2729,7 +2729,7 @@ public enum SunMoonPromos implements LogicCardInfo {
                   apply POISONED, opp.active
                   apply ASLEEP, opp.active
                  }
-                }   
+                }
               }
               before PLAY_EVOLUTION, {
                 if(ef.cardToPlay.moves.find{ it.name == "Spore" }) {
@@ -2791,7 +2791,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               if (self.cards.filterByType(SPECIAL_ENERGY)) damage 60
             }
           }
-        };  
+        };
       case TERRAKION_SM205:
         return basic (this, hp:HP140, type:F, retreatCost:4) {
           weakness G
@@ -2813,16 +2813,16 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 110
             }
           }
-        }; 
+        };
       case PIKACHU_SM206:
-      return basic (this, hp:HP60, type:L, retreatCost:1) {    
+      return basic (this, hp:HP60, type:L, retreatCost:1) {
         weakness F
         resistance M, MINUS20
         move "Thunder Shock", {
           text "40 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
           energyCost L, C, C
           onAttack {
-            damage 40 
+            damage 40
             afterDamage {
               flipThenApplySC PARALYZED
             }
@@ -2845,7 +2845,7 @@ public enum SunMoonPromos implements LogicCardInfo {
                 damage 80
           } else {
                 damage 0
-          }  
+          }
         }
        }
       };
@@ -2856,7 +2856,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "Once during your turn (before your attack), you may discard a special energy from this pokemon. If you do, heal 80 damage from this Pokémon."
             actionA {
               checkLastTurn()
-              assert self.findAll(cardTypeFilter(SPECIAL)) : "There are no special energy attached"
+              assert self.findAll(cardTypeFilter(SPECIAL)) : "There are no special energies attached"
               assert self.numberOfDamageCounters : "$self is not damaged"
               powerUsed()
               my.hand.findAll(cardTypeFilter(POKEMON)).select("Discard a Pokemon to heal 80").discard()
@@ -2864,22 +2864,25 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
           move "Abnormal Overheating", {
-            text "This Pokemon is now burned"
+            text "160 damage. This Pokemon is now burned"
             energyCost C, C, C
             onAttack {
               damage 160
-              afterDamage {apply BURNED, self}
+              afterDamage {
+                apply BURNED, self
+              }
             }
           }
           move "Critical Error-Gx", {
             text "Search your deck for up to 10 cards and discard them. Then shuffle your deck. (You can't use more than 1 gx attack in a game)."
             energyCost C
-            attackRequirement { gxCheck() 
-            assert my.deck : "There is no cards in your deck"
-                              }
+            attackRequirement {
+              gxCheck()
+              assert my.deck : "There is no cards in your deck"
+            }
             onAttack {
               gxPerform()
-              my.deck.search(max:10,"Choose up to 10 to discard",cardTypeFilter(card)).discard()
+              my.deck.search(min: 0, max:10, "Choose up to 10 cards to discard").discard()
               shuffleDeck()
             }
           }
@@ -2929,32 +2932,39 @@ public enum SunMoonPromos implements LogicCardInfo {
 				}
 			};
       case ALOLAN_SANDSLASH_GX_SM236:
-        return evolution (this, from:"Alolan Sandshrew" hp:HP200, type:W, retreatCost:2) {
+        return evolution (this, from:"Alolan Sandshrew", hp:HP200, type:W, retreatCost:2) {
         weakness M
           bwAbility "Spiky Shield", {
           text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
-          before APPLY_ATTACK_DAMAGES,{
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value >= 10}) && self.active){
-                directDamage(30, ef.attacker, ABILITY)
-                }
-           }
-         }   
-        move "Frost Breath", { 
-        energyCost W, C, C
+          before APPLY_ATTACK_DAMAGES, {
+            if (bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value >= 10}) && self.active) {
+              directDamage(30, ef.attacker, ABILITY)
+            }
+          }
+        }
+        move "Frost Breath", {
+          text "120 damage."
+          energyCost W, C, C
           onAttack {
             damage 120
           }
         }
-          move "Spiky Storm-GX", {
-            text "This attack does 100 damage to each of your opponent's Pokémon that has any damage counters on it. (You can't use more than 1 GX attack in a game.)"  
-            energyCost W, C, C
-            attackRequirement { gxCheck() }
-					  onAttack {
+        move "Spiky Storm-GX", {
+          text "This attack does 100 damage to each of your opponent's Pokémon that has any damage counters on it. (You can't use more than 1 GX attack in a game.)"
+          energyCost W, C, C
+          attackRequirement { gxCheck() }
+          onAttack {
             gxPerform()
-            opp.bench.each{if(it.numberOfDamageCounters) damage 100,it}  
-         }
+
+            opp.bench.each {
+              if (it.numberOfDamageCounters) {
+                damage 100, it
+              }
+            }
+          }
+        }
       };
-      
+
       default:
         return null;
     }
