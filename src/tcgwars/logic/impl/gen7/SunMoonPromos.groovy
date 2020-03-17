@@ -2815,7 +2815,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           }
         };
       case PIKACHU_SM206:
-      return basic (this, hp:HP60, type:L, retreatCost:1) {
+      return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
         resistance M, MINUS20
         move "Thunder Shock", {
