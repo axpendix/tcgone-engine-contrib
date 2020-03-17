@@ -2833,21 +2833,21 @@ public enum SunMoonPromos implements LogicCardInfo {
       return basic (this, hp:HP110, type:F, retreatCost:2) {
         weakness W
         move "Low Kick", {
+          text "20 damage."
           energyCost F
           onAttack {
             damage 20
           }
         }
         move "Territory Attack" {
-        energyCost F, F
-        onAttack {
-          if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner){
-                damage 80
-          } else {
-                damage 0
+          text "80 damage. If you don’t have a Stadium card in play, this attack does nothing."
+          energyCost F, F
+          onAttack {
+            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner) {
+              damage 80
+            }
           }
         }
-       }
       };
       case PORYGON_Z_GX_SM216:
         return evolution (this, from:"Porygon2", hp:HP240, type:C, retreatCost:2) {
