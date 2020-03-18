@@ -1861,12 +1861,14 @@ public enum UnifiedMinds implements LogicCardInfo {
           move "Spirit Smash", {
             text "Discard the top card of your opponent's deck. If the card you discarded is a Pokémon, this attack does damage equal to that Pokémon’s HP to your opponent's Active Pokémon."
             onAttack {
-              def topCard = opp.deck.subList(0, 1)
-              topCard.showToMe("Top card of your opponent's deck")
-              if (topCard.filterByType(POKEMON)) {
-                topCard.each{damage it.asPokemonCard().hp.value}
+              if (opp.deck) {
+                def topCard = opp.deck.subList(0, 1)
+                topCard.showToMe("Top card of your opponent's deck")
+                if (topCard.filterByType(POKEMON)) {
+                  topCard.each{damage it.asPokemonCard().hp.value}
+                }
+                topCard.discard()
               }
-              topCard.discard()
             }
           }
           move "Bone Beatdown", {
