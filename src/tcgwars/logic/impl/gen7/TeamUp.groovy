@@ -2500,8 +2500,10 @@ public enum TeamUp implements LogicCardInfo {
             energyCost C,C,C
             onAttack{
               damage 80
-              def addDmg = 20*Math.min(self.cards.energyCount(M),5)
-              damage addDmg
+              if (opp.bench) {
+                def addDmg = 20*Math.min(self.cards.energyCount(M), 5)
+                damage addDmg, opp.bench.select()
+              }
             }
           }
         };
