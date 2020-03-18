@@ -2130,12 +2130,12 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP050, type:DARKNESS, retreatCost:1) {
           weakness L, PLUS10
           resistance F, MINUS20
-          move "", {
-            text "Murkrow damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+          bwAbility "Dark Stone" , {
+            text "Murkrow can evolve during the turn you play it."
+            delayedA {
+              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+                prevent()
+              }
             }
           }
           move "Feint Attack", {
@@ -2143,10 +2143,9 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost D, C
             attackRequirement {}
             onAttack {
-              damage 0
+              swiftDamage(20, opp.all.select())
             }
           }
-
         };
       case NATU_96:
         return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
