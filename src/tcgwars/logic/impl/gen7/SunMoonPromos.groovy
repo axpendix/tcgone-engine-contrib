@@ -2599,21 +2599,21 @@ public enum SunMoonPromos implements LogicCardInfo {
       case GRENINJA_GX_SM197:
 			return evolution (this, from:"Frogadier", hp:HP230, type:W, retreatCost:1) {
 				weakness G
-				bwAbility "Elusive Master", {
-					text "Once during your turn (before your attack), if this Pokémon is the last card in your hand, you may play it onto your Bench. If you do, draw 3 cards."
-					actionA {
-            checkLastTurn()
-            assert my.hand.size() == 1
-            assert my.bench.notFull
-            powerUsed()
-
-            def card = my.hand.first()
-            my.hand.remove(card)
-            benchPCS(card)
-
+        globalAbility {Card thisCard->
+          def lastTurn=0
+          action("Elusive Master", [TargetPlayer.fromPlayerType(thisCard.player)]) {
+            def text="Once during your turn (before your attack), if this Pokémon is the last card in your hand, you may play it onto your Bench. If you do, draw 3 cards."
+            assert thisCard.player.pbg.hand.size() == 1 : "Hand size is not 1"
+            assert thisCard.player.pbg.hand.contains(thisCard) : "Not in hand"
+            assert thisCard.player.pbg.bench.notFull : "Bench full"
+            assert bg.turnCount!=lastTurn : "Already used ability"
+            assert checkGlobalAbility(thisCard) : "Blocked ability"
+            bc "$thisCard used Elusive Master"
+            my.hand.remove(thisCard)
+            def pcs = benchPCS(thisCard)
             draw 3
-					}
-				}
+          }
+        }
 				move "Mist Slash", {
 					text "130 damage. This attack's damage isn't affected by Weakness, Resistance, or any other effects on your opponent's Active Pokémon."
 					energyCost W, C
