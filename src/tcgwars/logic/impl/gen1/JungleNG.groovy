@@ -397,8 +397,8 @@ public enum JungleNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              afterDamage{
-                if(opp.bench){
+              afterDamage {
+                if (opp.bench && defending.getRemainingHP().value > 0) {
                   defending.cards.moveTo(opp.hand)
                   removePCS(defending)
                 }
