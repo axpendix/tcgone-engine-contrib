@@ -1576,10 +1576,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost G
             onAttack {
               damage 10
-              applyAfterDamage PARALYZED
+              afterDamage {
+                apply PARALYZED
+              }
             }
           }
-
         };
       case CHARMANDER_57:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
