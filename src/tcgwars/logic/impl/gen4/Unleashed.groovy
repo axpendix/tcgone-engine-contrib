@@ -1677,9 +1677,13 @@ public enum Unleashed implements LogicCardInfo {
           text "Flip a coin. If heads, search your discard pile for a Pokémon, show it to your opponent, and put it on top of your deck. If tails, search your discard pile for a Trainer card, show it to your opponent, and put it on top of your deck."
           onPlay {
             flip 1, {
-              my.discard.filterByType(POKEMON).select("Select a Pokemon").showToOpponent("Selected Pokemon").moveTo(addToTop:true, my.deck)
+              if (my.discard.filterByType(POKEMON)) {
+                my.discard.filterByType(POKEMON).select("Select a Pokemon").showToOpponent("Selected Pokemon").moveTo(addToTop:true, my.deck)
+              }
             }, {
-              my.discard.filterByType(TRAINER).select("Select a Trainer card").showToOpponent("Selected Trainer card").moveTo(addToTop:true, my.deck)
+              if (my.discard.filterByType(TRAINER)) {
+                my.discard.filterByType(TRAINER).select("Select a Trainer card").showToOpponent("Selected Trainer card").moveTo(addToTop:true, my.deck)
+              }
             }
           }
           playRequirement{
