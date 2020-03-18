@@ -4722,7 +4722,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               toDiscard.discard()
             }
 
-            def names = my.all.collect { it.name }
+            def names = my.all.findAll {it.turnCount < bg.turnCount}.collect { it.name }
             def sel = deck.search ("Evolves from $names", {
               it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor) && (it.cardTypes.is(POKEMON_EX) || it.cardTypes.is(POKEMON_GX))
             })
@@ -4746,6 +4746,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Deck is empty"
             assert bg.turnCount > 2 : "Cannot use this card during your first turn."
+            assert my.all.findAll {it.turnCount < bg.turnCount}
           }
         };
       case ROLLER_SKATER_203:
