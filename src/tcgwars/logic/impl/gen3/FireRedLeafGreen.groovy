@@ -2284,14 +2284,17 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return basicTrainer (this) {
           text "Flip a coin. If heads, choose 1 of your Pokémon (excluding Pokémon-ex), and remove all Special Conditions and 6 damage counters from that Pokémon (all if there are less than 6)."
           onPlay {
-            def tar = my.all.findAll{(it.numberOfDamageCounters !=0 || !(it.noSPC())) && it.topPokemonCard.cardTypes.isNot(POKEMON_EX)}
-            if(tar){
-              def pcs = tar.select("select 1 of your Pokémon (excluding Pokémon-ex) to remove all Special Conditions and 6 damage counters")
-              clearSpecialCondition(pcs,Source.TRAINER_CARD)
-              heal 60, pcs
+            flip {
+              def tar = my.all.findAll{(it.numberOfDamageCounters || !(it.noSPC())) && it.topPokemonCard.cardTypes.isNot(POKEMON_EX)}
+              if(tar){
+                def pcs = tar.select("select 1 of your Pokémon (excluding Pokémon-EX) to remove all Special Conditions and 6 damage counters")
+                clearSpecialCondition(pcs,Source.TRAINER_CARD)
+                heal 60, pcs
+              }
             }
           }
           playRequirement{
+            assert my.all.findAll{(it.numberOfDamageCounters || !(it.noSPC())) && it.topPokemonCard.cardTypes.isNot(POKEMON_EX)}
           }
         };
       case MT__MOON_94:
