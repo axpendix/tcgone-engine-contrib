@@ -2315,7 +2315,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
           onRemoveFromPlay{
-            eff.unregister()
+            effect1.unregister()
+            effect2.unregister()
           }
         };
       case POKE_BALL_95:
