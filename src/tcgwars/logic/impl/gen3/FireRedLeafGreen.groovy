@@ -2360,7 +2360,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return supporter (this) {
           text "Shuffle your hand into your deck, then draw 5 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            my.hand.getExcludedList(thisCard).moveTo(my.deck)
+            my.hand.getExcludedList(thisCard).moveTo(hidden: true, my.deck)
             shuffleDeck()
             draw 5
           }
