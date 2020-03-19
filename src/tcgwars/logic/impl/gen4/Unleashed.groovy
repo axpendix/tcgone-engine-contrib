@@ -1432,7 +1432,9 @@ public enum Unleashed implements LogicCardInfo {
             energyCost G
             onAttack {
               flip 3, {damage 20}
-              applyAfterDamage CONFUSED
+              afterDamage {
+                apply CONFUSED, self
+              }
             }
           }
 
