@@ -3434,7 +3434,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                   }
                   self.owner.pbg.triggerBenchSizeCheck()
 
-                  def eff = getter (GET_BENCH_SIZE, LAST) {h->
+                  def eff2 = getter (GET_BENCH_SIZE, LAST) {h->
                     bc "After bench size check - Current bench size is: $h.object"
                   }
 
