@@ -422,10 +422,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              increasedBaseDamageNextTurn("Extra Comet Punch",hp(50))
             }
           }
-
         };
       case MEWTWO_11:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:2) {
