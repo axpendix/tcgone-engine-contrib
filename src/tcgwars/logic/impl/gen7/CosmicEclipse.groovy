@@ -4676,6 +4676,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             def list = my.deck.subList(0, 6).filterByType(BASIC_ENERGY)
             def num = list.size()
             if (num) {
+              list.showToMe("These are the Energies that were found.")
               def tar = my.bench.findAll { it.types.contains(N) }.select("Which [N] Pokémon to attach these Energies to?")
               list.each { attachEnergy(tar, it) }
             }
