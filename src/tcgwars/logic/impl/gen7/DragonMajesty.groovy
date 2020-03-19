@@ -1377,7 +1377,7 @@ public enum DragonMajesty implements LogicCardInfo {
           text "You can play this card only if you discard 2 other cards from your hand.\nSearch your deck for up to 4 [R] Energy cards, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack).\n"
           onPlay {
             my.hand.getExcludedList(thisCard).select(count: 2, "Discard").discard()
-            my.deck.search(max:4,"Select up to 4 [R] Energy cards",energyFilter(R)).showToOpponent("The selected [R] Energy cards").moveTo(my.hand)
+            my.deck.search(max:4,"Select up to 4 [R] Energy cards",energyFilter(R)).moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
