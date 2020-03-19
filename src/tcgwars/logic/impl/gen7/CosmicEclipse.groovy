@@ -3429,16 +3429,9 @@ public enum CosmicEclipse implements LogicCardInfo {
                 def doll = my.hand.find{it.name=="Lillie's Poké Doll"}
                 if(doll && confirm("Play Lillie's Poké Doll from your hand as your new Active Pokémon?")) {
                   def eff = getter (GET_BENCH_SIZE, LAST) {h->
-                    h.object += 1
-                    bc "Before bench size check -  Current bench size is: $h.object"
+                    h.object = 10
                   }
                   self.owner.pbg.triggerBenchSizeCheck()
-
-                  def eff2 = getter (GET_BENCH_SIZE, LAST) {h->
-                    bc "After bench size check - Current bench size is: $h.object"
-                  }
-
-                  assert bench.notFull : "Bench is full for some reason"
 
                   def tmp = self.owner.pbg.all.findAll{it.name=="Lillie's Poké Doll"}
                   bg.em().run(new PlayCard(doll))
