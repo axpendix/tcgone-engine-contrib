@@ -1,4 +1,4 @@
-package tcgwars.logic.impl.gen;
+package tcgwars.logic.impl.gen3;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -35,7 +35,7 @@ import tcgwars.logic.util.*;
  * @author axpendix@hotmail.com
  */
 public enum UnseenForces implements CardInfo {
-	
+
 	UNOWN_! ("Unown", !, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	AMPHAROS_1 ("Ampharos", 1, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
 	ARIADOS_2 ("Ariados", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
@@ -180,11 +180,10 @@ public enum UnseenForces implements CardInfo {
 	UNOWN_W ("Unown", W, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	UNOWN_X ("Unown", X, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	UNOWN_Y ("Unown", Y, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_Z ("Unown", Z, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-;
-	
+	UNOWN_Z ("Unown", Z, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
+
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
-	
+
 	protected CardTypeSet cardTypes;
 	protected String name;
 	protected Rarity rarity;
@@ -248,10 +247,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case AMPHAROS_1:
 			return evolution (this, from:"Flaaffy", hp:HP120, type:L, retreatCost:2) {
@@ -270,7 +269,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case ARIADOS_2:
 			return evolution (this, from:"Spinarak", hp:HP070, type:G, retreatCost:1) {
@@ -288,10 +287,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case BELLOSSOM_3:
 			return evolution (this, from:"Gloom", hp:HP090, type:G, retreatCost:1) {
@@ -302,7 +301,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Full Bloom", {
@@ -313,7 +312,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case FERALIGATR_4:
 			return evolution (this, from:"Croconaw", hp:HP120, type:W, retreatCost:2) {
@@ -339,7 +338,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case FLAREON_5:
 			return evolution (this, from:"Eevee", hp:HP070, type:R, retreatCost:1) {
@@ -360,7 +359,7 @@ public enum UnseenForces implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case FORRETRESS_6:
 			return evolution (this, from:"Pineco", hp:HP070, type:M, retreatCost:1) {
@@ -382,7 +381,7 @@ public enum UnseenForces implements CardInfo {
 						damage 100
 					}
 				}
-				
+
 			};
 			case HOUNDOOM_7:
 			return evolution (this, from:"Houndour", hp:HP070, type:R, retreatCost:1) {
@@ -408,7 +407,7 @@ public enum UnseenForces implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case JOLTEON_8:
 			return evolution (this, from:"Eevee", hp:HP070, type:L, retreatCost:0) {
@@ -430,7 +429,7 @@ public enum UnseenForces implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case MEGANIUM_9:
 			return evolution (this, from:"Bayleef", hp:HP100, type:G, retreatCost:3) {
@@ -449,7 +448,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case OCTILLERY_10:
 			return evolution (this, from:"Remoraid", hp:HP080, type:W, retreatCost:1) {
@@ -464,7 +463,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Pulse Blast", {
@@ -475,7 +474,7 @@ public enum UnseenForces implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case POLIWRATH_11:
 			return evolution (this, from:"Poliwhirl", hp:HP120, type:F, retreatCost:2) {
@@ -501,7 +500,7 @@ public enum UnseenForces implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case PORYGON2_12:
 			return evolution (this, from:"Porygon", hp:HP070, type:C, retreatCost:1) {
@@ -516,7 +515,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Scramble Trip", {
@@ -527,7 +526,7 @@ public enum UnseenForces implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case SLOWBRO_13:
 			return evolution (this, from:"Slowpoke", hp:HP080, type:W, retreatCost:2) {
@@ -553,7 +552,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case SLOWKING_14:
 			return evolution (this, from:"Slowpoke", hp:HP070, type:P, retreatCost:1) {
@@ -571,7 +570,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case SUDOWOODO_15:
 			return basic (this, hp:HP060, type:F, retreatCost:1) {
@@ -581,7 +580,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Karate Chop", {
@@ -592,7 +591,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case SUNFLORA_16:
 			return evolution (this, from:"Sunkern", hp:HP070, type:G, retreatCost:1) {
@@ -603,7 +602,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Green Blast", {
@@ -614,7 +613,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case TYPHLOSION_17:
 			return evolution (this, from:"Quilava", hp:HP110, type:R, retreatCost:1) {
@@ -640,7 +639,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case URSARING_18:
 			return evolution (this, from:"Teddiursa", hp:HP080, type:C, retreatCost:2) {
@@ -666,7 +665,7 @@ public enum UnseenForces implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case VAPOREON_19:
 			return evolution (this, from:"Eevee", hp:HP070, type:W, retreatCost:1) {
@@ -687,7 +686,7 @@ public enum UnseenForces implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case CHANSEY_20:
 			return basic (this, hp:HP090, type:C, retreatCost:2) {
@@ -697,7 +696,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Double Tackle", {
@@ -705,10 +704,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case CLEFFA_21:
 			return basic (this, hp:HP050, type:C, retreatCost:1) {
@@ -723,10 +722,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case ELECTABUZZ_22:
 			return basic (this, hp:HP070, type:L, retreatCost:1) {
@@ -752,7 +751,7 @@ public enum UnseenForces implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case ELEKID_23:
 			return basic (this, hp:HP050, type:L, retreatCost:1) {
@@ -770,7 +769,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case HITMONCHAN_24:
 			return basic (this, hp:HP070, type:F, retreatCost:1) {
@@ -796,7 +795,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case HITMONLEE_25:
 			return basic (this, hp:HP060, type:F, retreatCost:1) {
@@ -811,7 +810,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Mega Kick", {
@@ -822,7 +821,7 @@ public enum UnseenForces implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case HITMONTOP_26:
 			return basic (this, hp:HP070, type:F, retreatCost:1) {
@@ -848,7 +847,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case HO_OH_27:
 			return basic (this, hp:HP080, type:R, retreatCost:2) {
@@ -866,10 +865,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost R, R, C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case JYNX_28:
 			return basic (this, hp:HP070, type:W, retreatCost:1) {
@@ -884,7 +883,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Pure Power", {
@@ -892,10 +891,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost W, P, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case LUGIA_29:
 			return basic (this, hp:HP080, type:P, retreatCost:2) {
@@ -908,7 +907,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case MURKROW_30:
 			return basic (this, hp:HP070, type:D, retreatCost:1) {
@@ -919,7 +918,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Plunder", {
@@ -930,7 +929,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case SMOOCHUM_31:
 			return basic (this, hp:HP050, type:W, retreatCost:1) {
@@ -945,10 +944,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case STANTLER_32:
 			return basic (this, hp:HP070, type:C, retreatCost:1) {
@@ -969,7 +968,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case TYROGUE_33:
 			return basic (this, hp:HP040, type:F, retreatCost:1) {
@@ -987,7 +986,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case AIPOM_34:
 			return basic (this, hp:HP050, type:C, retreatCost:1) {
@@ -1002,10 +1001,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case BAYLEEF_35:
 			return evolution (this, from:"Chikorita", hp:HP070, type:G, retreatCost:1) {
@@ -1027,7 +1026,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case CLEFABLE_36:
 			return evolution (this, from:"Clefairy", hp:HP080, type:C, retreatCost:1) {
@@ -1048,7 +1047,7 @@ public enum UnseenForces implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case CORSOLA_37:
 			return basic (this, hp:HP060, type:W, retreatCost:1) {
@@ -1058,7 +1057,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Double Attack", {
@@ -1066,10 +1065,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case CROCONAW_38:
 			return evolution (this, from:"Totodile", hp:HP080, type:W, retreatCost:2) {
@@ -1090,7 +1089,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case GRANBULL_39:
 			return evolution (this, from:"Snubbull", hp:HP070, type:C, retreatCost:2) {
@@ -1116,7 +1115,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case LANTURN_40:
 			return evolution (this, from:"Chinchou", hp:HP080, type:L, retreatCost:1) {
@@ -1137,7 +1136,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case MAGCARGO_41:
 			return evolution (this, from:"Slugma", hp:HP080, type:R, retreatCost:2) {
@@ -1163,7 +1162,7 @@ public enum UnseenForces implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case MILTANK_42:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -1178,7 +1177,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Body Slam", {
@@ -1189,7 +1188,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case NOCTOWL_43:
 			return evolution (this, from:"Hoothoot", hp:HP070, type:C, retreatCost:1) {
@@ -1200,7 +1199,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Surprise", {
@@ -1211,7 +1210,7 @@ public enum UnseenForces implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case QUAGSIRE_44:
 			return evolution (this, from:"Wooper", hp:HP080, type:R, retreatCost:2) {
@@ -1237,7 +1236,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case QUILAVA_45:
 			return evolution (this, from:"Cyndaquil", hp:HP070, type:R, retreatCost:1) {
@@ -1258,7 +1257,7 @@ public enum UnseenForces implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case SCYTHER_46:
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
@@ -1268,7 +1267,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Agility", {
@@ -1279,7 +1278,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case SHUCKLE_47:
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
@@ -1294,10 +1293,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case SMEARGLE_48:
 			return basic (this, hp:HP050, type:C, retreatCost:1) {
@@ -1315,7 +1314,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case XATU_49:
 			return evolution (this, from:"Natu", hp:HP080, type:P, retreatCost:1) {
@@ -1325,18 +1324,18 @@ public enum UnseenForces implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Psyshock", {
 					text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost 
+					energyCost
 					attackRequirement {}
 					onAttack {
 						damage 40
 					}
 				}
-				
+
 			};
 			case YANMA_50:
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
@@ -1346,7 +1345,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Spinning Tail", {
@@ -1354,10 +1353,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case CHIKORITA_51:
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
@@ -1379,7 +1378,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case CHINCHOU_52:
 			return basic (this, hp:HP050, type:L, retreatCost:1) {
@@ -1389,7 +1388,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Razor Fin", {
@@ -1400,7 +1399,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case CLEFAIRY_53:
 			return basic (this, hp:HP050, type:C, retreatCost:1) {
@@ -1421,7 +1420,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case CYNDAQUIL_54:
 			return basic (this, hp:HP050, type:R, retreatCost:1) {
@@ -1431,7 +1430,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Fireworks", {
@@ -1442,7 +1441,7 @@ public enum UnseenForces implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case EEVEE_55:
 			return basic (this, hp:HP040, type:C, retreatCost:1) {
@@ -1460,7 +1459,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case FLAAFFY_56:
 			return evolution (this, from:"Mareep", hp:HP080, type:L, retreatCost:1) {
@@ -1482,7 +1481,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case GLIGAR_57:
 			return basic (this, hp:HP050, type:F, retreatCost:1) {
@@ -1500,7 +1499,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case GLOOM_58:
 			return evolution (this, from:"Oddish", hp:HP070, type:G, retreatCost:1) {
@@ -1513,7 +1512,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case HOOTHOOT_59:
 			return basic (this, hp:HP050, type:C, retreatCost:1) {
@@ -1524,7 +1523,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Peck", {
@@ -1535,7 +1534,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case HOUNDOUR_60:
 			return basic (this, hp:HP050, type:R, retreatCost:1) {
@@ -1545,10 +1544,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case LARVITAR_61:
 			return basic (this, hp:HP050, type:F, retreatCost:1) {
@@ -1569,7 +1568,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case MAREEP_62:
 			return basic (this, hp:HP050, type:L, retreatCost:1) {
@@ -1583,7 +1582,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case NATU_63:
 			return basic (this, hp:HP050, type:P, retreatCost:1) {
@@ -1593,10 +1592,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case ODDISH_64:
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
@@ -1609,7 +1608,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case ONIX_65:
 			return basic (this, hp:HP080, type:F, retreatCost:3) {
@@ -1619,7 +1618,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Mud Slap", {
@@ -1630,7 +1629,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case PINECO_66:
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
@@ -1643,7 +1642,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case POLIWAG_67:
 			return basic (this, hp:HP050, type:W, retreatCost:1) {
@@ -1653,18 +1652,18 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Wave Splash", {
 					text "10 damage. "
-					energyCost 
+					energyCost
 					attackRequirement {}
 					onAttack {
 						damage 10
 					}
 				}
-				
+
 			};
 			case POLIWHIRL_68:
 			return evolution (this, from:"Poliwag", hp:HP070, type:W, retreatCost:1) {
@@ -1677,7 +1676,7 @@ public enum UnseenForces implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case PORYGON_69:
 			return basic (this, hp:HP050, type:C, retreatCost:1) {
@@ -1690,7 +1689,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case PUPITAR_70:
 			return evolution (this, from:"Larvitar", hp:HP070, type:F, retreatCost:0) {
@@ -1711,7 +1710,7 @@ public enum UnseenForces implements CardInfo {
 						damage 40
 					}
 				}
-				
+
 			};
 			case REMORAID_71:
 			return basic (this, hp:HP050, type:W, retreatCost:1) {
@@ -1721,7 +1720,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Splash", {
@@ -1732,7 +1731,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case SLOWPOKE_72:
 			return basic (this, hp:HP050, type:P, retreatCost:1) {
@@ -1742,7 +1741,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Trip Over", {
@@ -1753,7 +1752,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case SLUGMA_73:
 			return basic (this, hp:HP040, type:R, retreatCost:1) {
@@ -1763,7 +1762,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Headbutt", {
@@ -1774,7 +1773,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case SNUBBULL_74:
 			return basic (this, hp:HP050, type:C, retreatCost:1) {
@@ -1787,7 +1786,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case SPINARAK_75:
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
@@ -1797,7 +1796,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Pierce", {
@@ -1808,7 +1807,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case SUNKERN_76:
 			return basic (this, hp:HP040, type:G, retreatCost:1) {
@@ -1819,7 +1818,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Rollout", {
@@ -1830,7 +1829,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case TEDDIURSA_77:
 			return basic (this, hp:HP040, type:C, retreatCost:1) {
@@ -1840,7 +1839,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Scratch", {
@@ -1851,7 +1850,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case TOTODILE_78:
 			return basic (this, hp:HP050, type:W, retreatCost:1) {
@@ -1861,10 +1860,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case WOOPER_79:
 			return basic (this, hp:HP050, type:F, retreatCost:1) {
@@ -1885,7 +1884,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case CURSE_POWDER_80:
 			return itemCard (this) {
@@ -2106,7 +2105,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Roll Out", {
@@ -2117,7 +2116,7 @@ public enum UnseenForces implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case ESPEON_EX_102:
 			return evolution (this, from:"Eevee", hp:HP110, type:P, retreatCost:0) {
@@ -2132,7 +2131,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Psyloop", {
@@ -2143,7 +2142,7 @@ public enum UnseenForces implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case FERALIGATR_EX_103:
 			return evolution (this, from:"Croconaw", hp:HP150, type:W, retreatCost:3) {
@@ -2169,7 +2168,7 @@ public enum UnseenForces implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case HO_OH_EX_104:
 			return basic (this, hp:HP110, type:R, retreatCost:2) {
@@ -2187,7 +2186,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case LUGIA_EX_105:
 			return basic (this, hp:HP100, type:C, retreatCost:1) {
@@ -2206,7 +2205,7 @@ public enum UnseenForces implements CardInfo {
 						damage 200
 					}
 				}
-				
+
 			};
 			case MEGANIUM_EX_106:
 			return evolution (this, from:"Bayleef", hp:HP150, type:G, retreatCost:2) {
@@ -2231,10 +2230,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost G, G, C, C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case POLITOED_EX_107:
 			return evolution (this, from:"Poliwhirl", hp:HP150, type:W, retreatCost:3) {
@@ -2244,7 +2243,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Punch and Run", {
@@ -2263,7 +2262,7 @@ public enum UnseenForces implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case SCIZOR_EX_108:
 			return evolution (this, from:"Scyther", hp:HP120, type:M, retreatCost:1) {
@@ -2290,7 +2289,7 @@ public enum UnseenForces implements CardInfo {
 						damage 50
 					}
 				}
-				
+
 			};
 			case STEELIX_EX_109:
 			return evolution (this, from:"Onix", hp:HP150, type:M, retreatCost:5) {
@@ -2316,10 +2315,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case TYPHLOSION_EX_110:
 			return evolution (this, from:"Quilava", hp:HP150, type:R, retreatCost:1) {
@@ -2338,7 +2337,7 @@ public enum UnseenForces implements CardInfo {
 						damage 80
 					}
 				}
-				
+
 			};
 			case TYRANITAR_EX_111:
 			return evolution (this, from:"Pupitar", hp:HP160, type:D, retreatCost:2) {
@@ -2377,7 +2376,7 @@ public enum UnseenForces implements CardInfo {
 						damage 120
 					}
 				}
-				
+
 			};
 			case UMBREON_EX_112:
 			return evolution (this, from:"Eevee", hp:HP110, type:D, retreatCost:1) {
@@ -2404,7 +2403,7 @@ public enum UnseenForces implements CardInfo {
 						damage 60
 					}
 				}
-				
+
 			};
 			case ENTEI_STAR_113:
 			return basic (this, hp:HP080, type:R, retreatCost:1) {
@@ -2425,7 +2424,7 @@ public enum UnseenForces implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case RAIKOU_STAR_114:
 			return basic (this, hp:HP080, type:L, retreatCost:1) {
@@ -2446,7 +2445,7 @@ public enum UnseenForces implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case SUICUNE_STAR_115:
 			return basic (this, hp:HP080, type:W, retreatCost:1) {
@@ -2467,7 +2466,7 @@ public enum UnseenForces implements CardInfo {
 						damage 70
 					}
 				}
-				
+
 			};
 			case ROCKET_S_PERSIAN_EX_116:
 			return evolution (this, from:"Rocket's Meowth", hp:HP100, type:D, retreatCost:1) {
@@ -2485,7 +2484,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case CELEBI_EX_117:
 			return basic (this, hp:HP070, type:G, retreatCost:1) {
@@ -2495,7 +2494,7 @@ public enum UnseenForces implements CardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Time Trap", {
@@ -2506,7 +2505,7 @@ public enum UnseenForces implements CardInfo {
 						damage 30
 					}
 				}
-				
+
 			};
 			case UNOWN_?:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2521,10 +2520,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_A:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2539,10 +2538,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_B:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2557,10 +2556,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_C:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2575,10 +2574,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_D:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2593,10 +2592,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_E:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2611,10 +2610,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_F:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2632,7 +2631,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case UNOWN_G:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2647,10 +2646,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_H:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2665,10 +2664,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_I:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2683,10 +2682,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_J:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2701,10 +2700,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_K:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2722,7 +2721,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case UNOWN_L:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2737,10 +2736,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_M:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2755,10 +2754,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_N:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2773,10 +2772,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_O:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2794,7 +2793,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case UNOWN_P:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2809,10 +2808,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_Q:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2827,10 +2826,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_R:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2845,10 +2844,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_S:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2863,10 +2862,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_T:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2881,10 +2880,10 @@ public enum UnseenForces implements CardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 			case UNOWN_U:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2902,7 +2901,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case UNOWN_V:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2920,7 +2919,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case UNOWN_W:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2938,7 +2937,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case UNOWN_X:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2956,7 +2955,7 @@ public enum UnseenForces implements CardInfo {
 						damage 20
 					}
 				}
-				
+
 			};
 			case UNOWN_Y:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2974,7 +2973,7 @@ public enum UnseenForces implements CardInfo {
 						damage 10
 					}
 				}
-				
+
 			};
 			case UNOWN_Z:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -2989,14 +2988,14 @@ public enum UnseenForces implements CardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
-				
+
 			};
 				default:
 			return null;
 		}
 	}
-	
+
 }
