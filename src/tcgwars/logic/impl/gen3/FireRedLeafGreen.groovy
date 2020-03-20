@@ -2251,10 +2251,12 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               before KNOCKOUT, {
-                if(!self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.owner.pbg.active.cards.filterByType(ENERGY)) {
+                if (!self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.owner.pbg.active.cards.filterByType(ENERGY)) {
                   bc "EXP.ALL activates"
-                  if(confirm("move an energy from ${self.owner.pbg.active} to $self ?")){
-                    moveEnergy(basic: true, self.owner.pbg.active, self)
+                  if (confirm("move an energy from ${self.owner.pbg.active} to $self ?")) {
+                    def energy = self.cards.filterByType(BASIC_ENERGY).oppSelect("Select the Energy to move")
+                    def tar = self.owner.pbg.all.oppSelect("Select the Pokemon to attach the Energy to")
+                    energySwitch(self, tar, energy)
                   }
                 }
               }
