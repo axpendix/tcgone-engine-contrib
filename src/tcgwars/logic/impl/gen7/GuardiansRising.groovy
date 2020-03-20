@@ -1744,7 +1744,7 @@ public enum GuardiansRising implements LogicCardInfo {
             text "Your opponent can't have more than 4 Benched Pokémon. If they have 5 or more Benched Pokémon, they discard Benched Pokémon until they have 4 Pokémon on the Bench. If more than one effect changes the number of Benched Pokémon allowed, use the smaller number."
             getterA (GET_BENCH_SIZE) {h->
               if(h.effect.playerType == self.owner.opposite) {
-                h.object = Math.min(h.object as Integer, 4)
+                h.object = 4
               }
             }
             onActivate {
