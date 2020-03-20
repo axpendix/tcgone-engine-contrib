@@ -1704,6 +1704,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
+                after SWITCH, self.owner.opposite.pbg.active, {unregister()}
+                after EVOLVE, self.owner.opposite.pbg.active, {unregister()}
               }
             }
           }
