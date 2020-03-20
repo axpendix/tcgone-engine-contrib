@@ -264,12 +264,15 @@ public enum UnseenForces implements LogicCardInfo {
 				move "Miraculous Thunder", {
 					text "50 damage. You may discard all [L] Energy attached to Ampharos. If you do, the Defending Pokémon is now Burned and Confused."
 					energyCost L, C, C
-					attackRequirement {}
 					onAttack {
 						damage 50
+            if (confirm("You may discard all [L] Energy from this Pokémon. If you do, the Defending Pokémon is now Burned and Confused.")) {
+              discardAllSelfEnergy(L)
+              apply BURNED
+              apply CONFUSED
+            }
 					}
 				}
-
 			};
 			case ARIADOS_2:
 			return evolution (this, from:"Spinarak", hp:HP070, type:G, retreatCost:1) {
@@ -277,20 +280,25 @@ public enum UnseenForces implements LogicCardInfo {
 				move "Reactive Poison", {
 					text "10+ damage. Does 10 damage plus 30 more damage for each Special Condition affecting the Defending Pokémon."
 					energyCost C
-					attackRequirement {}
 					onAttack {
-						damage 10
+            damage 10+30*defending.specialConditions.size()
 					}
 				}
 				move "Spider Trap", {
 					text "The Defending Pokémon is now Asleep and Poisoned. Before applying this effect, you may switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. If you do, the new Defending Pokémon is now Asleep and Poisoned. Your opponent chooses the Defending Pokémon to switch."
 					energyCost G
-					attackRequirement {}
 					onAttack {
-
+            def pcs = defending
+            if (opp.bench && confirm("Switch the defending Pokémon with 1 of your opponent's benched pokémon?")) {
+              pcs = opp.bench.select("Switch")
+              sw opp.active, pcs
+            }
+            targeted(pcs) {
+              apply POISONED, pcs
+              apply ASLEEP, pcs
+            }
 					}
 				}
-
 			};
 			case BELLOSSOM_3:
 			return evolution (this, from:"Gloom", hp:HP090, type:G, retreatCost:1) {
@@ -299,20 +307,32 @@ public enum UnseenForces implements LogicCardInfo {
 				move "Green Dance", {
 					text "Search your deck for up to 2 [G] Pokémon, show them to your opponent, and put them into your hand. Shuffle your deck afterward. If you put any [G] Pokémon into your hand, you may switch Bellossom with 1 of your Benched Pokémon."
 					energyCost G
-					attackRequirement {}
+					attackRequirement {
+            assert my.deck : "There are no more cards in your deck"
+          }
 					onAttack {
+            def cards = deck.search(min: 0, max: 2, pokemonTypeFilter(G))
+            if (cards) {
+              cards.moveTo(hand)
 
+              if (my.bench && confirm("Switch Bellossom with 1 of your Benched Pokemon?")) {
+                switchYourActive()
+              }
+            }
+            shuffleDeck()
 					}
 				}
 				move "Full Bloom", {
 					text "50+ damage. If you have at least 3 Bellossom in play, this attack does 50 damage plus 50 more damage."
 					energyCost C, C, C
-					attackRequirement {}
 					onAttack {
 						damage 50
+
+            if (my.all.findAll{it.name == "Bellossom"}.size() >= 3){
+              damage 50
+            }
 					}
 				}
-
 			};
 			case FERALIGATR_4:
 			return evolution (this, from:"Croconaw", hp:HP120, type:W, retreatCost:2) {
@@ -320,7 +340,15 @@ public enum UnseenForces implements LogicCardInfo {
 				pokeBody "Intimidating Fang", {
 					text "As long as Feraligatr is your Active Pokémon, any damage done to your Pokémon by an opponent's attack is reduced by 10 (before applying Weakness and Resistance)."
 					delayedA {
-					}
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if(it.to.owner==self.owner && it.dmg.value && it.notNoEffect && self.active) {
+                  bc "Intimidating Fang: -10"
+                  it.dmg-=hp(10)
+                }
+              }
+            }
+          }
 				}
 				move "Pull Away", {
 					text "30 damage. If your opponent has 5 or more cards in his or her hand, your opponent discards a number of cards until your opponent has 4 cards left in his or her hand."
@@ -328,6 +356,10 @@ public enum UnseenForces implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+
+            if (opp.hand.size() >= 5) {
+              opp.hand.oppSelect(min: opp.hand.size()-4, max: opp.hand.size()-4, "Discard cards until you have 4 left in your hand").discard()
+            }
 					}
 				}
 				move "Tonnage", {
@@ -336,6 +368,11 @@ public enum UnseenForces implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+
+            if (confirm("Do 30 damage to Feraligatr to do 30 more damage?")) {
+              damage 30
+              damage 30, self
+            }
 					}
 				}
 
@@ -349,6 +386,9 @@ public enum UnseenForces implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            afterDamage {
+              attachEnergyFrom(type: R, my.discard, my.all)
+            }
 					}
 				}
 				move "Multi Burn", {
@@ -357,9 +397,18 @@ public enum UnseenForces implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+
+            int differentTypes = 0
+            for (Type t1:Type.values()) {
+              if (self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(t1))
+                differentTypes++
+            }
+            if (differentTypes >= 3) {
+              damage 20
+              apply BURNED
+            }
 					}
 				}
-
 			};
 			case FORRETRESS_6:
 			return evolution (this, from:"Pineco", hp:HP070, type:M, retreatCost:1) {
