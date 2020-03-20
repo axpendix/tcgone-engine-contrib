@@ -34,7 +34,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum UnseenForces implements CardInfo {
+public enum UnseenForces implements LogicCardInfo {
 
 	UNOWN_! ("Unown", !, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	AMPHAROS_1 ("Ampharos", 1, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
