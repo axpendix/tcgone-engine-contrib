@@ -2467,6 +2467,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
       case CHARIZARD_EX_105:
         return evolution (this, from:"Charmeleon", hp:HP160, type:FIRE, retreatCost:2) {
           weakness LIGHTNING
+          weakness WATER
           pokeBody "Energy Flame", {
             text "All Energy attached to Charizard ex are [R] Energy instead of its usual type."
             getterA GET_ENERGY_TYPES, { holder->
