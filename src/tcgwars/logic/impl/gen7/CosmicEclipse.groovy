@@ -3185,7 +3185,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost C
             onAttack {
               opp.hand.showToMe("Opponent's hand")
-              opp.hand.filterByType(ITEM).discard()
+              opp.hand.filterByType(ITEM).select("Select a card to discard").discard()
             }
           }
           move "Sting", {
