@@ -2391,7 +2391,9 @@ public enum CosmicEclipse implements LogicCardInfo {
             onActivate {
               effect1 = getter IS_ABILITY_BLOCKED, { Holder h ->
                 if (h.effect.target.numberOfDamageCounters && h.effect.target.pokemonGX && h.effect.ability instanceof BwAbility) {
-                  h.object=true
+                  targeted(h.effect.target, SRC_ABILITY) {
+                    h.object = true
+                  }
                 }
               }
             }
