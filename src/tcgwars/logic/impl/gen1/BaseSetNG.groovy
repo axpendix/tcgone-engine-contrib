@@ -650,7 +650,7 @@ public enum BaseSetNG implements LogicCardInfo {
           pokemonPower "Energy Trans", {
             text "As often as you like during your turn (before you attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one. This power can’t be used if Venusaur is Asleep, Confused, or Paralyzed."
             actionA {
-              checkNoSPC()
+              assert !self.isSPC(ASLEEP) || !self.isSPC(CONFUSED) || !self.isSPC(PARALYZED)
               assert my.all.findAll {it.cards.energyCount(G)>0}
               assert my.all.size()>=2
 
