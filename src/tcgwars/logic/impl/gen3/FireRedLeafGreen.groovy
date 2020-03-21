@@ -2561,7 +2561,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
       case GENGAR_EX_108:
         return evolution (this, from:"Haunter", hp:HP150, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
+          weakness PSYCHIC
           resistance COLORLESS
+          resistance FIGHTING
           move "Poltergeist", {
             text "40+ damage. Look at your opponent’s hand. This attack does 40 damage plus 10 more damage for each Trainer card in your opponent’s hand."
             energyCost P, C
@@ -2656,6 +2658,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
       case VENUSAUR_EX_112:
         return evolution (this, from:"Ivysaur", hp:HP150, type:GRASS, retreatCost:3) {
           weakness FIRE
+          weakness PSYCHIC
           pokePower "Energy Trans", {
             text "As often as you like during your turn (before your attack), move a [G] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Venusaur ex is affected by a Special Condition."
             actionA {
