@@ -2936,9 +2936,11 @@ public enum SunMoonPromos implements LogicCardInfo {
         weakness M
         bwAbility "Spiky Shield", {
         text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
-          before APPLY_ATTACK_DAMAGES, {
-            if (bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value >= 10}) && self.active) {
-              directDamage(30, ef.attacker, ABILITY)
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              if (bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value >= 10}) && self.active) {
+                directDamage(30, ef.attacker, ABILITY)
+              }
             }
           }
         }
