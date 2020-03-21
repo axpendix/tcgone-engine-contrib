@@ -2815,40 +2815,40 @@ public enum SunMoonPromos implements LogicCardInfo {
           }
         };
       case PIKACHU_SM206:
-      return basic (this, hp:HP060, type:L, retreatCost:1) {
-        weakness F
-        resistance M, MINUS20
-        move "Thunder Shock", {
-          text "40 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
-          energyCost L, C, C
-          onAttack {
-            damage 40
-            afterDamage {
-              flipThenApplySC PARALYZED
+        return basic (this, hp:HP060, type:L, retreatCost:1) {
+          weakness F
+          resistance M, MINUS20
+          move "Thunder Shock", {
+            text "40 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+            energyCost L, C, C
+            onAttack {
+              damage 40
+              afterDamage {
+                flipThenApplySC PARALYZED
+              }
             }
           }
-        }
-      };
+        };
       case SUDOWOODO_SM207:
-      return basic (this, hp:HP110, type:F, retreatCost:2) {
-        weakness W
-        move "Low Kick", {
-          text "20 damage."
-          energyCost F
-          onAttack {
-            damage 20
-          }
-        }
-        move "Territory Attack", {
-          text "80 damage. If you don’t have a Stadium card in play, this attack does nothing."
-          energyCost F, F
-          onAttack {
-            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner) {
-              damage 80
+        return basic (this, hp:HP110, type:F, retreatCost:2) {
+          weakness W
+          move "Low Kick", {
+            text "20 damage."
+            energyCost F
+            onAttack {
+              damage 20
             }
           }
-        }
-      };
+          move "Territory Attack", {
+            text "80 damage. If you don’t have a Stadium card in play, this attack does nothing."
+            energyCost F, F
+            onAttack {
+              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner) {
+                damage 80
+              }
+            }
+          }
+        };
       case PORYGON_Z_GX_SM216:
         return evolution (this, from:"Porygon2", hp:HP240, type:C, retreatCost:2) {
           weakness F
@@ -2888,58 +2888,57 @@ public enum SunMoonPromos implements LogicCardInfo {
           }
         };
       case TREVENANT_DUSKNOIR_GX_SM217:
-			return basic (this, hp:HP270, type:P, retreatCost:3) {
-				weakness D
-				resistance F, MINUS20
-				move "Night Watch", {
-					text "150 damage. Choose 2 random cards from your opponent's hand. Your opponent reveals those cards and shuffles them into their deck."
-					energyCost P, P, P
-					onAttack {
-						damage 150
-            afterDamage {
-              def number = Math.min(2, opp.hand.size())
-              if (number > 0) {
-                opp.hand.select(hidden: true, count:number).showToMe("Choosen cards").moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
-              }
-            }
-					}
-				}
-				move "Pale Moon GX", {
-					text "At the end of your opponent’s next turn, the Defending Pokémon will be Knocked Out. If this Pokémon has at least 1 extra [P] Energy attached to it (in addition to this attack's cost), discard all Energy from your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)"
-					energyCost P, C
-					attackRequirement { gxCheck() }
-					onAttack {
-            gxPerform()
-
-            if (self.cards.energySufficient( thisMove.energyCost + P )) {
-              opp.active.cards.filterByType(ENERGY).discard()
-            }
-
-            def pcs = defending
-            delayed {
-              before BETWEEN_TURNS, {
-                if (bg.currentTurn == self.owner.opposite) {
-                  bc "Pale Moon GX's effect occurs."
-                  new Knockout(pcs).run(bg)
+        return basic (this, hp:HP270, type:P, retreatCost:3) {
+          weakness D
+          resistance F, MINUS20
+          move "Night Watch", {
+            text "150 damage. Choose 2 random cards from your opponent's hand. Your opponent reveals those cards and shuffles them into their deck."
+            energyCost P, P, P
+            onAttack {
+              damage 150
+              afterDamage {
+                def number = Math.min(2, opp.hand.size())
+                if (number > 0) {
+                  opp.hand.select(hidden: true, count:number).showToMe("Choosen cards").moveTo(opp.deck)
+                  shuffleDeck(null, TargetPlayer.OPPONENT)
                 }
               }
-              unregisterAfter 2
-              after SWITCH, pcs, {unregister()}
-              after EVOLVE, pcs, {unregister()}
             }
-					}
-				}
-			};
+          }
+          move "Pale Moon GX", {
+            text "At the end of your opponent’s next turn, the Defending Pokémon will be Knocked Out. If this Pokémon has at least 1 extra [P] Energy attached to it (in addition to this attack's cost), discard all Energy from your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)"
+            energyCost P, C
+            attackRequirement { gxCheck() }
+            onAttack {
+              gxPerform()
+
+              if (self.cards.energySufficient( thisMove.energyCost + P )) {
+                opp.active.cards.filterByType(ENERGY).discard()
+              }
+
+              def pcs = defending
+              delayed {
+                before BETWEEN_TURNS, {
+                  if (bg.currentTurn == self.owner.opposite) {
+                    bc "Pale Moon GX's effect occurs."
+                    new Knockout(pcs).run(bg)
+                  }
+                }
+                unregisterAfter 2
+                after SWITCH, pcs, {unregister()}
+                after EVOLVE, pcs, {unregister()}
+              }
+            }
+          }
+        };
       case ALOLAN_SANDSLASH_GX_SM236:
         return evolution (this, from:"Alolan Sandshrew", hp:HP200, type:W, retreatCost:2) {
         weakness M
-          bwAbility "Spiky Shield", {
-          text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
-            before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value >= 10}) && self.active) {
-                directDamage(30, ef.attacker, ABILITY)
-              }
+        bwAbility "Spiky Shield", {
+        text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
+          before APPLY_ATTACK_DAMAGES, {
+            if (bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value >= 10}) && self.active) {
+              directDamage(30, ef.attacker, ABILITY)
             }
           }
         }
