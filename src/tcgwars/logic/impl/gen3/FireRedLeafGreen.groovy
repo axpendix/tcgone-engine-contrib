@@ -2256,9 +2256,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 if (!self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.owner.pbg.active.cards.filterByType(BASIC_ENERGY)) {
                   bc "EXP.ALL activates"
                   if (confirm("Move an Energy from ${self.owner.pbg.active} to $self ?")) {
-                    def energy = self.owner.pbg.active.cards.filterByType(BASIC_ENERGY).oppSelect("Select the Energy to move")
-                    def tar = self.owner.pbg.all.oppSelect("Select the Pokemon to attach the Energy to")
-                    energySwitch(self, tar, energy)
+                    def energy = self.owner.pbg.active.cards.filterByType(BASIC_ENERGY).oppSelect("Select an Energy from the Active Pokemon to move to the holder of Exp All")
+                    energySwitch(self.owner.pbg.active, self, energy)
                   }
                 }
               }
