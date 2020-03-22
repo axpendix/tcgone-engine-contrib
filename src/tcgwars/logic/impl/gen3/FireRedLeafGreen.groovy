@@ -2267,14 +2267,14 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             eff.unregister()
           }
           allowAttach {to->
-            to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && to.topPokemonCard.cardTypes.isNot(POKEMON_EX)
+            to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && to.topPokemonCard.cardTypes.isNot(EX)
           }
         };
       case GREAT_BALL_92:
         return basicTrainer (this) {
           text "Search your deck for a Basic Pokémon (excluding Pokémon-ex) and put it onto your Bench. Shuffle your deck afterward."
           onPlay {
-            my.deck.search(count : 1,"Search your deck for a Basic Pokémon (excluding Pokémon-ex)",{it.cardTypes.is(BASIC) && it.cardTypes.isNot(POKEMON_EX)}).each{
+            my.deck.search(count : 1,"Search your deck for a Basic Pokémon (excluding Pokémon-ex)",{it.cardTypes.is(BASIC) && it.cardTypes.isNot(EX)}).each{
               deck.remove(it)
               benchPCS(it)
             }
