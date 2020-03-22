@@ -1777,22 +1777,22 @@ public enum UnifiedMinds implements LogicCardInfo {
               assert self.active: "This Pokemon is not in an Active Pokemon"
               def perfectionMoves = []
               self.owner.pbg.bench.findAll {it.pokemonGX || it.pokemonEX}.each {
+                if (it.topPokemonCard.name != "Mewtwo & Mew-GX")
                 perfectionMoves.addAll(it.topPokemonCard.moves)
               }
               self.owner.pbg.discard.each {
-                if (it.cardTypes.isIn(POKEMON_EX, POKEMON_GX)) {
+                if (it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) && it.name != "Miraculous Duo GX") {
                   perfectionMoves.addAll(it.moves)
                 }
               }
+              assert perfectionMoves.notEmpty: "There are no moves to copy."
 
-              if (perfectionMoves) {
-                def chosenMove = choose(perfectionMoves, perfectionMoves.collect({it.name}), "Choose a move to perform")
+              def chosenMove = choose(perfectionMoves, perfectionMoves.collect({it.name}), "Choose a move to perform")
 
-                if (chosenMove) {
-                  def bef = blockingEffect(BETWEEN_TURNS)
-                  attack (chosenMove as Move)
-                  bef.unregisterItself(bg().em())
-                }
+              if (chosenMove) {
+                def bef = blockingEffect(BETWEEN_TURNS)
+                attack (chosenMove as Move)
+                bef.unregisterItself(bg().em())
               }
             }
           }
