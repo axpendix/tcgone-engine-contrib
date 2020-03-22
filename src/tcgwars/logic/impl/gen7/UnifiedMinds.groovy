@@ -1773,13 +1773,25 @@ public enum UnifiedMinds implements LogicCardInfo {
           weakness P
           bwAbility "Perfection", {
             text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
-            getterA (GET_MOVE_LIST, self) {h->
+            actionA {
+              assert self.active: "This Pokemon is not in an Active Pokemon"
+              def perfectionMoves = []
               self.owner.pbg.bench.findAll {it.pokemonGX || it.pokemonEX}.each {
-                h.object.addAll(it.topPokemonCard.moves)
+                perfectionMoves.addAll(it.topPokemonCard.moves)
               }
               self.owner.pbg.discard.each {
-                if(it.cardTypes.isIn(POKEMON_EX,POKEMON_GX)) {
-                  h.object.addAll(it.moves)
+                if (it.cardTypes.isIn(POKEMON_EX, POKEMON_GX)) {
+                  perfectionMoves.addAll(it.moves)
+                }
+              }
+
+              if (perfectionMoves) {
+                def chosenMove = choose(perfectionMoves, perfectionMoves.collect({it.name}), "Choose a move to perform")
+
+                if (chosenMove) {
+                  def bef = blockingEffect(BETWEEN_TURNS)
+                  attack (chosenMove as Move)
+                  bef.unregisterItself(bg().em())
                 }
               }
             }
