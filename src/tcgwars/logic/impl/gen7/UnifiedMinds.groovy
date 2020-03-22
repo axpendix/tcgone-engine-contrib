@@ -4394,7 +4394,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               bc "Used Giant Hearth's effect"
               lastTurn = bg().turnCount
               my.hand.select("Choose the card to discard").discard()
-              my.deck.search(max:2,"Select up to 2 Fire Energy cards",energyFilter(R)).showToOpponent("The selected Fire Energy cards").moveTo(my.hand)
+              my.deck.search(max:2,"Select up to 2 Fire Energy cards",basicEnergyFilter(R)).showToOpponent("The selected Fire Energy cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
