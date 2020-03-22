@@ -1787,7 +1787,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
               assert !perfectionMoves.isEmpty(): "There are no moves to copy"
 
-              def chosenMove = choose(perfectionMoves, perfectionMoves.collect({it.name})+["Cancel"], "Choose a move to perform")
+              def chosenMove = choose(perfectionMoves+["Cancel"], perfectionMoves.collect({it.name})+["Cancel"], "Choose a move to perform")
 
               if (chosenMove && chosenMove != "Cancel") {
                 attack (chosenMove as Move)
