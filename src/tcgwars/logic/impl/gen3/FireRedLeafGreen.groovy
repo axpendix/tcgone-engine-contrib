@@ -2788,12 +2788,12 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               if(self.lastEvolved == bg.turnCount){
                 if(confirm("Switch your active with Zapdos ex"))
                 {
-                  def energyCnt = my.active.cards.filterByEnergyType(L).size()
-                  def energyMove = choose(0..energyCnt,"Choose the number of energy to move")
-                  for(int i=0;i<energyMove;i++){
-                    moveEnergy(type: L, my.active, self)
-                  }
+                  def energyCount = my.active.cards.filterByEnergyType(L).size()
+                  def energyMove = choose(0..energyCount,"Choose the number of Energy cards to move")
                   sw my.active, self
+                  for (int i=0; i < energyMove; i++) {
+                    moveEnergy(type: L, my.bench, self)
+                  }
                 }
               }
             }
