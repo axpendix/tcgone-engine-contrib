@@ -4377,16 +4377,18 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onPlay {reason->
             // TODO implement properly after source refactoring and/or RichSource captivation
             eff = delayed {
-              before null, self, SRC_ABILITY, {
-                if(bg.currentTurn != self.owner) {
+              before null, self, SRC_ABILITY, BEFORE_LAST {
+                if (ef.target == self) {
                   bc "Stealty Hood prevents effect"
                   prevent()
                 }
+                new CheckAbilities().run(bg)
               }
             }
           }
           onRemoveFromPlay {
             eff.unregister()
+            new CheckAbilities().run(bg)
           }
         };
       case SURPRISE_BOX_187:
