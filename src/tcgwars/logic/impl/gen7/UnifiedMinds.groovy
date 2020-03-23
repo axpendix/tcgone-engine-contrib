@@ -1950,7 +1950,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if (it.to == self && it.from.topPokemonCard.cardTypes.is(TAG_TEAM) && it.dmg.value && it.notNoEffect) {
-                      bc "Paranormal prevents damage from TAG TEAM Pokémon"
+                      bc "Tag Purge prevents damage from TAG TEAM Pokémon"
                       it.dmg = hp(0)
                     }
                   }
