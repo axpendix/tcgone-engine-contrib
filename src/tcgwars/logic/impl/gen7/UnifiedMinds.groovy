@@ -1898,13 +1898,13 @@ public enum UnifiedMinds implements LogicCardInfo {
               assert all.find({ it.numberOfDamageCounters > 0 })
               checkLastTurn()
               powerUsed()
-              def source = all.findAll { it.numberOfDamageCounters > 0 }.select("Source for damage counter")
-              def target = all
-              all.remove(source)
-              target = target.select("Target for damage counter")
+              def source = my.all.findAll { it.numberOfDamageCounters > 0 }.select("Select a source for Damage Counter")
+              def target = my.all
+              my.all.remove(source)
+              target = target.select("Select a target to move the Damage counter to")
               source.damage-=hp(10)
               target.damage+=hp(10)
-              bc "Swapped a damage counter from $source to $target"
+              bc "Moved a Damage Counter from $source to $target"
               checkFaint()
             }
           }
