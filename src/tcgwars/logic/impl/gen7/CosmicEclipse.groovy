@@ -2388,6 +2388,11 @@ public enum CosmicEclipse implements LogicCardInfo {
           bwAbility "Shadow Box", {
             text "Pokémon-GX that have any damage counters on them (both yours and your opponent's) have no Abilities."
             def effect1
+            delayedA {
+              after REMOVE_DAMAGE_COUNTER, {
+                new CheckAbilities().run(bg)
+              }
+            }
             onActivate {
               effect1 = getter IS_ABILITY_BLOCKED, { Holder h ->
                 if (h.effect.target.numberOfDamageCounters && h.effect.target.pokemonGX && h.effect.ability instanceof BwAbility) {
