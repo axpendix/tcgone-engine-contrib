@@ -2396,9 +2396,11 @@ public enum CosmicEclipse implements LogicCardInfo {
                   }
                 }
               }
+              new CheckAbilities().run(bg)
             }
             onDeactivate {
               effect1.unregister()
+              new CheckAbilities().run(bg)
             }
           }
           move "Tail Trickery", {
