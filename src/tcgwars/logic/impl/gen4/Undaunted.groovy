@@ -174,7 +174,7 @@ public enum Undaunted implements LogicCardInfo {
               checkNoSPC()
               assert my.all.findAll{it.numberOfDamageCounters} : "No damage on your Pokemon"
               powerUsed()
-              may.all.each{ heal 10, it, SRC_ABILITY }
+              my.all.each{ heal 10, it, SRC_ABILITY }
             }
           }
           move "Dance ’til Dawn", {
