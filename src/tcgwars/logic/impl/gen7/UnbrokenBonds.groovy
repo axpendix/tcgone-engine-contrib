@@ -4378,10 +4378,8 @@ public enum UnbrokenBonds implements LogicCardInfo {
             // TODO implement properly after source refactoring and/or RichSource captivation
             eff = delayed {
               before null, self, SRC_ABILITY, {
-                if (bg.currentTurn != self.owner) {
-                  bc "Stealty Hood prevents effect"
-                  prevent()
-                }
+                bc "Stealty Hood prevents effect"
+                prevent()
               }
             }
             new CheckAbilities().run(bg)
