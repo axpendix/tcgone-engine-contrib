@@ -583,7 +583,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Pulse Blast", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -679,7 +679,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Rolling Tackle", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1028,7 +1028,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 			return basic (this, hp:HP080, type:R, retreatCost:2) {
 				weakness W
 				move "Gust", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1186,7 +1186,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Razor Leaf", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
@@ -1238,7 +1238,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 			return evolution (this, from:"Totodile", hp:HP080, type:W, retreatCost:2) {
 				weakness L
 				move "Bite", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1379,7 +1379,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Mud Shot", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1407,7 +1407,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Tackle", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1514,7 +1514,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				weakness R
 				resistance W, MINUS30
 				move "Headbutt", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1522,7 +1522,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Razor Leaf", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1542,7 +1542,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Razor Fin", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1554,7 +1554,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 			return basic (this, hp:HP050, type:C, retreatCost:1) {
 				weakness F
 				move "Pound", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1599,7 +1599,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Tail Whap", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1670,7 +1670,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Peck", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1702,7 +1702,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Tackle", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1715,7 +1715,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				weakness F
 				resistance M, MINUS30
 				move "Tackle", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1759,7 +1759,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Mud Slap", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1771,7 +1771,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
 				weakness R
 				move "Ram", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1791,7 +1791,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Wave Splash", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost
 					attackRequirement {}
 					onAttack {
@@ -1827,7 +1827,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 			return evolution (this, from:"Larvitar", hp:HP070, type:F, retreatCost:0) {
 				weakness G
 				move "Slash", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1835,7 +1835,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Rock Throw", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
@@ -1855,7 +1855,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Splash", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1895,7 +1895,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Headbutt", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1927,7 +1927,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Pierce", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1948,7 +1948,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Rollout", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -1968,7 +1968,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Scratch", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1992,7 +1992,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 			return basic (this, hp:HP050, type:F, retreatCost:1) {
 				weakness G
 				move "Mud Shot", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2000,7 +2000,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Tail Whap", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2231,7 +2231,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Roll Out", {
-					text "60 damage. "
+					text "60 damage."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -2335,7 +2335,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Razor Leaf", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -2507,7 +2507,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Darkness Fang", {
-					text "60 damage. "
+					text "60 damage."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
