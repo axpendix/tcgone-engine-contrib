@@ -4380,7 +4380,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               before null, self, SRC_ABILITY {
                 if (ef.target == self) {
                   bc "Stealty Hood prevents effect"
-                  bg.em().run(new CheckAbilities())
+                  // bg.em().run(new CheckAbilities())
                   prevent()
                 }
               }
@@ -4388,7 +4388,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           }
           onRemoveFromPlay {
             eff.unregister()
-            new CheckAbilities().run(bg)
+            // new CheckAbilities().run(bg)
           }
         };
       case SURPRISE_BOX_187:
