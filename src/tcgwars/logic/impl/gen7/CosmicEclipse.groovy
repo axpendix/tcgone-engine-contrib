@@ -2390,7 +2390,6 @@ public enum CosmicEclipse implements LogicCardInfo {
             def effect1
             delayedA {
               after REMOVE_DAMAGE_COUNTER, {
-                bc "Checking new abilities"
                 new CheckAbilities().run(bg)
               }
             }

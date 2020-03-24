@@ -632,6 +632,7 @@ public enum UnseenForces implements LogicCardInfo {
 				pokePower "3-D Reset", {
 					text "As often as you like during your turn (before your attack), return a Pokémon Tool card attached to 1 of your Pokémon to your hand. This power can't be used if Porygon2 is affected by a Special Condition."
 					actionA {
+            // TODO:
 					}
 				}
 				move "Data Retrieval", {
@@ -639,7 +640,9 @@ public enum UnseenForces implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            if (my.hand.size() < 8){
+              draw 8 - my.hand.size()
+            }
 					}
 				}
 				move "Scramble Trip", {
@@ -648,6 +651,10 @@ public enum UnseenForces implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            if (self.cards.findAll { it.name=="Scramble Energy" }) {
+              damage 20
+              apply CONFUSED
+            }
 					}
 				}
 			};
@@ -656,8 +663,9 @@ public enum UnseenForces implements LogicCardInfo {
 				weakness G
 				pokeBody "Dual Armor", {
 					text "As long as Slowbro has any [P] Energy attached to it, Slowbro is both Water and Psychic type."
-					delayedA {
-					}
+					getterA GET_POKEMON_TYPE, self, { h->
+            if (self.cards.energyCount(P)) h.object.add(P)
+          }
 				}
 				move "Parallel Gain", {
 					text "20 damage. Remove 1 damage counter from each of your Pokémon (including Slowbro)."
@@ -665,6 +673,9 @@ public enum UnseenForces implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            afterDamage {
+              my.all.each { heal 10, it }
+            }
 					}
 				}
 				move "Rolling Tackle", {
@@ -682,6 +693,7 @@ public enum UnseenForces implements LogicCardInfo {
 				pokePower "Item Search", {
 					text "Once during your turn (before your attack), you may search your deck for a Pokémon Tool card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power can't be used if Slowking is affected by a Special Condition."
 					actionA {
+            // TODO
 					}
 				}
 				move "Aftermath", {
@@ -689,7 +701,8 @@ public enum UnseenForces implements LogicCardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+            def extraDamage = Math.min(40, 10*my.discard.filterByType(POKEMON_TOOL).size())
+            damage 20 + extraDamage
 					}
 				}
 			};
@@ -701,7 +714,7 @@ public enum UnseenForces implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            // TODO:
 					}
 				}
 				move "Karate Chop", {
@@ -709,7 +722,7 @@ public enum UnseenForces implements LogicCardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 50
+						damage 50 - 10*self.numberOfDamageCounters
 					}
 				}
 			};
@@ -722,7 +735,8 @@ public enum UnseenForces implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-
+            apply CONFUSED
+            apply CONFUSED, self
 					}
 				}
 				move "Green Blast", {
@@ -731,6 +745,9 @@ public enum UnseenForces implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            my.all.each {
+              damage 10*it.cards.energyCount(G)
+            }
 					}
 				}
 			};
@@ -740,6 +757,7 @@ public enum UnseenForces implements LogicCardInfo {
 				pokeBody "Burning Aura", {
 					text "As long as Typhlosion is your Active Pokémon, put 1 damage counter on each Active Pokémon (both yours and your opponent's) between turns."
 					delayedA {
+            // TODO
 					}
 				}
 				move "Flickering Flames", {
@@ -748,6 +766,9 @@ public enum UnseenForces implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            afterDamage {
+              apply ASLEEP
+            }
 					}
 				}
 				move "Rage", {
@@ -755,7 +776,7 @@ public enum UnseenForces implements LogicCardInfo {
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
-						damage 50
+            damage 50+10*self.numberOfDamageCounters
 					}
 				}
 			};
@@ -765,15 +786,31 @@ public enum UnseenForces implements LogicCardInfo {
 				pokeBody "Intimidating Ring", {
 					text "As long as Ursaring is your Active Pokémon, your opponent's Basic Pokémon can't attack or use any Poké-Powers."
 					delayedA {
-					}
+            before CHECK_ATTACK_REQUIREMENTS, {
+              if (self.active && ef.attacker.owner != self.owner && ef.attacker.basic) {
+                wcu "Intimidating Ring prevents attack"
+                prevent()
+              }
+            }
+          }
+          getterA (IS_ABILITY_BLOCKED) { Holder h->
+            if (self.active && h.effect.target.owner != self.owner && !h.effect.target.basic && h.effect.ability instanceof PokePower) {
+              h.object=true
+            }
+          }
 				}
 				move "Drag Off", {
 					text "20 damage. Before doing damage, you may switch 1 of your opponent's Benched Pokémon with the Defending Pokémon. If you do, this attack does 20 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
 					energyCost C, C
 					attackRequirement {}
-					onAttack {
-						damage 20
-					}
+					onAttack{
+            def target = defending
+            if (opp.bench) {
+              target = opp.bench.select("Select the new active")
+              sw defending, target
+            }
+            damage 20, target
+          }
 				}
 				move "Rock Smash", {
 					text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 20 more damage."
@@ -781,6 +818,7 @@ public enum UnseenForces implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            flip { damage 20 }
 					}
 				}
 			};
@@ -793,6 +831,9 @@ public enum UnseenForces implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            afterDamage {
+              attachEnergyFrom(basic: true, my.hand, my.all)
+            }
 					}
 				}
 				move "Multi Bubble", {
@@ -801,6 +842,16 @@ public enum UnseenForces implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+
+            int differentTypes = 0
+            for (Type t1:Type.values()) {
+              if (self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(t1))
+                differentTypes++
+            }
+            if (differentTypes >= 3) {
+              damage 20
+              apply ASLEEP
+            }
 					}
 				}
 			};
@@ -812,7 +863,12 @@ public enum UnseenForces implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            heal 10, self
+            afterDamage {
+              if (self.specialConditions) {
+                afterDamage { clearSpecialCondition(self) }
+              }
+            }
 					}
 				}
 				move "Double Tackle", {
@@ -820,7 +876,7 @@ public enum UnseenForces implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-
+            damage 20
 					}
 				}
 			};
@@ -830,6 +886,14 @@ public enum UnseenForces implements LogicCardInfo {
 				pokePower "Baby Evolution", {
 					text "Once during your turn (before your attack), you may put Clefairy from your hand onto Cleffa (this counts as evolving Cleffa) and remove all damage counters from Cleffa."
 					actionA {
+            assert my.hand.findAll { it.name == "Clefairy" } : "There are no Pokémon in your hand to evolve ${self}."
+            checkLastTurn()
+            powerUsed()
+            def tar = my.hand.findAll { it.name == "Clefairy" }.select()
+            if (tar) {
+              evolve(self, tar.first(), OTHER)
+              heal self.numberOfDamageCounters*10,self
+            }
 					}
 				}
 				move "Eeeeeeek", {
@@ -837,7 +901,9 @@ public enum UnseenForces implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            shuffleDeck(hand)
+            hand.clear()
+            draw 6
 					}
 				}
 			};
