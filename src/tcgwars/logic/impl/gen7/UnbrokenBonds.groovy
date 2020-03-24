@@ -4378,7 +4378,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             // TODO implement properly after source refactoring and/or RichSource captivation
             eff = delayed {
               before null, self, SRC_ABILITY, {
-                if (ef.target == self) {
+                if (bg.currentTurn != self.owner)
                   bc "Stealty Hood prevents effect"
                   prevent()
                 }
