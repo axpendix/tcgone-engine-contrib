@@ -2958,7 +2958,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           onAttack {
             gxPerform()
 
-            opp.bench.each {
+            opp.all.each {
               if (it.numberOfDamageCounters) {
                 damage 100, it
               }
