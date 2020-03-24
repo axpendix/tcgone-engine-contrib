@@ -4380,7 +4380,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               before null, self, SRC_ABILITY {
                 if (ef.target == self) {
                   bc "Stealty Hood prevents effect"
-                  new CheckAbilities().run(bg)
+                  bg.em().run(new CheckAbilities())
                   prevent()
                 }
               }
