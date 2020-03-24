@@ -2389,7 +2389,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Pokémon-GX that have any damage counters on them (both yours and your opponent's) have no Abilities."
             def effect1
             delayedA {
-              after REMOVE_DAMAGE_COUNTER, BEFORE_LAST, {
+              after REMOVE_DAMAGE_COUNTER, {
                 bc "Checking new abilities"
                 new CheckAbilities().run(bg)
               }
