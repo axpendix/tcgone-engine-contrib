@@ -1936,8 +1936,8 @@ public enum SunMoonPromos implements LogicCardInfo {
             energyCost R,P,C
             onAttack{
               damage 110
-              afterDamage{
-                discardSelfEnergy R,P
+              afterDamage {
+                flip 1, {}, {discardSelfEnergy(R,P)}
               }
             }
           }
@@ -1951,7 +1951,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             onAttack{
               damage 20
               afterDamage{
-                if(my.deck){
+                if (my.deck) {
                   attachEnergyFrom(basic:true,my.deck,self)
                 }
               }
