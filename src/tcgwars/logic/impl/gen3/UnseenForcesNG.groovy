@@ -3495,7 +3495,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
             // TODO:
               // if (defending.abilities.keySet().find{it instanceof PokePower})
               //   noWrDamage 20, it
-            }
+            // }
 					}
 				}
 			};
