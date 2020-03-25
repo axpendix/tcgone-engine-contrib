@@ -192,7 +192,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 	protected Rarity rarity;
 	protected int collectionLineNo;
 
-	UnseenForces(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+	UnseenForcesNG(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
 		this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
 		this.name = name;
 		this.rarity = rarity;
