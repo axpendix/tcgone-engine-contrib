@@ -1,5 +1,8 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.impl.gen4.HeartgoldSoulsilver;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -240,6 +243,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -913,6 +929,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokeBody "Stages of Evolution", {
 					text "As long as Electabuzz is an Evolved Pokémon, damage done by attacks from your opponent's Pokémon that has any Special Energy cards attached to it is reduced by 40 (after applying Weakness and Resistance)."
 					delayedA {
+            // TODO
 					}
 				}
 				move "Double Shock", {
@@ -958,6 +975,9 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Low Pressure System") {
+              apply CONFUSED
+            }
 					}
 				}
 			};
@@ -967,6 +987,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokeBody "Stages of Evolution", {
 					text "As long as Hitmonchan is an Evolved Pokémon, Hitmonchan gets +30 HP."
 					delayedA {
+            // TODO
 					}
 				}
 				move "Heavy Punch", {
@@ -974,7 +995,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10*opp.bench.size()
 					}
 				}
 				move "Speedy Uppercut", {
@@ -982,7 +1003,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 50
+						directDamage 50
 					}
 				}
 			};
@@ -992,6 +1013,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokeBody "Stages of Evolution", {
 					text "As long as Hitmonlee is an Evolved Pokémon, Hitmonlee's attacks do 20 more damage to your opponent's Pokémon (before applying Weakness and Resistance)."
 					delayedA {
+            // TODO
 					}
 				}
 				move "Stretch Kick", {
@@ -1003,7 +1025,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					}
 				}
 				move "Mega Kick", {
-					text "40 damage. n/a"
+					text "40 damage."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -1103,6 +1125,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip 2, { damage 20 }
 					}
 				}
 			};
@@ -1282,7 +1305,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
-            increasedBaseDamageNextTurn("Extra Comet Punch",hp(30))
+            increasedBaseDamageNextTurn("Extra Comet Punch", hp(30))
 					}
 				}
 			};
@@ -1415,6 +1438,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            if (opp.active.topPokemonCard.cardTypes.is(EX)) damage 30
 					}
 				}
 			};
@@ -1424,14 +1448,22 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokeBody "Thick Fat", {
 					text "Any damage done to Miltank by attacks from [R] Pokémon and [W] Pokémon is reduced by 30 (after applying Weakness and Resistance)."
 					delayedA {
+            // TODO
 					}
 				}
 				move "Healing Milk", {
 					text "Flip 2 coins. For each heads, remove 2 damage counters from 1 of your Pokémon."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+            assert my.all.findAll { it.numberOfDamageCounters }: "No damaged Pokemon"
+          }
 					onAttack {
-
+            flip 2, {
+              if (my.all.findAll { it.numberOfDamageCounters }) {
+                def pcs = my.all.findAll { it.numberOfDamageCounters }.select()
+                heal 20, pcs
+              }
+            }
 					}
 				}
 				move "Body Slam", {
@@ -1440,6 +1472,9 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip {
+              apply PARALYZED
+            }
 					}
 				}
 			};
@@ -1452,7 +1487,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            draw 3
 					}
 				}
 				move "Surprise", {
@@ -1461,6 +1496,13 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+
+            afterDamage {
+              if (opp.hand) {
+                opp.hand.select(hidden: true).showToMe("Choosen card").moveTo(opp.deck)
+                shuffleDeck(null, TargetPlayer.OPPONENT)
+              }
+            }
 					}
 				}
 			};
@@ -1614,7 +1656,11 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
+            draw 2
 
+            if (my.bench && confirm("Switch Yanma with 1 of your Benched Pokémon?")) {
+              sw self, my.bench.select()
+            }
 					}
 				}
 				move "Spinning Tail", {
@@ -1686,6 +1732,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            apply ASLEEP
 					}
 				}
 			};
@@ -1886,9 +1933,11 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				move "Dig Deep", {
 					text "Search your discard pile for an Energy card, show it to your opponent, and put it into your hand."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+            assert my.discard.hasType(BASIC_ENERGY) : "No Basic Energy cards in Discard pile"
+          }
 					onAttack {
-            // TODO:
+            my.discard.filterByType(BASIC_ENERGY).select().moveTo(my.hand)
 					}
 				}
 				move "Mud Slap", {
@@ -2231,9 +2280,14 @@ public enum UnseenForcesNG implements LogicCardInfo {
 			return itemCard (this) {
 				text "Flip a coin. If heads, search your deck for a Basic Pokémon or Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 				onPlay {
-				}
-				playRequirement{
-				}
+          flip{
+            my.deck.search(count: 1, "Select a Basic Pokémon or an Evolution card", {it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)}).moveTo(my.hand)
+            shuffleDeck()
+          }
+        }
+        playRequirement{
+          assert my.deck: "Deck is empty"
+        }
 			};
 			case POKEMON_REVERSAL_88:
 			return itemCard (this) {
@@ -2244,14 +2298,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				}
 			};
 			case PROFESSOR_ELM_S_TRAINING_METHOD_89:
-			return supporter (this) {
-				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
-					"Search your deck for an Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy(HeartgoldSoulsilver.PROFESSOR_ELM_S_TRAINING_METHOD_100, this)
 			case PROTECTIVE_ORB_90:
 			return pokemonTool (this) {
 				text "Attach Protective Orb to 1 of your Evolved Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Protective Orb is attached to is a Basic Pokémon or Pokémon-ex, discard Protective Orb." +
@@ -2267,11 +2314,23 @@ public enum UnseenForcesNG implements LogicCardInfo {
 			return pokemonTool (this) {
 				text "Attach Sitrus Berry to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Sitrus Berry is attached to is Pokémon-ex or has Dark or an owner in its name, discard Sitrus Berry." +
 					"At any time between turns, if the Pokémon this card is attached to has at least 3 damage counters on it, remove 3 damage counters from it. Then, discard Sitrus Berry."
-				onPlay {reason->
+				def eff
+        onPlay {reason->
+          eff=delayed(anytime:true){
+            before BEGIN_TURN,{
+              if(self.numberOfDamageCounters >= 3) {
+                bc "Sitrus Berry activates"
+                heal 30, self
+                discard thisCard
+              }
+            }
+          }
 				}
 				onRemoveFromPlay {
+          eff.unregister()
 				}
 				allowAttach {to->
+          // TODO
 				}
 			};
 			case SOLID_RAGE_92:
@@ -2297,18 +2356,15 @@ public enum UnseenForcesNG implements LogicCardInfo {
 			return itemCard (this) {
 				text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 				onPlay {
+          deck.search(count: 1, cardTypeFilter(BASIC_ENERGY)).moveTo(hand)
+          shuffleDeck()
 				}
 				playRequirement{
+          assert my.deck: "Deck is empty"
 				}
 			};
 			case POTION_95:
-			return itemCard (this) {
-				text "Remove 2 damage counters from 1 of your Pokémon (remove 1 damage counter if that Pokémon has only 1)."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (FireRedLeafGreen.POTION_101, this)
 			case DARKNESS_ENERGY_96:
 			return specialEnergy (this, [[C]]) {
 				text "If the Pokémon [D] Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect unless the Attacking Pokémon is Darkness or has Dark in its name. [D] Energy provides [D] Energy. (Doesn't count as a basic Energy card.)"
@@ -2375,6 +2431,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Blissful Support", {
 					text "Once during your turn, when you play Blissey ex from your hand to evolve 1 of your Pokémon, you may discard all Energy cards attached to any number of your Pokémon and remove all damage counters from those Pokémon."
 					actionA {
+            // TODO
 					}
 				}
 				move "Energy Absorption", {
@@ -2382,7 +2439,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            // TODO
 					}
 				}
 				move "Roll Out", {
@@ -2400,6 +2457,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Devo Flash", {
 					text "Once during your turn, when you play Espeon ex from your hand to evolve 1 of your Pokémon, you may choose 1 Evolved Pokémon on your opponent's Bench, remove the highest Stage Evolution card from that Pokémon, and put it back into his or her hand."
 					actionA {
+            // TODO
 					}
 				}
 				move "Snap Tail", {
@@ -2425,6 +2483,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokeBody "Overpowering Fang", {
 					text "As long as Feraligatr ex is your Active Pokémon, each player's Pokémon (excluding Pokémon-ex) can't use any Poké-Powers or Poké-Bodies."
 					delayedA {
+            // TODO
 					}
 				}
 				move "Tsunami", {
@@ -2433,6 +2492,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            // TODO
 					}
 				}
 				move "Sore Spot", {
@@ -2441,6 +2501,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+            // TODO
 					}
 				}
 			};
@@ -2450,6 +2511,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Golden Wing", {
 					text "If Ho-Oh ex would be Knocked Out by damage from an opponent's attack, you may move up to 2 Energy attached to Ho-Oh ex to your Pokémon in any way you like."
 					actionA {
+            // TODO:
 					}
 				}
 				move "Rainbow Burn", {
@@ -2458,6 +2520,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            // TODO
 					}
 				}
 			};
@@ -2468,6 +2531,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokeBody "Silver Sparkle", {
 					text "If Lugia ex is your Active Pokémon and is damaged by an opponent's attack (even if Lugia ex is Knocked Out), flip a coin. If heads, choose an Energy card attached to the Attacking Pokémon and return it to your opponent's hand."
 					delayedA {
+            // TODO:
 					}
 				}
 				move "Elemental Blast", {
@@ -2476,6 +2540,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 200
+            // TODO
 					}
 				}
 			};
@@ -2487,6 +2552,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Nurture and Heal", {
 					text "Once during your turn (before your attack), you may attach a [G] Energy card from your hand to 1 of your Pokémon. If you do, remove 1 damage counter from that Pokémon. This power can't be used if Meganium ex is affected by a Special Condition."
 					actionA {
+            // TODO
 					}
 				}
 				move "Razor Leaf", {
@@ -2502,7 +2568,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost G, G, C, C, C
 					attackRequirement {}
 					onAttack {
-
+            // TODO
 					}
 				}
 			};
@@ -2528,6 +2594,9 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            if (my.bench) {
+              sw self, my.bench.select("Select a Pokemon to switch Politoed ex with")
+            }
 					}
 				}
 				move "Swallow Up", {
@@ -2536,6 +2605,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+            // TODO
 					}
 				}
 			};
@@ -2546,6 +2616,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokeBody "Danger Perception", {
 					text "As long as Scizor ex's remaining HP is 60 or less, Scizor ex does 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
 					delayedA {
+            // TODO
 					}
 				}
 				move "Steel Wing", {
@@ -2554,6 +2625,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            // TODO
 					}
 				}
 				move "Cross-Cut", {
@@ -2562,6 +2634,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            // TODO
 					}
 				}
 			};
@@ -2603,6 +2676,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Bursting Up", {
 					text "Once during your turn, when you play Typhlosion ex from your hand to evolve 1 of your Pokémon, count the number of your opponent's Benched Pokémon. You may search your deck for up to that number of [R] Energy cards and attach them to 1 of your [R] Pokémon. Shuffle your deck afterward."
 					actionA {
+            // TODO
 					}
 				}
 				move "Kindle", {
@@ -2611,6 +2685,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
+            // TODO
 					}
 				}
 			};
@@ -2625,6 +2700,12 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+
+            afterDamage {
+              if (bg.stadiumInfoStruct && confirm("Discard the Stadium card?")) {
+                discard(bg.stadiumInfoStruct.stadiumCard)
+              }
+            }
 					}
 				}
 				move "Derail", {
@@ -2633,6 +2714,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            discardDefendingSpecialEnergy(delegate)
 					}
 				}
 				move "Mix-Up", {
@@ -2641,6 +2723,10 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+
+            if (opp.deck) {
+              opp.deck.subList(0,1).discard()
+            }
 					}
 				}
 				move "Losing Control", {
@@ -2649,6 +2735,10 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 120
+
+            if (my.deck) {
+              my.deck.subList(0, 3).discard()
+            }
 					}
 				}
 			};
@@ -2659,6 +2749,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Darker Ring", {
 					text "Once during your turn (before your attack), when you play Umbreon ex from your hand to evolve 1 of your Pokémon, switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
 					actionA {
+            // TODO
 					}
 				}
 				move "Black Cry", {
@@ -2667,6 +2758,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            // TODO
 					}
 				}
 				move "Darkness Fang", {
@@ -2687,6 +2779,10 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+
+            if (my.bench) {
+              sw self, my.bench.select("Switch Entei Star with 1 of your Benched Pokémon")
+            }
 					}
 				}
 				move "Detonation", {
@@ -2695,6 +2791,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+            // TODO
 					}
 				}
 			};
@@ -2707,6 +2804,10 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+
+            if (my.bench) {
+              sw self, my.bench.select("Switch Raikou Star with 1 of your Benched Pokémon")
+            }
 					}
 				}
 				move "Meta Voltage", {
@@ -2727,6 +2828,10 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+
+            if (my.bench) {
+              sw self, my.bench.select("Switch Suicune Star with 1 of your Benched Pokémon")
+            }
 					}
 				}
 				move "Cross Wind", {
@@ -2744,6 +2849,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Night Cry", {
 					text "Once during your turn, if Rocket's Persian ex is on your Bench, you may search your deck for a Pokémon with Dark or Rocket's in its name. Show it to your opponent and put it into your hand. Shuffle your deck afterward."
 					actionA {
+            // TODO:
 					}
 				}
 				move "Toxic Claws", {
@@ -2761,7 +2867,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 			return basic (this, hp:HP070, type:G, retreatCost:1) {
 				weakness R
 				move "Spiral Leaf", {
-					text "Flip a coin. If heads, put 1 damage counter on each of your opponent's Pokémon. If tails, remove 1 damage country for each of your Pokémon."
+					text "Flip a coin. If heads, put 1 damage counter on each of your opponent's Pokémon. If tails, remove 1 damage counter for each of your Pokémon."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -2783,6 +2889,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -2800,6 +2919,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown")}) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -2817,6 +2949,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -2834,6 +2979,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -2851,6 +3009,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -2868,6 +3039,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -2885,6 +3069,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -2902,6 +3099,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -2919,6 +3129,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -2936,6 +3159,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -2953,6 +3189,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -2970,6 +3219,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -2987,6 +3249,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -3004,6 +3279,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -3021,6 +3309,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -3028,7 +3329,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            heal(50, self)
 					}
 				}
 			};
@@ -3038,6 +3339,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -3046,6 +3360,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            // TODO
 					}
 				}
 			};
@@ -3055,6 +3370,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -3062,7 +3390,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-
+            // TODO
 					}
 				}
 			};
@@ -3072,6 +3400,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -3079,7 +3420,16 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            my.deck.select(min:0, max:3, "Select up to 3 different types of basic Energy cards", cardTypeFilter(BASIC_ENERGY), self.owner,
+              {
+                CardList list->
+                  for (Type t1:Type.values()) {
+                    if (list.findAll{it.asEnergyCard().containsTypePlain(t1)}.size() >= 2) {
+                      return false
+                    }
+                  }
+                  return true
+              }).moveTo(my.hand)
 					}
 				}
 			};
@@ -3089,14 +3439,30 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
 					text "Flip a coin. If heads, your opponent returns the Defending Pokémon and all cards attached to it to his or her hand. (If your opponent doesn't have any Benched Pokémon or other Active Pokémon, this attack does nothing.)"
 					energyCost C, C
-					attackRequirement {}
+					attackRequirement { assert opp.bench: "Opponent's bench is empty" }
 					onAttack {
-
+            flip {
+              defending.cards.moveTo(hand)
+              removePCS(defending)
+            }
 					}
 				}
 			};
@@ -3106,6 +3472,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -3113,7 +3492,10 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
-
+            // TODO:
+              // if (defending.abilities.keySet().find{it instanceof PokePower})
+              //   noWrDamage 20, it
+            }
 					}
 				}
 			};
@@ -3123,6 +3505,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -3140,6 +3535,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -3148,6 +3556,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            amnesia delegate
 					}
 				}
 			};
@@ -3157,6 +3566,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -3165,6 +3587,8 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            def addDmg = Math.min(my.discard.filterByType(BASIC, EVOLUTION).size(), 6)
+            damage 10*addDmg
 					}
 				}
 			};
@@ -3174,15 +3598,33 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
 					text "20 damage. Flip a coin. If heads, search your discard pile for a card, show it to your opponent, and put it on top of your deck."
 					energyCost P, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
+					attackRequirement {
+            assert my.discard.notEmpty
+          }
+          onAttack {
+            damage 20
+            flip {
+              my.discard.select("Move a card from Discard to top of deck").moveTo(addToTop: true, my.deck)
+            }
+          }
 				}
 			};
 			case UNOWN_X:
@@ -3191,6 +3633,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -3208,6 +3663,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -3216,6 +3684,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            apply ASLEEP
 					}
 				}
 			};
@@ -3225,6 +3694,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Shuffle", {
 					text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
 					}
 				}
 				move "Hidden Power", {
@@ -3232,7 +3714,10 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-
+            all.each {
+              if (it.abilities.keySet().find{it instanceof PokePower})
+                noWrDamage 20, it
+            }
 					}
 				}
 			};
