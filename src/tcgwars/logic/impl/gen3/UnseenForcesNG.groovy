@@ -920,7 +920,10 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						flip 2,{
+              damage 10
+              applyAfterDamage PARALYZED
+            }
 					}
 				}
 				move "Luster Blast", {
@@ -929,6 +932,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+            discardSelfEnergy C,C,C
 					}
 				}
 			};
@@ -938,6 +942,14 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Baby Evolution", {
 					text "Once during your turn (before your attack), you may put Electabuzz from your hand onto Elekid (this counts as evolving Elekid) and remove all damage counters from Elekid."
 					actionA {
+            assert my.hand.findAll { it.name == "Electabuzz" } : "There are no Pokémon in your hand to evolve ${self}."
+            checkLastTurn()
+            powerUsed()
+            def tar = my.hand.findAll { it.name == "Electabuzz" }.select()
+            if (tar) {
+              evolve(self, tar.first(), OTHER)
+              heal self.numberOfDamageCounters*10,self
+            }
 					}
 				}
 				move "Magnetic Trip", {
@@ -987,7 +999,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-
+            damage 30, opp.bench.select("Deal 10 damage to which Pokémon?")
 					}
 				}
 				move "Mega Kick", {
@@ -1004,8 +1016,14 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				weakness P
 				pokeBody "Stages of Evolution", {
 					text "As long as Hitmontop is an Evolved Pokémon, is your Active Pokémon, and is damaged by an opponent's attack (even if Hitmontop is Knocked Out), put 2 damage counters on the Attacking Pokémon."
-					delayedA {
-					}
+					delayedA (priority: LAST) {
+            before APPLY_ATTACK_DAMAGES, {
+              if(bg.currentTurn == self.owner.opposite && self.evolution && self.active && bg.dm().find({it.to==self && it.dmg.value})){
+                bc "Stages of Evolution Activates"
+                directDamage 20, (ef.attacker as PokemonCardSet)
+              }
+            }
+          }
 				}
 				move "Upward Kick", {
 					text "20+ damage. If the Defending Pokémon already has at least 2 damage counters on it, this attack does 20 damage plus 30 more damage."
@@ -1013,10 +1031,11 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            if (opp.active.numberOfDamageCounters >= 2) damage 30
 					}
 				}
 				move "Spiral Kick", {
-					text "50 damage. n/a"
+					text "50 damage."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1040,7 +1059,10 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost R, R, C, C
 					attackRequirement {}
 					onAttack {
-
+            flip {
+              def tar = opp.all.select("Select the Pokémon to target.")
+              noWrDamage 60, tar
+            }
 					}
 				}
 			};
@@ -1050,6 +1072,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokeBody "Stages of Evolution", {
 					text "As long as Jynx is an Evolved Pokémon, prevent all effects of opponent's attacks, except damage, done to Jynx, and Jynx has no Weakness."
 					delayedA {
+            // TODO:
 					}
 				}
 				move "Freeze Light", {
@@ -1057,7 +1080,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            flip 1, {apply PARALYZED}, {apply BURNED}
 					}
 				}
 				move "Pure Power", {
@@ -1065,7 +1088,9 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost W, P, C
 					attackRequirement {}
 					onAttack {
-
+            (1..4).each {
+              directDamage 10, opp.all.select("Put 1 damage counter to which pokémon?")
+            }
 					}
 				}
 			};
@@ -1090,7 +1115,14 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            def pcs = defending
+            if (opp.bench) {
+              if (confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")) {
+                pcs = opp.bench.oppSelect()
+                sw defending, pcs
+              }
+            }
+            apply ASLEEP, pcs
 					}
 				}
 				move "Plunder", {
@@ -1098,7 +1130,10 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+            if (defending.cards.filterByType(TRAINER)){
+              defending.cards.filterByType(TRAINER).discard()
+              damage 20
+            }
 					}
 				}
 			};
@@ -1108,6 +1143,14 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Baby Evolution", {
 					text "Once during your turn (before your attack), you may put Jynx from your hand onto Smoochum (this counts as evolving Smoochum) and remove all damage counters from Smoochum."
 					actionA {
+            assert my.hand.findAll{it.name == "Jynx"} : "There are no Pokémon in your hand to evolve ${self}."
+            checkLastTurn()
+            powerUsed()
+            def tar = my.hand.findAll{it.name == "Jynx"}.select()
+            if (tar) {
+              evolve(self, tar.first(), OTHER)
+              heal self.numberOfDamageCounters*10,self
+            }
 					}
 				}
 				move "Blown Kiss", {
@@ -1115,7 +1158,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            if (opp.all) directDamage(10, opp.all.select("Select a Pokemon to put a damage counter on"))
 					}
 				}
 			};
@@ -1128,6 +1171,9 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            if (defending.evolution) {
+              apply CONFUSED
+            }
 					}
 				}
 				move "Push Away", {
@@ -1136,6 +1182,13 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            afterDamage {
+              if (opp.hand) {
+                opp.hand.showToMe("Opponent's hand")
+                def card = opp.hand.select("Select a Trainer card to discard.", cardTypeFilter(TRAINER)).first()
+                card.discard()
+              }
+            }
 					}
 				}
 			};
@@ -1144,7 +1197,15 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				weakness P
 				pokeBody "Baby Evolution", {
 					text "Once during your turn (before your attack), you may put Hitmonlee, Hitmonchan, or Hitmontop from your hand onto Tyrogue (this counts as evolving Tyrogue) and remove all damage counters from Tyrogue."
-					delayedA {
+					actionA {
+            assert my.hand.findAll{it.predecessor == "Tyrogue"} : "There are no Pokémon in your hand to evolve ${self}."
+            checkLastTurn()
+            powerUsed()
+            def tar = my.hand.findAll{it.predecessor == "Tyrogue"}.select()
+            if (tar) {
+              evolve(self, tar.first(), OTHER)
+              heal self.numberOfDamageCounters*10,self
+            }
 					}
 				}
 				move "Desperate Punch", {
@@ -1152,7 +1213,10 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 10
+            def amount = opp.all.size() - my.all.size()
+            if (amount > 0) {
+              damage 10*amount
+            }
 					}
 				}
 			};
@@ -1162,6 +1226,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Snappy Move", {
 					text "Once during your turn (before your attack), if Aipom is on your Bench, you may draw a card. Then, discard all cards attached to Aipom and put Aipom on the bottom of your deck. You can't use more than 1 Snappy Move Poké-Power each turn."
 					actionA {
+            // TODO:
 					}
 				}
 				move "Snap Tail", {
@@ -1169,7 +1234,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            damage 10, opp.all.select()
 					}
 				}
 			};
@@ -1183,6 +1248,9 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            afterDamage {
+              apply ASLEEP
+            }
 					}
 				}
 				move "Razor Leaf", {
@@ -1203,6 +1271,9 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            afterDamage {
+              apply ASLEEP
+            }
 					}
 				}
 				move "Extra Comet Punch", {
@@ -1211,6 +1282,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            increasedBaseDamageNextTurn("Extra Comet Punch",hp(30))
 					}
 				}
 			};
@@ -1222,15 +1294,19 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            // TODO
 					}
 				}
 				move "Double Attack", {
 					text "Choose 2 of your opponent's Benched Pokémon. This attack does 10 damage to each of them. (Don't apply Weakness and Resistance for Benched Pokémon.)"
 					energyCost W
-					attackRequirement {}
+					attackRequirement {
+            assert opp.bench: "Opponent does not have any Benched Pokemon"
+          }
 					onAttack {
-
+            multiSelect(opp.bench, 2).each {
+              targeted(it){ damage 10, it }
+            }
 					}
 				}
 			};
@@ -1251,6 +1327,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            dontApplyResistance()
 					}
 				}
 			};
@@ -1260,7 +1337,15 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokeBody "Intimidating Fang", {
 					text "As long as Granbull is your Active Pokémon, any damage done to your Pokémon by an opponent's attack is reduced by 10 (before applying Weakness and Resistance)."
 					delayedA {
-					}
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
+                  bc "Intimidating Fang -10"
+                  it.dmg -= hp(10)
+                }
+              }
+            }
+          }
 				}
 				move "Crushing Blow", {
 					text "30 damage. Flip a coin. If heads, discard an Energy attached to the Defending Pokémon."
@@ -1268,6 +1353,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            flip { discardDefendingEnergy() }
 					}
 				}
 				move "Double Lariat", {
@@ -1275,7 +1361,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 50
+						flip 2, { damage 50 }
 					}
 				}
 			};
@@ -1288,6 +1374,11 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+
+            def tar = my.discard.filterByType(BASIC_ENERGY)
+            if (tar) {
+              attachEnergyFrom(basic: true, my.discard, self)
+            }
 					}
 				}
 				move "Take Down", {
@@ -1296,6 +1387,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            damage 10, self
 					}
 				}
 			};
@@ -1304,8 +1396,9 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				weakness W
 				pokeBody "Dual Armor", {
 					text "As long as Magcargo has any [F] Energy attached to it, Magcargo is both Fire and Fighting type."
-					delayedA {
-					}
+					getterA GET_POKEMON_TYPE, self, { h->
+            if (self.cards.energyCount(F)) h.object.add(F)
+          }
 				}
 				move "Smokescreen", {
 					text "30 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
@@ -1313,6 +1406,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            sandAttack(thisMove)
 					}
 				}
 				move "Extra Flame", {
@@ -1376,7 +1470,15 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokeBody "Dense", {
 					text "Any damage done to Quagsire by attacks from your opponent's Evolved Pokémon is reduced by 20 (after applying Weakness and Resistance)."
 					delayedA {
-					}
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to == self && it.from.evolution && it.dmg.value && it.notNoEffect) {
+                  bc "Dense -20"
+                  it.dmg -= hp(20)
+                }
+              }
+            }
+          }
 				}
 				move "Mud Shot", {
 					text "20 damage."
@@ -1392,6 +1494,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            dontApplyResistance()
 					}
 				}
 			};
@@ -1404,6 +1507,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            sandAttack(thisMove)
 					}
 				}
 				move "Tackle", {
@@ -1423,7 +1527,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            // TODO:
 					}
 				}
 				move "Agility", {
@@ -1432,6 +1536,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip { preventAllEffectsNextTurn() }
 					}
 				}
 			};
@@ -1441,14 +1546,23 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokeBody "Extra Tight", {
 					text "Prevent all damage done to Shuckle by attacks from your opponent's Pokémon-ex."
 					delayedA {
-					}
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to == self && it.from.topPokemonCard.cardTypes.is(EX)) {
+                  bc "Shell Barricade prevents all damage"
+                  it.dmg=hp(0)
+                }
+              }
+            }
+          }
 				}
 				move "Toxic", {
 					text "The Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-
+            apply POISONED
+            extraPoison 1
 					}
 				}
 			};
@@ -1458,6 +1572,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokePower "Makeover", {
 					text "Once during your turn (before your attack), you may discard a basic Energy card attached to 1 of your Pokémon (excluding Pokémon-ex). If you do, search your discard pile for a basic Energy card (excluding the one you discarded) and attach it to that Pokémon. This power can't be used if Smeargle is affected by a Special Condition."
 					actionA {
+            // TODO
 					}
 				}
 				move "Split Spiral Punch", {
@@ -1466,6 +1581,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip { apply CONFUSED }
 					}
 				}
 			};
@@ -1477,7 +1593,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-
+            noWrDamage 30, opp.all.select("Deal 30 damage to which Pokémon?")
 					}
 				}
 				move "Psyshock", {
@@ -1486,6 +1602,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            flip { apply PARALYZED }
 					}
 				}
 			};
@@ -1505,7 +1622,9 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-
+            flip {
+              opp.all.each { damage 20, it }
+            }
 					}
 				}
 			};
@@ -1538,7 +1657,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            flip { apply PARALYZED }
 					}
 				}
 				move "Razor Fin", {
@@ -1578,7 +1697,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            flip { apply PARALYZED }
 					}
 				}
 				move "Fireworks", {
@@ -1587,6 +1706,9 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            afterDamage {
+              flip 1, {}, {discardSelfEnergy(R)}
+            }
 					}
 				}
 			};
@@ -1596,6 +1718,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokeBody "Energy Evolution", {
 					text "Whenever you attach an Energy card from your hand to Eevee, you may search your deck for a card that evolves from Eevee that is the same type as the Energy card you attached to Eevee. Put that card onto Eevee. (This counts as evolving Eevee.) Shuffle your deck afterward. This power can't be used when you attach an Energy card to Eevee as part of an attack's effect."
 					delayedA {
+            // TODO
 					}
 				}
 				move "Tail Whap", {
@@ -1617,6 +1740,9 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            afterDamage {
+              flip { apply PARALYZED }
+            }
 					}
 				}
 				move "Thunder", {
@@ -1625,6 +1751,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            damage 10, self
 					}
 				}
 			};
@@ -1633,8 +1760,11 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				weakness L
 				pokeBody "Free Flight", {
 					text "If Gligar has no Energy attached to it, Gligar's Retreat Cost is 0."
-					delayedA {
-					}
+					getterA (GET_RETREAT_COST, BEFORE_LAST, self) { h->
+            if (self.cards.energyCount(C) == 0) {
+              h.object = 0
+            }
+          }
 				}
 				move "Toxic Grip", {
 					text "10 damage. The Defending Pokémon is now Poisoned."
@@ -1642,6 +1772,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            apply POISONED
 					}
 				}
 			};
@@ -1654,6 +1785,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            apply POISONED
 					}
 				}
 			};
@@ -1666,7 +1798,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            flip { apply CONFUSED }
 					}
 				}
 				move "Peck", {
@@ -1686,7 +1818,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-
+            apply POISONED
 					}
 				}
 			};
@@ -1698,7 +1830,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10*self.numberOfDamageCounters
 					}
 				}
 				move "Tackle", {
@@ -1731,7 +1863,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            noWrDamage 10, opp.all.select("Do 10 damage to which pokémon?")
 					}
 				}
 			};
@@ -1744,6 +1876,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip { apply PARALYZED }
 					}
 				}
 			};
@@ -1755,7 +1888,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            // TODO:
 					}
 				}
 				move "Mud Slap", {
@@ -1787,7 +1920,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            apply ASLEEP
 					}
 				}
 				move "Wave Splash", {
@@ -1808,6 +1941,18 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+
+            int differentTypes = 0
+            for (Type t1:Type.values()) {
+              if (self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(t1))
+                differentTypes++
+            }
+
+            if (differentTypes >= 2) {
+              damage 20
+            } else {
+              damage 10
+            }
 					}
 				}
 			};
@@ -1819,7 +1964,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						flip 3, {damage 10}
 					}
 				}
 			};
@@ -1851,7 +1996,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            callForFamily(basic: true, 1, delegate)
 					}
 				}
 				move "Splash", {
@@ -1869,9 +2014,11 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				move "Fishing Tail", {
 					text "Search your discard pile for a Basic Pokémon, Evolution card, or basic Energy card, show it to your opponent, and put it into your hand."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+            assert my.discard: "Discard pile is empty"
+          }
 					onAttack {
-
+            // TODO:
 					}
 				}
 				move "Trip Over", {
@@ -1880,6 +2027,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip { damage 10 }
 					}
 				}
 			};
@@ -1891,7 +2039,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            apply ASLEEP
 					}
 				}
 				move "Headbutt", {
@@ -1912,6 +2060,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip { apply PARALYZED }
 					}
 				}
 			};
@@ -1923,7 +2072,10 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-
+            flip {
+              apply PARALYZED
+              apply POISONED
+            }
 					}
 				}
 				move "Pierce", {
@@ -1942,10 +2094,13 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				move "Minor Errand-Running", {
 					text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
-					onAttack {
-
-					}
+					attackRequirement {
+            assert my.deck
+          }
+          onAttack {
+            my.deck.search(min: 0, max: 1, "Select a basic Energy card.", cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
+            shuffleDeck()
+          }
 				}
 				move "Rollout", {
 					text "20 damage."
@@ -1964,7 +2119,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            reduceDamageNextTurn(hp(20), thisMove)
 					}
 				}
 				move "Scratch", {
@@ -1984,7 +2139,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            noWrDamage 10, opp.all.select("Deal 10 damage to which Pokémon?")
 					}
 				}
 			};
@@ -2252,7 +2407,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-
+            damage 30, opp.all.select("Deal 30 damage to which Pokémon?")
 					}
 				}
 				move "Psyloop", {
@@ -2359,7 +2514,12 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
-
+            def target = opp.all.select("Put 1 damage counter to which pokémon?")
+            def amount = 30
+            if (target.topPokemonCard.cardTypes.contains(STAGE2)) {
+              amount = 50
+            }
+            damage amount, target
 					}
 				}
 				move "Punch and Run", {
@@ -2414,6 +2574,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 				pokeBody "Poison Resistance", {
 					text "Steelix ex can't be Poisoned."
 					delayedA {
+            // TODO:
 					}
 				}
 				move "Metal Charge", {
@@ -2422,6 +2583,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+            damage 10, self
 					}
 				}
 				move "Mudslide", {
@@ -2429,7 +2591,8 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost F, F, C, C
 					attackRequirement {}
 					onAttack {
-
+            discardSelfEnergy F,F
+            damage 100, opp.all.select("Deal 30 damage to which Pokémon?")
 					}
 				}
 			};
@@ -2589,6 +2752,8 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            apply POISONED
+            extraPoison 1
 					}
 				}
 			};
@@ -2965,7 +3130,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-
+            noWrDamage 20, opp.all.select("Deal 20 damage to which Pokémon?")
 					}
 				}
 			};
@@ -3033,7 +3198,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+						flipUntilTails { damage 20 }
 					}
 				}
 			};
