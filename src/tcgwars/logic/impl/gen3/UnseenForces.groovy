@@ -37,7 +37,7 @@ import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
-public enum UnseenForcesNG implements LogicCardInfo {
+public enum UnseenForces implements LogicCardInfo {
 
 	UNOWN_0 ("Unown", 0, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	AMPHAROS_1 ("Ampharos", 1, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
@@ -192,7 +192,7 @@ public enum UnseenForcesNG implements LogicCardInfo {
 	protected Rarity rarity;
 	protected int collectionLineNo;
 
-	UnseenForcesNG(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+	UnseenForces(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
 		this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
 		this.name = name;
 		this.rarity = rarity;
