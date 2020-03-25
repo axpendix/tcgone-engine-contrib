@@ -287,7 +287,7 @@ public enum Emerald implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              if(defending.pokemonEX) damage 40
+              if (opp.active.topPokemonCard.cardTypes.is(EX)) damage 40
             }
           }
 
@@ -715,7 +715,7 @@ public enum Emerald implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              if(defending.pokemonEX) damage 30
+              if (opp.active.topPokemonCard.cardTypes.is(EX)) damage 30
             }
           }
 
@@ -729,7 +729,7 @@ public enum Emerald implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              if(defending.pokemonEX) damage 20
+              if (opp.active.topPokemonCard.cardTypes.is(EX)) damage 20
             }
           }
           move "Quick Attack", {
@@ -774,7 +774,7 @@ public enum Emerald implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              if(defending.pokemonEX) damage 30
+              if (opp.active.topPokemonCard.cardTypes.is(EX)) damage 30
             }
           }
           move "Super Singe", {
