@@ -4108,9 +4108,10 @@ public enum UnbrokenBonds implements LogicCardInfo {
           text "Search your deck for a basic Energy card, reveal it, and put it into your hand. If you go second and it's your first turn, search for up to 3 basic Energy cards instead of 1. Then, shuffle your deck."
           onPlay {
             deck.search(max:bg.turnCount==2?3:1,cardTypeFilter(BASIC_ENERGY)).moveTo(hand)
+            shuffleDeck()
           }
           playRequirement{
-            assert deck
+            assert my.deck
           }
         };
       case FAIRY_CHARM_ABILITY_171:
