@@ -1,7 +1,13 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.impl.gen2.Aquapolis;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.impl.gen3.Deoxys;
+import tcgwars.logic.impl.gen3.Dragon;
 import tcgwars.logic.impl.gen4.HeartgoldSoulsilver;
+import tcgwars.logic.impl.gen5.BlackWhite;
+import tcgwars.logic.impl.gen5.PlasmaStorm
+import tcgwars.logic.impl.gen6.KalosStarterSet;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -2326,58 +2332,88 @@ public enum UnseenForces implements LogicCardInfo {
 				}
 			};
 			case CURSE_POWDER_80:
-			return itemCard (this) {
+			return pokemonTool (this) {
 				text "Attach Curse Powder to 1 of your Evolved Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Curse Powder is attached to is a Basic Pokémon or Pokémon-ex, discard Curse Powder." +
 					"If the Pokémon that Curse Powder is attached to is your Active Pokémon and is Knocked Out by damage from an opponent's attack, put 3 damage counters on the Attacking Pokémon."
+        def eff
 				onPlay {
+          eff = delayed {
+            before (KNOCKOUT, self) {
+              if(self.types.contains(P) && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+                bc "Curse Powder activates"
+                if (self.owner.opposite.pbg.all) {
+                  directDamage 30, self.owner.opposite.pbg.active
+                }
+              }
+            }
+          }
 				}
-				playRequirement{
-				}
+        allowAttach { to ->
+          to.topPokemonCard.cardTypes.isNot(EX) && to.topPokemonCard.cardTypes.isNot(BASIC)
+        }
+        onRemoveFromPlay {
+          eff.unregister()
+        }
 			};
 			case ENERGY_RECYCLE_SYSTEM_81:
-			return itemCard (this) {
-				text "Search your discard pile for basic Energy cards. You may either show 1 basic Energy card to your opponent and put it into your hand, or show 3 basic Energy cards to your opponent and shuffle them into your deck."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+			return copy(Dragon.ENERGY_RECYCLE_SYSTEM_84, this);
 			case ENERGY_REMOVAL_2_82:
 			return itemCard (this) {
 				text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponent's Pokémon and discard it."
 				onPlay {
+          def tar = opp.all.findAll {it.cards.energyCount(C)}
+          def pcs = tar.select("Discard energy from")
+          targeted (pcs, TRAINER_CARD) {
+            pcs.cards.filterByType(ENERGY).select("Discard").discard()
+          }
 				}
 				playRequirement{
+          assert opp.all.findAll {it.cards.energyCount(C)} : "No Energy Cards attached to the Opponent's Pokemon"
 				}
 			};
 			case ENERGY_ROOT_83:
 			return pokemonTool (this) {
 				text "Attach Energy Root to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Energy Root is attached to is Pokémon-ex or has Dark or an owner in its name, discard Energy Root." +
 					"As long as Energy Root is attached to a Pokémon, that Pokémon gets +20 HP and can't use any Poké-Powers or Poké-Bodies."
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				allowAttach {to->
+				def eff
+        def eff2
+        onPlay {reason->
+          eff = getter (GET_FULL_HP, self) {h->
+            h.object += hp(20)
+          }
+          eff2 = getter (IS_ABILITY_BLOCKED) { Holder h ->
+            if (h.effect.target == self) {
+              if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
+                h.object=true
+              }
+            }
+          }
+        }
+        onRemoveFromPlay {
+          eff.unregister()
+          eff2.unregister()
+        }
+				allowAttach { to->
+          to.topPokemonCard.cardTypes.isNot(EX) && !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON)
 				}
 			};
 			case ENERGY_SWITCH_84:
-			return itemCard (this) {
-				text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+			return copy(BlackWhite.ENERGY_SWITCH_94, this);
 			case FLUFFY_BERRY_85:
 			return pokemonTool (this) {
 				text "Attach Fluffy Berry to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Fluffy Berry is attached to is Pokémon-ex or has Dark or an owner in its name, discard Fluffy Berry." +
 					"As long as Fluffy Berry is attached to a Pokémon, that Pokémon's Retreat Cost is 0."
-				onPlay {reason->
+				def eff
+        onPlay {reason->
+          eff = getter GET_RETREAT_COST, self, { h ->
+            h.object = 0
+          }
 				}
 				onRemoveFromPlay {
+          eff.unregister()
 				}
-				allowAttach {to->
+				allowAttach { to->
+          to.topPokemonCard.cardTypes.isNot(EX) && !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON)
 				}
 			};
 			case MARY_S_REQUEST_86:
@@ -2385,8 +2421,11 @@ public enum UnseenForces implements LogicCardInfo {
 				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
 					"Draw a card. If you don't have any Stage 2 Evolved Pokémon in play, draw 2 more cards."
 				onPlay {
+          draw 2
+          if (my.bench.find{it.topPokemonCard.cardTypes.is(STAGE2)}) draw 2
 				}
 				playRequirement{
+          assert my.deck : "Deck is empty"
 				}
 			};
 			case POKE_BALL_87:
@@ -2403,25 +2442,25 @@ public enum UnseenForces implements LogicCardInfo {
         }
 			};
 			case POKEMON_REVERSAL_88:
-			return itemCard (this) {
-				text "Flip a coin. If heads, choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+			return copy (KalosStarterSet.POKEMON_CATCHER_36, this)
 			case PROFESSOR_ELM_S_TRAINING_METHOD_89:
       return copy(HeartgoldSoulsilver.PROFESSOR_ELM_S_TRAINING_METHOD_100, this)
 			case PROTECTIVE_ORB_90:
 			return pokemonTool (this) {
 				text "Attach Protective Orb to 1 of your Evolved Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Protective Orb is attached to is a Basic Pokémon or Pokémon-ex, discard Protective Orb." +
 					"As long as Protective Orb is attached to a Pokémon, that Pokémon has no Weakness."
+        def eff
 				onPlay {reason->
+          eff = getter (GET_WEAKNESSES, self) { h->
+            h.object.clear()
+          }
 				}
 				onRemoveFromPlay {
+          eff.unregister()
 				}
-				allowAttach {to->
-				}
+				allowAttach { to ->
+          to.topPokemonCard.cardTypes.isNot(EX) && to.topPokemonCard.cardTypes.isNot(BASIC)
+        }
 			};
 			case SITRUS_BERRY_91:
 			return pokemonTool (this) {
@@ -2450,21 +2489,26 @@ public enum UnseenForces implements LogicCardInfo {
 			return pokemonTool (this) {
 				text "Attach Solid Rage to 1 of your Evolved Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Solid Rage is attached to is a Basic Pokémon or Pokémon-ex, discard Solid Rage." +
 					"If you have more Prize cards left than your opponent, the Pokémon that Solid Rage is attached to does 20 more damage to the Active Pokémon (before applying Weakness and Resistance)."
-				onPlay {reason->
+				def eff
+        onPlay {reason->
+          eff = delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              bg.dm().each {if(it.to.active && it.from.owner==thisCard.player && it.to.owner!=it.from.owner && it.dmg.value){
+                bc "Solid Rage +20"
+                it.dmg += hp(20)
+              }}
+            }
+          }
 				}
 				onRemoveFromPlay {
+          eff.unregister()
 				}
-				allowAttach {to->
+				allowAttach { to->
+          to.topPokemonCard.cardTypes.isNot(EX) && to.topPokemonCard.cardTypes.isNot(BASIC)
 				}
 			};
 			case WARP_POINT_93:
-			return itemCard (this) {
-				text "Your opponent switches 1 of his or her Defending Pokémon with 1 of his or her Benched Pokémon, if any. You switch 1 of your Active Pokémon with 1 of your Benched Pokémon, if any."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+			return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
 			case ENERGY_SEARCH_94:
 			return itemCard (this) {
 				text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
@@ -2479,65 +2523,22 @@ public enum UnseenForces implements LogicCardInfo {
 			case POTION_95:
       return copy (FireRedLeafGreen.POTION_101, this)
 			case DARKNESS_ENERGY_96:
-			return specialEnergy (this, [[C]]) {
-				text "If the Pokémon [D] Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect unless the Attacking Pokémon is Darkness or has Dark in its name. [D] Energy provides [D] Energy. (Doesn't count as a basic Energy card.)"
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
-			};
+			return copy (RubySapphire.DARKNESS_ENERGY_93, this);
 			case METAL_ENERGY_97:
-			return specialEnergy (this, [[C]]) {
-				text "Damage done by attacks to the Pokémon that [M] Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that [M] Energy is attached to isn't Metal. [M] Energy provides [M] Energy. (Doesn't count as a basic Energy card.)"
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
-			};
+			return copy (RubySapphire.METAL_ENERGY_94, this);
 			case BOOST_ENERGY_98:
-			return specialEnergy (this, [[C]]) {
-				text "Boost Energy can be attached only to an Evolved Pokémon. Discard Boost Energy at the end of the turn it was attached. Boost Energy provides [C] [C] [C] Energy. The Pokémon Boost Energy is attached to can't retreat. If the Pokémon Boost Energy is attached to isn't an Evolved Pokémon, discard Boost Energy."
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
-			};
+			return copy (Deoxys.BOOST_ENERGY_93, this);
 			case CYCLONE_ENERGY_99:
 			return specialEnergy (this, [[C]]) {
 				text "Cyclone Energy provides [C] Energy. When you attach this card from your hand to your Active Pokémon, switch 1 of the Defending Pokémon with 1 of your opponent's Benched Pokémon. Your opponent chooses the Benched Pokémon to switch."
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
+				onPlay { reason->
+          if (reason == PLAY_FROM_HAND) {
+            whirlwind()
+          }
 				}
 			};
 			case WARP_ENERGY_100:
-			return specialEnergy (this, [[C]]) {
-				text "Warp Energy provides [C] Energy. When you attach this card from your hand to your Active Pokémon, switch that Pokémon with 1 of your Benched Pokémon."
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
-			};
+			return copy (Aquapolis.WARP_ENERGY_147, this)
 			case BLISSEY_EX_101:
 			return evolution (this, from:"Chansey ex", hp:HP160, type:C, retreatCost:1) {
 				weakness F
@@ -3400,7 +3401,7 @@ public enum UnseenForces implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-
+            directDamage 10*my.all.findAll { it.numberOfDamageCounters }.size()
 					}
 				}
 			};
