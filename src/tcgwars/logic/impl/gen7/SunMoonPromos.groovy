@@ -2935,11 +2935,11 @@ public enum SunMoonPromos implements LogicCardInfo {
         return evolution (this, from:"Alolan Sandshrew", hp:HP200, type:W, retreatCost:2) {
         weakness M
         bwAbility "Spiky Shield", {
-        text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
+          text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value >= 10}) && self.active) {
-                directDamage(30, ef.attacker, ABILITY)
+              if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
+                directDamage(30, ef.attacker, Source.SRC_ABILITY)
               }
             }
           }
