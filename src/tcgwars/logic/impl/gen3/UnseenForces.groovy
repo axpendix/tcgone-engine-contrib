@@ -243,7 +243,7 @@ public enum UnseenForces implements LogicCardInfo {
 	@Override
 	public Card getImplementation() {
 		switch (this) {
-			case UNOWN_!:
+			case UNOWN_0:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
 				weakness P
 				pokePower "Shuffle", {
