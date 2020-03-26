@@ -2946,7 +2946,7 @@ public enum UnseenForces implements LogicCardInfo {
 					text "Flip a coin. If heads, put 1 damage counter on each of your opponent's Pokémon. If tails, remove 1 damage counter for each of your Pokémon."
 					energyCost G
 					onAttack {
-            flip {
+            flip 1, {
               opp.all.each {
                 directDamage 10, it
               }
