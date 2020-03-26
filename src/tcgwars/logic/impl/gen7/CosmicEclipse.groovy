@@ -362,7 +362,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             delayedA {
               after ATTACH_ENERGY, self, {
                 checkLastTurn()
-                if (self.active && ef.reason==PLAY_FROM_HAND && ef.card.containsTypePlain(G) && opp.bench && confirm("Use Shining Vine?")) {
+                if (self.active && ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(G) && opp.bench && confirm("Use Shining Vine?")) {
                   sw(opp.active, opp.bench.select(), SRC_ABILITY)
                   powerUsed()
                 }
