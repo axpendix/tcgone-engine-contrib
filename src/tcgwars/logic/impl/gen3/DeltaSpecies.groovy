@@ -209,6 +209,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Final Sting", {
 					text "Once during your turn (before your attack), you may Knock Out Beedrill. If you do, choose 1 of your opponent's Defending Pokémon. That Pokémon is now Paralyzed and Poisoned. Put 2 damage counters instead of 1 on that Pokémon between turns. This power can't be used if Beedrill is affected by a Special Condition."
 					actionA {
+            // TODO:
 					}
 				}
 				move "Super Slash", {
@@ -217,9 +218,11 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            if (defending.evolution) {
+              damage 30
+            }
 					}
 				}
-
 			};
 			case CROBAT_Δ_2:
 			return evolution (this, from:"Golbat", hp:HP090, type:[G, M], retreatCost:0) {
@@ -240,7 +243,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
 					}
 				}
-
 			};
 			case DRAGONITE_Δ_3:
 			return evolution (this, from:"Dragonair", hp:HP100, type:[L, M], retreatCost:2) {
@@ -261,14 +263,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Heavy Impact", {
-					text "70 damage. "
+					text "70 damage."
 					energyCost L, M, C, C
 					attackRequirement {}
 					onAttack {
 						damage 70
 					}
 				}
-
 			};
 			case ESPEON_Δ_4:
 			return evolution (this, from:"Eevee", hp:HP070, type:[P, M], retreatCost:1) {
@@ -286,7 +287,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case FLAREON_Δ_5:
 			return evolution (this, from:"Eevee", hp:HP070, type:[R, M], retreatCost:1) {
@@ -307,7 +307,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case GARDEVOIR_Δ_6:
 			return evolution (this, from:"Kirlia", hp:HP100, type:[P, M], retreatCost:2) {
@@ -333,7 +332,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case JOLTEON_Δ_7:
 			return evolution (this, from:"Eevee", hp:HP070, type:[L, M], retreatCost:1) {
@@ -355,7 +353,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case LATIAS_Δ_8:
 			return basic (this, hp:HP070, type:[L, M], retreatCost:1) {
@@ -383,7 +380,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 80
 					}
 				}
-
 			};
 			case LATIOS_Δ_9:
 			return basic (this, hp:HP080, type:[L, M], retreatCost:2) {
@@ -396,7 +392,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Dragon Claw", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -411,7 +407,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 80
 					}
 				}
-
 			};
 			case MAROWAK_Δ_10:
 			return evolution (this, from:"Cubone", hp:HP080, type:[F, M], retreatCost:1) {
@@ -432,7 +427,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case METAGROSS_Δ_11:
 			return evolution (this, from:"Metang", hp:HP100, type:[L, M], retreatCost:3) {
@@ -451,7 +445,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case MEWTWO_Δ_12:
 			return basic (this, hp:HP070, type:[R, M], retreatCost:1) {
@@ -469,7 +462,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case RAYQUAZA_Δ_13:
 			return basic (this, hp:HP090, type:[L, M], retreatCost:3) {
@@ -497,7 +489,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
 					}
 				}
-
 			};
 			case SALAMENCE_Δ_14:
 			return evolution (this, from:"Shelgon", hp:HP110, type:[R, M], retreatCost:1) {
@@ -520,7 +511,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 100
 					}
 				}
-
 			};
 			case STARMIE_Δ_15:
 			return evolution (this, from:"Staryu", hp:HP060, type:[W, M], retreatCost:0) {
@@ -546,7 +536,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case TYRANITAR_Δ_16:
 			return evolution (this, from:"Pupitar", hp:HP120, type:[R, M], retreatCost:2) {
@@ -564,7 +553,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case UMBREON_Δ_17:
 			return evolution (this, from:"Eevee", hp:HP070, type:[D, M], retreatCost:1) {
@@ -583,7 +571,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
 					}
 				}
-
 			};
 			case VAPOREON_Δ_18:
 			return evolution (this, from:"Eevee", hp:HP070, type:[W, M], retreatCost:1) {
@@ -604,7 +591,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case AZUMARILL_Δ_19:
 			return evolution (this, from:"Marill", hp:HP080, type:[W, M], retreatCost:2) {
@@ -618,14 +604,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Rolling Tackle", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
 						damage 50
 					}
 				}
-
 			};
 			case AZURILL_20:
 			return basic (this, hp:HP050, type:C, retreatCost:1) {
@@ -643,7 +628,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
 					}
 				}
-
 			};
 			case HOLON_S_ELECTRODE_21:
 			return evolution (this, from:"Holon's Voltorb", hp:HP070, type:L, retreatCost:0) {
@@ -656,7 +640,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case HOLON_S_MAGNETON_22:
 			return evolution (this, from:"Holon's Magnemite", hp:HP070, type:M, retreatCost:1) {
@@ -670,7 +653,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case HYPNO_23:
 			return evolution (this, from:"Drowzee", hp:HP070, type:P, retreatCost:1) {
@@ -689,14 +671,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Psyshot", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
 						damage 40
 					}
 				}
-
 			};
 			case MIGHTYENA_Δ_24:
 			return evolution (this, from:"Poochyena", hp:HP070, type:[D, M], retreatCost:1) {
@@ -718,7 +699,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case PORYGON2_25:
 			return evolution (this, from:"Porygon", hp:HP070, type:C, retreatCost:1) {
@@ -736,7 +716,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case RAIN_CASTFORM_26:
 			return basic (this, hp:HP070, type:W, retreatCost:1) {
@@ -754,7 +733,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case SANDSLASH_Δ_27:
 			return evolution (this, from:"Sandshrew", hp:HP080, type:[F, M], retreatCost:1) {
@@ -773,14 +751,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Slash", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
 						damage 50
 					}
 				}
-
 			};
 			case SLOWKING_28:
 			return evolution (this, from:"Slowpoke", hp:HP080, type:W, retreatCost:1) {
@@ -798,7 +775,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case SNOW_CLOUD_CASTFORM_29:
 			return basic (this, hp:HP070, type:W, retreatCost:2) {
@@ -816,13 +792,12 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case STARMIE_Δ_30:
 			return evolution (this, from:"Staryu", hp:HP070, type:[W, M], retreatCost:1) {
 				weakness L
 				move "Surf", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -837,7 +812,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case SUNNY_CASTFORM_31:
 			return basic (this, hp:HP070, type:R, retreatCost:2) {
@@ -855,7 +829,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
 					}
 				}
-
 			};
 			case SWELLOW_32:
 			return evolution (this, from:"Taillow", hp:HP070, type:C, retreatCost:0) {
@@ -870,14 +843,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Glide", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
 						damage 40
 					}
 				}
-
 			};
 			case WEEZING_33:
 			return evolution (this, from:"Koffing", hp:HP070, type:G, retreatCost:2) {
@@ -896,14 +868,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Sludge Whirlpool", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
 						damage 50
 					}
 				}
-
 			};
 			case CASTFORM_34:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -921,7 +892,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
 					}
 				}
-
 			};
 			case DITTO_35:
 			return basic (this, hp:HP060, type:C, retreatCost:1) {
@@ -939,7 +909,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case DITTO_36:
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
@@ -957,7 +926,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
 					}
 				}
-
 			};
 			case DITTO_37:
 			return basic (this, hp:HP060, type:R, retreatCost:1) {
@@ -975,7 +943,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case DITTO_38:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
@@ -993,7 +960,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
 					}
 				}
-
 			};
 			case DITTO_39:
 			return basic (this, hp:HP060, type:L, retreatCost:1) {
@@ -1011,7 +977,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 40
 					}
 				}
-
 			};
 			case DITTO_40:
 			return basic (this, hp:HP060, type:W, retreatCost:1) {
@@ -1029,7 +994,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case DRAGONAIR_Δ_41:
 			return evolution (this, from:"Dratini", hp:HP070, type:L, retreatCost:1) {
@@ -1045,14 +1009,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Dragon Rage", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
 						damage 40
 					}
 				}
-
 			};
 			case DRAGONAIR_Δ_42:
 			return evolution (this, from:"Dratini", hp:HP070, type:L, retreatCost:2) {
@@ -1067,7 +1030,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case GOLBAT_43:
 			return evolution (this, from:"Zubat", hp:HP070, type:G, retreatCost:1) {
@@ -1088,7 +1050,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
 					}
 				}
-
 			};
 			case HARIYAMA_44:
 			return evolution (this, from:"Makuhita", hp:HP080, type:R, retreatCost:1) {
@@ -1099,7 +1060,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Slap Push", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost
 					attackRequirement {}
 					onAttack {
@@ -1114,7 +1075,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case ILLUMISE_45:
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
@@ -1140,7 +1100,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case KAKUNA_46:
 			return evolution (this, from:"Weedle", hp:HP060, type:G, retreatCost:2) {
@@ -1154,14 +1113,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Rollout", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
 						damage 30
 					}
 				}
-
 			};
 			case KIRLIA_47:
 			return evolution (this, from:"Ralts", hp:HP070, type:P, retreatCost:1) {
@@ -1182,7 +1140,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case MAGNETON_48:
 			return evolution (this, from:"Magnemite", hp:HP080, type:L, retreatCost:1) {
@@ -1197,14 +1154,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Speed Ball", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
 						damage 50
 					}
 				}
-
 			};
 			case METANG_Δ_49:
 			return evolution (this, from:"Beldum", hp:HP080, type:L, retreatCost:2) {
@@ -1219,14 +1175,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Magnetic Blast", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
 						damage 50
 					}
 				}
-
 			};
 			case PERSIAN_50:
 			return evolution (this, from:"Meowth", hp:HP080, type:C, retreatCost:1) {
@@ -1244,7 +1199,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
 					}
 				}
-
 			};
 			case PUPITAR_Δ_51:
 			return evolution (this, from:"Larvitar", hp:HP070, type:R, retreatCost:0) {
@@ -1265,7 +1219,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 40
 					}
 				}
-
 			};
 			case RAPIDASH_52:
 			return evolution (this, from:"Ponyta", hp:HP070, type:R, retreatCost:0) {
@@ -1286,7 +1239,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case SHELGON_Δ_53:
 			return evolution (this, from:"Bagon", hp:HP080, type:R, retreatCost:2) {
@@ -1302,14 +1254,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Combustion", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
 						damage 40
 					}
 				}
-
 			};
 			case SHELGON_Δ_54:
 			return evolution (this, from:"Bagon", hp:HP070, type:R, retreatCost:2) {
@@ -1322,14 +1273,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Heat Blast", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost
 					attackRequirement {}
 					onAttack {
 						damage 30
 					}
 				}
-
 			};
 			case SKARMORY_55:
 			return basic (this, hp:HP070, type:M, retreatCost:1) {
@@ -1356,7 +1306,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case VOLBEAT_56:
 			return basic (this, hp:HP060, type:G, retreatCost:1) {
@@ -1374,7 +1323,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case BAGON_Δ_57:
 			return basic (this, hp:HP050, type:R, retreatCost:1) {
@@ -1382,14 +1330,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 				resistance F, MINUS30
 				resistance R, MINUS30
 				move "Bite", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
 						damage 10
 					}
 				}
-
 			};
 			case BAGON_Δ_58:
 			return basic (this, hp:HP050, type:R, retreatCost:1) {
@@ -1404,7 +1351,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case BELDUM_Δ_59:
 			return basic (this, hp:HP050, type:L, retreatCost:1) {
@@ -1423,13 +1369,12 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case CUBONE_60:
 			return basic (this, hp:HP050, type:F, retreatCost:1) {
 				weakness G
 				move "Beat", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1444,7 +1389,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case DITTO_61:
 			return basic (this, hp:HP060, type:R, retreatCost:1) {
@@ -1462,7 +1406,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case DITTO_62:
 			return basic (this, hp:HP060, type:F, retreatCost:1) {
@@ -1480,7 +1423,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
 					}
 				}
-
 			};
 			case DITTO_63:
 			return basic (this, hp:HP060, type:L, retreatCost:1) {
@@ -1498,7 +1440,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case DITTO_64:
 			return basic (this, hp:HP060, type:W, retreatCost:1) {
@@ -1516,7 +1457,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case DRATINI_Δ_65:
 			return basic (this, hp:HP050, type:L, retreatCost:1) {
@@ -1524,7 +1464,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				resistance G, MINUS30
 				resistance F, MINUS30
 				move "Hook", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1539,7 +1479,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 30
 					}
 				}
-
 			};
 			case DRATINI_Δ_66:
 			return basic (this, hp:HP050, type:L, retreatCost:1) {
@@ -1554,7 +1493,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case DROWZEE_67:
 			return basic (this, hp:HP050, type:P, retreatCost:1) {
@@ -1568,14 +1506,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Headbutt", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
 						damage 20
 					}
 				}
-
 			};
 			case EEVEE_Δ_68:
 			return basic (this, hp:HP050, type:M, retreatCost:1) {
@@ -1588,7 +1525,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case EEVEE_69:
 			return basic (this, hp:HP050, type:C, retreatCost:1) {
@@ -1602,14 +1538,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Rear Kick", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
 						damage 20
 					}
 				}
-
 			};
 			case HOLON_S_MAGNEMITE_70:
 			return basic (this, hp:HP040, type:M, retreatCost:1) {
@@ -1623,7 +1558,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
 					}
 				}
-
 			};
 			case HOLON_S_VOLTORB_71:
 			return basic (this, hp:HP040, type:L, retreatCost:1) {
@@ -1636,7 +1570,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case KOFFING_72:
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
@@ -1650,20 +1583,19 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Ram", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
 						damage 20
 					}
 				}
-
 			};
 			case LARVITAR_Δ_73:
 			return basic (this, hp:HP050, type:R, retreatCost:1) {
 				weakness G
 				move "Bite", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1678,7 +1610,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 20
 					}
 				}
-
 			};
 			case MAGNEMITE_74:
 			return basic (this, hp:HP050, type:L, retreatCost:1) {
@@ -1693,14 +1624,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Magnetic Blast", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost L
 					attackRequirement {}
 					onAttack {
 						damage 10
 					}
 				}
-
 			};
 			case MAKUHITA_75:
 			return basic (this, hp:HP050, type:F, retreatCost:1) {
@@ -1713,13 +1643,12 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case MARILL_76:
 			return basic (this, hp:HP050, type:W, retreatCost:1) {
 				weakness L
 				move "Rollout", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1734,7 +1663,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case MEOWTH_77:
 			return basic (this, hp:HP050, type:C, retreatCost:1) {
@@ -1748,27 +1676,25 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Bite", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
 						damage 10
 					}
 				}
-
 			};
 			case PONYTA_78:
 			return basic (this, hp:HP050, type:R, retreatCost:1) {
 				weakness W
 				move "Flare", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost R
 					attackRequirement {}
 					onAttack {
 						damage 10
 					}
 				}
-
 			};
 			case POOCHYENA_79:
 			return basic (this, hp:HP050, type:D, retreatCost:1) {
@@ -1790,20 +1716,18 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case PORYGON_80:
 			return basic (this, hp:HP050, type:C, retreatCost:1) {
 				weakness F
 				move "Sharpen", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
 						damage 30
 					}
 				}
-
 			};
 			case RALTS_81:
 			return basic (this, hp:HP050, type:P, retreatCost:1) {
@@ -1824,7 +1748,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case SANDSHREW_82:
 			return basic (this, hp:HP050, type:F, retreatCost:1) {
@@ -1838,14 +1761,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Scratch", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
 						damage 20
 					}
 				}
-
 			};
 			case SLOWPOKE_83:
 			return basic (this, hp:HP050, type:W, retreatCost:1) {
@@ -1859,20 +1781,19 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Tackle", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
 						damage 20
 					}
 				}
-
 			};
 			case STARYU_84:
 			return basic (this, hp:HP050, type:W, retreatCost:1) {
 				weakness L
 				move "Tackle", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1880,14 +1801,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Spinning Attack", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
 						damage 20
 					}
 				}
-
 			};
 			case STARYU_85:
 			return basic (this, hp:HP050, type:W, retreatCost:1) {
@@ -1908,7 +1828,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
 					}
 				}
-
 			};
 			case TAILLOW_86:
 			return basic (this, hp:HP040, type:C, retreatCost:1) {
@@ -1922,7 +1841,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
 					}
 				}
-
 			};
 			case WEEDLE_87:
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
@@ -1935,7 +1853,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case ZUBAT_88:
 			return basic (this, hp:HP050, type:G, retreatCost:1) {
@@ -1948,7 +1865,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 					}
 				}
-
 			};
 			case DUAL_BALL_89:
 			return itemCard (this) {
@@ -2155,7 +2071,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 70
 					}
 				}
-
 			};
 			case JOLTEON_EX_109:
 			return evolution (this, from:"Eevee", hp:HP100, type:L, retreatCost:0) {
@@ -2182,7 +2097,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 70
 					}
 				}
-
 			};
 			case VAPOREON_EX_110:
 			return evolution (this, from:"Eevee", hp:HP120, type:W, retreatCost:1) {
@@ -2201,14 +2115,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					}
 				}
 				move "Hydrosplash", {
-					text "60 damage. "
+					text "60 damage."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
 						damage 60
 					}
 				}
-
 			};
 			case GROUDON_STAR_111:
 			return basic (this, hp:HP090, type:F, retreatCost:3) {
@@ -2229,7 +2142,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 80
 					}
 				}
-
 			};
 			case KYOGRE_STAR_112:
 			return basic (this, hp:HP090, type:W, retreatCost:3) {
@@ -2250,7 +2162,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 60
 					}
 				}
-
 			};
 			case METAGROSS_STAR_113:
 			return basic (this, hp:HP070, type:M, retreatCost:3) {
@@ -2272,7 +2183,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 50
 					}
 				}
-
 			};
 			case AZUMARILL_114:
 			return evolution (this, from:"Marill", hp:HP070, type:W, retreatCost:1) {
@@ -2290,7 +2200,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 40
 					}
 				}
-
 			};
 				default:
 			return null;
