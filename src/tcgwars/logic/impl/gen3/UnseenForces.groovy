@@ -45,7 +45,7 @@ import tcgwars.logic.util.*;
  */
 public enum UnseenForces implements LogicCardInfo {
 
-	UNOWN_! ("Unown", !, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_! ("Unown", 0, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	AMPHAROS_1 ("Ampharos", 1, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
 	ARIADOS_2 ("Ariados", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
 	BELLOSSOM_3 ("Bellossom", 3, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
@@ -163,7 +163,7 @@ public enum UnseenForces implements LogicCardInfo {
 	SUICUNE_STAR_115 ("Suicune Star", 115, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
 	ROCKET_S_PERSIAN_EX_116 ("Rocket's Persian ex", 116, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
 	CELEBI_EX_117 ("Celebi ex", 117, Rarity.ULTRARARE, [POKEMON, BASIC, _GRASS_]),
-	UNOWN_? ("Unown", ?, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_? ("Unown", 118, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	UNOWN_A ("Unown", A, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	UNOWN_B ("Unown", B, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	UNOWN_C ("Unown", C, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
@@ -189,7 +189,7 @@ public enum UnseenForces implements LogicCardInfo {
 	UNOWN_W ("Unown", W, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	UNOWN_X ("Unown", X, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	UNOWN_Y ("Unown", Y, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_Z ("Unown", Z, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_Z ("Unown", Z, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
