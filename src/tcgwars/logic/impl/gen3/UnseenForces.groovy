@@ -269,7 +269,7 @@ public enum UnseenForces implements LogicCardInfo {
 					text "Flip a coin. If heads, put 2 damage counters on 1 of your opponent's Pokémon. If tails, put 2 damage counters on 1 of your Pokémon."
 					energyCost C
 					onAttack {
-
+            // TODO
 					}
 				}
 			};
@@ -2963,7 +2963,7 @@ public enum UnseenForces implements LogicCardInfo {
 					onAttack {
 						damage 30
             afterDamage {
-              flip {
+              flip 1, {
                 if (opp.deck) {
                   def rearrangedCards = rearrange(opp.deck.subList(0, 4))
                   opp.deck.setSubList(0, rearrangedCards)
