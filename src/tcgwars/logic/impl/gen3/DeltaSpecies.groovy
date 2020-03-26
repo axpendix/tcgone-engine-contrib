@@ -233,6 +233,16 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+
+            delayed {
+              before PLAY_TRAINER, {
+                if (bg.currentTurn == self.owner.opposite && !ef.cardToPlay.cardTypes.is(SUPPORTER)) {
+                  wcu "Radar Jam prevents playing Trainer Cards this turn"
+                  prevent()
+                }
+              }
+              unregisterAfter 2
+            }
 					}
 				}
 				move "Target Attack", {
@@ -240,7 +250,12 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost G, M, C
 					attackRequirement {}
 					onAttack {
-
+            def target = opp.all.select("Deal damage to?")
+            if (target.numberOfDamageCounters) {
+              damage 60, target
+            } else {
+              damage 40, target
+            }
 					}
 				}
 			};
@@ -252,6 +267,12 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Delta Charge", {
 					text "Once during your turn (before your attack), you may attach a [L] Energy card from your discard pile to 1 of your Benched Pokémon. This power can't be used if Dragonite is affected by a Special Condition."
 					actionA {
+            checkLastTurn()
+            assert my.bench.notEmpty : "Bench is empty"
+            checkNoSPC()
+            powerUsed()
+
+            attachEnergyFrom(type:L, my.discard, my.bench)
 					}
 				}
 				move "Agility", {
@@ -260,6 +281,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            flip { preventAllEffectsNextTurn() }
 					}
 				}
 				move "Heavy Impact", {
@@ -277,6 +299,16 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Delta Heal", {
 					text "Once during your turn (before your attack), you may remove 1 damage counter from each of your Pokémon that has δ on its card. You can't use more than 1 Delta Heal Poké-Power each turn. This power can't be used if Espeon is affected by a Special Condition."
 					actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Delta_Heal") != bg.turnCount : "You cannot use Delta Heal more than once per turn!"
+            checkNoSPC()
+            powerUsed()
+            bg.em().storeObject("Delta_Heal", bg.turnCount)
+            my.all.each {
+              if (it.name.contains("δ")) {
+                heal 10, it
+              }
+            }
 					}
 				}
 				move "Psyshock", {
@@ -285,6 +317,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            flip { apply PARALYZED }
 					}
 				}
 			};
@@ -294,9 +327,18 @@ public enum DeltaSpecies implements LogicCardInfo {
 				move "Delta Search", {
 					text "10 damage. Search your deck for a Holon Energy card and attach it to Flareon. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
 					onAttack {
 						damage 10
+
+            afterDamage {
+              my.deck.search(max: 1, "Select a Holon Energy card to attach to Flareon", {it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon") }).each {
+                attachEnergy(self, it)
+              }
+              shuffleDeck()
+            }
 					}
 				}
 				move "Return Burn", {
@@ -305,6 +347,14 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+
+            afterDamage {
+              if (confirm("Return an Energy card from $self to your hand?")) {
+                damage 30
+                self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)
+                apply BURNED
+              }
+            }
 					}
 				}
 			};
@@ -314,6 +364,16 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Energy Jump", {
 					text "Once during your turn (before your attack), you may move an Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Gardevoir is affected by a Special Condition."
 					actionA {
+            checkLastTurn()
+            checkNoSPC()
+            assert my.bench : "No benched Pokemon"
+            assert my.all.findAll { it.cards.filterByType(ENERGY) } : "No Energy Cards attached to your Pokemon"
+            powerUsed()
+
+            def source = my.all.findAll { it.cards.filterByType(ENERGY) }.select("Choose a Pokemon to move an Energy from")
+            def target = my.all.select("Select a Pokemon to move the Energy to")
+
+            moveEnergy(source, target)
 					}
 				}
 				move "Psychic Rage", {
@@ -321,7 +381,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
-
+            damage 10*opp.all.select("Choose a target").numberOfDamageCounters
 					}
 				}
 				move "Black Magic", {
@@ -329,7 +389,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost P, C, C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10+20*opp.bench.size()
 					}
 				}
 			};
@@ -340,9 +400,18 @@ public enum DeltaSpecies implements LogicCardInfo {
 				move "Delta Search", {
 					text "10 damage. Search your deck for a Holon Energy card and attach it to Jolteon. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
 					onAttack {
 						damage 10
+
+            afterDamage {
+              my.deck.search(max: 1, "Select a Holon Energy card to attach to Flareon", {it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon") }).each {
+                attachEnergy(self, it)
+              }
+              shuffleDeck()
+            }
 					}
 				}
 				move "Return Spark", {
@@ -351,6 +420,13 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+
+            afterDamage {
+              if (opp.bench && confirm("Return an Energy card from $self to your hand?")) {
+                self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)
+                damage 20, opp.bench.select("Deal damage to")
+              }
+            }
 					}
 				}
 			};
@@ -361,8 +437,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				resistance F, MINUS30
 				pokeBody "Delta Aura", {
 					text "If you have Latios or Latios ex in play, the attack cost of Latias's Extra Crush is now Lightning Metal [C]."
-					delayedA {
-					}
+          // TODO
 				}
 				move "Spiral Drain", {
 					text "20 damage. Remove 2 damage counters from Latias."
@@ -370,6 +445,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            heal 20, self
 					}
 				}
 				move "Extra Crush", {
@@ -377,7 +453,9 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost L, M, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 80
+            if (opp.all.findAll { it.topPokemonCard.cardTypes.is(EX) }) {
+              damage 80
+            }
 					}
 				}
 			};
@@ -389,6 +467,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokeBody "Delta Aura", {
 					text "If you have Latias or Latias ex in play, the attack cost of Latios's Psychic Force is now Lightning Metal [C]."
 					delayedA {
+            // TODO
 					}
 				}
 				move "Dragon Claw", {
@@ -404,7 +483,9 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost L, M, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 80
+            if (opp.all.findAll { it.topPokemonCard.cardTypes.is(STAGE2) }) {
+              damage 80
+            }
 					}
 				}
 			};
@@ -416,7 +497,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost F, M
 					attackRequirement {}
 					onAttack {
-
+            // TODO
 					}
 				}
 				move "Metal Crusher", {
@@ -424,7 +505,11 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-						damage 50
+            if (defending.types.contains(M)) {
+              damage 90
+            } else {
+              damage 50
+            }
 					}
 				}
 			};
@@ -435,6 +520,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Delta Control", {
 					text "Once during your turn (before your attack), you may look at the top 4 cards of your deck, choose 1 of them, and put it into your hand. Put the 3 other cards on the bottom of your deck in any order. This power can't be used if Metagross is affected by a Special Condition."
 					actionA {
+            // TODO
 					}
 				}
 				move "Crush and Burn", {
