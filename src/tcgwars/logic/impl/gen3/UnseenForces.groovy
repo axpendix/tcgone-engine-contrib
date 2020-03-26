@@ -163,7 +163,7 @@ public enum UnseenForces implements LogicCardInfo {
 	SUICUNE_STAR_115 ("Suicune Star", 115, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
 	ROCKET_S_PERSIAN_EX_116 ("Rocket's Persian ex", 116, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
 	CELEBI_EX_117 ("Celebi ex", 117, Rarity.ULTRARARE, [POKEMON, BASIC, _GRASS_]),
-	UNOWN_? ("Unown", 118, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_118 ("Unown", 118, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	UNOWN_A ("Unown", A, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	UNOWN_B ("Unown", B, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	UNOWN_C ("Unown", C, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
