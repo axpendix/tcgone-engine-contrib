@@ -45,7 +45,7 @@ import tcgwars.logic.util.*;
  */
 public enum UnseenForces implements LogicCardInfo {
 
-	UNOWN_0 ("Unown", 0, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_! ("Unown", !, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 	AMPHAROS_1 ("Ampharos", 1, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
 	ARIADOS_2 ("Ariados", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
 	BELLOSSOM_3 ("Bellossom", 3, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
@@ -163,33 +163,33 @@ public enum UnseenForces implements LogicCardInfo {
 	SUICUNE_STAR_115 ("Suicune Star", 115, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
 	ROCKET_S_PERSIAN_EX_116 ("Rocket's Persian ex", 116, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
 	CELEBI_EX_117 ("Celebi ex", 117, Rarity.ULTRARARE, [POKEMON, BASIC, _GRASS_]),
-	UNOWN_118 ("Unown", 118, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_A ("Unown", 119, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_B ("Unown", 120, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_C ("Unown", 121, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_D ("Unown", 122, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_E ("Unown", 123, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_F ("Unown", 124, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_G ("Unown", 125, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_H ("Unown", 126, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_I ("Unown", 127, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_J ("Unown", 128, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_K ("Unown", 129, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_L ("Unown", 130, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_M ("Unown", 131, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_N ("Unown", 132, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_O ("Unown", 133, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_P ("Unown", 134, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_Q ("Unown", 135, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_R ("Unown", 136, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_S ("Unown", 137, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_T ("Unown", 138, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_U ("Unown", 139, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_V ("Unown", 140, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_W ("Unown", 141, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_X ("Unown", 142, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_Y ("Unown", 143, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-	UNOWN_Z ("Unown", 144, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
+	UNOWN_? ("Unown", ?, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_A ("Unown", A, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_B ("Unown", B, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_C ("Unown", C, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_D ("Unown", D, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_E ("Unown", E, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_F ("Unown", F, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_G ("Unown", G, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_H ("Unown", H, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_I ("Unown", I, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_J ("Unown", J, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_K ("Unown", K, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_L ("Unown", L, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_M ("Unown", M, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_N ("Unown", N, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_O ("Unown", O, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_P ("Unown", P, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_Q ("Unown", Q, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_R ("Unown", R, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_S ("Unown", S, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_T ("Unown", T, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_U ("Unown", U, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_V ("Unown", V, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_W ("Unown", W, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_X ("Unown", X, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_Y ("Unown", Y, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	UNOWN_Z ("Unown", Z, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -243,7 +243,7 @@ public enum UnseenForces implements LogicCardInfo {
 	@Override
 	public Card getImplementation() {
 		switch (this) {
-			case UNOWN_0:
+			case UNOWN_!:
 			return basic (this, hp:HP060, type:P, retreatCost:1) {
 				weakness P
 				pokePower "Shuffle", {
@@ -1328,9 +1328,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
 					onAttack {
             deck.search ({
-              (it.asPokemonCard().types.contains(W) ||
-              it.asPokemonCard().types.contains(F))
-              && !it.asPokemonCard().cardTypes.is(EX)
+              (it.asPokemonCard().types.contains(W) || it.asPokemonCard().types.contains(F)) && !it.asPokemonCard().cardTypes.is(EX)
             }).each {
               it.moveTo(my.hand)
             }
