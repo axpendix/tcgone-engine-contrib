@@ -9,6 +9,8 @@ import tcgwars.logic.impl.gen5.BlackWhite;
 import tcgwars.logic.impl.gen5.PlasmaStorm
 import tcgwars.logic.impl.gen6.KalosStarterSet;
 
+import tcgwars.logic.effect.gm.PlayTrainer
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -2427,7 +2429,7 @@ public enum UnseenForces implements LogicCardInfo {
 
               def tar = true
               while (tar) {
-                def tar = my.bench.findAll { it.cards.filterByType(ENERGY) }
+                tar = my.bench.findAll { it.cards.filterByType(ENERGY) }
                 if (!tar) break
                 def pcs = tar.select("Select a Pokémon to discard all Energy Cards from to heal off all damage. Cancel to stop", false)
                 if (!pcs) break
