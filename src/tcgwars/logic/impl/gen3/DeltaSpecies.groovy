@@ -350,7 +350,6 @@ public enum DeltaSpecies implements LogicCardInfo {
 
             afterDamage {
               if (confirm("Return an Energy card from $self to your hand?")) {
-                damage 30
                 self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)
                 apply BURNED
               }
@@ -407,7 +406,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 						damage 10
 
             afterDamage {
-              my.deck.search(max: 1, "Select a Holon Energy card to attach to Flareon", {it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon") }).each {
+              my.deck.search(max: 1, "Select a Holon Energy card to attach to Jolteon", {it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon") }).each {
                 attachEnergy(self, it)
               }
               shuffleDeck()
@@ -529,6 +528,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            // TODO
 					}
 				}
 			};
@@ -537,15 +537,26 @@ public enum DeltaSpecies implements LogicCardInfo {
 				weakness P
 				pokePower "Delta Switch", {
 					text "Once during your turn, when you put Mewtwo from your hand onto your Bench, you may move any number of basic Energy cards attached to your Pokémon to your other Pokémon (excluding Mewtwo) in any way you like."
+          // TODO
 					actionA {
-					}
+            if (it == PLAY_FROM_HAND && confirm("Use Delta Switch?")) {
+              while (1) {
+                def pl=(my.all.findAll {it.cards.filterByType(BASIC_ENERGY) && it != self})
+                if(!pl) break;
+                def src =pl.select("source for energy (cancel to stop)", false)
+                if(!src) break;
+                def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
+                energySwitch(src, self, card)
+              }
+            }
+          }
 				}
 				move "Energy Burst", {
 					text "10x damage. Does 10 damage times the total amount of Energy attached to Mewtwo and the Defending Pokémon."
 					energyCost R, M
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10*(self.cards.energyCount(C) + opp.cards.energyCount(C))
 					}
 				}
 			};
@@ -557,6 +568,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokeBody "Delta Guard", {
 					text "As long as Rayquaza has any Holon Energy cards attached to it, ignore the effect of Rayquaza's Lightning Storm attack."
 					delayedA {
+            // TODO
 					}
 				}
 				move "Power Blow", {
@@ -564,15 +576,16 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost L
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10*self.cards.energyCount(C)
 					}
 				}
 				move "Lightning Storm", {
-					text "Put 7 damage counters on Rayquaza."
+					text "70 damage. Put 7 damage counters on Rayquaza."
 					energyCost L, M, C, C
 					attackRequirement {}
 					onAttack {
-
+            damage 70
+            damage 70, self
 					}
 				}
 			};
@@ -587,6 +600,9 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            afterDamage {
+              attachEnergyFrom(type: R, my.discard, my.all)
+            }
 					}
 				}
 				move "Delta Blast", {
@@ -595,6 +611,9 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 100
+            afterDamage {
+              discardSelfEnergy(M)
+            }
 					}
 				}
 			};
@@ -604,14 +623,17 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Metal Navigation", {
 					text "Once during your turn (before your attack), you may search your deck for a [M] Energy card and attach it to Starmie. Shuffle your deck afterward. This power can't be used if Starmie is affected by a Special Condition."
 					actionA {
+            // TODO
 					}
 				}
 				move "Collect", {
 					text "Draw 3 cards."
 					energyCost W
-					attackRequirement {}
+					attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
 					onAttack {
-
+            draw 3
 					}
 				}
 				move "Energy Loop", {
@@ -620,6 +642,9 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            afterDamage {
+              self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)
+            }
 					}
 				}
 			};
@@ -629,6 +654,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Crush Draw", {
 					text "Once during your turn (before your attack), you may reveal the top card of your deck. If that card is a basic Energy card, attach it to 1 of your Pokémon. If not, put the card back on top of your deck. This power can't be used if Tyranitar is affected by a Special Condition."
 					actionA {
+            // TODO
 					}
 				}
 				move "Delta Crush", {
@@ -637,6 +663,14 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+
+            if (confirm("Discard an Energy card from $self to deal 20 more damage?")) {
+              damage 20
+
+              afterDamage {
+                self.cards.filterByType(ENERGY).select(count:1).discard()
+              }
+            }
 					}
 				}
 			};
@@ -647,6 +681,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokeBody "Delta Moon", {
 					text "When your opponent attaches a Special Energy card from his or her hand to 1 of his or her Pokémon, put 1 damage counter on that Pokémon. You can't use more than 1 Delta Moon Poké-Body each turn."
 					delayedA {
+            // TODO
 					}
 				}
 				move "Feint Attack", {
@@ -654,7 +689,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost D, M
 					attackRequirement {}
 					onAttack {
-
+            directDamage 30, opp.all.select("Deal damage to?")
 					}
 				}
 			};
@@ -664,9 +699,18 @@ public enum DeltaSpecies implements LogicCardInfo {
 				move "Delta Search", {
 					text "10 damage. Search your deck for a Holon Energy card and attach it to Vaporeon. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
 					onAttack {
 						damage 10
+
+            afterDamage {
+              my.deck.search(max: 1, "Select a Holon Energy card to attach to Vaporeon", {it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon") }).each {
+                attachEnergy(self, it)
+              }
+              shuffleDeck()
+            }
 					}
 				}
 				move "Return Wave", {
@@ -675,6 +719,14 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+
+            afterDamage {
+              if (confirm("Return an Energy card from $self to your hand?")) {
+
+                self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)
+                defending.cards.filterByType(ENERGY).select(count:1).moveTo(opp.hand)
+              }
+            }
 					}
 				}
 			};
@@ -687,6 +739,9 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip {
+              apply PARALYZED
+            }
 					}
 				}
 				move "Rolling Tackle", {
@@ -704,14 +759,24 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Baby Evolution", {
 					text "Once during your turn (before your attack), you may put Marill from your hand onto Azurill (this counts as evolving Azurill) and remove all damage counters from Azurill."
 					actionA {
-					}
+            assert my.hand.findAll{it.name == "Marill"} : "There is no pokémon in your hand to evolve ${self}."
+            checkLastTurn()
+            powerUsed()
+            def tar = my.hand.findAll { it.name == "Marill" }.select()
+            if (tar) {
+              evolve(self, tar.first(), OTHER)
+              heal self.numberOfDamageCounters*10, self
+            }
+          }
 				}
 				move "Type Match", {
 					text "Choose a basic Energy card in your hand and show it to your opponent. Then, search your deck for a Basic Pokémon or Evolution card of that Energy type, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
 					onAttack {
-
+            // TODO
 					}
 				}
 			};
@@ -724,6 +789,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            apply CONFUSED
 					}
 				}
 			};
@@ -736,7 +802,11 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
-						damage 30
+            if (defending.topPokemonCard.cardTypes.is(EX)) {
+              damage 50
+            } else {
+              damage 30
+            }
 					}
 				}
 			};
@@ -746,6 +816,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokeBody "Binding Aura", {
 					text "Your opponent can't play any Basic Pokémon or Evolution cards from his or her hand to evolve an Asleep Pokémon and can't attach any Energy cards from his or her hand to an Asleep Pokémon."
 					delayedA {
+            // TODO
 					}
 				}
 				move "Sleep Inducer", {
@@ -753,7 +824,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            // TODO
 					}
 				}
 				move "Psyshot", {
@@ -775,6 +846,9 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            if (defending.topPokemonCard.cardTypes.is(EX)) {
+              cantAttackNextTurn(defending)
+            }
 					}
 				}
 				move "Gang Up", {
@@ -782,7 +856,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10*my.all.findAll { it.types.contains(D) || it.types.contains(M) }.size()
 					}
 				}
 			};
@@ -792,6 +866,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Backup", {
 					text "Once during your turn (before your attack), if you have less than 6 cards in your hand, you may draw cards until you have 6 cards in your hand. This power can't be used if Porygon2 is affected by a Special Condition."
 					actionA {
+            // TODO
 					}
 				}
 				move "Machine Burst", {
@@ -800,6 +875,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            // TODO
 					}
 				}
 			};
@@ -809,6 +885,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Temperamental Weather", {
 					text "Once during your turn (before your attack), you may search your deck for Castform, Sunny Castform, or Snow-cloud Castform and switch it with Rain Castform. (Any cards attached to Rain Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Rain Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
 					actionA {
+            // TODO
 					}
 				}
 				move "Holon Splash", {
@@ -817,6 +894,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            // TODO
 					}
 				}
 			};
@@ -826,6 +904,10 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokeBody "Delta Storm", {
 					text "As long as Sandslash is your Active Pokémon, put 1 damage counter on each of your opponent's Pokémon-ex between turns."
 					delayedA {
+            // TODO
+            if (defending.topPokemonCard.cardTypes.is(EX)) {
+              cantAttackNextTurn(defending)
+            }
 					}
 				}
 				move "Rend", {
@@ -833,7 +915,11 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+            if (defending.numberOfDamageCounters) {
+              damage 40
+            } else {
+              damage 20
+            }
 					}
 				}
 				move "Slash", {
@@ -851,6 +937,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Prize Shift", {
 					text "Once during your turn (before your attack), you may choose a card from your hand and put it as a Prize card face up. If you do, choose 1 of your face-down Prize cards without looking and put it into your hand. This power can't be used if Slowking is affected by a Special Condition or if all of your Prize cards are face up."
 					actionA {
+            // TODO
 					}
 				}
 				move "Psychic Option", {
@@ -859,6 +946,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            // TODO
 					}
 				}
 			};
@@ -868,6 +956,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Temperamental Weather", {
 					text "Once during your turn (before your attack), you may search your deck for Castform, Rain Castform, or Sunny Castform and switch it with Snow-cloud Castform. (Any cards attached to Snow-cloud Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Snow-cloud Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
 					actionA {
+            // TODO
 					}
 				}
 				move "Holon Blizzard", {
@@ -876,6 +965,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            // TODO
 					}
 				}
 			};
@@ -895,7 +985,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 50
+						swiftDamage(50, defending)
 					}
 				}
 			};
@@ -905,6 +995,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Temperamental Weather", {
 					text "Once during your turn (before your attack), you may search your deck for Castform, Rain Castform, or Snow-cloud Castform and switch it with Sunny Castform. (Any cards attached to Sunny Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Sunny Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
 					actionA {
+            // TODO
 					}
 				}
 				move "Holon Search", {
@@ -912,7 +1003,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-
+            // TODO
 					}
 				}
 			};
@@ -925,7 +1016,11 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            flip 1, {
+              preventAllEffectsNextTurn()
+            }, {
+              increasedBaseDamageNextTurn("Glide", hp(60))
+            }
 					}
 				}
 				move "Glide", {
@@ -943,6 +1038,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokeBody "Body Odor", {
 					text "As long as Weezing is the Active Pokémon, put 1 damage counter on each of your opponent's Pokémon that has any Poké-Bodies between turns."
 					delayedA {
+            // TODO
 					}
 				}
 				move "Mist Attack", {
@@ -950,7 +1046,9 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-
+            opp.all.each {
+              damage 10, it
+            }
 					}
 				}
 				move "Sludge Whirlpool", {
@@ -968,6 +1066,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Temperamental Weather", {
 					text "Once during your turn (before your attack), you may search your deck for Sunny Castform, Rain Castform, or Snow-cloud Castform and switch it with Castform. (Any cards attached to Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
 					actionA {
+            // TODO
 					}
 				}
 				move "Holon Draw", {
@@ -975,7 +1074,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            // TODO
 					}
 				}
 			};
@@ -985,6 +1084,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Duplicate", {
 					text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
 					actionA {
+            // TODO
 					}
 				}
 				move "Energy Link", {
@@ -993,6 +1093,10 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+
+            afterDamage {
+              attachEnergyFrom(my.discard, self)
+            }
 					}
 				}
 			};
@@ -1002,6 +1106,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Duplicate", {
 					text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
 					actionA {
+            // TODO
 					}
 				}
 				move "Toxic", {
@@ -1009,7 +1114,8 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-
+            apply POISONED
+            extraPoison 1
 					}
 				}
 			};
@@ -1019,6 +1125,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Duplicate", {
 					text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
 					actionA {
+            // TODO
 					}
 				}
 				move "Rage", {
@@ -1026,7 +1133,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10+10*self.numberOfDamageCounters
 					}
 				}
 			};
@@ -1036,6 +1143,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Duplicate", {
 					text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
 					actionA {
+            // TODO
 					}
 				}
 				move "Copy", {
@@ -1043,7 +1151,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            // TODO
 					}
 				}
 			};
@@ -1053,6 +1161,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Duplicate", {
 					text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
 					actionA {
+            // TODO
 					}
 				}
 				move "Thunderbolt", {
@@ -1061,6 +1170,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            discardAllSelfEnergy(null)
 					}
 				}
 			};
@@ -1070,6 +1180,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokePower "Duplicate", {
 					text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
 					actionA {
+            // TODO
 					}
 				}
 				move "Smash Turn", {
@@ -1078,6 +1189,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            // TODO
 					}
 				}
 			};
@@ -1091,7 +1203,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+						flip 2, {damage 20}
 					}
 				}
 				move "Dragon Rage", {
@@ -1114,6 +1226,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            // TODO
 					}
 				}
 			};
@@ -1125,7 +1238,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-
+            apply POISONED
 					}
 				}
 				move "Sonic Signal", {
@@ -2095,6 +2208,9 @@ public enum DeltaSpecies implements LogicCardInfo {
 				onMove {to->
 				}
 				allowAttach {to->
+          if (defending.topPokemonCard.cardTypes.is(EX)) {
+            cantAttackNextTurn(defending)
+          }
 				}
 			};
 			case HOLON_ENERGY_GL_105:
@@ -2107,6 +2223,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 				onMove {to->
 				}
 				allowAttach {to->
+
 				}
 			};
 			case HOLON_ENERGY_WP_106:
