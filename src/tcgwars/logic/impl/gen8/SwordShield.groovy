@@ -177,7 +177,7 @@ public enum SwordShield implements LogicCardInfo {
 	MAWILE_129 ("Mawile", 129, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
 	FERROSEED_130 ("Ferroseed", 130, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
 	FERROTHORN_131 ("Ferrothorn", 131, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-	GALARIAN_STUNFISK_132 ("Galarian Stunfisk", 132, Rarity.UNCOMMON, [POKEMON, BASIC, _METAL_, NOT_IMPLEMENTED]),
+	GALARIAN_STUNFISK_132 ("Galarian Stunfisk", 132, Rarity.UNCOMMON, [POKEMON, BASIC, _METAL_]),
 	PAWNIARD_133 ("Pawniard", 133, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
 	BISHARP_134 ("Bisharp", 134, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
 	CORVIKNIGHT_135 ("Corviknight", 135, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _METAL_]),
@@ -2791,13 +2791,19 @@ public enum SwordShield implements LogicCardInfo {
 				resistance G, MINUS30
 				bwAbility "Snap Trap", {
 					text "If this Pokémon is in the Active Spot and is damaged by an opponent’s attack (even if it is Knocked Out), discard an Energy from the Attacking Pokémon."
-					delayedA {
+					delayedA (priority: LAST) {
             before APPLY_ATTACK_DAMAGES, {
-              if (ef.attacker.owner != self.owner) {
+              PokemonCardSet pcs = ef.attacker
+              if (pcs.owner != self.owner) {
                 bg.dm().each{
-                  if (it.to == self && self.active && it.notNoEffect && it.dmg.value) {
-                    bc "Galarian Stunfisk's Snap Trap triggered, discarding an Energy from the Attacking Pokémon"
-                    discardDefendingEnergy(Target.OPP_ACTIVE) // This will discard stunfisk's energy but I don't know the other values for Target
+                  if (it.to == self && self.active && it.dmg.value) {
+                    targeted (pcs, SRC_ABILITY) {
+                      bc "Galarian Stunfisk's Snap Trap triggered, attempting to discard an Energy from $pcs"
+                      def list = pcs.cards.filterByType(ENERGY) as CardList
+                      if (list) list.select("Snap Trap: Discard an energy card from $pcs", {1}, self.owner).discard()
+                      // below only works with attacks unfortunately, to be refactored later on
+//                    discardDefendingEnergy(Target.OPP_ACTIVE) // This will discard stunfisk's energy but I don't know the other values for Target
+                    }
                   }
                 }
               }
