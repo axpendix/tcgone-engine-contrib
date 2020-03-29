@@ -1049,10 +1049,12 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost R
             onAttack {
               damage 10
-              def sel = my.prizeCardSet.faceDownCards.select(hidden:true, "Reveal a prize card")
-              bc "$sel was revealed"
-              my.prizeCardSet.setVisible(sel.first(), true)
-              if (sel.filterByBasicEnergyType(R)) damage 50
+              if(my.prizeCardSet.faceDownCards) {
+                def sel = my.prizeCardSet.faceDownCards.select(hidden:true, "Reveal a prize card")
+                bc "$sel was revealed"
+                my.prizeCardSet.setVisible(sel.first(), true)
+                if (sel.filterByBasicEnergyType(R)) damage 50
+              }
             }
           }
           move "Fireball Circus", {
