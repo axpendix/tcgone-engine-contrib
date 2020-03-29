@@ -2738,7 +2738,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W, W, C
             onAttack {
               damage 50
-              if(confirm("discard an Energy card attached to Articuno ex")){
+              if(confirm("Discard an Energy card attached to $self?")){
                 discardSelfEnergy C
                 discardDefendingEnergy()
               }
@@ -2751,16 +2751,17 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           weakness WATER
           pokePower "Legendary Ascent", {
             text "Once during your turn, when you put Moltres ex from your hand onto your Bench, you may switch 1 of your Active Pokémon with Moltres ex. If you do, you may also move any number of basic [R] Energy cards attached to your Pokémon to Moltres ex."
-            actionA {
-              if(self.lastEvolved == bg.turnCount){
-                if(confirm("Switch your active with Moltres ex"))
-                {
-                  def energyCount = my.active.cards.filterByEnergyType(R).size()
-                  def energyMove = choose(0..energyCount,"Choose the number of Energy cards to move")
-                  sw my.active, self
-                  for (int i=0; i < energyMove; i++) {
-                    moveEnergy(type: R, my.bench, self)
-                  }
+            onActivate { reason ->
+              if (reason == PLAY_FROM_HAND && self.benched && confirm("Use Legendary Ascent to switch your active with $self ?")) {
+                powerUsed()
+                sw my.active, self
+                while (1) {
+                  def pl = (my.all.findAll { it.cards.filterByEnergyType(R) && it != self })
+                  if (!pl) break;
+                  def src = pl.select("Source for [R] energy (cancel to stop moving)", false)
+                  if (!src) break;
+                  def card = src.cards.filterByEnergyType(R).select("Card to move").first()
+                  energySwitch(src, self, card)
                 }
               }
             }
@@ -2771,7 +2772,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost R, R, C
             onAttack {
               damage 60
-              if(confirm("discard an Energy card attached to Articuno ex")){
+              if(confirm("Discard an Energy card attached to $self?")){
                 discardSelfEnergy C
                 applyAfterDamage CONFUSED
               }
@@ -2783,16 +2784,17 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           weakness LIGHTNING
           pokePower "Legendary Ascent", {
             text "Once during your turn, when you put Zapdos ex from your hand onto your Bench, you may switch 1 of your Active Pokémon with Zapdos ex. If you do, you may also move any number of basic [L] Energy cards attached to your Pokémon to Zapdos ex."
-            actionA {
-              if(self.lastEvolved == bg.turnCount){
-                if(confirm("Switch your active with Zapdos ex"))
-                {
-                  def energyCount = my.active.cards.filterByEnergyType(L).size()
-                  def energyMove = choose(0..energyCount,"Choose the number of Energy cards to move")
-                  sw my.active, self
-                  for (int i=0; i < energyMove; i++) {
-                    moveEnergy(type: L, my.bench, self)
-                  }
+            onActivate { reason ->
+              if (reason == PLAY_FROM_HAND && self.benched && confirm("Use Legendary Ascent to switch your active with $self ?")) {
+                powerUsed()
+                sw my.active, self
+                while (1) {
+                  def pl = (my.all.findAll { it.cards.filterByEnergyType(L) && it != self })
+                  if (!pl) break;
+                  def src = pl.select("Source for [L] energy (cancel to stop moving)", false)
+                  if (!src) break;
+                  def card = src.cards.filterByEnergyType(L).select("Card to move").first()
+                  energySwitch(src, self, card)
                 }
               }
             }
@@ -2802,7 +2804,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 50
-              if(confirm("discard an Energy card attached to Articuno ex")){
+              if(confirm("Discard an Energy card attached to $self for +20?")){
                 discardSelfEnergy C
                 damage 20
               }
