@@ -3,9 +3,7 @@ package tcgwars.logic.util
 import tcgwars.logic.groovy.TcgStatics
 import tcgwars.logic.Battleground;
 import tcgwars.logic.PlayerType
-import tcgwars.logic.client.PokemonSelectUIRequestBuilder
-
-import java.util.function.Predicate;
+import tcgwars.logic.client.PokemonSelectUIRequestBuilder;
 
 /**
  * @author axpendix@hotmail.com
@@ -57,11 +55,9 @@ public class PcsList extends ArrayList<PokemonCardSet> implements PokemonStack {
   public static PcsList unmodifiableList(List<PokemonCardSet> list){
     return new PcsList(Collections.unmodifiableList(list));
   }
-  PcsList findAll(Predicate<PokemonCardSet> predicate){
-    PcsList nl = new PcsList();
-    for (PokemonCardSet it : this) {
-      if(predicate.test(it)) nl.add(it)
-    }
+  public PcsList findAll(Closure c){
+    PcsList nl=new PcsList();
+    this.each {if(c(it)) nl.add(it)}
     nl
   }
   public int sum(Closure closure){
