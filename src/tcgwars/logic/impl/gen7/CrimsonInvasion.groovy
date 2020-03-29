@@ -846,7 +846,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           move "Defense Curl", {
             text "Flip a coin. If heads, prevent all damage done to this Pokémon by attacks during your opponent's next turn."
             onAttack {
-              flip{preventAllEffectsNextTurn()}
+              flip{preventAllDamageNextTurn()}
             }
           }
           move "Tackle", {
