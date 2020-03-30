@@ -4324,17 +4324,18 @@ public enum UnbrokenBonds implements LogicCardInfo {
           text "Pokémon-GX and Pokémon-EX in play (both yours and your opponent's) have no Abilities."
           def effect1
           def effect2
+          def effect3
           onPlay {
             effect1 = getter(GET_ABILITIES, BEFORE_LAST) {h->
               if (h.effect.target.pokemonEX || h.effect.target.pokemonGX) {
                 h.object.keySet().removeIf{it instanceof BwAbility}
               }
             }
-//            effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
-//              if ((h.effect.target.pokemonEX || h.effect.target.pokemonGX) && h.effect.ability instanceof BwAbility) {
-//                h.object=true
-//              }
-//            }
+            effect3 = getter IS_ABILITY_BLOCKED, { Holder h->
+              if ((h.effect.target.pokemonEX || h.effect.target.pokemonGX) && h.effect.ability instanceof BwAbility) {
+                h.object=true
+              }
+            }
             effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
               if ((h.effect.target as Card).cardTypes.isIn(POKEMON_GX, POKEMON_EX)) {
                 h.object=true
@@ -4345,6 +4346,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onRemoveFromPlay{
             effect1.unregister()
             effect2.unregister()
+            effect3.unregister()
             new CheckAbilities().run(bg)
           }
         };
