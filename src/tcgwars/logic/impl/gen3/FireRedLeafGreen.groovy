@@ -2472,7 +2472,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             getterA GET_ENERGY_TYPES, { holder->
               if(holder.effect.target.owner == self.owner
                 && holder.effect.target == self
-                && holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
+                && holder.effect.card.cardTypes.is(ENERGY)) {
                 holder.object = [[R] as Set]
               }
             }
