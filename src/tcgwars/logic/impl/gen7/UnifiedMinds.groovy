@@ -1964,7 +1964,6 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost P
             attackRequirement {
               gxCheck()
-              assert my.all.size() > 4 : "Power Bind prevents this Pokémon from attacking"
             }
             onAttack {
               gxPerform()
