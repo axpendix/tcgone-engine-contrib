@@ -3098,7 +3098,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              directDamage 120, opp.all.select("Which Pokemon to do 120 damage to?"), Source.ATTACK
+              swiftDamage(120, opp.all.select())
             }
           }
         };
