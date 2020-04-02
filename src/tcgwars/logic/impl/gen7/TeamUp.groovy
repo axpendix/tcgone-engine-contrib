@@ -891,7 +891,7 @@ public enum TeamUp implements LogicCardInfo {
             }
           }
           move "Hyper Beam" , {
-            text "100 damage. Discardan Energy from your opponent's active Pokémon."
+            text "100 damage. Discard an Energy from your opponent's active Pokémon."
             energyCost W,W,W
             onAttack{
               damage 100
