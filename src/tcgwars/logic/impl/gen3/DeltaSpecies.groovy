@@ -1256,6 +1256,8 @@ public enum DeltaSpecies implements LogicCardInfo {
 				pokeBody "Reversal Aura", {
 					text "As long as you have more Prize cards left than your opponent, each of Hariyama's attacks does 20 more damage to the Active Pokémon (before applying Weakness and Resistance) and damage done by the Active Pokémon to Hariyama is reduced by 20 (after applying Weakness and Resistance)."
 					delayedA {
+            // damage 50*opp.prizeCardSet.takenCount
+            // TODO
 					}
 				}
 				move "Slap Push", {
@@ -2335,6 +2337,8 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            // damage 50*opp.prizeCardSet.takenCount
+            // TODO
 					}
 				}
 				move "Ground Slash", {
@@ -2355,6 +2359,8 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            //damage 50*opp.prizeCardSet.takenCount
+            // TODO
 					}
 				}
 				move "Sheer Cold", {
@@ -2376,6 +2382,8 @@ public enum DeltaSpecies implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            // TODO
+            // damage 50*opp.prizeCardSet.takenCount
 					}
 				}
 				move "Hyper Beam", {

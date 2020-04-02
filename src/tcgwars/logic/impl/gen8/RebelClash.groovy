@@ -127,7 +127,7 @@ public enum RebelClash implements LogicCardInfo {
 	CURSED_SHOVEL_89 ("Cursed Shovel", 89, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
 	OLEANA_90 ("Oleana", 90, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
 	DAN_91 ("Dan", 91, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
-	BOSS’S_ORDERS_92 ("Boss’s Orders", 92, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
+	BOSS_S_ORDERS_92 ("Boss’s Orders", 92, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
 	GALAR_MINE_93 ("Galar Mine", 93, Rarity.HOLORARE, [TRAINER, STADIUM]),
 	SPEED_LIGHTNING_ENERGY_94 ("Speed Lightning Energy", 94, Rarity.HOLORARE, [ENERGY, SPECIAL_ENERGY]),
 	HORROR_PSYCHIC_ENERGY_95 ("Horror Psychic Energy", 95, Rarity.HOLORARE, [ENERGY, SPECIAL_ENERGY]),
@@ -193,7 +193,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            increasedBaseDamageNextTurn("Speed Sickle", hp(50))
 					}
 				}
 				move "Speed Sickle", {
@@ -201,7 +201,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            damage 20
 					}
 				}
 			};
@@ -213,7 +213,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
-
+            damage 110
 					}
 				}
 			};
@@ -225,7 +225,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-
+            damage 20
 					}
 				}
 			};
@@ -237,7 +237,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-
+            flip 3, { damage 40 }
 					}
 				}
 			};
@@ -249,7 +249,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-
+            damage 60*my.prizeCardSet.takenCount
 					}
 				}
 			};
@@ -1650,7 +1650,7 @@ public enum RebelClash implements LogicCardInfo {
 				playRequirement{
 				}
 			};
-			case BOSS’S_ORDERS_92:
+			case BOSS_S_ORDERS_92:
 			return supporter (this) {
 				text "Choose 1 of your opponent’s Benched Pokemon and switch it with their Active Pokemon. You may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
