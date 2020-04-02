@@ -437,7 +437,13 @@ public enum RebelClash implements LogicCardInfo {
             def myTop = my.deck.subList(0,1)
             def oppTop = opp.deck.subList(0,1)
 
-            if (myTop)
+            if (myTop.getCardTypes().isEnergy()) {
+              damage 100
+            }
+
+            if (oppTop.getCardTypes().isEnergy()) {
+              damage 100
+            }
 					}
 				}
 			};
@@ -1445,7 +1451,8 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            damage 10
+            // TODO
 					}
 				}
 			};
@@ -1458,7 +1465,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-
+            flipUntilTails { damage 30 }
 					}
 				}
 				move "Blindside", {
@@ -1466,7 +1473,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost D, D
 					attackRequirement {}
 					onAttack {
-
+            // TODO
 					}
 				}
 			};
@@ -1477,23 +1484,29 @@ public enum RebelClash implements LogicCardInfo {
 					text "Choose 1 of your opponent’s Benched Pokemon and switch it with their Active Pokemon. This attack does 30 damage to the new Active Pokemon."
 					energyCost D, C
 					attackRequirement {}
-					onAttack {
-
-					}
+					onAttack{
+            def target = defending
+            if (opp.bench) {
+              target = opp.bench.select("Select the new active")
+              sw defending, target
+            }
+            damage 30, target
+          }
 				}
 				move "Brain Shake", {
 					text "130 damage. Your opponent’s Active Pokemon is now Confused."
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
-
+            damage 130
+            apply CONFUSED
 					}
 				}
 			};
 			case MALAMAR_VMAX_71:
 			return evolution (this, from:"Malamar V", hp:HP310, type:D, retreatCost:2) {
 				weakness G
-
+        // TODO
 			};
 			case SCIZOR_72:
 			return evolution (this, from:"Scyther", hp:HP130, type:M, retreatCost:1) {
@@ -1504,7 +1517,8 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost M
 					attackRequirement {}
 					onAttack {
-
+            damage 30
+            // TODO
 					}
 				}
 				move "Guard Claw", {
@@ -1512,7 +1526,8 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
-
+            damage 90
+            reduceDamageNextTurn(hp(30), thisMove)
 					}
 				}
 			};
@@ -1525,7 +1540,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost M
 					attackRequirement {}
 					onAttack {
-
+            damage 10+30*opp.active.retreatCost
 					}
 				}
 				move "Heavy Impact", {
@@ -1533,7 +1548,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
-
+            damage 120
 					}
 				}
 			};
@@ -1546,7 +1561,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            // TODO
 					}
 				}
 				move "Metal Claw", {
@@ -1554,7 +1569,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
-
+            damage 80
 					}
 				}
 			};
@@ -1566,7 +1581,8 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
-
+            damage 90
+            // TODO
 					}
 				}
 			};
@@ -1579,7 +1595,10 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
-
+            damage 100
+            if (opp.active.basic) {
+              damage 100
+            }
 					}
 				}
 				move "Giant Hammer", {
@@ -1587,7 +1606,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost M, M, M, C
 					attackRequirement {}
 					onAttack {
-
+            damage 240
 					}
 				}
 			};
@@ -1597,9 +1616,11 @@ public enum RebelClash implements LogicCardInfo {
 				move "Collect", {
 					text "Draw 2 cards."
 					energyCost C
-					attackRequirement {}
+					attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
 					onAttack {
-
+            draw 2
 					}
 				}
 			};
@@ -1610,6 +1631,7 @@ public enum RebelClash implements LogicCardInfo {
 				bwAbility "Lucky Match", {
 					text "Once during your turn, when you play this card from your hand onto your Bench, you may flip a coin. If heads, choose a Supporter card from your discard pile, reveal it, and put it into your hand."
 					actionA {
+            // TODO
 					}
 				}
 			};
@@ -1622,7 +1644,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            // TODO
 					}
 				}
 				move "Sharp Wing", {
@@ -1630,7 +1652,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-
+            damage 20
 					}
 				}
 			};
@@ -1643,7 +1665,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-
+            damage 40
 					}
 				}
 				move "Gust", {
@@ -1651,7 +1673,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-
+            damage 60
 					}
 				}
 			};
@@ -1664,7 +1686,8 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-
+            damage 50
+            // TODO
 					}
 				}
 				move "Air Slash", {
@@ -1672,7 +1695,8 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-
+            damage 150
+            discardSelfEnergy C
 					}
 				}
 			};
@@ -1684,7 +1708,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            damage 10
 					}
 				}
 				move "Jump On", {
@@ -1692,7 +1716,8 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-
+            damage 40
+            flip { damage 40 }
 					}
 				}
 			};
@@ -1700,7 +1725,7 @@ public enum RebelClash implements LogicCardInfo {
 			return evolution (this, from:"Stufful", hp:HP140, type:C, retreatCost:3) {
 				weakness F
 				move "Big Throw", {
-					text "Flip a coin. If heads, toss your opponent across the room and discard your opponent’s Active Pokemon and all cards attached to it."
+					text "Flip a coin. If heads, discard your opponent’s Active Pokemon and all cards attached to it."
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1716,7 +1741,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            damage 10
 					}
 				}
 				move "Bite", {
@@ -1724,7 +1749,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-
+            damage 20
 					}
 				}
 			};
@@ -1734,6 +1759,7 @@ public enum RebelClash implements LogicCardInfo {
 				bwAbility "Greedy Tail", {
 					text "Once during your turn, you may search your deck for a Pokemon Tool card, reveal it, and put it into your hand. Then, shuffle your deck."
 					actionA {
+            // TODO
 					}
 				}
 				move "Tail Slap", {
@@ -1741,7 +1767,7 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-
+            damage 80
 					}
 				}
 			};
@@ -1749,6 +1775,7 @@ public enum RebelClash implements LogicCardInfo {
 			return itemCard (this) {
 				text "Put 1 of your Pokemon (excluding Pokemon V/GX) into your hand. (Discard all cards attached to that Pokemon.) You may play as many Item cards during your turn as you like (before your attack). (Note -  The term “Pokemon V” includes both Pokemon V and Pokemon VMAX.)"
 				onPlay {
+          // TODO
 				}
 				playRequirement{
 				}
@@ -1757,6 +1784,7 @@ public enum RebelClash implements LogicCardInfo {
 			return itemCard (this) {
 				text "Play this card when you draw it from your deck at the start of your turn (before putting it into your hand). Draw 3 cards. You may play as many Item cards as you like during your turn (before your attack)."
 				onPlay {
+          // TODO
 				}
 				playRequirement{
 				}
@@ -1765,6 +1793,7 @@ public enum RebelClash implements LogicCardInfo {
 			return itemCard (this) {
 				text "Discard up to 2 Pokemon Tools from either player’s Pokemon. You may play as many Item cards during your turn as you like (before your attack)."
 				onPlay {
+          // TODO
 				}
 				playRequirement{
 				}
@@ -1773,6 +1802,7 @@ public enum RebelClash implements LogicCardInfo {
 			return pokemonTool (this) {
 				text "Attach a Pokemon Tool to 1 of your Pokemon that doesn’t already have a Pokemon Tool attached to it. If the Pokemon this Tool is attached to is Knocked Out by damage from an opponent's attack, discard the top 2 cards of your opponent's deck. You may play as many Item cards as you like during your turn (before your attack)."
 				onPlay {reason->
+          // TODO
 				}
 				onRemoveFromPlay {
 				}
@@ -1783,6 +1813,7 @@ public enum RebelClash implements LogicCardInfo {
 			return supporter (this) {
 				text "Discard 2 cards from your hand in order to play this card. Your opponent reveals their hand. Choose a Trainer you find there and put it at the bottom of your opponent's deck. You may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+          // TODO
 				}
 				playRequirement{
 				}
@@ -1791,6 +1822,7 @@ public enum RebelClash implements LogicCardInfo {
 			return supporter (this) {
 				text "Draw 2 cards. Play Rock-Paper-Scissors with your opponent. If you win, draw 2 more cards. You may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+          // TODO
 				}
 				playRequirement{
 				}
@@ -1799,6 +1831,7 @@ public enum RebelClash implements LogicCardInfo {
 			return supporter (this) {
 				text "Choose 1 of your opponent’s Benched Pokemon and switch it with their Active Pokemon. You may play only 1 Supporter card during your turn (before your attack)."
 				onPlay {
+          // TODO
 				}
 				playRequirement{
 				}
@@ -1807,14 +1840,16 @@ public enum RebelClash implements LogicCardInfo {
 			return stadium (this) {
 				text "The Retreat Cost of each Active Pokemon (both yours and your opponent’s) is [C][C] more. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
 				onPlay {
+          // TODO
 				}
 				onRemoveFromPlay{
 				}
 			};
 			case SPEED_LIGHTNING_ENERGY_94:
-			return specialEnergy (this, [[C]]) {
+			return specialEnergy (this, [[L]]) {
 				text "This card provides 1 [L] Energy while it’s attached to a Pokemon. When you attach this card from your hand to an [L] Pokemon, draw 2 cards"
 				onPlay {reason->
+          // TODO
 				}
 				onRemoveFromPlay {
 				}
@@ -1824,9 +1859,10 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case HORROR_PSYCHIC_ENERGY_95:
-			return specialEnergy (this, [[C]]) {
+			return specialEnergy (this, [[P]]) {
 				text "This card provides 1 [P] Energy while it’s attached to a Pokemon. When the [P] Pokemon this card is attached to is your Active Pokemon and is damaged by an opponents attack, put 2 damage counters on the Attacking Pokemon."
 				onPlay {reason->
+          // TODO
 				}
 				onRemoveFromPlay {
 				}
@@ -1837,8 +1873,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
 			case CAPTURE_ENERGY_96:
 			return specialEnergy (this, [[C]]) {
-				text "This card provides [C] Energy only while attached to a Pokemon. When attaching this card from your hand to 1 of your Pokemon, search your deck for a Basic Pokemon and put it on your Bench. Then, shuffle your deck.</p></blockquote (The secret rare cards will be revealed over the coming week.)"
+				text "This card provides [C] Energy only while attached to a Pokemon. When attaching this card from your hand to 1 of your Pokemon, search your deck for a Basic Pokemon and put it on your Bench. Then, shuffle your deck."
 				onPlay {reason->
+          // TODO
 				}
 				onRemoveFromPlay {
 				}
