@@ -1,4 +1,4 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen8;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -36,91 +36,91 @@ import tcgwars.logic.util.*;
  */
 public enum RebelClash implements LogicCardInfo {
 
-	SCYTHER_1 ("Scyther", 1, Rarity.HOLORARE, [POKEMON, BASIC]),
-	HERACROSS_2 ("Heracross", 2, Rarity.HOLORARE, [POKEMON, BASIC]),
-	LOTAD_3 ("Lotad", 3, Rarity.HOLORARE, [POKEMON, BASIC]),
-	LOMBRE_4 ("Lombre", 4, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	LUDICOLO_5 ("Ludicolo", 5, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2]),
-	SURSKIT_6 ("Surskit", 6, Rarity.HOLORARE, [POKEMON, BASIC]),
-	MASQUERAIN_7 ("Masquerain", 7, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	PHATUMP_8 ("Phatump", 8, Rarity.HOLORARE, [POKEMON, BASIC]),
-	TREVENANT_9 ("Trevenant", 9, Rarity.HOLORARE, [POKEMON, BASIC]),
-	ELDEGOSS_V_10 ("Eldegoss V", 10, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC]),
-	APPLIN_11 ("Applin", 11, Rarity.HOLORARE, [POKEMON, BASIC]),
-	FLAPPLE_12 ("Flapple", 12, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	NINETALES_V_13 ("Ninetales V", 13, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC]),
-	MAGMAR_14 ("Magmar", 14, Rarity.HOLORARE, [POKEMON, BASIC]),
-	MAGMORTAR_15 ("Magmortar", 15, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	LITWICK_16 ("Litwick", 16, Rarity.HOLORARE, [POKEMON, BASIC]),
-	LAMPENT_17 ("Lampent", 17, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	CHANDELURE_18 ("Chandelure", 18, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2]),
-	HEATMOR_19 ("Heatmor", 19, Rarity.HOLORARE, [POKEMON, BASIC]),
-	WINGULL_20 ("Wingull", 20, Rarity.HOLORARE, [POKEMON, BASIC]),
-	PELIPPER_21 ("Pelipper", 21, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	MILOTIC_V_22 ("Milotic V", 22, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC]),
-	TYMPOLE_23 ("Tympole", 23, Rarity.HOLORARE, [POKEMON, BASIC]),
-	PALPITOAD_24 ("Palpitoad", 24, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	SEISMITOAD_25 ("Seismitoad", 25, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2]),
-	GALARIAN_DARUMAKA_26 ("Galarian Darumaka", 26, Rarity.HOLORARE, [POKEMON, BASIC]),
-	GALARIAN_DARMANITAN_27 ("Galarian Darmanitan", 27, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	EISCUE_28 ("Eiscue", 28, Rarity.HOLORARE, [POKEMON, BASIC]),
-	VOLTORB_29 ("Voltorb", 29, Rarity.HOLORARE, [POKEMON, BASIC]),
-	ELECTRODE_30 ("Electrode", 30, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	ELECTABUZZ_31 ("Electabuzz", 31, Rarity.HOLORARE, [POKEMON, BASIC]),
-	ELECTIVIRE_32 ("Electivire", 32, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	SHINX_33 ("Shinx", 33, Rarity.HOLORARE, [POKEMON, BASIC]),
-	LUXIO_34 ("Luxio", 34, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	LUXRAY_35 ("Luxray", 35, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2]),
-	TOXTRICITY_V_36 ("Toxtricity V", 36, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC]),
-	TOXTRICITY_VMAX_37 ("Toxtricity VMAX", 37, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX]),
-	MORPEKO_38 ("Morpeko", 38, Rarity.HOLORARE, [POKEMON, BASIC]),
-	CLEFAIRY_39 ("Clefairy", 39, Rarity.HOLORARE, [POKEMON, BASIC]),
-	CLEFABLE_40 ("Clefable", 40, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	SIGILYPH_41 ("Sigilyph", 41, Rarity.HOLORARE, [POKEMON, BASIC]),
-	SANDYGAST_42 ("Sandygast", 42, Rarity.HOLORARE, [POKEMON, BASIC]),
-	PALOSSAND_43 ("Palossand", 43, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	HATTENA_44 ("Hattena", 44, Rarity.HOLORARE, [POKEMON, BASIC]),
-	HATTREM_45 ("Hattrem", 45, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	HATTERENE_46 ("Hatterene", 46, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2]),
-	MILCERY_47 ("Milcery", 47, Rarity.HOLORARE, [POKEMON, BASIC]),
-	ALCREMIE_48 ("Alcremie", 48, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	DRAGAPULT_V_49 ("Dragapult V", 49, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC]),
-	DRAGAPULT_VMAX_50 ("Dragapult VMAX", 50, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX]),
-	NOSEPASS_51 ("Nosepass", 51, Rarity.HOLORARE, [POKEMON, BASIC]),
-	MEDITITE_52 ("Meditite", 52, Rarity.HOLORARE, [POKEMON, BASIC]),
-	MEDICHAM_53 ("Medicham", 53, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	BARBOACH_54 ("Barboach", 54, Rarity.HOLORARE, [POKEMON, BASIC]),
-	WHISCASH_55 ("Whiscash", 55, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	GALARIAN_YAMASK_56 ("Galarian Yamask", 56, Rarity.HOLORARE, [POKEMON, BASIC]),
-	GALARIAN_RUNERIGUS_57 ("Galarian Runerigus", 57, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	ROLYCOLY_58 ("Rolycoly", 58, Rarity.HOLORARE, [POKEMON, BASIC]),
-	CARKOAL_59 ("Carkoal", 59, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	COALOSSAL_60 ("Coalossal", 60, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2]),
-	FALINKS_V_61 ("Falinks V", 61, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC]),
-	STONJOURNER_62 ("Stonjourner", 62, Rarity.HOLORARE, [POKEMON, BASIC]),
-	KOFFING_63 ("Koffing", 63, Rarity.HOLORARE, [POKEMON, BASIC]),
-	GALARIAN_WEEZING_64 ("Galarian Weezing", 64, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	SPIRITOMB_65 ("Spiritomb", 65, Rarity.HOLORARE, [POKEMON, BASIC]),
-	TRUBBISH_66 ("Trubbish", 66, Rarity.HOLORARE, [POKEMON, BASIC]),
-	GARBODOR_67 ("Garbodor", 67, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	VULLABY_68 ("Vullaby", 68, Rarity.HOLORARE, [POKEMON, BASIC]),
-	MANDIBUZZ_69 ("Mandibuzz", 69, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	MALAMAR_V_70 ("Malamar V", 70, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC]),
-	MALAMAR_VMAX_71 ("Malamar VMAX", 71, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX]),
-	SCIZOR_72 ("Scizor", 72, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	PROBOPASS_73 ("Probopass", 73, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	DURANT_74 ("Durant", 74, Rarity.HOLORARE, [POKEMON, BASIC]),
-	COPPERAJAH_V_75 ("Copperajah V", 75, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC]),
-	COPPERAJAH_VMAX_76 ("Copperajah VMAX", 76, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX]),
-	SNORLAX_77 ("Snorlax", 77, Rarity.HOLORARE, [POKEMON, BASIC]),
-	CHATOT_78 ("Chatot", 78, Rarity.HOLORARE, [POKEMON, BASIC]),
-	PIDOVE_79 ("Pidove", 79, Rarity.HOLORARE, [POKEMON, BASIC]),
-	TRANQUIL_80 ("Tranquil", 80, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	UNFEZANT_81 ("Unfezant", 81, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2]),
-	STUFFUL_82 ("Stufful", 82, Rarity.HOLORARE, [POKEMON, BASIC]),
-	BEWEAR_83 ("Bewear", 83, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
-	SKWOVET_84 ("Skwovet", 84, Rarity.HOLORARE, [POKEMON, BASIC]),
-	GREEDENT_85 ("Greedent", 85, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1]),
+	SCYTHER_1 ("Scyther", 1, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+	HERACROSS_2 ("Heracross", 2, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+	LOTAD_3 ("Lotad", 3, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+	LOMBRE_4 ("Lombre", 4, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+	LUDICOLO_5 ("Ludicolo", 5, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
+	SURSKIT_6 ("Surskit", 6, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+	MASQUERAIN_7 ("Masquerain", 7, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+	PHATUMP_8 ("Phatump", 8, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+	TREVENANT_9 ("Trevenant", 9, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+	ELDEGOSS_V_10 ("Eldegoss V", 10, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _GRASS_]),
+	APPLIN_11 ("Applin", 11, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+	FLAPPLE_12 ("Flapple", 12, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+	NINETALES_V_13 ("Ninetales V", 13, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _FIRE_]),
+	MAGMAR_14 ("Magmar", 14, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
+	MAGMORTAR_15 ("Magmortar", 15, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+	LITWICK_16 ("Litwick", 16, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
+	LAMPENT_17 ("Lampent", 17, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+	CHANDELURE_18 ("Chandelure", 18, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
+	HEATMOR_19 ("Heatmor", 19, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
+	WINGULL_20 ("Wingull", 20, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+	PELIPPER_21 ("Pelipper", 21, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+	MILOTIC_V_22 ("Milotic V", 22, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _WATER_]),
+	TYMPOLE_23 ("Tympole", 23, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+	PALPITOAD_24 ("Palpitoad", 24, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+	SEISMITOAD_25 ("Seismitoad", 25, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
+	GALARIAN_DARUMAKA_26 ("Galarian Darumaka", 26, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+	GALARIAN_DARMANITAN_27 ("Galarian Darmanitan", 27, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+	EISCUE_28 ("Eiscue", 28, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+	VOLTORB_29 ("Voltorb", 29, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
+	ELECTRODE_30 ("Electrode", 30, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+	ELECTABUZZ_31 ("Electabuzz", 31, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
+	ELECTIVIRE_32 ("Electivire", 32, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+	SHINX_33 ("Shinx", 33, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
+	LUXIO_34 ("Luxio", 34, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+	LUXRAY_35 ("Luxray", 35, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
+	TOXTRICITY_V_36 ("Toxtricity V", 36, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _LIGHTNING_]),
+	TOXTRICITY_VMAX_37 ("Toxtricity VMAX", 37, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _LIGHTNING_]),
+	MORPEKO_38 ("Morpeko", 38, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
+	CLEFAIRY_39 ("Clefairy", 39, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	CLEFABLE_40 ("Clefable", 40, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+	SIGILYPH_41 ("Sigilyph", 41, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	SANDYGAST_42 ("Sandygast", 42, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	PALOSSAND_43 ("Palossand", 43, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+	HATTENA_44 ("Hattena", 44, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	HATTREM_45 ("Hattrem", 45, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+	HATTERENE_46 ("Hatterene", 46, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
+	MILCERY_47 ("Milcery", 47, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+	ALCREMIE_48 ("Alcremie", 48, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+	DRAGAPULT_V_49 ("Dragapult V", 49, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _PSYCHIC_]),
+	DRAGAPULT_VMAX_50 ("Dragapult VMAX", 50, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _PSYCHIC_]),
+	NOSEPASS_51 ("Nosepass", 51, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
+	MEDITITE_52 ("Meditite", 52, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
+	MEDICHAM_53 ("Medicham", 53, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+	BARBOACH_54 ("Barboach", 54, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
+	WHISCASH_55 ("Whiscash", 55, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+	GALARIAN_YAMASK_56 ("Galarian Yamask", 56, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
+	GALARIAN_RUNERIGUS_57 ("Galarian Runerigus", 57, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+	ROLYCOLY_58 ("Rolycoly", 58, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
+	CARKOAL_59 ("Carkoal", 59, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+	COALOSSAL_60 ("Coalossal", 60, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
+	FALINKS_V_61 ("Falinks V", 61, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _FIGHTING_]),
+	STONJOURNER_62 ("Stonjourner", 62, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
+	KOFFING_63 ("Koffing", 63, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
+	GALARIAN_WEEZING_64 ("Galarian Weezing", 64, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
+	SPIRITOMB_65 ("Spiritomb", 65, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
+	TRUBBISH_66 ("Trubbish", 66, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
+	GARBODOR_67 ("Garbodor", 67, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
+	VULLABY_68 ("Vullaby", 68, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
+	MANDIBUZZ_69 ("Mandibuzz", 69, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
+	MALAMAR_V_70 ("Malamar V", 70, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _DARKNESS_]),
+	MALAMAR_VMAX_71 ("Malamar VMAX", 71, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
+	SCIZOR_72 ("Scizor", 72, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+	PROBOPASS_73 ("Probopass", 73, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+	DURANT_74 ("Durant", 74, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
+	COPPERAJAH_V_75 ("Copperajah V", 75, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _METAL_]),
+	COPPERAJAH_VMAX_76 ("Copperajah VMAX", 76, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _METAL_]),
+	SNORLAX_77 ("Snorlax", 77, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+	CHATOT_78 ("Chatot", 78, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+	PIDOVE_79 ("Pidove", 79, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+	TRANQUIL_80 ("Tranquil", 80, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+	UNFEZANT_81 ("Unfezant", 81, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
+	STUFFUL_82 ("Stufful", 82, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+	BEWEAR_83 ("Bewear", 83, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+	SKWOVET_84 ("Skwovet", 84, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+	GREEDENT_85 ("Greedent", 85, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
 	SCOOP_UP_NET_86 ("Scoop Up Net", 86, Rarity.HOLORARE, [TRAINER, ITEM]),
 	NUGGET_87 ("Nugget", 87, Rarity.HOLORARE, [TRAINER, ITEM]),
 	TOOL_SCRAPPER_88 ("Tool Scrapper", 88, Rarity.HOLORARE, [TRAINER, ITEM]),
@@ -186,7 +186,7 @@ public enum RebelClash implements LogicCardInfo {
 	public Card getImplementation() {
 		switch (this) {
 			case SCYTHER_1:
-			return basic (this, hp:HP080, type:null, retreatCost:1) {
+			return basic (this, hp:HP080, type:G, retreatCost:1) {
 				weakness R
 				move "Swords Dance", {
 					text "During your next turn, the base damage of this Pokemon’s Speed Sickle is increased by 70."
@@ -206,7 +206,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case HERACROSS_2:
-			return basic (this, hp:HP130, type:null, retreatCost:2) {
+			return basic (this, hp:HP130, type:G, retreatCost:2) {
 				weakness R
 				move "Strong Horn", {
 					text "110 damage."
@@ -218,7 +218,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case LOTAD_3:
-			return basic (this, hp:HP060, type:null, retreatCost:1) {
+			return basic (this, hp:HP060, type:G, retreatCost:1) {
 				weakness R
 				move "Ram", {
 					text "20 damage."
@@ -230,7 +230,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case LOMBRE_4:
-			return evolution (this, from:"Lotad", hp:HP090, type:null, retreatCost:1) {
+			return evolution (this, from:"Lotad", hp:HP090, type:G, retreatCost:1) {
 				weakness R
 				move "Fury Swipes", {
 					text "40x damage. Flip 3 coins. This attack does 40 damage times the number of heads."
@@ -242,7 +242,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case LUDICOLO_5:
-			return evolution (this, from:"Lombre", hp:HP160, type:null, retreatCost:2) {
+			return evolution (this, from:"Lombre", hp:HP160, type:G, retreatCost:2) {
 				weakness R
 				move "Energized Rush", {
 					text "60x damage. This attack does 60 damage for each Prize card you’ve taken."
@@ -254,7 +254,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case SURSKIT_6:
-			return basic (this, hp:HP050, type:null, retreatCost:1) {
+			return basic (this, hp:HP050, type:G, retreatCost:1) {
 				weakness R
 				move "Agility", {
 					text "10 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokemon during your opponent’s next turn."
@@ -266,7 +266,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case MASQUERAIN_7:
-			return evolution (this, from:"Surskit", hp:HP090, type:null, retreatCost:1) {
+			return evolution (this, from:"Surskit", hp:HP090, type:G, retreatCost:1) {
 				weakness R
 				move "Pattern Menace", {
 					text "30 damage. Your opponent can’t attach Energy from their hand to the Defending Pokemon during their next turn."
@@ -278,7 +278,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case PHATUMP_8:
-			return basic (this, hp:HP060, type:null, retreatCost:1) {
+			return basic (this, hp:HP060, type:G, retreatCost:1) {
 				weakness R
 				move "Dark Guidance", {
 					text "Choose a Basic Pokemon from your discard pile and play it onto your Bench."
@@ -298,7 +298,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case TREVENANT_9:
-			return basic (this, hp:HP130, type:null, retreatCost:3) {
+			return basic (this, hp:HP130, type:G, retreatCost:3) {
 				weakness R
 				move "Seed Bomb", {
 					text "40 damage."
@@ -318,7 +318,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case ELDEGOSS_V_10:
-			return basic (this, hp:HP180, type:null, retreatCost:1) {
+			return basic (this, hp:HP180, type:G, retreatCost:1) {
 				weakness R
 				bwAbility "Happy March", {
 					text "Once during your turn, when you play this card from your hand to your Bench, you may put a Supporter card from your discard pile into your hand."
@@ -335,7 +335,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case APPLIN_11:
-			return basic (this, hp:HP040, type:null, retreatCost:1) {
+			return basic (this, hp:HP040, type:G, retreatCost:1) {
 				weakness R
 				move "Withdraw", {
 					text "Flip a coin. If heads, prevent all damage from attacks done to this Pokemon during your opponent’s next turn."
@@ -347,15 +347,15 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case FLAPPLE_12:
-			return evolution (this, from:"Applkin", hp:HP080, type:null, retreatCost:1) {
+			return evolution (this, from:"Applkin", hp:HP080, type:G, retreatCost:1) {
 				weakness R
 
 			};
 			case NINETALES_V_13:
-			return basic (this, hp:HP200, type:null, retreatCost:2) {
+			return basic (this, hp:HP200, type:R, retreatCost:2) {
 				weakness W
 				move "Nine Tailed Transformation", {
-					text "Choose 1 of your opponent's Active Pokemon's attacks and use it as this attack."
+					text "Choose 1 of your opponent''s Active Pokemon''s attacks and use it as this attack."
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
@@ -372,7 +372,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case MAGMAR_14:
-			return basic (this, hp:HP090, type:null, retreatCost:2) {
+			return basic (this, hp:HP090, type:R, retreatCost:2) {
 				weakness W
 				move "Punch", {
 					text "10 damage."
@@ -384,7 +384,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case MAGMORTAR_15:
-			return evolution (this, from:"Magmar", hp:HP140, type:null, retreatCost:3) {
+			return evolution (this, from:"Magmar", hp:HP140, type:R, retreatCost:3) {
 				weakness W
 				move "Ground Burn", {
 					text "80+ damage. Each player discards a card from the top of their deck. This attack does 100 more damage for each Energy card discarded in this way."
@@ -396,7 +396,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case LITWICK_16:
-			return basic (this, hp:HP060, type:null, retreatCost:1) {
+			return basic (this, hp:HP060, type:R, retreatCost:1) {
 				weakness W
 				move "Scorch", {
 					text "Your opponent’s Active Pokemon is now Burned."
@@ -408,7 +408,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case LAMPENT_17:
-			return evolution (this, from:"Litwick", hp:HP080, type:null, retreatCost:1) {
+			return evolution (this, from:"Litwick", hp:HP080, type:R, retreatCost:1) {
 				weakness W
 				move "Rekindle", {
 					text "20 damage. Attach a [R] Energy card from your discard pile to this Pokemon."
@@ -420,7 +420,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case CHANDELURE_18:
-			return evolution (this, from:"Lampent", hp:HP140, type:null, retreatCost:2) {
+			return evolution (this, from:"Lampent", hp:HP140, type:R, retreatCost:2) {
 				weakness W
 				bwAbility "Protection Lamp", {
 					text "Each of your Pokemon that has any Energy attached to it has no Weakness."
@@ -437,10 +437,10 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case HEATMOR_19:
-			return basic (this, hp:HP120, type:null, retreatCost:2) {
+			return basic (this, hp:HP120, type:R, retreatCost:2) {
 				weakness W
 				move "Lick", {
-					text "20 damage. Flip a coin. If heads, your opponent's Active Pokemon is now Paralyzed."
+					text "20 damage. Flip a coin. If heads, your opponent''s Active Pokemon is now Paralyzed."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -457,7 +457,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case WINGULL_20:
-			return basic (this, hp:HP070, type:null, retreatCost:1) {
+			return basic (this, hp:HP070, type:W, retreatCost:1) {
 				weakness L
 				move "Collect", {
 					text "Draw a card."
@@ -477,7 +477,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case PELIPPER_21:
-			return evolution (this, from:"Wingull", hp:HP120, type:null, retreatCost:2) {
+			return evolution (this, from:"Wingull", hp:HP120, type:W, retreatCost:2) {
 				weakness L
 				resistance F, MINUS20
 				move "Wing Attack", {
@@ -498,10 +498,10 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case MILOTIC_V_22:
-			return basic (this, hp:HP210, type:null, retreatCost:null) {
+			return basic (this, hp:HP210, type:W, retreatCost:null) {
 				weakness L
 				move "Aqua Impact", {
-					text "10+ damage. This attack does 50 more damage for each [C] in your opponent's Active Pokemon's Retreat Cost."
+					text "10+ damage. This attack does 50 more damage for each [C] in your opponent''s Active Pokemon''s Retreat Cost."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -509,7 +509,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Hypno Splash", {
-					text "150 damage. Your opponent's Active Pokemon is now Asleep."
+					text "150 damage. Your opponent''s Active Pokemon is now Asleep."
 					energyCost W, C, C, C
 					attackRequirement {}
 					onAttack {
@@ -518,7 +518,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case TYMPOLE_23:
-			return basic (this, hp:HP060, type:null, retreatCost:1) {
+			return basic (this, hp:HP060, type:W, retreatCost:1) {
 				weakness L
 				move "Spin", {
 					text "Your opponent’s Active Pokemon is now Confused."
@@ -530,7 +530,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case PALPITOAD_24:
-			return evolution (this, from:"Tympole", hp:HP090, type:null, retreatCost:2) {
+			return evolution (this, from:"Tympole", hp:HP090, type:W, retreatCost:2) {
 				weakness L
 				move "Twirling Sign", {
 					text "30 damage. Your opponent’s Active Pokemon is now Confused."
@@ -542,7 +542,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case SEISMITOAD_25:
-			return evolution (this, from:"Palpitoad", hp:HP170, type:null, retreatCost:3) {
+			return evolution (this, from:"Palpitoad", hp:HP170, type:W, retreatCost:3) {
 				weakness L
 				move "Split Spiral Punch", {
 					text "30 damage. Your opponent’s Active Pokemon is now Confused."
@@ -562,7 +562,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case GALARIAN_DARUMAKA_26:
-			return basic (this, hp:HP080, type:null, retreatCost:2) {
+			return basic (this, hp:HP080, type:W, retreatCost:2) {
 				weakness M
 				move "Ice Punch", {
 					text "30 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
@@ -574,7 +574,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case GALARIAN_DARMANITAN_27:
-			return evolution (this, from:"Galarian Darumaka", hp:HP140, type:null, retreatCost:3) {
+			return evolution (this, from:"Galarian Darumaka", hp:HP140, type:W, retreatCost:3) {
 				weakness M
 				move "Blizzard", {
 					text "80 damage. This attack does 10 damage to each of your opponent’s Benched Pokemon. (Don’t apply Weakness and Resistance for Benched Pokemon.)"
@@ -594,7 +594,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case EISCUE_28:
-			return basic (this, hp:HP120, type:null, retreatCost:2) {
+			return basic (this, hp:HP120, type:W, retreatCost:2) {
 				weakness M
 				bwAbility "Ice Face", {
 					text "If this Pokemon's HP is at max, any damage done to it by opponent’s attacks is reduced by 60."
@@ -611,7 +611,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case VOLTORB_29:
-			return basic (this, hp:HP050, type:null, retreatCost:1) {
+			return basic (this, hp:HP050, type:L, retreatCost:1) {
 				weakness F
 				move "Continuous Tumble", {
 					text "Flip a coin until you get tails. This attack does 20 damage times the number of heads."
@@ -623,7 +623,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case ELECTRODE_30:
-			return evolution (this, from:"Voltorb", hp:HP090, type:null, retreatCost:0) {
+			return evolution (this, from:"Voltorb", hp:HP090, type:L, retreatCost:0) {
 				weakness F
 				move "Orb Collection", {
 					text "Search your deck for up to 3 Energy cards, reveal them, and put them in your hand. Then, shuffle your deck."
@@ -643,7 +643,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case ELECTABUZZ_31:
-			return basic (this, hp:HP090, type:null, retreatCost:2) {
+			return basic (this, hp:HP090, type:L, retreatCost:2) {
 				weakness F
 				move "Knuckle Punch", {
 					text "10 damage."
@@ -663,7 +663,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case ELECTIVIRE_32:
-			return evolution (this, from:"Electabuzz", hp:HPnull, type:null, retreatCost:3) {
+			return evolution (this, from:"Electabuzz", hp:HPnull, type:L, retreatCost:3) {
 				weakness F
 				move "Thundershock", {
 					text "50 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
@@ -683,7 +683,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case SHINX_33:
-			return basic (this, hp:HP060, type:null, retreatCost:1) {
+			return basic (this, hp:HP060, type:L, retreatCost:1) {
 				weakness F
 				move "Adversity", {
 					text "10 damage. If your opponent has 3 or fewer Prize cards remaining, this attack does 50 more damage."
@@ -695,7 +695,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case LUXIO_34:
-			return evolution (this, from:"Shinx", hp:HP090, type:null, retreatCost:1) {
+			return evolution (this, from:"Shinx", hp:HP090, type:L, retreatCost:1) {
 				weakness F
 				bwAbility "Top Entry", {
 					text "I<span class="_5yl5">f you draw this card from your deck at the beginning of your turn and there is room on your Bench, instead of putting it into your hand, you may play it directly onto your Bench.</span"
@@ -712,7 +712,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case LUXRAY_35:
-			return evolution (this, from:"Luxio", hp:HP160, type:null, retreatCost:1) {
+			return evolution (this, from:"Luxio", hp:HP160, type:L, retreatCost:1) {
 				weakness F
 				move "Raid", {
 					text "60 damage. If this Pokemon evolved from Luxio during your turn, this attack does 100 more damage."
@@ -732,7 +732,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case TOXTRICITY_V_36:
-			return basic (this, hp:HP210, type:null, retreatCost:2) {
+			return basic (this, hp:HP210, type:L, retreatCost:2) {
 				weakness F
 				move "Poison Jab", {
 					text "20 damage. Your opponent’s Active Pokemon is now Poisoned."
@@ -752,7 +752,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case TOXTRICITY_VMAX_37:
-			return evolution (this, from:"Toxtricity V", hp:HP320, type:null, retreatCost:2) {
+			return evolution (this, from:"Toxtricity V", hp:HP320, type:L, retreatCost:2) {
 				weakness F
 				move "Giganto Riot", {
 					text "160+ damage. This attack does 80 more damage if your opponent’s Active Pokemon is Poisoned."
@@ -764,7 +764,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case MORPEKO_38:
-			return basic (this, hp:HP080, type:null, retreatCost:1) {
+			return basic (this, hp:HP080, type:L, retreatCost:1) {
 				weakness F
 				move "Torment", {
 					text "20 damage. Choose 1 of your opponent’s Active Pokemon’s attacks. The Defending Pokemon can’t use that attack during your opponent’s next turn."
@@ -784,7 +784,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case CLEFAIRY_39:
-			return basic (this, hp:HP060, type:null, retreatCost:1) {
+			return basic (this, hp:HP060, type:P, retreatCost:1) {
 				weakness M
 				move "Glowing Finger", {
 					text "Your opponent’s Active Pokemon is now Asleep."
@@ -804,7 +804,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case CLEFABLE_40:
-			return evolution (this, from:"Clefairy", hp:HP110, type:null, retreatCost:1) {
+			return evolution (this, from:"Clefairy", hp:HP110, type:P, retreatCost:1) {
 				weakness M
 				bwAbility "Playful", {
 					text "Once during your turn, when you play this card from your hand to evolve a Pokemon, you may choose an Energy attached to your  opponent’s Active Pokemon and return it to the top of your opponent’s deck."
@@ -821,7 +821,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case SIGILYPH_41:
-			return basic (this, hp:HP110, type:null, retreatCost:1) {
+			return basic (this, hp:HP110, type:P, retreatCost:1) {
 				weakness L
 				resistance F, MINUS20
 				bwAbility "Strikes Back", {
@@ -839,7 +839,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case SANDYGAST_42:
-			return basic (this, hp:HP080, type:null, retreatCost:3) {
+			return basic (this, hp:HP080, type:P, retreatCost:3) {
 				weakness D
 				resistance F, MINUS20
 				move "Sneaky Placement", {
@@ -852,7 +852,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case PALOSSAND_43:
-			return evolution (this, from:"Sandygast", hp:HP140, type:null, retreatCost:4) {
+			return evolution (this, from:"Sandygast", hp:HP140, type:P, retreatCost:4) {
 				weakness D
 				resistance F, MINUS20
 				move "Sand Burial", {
@@ -873,7 +873,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case HATTENA_44:
-			return basic (this, hp:HP060, type:null, retreatCost:1) {
+			return basic (this, hp:HP060, type:P, retreatCost:1) {
 				weakness D
 				resistance F, MINUS20
 				move "Find a Friend", {
@@ -894,7 +894,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case HATTREM_45:
-			return evolution (this, from:"Hattena", hp:HP080, type:null, retreatCost:1) {
+			return evolution (this, from:"Hattena", hp:HP080, type:P, retreatCost:1) {
 				weakness D
 				resistance F, MINUS20
 				move "Calm Mind", {
@@ -915,7 +915,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case HATTERENE_46:
-			return evolution (this, from:"Hattrem", hp:HP150, type:null, retreatCost:2) {
+			return evolution (this, from:"Hattrem", hp:HP150, type:P, retreatCost:2) {
 				weakness D
 				resistance F, MINUS20
 				bwAbility "Mind Hat", {
@@ -924,7 +924,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Regretful Droplets", {
-					text "Put damage counters on your opponent's Active Pokemon equal to the number of Pokemon in your discard pile."
+					text "Put damage counters on your opponent''s Active Pokemon equal to the number of Pokemon in your discard pile."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -933,7 +933,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case MILCERY_47:
-			return basic (this, hp:HP050, type:null, retreatCost:1) {
+			return basic (this, hp:HP050, type:P, retreatCost:1) {
 				weakness M
 				move "Aromatherapy", {
 					text "Heal 10 damage from each of your Pokemon."
@@ -953,7 +953,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case ALCREMIE_48:
-			return evolution (this, from:"Milcery", hp:HP110, type:null, retreatCost:1) {
+			return evolution (this, from:"Milcery", hp:HP110, type:P, retreatCost:1) {
 				weakness M
 				move "Decorate", {
 					text "Attach any number of Basic Energy from your hand to your Pokemon in any way you like."
@@ -973,7 +973,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case DRAGAPULT_V_49:
-			return basic (this, hp:HP210, type:null, retreatCost:1) {
+			return basic (this, hp:HP210, type:P, retreatCost:1) {
 				weakness D
 				resistance F, MINUS20
 				move "Bite", {
@@ -994,7 +994,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case DRAGAPULT_VMAX_50:
-			return evolution (this, from:"Dragapult V", hp:HP320, type:null, retreatCost:1) {
+			return evolution (this, from:"Dragapult V", hp:HP320, type:P, retreatCost:1) {
 				weakness D
 				resistance F, MINUS20
 				move "Shred", {
@@ -1006,7 +1006,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Giganto Phantom", {
-					text "130 damage. Put 5 damage counters on your opponent's Benched Pokemon in any way you like."
+					text "130 damage. Put 5 damage counters on your opponent''s Benched Pokemon in any way you like."
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
@@ -1015,7 +1015,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case NOSEPASS_51:
-			return basic (this, hp:HP080, type:null, retreatCost:3) {
+			return basic (this, hp:HP080, type:F, retreatCost:3) {
 				weakness G
 				move "Tackle", {
 					text "10 damage."
@@ -1035,7 +1035,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case MEDITITE_52:
-			return basic (this, hp:HP070, type:null, retreatCost:1) {
+			return basic (this, hp:HP070, type:F, retreatCost:1) {
 				weakness P
 				move "Meditate", {
 					text "10 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
@@ -1047,7 +1047,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case MEDICHAM_53:
-			return evolution (this, from:"Meditite", hp:HP110, type:null, retreatCost:1) {
+			return evolution (this, from:"Meditite", hp:HP110, type:F, retreatCost:1) {
 				weakness P
 				move "Yoga Kick", {
 					text "40 damage. This attack’s damage isn’t affected by Weakness or Resistance."
@@ -1067,7 +1067,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case BARBOACH_54:
-			return basic (this, hp:HP070, type:null, retreatCost:2) {
+			return basic (this, hp:HP070, type:F, retreatCost:2) {
 				weakness G
 				move "Razor Fin", {
 					text "10 damage."
@@ -1079,7 +1079,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case WHISCASH_55:
-			return evolution (this, from:"Barboach", hp:HP140, type:null, retreatCost:3) {
+			return evolution (this, from:"Barboach", hp:HP140, type:F, retreatCost:3) {
 				weakness G
 				bwAbility "Submerge", {
 					text "As long as this Pokemon is on your Bench, it takes no damage from attacks."
@@ -1096,7 +1096,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case GALARIAN_YAMASK_56:
-			return basic (this, hp:HP070, type:null, retreatCost:2) {
+			return basic (this, hp:HP070, type:F, retreatCost:2) {
 				weakness G
 				move "Reckless Charge", {
 					text "50 damage. This Pokemon does 30 damage to itself."
@@ -1108,7 +1108,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case GALARIAN_RUNERIGUS_57:
-			return evolution (this, from:"Yamask", hp:HP100, type:null, retreatCost:2) {
+			return evolution (this, from:"Yamask", hp:HP100, type:F, retreatCost:2) {
 				weakness G
 				move "Grudge Distribution", {
 					text "Count the number of damage counters on this Galarian Runerigus. Put twice as many damage counters on your opponent’s Active Pokemon."
@@ -1128,7 +1128,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case ROLYCOLY_58:
-			return basic (this, hp:HP070, type:null, retreatCost:2) {
+			return basic (this, hp:HP070, type:F, retreatCost:2) {
 				weakness G
 				move "Ram", {
 					text "10 damage."
@@ -1140,7 +1140,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case CARKOAL_59:
-			return evolution (this, from:"Rolycoly", hp:HP100, type:null, retreatCost:3) {
+			return evolution (this, from:"Rolycoly", hp:HP100, type:F, retreatCost:3) {
 				weakness G
 				move "Ram", {
 					text "30 damage."
@@ -1160,7 +1160,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case COALOSSAL_60:
-			return evolution (this, from:"Carkoal", hp:HP160, type:null, retreatCost:4) {
+			return evolution (this, from:"Carkoal", hp:HP160, type:F, retreatCost:4) {
 				weakness G
 				bwAbility "Tar Generator", {
 					text "Once during your turn, you may search your discard pile for up to 1 [R] Energy and 1 [F] Energy and attach them to your Pokemon in any way you like."
@@ -1177,7 +1177,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case FALINKS_V_61:
-			return basic (this, hp:HP160, type:null, retreatCost:2) {
+			return basic (this, hp:HP160, type:F, retreatCost:2) {
 				weakness P
 				bwAbility "Iron Defender", {
 					text "As long as this Pokemon is in play, damage done to any of your Pokemon with Falinks in its name by your opponent's atacks is reduced by 20."
@@ -1194,7 +1194,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case STONJOURNER_62:
-			return basic (this, hp:HP140, type:null, retreatCost:4) {
+			return basic (this, hp:HP140, type:F, retreatCost:4) {
 				weakness G
 				move "Mega Kick", {
 					text "80 damage."
@@ -1214,7 +1214,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case KOFFING_63:
-			return basic (this, hp:HP070, type:null, retreatCost:1) {
+			return basic (this, hp:HP070, type:D, retreatCost:1) {
 				weakness F
 				move "Suffocating Gas", {
 					text "10 damage."
@@ -1226,7 +1226,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case GALARIAN_WEEZING_64:
-			return evolution (this, from:"Koffing", hp:HP130, type:null, retreatCost:3) {
+			return evolution (this, from:"Koffing", hp:HP130, type:D, retreatCost:3) {
 				weakness F
 				bwAbility "Chemical Change Gas", {
 					text "As long as this Pokemon is your Active Pokemon, each of your opponent’s Pokemon has no Abilities (excluding Chemical Change Gas)."
@@ -1243,7 +1243,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case SPIRITOMB_65:
-			return basic (this, hp:HP060, type:null, retreatCost:2) {
+			return basic (this, hp:HP060, type:D, retreatCost:2) {
 				weakness G
 				move "Grudge Split", {
 					text "Discard 1 card from the top of each player’s deck."
@@ -1263,7 +1263,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case TRUBBISH_66:
-			return basic (this, hp:HP060, type:null, retreatCost:1) {
+			return basic (this, hp:HP060, type:D, retreatCost:1) {
 				weakness F
 				move "Venom Shock", {
 					text "20+ damage. If your opponent’s Active Pokemon is Poisoned, this attack does 50 more damage."
@@ -1275,7 +1275,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case GARBODOR_67:
-			return evolution (this, from:"Trubbish", hp:HP120, type:null, retreatCost:2) {
+			return evolution (this, from:"Trubbish", hp:HP120, type:D, retreatCost:2) {
 				weakness F
 				bwAbility "Poison Pool", {
 					text "Once during your turn, if there is a Stadium in play, you may leave your opponents Active Pokemon Poisoned."
@@ -1292,7 +1292,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case VULLABY_68:
-			return basic (this, hp:HP060, type:null, retreatCost:1) {
+			return basic (this, hp:HP060, type:D, retreatCost:1) {
 				weakness L
 				resistance F, MINUS20
 				move "Pluck", {
@@ -1305,7 +1305,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case MANDIBUZZ_69:
-			return evolution (this, from:"Vullaby", hp:HP120, type:null, retreatCost:2) {
+			return evolution (this, from:"Vullaby", hp:HP120, type:D, retreatCost:2) {
 				weakness L
 				resistance F, MINUS20
 				move "Bone Rush", {
@@ -1326,7 +1326,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case MALAMAR_V_70:
-			return basic (this, hp:HP210, type:null, retreatCost:2) {
+			return basic (this, hp:HP210, type:D, retreatCost:2) {
 				weakness G
 				move "Drag Off", {
 					text "Choose 1 of your opponent’s Benched Pokemon and switch it with their Active Pokemon. This attack does 30 damage to the new Active Pokemon."
@@ -1346,12 +1346,12 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case MALAMAR_VMAX_71:
-			return evolution (this, from:"Malamar V", hp:HP310, type:null, retreatCost:2) {
+			return evolution (this, from:"Malamar V", hp:HP310, type:D, retreatCost:2) {
 				weakness G
 
 			};
 			case SCIZOR_72:
-			return evolution (this, from:"Scyther", hp:HP130, type:null, retreatCost:1) {
+			return evolution (this, from:"Scyther", hp:HP130, type:M, retreatCost:1) {
 				weakness R
 				resistance G, MINUS20
 				move "Raid", {
@@ -1372,7 +1372,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case PROBOPASS_73:
-			return evolution (this, from:"Nosepass", hp:HP140, type:null, retreatCost:4) {
+			return evolution (this, from:"Nosepass", hp:HP140, type:M, retreatCost:4) {
 				weakness R
 				resistance G, MINUS20
 				move "Gravity Drop", {
@@ -1393,7 +1393,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case DURANT_74:
-			return basic (this, hp:HP100, type:null, retreatCost:1) {
+			return basic (this, hp:HP100, type:M, retreatCost:1) {
 				weakness R
 				resistance G, MINUS20
 				move "Gather Bait", {
@@ -1414,7 +1414,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case COPPERAJAH_V_75:
-			return basic (this, hp:HP220, type:null, retreatCost:4) {
+			return basic (this, hp:HP220, type:M, retreatCost:4) {
 				weakness R
 				move "Adamantine Press", {
 					text "90 damage. During your opponent’s next turn, this Pokemon takes 30 less damage from attacks."
@@ -1426,7 +1426,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case COPPERAJAH_VMAX_76:
-			return evolution (this, from:"Copperajah V", hp:HP340, type:null, retreatCost:4) {
+			return evolution (this, from:"Copperajah V", hp:HP340, type:M, retreatCost:4) {
 				weakness R
 				resistance G, MINUS20
 				move "Dangerous Nose", {
@@ -1447,7 +1447,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case SNORLAX_77:
-			return basic (this, hp:HP150, type:null, retreatCost:4) {
+			return basic (this, hp:HP150, type:C, retreatCost:4) {
 				weakness F
 				move "Collect", {
 					text "Draw 2 cards."
@@ -1459,7 +1459,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case CHATOT_78:
-			return basic (this, hp:HP070, type:null, retreatCost:1) {
+			return basic (this, hp:HP070, type:C, retreatCost:1) {
 				weakness L
 				resistance F, MINUS20
 				bwAbility "Lucky Match", {
@@ -1469,7 +1469,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case PIDOVE_79:
-			return basic (this, hp:HP060, type:null, retreatCost:1) {
+			return basic (this, hp:HP060, type:C, retreatCost:1) {
 				weakness L
 				resistance F, MINUS20
 				move "Chirp", {
@@ -1490,7 +1490,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case TRANQUIL_80:
-			return evolution (this, from:"Pidove", hp:HP080, type:null, retreatCost:1) {
+			return evolution (this, from:"Pidove", hp:HP080, type:C, retreatCost:1) {
 				weakness L
 				resistance F, MINUS20
 				move "Sharp Wing", {
@@ -1511,7 +1511,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case UNFEZANT_81:
-			return evolution (this, from:"Tranquil", hp:HP150, type:null, retreatCost:1) {
+			return evolution (this, from:"Tranquil", hp:HP150, type:C, retreatCost:1) {
 				weakness L
 				resistance F, MINUS20
 				move "Daunt", {
@@ -1532,7 +1532,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case STUFFUL_82:
-			return basic (this, hp:HP080, type:null, retreatCost:2) {
+			return basic (this, hp:HP080, type:C, retreatCost:2) {
 				weakness F
 				move "Tackle", {
 					text "10 damage."
@@ -1552,7 +1552,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case BEWEAR_83:
-			return evolution (this, from:"Stufful", hp:HP140, type:null, retreatCost:3) {
+			return evolution (this, from:"Stufful", hp:HP140, type:C, retreatCost:3) {
 				weakness F
 				move "Big Throw", {
 					text "Flip a coin. If heads, toss your opponent across the room and discard your opponent’s Active Pokemon and all cards attached to it."
@@ -1564,7 +1564,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case SKWOVET_84:
-			return basic (this, hp:HP070, type:null, retreatCost:1) {
+			return basic (this, hp:HP070, type:C, retreatCost:1) {
 				weakness F
 				move "Tackle", {
 					text "10 damage."
@@ -1584,7 +1584,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case GREEDENT_85:
-			return evolution (this, from:"Skwovet", hp:HP120, type:null, retreatCost:1) {
+			return evolution (this, from:"Skwovet", hp:HP120, type:C, retreatCost:1) {
 				weakness F
 				bwAbility "Greedy Tail", {
 					text "Once during your turn, you may search your deck for a Pokemon Tool card, reveal it, and put it into your hand. Then, shuffle your deck."
@@ -1706,5 +1706,4 @@ public enum RebelClash implements LogicCardInfo {
 			return null;
 		}
 	}
-
 }
