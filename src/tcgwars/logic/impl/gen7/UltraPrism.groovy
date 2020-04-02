@@ -2483,6 +2483,18 @@ public enum UltraPrism implements LogicCardInfo {
                     bc "Timeless GX started a new turn!"
                     unregister()
                   }
+
+                  // Enable the use of a 2nd Supporter
+                  def eff
+                  register {
+                    eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
+                      if(h.effect.playerType == thisCard.player && h.object < 2) h.object = 2
+                    }
+                  }
+                  unregister {
+                    eff.unregister()
+                  }
+                  unregisterAfter 1
                 }
               }
             }
