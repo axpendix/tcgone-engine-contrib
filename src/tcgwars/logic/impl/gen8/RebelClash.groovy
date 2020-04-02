@@ -131,8 +131,7 @@ public enum RebelClash implements LogicCardInfo {
 	GALAR_MINE_93 ("Galar Mine", 93, Rarity.HOLORARE, [TRAINER, STADIUM]),
 	SPEED_LIGHTNING_ENERGY_94 ("Speed Lightning Energy", 94, Rarity.HOLORARE, [ENERGY, SPECIAL_ENERGY]),
 	HORROR_PSYCHIC_ENERGY_95 ("Horror Psychic Energy", 95, Rarity.HOLORARE, [ENERGY, SPECIAL_ENERGY]),
-	CAPTURE_ENERGY_96 ("Capture Energy", 96, Rarity.HOLORARE, [ENERGY, SPECIAL_ENERGY]),
-;
+	CAPTURE_ENERGY_96 ("Capture Energy", 96, Rarity.HOLORARE, [ENERGY, SPECIAL_ENERGY]);
 
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -1585,7 +1584,7 @@ public enum RebelClash implements LogicCardInfo {
 				}
 			};
 			case GREEDENT_85:
-			return evolution (this, from:"Peter Griffin", hp:HP120, type:null, retreatCost:1) {
+			return evolution (this, from:"Skwovet", hp:HP120, type:null, retreatCost:1) {
 				weakness F
 				bwAbility "Greedy Tail", {
 					text "Once during your turn, you may search your deck for a Pokemon Tool card, reveal it, and put it into your hand. Then, shuffle your deck."
