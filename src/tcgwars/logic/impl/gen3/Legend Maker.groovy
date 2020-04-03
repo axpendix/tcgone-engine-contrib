@@ -219,8 +219,11 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost F, C, C
           attackRequirement {}
           onAttack {
-            damage 70
-            // TODO
+            if (self.cards.findAll { it.name.contains("React Energy") }) {
+              damage 70
+            } else {
+              damage 70-self.numberOfDamageCounters*10
+            }
           }
         }
         move "Bound Crush", {
@@ -242,6 +245,8 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             // TODO
+            // if (self.cards.findAll { it.name.contains("React Energy") }) {
+            // }
           }
         }
         move "Linear Attack", {
@@ -310,7 +315,13 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            // TODO
+            def counters = 2
+            if (self.cards.findAll { it.name.contains("React Energy") }) {
+              counters = 4
+            }
+            (1..counters).each {
+              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? $it/counters remaining")
+            }
           }
         }
         move "Super Psy Bolt", {
@@ -487,7 +498,9 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            // TODO
+            if (self.cards.findAll { it.name.contains("React Energy") }) {
+              apply CONFUSED
+            }
           }
         }
         move "Cross-Cut", {
@@ -538,6 +551,8 @@ public enum LegendMaker implements LogicCardInfo {
           text "As long as Wailord has any React Energy cards attached to it, the Retreat Cost for each of your [W] Pokémon (excluding Pokémon-ex) is 0."
           delayedA {
             // TODO
+            // if (self.cards.findAll { it.name.contains("React Energy") }) {
+            // }
           }
         }
         move "Hypno Splash", {
@@ -753,7 +768,13 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            // TODO
+
+            if (self.cards.findAll { it.name.contains("React Energy") }) {
+              def magnets = all.findAll({
+                it.name.contains("Magnemite") || it.name.contains("Magneton")
+              }).size()
+              damage 10*magnets
+            }
           }
         }
         move "Magnetic Blast", {
@@ -969,7 +990,9 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            // TODO
+            if (self.cards.findAll { it.name.contains("React Energy") } && opp.bench) {
+              damage 20, opp.bench.select()
+            }
           }
         }
       };
@@ -1139,7 +1162,16 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Reactive Colors", {
           text "If Kecleon has any React Energy cards attached to it, Kecleon is Grass, Fire, Water, Lightning, Psychic, and Fighting type."
           delayedA {
-            // TODO
+            getterA GET_POKEMON_TYPE, self, {h->
+              if (self.cards.findAll { it.name.contains("React Energy") }) {
+                h.object.add(G)
+                h.object.add(R)
+                h.object.add(W)
+                h.object.add(L)
+                h.object.add(P)
+                h.object.add(F)
+              }
+            }
           }
         }
         move "Tongue Whip", {
@@ -1270,6 +1302,8 @@ public enum LegendMaker implements LogicCardInfo {
           text "As long as Roselia has any React Energy cards attached to it, remove 1 damage counter from each of your Pokémon (excluding Pokémon-ex) that has any React Energy cards attached to it between turns. You can't use more than 1 Reactive Aroma Poké-Body each turn."
           delayedA {
             // TODO
+            if (self.cards.findAll { it.name.contains("React Energy") }) {
+            }
           }
         }
         move "Flick Poison", {
@@ -1337,6 +1371,8 @@ public enum LegendMaker implements LogicCardInfo {
           text "As long as Tentacruel has any React Energy cards attached to it, prevent all effects, including damage, done to any of your Tentacruel in play by attacks from your opponent's Pokémon-ex."
           delayedA {
             // TODO
+            if (self.cards.findAll { it.name.contains("React Energy") }) {
+            }
           }
         }
         move "Water Arrow", {
@@ -1373,7 +1409,9 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            // TODO
+            if (self.cards.findAll { it.name.contains("React Energy") }) {
+              damage 20
+            }
           }
         }
       };
@@ -1561,7 +1599,9 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            // TODO
+            if (self.cards.findAll { it.name.contains("React Energy") }) {
+              heal 20, self
+            }
           }
         }
         move "Confuse Ray", {
@@ -2020,8 +2060,10 @@ public enum LegendMaker implements LogicCardInfo {
         weakness G
         pokeBody "Dual Armor", {
           text "As long as Armaldo ex has any React Energy cards attached to it, Armaldo ex is both Grass and Fighting type."
-          delayedA {
-            // TODO
+          getterA GET_POKEMON_TYPE, self, {h->
+            if (self.cards.findAll { it.name.contains("React Energy") }) {
+              h.object.add(G)
+            }
           }
         }
         move "Spiral Drain", {
@@ -2049,8 +2091,8 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-            damage 30
-            // TODO
+            def bonusDamage = Math.min(my.discard.filterByType(SUPPORTER).size()*10, 60)
+            damage 30+bonusDamage
           }
         }
       };
@@ -2137,7 +2179,8 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            // TODO
+            // TODO Curious to see if this works the way I expect it to
+            preventAllEffectsFromCustomPokemonNextTurn("Ice Barrier", self, {it.EX})
           }
         }
         move "Final Blizzard", {
@@ -2146,7 +2189,12 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            // TODO
+
+            if (opp.prizeCardSet.size() == 1 && my.all.size() == 1) {
+              opp.bench.each {
+                damage 30, it
+              }
+            }
           }
         }
       };
@@ -2167,8 +2215,11 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost F, F, C
           attackRequirement {}
           onAttack {
-            damage 30
-            // TODO
+            def amount = 30
+            if (opp.prizeCardSet.size() == 1 && my.all.size() == 1) {
+              amount = 100
+            }
+            damage amount
           }
         }
       };
@@ -2191,7 +2242,14 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            // TODO
+
+            def counters = 3
+            if (opp.prizeCardSet.size() == 1 && my.all.size() == 1) {
+              counters = 6
+            }
+            (1..counters).each {
+              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? $it/counters remaining")
+            }
           }
         }
       };
