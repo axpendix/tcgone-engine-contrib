@@ -700,7 +700,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost D, M
           attackRequirement {}
           onAttack {
-            directDamage 30, opp.all.select("Deal damage to?")
+            swiftDamage(30, opp.all.select())
           }
         }
       };
@@ -1438,7 +1438,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 20+10*opp.active.energyCount()
           }
         }
       };
