@@ -1102,7 +1102,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Haunt", {
@@ -1110,7 +1110,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-
+            directDamage 20, defending
           }
         }
       };
@@ -1120,6 +1120,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Ancient Protection", {
           text "Each of your Omanyte, Omastar, Kabuto, Kabutops, and Kabutops ex has no Weakness."
           delayedA {
+            // TODO
           }
         }
         move "Granite Head", {
@@ -1128,6 +1129,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            reduceDamageNextTurn(hp(10), thisMove)
           }
         }
       };
@@ -1137,6 +1139,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Reactive Colors", {
           text "If Kecleon has any React Energy cards attached to it, Kecleon is Grass, Fire, Water, Lightning, Psychic, and Fighting type."
           delayedA {
+            // TODO
           }
         }
         move "Tongue Whip", {
@@ -1144,7 +1147,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            damage 10, opp.all.select()
           }
         }
         move "Quick Attack", {
@@ -1153,6 +1156,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 20 }
           }
         }
       };
@@ -1165,7 +1169,8 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            heal 50, self
+            clearSpecialCondition(self)
           }
         }
         move "Body Slam", {
@@ -1174,6 +1179,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { apply PARALYZED }
           }
         }
       };
@@ -1183,6 +1189,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Paranoid", {
           text "As long as Machoke is Confused, Machoke's attacks do 50 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
+            // TODO
           }
         }
         move "Split Kick", {
@@ -1190,7 +1197,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-
+            damage 20
           }
         }
         move "Magnum Punch", {
@@ -1209,6 +1216,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Deep Sleep", {
           text "As long as Misdreavus is your Active Pokémon, each player flips 2 coins for his or her Pokémon that is Asleep between turns. If either coin is tails, that Pokémon is still Asleep."
           delayedA {
+            // TODO
           }
         }
         move "Return Trance", {
@@ -1216,7 +1224,8 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            self.cards.filterByType(ENERGY).select(count: 1).moveTo(my.hand)
+            apply ASLEEP
           }
         }
         move "Dream Eater", {
@@ -1224,7 +1233,9 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            damage 30
+            if (defending.isSPC(ASLEEP)) {
+              damage 30
+            }
           }
         }
       };
@@ -1245,7 +1256,10 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost D, C
           attackRequirement {}
           onAttack {
-            damage 30
+            if (defending.cards.filterByType(TRAINER)){
+              defending.cards.filterByType(TRAINER).discard()
+              damage 30
+            }
           }
         }
       };
@@ -1255,6 +1269,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Reactive Aroma", {
           text "As long as Roselia has any React Energy cards attached to it, remove 1 damage counter from each of your Pokémon (excluding Pokémon-ex) that has any React Energy cards attached to it between turns. You can't use more than 1 Reactive Aroma Poké-Body each turn."
           delayedA {
+            // TODO
           }
         }
         move "Flick Poison", {
@@ -1262,7 +1277,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
       };
@@ -1272,6 +1287,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Power Circulation", {
           text "Once during your turn (before your attack), you may search your discard pile for a basic Energy card, show it to your opponent, and put it on top of your deck. If you do, put 1 damage counter on Sealeo. This power can't be used if Sealeo is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Lunge Out", {
@@ -1290,6 +1306,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Reactive Healing", {
           text "Whenever you attach a React Energy card from your hand to Tangela, remove all damage counters from Tangela."
           delayedA {
+            // TODO
           }
         }
         move "Entangling Vines", {
@@ -1298,6 +1315,9 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            if (defending.basic) {
+              cantAttackNextTurn(defending)
+            }
           }
         }
         move "Gentle Wrap", {
@@ -1306,6 +1326,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            cantRetreat(defending)
           }
         }
       };
@@ -1315,6 +1336,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Reactive Shield", {
           text "As long as Tentacruel has any React Energy cards attached to it, prevent all effects, including damage, done to any of your Tentacruel in play by attacks from your opponent's Pokémon-ex."
           delayedA {
+            // TODO
           }
         }
         move "Water Arrow", {
@@ -1322,7 +1344,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-
+            damage 20, opp.all.select()
           }
         }
         move "Fury Strikes", {
@@ -1330,7 +1352,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            flip 3, { damage 20 }
           }
         }
       };
@@ -1342,7 +1364,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { apply CONFUSED }
           }
         }
         move "Bi-Blast", {
@@ -1351,6 +1373,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            // TODO
           }
         }
       };
@@ -1363,6 +1386,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            apply ASLEEP
           }
         }
         move "Vine Whip", {
@@ -1383,7 +1407,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            attachEnergyFrom(type:M, my.hand, self)
           }
         }
         move "Headbutt", {
@@ -1403,7 +1427,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            apply ASLEEP
           }
         }
       };
@@ -1415,7 +1439,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost L
           attackRequirement {}
           onAttack {
-
+            damage 10, opp.all.select()
           }
         }
         move "Lightning Ball", {
@@ -1435,7 +1459,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { preventAllEffectsNextTurn() }
           }
         }
         move "Clamp Splash", {
@@ -1456,7 +1480,9 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip {
+              apply PARALYZED
+            }
           }
         }
         move "Smog", {
@@ -1464,7 +1490,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-
+            apply POISONED
           }
         }
       };
@@ -1477,6 +1503,10 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            all.each {
+              damage 10, it
+            }
+            damage 50, self
           }
         }
       };
@@ -1488,7 +1518,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Sludge Toss", {
@@ -1509,6 +1539,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { apply PARALYZED }
           }
         }
         move "Firebreathing", {
@@ -1517,6 +1548,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 20 }
           }
         }
       };
@@ -1529,6 +1561,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            // TODO
           }
         }
         move "Confuse Ray", {
@@ -1537,6 +1570,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            apply CONFUSED
           }
         }
       };
@@ -1549,6 +1583,9 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            if (opp.bench) {
+              damage 10, opp.bench.select()
+            }
           }
         }
       };
@@ -1558,6 +1595,14 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Magmar from your hand onto Magby (this counts as evolving Magby) and remove all damage counters from Magby."
           actionA {
+            assert my.hand.findAll{it.name.contains("Magmar")} : "There is no pokémon in your hand to evolve ${self}."
+            checkLastTurn()
+            powerUsed()
+            def tar = my.hand.findAll { it.name.contains("Magmar") }.select()
+            if (tar) {
+              evolve(self, tar.first(), OTHER)
+              heal self.numberOfDamageCounters*10, self
+            }
           }
         }
         move "Ignite", {
@@ -1566,6 +1611,9 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Full Flame") {
+              apply BURNED
+            }
           }
         }
       };
@@ -1578,16 +1626,21 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 10
+            flip 1, {
+              damage 10
+              discardDefendingEnergy()
+            }, {}
           }
         }
       };
       case OMANYTE_60:
+      // TODO
       return evolution (this, from:"Mysterious Fossil", hp:HP070, type:W, retreatCost:1) {
         weakness L
         pokeBody "Ancient Tentacles", {
           text "Damage done to your opponent's Pokémon by your Omanyte, Omastar, Kabuto, Kabutops, or Kabutops ex isn't affected by Resistance."
           delayedA {
+            // TODO
           }
         }
         move "[Poké-Body] Ancient Tentacles", {
@@ -1595,7 +1648,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Rising Lunge", {
@@ -1613,9 +1666,12 @@ public enum LegendMaker implements LogicCardInfo {
         move "Drawup Power", {
           text "Search your deck for an Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert deck : "Deck is empty"
+          }
           onAttack {
-
+            my.deck.search ("Put Energy Card to hand", cardTypeFilter(ENERGY)).moveTo(hand)
+            shuffleDeck()
           }
         }
         move "Continuous Tumble", {
@@ -1624,6 +1680,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flipUntilTails { damage 10 }
           }
         }
       };
@@ -1644,6 +1701,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 20 }
           }
         }
       };
@@ -1676,7 +1734,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Jump On", {
@@ -1685,6 +1743,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 20 }
           }
         }
       };
@@ -1708,7 +1767,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-
+            apply POISONED
           }
         }
       };
@@ -1718,9 +1777,9 @@ public enum LegendMaker implements LogicCardInfo {
         move "Pebble Throw", {
           text "Choose 1 of your opponent's Benched Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
-          attackRequirement {}
+          attackRequirement { assert opp.bench : "Opponent has no benched Pokemon"}
           onAttack {
-
+            damage 10, opp.bench.select()
           }
         }
         move "Double Pinchers", {
@@ -1728,7 +1787,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
-            damage 20
+            flip 2, { damage 20 }
           }
         }
       };
@@ -1740,7 +1799,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { apply PARALYZED }
           }
         }
         move "Bouncing Ball", {
@@ -1749,6 +1808,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            damage 10, self
           }
         }
       };
@@ -1760,7 +1820,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            damage 20
           }
         }
         move "Whirlpool", {
@@ -1769,6 +1829,9 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip {
+              discardDefendingEnergy()
+            }
           }
         }
       };
@@ -1778,6 +1841,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Poison Payback", {
           text "If Wurmple is your Active Pokémon and is damaged by an opponent's attack (even if Wurmple is Knocked Out), the Attacking Pokémon is now Poisoned."
           delayedA {
+            // TODO
           }
         }
         move "String Pull", {
@@ -1785,7 +1849,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            whirlwind()
           }
         }
       };
@@ -1795,6 +1859,14 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Wobbuffet from your hand onto Wynaut (this counts as evolving Wynaut) and remove all damage counters from Wynaut."
           actionA {
+            assert my.hand.findAll{it.name == "Wobbuffett"} : "There is no Pokémon in your hand to evolve ${self}."
+            checkLastTurn()
+            powerUsed()
+            def tar = my.hand.findAll { it.name == "Wobbuffet" }.select()
+            if (tar) {
+              evolve(self, tar.first(), OTHER)
+              heal self.numberOfDamageCounters*10, self
+            }
           }
         }
         move "Confusion Wave", {
@@ -1802,7 +1874,8 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            apply CONFUSED
+            apply CONFUSED, self
           }
         }
       };
@@ -1811,6 +1884,7 @@ public enum LegendMaker implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "At any time between turns, each player puts 1 damage counter on his or her Pokémon that has a Poké-Power."
         onPlay {
+          // TODO
         }
         onRemoveFromPlay{
         }
@@ -1820,6 +1894,7 @@ public enum LegendMaker implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Draw 3 cards. Your opponent may also draw a card."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1829,6 +1904,7 @@ public enum LegendMaker implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Put 4 damage counters instead of 2 on each Burned Pokémon between turns. The Special Condition Burned can't be removed by evolving or devolving the Burned Pokémon."
         onPlay {
+          // TODO
         }
         onRemoveFromPlay{
         }
@@ -1838,6 +1914,7 @@ public enum LegendMaker implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each player can't have more than 3 Benched Pokémon. When Giant Stump comes into play, each player discards Benched Pokémon and any cards attached to them until he or she has 3 Benched Pokémon. (You discard your Pokémon first.)"
         onPlay {
+          // TODO
         }
         onRemoveFromPlay{
         }
@@ -1847,6 +1924,7 @@ public enum LegendMaker implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Once during each player's turn, if the player has no Special Energy cards in his or her discard pile, that player searches his or her discard pile for a basic Energy card, shows it to the opponent, and puts it into his or her hand."
         onPlay {
+          // TODO
         }
         onRemoveFromPlay{
         }
@@ -1856,6 +1934,7 @@ public enum LegendMaker implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Once during each player's turn, that player may put an Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep, or Anorith onto his or her Bench from his or her hand. Treat the new Benched Pokémon as Basic Pokémon."
         onPlay {
+          // TODO
         }
         onRemoveFromPlay{
         }
@@ -1865,6 +1944,7 @@ public enum LegendMaker implements LogicCardInfo {
         text "Play Claw Fossil as if it were a Basic Pokémon. While in play, Claw Fossil counts as a [C] Pokémon (as well as a Trainer card). Claw Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Claw Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Claw Fossil from play." +
           "If Claw Fossil is your Active Pokémon and is damaged by an opponent's attack (even if Claw Fossil is Knocked Out), put 1 damage counter on the Attacking Pokémon."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1873,6 +1953,7 @@ public enum LegendMaker implements LogicCardInfo {
       return itemCard (this) {
         text "Play Mysterious Fossil as if it were a Basic Pokémon. While in play, Mysterious Fossil counts as a [C] Pokémon (as well as a Trainer card). Mysterious Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Mysterious Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Mysterious Fossil from play."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1882,6 +1963,7 @@ public enum LegendMaker implements LogicCardInfo {
         text "Play Root Fossil as if it were a Basic Pokémon. While in play, Root Fossil counts as a [C] Pokémon (as well as a Trainer card). Root Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Root Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Root Fossil from play." +
           "At any time between turns, remove 1 damage counter from Root Fossil."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1890,6 +1972,7 @@ public enum LegendMaker implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) When you attach this card from your hand to 1 of your Pokémon, put 1 damage counter on that Pokémon."
         onPlay {reason->
+          // TODO
         }
         onRemoveFromPlay {
         }
@@ -1902,6 +1985,7 @@ public enum LegendMaker implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "React Energy provides [C] Energy."
         onPlay {reason->
+          // TODO
         }
         onRemoveFromPlay {
         }
@@ -1916,14 +2000,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Fire Remedy", {
           text "Whenever you attach a [R] Energy from your hand to Arcanine ex, remove 1 damage counter and all Special Conditions from Arcanine ex."
           delayedA {
-          }
-        }
-        move "[Pokémon-ex rule]", {
-          text "When Pokémon-ex has been Knocked Out, your opponent takes 2 Prize cards."
-          energyCost
-          attackRequirement {}
-          onAttack {
-
+            // TODO
           }
         }
         move "Overrun", {
@@ -1932,6 +2009,9 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            if (opp.bench) {
+              damage 20, opp.bench.select()
+            }
           }
         }
       };
@@ -1941,6 +2021,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Dual Armor", {
           text "As long as Armaldo ex has any React Energy cards attached to it, Armaldo ex is both Grass and Fighting type."
           delayedA {
+            // TODO
           }
         }
         move "Spiral Drain", {
@@ -1949,6 +2030,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            heal 20, self
           }
         }
       };
@@ -1959,6 +2041,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Shady Move", {
           text "Once during your turn (before your attack), if Banette ex is your Active Pokémon, you may move 1 damage counter from either player's Pokémon to another Pokémon (yours or your opponent's). This power can't be used if Banette ex is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Shadow Chant", {
@@ -1967,6 +2050,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            // TODO
           }
         }
       };
@@ -1975,6 +2059,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Safeguard", {
           text "Prevent all effects of attacks, including damage, done to Dustox ex by your opponent's Pokémon-ex."
           delayedA {
+            // TODO
           }
         }
         move "Silver Wind", {
@@ -1983,6 +2068,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            // TODO
           }
         }
       };
@@ -1992,6 +2078,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Emerge Charge", {
           text "Once during your turn, when you play Flygon ex from your hand to evolve 1 of your Pokémon, you may search your discard pile for up to 2 Energy cards and attach them to Flygon ex."
           actionA {
+            // TODO
           }
         }
         move "Reactive Blast", {
@@ -2000,6 +2087,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            // TODO
           }
         }
       };
@@ -2009,6 +2097,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Versatile", {
           text "Mew ex can use the attacks of all Pokémon in play as its own. (You still need the necessary Energy to use each attack.)"
           delayedA {
+            // TODO
           }
         }
         move "Power Move", {
@@ -2016,7 +2105,9 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-
+            // TODO
+            attachEnergyFrom(my.deck, self)
+            shuffleDeck()
           }
         }
       };
@@ -2025,6 +2116,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Icy Aura", {
           text "As long as Walrein ex is your Active Pokémon, put 1 damage count on each Active Pokémon (both yours and your opponent's) between turns, excluding [W] Pokémon."
           delayedA {
+            // TODO
           }
         }
         move "Water Arrow", {
@@ -2032,7 +2124,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost W, C
           attackRequirement {}
           onAttack {
-
+            damage 40, opp.all.select()
           }
         }
       };
@@ -2045,6 +2137,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            // TODO
           }
         }
         move "Final Blizzard", {
@@ -2053,6 +2146,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            // TODO
           }
         }
       };
@@ -2065,6 +2159,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            heal 10, self
           }
         }
         move "Final Blast", {
@@ -2073,6 +2168,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            // TODO
           }
         }
       };
@@ -2086,6 +2182,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            reduceDamageNextTurn(hp(10), thisMove)
           }
         }
         move "Final Laser", {
@@ -2094,6 +2191,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            // TODO
           }
         }
       };
@@ -2105,7 +2203,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { apply PARALYZED }
           }
         }
         move "Iron Tail", {
@@ -2113,7 +2211,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost M, C
           attackRequirement {}
           onAttack {
-            damage 20
+            flipUntilTails { damage 20 }
           }
         }
       };
@@ -2121,5 +2219,4 @@ public enum LegendMaker implements LogicCardInfo {
       return null;
     }
   }
-
 }
