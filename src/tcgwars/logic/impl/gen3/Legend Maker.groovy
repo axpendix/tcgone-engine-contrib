@@ -1026,7 +1026,9 @@ public enum LegendMaker implements LogicCardInfo {
         move "Down Draw", {
           text "Draw 2 cards from the bottom of your deck."
           energyCost C
-          attackRequirement { my.deck : "No cards in deck" }
+          attackRequirement {
+            assert my.deck : "No cards in deck"
+          }
           onAttack {
             if (my.deck.size() < 2) {
               draw 2
