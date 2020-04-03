@@ -978,7 +978,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           onAttack {
             damage 20
 
-            if self.cards.findAll { it.name.contains("Holon Energy") } {
+            if (self.cards.findAll { it.name.contains("Holon Energy") }) {
               opp.bench.each {
                 damage 10, it
               }
@@ -1094,7 +1094,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           attackRequirement { assert my.deck : "Deck is empty" }
           onAttack {
             draw 1
-            if self.cards.findAll { it.name.contains("Holon Energy") } {
+            if (self.cards.findAll { it.name.contains("Holon Energy") }) {
               draw 2
             }
           }
