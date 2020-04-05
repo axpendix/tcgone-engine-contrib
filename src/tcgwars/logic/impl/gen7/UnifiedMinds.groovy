@@ -1774,7 +1774,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Perfection", {
             text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
             actionA {
-              assert self.active: "This Pokemon is not in an Active Pokemon"
+              assert self.active: "This Pokemon is not an Active Pokemon"
               def perfectionMoves = []
               self.owner.pbg.bench.findAll {it.pokemonGX || it.pokemonEX}.each {
                 if (it.topPokemonCard.name != "Mewtwo & Mew-GX")
