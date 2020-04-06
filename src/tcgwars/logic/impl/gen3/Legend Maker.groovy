@@ -1273,7 +1273,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Ancient Protection", {
           text "Each of your Omanyte, Omastar, Kabuto, Kabutops, and Kabutops ex has no Weakness."
           getterA (GET_WEAKNESSES) { h->
-            if (h.effect.target.name == "Omanyte" || h.effect.target.name == "Omastar" || h.effect.target.name == "Kabuto" || h.effect.target.name == "Kabutops" || h.effect.target.name == "Kabutops ex" || ) {
+            if (h.effect.target.name == "Omanyte" || h.effect.target.name == "Omastar" || h.effect.target.name == "Kabuto" || h.effect.target.name == "Kabutops" || h.effect.target.name == "Kabutops ex" ) {
               def list = h.object as List<Weakness>
               list.clear()
             }
