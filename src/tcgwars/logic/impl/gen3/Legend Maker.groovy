@@ -783,7 +783,11 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Sol Shade", {
           text "As long as you have Solrock in play, each player's [R] Pokémon (excluding Pokémon-ex) can't use any Poké-Powers."
           delayedA {
-            // TODO
+            getterA (IS_ABILITY_BLOCKED) { Holder h->
+              if (my.all.find{it.name == 'Solrock'} && h.effect.target.owner != self.owner && h.effect.target.types.contains(R) && !h.effect.target.EX && h.effect.ability instanceof PokePower) {
+                h.object=true
+              }
+            }
           }
         }
         move "Moon Guidance", {
@@ -842,8 +846,18 @@ public enum LegendMaker implements LogicCardInfo {
         resistance M, MINUS30
         pokePower "Reactive Recharge", {
           text "If Magneton would be Knocked Out by damage from an opponent's attack, you may move any number of React Energy cards from Magneton to your Pokémon in any way you like."
-          actionA {
-            // TODO
+          delayedA {
+            before KNOCKOUT, {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut==self  && ef.pokemonToBeKnockedOut.cards.findAll {it.name.contains("React Energy")}) {
+                if (confirm("Move an energy from ${ef.pokemonToBeKnockedOut} to $self ?")) {
+                  while(ef.pokemonToBeKnockedOut.cards.findAll{it.name.contains("React Energy")}) {
+                    def card=ef.pokemonToBeKnockedOut.cards.name.contains("React Energy").select("Card to move").first()
+                    def tar = my.all.getExcludedList(ef.pokemonToBeKnockedOut).select("Select Pokemon to move React Energy to")
+                    energySwitch(ef.pokemonToBeKnockedOut, tar, card)
+                  }
+                }
+              }
+            }
           }
         }
         move "Multiple Force", {
@@ -1534,8 +1548,19 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Reactive Shield", {
           text "As long as Tentacruel has any React Energy cards attached to it, prevent all effects, including damage, done to any of your Tentacruel in play by attacks from your opponent's Pokémon-ex."
           delayedA {
-            // TODO
-            if (self.cards.findAll { it.name.contains("React Energy") }) {
+            before null, self, Source.ATTACK, {
+              if (!self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && self.owner.pbg.active.name == "Tentacruel") {
+                bc "Fast Protection prevents effect"
+                prevent()
+              }
+            }
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to.name == "Tentacruel") && it.notNoEffect && !it.from.EX && self.cards.findAll{it.name.contains("React Energy")}) {
+                  it.dmg = hp(0)
+                  bc "Fast Protection prevents damage"
+                }
+              }
             }
           }
         }
@@ -1843,18 +1868,11 @@ public enum LegendMaker implements LogicCardInfo {
         }
       };
       case OMANYTE_60:
-      // TODO
       return evolution (this, from:"Mysterious Fossil", hp:HP070, type:W, retreatCost:1) {
         weakness L
         pokeBody "Ancient Tentacles", {
           text "Damage done to your opponent's Pokémon by your Omanyte, Omastar, Kabuto, Kabutops, or Kabutops ex isn't affected by Resistance."
           // TODO
-          getterA (GET_WEAKNESSES) { h->
-            if (h.effect.target.name == "Omanyte" || h.effect.target.name == "Omastar" || h.effect.target.name == "Kabuto" || h.effect.target.name == "Kabutops" || h.effect.target.name == "Kabutops ex" || ) {
-              def list = h.object as List<Weakness>
-              list.clear()
-            }
-          }
         }
         move "Rising Lunge", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
