@@ -40,36 +40,36 @@ import tcgwars.logic.util.*;
  */
 public enum DeltaSpecies implements LogicCardInfo {
 
-  BEEDRILL_Δ_1 ("Beedrill δ", 1, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_, _METAL_]),
-  CROBAT_Δ_2 ("Crobat δ", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_, _METAL_]),
-  DRAGONITE_Δ_3 ("Dragonite δ", 3, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_, _METAL_]),
-  ESPEON_Δ_4 ("Espeon δ", 4, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_, _METAL_]),
-  FLAREON_Δ_5 ("Flareon δ", 5, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_, _METAL_]),
-  GARDEVOIR_Δ_6 ("Gardevoir δ", 6, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_, _METAL_]),
-  JOLTEON_Δ_7 ("Jolteon δ", 7, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_, _METAL_]),
-  LATIAS_Δ_8 ("Latias δ", 8, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_, _METAL_]),
-  LATIOS_Δ_9 ("Latios δ", 9, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_, _METAL_]),
-  MAROWAK_Δ_10 ("Marowak δ", 10, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_, _METAL_]),
-  METAGROSS_Δ_11 ("Metagross δ", 11, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_, _METAL_]),
-  MEWTWO_Δ_12 ("Mewtwo δ", 12, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_, _METAL_]),
-  RAYQUAZA_Δ_13 ("Rayquaza δ", 13, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_, _METAL_]),
-  SALAMENCE_Δ_14 ("Salamence δ", 14, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_, _METAL_]),
-  STARMIE_Δ_15 ("Starmie δ", 15, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_, _METAL_]),
-  TYRANITAR_Δ_16 ("Tyranitar δ", 16, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_, _METAL_]),
-  UMBREON_Δ_17 ("Umbreon δ", 17, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_, _METAL_]),
-  VAPOREON_Δ_18 ("Vaporeon δ", 18, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_, _METAL_]),
-  AZUMARILL_Δ_19 ("Azumarill δ", 19, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_, _METAL_]),
+  BEEDRILL_DELTA_1 ("Beedrill δ", 1, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_, _METAL_]),
+  CROBAT_DELTA_2 ("Crobat δ", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_, _METAL_]),
+  DRAGONITE_DELTA_3 ("Dragonite δ", 3, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_, _METAL_]),
+  ESPEON_DELTA_4 ("Espeon δ", 4, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_, _METAL_]),
+  FLAREON_DELTA_5 ("Flareon δ", 5, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_, _METAL_]),
+  GARDEVOIR_DELTA_6 ("Gardevoir δ", 6, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_, _METAL_]),
+  JOLTEON_DELTA_7 ("Jolteon δ", 7, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_, _METAL_]),
+  LATIAS_DELTA_8 ("Latias δ", 8, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_, _METAL_]),
+  LATIOS_DELTA_9 ("Latios δ", 9, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_, _METAL_]),
+  MAROWAK_DELTA_10 ("Marowak δ", 10, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_, _METAL_]),
+  METAGROSS_DELTA_11 ("Metagross δ", 11, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_, _METAL_]),
+  MEWTWO_DELTA_12 ("Mewtwo δ", 12, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_, _METAL_]),
+  RAYQUAZA_DELTA_13 ("Rayquaza δ", 13, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_, _METAL_]),
+  SALAMENCE_DELTA_14 ("Salamence δ", 14, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_, _METAL_]),
+  STARMIE_DELTA_15 ("Starmie δ", 15, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_, _METAL_]),
+  TYRANITAR_DELTA_16 ("Tyranitar δ", 16, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_, _METAL_]),
+  UMBREON_DELTA_17 ("Umbreon δ", 17, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_, _METAL_]),
+  VAPOREON_DELTA_18 ("Vaporeon δ", 18, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_, _METAL_]),
+  AZUMARILL_DELTA_19 ("Azumarill δ", 19, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_, _METAL_]),
   AZURILL_20 ("Azurill", 20, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
   HOLON_S_ELECTRODE_21 ("Holon's Electrode", 21, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   HOLON_S_MAGNETON_22 ("Holon's Magneton", 22, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
   HYPNO_23 ("Hypno", 23, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  MIGHTYENA_Δ_24 ("Mightyena δ", 24, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_, _METAL_]),
+  MIGHTYENA_DELTA_24 ("Mightyena δ", 24, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_, _METAL_]),
   PORYGON2_25 ("Porygon2", 25, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   RAIN_CASTFORM_26 ("Rain Castform", 26, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  SANDSLASH_Δ_27 ("Sandslash δ", 27, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_, _METAL_]),
+  SANDSLASH_DELTA_27 ("Sandslash δ", 27, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_, _METAL_]),
   SLOWKING_28 ("Slowking", 28, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   SNOW_CLOUD_CASTFORM_29 ("Snow-cloud Castform", 29, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  STARMIE_Δ_30 ("Starmie δ", 30, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_, _METAL_]),
+  STARMIE_DELTA_30 ("Starmie δ", 30, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_, _METAL_]),
   SUNNY_CASTFORM_31 ("Sunny Castform", 31, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
   SWELLOW_32 ("Swellow", 32, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   WEEZING_33 ("Weezing", 33, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
@@ -80,39 +80,39 @@ public enum DeltaSpecies implements LogicCardInfo {
   DITTO_38 ("Ditto", 38, Rarity.UNCOMMON, [POKEMON, BASIC, _PSYCHIC_]),
   DITTO_39 ("Ditto", 39, Rarity.UNCOMMON, [POKEMON, BASIC, _LIGHTNING_]),
   DITTO_40 ("Ditto", 40, Rarity.UNCOMMON, [POKEMON, BASIC, _WATER_]),
-  DRAGONAIR_Δ_41 ("Dragonair δ", 41, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  DRAGONAIR_Δ_42 ("Dragonair δ", 42, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  DRAGONAIR_DELTA_41 ("Dragonair δ", 41, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  DRAGONAIR_DELTA_42 ("Dragonair δ", 42, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   GOLBAT_43 ("Golbat", 43, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   HARIYAMA_44 ("Hariyama", 44, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   ILLUMISE_45 ("Illumise", 45, Rarity.UNCOMMON, [POKEMON, BASIC, _GRASS_]),
   KAKUNA_46 ("Kakuna", 46, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   KIRLIA_47 ("Kirlia", 47, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   MAGNETON_48 ("Magneton", 48, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  METANG_Δ_49 ("Metang δ", 49, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  METANG_DELTA_49 ("Metang δ", 49, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   PERSIAN_50 ("Persian", 50, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  PUPITAR_Δ_51 ("Pupitar δ", 51, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  PUPITAR_DELTA_51 ("Pupitar δ", 51, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   RAPIDASH_52 ("Rapidash", 52, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  SHELGON_Δ_53 ("Shelgon δ", 53, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  SHELGON_Δ_54 ("Shelgon δ", 54, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  SHELGON_DELTA_53 ("Shelgon δ", 53, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  SHELGON_DELTA_54 ("Shelgon δ", 54, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   SKARMORY_55 ("Skarmory", 55, Rarity.UNCOMMON, [POKEMON, BASIC, _METAL_]),
   VOLBEAT_56 ("Volbeat", 56, Rarity.UNCOMMON, [POKEMON, BASIC, _GRASS_]),
-  BAGON_Δ_57 ("Bagon δ", 57, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
-  BAGON_Δ_58 ("Bagon δ", 58, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
-  BELDUM_Δ_59 ("Beldum δ", 59, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
+  BAGON_DELTA_57 ("Bagon δ", 57, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
+  BAGON_DELTA_58 ("Bagon δ", 58, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
+  BELDUM_DELTA_59 ("Beldum δ", 59, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   CUBONE_60 ("Cubone", 60, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   DITTO_61 ("Ditto", 61, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
   DITTO_62 ("Ditto", 62, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   DITTO_63 ("Ditto", 63, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   DITTO_64 ("Ditto", 64, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
-  DRATINI_Δ_65 ("Dratini δ", 65, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  DRATINI_Δ_66 ("Dratini δ", 66, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
+  DRATINI_DELTA_65 ("Dratini δ", 65, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
+  DRATINI_DELTA_66 ("Dratini δ", 66, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   DROWZEE_67 ("Drowzee", 67, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
-  EEVEE_Δ_68 ("Eevee δ", 68, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
+  EEVEE_DELTA_68 ("Eevee δ", 68, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
   EEVEE_69 ("Eevee", 69, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   HOLON_S_MAGNEMITE_70 ("Holon's Magnemite", 70, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
   HOLON_S_VOLTORB_71 ("Holon's Voltorb", 71, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   KOFFING_72 ("Koffing", 72, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
-  LARVITAR_Δ_73 ("Larvitar δ", 73, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
+  LARVITAR_DELTA_73 ("Larvitar δ", 73, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
   MAGNEMITE_74 ("Magnemite", 74, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   MAKUHITA_75 ("Makuhita", 75, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   MARILL_76 ("Marill", 76, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
@@ -207,7 +207,7 @@ public enum DeltaSpecies implements LogicCardInfo {
   @Override
   public Card getImplementation() {
     switch (this) {
-      case BEEDRILL_Δ_1:
+      case BEEDRILL_DELTA_1:
       return evolution (this, from:"Kakuna", hp:HP090, type:[G, M], retreatCost:0) {
         weakness R
         pokePower "Final Sting", {
@@ -229,7 +229,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case CROBAT_Δ_2:
+      case CROBAT_DELTA_2:
       return evolution (this, from:"Golbat", hp:HP090, type:[G, M], retreatCost:0) {
         weakness P
         move "Radar Jam", {
@@ -264,7 +264,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case DRAGONITE_Δ_3:
+      case DRAGONITE_DELTA_3:
       return evolution (this, from:"Dragonair", hp:HP100, type:[L, M], retreatCost:2) {
         weakness C
         resistance G, MINUS30
@@ -298,7 +298,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case ESPEON_Δ_4:
+      case ESPEON_DELTA_4:
       return evolution (this, from:"Eevee", hp:HP070, type:[P, M], retreatCost:1) {
         weakness P
         pokePower "Delta Heal", {
@@ -326,7 +326,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case FLAREON_Δ_5:
+      case FLAREON_DELTA_5:
       return evolution (this, from:"Eevee", hp:HP070, type:[R, M], retreatCost:1) {
         weakness W
         move "Delta Search", {
@@ -362,7 +362,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case GARDEVOIR_Δ_6:
+      case GARDEVOIR_DELTA_6:
       return evolution (this, from:"Kirlia", hp:HP100, type:[P, M], retreatCost:2) {
         weakness P
         pokePower "Energy Jump", {
@@ -397,7 +397,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case JOLTEON_Δ_7:
+      case JOLTEON_DELTA_7:
       return evolution (this, from:"Eevee", hp:HP070, type:[L, M], retreatCost:1) {
         weakness F
         resistance M, MINUS30
@@ -434,7 +434,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case LATIAS_Δ_8:
+      case LATIAS_DELTA_8:
       return basic (this, hp:HP070, type:[L, M], retreatCost:1) {
         weakness C
         resistance P, MINUS30
@@ -463,7 +463,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case LATIOS_Δ_9:
+      case LATIOS_DELTA_9:
       return basic (this, hp:HP080, type:[L, M], retreatCost:2) {
         weakness C
         resistance G, MINUS30
@@ -493,7 +493,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case MAROWAK_Δ_10:
+      case MAROWAK_DELTA_10:
       return evolution (this, from:"Cubone", hp:HP080, type:[F, M], retreatCost:1) {
         weakness G
         move "Energy Bone", {
@@ -517,7 +517,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case METAGROSS_Δ_11:
+      case METAGROSS_DELTA_11:
       return evolution (this, from:"Metang", hp:HP100, type:[L, M], retreatCost:3) {
         weakness R
         resistance G, MINUS30
@@ -537,7 +537,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case MEWTWO_Δ_12:
+      case MEWTWO_DELTA_12:
       return basic (this, hp:HP070, type:[R, M], retreatCost:1) {
         weakness P
         pokePower "Delta Switch", {
@@ -565,7 +565,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case RAYQUAZA_Δ_13:
+      case RAYQUAZA_DELTA_13:
       return basic (this, hp:HP090, type:[L, M], retreatCost:3) {
         weakness C
         resistance W, MINUS30
@@ -596,7 +596,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case SALAMENCE_Δ_14:
+      case SALAMENCE_DELTA_14:
       return evolution (this, from:"Shelgon", hp:HP110, type:[R, M], retreatCost:1) {
         weakness C
         resistance R, MINUS30
@@ -624,7 +624,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case STARMIE_Δ_15:
+      case STARMIE_DELTA_15:
       return evolution (this, from:"Staryu", hp:HP060, type:[W, M], retreatCost:0) {
         weakness L
         pokePower "Metal Navigation", {
@@ -659,7 +659,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case TYRANITAR_Δ_16:
+      case TYRANITAR_DELTA_16:
       return evolution (this, from:"Pupitar", hp:HP120, type:[R, M], retreatCost:2) {
         weakness G
         pokePower "Crush Draw", {
@@ -685,7 +685,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case UMBREON_Δ_17:
+      case UMBREON_DELTA_17:
       return evolution (this, from:"Eevee", hp:HP070, type:[D, M], retreatCost:1) {
         weakness F
         resistance P, MINUS30
@@ -704,7 +704,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case VAPOREON_Δ_18:
+      case VAPOREON_DELTA_18:
       return evolution (this, from:"Eevee", hp:HP070, type:[W, M], retreatCost:1) {
         weakness L
         move "Delta Search", {
@@ -741,7 +741,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case AZUMARILL_Δ_19:
+      case AZUMARILL_DELTA_19:
       return evolution (this, from:"Marill", hp:HP080, type:[W, M], retreatCost:2) {
         weakness L
         move "Bubblebeam", {
@@ -847,7 +847,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case MIGHTYENA_Δ_24:
+      case MIGHTYENA_DELTA_24:
       return evolution (this, from:"Poochyena", hp:HP070, type:[D, M], retreatCost:1) {
         weakness F
         resistance P, MINUS30
@@ -909,7 +909,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case SANDSLASH_Δ_27:
+      case SANDSLASH_DELTA_27:
       return evolution (this, from:"Sandshrew", hp:HP080, type:[F, M], retreatCost:1) {
         weakness G
         pokeBody "Delta Storm", {
@@ -986,7 +986,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case STARMIE_Δ_30:
+      case STARMIE_DELTA_30:
       return evolution (this, from:"Staryu", hp:HP070, type:[W, M], retreatCost:1) {
         weakness L
         move "Surf", {
@@ -1293,7 +1293,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case DRAGONAIR_Δ_41:
+      case DRAGONAIR_DELTA_41:
       return evolution (this, from:"Dratini", hp:HP070, type:L, retreatCost:1) {
         weakness C
         resistance G, MINUS30
@@ -1315,7 +1315,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case DRAGONAIR_Δ_42:
+      case DRAGONAIR_DELTA_42:
       return evolution (this, from:"Dratini", hp:HP070, type:L, retreatCost:2) {
         weakness C
         resistance G, MINUS30
@@ -1464,7 +1464,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case METANG_Δ_49:
+      case METANG_DELTA_49:
       return evolution (this, from:"Beldum", hp:HP080, type:L, retreatCost:2) {
         weakness R
         resistance G, MINUS30
@@ -1508,7 +1508,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case PUPITAR_Δ_51:
+      case PUPITAR_DELTA_51:
       return evolution (this, from:"Larvitar", hp:HP070, type:R, retreatCost:0) {
         weakness G
         move "Paralyzing Gaze", {
@@ -1550,7 +1550,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case SHELGON_Δ_53:
+      case SHELGON_DELTA_53:
       return evolution (this, from:"Bagon", hp:HP080, type:R, retreatCost:2) {
         weakness C
         resistance F, MINUS30
@@ -1573,7 +1573,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case SHELGON_Δ_54:
+      case SHELGON_DELTA_54:
       return evolution (this, from:"Bagon", hp:HP070, type:R, retreatCost:2) {
         weakness C
         resistance F, MINUS30
@@ -1660,7 +1660,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case BAGON_Δ_57:
+      case BAGON_DELTA_57:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness C
         resistance F, MINUS30
@@ -1674,7 +1674,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case BAGON_Δ_58:
+      case BAGON_DELTA_58:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness C
         resistance R, MINUS30
@@ -1689,7 +1689,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case BELDUM_Δ_59:
+      case BELDUM_DELTA_59:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness R
         resistance G, MINUS30
@@ -1856,7 +1856,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case DRATINI_Δ_65:
+      case DRATINI_DELTA_65:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness C
         resistance G, MINUS30
@@ -1879,7 +1879,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case DRATINI_Δ_66:
+      case DRATINI_DELTA_66:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness C
         resistance G, MINUS30
@@ -1914,7 +1914,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case EEVEE_Δ_68:
+      case EEVEE_DELTA_68:
       return basic (this, hp:HP050, type:M, retreatCost:1) {
         weakness F
         move "Metal Scoop", {
@@ -1995,7 +1995,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
       };
-      case LARVITAR_Δ_73:
+      case LARVITAR_DELTA_73:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness G
         move "Bite", {
@@ -2520,8 +2520,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost W, C
           attackRequirement {}
           onAttack {
-            damage 40
-            // TODO
+            swiftDamage(40, defending)
           }
         }
         move "Hydrosplash", {

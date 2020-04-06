@@ -36,77 +36,77 @@ import tcgwars.logic.util.*;
  */
 public enum DragonFrontiers implements LogicCardInfo {
 
-  AMPHAROS_Δ_1 ("Ampharos δ", 1, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
-  FERALIGATR_Δ_2 ("Feraligatr δ", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
-  HERACROSS_Δ_3 ("Heracross δ", 3, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
-  MEGANIUM_Δ_4 ("Meganium δ", 4, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
-  MILOTIC_Δ_5 ("Milotic δ", 5, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  NIDOKING_Δ_6 ("Nidoking δ", 6, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
-  NIDOQUEEN_Δ_7 ("Nidoqueen δ", 7, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _METAL_]),
-  NINETALES_Δ_8 ("Ninetales δ", 8, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  PINSIR_Δ_9 ("Pinsir δ", 9, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
-  SNORLAX_Δ_10 ("Snorlax δ", 10, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
-  TOGETIC_Δ_11 ("Togetic δ", 11, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  TYPHLOSION_Δ_12 ("Typhlosion δ", 12, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
-  ARBOK_Δ_13 ("Arbok δ", 13, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  CLOYSTER_Δ_14 ("Cloyster δ", 14, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  DEWGONG_Δ_15 ("Dewgong δ", 15, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  GLIGAR_Δ_16 ("Gligar δ", 16, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
-  JYNX_Δ_17 ("Jynx δ", 17, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
-  LEDIAN_Δ_18 ("Ledian δ", 18, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-  LICKITUNG_Δ_19 ("Lickitung δ", 19, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
-  MANTINE_Δ_20 ("Mantine δ", 20, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
-  QUAGSIRE_Δ_21 ("Quagsire δ", 21, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  SEADRA_Δ_22 ("Seadra δ", 22, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  TROPIUS_Δ_23 ("Tropius δ", 23, Rarity.RARE, [POKEMON, BASIC, _METAL_]),
-  VIBRAVA_Δ_24 ("Vibrava δ", 24, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  XATU_Δ_25 ("Xatu δ", 25, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
-  BAYLEEF_Δ_26 ("Bayleef δ", 26, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  CROCONAW_Δ_27 ("Croconaw δ", 27, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  DRAGONAIR_Δ_28 ("Dragonair δ", 28, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  ELECTABUZZ_Δ_29 ("Electabuzz δ", 29, Rarity.UNCOMMON, [POKEMON, BASIC, _FIGHTING_]),
-  FLAAFFY_Δ_30 ("Flaaffy δ", 30, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  HORSEA_Δ_31 ("Horsea δ", 31, Rarity.UNCOMMON, [POKEMON, BASIC, _FIGHTING_]),
+  AMPHAROS_DELTA_1 ("Ampharos δ", 1, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
+  FERALIGATR_DELTA_2 ("Feraligatr δ", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
+  HERACROSS_DELTA_3 ("Heracross δ", 3, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
+  MEGANIUM_DELTA_4 ("Meganium δ", 4, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
+  MILOTIC_DELTA_5 ("Milotic δ", 5, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  NIDOKING_DELTA_6 ("Nidoking δ", 6, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
+  NIDOQUEEN_DELTA_7 ("Nidoqueen δ", 7, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _METAL_]),
+  NINETALES_DELTA_8 ("Ninetales δ", 8, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  PINSIR_DELTA_9 ("Pinsir δ", 9, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
+  SNORLAX_DELTA_10 ("Snorlax δ", 10, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+  TOGETIC_DELTA_11 ("Togetic δ", 11, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  TYPHLOSION_DELTA_12 ("Typhlosion δ", 12, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
+  ARBOK_DELTA_13 ("Arbok δ", 13, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  CLOYSTER_DELTA_14 ("Cloyster δ", 14, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  DEWGONG_DELTA_15 ("Dewgong δ", 15, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+  GLIGAR_DELTA_16 ("Gligar δ", 16, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
+  JYNX_DELTA_17 ("Jynx δ", 17, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
+  LEDIAN_DELTA_18 ("Ledian δ", 18, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  LICKITUNG_DELTA_19 ("Lickitung δ", 19, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
+  MANTINE_DELTA_20 ("Mantine δ", 20, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
+  QUAGSIRE_DELTA_21 ("Quagsire δ", 21, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+  SEADRA_DELTA_22 ("Seadra δ", 22, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  TROPIUS_DELTA_23 ("Tropius δ", 23, Rarity.RARE, [POKEMON, BASIC, _METAL_]),
+  VIBRAVA_DELTA_24 ("Vibrava δ", 24, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  XATU_DELTA_25 ("Xatu δ", 25, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
+  BAYLEEF_DELTA_26 ("Bayleef δ", 26, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  CROCONAW_DELTA_27 ("Croconaw δ", 27, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  DRAGONAIR_DELTA_28 ("Dragonair δ", 28, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+  ELECTABUZZ_DELTA_29 ("Electabuzz δ", 29, Rarity.UNCOMMON, [POKEMON, BASIC, _FIGHTING_]),
+  FLAAFFY_DELTA_30 ("Flaaffy δ", 30, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+  HORSEA_DELTA_31 ("Horsea δ", 31, Rarity.UNCOMMON, [POKEMON, BASIC, _FIGHTING_]),
   KIRLIA_32 ("Kirlia", 32, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  KIRLIA_Δ_33 ("Kirlia δ", 33, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  NIDORINA_Δ_34 ("Nidorina δ", 34, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-  NIDORINO_Δ_35 ("Nidorino δ", 35, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
-  QUILAVA_Δ_36 ("Quilava δ", 36, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  SEADRA_Δ_37 ("Seadra δ", 37, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  SHELGON_Δ_38 ("Shelgon δ", 38, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  SMEARGLE_Δ_39 ("Smeargle δ", 39, Rarity.UNCOMMON, [POKEMON, BASIC, _PSYCHIC_]),
-  SWELLOW_Δ_40 ("Swellow δ", 40, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  TOGEPI_Δ_41 ("Togepi δ", 41, Rarity.UNCOMMON, [POKEMON, BASIC, _WATER_]),
-  VIBRAVA_Δ_42 ("Vibrava δ", 42, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  BAGON_Δ_43 ("Bagon δ", 43, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
-  CHIKORITA_Δ_44 ("Chikorita δ", 44, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
-  CYNDAQUIL_Δ_45 ("Cyndaquil δ", 45, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
-  DRATINI_Δ_46 ("Dratini δ", 46, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
-  EKANS_Δ_47 ("Ekans δ", 47, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
-  ELEKID_Δ_48 ("Elekid δ", 48, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
-  FEEBAS_Δ_49 ("Feebas δ", 49, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
-  HORSEA_Δ_50 ("Horsea δ", 50, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
+  KIRLIA_DELTA_33 ("Kirlia δ", 33, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  NIDORINA_DELTA_34 ("Nidorina δ", 34, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  NIDORINO_DELTA_35 ("Nidorino δ", 35, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
+  QUILAVA_DELTA_36 ("Quilava δ", 36, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  SEADRA_DELTA_37 ("Seadra δ", 37, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  SHELGON_DELTA_38 ("Shelgon δ", 38, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  SMEARGLE_DELTA_39 ("Smeargle δ", 39, Rarity.UNCOMMON, [POKEMON, BASIC, _PSYCHIC_]),
+  SWELLOW_DELTA_40 ("Swellow δ", 40, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  TOGEPI_DELTA_41 ("Togepi δ", 41, Rarity.UNCOMMON, [POKEMON, BASIC, _WATER_]),
+  VIBRAVA_DELTA_42 ("Vibrava δ", 42, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  BAGON_DELTA_43 ("Bagon δ", 43, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
+  CHIKORITA_DELTA_44 ("Chikorita δ", 44, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
+  CYNDAQUIL_DELTA_45 ("Cyndaquil δ", 45, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
+  DRATINI_DELTA_46 ("Dratini δ", 46, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
+  EKANS_DELTA_47 ("Ekans δ", 47, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
+  ELEKID_DELTA_48 ("Elekid δ", 48, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
+  FEEBAS_DELTA_49 ("Feebas δ", 49, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
+  HORSEA_DELTA_50 ("Horsea δ", 50, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   LARVITAR_51 ("Larvitar", 51, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
-  LARVITAR_Δ_52 ("Larvitar δ", 52, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  LEDYBA_Δ_53 ("Ledyba δ", 53, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
-  MAREEP_Δ_54 ("Mareep δ", 54, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
-  NATU_Δ_55 ("Natu δ", 55, Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
-  NIDORAN♀_Δ_56 ("Nidoran♀ δ", 56, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
-  NIDORAN♂_Δ_57 ("Nidoran♂ δ", 57, Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
+  LARVITAR_DELTA_52 ("Larvitar δ", 52, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
+  LEDYBA_DELTA_53 ("Ledyba δ", 53, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
+  MAREEP_DELTA_54 ("Mareep δ", 54, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
+  NATU_DELTA_55 ("Natu δ", 55, Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
+  NIDORAN_FEMALE_DELTA_56 ("Nidoran♀ δ", 56, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
+  NIDORAN_MALE_DELTA_57 ("Nidoran♂ δ", 57, Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
   PUPITAR_58 ("Pupitar", 58, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  PUPITAR_Δ_59 ("Pupitar δ", 59, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  PUPITAR_DELTA_59 ("Pupitar δ", 59, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   RALTS_60 ("Ralts", 60, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
-  RALTS_Δ_61 ("Ralts δ", 61, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
-  SEEL_Δ_62 ("Seel δ", 62, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
-  SHELLDER_Δ_63 ("Shellder δ", 63, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
-  SMOOCHUM_Δ_64 ("Smoochum δ", 64, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
-  SWABLU_Δ_65 ("Swablu δ", 65, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
-  TAILLOW_Δ_66 ("Taillow δ", 66, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
-  TOTODILE_Δ_67 ("Totodile δ", 67, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  TRAPINCH_Δ_68 ("Trapinch δ", 68, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
-  TRAPINCH_Δ_69 ("Trapinch δ", 69, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
-  VULPIX_Δ_70 ("Vulpix δ", 70, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
-  WOOPER_Δ_71 ("Wooper δ", 71, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
+  RALTS_DELTA_61 ("Ralts δ", 61, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
+  SEEL_DELTA_62 ("Seel δ", 62, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
+  SHELLDER_DELTA_63 ("Shellder δ", 63, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
+  SMOOCHUM_DELTA_64 ("Smoochum δ", 64, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
+  SWABLU_DELTA_65 ("Swablu δ", 65, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
+  TAILLOW_DELTA_66 ("Taillow δ", 66, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
+  TOTODILE_DELTA_67 ("Totodile δ", 67, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
+  TRAPINCH_DELTA_68 ("Trapinch δ", 68, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
+  TRAPINCH_DELTA_69 ("Trapinch δ", 69, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
+  VULPIX_DELTA_70 ("Vulpix δ", 70, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
+  WOOPER_DELTA_71 ("Wooper δ", 71, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
   BUFFER_PIECE_72 ("Buffer Piece", 72, Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
   COPYCAT_73 ("Copycat", 73, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   HOLON_LEGACY_74 ("Holon Legacy", 74, Rarity.UNCOMMON, [TRAINER, STADIUM]),
@@ -123,20 +123,20 @@ public enum DragonFrontiers implements LogicCardInfo {
   HOLON_ENERGY_GL_85 ("Holon Energy GL", 85, Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
   HOLON_ENERGY_WP_86 ("Holon Energy WP", 86, Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
   BOOST_ENERGY_87 ("Boost Energy", 87, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  Δ_RAINBOW_ENERGY_88 ("δ Rainbow Energy", 88, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
+  DELTA_RAINBOW_ENERGY_88 ("δ Rainbow Energy", 88, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
   SCRAMBLE_ENERGY_89 ("Scramble Energy", 89, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  ALTARIA_EX_Δ_90 ("Altaria ex δ", 90, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  DRAGONITE_EX_Δ_91 ("Dragonite ex δ", 91, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
-  FLYGON_EX_Δ_92 ("Flygon ex δ", 92, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
-  GARDEVOIR_EX_Δ_93 ("Gardevoir ex δ", 93, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
-  KINGDRA_EX_Δ_94 ("Kingdra ex δ", 94, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
-  LATIAS_EX_Δ_95 ("Latias ex δ", 95, Rarity.ULTRARARE, [POKEMON, BASIC, _FIRE_]),
-  LATIOS_EX_Δ_96 ("Latios ex δ", 96, Rarity.ULTRARARE, [POKEMON, BASIC, _WATER_]),
-  RAYQUAZA_EX_Δ_97 ("Rayquaza ex δ", 97, Rarity.ULTRARARE, [POKEMON, BASIC, _LIGHTNING_]),
-  SALAMENCE_EX_Δ_98 ("Salamence ex δ", 98, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
-  TYRANITAR_EX_Δ_99 ("Tyranitar ex δ", 99, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
-  CHARIZARD_STAR_Δ_100 ("Charizard Star δ", 100, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  MEW_STAR_Δ_101 ("Mew Star δ", 101, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]);
+  ALTARIA_EX_DELTA_90 ("Altaria ex δ", 90, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  DRAGONITE_EX_DELTA_91 ("Dragonite ex δ", 91, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
+  FLYGON_EX_DELTA_92 ("Flygon ex δ", 92, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
+  GARDEVOIR_EX_DELTA_93 ("Gardevoir ex δ", 93, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
+  KINGDRA_EX_DELTA_94 ("Kingdra ex δ", 94, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
+  LATIAS_EX_DELTA_95 ("Latias ex δ", 95, Rarity.ULTRARARE, [POKEMON, BASIC, _FIRE_]),
+  LATIOS_EX_DELTA_96 ("Latios ex δ", 96, Rarity.ULTRARARE, [POKEMON, BASIC, _WATER_]),
+  RAYQUAZA_EX_DELTA_97 ("Rayquaza ex δ", 97, Rarity.ULTRARARE, [POKEMON, BASIC, _LIGHTNING_]),
+  SALAMENCE_EX_DELTA_98 ("Salamence ex δ", 98, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
+  TYRANITAR_EX_DELTA_99 ("Tyranitar ex δ", 99, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
+  CHARIZARD_STAR_DELTA_100 ("Charizard Star δ", 100, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
+  MEW_STAR_DELTA_101 ("Mew Star δ", 101, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -190,7 +190,7 @@ public enum DragonFrontiers implements LogicCardInfo {
   @Override
   public Card getImplementation() {
     switch (this) {
-      case AMPHAROS_Δ_1:
+      case AMPHAROS_DELTA_1:
       return evolution (this, from:"Flaaffy", hp:HP120, type:C, retreatCost:2) {
         weakness F
         pokeBody "Holon Veil", {
@@ -207,7 +207,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case FERALIGATR_Δ_2:
+      case FERALIGATR_DELTA_2:
       return evolution (this, from:"Croconaw", hp:HP120, type:L, retreatCost:2) {
         weakness L
         pokeBody "Battle Aura", {
@@ -232,7 +232,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case HERACROSS_Δ_3:
+      case HERACROSS_DELTA_3:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness R
         pokeBody "Shining Horn", {
@@ -257,7 +257,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case MEGANIUM_Δ_4:
+      case MEGANIUM_DELTA_4:
       return evolution (this, from:"Bayleef", hp:HP110, type:F, retreatCost:2) {
         weakness R
         resistance W, MINUS30
@@ -283,7 +283,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case MILOTIC_Δ_5:
+      case MILOTIC_DELTA_5:
       return evolution (this, from:"Feebas", hp:HP090, type:R, retreatCost:2) {
         weakness L
         pokePower "Sharing", {
@@ -300,7 +300,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case NIDOKING_Δ_6:
+      case NIDOKING_DELTA_6:
       return evolution (this, from:"Nidorino", hp:HP120, type:D, retreatCost:3) {
         weakness P
         move "Linear Attack", {
@@ -320,7 +320,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case NIDOQUEEN_Δ_7:
+      case NIDOQUEEN_DELTA_7:
       return evolution (this, from:"Nidorina", hp:HP100, type:M, retreatCost:2) {
         weakness P
         pokePower "Invitation", {
@@ -337,7 +337,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case NINETALES_Δ_8:
+      case NINETALES_DELTA_8:
       return evolution (this, from:"Vulpix", hp:HP070, type:P, retreatCost:0) {
         weakness W
         pokePower "Volunteer", {
@@ -354,7 +354,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case PINSIR_Δ_9:
+      case PINSIR_DELTA_9:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness R
         pokeBody "Armor", {
@@ -379,7 +379,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case SNORLAX_Δ_10:
+      case SNORLAX_DELTA_10:
       return basic (this, hp:HP080, type:G, retreatCost:3) {
         weakness F
         pokeBody "Bedhead", {
@@ -388,7 +388,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case TOGETIC_Δ_11:
+      case TOGETIC_DELTA_11:
       return evolution (this, from:"Togepi", hp:HP060, type:W, retreatCost:0) {
         weakness L
         resistance F, MINUS30
@@ -409,7 +409,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case TYPHLOSION_Δ_12:
+      case TYPHLOSION_DELTA_12:
       return evolution (this, from:"Quilava", hp:HP100, type:P, retreatCost:1) {
         weakness W
         pokePower "Shady Move", {
@@ -426,7 +426,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case ARBOK_Δ_13:
+      case ARBOK_DELTA_13:
       return evolution (this, from:"Ekans", hp:HP080, type:R, retreatCost:1) {
         weakness P
         move "Burning Venom", {
@@ -446,7 +446,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case CLOYSTER_Δ_14:
+      case CLOYSTER_DELTA_14:
       return evolution (this, from:"Shellder", hp:HP070, type:F, retreatCost:1) {
         weakness L
         pokeBody "Solid Shell", {
@@ -463,7 +463,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case DEWGONG_Δ_15:
+      case DEWGONG_DELTA_15:
       return evolution (this, from:"Seel", hp:HP080, type:C, retreatCost:2) {
         weakness L
         pokeBody "Delta Protection", {
@@ -488,7 +488,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case GLIGAR_Δ_16:
+      case GLIGAR_DELTA_16:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness W
         move "Sting Turn", {
@@ -508,7 +508,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case JYNX_Δ_17:
+      case JYNX_DELTA_17:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness P
         pokeBody "Stages of Evolution", {
@@ -525,7 +525,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case LEDIAN_Δ_18:
+      case LEDIAN_DELTA_18:
       return evolution (this, from:"Ledyba", hp:HP070, type:M, retreatCost:0) {
         weakness R
         pokePower "Prowl", {
@@ -542,7 +542,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case LICKITUNG_Δ_19:
+      case LICKITUNG_DELTA_19:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness F
         move "Lap Up", {
@@ -562,7 +562,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case MANTINE_Δ_20:
+      case MANTINE_DELTA_20:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness L
         pokePower "Power Circulation", {
@@ -579,7 +579,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case QUAGSIRE_Δ_21:
+      case QUAGSIRE_DELTA_21:
       return evolution (this, from:"Wooper", hp:HP080, type:G, retreatCost:1) {
         weakness G
         pokePower "Dig up", {
@@ -596,7 +596,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case SEADRA_Δ_22:
+      case SEADRA_DELTA_22:
       return evolution (this, from:"Horsea", hp:HP070, type:F, retreatCost:1) {
         weakness L
         move "Smokescreen", {
@@ -616,7 +616,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case TROPIUS_Δ_23:
+      case TROPIUS_DELTA_23:
       return basic (this, hp:HP070, type:M, retreatCost:1) {
         weakness R
         pokePower "Tropical Heal", {
@@ -633,7 +633,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case VIBRAVA_Δ_24:
+      case VIBRAVA_DELTA_24:
       return evolution (this, from:"Trapinch", hp:HP070, type:P, retreatCost:1) {
         weakness C
         resistance L, MINUS30
@@ -652,7 +652,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case XATU_Δ_25:
+      case XATU_DELTA_25:
       return evolution (this, from:"Natu", hp:HP070, type:D, retreatCost:1) {
         weakness P
         pokeBody "Extra Feather", {
@@ -669,7 +669,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case BAYLEEF_Δ_26:
+      case BAYLEEF_DELTA_26:
       return evolution (this, from:"Chikorita", hp:HP070, type:F, retreatCost:1) {
         weakness R
         resistance W, MINUS30
@@ -682,7 +682,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case CROCONAW_Δ_27:
+      case CROCONAW_DELTA_27:
       return evolution (this, from:"Totodile", hp:HP070, type:L, retreatCost:1) {
         weakness L
         move "Scary Face", {
@@ -702,7 +702,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case DRAGONAIR_Δ_28:
+      case DRAGONAIR_DELTA_28:
       return evolution (this, from:"Dratini", hp:HP070, type:G, retreatCost:2) {
         move "Wrap", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
@@ -721,7 +721,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case ELECTABUZZ_Δ_29:
+      case ELECTABUZZ_DELTA_29:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness F
         pokePower "Power of Evolution", {
@@ -738,7 +738,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case FLAAFFY_Δ_30:
+      case FLAAFFY_DELTA_30:
       return evolution (this, from:"Mareep", hp:HP070, type:C, retreatCost:1) {
         weakness F
         move "Thundershock", {
@@ -750,7 +750,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case HORSEA_Δ_31:
+      case HORSEA_DELTA_31:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness L
         move "Tackle", {
@@ -790,7 +790,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case KIRLIA_Δ_33:
+      case KIRLIA_DELTA_33:
       return evolution (this, from:"Ralts", hp:HP070, type:R, retreatCost:1) {
         weakness P
         move "Flickering Flames", {
@@ -810,7 +810,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case NIDORINA_Δ_34:
+      case NIDORINA_DELTA_34:
       return evolution (this, from:"Nidoran?", hp:HP070, type:M, retreatCost:1) {
         weakness P
         move "Poison Sting", {
@@ -830,7 +830,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case NIDORINO_Δ_35:
+      case NIDORINO_DELTA_35:
       return evolution (this, from:"Nidoran?", hp:HP070, type:D, retreatCost:1) {
         weakness P
         move "Rage", {
@@ -850,7 +850,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case QUILAVA_Δ_36:
+      case QUILAVA_DELTA_36:
       return evolution (this, from:"Cyndaquil", hp:HP070, type:P, retreatCost:1) {
         weakness W
         move "Smash Kick", {
@@ -870,7 +870,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case SEADRA_Δ_37:
+      case SEADRA_DELTA_37:
       return evolution (this, from:"Horsea", hp:HP070, type:F, retreatCost:1) {
         weakness L
         move "Ram", {
@@ -890,7 +890,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case SHELGON_Δ_38:
+      case SHELGON_DELTA_38:
       return evolution (this, from:"Bagon", hp:HP070, type:W, retreatCost:2) {
         move "Headbutt", {
           text "20 damage. "
@@ -909,7 +909,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case SMEARGLE_Δ_39:
+      case SMEARGLE_DELTA_39:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness F
         move "Collect", {
@@ -929,7 +929,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case SWELLOW_Δ_40:
+      case SWELLOW_DELTA_40:
       return evolution (this, from:"Taillow", hp:HP070, type:R, retreatCost:0) {
         weakness L
         resistance F, MINUS30
@@ -947,7 +947,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case TOGEPI_Δ_41:
+      case TOGEPI_DELTA_41:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness F
         move "Charm", {
@@ -959,7 +959,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case VIBRAVA_Δ_42:
+      case VIBRAVA_DELTA_42:
       return evolution (this, from:"Trapinch", hp:HP070, type:P, retreatCost:1) {
         move "Bite", {
           text "20 damage. "
@@ -978,7 +978,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case BAGON_Δ_43:
+      case BAGON_DELTA_43:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         move "Granite Head", {
           text "10 damage. During your opponent's next turn, any damage done to Bagon by attacks is reduced by 10 (after applying Weakness and Resistance)."
@@ -989,7 +989,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case CHIKORITA_Δ_44:
+      case CHIKORITA_DELTA_44:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness R
         resistance W, MINUS30
@@ -1010,7 +1010,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case CYNDAQUIL_Δ_45:
+      case CYNDAQUIL_DELTA_45:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness W
         move "Swift", {
@@ -1022,7 +1022,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case DRATINI_Δ_46:
+      case DRATINI_DELTA_46:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         move "Ram", {
           text "10 damage. "
@@ -1033,7 +1033,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case EKANS_Δ_47:
+      case EKANS_DELTA_47:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness P
         move "Bite", {
@@ -1053,7 +1053,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case ELEKID_Δ_48:
+      case ELEKID_DELTA_48:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness F
         pokePower "Baby Evolution", {
@@ -1070,7 +1070,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case FEEBAS_Δ_49:
+      case FEEBAS_DELTA_49:
       return basic (this, hp:HP030, type:R, retreatCost:1) {
         weakness L
         move "Flail", {
@@ -1082,7 +1082,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case HORSEA_Δ_50:
+      case HORSEA_DELTA_50:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness L
         move "Sleepy Ball", {
@@ -1114,7 +1114,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case LARVITAR_Δ_52:
+      case LARVITAR_DELTA_52:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness G
         move "Paralyzing Gaze", {
@@ -1134,7 +1134,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case LEDYBA_Δ_53:
+      case LEDYBA_DELTA_53:
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness R
         move "Tackle", {
@@ -1154,7 +1154,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case MAREEP_Δ_54:
+      case MAREEP_DELTA_54:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
         move "Tail Whap", {
@@ -1166,7 +1166,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case NATU_Δ_55:
+      case NATU_DELTA_55:
       return basic (this, hp:HP040, type:D, retreatCost:1) {
         weakness P
         move "Flop", {
@@ -1178,7 +1178,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case NIDORAN♀_Δ_56:
+      case NIDORAN_FEMALE_DELTA_56:
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness P
         move "Tail Whip", {
@@ -1198,7 +1198,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case NIDORAN♂_Δ_57:
+      case NIDORAN_MALE_DELTA_57:
       return basic (this, hp:HP040, type:D, retreatCost:1) {
         weakness P
         move "Peck", {
@@ -1230,7 +1230,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case PUPITAR_Δ_59:
+      case PUPITAR_DELTA_59:
       return evolution (this, from:"Larvitar", hp:HP070, type:L, retreatCost:1) {
         weakness G
         move "Hyper Beam", {
@@ -1262,7 +1262,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case RALTS_Δ_61:
+      case RALTS_DELTA_61:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness P
         move "Calm Mind", {
@@ -1282,7 +1282,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case SEEL_Δ_62:
+      case SEEL_DELTA_62:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
         move "Pound", {
@@ -1302,7 +1302,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case SHELLDER_Δ_63:
+      case SHELLDER_DELTA_63:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness L
         move "Shell Grab", {
@@ -1314,7 +1314,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case SMOOCHUM_Δ_64:
+      case SMOOCHUM_DELTA_64:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness P
         pokePower "Baby Evolution", {
@@ -1331,7 +1331,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case SWABLU_Δ_65:
+      case SWABLU_DELTA_65:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
         resistance F, MINUS30
@@ -1344,7 +1344,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case TAILLOW_Δ_66:
+      case TAILLOW_DELTA_66:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness L
         resistance F, MINUS30
@@ -1357,7 +1357,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case TOTODILE_Δ_67:
+      case TOTODILE_DELTA_67:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness L
         move "Scratch", {
@@ -1377,7 +1377,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case TRAPINCH_Δ_68:
+      case TRAPINCH_DELTA_68:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness G
         move "Gnaw", {
@@ -1397,7 +1397,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case TRAPINCH_Δ_69:
+      case TRAPINCH_DELTA_69:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness G
         move "Quick Bind", {
@@ -1409,7 +1409,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case VULPIX_Δ_70:
+      case VULPIX_DELTA_70:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness W
         move "Hypnotic Gaze", {
@@ -1429,7 +1429,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case WOOPER_Δ_71:
+      case WOOPER_DELTA_71:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness G
         move "Amnesia", {
@@ -1607,7 +1607,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         allowAttach {to->
         }
       };
-      case Δ_RAINBOW_ENERGY_88:
+      case DELTA_RAINBOW_ENERGY_88:
       return specialEnergy (this, [[C]]) {
         text "δ Rainbow Energy provides [C] Energy. While attached to a Pokémon that has δ on its card, δ Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.)"
         onPlay {reason->
@@ -1631,7 +1631,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         allowAttach {to->
         }
       };
-      case ALTARIA_EX_Δ_90:
+      case ALTARIA_EX_DELTA_90:
       return evolution (this, from:"Swablu", hp:HP100, type:W, retreatCost:1) {
         weakness C
         resistance G, MINUS30
@@ -1650,7 +1650,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case DRAGONITE_EX_Δ_91:
+      case DRAGONITE_EX_DELTA_91:
       return evolution (this, from:"Dragonair", hp:HP150, type:G, retreatCost:2) {
         move "Deafen", {
           text "40 damage. Your opponent can't play any Trainer cards (except for Supporter cards) from his or her hand during your opponent's next turn."
@@ -1669,7 +1669,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case FLYGON_EX_Δ_92:
+      case FLYGON_EX_DELTA_92:
       return evolution (this, from:"Vibrava", hp:HP150, type:P, retreatCost:2) {
         pokeBody "Sand Damage", {
           text "As long as Flygon ex is your Active Pokémon, put 1 damage counter on each of your opponent's Benched Basic Pokémon between turns. You can't use more than 1 Sand Damage Poké-Body between turns."
@@ -1685,7 +1685,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case GARDEVOIR_EX_Δ_93:
+      case GARDEVOIR_EX_DELTA_93:
       return evolution (this, from:"Kirlia", hp:HP150, type:R, retreatCost:2) {
         weakness P
         pokePower "Imprison", {
@@ -1702,7 +1702,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case KINGDRA_EX_Δ_94:
+      case KINGDRA_EX_DELTA_94:
       return evolution (this, from:"Seadra", hp:HP140, type:F, retreatCost:1) {
         weakness L
         pokeBody "Extra Smoke", {
@@ -1727,7 +1727,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case LATIAS_EX_Δ_95:
+      case LATIAS_EX_DELTA_95:
       return basic (this, hp:HP100, type:R, retreatCost:2) {
         weakness P
         pokePower "Fellow Boost", {
@@ -1744,7 +1744,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case LATIOS_EX_Δ_96:
+      case LATIOS_EX_DELTA_96:
       return basic (this, hp:HP100, type:W, retreatCost:2) {
         weakness P
         pokeBody "Link Wing", {
@@ -1769,7 +1769,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case RAYQUAZA_EX_Δ_97:
+      case RAYQUAZA_EX_DELTA_97:
       return basic (this, hp:HP110, type:L, retreatCost:2) {
         pokeBody "Rage Aura", {
           text "If you have more Prize cards left than your opponent, the attack cost of Rayquaza ex's Special Circuit is now Lightning and Rayquaza ex's Sky-high Claws is now Lightning Lightning."
@@ -1793,7 +1793,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case SALAMENCE_EX_Δ_98:
+      case SALAMENCE_EX_DELTA_98:
       return evolution (this, from:"Shelgon", hp:HP160, type:W, retreatCost:2) {
         weakness C
         resistance R, MINUS30
@@ -1820,7 +1820,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case TYRANITAR_EX_Δ_99:
+      case TYRANITAR_EX_DELTA_99:
       return evolution (this, from:"Pupitar", hp:HP150, type:L, retreatCost:3) {
         weakness G
         move "Electromark", {
@@ -1848,7 +1848,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case CHARIZARD_STAR_Δ_100:
+      case CHARIZARD_STAR_DELTA_100:
       return basic (this, hp:HP090, type:D, retreatCost:3) {
         weakness W
         move "Rotating Claws", {
@@ -1868,7 +1868,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
       };
-      case MEW_STAR_Δ_101:
+      case MEW_STAR_DELTA_101:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness P
         move "Mimicry", {

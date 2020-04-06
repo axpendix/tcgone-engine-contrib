@@ -37,11 +37,11 @@ import tcgwars.logic.util.*;
 public enum CrystalGuardians implements LogicCardInfo {
 
   BANETTE_1 ("Banette", 1, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  BLASTOISE_Δ_2 ("Blastoise δ", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_, _METAL_]),
+  BLASTOISE_DELTA_2 ("Blastoise δ", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_, _METAL_]),
   CAMERUPT_3 ("Camerupt", 3, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  CHARIZARD_Δ_4 ("Charizard δ", 4, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_, _METAL_]),
+  CHARIZARD_DELTA_4 ("Charizard δ", 4, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_, _METAL_]),
   DUGTRIO_5 ("Dugtrio", 5, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  LUDICOLO_Δ_6 ("Ludicolo δ", 6, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
+  LUDICOLO_DELTA_6 ("Ludicolo δ", 6, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
   LUVDISC_7 ("Luvdisc", 7, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
   MANECTRIC_8 ("Manectric", 8, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   MAWILE_9 ("Mawile", 9, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
@@ -50,22 +50,22 @@ public enum CrystalGuardians implements LogicCardInfo {
   TAUROS_12 ("Tauros", 12, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
   WIGGLYTUFF_13 ("Wigglytuff", 13, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   BLASTOISE_14 ("Blastoise", 14, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
-  CACTURNE_Δ_15 ("Cacturne δ", 15, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  CACTURNE_DELTA_15 ("Cacturne δ", 15, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   COMBUSKEN_16 ("Combusken", 16, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   DUSCLOPS_17 ("Dusclops", 17, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  FEAROW_Δ_18 ("Fearow δ", 18, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  GROVYLE_Δ_19 ("Grovyle δ", 19, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  FEAROW_DELTA_18 ("Fearow δ", 18, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  GROVYLE_DELTA_19 ("Grovyle δ", 19, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   GRUMPIG_20 ("Grumpig", 20, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   IGGLYBUFF_21 ("Igglybuff", 21, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  KINGLER_Δ_22 ("Kingler δ", 22, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_, _METAL_]),
+  KINGLER_DELTA_22 ("Kingler δ", 22, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_, _METAL_]),
   LOUDRED_23 ("Loudred", 23, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   MARSHTOMP_24 ("Marshtomp", 24, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   MEDICHAM_25 ("Medicham", 25, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  PELIPPER_Δ_26 ("Pelipper δ", 26, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  PELIPPER_DELTA_26 ("Pelipper δ", 26, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   SWAMPERT_27 ("Swampert", 27, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
   VENUSAUR_28 ("Venusaur", 28, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   CHARMELEON_29 ("Charmeleon", 29, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  CHARMELEON_Δ_30 ("Charmeleon δ", 30, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  CHARMELEON_DELTA_30 ("Charmeleon δ", 30, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   COMBUSKEN_31 ("Combusken", 31, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   GROVYLE_32 ("Grovyle", 32, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   GULPIN_33 ("Gulpin", 33, Rarity.UNCOMMON, [POKEMON, BASIC, _GRASS_]),
@@ -84,7 +84,7 @@ public enum CrystalGuardians implements LogicCardInfo {
   BULBASAUR_46 ("Bulbasaur", 46, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
   CACNEA_47 ("Cacnea", 47, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
   CHARMANDER_48 ("Charmander", 48, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
-  CHARMANDER_Δ_49 ("Charmander δ", 49, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
+  CHARMANDER_DELTA_49 ("Charmander δ", 49, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   DIGLETT_50 ("Diglett", 50, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   DUSKULL_51 ("Duskull", 51, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   ELECTRIKE_52 ("Electrike", 52, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
@@ -103,7 +103,7 @@ public enum CrystalGuardians implements LogicCardInfo {
   TORCHIC_65 ("Torchic", 65, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
   TORCHIC_66 ("Torchic", 66, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
   TREECKO_67 ("Treecko", 67, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
-  TREECKO_Δ_68 ("Treecko δ", 68, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
+  TREECKO_DELTA_68 ("Treecko δ", 68, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   WHISMUR_69 ("Whismur", 69, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   WINGULL_70 ("Wingull", 70, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
   BILL_S_MAINTENANCE_71 ("Bill's Maintenance", 71, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
@@ -131,7 +131,7 @@ public enum CrystalGuardians implements LogicCardInfo {
   GROUDON_EX_93 ("Groudon ex", 93, Rarity.ULTRARARE, [POKEMON, BASIC, EX, _FIGHTING_]),
   JIRACHI_EX_94 ("Jirachi ex", 94, Rarity.ULTRARARE, [POKEMON, BASIC, EX, _PSYCHIC_]),
   KYOGRE_EX_95 ("Kyogre ex", 95, Rarity.ULTRARARE, [POKEMON, BASIC, EX, _WATER_]),
-  SCEPTILE_EX_Δ_96 ("Sceptile ex δ", 96, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
+  SCEPTILE_EX_DELTA_96 ("Sceptile ex δ", 96, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
   SHIFTRY_EX_97 ("Shiftry ex", 97, Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE2, _DARKNESS_]),
   SWAMPERT_EX_98 ("Swampert ex", 98, Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE2, _WATER_]),
   ALAKAZAM_STAR_99 ("Alakazam Star", 99, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
@@ -207,7 +207,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
       };
-      case BLASTOISE_Δ_2:
+      case BLASTOISE_DELTA_2:
       return evolution (this, from:"Wartortle", hp:HP110, type:[F, M], retreatCost:3) {
         weakness L
         pokeBody "Shield Veil", {
@@ -257,7 +257,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
       };
-      case CHARIZARD_Δ_4:
+      case CHARIZARD_DELTA_4:
       return evolution (this, from:"Charmeleon", hp:HP120, type:[L, M], retreatCost:2) {
         weakness W
         pokePower "Peal of Thunder", {
@@ -299,7 +299,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
       };
-      case LUDICOLO_Δ_6:
+      case LUDICOLO_DELTA_6:
       return evolution (this, from:"Lombre", hp:HP100, type:R, retreatCost:2) {
         weakness L
         pokeBody "Overzealous", {
@@ -490,7 +490,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
       };
-      case CACTURNE_Δ_15:
+      case CACTURNE_DELTA_15:
       return evolution (this, from:"Cacnea", hp:HP080, type:F, retreatCost:1) {
         weakness R
         pokePower "Spike Storm", {
@@ -561,7 +561,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
       };
-      case FEAROW_Δ_18:
+      case FEAROW_DELTA_18:
       return evolution (this, from:"Spearow", hp:HP060, type:L, retreatCost:1) {
         weakness L
         resistance F, MINUS30
@@ -579,7 +579,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
       };
-      case GROVYLE_Δ_19:
+      case GROVYLE_DELTA_19:
       return evolution (this, from:"Treecko", hp:HP070, type:P, retreatCost:1) {
         weakness R
         resistance W, MINUS30
@@ -626,7 +626,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
       };
-      case KINGLER_Δ_22:
+      case KINGLER_DELTA_22:
       return evolution (this, from:"Krabby", hp:HP080, type:[R, M], retreatCost:3) {
         weakness L
         move "Body Slam", {
@@ -711,7 +711,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
       };
-      case PELIPPER_Δ_26:
+      case PELIPPER_DELTA_26:
       return evolution (this, from:"Wingull", hp:HP070, type:L, retreatCost:1) {
         weakness L
         resistance F, MINUS30
@@ -799,7 +799,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
       };
-      case CHARMELEON_Δ_30:
+      case CHARMELEON_DELTA_30:
       return evolution (this, from:"Charmander", hp:HP070, type:L, retreatCost:1) {
         weakness W
         move "Slash", {
@@ -1176,7 +1176,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
       };
-      case CHARMANDER_Δ_49:
+      case CHARMANDER_DELTA_49:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness W
         move "Scratch", {
@@ -1495,7 +1495,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
       };
-      case TREECKO_Δ_68:
+      case TREECKO_DELTA_68:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness R
         resistance W, MINUS30
@@ -1868,7 +1868,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
       };
-      case SCEPTILE_EX_Δ_96:
+      case SCEPTILE_EX_DELTA_96:
       return evolution (this, from:"Grovyle", hp:HP140, type:P, retreatCost:1) {
         weakness G
         resistance W, MINUS30

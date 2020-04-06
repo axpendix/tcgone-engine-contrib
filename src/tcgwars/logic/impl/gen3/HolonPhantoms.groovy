@@ -36,32 +36,32 @@ import tcgwars.logic.util.*;
  */
 public enum HolonPhantoms implements LogicCardInfo {
 
-  ARMALDO_Δ_1 ("Armaldo δ", 1, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_, _METAL_]),
-  CRADILY_Δ_2 ("Cradily δ", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_, _METAL_]),
-  DEOXYS_Δ_3 ("Deoxys δ", 3, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  DEOXYS_Δ_4 ("Deoxys δ", 4, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
-  DEOXYS_Δ_5 ("Deoxys δ", 5, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  DEOXYS_Δ_6 ("Deoxys δ", 6, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
-  FLYGON_Δ_7 ("Flygon δ", 7, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_, _METAL_]),
-  GYARADOS_Δ_8 ("Gyarados δ", 8, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_, _METAL_]),
-  KABUTOPS_Δ_9 ("Kabutops δ", 9, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
-  KINGDRA_Δ_10 ("Kingdra δ", 10, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_, _METAL_]),
-  LATIAS_Δ_11 ("Latias δ", 11, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
-  LATIOS_Δ_12 ("Latios δ", 12, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
-  OMASTAR_Δ_13 ("Omastar δ", 13, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
-  PIDGEOT_Δ_14 ("Pidgeot δ", 14, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_, _METAL_]),
-  RAICHU_Δ_15 ("Raichu δ", 15, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-  RAYQUAZA_Δ_16 ("Rayquaza δ", 16, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_, _METAL_]),
-  VILEPLUME_Δ_17 ("Vileplume δ", 17, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_, _METAL_]),
+  ARMALDO_DELTA_1 ("Armaldo δ", 1, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_, _METAL_]),
+  CRADILY_DELTA_2 ("Cradily δ", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_, _METAL_]),
+  DEOXYS_DELTA_3 ("Deoxys δ", 3, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
+  DEOXYS_DELTA_4 ("Deoxys δ", 4, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
+  DEOXYS_DELTA_5 ("Deoxys δ", 5, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  DEOXYS_DELTA_6 ("Deoxys δ", 6, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
+  FLYGON_DELTA_7 ("Flygon δ", 7, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_, _METAL_]),
+  GYARADOS_DELTA_8 ("Gyarados δ", 8, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_, _METAL_]),
+  KABUTOPS_DELTA_9 ("Kabutops δ", 9, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
+  KINGDRA_DELTA_10 ("Kingdra δ", 10, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_, _METAL_]),
+  LATIAS_DELTA_11 ("Latias δ", 11, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
+  LATIOS_DELTA_12 ("Latios δ", 12, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+  OMASTAR_DELTA_13 ("Omastar δ", 13, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
+  PIDGEOT_DELTA_14 ("Pidgeot δ", 14, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_, _METAL_]),
+  RAICHU_DELTA_15 ("Raichu δ", 15, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  RAYQUAZA_DELTA_16 ("Rayquaza δ", 16, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_, _METAL_]),
+  VILEPLUME_DELTA_17 ("Vileplume δ", 17, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_, _METAL_]),
   ABSOL_18 ("Absol", 18, Rarity.RARE, [POKEMON, BASIC, _DARKNESS_]),
-  BELLOSSOM_Δ_19 ("Bellossom δ", 19, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
+  BELLOSSOM_DELTA_19 ("Bellossom δ", 19, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
   BLAZIKEN_20 ("Blaziken", 20, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
-  LATIAS_Δ_21 ("Latias δ", 21, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
-  LATIOS_Δ_22 ("Latios δ", 22, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
+  LATIAS_DELTA_21 ("Latias δ", 21, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
+  LATIOS_DELTA_22 ("Latios δ", 22, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
   MAWILE_23 ("Mawile", 23, Rarity.RARE, [POKEMON, BASIC, _METAL_]),
-  MEWTWO_Δ_24 ("Mewtwo δ", 24, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
+  MEWTWO_DELTA_24 ("Mewtwo δ", 24, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
   NOSEPASS_25 ("Nosepass", 25, Rarity.RARE, [POKEMON, BASIC, _FIGHTING_]),
-  RAYQUAZA_Δ_26 ("Rayquaza δ", 26, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
+  RAYQUAZA_DELTA_26 ("Rayquaza δ", 26, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
   REGICE_27 ("Regice", 27, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
   REGIROCK_28 ("Regirock", 28, Rarity.RARE, [POKEMON, BASIC, _FIGHTING_]),
   REGISTEEL_29 ("Registeel", 29, Rarity.RARE, [POKEMON, BASIC, _METAL_]),
@@ -70,56 +70,56 @@ public enum HolonPhantoms implements LogicCardInfo {
   SEVIPER_32 ("Seviper", 32, Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
   TORKOAL_33 ("Torkoal", 33, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
   ZANGOOSE_34 ("Zangoose", 34, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  AERODACTYL_Δ_35 ("Aerodactyl δ", 35, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  AERODACTYL_DELTA_35 ("Aerodactyl δ", 35, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   CAMERUPT_36 ("Camerupt", 36, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  CHIMECHO_Δ_37 ("Chimecho δ", 37, Rarity.UNCOMMON, [POKEMON, BASIC, _METAL_]),
+  CHIMECHO_DELTA_37 ("Chimecho δ", 37, Rarity.UNCOMMON, [POKEMON, BASIC, _METAL_]),
   CLAYDOL_38 ("Claydol", 38, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   COMBUSKEN_39 ("Combusken", 39, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   DONPHAN_40 ("Donphan", 40, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  EXEGGUTOR_Δ_41 ("Exeggutor δ", 41, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  GLOOM_Δ_42 ("Gloom δ", 42, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  GOLDUCK_Δ_43 ("Golduck δ", 43, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  EXEGGUTOR_DELTA_41 ("Exeggutor δ", 41, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  GLOOM_DELTA_42 ("Gloom δ", 42, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  GOLDUCK_DELTA_43 ("Golduck δ", 43, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   HOLON_S_CASTFORM_44 ("Holon's Castform", 44, Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
   LAIRON_45 ("Lairon", 45, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
   MANECTRIC_46 ("Manectric", 46, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   MASQUERAIN_47 ("Masquerain", 47, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  PERSIAN_Δ_48 ("Persian δ", 48, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_, _METAL_]),
-  PIDGEOTTO_Δ_49 ("Pidgeotto δ", 49, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  PRIMEAPE_Δ_50 ("Primeape δ", 50, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  PERSIAN_DELTA_48 ("Persian δ", 48, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_, _METAL_]),
+  PIDGEOTTO_DELTA_49 ("Pidgeotto δ", 49, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  PRIMEAPE_DELTA_50 ("Primeape δ", 50, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   RAICHU_51 ("Raichu", 51, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  SEADRA_Δ_52 ("Seadra δ", 52, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  SHARPEDO_Δ_53 ("Sharpedo δ", 53, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  VIBRAVA_Δ_54 ("Vibrava δ", 54, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+  SEADRA_DELTA_52 ("Seadra δ", 52, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  SHARPEDO_DELTA_53 ("Sharpedo δ", 53, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  VIBRAVA_DELTA_54 ("Vibrava δ", 54, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   WHISCASH_55 ("Whiscash", 55, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   WOBBUFFET_56 ("Wobbuffet", 56, Rarity.UNCOMMON, [POKEMON, BASIC, _PSYCHIC_]),
-  ANORITH_Δ_57 ("Anorith δ", 57, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  ANORITH_DELTA_57 ("Anorith δ", 57, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
   ARON_58 ("Aron", 58, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
   BALTOY_59 ("Baltoy", 59, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   BARBOACH_60 ("Barboach", 60, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
-  CARVANHA_Δ_61 ("Carvanha δ", 61, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
+  CARVANHA_DELTA_61 ("Carvanha δ", 61, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   CORPHISH_62 ("Corphish", 62, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
   CORPHISH_63 ("Corphish", 63, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
   ELECTRIKE_64 ("Electrike", 64, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  EXEGGCUTE_Δ_65 ("Exeggcute δ", 65, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
-  HORSEA_Δ_66 ("Horsea δ", 66, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
-  KABUTO_Δ_67 ("Kabuto δ", 67, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  LILEEP_Δ_68 ("Lileep δ", 68, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
-  MAGIKARP_Δ_69 ("Magikarp δ", 69, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
-  MANKEY_Δ_70 ("Mankey δ", 70, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
-  MEOWTH_Δ_71 ("Meowth δ", 71, Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_, _METAL_]),
+  EXEGGCUTE_DELTA_65 ("Exeggcute δ", 65, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
+  HORSEA_DELTA_66 ("Horsea δ", 66, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
+  KABUTO_DELTA_67 ("Kabuto δ", 67, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  LILEEP_DELTA_68 ("Lileep δ", 68, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
+  MAGIKARP_DELTA_69 ("Magikarp δ", 69, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
+  MANKEY_DELTA_70 ("Mankey δ", 70, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
+  MEOWTH_DELTA_71 ("Meowth δ", 71, Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_, _METAL_]),
   NUMEL_72 ("Numel", 72, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
-  ODDISH_Δ_73 ("Oddish δ", 73, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
-  OMANYTE_Δ_74 ("Omanyte δ", 74, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  ODDISH_DELTA_73 ("Oddish δ", 73, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
+  OMANYTE_DELTA_74 ("Omanyte δ", 74, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   PHANPY_75 ("Phanpy", 75, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
-  PICHU_Δ_76 ("Pichu δ", 76, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
-  PIDGEY_Δ_77 ("Pidgey δ", 77, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
+  PICHU_DELTA_76 ("Pichu δ", 76, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
+  PIDGEY_DELTA_77 ("Pidgey δ", 77, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   PIKACHU_78 ("Pikachu", 78, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  PIKACHU_Δ_79 ("Pikachu δ", 79, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
+  PIKACHU_DELTA_79 ("Pikachu δ", 79, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
   POOCHYENA_80 ("Poochyena", 80, Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
-  PSYDUCK_Δ_81 ("Psyduck δ", 81, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
+  PSYDUCK_DELTA_81 ("Psyduck δ", 81, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   SURSKIT_82 ("Surskit", 82, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
   TORCHIC_83 ("Torchic", 83, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
-  TRAPINCH_Δ_84 ("Trapinch δ", 84, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
+  TRAPINCH_DELTA_84 ("Trapinch δ", 84, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
   HOLON_ADVENTURER_85 ("Holon Adventurer", 85, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   HOLON_FOSSIL_86 ("Holon Fossil", 86, Rarity.UNCOMMON, [TRAINER, ITEM]),
   HOLON_LAKE_87 ("Holon Lake", 87, Rarity.UNCOMMON, [TRAINER, STADIUM]),
@@ -133,11 +133,11 @@ public enum HolonPhantoms implements LogicCardInfo {
   METAL_ENERGY_95 ("Metal Energy", 95, Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
   MULTI_ENERGY_96 ("Multi Energy", 96, Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
   DARK_METAL_ENERGY_97 ("Dark Metal Energy", 97, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  Δ_RAINBOW_ENERGY_98 ("δ Rainbow Energy", 98, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
+  DELTA_RAINBOW_ENERGY_98 ("δ Rainbow Energy", 98, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
   CRAWDAUNT_EX_99 ("Crawdaunt ex", 99, Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE1, _WATER_]),
   MEW_EX_100 ("Mew ex", 100, Rarity.ULTRARARE, [POKEMON, BASIC, EX, _PSYCHIC_]),
   MIGHTYENA_EX_101 ("Mightyena ex", 101, Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE1, _DARKNESS_]),
-  GYARADOS_STAR_Δ_102 ("Gyarados Star δ", 102, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
+  GYARADOS_STAR_DELTA_102 ("Gyarados Star δ", 102, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
   MEWTWO_STAR_103 ("Mewtwo Star", 103, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
   PIKACHU_STAR_104 ("Pikachu Star", 104, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
   GRASS_ENERGY_105 ("Grass Energy", 105, Rarity.HOLORARE, [ENERGY, BASIC, BASIC_ENERGY]),
@@ -200,7 +200,7 @@ public enum HolonPhantoms implements LogicCardInfo {
   @Override
   public Card getImplementation() {
     switch (this) {
-      case ARMALDO_Δ_1:
+      case ARMALDO_DELTA_1:
       return evolution (this, from:"Anorith", hp:HP110, type:[F, M], retreatCost:3) {
         weakness G
         move "Delta Edge", {
@@ -221,7 +221,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case CRADILY_Δ_2:
+      case CRADILY_DELTA_2:
       return evolution (this, from:"Lileep", hp:HP100, type:[D, M], retreatCost:2) {
         weakness R
         move "Harsh Fluid", {
@@ -242,7 +242,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case DEOXYS_Δ_3:
+      case DEOXYS_DELTA_3:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness P
         pokePower "Form Change", {
@@ -260,7 +260,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case DEOXYS_Δ_4:
+      case DEOXYS_DELTA_4:
       return basic (this, hp:HP080, type:M, retreatCost:2) {
         weakness P
         pokePower "Form Change", {
@@ -278,7 +278,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case DEOXYS_Δ_5:
+      case DEOXYS_DELTA_5:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness P
         pokePower "Form Change", {
@@ -296,7 +296,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case DEOXYS_Δ_6:
+      case DEOXYS_DELTA_6:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness P
         pokePower "Form Change", {
@@ -314,7 +314,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case FLYGON_Δ_7:
+      case FLYGON_DELTA_7:
       return evolution (this, from:"Vibrava", hp:HP110, type:[G, M], retreatCost:2) {
         weakness C
         resistance L, MINUS30
@@ -334,7 +334,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case GYARADOS_Δ_8:
+      case GYARADOS_DELTA_8:
       return evolution (this, from:"Magikarp", hp:HP090, type:[L, M], retreatCost:2) {
         weakness L
         pokeBody "Delta Reactor", {
@@ -360,7 +360,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case KABUTOPS_Δ_9:
+      case KABUTOPS_DELTA_9:
       return evolution (this, from:"Kabuto", hp:HP100, type:L, retreatCost:1) {
         weakness G
         move "Vital Drain", {
@@ -381,7 +381,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case KINGDRA_Δ_10:
+      case KINGDRA_DELTA_10:
       return evolution (this, from:"Seadra", hp:HP110, type:[R, M], retreatCost:2) {
         weakness L
         pokePower "Dragon Curse", {
@@ -407,7 +407,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case LATIAS_Δ_11:
+      case LATIAS_DELTA_11:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness C
         resistance P, MINUS30
@@ -435,7 +435,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case LATIOS_Δ_12:
+      case LATIOS_DELTA_12:
       return basic (this, hp:HP080, type:W, retreatCost:1) {
         weakness C
         resistance G, MINUS30
@@ -463,7 +463,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case OMASTAR_Δ_13:
+      case OMASTAR_DELTA_13:
       return evolution (this, from:"Omanyte", hp:HP110, type:P, retreatCost:2) {
         weakness L
         move "Bind", {
@@ -484,7 +484,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case PIDGEOT_Δ_14:
+      case PIDGEOT_DELTA_14:
       return evolution (this, from:"Pidgeotto", hp:HP100, type:[L, M], retreatCost:1) {
         weakness L
         resistance F, MINUS30
@@ -503,7 +503,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case RAICHU_Δ_15:
+      case RAICHU_DELTA_15:
       return evolution (this, from:"Pikachu", hp:HP070, type:M, retreatCost:0) {
         weakness F
         move "Zzzap", {
@@ -524,7 +524,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case RAYQUAZA_Δ_16:
+      case RAYQUAZA_DELTA_16:
       return basic (this, hp:HP080, type:[W, M], retreatCost:2) {
         weakness C
         resistance W, MINUS30
@@ -552,7 +552,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case VILEPLUME_Δ_17:
+      case VILEPLUME_DELTA_17:
       return evolution (this, from:"Gloom", hp:HP090, type:[P, M], retreatCost:1) {
         weakness P
         pokePower "Poison Pollen", {
@@ -592,7 +592,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case BELLOSSOM_Δ_19:
+      case BELLOSSOM_DELTA_19:
       return evolution (this, from:"Gloom", hp:HP100, type:W, retreatCost:1) {
         weakness R
         resistance W, MINUS30
@@ -632,7 +632,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case LATIAS_Δ_21:
+      case LATIAS_DELTA_21:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness C
         resistance P, MINUS30
@@ -655,7 +655,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case LATIOS_Δ_22:
+      case LATIOS_DELTA_22:
       return basic (this, hp:HP080, type:W, retreatCost:2) {
         weakness C
         resistance G, MINUS30
@@ -700,7 +700,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case MEWTWO_Δ_24:
+      case MEWTWO_DELTA_24:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness P
         move "Psychic Erase", {
@@ -742,7 +742,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case RAYQUAZA_Δ_26:
+      case RAYQUAZA_DELTA_26:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
         weakness C
         move "Outrage", {
@@ -920,7 +920,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case AERODACTYL_Δ_35:
+      case AERODACTYL_DELTA_35:
       return evolution (this, from:"Mysterious Fossil", hp:HP070, type:R, retreatCost:0) {
         weakness L
         resistance F, MINUS30
@@ -960,7 +960,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case CHIMECHO_Δ_37:
+      case CHIMECHO_DELTA_37:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness P
         pokePower "Delta Support", {
@@ -1041,7 +1041,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case EXEGGUTOR_Δ_41:
+      case EXEGGUTOR_DELTA_41:
       return evolution (this, from:"Exeggcute", hp:HP080, type:F, retreatCost:1) {
         weakness P
         move "Delta Circle", {
@@ -1062,7 +1062,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case GLOOM_Δ_42:
+      case GLOOM_DELTA_42:
       return evolution (this, from:"Oddish", hp:HP070, type:P, retreatCost:1) {
         weakness P
         move "Drool", {
@@ -1083,7 +1083,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case GOLDUCK_Δ_43:
+      case GOLDUCK_DELTA_43:
       return evolution (this, from:"Psyduck", hp:HP070, type:L, retreatCost:1) {
         weakness L
         pokeBody "Delta Block", {
@@ -1179,7 +1179,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case PERSIAN_Δ_48:
+      case PERSIAN_DELTA_48:
       return evolution (this, from:"Meowth", hp:HP070, type:[D, M], retreatCost:0) {
         weakness F
         move "Scratch and Draw", {
@@ -1200,7 +1200,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case PIDGEOTTO_Δ_49:
+      case PIDGEOTTO_DELTA_49:
       return evolution (this, from:"Pidgey", hp:HP070, type:L, retreatCost:1) {
         weakness L
         resistance F, MINUS30
@@ -1214,7 +1214,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case PRIMEAPE_Δ_50:
+      case PRIMEAPE_DELTA_50:
       return evolution (this, from:"Mankey", hp:HP070, type:R, retreatCost:0) {
         weakness P
         move "Wreck", {
@@ -1256,7 +1256,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case SEADRA_Δ_52:
+      case SEADRA_DELTA_52:
       return evolution (this, from:"Horsea", hp:HP070, type:R, retreatCost:1) {
         weakness L
         move "Searing Flame", {
@@ -1277,7 +1277,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case SHARPEDO_Δ_53:
+      case SHARPEDO_DELTA_53:
       return evolution (this, from:"Carvanha", hp:HP070, type:F, retreatCost:0) {
         weakness L
         move "Brush Aside", {
@@ -1298,7 +1298,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case VIBRAVA_Δ_54:
+      case VIBRAVA_DELTA_54:
       return evolution (this, from:"Trapinch", hp:HP080, type:G, retreatCost:1) {
         weakness C
         resistance L, MINUS30
@@ -1363,7 +1363,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case ANORITH_Δ_57:
+      case ANORITH_DELTA_57:
       return evolution (this, from:"Claw Fossil", hp:HP070, type:M, retreatCost:1) {
         weakness G
         move "Metal Claw", {
@@ -1448,7 +1448,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case CARVANHA_Δ_61:
+      case CARVANHA_DELTA_61:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness L
         move "Bite", {
@@ -1525,7 +1525,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case EXEGGCUTE_Δ_65:
+      case EXEGGCUTE_DELTA_65:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
         move "Rollout", {
@@ -1546,7 +1546,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case HORSEA_Δ_66:
+      case HORSEA_DELTA_66:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness L
         move "Ram", {
@@ -1567,7 +1567,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case KABUTO_Δ_67:
+      case KABUTO_DELTA_67:
       return evolution (this, from:"Mysterious Fossil", hp:HP070, type:L, retreatCost:2) {
         weakness G
         move "Eerie Light", {
@@ -1588,7 +1588,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case LILEEP_Δ_68:
+      case LILEEP_DELTA_68:
       return evolution (this, from:"Root Fossil", hp:HP080, type:D, retreatCost:2) {
         weakness R
         move "Poison Tentacles", {
@@ -1609,7 +1609,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case MAGIKARP_Δ_69:
+      case MAGIKARP_DELTA_69:
       return basic (this, hp:HP030, type:M, retreatCost:1) {
         weakness L
         move "Splash", {
@@ -1622,7 +1622,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case MANKEY_Δ_70:
+      case MANKEY_DELTA_70:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness P
         move "Paralyzing Gaze", {
@@ -1643,7 +1643,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case MEOWTH_Δ_71:
+      case MEOWTH_DELTA_71:
       return basic (this, hp:HP050, type:[D, M], retreatCost:1) {
         weakness F
         move "Slash", {
@@ -1685,7 +1685,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case ODDISH_Δ_73:
+      case ODDISH_DELTA_73:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness R
         move "Tackle", {
@@ -1706,7 +1706,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case OMANYTE_Δ_74:
+      case OMANYTE_DELTA_74:
       return evolution (this, from:"Mysterious Fossil", hp:HP070, type:P, retreatCost:1) {
         weakness L
         move "Collect", {
@@ -1748,7 +1748,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case PICHU_Δ_76:
+      case PICHU_DELTA_76:
       return basic (this, hp:HP050, type:M, retreatCost:1) {
         weakness F
         pokePower "Baby Evolution", {
@@ -1766,7 +1766,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case PIDGEY_Δ_77:
+      case PIDGEY_DELTA_77:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness L
         resistance F, MINUS30
@@ -1801,7 +1801,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case PIKACHU_Δ_79:
+      case PIKACHU_DELTA_79:
       return basic (this, hp:HP050, type:M, retreatCost:1) {
         weakness F
         move "Tail Whap", {
@@ -1844,7 +1844,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case PSYDUCK_Δ_81:
+      case PSYDUCK_DELTA_81:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness L
         move "Scratch", {
@@ -1899,7 +1899,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case TRAPINCH_Δ_84:
+      case TRAPINCH_DELTA_84:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness G
         move "Big Bite", {
@@ -2046,7 +2046,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         allowAttach {to->
         }
       };
-      case Δ_RAINBOW_ENERGY_98:
+      case DELTA_RAINBOW_ENERGY_98:
       return specialEnergy (this, [[C]]) {
         text "δ Rainbow Energy provides [C] Energy. While attached to a Pokémon that has δ on its card, δ Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.)"
         onPlay {reason->
@@ -2129,7 +2129,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
 
       };
-      case GYARADOS_STAR_Δ_102:
+      case GYARADOS_STAR_DELTA_102:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
         weakness L
         move "Spiral Growth", {
