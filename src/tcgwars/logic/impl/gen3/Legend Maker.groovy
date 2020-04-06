@@ -401,7 +401,9 @@ public enum LegendMaker implements LogicCardInfo {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
                 if (it.to == self && it.dmg.value && it.notNoEffect) {
-                  if (self.owner.pbg.all.find{it.name.contains("Omanyte")} || self.owner.pbg.all.find{it.name.contains("Omastar")})) {
+                  def omanyte = self.owner.pbg.all.find { it.name.contains("Omanyte") }
+                  def omastar = self.owner.pbg.all.find { it.name.contains("Omastar") }
+                  if (omanyte || omastar) {
                     bc "Ancient Shell -20"
                     it.dmg -= hp(20)
                   }
