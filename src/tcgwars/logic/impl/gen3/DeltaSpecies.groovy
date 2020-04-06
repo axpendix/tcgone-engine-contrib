@@ -1607,7 +1607,14 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokeBody "Shining Horn", {
           text "As long as Skarmory is the only Pokémon you have in play, your opponent's Basic Pokémon can't attack."
           delayedA {
-            // TODO
+            before CHECK_ATTACK_REQUIREMENTS, {
+              if (ef.attacker.owner == self.owner.opposite && ef.attacker.basic && my.all.size() == 1) {
+                flip 1, {}, {
+                  wcu "Shining Horn prevents this Pokémon from attacking"
+                  prevent()
+                }
+              }
+            }
           }
         }
         move "Cry for Help", {
