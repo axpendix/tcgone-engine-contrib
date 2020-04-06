@@ -793,9 +793,12 @@ public enum LegendMaker implements LogicCardInfo {
         move "Moon Guidance", {
           text "Search your deck for a Trainer card (excluding Supporter cards), show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
+          attackRequirement { assert my.deck : "Deck is empty" }
           onAttack {
-            // TODO
+            def nam=self.name
+            def tar = my.deck.search("Trainer Card (excluding Supporter cards)", {it.cardTypes.is(TRAINER) && !it.cardTypes.is(SUPPORTER)})
+            tar.moveTo(my.hand)
+            shuffleDeck()
           }
         }
         move "Psyshock", {
@@ -1556,7 +1559,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to.name == "Tentacruel") && it.notNoEffect && !it.from.EX && self.cards.findAll{it.name.contains("React Energy")}) {
+                if (it.to.name == "Tentacruel" && it.notNoEffect && !it.from.EX && self.cards.findAll{it.name.contains("React Energy")}) {
                   it.dmg = hp(0)
                   bc "Fast Protection prevents damage"
                 }
@@ -2116,10 +2119,30 @@ public enum LegendMaker implements LogicCardInfo {
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "At any time between turns, each player puts 1 damage counter on his or her Pokémon that has a Poké-Power."
+        def eff
         onPlay {
-          // TODO
+          eff = delayed {
+            before BEGIN_TURN, {
+              def once = true
+              all.each {
+                def hasPokePower = false
+                for (Ability ability : it.getAbilities().keySet()) {
+                  if (ability instanceof PokePower) hasPokePower = true;
+                }
+
+                if (hasPokePower) {
+                  if (once) {
+                    bc "Cursed Stone"
+                    once = false
+                  }
+                  directDamage(10, it, TRAINER_CARD)
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case FIELDWORKER_73:
@@ -2127,19 +2150,29 @@ public enum LegendMaker implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Draw 3 cards. Your opponent may also draw a card."
         onPlay {
-          // TODO
+          draw 3
+          if (opp.deck && oppConfirm("Draw a card?")) {
+            draw 1, TargetPlayer.OPPONENT
+          }
         }
         playRequirement{
+          assert my.deck : "Deck is empty"
         }
       };
       case FULL_FLAME_74:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Put 4 damage counters instead of 2 on each Burned Pokémon between turns. The Special Condition Burned can't be removed by evolving or devolving the Burned Pokémon."
+        def eff
         onPlay {
-          // TODO
+          eff = getter (GET_BURN_DAMAGE) {h->
+            bc "Full Flame increases burn damage to 40"
+            h.object = hp(40)
+          }
+          // TODO disable burn removal
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case GIANT_STUMP_75:
