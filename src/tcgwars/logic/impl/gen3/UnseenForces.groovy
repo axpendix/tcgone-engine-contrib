@@ -2000,18 +2000,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 30
-
-            int differentTypes = 0
-            for (Type t1:Type.values()) {
-              if (self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(t1))
-                differentTypes++
-            }
-
-            if (differentTypes >= 2) {
-              damage 20
-            } else {
-              damage 10
-            }
+            extraEnergyDamage(2, hp(10), C, thisMove)
           }
         }
       };
