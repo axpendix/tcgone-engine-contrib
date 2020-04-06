@@ -940,19 +940,6 @@ public enum LegendMaker implements LogicCardInfo {
         weakness G
         pokeBody "Luna Shade", {
           text "As long as you have Lunatone in play, each player's [C] Pokémon (excluding Pokémon-ex) can't use any Poké-Powers."
-          delayedA {
-            // TODO
-            before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.to == self && it.dmg.value && it.notNoEffect) {
-                  if (self.owner.pbg.all.find{it.name.contains("Omanyte")} || self.owner.pbg.all.find{it.name.contains("Omastar"})) {
-                    bc "Ancient Shell -20"
-                    it.dmg -= hp(20)
-                  }
-                }
-              }
-            }
-          }
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
             if (self.active && !h.effect.target.cardTypes.is(EX)) {
               if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
