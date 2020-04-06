@@ -570,7 +570,21 @@ public enum PowerKeepers implements LogicCardInfo {
 				pokeBody "Safeguard", {
 					text "Prevent all effects of attacks, including damage, done to Ninetales by your opponent's Pokémon-ex."
 					delayedA {
+            before null, self, Source.ATTACK, {
+              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+                bc "Safeguard prevents effect"
+                prevent()
+              }
+            }
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if(it.to == self && it.notNoEffect && it.from.EX ) {
+                  it.dmg = hp(0)
+                  bc "Safeguard prevents damage"
 					}
+				}
+            }
+          }
 				}
 				move "Quick Attack", {
 					text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."

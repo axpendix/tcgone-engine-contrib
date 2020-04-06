@@ -2437,11 +2437,17 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Safeguard", {
           text "Prevent all effects of attacks, including damage, done to Dustox ex by your opponent's Pokémon-ex."
           delayedA {
+            before null, self, Source.ATTACK, {
+              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+                bc "Safeguard prevents effect"
+                prevent()
+              }
+            }
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to == self && it.from.topPokemonCard.cardTypes.is(EX)) {
-                  bc "Safeguard prevents all damage"
-                  it.dmg=hp(0)
+                if(it.to == self && it.notNoEffect && it.from.EX ) {
+                  it.dmg = hp(0)
+                  bc "Safeguard prevents damage"
                 }
               }
             }
