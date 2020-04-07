@@ -1061,7 +1061,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost F, C, C
           attackRequirement {}
           onAttack {
-
+            multiSelect(opp.all, 2).each {
+              targeted(it) {
+                damage 30, it
+              }
+            }
           }
         }
 

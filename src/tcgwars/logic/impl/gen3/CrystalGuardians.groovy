@@ -1,5 +1,10 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.impl.gen3.DeltaSpecies;
+import tcgwars.logic.impl.gen5.PlasmaStorm;
+import tcgwars.logic.impl.gen5.BlackWhite;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -1683,14 +1688,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         }
       };
       case BILL_S_MAINTENANCE_71:
-      return supporter (this) {
-        text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
-          "If you have any cards in your hand, shuffle 1 of them into your deck, then draw 3 cards."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(FireRedLeafGreen.BILL_S_MAINTENANCE_87, this)
       case CASTAWAY_72:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -1701,14 +1699,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         }
       };
       case CELIO_S_NETWORK_73:
-      return supporter (this) {
-        text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
-          "Search your deck for a Basic Pokémon or Evolution card (excluding Pokémon-ex), show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(FireRedLeafGreen.CELIO_S_NETWORK_88, this)
       case CESSATION_CRYSTAL_74:
       return pokemonTool (this) {
         text "Attach Cessation Crystal to 1 of your Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Cessation Crystal is attached to is a Pokémon-ex, discard this card." +
@@ -1741,21 +1732,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         }
       };
       case DOUBLE_FULL_HEAL_77:
-      return itemCard (this) {
-        text "Remove all Special Conditions from each of your Active Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy (Sandstorm.DOUBLE_FULL_HEAL_86, this)
       case DUAL_BALL_78:
-      return itemCard (this) {
-        text "Flip 2 coins. For each heads, search your deck for a Basic Pokémon card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(DeltaSpecies.DUAL_BALL_89, this)
       case HOLON_CIRCLE_79:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -1788,29 +1767,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         }
       };
       case POKE_BALL_82:
-      return itemCard (this) {
-        text "Flip a coin. If heads, search your deck for a Basic Pokémon or Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(FireRedLeafGreen.POKE_BALL_95, this)
       case POKENAV_83:
-      return itemCard (this) {
-        text "Look at the top 3 cards of your deck, and choose a Basic Pokémon, Evolution card, or Energy card. Show it to your opponent and put it into your hand. Put the 2 other cards back on top of your deck in any order."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(RubySapphire.POKENAV_88, this);
       case WARP_POINT_84:
-      return itemCard (this) {
-        text "Your opponent switches 1 of his or her Defending Pokémon with 1 of his or her Benched Pokémon, if any. You switch 1 of your Active Pokémon with 1 of your Benched Pokémon, if any."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case WINDSTORM_85:
       return itemCard (this) {
         text "Choose up to 2 in any combination of Pokémon Tool cards and Stadium cards in play (both yours and your opponent's) and discard them."
@@ -1820,33 +1781,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         }
       };
       case ENERGY_SEARCH_86:
-      return itemCard (this) {
-        text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(BlackWhite.ENERGY_SEARCH_93, this);
       case POTION_87:
-      return itemCard (this) {
-        text "Remove 2 damage counters from 1 of your Pokémon (remove 1 damage counter if that Pokémon has only 1)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy (FireRedLeafGreen.POTION_101, this)
       case DOUBLE_RAINBOW_ENERGY_88:
-      return specialEnergy (this, [[C]]) {
-        text "Double Rainbow Energy can be attached only to an Evolved Pokémon (excluding Pokémon-ex). While in play, Double Rainbow Energy provides every type of Energy but provides 2 Energy at a time. (Has no effect other than providing Energy.) Damage done to your opponent's Pokémon by the Pokémon Double Rainbow Energy is attached to is reduced by 10 (before applying Weakness and Resistance). When the Pokémon Double Rainbow Energy is attached to is no longer an Evolved Pokémon, discard Double Rainbow Energy."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy (TeamMagmaVsTeamAqua.DOUBLE_RAINBOW_ENERGY_88, this);
       case AGGRON_EX_89:
       return evolution (this, from:"Lairon", hp:HP150, type:M, retreatCost:4) {
         weakness R
@@ -1861,7 +1800,11 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-
+            multiSelect(opp.all, 2).each {
+              targeted(it) {
+                damage 30, it
+              }
+            }
           }
         }
         move "Mega Burn", {
@@ -1870,6 +1813,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
+            cantUseAttack(thisMove, self)
           }
         }
       };
@@ -1881,7 +1825,12 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
-            damage 30
+            def target = defending
+            if (opp.bench) {
+              target = opp.bench.oppSelect("Select the new active")
+              sw defending, target
+            }
+            damage 30, target
           }
         }
         move "Burn Away", {
@@ -1890,6 +1839,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
+            // TODO
           }
         }
       };
@@ -1899,6 +1849,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Constrain", {
           text "Once during your turn (before your attack), you may use this power. Each player discards cards until that player has 6 cards in his or her hand. (You discard first.) This power can't be used if Delcatty ex is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Upstream", {
@@ -1907,6 +1858,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            // TODO
           }
         }
         move "Tail Slap", {
@@ -1924,6 +1876,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Extra Noise", {
           text "As long as Exploud ex is your Active Pokémon, put 1 damage counter on each of your opponent's Pokémon-ex between turns."
           delayedA {
+            // TODO
           }
         }
         move "Derail", {
@@ -1932,6 +1885,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            discardDefendingSpecialEnergy(delegate)
           }
         }
         move "Hyper Tail", {
@@ -1983,6 +1937,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Star Light", {
           text "As long as your opponent has any Pokémon-ex or Stage 2 Evolved Pokémon in play, Jirachi ex pays [C] less Energy to use Shield Beam or Super Psy Bolt."
           delayedA {
+            // TODO
           }
         }
         move "Shield Beam", {
@@ -1991,6 +1946,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            // TODO
           }
         }
         move "Super Psy Bolt", {
@@ -2008,6 +1964,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Flotation", {
           text "As long as Kyogre ex has 1 Energy or less attached to it, the Retreat Cost for each of your Kyogre ex is 0."
           delayedA {
+            // TODO
           }
         }
         move "Hydro Shot", {
@@ -2015,6 +1972,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost W, W, C
           attackRequirement {}
           onAttack {
+            // TODO
 
           }
         }
@@ -2026,6 +1984,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Extra Liquid", {
           text "Each player's Pokémon-ex can't use any Poké-Powers and pays [C] more Energy to use its attacks. Each Pokémon can't be affected by more than 1 Extra Liquid Poké-Body."
           delayedA {
+            // TODO
           }
         }
         move "Power Revenge", {
@@ -2033,7 +1992,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-            damage 60
+            damage 60+10*opp.prizeCardSet.takenCount
           }
         }
       };
@@ -2044,6 +2003,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Dark Eyes", {
           text "After your opponent's Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
           delayedA {
+            // TODO
           }
         }
         move "Target Attack", {
@@ -2051,7 +2011,12 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost D, C
           attackRequirement {}
           onAttack {
-
+            def target = opp.all.select("Deal damage to?")
+            if (target.numberOfDamageCounters) {
+              damage 50, target
+            } else {
+              damage 30, target
+            }
           }
         }
         move "Blade Arms", {
@@ -2069,6 +2034,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Energy Recycle", {
           text "Once during your turn (before your attack), you may search your discard pile for 3 Energy cards and attach them to your Pokémon in any way you like. If you do, your turn ends. This power can't be used if Swampert ex is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Ultra Pump", {
@@ -2077,6 +2043,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            // TODO
           }
         }
       };

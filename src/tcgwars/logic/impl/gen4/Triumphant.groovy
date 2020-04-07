@@ -1986,7 +1986,8 @@ public enum Triumphant implements LogicCardInfo {
             energyCost F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              discardDefendingSpecialEnergy(delegate)
             }
           }
           move "Champ Buster", {

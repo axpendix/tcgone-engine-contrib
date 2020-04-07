@@ -1031,7 +1031,9 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost W, C, D
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              // TODO
+              discardDefendingSpecialEnergy(delegate)
             }
           }
 

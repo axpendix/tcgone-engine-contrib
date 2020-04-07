@@ -917,7 +917,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           delayedA {
             // TODO
             if (defending.topPokemonCard.cardTypes.is(EX)) {
-              cantAttackNextTurn(defending)
+              // cantAttackNextTurn(defending)
             }
           }
         }
@@ -959,6 +959,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           onAttack {
             damage 20
             // TODO
+            discardDefendingSpecialEnergy(delegate)
           }
         }
       };
@@ -1346,7 +1347,11 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            multiSelect(opp.all, 2).each {
+              targeted(it) {
+                damage 10, it
+              }
+            }
           }
         }
       };

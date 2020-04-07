@@ -6,7 +6,7 @@ import tcgwars.logic.impl.gen3.Deoxys;
 import tcgwars.logic.impl.gen3.Dragon;
 import tcgwars.logic.impl.gen4.HeartgoldSoulsilver;
 import tcgwars.logic.impl.gen5.BlackWhite;
-import tcgwars.logic.impl.gen5.PlasmaStorm
+import tcgwars.logic.impl.gen5.PlasmaStorm;
 import tcgwars.logic.impl.gen6.KalosStarterSet;
 
 import tcgwars.logic.effect.gm.PlayTrainer

@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen4;
 
+import tcgwars.logic.impl.gen5.PlasmaStorm;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -2410,13 +2412,7 @@ public enum DiamondPearl implements LogicCardInfo {
           }
         };
       case WARP_POINT_116:
-        return basicTrainer (this) {
-          text "Your opponent switches 1 of his or her Defending Pokémon with 1 of his or her Benched Pokémon, if any. You switch 1 of your Active Pokémon with 1 of your Benched Pokémon, if any."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+      return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case ENERGY_SEARCH_117:
         return basicTrainer (this) {
           text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."

@@ -919,7 +919,8 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              discardDefendingSpecialEnergy(delegate)
             }
           }
 

@@ -1334,7 +1334,9 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              // TODO
+              damage 20
+              discardDefendingSpecialEnergy(delegate)
             }
           }
 
