@@ -245,7 +245,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Skull Bash", {
-          text "60 damage. "
+          text "60 damage."
           energyCost M, C, C
           attackRequirement {}
           onAttack {
@@ -278,7 +278,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Combustion", {
-          text "50 damage. "
+          text "50 damage."
           energyCost R, C, C
           attackRequirement {}
           onAttack {
@@ -356,7 +356,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Fire Punch", {
-          text "60 damage. "
+          text "60 damage."
           energyCost R, C, C
           attackRequirement {}
           onAttack {
@@ -489,7 +489,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           callForFamily(basic: true, 2, delegate)
         }
         move "Horn Attack", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -561,7 +561,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Light Punch", {
-          text "50 damage. "
+          text "50 damage."
           energyCost F, C, C
           attackRequirement {}
           onAttack {
@@ -581,7 +581,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "High Jump Kick", {
-          text "30 damage. "
+          text "30 damage."
           energyCost F, C
           attackRequirement {}
           onAttack {
@@ -600,7 +600,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Will-o'-the-wisp", {
-          text "30 damage. "
+          text "30 damage."
           energyCost P, C
           attackRequirement {}
           onAttack {
@@ -628,7 +628,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Pierce", {
-          text "30 damage. "
+          text "30 damage."
           energyCost L, C
           attackRequirement {}
           onAttack {
@@ -641,7 +641,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness R
         resistance W, MINUS30
         move "Scratch", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -742,7 +742,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       return evolution (this, from:"Mudkip", hp:HP070, type:W, retreatCost:1) {
         weakness G
         move "Rain Splash", {
-          text "20 damage. "
+          text "20 damage."
           energyCost W
           attackRequirement {}
           onAttack {
@@ -809,7 +809,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Wing Attack", {
-          text "40 damage. "
+          text "40 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -892,7 +892,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       return evolution (this, from:"Charmander", hp:HP070, type:L, retreatCost:1) {
         weakness W
         move "Slash", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -944,7 +944,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Smash Kick", {
-          text "30 damage. "
+          text "30 damage."
           energyCost G, C
           attackRequirement {}
           onAttack {
@@ -964,7 +964,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Sludge Toss", {
-          text "40 damage. "
+          text "40 damage."
           energyCost G, C, C
           attackRequirement {}
           onAttack {
@@ -985,7 +985,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Vine Whip", {
-          text "40 damage. "
+          text "40 damage."
           energyCost G, C, C
           attackRequirement {}
           onAttack {
@@ -1053,7 +1053,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Wave Splash", {
-          text "50 damage. "
+          text "50 damage."
           energyCost W, C, C
           attackRequirement {}
           onAttack {
@@ -1074,7 +1074,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Mud Shot", {
-          text "50 damage. "
+          text "50 damage."
           energyCost F, C, C
           attackRequirement {}
           onAttack {
@@ -1095,7 +1095,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Corkscrew Punch", {
-          text "40 damage. "
+          text "40 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -1121,7 +1121,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Tackle", {
-          text "20 damage. "
+          text "20 damage."
           energyCost P, C
           attackRequirement {}
           onAttack {
@@ -1133,7 +1133,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
         move "Tail Whap", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1162,7 +1162,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Tackle", {
-          text "50 damage. "
+          text "50 damage."
           energyCost W, C, C
           attackRequirement {}
           onAttack {
@@ -1182,7 +1182,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Bite", {
-          text "40 damage. "
+          text "40 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -1207,7 +1207,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
         move "Tackle", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1235,7 +1235,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Vine Whip", {
-          text "20 damage. "
+          text "20 damage."
           energyCost G, C
           attackRequirement {}
           onAttack {
@@ -1272,7 +1272,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Flame Tail", {
-          text "20 damage. "
+          text "20 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
@@ -1284,7 +1284,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness W
         move "Scratch", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1292,7 +1292,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Bite", {
-          text "20 damage. "
+          text "20 damage."
           energyCost L, C
           attackRequirement {}
           onAttack {
@@ -1304,7 +1304,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
         move "Mud Slap", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1334,7 +1334,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Super Psy Bolt", {
-          text "10 damage. "
+          text "10 damage."
           energyCost P
           attackRequirement {}
           onAttack {
@@ -1402,7 +1402,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Rolling Tackle", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1414,7 +1414,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
         move "Kick", {
-          text "10 damage. "
+          text "10 damage."
           energyCost F
           attackRequirement {}
           onAttack {
@@ -1449,7 +1449,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Mud Slap", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1469,7 +1469,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Waterfall", {
-          text "20 damage. "
+          text "20 damage."
           energyCost W, C
           attackRequirement {}
           onAttack {
@@ -1494,7 +1494,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
         move "Headbutt", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1527,7 +1527,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Ram", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1539,7 +1539,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
         move "Bite", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1547,7 +1547,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Skull Bash", {
-          text "30 damage. "
+          text "30 damage."
           energyCost W, C, C
           attackRequirement {}
           onAttack {
@@ -1619,7 +1619,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Scratch", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1632,7 +1632,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness R
         resistance W, MINUS30
         move "Pound", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1661,7 +1661,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Hyper Voice", {
-          text "30 damage. "
+          text "30 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -1674,7 +1674,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Wing Attack", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1910,7 +1910,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Tail Slap", {
-          text "60 damage. "
+          text "60 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -1940,6 +1940,13 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            def hasPokeBody = false
+            def hasPokePower = false
+            for (Ability ability : defending.getAbilities().keySet()) {
+              if (ability instanceof PokeBody) hasPokeBody = true;
+              if (ability instanceof PokePower) hasPokePower = true;
+            }
+            if (hasPokeBody || hasPokePower) damage 20
           }
         }
       };
@@ -1987,7 +1994,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Super Psy Bolt", {
-          text "50 damage. "
+          text "50 damage."
           energyCost P, C, C
           attackRequirement {}
           onAttack {
@@ -2048,7 +2055,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         move "Blade Arms", {
-          text "70 damage. "
+          text "70 damage."
           energyCost D, C, C
           attackRequirement {}
           onAttack {
