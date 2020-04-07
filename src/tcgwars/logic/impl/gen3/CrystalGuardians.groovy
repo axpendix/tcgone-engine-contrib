@@ -218,6 +218,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            if (defending.basic) {
+              apply CONFUSED
+            }
           }
         }
       };
@@ -226,7 +229,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness L
         pokeBody "Shield Veil", {
           text "Each of your Active Pokémon has no Weakness."
-          delayedA {
+          getterA (GET_WEAKNESSES) { h->
+            if(h.effect.target.owner == self.owner && h.effect.target.active) {
+              def list = h.object as List<Weakness>
+              list.clear()
+            }
           }
         }
         move "Enraged Linear Attack", {
@@ -234,7 +241,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
-
+            damage 10*self.numberOfDamageCounters, opp.all.select("Deal damage to?")
           }
         }
         move "Skull Bash", {
@@ -251,7 +258,15 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness W
         pokeBody "Delta Protection", {
           text "Any damage done to Camerupt by attacks from your opponent's Pokémon that has δ on its card is reduced by 40 (after applying Weakness and Resistance)."
-          delayedA {
+          delayedA{
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if(it.to == self && it.from.topPokemonCard.name.contains("δ") && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
+                  bc "Delta Protection reduces damage from δ Pokemon by 40"
+                  it.dmg -= hp(40)
+                }
+              }
+            }
           }
         }
         move "Linear Attack", {
@@ -259,7 +274,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost R, C
           attackRequirement {}
           onAttack {
-
+            damage 30, opp.all.select()
           }
         }
         move "Combustion", {
@@ -277,6 +292,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Peal of Thunder", {
           text "Once during your turn, when you play Charizard from your hand to evolve 1 of your Pokémon, you may look at the top 5 cards of your deck, choose as many Energy cards as you like, and attach them to 1 of your Pokémon. Discard the other cards."
           actionA {
+            // TODO
           }
         }
         move "Metal Burn", {
@@ -285,6 +301,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
+            discardAllSelfEnergy(M)
           }
         }
       };
@@ -294,6 +311,12 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Sand Veil", {
           text "Prevent all damage done to your Benched Pokémon by your opponent's attacks."
           delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {if(it.to.owner==self.owner && it.to.benched && it.dmg.value){
+                bc "Sand Veil reduces damage"
+                it.dmg=hp(0)
+              }}
+            }
           }
         }
         move "Dig Under", {
@@ -301,7 +324,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
-
+            damage 30, opp.all.select()
           }
         }
         move "Double-edge", {
@@ -310,6 +333,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            damage 10, self
           }
         }
       };
@@ -319,6 +343,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Overzealous", {
           text "If your opponent has any Pokémon-ex in play, each of Ludicolo's attacks does 30 more damage to the Defending Pokémon."
           delayedA {
+            // TODO
           }
         }
         move "Knock Off", {
@@ -327,6 +352,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToOpponent("This card will be discarded.").discard()
           }
         }
         move "Fire Punch", {
@@ -346,7 +372,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Stadium Play", {
@@ -355,6 +381,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            // TODO
           }
         }
       };
@@ -368,6 +395,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            afterDamage {
+              whirlwind()
+            }
           }
         }
         move "Strong Current", {
@@ -376,6 +406,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            // TODO
           }
         }
       };
@@ -388,7 +419,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Bite Off", {
@@ -397,6 +428,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            if (defending.topPokemonCard.cardTypes.is(EX)) {
+              damage 30
+            }
           }
         }
       };
@@ -406,6 +440,8 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Excavate", {
           text "Once during your turn (before your attack), you may look at the card on top of your deck. Put that card on top of your deck, or discard that card. This power can't be used if Sableye is affected by a Special Condition."
           actionA {
+            // TODO
+            checkNoSPC()
           }
         }
         move "Disable", {
@@ -414,6 +450,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            amnesia delegate
           }
         }
       };
@@ -425,7 +462,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Reactive Poison", {
@@ -433,7 +470,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost G, C, C
           attackRequirement {}
           onAttack {
-            damage 50
+            damage 50+20*defending.specialConditions.size()
           }
         }
       };
@@ -443,15 +480,13 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Crush Chance", {
           text "Once during your turn, when you put Tauros from your hand onto your Bench, you may discard a Stadium card in play."
           actionA {
+            // TODO
           }
         }
         move "Call for Family", {
           text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily(basic: true, 2, delegate)
         }
         move "Horn Attack", {
           text "20 damage. "
@@ -468,14 +503,15 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Fluffy Fur", {
           text "If Wigglytuff is your Active Pokémon and is damaged by an opponent's attack (even if Wigglytuff is Knocked Out), the Attacking Pokémon is now Asleep."
           delayedA {
+            // TODO
           }
         }
         move "Collect", {
           text "Draw 3 cards."
           energyCost C
-          attackRequirement {}
+          attackRequirement { assert my.deck : "Deck is empty"}
           onAttack {
-
+            draw 3
           }
         }
         move "Pester", {
@@ -484,6 +520,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            if(defending.specialConditions) damage 20
           }
         }
       };
@@ -493,6 +530,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Water Pressure", {
           text "As long as Blastoise's remaining HP is 40 or less, Blastoise does 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
+            // TODO
           }
         }
         move "Hydro Pump", {
@@ -501,6 +539,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            extraEnergyDamage(4, hp(20), W, thisMove)
           }
         }
       };
@@ -510,6 +549,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Spike Storm", {
           text "Once during your turn (before your attack), if Cacturne is your Active Pokémon, you may put 1 damage counter on 1 of your opponent's Pokémon that already has any damage counters on it. This power can't be used if Cacturne is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Triple Needle", {
@@ -517,7 +557,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Light Punch", {
@@ -537,7 +577,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-
+            increasedBaseDamageNextTurn("High Jump Kick", hp(40))
           }
         }
         move "High Jump Kick", {
@@ -556,6 +596,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Cursed Glare", {
           text "As long as Dusclops is your Active Pokémon, your opponent can't attach any Special Energy cards (except for Darkness and [M] Energy cards) from his or her hand to his or her Active Pokémon."
           delayedA {
+            // TODO
           }
         }
         move "Will-o'-the-wisp", {
@@ -572,6 +613,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            // TODO
           }
         }
       };
@@ -582,6 +624,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Delta Sign", {
           text "Once during your turn (before your attack), you may search your deck for a Pokémon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. You can't use more than 1 Delta Sign Poké-Power each turn. This power can't be used if Fearow is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Pierce", {
@@ -611,6 +654,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { preventAllEffectsNextTurn() }
           }
         }
       };
@@ -620,6 +664,16 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Thick Fat", {
           text "Any damage done to Grumpig by attacks from [R] Pokémon and [W] Pokémon is reduced by 30 (after applying Weakness and Resistance)."
           delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              if(ef.attacker.owner != self.owner && (ef.attacker.types.contains(R) || ef.attacker.types.contains(W))) {
+                bg.dm().each{
+                  if(it.to == self && it.notNoEffect && it.dmg.value) {
+                    bc "Thick Fat -30"
+                    it.dmg -= hp(30)
+                  }
+                }
+              }
+            }
           }
         }
         move "Circular Steps", {
@@ -627,7 +681,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost P, P, C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*all.size() - 1
           }
         }
       };
@@ -637,6 +691,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Hover Lift", {
           text "You pay [C] less to retreat your Jigglypuff, Wigglytuff, Wigglytuff ex, and Igglybuff."
           delayedA {
+            // TODO
           }
         }
       };
@@ -649,6 +704,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { apply PARALYZED }
           }
         }
         move "Prop-up Pinchers", {
@@ -657,6 +713,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            if (self.cards.hasType(POKEMON_TOOL)) damage 40
           }
         }
       };
@@ -669,6 +726,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            // TODO
           }
         }
         move "Bass Control", {
@@ -676,7 +734,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-
+            damage 40, opp.all.select()
           }
         }
       };
@@ -697,6 +755,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            if (opp.bench) {
+              damage 30, opp.all.bench()
+            }
           }
         }
       };
@@ -705,7 +766,8 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness P
         pokeBody "Dual Armor", {
           text "As long as Medicham has any [P] Energy cards attached to it, Medicham is both Psychic and Fighting type."
-          delayedA {
+          getterA GET_POKEMON_TYPE, self, { h->
+            if (self.cards.energyCount(P)) h.object.add(P)
           }
         }
         move "Psyshock", {
@@ -714,6 +776,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { apply PARALYZED }
           }
         }
         move "Sky Uppercut", {
@@ -722,6 +785,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            dontApplyResistance()
           }
         }
       };
@@ -732,6 +796,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Delta Transport", {
           text "Once during your turn (before your attack), if Pelipper is on your Bench, you may switch 1 of your Active Pokémon that has δ on its card with 1 of your Benched Pokémon."
           actionA {
+            // TODO
           }
         }
         move "Supersonic", {
@@ -740,6 +805,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            apply CONFUSED
           }
         }
         move "Wing Attack", {
@@ -757,6 +823,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Echo Draw", {
           text "Once during your turn (before your attack), you may draw a card. This power can't be used if Swampert is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Rock Hurl", {
@@ -765,6 +832,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            dontApplyResistance()
           }
         }
       };
@@ -774,6 +842,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Chlorophyll", {
           text "All Energy cards that provide only [C] Energy attached to your [G] Pokémon provide [G] Energy instead."
           delayedA {
+            // TODO
           }
         }
         move "Green Blast", {
@@ -782,6 +851,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            my.all.each {
+              damage 10*it.cards.energyCount(G)
+            }
           }
         }
         move "Toxic Sleep", {
@@ -789,7 +861,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost G, G, C
           attackRequirement {}
           onAttack {
-
+            apply ASLEEP
+            apply POISONED
+            extraPoison 1
           }
         }
       };
@@ -801,7 +875,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10+10*self.numberOfDamageCounters
           }
         }
         move "Flamethrower", {
@@ -810,6 +884,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            discardSelfEnergy R
           }
         }
       };
@@ -830,6 +905,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            flip 1, {}, { damage 10, self }
           }
         }
       };
@@ -842,6 +918,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            apply BURNED
           }
         }
         move "Firebreathing", {
@@ -850,6 +927,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { damage 20 }
           }
         }
       };
@@ -862,7 +940,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            flip { preventAllEffectsNextTurn() }
           }
         }
         move "Smash Kick", {
@@ -882,7 +960,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            amnesia delegate
           }
         }
         move "Sludge Toss", {
@@ -903,6 +981,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            apply ASLEEP
           }
         }
         move "Vine Whip", {
@@ -922,7 +1001,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            if (opp.bench) {
+              damage 30, opp.bench.select()
+            }
           }
         }
         move "Sharp Leaf", {
@@ -931,6 +1012,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            flip { damage 20 }
           }
         }
       };
@@ -943,7 +1025,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            whirlwind()
           }
         }
         move "Metal Charge", {
@@ -952,6 +1034,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            damage 10, self
           }
         }
       };
@@ -963,6 +1046,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
+            if (defending.cards.filterByType(TRAINER)){
+              defending.cards.filterByType(TRAINER).discard()
+            }
             damage 20
           }
         }
@@ -984,6 +1070,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            cantRetreat defending
           }
         }
         move "Mud Shot", {
@@ -1004,7 +1091,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            attachEnergyFrom(type:D, my.hand, self)
           }
         }
         move "Corkscrew Punch", {
@@ -1023,9 +1110,14 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Ascension", {
           text "Search your deck for a card that evolves from Shuppet and put it onto Shuppet. (This counts as evolving Shuppet.) Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck
+          }
           onAttack {
-
+            def nam=self.name
+            def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
+            if(tar) evolve(self, tar.first(), OTHER)
+            shuffleDeck()
           }
         }
         move "Tackle", {
@@ -1053,7 +1145,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            swiftDamage(20, opp.all.select())
           }
         }
       };
@@ -1066,6 +1158,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { apply PARALYZED }
           }
         }
         move "Tackle", {
@@ -1085,7 +1178,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { cantAttackNextTurn defending }
           }
         }
         move "Bite", {
@@ -1106,7 +1199,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*self.numberOfDamageCounters
           }
         }
       };
@@ -1126,7 +1219,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-
+            apply POISONED
           }
         }
       };
@@ -1138,7 +1231,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            attachEnergyFrom(type:D, my.hand, self)
           }
         }
         move "Vine Whip", {
@@ -1156,10 +1249,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Call for Family", {
           text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily(basic: true, 1, delegate)
         }
         move "Rising Lunge", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
@@ -1227,6 +1317,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            cantRetreat defending
           }
         }
       };
@@ -1237,9 +1328,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Collect", {
           text "Draw a card."
           energyCost C
-          attackRequirement {}
+          attackRequirement { assert my.deck : "Deck is empty" }
           onAttack {
-
+            draw 1
           }
         }
         move "Super Psy Bolt", {
@@ -1258,9 +1349,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Sniff Out", {
           text "Put any 1 card from your discard pile into your hand."
           energyCost C
-          attackRequirement {}
+          attackRequirement { assert my.discard : "Discard is empty"}
           onAttack {
-
+            my.discard.select().moveTo(my.hand)
           }
         }
         move "Quick Blow", {
@@ -1269,6 +1360,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 10 }
           }
         }
       };
@@ -1281,6 +1373,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            apply ASLEEP
           }
         }
       };
@@ -1293,6 +1386,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 10 }
           }
         }
       };
@@ -1301,7 +1395,10 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness L
         pokeBody "Aqua Lift", {
           text "If Lotad has any [W] Energy attached to it, the Retreat Cost for Lotad is 0."
-          delayedA {
+          getterA (GET_RETREAT_COST, BEFORE_LAST, self) {h->
+            if (self.cards.energyCount(W)) {
+              h.object = 0
+            }
           }
         }
         move "Rolling Tackle", {
@@ -1329,7 +1426,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            (1..2).each {
+              if (opp.all) directDamage(10, opp.all.select("Put a damage counter on - $it out of 2"))
+            }
           }
         }
       };
@@ -1339,6 +1438,14 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Submerge", {
           text "As long as Mudkip is on your Bench, prevent all damage done to Mudkip by attacks (both yours and your opponent's)."
           delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (!self.active && it.to == self) {
+                  bc "Submerge prevent all damage"
+                  it.dmg=hp(0)
+                }
+              }
+            }
           }
         }
         move "Mud Slap", {
@@ -1358,7 +1465,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            heal 20, self
           }
         }
         move "Waterfall", {
@@ -1379,6 +1486,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            damage 10, self
           }
         }
       };
@@ -1401,9 +1509,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Spearhead", {
           text "Draw a card."
           energyCost C
-          attackRequirement {}
+          attackRequirement { assert my.deck : "Deck is empty" }
           onAttack {
-
+            draw 1
           }
         }
       };
@@ -1415,7 +1523,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*defending.cards.energyCount(C)
           }
         }
         move "Ram", {
@@ -1453,6 +1561,14 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Solid Shell", {
           text "Any damage done to Squirtle by attacks is reduced by 10 (after applying Weakness and Resistance)."
           delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to == self && it.dmg.value && it.notNoEffect) {
+                  bc "Solid Shell -10"
+                  it.dmg -= hp(10)
+                }
+              }
+            }
           }
         }
         move "Bubblebeam", {
@@ -1461,6 +1577,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            apply PARALYZED
           }
         }
       };
@@ -1472,7 +1589,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 20
+            flip { damage 20 }
           }
         }
       };
@@ -1485,6 +1602,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            sandAttack(thisMove)
           }
         }
       };
@@ -1497,7 +1615,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { apply PARALYZED }
           }
         }
         move "Scratch", {
@@ -1527,6 +1645,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { apply PARALYZED }
           }
         }
       };
@@ -1538,7 +1657,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { apply CONFUSED }
           }
         }
         move "Hyper Voice", {
@@ -1830,6 +1949,17 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Hard Rock", {
           text "As long as Groudon ex has 1 Energy or less attached to it, damage done to any of your Groudon ex in play by attacks is reduced by 20 (after applying Weakness and Resistance). You can't use more than 1 Hard Rock Poké-Body each turn."
           delayedA {
+            // TODO Only apply one at a time
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to.name == "Groudon ex" && it.dmg.value && it.notNoEffect) {
+                  if (self.cards.energyCount(C) < 2) {
+                    bc "Hard Rock -20"
+                    it.dmg -= hp(20)
+                  }
+                }
+              }
+            }
           }
         }
         move "Power Blast", {

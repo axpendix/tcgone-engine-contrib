@@ -400,7 +400,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost P, P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30+20*defending.cards.energyCount(C)
             }
           }
 
@@ -2229,7 +2229,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost D, C
             attackRequirement {}
             onAttack {
-              damage 0
+              swiftDamage(20, opp.all.select())
             }
           }
 

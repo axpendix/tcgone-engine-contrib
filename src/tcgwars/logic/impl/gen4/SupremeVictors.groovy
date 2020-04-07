@@ -231,7 +231,7 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost D
             attackRequirement {}
             onAttack {
-              damage 0
+              swiftDamage(20, opp.all.select())
             }
           }
           move "Doom News", {

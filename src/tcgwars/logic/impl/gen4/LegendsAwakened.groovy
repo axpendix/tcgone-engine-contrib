@@ -1563,7 +1563,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              swiftDamage(30, opp.all.select())
             }
           }
           move "Fasten Claws", {

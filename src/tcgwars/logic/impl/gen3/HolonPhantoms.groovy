@@ -687,7 +687,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            swiftDamage(10, opp.all.select())
           }
         }
         move "Surprise", {
@@ -823,7 +823,10 @@ public enum HolonPhantoms implements LogicCardInfo {
         weakness L
         pokeBody "Aqua Lift", {
           text "If Relicanth has any [W] Energy attached to it, the Retreat Cost for Relicanth is 0."
-          delayedA {
+          getterA (GET_RETREAT_COST, BEFORE_LAST, self) {h->
+            if(self.cards.energyCount(W)) {
+              h.object = 0
+            }
           }
         }
         move "Knock Away", {
@@ -1029,6 +1032,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            dontApplyResistance()
           }
         }
         move "Double Spin", {
@@ -1079,6 +1083,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            cantRetreat defending
           }
         }
 
@@ -1330,6 +1335,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            dontApplyResistance()
           }
         }
         move "Earthquake", {
@@ -1908,6 +1914,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            cantRetreat defending
           }
         }
         move "Mud Slap", {

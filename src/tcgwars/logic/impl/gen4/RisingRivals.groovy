@@ -591,7 +591,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20+20*defending.cards.energyCount(C)
             }
           }
 
@@ -1865,7 +1865,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              swiftDamage(30, opp.all.select())
             }
           }
 
@@ -1877,6 +1877,14 @@ public enum RisingRivals implements LogicCardInfo {
           pokeBody "Submerge", {
             text "As long as Quagsire is on your Bench, prevent all damage done to Quagsire by attacks ."
             delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if (!self.active && it.to == self) {
+                    bc "Submerge prevent all damage"
+                    it.dmg=hp(0)
+                  }
+                }
+              }
             }
           }
           move "Punch and Run", {

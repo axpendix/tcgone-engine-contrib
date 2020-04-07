@@ -734,7 +734,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost D, C
             attackRequirement {}
             onAttack {
-              damage 0
+              swiftDamage(30, opp.all.select())
             }
           }
 

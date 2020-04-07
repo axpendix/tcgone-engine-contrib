@@ -640,7 +640,10 @@ public enum DragonFrontiers implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Psychic Wing", {
           text "If Vibrava has any [P] Energy attached to it, the Retreat Cost for Vibrava is 0."
-          delayedA {
+          getterA (GET_RETREAT_COST, BEFORE_LAST, self) {h->
+            if(self.cards.energyCount(P)) {
+              h.object = 0
+            }
           }
         }
         move "Quick Blow", {
@@ -1186,7 +1189,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { cantAttackNextTurn defending }
           }
         }
         move "Scratch", {

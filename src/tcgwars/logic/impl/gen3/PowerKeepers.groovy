@@ -267,6 +267,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
+            dontApplyResistance()
 					}
 				}
 			};
@@ -342,6 +343,8 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            apply POISONED
+            cantRetreat defending
 					}
 				}
 			};
@@ -417,7 +420,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 40
+						swiftDamage(40, defending)
 					}
 				}
 				move "Cross Chop", {
@@ -438,6 +441,9 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            afterDamage {
+              attachEnergyFrom(type: L, my.discard, self)
+            }
 					}
 				}
 				move "Thunderbolt", {
@@ -581,8 +587,8 @@ public enum PowerKeepers implements LogicCardInfo {
                 if(it.to == self && it.notNoEffect && it.from.EX ) {
                   it.dmg = hp(0)
                   bc "Safeguard prevents damage"
-					}
-				}
+                }
+              }
             }
           }
 				}
@@ -661,7 +667,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-
+            swiftDamage(20, opp.all.select())
 					}
 				}
 			};
@@ -691,7 +697,21 @@ public enum PowerKeepers implements LogicCardInfo {
 				pokeBody "Safeguard", {
 					text "Prevent all effects of attacks, including damage, done to Wobbuffet by your opponent's Pokémon-ex."
 					delayedA {
-					}
+            before null, self, Source.ATTACK, {
+              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+                bc "Safeguard prevents effect"
+                prevent()
+              }
+            }
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if(it.to == self && it.notNoEffect && it.from.EX ) {
+                  it.dmg = hp(0)
+                  bc "Safeguard prevents damage"
+                }
+              }
+            }
+          }
 				}
 				move "Flip Over", {
 					text "50 damage. Wobbuffet does 10 damage to itself, and don't apply Weakness and Resistance to this damage."
@@ -1119,7 +1139,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            swiftDamage(10, opp.all.select())
 					}
 				}
 			};
@@ -1223,6 +1243,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            cantRetreat defending
 					}
 				}
 			};
@@ -1276,6 +1297,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip { apply PARALYZED }
 					}
 				}
 				move "Cross Chop", {
@@ -1284,6 +1306,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip { damage 10 }
 					}
 				}
 			};
@@ -1315,7 +1338,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					energyCost L
 					attackRequirement {}
 					onAttack {
-
+            attachEnergyFrom(type: L, my.discard, self)
 					}
 				}
 				move "Slam", {
@@ -1324,6 +1347,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip 2, { damage 20 }
 					}
 				}
 			};
@@ -1336,7 +1360,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						damage 10
+						flip 2, { damage 10 }
 					}
 				}
 			};
@@ -1357,6 +1381,10 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            if (bench) {
+              def tar = my.bench.select("Select the Pokémon to switch with Ralts")
+              sw self, tar
+            }
 					}
 				}
 			};
@@ -1368,7 +1396,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            heal 20, self
 					}
 				}
 				move "Double Spin", {
@@ -1376,7 +1404,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+						flip 2, { damage 20 }
 					}
 				}
 			};
@@ -1390,6 +1418,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip 1, { apply ASLEEP }, { apply CONFUSED }
 					}
 				}
 			};
@@ -1401,7 +1430,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            flip { cantAttackNextTurn defending }
 					}
 				}
 				move "Tackle", {

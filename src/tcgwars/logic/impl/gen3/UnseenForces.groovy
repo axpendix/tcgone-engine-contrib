@@ -1168,8 +1168,8 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             if (defending.cards.filterByType(TRAINER)){
               defending.cards.filterByType(TRAINER).discard()
-              damage 20
             }
+            damage 20
           }
         }
       };

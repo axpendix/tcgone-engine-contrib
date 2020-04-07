@@ -2302,7 +2302,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { cantAttackNextTurn defending }
             }
           }
           move "Bite", {
@@ -2772,7 +2772,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              swiftDamage(40, opp.all.select())
             }
           }
           move "Darkness Wing", {
