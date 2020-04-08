@@ -652,7 +652,8 @@ public enum Triumphant implements LogicCardInfo {
             energyCost G, G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip 3,{},{}, [ 1:{damage 20}, 2:{damage 40}, 3:{damage 100} ]
             }
           }
 
@@ -1244,7 +1245,7 @@ public enum Triumphant implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              apply POISONED
             }
           }
           move "Corrode Target", {

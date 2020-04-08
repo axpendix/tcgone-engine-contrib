@@ -1600,6 +1600,14 @@ public enum GreatEncounters implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Jigglypuff from your hand onto Igglybuff (this counts as evolving Igglybuff) and remove all damage counters from Igglybuff."
             actionA {
+              assert my.hand.findAll{it.name.contains("Jigglypuff")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Jigglypuff") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Inquire", {

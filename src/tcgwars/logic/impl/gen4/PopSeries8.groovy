@@ -157,7 +157,14 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if (opp.bench) {
+                multiSelect(opp.bench, 2).each {
+                  targeted(it) {
+                    damage 10, it
+                  }
+                }
+              }
             }
           }
           move "Triple Nose", {
@@ -333,6 +340,14 @@ public enum PopSeries8 implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Chansey from your hand onto Happiny (this counts as evolving Happiny) and remove all damage counters from Happiny."
             actionA {
+              assert my.hand.findAll{it.name.contains("Chansey")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Chansey") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Lively", {

@@ -768,6 +768,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Marill from your hand onto Azurill (this counts as evolving Azurill) and remove all damage counters from Azurill."
           actionA {
+            // TODO not include any ex pokemon.  This goes for all baby evolution pokepowers
             assert my.hand.findAll{it.name.contains("Marill")} : "There is no pokémon in your hand to evolve ${self}."
             checkLastTurn()
             powerUsed()

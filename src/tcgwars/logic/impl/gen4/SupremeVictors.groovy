@@ -459,7 +459,8 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              whirlwind()
             }
           }
 
@@ -2302,6 +2303,14 @@ public enum SupremeVictors implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Chimecho from your hand onto Chingling (this counts as evolving Chingling) and remove all damage counters from Chingling."
             actionA {
+              assert my.hand.findAll{it.name.contains("Chimecho")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Chimecho") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Chime", {
@@ -2636,6 +2645,14 @@ public enum SupremeVictors implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Mr. Mime from your hand onto Mime Jr. (this counts as evolving Mime Jr.) and remove all damage counters from Mime Jr."
             actionA {
+              assert my.hand.findAll{it.name.contains("Mr. Mime")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Mr. Mime") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Encore", {

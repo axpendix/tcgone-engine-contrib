@@ -365,7 +365,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*self.cards.energyCount(C)
           }
         }
       };
@@ -530,6 +530,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            // TODO
           }
         }
       };
@@ -768,6 +769,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip 3,{},{}, [ 1:{damage 10}, 2:{damage 30}, 3:{damage 50} ]
           }
         }
       };
@@ -950,6 +952,13 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Clear Body", {
           text "Metang can't be affected by any Special Conditions."
           delayedA {
+            before APPLY_SPECIAL_CONDITION, {
+              def pcs = e.getTarget(bg)
+              if (pcs.owner == self.owner) {
+                bc "Clear Body prevents Special Conditions"
+                prevent()
+              }
+            }
           }
         }
         move "Extra Comet Punch", {

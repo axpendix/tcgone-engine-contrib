@@ -358,7 +358,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToOpponent("This card will be discarded.").discard()
+            discardRandomCardFromOpponentsHand()
           }
         }
         move "Fire Punch", {

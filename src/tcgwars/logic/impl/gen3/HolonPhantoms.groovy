@@ -209,6 +209,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            // TODO
           }
         }
         move "Fossil Charge", {
@@ -217,6 +218,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            // TODO
           }
         }
       };
@@ -229,6 +231,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            // TODO
           }
         }
         move "Poison Tentacles", {
@@ -237,6 +240,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            apply POISONED
           }
         }
       };
@@ -246,6 +250,19 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Form Change", {
           text "Once during your turn (before your attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
           actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
+            assert my.deck : "There is no card in your deck"
+            powerUsed()
+            bg.em().storeObject("Form_Change",bg.turnCount)
+            def deoxys = self.topPokemonCard
+            if (my.deck.findAll{it.name == "Deoxys"}) {
+              my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
+              my.deck.add(deoxys)
+              self.cards.remove(deoxys)
+              shuffleDeck()
+              checkFaint()
+            }
           }
         }
         move "Energy Loop", {
@@ -263,6 +280,19 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Form Change", {
           text "Once during your turn (before your attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
           actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
+            assert my.deck : "There is no card in your deck"
+            powerUsed()
+            bg.em().storeObject("Form_Change",bg.turnCount)
+            def deoxys = self.topPokemonCard
+            if (my.deck.findAll{it.name == "Deoxys"}) {
+              my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
+              my.deck.add(deoxys)
+              self.cards.remove(deoxys)
+              shuffleDeck()
+              checkFaint()
+            }
           }
         }
         move "Delta Reduction", {
@@ -280,6 +310,19 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Form Change", {
           text "Once during your turn (before your attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
           actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
+            assert my.deck : "There is no card in your deck"
+            powerUsed()
+            bg.em().storeObject("Form_Change",bg.turnCount)
+            def deoxys = self.topPokemonCard
+            if (my.deck.findAll{it.name == "Deoxys"}) {
+              my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
+              my.deck.add(deoxys)
+              self.cards.remove(deoxys)
+              shuffleDeck()
+              checkFaint()
+            }
           }
         }
         move "Crystal Laser", {
@@ -297,6 +340,19 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Form Change", {
           text "Once during your turn (before your attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
           actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
+            assert my.deck : "There is no card in your deck"
+            powerUsed()
+            bg.em().storeObject("Form_Change",bg.turnCount)
+            def deoxys = self.topPokemonCard
+            if (my.deck.findAll{it.name == "Deoxys"}) {
+              my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
+              my.deck.add(deoxys)
+              self.cards.remove(deoxys)
+              shuffleDeck()
+              checkFaint()
+            }
           }
         }
         move "Teleportation Burst", {
@@ -305,6 +361,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            if (my.bench) {
+              sw my.active, my.bench.select()
+            }
           }
         }
       };
@@ -316,6 +375,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Delta Supply", {
           text "Once during your turn (before your attack), you may attach a basic Energy card or a δ Rainbow Energy card from your hand to 1 of your Pokémon that has δ on its card. This power can't be used if Flygon is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Swift", {
@@ -333,6 +393,10 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Delta Reactor", {
           text "As long as any Stadium card with Holon in its name is in play, each of your Pokémon that has δ on its card does 10 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
+            // TODO
+            // if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Full Flame") {
+            //   apply BURNED
+            // }
           }
         }
         move "Hyper Beam", {
@@ -362,6 +426,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            // TODO
           }
         }
         move "Thunderous Blow", {
@@ -369,7 +434,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 40
+            damage 40+10*self.cards.energyCount(L)
           }
         }
       };
@@ -379,6 +444,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Dragon Curse", {
           text "Once during your turn (before your attack), if Kingdra is your Active Pokémon, you may put 2 damage counters on 1 of your opponent's Pokémon with δ on its card. This power can't be used if Kingdra is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Extra Flame", {
@@ -408,7 +474,12 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Dual Aura", {
           text "As long as you have Latios or Latios ex in play, each player's Evolved Pokémon (excluding Pokémon-ex) can't use any Poké-Bodies."
-          delayedA {
+          getterA (IS_ABILITY_BLOCKED) { Holder h ->
+            if (my.all.findAll{it.name == "Latios" || it.name == "Latios ex"} && !h.effect.target.EX && h.effect.target.evolution) {
+              if (h.effect.ability instanceof PokePower) {
+                h.object = true
+              }
+            }
           }
         }
         move "Spearhead", {
@@ -435,7 +506,12 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Dual Aura (Duaru oora)", {
           text "As long as you have Latias or Latias ex in play, each player's Evolved Pokémon (excluding Pokémon-ex) can't use any Poké-Bodies."
-          delayedA {
+          getterA (IS_ABILITY_BLOCKED) { Holder h ->
+            if (my.all.findAll{it.name == "Latias" || it.name == "Latias ex"} && !h.effect.target.EX && h.effect.target.evolution) {
+              if (h.effect.ability instanceof PokePower) {
+                h.object = true
+              }
+            }
           }
         }
         move "Dive", {
@@ -452,6 +528,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            discardSelfEnergy W
           }
         }
       };
@@ -482,7 +559,12 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Delta Reserve", {
           text "As long as Pidgeot has any Holon Energy cards attached to it, each player's Pokémon (excluding Pokémon that has δ on its card) can't use any Poké-Powers."
-          delayedA {
+          getterA (IS_ABILITY_BLOCKED) { Holder h ->
+            if (self.cards.findAll{it.name.contains("Holon Energy")} && !h.effect.target.name.contains("δ")) {
+              if (h.effect.ability instanceof PokePower) {
+                h.object=true
+              }
+            }
           }
         }
         move "Rotating Claws", {
@@ -491,6 +573,13 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            afterDamage {
+              if (confirm("Rotating Claws - Discard an Energy?")) {
+                discardSelfEnergy C
+                // TODO how to not include the energy that was just added?
+                attachEnergyFrom(my.discard, self)
+              }
+            }
           }
         }
       };
@@ -502,7 +591,15 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            all.each {
+              def hasPokeBody = false
+              def hasPokePower = false
+              for (Ability ability : it.getAbilities().keySet()) {
+                if (ability instanceof PokeBody) hasPokeBody = true;
+                if (ability instanceof PokePower) hasPokePower = true;
+              }
+              if (hasPokeBody || hasPokePower) noWrDamage 10, it
+            }
           }
         }
         move "Metallic Thunder", {
@@ -510,7 +607,12 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost M, M, C
           attackRequirement {}
           onAttack {
-            damage 50
+            if (confirm("Discard 2 [M]?")) {
+              discardSelfEnergy M, M
+              damage 90
+            } else {
+              damage 50
+            }
           }
         }
       };
@@ -521,15 +623,23 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Hydro Barrier", {
           text "As long as Rayquaza has any Holon Energy cards attached to it, each of your [W] Pokémon has no Weakness."
-          delayedA {
+          getterA (GET_WEAKNESSES) { h->
+            if (h.effect.target.owner == self.owner && h.effect.target.types.contains(W) && self.cards.findAll {it.name.contains("Holon Energy")}) {
+              def list = h.object as List<Weakness>
+              list.clear()
+            }
           }
         }
         move "Delta Search", {
           text "Search your deck for a Holon Energy card and attach it to Rayquaza. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-
+            def energy = my.deck.search(max: 1, "Select a Holon Energy card.", {it.name.contains("Holon Energy")})
+            attachEnergy(self, energy)
+            shuffleDeck()
           }
         }
         move "Ozone Flare", {
@@ -547,6 +657,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Poison Pollen", {
           text "Once during your turn (before your attack), you may flip a coin. If heads, choose 1 of the Defending Pokémon. That Pokémon is now Poisoned. This power can't be used if Vileplume is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Poltergeist", {
@@ -555,6 +666,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            // TODO
           }
         }
       };
@@ -567,7 +679,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Overrun", {
@@ -576,6 +688,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            if (opp.bench) {
+              damage 20, opp.bench.select()
+            }
           }
         }
       };
@@ -586,6 +701,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Fellowship", {
           text "Bellossom can use the attacks of all Oddish, Gloom, Vileplume, Vileplume ex, or other Bellossom you have in play as its own. (You still need the necessary Energy to use each attack.)"
           delayedA {
+            // TODO
           }
         }
         move "Aqua Flower", {
@@ -594,6 +710,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            // TODO
           }
         }
       };
@@ -641,6 +758,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            flip { apply BURNED }
           }
         }
       };
@@ -663,7 +781,10 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost W, W, C
           attackRequirement {}
           onAttack {
-            damage 50
+            flip {
+              damage 50
+              apply PARALYZED
+            }
           }
         }
       };
@@ -697,7 +818,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            amnesia delegate
           }
         }
         move "Swift", {
@@ -727,6 +848,13 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            if (opp.bench) {
+              multiSelect(opp.bench, 2).each {
+                targeted(it) {
+                  damage 10, it
+                }
+              }
+            }
           }
         }
       };
@@ -759,6 +887,13 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Clear Body", {
           text "Regice can't be affected by any Special Conditions."
           delayedA {
+            before APPLY_SPECIAL_CONDITION, {
+              def pcs = e.getTarget(bg)
+              if (pcs.owner == self.owner) {
+                bc "Clear Body prevents Special Conditions"
+                prevent()
+              }
+            }
           }
         }
         move "Icy Wind", {
@@ -777,6 +912,13 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Clear Body", {
           text "Regirock can't be affected by any Special Conditions."
           delayedA {
+            before APPLY_SPECIAL_CONDITION, {
+              def pcs = e.getTarget(bg)
+              if (pcs.owner == self.owner) {
+                bc "Clear Body prevents Special Conditions"
+                prevent()
+              }
+            }
           }
         }
         move "Rock Slide", {
@@ -785,6 +927,13 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            if (opp.bench) {
+              multiSelect(opp.bench, 2).each {
+                targeted(it) {
+                  damage 10, it
+                }
+              }
+            }
           }
         }
       };
@@ -795,6 +944,13 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Clear Body", {
           text "Registeel can't be affected by any Special Conditions."
           delayedA {
+            before APPLY_SPECIAL_CONDITION, {
+              def pcs = e.getTarget(bg)
+              if (pcs.owner == self.owner) {
+                bc "Clear Body prevents Special Conditions"
+                prevent()
+              }
+            }
           }
         }
         move "Hyper Beam", {
@@ -845,6 +1001,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            discardRandomCardFromOpponentsHand()
           }
         }
       };
@@ -876,7 +1033,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*self.cards.energyCount(C)
           }
         }
         move "Combustion", {
@@ -905,6 +1062,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip 3,{},{}, [ 1:{damage 10}, 2:{damage 20}, 3:{damage 40} ]
           }
         }
       };
@@ -915,6 +1073,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Primal Light", {
           text "Once during your turn (before your attack), you may search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power can't be used if Aerodactyl is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Granite Head", {
@@ -936,6 +1095,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            all.each {
+              if (it.benched) {
+                damage 10, it
+              }
+            }
           }
         }
         move "Take Down", {
@@ -944,6 +1108,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            damage 10, self
           }
         }
       };
@@ -953,6 +1118,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Delta Support", {
           text "Once during your turn (before your attack), if you have a Supporter card with Holon in its name in play, you may search your discard pile for a basic Energy card or a δ Rainbow Energy card, show it to your opponent, and put it into your hand. This power can't be used if Chimecho is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Hook", {
@@ -972,7 +1138,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            opp.all.each {
+              damage 10, it
+            }
           }
         }
         move "Hyper Beam", {
@@ -1002,6 +1170,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            flip { apply BURNED }
           }
         }
       };
@@ -1022,7 +1191,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 50
+            flip 2, { damage 50 }
           }
         }
       };
@@ -1034,7 +1203,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10+10*my.all.findAll {it.name.contains("δ")}.size()
           }
         }
         move "Split Bomb", {
@@ -1096,7 +1265,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            my.all.findAll { it.name.contains("δ") }.each{
+              draw 1
+            }
           }
         }
       };
@@ -1151,7 +1322,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            heal 20, my.all.select()
           }
         }
         move "Quick Attack", {
@@ -1173,6 +1344,10 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+
+            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name.contains("Holon") {
+              draw 3
+            }
           }
         }
         move "Deceive", {
@@ -1180,7 +1355,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost M, C
           attackRequirement {}
           onAttack {
-
+            directDamge 40, opp.all.oppSelect("Put 4 damage counters on which Pokemon?")
           }
         }
       };
@@ -1194,6 +1369,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            whirlwind()
           }
         }
       };
@@ -1206,6 +1382,13 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+
+            if (bg.stadiumInfoStruct) {
+              damage 30
+              afterDamage {
+                discard bg.stadiumInfoStruct.stadiumCard
+              }
+            }
           }
         }
         move "Flames of Rage", {
@@ -1213,7 +1396,8 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost R, C, C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10+20*self.numberOfDamageCounters
+            discardSelfEnergy C, C
           }
         }
       };
@@ -1247,6 +1431,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            apply BURNED
           }
         }
         move "Combustion", {
@@ -1267,6 +1452,10 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+
+            if (self.cards.findAll { it.name.contains("Holon Energy") }) {
+              discardRandomCardFromOpponentsHand()
+            }
           }
         }
         move "Swift Turn", {
@@ -1566,7 +1755,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost D
           attackRequirement {}
           onAttack {
-
+            apply POISONED
           }
         }
         move "Mud Shot", {
@@ -1627,6 +1816,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            draw 1
           }
         }
       };
@@ -1638,7 +1828,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { apply BURNED }
           }
         }
         move "Flare", {
@@ -1667,6 +1857,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            heal 20, self
           }
         }
       };
@@ -1678,7 +1869,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-
+            draw 3
           }
         }
         move "Water Arrow", {
@@ -1686,7 +1877,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            damage 20, opp.all.select()
           }
         }
       };
@@ -1716,6 +1907,14 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Pikachu from your hand onto Pichu (this counts as evolving Pichu) and remove all damage counters from Pichu."
           actionA {
+            assert my.hand.findAll{it.name.contains("Pikachu")} : "There is no pokémon in your hand to evolve ${self}."
+            checkLastTurn()
+            powerUsed()
+            def tar = my.hand.findAll { it.name.contains("Pikachu") }.select()
+            if (tar) {
+              evolve(self, tar.first(), OTHER)
+              heal self.numberOfDamageCounters*10, self
+            }
           }
         }
         move "Paste", {
@@ -1723,7 +1922,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            attachEnergyFrom(my.discard, my.all.findAll {it.name.contains("δ")}.select("Attach to?"))
           }
         }
       };
@@ -2021,6 +2220,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Splash Back", {
           text "Once during your turn (before your attack), if your opponent has 4 or more Benched Pokémon, you may choose 1 of them and return that Pokémon and all cards attached to it to his or her hand. This power can't be used if Crawdaunt ex is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Power Blow", {
@@ -2028,7 +2228,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost W, C
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 20*self.cards.energyCount(C)
           }
         }
       };
@@ -2038,6 +2238,11 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Psychic Vision", {
           text "Once during your turn (before your attack), if Mew ex is on your Bench, you may look at your opponent's hand."
           actionA {
+            checkLastTurn()
+            assert self.benched : "This Pokemon is not benched"
+            assert opp.hand : "Opponent's hand is empty"
+            powerUsed()
+            opp.hand.showToMe("Opponent's hand")
           }
         }
         move "Super Psy Bolt", {

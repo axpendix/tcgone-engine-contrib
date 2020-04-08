@@ -947,7 +947,7 @@ public enum Stormfront implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20*self.cards.energyCount(C)
             }
           }
           move "Spinning Tail", {
@@ -1032,6 +1032,14 @@ public enum Stormfront implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Roselia from your hand onto Budew (this counts as evolving Budew) and remove all damage counters from Budew."
             actionA {
+              assert my.hand.findAll{it.name.contains("Roselia")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Roselia") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Buddy-buddy", {
@@ -1155,7 +1163,8 @@ public enum Stormfront implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip 3,{},{}, [ 1:{damage 10}, 2:{damage 20}, 3:{damage 40} ]
             }
           }
 
@@ -1191,7 +1200,7 @@ public enum Stormfront implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              apply POISONED
             }
           }
           move "Hoodwink", {
@@ -1307,6 +1316,14 @@ public enum Stormfront implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Pikachu from your hand onto Pichu (this counts as evolving Pichu) and remove all damage counters from Pichu."
             actionA {
+              assert my.hand.findAll{it.name.contains("Pikachu")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Pikachu") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Electric Circuit", {
@@ -1711,7 +1728,14 @@ public enum Stormfront implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if (opp.bench) {
+                multiSelect(opp.bench, 2).each {
+                  targeted(it) {
+                    damage 10, it
+                  }
+                }
+              }
             }
           }
 

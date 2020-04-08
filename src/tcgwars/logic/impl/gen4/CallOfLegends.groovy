@@ -907,7 +907,7 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              apply POISONED
             }
           }
           move "Super Explosion", {
@@ -1626,7 +1626,7 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost R
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply BURNED }
             }
           }
           move "Ember", {

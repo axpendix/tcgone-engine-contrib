@@ -221,6 +221,19 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn , you may search your deck for any Deoxys and switch it with Deoxys Normal Forme. (Any cards attached to Deoxys Normal Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Normal Forme on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
+              checkLastTurn()
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
+              assert my.deck : "There is no card in your deck"
+              powerUsed()
+              bg.em().storeObject("Form_Change",bg.turnCount)
+              def deoxys = self.topPokemonCard
+              if (my.deck.findAll{it.name == "Deoxys"}) {
+                my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
+                my.deck.add(deoxys)
+                self.cards.remove(deoxys)
+                shuffleDeck()
+                checkFaint()
+              }
             }
           }
           move "Energy Crush", {
@@ -688,6 +701,19 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn , you may search your deck for any Deoxys and switch it with Deoxys Attack Forme. (Any cards attached to Deoxys Attack Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Attack Forme on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
+              checkLastTurn()
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
+              assert my.deck : "There is no card in your deck"
+              powerUsed()
+              bg.em().storeObject("Form_Change",bg.turnCount)
+              def deoxys = self.topPokemonCard
+              if (my.deck.findAll{it.name == "Deoxys"}) {
+                my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
+                my.deck.add(deoxys)
+                self.cards.remove(deoxys)
+                shuffleDeck()
+                checkFaint()
+              }
             }
           }
           move "Psychic Boost", {
@@ -706,6 +732,19 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn , you may search your deck for any Deoxys and switch it with Deoxys Defense Forme. (Any cards attached to Deoxys Defense Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Defense Forme on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
+              checkLastTurn()
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
+              assert my.deck : "There is no card in your deck"
+              powerUsed()
+              bg.em().storeObject("Form_Change",bg.turnCount)
+              def deoxys = self.topPokemonCard
+              if (my.deck.findAll{it.name == "Deoxys"}) {
+                my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
+                my.deck.add(deoxys)
+                self.cards.remove(deoxys)
+                shuffleDeck()
+                checkFaint()
+              }
             }
           }
           move "Psychic Defense", {
@@ -724,6 +763,19 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn , you may search your deck for any Deoxys and switch it with Deoxys Speed Forme. (Any cards attached to Deoxys Speed Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Speed Forme on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
+              checkLastTurn()
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
+              assert my.deck : "There is no card in your deck"
+              powerUsed()
+              bg.em().storeObject("Form_Change",bg.turnCount)
+              def deoxys = self.topPokemonCard
+              if (my.deck.findAll{it.name == "Deoxys"}) {
+                my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
+                my.deck.add(deoxys)
+                self.cards.remove(deoxys)
+                shuffleDeck()
+                checkFaint()
+              }
             }
           }
           move "Speed Shot", {
@@ -1252,7 +1304,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              whirlwind()
             }
           }
 
@@ -1317,7 +1370,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20*self.cards.energyCount(C)
             }
           }
 
@@ -2784,6 +2837,17 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Hitmonlee, Hitmonchan, or Hitmontop from your hand onto Tyrogue (this counts as evolving Tyrogue) and remove all damage counters from Tyrogue."
             actionA {
+              def eligible = my.hand.findAll {
+                it.name.contains("Hitmonlee") || it.name.contains("Hitmonchan") || it.name.contains("Hitmontop")
+              }
+              assert eligible: "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = eligible.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Gut Blow", {

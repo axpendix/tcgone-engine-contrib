@@ -277,7 +277,8 @@ public enum PopSeries6 implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              whirlwind()
             }
           }
           move "Clutch", {

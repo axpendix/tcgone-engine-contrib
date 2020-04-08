@@ -924,7 +924,8 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              whirlwind()
             }
           }
 
@@ -1569,6 +1570,14 @@ public enum SecretWonders implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Jynx from your hand onto Smoochum (this counts as evolving Smoochum) and remove all damage counters from Smoochum."
             actionA {
+              assert my.hand.findAll{it.name.contains("Jynx")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Jynx") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Psykiss", {

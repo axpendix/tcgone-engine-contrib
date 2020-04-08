@@ -1038,7 +1038,8 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              whirlwind()
             }
           }
 
@@ -1738,6 +1739,14 @@ public enum RisingRivals implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Snorlax from your hand onto Munchlax (this counts as evolving Munchlax) and remove all damage counters from Munchlax."
             actionA {
+              assert my.hand.findAll{it.name.contains("Snorlax")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Snorlax") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Rest", {
@@ -1756,6 +1765,14 @@ public enum RisingRivals implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Snorlax from your hand onto Munchlax (this counts as evolving Munchlax) and remove all damage counters from Munchlax."
             actionA {
+              assert my.hand.findAll{it.name.contains("Snorlax")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Snorlax") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Errand-Running", {
@@ -2068,7 +2085,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10*self.cards.energyCount(C)
             }
           }
 

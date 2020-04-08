@@ -1010,6 +1010,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Chimecho from your hand onto Chingling (this counts as evolving Chingling) and remove all damage counters from Chingling."
             actionA {
+              assert my.hand.findAll{it.name.contains("Chimecho")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Chimecho") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Inviting Bell", {
@@ -1203,7 +1211,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if (opp.bench) {
+                multiSelect(opp.bench, 2).each {
+                  targeted(it) {
+                    damage 10, it
+                  }
+                }
+              }
             }
           }
 
@@ -1214,6 +1229,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Chansey from your hand onto Happiny (this counts as evolving Happiny) and remove all damage counters from Happiny."
             actionA {
+              assert my.hand.findAll{it.name.contains("Chansey")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Chansey") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Lively", {
@@ -1466,7 +1489,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              whirlwind()
             }
           }
 
@@ -1907,6 +1931,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Magmar from your hand onto Magby (this counts as evolving Magby) and remove all damage counters from Magby."
             actionA {
+              assert my.hand.findAll{it.name.contains("Magmar")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Magmar") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Scorch", {
@@ -1914,7 +1946,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply BURNED }
             }
           }
 
@@ -2013,6 +2045,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Pikachu from your hand onto Pichu (this counts as evolving Pichu) and remove all damage counters from Pichu."
             actionA {
+              assert my.hand.findAll{it.name.contains("Pikachu")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Pikachu") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Chupi", {

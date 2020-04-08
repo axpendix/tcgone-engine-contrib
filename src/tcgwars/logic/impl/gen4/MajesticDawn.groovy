@@ -1181,7 +1181,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip 3,{},{}, [ 1:{damage 10}, 2:{damage 20}, 3:{damage 40} ]
             }
           }
 
@@ -1425,6 +1426,14 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Chimecho from your hand onto Chingling (this counts as evolving Chingling) and remove all damage counters from Chingling."
             actionA {
+              assert my.hand.findAll{it.name.contains("Chimecho")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Chimecho") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Uproar", {
@@ -1635,6 +1644,14 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Snorlax from your hand onto Munchlax (this counts as evolving Munchlax) and remove all damage counters from Munchlax."
             actionA {
+              assert my.hand.findAll{it.name.contains("Snorlax")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Snorlax") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Lick", {
@@ -1784,7 +1801,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              whirlwind()
             }
           }
           move "Flap", {

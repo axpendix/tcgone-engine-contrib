@@ -1068,7 +1068,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 10*self.numberOfDamageCounters
+            damage 10*self.cards.energyCount(C)
           }
         }
         move "Shadow Tag", {

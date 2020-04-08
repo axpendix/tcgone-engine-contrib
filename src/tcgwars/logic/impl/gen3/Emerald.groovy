@@ -454,7 +454,7 @@ public enum Emerald implements LogicCardInfo {
             delayedA {
               before APPLY_SPECIAL_CONDITION, {
                 def pcs=e.getTarget(bg)
-                if(pcs.owner==self.owner && pcs.cards.energyCount(G)){
+                if(pcs.owner==self.owner && pcs.cards.energyCount(G)) {
                   bc "Green Essence prevents special conditions"
                   prevent()
                 }

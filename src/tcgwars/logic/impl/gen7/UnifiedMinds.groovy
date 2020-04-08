@@ -594,7 +594,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost G, C, C
             onAttack {
               damage 50
-              flip 3,{},{}, [ 1:{damage 10}, 2:{damage 80}, 3:{damage 150} ]
+              flip 3,{},{}, [ 1:{damage 40}, 2:{damage 80}, 3:{damage 150} ]
             }
           }
         };
