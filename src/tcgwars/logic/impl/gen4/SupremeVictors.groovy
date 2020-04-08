@@ -578,7 +578,8 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost W, W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip { apply PARALYZED }
             }
           }
 
@@ -724,7 +725,8 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost D, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -838,7 +840,8 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -989,7 +992,8 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply PARALYZED }
             }
           }
 
@@ -1558,7 +1562,8 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
           move "Rear Kick", {
@@ -1600,7 +1605,7 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              sandAttack(thisMove)
             }
           }
           move "Fireworks", {
@@ -1630,7 +1635,8 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply PARALYZED }
             }
           }
 
@@ -1904,7 +1910,8 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              amnesia delegate
             }
           }
 
@@ -2034,7 +2041,8 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -2091,7 +2099,7 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply CONFUSED }
             }
           }
           move "Air Slash", {
@@ -2477,7 +2485,7 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10*self.numberOfDamageCounters
             }
           }
           move "Fury Attack", {
@@ -2742,7 +2750,8 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
 
@@ -2806,7 +2815,8 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply POISONED }
             }
           }
 
@@ -2869,7 +2879,7 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply PARALYZED }
             }
           }
           move "Tackle", {
@@ -2890,7 +2900,8 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply POISONED }
             }
           }
           move "Tail Smash", {
@@ -2960,7 +2971,7 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply CONFUSED }
             }
           }
           move "Rollout", {

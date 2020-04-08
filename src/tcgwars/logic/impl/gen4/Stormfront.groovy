@@ -223,7 +223,8 @@ public enum Stormfront implements LogicCardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -999,7 +1000,7 @@ public enum Stormfront implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              amnesia delegate
             }
           }
           move "", {
@@ -1074,7 +1075,8 @@ public enum Stormfront implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply CONFUSED }
             }
           }
           move "Trick Room", {
@@ -1109,7 +1111,7 @@ public enum Stormfront implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              swiftDamage(60, defending)
             }
           }
 
@@ -1254,7 +1256,8 @@ public enum Stormfront implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
           move "Removal Pulse", {
@@ -1262,7 +1265,8 @@ public enum Stormfront implements LogicCardInfo {
             energyCost L, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -1275,7 +1279,7 @@ public enum Stormfront implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              draw 1
             }
           }
           move "Energy Milk", {
@@ -1413,7 +1417,8 @@ public enum Stormfront implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
           move "Rollout", {
@@ -1530,7 +1535,8 @@ public enum Stormfront implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
 
@@ -1588,7 +1594,7 @@ public enum Stormfront implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply PARALYZED }
             }
           }
           move "Linear Attack", {
@@ -1834,7 +1840,8 @@ public enum Stormfront implements LogicCardInfo {
             energyCost F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply PARALYZED }
             }
           }
 
@@ -1877,7 +1884,8 @@ public enum Stormfront implements LogicCardInfo {
             energyCost R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { preventAllEffectsNextTurn() }
             }
           }
 
@@ -1998,7 +2006,7 @@ public enum Stormfront implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply PARALYZED }
             }
           }
           move "Take Down", {
@@ -2028,7 +2036,8 @@ public enum Stormfront implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
 
@@ -2050,7 +2059,7 @@ public enum Stormfront implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply POISONED }
             }
           }
 
@@ -2483,7 +2492,8 @@ public enum Stormfront implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
 

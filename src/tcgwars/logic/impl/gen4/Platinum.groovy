@@ -727,7 +727,8 @@ public enum Platinum implements LogicCardInfo {
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 100
+              damage 60, self
             }
           }
 
@@ -1234,7 +1235,8 @@ public enum Platinum implements LogicCardInfo {
             energyCost R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { damage 20 }
             }
           }
           move "High Jump Kick", {
@@ -1255,7 +1257,8 @@ public enum Platinum implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { damage 20 }
             }
           }
           move "Knock Over", {
@@ -1489,7 +1492,8 @@ public enum Platinum implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
 
@@ -1557,7 +1561,8 @@ public enum Platinum implements LogicCardInfo {
             energyCost W, W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip { apply PARALYZED }
             }
           }
 
@@ -1578,7 +1583,8 @@ public enum Platinum implements LogicCardInfo {
             energyCost F, F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -1650,7 +1656,8 @@ public enum Platinum implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
 
@@ -1754,7 +1761,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply POISONED }
             }
           }
           move "Sweet Saliva", {
@@ -1818,7 +1825,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              draw 1
             }
           }
           move "Shoot Through", {
@@ -1848,7 +1855,8 @@ public enum Platinum implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { damage 20 }
             }
           }
 
@@ -1891,7 +1899,8 @@ public enum Platinum implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
 
@@ -1994,7 +2003,8 @@ public enum Platinum implements LogicCardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply PARALYZED }
             }
           }
 
@@ -2310,7 +2320,8 @@ public enum Platinum implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              sandAttack(thisMove)
             }
           }
 
@@ -2323,7 +2334,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10*self.numberOfDamageCounters
             }
           }
           move "Slack Off", {
@@ -2459,7 +2470,8 @@ public enum Platinum implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
 
@@ -2501,7 +2513,8 @@ public enum Platinum implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply POISONED }
             }
           }
 
@@ -2822,7 +2835,8 @@ public enum Platinum implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply PARALYZED }
             }
           }
           move "Thunderpunch", {

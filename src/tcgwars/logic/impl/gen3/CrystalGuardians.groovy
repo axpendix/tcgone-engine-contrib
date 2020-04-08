@@ -434,7 +434,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            if (defending.topPokemonCard.cardTypes.is(EX)) {
+            if (defending.EX) {
               damage 30
             }
           }
@@ -1275,6 +1275,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 20 }
           }
         }
       };
@@ -1595,7 +1596,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            apply PARALYZED
+            flip { apply PARALYZED }
           }
         }
       };

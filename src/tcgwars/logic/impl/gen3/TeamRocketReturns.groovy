@@ -1064,11 +1064,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              if(defending.pokemonEX){
-                afterDamage{
-                  apply ASLEEP
-                  apply POISONED
-                }
+              if (defending.EX) {
+                apply ASLEEP
+                apply POISONED
               }
             }
           }

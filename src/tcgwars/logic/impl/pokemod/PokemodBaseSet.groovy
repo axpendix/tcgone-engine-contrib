@@ -674,6 +674,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
 					energyCost L
 					onAttack {
 						damage 10
+            flip { apply PARALYZED }
 					}
 				}
 				move "Thunderpunch", {
@@ -846,7 +847,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
 					text "The Defending Pokémon is now Asleep."
 					energyCost P
 					onAttack {
-
+            apply ASLEEP
 					}
 				}
 				move "Dream Eater", {

@@ -207,7 +207,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					}
 				}
 				move "Metal Claw", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -220,6 +220,9 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 70
+            if (opp.deck) {
+              opp.deck.subList(0,1).discard()
+            }
 					}
 				}
 			};
@@ -243,7 +246,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					}
 				}
 				move "Gust", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -314,7 +317,7 @@ public enum PowerKeepers implements LogicCardInfo {
 			return evolution (this, from:"Charmeleon", hp:HP120, type:R, retreatCost:2) {
 				weakness W
 				move "Combustion", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost R
 					attackRequirement {}
 					onAttack {
@@ -400,7 +403,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					}
 				}
 				move "Blinding Scythe", {
-					text "60 damage. "
+					text "60 damage."
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
@@ -430,6 +433,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
+            flip { damage 30 }
 					}
 				}
 			};
@@ -599,10 +603,11 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip { damage 20 }
 					}
 				}
 				move "Will-o'-the-wisp", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost R, C, C
 					attackRequirement {}
 					onAttack {
@@ -676,7 +681,7 @@ public enum PowerKeepers implements LogicCardInfo {
 			return basic (this, hp:HP070, type:G, retreatCost:1) {
 				weakness P
 				move "Sharp Fang", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -745,6 +750,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip { damage 20 }
 					}
 				}
 			};
@@ -795,7 +801,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					}
 				}
 				move "Flame Tail", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
@@ -834,6 +840,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            apply ASLEEP
 					}
 				}
 				move "Double-edge", {
@@ -842,6 +849,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 60
+            damage 10, self
 					}
 				}
 			};
@@ -853,7 +861,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            apply ASLEEP
 					}
 				}
 				move "Dream Eater", {
@@ -875,6 +883,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            reduceDamageNextTurn(hp(10),thisMove)
 					}
 				}
 				move "Stomp", {
@@ -883,6 +892,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            flip { damage 20 }
 					}
 				}
 			};
@@ -895,10 +905,11 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip { damage 20 }
 					}
 				}
 				move "Mega Kick", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -915,7 +926,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					}
 				}
 				move "Punch", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -928,6 +939,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            flip { apply PARALYZED }
 					}
 				}
 			};
@@ -959,10 +971,11 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip { apply PARALYZED }
 					}
 				}
 				move "Gentle Slap", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -979,6 +992,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip { apply PARALYZED }
 					}
 				}
 			};
@@ -992,6 +1006,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip { apply PARALYZED }
 					}
 				}
 				move "Darkness Charge", {
@@ -1017,7 +1032,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					}
 				}
 				move "Rolling Tackle", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
@@ -1031,7 +1046,7 @@ public enum PowerKeepers implements LogicCardInfo {
 				resistance L, MINUS30
 				resistance F, MINUS30
 				move "Ram", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1061,6 +1076,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip { damage 20 }
 					}
 				}
 			};
@@ -1077,7 +1093,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					}
 				}
 				move "Tackle", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -1108,10 +1124,11 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip { apply CONFUSED }
 					}
 				}
 				move "Spinning Attack", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1154,7 +1171,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					}
 				}
 				move "Gnaw", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -1171,6 +1188,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            sandAttack(thisMove)
 					}
 				}
 			};
@@ -1183,6 +1201,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip { damage 10 }
 					}
 				}
 				move "Negative Ion", {
@@ -1274,7 +1293,7 @@ public enum PowerKeepers implements LogicCardInfo {
 				weakness F
 				resistance M, MINUS30
 				move "Ram", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1324,7 +1343,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					}
 				}
 				move "Mud Shot", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1370,7 +1389,7 @@ public enum PowerKeepers implements LogicCardInfo {
 			return basic (this, hp:HP050, type:P, retreatCost:1) {
 				weakness P
 				move "Slap", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1436,7 +1455,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					}
 				}
 				move "Tackle", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1452,11 +1471,11 @@ public enum PowerKeepers implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            amnesia delegate
 					}
 				}
 				move "Scratch", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1496,7 +1515,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					}
 				}
 				move "Aurora Beam", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -1549,7 +1568,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            flip { apply CONFUSED }
 					}
 				}
 				move "Ember", {
@@ -1574,7 +1593,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10*self.numberOfDamageCounters
 					}
 				}
 			};
@@ -1917,7 +1936,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					}
 				}
 				move "Razor Wing", {
-					text "60 damage. "
+					text "60 damage."
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
@@ -1974,6 +1993,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            flip { preventAllEffectsNextTurn() }
 					}
 				}
 			};
@@ -1991,6 +2011,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            flip { discardDefendingEnergy() }
 					}
 				}
 			};

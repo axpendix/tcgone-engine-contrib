@@ -240,7 +240,8 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply CONFUSED }
             }
           }
 
@@ -583,7 +584,8 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost D, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { damage 30 }
             }
           }
 
@@ -748,7 +750,8 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip { damage 30 }
             }
           }
 
@@ -890,7 +893,8 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip { damage 30 }
             }
           }
 
@@ -1054,7 +1058,8 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { preventAllEffectsNextTurn() }
             }
           }
           move "Mach Bolt", {
@@ -1327,7 +1332,8 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost D
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { damage 10 }
             }
           }
 
@@ -1340,7 +1346,8 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              sandAttack(thisMove)
             }
           }
           move "Suffocating Gas", {
@@ -1459,7 +1466,8 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { damage 10 }
             }
           }
 

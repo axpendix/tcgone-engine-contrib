@@ -429,7 +429,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            if (opp.active.topPokemonCard.cardTypes.contains(EX)) {
+            if (defending.EX) {
               damage 30
             }
           }
@@ -744,7 +744,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
-            if (opp.active.topPokemonCard.cardTypes.contains(EX)) {
+            if (defending.EX) {
               damage 30
             }
           }
@@ -1710,9 +1710,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            flip {
-              apply PARALYZED
-            }
+            flip { apply PARALYZED }
           }
         }
         move "Smog", {

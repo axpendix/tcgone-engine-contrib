@@ -525,9 +525,6 @@ public enum RebelClash implements LogicCardInfo {
         move "Collect", {
           text "Draw a card."
           energyCost C
-          attackRequirement {
-            assert my.deck : "Deck is empty"
-          }
           onAttack {
             draw 1
           }

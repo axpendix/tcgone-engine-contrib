@@ -263,7 +263,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost M, M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              flip { damage 20 }
             }
           }
 
@@ -508,7 +509,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply CONFUSED }
             }
           }
 
@@ -672,7 +674,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
           move "Lightning Strike", {
@@ -702,7 +705,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip { damage 20 }
             }
           }
 
@@ -763,7 +767,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost W, W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -807,7 +812,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip { damage 40 }
             }
           }
 
@@ -972,7 +978,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost G, G, G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip { apply PARALYZED }
             }
           }
 
@@ -1006,7 +1013,7 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              draw 1
             }
           }
           move "Slam", {
@@ -1028,7 +1035,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply PARALYZED }
             }
           }
           move "Volt Crush", {
@@ -1057,7 +1065,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { damage 30 }
             }
           }
 
@@ -1106,7 +1115,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply PARALYZED }
             }
           }
 
@@ -1185,7 +1195,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { damage 30 }
             }
           }
           move "Drill Peck", {
@@ -1206,7 +1217,7 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10*self.numberOfDamageCounters
             }
           }
           move "Wood Hammer", {
@@ -1245,7 +1256,7 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              draw 1
             }
           }
           move "Hand Trick", {
@@ -1296,7 +1307,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply CONFUSED }
             }
           }
 
@@ -1463,7 +1475,7 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply POISONED }
             }
           }
 
@@ -1584,7 +1596,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { damage 10 }
             }
           }
           move "Double-edge", {
@@ -1592,7 +1605,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              damage 10, self
             }
           }
 
@@ -1628,7 +1642,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
 
@@ -1660,7 +1675,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { damage 10 }
             }
           }
           move "Volt Tackle", {
@@ -1681,7 +1697,8 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { damage 10 }
             }
           }
           move "Headbutt", {
@@ -1789,7 +1806,7 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost D
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply POISONED }
             }
           }
           move "Slash", {

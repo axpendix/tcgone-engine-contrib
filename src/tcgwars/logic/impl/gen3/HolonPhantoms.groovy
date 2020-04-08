@@ -219,7 +219,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
           }
         }
-
       };
       case CRADILY_DELTA_2:
       return evolution (this, from:"Lileep", hp:HP100, type:[D, M], retreatCost:2) {
@@ -240,7 +239,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
           }
         }
-
       };
       case DEOXYS_DELTA_3:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
@@ -258,7 +256,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 60
           }
         }
-
       };
       case DEOXYS_DELTA_4:
       return basic (this, hp:HP080, type:M, retreatCost:2) {
@@ -276,7 +273,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 30
           }
         }
-
       };
       case DEOXYS_DELTA_5:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
@@ -294,7 +290,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-
       };
       case DEOXYS_DELTA_6:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
@@ -312,7 +307,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-
       };
       case FLYGON_DELTA_7:
       return evolution (this, from:"Vibrava", hp:HP110, type:[G, M], retreatCost:2) {
@@ -329,10 +323,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost G, M, C
           attackRequirement {}
           onAttack {
-            damage 60
+            swiftDamage(60, defending)
           }
         }
-
       };
       case GYARADOS_DELTA_8:
       return evolution (this, from:"Magikarp", hp:HP090, type:[L, M], retreatCost:2) {
@@ -348,17 +341,17 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { discardDefendingEnergy() }
           }
         }
         move "Heavy Impact", {
-          text "80 damage. "
+          text "80 damage."
           energyCost L, M, C, C, C
           attackRequirement {}
           onAttack {
             damage 80
           }
         }
-
       };
       case KABUTOPS_DELTA_9:
       return evolution (this, from:"Kabuto", hp:HP100, type:L, retreatCost:1) {
@@ -379,7 +372,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 40
           }
         }
-
       };
       case KINGDRA_DELTA_10:
       return evolution (this, from:"Seadra", hp:HP110, type:[R, M], retreatCost:2) {
@@ -395,17 +387,19 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            if (defending.EX) {
+              damage 30
+            }
           }
         }
         move "Heat Blast", {
-          text "80 damage. "
+          text "80 damage."
           energyCost R, M, C, C
           attackRequirement {}
           onAttack {
             damage 80
           }
         }
-
       };
       case LATIAS_DELTA_11:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
@@ -422,18 +416,17 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            draw 1
           }
         }
         move "Dragon Claw", {
-          text "40 damage. "
+          text "40 damage."
           energyCost R, C, C
           attackRequirement {}
           onAttack {
             damage 40
           }
         }
-
       };
       case LATIOS_DELTA_12:
       return basic (this, hp:HP080, type:W, retreatCost:1) {
@@ -446,7 +439,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Dive", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -461,7 +454,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
           }
         }
-
       };
       case OMASTAR_DELTA_13:
       return evolution (this, from:"Omanyte", hp:HP110, type:P, retreatCost:2) {
@@ -472,6 +464,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { apply PARALYZED }
           }
         }
         move "Vengeful Spikes", {
@@ -482,7 +475,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 30
           }
         }
-
       };
       case PIDGEOT_DELTA_14:
       return evolution (this, from:"Pidgeotto", hp:HP100, type:[L, M], retreatCost:1) {
@@ -501,7 +493,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
           }
         }
-
       };
       case RAICHU_DELTA_15:
       return evolution (this, from:"Pikachu", hp:HP070, type:M, retreatCost:0) {
@@ -522,7 +513,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
           }
         }
-
       };
       case RAYQUAZA_DELTA_16:
       return basic (this, hp:HP080, type:[W, M], retreatCost:2) {
@@ -543,14 +533,13 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Ozone Flare", {
-          text "60 damage. "
+          text "60 damage."
           energyCost W, M, C, C
           attackRequirement {}
           onAttack {
             damage 60
           }
         }
-
       };
       case VILEPLUME_DELTA_17:
       return evolution (this, from:"Gloom", hp:HP090, type:[P, M], retreatCost:1) {
@@ -568,7 +557,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 30
           }
         }
-
       };
       case ABSOL_18:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
@@ -590,7 +578,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 10
           }
         }
-
       };
       case BELLOSSOM_DELTA_19:
       return evolution (this, from:"Gloom", hp:HP100, type:W, retreatCost:1) {
@@ -609,13 +596,12 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 40
           }
         }
-
       };
       case BLAZIKEN_20:
       return evolution (this, from:"Combusken", hp:HP100, type:R, retreatCost:2) {
         weakness W
         move "Combustion", {
-          text "30 damage. "
+          text "30 damage."
           energyCost R
           attackRequirement {}
           onAttack {
@@ -628,9 +614,13 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            flip 1, {
+              damage 20
+            }, {
+              apply BURNED
+            }
           }
         }
-
       };
       case LATIAS_DELTA_21:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
@@ -638,7 +628,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance P, MINUS30
         resistance F, MINUS30
         move "Combustion", {
-          text "20 damage. "
+          text "20 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
@@ -653,7 +643,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 40
           }
         }
-
       };
       case LATIOS_DELTA_22:
       return basic (this, hp:HP080, type:W, retreatCost:2) {
@@ -666,6 +655,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 20 }
           }
         }
         move "Dragonbreath", {
@@ -676,7 +666,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
           }
         }
-
       };
       case MAWILE_23:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
@@ -699,7 +688,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             afterDamage { astonish() }
           }
         }
-
       };
       case MEWTWO_DELTA_24:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
@@ -717,10 +705,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost L, L, C
           attackRequirement {}
           onAttack {
-            damage 40
+            swiftDamage(40, defending)
           }
         }
-
       };
       case NOSEPASS_25:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
@@ -731,6 +718,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { apply CONFUSED }
           }
         }
         move "Rock Slide", {
@@ -741,7 +729,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-
       };
       case RAYQUAZA_DELTA_26:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
@@ -751,7 +738,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost R, C
           attackRequirement {}
           onAttack {
-            damage 10
+            flip {
+              damage 10+10*self.numberOfDamageCounters
+            }
           }
         }
         move "Flamethrower", {
@@ -760,9 +749,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            discardSelfEnergy R
           }
         }
-
       };
       case REGICE_27:
       return basic (this, hp:HP080, type:W, retreatCost:2) {
@@ -778,9 +767,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            flip { apply ASLEEP }
           }
         }
-
       };
       case REGIROCK_28:
       return basic (this, hp:HP080, type:F, retreatCost:2) {
@@ -798,7 +787,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 40
           }
         }
-
       };
       case REGISTEEL_29:
       return basic (this, hp:HP080, type:M, retreatCost:2) {
@@ -815,9 +803,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { discardDefendingEnergy() }
           }
         }
-
       };
       case RELICANTH_30:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
@@ -834,11 +822,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
           energyCost C, C
           attackRequirement {}
-          onAttack {
+          onAtta1k {
             damage 20
+            flip { damage 10 }
           }
         }
-
       };
       case SABLEYE_31:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
@@ -848,7 +836,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { apply PARALYZED }
           }
         }
         move "Knock Off", {
@@ -859,7 +847,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 10
           }
         }
-
       };
       case SEVIPER_32:
       return basic (this, hp:HP070, type:G, retreatCost:1) {
@@ -869,18 +856,17 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { apply POISONED }
           }
         }
         move "Bite", {
-          text "40 damage. "
+          text "40 damage."
           energyCost G, C, C
           attackRequirement {}
           onAttack {
             damage 40
           }
         }
-
       };
       case TORKOAL_33:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
@@ -894,20 +880,19 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Combustion", {
-          text "40 damage. "
+          text "40 damage."
           energyCost R, C, C
           attackRequirement {}
           onAttack {
             damage 40
           }
         }
-
       };
       case ZANGOOSE_34:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
         move "Scratch", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -922,7 +907,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 10
           }
         }
-
       };
       case AERODACTYL_DELTA_35:
       return evolution (this, from:"Mysterious Fossil", hp:HP070, type:R, retreatCost:0) {
@@ -939,9 +923,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            reduceDamageNextTurn(hp(10),thisMove)
           }
         }
-
       };
       case CAMERUPT_36:
       return evolution (this, from:"Numel", hp:HP090, type:R, retreatCost:2) {
@@ -962,7 +946,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 60
           }
         }
-
       };
       case CHIMECHO_DELTA_37:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
@@ -973,14 +956,13 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Hook", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
             damage 20
           }
         }
-
       };
       case CLAYDOL_38:
       return evolution (this, from:"Baltoy", hp:HP080, type:P, retreatCost:1) {
@@ -999,15 +981,15 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            flip { discardDefendingEnergy() }
           }
         }
-
       };
       case COMBUSKEN_39:
       return evolution (this, from:"Torchic", hp:HP070, type:R, retreatCost:1) {
         weakness W
         move "Slash", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1022,7 +1004,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 40
           }
         }
-
       };
       case DONPHAN_40:
       return evolution (this, from:"Phanpy", hp:HP080, type:F, retreatCost:1) {
@@ -1044,7 +1025,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
           }
         }
-
       };
       case EXEGGUTOR_DELTA_41:
       return evolution (this, from:"Exeggcute", hp:HP080, type:F, retreatCost:1) {
@@ -1069,13 +1049,12 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-
       };
       case GLOOM_DELTA_42:
       return evolution (this, from:"Oddish", hp:HP070, type:P, retreatCost:1) {
         weakness P
         move "Drool", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1091,7 +1070,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             cantRetreat defending
           }
         }
-
       };
       case GOLDUCK_DELTA_43:
       return evolution (this, from:"Psyduck", hp:HP070, type:L, retreatCost:1) {
@@ -1109,7 +1087,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 30
           }
         }
-
       };
       case HOLON_S_CASTFORM_44:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
@@ -1122,14 +1099,13 @@ public enum HolonPhantoms implements LogicCardInfo {
 
           }
         }
-
       };
       case LAIRON_45:
       return evolution (this, from:"Aron", hp:HP080, type:M, retreatCost:2) {
         weakness R
         resistance G, MINUS30
         move "Tackle", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1144,7 +1120,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 30
           }
         }
-
       };
       case MANECTRIC_46:
       return evolution (this, from:"Electrike", hp:HP080, type:L, retreatCost:1) {
@@ -1164,9 +1139,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            flip { damage 20 }
           }
         }
-
       };
       case MASQUERAIN_47:
       return evolution (this, from:"Surskit", hp:HP070, type:G, retreatCost:0) {
@@ -1185,9 +1160,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { damage 10 }
           }
         }
-
       };
       case PERSIAN_DELTA_48:
       return evolution (this, from:"Meowth", hp:HP070, type:[D, M], retreatCost:0) {
@@ -1208,7 +1183,6 @@ public enum HolonPhantoms implements LogicCardInfo {
 
           }
         }
-
       };
       case PIDGEOTTO_DELTA_49:
       return evolution (this, from:"Pidgey", hp:HP070, type:L, retreatCost:1) {
@@ -1222,7 +1196,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 30
           }
         }
-
       };
       case PRIMEAPE_DELTA_50:
       return evolution (this, from:"Mankey", hp:HP070, type:R, retreatCost:0) {
@@ -1243,7 +1216,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 10
           }
         }
-
       };
       case RAICHU_51:
       return evolution (this, from:"Pikachu", hp:HP080, type:L, retreatCost:1) {
@@ -1254,17 +1226,17 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { apply PARALYZED }
           }
         }
         move "Pika Bolt", {
-          text "50 damage. "
+          text "50 damage."
           energyCost L, C, C
           attackRequirement {}
           onAttack {
             damage 50
           }
         }
-
       };
       case SEADRA_DELTA_52:
       return evolution (this, from:"Horsea", hp:HP070, type:R, retreatCost:1) {
@@ -1278,14 +1250,13 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Combustion", {
-          text "40 damage. "
+          text "40 damage."
           energyCost R, C, C
           attackRequirement {}
           onAttack {
             damage 40
           }
         }
-
       };
       case SHARPEDO_DELTA_53:
       return evolution (this, from:"Carvanha", hp:HP070, type:F, retreatCost:0) {
@@ -1306,7 +1277,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
           }
         }
-
       };
       case VIBRAVA_DELTA_54:
       return evolution (this, from:"Trapinch", hp:HP080, type:G, retreatCost:1) {
@@ -1319,17 +1289,17 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { damage 10 }
           }
         }
         move "Cutting Wind", {
-          text "40 damage. "
+          text "40 damage."
           energyCost G, C, C
           attackRequirement {}
           onAttack {
             damage 40
           }
         }
-
       };
       case WHISCASH_55:
       return evolution (this, from:"Barboach", hp:HP080, type:F, retreatCost:1) {
@@ -1351,7 +1321,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 60
           }
         }
-
       };
       case WOBBUFFET_56:
       return basic (this, hp:HP070, type:P, retreatCost:2) {
@@ -1372,13 +1341,12 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 10
           }
         }
-
       };
       case ANORITH_DELTA_57:
       return evolution (this, from:"Claw Fossil", hp:HP070, type:M, retreatCost:1) {
         weakness G
         move "Metal Claw", {
-          text "20 damage. "
+          text "20 damage."
           energyCost M
           attackRequirement {}
           onAttack {
@@ -1391,16 +1359,16 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { damage 20 }
           }
         }
-
       };
       case ARON_58:
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness R
         resistance G, MINUS30
         move "Mud Slap", {
-          text "10 damage. "
+          text "10 damage."
           energyCost
           attackRequirement {}
           onAttack {
@@ -1408,20 +1376,19 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Metal Claw", {
-          text "20 damage. "
+          text "20 damage."
           energyCost M, C
           attackRequirement {}
           onAttack {
             damage 20
           }
         }
-
       };
       case BALTOY_59:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
         move "Ram", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1436,13 +1403,12 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-
       };
       case BARBOACH_60:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
         move "Waterfall", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1454,16 +1420,15 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*self.numberOfDamageCounters
           }
         }
-
       };
       case CARVANHA_DELTA_61:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness L
         move "Bite", {
-          text "10 damage. "
+          text "10 damage."
           energyCost
           attackRequirement {}
           onAttack {
@@ -1478,13 +1443,12 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 30
           }
         }
-
       };
       case CORPHISH_62:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
         move "Corkscrew Punch", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1492,14 +1456,13 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Guillotine", {
-          text "30 damage. "
+          text "30 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
             damage 30
           }
         }
-
       };
       case CORPHISH_63:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
@@ -1509,18 +1472,17 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*self.numberOfDamageCounters
           }
         }
         move "Crabhammer", {
-          text "10 damage. "
+          text "10 damage."
           energyCost W
           attackRequirement {}
           onAttack {
             damage 10
           }
         }
-
       };
       case ELECTRIKE_64:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
@@ -1532,15 +1494,15 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { apply PARALYZED }
           }
         }
-
       };
       case EXEGGCUTE_DELTA_65:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
         move "Rollout", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1555,13 +1517,12 @@ public enum HolonPhantoms implements LogicCardInfo {
 
           }
         }
-
       };
       case HORSEA_DELTA_66:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness L
         move "Ram", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1569,14 +1530,13 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Steady Firebreathing", {
-          text "20 damage. "
+          text "20 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
             damage 20
           }
         }
-
       };
       case KABUTO_DELTA_67:
       return evolution (this, from:"Mysterious Fossil", hp:HP070, type:L, retreatCost:2) {
@@ -1590,14 +1550,13 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Shell Attack", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
             damage 20
           }
         }
-
       };
       case LILEEP_DELTA_68:
       return evolution (this, from:"Root Fossil", hp:HP080, type:D, retreatCost:2) {
@@ -1611,27 +1570,25 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Mud Shot", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
             damage 20
           }
         }
-
       };
       case MAGIKARP_DELTA_69:
       return basic (this, hp:HP030, type:M, retreatCost:1) {
         weakness L
         move "Splash", {
-          text "10 damage. "
+          text "10 damage."
           energyCost M
           attackRequirement {}
           onAttack {
             damage 10
           }
         }
-
       };
       case MANKEY_DELTA_70:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
@@ -1641,24 +1598,23 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { apply PARALYZED }
           }
         }
         move "Low Kick", {
-          text "20 damage. "
+          text "20 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
             damage 20
           }
         }
-
       };
       case MEOWTH_DELTA_71:
       return basic (this, hp:HP050, type:[D, M], retreatCost:1) {
         weakness F
         move "Slash", {
-          text "10 damage. "
+          text "10 damage."
           energyCost D
           attackRequirement {}
           onAttack {
@@ -1673,7 +1629,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 10
           }
         }
-
       };
       case NUMEL_72:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
@@ -1687,20 +1642,19 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Flare", {
-          text "20 damage. "
+          text "20 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
             damage 20
           }
         }
-
       };
       case ODDISH_DELTA_73:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness R
         move "Tackle", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1715,7 +1669,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 10
           }
         }
-
       };
       case OMANYTE_DELTA_74:
       return evolution (this, from:"Mysterious Fossil", hp:HP070, type:P, retreatCost:1) {
@@ -1736,7 +1689,6 @@ public enum HolonPhantoms implements LogicCardInfo {
 
           }
         }
-
       };
       case PHANPY_75:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
@@ -1746,18 +1698,17 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            apply ASLEEP
           }
         }
         move "Mud Slup", {
-          text "10 damage. "
+          text "10 damage."
           energyCost F
           attackRequirement {}
           onAttack {
             damage 10
           }
         }
-
       };
       case PICHU_DELTA_76:
       return basic (this, hp:HP050, type:M, retreatCost:1) {
@@ -1775,21 +1726,19 @@ public enum HolonPhantoms implements LogicCardInfo {
 
           }
         }
-
       };
       case PIDGEY_DELTA_77:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness L
         resistance F, MINUS30
         move "Wing Attack", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
             damage 10
           }
         }
-
       };
       case PIKACHU_78:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
@@ -1799,7 +1748,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { apply PARALYZED }
           }
         }
         move "Quick Attack", {
@@ -1808,15 +1757,15 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { damage 10 }
           }
         }
-
       };
       case PIKACHU_DELTA_79:
       return basic (this, hp:HP050, type:M, retreatCost:1) {
         weakness F
         move "Tail Whap", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1829,9 +1778,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { damage 10 }
           }
         }
-
       };
       case POOCHYENA_80:
       return basic (this, hp:HP040, type:D, retreatCost:1) {
@@ -1842,24 +1791,23 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { apply PARALYZED }
           }
         }
         move "Smash Kick", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
             damage 20
           }
         }
-
       };
       case PSYDUCK_DELTA_81:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness L
         move "Scratch", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1874,7 +1822,6 @@ public enum HolonPhantoms implements LogicCardInfo {
 
           }
         }
-
       };
       case SURSKIT_82:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
@@ -1885,15 +1832,15 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            apply ASLEEP
           }
         }
-
       };
       case TORCHIC_83:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness W
         move "Peck", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1901,14 +1848,13 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Flare", {
-          text "20 damage. "
+          text "20 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
             damage 20
           }
         }
-
       };
       case TRAPINCH_DELTA_84:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
@@ -1923,14 +1869,13 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Mud Slap", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
             damage 20
           }
         }
-
       };
       case HOLON_ADVENTURER_85:
       return supporter (this) {
@@ -2086,7 +2031,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-
       };
       case MEW_EX_100:
       return basic (this, hp:HP090, type:P, retreatCost:1) {
@@ -2097,7 +2041,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Super Psy Bolt", {
-          text "30 damage. "
+          text "30 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -2112,7 +2056,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
           }
         }
-
       };
       case MIGHTYENA_EX_101:
       return evolution (this, from:"Poochyena", hp:HP100, type:D, retreatCost:0) {
@@ -2124,7 +2067,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         move "Sharp Fang", {
-          text "30 damage. "
+          text "30 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -2139,7 +2082,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
           }
         }
-
       };
       case GYARADOS_STAR_DELTA_102:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
@@ -2160,7 +2102,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
           }
         }
-
       };
       case MEWTWO_STAR_103:
       return basic (this, hp:HP080, type:P, retreatCost:1) {
@@ -2181,7 +2122,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
           }
         }
-
       };
       case PIKACHU_STAR_104:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
@@ -2192,6 +2132,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { apply PARALYZED }
           }
         }
         move "Spring Back", {
@@ -2202,7 +2143,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-
       };
       case GRASS_ENERGY_105:
       return basic (this, hp:null, type:null, retreatCost:null) {
@@ -2239,9 +2179,8 @@ public enum HolonPhantoms implements LogicCardInfo {
 
           }
         }
-
       };
-        default:
+      default:
       return null;
     }
   }

@@ -347,7 +347,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost M
             attackRequirement {}
             onAttack {
-              damage 0
+              swiftDamage(20, defending)
             }
           }
 
@@ -562,7 +562,8 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
           move "Mega Impact", {
@@ -717,7 +718,8 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost F, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 100
+              damage 60, self
             }
           }
 
@@ -1057,7 +1059,8 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost P, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -1279,7 +1282,8 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -2045,7 +2049,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              swiftDamage(10, defending)
             }
           }
 
@@ -2544,7 +2548,8 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply PARALYZED }
             }
           }
           move "Fly", {

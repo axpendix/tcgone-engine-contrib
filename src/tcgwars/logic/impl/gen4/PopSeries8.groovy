@@ -94,7 +94,8 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
           move "Fire Spin", {
@@ -178,7 +179,7 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply CONFUSED }
             }
           }
           move "Air Slash", {
@@ -200,7 +201,8 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply CONFUSED }
             }
           }
           move "Magical Leaf", {
@@ -252,7 +254,8 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost L, L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply PARALYZED }
             }
           }
 
@@ -318,7 +321,8 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost P, P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply POISONED }
             }
           }
 

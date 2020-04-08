@@ -1117,7 +1117,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              draw 1
             }
           }
           move "Bite and Run", {
@@ -1443,7 +1443,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip { damage 20 }
             }
           }
 
@@ -1666,7 +1667,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { damage 30 }
             }
           }
 
@@ -1687,7 +1689,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              damage 60, self
             }
           }
 
@@ -1709,7 +1712,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { damage 10 }
             }
           }
 
@@ -1730,7 +1734,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost P, P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply POISONED }
             }
           }
 
@@ -1922,7 +1927,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10*self.numberOfDamageCounters
             }
           }
           move "Dragon Rage", {
@@ -1973,7 +1978,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply POISONED }
             }
           }
 
@@ -1994,7 +2000,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost G, G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
 
@@ -2032,7 +2039,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { damage 10 }
             }
           }
 
@@ -2053,7 +2061,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W, W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
 
@@ -2088,7 +2097,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply PARALYZED }
             }
           }
 
@@ -2136,7 +2146,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              draw 1
             }
           }
           move "Snowball", {

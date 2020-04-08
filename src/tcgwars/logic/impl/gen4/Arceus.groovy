@@ -362,7 +362,8 @@ public enum Arceus implements LogicCardInfo {
             energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip { damage 20 }
             }
           }
 
@@ -494,7 +495,8 @@ public enum Arceus implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -535,7 +537,8 @@ public enum Arceus implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply CONFUSED }
             }
           }
 
@@ -688,7 +691,7 @@ public enum Arceus implements LogicCardInfo {
             energyCost L, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              swiftDamage(50, defending)
             }
           }
 
@@ -731,7 +734,7 @@ public enum Arceus implements LogicCardInfo {
             energyCost W, W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
             }
           }
 
@@ -934,7 +937,8 @@ public enum Arceus implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -1021,7 +1025,8 @@ public enum Arceus implements LogicCardInfo {
             energyCost F, F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              damage 10, self
             }
           }
 
@@ -1601,7 +1606,7 @@ public enum Arceus implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              draw 1
             }
           }
           move "Drool", {
@@ -1771,7 +1776,8 @@ public enum Arceus implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -1828,7 +1834,7 @@ public enum Arceus implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              draw 1
             }
           }
           move "Stun Spore", {

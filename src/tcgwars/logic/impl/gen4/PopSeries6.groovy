@@ -298,7 +298,7 @@ public enum PopSeries6 implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              amnesia delegate
             }
           }
           move "Scavenge", {

@@ -572,7 +572,8 @@ public enum Undaunted implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              apply ASLEEP
             }
           }
 
@@ -608,7 +609,8 @@ public enum Undaunted implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply ASLEEP }
             }
           }
           move "Poltergeist", {
@@ -782,7 +784,8 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { preventAllEffectsNextTurn() }
             }
           }
           move "Mach Bolt", {
@@ -1201,7 +1204,8 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply PARALYZED }
             }
           }
 

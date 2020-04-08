@@ -184,7 +184,8 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { damage 10 }
             }
           }
 
@@ -278,7 +279,8 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip { damage 20 }
             }
           }
 
@@ -409,7 +411,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              draw 1
             }
           }
           move "Tone-Deaf", {
@@ -450,7 +452,8 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { damage 10 }
             }
           }
 

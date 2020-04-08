@@ -667,7 +667,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { damage 20 }
             }
           }
           move "Poison Claws", {
@@ -782,7 +783,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G, G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { damage 30 }
             }
           }
 
@@ -1113,7 +1115,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply CONFUSED }
             }
           }
           move "Magical Leaf", {
@@ -1121,7 +1124,11 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G, G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {
+                damage 20
+                heal 30, self
+              }
             }
           }
 
@@ -1264,7 +1271,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { damage 30 }
             }
           }
           move "Thunder Fang", {
@@ -1467,7 +1475,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10*self.numberOfDamageCounters
             }
           }
           move "Horn Drill", {
@@ -1621,7 +1629,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              amnesia delegate
             }
           }
           move "Scavenge", {
@@ -1695,7 +1703,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              draw 1
             }
           }
           move "Tone-Deaf", {
@@ -1703,7 +1711,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply CONFUSED }
             }
           }
 
@@ -1785,7 +1794,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              draw 1
             }
           }
 
@@ -1956,7 +1965,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost M
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply CONFUSED }
             }
           }
           move "Resonance", {
@@ -2046,7 +2055,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply CONFUSED }
             }
           }
 
@@ -2088,7 +2098,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { damage 10 }
             }
           }
 
@@ -2201,7 +2212,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply POISONED }
             }
           }
           move "Pin Missile", {
@@ -2253,7 +2264,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { damage 20 }
             }
           }
 
@@ -2310,7 +2322,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { damage 10 }
             }
           }
           move "String Shot", {

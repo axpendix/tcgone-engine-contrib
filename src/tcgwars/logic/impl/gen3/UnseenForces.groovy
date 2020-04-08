@@ -1448,7 +1448,9 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost R, C, C
           onAttack {
             damage 40
-            if (opp.active.topPokemonCard.cardTypes.is(EX)) damage 30
+            if (defending.EX) {
+              damge 30
+            }
           }
         }
       };
@@ -1490,9 +1492,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            flip {
-              apply PARALYZED
-            }
+            flip { apply PARALYZED }
           }
         }
       };
@@ -3201,6 +3201,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost P, C
           onAttack {
             damage 10
+            // TODO
           }
         }
       };

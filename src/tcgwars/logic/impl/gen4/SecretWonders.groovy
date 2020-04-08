@@ -999,7 +999,8 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply CONFUSED }
             }
           }
 
@@ -1647,7 +1648,8 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply PARALYZED }
             }
           }
 
@@ -1706,7 +1708,8 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -1967,7 +1970,8 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply PARALYZED }
             }
           }
           move "Thunder", {
@@ -2049,7 +2053,8 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply PARALYZED }
             }
           }
           move "Stomp", {
@@ -2113,7 +2118,8 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply PARALYZED }
             }
           }
           move "Static Shock", {
@@ -2177,7 +2183,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              draw 1
             }
           }
           move "Poison Skin", {
@@ -2199,7 +2205,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10*self.numberOfDamageCounters
             }
           }
           move "Take Down", {
@@ -2268,7 +2274,8 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost W, W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
 
@@ -2289,7 +2296,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply CONFUSED }
             }
           }
 
@@ -2416,7 +2423,8 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply POISONED }
             }
           }
 
@@ -2576,7 +2584,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply PARALYZED }
             }
           }
           move "Signal Beam", {
@@ -2584,7 +2592,8 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply CONFUSED }
             }
           }
 

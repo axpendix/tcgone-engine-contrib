@@ -158,7 +158,8 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
           move "Double Stomp", {
@@ -283,7 +284,8 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply PARALYZED }
             }
           }
           move "Poison Berry", {

@@ -224,7 +224,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Sharp Fang", {
-          text "60 damage. "
+          text "60 damage."
           energyCost L, L, C
           attackRequirement {}
           onAttack {
@@ -254,6 +254,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            if (defending.EX) {
+              damage 20
+            }
           }
         }
       };
@@ -272,10 +275,11 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            reduceDamageNextTurn(hp(30), thisMove)
           }
         }
         move "Mega Impact", {
-          text "60 damage. "
+          text "60 damage."
           energyCost F, C, C
           attackRequirement {}
           onAttack {
@@ -292,7 +296,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Flare", {
-          text "60 damage. "
+          text "60 damage."
           energyCost R, R, C
           attackRequirement {}
           onAttack {
@@ -371,7 +375,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Guillotine", {
-          text "40 damage. "
+          text "40 damage."
           energyCost F, C, C
           attackRequirement {}
           onAttack {
@@ -401,7 +405,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Wave Splash", {
-          text "30 damage. "
+          text "30 damage."
           energyCost W, C
           attackRequirement {}
           onAttack {
@@ -434,7 +438,8 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            apply BURNED
+            apply POISONED
           }
         }
         move "Strangle", {
@@ -477,6 +482,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { apply PARALYZED }
           }
         }
         move "Surge", {
@@ -505,6 +511,10 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            if (defending.EX) {
+              damage 10
+              apply CONFUSED
+            }
           }
         }
       };
@@ -517,7 +527,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Fire Punch", {
-          text "30 damage. "
+          text "30 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
@@ -550,7 +560,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            draw 2
           }
         }
         move "Delta Mind", {
@@ -576,6 +586,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            heal 10, self
           }
         }
       };
@@ -605,10 +616,11 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            sandAttack(thisMove)
           }
         }
         move "Razor Wing", {
-          text "40 damage. "
+          text "40 damage."
           energyCost F, C, C
           attackRequirement {}
           onAttack {
@@ -629,7 +641,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost M
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*self.cards.energyCount(C)
           }
         }
       };
@@ -652,6 +664,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { damage 20 }
           }
         }
       };
@@ -697,7 +710,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Slash", {
-          text "50 damage. "
+          text "50 damage."
           energyCost L, C, C
           attackRequirement {}
           onAttack {
@@ -712,11 +725,11 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { apply PARALYZED }
           }
         }
         move "Horn Attack", {
-          text "40 damage. "
+          text "40 damage."
           energyCost G, C, C
           attackRequirement {}
           onAttack {
@@ -737,7 +750,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
-            damage 30
+            swiftDamage(30, defending)
           }
         }
       };
@@ -750,6 +763,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { apply PARALYZED }
           }
         }
       };
@@ -757,7 +771,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness L
         move "Tackle", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -782,6 +796,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { apply PARALYZED }
           }
         }
         move "Link Blast", {
@@ -802,10 +817,11 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            apply ASLEEP
           }
         }
         move "Smack", {
-          text "40 damage. "
+          text "40 damage."
           energyCost R, C, C
           attackRequirement {}
           onAttack {
@@ -825,7 +841,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Rear Kick", {
-          text "40 damage. "
+          text "40 damage."
           energyCost M, C, C
           attackRequirement {}
           onAttack {
@@ -845,7 +861,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Horn Drill", {
-          text "30 damage. "
+          text "30 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -857,7 +873,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return evolution (this, from:"Cyndaquil", hp:HP070, type:P, retreatCost:1) {
         weakness W
         move "Smash Kick", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -870,6 +886,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { damage 20 }
           }
         }
       };
@@ -877,7 +894,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return evolution (this, from:"Horsea", hp:HP070, type:F, retreatCost:1) {
         weakness L
         move "Ram", {
-          text "20 damage. "
+          text "20 damage."
           energyCost F, C
           attackRequirement {}
           onAttack {
@@ -890,13 +907,16 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            if (defending.EX) {
+              damage 30
+            }
           }
         }
       };
       case SHELGON_DELTA_38:
       return evolution (this, from:"Bagon", hp:HP070, type:W, retreatCost:2) {
         move "Headbutt", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -909,6 +929,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            damage 10, self
           }
         }
       };
@@ -920,7 +941,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            draw 1
           }
         }
         move "Flickering Tail", {
@@ -929,6 +950,10 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            if (defending.EX) {
+              damage 10
+              apply ASLEEP
+            }
           }
         }
       };
@@ -947,6 +972,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { preventAllEffectsNextTurn() }
           }
         }
       };
@@ -958,14 +984,14 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-
+            reduceDamageNextTurn(hp(20), thisMove)
           }
         }
       };
       case VIBRAVA_DELTA_42:
       return evolution (this, from:"Trapinch", hp:HP070, type:P, retreatCost:1) {
         move "Bite", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -978,6 +1004,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            if (defending.EX) {
+              apply CONFUSED
+            }
           }
         }
       };
@@ -989,6 +1018,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            reduceDamageNextTurn(hp(10), thisMove)
           }
         }
       };
@@ -1001,11 +1031,11 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            apply ASLEEP
           }
         }
         move "Tackle", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1021,14 +1051,14 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-            damage 30
+            swiftDamage(30, defending)
           }
         }
       };
       case DRATINI_DELTA_46:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         move "Ram", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1040,7 +1070,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness P
         move "Bite", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1048,7 +1078,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Tail Snap", {
-          text "20 damage. "
+          text "20 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
@@ -1081,7 +1111,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*self.numberOfDamageCounters
           }
         }
       };
@@ -1094,6 +1124,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            apply ASLEEP
           }
         }
       };
@@ -1101,7 +1132,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness W
         move "Bite", {
-          text "10 damage. "
+          text "10 damage."
           energyCost F
           attackRequirement {}
           onAttack {
@@ -1109,7 +1140,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Mud Slap", {
-          text "20 damage. "
+          text "20 damage."
           energyCost F, C
           attackRequirement {}
           onAttack {
@@ -1125,11 +1156,11 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost L
           attackRequirement {}
           onAttack {
-
+            flip { apply PARALYZED }
           }
         }
         move "Horn Attack", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1141,7 +1172,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness R
         move "Tackle", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1153,7 +1184,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost M
           attackRequirement {}
           onAttack {
-
+            flip { apply CONFUSED }
           }
         }
       };
@@ -1161,7 +1192,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
         move "Tail Whap", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1173,7 +1204,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return basic (this, hp:HP040, type:D, retreatCost:1) {
         weakness P
         move "Flop", {
-          text "10 damage. "
+          text "10 damage."
           energyCost D
           attackRequirement {}
           onAttack {
@@ -1193,7 +1224,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Scratch", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1205,7 +1236,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return basic (this, hp:HP040, type:D, retreatCost:1) {
         weakness P
         move "Peck", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1217,7 +1248,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost D
           attackRequirement {}
           onAttack {
-
+            flip { apply POISONED }
           }
         }
       };
@@ -1225,7 +1256,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return evolution (this, from:"Larvitar", hp:HP070, type:F, retreatCost:1) {
         weakness W
         move "Headbutt", {
-          text "20 damage. "
+          text "20 damage."
           energyCost F
           attackRequirement {}
           onAttack {
@@ -1242,6 +1273,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { discardDefendingEnergy() }
           }
         }
       };
@@ -1253,7 +1285,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            apply ASLEEP
           }
         }
         move "Psychic Boom", {
@@ -1261,7 +1293,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*defending.cards.energyCount()
           }
         }
       };
@@ -1277,7 +1309,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Will-o'-the-wisp", {
-          text "20 damage. "
+          text "20 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
@@ -1289,7 +1321,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
         move "Pound", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1297,7 +1329,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Aurora Beam", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1314,6 +1346,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { apply PARALYZED }
           }
         }
       };
@@ -1357,6 +1390,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 10 }
           }
         }
       };
@@ -1364,7 +1398,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness L
         move "Scratch", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1384,7 +1418,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness G
         move "Gnaw", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1392,7 +1426,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Dig", {
-          text "20 damage. "
+          text "20 damage."
           energyCost P, C
           attackRequirement {}
           onAttack {
@@ -1420,11 +1454,11 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            apply ASLEEP
           }
         }
         move "Will-o'-the-wisp", {
-          text "20 damage. "
+          text "20 damage."
           energyCost P, C
           attackRequirement {}
           onAttack {
@@ -1440,11 +1474,11 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            amnesia delegate
           }
         }
         move "Tail Slap", {
-          text "20 damage. "
+          text "20 damage."
           energyCost G, C
           attackRequirement {}
           onAttack {
@@ -1764,7 +1798,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Hydro Splash", {
-          text "60 damage. "
+          text "60 damage."
           energyCost W, C, C
           attackRequirement {}
           onAttack {
@@ -1788,7 +1822,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Sky-high Claws", {
-          text "70 damage. "
+          text "70 damage."
           energyCost L, L, C, C
           attackRequirement {}
           onAttack {
@@ -1807,7 +1841,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Claw Swipe", {
-          text "60 damage. "
+          text "60 damage."
           energyCost W, C, C
           attackRequirement {}
           onAttack {

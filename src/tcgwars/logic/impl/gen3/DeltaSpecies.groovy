@@ -750,9 +750,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            flip {
-              apply PARALYZED
-            }
+            flip { apply PARALYZED }
           }
         }
         move "Rolling Tackle", {
@@ -813,7 +811,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost M, C
           attackRequirement {}
           onAttack {
-            if (defending.topPokemonCard.cardTypes.is(EX)) {
+            if (defending.EX) {
               damage 50
             } else {
               damage 30
@@ -857,7 +855,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            if (defending.topPokemonCard.cardTypes.is(EX)) {
+            if (defending.EX) {
               cantAttackNextTurn(defending)
             }
           }

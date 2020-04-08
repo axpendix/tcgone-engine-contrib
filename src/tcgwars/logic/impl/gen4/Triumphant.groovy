@@ -231,7 +231,8 @@ public enum Triumphant implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply PARALYZED }
             }
           }
 
@@ -383,7 +384,8 @@ public enum Triumphant implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply PARALYZED }
             }
           }
 
@@ -641,7 +643,8 @@ public enum Triumphant implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply CONFUSED }
             }
           }
           move "Fury Cutter", {
@@ -1188,7 +1191,8 @@ public enum Triumphant implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -1543,7 +1547,8 @@ public enum Triumphant implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
 

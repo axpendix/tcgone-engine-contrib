@@ -362,7 +362,8 @@ public enum PopSeries7 implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply PARALYZED }
             }
           }
           move "Static Shock", {
@@ -391,7 +392,7 @@ public enum PopSeries7 implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply CONFUSED }
             }
           }
 

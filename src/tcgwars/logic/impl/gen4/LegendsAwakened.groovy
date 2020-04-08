@@ -242,7 +242,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip { discardDefendingEnergy() }
             }
           }
           move "Draco Meteor", {
@@ -461,7 +462,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip { damage 40 }
             }
           }
 
@@ -960,7 +962,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost F, F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip { damage 30 }
             }
           }
 
@@ -1110,7 +1113,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { damage 20 }
             }
           }
 
@@ -1216,7 +1220,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply PARALYZED }
             }
           }
           move "Rising Lunge", {
@@ -1224,7 +1229,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { damage 20 }
             }
           }
 
@@ -1289,7 +1295,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { damage 40 }
             }
           }
 
@@ -1479,7 +1486,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { preventAllEffectsNextTurn() }
             }
           }
           move "Metal Claw", {
@@ -1571,7 +1579,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip { damage 10 }
             }
           }
 
@@ -1876,7 +1885,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              draw 1
             }
           }
           move "Tackle", {
@@ -1939,7 +1948,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply CONFUSED }
             }
           }
           move "Wave Splash", {
@@ -2046,7 +2055,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply CONFUSED }
             }
           }
           move "Gust", {
@@ -2097,7 +2107,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { damage 10 }
             }
           }
 
@@ -2111,7 +2122,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply POISONED }
             }
           }
           move "Slash", {
@@ -2174,7 +2185,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              amnesia delegate
             }
           }
           move "Gastro Acid", {
@@ -2258,7 +2269,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              sandAttack(thisMove)
             }
           }
           move "Reverse Thrust", {
@@ -2302,7 +2313,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply CONFUSED }
             }
           }
           move "Double-edge", {
@@ -2310,7 +2321,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              damage 10, self
             }
           }
 
@@ -2474,7 +2486,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply POISONED }
             }
           }
           move "Ram", {
@@ -2567,7 +2579,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { damage 20 }
             }
           }
 
@@ -2760,7 +2773,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { discardDefendingEnergy() }
             }
           }
 
@@ -2821,7 +2834,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost G, G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { preventAllEffectsNextTurn() }
             }
           }
 

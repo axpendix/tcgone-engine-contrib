@@ -494,7 +494,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W, C, C
             onAttack {
               damage 50
-              if(defending.pokemonEX) damage 30
+              if (defending.EX) {
+                damage 30
+              }
             }
           }
 

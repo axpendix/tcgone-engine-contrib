@@ -337,7 +337,8 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost G, G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip { damage 20 }
             }
           }
 
@@ -917,7 +918,8 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { preventAllEffectsNextTurn() }
             }
           }
           move "Aqua Jet", {
@@ -1270,7 +1272,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              amnesia delegate
             }
           }
           move "Zen Headbutt", {
@@ -1523,7 +1525,8 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { apply POISONED }
             }
           }
 
@@ -2053,7 +2056,8 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost G, G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply CONFUSED }
             }
           }
 
