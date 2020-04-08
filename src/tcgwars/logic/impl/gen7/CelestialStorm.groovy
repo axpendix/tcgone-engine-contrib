@@ -1010,7 +1010,7 @@ public enum CelestialStorm implements LogicCardInfo {
             energyCost W
             onAttack {
               damage 10
-              afterDamage{
+              afterDamage {
                 astonish()
               }
             }
@@ -1043,7 +1043,7 @@ public enum CelestialStorm implements LogicCardInfo {
             text "Once during your turn (before your attack), you may draw a card."
             actionA {
               checkLastTurn()
-              assert my.deck : "There is no more card to draw in your deck"
+              assert my.deck : "Deck is empty"
               powerUsed()
               draw 1
             }

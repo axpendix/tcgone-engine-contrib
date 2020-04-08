@@ -673,6 +673,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           bwAbility "Seasonal Blessings", {
             text "Once during your turn (before your attack), you may draw a card."
             actionA {
+              assert my.deck : "Deck is empty"
               checkLastTurn()
               powerUsed()
               draw 1

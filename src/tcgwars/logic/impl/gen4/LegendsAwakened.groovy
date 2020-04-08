@@ -2323,7 +2323,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              afterDamage {
+                astonish()
+              }
             }
           }
           move "Absorb", {

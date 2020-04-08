@@ -239,6 +239,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            afterDamage { astonish() }
 					}
 				}
 				move "Gust", {
@@ -1235,6 +1236,7 @@ public enum PowerKeepers implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            afterDamage { astonish() }
 					}
 				}
 				move "Acid", {

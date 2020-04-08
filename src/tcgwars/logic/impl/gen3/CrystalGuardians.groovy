@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.impl.gen3.Deoxys;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.DeltaSpecies;
 import tcgwars.logic.impl.gen5.PlasmaStorm;
@@ -731,7 +732,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            // TODO
+            afterDamage { astonish() }
           }
         }
         move "Bass Control", {
@@ -801,7 +802,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Delta Transport", {
           text "Once during your turn (before your attack), if Pelipper is on your Bench, you may switch 1 of your Active Pokémon that has δ on its card with 1 of your Benched Pokémon."
           actionA {
-            // TODO
+            assert my.active.topPokemonCard.name.contains("δ") : "Active is not Delta Pokemon"
+            checkLastTurn()
+            assert self.benched : "Pelipper not on Bench"
+            powerUsed()
+            sw my.active, my.bench.select("Select a new active Pokemon.")
           }
         }
         move "Supersonic", {
@@ -828,7 +833,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Echo Draw", {
           text "Once during your turn (before your attack), you may draw a card. This power can't be used if Swampert is affected by a Special Condition."
           actionA {
-            // TODO
+            assert my.deck : "Deck is empty"
+            checkNoSPC()
+            checkLastTurn()
+            powerUsed()
+            draw 1
           }
         }
         move "Rock Hurl", {
@@ -846,8 +855,12 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness R
         pokeBody "Chlorophyll", {
           text "All Energy cards that provide only [C] Energy attached to your [G] Pokémon provide [G] Energy instead."
-          delayedA {
-            // TODO
+          getterA GET_ENERGY_TYPES, { holder ->
+            if (holder.effect.target == self) {
+              int count = holder.object.size()
+              // TODO: This works, but only convert the [C] energies
+              holder.object = [(1..count).collect{[GRASS] as Set}]
+            }
           }
         }
         move "Green Blast", {
@@ -1694,6 +1707,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Search your deck for a Supporter card, a Pokémon Tool card, and a basic Energy card. Show them to your opponent, and put them into your hand. Shuffle your deck afterward."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1705,6 +1719,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         text "Attach Cessation Crystal to 1 of your Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Cessation Crystal is attached to is a Pokémon-ex, discard this card." +
           "As long as Cessation Crystal is attached to an Active Pokémon, each player's Pokémon (both yours and your opponent's) can't use any Poké-Powers or Poké-Bodies."
         onPlay {reason->
+          // TODO
         }
         onRemoveFromPlay {
         }
@@ -1716,21 +1731,13 @@ public enum CrystalGuardians implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each Special Energy card that provides 2 or more Energy (both yours and your opponent's) now provides only 1 [C] Energy. This isn't affected by any Poké-Powers or Poké-Bodies."
         onPlay {
+          // TODO
         }
         onRemoveFromPlay{
         }
       };
       case CRYSTAL_SHARD_76:
-      return pokemonTool (this) {
-        text "Attach Crystal Shard to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card." +
-          "As long as Crystal Shard is attached to a Pokémon, that Pokémon's type is [C]. If that Pokémon attacks, discard this card at the end of the turn."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(Deoxys.CRYSTAL_SHARD_85, this)
       case DOUBLE_FULL_HEAL_77:
       return copy (Sandstorm.DOUBLE_FULL_HEAL_86, this)
       case DUAL_BALL_78:
@@ -1748,11 +1755,20 @@ public enum CrystalGuardians implements LogicCardInfo {
       return pokemonTool (this) {
         text "Attach Memory Berry to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card." +
           "The Pokémon this card is attached to can use any attack from its Basic Pokémon or its Stage 1 Evolution card. (You still have to pay for that attack's Energy cost.) If that Pokémon attacks, discard this card at the end of the turn."
-        onPlay {reason->
+        def eff
+        onPlay { reason ->
+          eff = getter (GET_MOVE_LIST) { holder->
+            if(holder.effect.target.active && holder.effect.target.evolution) {
+              for(card in holder.effect.target.cards.filterByType(POKEMON)) {
+                if(card!=holder.effect.target.topPokemonCard){
+                  holder.object.addAll(card.moves)
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case MYSTERIOUS_SHARD_81:
@@ -1760,6 +1776,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         text "Attach Mysterious Shard to 1 of your Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Mysterious Shard is attached to is a Pokémon-ex, discard this card." +
           "Prevent all effects of attacks, including damage, done to the Pokémon that Mysterious Shard is attached to by your opponent's Pokémon-ex. Discard this card at the end of your opponent's next turn."
         onPlay {reason->
+          // TODO
         }
         onRemoveFromPlay {
         }
@@ -1776,6 +1793,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       return itemCard (this) {
         text "Choose up to 2 in any combination of Pokémon Tool cards and Stadium cards in play (both yours and your opponent's) and discard them."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1793,6 +1811,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Intimidating Armor", {
           text "As long as Aggron ex is your Active Pokémon, your opponent's Basic Pokémon can't attack or use any Poké-Powers or Poké-Bodies."
           delayedA {
+            // TODO
           }
         }
         move "Split Bomb", {
@@ -1838,8 +1857,10 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost R, F, C, C
           attackRequirement {}
           onAttack {
-            damage 100
-            // TODO
+            if (defending.getRemainingHP().value <= 100) {
+              damage 100-defending.getRemainingHP().value, self
+            }
+            swiftDamage(100, defending)
           }
         }
       };
@@ -1849,7 +1870,15 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Constrain", {
           text "Once during your turn (before your attack), you may use this power. Each player discards cards until that player has 6 cards in his or her hand. (You discard first.) This power can't be used if Delcatty ex is affected by a Special Condition."
           actionA {
-            // TODO
+            checkNoSPC()
+            checkLastTurn()
+            powerUsed()
+
+            def amountToDiscard = Math.max(my.hand.size() - 6, 0)
+            my.hand.select(count: amountToDiscard, "Discard until 6 cards left in hand").discard()
+
+            def oppAmountToDiscard = Math.max(opp.hand.size() - 6, 0)
+            opp.hand.select(count: oppAmountToDiscard, "Discard until 6 cards left in hand").discard()
           }
         }
         move "Upstream", {
@@ -1857,8 +1886,12 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 10
-            // TODO
+            def energies = my.discard.filterByType(BASIC_ENERGY)
+            damage 10*energies.size()
+            afterDamage {
+              energies.moveTo(my.deck)
+              shuffleDeck()
+            }
           }
         }
         move "Tail Slap", {
@@ -1876,7 +1909,20 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Extra Noise", {
           text "As long as Exploud ex is your Active Pokémon, put 1 damage counter on each of your opponent's Pokémon-ex between turns."
           delayedA {
-            // TODO
+            before BEGIN_TURN, {
+              if (self.active) {
+                def once = true
+                all.each {
+                  if (it.EX) {
+                    if (once) {
+                      bc "Extra Noise"
+                      once = false
+                    }
+                    directDamage(10, it, TRAINER_CARD)
+                  }
+                }
+              }
+            }
           }
         }
         move "Derail", {
@@ -1929,6 +1975,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
+            discardSelfEnergy C,C
           }
         }
       };
@@ -1946,7 +1993,18 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            // TODO
+            afterDamage {
+              delayed {
+                getter (IS_ABILITY_BLOCKED) { Holder h ->
+                  if (h.effect.target == self) {
+                    if (h.effect.ability instanceof PokePower) {
+                      h.object=true
+                    }
+                  }
+                }
+                unregisterAfter 2
+              }
+            }
           }
         }
         move "Super Psy Bolt", {
@@ -1972,8 +2030,10 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost W, W, C
           attackRequirement {}
           onAttack {
-            // TODO
-
+            if (confirm("Hydro Shot - Discard 2 Energies?")) {
+              discardSelfEnergy C,C
+              damage 70, opp.all.select()
+            }
           }
         }
       };
@@ -1983,8 +2043,24 @@ public enum CrystalGuardians implements LogicCardInfo {
         resistance W, MINUS30
         pokeBody "Extra Liquid", {
           text "Each player's Pokémon-ex can't use any Poké-Powers and pays [C] more Energy to use its attacks. Each Pokémon can't be affected by more than 1 Extra Liquid Poké-Body."
-          delayedA {
-            // TODO
+          getterA (IS_ABILITY_BLOCKED) { Holder h ->
+            if (self.active && !h.effect.target.cardTypes.is(EX)) {
+              if (h.effect.ability instanceof PokePower) {
+                h.object=true
+              }
+            }
+          }
+          // TODO: How to make only one ability apply
+          getterA GET_MOVE_LIST, { h ->
+            if (h.effect.target.cardTypes.is(EX)) {
+              def list = []
+              for (move in h.object) {
+                def copy = move.shallowCopy()
+                copy.energyCost.add(C)
+                list.add(copy)
+              }
+              h.object=list
+            }
           }
         }
         move "Power Revenge", {
@@ -2034,7 +2110,14 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Energy Recycle", {
           text "Once during your turn (before your attack), you may search your discard pile for 3 Energy cards and attach them to your Pokémon in any way you like. If you do, your turn ends. This power can't be used if Swampert ex is affected by a Special Condition."
           actionA {
-            // TODO
+            checkLastTurn()
+            checkNoSPC()
+            assert my.discard.filterByType(ENERGY) : "No Energies in discard"
+            powerUsed()
+            def energies = my.discard.filterByType(ENERGY).size()
+            (1..energies) {
+              attachEnergy(my.all.select("Target"), my.discard.filterByType(ENERGY).select("Energy").first())
+            }
           }
         }
         move "Ultra Pump", {
@@ -2043,7 +2126,12 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            // TODO
+            if (confirm("Ultra Pump - Discard 2 cards from hand?")) {
+              damage 20
+              if (opp.bench) {
+                damage 20, opp.bench.select()
+              }
+            }
           }
         }
       };
@@ -2053,9 +2141,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Psychic Select", {
           text "Put any 1 card from your discard pile into your hand."
           energyCost P
-          attackRequirement {}
+          attackRequirement { assert my.discard : "Discard is empty"}
           onAttack {
-
+            my.discard.select("Choose the card to put in your hand").moveTo(my.hand)
           }
         }
         move "Skill Copy", {
@@ -2063,7 +2151,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
       };
@@ -2072,7 +2160,19 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness R
         pokePower "Time Travel", {
           text "If Celebi Star would be Knocked Out by damage from an opponent's attack, you may flip a coin. If heads, Celebi Star is not Knocked Out, discard all cards attached to Celebi Star, and put Celebi Star on the bottom of your deck."
-          actionA {
+          delayedA {
+            before KNOCKOUT, self, {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+                bc "$self - Time Travel activated"
+                flip 1, {
+                  bc "$self is not knocked out and moved to the deck"
+                  prevent()
+                  self.cards.getExcludedList(self.topPokemonCard).discard()
+                  self.cards.moveTo(my.deck)
+                  removePCS(self)
+                }
+              }
+            }
           }
         }
         move "Leaf Shade", {
@@ -2080,11 +2180,12 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-
+            def count = self.cards.energyCount(C)
+            directDamage count*10, opp.all.select()
           }
         }
       };
-        default:
+      default:
       return null;
     }
   }

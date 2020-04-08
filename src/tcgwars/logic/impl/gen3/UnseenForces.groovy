@@ -1512,13 +1512,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 30
-
-            afterDamage {
-              if (opp.hand) {
-                opp.hand.select(hidden: true).showToMe("Choosen card").moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
-              }
-            }
+            afterDamage { astonish() }
           }
         }
       };

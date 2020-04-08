@@ -696,6 +696,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            afterDamage { astonish() }
           }
         }
 
