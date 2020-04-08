@@ -3659,15 +3659,14 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Ultimate Ray", {
             text "150 damage. Search your deck for up to 3 basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
             energyCost M, W, C
-            attackRequirement {
-              assert my.deck : "There are no more cards in your deck"
-            }
             onAttack {
               damage 150
-              my.deck.search (max: 3, cardTypeFilter(BASIC_ENERGY)).each {
-                attachEnergy(my.all.select("Attach $it to"), it)
+              if (my.deck) {
+                my.deck.search (max: 3, cardTypeFilter(BASIC_ENERGY)).each {
+                  attachEnergy(my.all.select("Attach $it to"), it)
+                }
+                shuffleDeck()
               }
-              shuffleDeck()
             }
           }
           move "Altered Creation GX", {
