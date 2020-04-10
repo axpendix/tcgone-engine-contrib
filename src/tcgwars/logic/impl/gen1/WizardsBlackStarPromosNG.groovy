@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen1;
 
+import tcgwars.logic.impl.gen1.BaseSetNG;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -34,7 +36,7 @@ import tcgwars.logic.util.*;
 /**
  * @author lithogenn@gmail.com
  */
-public enum WizardsBlackStarPromos implements LogicCardInfo {
+public enum WizardsBlackStarPromosNG implements LogicCardInfo {
 
   PIKACHU_1 ("Pikachu", 1, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
   ELECTABUZZ_2 ("Electabuzz", 2, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
@@ -97,7 +99,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
   protected Rarity rarity;
   protected int collectionLineNo;
 
-  WizardsBlackStarPromos(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  WizardsBlackStarPromosNG(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -150,7 +152,8 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            reduceDamageNextTurn(hp(10), thisMove)
+            // I don't understand the benching condition
           }
         }
         move "Thundershock", {
@@ -159,6 +162,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { apply PARALYZED }
           }
         }
       };
@@ -170,7 +174,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost L
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Quick Attack", {
@@ -179,6 +183,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 20 }
           }
         }
       };
@@ -190,7 +195,11 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-
+            def count = 0
+            while (count < 2 && my.discard.filterByType(ENERGY)) {
+              attachEnergyFrom(my.discard, self)
+              count++
+            }
           }
         }
         move "Psyburn", {
@@ -210,7 +219,8 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost L
           attackRequirement {}
           onAttack {
-
+            attachEnergyFrom(my.deck, self)
+            shuffleDeck()
           }
         }
         move "Thunderbolt", {
@@ -219,6 +229,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            discardAllSelfEnergy(null)
           }
         }
       };
@@ -228,14 +239,15 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
         pokePower "Special Delivery", {
           text "Once during your turn (before your attack), you may draw a card. If you do, choose a card from your hand and put it on top of your deck. This power can't be used if Dragonite is Asleep, Confused, or Paralyzed."
           actionA {
+            // TODO
           }
         }
         move "Supersonic Flight", {
-          text "Flip a coin. If tails, this attack does nothing."
+          text "60 damage. Flip a coin. If tails, this attack does nothing."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-
+            flip { damage 60 }
           }
         }
       };
@@ -248,6 +260,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 20 }
           }
         }
         move "Flames of Rage", {
@@ -255,7 +268,8 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost R, R
           attackRequirement {}
           onAttack {
-            damage 40
+            damage 40+10*self.numberOfDamageCounters
+            discardSelfEnergy C,C
           }
         }
       };
@@ -268,7 +282,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            heal 10, self
           }
         }
         move "Double-Edge", {
@@ -277,6 +291,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            damage 20, self
           }
         }
       };
@@ -288,7 +303,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*defending.cards.energyCount(C)
           }
         }
         move "Devolution Beam", {
@@ -296,7 +311,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost P, P
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
       };
@@ -312,6 +327,11 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip 1, { damage 20 }, {
+              if (opp.bench) {
+                damage 20, opp.bench.oppSelect("Deal 20 damage to")
+              }
+            }
           }
         }
       };
@@ -322,6 +342,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
         pokePower "Chain Reaction", {
           text "This power can only be used when a Pokémon evolves. Search your deck for a card that evolves from Eevee and attach it to Eevee. This counts as evolving Eevee. Shuffle your deck afterward. This power can't be used if Eevee is Asleep, Confused, or Paralyzed."
           actionA {
+            // TODO
           }
         }
         move "Bite", {
@@ -341,7 +362,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Telekinesis", {
@@ -350,6 +371,9 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+
+            // TODO
+            damage 30, opp.all.select()
           }
         }
       };
@@ -359,6 +383,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
         pokePower "Solar Power", {
           text "Once during your turn (before your attack), you may use this power. Your Active Pokémon and the Defending Pokémon are no longer Asleep, Confused, Paralyzed, or Poisoned. This power can't be used if Venusaur is Asleep, Confused, or Paralyzed."
           actionA {
+            // TODO
           }
         }
         move "Mega Drain", {
@@ -381,7 +406,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "3-D Attack", {
@@ -389,7 +414,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            flip 3, { damage 20 }
           }
         }
       };
@@ -397,6 +422,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
       return basicTrainer (this) {
         text "You may draw up to 5 cards, then your opponent may draw up to 5 cards. Your turn is over now (you don't get to attack)."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -410,7 +436,11 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            if (opp.bench) {
+              flip {
+                // TODO
+              }
+            }
           }
         }
         move "Poison Claws", {
@@ -418,7 +448,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            flip { apply POISONED }
           }
         }
       };
@@ -431,7 +461,11 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 10
+            flip all.size(), {
+              damage 10
+            }, {
+              damage 10, self
+            }
           }
         }
       };
@@ -449,7 +483,9 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
         move "Synchronize", {
           text "40 damage. This attack can't be used unless Sabrina's Abra and the Defending Pokémon have the same number of Energy cards attached to them."
           energyCost P, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.cards.filterByType(ENERGY).size() == self.cards.filterByType(ENERGY).size() : "Abra and the defending Pokemon have different number of Energies"
+          }
           onAttack {
             damage 40
           }
@@ -463,7 +499,15 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-
+            delayed {
+              before PLAY_TRAINER, {
+                if (bg.currentTurn == self.owner.opposite) {
+                  wcu "Psyduck's Headache prevents playing this card!"
+                  prevent()
+                }
+              }
+              unregisterAfter 2
+            }
           }
         }
         move "Fury Swipes", {
@@ -471,7 +515,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            damage 10
+            flip 3, { damage 10 }
           }
         }
       };
@@ -484,6 +528,12 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+
+            flip 1, {
+              discardSelfEnergy(C)
+            }, {
+              discardAllSelfEnergy(null)
+            }
           }
         }
       };
@@ -496,6 +546,13 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+
+            flip 1, {
+              apply { PARALYZED }
+              opp.bench.each {
+                damage 10, it
+              }
+            }
           }
         }
       };
@@ -508,6 +565,15 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+
+            flip 1, {
+              if (opp.bench) {
+                def target = opp.bench.select("Which Benched Pokemon to deal damage to?")
+                damage 30, target
+              }
+            }, {
+              damage 30, self
+            }
           }
         }
       };
@@ -520,6 +586,11 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+
+            // Confirm with opponent if it's the attacker's birthday
+            if (confirm("Is it their birthday?")) {
+              flip { damage 30 }
+            }
           }
         }
       };
@@ -532,6 +603,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { apply PARALYZED }
           }
         }
         move "Fly", {
@@ -540,6 +612,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { preventAllEffectsNextTurn() }
           }
         }
       };
@@ -560,6 +633,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            discardAllSelfEnergy(null)
           }
         }
       };
@@ -572,6 +646,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { apply PARALYZED }
           }
         }
         move "Agility", {
@@ -580,6 +655,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { preventAllEffectsNextTurn() }
           }
         }
       };
@@ -604,6 +680,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            // TODO
           }
         }
       };
@@ -615,7 +692,8 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            reduceDamageNextTurn(hp(20), thisMove)
+            // TODO: (Benching either Pokémon ends this effect.)??
           }
         }
         move "Mini-Metronome", {
@@ -623,7 +701,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
       };
@@ -634,7 +712,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            draw 2
           }
         }
       };
@@ -647,7 +725,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
       };
@@ -660,7 +738,22 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
+            flip {
+              delayed{
+                before APPLY_ATTACK_DAMAGES, {
+                  bc "Leer prevent attacking Scizor"
+                  prevent()
+                }
+                before null, self, Source.ATTACK, {
+                  bc "Leer prevent attacking Scizor"
+                  prevent()
+                }
 
+                unregisterAfter 2
+                after SWITCH, defending, {unregister()}
+                after SWITCH, self, {unregister()}
+              }
+            }
           }
         }
         move "Metal Pincer", {
@@ -669,6 +762,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flipUntilTails { damage 10 }
           }
         }
       };
@@ -678,6 +772,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
         pokePower "Bolt", {
           text "Whenever your opponent's attack damages Entei, unless that attack Knocks Out Entei, flip a coin. If heads, shuffle Entei and all cards attached to it into your deck. This power can't be used if Entei is already Asleep, Confused, or Paralyzed when it is damaged."
           actionA {
+            // TODO
           }
         }
         move "Protective Flame", {
@@ -686,6 +781,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            // TODO
           }
         }
       };
@@ -696,7 +792,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
       };
@@ -707,7 +803,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            apply ASLEEP
           }
         }
       };
@@ -719,7 +815,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost F, F
           attackRequirement {}
           onAttack {
-            damage 20
+            flipUntilTails { damage 20 }
           }
         }
         move "Rapid Spin", {
@@ -728,6 +824,14 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            afterDamage {
+              if (my.bench) {
+                sw self, my.bench.select("New active")
+                if (opp.bench) {
+                  sw defending, opp.bench.oppSelect("New active")
+                }
+              }
+            }
           }
         }
       };
@@ -737,6 +841,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
         pokePower "[Join]", {
           text "Once during your turn (before you attack), if you have Unown J, Unown O, Unown I, and Unown N on your Bench, you may search your deck for a Basic Pokémon or Evolution Pokémon card. Show that card to your opponent, then put it into your hand. Shuffle your deck afterward."
           actionA {
+            // TODO
           }
         }
         move "Hidden Power", {
@@ -756,7 +861,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-
+            directDamage 10*self.numberOfDamageCounters
           }
         }
         move "Confuse Ray", {
@@ -765,31 +870,49 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { apply CONFUSED }
           }
         }
       };
       case POKEMON_CENTER_40:
-      return basicTrainer (this) {
-        text "Remove all damage counters from all of your own Pokémon with damage counters on them, then discard all Energy cards attached to those Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(BaseSetNG.POKEMON_CENTER, this)
       case LUCKY_STADIUM_41:
-      return basicTrainer (this) {
+      return stadium (this) {
         text "Once during each player's turn (before attacking), the player may flip a coin. If heads, that player draws a card."
+        def currentTurnCount=0
+        def actions=[]
         onPlay {
+          actions=action("Stadium: Lucky Stadium") {
+            assert my.deck : "Deck is empty"
+            assert currentTurnCount != bg().turnCount : "Already used Stadium"
+            bc "Used Lucky Stadium"
+            currentTurnCount = bg().turnCount
+
+            flip { draw 1 }
+          }
         }
-        playRequirement{
+        onRemoveFromPlay {
+          actions.each {
+            bg().gm().unregisterAction(it)
+          }
         }
       };
       case POKEMON_TOWER_42:
-      return basicTrainer (this) {
+      return stadium (this) {
         text "If the effect of a Pokémon Power, attack, Energy card, or Trainer card would put a card in a discard pile into its owner's hand, that card stays in that discard pile instead."
+        def eff
         onPlay {
+          // This needs testing, idk how MOVE_CARD would behave
+          eff = delayed {
+            before MOVE_CARD, {
+              if (ef.cards.contains(card) && ef.newLocation?.is(card.player.pbg.hand && ef.oldLocation?.is(card.player.pbg.discard)) {
+                prevent()
+              }
+            }
+          }
         }
-        playRequirement{
+        onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case MACHAMP_43:
@@ -801,6 +924,9 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip self.numberOfDamageCounters, {
+              damage 10
+            }
           }
         }
         move "Fling", {
@@ -809,6 +935,9 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            if (opp.bench) {
+              whirlwind()
+            }
           }
         }
       };
@@ -820,7 +949,9 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-            damage 10
+            def energiesToDiscard = self.cards.select(min:0, max:self.cards.filterByType(ENERGY).size())
+            damage 10+10*energiesToDiscard.size()
+            afterDamage { energiesToDiscard.discard() }
           }
         }
         move "Magma Punch", {
@@ -842,6 +973,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            cantUseAttack(thisMove,self)
           }
         }
       };
@@ -853,7 +985,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost L
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Lightning Bolt", {
@@ -862,6 +994,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            // TODO
           }
         }
       };
@@ -871,6 +1004,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
         pokePower "Neutral Shield", {
           text "Mew is not affected by attacks made by Evolved Pokémon. This power turns off if Mew is Asleep, Confused, or Paralyzed."
           actionA {
+            // TODO
           }
         }
         move "Psyshock", {
@@ -879,6 +1013,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { apply CONFUSED }
           }
         }
       };
@@ -888,6 +1023,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
         pokePower "Aurora Veil", {
           text "As long as Articuno is your Active Pokémon, you Benched Pokémon are not affected by attacks. This power cannot be used if Articuno is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Ice Beam", {
@@ -896,6 +1032,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { PARALYZED }
           }
         }
       };
@@ -906,6 +1043,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
         pokePower "Guard", {
           text "As long as Snorlax is your Active Pokémon, the Defending Pokémon can't retreat. This power stops working when Snorlax is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Roll Over", {
@@ -914,6 +1052,8 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            apply ASLEEP, self
+            flip { apply ASLEEP }
           }
         }
       };
@@ -926,6 +1066,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip 2, { damage 20 }
           }
         }
       };
@@ -937,7 +1078,9 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            if (opp.bench) {
+              damage 20, opp.bench.select()
+            }
           }
         }
         move "Super Singe", {
@@ -946,6 +1089,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { apply BURNED }
           }
         }
       };
@@ -954,11 +1098,11 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
         weakness W
         resistance F, MINUS30
         move "Sacred Fire", {
-          text "Flip a coin. If tails, this attack's base damage is 20 instead of 60."
+          text "60 damage. Flip a coin. If tails, this attack's base damage is 20 instead of 60."
           energyCost R, R, C, C
           attackRequirement {}
           onAttack {
-
+            flip 1, { damage 60 }, { damage 20 }
           }
         }
       };
@@ -968,6 +1112,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
         pokeBody "Pure Body", {
           text "To attach a [W] Energy card from your hand to Suicune, you must discard an Energy card attached to Suicune. (Attach the [W] Energy, and then discard an Energy card from Suicune.)"
           delayedA {
+            // TODO
           }
         }
         move "Hypno Wave", {
@@ -976,6 +1121,7 @@ public enum WizardsBlackStarPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip 1, { damage 20 }, { apply ASLEEP }
           }
         }
       };
