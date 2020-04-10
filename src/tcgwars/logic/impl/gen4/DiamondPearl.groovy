@@ -370,10 +370,7 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(basic:true, 1, delegate)
           }
           move "Aqua Ring", {
             text "30 damage. Switch Manaphy with 1 of your Benched Pokémon."

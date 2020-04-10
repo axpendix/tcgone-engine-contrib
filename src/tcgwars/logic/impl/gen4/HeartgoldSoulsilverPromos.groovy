@@ -413,10 +413,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for up to 2 Basic Pok�mon and put them onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(basic:true, 2, delegate)
           }
           move "Tag Team Boost", {
             text "10+ damage. If Plusle is on your Bench, this attack does 10 damage plus 20 more damage."

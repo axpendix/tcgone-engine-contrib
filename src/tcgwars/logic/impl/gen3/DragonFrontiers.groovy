@@ -196,6 +196,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Holon Veil", {
           text "Treat each Basic Pokémon and Evolution card in your deck, in your discard pile, in your hand, and in play as a Pokémon that has δ on its card."
           delayedA {
+            // TODO
           }
         }
         move "Delta Circle", {
@@ -203,7 +204,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 20 + 10*my.all.findAll { it.name.contains("δ") }.size()
           }
         }
       };
@@ -213,6 +214,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Battle Aura", {
           text "Each of your Pokémon that has δ on its card does 10 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
+            // TODO
           }
         }
         move "Drag Off", {
@@ -220,7 +222,12 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            def target = defending
+            if (opp.bench) {
+              target = opp.bench.select("Select the new active")
+              sw defending, target
+            }
+            damage 20, target
           }
         }
         move "Sharp Fang", {
@@ -238,14 +245,17 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Shining Horn", {
           text "As long as Heracross is the only Pokémon you have in play, your opponent's Basic Pokémon can't attack."
           delayedA {
+            // TODO
           }
         }
         move "Dig Deep", {
           text "Search your discard pile for an Energy card, show it to your opponent, and put it into your hand."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard.find(cardTypeFilter(ENERGY)) : "There are no Energies in your discard pile."
+          }
           onAttack {
-
+            my.discard.findAll(cardTypeFilter(ENERGY)).select().moveTo(my.hand)
           }
         }
         move "Extra Claws", {
@@ -267,6 +277,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Evolutionary Call", {
           text "Once during your turn, when you play Meganium from your hand to evolve 1 of your Pokémon, you may search your deck for up to 3 in any combination of Basic Pokémon or Evolution cards. Show them to your opponent and put them into your hand. Shuffle your deck afterward."
           actionA {
+            // TODO
           }
         }
         move "Delta Reduction", {
@@ -293,6 +304,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Sharing", {
           text "Once during your turn (before your attack), you may look at your opponent's hand. You may use the effect of a Supporter card you find there as the effect of this power. (The Supporter card remains in your opponent's hand.) You can't use more than 1 Sharing Poké-Power each turn. This power can't be used if Milotic is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Flare", {
@@ -312,7 +324,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            damage 30, opp.all.select()
           }
         }
         move "Dark Horn", {
@@ -321,6 +333,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            // TODO
           }
         }
       };
@@ -330,6 +343,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Invitation", {
           text "Once during your turn (before your attack), you may search your deck for a Basic Pokémon or Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power can't be used if Nidoqueen is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Vengeance", {
@@ -338,6 +352,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            // TODO
           }
         }
       };
@@ -347,6 +362,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Volunteer", {
           text "Once during your turn (before your attack), you may remove 4 damage counters from Ninetales and discard Ninetales from Vulpix. If you do, search your deck for Ninetales or Ninetales ex and put it onto Vulpix (this counts as evolving Vulpix). Shuffle your deck afterward."
           actionA {
+            // TODO
           }
         }
         move "Trick Tail", {
@@ -355,6 +371,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            // TODO
           }
         }
       };
@@ -364,6 +381,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Armor", {
           text "If your opponent has 5 or more cards in his or her hand, any damage done to Pinsir by attacks is reduced by 30 (after applying Weakness and Resistance)."
           delayedA {
+            // TODO
           }
         }
         move "Delta Call", {
@@ -371,7 +389,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Guillotine", {
@@ -389,6 +407,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Bedhead", {
           text "As long as Snorlax remains Asleep between turns, put 2 damage counters on 1 of the Defending Pokémon."
           delayedA {
+            // TODO
           }
         }
       };
@@ -401,7 +420,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Wave Splash", {
@@ -419,6 +438,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Shady Move", {
           text "Once during your turn (before your attack), if Typhlosion is your Active Pokémon, you may move 1 damage counter from either player's Pokémon to another Pokémon (yours or your opponent's). This power can't be used if Typhlosion is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Burning Ball", {
@@ -427,6 +447,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            // TODO
           }
         }
       };
@@ -448,6 +469,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            if (defending.name.contains("δ")) {
+              damage 30
+            }
           }
         }
       };
@@ -457,6 +481,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Solid Shell", {
           text "Prevent all of effects of attacks, including damage, done by your opponent's Pokémon to each of your Benched Pokémon that has δ on its card."
           delayedA {
+            // TODO
           }
         }
         move "Grind", {
@@ -464,7 +489,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10+10*self.energyCount(C)
           }
         }
       };
@@ -474,6 +499,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Delta Protection", {
           text "Any damage done to Dewgong by attacks from your opponent's Pokémon that has δ on its card is reduced by 40 (after applying Weakness and Resistance)."
           delayedA {
+            // TODO
           }
         }
         move "Ice Beam", {
@@ -491,6 +517,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            // TODO
           }
         }
       };
@@ -502,7 +529,13 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip {
+              apply PARALYZED
+              if (bench) {
+                def tar = my.bench.select("Switch with")
+                sw self, tar
+              }
+            }
           }
         }
         move "Tail Sting", {
@@ -524,6 +557,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Stages of Evolution", {
           text "As long as Jynx is an Evolved Pokémon, you pay [C] less to retreat your Fire and [P] Pokémon."
           delayedA {
+            // TODO
           }
         }
         move "Fire Punch", {
@@ -541,6 +575,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Prowl", {
           text "Once during your turn, when you play Ledian from your hand to evolve 1 of your Pokémon, you may search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
           actionA {
+            // TODO
           }
         }
         move "Metal Star", {
@@ -549,6 +584,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            // TODO
           }
         }
       };
@@ -568,7 +604,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
       };
@@ -578,6 +614,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Power Circulation", {
           text "Once during your turn (before your attack), you may search your discard pile for a basic Energy card, show it to your opponent, and put it on top of your deck. If you do, put 1 damage counter on Mantine. This power can't be used if Mantine is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Spiral Drain", {
@@ -596,6 +633,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Dig up", {
           text "Once during your turn, when you play Quagsire from your hand to evolve 1 of your Pokémon, you may search your discard pile for up to 2 Pokémon Tool cards, show them to your opponent, and put them into your hand."
           actionA {
+            // TODO
           }
         }
         move "Pump Out", {
@@ -604,6 +642,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            // TODO
           }
         }
       };
@@ -634,6 +673,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Tropical Heal", {
           text "Once during your turn, when you put Tropius from your hand onto your Bench, you may remove all Special Conditions, Imprison markers, and Shock-wave markers from your Pokémon."
           actionA {
+            // TODO
           }
         }
         move "Grind", {
@@ -674,6 +714,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Extra Feather", {
           text "Each of your Stage 2 Pokémon-ex does 10 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
+            // TODO
           }
         }
         move "Confuse Ray", {
@@ -682,6 +723,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { apply CONFUSED }
           }
         }
       };
@@ -695,6 +737,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            apply POISONED
           }
         }
       };
@@ -706,7 +749,10 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip {
+              cantRetreat defending
+              cantAttackNextTurn defending
+            }
           }
         }
         move "Slash", {
@@ -743,6 +789,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Power of Evolution", {
           text "Once during your turn (before your attack), if Electabuzz is an Evolved Pokémon, you may draw a card from the bottom of your deck. This power can't be used if Electabuzz is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Swift", {
@@ -784,6 +831,10 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            if (bench) {
+              def tar = my.bench.select("Switch with")
+              sw self, tar
+            }
           }
         }
       };
@@ -805,6 +856,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            // TODO
           }
         }
       };
@@ -838,6 +890,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            apply POISONED
           }
         }
         move "Rear Kick", {
@@ -857,7 +910,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost D, C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10 + 10 * self.numberOfDamageCounters
           }
         }
         move "Horn Drill", {
@@ -964,6 +1017,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Extra Wing", {
           text "The Retreat Cost for each of your Stage 2 Pokémon-ex is 0."
           delayedA {
+            // TODO
           }
         }
         move "Agility", {
@@ -1313,7 +1367,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            heal 20, self
           }
         }
         move "Will-o'-the-wisp", {
@@ -1379,7 +1433,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
       };
@@ -1393,6 +1447,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            if (self.cards.energyCount(C) < defending.cards.energyCount(C)) {
+              damage 10
+            }
           }
         }
       };
@@ -1426,7 +1483,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost L, C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10 + 10 * self.numberOfDamageCounters
           }
         }
       };
@@ -1458,7 +1515,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-
+            directDamage 10, opp.all.select()
           }
         }
       };
@@ -1507,6 +1564,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "Attach Buffer Piece to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card." +
           "Damage done to the Pokémon Buffer Piece is attached to by an opponent's attack is reduced by 20 (after applying Weakness and Resistance). At the end of your opponent's turn after you played Buffer Piece, discard Buffer Piece."
         onPlay {reason->
+        // TODO
         }
         onRemoveFromPlay {
         }
@@ -1518,6 +1576,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Shuffle your hand into your deck. Then, count the number of cards in your opponent's hand and draw that many cards."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1527,6 +1586,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each Pokémon in play that has δ on its card in play (both yours and your opponent's) has no Weakness and can't use any Poké-Powers."
         onPlay {
+          // TODO
         }
         onRemoveFromPlay{
         }
@@ -1536,6 +1596,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Search your deck for up to 3 Basic Pokémon that each has 100 HP or less, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1545,6 +1606,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Choose up to 2 of your Prize cards and put them face up. (These cards remain face up for the rest of the game.) Draw 2 cards."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1554,6 +1616,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward. Or, search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1562,6 +1625,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return itemCard (this) {
         text "Flip 2 coins. If both are heads, search your discard pile for a Basic Pokémon or Evolution card, show it to your opponent, and put it into your hand. If both are tails, search your discard pile for a Trainer card, show it to your opponent, and put it into your hand."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1571,6 +1635,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Search your deck for an Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1580,6 +1645,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Shuffle your hand into your deck, then draw 5 cards."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1589,6 +1655,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "Attach Strength Charm to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card." +
           "Whenever an attack from the Pokémon that Strength Charm is attached to does damage to the Active Pokémon, the attack does 10 more damage (before applying Weakness and Resistance). Discard Strength Charm at the end of the turn in which this Pokémon attacks."
         onPlay {reason->
+        // TODO
         }
         onRemoveFromPlay {
         }
@@ -1600,6 +1667,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "Draw 3 cards. Then discard any 1 card from your hand." +
           "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1608,6 +1676,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return itemCard (this) {
         text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1616,6 +1685,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "Holon Energy FF provides [C] Energy. If the Pokémon that Holon Energy FF is attached to also has a basic [R] Energy card attached to it, that Pokémon has no Weakness. If the Pokémon that Holon Energy FF is attached to also has a basic [F] Energy card attached to it, damage done by that Pokémon's attack isn't affected by Resistance. Ignore these effects if Holon Energy FF is attached to Pokémon-ex."
         onPlay {reason->
+        // TODO
         }
         onRemoveFromPlay {
         }
@@ -1628,6 +1698,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "Holon Energy GL provides [C] Energy. If the Pokémon that Holon Energy GL is attached to also has a basic [G] Energy card attached to it, that Pokémon can't be affected by any Special Conditions. If the Pokémon that Holon Energy GL is attached to also has a basic [L] Energy card attached to it, damage done by your opponent's Pokémon-ex is reduced by 10. Ignore these effects if Holon Energy GL is attached to Pokémon-ex."
         onPlay {reason->
+        // TODO
         }
         onRemoveFromPlay {
         }
@@ -1640,6 +1711,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "Holon Energy WP provides [C] Energy. If the Pokémon that Holon Energy WP is attached to also has a basic [W] Energy card attached to it, prevent all effects of attacks, excluding damage, done to that Pokémon by your opponent's Pokémon. If the Pokémon that Holon Energy WP is attached to also has a basic [P] Energy card attached to it, that Pokémon's Retreat Cost is 0. Ignore these effects if Holon Energy WP is attached to Pokémon-ex."
         onPlay {reason->
+        // TODO
         }
         onRemoveFromPlay {
         }
@@ -1652,6 +1724,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "Boost Energy can be attached only to an Evolved Pokémon. Discard Boost Energy at the end of the turn it was attached. Boost Energy provides [C] [C] [C] Energy. The Pokémon Boost Energy is attached to can't retreat. If the Pokémon Boost Energy is attached to isn't an Evolved Pokémon, discard Boost Energy."
         onPlay {reason->
+        // TODO
         }
         onRemoveFromPlay {
         }
@@ -1664,6 +1737,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "δ Rainbow Energy provides [C] Energy. While attached to a Pokémon that has δ on its card, δ Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.)"
         onPlay {reason->
+        // TODO
         }
         onRemoveFromPlay {
         }
@@ -1676,6 +1750,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "Scramble Energy can be attached only to an Evolved Pokémon (excluding Pokémon-ex). Scramble Energy provides [C] Energy. While in play, if you have more Prize cards left than your opponent, Scramble Energy provides every type of Energy but provides only 3 in any combination at a time. If the Pokémon Scramble Energy is attached to isn't an Evolved Pokémon (or evolves into Pokémon-ex), discard Scramble Energy."
         onPlay {reason->
+        // TODO
         }
         onRemoveFromPlay {
         }
@@ -1692,6 +1767,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Extra Boost", {
           text "Once during your turn (before your attack), you may attach a basic Energy card from your hand to 1 of your Stage 2 Pokémon-ex. This power can't be used if Altaria ex is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Healing Light", {
@@ -1711,6 +1787,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            // TODO
           }
         }
         move "Dragon Roar", {
@@ -1718,7 +1795,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost G, G, C, C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
       };
@@ -1727,6 +1804,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Sand Damage", {
           text "As long as Flygon ex is your Active Pokémon, put 1 damage counter on each of your opponent's Benched Basic Pokémon between turns. You can't use more than 1 Sand Damage Poké-Body between turns."
           delayedA {
+            // TODO
           }
         }
         move "Psychic Pulse", {
@@ -1735,6 +1813,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
+            // TODO
           }
         }
       };
@@ -1744,6 +1823,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Imprison", {
           text "Once during your turn (before your attack), if Gardevoir ex is your Active Pokémon, you may put an Imprison marker on 1 of your opponent's Pokémon. Any Pokémon that has any Imprison markers on it can't use any Poké-Powers or Poké-Bodies. This power can't be used if Gardevoir ex is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Flame Ball", {
@@ -1752,6 +1832,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
+            // TODO
           }
         }
       };
@@ -1761,6 +1842,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Extra Smoke", {
           text "Any damage done to your Stage 2 Pokémon-ex by your opponent's attacks is reduced by 10 (before applying Weakness and Resistance)."
           delayedA {
+            // TODO
           }
         }
         move "Energy Link", {
@@ -1769,6 +1851,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            // TODO
           }
         }
         move "Protective Swirl", {
@@ -1777,6 +1860,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
+            // TODO
           }
         }
       };
@@ -1786,6 +1870,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Fellow Boost", {
           text "Once during your turn (before your attack), you may attach a basic Energy card from your hand to your Latias, Latias ex, Latios or Latios ex. If you do, your turn ends. This power can't be used if Latias ex is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Power Crush", {
@@ -1794,6 +1879,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 90
+            // TODO
           }
         }
       };
@@ -1803,6 +1889,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Link Wing", {
           text "The Retreat Cost for each of your Latias, Latias ex, Latios, and Latios ex is 0."
           delayedA {
+            // TODO
           }
         }
         move "Ice Barrier", {
@@ -1811,6 +1898,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            // TODO
           }
         }
         move "Hydro Splash", {
@@ -1827,6 +1915,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Rage Aura", {
           text "If you have more Prize cards left than your opponent, the attack cost of Rayquaza ex's Special Circuit is now Lightning and Rayquaza ex's Sky-high Claws is now Lightning Lightning."
           delayedA {
+            // TODO
           }
         }
         move "Special Circuit", {
@@ -1834,7 +1923,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost L, C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Sky-high Claws", {
@@ -1854,6 +1943,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Type Shift", {
           text "Once during your turn (before your attack), you may use this power. Salamence ex's type is Fire until the end of your turn."
           actionA {
+            // TODO
           }
         }
         move "Claw Swipe", {
@@ -1870,6 +1960,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
+            // TODO
           }
         }
       };
@@ -1881,7 +1972,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost L, C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Hyper Claws", {
@@ -1900,7 +1991,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost L, L, C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
       };
@@ -1913,6 +2004,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            // TODO
           }
         }
         move "Dark Swirl", {
@@ -1921,6 +2013,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 150
+            // TODO
           }
         }
       };
@@ -1932,7 +2025,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Rainbow Wave", {
@@ -1940,7 +2033,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
       };

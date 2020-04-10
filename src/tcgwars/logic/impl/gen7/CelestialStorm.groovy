@@ -2039,9 +2039,12 @@ public enum CelestialStorm implements LogicCardInfo {
             energyCost F,C,C
             onAttack {
               damage 50
-              if(bg.stadiumInfoStruct) {
+              if (bg.stadiumInfoStruct) {
                 damage 50
-                discard bg.stadiumInfoStruct.stadiumCard
+
+                afterDamage {
+                  discard bg.stadiumInfoStruct.stadiumCard
+                }
               }
             }
           }

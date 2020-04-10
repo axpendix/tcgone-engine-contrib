@@ -1916,18 +1916,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {
-              assert bench.notFull
-              assert deck.notEmpty
-            }
-            onAttack {
-              int count = bench.freeBenchCount>=2?2:1
-              deck.search (max: count, cardTypeFilter(BASIC)).each {
-                deck.remove(it)
-                benchPCS(it)
-              }
-              shuffleDeck()
-            }
+            callForFamily(basic:true, 2, delegate)
           }
           move "Toxic SPore", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
@@ -2260,6 +2249,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                   if (oppConfirm("EXP.ALL: Move an Energy from ${self.owner.pbg.active} to $self ?")) {
                     def energy = self.owner.pbg.active.cards.filterByType(BASIC_ENERGY).oppSelect("Select an Energy from the Active Pokemon to move to the holder of EXP.ALL").first()
                     energySwitch(self.owner.pbg.active, self, energy)
+                    discard thisCard
                   }
                 }
               }

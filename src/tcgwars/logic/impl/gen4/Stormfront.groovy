@@ -1501,7 +1501,10 @@ public enum Stormfront implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                cantRetreat defending
+                cantAttackNextTurn defending
+              }
             }
           }
           move "Headbutt", {

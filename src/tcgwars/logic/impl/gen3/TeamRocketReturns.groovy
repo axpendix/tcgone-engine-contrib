@@ -2090,17 +2090,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {
-              assert deck.notEmpty
-              assert my.bench.notFull
-            }
-            onAttack {
-              deck.search (count: 1,{it.cardTypes.is(BASIC)}).each {
-                deck.remove(it)
-                benchPCS(it)
-              }
-              shuffleDeck()
-            }
+            callForFamily(basic:true, 1, delegate)
           }
           move "Snarl", {
             text "Flip a coin. If heads, this attack does 10 damage to the Defending Pokémon. If tails, the Defending Pokémon is now Paralyzed."

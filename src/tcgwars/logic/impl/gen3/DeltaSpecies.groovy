@@ -1392,10 +1392,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Call for Family", {
           text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily(basic:true, 1, delegate)
         }
         move "Strange Rasping", {
           text "20 damage. If the Defending Pokémon is an Evolved Pokémon, the Defending Pokémon is now Confused."
@@ -1939,10 +1936,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Call for Family", {
           text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
-          onAttack {
-            callForFamily(basic: true, 1, delegate)
-          }
+          callForFamily(basic:true, 1, delegate)
         }
         move "Rear Kick", {
           text "20 damage."

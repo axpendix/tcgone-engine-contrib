@@ -1016,11 +1016,16 @@ public enum DiamondPearlPromos implements LogicCardInfo {
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
           weakness F
           move "Drag Off", {
-            text "30 damage. Before doing damage, you may choose 1 of your opponent�s Benched Pok�mon and switch it with the Defending Pok�mon."
+            text "30 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokemon and switch it with the Defending Pokemon."
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              def target = defending
+              if (opp.bench) {
+                target = opp.bench.select("Select the new active")
+                sw defending, target
+              }
+              damage 30, target
             }
           }
           move "Giga Hammer", {

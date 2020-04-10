@@ -1473,20 +1473,8 @@ public enum Deoxys implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {
-              assert deck.notEmpty : "Your deck is empty"
-              assert my.bench.notFull : "You cannot put anymore Pokémon on your bench."
-            }
-            onAttack {
-              int count = bench.freeBenchCount>=2?2:1
-              deck.search (max: count, cardTypeFilter(BASIC)).each {
-                deck.remove(it)
-                benchPCS(it)
-              }
-              shuffleDeck()
-            }
+            callForFamily(basic:true, 2, delegate)
           }
-
           move "Positive Spark", {
             text "Does 20 damage to each of your opponent’s Pokémon that has any Poké-Powers. Don’t apply Weakness and Resistance."
             energyCost L

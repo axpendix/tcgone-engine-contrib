@@ -1888,10 +1888,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(basic:true, 1, delegate)
           }
           move "Sling", {
             text "10 damage. "
@@ -2000,10 +1997,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for Nidoran Male or Nidoran Female and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+
+            // TODO
+            callForFamily(basic:true, 1, delegate)
           }
           move "Poison Sting", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."

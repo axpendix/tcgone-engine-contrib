@@ -268,10 +268,7 @@ public enum GreatEncounters implements LogicCardInfo {
           move "Call for Family", {
             text "Search you deck for up to 3 Basic Pokémon and put them onto your Bench. Shuffle you deck afterward."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(basic:true, 3, delegate)
           }
           move "Smash Short", {
             text "10+ damage. If the Defending Pokémon has a Pokémon Tool card attached to it, this attack does 10 damage plus 20 more damage. Discard that Pokémon Tool card, loo, at your opponent’s hand and discard any Pokémon Tool cards of the same name you find there."
@@ -1025,7 +1022,10 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                cantRetreat defending
+                cantAttackNextTurn defending
+              }
             }
           }
           move "Threaten and Drop", {
@@ -2076,10 +2076,7 @@ public enum GreatEncounters implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(basic:true, 1, delegate)
           }
           move "String Shot", {
             text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."

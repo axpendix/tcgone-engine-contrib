@@ -1195,10 +1195,7 @@ public enum Undaunted implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(basic:true, 1, delegate)
           }
           move "Tickle", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."

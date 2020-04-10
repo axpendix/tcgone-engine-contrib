@@ -599,7 +599,14 @@ public enum Arceus implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if (bg.stadiumInfoStruct) {
+                damage 50
+
+                afterDamage {
+                  discard bg.stadiumInfoStruct.stadiumCard
+                }
+              }
             }
           }
           move "Avalanche", {

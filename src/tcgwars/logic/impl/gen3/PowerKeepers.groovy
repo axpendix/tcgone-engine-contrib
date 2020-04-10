@@ -369,6 +369,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Energy Draw", {
           text "Once during your turn (before your attack), you may discard 1 Energy card from your hand. Then draw up to 3 cards from your deck. This power can't be used if Delcatty is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Max Energy Source", {
@@ -386,6 +387,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Psy Shadow", {
           text "Once during your turn (before your attack), you may search your deck for a [P] Energy card and attach it to 1 of your Pokémon. Put 2 damage counters on that Pokémon. Shuffle your deck afterward. This power can't be used if Gardevoir is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Energy Burst", {
@@ -393,7 +395,8 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            damage 10
+            def energies = self.cards.filterByType(ENERGY).size() + opp.cards.filterByType(ENERGY).size()
+            damage 10*energies
           }
         }
       };
@@ -403,6 +406,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Primal Stare", {
           text "As long as Kabutops is your Active Pokémon, your opponent can't play any Basic Pokémon or Evolution cards from his or her hand to evolve his or her Active Pokémon."
           delayedA {
+            // TODO
           }
         }
         move "Luring Antenna", {
@@ -410,6 +414,9 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
+            // TODO
+            // wtf, who chooses
+
             damage 20
           }
         }
@@ -428,6 +435,14 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Overzealous", {
           text "If your opponent has any Pokémon-ex in play, each of Machamp's attacks does 30 more damage to the Defending Pokémon."
           delayedA {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker == self && it.notNoEffect && it.dmg.value && it.to.active) {
+                if (opp.all.findAll { it.EX }) {
+                  bc "Overzealous +30"
+                  it.dmg += hp(30)
+                }
+              }
+            }
           }
         }
         move "Brick Smash", {
@@ -468,6 +483,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
+            discardAllSelfEnergy(null)
           }
         }
       };
@@ -476,7 +492,12 @@ public enum PowerKeepers implements LogicCardInfo {
         weakness F
         pokeBody "Lazy", {
           text "As long as Slaking is your Active Pokémon, your opponent's Pokémon can't use any Poké-Powers."
-          delayedA {
+          getterA (IS_ABILITY_BLOCKED) { Holder h ->
+            if (self.active && !h.effect.target.cardTypes.is(EX)) {
+              if (h.effect.ability instanceof PokePower) {
+                h.object=true
+              }
+            }
           }
         }
         move "Critical Move", {
@@ -485,6 +506,8 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
+            discardSelfEnergy(C)
+            cantAttackNextTurn(self)
           }
         }
       };
@@ -498,6 +521,9 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            if (opp.bench) {
+              damage 20, opp.bench.select()
+            }
           }
         }
         move "Mysterious Light", {
@@ -506,6 +532,9 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Phoebe's Stadium") {
+              apply CONFUSED
+            }
           }
         }
       };
@@ -514,7 +543,14 @@ public enum PowerKeepers implements LogicCardInfo {
         weakness F
         pokePower "Energy Grounding", {
           text "Once during your opponent's turn, when any of your Pokémon is Knocked Out by your opponent's attacks, you may use this power. Choose a basic Energy card discarded from the Knocked Out Pokémon and attach it to Lanturn. You can't use more than 1 Energy Grounding Poké-Power each turn."
-          actionA {
+          delayedA{
+            before KNOCKOUT, {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut!=self  && ef.pokemonToBeKnockedOut.cards.energyCount(C)) {
+                if (confirm("Move an energy from ${ef.pokemonToBeKnockedOut} to $self?")) {
+                  moveEnergy(basic:true, ef.pokemonToBeKnockedOut,self)
+                }
+              }
+            }
           }
         }
         move "Lightning Strike", {
@@ -523,6 +559,10 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            if (confirm("Discard all [L] Energy?")) {
+              damage 40
+              discardAllSelfEnergy(L)
+            }
           }
         }
       };
@@ -533,6 +573,8 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Magnetic Field", {
           text "Once during your turn (before your attack), if you have basic Energy cards in your discard pile, you may discard any 1 card from your hand. Then search for up to 2 basic Energy cards from your discard pile, show them to your opponent, and put them into your hand. You can't return the card you first discarded to your hand in this way. This power can't be used if Magneton is affected by a Special Condition."
           actionA {
+            // TODO
+            checkNoSPC()
           }
         }
         move "Magnetic Force", {
@@ -540,8 +582,12 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost L, C
           attackRequirement {}
           onAttack {
-            damage 10
-            // TODO
+            def amount = 0
+            def pokemon = my.all.getExcludedList(self.topPokemonCard)
+            pokemon.each {
+              amount += 10 * it.cards.filterByType(ENERGY).size()
+            }
+            damage amount
           }
         }
       };
@@ -552,10 +598,7 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Call for Family", {
           text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily(basic:true, 1, delegate)
         }
         move "Pull Away", {
           text "20 damage. If your opponent has 5 or more cards in his or her hand, your opponent discards a number of cards until your opponent has 4 cards left in his or her hand."
@@ -563,6 +606,10 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+
+            if (opp.hand.size() >= 5) {
+              opp.hand.oppSelect(min: opp.hand.size()-4, max: opp.hand.size()-4, "Discard cards until you have 4 left in your hand").discard()
+            }
           }
         }
       };
@@ -576,6 +623,10 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            if (defending.cards.filterByType(TRAINER)) {
+              defending.cards.filterByType(TRAINER).discard()
+            }
+            damage 20
           }
         }
         move "Dark Burst", {
@@ -584,6 +635,9 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Sidney's Stadium") {
+              damage 20
+            }
           }
         }
       };
@@ -635,7 +689,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Hydrocannon", {
@@ -644,6 +698,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            extraEnergyDamage(2, hp(20), W, thisMove)
           }
         }
       };
@@ -653,14 +708,29 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Pikachu from your hand onto Pichu (this counts as evolving Pichu) and remove all damage counters from Pichu."
           actionA {
+            assert my.hand.findAll{it.name.contains("Pikachu")} : "There are no Pokémon in your hand to evolve ${self}."
+            checkLastTurn()
+            powerUsed()
+            def tar = my.hand.findAll { it.name.contains("Pikachu") }.select()
+            if (tar) {
+              evolve(self, tar.first(), OTHER)
+              heal self.numberOfDamageCounters*10, self
+            }
           }
         }
         move "Cry for Help", {
           text "Search your deck for a [L] Pokémon (excluding Pokémon-ex), show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           energyCost L
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-
+            deck.search ({
+              (it.asPokemonCard().types.contains(L)) && !it.asPokemonCard().cardTypes.is(EX)
+            }).each {
+              it.moveTo(my.hand)
+            }
+            shuffleDeck()
           }
         }
       };
@@ -670,14 +740,21 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Synergy Effect", {
           text "If Phoebe's Stadium is in play, prevent all damage done to Sableye by attacks from your opponent's Pokémon-ex."
           delayedA {
+            // TODO
           }
         }
         move "Down Draw", {
           text "Draw 2 cards from the bottom of your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "No cards in deck"
+          }
           onAttack {
-
+            if (my.deck.size() < 2) {
+              draw 2
+            } else {
+              my.deck.subList(my.deck.size() - 2, my.deck.size()).moveTo(hidden:true, my.hand)
+            }
           }
         }
         move "Feint Attack", {
@@ -705,7 +782,8 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost G, C, C
           attackRequirement {}
           onAttack {
-
+            apply POISONED
+            extraPoison 1
           }
         }
       };
@@ -736,7 +814,8 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost P, C, C
           attackRequirement {}
           onAttack {
-            damage 50
+            noWrDamage 50
+            damage 10, self
           }
         }
       };
@@ -746,15 +825,16 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Thick Skin", {
           text "Zangoose can't be affected by any Special Conditions."
           delayedA {
+            before APPLY_SPECIAL_CONDITION, self, {
+              bc ("$self is thick Skinned!")
+              prevent()
+            }
           }
         }
         move "Call for Family", {
           text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily(basic:true, 2, delegate)
         }
         move "Sharp Claws", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
@@ -772,6 +852,14 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Solid Shell", {
           text "Any damage done to Anorith by attacks is reduced by 10 (after applying Weakness and Resistance)."
           delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to == self && it.dmg.value && it.notNoEffect) {
+                  bc "Solid Shell -10"
+                  it.dmg -= hp(10)
+                }
+              }
+            }
           }
         }
         move "Fury Cutter", {
@@ -791,6 +879,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Poison Structure", {
           text "Once during your turn (before your attack), if Sidney's Stadium is in play, you may choose 1 of the Defending Pokémon. That Pokémon is now Poisoned. This power can't be used if Cacturne is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Pin Missile", {
@@ -798,7 +887,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            flip 4, { damage 20 }
           }
         }
       };
@@ -810,7 +899,10 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip {
+              cantRetreat defending
+              cantAttackNextTurn defending
+            }
           }
         }
         move "Flame Tail", {
@@ -828,6 +920,11 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Natural Cure", {
           text "When you attach a [R] Energy card from your hand to Combusken, remove all Special Conditions from Combusken."
           delayedA {
+            before ATTACH_ENERGY, self {
+              if (ef.reason == PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == R) {
+                clearSpecialCondition(self, SRC_ABILITY)
+              }
+            }
           }
         }
         move "Lunge", {
@@ -835,7 +932,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 50
+            flip { damage 50 }
           }
         }
       };
@@ -845,6 +942,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Synergy Effect", {
           text "If Glacia's Stadium is in play, any damage done to Glalie by attacks from your opponent's Pokémon is reduced by 30 (after applying Weakness and Resistance)."
           delayedA {
+            // TODO
           }
         }
         move "Powder Snow", {
@@ -882,7 +980,9 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-            damage 50
+            if (defending.isSPC(ASLEEP)) {
+              damage 50
+            }
           }
         }
       };
@@ -896,7 +996,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            reduceDamageNextTurn(hp(10),thisMove)
+            reduceDamageNextTurn(hp(10), thisMove)
           }
         }
         move "Stomp", {
@@ -936,6 +1036,16 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Vigorous Aura", {
           text "As long as Medicham is your Active Pokémon, attacks by each player's Active Pokémon do 10 more damage to any Active Pokémon (before applying Weakness and Resistance)."
           delayedA {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker.owner == self.owner && self.active) {
+                bg.dm().each {
+                  if (it.to.active && it.notNoEffect && it.dmg.value) {
+                    bc "Vigorous Aura +10"
+                    it.dmg += hp(10)
+                  }
+                }
+              }
+            }
           }
         }
         move "Punch", {
@@ -978,6 +1088,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            increasedBaseDamageNextTurn("Extra Comet Punch", hp(30))
           }
         }
       };
@@ -1035,6 +1146,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            damage 10, self
           }
         }
       };
@@ -1048,7 +1160,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost R, C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10+10*self.numberOfDamageCounters
           }
         }
         move "Rolling Tackle", {
@@ -1078,7 +1190,10 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost G, L, C
           attackRequirement {}
           onAttack {
-            damage 60
+            flip {
+              damage 60
+              apply PARALYZED
+            }
           }
         }
       };
@@ -1088,6 +1203,11 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Strikes Back", {
           text "If Vigoroth is your Active Pokémon and is damaged by an opponent's attack (even if Vigoroth is Knocked Out), put 1 damage counter on the Attacking Pokémon."
           delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
+                directDamage(10, ef.attacker, Source.SRC_ABILITY)
+              }
+            }
           }
         }
         move "Ambush", {
@@ -1107,9 +1227,11 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Dig Deep", {
           text "Search your discard pile for an Energy card, show it to your opponent, and put it into your hand."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard.find(cardTypeFilter(ENERGY)) : "No Energies in your discard pile."
+          }
           onAttack {
-
+            my.discard.findAll(cardTypeFilter(ENERGY)).select().moveTo(my.hand)
           }
         }
         move "Tackle", {
@@ -1131,7 +1253,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10+10*self.numberOfDamageCounters
           }
         }
       };
@@ -1166,6 +1288,9 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip {
+              // TODO
+            }
           }
         }
       };
@@ -1188,6 +1313,11 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Rough Skin", {
           text "If Carvanha is your Active Pokémon and is damaged by an opponent's attack (even if Carvanha is Knocked Out), put 1 damage counter on the Attacking Pokémon."
           delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
+                directDamage(10, ef.attacker, Source.SRC_ABILITY)
+              }
+            }
           }
         }
         move "Gnaw", {
@@ -1230,6 +1360,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            // TODO
           }
         }
       };
@@ -1242,7 +1373,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-            damage 30
+            flip { damage 30 }
           }
         }
       };
@@ -1254,7 +1385,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Double Scratch", {
@@ -1262,7 +1393,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
-            damage 20
+            flip 2, { damage 20 }
           }
         }
       };
@@ -1296,7 +1427,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 20
+            flip { damage 20 }
           }
         }
         move "Submission", {
@@ -1305,6 +1436,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            damage 10, self
           }
         }
       };
@@ -1359,7 +1491,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Mud Shot", {
@@ -1521,7 +1653,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost W, C
           attackRequirement {}
           onAttack {
-            damage 20
+            flip 2, { damage 20 }
           }
         }
       };
@@ -1533,7 +1665,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { preventAllEffectsNextTurn() }
           }
         }
         move "Aurora Beam", {
@@ -1554,7 +1686,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 10
+            flip 3, { damage 10 }
           }
         }
       };
@@ -1567,6 +1699,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { apply BURNED }
           }
         }
       };
@@ -1578,7 +1711,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 20
+            flip { damage 20 }
           }
         }
       };
@@ -1599,6 +1732,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            discardSelfEnergy(R)
           }
         }
       };
@@ -1608,6 +1742,14 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Wobbuffet from your hand onto Wynaut (this counts as evolving Wynaut) and remove all damage counters from Wynaut."
           actionA {
+            assert my.hand.findAll{it.name.contains("Wobbuffet")} : "There are no Pokémon in your hand to evolve ${self}."
+            checkLastTurn()
+            powerUsed()
+            def tar = my.hand.findAll { it.name.contains("Wobbuffet") }.select()
+            if (tar) {
+              evolve(self, tar.first(), OTHER)
+              heal self.numberOfDamageCounters*10, self
+            }
           }
         }
         move "Flail", {
@@ -1624,6 +1766,7 @@ public enum PowerKeepers implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each player's [C] Evolved Pokémon, Darkness Evolved Pokémon, and Metal Evolved Pokémon can't use any Poké-Powers or Poké-Bodies."
         onPlay {
+          // TODO
         }
         onRemoveFromPlay{
         }
@@ -1633,6 +1776,7 @@ public enum PowerKeepers implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Any damage done to [C] Active Pokémon (both yours and your opponent's) by an opponent's attack is reduced by 10 (after applying Weakness and Resistance)."
         onPlay {
+          // TODO
         }
         onRemoveFromPlay{
         }
@@ -1641,6 +1785,7 @@ public enum PowerKeepers implements LogicCardInfo {
       return itemCard (this) {
         text "Search your discard pile for basic Energy cards. You may either show 1 basic Energy card to your opponent and put it into your hand, or show 3 basic Energy cards to your opponent and shuffle them into your deck."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1649,6 +1794,8 @@ public enum PowerKeepers implements LogicCardInfo {
       return itemCard (this) {
         text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponent's Pokémon and discard it."
         onPlay {
+          // TODO
+
         }
         playRequirement{
         }
@@ -1657,6 +1804,7 @@ public enum PowerKeepers implements LogicCardInfo {
       return itemCard (this) {
         text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1666,6 +1814,7 @@ public enum PowerKeepers implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each player's [W] Pokémon (excluding Pokémon-ex) has no Weakness."
         onPlay {
+          // TODO
         }
         onRemoveFromPlay{
         }
@@ -1674,6 +1823,7 @@ public enum PowerKeepers implements LogicCardInfo {
       return itemCard (this) {
         text "Search your deck for a Basic Pokémon (excluding Pokémon-ex) and put it onto your Bench. Shuffle your deck afterward."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1682,6 +1832,7 @@ public enum PowerKeepers implements LogicCardInfo {
       return itemCard (this) {
         text "Look at the top 7 cards from your deck. Choose a Basic Pokémon or Evolution card from those cards, show it to your opponent, and put it into your hand. Put the other 6 cards back on top of your deck. Shuffle your deck afterward."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1691,6 +1842,7 @@ public enum PowerKeepers implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each player pays [C] [C] less to retreat his or her [P] Pokémon."
         onPlay {
+          // TODO
         }
         onRemoveFromPlay{
         }
@@ -1700,6 +1852,7 @@ public enum PowerKeepers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Draw cards from your deck until you have 6 cards in your hand."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1709,6 +1862,7 @@ public enum PowerKeepers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Search your deck for up to 3 cards in any combination of Supporter cards and Stadium cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1718,6 +1872,7 @@ public enum PowerKeepers implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each player's [D] Pokémon can't be Asleep, Confused, or Paralyzed."
         onPlay {
+          // TODO
         }
         onRemoveFromPlay{
         }
@@ -1727,6 +1882,7 @@ public enum PowerKeepers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Draw a number of cards up to the number of your opponent's Pokémon in play. If you have 7 or more cards (including this one) in your hand, you can't play this card."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1736,6 +1892,7 @@ public enum PowerKeepers implements LogicCardInfo {
         text "Play Claw Fossil as if it were a Basic Pokémon. While in play, Claw Fossil counts as a [C] Pokémon (as well as a Trainer card). Claw Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Claw Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Claw Fossil from play." +
           "If Claw Fossil is your Active Pokémon and is damaged by an opponent's attack (even if Claw Fossil is Knocked Out), put 1 damage counter on the Attacking Pokémon."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1744,6 +1901,7 @@ public enum PowerKeepers implements LogicCardInfo {
       return itemCard (this) {
         text "Play Mysterious Fossil as if it were a Basic Pokémon. While in play, Mysterious Fossil counts as a [C] Pokémon (as well as a Trainer card). Mysterious Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Mysterious Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Mysterious Fossil from play."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1753,6 +1911,7 @@ public enum PowerKeepers implements LogicCardInfo {
         text "Play Root Fossil as if it were a Basic Pokémon. While in play, Root Fossil counts as a [C] Pokémon (as well as a Trainer card). Root Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Root Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Root Fossil from play." +
           "At any time between turns, remove 1 damage counter from Root Fossil."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -1761,6 +1920,7 @@ public enum PowerKeepers implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "If the Pokémon [D] Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect unless the Attacking Pokémon is Darkness or has Dark in its name. [D] Energy provides [D] Energy. (Doesn't count as a basic Energy card.)"
         onPlay {reason->
+          // TODO
         }
         onRemoveFromPlay {
         }
@@ -1773,6 +1933,7 @@ public enum PowerKeepers implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "Damage done by attacks to the Pokémon that [M] Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that [M] Energy is attached to isn't Metal. [M] Energy provides [M] Energy. (Doesn't count as a basic Energy card.)"
         onPlay {reason->
+        // TODO
         }
         onRemoveFromPlay {
         }
@@ -1785,6 +1946,7 @@ public enum PowerKeepers implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "Attach Multi Energy to 1 of your Pokémon. While in play, Multi Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) Multi Energy provides [C] Energy when attached to a Pokémon that already has Special Energy cards attached to it."
         onPlay {reason->
+          // TODO
         }
         onRemoveFromPlay {
         }
@@ -1797,6 +1959,7 @@ public enum PowerKeepers implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "Cyclone Energy provides [C] Energy. When you attach this card from your hand to your Active Pokémon, switch 1 of the Defending Pokémon with 1 of your opponent's Benched Pokémon. Your opponent chooses the Benched Pokémon to switch."
         onPlay {reason->
+          // TODO
         }
         onRemoveFromPlay {
         }
@@ -1809,6 +1972,7 @@ public enum PowerKeepers implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "Warp Energy provides [C] Energy. When you attach this card from your hand to your Active Pokémon, switch that Pokémon with 1 of your Benched Pokémon."
         onPlay {reason->
+          // TODO
         }
         onRemoveFromPlay {
         }
@@ -1824,6 +1988,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Cursed Eyes", {
           text "Once during your turn, when you put Absol ex from your hand onto your Bench, you may move 3 damage counters from 1 of your opponent's Pokémon to another of his or her Pokémon."
           actionA {
+            // TODO
           }
         }
         move "Psychic Pulse", {
@@ -1832,6 +1997,11 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            opp.bench.each {
+              if (it.numberOfDamageCounters) {
+                damage 10, it
+              }
+            }
           }
         }
       };
@@ -1841,6 +2011,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Type Shift", {
           text "Once during your turn (before your attack), you may use this power. Claydol ex's type is Fighting until the end of your turn."
           actionA {
+            // TODO
           }
         }
         move "Psychic Boom", {
@@ -1848,7 +2019,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 20 + 10 * defending.cards.energyCount(C)
           }
         }
         move "Shadow Crush", {
@@ -1857,6 +2028,11 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            // TODO
+            if (confirm("Discard a [P] attached to Claydol ex?")) {
+              discardSelfEnergy(P)
+              discardDefendingEnergy(C)
+            }
           }
         }
       };
@@ -1868,6 +2044,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Psychic Protector", {
           text "If Flygon ex is damaged by an opponent's attack, you may discard up to 4 cards from your hand. If you do, any damage done to Flygon ex is reduced by 10 for each card you discarded."
           delayedA {
+            // TODO
           }
         }
         move "Slashing Strike", {
@@ -1876,6 +2053,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            flip { cantUseAttack(thisMove, self) }
           }
         }
       };
@@ -1886,6 +2064,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Magnetic Redraw", {
           text "Once during your turn (before your attack), if Metagross ex is your Active Pokémon, you may use this power. Each player shuffles his or her hand into his or her deck. Then, each player draws 4 cards. This power can't be used if Metagross ex is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Scanblast", {
@@ -1894,6 +2073,11 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            opp.bench.each {
+              if (defending.name == it.name) {
+                damage 70, it
+              }
+            }
           }
         }
       };
@@ -1908,6 +2092,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 150
+            // TODO
           }
         }
         move "Hydro Wave", {
@@ -1915,7 +2100,10 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost W, W, C, C
           attackRequirement {}
           onAttack {
-
+            opp.bench.each {
+              damage 30, it
+            }
+            discardAllSelfEnergy(null)
           }
         }
       };
@@ -1928,7 +2116,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost D
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Dirge", {
@@ -1937,6 +2125,11 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            opp.bench.each {
+              if (defending.name == it.name) {
+                damage 60, it
+              }
+            }
           }
         }
       };
@@ -1947,6 +2140,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Metal Gravity", {
           text "If your opponent's Active Pokémon retreats and has 40 or more remaining HP, put 3 damage counters on that Pokémon. You can't use more than 1 Metal Gravity Poké-Body each turn."
           delayedA {
+            // TODO
           }
         }
         move "Whirlwind", {
@@ -1955,6 +2149,9 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            afterDamage {
+              whirlwind()
+            }
           }
         }
         move "Razor Wing", {
@@ -1972,6 +2169,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Chilling Breath", {
           text "Once during your turn, when you play Walrein ex from your hand to evolve 1 of your Pokémon, you may use this power. Your opponent can't play any Trainer cards from his or her hand during your opponent's next turn."
           actionA {
+            // TODO
           }
         }
         move "Wreck", {
@@ -1980,6 +2178,13 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            if (bg.stadiumInfoStruct) {
+              damage 20
+
+              afterDamage {
+                discard bg.stadiumInfoStruct.stadiumCard
+              }
+            }
           }
         }
       };
@@ -1989,6 +2194,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Crimson Ray", {
           text "Once during your turn, when you put Flareon Star from your hand onto your Bench, you may use this power. Each Active Pokémon (both yours and your opponent's) is now Burned."
           actionA {
+            // TODO
           }
         }
         move "Flamethrower", {
@@ -1997,6 +2203,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            discardSelfEnergy(R)
           }
         }
       };
@@ -2007,6 +2214,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Yellow Ray", {
           text "Once during your turn, when you put Jolteon Star from your hand onto your Bench, you may put 1 damage counter on each Active Pokémon (both yours and your opponent's)."
           actionA {
+            // TODO
           }
         }
         move "Agility", {
@@ -2025,6 +2233,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Blue Ray", {
           text "Once during your turn, when you put Vaporeon Star from your hand onto your Bench, you may remove all Special Conditions and 3 damage counters from each Active Pokémon (both yours and your opponent's)."
           actionA {
+            // TODO
           }
         }
         move "Whirlpool", {

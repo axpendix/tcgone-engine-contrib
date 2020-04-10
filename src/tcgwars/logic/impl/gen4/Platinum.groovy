@@ -585,10 +585,7 @@ public enum Platinum implements LogicCardInfo {
           move "Call for Family", {
             text "and put them onto your Bench. Shuffle your deck afterward."
             energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(basic:true, 1, delegate)
           }
           move "Team Attack", {
             text "10+ damage. you have in play."
@@ -1717,6 +1714,10 @@ public enum Platinum implements LogicCardInfo {
           pokeBody "Thick Skin", {
             text "Zangoose can’t be affected by any Special Conditions."
             delayedA {
+              before APPLY_SPECIAL_CONDITION, self, {
+                bc ("$self is thick Skinned!")
+                prevent()
+              }
             }
           }
           move "Invite and Strike", {
@@ -1874,10 +1875,7 @@ public enum Platinum implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(basic:true, 1, delegate)
           }
           move "Spring Out", {
             text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon."

@@ -478,7 +478,12 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              def target = defending
+              if (opp.bench) {
+                target = opp.bench.select("Select the new active")
+                sw defending, target
+              }
+              damage 30, target
             }
           }
           move "Push Over", {
@@ -1086,6 +1091,11 @@ public enum SupremeVictors implements LogicCardInfo {
           pokeBody "Natural Cure", {
             text "When you attach an Energy card from your hand to Roserade , remove all Special Conditions from Roserade ."
             delayedA {
+              before ATTACH_ENERGY, self {
+                if (ef.reason == PLAY_FROM_HAND) {
+                  clearSpecialCondition(self, SRC_ABILITY)
+                }
+              }
             }
           }
           move "Magical Leaf", {
@@ -2239,10 +2249,7 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(basic:true, 1, delegate)
           }
           move "Nosedive", {
             text "30 damage. Flip a coin. If tails, Chatot does 10 damage to itself."
@@ -2692,10 +2699,7 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(basic:true, 1, delegate)
           }
           move "Dash Attack", {
             text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon."

@@ -2565,7 +2565,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert my.discard.find(cardTypeFilter(ENERGY)) : "There are no Energies in your discard pile."
             }
             onAttack {
-              my.discard.findAll (cardTypeFilter(ENERGY) ).select().moveTo(my.hand)
+              my.discard.findAll(cardTypeFilter(ENERGY)).select().moveTo(my.hand)
             }
           }
           move "Tail Smash", {

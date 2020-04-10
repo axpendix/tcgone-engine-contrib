@@ -780,10 +780,7 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(basic:true, 1, delegate)
           }
           move "(-) Boost", {
             text "20 damage. If Minun is on your Bench, this attack does 20 damage plus 20 more damage."
@@ -1518,9 +1515,7 @@ public enum MajesticDawn implements LogicCardInfo {
             text "Search your deck for as many Eevee as you like and put them onto your Bench. Shuffle your deck afterward."
             energyCost C
             attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(basic:true, 1, delegate)
           }
           move "Lunge", {
             text "20 damage. Flip a coin. If tails, this attack does nothing."
@@ -1582,10 +1577,7 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterwards."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(basic:true, 1, delegate)
           }
           move "Rip Claw", {
             text "10 damage. Flip a coin. If heads, discard an Energy attached to the Defending Pokémon."

@@ -595,7 +595,7 @@ public enum Emerald implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              flip{
+              flip {
                 cantRetreat defending
                 cantAttackNextTurn defending
               }
