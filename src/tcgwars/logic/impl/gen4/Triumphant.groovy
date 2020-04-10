@@ -1682,7 +1682,7 @@ public enum Triumphant implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { amnesia delegate }
             }
           }
           move "Haunt", {

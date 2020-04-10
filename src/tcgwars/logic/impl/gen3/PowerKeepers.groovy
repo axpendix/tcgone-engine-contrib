@@ -204,6 +204,8 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Terraforming", {
           text "Once during your turn (before your attack), you may look at the top 5 cards from your deck and put them back on top of your deck in any order. This power can't be used if Aggron is affected by a Special Condition."
           actionA {
+            // TODO
+            checkNoSPC()
           }
         }
         move "Metal Claw", {
@@ -234,6 +236,10 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Synergy Effect", {
           text "If Drake's Stadium is in play, remove 1 damage counter from Altaria between turns."
           delayedA {
+            // TODO
+            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Drake's Stadium") {
+              heal 10, self
+            }
           }
         }
         move "Surprise", {
@@ -262,7 +268,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Mach Claw", {
@@ -284,7 +290,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 20+10*opp.prizeCardSet.takenCount
           }
         }
         move "Bench Manipulation", {
@@ -293,6 +299,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            flip opp.bench.size(), {}, { noWrDamage 40 }
           }
         }
       };
@@ -302,6 +309,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Firestarter", {
           text "Once during your turn (before your attack), you may attach a [R] Energy card from your discard pile to 1 of your Benched Pokémon. This power can't be used if Blaziken is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Fire Stream", {
@@ -310,6 +318,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            discardSelfEnergy(R)
           }
         }
       };
@@ -330,6 +339,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            apply BURNED
           }
         }
       };
@@ -339,6 +349,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Evolutionary Call", {
           text "Once during your turn, when you play Cradily from your hand to evolve 1 of your Pokémon, you may search your deck for up to 3 in any combination of Basic Pokémon or Evolution cards. Show them to your opponent and put them into your hand. Shuffle your deck afterward."
           actionA {
+            // TODO
           }
         }
         move "Poison Ring", {
@@ -1500,7 +1511,9 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            if (opp.bench) {
+              damage 10, opp.bench.select()
+            }
           }
         }
         move "Double Headbutt", {

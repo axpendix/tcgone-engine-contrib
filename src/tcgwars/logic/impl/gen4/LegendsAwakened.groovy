@@ -2442,7 +2442,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if (opp.prizeCardSet.size() == 1) {
+                damage 20
+              }
             }
           }
 

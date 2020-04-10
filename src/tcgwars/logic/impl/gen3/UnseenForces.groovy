@@ -632,7 +632,9 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost W, C, C
           onAttack {
             damage 60
-            if (opp.active.topPokemonCard.cardTypes.is(STAGE2)) damage 30
+            if (opp.active.topPokemonCard.cardTypes.is(STAGE2)) {
+              damage 30
+            }
           }
         }
       };

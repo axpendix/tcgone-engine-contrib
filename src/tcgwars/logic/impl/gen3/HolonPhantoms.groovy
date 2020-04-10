@@ -1355,7 +1355,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost M, C
           attackRequirement {}
           onAttack {
-            directDamge 40, opp.all.oppSelect("Put 4 damage counters on which Pokemon?")
+            directDamage 40, opp.all.oppSelect("Put 4 damage counters on which Pokemon?")
           }
         }
       };
@@ -1703,7 +1703,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
-
+            if (opp.bench) {
+              damage 20, opp.bench.select()
+            }
           }
         }
       };
@@ -1735,7 +1737,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost L
           attackRequirement {}
           onAttack {
-
+            apply CONFUSED
           }
         }
         move "Shell Attack", {
@@ -2018,7 +2020,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost L
           attackRequirement {}
           onAttack {
-
+            amnesia delegate
           }
         }
       };
@@ -2259,6 +2261,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            // TODO
           }
         }
       };
@@ -2269,6 +2272,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Driving Howl", {
           text "Once during your turn (before your attack), you may choose 1 of the Defending Pokémon and switch it with 1 of your opponent's Benched Pokémon. Your opponent chooses the Benched Pokémon to switch. This power can't be used if Mightyena ex is affected by a Special Condition."
           actionA {
+            // TODO
           }
         }
         move "Sharp Fang", {
@@ -2285,6 +2289,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            if (opp.active.topPokemonCard.cardTypes.is(STAGE2)) {
+              damage 40
+            }
           }
         }
       };
@@ -2297,6 +2304,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            afterDamage {
+              flipUntilTails {
+                attachEnergyFrom(my.discard, self)
+              }
+            }
           }
         }
         move "All-out Blast", {
@@ -2304,7 +2316,14 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost R, R, R, R
           attackRequirement {}
           onAttack {
+            def list = my.deck.subList(0,my.deck.size() - 1)
+            def count = list.filterByType(ENERGY).size()
+
             damage 50
+            damage 20*count
+            afterDamage {
+              list.discard()
+            }
           }
         }
       };
@@ -2316,7 +2335,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            afterDamage {
+              attachEnergyFrom(my.discard, self)
+            }
           }
         }
         move "Psychic Star", {
@@ -2325,6 +2346,10 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            if (defending.evolution) {
+              discardAllSelfEnergy(null)
+              damage 50
+            }
           }
         }
       };
@@ -2346,6 +2371,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            if (opp.prizeCardSet.size() == 1) {
+              damage 50
+            }
           }
         }
       };
@@ -2381,7 +2409,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-
+            def target = opp.all.select()
+            def count = target.cards.energyCount(C)
+            directDamage count, target
           }
         }
       };

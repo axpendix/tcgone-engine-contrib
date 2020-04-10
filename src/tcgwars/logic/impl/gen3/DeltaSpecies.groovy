@@ -2314,10 +2314,11 @@ public enum DeltaSpecies implements LogicCardInfo {
       case HOLON_FARMER_91:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
-          "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card.Search your discard pile for 3 basic Energy cards and any combination of 3 Basic Pokémon or Evolution cards, show them to your opponent, and put them on top of your deck. Shuffle your deck afterward."
+          "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Search your discard pile for 3 basic Energy cards and any combination of 3 Basic Pokémon or Evolution cards, show them to your opponent, and put them on top of your deck. Shuffle your deck afterward."
         onPlay {
         }
         playRequirement{
+          assert my.hand : "Hand is empty"
         }
       };
       case HOLON_LASS_92:
@@ -2435,17 +2436,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
       };
       case METAL_ENERGY_107:
-      return specialEnergy (this, [[C]]) {
-        text "Damage done by attacks to the Pokémon that [M] Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that [M] Energy is attached to isn't Metal. [M] Energy provides [M] Energy. (Doesn't count as a basic Energy card.)"
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy (RubySapphire.METAL_ENERGY_94, this);
       case FLAREON_EX_108:
       return evolution (this, from:"Eevee", hp:HP110, type:R, retreatCost:1) {
         weakness W
@@ -2517,6 +2508,12 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Evolutionary Swirl", {
           text "Once during your turn, when you play Vaporeon ex from your hand to evolve 1 of your Pokémon, you may have your opponent shuffle his or her hand into his or her deck. Then, your opponent draws up to 4 cards."
           actionA {
+            if (r==PLAY_FROM_HAND && checkLastTurn() && opp.hand && confirm("Use Evolutionary Swirl?")) {
+              powerUsed()
+              opp.hand.moveTo(hidden:true, opp.deck)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
+              draw 4, TargetPlayer.OPPONENT
+            }
           }
         }
         move "Fastwave", {
@@ -2546,8 +2543,14 @@ public enum DeltaSpecies implements LogicCardInfo {
           onAttack {
             damage 10
 
-            // damage 50*opp.prizeCardSet.takenCount
-            // TODO
+            def takenPrizes = opp.prizeCardSet.takenCount
+            def energies = my.discard.filterByType(ENERGY).size()
+            if (takenPrizes && energies) {
+              def count = Math.min(takenPrizes, energies)
+              (1..count) {
+                attachEnergyFrom(type:F, my.discard, self)
+              }
+            }
           }
         }
         move "Ground Slash", {
@@ -2569,8 +2572,14 @@ public enum DeltaSpecies implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            //damage 50*opp.prizeCardSet.takenCount
-            // TODO
+            def takenPrizes = opp.prizeCardSet.takenCount
+            def energies = my.discard.filterByType(ENERGY).size()
+            if (takenPrizes && energies) {
+              def count = Math.min(takenPrizes, energies)
+              (1..count) {
+                attachEnergyFrom(type:W, my.discard, self)
+              }
+            }
           }
         }
         move "Sheer Cold", {
@@ -2593,8 +2602,15 @@ public enum DeltaSpecies implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            // TODO
-            // damage 50*opp.prizeCardSet.takenCount
+
+            def takenPrizes = opp.prizeCardSet.takenCount
+            def energies = my.discard.filterByType(ENERGY).size()
+            if (takenPrizes && energies) {
+              def count = Math.min(takenPrizes, energies)
+              (1..count) {
+                attachEnergyFrom(type:M, my.discard, self)
+              }
+            }
           }
         }
         move "Hyper Beam", {

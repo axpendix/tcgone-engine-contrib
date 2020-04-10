@@ -1890,6 +1890,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            if (opp.active.topPokemonCard.cardTypes.is(STAGE2)) {
+              damage 20
+            }
           }
         }
         move "Shock-wave", {

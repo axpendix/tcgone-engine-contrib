@@ -2257,7 +2257,10 @@ public enum Arceus implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if (opp.prizeCardSet.size() == 1) {
+                damage 30
+              }
             }
           }
 

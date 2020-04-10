@@ -1896,7 +1896,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { amnesia delegate }
             }
           }
           move "Night Shade", {
