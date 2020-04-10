@@ -47,7 +47,7 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
- * @author axpendix@hotmail.com
+ * @author thezipcompany@gmail.com
  */
 public enum ShinyVault implements CardInfo {
 	
@@ -144,8 +144,7 @@ public enum ShinyVault implements CardInfo {
 	TAPU_BULU_GX_SV91 ("Tapu Bulu-GX", SV91, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, _GRASS_]),
 	TAPU_FINI_GX_SV92 ("Tapu Fini-GX", SV92, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, _WATER_]),
 	TAPU_KOKO_GX_SV93 ("Tapu Koko-GX", SV93, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, _LIGHTNING_]),
-	TAPU_LELE_GX_SV94 ("Tapu Lele-GX", SV94, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, _PSYCHIC_]),
-;
+	TAPU_LELE_GX_SV94 ("Tapu Lele-GX", SV94, Rarity.SECRET, [POKEMON, BASIC, POKEMON_GX, _PSYCHIC_]);
 	
 	static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 	
