@@ -1,4 +1,4 @@
-package tcgwars.logic.impl.gen;
+package tcgwars.logic.impl.gen7;
 
 import tcgwars.logic.impl.gen6.Breakthrough;
 
@@ -49,7 +49,7 @@ import tcgwars.logic.util.*;
 /**
  * @author thezipcompany@gmail.com
  */
-public enum ShinyVault implements CardInfo {
+public enum ShinyVault implements LogicCardInfo {
 	
 	SCYTHER_SV1 ("Scyther", SV1, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
 	QUAGSIRE_SV10 ("Quagsire", SV10, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
