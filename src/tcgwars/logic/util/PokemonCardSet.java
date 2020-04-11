@@ -4,6 +4,7 @@ import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import tcgwars.common.TWCommon;
 import tcgwars.logic.Battleground;
+import tcgwars.logic.GameFormat;
 import tcgwars.logic.PlayerType;
 import tcgwars.logic.card.*;
 import tcgwars.logic.card.energy.EnergyCard;
@@ -341,6 +342,18 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   }
   public boolean noSPC(){
     return specialConditions.isEmpty();
+  }
+  public boolean checkSpecialConditionsForClassic() {
+    if(Battleground.getInstance().getGame().getFormat() == GameFormat.MODIFIED_2002_2003) {
+      return specialConditions.isEmpty();
+    } else {
+      for (SpecialConditionType sct : specialConditions) {
+        if(sct == SpecialConditionType.PARALYZED || sct == SpecialConditionType.ASLEEP || sct == SpecialConditionType.CONFUSED) {
+          return false;
+        }
+      }
+      return true;
+    }
   }
   public boolean isSPC(SpecialConditionType type){
     return specialConditions.contains(type);
