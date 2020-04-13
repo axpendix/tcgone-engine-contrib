@@ -213,6 +213,7 @@ public enum SunMoonPromos implements LogicCardInfo {
   TYPHLOSION_SM185("Typhlosion", 185, Rarity.PROMO, [POKEMON,_FIRE_,STAGE2,EVOLUTION]),
   FLAREON_SM186("Flareon", 186, Rarity.PROMO, [POKEMON,_FIRE_,STAGE1,EVOLUTION]),
   KANGASKHAN_GX_SM188("Kangaskhan-GX", 188, Rarity.PROMO, [POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
+  BLASTOISE_GX_SM189 ("Blastoise-GX", 189, Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_GX, STAGE2, _WATER_]),
   DETECTIVE_PIKACHU_SM190("Detective Pikachu", 190, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
   GRENINJA_GX_SM197 ("Greninja-GX", 197, Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_GX, STAGE2, _WATER_]),
   BULBASAUR_SM198("Bulbasaur", 198, Rarity.PROMO, [POKEMON,_GRASS_,BASIC]),
@@ -2599,6 +2600,8 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
+      case BLASTOISE_GX_SM189:
+        return copy(UnbrokenBonds.BLASTOISE_GX_35, this);
       case DETECTIVE_PIKACHU_SM190:
         return basic (this, hp:HP090, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
