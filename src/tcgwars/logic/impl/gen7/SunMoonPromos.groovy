@@ -215,6 +215,9 @@ public enum SunMoonPromos implements LogicCardInfo {
   KANGASKHAN_GX_SM188("Kangaskhan-GX", 188, Rarity.PROMO, [POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
   BLASTOISE_GX_SM189 ("Blastoise-GX", 189, Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_GX, STAGE2, _WATER_]),
   DETECTIVE_PIKACHU_SM190("Detective Pikachu", 190, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+  MEWTWO_MEW_GX_SM191 ("Mewtwo & Mew-GX", 191, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _PSYCHIC_]),
+  LUCARIO_MELMETAL_GX_SM192 ("Lucario & Melmetal-GX", 192, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _METAL_]),
+  GARCHOMP_GIRATINA_GX_SM193 ("Garchomp & Giratina-GX", 193, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DRAGON_]),
   GRENINJA_GX_SM197 ("Greninja-GX", 197, Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_GX, STAGE2, _WATER_]),
   BULBASAUR_SM198("Bulbasaur", 198, Rarity.PROMO, [POKEMON,_GRASS_,BASIC]),
   PSYDUCK_SM199("Psyduck", 199, Rarity.PROMO, [POKEMON,_WATER_,BASIC]),
@@ -2624,6 +2627,12 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
+      case MEWTWO_MEW_GX_SM191:
+        return copy(UnifiedMinds.MEWTWO_MEW_GX_71, this);
+      case LUCARIO_MELMETAL_GX_SM192:
+        return copy(UnbrokenBonds.LUCARIO_MELMETAL_GX_120, this);
+      case GARCHOMP_GIRATINA_GX_SM193:
+        return copy (UnifiedMinds.GARCHOMP_GIRATINA_GX_146, this);
       case GRENINJA_GX_SM197:
 			  return evolution (this, from:"Frogadier", hp:HP230, type:W, retreatCost:1) {
 				weakness G
