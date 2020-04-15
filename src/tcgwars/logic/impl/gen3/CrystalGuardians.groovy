@@ -1928,7 +1928,7 @@ public enum CrystalGuardians implements LogicCardInfo {
               }
             }
             before null, null, Source.ATTACK, {
-              if (&& self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && ef.target == self.owner) {
+              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && ef.target == self.owner) {
                 bc "$name prevents effect"
                 prevent()
               }
