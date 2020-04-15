@@ -2351,9 +2351,9 @@ public enum CrystalGuardians implements LogicCardInfo {
             assert my.hand.filterByType(BASIC,STAGE1,STAGE2) : "No valid Pokemon in hand"
           }
           onAttack {
-            def card = my.hand.filterByType(BASIC,STAGE1,STAGE2).select(min:0, max:1, "Discard a Pokémon use one of that Pokémon’s attacks as this attack.")
-            if (card) {
-              def card = card.first()
+            def tmp = my.hand.filterByType(BASIC,STAGE1,STAGE2).select(min:0, max:1, "Discard a Pokémon and use one of that Pokémon’s attacks as this attack.")
+            if (tmp) {
+              def card = tmp.first()
               bc "$card was chosen"
               discard card
               def moves = card.asPokemonCard().moves
