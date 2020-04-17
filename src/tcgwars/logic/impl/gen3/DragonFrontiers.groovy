@@ -926,7 +926,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkNoSPC()
             checkLastTurn()
             powerUsed()
-            assert my.deck "Deck is empty"
+            assert my.deck : "Deck is empty"
 
             if (self.evolution) {
               my.deck.subList(my.deck.size() - 1, my.deck.size()).moveTo(my.hand)
