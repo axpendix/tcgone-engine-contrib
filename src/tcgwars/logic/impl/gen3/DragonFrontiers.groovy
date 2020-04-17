@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.effect.gm.PlayTrainer;
+
 import tcgwars.logic.impl.gen3.Deoxys;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.TeamRocketReturns;
