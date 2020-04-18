@@ -297,10 +297,14 @@ public enum RebelClash implements LogicCardInfo {
         move "Dark Guidance", {
           text "Choose a Basic Pokemon from your discard pile and play it onto your Bench."
           energyCost C
-          attackRequirement {}
-          onAttack {
-            // TODO
-          }
+          attackRequirement {
+             assert bench.notFull
+             assert my.discard.filterByType(BASIC)
+             }
+           attackRequirement {}
+           onAttack {
+             def card = my.discard.findAll{it.basic}.select("Select the card to put on the bench").first()
+             my.discard.remove(card)
         }
         move "Seed Bomb", {
           text "30 damage."
@@ -693,7 +697,8 @@ public enum RebelClash implements LogicCardInfo {
                   bg.dm().each{
                     if(it.to == self && self.damage == hp(0)) {
                       bc "$self's Ice Face!"
-                      it.dmg = it.dmg - hp(60)}
+                      it.dmg = it.dmg - hp(60)
+                    }
                   }
                 }
             }
