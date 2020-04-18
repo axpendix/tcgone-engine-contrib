@@ -298,15 +298,13 @@ public enum RebelClash implements LogicCardInfo {
           text "Choose a Basic Pokemon from your discard pile and play it onto your Bench."
           energyCost C
           attackRequirement {
-            assert bench.notFull
-            assert my.discard.filterByType(BASIC)
-            }
-          onAttack {
-            def card = my.discard.findAll{it.basic}.select("Select the card to put on the bench").first()
-            my.discard.remove(card)
-            benchPCS(card)
-            
-          }
+             assert bench.notFull
+             assert my.discard.filterByType(BASIC)
+             }
+           attackRequirement {}
+           onAttack {
+             def card = my.discard.findAll{it.basic}.select("Select the card to put on the bench").first()
+             my.discard.remove(card)
         }
         move "Seed Bomb", {
           text "30 damage."
@@ -693,8 +691,17 @@ public enum RebelClash implements LogicCardInfo {
         weakness M
         bwAbility "Ice Face", {
           text "If this Pokemon's HP is at max, any damage done to it by opponent’s attacks is reduced by 60."
-          actionA {
-            // TODO
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+                if(ef.attacker.owner != self.owner) {
+                  bg.dm().each{
+                    if(it.to == self && self.damage == hp(0)) {
+                      bc "$self's Ice Face!"
+                      it.dmg = it.dmg - hp(60)
+                    }
+                  }
+                }
+            }
           }
         }
         move "Blizzard", {
