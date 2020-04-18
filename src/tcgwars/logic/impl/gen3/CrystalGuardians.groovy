@@ -297,8 +297,22 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness W
         pokePower "Peal of Thunder", {
           text "Once during your turn, when you play Charizard from your hand to evolve 1 of your Pokémon, you may look at the top 5 cards of your deck, choose as many Energy cards as you like, and attach them to 1 of your Pokémon. Discard the other cards."
-          actionA {
-            // TODO
+          onActivate {r->
+            if (r==PLAY_FROM_HAND && bg.em().retrieveObject("Peal_Of_Thunder") != bg.turnCount && my.deck && confirm("Use Peal of Thunder?")) {
+              powerUsed()
+              bg.em().storeObject("Peal_Of_Thunder", bg.turnCount)
+              my.deck.subList(0,5).showToMe("Top 5 cards of your deck.")
+              if (my.deck.subList(0,5).filterByType(ENERGY)) {
+                def tar = my.all.select("Attach Energies to?")
+                my.deck.subList(0,5).filterByType(ENERGY).each {
+                  if (it.cardTypes.is(ENERGY)) {
+                    attachEnergy(self,it)
+                  } else {
+                    discard it
+                  }
+                }
+              }
+            }
           }
         }
         move "Metal Burn", {
@@ -349,7 +363,14 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Overzealous", {
           text "If your opponent has any Pokémon-ex in play, each of Ludicolo's attacks does 30 more damage to the Defending Pokémon."
           delayedA {
-            // TODO
+            after PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker == self && it.notNoEffect && it.dmg.value && it.to.active) {
+                if (opp.all.findAll { it.EX }) {
+                  bc "Overzealous +30"
+                  it.dmg += hp(30)
+                }
+              }
+            }
           }
         }
         move "Knock Off", {
@@ -376,9 +397,17 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Even Game", {
           text "Count the number of your opponent's Pokémon. Search your deck for up to that number of Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+            assert my.bench.notFull : "Bench is full"
+          }
           onAttack {
-            // TODO
+            def maxSpace = Math.min(opp.all.size(), my.bench.freeBenchCount)
+            deck.search (min: 0,max:maxSpace, cardTypeFilter(BASIC)).each {
+              deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
           }
         }
         move "Stadium Play", {
@@ -387,7 +416,17 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            // TODO
+            if (bg.stadiumInfoStruct) {
+              if (bg.stadiumInfoStruct.stadiumCard.player == self.owner) {
+                my.all.each {
+                  heal 10, it
+                }
+              } else {
+                opp.all.each {
+                  heal 10, it
+                }
+              }
+            }
           }
         }
       };
@@ -412,7 +451,11 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            // TODO
+            if (self.cards.hasType(POKEMON_TOOL)) {
+              opp.bench.each {
+                damage 20, it
+              }
+            }
           }
         }
       };
@@ -423,9 +466,25 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Mining", {
           text "Search your deck for a Trainer card, show it to your opponent, and put it into your hand. If that card is a Pokémon Tool card, you may attach it to 1 of your Pokémon instead. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-            // TODO
+            def trainer = my.deck.search(count:1, "Select an Trainer card",cardTypeFilter(ITEM))
+            trainer.each {
+              if (it.cardTypes.is(POKEMON_TOOL)) {
+                if (my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)} && confirm("Attach this tool to one of your pokémon?")) {
+                  trainer.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $it to which pokémon?").cards)
+                }
+                else {
+                  trainer.moveTo(my.hand)
+                }
+              }
+              else {
+                trainer.moveTo(my.hand)
+              }
+            }
+            shuffleDeck()
           }
         }
         move "Bite Off", {
@@ -446,8 +505,14 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Excavate", {
           text "Once during your turn (before your attack), you may look at the card on top of your deck. Put that card on top of your deck, or discard that card. This power can't be used if Sableye is affected by a Special Condition."
           actionA {
-            // TODO
             checkNoSPC()
+            checkLastTurn()
+            assert my.deck : "Deck is empty"
+            powerUsed()
+            my.deck.subList(0,1).showToMe("Top card")
+            if (choose("Discard the top card of your deck?")) {
+              discard my.deck.first()
+            }
           }
         }
         move "Disable", {
@@ -468,7 +533,19 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            // TODO
+            def choice1 = choose([1,2], ['Apply Burn', 'Apply Poison'], "Choose 1")
+            def choice2 = choose([3,4], ['Apply Asleep', 'Apply Confusion'], "Choose 1")
+
+            if (choice1 == 1) {
+              apply BURNED
+            } else {
+              apply POISONED
+            }
+            if (choice2 == 3) {
+              apply ASLEEP
+            } else {
+              apply CONFUSED
+            }
           }
         }
         move "Reactive Poison", {
@@ -485,8 +562,12 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness F
         pokePower "Crush Chance", {
           text "Once during your turn, when you put Tauros from your hand onto your Bench, you may discard a Stadium card in play."
-          actionA {
-            // TODO
+          onActivate {r->
+            if (r==PLAY_FROM_HAND && bg.stadiumInfoStruct && bg.em().retrieveObject("Crush_Chance")!=bg.turnCount && confirm('Use Crush Chance to discard the current Stadium Card?')) {
+              bg.em().storeObject("Crush_Chance", bg.turnCount)
+              powerUsed()
+              discard bg.stadiumInfoStruct.stadiumCard
+            }
           }
         }
         move "Call for Family", {
@@ -508,8 +589,14 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness F
         pokeBody "Fluffy Fur", {
           text "If Wigglytuff is your Active Pokémon and is damaged by an opponent's attack (even if Wigglytuff is Knocked Out), the Attacking Pokémon is now Asleep."
-          delayedA {
-            // TODO
+          delayedA (priority: LAST) {
+            before APPLY_ATTACK_DAMAGES, {
+              if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({it.to==self && it.dmg.value})) {
+                bc "Fluffy Fur"
+                apply ASLEEP, (ef.attacker as PokemonCardSet)
+              }
+            }
+            after SWITCH, self, {unregister()}
           }
         }
         move "Collect", {
@@ -536,7 +623,14 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Water Pressure", {
           text "As long as Blastoise's remaining HP is 40 or less, Blastoise does 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
-            // TODO
+            after PROCESS_ATTACK_EFFECTS, {
+              bg.dm().each {
+                if (it.from == self && self.getRemainingHP().value <= 40 && it.dmg.value && it.notNoEffect) {
+                  bc "Water Pressure +40"
+                  it.dmg -= hp(40)
+                }
+              }
+            }
           }
         }
         move "Hydro Pump", {
@@ -555,7 +649,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Spike Storm", {
           text "Once during your turn (before your attack), if Cacturne is your Active Pokémon, you may put 1 damage counter on 1 of your opponent's Pokémon that already has any damage counters on it. This power can't be used if Cacturne is affected by a Special Condition."
           actionA {
-            // TODO
+            checkNoSPC()
+            checkLastTurn()
+            powerUsed()
+            assert self.active : "Cacturne is not an Active Pokemon"
+            directDamage 10, opp.all.findAll { it.numberOfDamageCounters }.select()
           }
         }
         move "Triple Needle", {
@@ -563,7 +661,11 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-            // TODO
+            multiSelect(opp.all, 3).each {
+              targeted(it) {
+                damage 10, it
+              }
+            }
           }
         }
         move "Light Punch", {
@@ -602,7 +704,14 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Cursed Glare", {
           text "As long as Dusclops is your Active Pokémon, your opponent can't attach any Special Energy cards (except for Darkness and [M] Energy cards) from his or her hand to his or her Active Pokémon."
           delayedA {
-            // TODO
+            before PLAY_ENERGY, {
+              if (self.active && ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite) {
+                if (!ef.cardToPlay.name.contains("Metal") || !ef.cardToPlay.name.contains("Darkness")) {
+                  wcu "Cursed Glare prevents playing this card"
+                  prevent()
+                }
+              }
+            }
           }
         }
         move "Will-o'-the-wisp", {
@@ -619,7 +728,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            // TODO
+            preventAllEffectsFromCustomPokemonNextTurn("Psychic Shield", self, {it.EX})
           }
         }
       };
@@ -630,7 +739,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Delta Sign", {
           text "Once during your turn (before your attack), you may search your deck for a Pokémon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. You can't use more than 1 Delta Sign Poké-Power each turn. This power can't be used if Fearow is affected by a Special Condition."
           actionA {
-            // TODO
+            checkNoSPC()
+            checkLastTurn()
+            powerUsed()
+            deck.search("Search your deck for a δ Pokemon", {it.cardTypes.pokemon && it.name.contains("δ") }).moveTo(my.hand)
+            shuffleDeck()
           }
         }
         move "Pierce", {
@@ -696,8 +809,10 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness F
         pokeBody "Hover Lift", {
           text "You pay [C] less to retreat your Jigglypuff, Wigglytuff, Wigglytuff ex, and Igglybuff."
-          delayedA {
-            // TODO
+          getterA GET_RETREAT_COST ,{ h->
+            if (h.effect.target.owner == self.owner && (h.effect.target.name == "Jigglypuff" || h.effect.target.name == "Wigglytuff" || h.effect.target.name == "Wigglytuff ex" || h.effect.target.name == "Igglybuff")) {
+              h.object = Math.max(0, h.object-1)
+            }
           }
         }
       };
@@ -856,10 +971,10 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Chlorophyll", {
           text "All Energy cards that provide only [C] Energy attached to your [G] Pokémon provide [G] Energy instead."
           getterA GET_ENERGY_TYPES, { holder ->
-            if (holder.effect.target == self) {
-              int count = holder.object.size()
-              // TODO: This works, but only convert the [C] energies
-              holder.object = [(1..count).collect{[GRASS] as Set}]
+            if(holder.effect.target.owner == self.owner
+              && holder.effect.card.containsTypePlain(C)
+              && holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
+              holder.object = [[G] as Set]
             }
           }
         }
@@ -1705,12 +1820,16 @@ public enum CrystalGuardians implements LogicCardInfo {
       return copy(FireRedLeafGreen.BILL_S_MAINTENANCE_87, this)
       case CASTAWAY_72:
       return supporter (this) {
-        text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
-          "Search your deck for a Supporter card, a Pokémon Tool card, and a basic Energy card. Show them to your opponent, and put them into your hand. Shuffle your deck afterward."
+        text "Search your deck for a Supporter card, a Pokémon Tool card, and a basic Energy card. Show them to your opponent, and put them into your hand. Shuffle your deck afterward."
         onPlay {
-          // TODO
+          my.deck.search(max: 3, "Select a Supporter card, a Pokémon Tool card and a Basic Energy card", {it.cardTypes.is(SUPPORTER) || it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(BASIC_ENERGY)}, { CardList list ->
+            list.filterByType(SUPPORTER).size() <= 1 && list.filterByType(POKEMON_TOOL).size() <= 1 && list.filterByType(BASIC_ENERGY).size() <= 1
+          }).moveTo(my.hand)
+
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck : "Deck is empty"
         }
       };
       case CELIO_S_NETWORK_73:
@@ -1719,22 +1838,35 @@ public enum CrystalGuardians implements LogicCardInfo {
       return pokemonTool (this) {
         text "Attach Cessation Crystal to 1 of your Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Cessation Crystal is attached to is a Pokémon-ex, discard this card." +
           "As long as Cessation Crystal is attached to an Active Pokémon, each player's Pokémon (both yours and your opponent's) can't use any Poké-Powers or Poké-Bodies."
+        def eff
         onPlay {reason->
-          // TODO
+          eff = getter IS_ABILITY_BLOCKED, { Holder h->
+            if (self.active && (h.effect.ability instanceof PokeBody || h.effect.ability instanceof PokePower)) {
+              h.object=true
+            }
+          }
         }
         onRemoveFromPlay {
+          eff.unregister()
         }
-        allowAttach {to->
+        allowAttach { to->
+          !to.EX
         }
       };
       case CRYSTAL_BEACH_75:
       return stadium (this) {
-        text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
-          "Each Special Energy card that provides 2 or more Energy (both yours and your opponent's) now provides only 1 [C] Energy. This isn't affected by any Poké-Powers or Poké-Bodies."
+        text "Each Special Energy card that provides 2 or more Energy (both yours and your opponent's) now provides only 1 [C] Energy. This isn't affected by any Poké-Powers or Poké-Bodies."
+        def eff
         onPlay {
-          // TODO
+          eff = getter GET_ENERGY_TYPES, { holder->
+            if (holder.effect.card.containsTypePlain(G) && holder.object.size() >= 2
+              && holder.effect.card.cardTypes.is(SPECIAL_ENERGY)) {
+              holder.object = [[C] as Set]
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case CRYSTAL_SHARD_76:
@@ -1745,17 +1877,25 @@ public enum CrystalGuardians implements LogicCardInfo {
       return copy(DeltaSpecies.DUAL_BALL_89, this)
       case HOLON_CIRCLE_79:
       return stadium (this) {
-        text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
-          "Prevent all effects of an attack, including damage, done by either player's Active Pokémon. If an Active Pokémon uses an attack, that attack ends, and discard this card."
+        text "Prevent all effects of an attack, including damage, done by either player's Active Pokémon. If an Active Pokémon uses an attack, that attack ends, and discard this card."
+        def eff
         onPlay {
+          eff = delayed {
+            before null, null, Source.ATTACK, {
+              bc "Holon Circle prevents the attack"
+              prevent()
+              discard ef.cardToPlay
+              unregister()
+            }
+          }
         }
-        onRemoveFromPlay{
+        onRemoveFromPlay {
+          eff.unregister()
         }
       };
       case MEMORY_BERRY_80:
       return pokemonTool (this) {
-        text "Attach Memory Berry to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card." +
-          "The Pokémon this card is attached to can use any attack from its Basic Pokémon or its Stage 1 Evolution card. (You still have to pay for that attack's Energy cost.) If that Pokémon attacks, discard this card at the end of the turn."
+        text "The Pokémon this card is attached to can use any attack from its Basic Pokémon or its Stage 1 Evolution card. (You still have to pay for that attack's Energy cost.) If that Pokémon attacks, discard this card at the end of the turn."
         def eff
         onPlay { reason ->
           eff = getter (GET_MOVE_LIST) { holder->
@@ -1774,14 +1914,32 @@ public enum CrystalGuardians implements LogicCardInfo {
       };
       case MYSTERIOUS_SHARD_81:
       return pokemonTool (this) {
-        text "Attach Mysterious Shard to 1 of your Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Mysterious Shard is attached to is a Pokémon-ex, discard this card." +
-          "Prevent all effects of attacks, including damage, done to the Pokémon that Mysterious Shard is attached to by your opponent's Pokémon-ex. Discard this card at the end of your opponent's next turn."
+        text "Prevent all effects of attacks, including damage, done to the Pokémon that Mysterious Shard is attached to by your opponent's Pokémon-ex. Discard this card at the end of your opponent's next turn."
+        def eff1
+        def eff2
         onPlay {reason->
-          // TODO
-        }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff=delayed {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each{
+                if (it.to == self && it.from.owner != self.owner && it.from.EX && it.notZero && it.notNoEffect) {
+                  it.dmg=hp(0)
+                  bc "$name prevents damage"
+                }
+              }
+            }
+            before null, null, Source.ATTACK, {
+              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && ef.target == self.owner) {
+                bc "$name prevents effect"
+                prevent()
+              }
+            }
+          }
+          eff2 = delayed {
+            after BETWEEN_TURNS, {
+              discard thisCard
+              unregisterAfter 2
+            }
+          }
         }
       };
       case POKE_BALL_82:
@@ -1794,9 +1952,26 @@ public enum CrystalGuardians implements LogicCardInfo {
       return itemCard (this) {
         text "Choose up to 2 in any combination of Pokémon Tool cards and Stadium cards in play (both yours and your opponent's) and discard them."
         onPlay {
-          // TODO
+          def i = 2
+          while(i-- > 0) {
+            if (bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter() && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokemon Tool in play")) {
+              discard bg.stadiumInfoStruct.stadiumCard
+              continue
+            }
+            def tar = all.findAll {it.cards.hasType(POKEMON_TOOL)}
+            if(tar) {
+              def sel = tar.select("Select Pokemon to discard a Pokemon Tool from (cancel to stop)", i == 1)
+              if (sel) {
+                def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokemon Tool from $sel")
+                targeted (sel, TRAINER_CARD) {
+                  list.discard()
+                }
+              }
+            }
+          }
         }
         playRequirement{
+          assert all.findAll {it.cards.hasType(POKEMON_TOOL)} || (bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter())
         }
       };
       case ENERGY_SEARCH_86:
@@ -1811,8 +1986,15 @@ public enum CrystalGuardians implements LogicCardInfo {
         resistance G, MINUS30
         pokeBody "Intimidating Armor", {
           text "As long as Aggron ex is your Active Pokémon, your opponent's Basic Pokémon can't attack or use any Poké-Powers or Poké-Bodies."
-          delayedA {
-            // TODO
+          getterA (IS_ABILITY_BLOCKED) { Holder h ->
+            if (h.effect.target == self) {
+              if (h.effect.ability instanceof PokePower) {
+                h.object=true
+              }
+              else if (h.effect.ability instanceof PokeBody) {
+                h.object=true
+              }
+            }
           }
         }
         move "Split Bomb", {
@@ -1957,11 +2139,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Hard Rock", {
           text "As long as Groudon ex has 1 Energy or less attached to it, damage done to any of your Groudon ex in play by attacks is reduced by 20 (after applying Weakness and Resistance). You can't use more than 1 Hard Rock Poké-Body each turn."
           delayedA {
-            // TODO Only apply one at a time
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to.name == "Groudon ex" && it.dmg.value && it.notNoEffect) {
+                if (it.to.name == "Groudon ex" && it.dmg.value && it.notNoEffect && bg.em().retrieveObject("Hard Rock") != (pcs.id+bg.turnCount)) {
                   if (self.cards.energyCount(C) < 2) {
+                    bg.em().storeObject("Hard Rock", pcs.id+bg.turnCount)
                     bc "Hard Rock -20"
                     it.dmg -= hp(20)
                   }
@@ -1984,9 +2166,17 @@ public enum CrystalGuardians implements LogicCardInfo {
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         pokeBody "Star Light", {
           text "As long as your opponent has any Pokémon-ex or Stage 2 Evolved Pokémon in play, Jirachi ex pays [C] less Energy to use Shield Beam or Super Psy Bolt."
-          delayedA {
-            // TODO
-          }
+          getterA (GET_MOVE_LIST, BEFORE_LAST, self) {h->
+						if (opp.all.findAll { it.EX || it.topPokemonCard.cardTypes.is(STAGE2) }) {
+              def list=[]
+              for (move in h.object) {
+                def copy = move.shallowCopy()
+                copy.energyCost.remove(C)
+                list.add(copy)
+              }
+              h.object=list
+            }
+					}
         }
         move "Shield Beam", {
           text "30 damage. During your opponent's next turn, your opponent can't use any Poké-Powers on his or her Pokémon."
@@ -2022,8 +2212,12 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness L
         pokeBody "Flotation", {
           text "As long as Kyogre ex has 1 Energy or less attached to it, the Retreat Cost for each of your Kyogre ex is 0."
-          delayedA {
-            // TODO
+          getterA (GET_RETREAT_COST, BEFORE_LAST) {holder->
+            if (self.cards.energyCount(C) <= 1) {
+              if (holder.effect.target.name == "Kyogre ex") {
+                holder.object = 0
+              }
+            }
           }
         }
         move "Hydro Shot", {
@@ -2051,9 +2245,8 @@ public enum CrystalGuardians implements LogicCardInfo {
               }
             }
           }
-          // TODO: How to make only one ability apply
           getterA GET_MOVE_LIST, { h ->
-            if (h.effect.target.cardTypes.is(EX)) {
+            if (h.effect.target.cardTypes.is(EX) && bg.em().retrieveObject("Extra_Liquid") != (h.effect.target.id+bg.turnCount)) {
               def list = []
               for (move in h.object) {
                 def copy = move.shallowCopy()
@@ -2061,6 +2254,7 @@ public enum CrystalGuardians implements LogicCardInfo {
                 list.add(copy)
               }
               h.object=list
+              bg.em().storeObject("Extra_Liquid", h.effect.target.id+bg.turnCount)
             }
           }
         }
@@ -2080,7 +2274,10 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Dark Eyes", {
           text "After your opponent's Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
           delayedA {
-            // TODO
+            after USE_POKEPOWER, {
+              if (ef.pcs.owner == self.owner.opposite)
+                directDamage 20, ef.pcs
+            }
           }
         }
         move "Target Attack", {
@@ -2150,9 +2347,24 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Skill Copy", {
           text "Discard a Basic Pokémon or Evolution card from your hand. Choose 1 of that card's attacks. Skill Copy copies that attack. This attack does nothing if Alakazam Star doesn't have the Energy necessary to use that attack. (You must still do anything else required for that attack.) Alakazam Star performs that attack."
           energyCost C, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.hand.filterByType(BASIC,STAGE1,STAGE2) : "No valid Pokemon in hand"
+          }
           onAttack {
-            // TODO
+            def tmp = my.hand.filterByType(BASIC,STAGE1,STAGE2).select(min:0, max:1, "Discard a Pokémon and use one of that Pokémon’s attacks as this attack.")
+            if (tmp) {
+              def card = tmp.first()
+              bc "$card was chosen"
+              discard card
+              def moves = card.asPokemonCard().moves
+              if (moves) {
+                def move = choose(moves, "Choose attack")
+                bc "$move was chosen"
+                def bef=blockingEffect(BETWEEN_TURNS)
+                attack (move as Move)
+                bef.unregisterItself(bg().em())
+              }
+            }
           }
         }
       };

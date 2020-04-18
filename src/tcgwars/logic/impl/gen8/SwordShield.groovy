@@ -1945,6 +1945,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost P, C
           onAttack {
             damage 10
+            if (opp.active.isSPC(ASLEEP)) damage 120
           }
         }
       };

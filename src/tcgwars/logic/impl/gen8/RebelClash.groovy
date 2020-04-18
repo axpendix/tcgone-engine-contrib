@@ -193,7 +193,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            increasedBaseDamageNextTurn("Speed Sickle", hp(50))
+            increasedBaseDamageNextTurn("Speed Sickle", hp(70))
           }
         }
         move "Speed Sickle", {
@@ -297,10 +297,14 @@ public enum RebelClash implements LogicCardInfo {
         move "Dark Guidance", {
           text "Choose a Basic Pokemon from your discard pile and play it onto your Bench."
           energyCost C
-          attackRequirement {}
-          onAttack {
-            // TODO
-          }
+          attackRequirement {
+             assert bench.notFull
+             assert my.discard.filterByType(BASIC)
+             }
+           attackRequirement {}
+           onAttack {
+             def card = my.discard.findAll{it.basic}.select("Select the card to put on the bench").first()
+             my.discard.remove(card)
         }
         move "Seed Bomb", {
           text "30 damage."
@@ -375,7 +379,23 @@ public enum RebelClash implements LogicCardInfo {
       case FLAPPLE_12:
       return evolution (this, from:"Applkin", hp:HP080, type:G, retreatCost:1) {
         weakness R
-        // TODO
+        bwAbility "Apple Drop",{
+          text "Once during your turn, you may put 2 damage counters on 1 of your opponent’s Pokemon. Then, shuffle this Pokemon and all cards attached to it into your deck."
+          actionA {
+                checkLastTurn()
+                powerUsed()
+                directDamage(20, opp.all.select())
+                self.cards.moveTo(my.deck)
+                removePCS(self)
+                shuffleDeck()
+          }
+          move "Acid Bomb",{
+            text "60 damage. Flip a coin. If heads, discard an Energy from your opponent’s Active Pokemon."
+            energyCost C, C
+            damage 60
+            flip 1{afterDamage{discardDefendingEnergy()}}
+          }
+        }
       };
       case NINETALES_V_13:
       return basic (this, hp:HP200, type:R, retreatCost:2) {
@@ -671,8 +691,17 @@ public enum RebelClash implements LogicCardInfo {
         weakness M
         bwAbility "Ice Face", {
           text "If this Pokemon's HP is at max, any damage done to it by opponent’s attacks is reduced by 60."
-          actionA {
-            // TODO
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+                if(ef.attacker.owner != self.owner) {
+                  bg.dm().each{
+                    if(it.to == self && self.damage == hp(0)) {
+                      bc "$self's Ice Face!"
+                      it.dmg = it.dmg - hp(60)
+                    }
+                  }
+                }
+            }
           }
         }
         move "Blizzard", {
