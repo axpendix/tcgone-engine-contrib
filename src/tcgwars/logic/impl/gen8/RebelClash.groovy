@@ -43,8 +43,8 @@ public enum RebelClash implements LogicCardInfo {
   LUDICOLO_5 ("Ludicolo", 5, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   SURSKIT_6 ("Surskit", 6, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
   MASQUERAIN_7 ("Masquerain", 7, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  PHATUMP_8 ("Phatump", 8, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
-  TREVENANT_9 ("Trevenant", 9, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+  PHANTUMP_8 ("Phantump", 8, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+  TREVENANT_9 ("Trevenant", 9, Rarity.HOLORARE, [POKEMON, EVOLUTION, _GRASS_]),
   ELDEGOSS_V_10 ("Eldegoss V", 10, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _GRASS_]),
   APPLIN_11 ("Applin", 11, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
   FLAPPLE_12 ("Flapple", 12, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
@@ -291,7 +291,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
       };
-      case PHATUMP_8:
+      case PHANTUMP_8:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
         move "Dark Guidance", {
@@ -312,7 +312,7 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case TREVENANT_9:
-      return basic (this, hp:HP130, type:G, retreatCost:3) {
+      return evolution (this, from:"Phantump", hp:HP130, type:G, retreatCost:3) {
         weakness R
         move "Seed Bomb", {
           text "40 damage."
