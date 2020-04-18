@@ -193,7 +193,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            increasedBaseDamageNextTurn("Speed Sickle", hp(50))
+            increasedBaseDamageNextTurn("Speed Sickle", hp(70))
           }
         }
         move "Speed Sickle", {
@@ -375,7 +375,23 @@ public enum RebelClash implements LogicCardInfo {
       case FLAPPLE_12:
       return evolution (this, from:"Applkin", hp:HP080, type:G, retreatCost:1) {
         weakness R
-        // TODO
+        bwAbility "Apple Drop",{
+          text "Once during your turn, you may put 2 damage counters on 1 of your opponent’s Pokemon. Then, shuffle this Pokemon and all cards attached to it into your deck."
+          actionA {
+                checkLastTurn()
+                powerUsed()
+                directDamage(20, opp.all.select())
+                self.cards.moveTo(my.deck)
+                removePCS(self)
+                shuffleDeck()
+          }
+          move "Acid Bomb",{
+            text "60 damage. Flip a coin. If heads, discard an Energy from your opponent’s Active Pokemon."
+            energyCost C, C
+            damage 60
+            flip 1{afterDamage{discardDefendingEnergy()}}
+          }
+        }
       };
       case NINETALES_V_13:
       return basic (this, hp:HP200, type:R, retreatCost:2) {
