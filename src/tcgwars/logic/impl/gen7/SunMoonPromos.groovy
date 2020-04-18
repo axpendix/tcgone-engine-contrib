@@ -192,6 +192,9 @@ public enum SunMoonPromos implements LogicCardInfo {
   DEOXYS_SM164("Deoxys", 164, Rarity.PROMO, [POKEMON,_PSYCHIC_,BASIC]),
   ULTRA_NECROZMA_SM165("Ultra Necrozma", 165, Rarity.PROMO, [POKEMON,_DRAGON_,BASIC,ULTRA_BEAST]),
   MAGIKARP_WAILORD_GX_SM166("Magikarp & Wailord-GX", 166, Rarity.PROMO, [POKEMON_GX,POKEMON,_WATER_,BASIC,TAG_TEAM]),
+  CELEBI_VENUSAUR_GX_SM167 ("Celebi & Venusaur-GX", 167, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _GRASS_]),
+  PIKACHU_ZEKROM_GX_SM168 ("Pikachu & Zekrom-GX", 168, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _LIGHTNING_]),
+  EEVEE_SNORLAX_GX_SM169 ("Eevee & Snorlax-GX", 169, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _COLORLESS_]),
   DETECTIVE_PIKACHU_SM170("Detective Pikachu", 170, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
   FLAREON_GX_SM171("Flareon-GX", 171, Rarity.PROMO, [POKEMON_GX,POKEMON,_FIRE_,STAGE1,EVOLUTION]),
   VAPOREON_GX_SM172("Vaporeon-GX", 172, Rarity.PROMO, [POKEMON_GX,POKEMON,_WATER_,STAGE1,EVOLUTION]),
@@ -210,7 +213,11 @@ public enum SunMoonPromos implements LogicCardInfo {
   TYPHLOSION_SM185("Typhlosion", 185, Rarity.PROMO, [POKEMON,_FIRE_,STAGE2,EVOLUTION]),
   FLAREON_SM186("Flareon", 186, Rarity.PROMO, [POKEMON,_FIRE_,STAGE1,EVOLUTION]),
   KANGASKHAN_GX_SM188("Kangaskhan-GX", 188, Rarity.PROMO, [POKEMON_GX,POKEMON,_COLORLESS_,BASIC]),
+  BLASTOISE_GX_SM189 ("Blastoise-GX", 189, Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_GX, STAGE2, _WATER_]),
   DETECTIVE_PIKACHU_SM190("Detective Pikachu", 190, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
+  MEWTWO_MEW_GX_SM191 ("Mewtwo & Mew-GX", 191, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _PSYCHIC_]),
+  LUCARIO_MELMETAL_GX_SM192 ("Lucario & Melmetal-GX", 192, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _METAL_]),
+  GARCHOMP_GIRATINA_GX_SM193 ("Garchomp & Giratina-GX", 193, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DRAGON_]),
   GRENINJA_GX_SM197 ("Greninja-GX", 197, Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_GX, STAGE2, _WATER_]),
   BULBASAUR_SM198("Bulbasaur", 198, Rarity.PROMO, [POKEMON,_GRASS_,BASIC]),
   PSYDUCK_SM199("Psyduck", 199, Rarity.PROMO, [POKEMON,_WATER_,BASIC]),
@@ -222,9 +229,30 @@ public enum SunMoonPromos implements LogicCardInfo {
   TERRAKION_SM205("Terrakion", 205, Rarity.PROMO, [POKEMON,_FIGHTING_,BASIC]),
   PIKACHU_SM206("Pikachu", 206, Rarity.PROMO, [POKEMON,_LIGHTNING_,BASIC]),
   SUDOWOODO_SM207("Sudowoodo", 207, Rarity.PROMO, [POKEMON,_FIGHTING_,BASIC]),
+  VIKAVOLT_SM208 ("Vikavolt", 208, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
+  STAKATAKA_SM209 ("Stakataka", 209, Rarity.PROMO, [POKEMON, BASIC, _FIGHTING_]),
+  MOLTRES_ZAPDOS_ARTICUNO_GX_SM210 ("Moltres & Zapdos & Articuno-GX", 210, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _COLORLESS_]),
+  CHARIZARD_GX_SM211 ("Charizard-GX", 211, Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_GX, STAGE2, _FIRE_]),
+  GYARADOS_GX_SM212 ("Gyarados-GX", 212, Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, _WATER_]),
+  RAICHU_GX_SM213 ("Raichu-GX", 213, Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_GX, STAGE1, _LIGHTNING_]),
+  MEWTWO_SM214 ("Mewtwo", 214, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  MEW_SM215 ("Mew", 215, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
   PORYGON_Z_GX_SM216("Porygon-Z-GX", 216, Rarity.PROMO, [POKEMON, STAGE2, EVOLUTION, POKEMON_GX, _COLORLESS_]),
   TREVENANT_DUSKNOIR_GX_SM217 ("Trevenant & Dusknoir-GX", 217, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _PSYCHIC_]),
-  ALOLAN_SANDSLASH_GX_SM236 ("Alolan Sandslash-GX", 236, Rarity.PROMO, [POKEMON, STAGE1, EVOLUTION, POKEMON_GX, _WATER_]);
+  BUZZWOLE_SM218 ("Buzzwole", 218, Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
+  ENTEI_SM219 ("Entei", 219, Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
+  PHIONE_SM220 ("Phione", 220, Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  BLACEPHALON_SM221 ("Blacephalon", 221, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  TERRAKION_SM223 ("Terrakion", 223, Rarity.PROMO, [POKEMON, BASIC, _FIGHTING_]),
+  VICTINI_SM225 ("Victini", 225, Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
+  CHARIZARD_SM226 ("Charizard", 226, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
+  CHARIZARD_BRAIXEN_GX_SM230 ("Charizard & Braixen-GX", 230, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _FIRE_]),
+  CHAMPIONS_FESTIVAL_SM231 ("Champions Festival", 231, Rarity.PROMO, [TRAINER, STADIUM]),
+  EEVEE_GX_SM233 ("Eevee-GX", 233, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, _COLORLESS_]),
+  ALOLAN_SANDSLASH_GX_SM236 ("Alolan Sandslash-GX", 236, Rarity.PROMO, [POKEMON, STAGE1, EVOLUTION, POKEMON_GX, _WATER_]),
+  ESPEON_DEOXYS_GX_SM240("Espeon & Deoxys-GX", 240, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _PSYCHIC_]),
+  UMBREON_DARKRAI_GX_SM241("Umbreon & Darkrai-GX", 241, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DARKNESS_]),
+  EEVEE_GX_SM242("Eevee-GX", 242, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, _COLORLESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -2149,15 +2177,12 @@ public enum SunMoonPromos implements LogicCardInfo {
         };
       case CHARIZARD_SM158:
         return copy(TeamUp.CHARIZARD_14, this);
-
       case ZAPDOS_SM159:
         return copy(TeamUp.ZAPDOS_40, this);
       case NIDOQUEEN_SM160:
         return copy(TeamUp.NIDOQUEEN_56, this);
-
       case JIRACHI_SM161:
         return copy(TeamUp.JIRACHI_99, this);
-
       case PIKACHU_SM162:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -2240,10 +2265,14 @@ public enum SunMoonPromos implements LogicCardInfo {
         };
       case MAGIKARP_WAILORD_GX_SM166:
         return copy(TeamUp.MAGIKARP_WAILORD_GX_160, this);
-
+      case CELEBI_VENUSAUR_GX_SM167:
+        return copy(TeamUp.CELEBI_VENUSAUR_GX_1, this);
+      case PIKACHU_ZEKROM_GX_SM168:
+        return copy(TeamUp.PIKACHU_ZEKROM_GX_33, this);
+      case EEVEE_SNORLAX_GX_SM169:
+        return copy(TeamUp.EEVEE_SNORLAX_GX_120, this);
       case DETECTIVE_PIKACHU_SM170:
         return copy(DetectivePikachu.DETECTIVE_PIKACHU_10, this);
-
       case FLAREON_GX_SM171:
         return 	evolution (this, from:"Eevee", hp:HP210, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -2577,6 +2606,8 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
+      case BLASTOISE_GX_SM189:
+        return copy(UnbrokenBonds.BLASTOISE_GX_35, this);
       case DETECTIVE_PIKACHU_SM190:
         return basic (this, hp:HP090, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -2596,8 +2627,14 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
+      case MEWTWO_MEW_GX_SM191:
+        return copy(UnifiedMinds.MEWTWO_MEW_GX_71, this);
+      case LUCARIO_MELMETAL_GX_SM192:
+        return copy(UnbrokenBonds.LUCARIO_MELMETAL_GX_120, this);
+      case GARCHOMP_GIRATINA_GX_SM193:
+        return copy (UnifiedMinds.GARCHOMP_GIRATINA_GX_146, this);
       case GRENINJA_GX_SM197:
-			return evolution (this, from:"Frogadier", hp:HP230, type:W, retreatCost:1) {
+			  return evolution (this, from:"Frogadier", hp:HP230, type:W, retreatCost:1) {
 				weakness G
         globalAbility {Card thisCard->
           def lastTurn=0
@@ -2636,7 +2673,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             removePCS(pcs)
 					}
 				}
-			};
+			  };
       case BULBASAUR_SM198:
         return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -2793,27 +2830,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           }
         };
       case TERRAKION_SM205:
-        return basic (this, hp:HP140, type:F, retreatCost:4) {
-          weakness G
-          move "Cavern Counter", {
-            text "50+ damage. If all of your Benched Pokémon have at least 1 damage counter on them, this attack does 150 more damage."
-            energyCost F, C, C
-            onAttack {
-              damage 50
-              def numberOfDamagedBench = my.bench.findAll{it.numberOfDamageCounters}.size()
-              if ( my.bench.size() > 0 && numberOfDamagedBench == my.bench.size() )  {
-                damage 150
-              }
-            }
-          }
-          move "Boulder Crush", {
-            text "110 damage. "
-            energyCost F, F, C, C
-            onAttack {
-              damage 110
-            }
-          }
-        };
+        return copy(UnifiedMinds.TERRAKION_122);
       case PIKACHU_SM206:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness F
@@ -2849,6 +2866,22 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
+      case VIKAVOLT_SM208:
+        return copy(UnbrokenBonds.VIKAVOLT_59, this);
+      case STAKATAKA_SM209:
+        return copy(UnbrokenBonds.STAKATAKA_106, this);
+      case MOLTRES_ZAPDOS_ARTICUNO_GX_SM210:
+        return copy(HiddenFates.MOLTRES_ZAPDOS_ARTICUNO_GX_44, this);
+      case CHARIZARD_GX_SM211:
+        return copy(HiddenFates.CHARIZARD_GX_9, this);
+      case GYARADOS_GX_SM212:
+        return copy(HiddenFates.GYARADOS_GX_16, this);
+      case RAICHU_GX_SM213:
+        return copy(HiddenFates.RAICHU_GX_20, this);
+      case MEWTWO_SM214:
+        return copy(UnbrokenBonds.MEWTWO_75, this);
+      case MEW_SM215:
+        return copy(UnbrokenBonds.MEW_76, this);
       case PORYGON_Z_GX_SM216:
         return evolution (this, from:"Porygon2", hp:HP240, type:C, retreatCost:2) {
           weakness F
@@ -2931,6 +2964,28 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
+      case BUZZWOLE_SM218:
+        return copy(CosmicEclipse.BUZZWOLE_21, this);
+      case ENTEI_SM219:
+        return copy(CosmicEclipse.ENTEI_28, this);
+      case PHIONE_SM220:
+        return copy(CosmicEclipse.PHIONE_57, this);
+      case BLACEPHALON_SM221:
+        return copy(CosmicEclipse.BLACEPHALON_104, this);
+      case TERRAKION_SM223:
+        return copy(UnifiedMinds.TERRAKION_122, this);
+      case VICTINI_SM225:
+        return copy(UnifiedMinds.VICTINI_26, this);
+      case CHARIZARD_SM226:
+        return copy(TeamUp.CHARIZARD_14, this);
+      case VENUSAUR_SNIVY_GX_SM229:
+        return copy(CosmicEclipse.VENUSAUR_SNIVY_GX_1, this);
+      case CHARIZARD_BRAIXEN_GX_SM230:
+        return copy(CosmicEclipse.CHARIZARD_BRAIXEN_GX_22, this);
+      case CHAMPIONS_FESTIVAL_SM231:
+        return copy(BlackWhitePromos.CHAMPIONS_FESTIVAL_BW95, this)
+      case EEVEE_GX_SM233:
+        return copy(EEVEE_GX_SM174, this);
       case ALOLAN_SANDSLASH_GX_SM236:
         return evolution (this, from:"Alolan Sandshrew", hp:HP200, type:W, retreatCost:2) {
         weakness M
@@ -2965,11 +3020,15 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         }
-      };
-
+        };
+      case ESPEON_DEOXYS_GX_SM240:
+        return copy(UnifiedMinds.ESPEON_DEOXYS_GX_72, this);
+      case UMBREON_DARKRAI_GX_SM241:
+        return copy(UnifiedMinds.UMBREON_DARKRAI_GX_125, this);
+      case EEVEE_GX_SM242:
+        return copy(EEVEE_GX_SM174, this);
       default:
         return null;
     }
   }
-
 }
