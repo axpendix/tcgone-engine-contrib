@@ -223,7 +223,7 @@ public enum SunMoonPromos implements LogicCardInfo {
   PSYDUCK_SM199("Psyduck", 199, Rarity.PROMO, [POKEMON,_WATER_,BASIC]),
   SNUBBULL_SM200("Snubbull", 200, Rarity.PROMO, [POKEMON,_FAIRY_,BASIC]),
   RESHIRAM_CHARIZARD_GX_SM201("Reshiram & Charizard-GX", 201, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _FIRE_]),
-  AMOONGUSS_SM202("Amoongus", 202, Rarity.PROMO, [POKEMON,_GRASS_,STAGE1,EVOLUTION]),
+  AMOONGUSS_SM202("Amoonguss", 202, Rarity.PROMO, [POKEMON,_GRASS_,STAGE1,EVOLUTION]),
   TAPU_FINI_SM203("Tapu Fini", 203, Rarity.PROMO, [POKEMON,_WATER_,BASIC]),
   NECROZMA_SM204("Necrozma", 204, Rarity.PROMO, [POKEMON,_PSYCHIC_,BASIC]),
   TERRAKION_SM205("Terrakion", 205, Rarity.PROMO, [POKEMON,_FIGHTING_,BASIC]),
@@ -2419,10 +2419,8 @@ public enum SunMoonPromos implements LogicCardInfo {
         };
       case EEVEE_GX_SM175:
         return copy(EEVEE_GX_SM174, this);
-
       case EEVEE_GX_SM176:
         return copy(EEVEE_GX_SM174, this);
-
       case MELTAN_SM177:
         return basic (this, hp:HP060, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -2479,7 +2477,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-
         };
       case VOLCANION_SM179:
         return copy(UnbrokenBonds.VOLCANION_25, this)
@@ -2501,7 +2498,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 20, self
             }
           }
-
         };
       case EEVEE_SM184:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -2632,7 +2628,7 @@ public enum SunMoonPromos implements LogicCardInfo {
       case LUCARIO_MELMETAL_GX_SM192:
         return copy(UnbrokenBonds.LUCARIO_MELMETAL_GX_120, this);
       case GARCHOMP_GIRATINA_GX_SM193:
-        return copy (UnifiedMinds.GARCHOMP_GIRATINA_GX_146, this);
+        return copy(UnifiedMinds.GARCHOMP_GIRATINA_GX_146, this);
       case GRENINJA_GX_SM197:
 			  return evolution (this, from:"Frogadier", hp:HP230, type:W, retreatCost:1) {
 				weakness G
@@ -2722,113 +2718,14 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
-            case RESHIRAM_CHARIZARD_GX_SM201:
-       return basic (this, hp:HP270, type:R, retreatCost:3) {
-         weakness W
-         move "Outrage", {
-           text "30+ damage. This attack does 10 more damage for each damage counter on this Pokémon."
-           energyCost R, C
-           onAttack {
-             damage 30+10*self.numberOfDamageCounters
-          }
-         }
-         move "Flare Strike", {
-           text "230 damage. This Pokémon can't use Flare Strike during your next turn."
-           energyCost R, R, R, C
-           onAttack {
-             damage 230
-             cantUseAttack(thisMove, self)
-           }
-         }
-         move "Double Blaze GX", {
-           text "200+ damage. If this Pokémon has at least 3 extra [R] Energy attached to it (in addition to this attack's cost), this attack does 100 more damage, and this attack's damage isn't affected by any effects on your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)"
-           energyCost R, R, R
-           attackRequirement {gxCheck()}
-           onAttack {
-             gxPerform()
-             if(self.cards.energySufficient(thisMove.energyCost + R + R + R)){
-               shredDamage 300
-             } else {
-               damage 200
-             }
-           }
-         }
-       };
+      case RESHIRAM_CHARIZARD_GX_SM201:
+        return copy(UnbrokenBonds.RESHIRAM_CHARIZARD_GX_20, this);
       case AMOONGUSS_SM202:
-        return evolution (this, from:"Foongus", hp:HP100, type:G, retreatCost:2) {
-          weakness R
-          bwAbility "Bursting Spores", {
-            text "Whenever you play a Pokémon that has the Spore attack from your hand during your turn, you may leave your opponent's Active Pokémon Asleep and Poisoned."
-            delayedA {
-              before PLAY_BASIC_POKEMON, {
-                if(ef.cardToPlay.moves.find{ it.name == "Spore" }) {
-                  if(bg.currentTurn == self.owner) {
-                  apply POISONED, opp.active
-                  apply ASLEEP, opp.active
-                 }
-                }
-              }
-              before PLAY_EVOLUTION, {
-                if(ef.cardToPlay.moves.find{ it.name == "Spore" }) {
-                  if(bg.currentTurn == self.owner) {
-                  apply POISONED, opp.active
-                  apply ASLEEP, opp.active
-                  }
-                 }
-               }
-             }
-          }
-          move "Venoshock", {
-            text "20+ damage. If your opponent's Active Pokémon is Poisoned, this attack does 70 more damage."
-            energyCost C, C
-            onAttack {
-              damage 20
-              if (defending.isSPC(POISONED)) damage 70
-            }
-          }
-        };
+        return copy(UnifiedMinds.AMOONGUSS_14, this);
       case TAPU_FINI_SM203:
-        return basic (this, hp:HP120, type:W, retreatCost:1) {
-          weakness G
-          move "Razor Fin", {
-            text "20 damage. "
-            energyCost W
-            onAttack {
-              damage 20
-            }
-          }
-          move "Nature Wave", {
-            text "100 damage. If your opponent has any Ultra Beasts in play, this attack can be used for [C]."
-            energyCost C
-            attackRequirement {
-              def ultraBeasts = opp.all.findAll { it.topPokemonCard.cardTypes.is(ULTRA_BEAST) }
-              if (!ultraBeasts) assert self.cards.energySufficient(W, W, C) : "Not enough energy. Opponent does not have any Ultra Beasts in play so full energy requirement must be satisfied."
-            }
-            onAttack {
-              damage 100
-            }
-          }
-        };
+        return copy(UnifiedMinds.TAPU_FINI_53, this);
       case NECROZMA_SM204:
-        return basic (this, hp:HP130, type:P, retreatCost:2) {
-          weakness P
-          move "Barrier Attack", {
-            text "30 damage. During your opponent’s next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
-            energyCost C, C
-            onAttack {
-              damage 30
-              reduceDamageNextTurn(hp(30), thisMove)
-            }
-          }
-          move "Special Laser", {
-            text "100+ damage. If this Pokémon has any Special Energy attached to it, this attack does 60 more damage."
-            energyCost P, P, C
-            onAttack {
-              damage 100
-              if (self.cards.filterByType(SPECIAL_ENERGY)) damage 60
-            }
-          }
-        };
+        return copy(UnifiedMinds.NECROZMA_101, this);
       case TERRAKION_SM205:
         return copy(UnifiedMinds.TERRAKION_122);
       case PIKACHU_SM206:
