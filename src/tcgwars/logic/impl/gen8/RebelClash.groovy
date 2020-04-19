@@ -298,13 +298,14 @@ public enum RebelClash implements LogicCardInfo {
           text "Choose a Basic Pokemon from your discard pile and play it onto your Bench."
           energyCost C
           attackRequirement {
-             assert bench.notFull
-             assert my.discard.filterByType(BASIC)
-             }
-           attackRequirement {}
-           onAttack {
-             def card = my.discard.findAll{it.basic}.select("Select the card to put on the bench").first()
-             my.discard.remove(card)
+            assert bench.notFull
+            assert my.discard.filterByType(BASIC)
+          }
+          onAttack {
+            def card = my.discard.findAll{it.basic}.select("Select the card to put on the bench")
+            def pcs = benchPCS(card)
+            my.discard.remove(card)
+          }
         }
         move "Seed Bomb", {
           text "30 damage."
