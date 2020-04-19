@@ -316,7 +316,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip 3,{damage 10}
             }
           }
-
         };
       case LITTEN_SM02:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
@@ -328,7 +327,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 30
             }
           }
-
         };
       case POPPLIO_SM03:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -340,7 +338,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               apply ASLEEP
             }
           }
-
         };
       case PIKACHU_SM04:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
@@ -360,7 +357,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 50
             }
           }
-
         };
       case SNORLAX_GX_SM05:
         return basic (this, hp:HP190, type:COLORLESS, retreatCost:4) {
@@ -403,7 +399,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               afterDamage{apply ASLEEP,self}
             }
           }
-
         };
       case ROCKRUFF_SM06:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
@@ -422,7 +417,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 20
             }
           }
-
         };
       case PIKIPEK_SM07:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
@@ -436,7 +430,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 20,self
             }
           }
-
         };
       case LITTEN_SM08:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
@@ -455,7 +448,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 20
             }
           }
-
         };
       case TOGEDEMARU_SM09:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
@@ -475,7 +467,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 30*discardAllSelfEnergy(L).size()
             }
           }
-
         };
       case SHIINOTIC_SM10:
         return evolution (this, from:"Morelull", hp:HP100, type:GRASS, retreatCost:2) {
@@ -498,7 +489,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-
         };
       case BRUXISH_SM11:
         return basic (this, hp:HP110, type:WATER, retreatCost:2) {
@@ -518,7 +508,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               shredDamage 90
             }
           }
-
         };
       case PASSIMIAN_SM12:
         return basic (this, hp:HP110, type:FIGHTING, retreatCost:1) {
@@ -540,7 +529,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 10+30*my.bench.findAll{it.name=='Passimian'}.size()
             }
           }
-
         };
       case ORANGURU_SM13:
         return basic (this, hp:HP120, type:COLORLESS, retreatCost:2) {
@@ -562,7 +550,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 60+20*defending.cards.energyCount(C)
             }
           }
-
         };
       case LYCANROC_GX_SM14:
         return copy (BurningShadows.LYCANROC_GX_136, this);
@@ -583,7 +570,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 130
             }
           }
-
         };
       case SOLGALEO_GX_SM16:
         return copy (SunMoon.SOLGALEO_GX_89, this)
@@ -628,7 +614,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 80
             }
           }
-
         };
       case TSAREENA_SM26:
         return copy (SunMoon.TSAREENA_20, this)
@@ -652,7 +637,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 70
             }
           }
-
         };
       case VIKAVOLT_SM28:
         return copy (SunMoon.VIKAVOLT_52, this)
@@ -672,7 +656,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               astonish()
             }
           }
-
         };
       case TAPU_KOKO_SM30:
         return basic (this, hp:HP110, type:LIGHTNING, retreatCost:0) {
@@ -692,7 +675,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 100
             }
           }
-
         };
       case TAPU_KOKO_SM31:
         return copy (TAPU_KOKO_SM30, this);
@@ -732,7 +714,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-
         };
       case ESPEON_GX_SM35:
         return copy (SunMoon.ESPEON_GX_61, this)
@@ -761,7 +742,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 20
             }
           }
-
         };
       case KOMALA_SM41:
         return copy (GuardiansRising.KOMALA_114, this)
@@ -785,7 +765,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-
         };
       case TOGEDEMARU_SM44:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
@@ -805,7 +784,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 50
             }
           }
-
         };
       case TAPU_LELE_SM45:
         return basic (this, hp:HP110, type:PSYCHIC, retreatCost:1) {
@@ -840,7 +818,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-
         };
       case SEVIPER_SM46:
         return basic (this, hp:HP100, type:PSYCHIC, retreatCost:2) {
@@ -861,7 +838,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               applyAfterDamage POISONED
             }
           }
-
         };
       case CRABOMINABLE_SM47:
         return evolution (this, from:"Crabrawler", hp:HP140, type:FIGHTING, retreatCost:4) {
@@ -882,7 +858,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip 2, {damage 40}
             }
           }
-
         };
       case ZYGARDE_SM48:
         return basic (this, hp:HP150, type:DRAGON, retreatCost:4) {
@@ -904,7 +879,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-
         };
       case BEWEAR_SM49:
         return evolution (this, from:"Stufful", hp:HP120, type:COLORLESS, retreatCost:2) {
@@ -929,7 +903,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-
         };
       case TAPU_KOKO_GX_SM50:
         return copy (GuardiansRising.TAPU_KOKO_GX_47, this)
@@ -956,7 +929,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 10
             }
           }
-
         };
       case GOLISOPOD_SM52:
         return 	evolution (this, from:"Wimpod", hp:HP130, type:GRASS, retreatCost:2) {
@@ -1060,7 +1032,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               opp.deck.subList(0,4).discard()
             }
           }
-
         };
       case HO_OH_GX_SM57:
         return copy (BurningShadows.HO_OH_GX_21, this);
@@ -1170,7 +1141,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-
         };
       case KOMMO_O_GX_SM71:
         return copy (GuardiansRising.KOMMO_O_GX_100, this)
@@ -1207,7 +1177,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 100
             }
           }
-
         };
       case CHAMPIONS_FESTIVAL_SM78:
         return copy(BlackWhitePromos.CHAMPIONS_FESTIVAL_BW95, this)
@@ -1233,7 +1202,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 30
             }
           }
-
         };
       case HO_OH_GX_SM80:
         return copy (BurningShadows.HO_OH_GX_21, this)
@@ -1261,7 +1229,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-
         };
       case ZORUA_SM83:
         return copy (ShiningLegends.ZORUA_52, this);
@@ -1357,7 +1324,6 @@ public enum SunMoonPromos implements LogicCardInfo {
         };
       case RAICHU_GX_SM90:
         return copy (ShiningLegends.RAICHU_GX_29, this)
-
       case SILVALLY_GX_SM91:
         return copy (CrimsonInvasion.SILVALLY_GX_90, this);
       case TAPU_FINI_SM92:
