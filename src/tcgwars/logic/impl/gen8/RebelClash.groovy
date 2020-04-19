@@ -936,11 +936,11 @@ public enum RebelClash implements LogicCardInfo {
         weakness M
         bwAbility "Playful", {
           text "Once during your turn, when you play this card from your hand to evolve a Pokemon, you may choose an Energy attached to your  opponent’s Active Pokemon and return it to the top of your opponent’s deck."
-          onActivate {r->
-              if(r==PLAY_FROM_HAND && opp.active.cards.filterByType(ENERGY)) {
-                if(confirm("Use Playful?")) {
-                  powerUsed()
-                  opp.active.cards.filterByType(ENERGY).select("Choose the energy to put on top of their deck").moveTo(addToTop: true, opp.deck)
+            onActivate {r->
+                if(r==PLAY_FROM_HAND && opp.active.cards.filterByType(ENERGY)) {
+                  if(confirm("Use Playful?")) {
+                    powerUsed()
+                    opp.active.cards.filterByType(ENERGY).select("Choose the energy to put on top of their deck").moveTo(addToTop: true, opp.deck)
                   }
                 }
               }
@@ -1001,7 +1001,7 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             opp.deck.subList(0,1).discard()
-             if (self.cards.findAll { it.name=="Cursed Shovel" }) opp.deck.subList(0,1).discard() 
+             if (self.cards.findAll { it.name=="Cursed Shovel" }) opp.deck.subList(0,2).discard() 
 
           }
         }
