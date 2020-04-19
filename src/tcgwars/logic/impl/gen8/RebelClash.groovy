@@ -998,7 +998,7 @@ public enum RebelClash implements LogicCardInfo {
         move "Sand Burial", {
           text "Discard a card from the top of your opponent’s deck. If this Pokemon has Cursed Shovel attached to it, discard 2 more cards."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {assert opp.deck}
           onAttack {
             opp.deck.subList(0,1).discard()
              if (self.cards.findAll { it.name=="Cursed Shovel" }) opp.deck.subList(0,2).discard() 
