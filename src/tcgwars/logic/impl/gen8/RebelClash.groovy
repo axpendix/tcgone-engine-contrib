@@ -305,6 +305,8 @@ public enum RebelClash implements LogicCardInfo {
            onAttack {
              def card = my.discard.findAll{it.basic}.select("Select the card to put on the bench").first()
              my.discard.remove(card)
+            }
+          }
         }
         move "Seed Bomb", {
           text "30 damage."
