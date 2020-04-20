@@ -1741,10 +1741,15 @@ public enum DragonFrontiers implements LogicCardInfo {
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each Pokémon in play that has δ on its card in play (both yours and your opponent's) has no Weakness and can't use any Poké-Powers."
+        def eff
         onPlay {
           // TODO
+          eff = getter (GET_WEAKNESSES, self) { h->
+            h.object.clear()
+          }
         }
-        onRemoveFromPlay{
+        onRemoveFromPlay {
+          eff.unregister()
         }
       };
       case HOLON_MENTOR_75:

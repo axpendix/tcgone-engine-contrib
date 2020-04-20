@@ -177,8 +177,23 @@ public enum PopSeries9 implements LogicCardInfo {
           weakness D, PLUS20
           resistance C, MINUS20
           pokePower "Type Shift", {
-            text "Once during your turn (before your attack, you may use this power. Rotom’s type is until the end of your turn."
+            text "Once during your turn (before your attack, you may use this power. Rotom’s type is [P] until the end of your turn."
             actionA {
+              checkLastTurn()
+              powerUsed()
+              delayed {
+                def eff
+                register {
+                  eff = getter GET_POKEMON_TYPE, self, { h->
+                    h.object.clear()
+                    h.object.add(P)
+                  }
+                }
+                unregister {
+                  eff.unregister()
+                }
+                unregisterAfter 1
+              }
             }
           }
           move "Poltergeist", {

@@ -604,7 +604,14 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              def choice = choose([1,2],['Apply Burn', 'Apply Poison'], "Choose 1")
+
+              if (choice == 1) {
+                apply BURNED
+              } else {
+                apply POISONED
+              }
             }
           }
 

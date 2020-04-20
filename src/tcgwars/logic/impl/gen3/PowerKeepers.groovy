@@ -349,7 +349,15 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Evolutionary Call", {
           text "Once during your turn, when you play Cradily from your hand to evolve 1 of your Pokémon, you may search your deck for up to 3 in any combination of Basic Pokémon or Evolution cards. Show them to your opponent and put them into your hand. Shuffle your deck afterward."
           actionA {
-            // TODO
+            checkLastTurn()
+            assert my.deck : "Deck is empty"
+            if (it==PLAY_FROM_HAND && confirm("Use Evolutionary Call?")) {
+              powerUsed()
+
+              deck.search(max: 3, "Search your deck for up to 3 Basic/Evolutions", {it.cardTypes.pokemon && it.cardTypes.isIn(BASIC, EVOLUTION)}).moveTo(hand)
+
+              shuffleDeck()
+            }
           }
         }
         move "Poison Ring", {
@@ -2011,7 +2019,21 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Type Shift", {
           text "Once during your turn (before your attack), you may use this power. Claydol ex's type is Fighting until the end of your turn."
           actionA {
-            // TODO
+            checkLastTurn()
+            powerUsed()
+            delayed {
+              def eff
+              register {
+                eff = getter GET_POKEMON_TYPE, self, { h->
+                  h.object.clear()
+                  h.object.add(F)
+                }
+              }
+              unregister {
+                eff.unregister()
+              }
+              unregisterAfter 1
+            }
           }
         }
         move "Psychic Boom", {
@@ -2114,9 +2136,25 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Skill Hack", {
           text "Look at your opponent's hand and choose a Basic Pokémon or Evolution card you find there. Choose 1 of that Pokémon's attacks. Skill Hack copies that attack except for its Energy cost. (You must still do anything else required for that attack.) (No matter what type that Pokémon is, Shiftry ex's type is still Darkness.) Shiftry ex performs that attack."
           energyCost D
-          attackRequirement {}
+          attackRequirement {
+            assert opp.hand : "Opponent's hand is empty"
+          }
           onAttack {
             // TODO
+            opp.hand.showToMe("Opponent's hand")
+            def tmp = opp.hand.filterByType(BASIC,STAGE1,STAGE2).select(min:0, max:1, "Select a Pokémon and use one of that Pokémon’s attacks as this attack.")
+            if (tmp) {
+              def card = tmp.first()
+              bc "$card was chosen"
+              def moves = card.asPokemonCard().moves
+              if (moves) {
+                def move = choose(moves, "Choose attack")
+                bc "$move was chosen"
+                def bef=blockingEffect(BETWEEN_TURNS)
+                attack (move as Move)
+                bef.unregisterItself(bg().em())
+              }
+            }
           }
         }
         move "Dirge", {
@@ -2140,7 +2178,12 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Metal Gravity", {
           text "If your opponent's Active Pokémon retreats and has 40 or more remaining HP, put 3 damage counters on that Pokémon. You can't use more than 1 Metal Gravity Poké-Body each turn."
           delayedA {
-            // TODO
+            after RETREAT, {
+              if (ef.retreater.owner == self.owner.opposite && ef.retreater.getRemainingHP().value >= 40) {
+                bc "Metal Gravity"
+                directDamage 30, ef.retreater, SRC_ABILITY
+              }
+            }
           }
         }
         move "Whirlwind", {
@@ -2168,8 +2211,19 @@ public enum PowerKeepers implements LogicCardInfo {
         weakness L
         pokePower "Chilling Breath", {
           text "Once during your turn, when you play Walrein ex from your hand to evolve 1 of your Pokémon, you may use this power. Your opponent can't play any Trainer cards from his or her hand during your opponent's next turn."
-          actionA {
-            // TODO
+          onActivate {r->
+            if (r==PLAY_FROM_HAND) {
+              bc "Chlling Breath activates"
+              delayed {
+                before PLAY_TRAINER, {
+                  if (bg.currentTurn == self.owner.opposite) {
+                    wcu "Chilling Breath prevents playing Trainer cards"
+                    prevent()
+                  }
+                }
+                unregisterAfter 2
+              }
+            }
           }
         }
         move "Wreck", {

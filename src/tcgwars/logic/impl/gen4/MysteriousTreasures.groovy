@@ -552,7 +552,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness R, PLUS30
           pokeBody "Glacier Snow", {
             text "If Abomasnow is your Active Pokémon and is damaged by an opponent’s attack (even if Abomasnow is Knocked Out), the Attacking Pokémon is now Asleep."
-            delayedA {
+            delayedA (priority: LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({it.to==self && it.dmg.value})) {
+                  bc "Glacier Snow"
+                  apply ASLEEP, (ef.attacker as PokemonCardSet)
+                }
+              }
+              after SWITCH, self, {unregister()}
             }
           }
           move "Heavy Blizzard", {
@@ -1112,10 +1119,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              multiSelect(opp.all, 3).each{
+                targeted(it){
+                  damage 10, it
+                }
+              }
             }
           }
-
         };
       case DUNSPARCE_47:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {

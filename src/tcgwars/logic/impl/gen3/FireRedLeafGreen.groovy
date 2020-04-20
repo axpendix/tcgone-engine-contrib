@@ -755,7 +755,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           pokeBody "Retreat Aid", {
             text "As long as Dodrio is on your Bench, you pay [C][C] less to retreat your Active Pokémon (excluding Pokémon-ex and Baby Pokémon.)"
             getterA GET_RETREAT_COST ,{ h->
-              if(self.benched && h.effect.target.owner == self.owner && !(h.effect.target.pokemonEX || h.effect.target.topPokemonCard.cardTypes.is(BABY))){
+              if(self.benched && h.effect.target.owner == self.owner && !(h.effect.target.EX || h.effect.target.topPokemonCard.cardTypes.is(BABY))){
                 h.object = Math.max(0,h.object-2)
               }
             }

@@ -321,7 +321,14 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              def choice = choose([1,2],['Apply Burn', 'Apply Poison'], "Choose 1")
+
+              if (choice == 1) {
+                apply BURNED
+              } else {
+                apply POISONED
+              }
+              // TODO
             }
           }
           move "Pester", {

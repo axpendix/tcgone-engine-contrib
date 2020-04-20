@@ -3538,11 +3538,11 @@ public enum TeamUp implements LogicCardInfo {
               bg.clearDeterministicCurrentThreadPlayerType()
             } else {
               opp.hand.showToMe("Opponent's hand. No supporter in there.")
-            }          }
+            }
+          }
           playRequirement{
             assert opp.hand : "There is no card in your opponent's hand"
           }
-
         };
       case UNIDENTIFIED_FOSSIL_155:
         return copy (UltraPrism.UNIDENTIFIED_FOSSIL_134, this);

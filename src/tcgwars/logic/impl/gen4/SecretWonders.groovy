@@ -1687,7 +1687,15 @@ public enum SecretWonders implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Dangerous Scales", {
             text "If Venomoth is your Active Pokémon and is damaged by an opponent’s attack (even is Venomoth is Knocked Out), the Attacking Pokémon is now Asleep and Poisoned."
-            delayedA {
+            delayedA (priority: LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({it.to==self && it.dmg.value})) {
+                  bc "Dangerous Scales"
+                  apply ASLEEP, (ef.attacker as PokemonCardSet)
+                  apply POISONED, (ef.attacker as PokemonCardSet)
+                }
+              }
+              after SWITCH, self, {unregister()}
             }
           }
           move "Disturbance Dive", {
@@ -1933,9 +1941,9 @@ public enum SecretWonders implements LogicCardInfo {
           move "Down Draw", {
             text "Draw a card from the bottom of your deck."
             energyCost C
-            attackRequirement {}
+            attackRequirement { assert my.deck : "Deck is empty"}
             onAttack {
-              damage 0
+              my.deck.subList(my.deck.size() - 1, my.deck.size()).moveTo(my.hand)
             }
           }
           move "Mud Spatter", {

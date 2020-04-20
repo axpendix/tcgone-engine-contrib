@@ -1108,7 +1108,8 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              attachEnergyFrom(my.discard, self)
             }
           }
           move "Metallic Bolt", {

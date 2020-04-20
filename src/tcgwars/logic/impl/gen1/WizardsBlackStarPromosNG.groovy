@@ -363,17 +363,17 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             // TODO
+            flip {
+
+            }
           }
         }
         move "Telekinesis", {
-          text "30 damage. Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. Don't apply Weakness and Resistance for this attack. (Any other effects that would happen after applying Weakness and Resistance still happen.)"
+          text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. Don't apply Weakness and Resistance for this attack. (Any other effects that would happen after applying Weakness and Resistance still happen.)"
           energyCost P, P, P
           attackRequirement {}
           onAttack {
-            damage 30
-
-            // TODO
-            damage 30, opp.all.select()
+            noWrDamage 30, opp.all.select()
           }
         }
       };
