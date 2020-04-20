@@ -1106,7 +1106,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert self.active : "$self is not your active"
               powerUsed()
               my.deck.search(max : 1,"Search for an evolution",cardTypeFilter(EVOLUTION)).showToOpponent("Selected card.").moveTo(my.hand)
-
+              shuffleDeck()
             }
           }
           move "Dragon Rage", {
