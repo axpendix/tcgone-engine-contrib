@@ -2486,7 +2486,7 @@ public enum SwordShield implements LogicCardInfo {
         bwAbility "Headbutt Tantrum", {
           text "When you play this Pokémon from your hand onto your Bench during your turn, you may put 1 damage counter on 1 of your opponent's Pokémon."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && my.deck && confirm("Use Headbutt Tantrum?")) {
+            if (r==PLAY_FROM_HAND && confirm("Use Headbutt Tantrum?")) {
               powerUsed()
               directDamage 10, opp.all.select(), SRC_ABILITY
               shuffleDeck()
@@ -2528,7 +2528,7 @@ public enum SwordShield implements LogicCardInfo {
         bwAbility "Untamed Shout", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put 3 damage counters on 1 of your opponent's Pokémon."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && my.deck && confirm("Use Untamed Shout?")) {
+            if (r==PLAY_FROM_HAND && confirm("Use Untamed Shout?")) {
               powerUsed()
               directDamage 30, opp.all.select(), SRC_ABILITY
               shuffleDeck()
