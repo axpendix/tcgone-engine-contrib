@@ -2696,7 +2696,7 @@ public enum SunMoonPromos implements LogicCardInfo {
       case NECROZMA_SM204:
         return copy(UnifiedMinds.NECROZMA_101, this);
       case TERRAKION_SM205:
-        return copy(UnifiedMinds.TERRAKION_122);
+        return copy(UnifiedMinds.TERRAKION_122, this);
       case PIKACHU_SM206:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness F
