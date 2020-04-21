@@ -2489,7 +2489,6 @@ public enum SwordShield implements LogicCardInfo {
             if (r==PLAY_FROM_HAND && confirm("Use Headbutt Tantrum?")) {
               powerUsed()
               directDamage 10, opp.all.select(), SRC_ABILITY
-              shuffleDeck()
             }
           }
         }
@@ -2531,7 +2530,6 @@ public enum SwordShield implements LogicCardInfo {
             if (r==PLAY_FROM_HAND && confirm("Use Untamed Shout?")) {
               powerUsed()
               directDamage 30, opp.all.select(), SRC_ABILITY
-              shuffleDeck()
             }
           }
         }
