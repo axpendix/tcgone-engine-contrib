@@ -32,7 +32,7 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
- * @author axpendix@hotmail.com
+ * @author lithogenn@gmail.com
  */
 public enum RebelClash implements LogicCardInfo {
 
@@ -72,8 +72,8 @@ public enum RebelClash implements LogicCardInfo {
   HEATMOR_34 ("Heatmor", 34, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
   CINDERACE_V_35 ("Cinderace V", 35, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _FIRE_]),
   CINDERACE_VMAX_36 ("Cinderace VMAX", 36, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
-  GALARIAN_MR._MIME_37 ("Galarian Mr. Mime", 37, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
-  GALARIAN_MR._RIME_38 ("Galarian Mr. Rime", 38, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  GALARIAN_MR_MIME_37 ("Galarian Mr. Mime", 37, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+  GALARIAN_MR_RIME_38 ("Galarian Mr. Rime", 38, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   MAGIKARP_39 ("Magikarp", 39, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
   GYARADOS_40 ("Gyarados", 40, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   WINGULL_41 ("Wingull", 41, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
@@ -244,8 +244,7 @@ public enum RebelClash implements LogicCardInfo {
   GIANT_CHARM_206 ("Giant Charm", 206, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
   SCOOP_UP_NET_207 ("Scoop Up Net", 207, Rarity.HOLORARE, [TRAINER, ITEM]),
   TOOL_SCRAPPER_208 ("Tool Scrapper", 208, Rarity.HOLORARE, [TRAINER, ITEM]),
-  TWIN_ENERGY_209 ("Twin Energy", 209, Rarity.HOLORARE, [ENERGY, SPECIAL_ENERGY]),
-;
+  TWIN_ENERGY_209 ("Twin Energy", 209, Rarity.HOLORARE, [ENERGY, SPECIAL_ENERGY]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -301,13 +300,14 @@ public enum RebelClash implements LogicCardInfo {
     switch (this) {
       case CATERPIE_1:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
+				weakness R
 				bwAbility "Adaptive Evolution", {
 					text "This Pokemon can evolve during your first turn or the turn you play it."
 					actionA {
 					}
 				}
 				move "Gnaw", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -317,13 +317,14 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case METAPOD_2:
       return evolution (this, from:"Caterpie", hp:HP080, type:G, retreatCost:3) {
+				weakness R
 				bwAbility "Adaptive Evolution", {
 					text "This Pokemon can evolve during your first turn or the turn you play it."
 					actionA {
 					}
 				}
 				move "Ram", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -333,6 +334,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case BUTTERFREE_3:
       return evolution (this, from:"Metapod", hp:HP140, type:G, retreatCost:1) {
+				weakness R
 				move "Panic Poison", {
 					text "30 damage. Your opponent’s Active Pokemon is now Poisoned, Burned, and Confused."
 					energyCost G
@@ -342,7 +344,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Cutting Wind", {
-					text "80 damage. "
+					text "80 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -352,6 +354,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case SCYTHER_4:
       return basic (this, hp:HP080, type:G, retreatCost:1) {
+				weakness R
 				move "Swords Dance", {
 					text "During your next turn, the base damage of this Pokemon’s Speed Sickle is increased by 70."
 					energyCost C
@@ -361,7 +364,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Speed Sickle", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -371,6 +374,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case HERACROSS_5:
       return basic (this, hp:HP130, type:G, retreatCost:2) {
+				weakness R
 				move "Push Down", {
 					text "30 damage. Your opponent switches their Active Pokemon with 1 of their Benched Pokemon."
 					energyCost C, C
@@ -384,12 +388,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
-
+						damage 110
 					}
 				}
 			};
       case SHUCKLE_6:
       return basic (this, hp:HP080, type:G, retreatCost:1) {
+				weakness R
 				move "Gather Berries", {
 					text "Shuffle 5 basic Energy cards from your discard pile into your deck."
 					energyCost C
@@ -409,6 +414,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case LOTAD_7:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
+				weakness R
 				move "Blot", {
 					text "10 damage. Heal 10 damage from this Pokemon."
 					energyCost C
@@ -418,7 +424,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Ram", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -428,6 +434,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case LOMBRE_8:
       return evolution (this, from:"Lotad", hp:HP090, type:G, retreatCost:1) {
+				weakness R
 				bwAbility "Top Entry", {
 					text "If you draw this card from your deck at the beginning of your turn and there is room on your Bench, instead of putting it into your hand, you may play it directly onto your Bench."
 					actionA {
@@ -444,6 +451,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case LUDICOLO_9:
       return evolution (this, from:"Lombre", hp:HP160, type:G, retreatCost:2) {
+				weakness R
 				move "Energized Rush", {
 					text "60x damage. This attack does 60 damage for each Prize card you’ve taken."
 					energyCost C, C
@@ -453,16 +461,17 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Mega Drain", {
-					text "120 damage. Heal 30 damage from this Pokemon.Weakness"
+					text "120 damage. Heal 30 damage from this Pokemon."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 120
 					}
 				}
 			};
       case SURSKIT_10:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
+				weakness R
 				move "Agility", {
 					text "10 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokemon during your opponent’s next turn."
 					energyCost C
@@ -474,6 +483,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case MASQUERAIN_11:
       return evolution (this, from:"Surskit", hp:HP090, type:G, retreatCost:1) {
+				weakness R
 				move "Pattern Menace", {
 					text "30 damage. Your opponent can’t attach Energy from their hand to the Defending Pokemon during their next turn."
 					energyCost C
@@ -485,8 +495,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case SNOVER_12:
       return basic (this, hp:HP090, type:G, retreatCost:3) {
+				weakness R
 				move "Beat", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -494,7 +505,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Razor Leaf", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
@@ -504,6 +515,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case ABOMASNOW_13:
       return evolution (this, from:"Snover", hp:HP140, type:G, retreatCost:3) {
+				weakness R
 				move "Aroma Sleep", {
 					text "80 damage. Your opponent’s Active Pokemon is now Asleep."
 					energyCost G, C, C
@@ -517,12 +529,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost G, G, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 140
 					}
 				}
 			};
       case PHANTUMP_14:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
+				weakness R
 				move "Dark Guidance", {
 					text "Choose a Basic Pokemon from your discard pile and play it onto your Bench."
 					energyCost C
@@ -532,7 +545,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Seed Bomb", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -542,8 +555,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case TREVENANT_15:
       return evolution (this, from:"Phantump", hp:HP130, type:G, retreatCost:3) {
+				weakness R
 				move "Seed Bomb", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost G
 					attackRequirement {}
 					onAttack {
@@ -555,14 +569,15 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost G, G, C
 					attackRequirement {}
 					onAttack {
-
+						damage 120
 					}
 				}
 			};
       case GRUBBIN_16:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
+				weakness R
 				move "Gnaw", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -572,6 +587,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case RILLABOOM_V_17:
       return basic (this, hp:HP220, type:G, retreatCost:3) {
+				weakness R
 				move "Forest Feast", {
 					text "Search your deck for up to 2 Basic [G] Pokemon and put them onto your Bench. Then, shuffle your deck."
 					energyCost G
@@ -585,14 +601,15 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost G, G, G, C
 					attackRequirement {}
 					onAttack {
-
+						damage 220
 					}
 				}
 			};
       case RILLABOOM_VMAX_18:
       return evolution (this, from:"Rillaboom V", hp:HP330, type:G, retreatCost:3) {
+				weakness R
 				move "Scratch", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -610,6 +627,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case ELDEGOSS_V_19:
       return basic (this, hp:HP180, type:G, retreatCost:1) {
+				weakness R
 				bwAbility "Happy March", {
 					text "Once during your turn, when you play this card from your hand to your Bench, you may put a Supporter card from your discard pile into your hand."
 					actionA {
@@ -626,6 +644,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case APPLIN_20:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
+				weakness R
 				move "Withdraw", {
 					text "Flip a coin. If heads, prevent all damage from attacks done to this Pokemon during your opponent’s next turn."
 					energyCost C
@@ -637,6 +656,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case APPLIN_21:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
+				weakness R
 				move "Continuous Tumble", {
 					text "10+ damage. Flip a coin until you get tails. This attack does 30 more damage times the number of heads."
 					energyCost G, C
@@ -648,22 +668,31 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case FLAPPLE_22:
       return evolution (this, from:"Applin", hp:HP080, type:G, retreatCost:1) {
+				weakness R
 				bwAbility "Apple Drop", {
 					text "Once during your turn, you may put 2 damage counters on 1 of your opponent’s Pokemon. Then, shuffle this Pokemon and all cards attached to it into your deck."
 					actionA {
 					}
 				}
-
+				move "Acid Bomb", {
+					text "60 damage. Flip a coin. If heads, discard an Energy from your opponent’s Active Pokemon."
+					energyCost C, C
+					attackRequirement {}
+					onAttack {
+						damage 60
+					}
+				}
 			};
       case APPLETUN_23:
       return evolution (this, from:"Applin", hp:HP090, type:G, retreatCost:3) {
+				weakness R
 				bwAbility "Delicious Scent", {
 					text "Once during your turn, you may flip a coin. If heads, choose 1 of your opponent’s Benched Basic Pokemon and switch it with their Active Pokemon."
 					actionA {
 					}
 				}
 				move "Solar Beam", {
-					text "70 damage. "
+					text "70 damage."
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
@@ -673,6 +702,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case VULPIX_24:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
+				weakness W
 				move "Confuse Ray", {
 					text "Your opponent’s Active Pokemon is now Confused."
 					energyCost R
@@ -682,7 +712,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Smash Kick", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -692,6 +722,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case NINETALES_25:
       return evolution (this, from:"Vulpix", hp:HP120, type:R, retreatCost:1) {
+				weakness W
 				move "Hex", {
 					text "30+ damage. If your opponent’s Active Pokemon has an Ability, this attack does 90 more damage."
 					energyCost R
@@ -711,6 +742,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case NINETALES_V_26:
       return basic (this, hp:HP200, type:R, retreatCost:2) {
+				weakness W
 				move "Nine Tailed Transformation", {
 					text "Choose 1 of your opponent’s Active Pokemon’s attacks and use it as this attack."
 					energyCost R, C, C
@@ -724,12 +756,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost R, C, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 180
 					}
 				}
 			};
       case GROWLITHE_27:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
+				weakness W
 				move "Odor Sleuth", {
 					text "Flip a coin. If heads, put a card from your discard pile into your hand."
 					energyCost C
@@ -739,7 +772,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Fire Claws", {
-					text "60 damage. "
+					text "60 damage."
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
@@ -749,6 +782,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case ARCANINE_28:
       return evolution (this, from:"Growlithe", hp:HP130, type:R, retreatCost:2) {
+				weakness W
 				bwAbility "Warmup", {
 					text "If this Pokemon has Burning Scarf attached to it, it get +100 HP."
 					actionA {
@@ -759,14 +793,15 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-
+						damage 130
 					}
 				}
 			};
       case MAGMAR_29:
       return basic (this, hp:HP090, type:R, retreatCost:2) {
+				weakness W
 				move "Punch", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -774,7 +809,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Heat Breath", {
-					text "20+ damage. Flip a coin. If heads, this attack does 30 more damage.Weakness"
+					text "20+ damage. Flip a coin. If heads, this attack does 30 more damage."
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
@@ -784,6 +819,15 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case MAGMORTAR_30:
       return evolution (this, from:"Magmar", hp:HP140, type:R, retreatCost:3) {
+				weakness W
+				move "Burst Punch", {
+					text "30 damage. Your opponent’s Active Pokemon is now Burned."
+					energyCost R, C
+					attackRequirement {}
+					onAttack {
+						damage 30
+					}
+				}
 				move "Ground Burn", {
 					text "80+ damage. Each player discards a card from the top of their deck. This attack does 100 more damage for each Energy card discarded in this way."
 					energyCost R, R, C
@@ -795,6 +839,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case LITWICK_31:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
+				weakness W
 				move "Scorch", {
 					text "Your opponent’s Active Pokemon is now Burned."
 					energyCost R
@@ -806,6 +851,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case LAMPENT_32:
       return evolution (this, from:"Litwick", hp:HP080, type:R, retreatCost:1) {
+				weakness W
 				bwAbility "Top Entry", {
 					text "If you draw this card from your deck at the beginning of your turn and there is room on your Bench, instead of putting it into your hand, you may play it directly onto your Bench."
 					actionA {
@@ -822,6 +868,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case CHANDELURE_33:
       return evolution (this, from:"Lampent", hp:HP140, type:R, retreatCost:2) {
+				weakness W
 				bwAbility "Protection Lamp", {
 					text "Each of your Pokemon that has any Energy attached to it has no Weakness."
 					actionA {
@@ -832,12 +879,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost R, C
 					attackRequirement {}
 					onAttack {
-
+						damage 110
 					}
 				}
 			};
       case HEATMOR_34:
       return basic (this, hp:HP120, type:R, retreatCost:2) {
+				weakness W
 				move "Lick", {
 					text "20 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
 					energyCost C
@@ -851,12 +899,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-
+						damage 120
 					}
 				}
 			};
       case CINDERACE_V_35:
       return basic (this, hp:HP210, type:R, retreatCost:2) {
+				weakness W
 				bwAbility "Field Runner", {
 					text "If there is a Stadium card in play, this Pokemon has no Retreat Cost."
 					actionA {
@@ -867,12 +916,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-
+						damage 140
 					}
 				}
 			};
       case CINDERACE_VMAX_36:
       return evolution (this, from:"Cinderace V", hp:HP320, type:R, retreatCost:2) {
+				weakness W
 				move "Counter", {
 					text "30+ damage. This attack does additional damage equal to the amount of damage done to this Pokemon by attacks from your opponent’s Pokemon during your opponent’s last turn."
 					energyCost R, C
@@ -886,12 +936,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost R, R, C
 					attackRequirement {}
 					onAttack {
-
+						damage 170
 					}
 				}
 			};
-      case GALARIAN_MR._MIME_37:
+      case GALARIAN_MR_MIME_37:
       return basic (this, hp:HP080, type:W, retreatCost:1) {
+				weakness M
 				move "Icy Wind", {
 					text "10 damage. Your opponent’s Active Pokemon is now Asleep."
 					energyCost C
@@ -909,8 +960,9 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 			};
-      case GALARIAN_MR._RIME_38:
+      case GALARIAN_MR_RIME_38:
       return evolution (this, from:"Galarian Mr. Mime", hp:HP110, type:W, retreatCost:1) {
+				weakness M
 				bwAbility "Barrier Free", {
 					text "As long as this Pokemon is in play, prevent effects of opponent’s attacks done to all of your Pokemon with Energy attached to them. (This does not remove existing effects.)"
 					actionA {
@@ -927,6 +979,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case MAGIKARP_39:
       return basic (this, hp:HP030, type:W, retreatCost:1) {
+				weakness L
 				move "Leap Out", {
 					text "Switch This Pokemon with 1 of your Benched Pokemon."
 					energyCost C
@@ -938,8 +991,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case GYARADOS_40:
       return evolution (this, from:"Magikarp", hp:HP180, type:W, retreatCost:4) {
+				weakness L
 				move "Wrack Down", {
-					text "90 damage. "
+					text "90 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -951,12 +1005,14 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost W, W, C, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 200
 					}
 				}
 			};
       case WINGULL_41:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
+				weakness L
+				resistance F, MINUS30
 				move "Collect", {
 					text "Draw a card."
 					energyCost C
@@ -966,7 +1022,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Wave Splash", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -976,9 +1032,10 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case PELIPPER_42:
       return evolution (this, from:"Wingull", hp:HP120, type:W, retreatCost:2) {
-				resistance F, MINUS20
+				weakness L
+				resistance F, MINUS30
 				move "Wing Attack", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -990,12 +1047,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost W, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 110
 					}
 				}
 			};
       case MILOTIC_V_43:
       return basic (this, hp:HP210, type:W, retreatCost:2) {
+				weakness L
 				move "Aqua Impact", {
 					text "10+ damage. This attack does 50 more damage for each [C] in your opponent’s Active Pokemon’s Retreat Cost."
 					energyCost W, C, C
@@ -1009,12 +1067,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost W, C, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 150
 					}
 				}
 			};
       case TYMPOLE_44:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
+				weakness L
 				move "Spin", {
 					text "Your opponent’s Active Pokemon is now Confused."
 					energyCost C
@@ -1026,6 +1085,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case PALPITOAD_45:
       return evolution (this, from:"Tympole", hp:HP090, type:W, retreatCost:2) {
+				weakness L
 				move "Twirling Sign", {
 					text "30 damage. Your opponent’s Active Pokemon is now Confused."
 					energyCost C, C
@@ -1037,6 +1097,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case SEISMITOAD_46:
       return evolution (this, from:"Palpitoad", hp:HP170, type:W, retreatCost:3) {
+				weakness L
 				move "Split Spiral Punch", {
 					text "30 damage. Your opponent’s Active Pokemon is now Confused."
 					energyCost W
@@ -1050,12 +1111,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost W, C, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 120
 					}
 				}
 			};
       case GALARIAN_DARUMAKA_47:
       return basic (this, hp:HP080, type:W, retreatCost:2) {
+				weakness M
 				move "Ice Punch", {
 					text "30 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
 					energyCost W, C
@@ -1067,6 +1129,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case GALARIAN_DARMANITAN_48:
       return evolution (this, from:"Galarian Darumaka", hp:HP140, type:W, retreatCost:3) {
+				weakness M
 				move "Blizzard", {
 					text "80 damage. This attack does 10 damage to each of your opponent’s Benched Pokemon. (Don’t apply Weakness and Resistance for Benched Pokemon.)"
 					energyCost W, C, C
@@ -1080,12 +1143,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost W, W, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 170
 					}
 				}
 			};
       case INTELEON_V_49:
       return basic (this, hp:HP200, type:W, retreatCost:2) {
+				weakness L
 				move "Snipe Shot", {
 					text "This attack does 40 damage to 1 of your opponent’s Pokemon. (Don’t apply Weakness or Resistance for Benched Pokemon.)"
 					energyCost W
@@ -1099,12 +1163,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-
+						damage 130
 					}
 				}
 			};
       case INTELEON_VMAX_50:
       return evolution (this, from:"Inteleon V", hp:HP320, type:W, retreatCost:2) {
+				weakness L
 				move "Hydro Snipe", {
 					text "60 damage. You may return an Energy card from your opponent’s Active Pokemon to their hand."
 					energyCost W
@@ -1118,13 +1183,14 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost W, W, C
 					attackRequirement {}
 					onAttack {
-
+						damage 160
 					}
 				}
 			};
       case CRAMORANT_51:
       return basic (this, hp:HP110, type:W, retreatCost:1) {
-				resistance F, MINUS20
+				weakness L
+				resistance F, MINUS30
 				move "Diving", {
 					text "20 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokemon during your opponent’s next turn."
 					energyCost W
@@ -1144,8 +1210,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case ARROKUDA_52:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
+				weakness L
 				move "Rain Splash", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost W
 					attackRequirement {}
 					onAttack {
@@ -1155,8 +1222,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case BARRASKEWDA_53:
       return evolution (this, from:"Arrokuda", hp:HP120, type:W, retreatCost:1) {
+				weakness L
 				move "Peck", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1168,12 +1236,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-
+						damage 130
 					}
 				}
 			};
       case EISCUE_54:
       return basic (this, hp:HP120, type:W, retreatCost:2) {
+				weakness M
 				bwAbility "Ice Face", {
 					text "If this Pokemon’s HP is at max, any damage done to it by opponent’s attacks is reduced by 60."
 					actionA {
@@ -1190,6 +1259,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case PIKACHU_55:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
+				weakness F
 				move "Tail Whip", {
 					text "Flip a coin. If heads, the Defending Pokemon can’t attack during your opponent’s next turn."
 					energyCost C
@@ -1199,7 +1269,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Pika Volt", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -1209,6 +1279,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case VOLTORB_56:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
+				weakness F
 				move "Continuous Tumble", {
 					text "Flip a coin until you get tails. This attack does 20 damage times the number of heads."
 					energyCost C
@@ -1220,6 +1291,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case ELECTRODE_57:
       return evolution (this, from:"Voltorb", hp:HP090, type:L, retreatCost:0) {
+				weakness F
 				move "Orb Collection", {
 					text "Search your deck for up to 3 Energy cards, reveal them, and put them in your hand. Then, shuffle your deck."
 					energyCost C
@@ -1229,7 +1301,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Ball Attack", {
-					text "70 damage. "
+					text "70 damage."
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
@@ -1239,8 +1311,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case ELECTABUZZ_58:
       return basic (this, hp:HP090, type:L, retreatCost:2) {
+				weakness F
 				move "Knuckle Punch", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1248,7 +1321,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Electroslug", {
-					text "70 damage. "
+					text "70 damage."
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
@@ -1258,6 +1331,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case ELECTIVIRE_59:
       return evolution (this, from:"Electabuzz", hp:HP140, type:L, retreatCost:3) {
+				weakness F
 				move "Thundershock", {
 					text "50 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
 					energyCost L, C
@@ -1277,6 +1351,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case SHINX_60:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
+				weakness F
 				move "Adversity", {
 					text "10 damage. If your opponent has 3 or fewer Prize cards remaining, this attack does 50 more damage."
 					energyCost L
@@ -1288,13 +1363,14 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case LUXIO_61:
       return evolution (this, from:"Shinx", hp:HP090, type:L, retreatCost:1) {
+				weakness F
 				bwAbility "Top Entry", {
 					text "If you draw this card from your deck at the beginning of your turn and there is room on your Bench, instead of putting it into your hand, you may play it directly onto your Bench."
 					actionA {
 					}
 				}
 				move "Elekick", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost L
 					attackRequirement {}
 					onAttack {
@@ -1304,6 +1380,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case LUXRAY_62:
       return evolution (this, from:"Luxio", hp:HP160, type:L, retreatCost:1) {
+				weakness F
 				move "Raid", {
 					text "60 damage. If this Pokemon evolved from Luxio during your turn, this attack does 100 more damage."
 					energyCost L
@@ -1317,12 +1394,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-
+						damage 120
 					}
 				}
 			};
       case HELIOPTILE_63:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
+				weakness F
 				move "Thunder Jolt", {
 					text "30 damage. This Pokemon does 10 damage to itself."
 					energyCost L
@@ -1334,6 +1412,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case HELIOLISK_64:
       return evolution (this, from:"Helioptile", hp:HP110, type:L, retreatCost:1) {
+				weakness F
 				move "Eerie Impulse", {
 					text "Flip a coin. If heads, discard an Energy from 1 of your opponent’s Pokemon."
 					energyCost L
@@ -1347,12 +1426,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost L, C
 					attackRequirement {}
 					onAttack {
-
+						damage 120
 					}
 				}
 			};
       case CHARJABUG_65:
       return evolution (this, from:"Grubbin", hp:HP090, type:L, retreatCost:2) {
+				weakness F
 				move "Recharge", {
 					text "Search your deck for up to 2 [L] Energy cards and attach them to this Pokemon. Then, shuffle your deck."
 					energyCost C
@@ -1362,7 +1442,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Light Ball", {
-					text "70 damage. "
+					text "70 damage."
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
@@ -1372,6 +1452,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case VIKAVOLT_66:
       return evolution (this, from:"Charjabug", hp:HP150, type:L, retreatCost:2) {
+				weakness F
 				move "Powerful Storm", {
 					text "60+ damage. This attack does 20 more damage times the amount of Energy attached to all of your Pokemon."
 					energyCost L, C, C
@@ -1385,12 +1466,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost L, C, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 170
 					}
 				}
 			};
       case BOLTUND_V_67:
       return basic (this, hp:HP200, type:L, retreatCost:2) {
+				weakness F
 				move "Electrify", {
 					text "Search your deck for up to 2 [L] Energy and attach them to your Benched Pokemon in any way you like. Then, shuffle your deck."
 					energyCost L
@@ -1410,6 +1492,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case TOXEL_68:
       return basic (this, hp:HP070, type:L, retreatCost:2) {
+				weakness F
 				move "Tight Jaw", {
 					text "10 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
 					energyCost L
@@ -1421,6 +1504,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case TOXTRICITY_69:
       return evolution (this, from:"Toxel", hp:HP130, type:L, retreatCost:2) {
+				weakness F
 				move "Poison Shout", {
 					text "This attack does 20 damage to each of your opponent’s Pokemon. Your opponent’s Active Pokemon is now Poisoned. (Don’t apply Weakness and Resistance for Benched Pokemon.)"
 					energyCost L
@@ -1430,7 +1514,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Hammer In", {
-					text "90 damage. "
+					text "90 damage."
 					energyCost L, C, C
 					attackRequirement {}
 					onAttack {
@@ -1440,6 +1524,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case TOXTRICITY_V_70:
       return basic (this, hp:HP210, type:L, retreatCost:2) {
+				weakness F
 				move "Poison Jab", {
 					text "20 damage. Your opponent’s Active Pokemon is now Poisoned."
 					energyCost L
@@ -1459,6 +1544,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case TOXTRICITY_VMAX_71:
       return evolution (this, from:"Toxtricity V", hp:HP320, type:L, retreatCost:2) {
+				weakness F
 				move "Giganto Riot", {
 					text "160+ damage. This attack does 80 more damage if your opponent’s Active Pokemon is Poisoned."
 					energyCost L, L, C
@@ -1470,6 +1556,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case PINCURCHIN_V_72:
       return basic (this, hp:HP170, type:L, retreatCost:2) {
+				weakness F
 				bwAbility "Counterattack Crackle", {
 					text "If this Pokemon is your Active Pokemon and is damaged by an opponent’s attack, flip 3 coins. For each heads, put 3 damage counters on the Attacking Pokemon."
 					actionA {
@@ -1480,12 +1567,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost L, L, C
 					attackRequirement {}
 					onAttack {
-
+						damage 120
 					}
 				}
 			};
       case MORPEKO_73:
       return basic (this, hp:HP080, type:L, retreatCost:1) {
+				weakness F
 				move "Torment", {
 					text "20 damage. Choose 1 of your opponent’s Active Pokemon’s attacks. The Defending Pokemon can’t use that attack during your opponent’s next turn."
 					energyCost C
@@ -1505,6 +1593,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case CLEFAIRY_74:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
+				weakness M
 				move "Glowing Finger", {
 					text "Your opponent’s Active Pokemon is now Asleep."
 					energyCost C
@@ -1514,7 +1603,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Magical Shot", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1524,13 +1613,14 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case CLEFABLE_75:
       return evolution (this, from:"Clefairy", hp:HP110, type:P, retreatCost:1) {
+				weakness M
 				bwAbility "Playful", {
 					text "Once during your turn, when you play this card from your hand to evolve a Pokemon, you may choose an Energy attached to your opponent’s Active Pokemon and return it to the top of your opponent’s deck."
 					actionA {
 					}
 				}
 				move "Moon Kick", {
-					text "60 damage. "
+					text "60 damage."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1540,7 +1630,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case NATU_76:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				move "Me First", {
 					text "Draw a card."
 					energyCost C
@@ -1552,7 +1643,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case XATU_77:
       return evolution (this, from:"Natu", hp:HP120, type:P, retreatCost:1) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				move "Energy Warp", {
 					text "Move an Energy from 1 of your opponent’s Benched Pokemon to their Active Pokemon."
 					energyCost C
@@ -1572,7 +1664,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case GALARIAN_CORSOLA_78:
       return basic (this, hp:HP080, type:P, retreatCost:null) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				move "Cursed Droplets", {
 					text "Put 3 pistachios on your opponent’s Pokemon in any way you like."
 					energyCost P
@@ -1584,7 +1677,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case GALARIAN_CURSOLA_79:
       return evolution (this, from:"Galarian Corsola", hp:HP100, type:P, retreatCost:2) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				bwAbility "Perish Body", {
 					text "If this Pokemon is your Active Pokemon and is Knocked Out by damage from an opponent’s attack, flip a coin. If heads, the Attacking Pokemon is Knocked Out."
 					actionA {
@@ -1601,7 +1695,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case SIGILYPH_80:
       return basic (this, hp:HP110, type:P, retreatCost:1) {
-				resistance F, MINUS20
+				weakness L
+				resistance F, MINUS30
 				bwAbility "Strikes Back", {
 					text "If this Pokemon is your Active Pokemon and is damaged by an opponent’s attack, place 3 damage counters on the attacking Pokemon."
 					actionA {
@@ -1618,7 +1713,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case SANDYGAST_81:
       return basic (this, hp:HP080, type:P, retreatCost:3) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				move "Sneaky Placement", {
 					text "Put a damage counter on 1 of your opponent’s Pokemon."
 					energyCost P
@@ -1630,7 +1726,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case PALOSSAND_82:
       return evolution (this, from:"Sandygast", hp:HP140, type:P, retreatCost:4) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				move "Sand Burial", {
 					text "Discard a card from the top of your opponent’s deck. If this Pokemon has Cursed Shovel attached to it, discard 2 more cards."
 					energyCost C, C
@@ -1650,7 +1747,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case HATTENA_83:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				move "Find a Friend", {
 					text "Search your deck for a Pokemon, reveal it, and put it into your hand. Then, shuffle your deck."
 					energyCost C
@@ -1660,7 +1758,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Psychic Shot", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1670,7 +1768,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case HATTREM_84:
       return evolution (this, from:"Hattena", hp:HP080, type:P, retreatCost:1) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				move "Calm Mind", {
 					text "Heal 30 damage from this Pokemon."
 					energyCost C
@@ -1690,7 +1789,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case HATTERENE_85:
       return evolution (this, from:"Hattrem", hp:HP150, type:P, retreatCost:2) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				bwAbility "Mind Hat", {
 					text "Once during your turn, you may have each player discard 1 card from their hand. (Your opponent discards first. If either player has no cards in their hand, that player does not discard.)"
 					actionA {
@@ -1707,6 +1807,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case MILCERY_86:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
+				weakness M
 				move "Aromatherapy", {
 					text "Heal 10 damage from each of your Pokemon."
 					energyCost C
@@ -1716,7 +1817,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Tackle", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
@@ -1726,6 +1827,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case ALCREMIE_87:
       return evolution (this, from:"Milcery", hp:HP110, type:P, retreatCost:1) {
+				weakness M
 				move "Decorate", {
 					text "Attach any number of Basic Energy from your hand to your Pokemon in any way you like."
 					energyCost C
@@ -1745,7 +1847,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case INDEEDEE_88:
       return basic (this, hp:HP100, type:P, retreatCost:1) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				move "Refresh Time", {
 					text "Heal 30 damage from to each of your Pokemon."
 					energyCost C
@@ -1765,7 +1868,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case DREEPY_89:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				move "Quick Attack", {
 					text "10 damage. Flip a coin. If heads, this attack does 10 more damage."
 					energyCost P
@@ -1777,7 +1881,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case DRAKLOAK_90:
       return evolution (this, from:"Dreepy", hp:HP090, type:P, retreatCost:1) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				move "Call Forth", {
 					text "Search your deck for a Dreepy and put it on your Bench. Then, shuffle your deck."
 					energyCost C
@@ -1787,7 +1892,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Bite", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
@@ -1797,7 +1902,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case DRAGAPULT_91:
       return evolution (this, from:"Drakloak", hp:HP150, type:P, retreatCost:0) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				bwAbility "Infiltrator", {
 					text "If this Pokemon would be damaged by an attack, flip a coin. If heads, prevent all damage done to this Pokemon."
 					actionA {
@@ -1808,15 +1914,16 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
-
+						damage 120
 					}
 				}
 			};
       case DRAGAPULT_V_92:
       return basic (this, hp:HP210, type:P, retreatCost:1) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				move "Bite", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost P
 					attackRequirement {}
 					onAttack {
@@ -1834,7 +1941,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case DRAGAPULT_VMAX_93:
       return evolution (this, from:"Dragapult V", hp:HP320, type:P, retreatCost:1) {
-				resistance F, MINUS20
+				weakness D
+				resistance F, MINUS30
 				move "Shred", {
 					text "60 damage. This attack’s damage isn’t affected by effects on your opponents Active Pokemon."
 					energyCost P
@@ -1848,12 +1956,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost P, P
 					attackRequirement {}
 					onAttack {
-
+						damage 130
 					}
 				}
 			};
       case GALARIAN_FARFETCH_D_94:
       return basic (this, hp:HP080, type:F, retreatCost:1) {
+				weakness P
 				move "Rock Smash", {
 					text "10 damage. Flip a coin, if heads this attack does an additional 30 damage."
 					energyCost F
@@ -1863,7 +1972,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Pierce", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -1873,8 +1982,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case GALARIAN_SIRFETCH_D_95:
       return evolution (this, from:"Galarian Farfetch’d", hp:HP130, type:F, retreatCost:2) {
+				weakness P
 				move "Pierce", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1886,14 +1996,15 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 180
 					}
 				}
 			};
       case NOSEPASS_96:
       return basic (this, hp:HP080, type:F, retreatCost:3) {
+				weakness G
 				move "Tackle", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -1901,7 +2012,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Rolling Tackle", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -1911,6 +2022,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case MEDITITE_97:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
+				weakness P
 				move "Meditate", {
 					text "10 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
 					energyCost C
@@ -1922,6 +2034,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case MEDICHAM_98:
       return evolution (this, from:"Meditite", hp:HP110, type:F, retreatCost:1) {
+				weakness P
 				move "Yoga Kick", {
 					text "40 damage. This attack’s damage isn’t affected by Weakness or Resistance."
 					energyCost F
@@ -1941,8 +2054,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case BARBOACH_99:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
+				weakness G
 				move "Razor Fin", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost F
 					attackRequirement {}
 					onAttack {
@@ -1952,6 +2066,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case WHISCASH_100:
       return evolution (this, from:"Barboach", hp:HP140, type:F, retreatCost:3) {
+				weakness G
 				bwAbility "Submerge", {
 					text "As long as this Pokemon is on your Bench, it takes no damage from attacks."
 					actionA {
@@ -1962,12 +2077,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost F, F
 					attackRequirement {}
 					onAttack {
-
+						damage 140
 					}
 				}
 			};
       case GALARIAN_YAMASK_101:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
+				weakness G
 				move "Reckless Charge", {
 					text "50 damage. This Pokemon does 30 damage to itself."
 					energyCost C, C
@@ -1979,6 +2095,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case GALARIAN_RUNERIGUS_102:
       return evolution (this, from:"Yamask", hp:HP100, type:F, retreatCost:2) {
+				weakness G
 				move "Grudge Distribution", {
 					text "Count the number of damage counters on this Galarian Runerigus. Put twice as many damage counters on your opponent’s Active Pokemon."
 					energyCost C, C
@@ -1992,12 +2109,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 120
 					}
 				}
 			};
       case BINACLE_103:
       return basic (this, hp:HP080, type:F, retreatCost:2) {
+				weakness G
 				move "Double Chop", {
 					text "Flip 2 coins. This attack does 50 damage times the number of heads."
 					energyCost F, C, C
@@ -2009,6 +2127,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case BARBARACLE_104:
       return evolution (this, from:"Binacle", hp:HP120, type:F, retreatCost:3) {
+				weakness G
 				move "Rock Hurl", {
 					text "50 damage. This attack’s damage isn’t affected by Resistance."
 					energyCost F, C
@@ -2028,8 +2147,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case ROLYCOLY_105:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
+				weakness G
 				move "Ram", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2039,8 +2159,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case CARKOAL_106:
       return evolution (this, from:"Rolycoly", hp:HP100, type:F, retreatCost:3) {
+				weakness G
 				move "Ram", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2048,7 +2169,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Heat Stamp", {
-					text "60 damage. "
+					text "60 damage."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -2058,6 +2179,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case COALOSSAL_107:
       return evolution (this, from:"Carkoal", hp:HP160, type:F, retreatCost:4) {
+				weakness G
 				bwAbility "Tar Generator", {
 					text "Once during your turn, you may search your discard pile for up to 1 [R] Energy and 1 [F] Energy and attach them to your Pokemon in any way you like."
 					actionA {
@@ -2068,12 +2190,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost F, C, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 130
 					}
 				}
 			};
       case SANDACONDA_V_108:
       return basic (this, hp:HP220, type:F, retreatCost:3) {
+				weakness G
 				move "Sand Crown", {
 					text "30 damage. Attach a [F] Energy from your discard pile to this Pokemon."
 					energyCost F
@@ -2087,12 +2210,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-
+						damage 220
 					}
 				}
 			};
       case FALINKS_109:
       return basic (this, hp:HP090, type:F, retreatCost:1) {
+				weakness P
 				move "Call For Family", {
 					text "Search your deck for up to 2 Basic Pokemon and put them on your Bench. Then, shuffle your deck."
 					energyCost C
@@ -2112,6 +2236,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case FALINKS_V_110:
       return basic (this, hp:HP160, type:F, retreatCost:2) {
+				weakness P
 				bwAbility "Iron Defender", {
 					text "As long as this Pokemon is in play, damage done to any of your Pokemon with Falinks in its name by your opponent’s atacks is reduced by 20."
 					actionA {
@@ -2122,14 +2247,15 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost F, F, C
 					attackRequirement {}
 					onAttack {
-
+						damage 210
 					}
 				}
 			};
       case STONJOURNER_111:
       return basic (this, hp:HP140, type:F, retreatCost:4) {
+				weakness G
 				move "Mega Kick", {
-					text "80 damage. "
+					text "80 damage."
 					energyCost F, C, C
 					attackRequirement {}
 					onAttack {
@@ -2147,8 +2273,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case KOFFING_112:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
+				weakness F
 				move "Suffocating Gas", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -2158,6 +2285,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case GALARIAN_WEEZING_113:
       return evolution (this, from:"Koffing", hp:HP130, type:D, retreatCost:3) {
+				weakness F
 				bwAbility "Chemical Change Gas", {
 					text "As long as this Pokemon is your Active Pokemon, each of your opponent’s Pokemon has no Abilities (excluding Chemical Change Gas)."
 					actionA {
@@ -2174,6 +2302,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case STUNKY_114:
       return basic (this, hp:HP070, type:D, retreatCost:2) {
+				weakness F
 				move "Poison Gas", {
 					text "10 damage. Your opponent’s Active Pokemon is now Poisoned."
 					energyCost C, C
@@ -2185,8 +2314,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case SKUNTANK_115:
       return evolution (this, from:"Stunky", hp:HP120, type:D, retreatCost:3) {
+				weakness F
 				move "Slash", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2204,6 +2334,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case SPIRITOMB_116:
       return basic (this, hp:HP060, type:D, retreatCost:2) {
+				weakness G
 				move "Grudge Split", {
 					text "Discard 1 card from the top of each player’s deck."
 					energyCost D
@@ -2223,6 +2354,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case TRUBBISH_117:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
+				weakness F
 				move "Venom Shock", {
 					text "20+ damage. If your opponent’s Active Pokemon is Poisoned, this attack does 50 more damage."
 					energyCost C, C
@@ -2234,13 +2366,14 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case GARBODOR_118:
       return evolution (this, from:"Trubbish", hp:HP120, type:D, retreatCost:2) {
+				weakness F
 				bwAbility "Poison Pool", {
 					text "Once during your turn, if there is a Stadium in play, you may leave your opponents Active Pokemon Poisoned."
 					actionA {
 					}
 				}
 				move "Sludge Bomb", {
-					text "80 damage. "
+					text "80 damage."
 					energyCost D, C, C
 					attackRequirement {}
 					onAttack {
@@ -2250,7 +2383,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case VULLABY_119:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
-				resistance F, MINUS20
+				weakness L
+				resistance F, MINUS30
 				move "Pluck", {
 					text "10 damage. Before doing damage, discard all Pokemon Tools attached to your opponent’s Active Pokemon."
 					energyCost C
@@ -2262,7 +2396,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case MANDIBUZZ_120:
       return evolution (this, from:"Vullaby", hp:HP120, type:D, retreatCost:2) {
-				resistance F, MINUS20
+				weakness L
+				resistance F, MINUS30
 				move "Bone Rush", {
 					text "Flip a coin until you get tails. This attack does 30 damage times the number of heads."
 					energyCost D
@@ -2282,6 +2417,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case MALAMAR_V_121:
       return basic (this, hp:HP210, type:D, retreatCost:2) {
+				weakness G
 				move "Drag Off", {
 					text "Choose 1 of your opponent’s Benched Pokemon and switch it with their Active Pokemon. This attack does 30 damage to the new Active Pokemon."
 					energyCost D, C
@@ -2295,25 +2431,27 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
-
+						damage 130
 					}
 				}
 			};
       case MALAMAR_VMAX_122:
       return evolution (this, from:"Malamar V", hp:HP310, type:D, retreatCost:2) {
+				weakness G
 				move "Giganto Jammer", {
 					text "180 damage. Your opponent reveals their hand. Choose 1 card that you find there and put it on the bottom of your opponent’s deck.When your Pokemon VMAX is Knocked Out, your opponent takes 3 Prize cards."
 					energyCost D, D, C
 					attackRequirement {}
 					onAttack {
-
+						damage 180
 					}
 				}
 			};
       case IMPIDIMP_123:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
+				weakness G
 				move "Beat", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -2321,7 +2459,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Stampede", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
@@ -2331,8 +2469,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case MORGREM_124:
       return evolution (this, from:"Impidimp", hp:HP090, type:D, retreatCost:2) {
+				weakness G
 				move "Bite", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost D
 					attackRequirement {}
 					onAttack {
@@ -2350,6 +2489,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case GRIMMSNARL_125:
       return evolution (this, from:"Morgrem", hp:HP170, type:D, retreatCost:3) {
+				weakness G
 				bwAbility "Dark Limitation", {
 					text "As long as this Pokemon is your Active Pokemon, your opponent’s Active Pokemon pays [C] more to use its attacks."
 					actionA {
@@ -2366,14 +2506,15 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case GALARIAN_MEOWTH_126:
       return basic (this, hp:HP060, type:M, retreatCost:2) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				bwAbility "Evolution Roar", {
 					text "Once during your turn (before your attack), you may discard 2 cards from your hand. If you do, search your deck for 1 Galarian Perrserker, reveal it, and put it into your hand. Then, shuffle your deck."
 					actionA {
 					}
 				}
 				move "Scratch", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -2383,9 +2524,10 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case GALARIAN_PERRSERKER_127:
       return evolution (this, from:"Galarian Meowth", hp:HP120, type:M, retreatCost:2) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				move "Slash", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -2403,7 +2545,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case SCIZOR_128:
       return evolution (this, from:"Scyther", hp:HP130, type:M, retreatCost:1) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				move "Raid", {
 					text "30+ damage. If this Pokemon evolved from Scyther during your turn, this attack does 90 more damage."
 					energyCost M
@@ -2423,9 +2566,10 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case BRONZOR_129:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				move "Ram", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -2433,7 +2577,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Speed Flight", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -2443,9 +2587,10 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case BRONZONG_130:
       return evolution (this, from:"Bronzor", hp:HP130, type:M, retreatCost:3) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				move "Smack", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost M
 					attackRequirement {}
 					onAttack {
@@ -2463,7 +2608,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case PROBOPASS_131:
       return evolution (this, from:"Nosepass", hp:HP140, type:M, retreatCost:4) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				move "Gravity Drop", {
 					text "10+ damage. This attack does 30 more damage for each [C] in your opponent’s Active Pokemon’s Retreat Cost."
 					energyCost M
@@ -2477,13 +2623,14 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
-
+						damage 120
 					}
 				}
 			};
       case DURANT_132:
       return basic (this, hp:HP100, type:M, retreatCost:1) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				move "Gather Bait", {
 					text "For each Energy attached to this Pokemon, search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck."
 					energyCost C
@@ -2493,7 +2640,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Metal Claw", {
-					text "80 damage. "
+					text "80 damage."
 					energyCost M, C, C
 					attackRequirement {}
 					onAttack {
@@ -2503,9 +2650,10 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case HONEDGE_133:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				move "Slicing Blade", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -2515,9 +2663,10 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case DOUBLADE_134:
       return evolution (this, from:"Honedge", hp:HP090, type:M, retreatCost:2) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				move "Slash", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost M, C
 					attackRequirement {}
 					onAttack {
@@ -2535,7 +2684,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case AEGISLASH_135:
       return evolution (this, from:"Doublade", hp:HP140, type:M, retreatCost:3) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				bwAbility "Big Shield", {
 					text "As long as this Pokemon is in play, any damage done to your Pokemon by opponent’s attacks is reduced by 30. You can’t use more than 1 Big Shield Ability."
 					actionA {
@@ -2546,12 +2696,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
-
+						damage 130
 					}
 				}
 			};
       case COPPERAJAH_V_136:
       return basic (this, hp:HP220, type:M, retreatCost:4) {
+				weakness R
 				move "Adamantine Press", {
 					text "90 damage. During your opponent’s next turn, this Pokemon takes 30 less damage from attacks."
 					energyCost M, M, C
@@ -2561,17 +2712,18 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Wrack Down", {
-					text "180 damage.Weakness"
+					text "180 damage."
 					energyCost M, M, M, C
 					attackRequirement {}
 					onAttack {
-
+						damage 180
 					}
 				}
 			};
       case COPPERAJAH_VMAX_137:
       return evolution (this, from:"Copperajah V", hp:HP340, type:M, retreatCost:4) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				move "Dangerous Nose", {
 					text "100+ damage. If your opponent’s Active Pokemon is a Basic Pokemon, this attack does 100 more damage."
 					energyCost M, M, C
@@ -2585,13 +2737,14 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost M, M, M, C
 					attackRequirement {}
 					onAttack {
-
+						damage 240
 					}
 				}
 			};
       case DURALUDON_138:
       return basic (this, hp:HP130, type:M, retreatCost:2) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				move "Metal Sharpener", {
 					text "30 damage. Attach a [M] Energy from your discard pile to 1 of your Pokemon."
 					energyCost C
@@ -2605,13 +2758,14 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
-
+						damage 110
 					}
 				}
 			};
       case ZACIAN_139:
       return basic (this, hp:HP120, type:M, retreatCost:2) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				move "Energy Stream", {
 					text "30 damage. Attach a [M] Energy from your discard pile to 1 of your Pokemon."
 					energyCost C
@@ -2625,13 +2779,14 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
-
+						damage 120
 					}
 				}
 			};
       case ZAMAZENTA_140:
       return basic (this, hp:HP120, type:M, retreatCost:2) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				move "Guard Press", {
 					text "During your opponent''s next turn, this Pokemon takes 20 less damage from attacks (after applying Weakness and Resistance)."
 					energyCost M, C
@@ -2645,12 +2800,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
-
+						damage 120
 					}
 				}
 			};
       case SNORLAX_141:
       return basic (this, hp:HP150, type:C, retreatCost:4) {
+				weakness F
 				move "Collect", {
 					text "Draw 2 cards."
 					energyCost C
@@ -2664,20 +2820,21 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 120
 					}
 				}
 			};
       case CHATOT_142:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
-				resistance F, MINUS20
+				weakness L
+				resistance F, MINUS30
 				bwAbility "Lucky Match", {
 					text "Once during your turn, when you play this card from your hand onto your Bench, you may flip a coin. If heads, choose a Supporter card from your discard pile, reveal it, and put it into your hand."
 					actionA {
 					}
 				}
 				move "Glide", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2687,7 +2844,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case PIDOVE_143:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
-				resistance F, MINUS20
+				weakness L
+				resistance F, MINUS30
 				move "Chirp", {
 					text "Search your deck for up to 2 Pokemon with a [F] Resistance, reveal them, and put them into your hand. Then, shuffle your deck."
 					energyCost C
@@ -2697,7 +2855,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Sharp Wing", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2707,9 +2865,10 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case TRANQUIL_144:
       return evolution (this, from:"Pidove", hp:HP080, type:C, retreatCost:1) {
-				resistance F, MINUS20
+				weakness L
+				resistance F, MINUS30
 				move "Sharp Wing", {
-					text "40 damage. "
+					text "40 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2717,7 +2876,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Gust", {
-					text "60 damage. "
+					text "60 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -2727,7 +2886,8 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case UNFEZANT_145:
       return evolution (this, from:"Tranquil", hp:HP150, type:C, retreatCost:1) {
-				resistance F, MINUS20
+				weakness L
+				resistance F, MINUS30
 				move "Daunt", {
 					text "50 damage. The attacks of the Defending Pokemon do 50 less damage during your opponent’s next turn."
 					energyCost C, C
@@ -2741,12 +2901,13 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 150
 					}
 				}
 			};
       case BUNNELBY_146:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
+				weakness F
 				move "Burrow", {
 					text "Discard 1 card from the top of your opponent’s deck."
 					energyCost C
@@ -2756,7 +2917,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Headbutt Bounce", {
-					text "50 damage. "
+					text "50 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -2766,6 +2927,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case DIGGERSBY_147:
       return evolution (this, from:"Bunnelby", hp:HP130, type:C, retreatCost:3) {
+				weakness F
 				move "Mountain Toss Rush", {
 					text "Discard up to 6 cards from the top of your deck. This attack does 30 damage for each card discarded in this way."
 					energyCost C, C, C
@@ -2779,13 +2941,14 @@ public enum RebelClash implements LogicCardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-
+						damage 110
 					}
 				}
 			};
       case HAWLUCHA_148:
       return basic (this, hp:HP090, type:C, retreatCost:1) {
-				resistance F, MINUS20
+				weakness L
+				resistance F, MINUS30
 				move "Windfall", {
 					text "Shuffle your hand into your deck. Then, draw 5 cards."
 					energyCost C
@@ -2795,7 +2958,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Speed Attack", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2805,8 +2968,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case STUFFUL_149:
       return basic (this, hp:HP080, type:C, retreatCost:2) {
+				weakness F
 				move "Tackle", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2824,6 +2988,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case BEWEAR_150:
       return evolution (this, from:"Stufful", hp:HP140, type:C, retreatCost:3) {
+				weakness F
 				move "Hammer Arm", {
 					text "90 damage. Discard a card from the top of your opponent’s deck."
 					energyCost C, C, C
@@ -2843,8 +3008,9 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case SKWOVET_151:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
+				weakness F
 				move "Tackle", {
-					text "10 damage. "
+					text "10 damage."
 					energyCost C
 					attackRequirement {}
 					onAttack {
@@ -2852,7 +3018,7 @@ public enum RebelClash implements LogicCardInfo {
 					}
 				}
 				move "Bite", {
-					text "20 damage. "
+					text "20 damage."
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
@@ -2862,13 +3028,14 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case GREEDENT_152:
       return evolution (this, from:"Peter Griffin", hp:HP120, type:C, retreatCost:1) {
+				weakness F
 				bwAbility "Greedy Tail", {
 					text "Once during your turn, you may search your deck for a Pokemon Tool card, reveal it, and put it into your hand. Then, shuffle your deck."
 					actionA {
 					}
 				}
 				move "Tail Slap", {
-					text "80 damage. "
+					text "80 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
@@ -2878,6 +3045,7 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case DUBWOOL_V_153:
       return basic (this, hp:HP210, type:C, retreatCost:2) {
+				weakness F
 				bwAbility "Soft Wool", {
 					text "Damage done to this Pokemon by attacks is reduced by 30."
 					actionA {
@@ -3140,13 +3308,14 @@ public enum RebelClash implements LogicCardInfo {
       return copy (SONIA_167, this);
       case FROSMOTH_204:
       return evolution (this, from:"Snom", hp:HP090, type:W, retreatCost:2) {
+				weakness M
 				bwAbility "Ice Dance", {
 					text "As often as you like during your turn (before your attack), you may attach a [W] Energy card from your hand to 1 of your Benched [W] Pokemon."
 					actionA {
 					}
 				}
 				move "Aurora Beam", {
-					text "30 damage. "
+					text "30 damage."
 					energyCost W, C
 					attackRequirement {}
 					onAttack {
@@ -3156,14 +3325,15 @@ public enum RebelClash implements LogicCardInfo {
 			};
       case PERRSERKER_205:
       return evolution (this, from:"Galarian Meowth", hp:HP120, type:M, retreatCost:2) {
-				resistance G, MINUS20
+				weakness R
+				resistance G, MINUS30
 				bwAbility "Steely Spirit", {
 					text "The attacks of your [M] Pokemon do 20 more damage to your opponent’s Active Pokemon."
 					actionA {
 					}
 				}
 				move "Metal Claw", {
-					text "70 damage. "
+					text "70 damage."
 					energyCost M, M, C
 					attackRequirement {}
 					onAttack {
