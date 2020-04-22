@@ -2144,7 +2144,8 @@ public enum SwordShield implements LogicCardInfo {
           text "90 damage. This attack’s damage isn’t affected by Resistance."
           energyCost F, C, C
           onAttack {
-            noWrDamage(90, defending)
+            damage 90
+            dontApplyResistance()
           }
         }
         move "Bedrock Shake", {
@@ -2423,6 +2424,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost F, F, C
           onAttack {
             damage 130
+            dontApplyResistance()
           }
         }
       };
