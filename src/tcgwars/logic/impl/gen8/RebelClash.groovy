@@ -801,9 +801,16 @@ public enum RebelClash implements LogicCardInfo {
         move "Nine Tailed Transformation", {
           text "Choose 1 of your opponent’s Active Pokemon’s attacks and use it as this attack."
           energyCost R, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.active.topPokemonCard.moves : "No moves to perform"
+          }
           onAttack {
-            // TODO
+            def list = defending.topPokemonCard.moves
+            def selected = choose(list, "Choose a non-GX attack to use.")
+            bc "$selected was chosen"
+            def bef = blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+            attack (selected as Move)
+            bef.unregisterItself(bg().em())
           }
         }
         move "Flamethrower", {
@@ -845,8 +852,10 @@ public enum RebelClash implements LogicCardInfo {
         weakness W
         bwAbility "Warmup", {
           text "If this Pokemon has Burning Scarf attached to it, it get +100 HP."
-          actionA {
-            // TODO
+          getterA (GET_FULL_HP, self) {h->
+            if (self.cards.findAll { it.name == "Burning Scarf" }) {
+              h.object += hp(100)
+            }
           }
         }
         move "Fire Mane", {
@@ -898,6 +907,14 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             damage 80
             // TODO
+            if (opp.deck) {
+              if (opp.deck.subList(0,1).filterByType(ENERGY)) damage 10
+              opp.deck.subList(0,1).discard()
+            }
+            if (my.deck) {
+              if (my.deck.subList(0,1).filterByType(ENERGY)) damage 10
+              my.deck.subList(0,1).discard()
+            }
           }
         }
       };
