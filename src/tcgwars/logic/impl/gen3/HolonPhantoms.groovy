@@ -1,5 +1,9 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.impl.gen3.TeamRocketReturns;
+import tcgwars.logic.impl.gen3.LegendMaker;
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -208,8 +212,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost M, C
           attackRequirement {}
           onAttack {
-            damage 70
-            // TODO
+            if (bg.em().retrieveObject("last_supporter_play_turn") == bg.turnCount) {
+              damage 20
+            } else {
+              damage 70
+            }
           }
         }
         move "Fossil Charge", {
@@ -218,7 +225,12 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            // TODO
+
+            def fossilInHand = my.hand.findAll { it.name.contains("Fossil") }
+            if (opp.bench && fossilInHand && confirm("Discard a Fossil from hand to do 30 damage to a Benched Pokemon?")) {
+              my.hand.findAll { it.name.contains("Fossil") }.select().discard()
+              damage 30, opp.bench.select()
+            }
           }
         }
       };
@@ -231,7 +243,23 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            // TODO
+
+            def pcs = defending
+            delayed {
+              before BETWEEN_TURNS, {
+                if (turnCount + 1 <= bg.turnCount) {
+                  if (all.contains(pcs)) {
+                    bc "Harsh Fluid activates"
+                    directDamage 50, pcs
+                  }
+                }
+              }
+              unregisterAfter 2
+              after SWITCH, self, {unregister()}
+              after EVOLVE, self, {unregister()}
+              after SWITCH, pcs, {unregister()}
+              after EVOLVE, pcs, {unregister()}
+            }
           }
         }
         move "Poison Tentacles", {
@@ -301,6 +329,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            reduceDamageNextTurn(hp(30), thisMove)
           }
         }
       };
@@ -375,7 +404,12 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Delta Supply", {
           text "Once during your turn (before your attack), you may attach a basic Energy card or a δ Rainbow Energy card from your hand to 1 of your Pokémon that has δ on its card. This power can't be used if Flygon is affected by a Special Condition."
           actionA {
-            // TODO
+            checkLastTurn()
+            assert my.hand.filterByType(BASIC_ENERGY) || my.hand.findAll{it.name.contains "δ Rainbow Energy"}: "No Basic Energy or δ Rainbow Energy in Hand"
+            assert my.all.findAll { it.ex && it.STAGE2 } : "No Stage 2 Pokemon-ex in play"
+            powerUsed()
+            def tar = my.all.findAll { it.ex && it.STAGE2 }.select()
+            attachEnergyFrom(basic: true, my.hand, tar)
           }
         }
         move "Swift", {
@@ -393,10 +427,18 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Delta Reactor", {
           text "As long as any Stadium card with Holon in its name is in play, each of your Pokémon that has δ on its card does 10 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
-            // TODO
-            // if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Full Flame") {
-            //   apply BURNED
-            // }
+            after PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker.owner == self.owner && self.benched) {
+                bg.dm().each {
+                  if (it.from.name.contains("δ") && it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
+                    if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name.contains("Holon")) {
+                      bc "Delta Reactor +10"
+                      it.dmg += hp(10)
+                    }
+                  }
+                }
+              }
+            }
           }
         }
         move "Hyper Beam", {
@@ -426,7 +468,14 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            // TODO
+            delayed {
+              def pcs = defending
+              after KNOCKOUT, pcs, {
+                clearSpecialCondition(self)
+                heal 70, self
+              }
+              unregisterAfter 1
+            }
           }
         }
         move "Thunderous Blow", {
@@ -444,7 +493,11 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Dragon Curse", {
           text "Once during your turn (before your attack), if Kingdra is your Active Pokémon, you may put 2 damage counters on 1 of your opponent's Pokémon with δ on its card. This power can't be used if Kingdra is affected by a Special Condition."
           actionA {
-            // TODO
+            checkLastTurn()
+            checkNoSPC()
+            assert opp.all.findAll { it.name.contains("δ") } : "No valid targets"
+            powerUsed()
+            directDamage 20, opp.all.findAll { it.name.contains("δ") }.select()
           }
         }
         move "Extra Flame", {
@@ -504,7 +557,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         weakness C
         resistance G, MINUS30
         resistance F, MINUS30
-        pokeBody "Dual Aura (Duaru oora)", {
+        pokeBody "Dual Aura", {
           text "As long as you have Latias or Latias ex in play, each player's Evolved Pokémon (excluding Pokémon-ex) can't use any Poké-Bodies."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
             if (my.all.findAll{it.name == "Latias" || it.name == "Latias ex"} && !h.effect.target.EX && h.effect.target.evolution) {
@@ -657,7 +710,12 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Poison Pollen", {
           text "Once during your turn (before your attack), you may flip a coin. If heads, choose 1 of the Defending Pokémon. That Pokémon is now Poisoned. This power can't be used if Vileplume is affected by a Special Condition."
           actionA {
-            // TODO
+            checkNoSPC()
+            checkLastTurn()
+            flip {
+              apply POISONED, opp.active, SRC_ABILITY
+            }
+            powerUsed()
           }
         }
         move "Poltergeist", {
@@ -665,8 +723,8 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost P, M
           attackRequirement {}
           onAttack {
-            damage 30
-            // TODO
+            opp.hand.showToMe("Opponent’s hand")
+            damage 30+10*opp.hand.findAll { it.cardTypes.is(TRAINER) }.size()
           }
         }
       };
@@ -679,7 +737,14 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            // TODO
+            def list
+            if (my.deck && confirm("Rearrange the top 5 cards of your deck?")) {
+              list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards of your deck")
+              my.deck.setSubList(0, list)
+            } else if (opp.deck && confirm ("Rearrange the top 5 cards of your Opponent's deck?")) {
+              list=rearrange(opp.deck.subList(0,5), "Rearrange top 5 cards of your Opponent's deck")
+              opp.deck.setSubList(0, list)
+            }
           }
         }
         move "Overrun", {
@@ -700,8 +765,25 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance W, MINUS30
         pokeBody "Fellowship", {
           text "Bellossom can use the attacks of all Oddish, Gloom, Vileplume, Vileplume ex, or other Bellossom you have in play as its own. (You still need the necessary Energy to use each attack.)"
-          delayedA {
-            // TODO
+          actionA {
+            assert self.active: "$self is not an Active Pokemon"
+            def perfectionMoves = []
+            self.owner.pbg.bench.findAll {it.pokemonGX || it.pokemonEX}.each {
+              if (it.topPokemonCard.name != "Mewtwo & Mew-GX")
+              perfectionMoves.addAll(it.topPokemonCard.moves)
+            }
+            self.owner.pbg.discard.each {
+              if (it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) && it.name != "Miraculous Duo GX") {
+                perfectionMoves.addAll(it.moves)
+              }
+            }
+            assert !perfectionMoves.isEmpty(): "There are no moves to copy"
+
+            def chosenMove = choose(perfectionMoves+["Cancel"], perfectionMoves.collect({it.name})+["Cancel"], "Choose a move to perform")
+
+            if (chosenMove && chosenMove != "Cancel") {
+              attack (chosenMove as Move)
+            }
           }
         }
         move "Aqua Flower", {
@@ -710,7 +792,16 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
-            // TODO
+
+            delayed {
+              getter (GET_WEAKNESSES) { h->
+                if (h.effect.target == self) {
+                  def list = h.object as List<Weakness>
+                  list.clear()
+                }
+              }
+              unregisterAfter 2
+            }
           }
         }
       };
@@ -1074,6 +1165,12 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Once during your turn (before your attack), you may search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power can't be used if Aerodactyl is affected by a Special Condition."
           actionA {
             // TODO
+            checkLastTurn()
+            checkNoSPC()
+            powerUsed()
+            assert my.deck : "Deck is empty"
+            my.deck.search(max: 1, "Select a basic Energy card.", cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
+            shuffleDeck()
           }
         }
         move "Granite Head", {
@@ -1119,6 +1216,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Once during your turn (before your attack), if you have a Supporter card with Holon in its name in play, you may search your discard pile for a basic Energy card or a δ Rainbow Energy card, show it to your opponent, and put it into your hand. This power can't be used if Chimecho is affected by a Special Condition."
           actionA {
             // TODO
+            // if(bg.em().retrieveObject("Cynthia_"+bg.turnCount)){
+            //   damage 100
+            // }
           }
         }
         move "Hook", {
@@ -1246,6 +1346,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Delta Block", {
           text "As long as any Stadium card with Holon in its name is in play, your opponent can't play any Stadium cards from his or her hand."
           delayedA {
+            // TODO
           }
         }
         move "Mind Play", {
@@ -2083,6 +2184,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Draw 3 cards. If you discarded a Pokémon that has δ on its card, draw 4 cards instead."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -2100,6 +2202,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each player's Pokémon that has δ on its card can use attacks on this card instead of its own."
         onPlay {
+          // TODO
         }
         onRemoveFromPlay{
         }
@@ -2109,6 +2212,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward. Or, search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
@@ -2118,92 +2222,27 @@ public enum HolonPhantoms implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Flip a coin. If heads, draw the bottom 3 cards of your deck. If tails, draw the top 2 cards of your deck."
         onPlay {
+          // TODO
         }
         playRequirement{
         }
       };
       case RARE_CANDY_90:
-      return itemCard (this) {
-        text "Choose 1 of your Basic Pokémon in play. If you have a Stage 1 or Stage 2 card that evolves from that Pokémon in your hand, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.)"
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy (Sandstorm.RARE_CANDY_88, this);
       case CLAW_FOSSIL_91:
-      return itemCard (this) {
-        text "Play Claw Fossil as if it were a Basic Pokémon. While in play, Claw Fossil counts as a [C] Pokémon (as well as a Trainer card). Claw Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Claw Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Claw Fossil from play." +
-          "If Claw Fossil is your Active Pokémon and is damaged by an opponent's attack (even if Claw Fossil is Knocked Out), put 1 damage counter on the Attacking Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(LegendMaker.CLAW_FOSSIL_78, this);
       case MYSTERIOUS_FOSSIL_92:
-      return itemCard (this) {
-        text "Play Mysterious Fossil as if it were a Basic Pokémon. While in play, Mysterious Fossil counts as a [C] Pokémon (as well as a Trainer card). Mysterious Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Mysterious Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Mysterious Fossil from play."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(FossilNG.MYSTERIOUS_FOSSIL, this);
       case ROOT_FOSSIL_93:
-      return itemCard (this) {
-        text "Play Root Fossil as if it were a Basic Pokémon. While in play, Root Fossil counts as a [C] Pokémon (as well as a Trainer card). Root Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Root Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Root Fossil from play." +
-          "At any time between turns, remove 1 damage counter from Root Fossil."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(LegendMaker.ROOT_FOSSIL_80, this);
       case DARKNESS_ENERGY_94:
-      return specialEnergy (this, [[C]]) {
-        text "If the Pokémon [D] Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect unless the Attacking Pokémon is Darkness or has Dark in its name. [D] Energy provides [D] Energy. (Doesn't count as a basic Energy card.)"
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy (RubySapphire.DARKNESS_ENERGY_93, this);
       case METAL_ENERGY_95:
-      return specialEnergy (this, [[C]]) {
-        text "Damage done by attacks to the Pokémon that [M] Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that [M] Energy is attached to isn't Metal. [M] Energy provides [M] Energy. (Doesn't count as a basic Energy card.)"
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy (RubySapphire.METAL_ENERGY_94, this);
       case MULTI_ENERGY_96:
-      return specialEnergy (this, [[C]]) {
-        text "Attach Multi Energy to 1 of your Pokémon. While in play, Multi Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) Multi Energy provides [C] Energy when attached to a Pokémon that already has Special Energy cards attached to it."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(FireRedLeafGreen.MULTI_ENERGY_103, this);
       case DARK_METAL_ENERGY_97:
-      return specialEnergy (this, [[C]]) {
-        text "Attach Dark [M] Energy to 1 of your Pokémon. While in play, Dark [M] Energy provides Darkness and [M] Energy, but provides only 1 Energy at a time. (Doesn't count as a basic energy card when not in play and has no effect other than providing Energy.)"
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(TeamRocketReturns.DARK_METAL_ENERGY_94, this);
       case DELTA_RAINBOW_ENERGY_98:
       return specialEnergy (this, [[C]]) {
         text "δ Rainbow Energy provides [C] Energy. While attached to a Pokémon that has δ on its card, δ Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.)"
@@ -2214,6 +2253,15 @@ public enum HolonPhantoms implements LogicCardInfo {
         onMove {to->
         }
         allowAttach {to->
+        }
+        getEnergyTypesOverride {
+          if (!self || !self.topPokemonCard)
+            return [[C] as Set]
+          boolean cond1 = self.topPokemonCard.name.contains("δ")
+          if (cond1)
+            return [[R, D, F, G, W, Y, L, M, P, N] as Set]
+          else
+            return [[C] as Set]
         }
       };
       case CRAWDAUNT_EX_99:
@@ -2261,7 +2309,18 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            // TODO
+
+            afterDamage {
+              if (defending.evolution && confirm("Discard 2 Energy to devolve Defending?")) {
+                discardSelfEnergy(C, C)
+                def top = defending.topPokemonCard
+                bc "$top Devolved"
+                defending.cards.remove(top)
+                opp.deck.add(top)
+                shuffleDeck(null, TargetPlayer.OPPONENT)
+                devolve(pcs, top)
+              }
+            }
           }
         }
       };
@@ -2272,7 +2331,11 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Driving Howl", {
           text "Once during your turn (before your attack), you may choose 1 of the Defending Pokémon and switch it with 1 of your opponent's Benched Pokémon. Your opponent chooses the Benched Pokémon to switch. This power can't be used if Mightyena ex is affected by a Special Condition."
           actionA {
-            // TODO
+            checkNoSPC()
+            checkLastTurn()
+            assert opp.bench : "Opponent has no Benched"
+            powerUsed()
+            sw(opp.active, opp.bench.oppSelect("New Active Pokemon"))
           }
         }
         move "Sharp Fang", {
@@ -2419,5 +2482,4 @@ public enum HolonPhantoms implements LogicCardInfo {
       return null;
     }
   }
-
 }

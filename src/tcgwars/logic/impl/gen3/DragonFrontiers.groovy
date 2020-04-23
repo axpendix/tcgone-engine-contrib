@@ -3,6 +3,8 @@ package tcgwars.logic.impl.gen3;
 import tcgwars.logic.effect.gm.PlayTrainer;
 
 import tcgwars.logic.impl.gen3.Deoxys;
+import tcgwars.logic.impl.gen3.DeltaSpecies;
+import tcgwars.logic.impl.gen3.HolonPhantoms;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.TeamRocketReturns;
 import tcgwars.logic.impl.gen4.HeartgoldSoulsilver;
@@ -204,7 +206,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Holon Veil", {
           text "Treat each Basic Pokémon and Evolution card in your deck, in your discard pile, in your hand, and in play as a Pokémon that has δ on its card."
           delayedA {
-            // TODO
+            // TODO›
           }
         }
         move "Delta Circle", {
@@ -414,7 +416,20 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Volunteer", {
           text "Once during your turn (before your attack), you may remove 4 damage counters from Ninetales and discard Ninetales from Vulpix. If you do, search your deck for Ninetales or Ninetales ex and put it onto Vulpix (this counts as evolving Vulpix). Shuffle your deck afterward."
           actionA {
-            // TODO
+            checkLastTurn()
+            powerUsed()
+            heal 40, self
+
+            if (!self.slatedToKO) {
+              def top=self.topPokemonCard
+              bc "$top Devolved"
+              top.discard()
+              devolve(defending, top)
+            }
+
+            def tar = my.deck.search("Evolves from $self", {it.cardTypes.is(EVOLUTION) && self.name == it.predecessor})
+            if (tar) evolve(self, tar.first(), OTHER)
+            shuffleDeck()
           }
         }
         move "Trick Tail", {
@@ -433,7 +448,14 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Armor", {
           text "If your opponent has 5 or more cards in his or her hand, any damage done to Pinsir by attacks is reduced by 30 (after applying Weakness and Resistance)."
           delayedA {
-            // TODO
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to == self && it.dmg.value && it.notNoEffect && opp.hand.size() >= 5) {
+                  bc "Armor -30"
+                  it.dmg -= hp(30)
+                }
+              }
+            }
           }
         }
         move "Delta Call", {
@@ -738,7 +760,12 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Power Circulation", {
           text "Once during your turn (before your attack), you may search your discard pile for a basic Energy card, show it to your opponent, and put it on top of your deck. If you do, put 1 damage counter on Mantine. This power can't be used if Mantine is affected by a Special Condition."
           actionA {
-            // TODO
+            checkNoSPC()
+            checkLastTurn()
+            powerUsed()
+            assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energy in Discard"
+            my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 1, "Move one to the top of your deck").moveTo(addToTop: true, my.deck)
+            damage 10, self
           }
         }
         move "Spiral Drain", {
@@ -757,11 +784,11 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Dig up", {
           text "Once during your turn, when you play Quagsire from your hand to evolve 1 of your Pokémon, you may search your discard pile for up to 2 Pokémon Tool cards, show them to your opponent, and put them into your hand."
           onActivate {r->
-            // TODO
             checkLastTurn()
-            if (r==PLAY_FROM_HAND && my.deck && confirm("Use Shady Dealings?")) {
+            if (r==PLAY_FROM_HAND && my.discard.filterByType(POKEMON_TOOL) && bg.em().retrieveObject("Dig_Up")!=bg.turnCount && confirm("Use Dig Up?")) {
               powerUsed()
-              my.discard.filterByType(POKEMON_TOOL).select(min: 0, max: 2, "Select Pokémon Tool cards to move to your hand.").moveTo(my.deck)
+              bg.em().storeObject("Dig_Up", bg.turnCount)
+              my.discard.filterByType(POKEMON_TOOL).select(min: 0, max: 2, "Select Pokémon Tool cards to move to your hand.").moveTo(my.hand)
             }
           }
         }
@@ -801,8 +828,13 @@ public enum DragonFrontiers implements LogicCardInfo {
         weakness R
         pokePower "Tropical Heal", {
           text "Once during your turn, when you put Tropius from your hand onto your Bench, you may remove all Special Conditions, Imprison markers, and Shock-wave markers from your Pokémon."
-          actionA {
-            // TODO
+          onActivate {
+            if (it==PLAY_FROM_HAND && bg.em().retrieveObject("Tropical_Heal")!=bg.turnCount && confirm("Use Tropical Heal?")) {
+              bg.em().storeObject("Tropical_Heal",bg.turnCount)
+              powerUsed()
+
+              // TODO
+            }
           }
         }
         move "Grind", {
@@ -1310,7 +1342,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            damage 10, opp.all.select()
           }
         }
       };
@@ -1742,26 +1774,28 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each Pokémon in play that has δ on its card in play (both yours and your opponent's) has no Weakness and can't use any Poké-Powers."
         def eff
+        def eff2
         onPlay {
-          // TODO
           eff = getter (GET_WEAKNESSES, self) { h->
-            h.object.clear()
+            if (h.effect.target.name.contains("δ")) {
+              h.object.clear()
+            }
+          }
+          eff2 = getter (IS_ABILITY_BLOCKED) { Holder h ->
+            if (h.effect.target.name.contains("δ")) {
+              if (h.effect.ability instanceof PokePower) {
+                h.object=true
+              }
+            }
           }
         }
         onRemoveFromPlay {
           eff.unregister()
+          eff2.unregister()
         }
       };
       case HOLON_MENTOR_75:
-      return supporter (this) {
-        text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
-          "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Search your deck for up to 3 Basic Pokémon that each has 100 HP or less, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
-        onPlay {
-          // TODO
-        }
-        playRequirement{
-        }
-      };
+      return copy(DeltaSpecies.HOLON_MENTOR_93, this);
       case ISLAND_HERMIT_76:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -1787,7 +1821,16 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward. Or, search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand."
         onPlay {
-          // TODO
+          def choice = choose([1,2],['Search Deck', 'Search Discard'], "Choose 1")
+
+          if (choice == 1) {
+            my.deck.search(max:2, "Choose up to 2 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
+            shuffleDeck()
+          } else {
+            if (my.discard.filterByType(BASIC_ENERGY)) {
+              my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 2).moveTo(my.hand)
+            }
+          }
         }
         playRequirement{
         }
@@ -1796,7 +1839,20 @@ public enum DragonFrontiers implements LogicCardInfo {
       return itemCard (this) {
         text "Flip 2 coins. If both are heads, search your discard pile for a Basic Pokémon or Evolution card, show it to your opponent, and put it into your hand. If both are tails, search your discard pile for a Trainer card, show it to your opponent, and put it into your hand."
         onPlay {
-          // TODO
+          def allHeads = true
+          def allTails = true
+          flip 2, {
+            allTails = false
+          }, {
+            allHeads = false
+          }
+
+          if (allHeads && my.discard.filterByType(POKEMON)) {
+            my.discard.filterByType(POKEMON).select(count: 1, "Search your discard pile for a Basic Pokémon (or Evolution card)").moveTo(my.hand)
+          }
+          else if (allTails && my.discard.filterByType(TRAINER)) {
+            my.discard.filterByType(TRAINER).select(count: 1, "Search your discard pile for a Trainer").moveTo(my.hand)
+          }
         }
         playRequirement{
         }
@@ -1823,61 +1879,17 @@ public enum DragonFrontiers implements LogicCardInfo {
       case SWITCH_83:
       return copy(FireRedLeafGreen.SWITCH_102, this);
       case HOLON_ENERGY_FF_84:
-      return specialEnergy (this, [[C]]) {
-        text "Holon Energy FF provides [C] Energy. If the Pokémon that Holon Energy FF is attached to also has a basic [R] Energy card attached to it, that Pokémon has no Weakness. If the Pokémon that Holon Energy FF is attached to also has a basic [F] Energy card attached to it, damage done by that Pokémon's attack isn't affected by Resistance. Ignore these effects if Holon Energy FF is attached to Pokémon-ex."
-        onPlay {reason->
-        // TODO
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(DeltaSpecies.HOLON_ENERGY_FF_104, this);
       case HOLON_ENERGY_GL_85:
-      return specialEnergy (this, [[C]]) {
-        text "Holon Energy GL provides [C] Energy. If the Pokémon that Holon Energy GL is attached to also has a basic [G] Energy card attached to it, that Pokémon can't be affected by any Special Conditions. If the Pokémon that Holon Energy GL is attached to also has a basic [L] Energy card attached to it, damage done by your opponent's Pokémon-ex is reduced by 10. Ignore these effects if Holon Energy GL is attached to Pokémon-ex."
-        onPlay {reason->
-        // TODO
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(DeltaSpecies.HOLON_ENERGY_GL_105, this);
       case HOLON_ENERGY_WP_86:
-      return specialEnergy (this, [[C]]) {
-        text "Holon Energy WP provides [C] Energy. If the Pokémon that Holon Energy WP is attached to also has a basic [W] Energy card attached to it, prevent all effects of attacks, excluding damage, done to that Pokémon by your opponent's Pokémon. If the Pokémon that Holon Energy WP is attached to also has a basic [P] Energy card attached to it, that Pokémon's Retreat Cost is 0. Ignore these effects if Holon Energy WP is attached to Pokémon-ex."
-        onPlay {reason->
-        // TODO
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(DeltaSpecies.HOLON_ENERGY_WP_106, this);
       case BOOST_ENERGY_87:
-      return copy (Deoxys.BOOST_ENERGY_93, this);
+      return copy(Deoxys.BOOST_ENERGY_93, this);
       case DELTA_RAINBOW_ENERGY_88:
-      return specialEnergy (this, [[C]]) {
-        text "δ Rainbow Energy provides [C] Energy. While attached to a Pokémon that has δ on its card, δ Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.)"
-        onPlay {reason->
-        // TODO
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(HolonPhantoms.DELTA_RAINBOW_ENERGY_98, this);
       case SCRAMBLE_ENERGY_89:
-      return copy(Deoxys.SCRAMBLE_ENERGY_95)
+      return copy(Deoxys.SCRAMBLE_ENERGY_95, this);
       case ALTARIA_EX_DELTA_90:
       return evolution (this, from:"Swablu", hp:HP100, type:W, retreatCost:1) {
         weakness C
@@ -1886,7 +1898,12 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Extra Boost", {
           text "Once during your turn (before your attack), you may attach a basic Energy card from your hand to 1 of your Stage 2 Pokémon-ex. This power can't be used if Altaria ex is affected by a Special Condition."
           actionA {
-            // TODO
+            checkLastTurn()
+            assert my.hand.filterByType(BASIC_ENERGY) : "No Basic Energy in Hand"
+            assert my.all.findAll { it.ex && it.STAGE2 } : "No Stage 2 Pokemon-ex in play"
+            powerUsed()
+            def tar = my.all.findAll { it.ex && it.STAGE2 }.select()
+            attachEnergyFrom(basic: true, my.hand, tar)
           }
         }
         move "Healing Light", {
@@ -2026,12 +2043,15 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
-            // TODO
 
-            // getterA (GET_WEAKNESSES, self) {h->
-
-            //   h.object.clear()
-            // }
+            delayed {
+              getter (GET_WEAKNESSES, self) {h->
+                h.object.clear()
+              }
+              unregisterAfter 2
+              after SWITCH, self, { unregister() }
+              after EVOLVE, self, { unregister() }
+            }
           }
         }
       };

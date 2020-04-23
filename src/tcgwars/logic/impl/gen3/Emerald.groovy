@@ -342,7 +342,8 @@ public enum Emerald implements LogicCardInfo {
             energyCost F, C, C
             attackRequirement {}
             onAttack {
-              noWrDamage 40, defending
+              damage 40
+              dontApplyResistance()
             }
           }
 

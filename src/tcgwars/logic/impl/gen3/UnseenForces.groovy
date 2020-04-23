@@ -2221,19 +2221,7 @@ public enum UnseenForces implements LogicCardInfo {
       case ENERGY_RECYCLE_SYSTEM_81:
       return copy(Dragon.ENERGY_RECYCLE_SYSTEM_84, this);
       case ENERGY_REMOVAL_2_82:
-      return itemCard (this) {
-        text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponent's Pokémon and discard it."
-        onPlay {
-          def tar = opp.all.findAll {it.cards.energyCount(C)}
-          def pcs = tar.select("Discard energy from")
-          targeted (pcs, TRAINER_CARD) {
-            pcs.cards.filterByType(ENERGY).select("Discard").discard()
-          }
-        }
-        playRequirement{
-          assert opp.all.findAll {it.cards.energyCount(C)} : "No Energy Cards attached to the Opponent's Pokemon"
-        }
-      };
+      return copy(FireRedLeafGreen.ENERGY_REMOVAL_2_89, this);
       case ENERGY_ROOT_83:
       return pokemonTool (this) {
         text "Attach Energy Root to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Energy Root is attached to is Pokémon-ex or has Dark or an owner in its name, discard Energy Root." +
@@ -2261,7 +2249,7 @@ public enum UnseenForces implements LogicCardInfo {
         }
       };
       case ENERGY_SWITCH_84:
-      return copy(BlackWhite.ENERGY_SWITCH_94, this);
+      return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
       case FLUFFY_BERRY_85:
       return pokemonTool (this) {
         text "Attach Fluffy Berry to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Fluffy Berry is attached to is Pokémon-ex or has Dark or an owner in its name, discard Fluffy Berry." +

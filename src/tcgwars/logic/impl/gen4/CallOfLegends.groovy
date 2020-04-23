@@ -437,7 +437,8 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost F, F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              dontApplyResistance()
             }
           }
 
@@ -993,7 +994,8 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              dontApplyResistance()
             }
           }
           move "Double Spin", {
@@ -1297,7 +1299,8 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              dontApplyResistance()
             }
           }
 

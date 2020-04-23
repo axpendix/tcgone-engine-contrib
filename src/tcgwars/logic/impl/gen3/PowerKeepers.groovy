@@ -1,5 +1,14 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.impl.gen1.FossilNG;
+import tcgwars.logic.impl.gen2.Aquapolis;
+import tcgwars.logic.impl.gen3.Deoxys;
+import tcgwars.logic.impl.gen3.Dragon;
+import tcgwars.logic.impl.gen3.Emerald;
+import tcgwars.logic.impl.gen3.UnseenForces;
+import tcgwars.logic.impl.gen3.LegendMaker;
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -236,7 +245,6 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Synergy Effect", {
           text "If Drake's Stadium is in play, remove 1 damage counter from Altaria between turns."
           delayedA {
-            // TODO
             if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Drake's Stadium") {
               heal 10, self
             }
@@ -309,7 +317,12 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Firestarter", {
           text "Once during your turn (before your attack), you may attach a [R] Energy card from your discard pile to 1 of your Benched Pokémon. This power can't be used if Blaziken is affected by a Special Condition."
           actionA {
-            // TODO
+            checkNoSPC()
+            checkLastTurn()
+            assert my.bench : "No benched Pokemon"
+
+            attachEnergyFrom(type: R, my.discard, my.bench)
+            powerUsed()
           }
         }
         move "Fire Stream", {
@@ -377,7 +390,12 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Energy Draw", {
           text "Once during your turn (before your attack), you may discard 1 Energy card from your hand. Then draw up to 3 cards from your deck. This power can't be used if Delcatty is affected by a Special Condition."
           actionA {
-            // TODO
+            checkNoSPC()
+            checkLastTurn()
+            assert my.hand.filterByType(ENERGY) : "No Energy in hand"
+            my.hand.filterByType(ENERGY).select("Discard").discard()
+            draw choose([0,1,2,3], ["0","1","2","3"], "Draw how many cards?", 3)
+            powerUsed()
           }
         }
         move "Max Energy Source", {
@@ -697,7 +715,17 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            // TODO
+            int max = self.cards.energyCount(C)
+            while (max-- > 0) {
+              def tar = opp.all.findAll{ it.evolution }
+              if(!tar) break
+              def pcs = tar.select("Choose which Pokemon to devolve", false)
+              if(!pcs) break
+              def top=pcs.topPokemonCard
+              bc "$top Devolved"
+              moveCard(top, opp.hand)
+              devolve(pcs, top)
+            }
           }
         }
         move "Hydrocannon", {
@@ -748,7 +776,16 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Synergy Effect", {
           text "If Phoebe's Stadium is in play, prevent all damage done to Sableye by attacks from your opponent's Pokémon-ex."
           delayedA {
-            // TODO
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to == self && it.from.topPokemonCard.cardTypes.is(EX)) {
+                  if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Phoebe's Stadium") {
+                    bc "Synergy Effect prevents all damage"
+                    it.dmg=hp(0)
+                  }
+                }
+              }
+            }
           }
         }
         move "Down Draw", {
@@ -887,7 +924,13 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Poison Structure", {
           text "Once during your turn (before your attack), if Sidney's Stadium is in play, you may choose 1 of the Defending Pokémon. That Pokémon is now Poisoned. This power can't be used if Cacturne is affected by a Special Condition."
           actionA {
-            // TODO
+            checkNoSPC()
+            checkLastTurn()
+            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Sidney's Stadium") {
+              def tar = opp.all.select("Select who to Poison")
+              apply POISONED, tar
+            }
+            powerUsed()
           }
         }
         move "Pin Missile", {
@@ -950,7 +993,16 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Synergy Effect", {
           text "If Glacia's Stadium is in play, any damage done to Glalie by attacks from your opponent's Pokémon is reduced by 30 (after applying Weakness and Resistance)."
           delayedA {
-            // TODO
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to == self && it.dmg.value && it.notNoEffect) {
+                  if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Glacia's Stadium") {
+                    bc "Synergy Effect -30"
+                    it.dmg -= hp(30)
+                  }
+                }
+              }
+            }
           }
         }
         move "Powder Snow", {
@@ -1296,8 +1348,10 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            flip {
-              // TODO
+            if (opp.bench) {
+              flip {
+                moveEnergy(basic: true, defending, opp.bench)
+              }
             }
           }
         }
@@ -1368,7 +1422,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            // TODO
+            reduceDamageNextTurn(hp(10), thisMove)
           }
         }
       };
@@ -1391,9 +1445,10 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Fast Evolution", {
           text "Search your deck for an Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
+          attackRequirement { assert my.deck : "Deck is empty" }
           onAttack {
-            // TODO
+            my.deck.search(max: 1, "Search for an evolution", cardTypeFilter(EVOLUTION)).moveTo(my.hand)
+            shuffleDeck()
           }
         }
         move "Double Scratch", {
@@ -1770,15 +1825,7 @@ public enum PowerKeepers implements LogicCardInfo {
         }
       };
       case BATTLE_FRONTIER_71:
-      return stadium (this) {
-        text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
-          "Each player's [C] Evolved Pokémon, Darkness Evolved Pokémon, and Metal Evolved Pokémon can't use any Poké-Powers or Poké-Bodies."
-        onPlay {
-          // TODO
-        }
-        onRemoveFromPlay{
-        }
-      };
+      return copy(Emerald.BATTLE_FRONTIER_75, this);
       case DRAKE_S_STADIUM_72:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -1790,33 +1837,11 @@ public enum PowerKeepers implements LogicCardInfo {
         }
       };
       case ENERGY_RECYCLE_SYSTEM_73:
-      return itemCard (this) {
-        text "Search your discard pile for basic Energy cards. You may either show 1 basic Energy card to your opponent and put it into your hand, or show 3 basic Energy cards to your opponent and shuffle them into your deck."
-        onPlay {
-          // TODO
-        }
-        playRequirement{
-        }
-      };
+      return copy(Dragon.ENERGY_RECYCLE_SYSTEM_84, this);
       case ENERGY_REMOVAL_2_74:
-      return itemCard (this) {
-        text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponent's Pokémon and discard it."
-        onPlay {
-          // TODO
-
-        }
-        playRequirement{
-        }
-      };
+      return copy(FireRedLeafGreen.ENERGY_REMOVAL_2_89, this);
       case ENERGY_SWITCH_75:
-      return itemCard (this) {
-        text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
-        onPlay {
-          // TODO
-        }
-        playRequirement{
-        }
-      };
+      return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
       case GLACIA_S_STADIUM_76:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -1828,23 +1853,9 @@ public enum PowerKeepers implements LogicCardInfo {
         }
       };
       case GREAT_BALL_77:
-      return itemCard (this) {
-        text "Search your deck for a Basic Pokémon (excluding Pokémon-ex) and put it onto your Bench. Shuffle your deck afterward."
-        onPlay {
-          // TODO
-        }
-        playRequirement{
-        }
-      };
+      return copy(FireRedLeafGreen.GREAT_BALL_92, this);
       case MASTER_BALL_78:
-      return itemCard (this) {
-        text "Look at the top 7 cards from your deck. Choose a Basic Pokémon or Evolution card from those cards, show it to your opponent, and put it into your hand. Put the other 6 cards back on top of your deck. Shuffle your deck afterward."
-        onPlay {
-          // TODO
-        }
-        playRequirement{
-        }
-      };
+      return copy(Deoxys.MASTER_BALL_88, this);
       case PHOEBE_S_STADIUM_79:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -1856,25 +1867,9 @@ public enum PowerKeepers implements LogicCardInfo {
         }
       };
       case PROFESSOR_BIRCH_80:
-      return supporter (this) {
-        text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
-          "Draw cards from your deck until you have 6 cards in your hand."
-        onPlay {
-          // TODO
-        }
-        playRequirement{
-        }
-      };
+      return copy(Deoxys.PROFESSOR_BIRCH_82, this);
       case SCOTT_81:
-      return supporter (this) {
-        text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
-          "Search your deck for up to 3 cards in any combination of Supporter cards and Stadium cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
-        onPlay {
-          // TODO
-        }
-        playRequirement{
-        }
-      };
+      return copy(Emerald.SCOTT_84, this);
       case SIDNEY_S_STADIUM_82:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -1890,113 +1885,51 @@ public enum PowerKeepers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Draw a number of cards up to the number of your opponent's Pokémon in play. If you have 7 or more cards (including this one) in your hand, you can't play this card."
         onPlay {
-          // TODO
+          draw opp.all.size()
         }
-        playRequirement{
+        playRequirement {
+          assert my.deck : "Deck is empty"
+          assert my.hand.size() < 7 : "Hand size greater than 7"
         }
       };
       case CLAW_FOSSIL_84:
-      return itemCard (this) {
-        text "Play Claw Fossil as if it were a Basic Pokémon. While in play, Claw Fossil counts as a [C] Pokémon (as well as a Trainer card). Claw Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Claw Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Claw Fossil from play." +
-          "If Claw Fossil is your Active Pokémon and is damaged by an opponent's attack (even if Claw Fossil is Knocked Out), put 1 damage counter on the Attacking Pokémon."
-        onPlay {
-          // TODO
-        }
-        playRequirement{
-        }
-      };
+      return copy(LegendMaker.CLAW_FOSSIL_78, this);
       case MYSTERIOUS_FOSSIL_85:
-      return itemCard (this) {
-        text "Play Mysterious Fossil as if it were a Basic Pokémon. While in play, Mysterious Fossil counts as a [C] Pokémon (as well as a Trainer card). Mysterious Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Mysterious Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Mysterious Fossil from play."
-        onPlay {
-          // TODO
-        }
-        playRequirement{
-        }
-      };
+      return copy(FossilNG.MYSTERIOUS_FOSSIL, this);
       case ROOT_FOSSIL_86:
-      return itemCard (this) {
-        text "Play Root Fossil as if it were a Basic Pokémon. While in play, Root Fossil counts as a [C] Pokémon (as well as a Trainer card). Root Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Root Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Root Fossil from play." +
-          "At any time between turns, remove 1 damage counter from Root Fossil."
-        onPlay {
-          // TODO
-        }
-        playRequirement{
-        }
-      };
+      return copy(LegendMaker.ROOT_FOSSIL_80, this);
       case DARKNESS_ENERGY_87:
-      return specialEnergy (this, [[C]]) {
-        text "If the Pokémon [D] Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect unless the Attacking Pokémon is Darkness or has Dark in its name. [D] Energy provides [D] Energy. (Doesn't count as a basic Energy card.)"
-        onPlay {reason->
-          // TODO
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(RubySapphire.DARKNESS_ENERGY_93, this);
       case METAL_ENERGY_88:
-      return specialEnergy (this, [[C]]) {
-        text "Damage done by attacks to the Pokémon that [M] Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that [M] Energy is attached to isn't Metal. [M] Energy provides [M] Energy. (Doesn't count as a basic Energy card.)"
-        onPlay {reason->
-        // TODO
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(RubySapphire.METAL_ENERGY_94, this);
       case MULTI_ENERGY_89:
-      return specialEnergy (this, [[C]]) {
-        text "Attach Multi Energy to 1 of your Pokémon. While in play, Multi Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) Multi Energy provides [C] Energy when attached to a Pokémon that already has Special Energy cards attached to it."
-        onPlay {reason->
-          // TODO
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(FireRedLeafGreen.MULTI_ENERGY_103, this);
       case CYCLONE_ENERGY_90:
-      return specialEnergy (this, [[C]]) {
-        text "Cyclone Energy provides [C] Energy. When you attach this card from your hand to your Active Pokémon, switch 1 of the Defending Pokémon with 1 of your opponent's Benched Pokémon. Your opponent chooses the Benched Pokémon to switch."
-        onPlay {reason->
-          // TODO
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(UnseenForces.CYCLONE_ENERGY_99, this);
       case WARP_ENERGY_91:
-      return specialEnergy (this, [[C]]) {
-        text "Warp Energy provides [C] Energy. When you attach this card from your hand to your Active Pokémon, switch that Pokémon with 1 of your Benched Pokémon."
-        onPlay {reason->
-          // TODO
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(Aquapolis.WARP_ENERGY_147, this)
       case ABSOL_EX_92:
       return basic (this, hp:HP100, type:D, retreatCost:1) {
         weakness F
         resistance P, MINUS30
         pokePower "Cursed Eyes", {
           text "Once during your turn, when you put Absol ex from your hand onto your Bench, you may move 3 damage counters from 1 of your opponent's Pokémon to another of his or her Pokémon."
-          actionA {
-            // TODO
+          onActivate {r->
+            checkLastTurn()
+            if (r==PLAY_FROM_HAND && confirm("Use Cursed Eyes?")) {
+              powerUsed()
+
+              def numMoved = 0
+              while (numMoved != 3) {
+                def pcs = opp.all.findAll{it.numberOfDamageCounters}.select("Choose the Pokémon to move a damage counter from", false)
+                if (!pcs) break;
+                def tar = opp.all.select("Select Pokémon to recieve the Damage Counter", false)
+                if (!tar) break;
+                pcs.damage-=hp(10)
+                tar.damage+=hp(10)
+                numMoved++
+              }
+            }
           }
         }
         move "Psychic Pulse", {
@@ -2050,7 +1983,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            // TODO
+
             if (confirm("Discard a [P] attached to Claydol ex?")) {
               discardSelfEnergy(P)
               discardDefendingEnergy(C)
@@ -2066,7 +1999,20 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Psychic Protector", {
           text "If Flygon ex is damaged by an opponent's attack, you may discard up to 4 cards from your hand. If you do, any damage done to Flygon ex is reduced by 10 for each card you discarded."
           delayedA {
-            // TODO
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to == self && it.dmg.value && it.notNoEffect) {
+                  if (my.hand && confirm("Activate Psychic Protector?")) {
+                    def maxDiscard = Math.min(4, my.hand.size())
+                    def toDiscard = my.hand.select(min: 0, max: maxDiscard, "Discard")
+                    def reductionAmount = toDiscard.size() * 10
+
+                    bc "Psychic Protector -$reductionAmount"
+                    it.dmg -= hp(reductionAmount)
+                  }
+                }
+              }
+            }
           }
         }
         move "Slashing Strike", {
@@ -2086,7 +2032,20 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Magnetic Redraw", {
           text "Once during your turn (before your attack), if Metagross ex is your Active Pokémon, you may use this power. Each player shuffles his or her hand into his or her deck. Then, each player draws 4 cards. This power can't be used if Metagross ex is affected by a Special Condition."
           actionA {
-            // TODO
+            checkLastTurn()
+            checkNoSPC()
+            assert self.active : "$self is not an Active Pokémon"
+            powerUsed()
+
+            opp.hand.moveTo(hidden:true, opp.deck)
+            shuffleDeck(null, TargetPlayer.OPPONENT)
+            draw 4, TargetPlayer.OPPONENT
+
+            if (my.hand.size()) {
+              my.hand.moveTo(hidden:true, my.deck)
+              shuffleDeck()
+            }
+            draw 4
           }
         }
         move "Scanblast", {
@@ -2114,7 +2073,10 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 150
-            // TODO
+
+            if (my.deck) {
+              my.deck.subList(0, 5).discard()
+            }
           }
         }
         move "Hydro Wave", {
@@ -2247,8 +2209,14 @@ public enum PowerKeepers implements LogicCardInfo {
         weakness W
         pokePower "Crimson Ray", {
           text "Once during your turn, when you put Flareon Star from your hand onto your Bench, you may use this power. Each Active Pokémon (both yours and your opponent's) is now Burned."
-          actionA {
-            // TODO
+          onActivate {r->
+            checkLastTurn()
+            if (r==PLAY_FROM_HAND && confirm("Use Crimson Ray?")) {
+              powerUsed()
+
+              apply BURNED, opp.active, SRC_ABILITY
+              apply BURNED, self, SRC_ABILITY
+            }
           }
         }
         move "Flamethrower", {
@@ -2267,8 +2235,13 @@ public enum PowerKeepers implements LogicCardInfo {
         resistance M, MINUS30
         pokePower "Yellow Ray", {
           text "Once during your turn, when you put Jolteon Star from your hand onto your Bench, you may put 1 damage counter on each Active Pokémon (both yours and your opponent's)."
-          actionA {
-            // TODO
+          onActivate {r->
+            checkLastTurn()
+            if (r==PLAY_FROM_HAND && confirm("Use Yellow Ray?")) {
+              powerUsed()
+              directDamage 10, opp.active, SRC_ABILITY
+              directDamage 10, my.active, SRC_ABILITY
+            }
           }
         }
         move "Agility", {
@@ -2286,8 +2259,16 @@ public enum PowerKeepers implements LogicCardInfo {
         weakness L
         pokePower "Blue Ray", {
           text "Once during your turn, when you put Vaporeon Star from your hand onto your Bench, you may remove all Special Conditions and 3 damage counters from each Active Pokémon (both yours and your opponent's)."
-          actionA {
-            // TODO
+          onActivate {r->
+            if (r==PLAY_FROM_HAND) {
+              if (confirm("Use Blue Ray?")) {
+                powerUsed()
+                clearSpecialCondition(opp.active, Source.SRC_ABILITY)
+                clearSpecialCondition(my.active, Source.SRC_ABILITY)
+                heal 30, my.active, Source.SRC_ABILITY
+                heal 30, opp.active, Source.SRC_ABILITY
+              }
+            }
           }
         }
         move "Whirlpool", {

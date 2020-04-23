@@ -113,7 +113,8 @@ public enum PopSeries6 implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              dontApplyResistance()
             }
           }
           move "Aura Sphere", {

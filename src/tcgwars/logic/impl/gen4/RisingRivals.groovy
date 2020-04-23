@@ -642,7 +642,8 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost P, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              dontApplyResistance()
             }
           }
 
@@ -935,7 +936,8 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost F, F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              dontApplyResistance()
             }
           }
 

@@ -2533,19 +2533,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
       };
       case GREAT_BALL_90:
-      return basicTrainer (this) {
-        text "Search your deck for a Basic Pokémon (excluding Pokémon-ex) and put it onto your Bench. Shuffle your deck afterward."
-        onPlay {
-          my.deck.search(count : 1,"Search your deck for a Basic Pokémon (excluding Pokémon-ex)",{it.cardTypes.is(BASIC) && it.cardTypes.isNot(EX)}).each{
-            deck.remove(it)
-            benchPCS(it)
-          }
-        }
-        playRequirement{
-          assert my.bench.notFull : "Bench is full"
-          assert my.deck : "Deck is Empty"
-        }
-      };
+      return copy(FireRedLeafGreen.GREAT_BALL_92, this);
       case HOLON_FARMER_91:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +

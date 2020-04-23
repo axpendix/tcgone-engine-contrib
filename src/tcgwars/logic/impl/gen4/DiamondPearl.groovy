@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen4;
 
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen5.PlasmaStorm;
 
 import static tcgwars.logic.card.HP.*;
@@ -313,7 +314,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              dontApplyResistance()
             }
           }
           move "Aura Sphere", {
@@ -2424,13 +2426,7 @@ public enum DiamondPearl implements LogicCardInfo {
           }
         };
       case ENERGY_SWITCH_107:
-        return basicTrainer (this) {
-          text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+      return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
       case NIGHT_POKEMON_CENTER_108:
         return basicTrainer (this) {
           text "Choose 1 of your Pokémon. Flip 2 coins. If both are heads, remove all damage counters from that Pokémon. If both are tails, discard all Energy cards attached to that Pokémon."

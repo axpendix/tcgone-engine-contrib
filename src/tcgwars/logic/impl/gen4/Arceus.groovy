@@ -644,7 +644,8 @@ public enum Arceus implements LogicCardInfo {
             energyCost F, F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              dontApplyResistance()
             }
           }
 

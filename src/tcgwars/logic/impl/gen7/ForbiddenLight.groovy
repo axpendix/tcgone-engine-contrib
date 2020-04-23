@@ -1818,9 +1818,9 @@ public enum ForbiddenLight implements LogicCardInfo {
             text "As long as this Pokémon is on your Bench, your [F] Pokémon’s attacks do 20 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker.owner == self.owner && self.benched) {
-                  bg.dm().each{
-                    if(it.from.types.contains(F) && it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
+                if (ef.attacker.owner == self.owner && self.benched) {
+                  bg.dm().each {
+                    if (it.from.types.contains(F) && it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
                       bc "Princess’s Cheers +20"
                       it.dmg += hp(20)
                     }

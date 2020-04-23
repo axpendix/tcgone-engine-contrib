@@ -3266,7 +3266,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Headbutt Bounce", {
@@ -3361,7 +3361,12 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C, C, C, C
           attackRequirement {}
           onAttack {
-            // TODO
+            flip {
+              targeted (defending) {
+                defending.cards.reverse().discard()
+                removePCS(defending)
+              }
+            }
           }
         }
       };
@@ -3445,23 +3450,41 @@ public enum RebelClash implements LogicCardInfo {
       case BURNING_SCARF_155:
       return pokemonTool (this) {
         text "Attach a Pokemon Tool to 1 of your Pokemon that doesn’t already have a Pokemon Tool attached to it. If the [R] Pokemon this card is attached to is your Active Pokemon and is damaged by an opponent’s attack, the Attacking Pokemon is now Burned. You may play as many Item cards as you like during your turn (before your attack)."
+        def eff
         onPlay {reason->
-          // TODO
+          eff = delayed(priority: LAST) {
+            before APPLY_ATTACK_DAMAGES, {
+              bg().dm().each {
+                if (it.to == self && self.active && self.types.contains(R) && it.dmg.value && bg.currentTurn==self.owner.opposite) {
+                  bc "Burning Scarf activates"
+                  apply BURNED, it.from, SRC_ABILITY
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case CURSED_SHOVEL_156:
       return pokemonTool (this) {
         text "Attach a Pokemon Tool to 1 of your Pokemon that doesn’t already have a Pokemon Tool attached to it. If the Pokemon this Tool is attached to is Knocked Out by damage from an opponent’s attack, discard the top 2 cards of your opponent’s deck. You may play as many Item cards as you like during your turn (before your attack)."
+        def eff
         onPlay {reason->
-          // TODO
+          eff = delayed {
+            before (KNOCKOUT,self) {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+                bc "Cursed Shovel activates"
+                if (opp.deck) {
+                  opp.deck.subList(0, 2).discard()
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case DAN_157:
