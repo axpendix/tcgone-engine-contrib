@@ -739,7 +739,15 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Delicious Scent", {
           text "Once during your turn, you may flip a coin. If heads, choose 1 of your opponent’s Benched Basic Pokemon and switch it with their Active Pokemon."
           actionA {
-            // TODO
+            checkLastTurn()
+            assert opp.bench.notEmpty() : "Opponent bench empty"
+            powerUsed()
+            flip{
+              def pcs = opp.bench.select("New active")
+              targeted (pcs, SRC_ABILITY) {
+              sw(opp.active, pcs, SRC_ABILITY)
+              }
+            }
           }
         }
         move "Solar Beam", {
