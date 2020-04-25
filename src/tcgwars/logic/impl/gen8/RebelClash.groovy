@@ -740,10 +740,10 @@ public enum RebelClash implements LogicCardInfo {
           text "Once during your turn, you may flip a coin. If heads, choose 1 of your opponent’s Benched Basic Pokemon and switch it with their Active Pokemon."
           actionA {
             checkLastTurn()
-            assert opp.bench.notEmpty() : "Opponent bench empty"
+            assert opp.bench.findAll { it.basic } : "Opponent bench has no basic pokemon"
             powerUsed()
             flip{
-              def pcs = opp.bench.select("New active")
+              def pcs = opp.bench.findAll { it.basic}.select("New active")
               targeted (pcs, SRC_ABILITY) {
               sw(opp.active, pcs, SRC_ABILITY)
               }
