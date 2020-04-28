@@ -3360,9 +3360,11 @@ public enum RebelClash implements LogicCardInfo {
           text "Search your deck for up to 2 Pokemon with a [F] Resistance, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "There are no more cards in your deck."}
+            assert my.deck : "There are no more cards in your deck."
+          }
           onAttack {
             deck.search (max: 2 ,{it.cardTypes.is(POKEMON) &&  it.asPokemonCard().resistance.contains(F)}).showToOpponent("Chosen Pokémon cards.").moveTo(my.hand)
+            shuffleDeck()
           }
         }
         move "Sharp Wing", {
