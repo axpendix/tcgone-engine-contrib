@@ -4425,7 +4425,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           }
           playRequirement {
             def hand = my.hand.getExcludedList(thisCard).size() >= 1
-            assert (hand || my.discard.filterByType(SUPPORTER)) : "Not enough cards in hand and no supporters in bench."
+            assert (hand || my.discard.filterByType(SUPPORTER)) : "Not enough cards in hand and no Supporter cards in discard."
           }
         };
       case DRAGONIUM_Z_DRAGON_CLAW_190:
