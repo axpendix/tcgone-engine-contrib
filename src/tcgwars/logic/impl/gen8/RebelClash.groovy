@@ -1041,8 +1041,8 @@ public enum RebelClash implements LogicCardInfo {
           energyCost R, C
           attackRequirement {}
           onAttack {
-            // TODO
             damage 30
+            damage lastDamage.value
           }
         }
         move "Grand Fire Ball", {
