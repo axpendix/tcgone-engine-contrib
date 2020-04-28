@@ -512,7 +512,17 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            // TODO
+            delayed{
+              before ATTACH_ENERGY, self.owner.opposite.pbg.active, {
+                if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.active) {
+                  wcu "Pattern Menace prevents attaching energy"
+                  prevent()
+                }
+              }
+              unregisterAfter 2
+              after SWITCH, defending, {unregister()}
+              after EVOLVE, defending, {unregister()}
+            }
           }
         }
       };
