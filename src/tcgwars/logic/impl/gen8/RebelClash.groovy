@@ -308,7 +308,7 @@ public enum RebelClash implements LogicCardInfo {
           text "This Pokemon can evolve during your first turn or the turn you play it."
           delayedA {
             before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
-              if (bg.turnCount == 2) prevent()
+              prevent()
             }
           }
         }
@@ -328,7 +328,7 @@ public enum RebelClash implements LogicCardInfo {
           text "This Pokemon can evolve during your first turn or the turn you play it."
           delayedA {
             before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
-              if (bg.turnCount == 2) prevent()
+              prevent()
             }
           }
         }
