@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen8;
 
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.impl.gen4.HeartgoldSoulsilver;
 import tcgwars.logic.impl.gen8.SwordShield;
 
 import static tcgwars.logic.card.HP.*;
@@ -924,7 +925,6 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
-            // TODO
             if (opp.deck) {
               if (opp.deck.subList(0,1).filterByType(ENERGY)) damage 10
               opp.deck.subList(0,1).discard()
@@ -974,8 +974,11 @@ public enum RebelClash implements LogicCardInfo {
         weakness W
         bwAbility "Protection Lamp", {
           text "Each of your Pokemon that has any Energy attached to it has no Weakness."
-          actionA {
-            // TODO
+          getterA (GET_WEAKNESSES) { h->
+            if (h.effect.target == self && self.cards.energyCount(C)) {
+              def list = h.object as List<Weakness>
+              list.clear()
+            }
           }
         }
         move "Mirage Flare", {
@@ -1015,8 +1018,10 @@ public enum RebelClash implements LogicCardInfo {
         weakness W
         bwAbility "Field Runner", {
           text "If there is a Stadium card in play, this Pokemon has no Retreat Cost."
-          actionA {
-            // TODO
+          getterA (GET_RETREAT_COST, BEFORE_LAST, self) { h->
+            if (bg.stadiumInfoStruct) {
+              h.object = 0
+            }
           }
         }
         move "Crimson Legs", {
@@ -1037,6 +1042,7 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             // TODO
+            damage 30
           }
         }
         move "Grand Fire Ball", {
@@ -1164,7 +1170,10 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 110
-            // TODO
+
+            afterDamage {
+              moveEnergy(self, my.bench)
+            }
           }
         }
       };
@@ -1176,7 +1185,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost W, C, C
           attackRequirement {}
           onAttack {
-            // TODO
+            damage 10+50*defending.retreatCost
           }
         }
         move "Hypno Splash", {
@@ -1303,7 +1312,12 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            // TODO
+
+            afterDamage {
+              if (defending.cards.energyCount(C) && confirm("Return an Energy from your Opponent's Active Pokemon to their hand?")) {
+                defending.cards.filterByType(ENERGY).select(count:1).moveTo(opp.hand)
+              }
+            }
           }
         }
         move "Grand Bullet", {
@@ -1524,6 +1538,16 @@ public enum RebelClash implements LogicCardInfo {
           text "If you draw this card from your deck at the beginning of your turn and there is room on your Bench, instead of putting it into your hand, you may play it directly onto your Bench."
           actionA {
             // TODO
+            // def text="Once during your turn (before your attack), if this Pokémon is the last card in your hand, you may play it onto your Bench. If you do, draw 3 cards."
+            // assert thisCard.player.pbg.hand.size() == 1 : "Hand size is not 1"
+            // assert thisCard.player.pbg.hand.contains(thisCard) : "Not in hand"
+            // assert thisCard.player.pbg.bench.notFull : "Bench full"
+            // assert bg.turnCount!=lastTurn : "Already used ability"
+            // assert checkGlobalAbility(thisCard) : "Blocked ability"
+            // bc "$thisCard used Elusive Master"
+            // my.hand.remove(thisCard)
+            // def pcs = benchPCS(thisCard)
+            // draw 3
           }
         }
         move "Elekick", {
@@ -1900,8 +1924,20 @@ public enum RebelClash implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Perish Body", {
           text "If this Pokemon is your Active Pokemon and is Knocked Out by damage from an opponent’s attack, flip a coin. If heads, the Attacking Pokemon is Knocked Out."
-          actionA {
-            // TODO
+          delayedA {
+            before (KNOCKOUT, self) {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+                delayed(inline: true){
+                  after KNOCKOUT, self, {
+                    flip {
+                      new Knockout(ef.attacker).run(bg)
+                      bc "Perish Body activates"
+                    }
+                  }
+                }
+
+              }
+            }
           }
         }
         move "Corner", {
@@ -2030,7 +2066,23 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Mind Hat", {
           text "Once during your turn, you may have each player discard 1 card from their hand. (Your opponent discards first. If either player has no cards in their hand, that player does not discard.)"
           actionA {
-            // TODO
+            checkLastTurn()
+            powerUsed()
+            if (opp.hand && oppConfirm("Mind Hat - Discard a card from your hand?")) {
+              if (opp.hand.size() > 1) {
+                opp.hand.oppSelect(count:1, "Which card to discard?").discard()
+              } else {
+                opp.hand.discard()
+              }
+            }
+
+            if (my.hand && confirm("Mind Hat - Discard a card from your hand?")) {
+              if (my.hand.size() > 1) {
+                my.hand.select(count:1, "Which card to discard?").discard()
+              } else {
+                my.hand.discard()
+              }
+            }
           }
         }
         move "Regretful Droplets", {
@@ -2280,7 +2332,19 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 180
-            // TODO
+            afterDamage {
+              delayed {
+                before CHECK_ATTACK_REQUIREMENTS, {
+                  if (ef.attacker.owner == self && ef.move.name == "Meteor Assault") {
+                    wcu "Meteor Assault prevent this attack from being used as long as $self is Active"
+                    prevent()
+                  }
+                }
+
+                after SWITCH, self, { unregister() }
+                after EVOLVE, self, { unregister() }
+              }
+            }
           }
         }
       };
@@ -2485,7 +2549,20 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Tar Generator", {
           text "Once during your turn, you may search your discard pile for up to 1 [R] Energy and 1 [F] Energy and attach them to your Pokemon in any way you like."
           actionA {
-            // TODO
+            checkLastTurn()
+            powerUsed()
+            if (my.discard.filterByEnergyType(R)) {
+              my.discard.filterByEnergyType(R).select(min:0, max:1).each {
+                def tar = my.all.select("Attach Energy to?")
+                attachEnergy(tar, it)
+              }
+            }
+            if (my.discard.filterByEnergyType(F)) {
+              my.discard.filterByEnergyType(F).select(min:0, max:1).each {
+                def tar = my.all.select("Attach Energy to?")
+                attachEnergy(tar, it)
+              }
+            }
           }
         }
         move "Burning Avalanche", {
@@ -2790,12 +2867,17 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Malamar V", hp:HP310, type:D, retreatCost:2) {
         weakness G
         move "Giganto Jammer", {
-          text "180 damage. Your opponent reveals their hand. Choose 1 card that you find there and put it on the bottom of your opponent’s deck. When your Pokemon VMAX is Knocked Out, your opponent takes 3 Prize cards."
+          text "180 damage. Your opponent reveals their hand. Choose 1 card that you find there and put it on the bottom of your opponent’s deck."
           energyCost D, D, C
           attackRequirement {}
           onAttack {
             damage 180
-            // TODO
+
+            afterDamage {
+              if (opp.hand) {
+                opp.hand.select("Choose 1 card to put on the bottom of their Deck").moveTo(opp.deck)
+              }
+            }
           }
         }
       };
@@ -2844,8 +2926,16 @@ public enum RebelClash implements LogicCardInfo {
         weakness G
         bwAbility "Dark Limitation", {
           text "As long as this Pokemon is your Active Pokemon, your opponent’s Active Pokemon pays [C] more to use its attacks."
-          actionA {
-            // TODO
+          getterA GET_MOVE_LIST, { h ->
+            if (h.effect.target.active && self.active) {
+              def list = []
+              for (move in h.object) {
+                def copy = move.shallowCopy()
+                copy.energyCost.add(C)
+                list.add(copy)
+              }
+              h.object=list
+            }
           }
         }
         move "Energy Press", {
@@ -2865,6 +2955,15 @@ public enum RebelClash implements LogicCardInfo {
           text "Once during your turn (before your attack), you may discard 2 cards from your hand. If you do, search your deck for 1 Galarian Perrserker, reveal it, and put it into your hand. Then, shuffle your deck."
           actionA {
             // TODO
+            checkLastTurn()
+            powerUsed()
+            assert my.deck : "Deck is empty"
+            assert my.hand.size() >= 2 : "Requires 2 or more Cards in hand"
+
+            my.deck.search {
+              it.name.contains("Galarian Perrserker")
+            }.moveTo(self.cards)
+            shuffleDeck()
           }
         }
         move "Scratch", {
@@ -3003,7 +3102,9 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            // TODO
+            def energyCount = self.cards.energyCount(C)
+            my.deck.search(max:energyCount, "Choose up to $energyCount Trainer card(s)", cardTypeFilter(TRAINER)).moveTo(my.hand)
+            shuffleDeck()
           }
         }
         move "Metal Claw", {
@@ -3055,8 +3156,15 @@ public enum RebelClash implements LogicCardInfo {
         resistance G, MINUS30
         bwAbility "Big Shield", {
           text "As long as this Pokemon is in play, any damage done to your Pokemon by opponent’s attacks is reduced by 30. You can’t use more than 1 Big Shield Ability."
-          actionA {
-            // TODO
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to.owner == self.owner && it.notNoEffect && it.dmg.value) {
+                  bc "Big Shield -30"
+                  it.dmg -= hp(30)
+                }
+              }
+            }
           }
         }
         move "Power Edge", {
@@ -3215,8 +3323,12 @@ public enum RebelClash implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Lucky Match", {
           text "Once during your turn, when you play this card from your hand onto your Bench, you may flip a coin. If heads, choose a Supporter card from your discard pile, reveal it, and put it into your hand."
-          actionA {
-            // TODO
+          onActivate { r->
+            if (r==PLAY_FROM_HAND && my.discard.filterByType(SUPPORTER) && bg.em().retrieveObject("Lucky Match")!=bg.turnCount && confirm("Use Lucky Match?")) {
+              powerUsed()
+              bg.em().storeObject("Lucky Match", bg.turnCount)
+              my.discard.filterByType(SUPPORTER).select("Choose a Supporter to move to your hand.").moveTo(my.hand)
+            }
           }
         }
         move "Glide", {
@@ -3299,9 +3411,11 @@ public enum RebelClash implements LogicCardInfo {
         move "Burrow", {
           text "Discard 1 card from the top of your opponent’s deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.deck : "Opponent's Deck is empty"
+          }
           onAttack {
-            // TODO
+            opp.deck.subList(0, 1).discard()
           }
         }
         move "Headbutt Bounce", {
@@ -3319,9 +3433,14 @@ public enum RebelClash implements LogicCardInfo {
         move "Mountain Toss Rush", {
           text "Discard up to 6 cards from the top of your deck. This attack does 30 damage for each card discarded in this way."
           energyCost C, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-            // TODO
+            def num =  choose([0,1,2,3,4,5,6], ["0","1","2","3","4","5","6"], "Discard how many from the top of your deck?", 6)
+            num = Math.min(num, deck.size())
+            my.deck.subList(0,num).discard()
+            damage 30*num
           }
         }
         move "Headbutt Bounce", {
@@ -3537,36 +3656,37 @@ public enum RebelClash implements LogicCardInfo {
       return itemCard (this) {
         text "Search your deck for 2 [W] Energy, reveal them, and put them into your hand. Then, shuffle your deck. You may play as many Item cards as you like during your turn (before your attack)."
         onPlay {
-          // TODO
+          my.deck.search(max: 2, "Search for 2 [W] energy", energyFilter(W)).moveTo(my.hand)
         }
         playRequirement{
+          assert my.deck : "Deck is empty"
         }
       };
       case FULL_HEAL_159:
-      return itemCard (this) {
-        text "Remove all Special Conditions from your Active Pokemon. You may play as many Item cards as you like during your turn (before your attack)."
-        onPlay {
-          // TODO
-        }
-        playRequirement{
-        }
-      };
+      return copy(HeartgoldSoulsilver.FULL_HEAL_93, this);
       case GALAR_MINE_160:
       return basicTrainer (this) {
-        text "Stadium The Retreat Cost of each Active Pokemon (both yours and your opponent’s) is [C][C] more. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+        text "The Retreat Cost of each Active Pokemon (both yours and your opponent’s) is [C][C] more. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+        def eff
         onPlay {
-            // TODO
+          eff = getter (GET_RETREAT_COST) { Holder h->
+            h.object += 2
+          }
         }
-        playRequirement{
+        onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case MILO_161:
       return supporter (this) {
         text "Discard up to 2 cards from your hand. Then draw twice as many cards as you discarded. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          // TODO
+          def num = my.hand.select(max:2).discard().size()
+          draw num*2
         }
-        playRequirement{
+        playRequirement {
+          def hand = my.hand.getExcludedList(thisCard).size() >= 1
+          assert (hand || my.deck) : "Not enough cards in Hand or Deck is empty."
         }
       };
       case NUGGET_162:
@@ -3575,16 +3695,20 @@ public enum RebelClash implements LogicCardInfo {
         onPlay {
           // TODO
         }
-        playRequirement{
+        playRequirement {
         }
       };
       case OLEANA_163:
       return supporter (this) {
         text "Discard 2 cards from your hand in order to play this card. Your opponent reveals their hand. Choose a Trainer you find there and put it at the bottom of your opponent’s deck. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          // TODO
+          my.hand.getExcludedList(thisCard).select(count:2, "Discard two cards to discard.").discard()
+          opp.hand.showToMe("Opponent's hand")
+          opp.hand.filterByType(TRAINER).select(count:1).moveTo(opp.deck)
         }
-        playRequirement{
+        playRequirement {
+          def hand = my.hand.getExcludedList(thisCard).size() >= 2
+          assert (hand || my.opp.hand) : "Not enough cards in Hand or Opponent's hand is empty."
         }
       };
       case POKEBALL_164:
@@ -3593,18 +3717,24 @@ public enum RebelClash implements LogicCardInfo {
       return itemCard (this) {
         text "Put 1 of your Pokemon (excluding Pokemon V/GX) into your hand. (Discard all cards attached to that Pokemon.) You may play as many Item cards during your turn as you like (before your attack). (Note -  The term “Pokemon V” includes both Pokemon V and Pokemon VMAX.)"
         onPlay {
-          // TODO
+          def validTargets = my.all.findAll { it.topPokemonCard.cardTypes.is(VMAX) || it.topPokemonCard.cardTypes.is(POKEMON_V) || it.topPokemonCard.cardTypes.is(GX) }
+          def tar = validTargets.select("Which Pokemon to put back into your hand?")
+          removePCS(tar)
+          tar.moveTo(my.hand)
         }
-        playRequirement{
+        playRequirement {
+          assert my.all.findAll { it.topPokemonCard.cardTypes.is(VMAX) || it.topPokemonCard.cardTypes.is(POKEMON_V) || it.topPokemonCard.cardTypes.is(GX) } : "No Pokemon V/VMAX/GX on Bench"
         }
       };
       case SKYLA_166:
       return supporter (this) {
         text "Search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          // TODO
+          my.deck.search(max: 1, "Choose a Trainer card", cardTypeFilter(TRAINER)).moveTo(my.hand)
+          shuffleDeck()
         }
-        playRequirement{
+        playRequirement {
+          assert my.deck : "Deck is empty"
         }
       };
       case SONIA_167:
