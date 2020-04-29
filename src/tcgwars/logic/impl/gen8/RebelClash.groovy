@@ -533,6 +533,18 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
+        move "U-Turn", {
+          text "40 damage. Switch this Pokémon with 1 of your Benched Pokémon."
+          energyCost C, C
+          onAttack{
+            damage 40
+            afterDamage {
+              if(my.bench){
+                sw self, my.bench.select("Choose your new active Pokémon.")
+              }
+            }
+          }
+        }
       };
       case SNOVER_12:
       return basic (this, hp:HP090, type:G, retreatCost:3) {
