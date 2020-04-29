@@ -3364,7 +3364,7 @@ public enum RebelClash implements LogicCardInfo {
           }
           onAttack {
             my.deck.search (max: 2, {
-              it.asPokemonCard().resistances.contains(F)
+              it.cardTypes.is(POKEMON) && it.asPokemonCard().resistances.find{res-> res.type==F}
             }).showToOpponent("Chosen Pokémon cards.").moveTo(my.hand)
             shuffleDeck()
           }
