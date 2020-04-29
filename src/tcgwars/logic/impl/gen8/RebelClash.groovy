@@ -3668,11 +3668,45 @@ public enum RebelClash implements LogicCardInfo {
       return supporter (this) {
         text "Draw 2 cards. Play Rock-Paper-Scissors with your opponent. If you win, draw 2 more cards. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          // TODO
           draw 2
-          flip { draw 2 }
+
+          def winnerDetermined = false
+          def myWin = false
+
+          while (!winnerDetermined) {
+            def myChoice = choose([1,2,3], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
+            def opponentChoice =,oppChoose([4,5,6], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
+
+            if (myChoice == 1) {
+              if (opponentChoice == 5) {
+                winnerDetermined = true
+              } else if (opponentChoice == 6) {
+                winnerDetermined = true
+                myWin = true
+              }
+            } else if (myChoice == 2) {
+              if (opponentChoice == 4) {
+                winnerDetermined = true
+                myWin = true
+              } else if (opponentChoice == 6) {
+                winnerDetermined = true
+              }
+            } else {
+              if (opponentChoice == 4) {
+                winnerDetermined = true
+              } else if (opponentChoice == 5) {
+                winnerDetermined = true
+                myWin = true
+              }
+            }
+          }
+
+          if (myWin) {
+            draw 2
+          }
         }
-        playRequirement{
+        playRequirement {
+          assert my.deck : "Deck is empty"
         }
       };
       case FULL_BUCKET_158:
