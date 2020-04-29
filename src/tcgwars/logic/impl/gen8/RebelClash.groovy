@@ -3363,7 +3363,7 @@ public enum RebelClash implements LogicCardInfo {
             assert my.deck : "There are no more cards in your deck."
           }
           onAttack {
-            deck.search (max: 2 ,{Card it -> it.cardTypes.is(POKEMON) &&  it.asPokemonCard().resistances.contains(F)}).showToOpponent("Chosen Pokémon cards.").moveTo(my.hand)
+            deck.search (max: 2 ,{it.cardTypes.is(POKEMON) && it.asPokemonCard().resistances.contains(F)}).showToOpponent("Chosen Pokémon cards.").moveTo(my.hand)
             shuffleDeck()
           }
         }
