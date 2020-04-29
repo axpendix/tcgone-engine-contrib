@@ -1099,8 +1099,8 @@ public enum RebelClash implements LogicCardInfo {
               if (pcs && pcs.cards.energyCount(C) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
                 bc "$name prevents effect"
                 prevent()
-          }
-        }
+              }
+            }
           }
         }
         move "Triple Spin", {
@@ -3843,52 +3843,53 @@ public enum RebelClash implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "This card provides [C] Energy only while attached to a Pokemon. When attaching this card from your hand to 1 of your Pokemon, search your deck for a Basic Pokemon and put it on your Bench. Then, shuffle your deck."
         onPlay {reason->
-        // TODO
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
+          if (my.deck && my.bench.notFull) {
+            my.deck.search (count: 1, { it.cardTypes.is(BASIC) }).each {
+              my.deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
+          }
         }
       };
       case HORROR_PSYCHIC_ENERGY_172:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[P]]) {
         text "This card provides 1 [P] Energy while it’s attached to a Pokemon. When the [P] Pokemon this card is attached to is your Active Pokemon and is damaged by an opponents attack, put 2 damage counters on the Attacking Pokemon."
-        onPlay {reason->
-        // TODO
+        def eff
+        onPlay { reason->
+          eff = delayed(priority: LAST) {
+            before APPLY_ATTACK_DAMAGES, {
+              bg().dm().each {
+                if (it.to == self && self.types.contains(P) && it.dmg.value && bg.currentTurn==self.owner.opposite
+                  && self.active) {
+                  bc "Horror Psychic Energy activates"
+                  apply CONFUSED, it.from, SRC_ABILITY
+                  directDamage(20, ef.attacker as PokemonCardSet)
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case SPEED_LIGHTNING_ENERGY_173:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[L]]) {
         text "This card provides 1 [L] Energy while it’s attached to a Pokemon. When you attach this card from your hand to an [L] Pokemon, draw 2 cards"
         onPlay {reason->
-        // TODO
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
+          if (reason == PLAY_FROM_HAND && self.types.contains(L)) {
+            draw 2
+          }
         }
       };
       case TWIN_ENERGY_174:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[C,C]]) {
         text "This card provides 2 [C] Energy. If this card is attached to a Pokemon V or Pokemon GX, this card provides 1 [C] Energy instead."
-        onPlay {reason->
-        // TODO
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
+        getEnergyTypesOverride {
+          if (self && (self.cardTypes.contains(POKEMON_V) || self.cardTypes.contains(VMAX) || self.cardTypes.contains(GX)) {
+            return [[C] as Set]
+          }
         }
       };
       case RILLABOOM_V_175:
