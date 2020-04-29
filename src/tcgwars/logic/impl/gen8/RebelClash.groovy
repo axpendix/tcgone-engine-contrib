@@ -3391,7 +3391,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
       };
-      case TRANQUIL_144:
+      case TRANQUILL_144:
       return evolution (this, from:"Pidove", hp:HP080, type:C, retreatCost:1) {
         weakness L
         resistance F, MINUS30
