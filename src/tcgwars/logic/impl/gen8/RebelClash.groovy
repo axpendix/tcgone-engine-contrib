@@ -2966,15 +2966,15 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Evolution Roar", {
           text "Once during your turn (before your attack), you may discard 2 cards from your hand. If you do, search your deck for 1 Galarian Perrserker, reveal it, and put it into your hand. Then, shuffle your deck."
           actionA {
-            // TODO
             checkLastTurn()
             powerUsed()
             assert my.deck : "Deck is empty"
             assert my.hand.size() >= 2 : "Requires 2 or more Cards in hand"
 
+            my.hand.select(count: 2, "Select 2 cards to discard").discard()
             my.deck.search {
               it.name.contains("Galarian Perrserker")
-            }.moveTo(self.cards)
+            }.moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -3758,36 +3758,79 @@ public enum RebelClash implements LogicCardInfo {
       return supporter (this) {
         text "Search your deck for up to 2 Basic Pokemon or up to 2 Basic Energy, reveal them, and put them into your hand. Then, shuffle your deck. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          // TODO
+          def choice = choose([0,1],["Search deck for up to 2 Basic Pokemon","Search deck for up to 2 Basic Energy"],"What do you want to do?")
+          if (choice == 0) {
+            deck.search(max:2, cardTypeFilter(BASIC)).moveTo(hand)
+          } else {
+            deck.search(max:2, cardTypeFilter(BASIC_ENERGY)).moveTo(hand)
+          }
+          shuffleDeck()
         }
-        playRequirement{
+        playRequirement {
+          assert my.deck : "Deck is empty"
         }
       };
       case TOOL_SCRAPPER_168:
       return itemCard (this) {
         text "Discard up to 2 Pokemon Tools from either player’s Pokemon. You may play as many Item cards during your turn as you like (before your attack)."
         onPlay {
-          // TODO
+          def i = 2
+          while (i-- > 0) {
+            def tar = all.findAll {it.cards.hasType(POKEMON_TOOL)}
+            if (tar) {
+              def sel = tar.select("Select Pokemon to discard a Pokemon Tool from (cancel to stop)", i == 1)
+              if (sel) {
+                def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokemon Tool from $sel")
+                targeted (sel, TRAINER_CARD) {
+                  list.discard()
+                }
+              }
+            }
+          }
         }
         playRequirement{
+          assert all.findAll {it.cards.hasType(POKEMON_TOOL)} : "No Pokemon Tools in play"
         }
       };
       case TRAINING_COURT_169:
-      return basicTrainer (this) {
-        text "Stadium Once during each player’s turn, that player may choose a basic Energy card from their discard pile, reveal it, and put it into their hand. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+      return stadium (this) {
+        text "Once during each player’s turn, that player may choose a basic Energy card from their discard pile, reveal it, and put it into their hand. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+        def lastTurn=0
+        def actions=[]
         onPlay {
-          // TODO
+          actions=action("Stadium: Training Court") {
+            assert my.deck : "Deck is empty"
+            assert my.hand : "You don't have cards in your hand"
+            assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "No Basic Energies in Discard"
+            assert lastTurn != bg().turnCount : "Already used"
+            bc "Used Training Court effect"
+            lastTurn = bg().turnCount
+            my.discard.findAll(cardTypeFilter(BASIC_ENERGY)).select("Which to move to hand?").moveTo(my.hand)
+          }
         }
-        playRequirement{
+        onRemoveFromPlay {
+          actions.each { bg().gm().unregisterAction(it) }
         }
       };
       case TURRFIELD_170:
-      return itemCard (this) {
+      return stadium (this) {
         text "Once during each player’s turn, that player may search their deck for a [G] Evolution Pokemon, reveal it, and put it into their hand. Then, that player shuffles their deck. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+        def lastTurn=0
+        def actions=[]
         onPlay {
-          // TODO
+          actions=action("Stadium: Turrfield") {
+            assert my.deck : "Deck is empty"
+            assert lastTurn != bg().turnCount : "Already used"
+            bc "Used Turrfield effect"
+            lastTurn = bg().turnCount
+            my.deck.search("Choose a [G] Evolution Pokemon", {
+              it.cardTypes.is(EVOLUTION) && it.cardTypes.contains(G)
+            }).moveTo(my.hand)
+            shuffleDeck()
+          }
         }
-        playRequirement{
+        onRemoveFromPlay {
+          actions.each { bg().gm().unregisterAction(it) }
         }
       };
       case CAPTURE_ENERGY_171:
