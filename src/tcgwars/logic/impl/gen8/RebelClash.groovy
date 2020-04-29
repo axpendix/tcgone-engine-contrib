@@ -3682,7 +3682,7 @@ public enum RebelClash implements LogicCardInfo {
 
           while (!winnerDetermined) {
             def myChoice = choose([1,2,3], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
-            def opponentChoice =,oppChoose([4,5,6], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
+            def opponentChoice = oppChoose([4,5,6], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
 
             if (myChoice == 1) {
               if (opponentChoice == 5) {
