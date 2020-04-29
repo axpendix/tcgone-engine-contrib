@@ -1093,8 +1093,14 @@ public enum RebelClash implements LogicCardInfo {
         weakness M
         bwAbility "Barrier Free", {
           text "As long as this Pokemon is in play, prevent effects of opponent’s attacks done to all of your Pokemon with Energy attached to them. (This does not remove existing effects.)"
-          actionA {
-            // TODO
+          delayedA {
+            before null, null, Source.ATTACK, {
+              def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+              if (pcs && pcs.cards.energyCount(C) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
+                bc "$name prevents effect"
+                prevent()
+          }
+        }
           }
         }
         move "Triple Spin", {
