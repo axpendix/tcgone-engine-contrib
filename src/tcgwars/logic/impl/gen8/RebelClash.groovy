@@ -3768,7 +3768,7 @@ public enum RebelClash implements LogicCardInfo {
       return supporter (this) {
         text "Discard up to 2 cards from your hand. Then draw twice as many cards as you discarded. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          def num = my.hand.select(max:2).discard().size()
+          def num = my.hand.getExcludedList(thisCard).select(min: 1, max:2, "Discard up to 2 cards and draw twice as many").discard().size()
           draw num*2
         }
         playRequirement {
