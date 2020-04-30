@@ -705,7 +705,8 @@ public enum RebelClash implements LogicCardInfo {
             damage 50
             afterDamage {
               if (confirm("Shuffle this Pokemon and all cards back into deck?")) {
-                self.cards.moveTo(hand)
+                self.cards.moveTo(my.deck)
+                shuffleDeck()
                 removePCS(self)
               }
             }
