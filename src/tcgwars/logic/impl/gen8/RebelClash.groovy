@@ -485,7 +485,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 60*self.prizeCardSet.takenCount
+            damage 60*my.prizeCardSet.takenCount
           }
         }
         move "Mega Drain", {
