@@ -750,7 +750,7 @@ public enum RebelClash implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               directDamage(20, opp.all.select())
-              qself.cards.moveTo(my.deck)
+              self.cards.moveTo(my.deck)
               removePCS(self)
               shuffleDeck()
             }
