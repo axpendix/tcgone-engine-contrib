@@ -601,7 +601,7 @@ public enum RebelClash implements LogicCardInfo {
             assert my.discard.filterByType(BASIC) : "Discard has no Basics"
           }
           onAttack {
-            def card = my.discard.filterByType(BASIC).select().first()
+            def card = my.discard.filterByType(BASIC).select("Choose a Basic Pokémon to put onto your Bench").first()
             my.discard.remove(card)
             benchPCS(card)
           }
