@@ -719,24 +719,24 @@ public enum RebelClash implements LogicCardInfo {
       case APPLIN_20:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
-        move "Withdraw", {
-          text "Flip a coin. If heads, prevent all damage from attacks done to this Pokemon during your opponent’s next turn."
-          energyCost C
-          attackRequirement {}
-          onAttack {
-            flip { preventAllDamageNextTurn() }
-          }
-        }
-      };
-      case APPLIN_21:
-      return basic (this, hp:HP040, type:G, retreatCost:1) {
-        weakness R
         move "Continuous Tumble", {
           text "10+ damage. Flip a coin until you get tails. This attack does 30 more damage times the number of heads."
           energyCost G, C
           attackRequirement {}
           onAttack {
             flipUntilTails { damage 30 }
+          }
+        }
+      };
+      case APPLIN_21:
+      return basic (this, hp:HP040, type:G, retreatCost:1) {
+        weakness R
+        move "Withdraw", {
+          text "Flip a coin. If heads, prevent all damage from attacks done to this Pokemon during your opponent’s next turn."
+          energyCost C
+          attackRequirement {}
+          onAttack {
+            flip { preventAllDamageNextTurn() }
           }
         }
       };
