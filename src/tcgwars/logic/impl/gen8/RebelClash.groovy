@@ -458,12 +458,13 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Top Entry", {
           text "If you draw this card from your deck at the beginning of your turn and there is room on your Bench, instead of putting it into your hand, you may play it directly onto your Bench."
           globalAbility {Card thisCard->
-            after DRAW_CARD, {
-              if (ef.card.is(thisCard) && bg.em().currentEffectStack.find{it instanceof BeginTurn}
-              && thisCard.player.pbg.bench.notFull && checkGlobalAbility(thisCard)
-              && confirm("Activate Lombre's Top Entry?", thisCard.player)) {
-
-                def pcs = benchPCS(thisCard)
+            delayed {
+              after DRAW_CARD, {
+                if (ef.card.is(thisCard) && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.bench.notFull && checkGlobalAbility(thisCard) && confirm("Activate Lombre's Top Entry?", thisCard.player)) {
+                  thisCard.player.pbg.hand.remove(thisCard)
+                  bc "Lombre's Top Entry activated"
+                  benchPCS(thisCard)
+                }
               }
             }
           }
