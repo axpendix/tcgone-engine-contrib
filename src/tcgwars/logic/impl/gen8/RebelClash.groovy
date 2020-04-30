@@ -44,8 +44,8 @@ public enum RebelClash implements LogicCardInfo {
   METAPOD_2 ("Metapod", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   BUTTERFREE_3 ("Butterfree", 3, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   SCYTHER_4 ("Scyther", 4, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
-  HERACROSS_5 ("Heracross", 5, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
-  SHUCKLE_6 ("Shuckle", 6, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+  SHUCKLE_5 ("Shuckle", 6, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+  HERACROSS_6 ("Heracross", 5, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
   LOTAD_7 ("Lotad", 7, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
   LOMBRE_8 ("Lombre", 8, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   LUDICOLO_9 ("Ludicolo", 9, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
@@ -385,7 +385,34 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
       };
-      case HERACROSS_5:
+      case SHUCKLE_5:
+      return basic (this, hp:HP080, type:G, retreatCost:1) {
+        weakness R
+        move "Gather Berries", {
+          text "Shuffle 5 basic Energy cards from your discard pile into your deck."
+          energyCost C
+          attackRequirement {
+            assert my.discard.filterByType(BASIC_ENERGY) : "Discard has no Basic Energies"
+          }
+          onAttack {
+            def energies = my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 5, "Select up to 5 Basic Energy cards to shuffle into your deck.")
+            energies.moveTo(my.deck)
+            if (energies) {
+              shuffleDeck()
+            }
+          }
+        }
+        move "Bind", {
+          text "50 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
+          energyCost G, C, C
+          attackRequirement {}
+          onAttack {
+            damage 50
+            flip { apply PARALYZED }
+          }
+        }
+      };
+      case HERACROSS_6:
       return basic (this, hp:HP130, type:G, retreatCost:2) {
         weakness R
         move "Push Down", {
@@ -403,31 +430,6 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 110
-          }
-        }
-      };
-      case SHUCKLE_6:
-      return basic (this, hp:HP080, type:G, retreatCost:1) {
-        weakness R
-        move "Gather Berries", {
-          text "Shuffle 5 basic Energy cards from your discard pile into your deck."
-          energyCost C
-          attackRequirement {
-            assert my.discard.filterByType(BASIC_ENERGY) : "Discard has no Basic Energies"
-          }
-          onAttack {
-            def energies = my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 5, "Select up to 5 Basic Energy cards to shuffle into your deck.")
-            energies.moveTo(my.deck)
-            shuffleDeck()
-          }
-        }
-        move "Bind", {
-          text "50 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
-          energyCost G, C, C
-          attackRequirement {}
-          onAttack {
-            damage 50
-            flip { apply PARALYZED }
           }
         }
       };
