@@ -746,7 +746,7 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Apple Drop", {
           text "Once during your turn, you may put 2 damage counters on 1 of your opponent’s Pokemon. Then, shuffle this Pokemon and all cards attached to it into your deck."
           actionA {
-            if(confirm("Use Apple Drop?"){
+            if(confirm("Use Apple Drop?")){
               checkLastTurn()
               powerUsed()
               directDamage(20, opp.all.select())
