@@ -473,7 +473,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost G, C, C
           attackRequirement {}
           onAttack {
-            flip { damage 40 }
+            flip 3, { damage 40 }
           }
         }
       };
