@@ -373,7 +373,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            increasedBaseDamageNextTurn("Speed Sickle", hp(50))
+            increasedBaseDamageNextTurn("Speed Sickle", hp(70))
           }
         }
         move "Speed Sickle", {
