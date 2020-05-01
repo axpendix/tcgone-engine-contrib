@@ -2894,14 +2894,14 @@ public enum RebelClash implements LogicCardInfo {
         move "Drag Off", {
           text "Choose 1 of your opponent’s Benched Pokemon and switch it with their Active Pokemon. This attack does 30 damage to the new Active Pokemon."
           energyCost D, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench : "Opponent has no Benched Pokemon"
+          }
           onAttack {
             def target = defending
-            if (opp.bench) {
-              target = opp.bench.select("Select the new active")
-              sw defending, target
-              damage 30, target
-            }
+            target = opp.bench.select("Select the new active")
+            sw defending, target
+            damage 30, target
           }
         }
         move "Brain Shake", {
