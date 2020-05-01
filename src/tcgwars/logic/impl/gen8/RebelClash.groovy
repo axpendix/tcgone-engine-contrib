@@ -824,7 +824,7 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            if (defending.hasModernAbility()) {
+            if (defending.specialConditions) {
               damage 90
             }
           }
