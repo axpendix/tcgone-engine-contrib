@@ -2833,11 +2833,11 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Poisonous Puddle", {
           text "Once during your turn, if there is a Stadium in play, you may leave your opponents Active Pokemon Poisoned."
           actionA {
+            assert bg.stadiumInfoStruct : "There is no Stadium in play"
             checkLastTurn()
             powerUsed()
-            if (bg.stadiumInfoStruct) {
-              apply POISONED, opp.active, SRC_ABILITY
-            }
+
+            apply POISONED, opp.active, SRC_ABILITY
           }
         }
         move "Sludge Bomb", {
