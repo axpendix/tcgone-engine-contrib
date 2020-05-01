@@ -3877,8 +3877,6 @@ public enum RebelClash implements LogicCardInfo {
         def actions=[]
         onPlay {
           actions=action("Stadium: Training Court") {
-            assert my.deck : "Deck is empty"
-            assert my.hand : "You don't have cards in your hand"
             assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "No Basic Energies in Discard"
             assert lastTurn != bg().turnCount : "Already used"
             bc "Used Training Court effect"
