@@ -3697,8 +3697,8 @@ public enum RebelClash implements LogicCardInfo {
             before (KNOCKOUT,self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                 bc "Cursed Shovel activates"
-                if (opp.deck) {
-                  opp.deck.subList(0, 2).discard()
+                if (my.deck) { // from perspective of opponent's turn
+                  my.deck.subList(0, 2).discard()
                 }
               }
             }
