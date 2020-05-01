@@ -3688,6 +3688,7 @@ public enum RebelClash implements LogicCardInfo {
         text "Search your deck for 2 [W] Energy, reveal them, and put them into your hand. Then, shuffle your deck. You may play as many Item cards as you like during your turn (before your attack)."
         onPlay {
           my.deck.search(max: 2, "Search for 2 [W] energy", energyFilter(W)).moveTo(my.hand)
+          shuffleDeck()
         }
         playRequirement{
           assert my.deck : "Deck is empty"
