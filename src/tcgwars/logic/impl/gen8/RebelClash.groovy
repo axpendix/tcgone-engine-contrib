@@ -1088,7 +1088,7 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 170
-            appply BURNED
+            apply BURNED
           }
         }
       };
