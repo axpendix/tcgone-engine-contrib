@@ -1972,11 +1972,11 @@ public enum RebelClash implements LogicCardInfo {
           delayedA {
             before (KNOCKOUT, self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
-                delayed(inline: true){
+                delayed(inline: true) {
                   after KNOCKOUT, self, {
+                    bc "Perish Body activates"
                     flip {
                       new Knockout(ef.attacker).run(bg)
-                      bc "Perish Body activates"
                     }
                   }
                 }
