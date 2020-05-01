@@ -122,7 +122,7 @@ public enum RebelClash implements LogicCardInfo {
   SIGILYPH_80 ("Sigilyph", 80, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
   SANDYGAST_81 ("Sandygast", 81, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
   PALOSSAND_82 ("Palossand", 82, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  HATTENA_83 ("Hattena", 83, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  HATENNA_83 ("Hatenna", 83, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
   HATTREM_84 ("Hattrem", 84, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   HATTERENE_85 ("Hatterene", 85, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
   MILCERY_86 ("Milcery", 86, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
@@ -2058,7 +2058,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
       };
-      case HATTENA_83:
+      case HATENNA_83:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness D
         resistance F, MINUS30
@@ -2083,7 +2083,7 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case HATTREM_84:
-      return evolution (this, from:"Hattena", hp:HP080, type:P, retreatCost:1) {
+      return evolution (this, from:"Hatenna", hp:HP080, type:P, retreatCost:1) {
         weakness D
         resistance F, MINUS30
         move "Calm Mind", {
