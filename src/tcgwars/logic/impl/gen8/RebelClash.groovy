@@ -3933,7 +3933,6 @@ public enum RebelClash implements LogicCardInfo {
                 if (it.to == self && self.types.contains(P) && it.dmg.value && bg.currentTurn==self.owner.opposite
                   && self.active) {
                   bc "Horror Psychic Energy activates"
-                  apply CONFUSED, it.from, SRC_ABILITY
                   directDamage(20, ef.attacker as PokemonCardSet)
                 }
               }
