@@ -2812,7 +2812,7 @@ public enum RebelClash implements LogicCardInfo {
             assert my.discard.filterByType(POKEMON) : "No Pokemon in Discard"
           }
           onAttack {
-            directDamage my.discard.filterByType(POKEMON).size()*10
+            directDamage my.discard.filterByType(POKEMON).size()*10, opp.active
           }
         }
       };
