@@ -3732,6 +3732,7 @@ public enum RebelClash implements LogicCardInfo {
           }
 
           if (myWin) {
+            bc "Dan: Current Turn's player won Rock Paper Scissors and can draw 2 extra cards"
             draw 2
           }
         }
