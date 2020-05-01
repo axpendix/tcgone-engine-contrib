@@ -2108,12 +2108,11 @@ public enum RebelClash implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Mind Hat", {
           text "Once during your turn, you may have each player discard 1 card from their hand. (Your opponent discards first. If either player has no cards in their hand, that player does not discard.)"
-          bwAbility "Mind Hat", {
-          text "Once during your turn, you may have each player discard 1 card from their hand. (Your opponent discards first. If either player has no cards in their hand, that player does not discard.)"
           actionA {
             assert (my.hand || opp.hand): "Neither player have any cards in their hand."
             checkLastTurn()
-            if(confirm("Use Mind Hat")){
+
+            if (confirm("Use Mind Hat")) {
               powerUsed()
               if (opp.hand) {
                 if (opp.hand.size() > 1) {
