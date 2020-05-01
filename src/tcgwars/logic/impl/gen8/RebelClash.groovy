@@ -1502,7 +1502,7 @@ public enum RebelClash implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            deck.search(max: 3, cardTypeFilter(BASIC_ENERGY)).moveTo(hand)
+            deck.search(min: 0, max: 3, cardTypeFilter(ENERGY)).moveTo(hand)
             shuffleDeck()
           }
         }
