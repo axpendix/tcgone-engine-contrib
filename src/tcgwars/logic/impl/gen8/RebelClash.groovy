@@ -1122,7 +1122,7 @@ public enum RebelClash implements LogicCardInfo {
             before null, null, Source.ATTACK, {
               def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
               if (pcs && pcs.cards.energyCount(C) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
-                bc "$name prevents effect"
+                bc "Galarian Mr Rime's Screen Cleaner prevents effect"
                 prevent()
               }
             }
