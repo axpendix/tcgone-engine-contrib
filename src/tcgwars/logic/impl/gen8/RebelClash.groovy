@@ -3804,13 +3804,13 @@ public enum RebelClash implements LogicCardInfo {
       return itemCard (this) {
         text "Put 1 of your Pokemon (excluding Pokemon V/GX) into your hand. (Discard all cards attached to that Pokemon.) You may play as many Item cards during your turn as you like (before your attack). (Note -  The term “Pokemon V” includes both Pokemon V and Pokemon VMAX.)"
         onPlay {
-          def validTargets = my.all.findAll { it.topPokemonCard.cardTypes.is(VMAX) || it.topPokemonCard.cardTypes.is(POKEMON_V) || it.topPokemonCard.cardTypes.is(GX) }
+          def validTargets = my.all.findAll { it.topPokemonCard.cardTypes.is(VMAX) || it.topPokemonCard.cardTypes.is(POKEMON_V) || it.topPokemonCard.cardTypes.is(POKEMON_GX) }
           def tar = validTargets.select("Which Pokemon to put back into your hand?")
           removePCS(tar)
           tar.moveTo(my.hand)
         }
         playRequirement {
-          assert my.all.findAll { it.topPokemonCard.cardTypes.is(VMAX) || it.topPokemonCard.cardTypes.is(POKEMON_V) || it.topPokemonCard.cardTypes.is(GX) } : "No Pokemon V/VMAX/GX on Bench"
+          assert my.all.findAll { it.topPokemonCard.cardTypes.is(VMAX) || it.topPokemonCard.cardTypes.is(POKEMON_V) || it.topPokemonCard.cardTypes.is(POKEMON_GX) } : "No Pokemon V/VMAX/GX on Bench"
         }
       };
       case SKYLA_166:
