@@ -2726,14 +2726,14 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case GALARIAN_WEEZING_113:
-      return evolution (this, from:"Koffing", hp:HP130, type:D, retreatCost:3) {
+      return evolution (this, from:"Galarian Koffing", hp:HP130, type:D, retreatCost:3) {
         weakness F
         bwAbility "Neutralizing Gas", {
           text "As long as this Pokemon is in the Active Spot, your opponent's Pokemon in play have no Abilities, except for Neutralizing Gas."
           def effect1
           onActivate {
             effect1 = getter IS_ABILITY_BLOCKED, { Holder h ->
-              if (self.active && h.effect.ability instanceof BwAbility) {
+              if (self.active && h.effect.ability.name != "Neutralizing Gas" && h.effect.ability instanceof BwAbility && h.effect.target.owner != self.owner) {
                 targeted(h.effect.target, SRC_ABILITY) {
                   h.object = true
                 }
