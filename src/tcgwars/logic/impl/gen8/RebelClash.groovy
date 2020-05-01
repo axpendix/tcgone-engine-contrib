@@ -3799,11 +3799,13 @@ public enum RebelClash implements LogicCardInfo {
         onPlay {
           my.hand.getExcludedList(thisCard).select(count:2, "Discard two cards to discard.").discard()
           opp.hand.showToMe("Opponent's hand")
-          opp.hand.filterByType(TRAINER).select(count:1).moveTo(opp.deck)
+          if (opp.hand.filterByType(TRAINER)) {
+            opp.hand.filterByType(TRAINER).select(count:1).moveTo(opp.deck)
+          }
         }
         playRequirement {
-          def hand = my.hand.getExcludedList(thisCard).size() >= 2
-          assert (hand || my.opp.hand) : "Not enough cards in Hand or Opponent's hand is empty."
+          assert my.hand.getExcludedList(thisCard).size() >= 2 : "Not enough cards in your hand"
+          assert opp.hand : "Opponent's hand is empty"
         }
       };
       case POKEBALL_164:
