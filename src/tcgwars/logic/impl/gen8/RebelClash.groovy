@@ -3759,7 +3759,7 @@ public enum RebelClash implements LogicCardInfo {
       case FULL_HEAL_159:
       return copy(HeartgoldSoulsilver.FULL_HEAL_93, this);
       case GALAR_MINE_160:
-      return basicTrainer (this) {
+      return stadium (this) {
         text "The Retreat Cost of each Active Pokemon (both yours and your opponent’s) is [C][C] more. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
         def eff
         onPlay {
