@@ -3259,7 +3259,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-        move "Giant Hammer", {
+        move "G-Max Hammer", {
           text "240 damage."
           energyCost M, M, M, C
           attackRequirement {}
