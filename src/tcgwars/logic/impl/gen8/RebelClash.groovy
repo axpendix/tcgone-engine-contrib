@@ -3957,8 +3957,12 @@ public enum RebelClash implements LogicCardInfo {
       case TWIN_ENERGY_174:
       return specialEnergy (this, [[C,C]]) {
         text "This card provides 2 [C] Energy. If this card is attached to a Pokemon V or Pokemon GX, this card provides 1 [C] Energy instead."
+        onPlay {reason->
+        }
+        allowAttach {to->
+        }
         getEnergyTypesOverride {
-          if (self && (self.cardTypes.contains(POKEMON_V) || self.cardTypes.contains(VMAX) || self.cardTypes.contains(GX)) {
+          if (self && (self.cardTypes.contains(POKEMON_V) || self.cardTypes.contains(VMAX) || self.cardTypes.contains(POKEMON_GX)) {
             return [[C] as Set]
           }
         }
