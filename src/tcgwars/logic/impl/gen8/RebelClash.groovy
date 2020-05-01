@@ -3902,7 +3902,7 @@ public enum RebelClash implements LogicCardInfo {
             bc "Used Turrfield effect"
             lastTurn = bg().turnCount
             my.deck.search("Choose a [G] Evolution Pokemon", {
-              it.cardTypes.is(EVOLUTION) && it.cardTypes.contains(G)
+              it.cardTypes.is(EVOLUTION) && it.types.contains(G)
             }).moveTo(my.hand)
             shuffleDeck()
           }
