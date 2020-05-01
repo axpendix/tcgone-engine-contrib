@@ -2264,14 +2264,12 @@ public enum RebelClash implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Infiltrator", {
           text "If this Pokemon would be damaged by an attack, flip a coin. If heads, prevent all damage done to this Pokemon."
-          delayedA {
+          delayedA (priority: BEFORE_LAST) {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.to == self && it.notNoEffect) {
-                  flip {
-                    bc "Infiltrator prevent damage"
-                    it.dmg = hp(0)
-                  }
+              def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
+              if (entry) {
+                flip "Infiltrator", {
+                  entry.dmg=hp(0)
                 }
               }
             }
