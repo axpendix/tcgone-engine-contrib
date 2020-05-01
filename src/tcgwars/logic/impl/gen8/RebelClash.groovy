@@ -2502,7 +2502,7 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case GALARIAN_RUNERIGUS_102:
-      return evolution (this, from:"Yamask", hp:HP100, type:F, retreatCost:2) {
+      return evolution (this, from:"Galarian Yamask", hp:HP100, type:F, retreatCost:2) {
         weakness G
         move "Spreading Spite", {
           text "For each damage counter on this Galarian Runerigus, put 2 damage counters on your opponent's Pokemon in any way you like."
@@ -2510,7 +2510,7 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             (1..self.numberOfDamageCounters).each {
-              directDamage 20, opp.all.select("Put 1 damage counter to which pokémon? ($it/$self.numberOfDamageCounters")
+              directDamage 20, opp.all.select("Put 2 damage counter to which Pokémon? ($it/$self.numberOfDamageCounters")
             }
           }
         }
