@@ -1424,10 +1424,12 @@ public enum RebelClash implements LogicCardInfo {
         move "Spiral Jet", {
           text "130 damage. Discard 2 [W] Energy from your hand or this attack does nothing."
           energyCost W
-          attackRequirement {}
+          attackRequirement {
+            assert my.hand.filterByEnergyType(W).size() >= 2 : "Less than 2 [W] Energies in your hand"
+          }
           onAttack {
             damage 130
-            discardSelfEnergy(W, W)
+            my.hand.filterByEnergyType(W).select(count:2, "Discard").discard()
           }
         }
       };
