@@ -1814,10 +1814,12 @@ public enum RebelClash implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               if (ef.attacker.owner != self.owner) {
-                bg.dm().each{
+                bg.dm().each {
                   if (it.to == self && self.active && it.notNoEffect && it.dmg.value) {
                     bc "Counterattack Kerzap Activates"
-                    directDamage 30, ef.attacker
+                    flip 3, {
+                      directDamage 30, ef.attacker
+                    }
                   }
                 }
               }
