@@ -4021,33 +4021,7 @@ public enum RebelClash implements LogicCardInfo {
       case FROSMOTH_204:
       return copy(SwordShield.FROSMOTH_64, this);
       case PERRSERKER_205:
-      return evolution (this, from:"Galarian Meowth", hp:HP120, type:M, retreatCost:2) {
-        weakness R
-        resistance G, MINUS30
-        bwAbility "Steely Spirit", {
-          text "The attacks of your [M] Pokemon do 20 more damage to your opponent’s Active Pokemon."
-          delayedA {
-            after PROCESS_ATTACK_EFFECTS, {
-              if (ef.attacker.owner == self.owner) {
-                bg.dm().each {
-                  if (it.from.types.contains(M) && it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
-                    bc "Steely Spirit +20"
-                    it.dmg += hp(20)
-                  }
-                }
-              }
-            }
-          }
-        }
-        move "Metal Claw", {
-          text "70 damage."
-          energyCost M, M, C
-          attackRequirement {}
-          onAttack {
-            damage 70
-          }
-        }
-      };
+      return copy(SwordShield.GALARIAN_PERRSERKER_128, this);
       case GIANT_CHARM_206:
       return copy(SwordShield.BIG_CHARM_158, this);
       case SCOOP_UP_NET_207:
