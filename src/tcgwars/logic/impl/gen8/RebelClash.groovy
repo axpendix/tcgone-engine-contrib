@@ -2898,8 +2898,8 @@ public enum RebelClash implements LogicCardInfo {
             if (opp.bench) {
               target = opp.bench.select("Select the new active")
               sw defending, target
+              damage 30, target
             }
-            damage 30, target
           }
         }
         move "Brain Shake", {
