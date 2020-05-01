@@ -819,7 +819,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Vulpix", hp:HP120, type:R, retreatCost:1) {
         weakness W
         move "Hex", {
-          text "30+ damage. If your opponent’s Active Pokemon has an Ability, this attack does 90 more damage."
+          text "30+ damage. If your opponent's Active Pokemon is affected by a Special Condition, this attack does 90 more damage."
           energyCost R
           attackRequirement {}
           onAttack {
@@ -2505,7 +2505,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Yamask", hp:HP100, type:F, retreatCost:2) {
         weakness G
         move "Spreading Spite", {
-          text "Count the number of damage counters on this Galarian Runerigus. Put twice as many damage counters on your opponent’s Active Pokemon."
+          text "For each damage counter on this Galarian Runerigus, put 2 damage counters on your opponent's Pokemon in any way you like."
           energyCost C, C
           attackRequirement {}
           onAttack {
