@@ -463,8 +463,8 @@ public enum RebelClash implements LogicCardInfo {
             delayed {
               after DRAW_CARD, {
                 if (ef.card.is(thisCard) && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.bench.notFull && checkGlobalAbility(thisCard) && confirm("Activate Lombre's Top Entry?", thisCard.player)) {
-                  thisCard.player.pbg.hand.remove(thisCard)
                   bc "Lombre's Top Entry activated"
+                  thisCard.player.pbg.hand.remove(thisCard)
                   benchPCS(thisCard)
                 }
               }
