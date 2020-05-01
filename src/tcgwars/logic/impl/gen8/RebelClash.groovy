@@ -2974,7 +2974,7 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Dark Oath", {
           text "As long as this Pokemon is your Active Pokemon, your opponent’s Active Pokemon pays [C] more to use its attacks."
           getterA GET_MOVE_LIST, { h ->
-            if (h.effect.target.active && self.active) {
+            if (self.active && h.effect.target.active && h.effect.target.owner == self.owner.opposite) {
               def list = []
               for (move in h.object) {
                 def copy = move.shallowCopy()
@@ -2990,7 +2990,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost D, C, C
           attackRequirement {}
           onAttack {
-            dammage 100+30*opp.active.cards.energyCount(C)
+            damage 100+30*opp.active.cards.energyCount(C)
           }
         }
       };
