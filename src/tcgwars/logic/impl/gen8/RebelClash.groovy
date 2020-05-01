@@ -2509,7 +2509,9 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            directDamage 20*self.numberOfDamageCounters
+            (1..self.numberOfDamageCounters).each {
+              directDamage 20, opp.all.select("Put 1 damage counter to which pokémon? ($it/$self.numberOfDamageCounters")
+            }
           }
         }
         move "Mad Hammer", {
