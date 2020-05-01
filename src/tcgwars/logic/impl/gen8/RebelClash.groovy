@@ -2633,7 +2633,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             damage 30
             afterDamage {
-              attachEnergyFrom(type: F, my.discard, self)
+              attachEnergyFrom(basic: true, type: F, my.discard, self)
             }
           }
         }
