@@ -1000,7 +1000,7 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Protective Glow", {
           text "Each of your Pokemon that has any Energy attached to it has no Weakness."
           getterA (GET_WEAKNESSES) { h->
-            if (h.effect.target == self && self.cards.energyCount(C)) {
+            if (h.effect.target.owner == self.owner && h.effect.target.cards.energyCount(C)) {
               def list = h.object as List<Weakness>
               list.clear()
             }
