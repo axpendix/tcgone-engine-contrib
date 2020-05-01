@@ -3959,8 +3959,12 @@ public enum RebelClash implements LogicCardInfo {
         onPlay {reason->
         }
         getEnergyTypesOverride {
-          if (self && (self.cardTypes.contains(POKEMON_V) || self.cardTypes.contains(VMAX) || self.cardTypes.contains(POKEMON_GX)) {
-            return [[C] as Set]
+          if (self && self.topPokemonCard) {
+            def typeList = self.topPokemonCard.cardTypes
+
+            if (typeList.contains(POKEMON_V) || typeList.contains(VMAX) || typeList.contains(POKEMON_GX)) {
+              return [[C] as Set]
+            }
           }
         }
       };
