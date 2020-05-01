@@ -44,8 +44,8 @@ public enum RebelClash implements LogicCardInfo {
   METAPOD_2 ("Metapod", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   BUTTERFREE_3 ("Butterfree", 3, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   SCYTHER_4 ("Scyther", 4, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
-  SHUCKLE_5 ("Shuckle", 6, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
-  HERACROSS_6 ("Heracross", 5, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+  SHUCKLE_5 ("Shuckle", 5, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
+  HERACROSS_6 ("Heracross", 6, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
   LOTAD_7 ("Lotad", 7, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
   LOMBRE_8 ("Lombre", 8, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   LUDICOLO_9 ("Ludicolo", 9, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
@@ -94,7 +94,7 @@ public enum RebelClash implements LogicCardInfo {
   ARROKUDA_52 ("Arrokuda", 52, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
   BARRASKEWDA_53 ("Barraskewda", 53, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   EISCUE_54 ("Eiscue", 54, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
-  PIKACHU_55 ("Pikachu", 55, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
+  EISCUE_V_55 ("Eiscue V", 55, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _WATER_]),
   VOLTORB_56 ("Voltorb", 56, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
   ELECTRODE_57 ("Electrode", 57, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   ELECTABUZZ_58 ("Electabuzz", 58, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
@@ -195,9 +195,9 @@ public enum RebelClash implements LogicCardInfo {
   DUBWOOL_V_153 ("Dubwool V", 153, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _COLORLESS_]),
   BOSS_S_ORDERS_154 ("Boss’s Orders", 154, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   BURNING_SCARF_155 ("Burning Scarf", 155, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
-  CURSED_SHOVEL_156 ("Cursed Shovel", 156, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
-  DAN_157 ("Dan", 157, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
-  FULL_BUCKET_158 ("Full Bucket", 158, Rarity.HOLORARE, [TRAINER, ITEM]),
+  CAPACIOUS_BUCKET_156 ("Capacious Bucket", 156, Rarity.HOLORARE, [TRAINER, ITEM]),
+  CURSED_SHOVEL_157 ("Cursed Shovel", 157, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
+  DAN_158 ("Dan", 158, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   FULL_HEAL_159 ("Full Heal", 159, Rarity.HOLORARE, [TRAINER, ITEM]),
   GALAR_MINE_160 ("Galar Mine", 160, Rarity.HOLORARE, [TRAINER]),
   MILO_161 ("Milo", 161, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
@@ -1460,9 +1460,9 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
       };
-      case PIKACHU_55:
-      return basic (this, hp:HP060, type:L, retreatCost:1) {
-        weakness F
+      case EISCUE_V_55:
+      return basic (this, hp:HP210, type:W, retreatCost:2) {
+        weakness M
         move "Tail Whip", {
           text "Flip a coin. If heads, the Defending Pokemon can’t attack during your opponent’s next turn."
           energyCost C
@@ -3680,7 +3680,17 @@ public enum RebelClash implements LogicCardInfo {
           eff.unregister()
         }
       };
-      case CURSED_SHOVEL_156:
+      case CAPACIOUS_BUCKET_156:
+      return itemCard (this) {
+        text "Search your deck for 2 [W] Energy, reveal them, and put them into your hand. Then, shuffle your deck. You may play as many Item cards as you like during your turn (before your attack)."
+        onPlay {
+          my.deck.search(max: 2, "Search for 2 [W] energy", energyFilter(W)).moveTo(my.hand)
+        }
+        playRequirement{
+          assert my.deck : "Deck is empty"
+        }
+      };
+      case CURSED_SHOVEL_157:
       return pokemonTool (this) {
         text "Attach a Pokemon Tool to 1 of your Pokemon that doesn’t already have a Pokemon Tool attached to it. If the Pokemon this Tool is attached to is Knocked Out by damage from an opponent’s attack, discard the top 2 cards of your opponent’s deck. You may play as many Item cards as you like during your turn (before your attack)."
         def eff
@@ -3700,7 +3710,7 @@ public enum RebelClash implements LogicCardInfo {
           eff.unregister()
         }
       };
-      case DAN_157:
+      case DAN_158:
       return supporter (this) {
         text "Draw 2 cards. Play Rock-Paper-Scissors with your opponent. If you win, draw 2 more cards. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
@@ -3743,16 +3753,6 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         playRequirement {
-          assert my.deck : "Deck is empty"
-        }
-      };
-      case FULL_BUCKET_158:
-      return itemCard (this) {
-        text "Search your deck for 2 [W] Energy, reveal them, and put them into your hand. Then, shuffle your deck. You may play as many Item cards as you like during your turn (before your attack)."
-        onPlay {
-          my.deck.search(max: 2, "Search for 2 [W] energy", energyFilter(W)).moveTo(my.hand)
-        }
-        playRequirement{
           assert my.deck : "Deck is empty"
         }
       };
