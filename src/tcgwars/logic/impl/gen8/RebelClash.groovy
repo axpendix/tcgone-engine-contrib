@@ -1945,7 +1945,7 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case GALARIAN_CORSOLA_78:
-      return basic (this, hp:HP080, type:P, retreatCost:null) {
+      return basic (this, hp:HP080, type:P, retreatCost:2) {
         weakness D
         resistance F, MINUS30
         move "Cursed Drop", {
