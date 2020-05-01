@@ -1757,7 +1757,7 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             opp.all.each {
-              damage 20
+              damage 20, it
             }
             apply POISONED
           }
