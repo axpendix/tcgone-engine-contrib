@@ -244,8 +244,8 @@ public enum RebelClash implements LogicCardInfo {
   OLEANA_202 ("Oleana", 202, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   SONIA_203 ("Sonia", 203, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   FROSMOTH_204 ("Frosmoth", 204, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  PERRSERKER_205 ("Perrserker", 205, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-  GIANT_CHARM_206 ("Giant Charm", 206, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
+  GALARIAN_PERRSERKER_205 ("Galarian Perrserker", 205, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  BIG_CHARM_206 ("Big Charm", 206, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
   SCOOP_UP_NET_207 ("Scoop Up Net", 207, Rarity.HOLORARE, [TRAINER, ITEM]),
   TOOL_SCRAPPER_208 ("Tool Scrapper", 208, Rarity.HOLORARE, [TRAINER, ITEM]),
   TWIN_ENERGY_209 ("Twin Energy", 209, Rarity.HOLORARE, [ENERGY, SPECIAL_ENERGY]);
@@ -4027,9 +4027,9 @@ public enum RebelClash implements LogicCardInfo {
       return copy (SONIA_167, this);
       case FROSMOTH_204:
       return copy(SwordShield.FROSMOTH_64, this);
-      case PERRSERKER_205:
+      case GALARIAN_PERRSERKER_205:
       return copy(SwordShield.GALARIAN_PERRSERKER_128, this);
-      case GIANT_CHARM_206:
+      case BIG_CHARM_206:
       return copy(SwordShield.BIG_CHARM_158, this);
       case SCOOP_UP_NET_207:
       return copy(SCOOP_UP_NET_165, this);
