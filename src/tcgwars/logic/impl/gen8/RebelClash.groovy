@@ -3376,12 +3376,13 @@ public enum RebelClash implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         bwAbility "Lucky Match", {
-          text "Once during your turn, when you play this card from your hand onto your Bench, you may flip a coin. If heads, choose a Supporter card from your discard pile, reveal it, and put it into your hand."
+          text "When you play this Pokemon from your hand onto your Bench during your turn you may flip a coin. If heads put a Supporter card from your discard pile into your hand."
           onActivate { r->
-            if (r==PLAY_FROM_HAND && my.discard.filterByType(SUPPORTER) && bg.em().retrieveObject("Lucky_Match")!=bg.turnCount && confirm("Use Lucky Match?")) {
+            if (r==PLAY_FROM_HAND && my.discard.filterByType(SUPPORTER) && confirm("Use Lucky Match?")) {
               powerUsed()
-              bg.em().storeObject("Lucky_Match", bg.turnCount)
-              my.discard.filterByType(SUPPORTER).select("Choose a Supporter to move to your hand.").moveTo(my.hand)
+              flip "Lucky Match", {
+                my.discard.filterByType(SUPPORTER).select("Choose a Supporter to move to your hand.").moveTo(my.hand)
+              }
             }
           }
         }
