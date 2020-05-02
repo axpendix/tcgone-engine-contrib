@@ -1466,20 +1466,26 @@ public enum RebelClash implements LogicCardInfo {
       case EISCUE_V_55:
       return basic (this, hp:HP210, type:W, retreatCost:2) {
         weakness M
-        move "Tail Whip", {
-          text "Flip a coin. If heads, the Defending Pokemon can’t attack during your opponent’s next turn."
-          energyCost C
-          attackRequirement {}
-          onAttack {
-            flip { cantAttackNextTurn defending }
+        bwAbility "Cold Absorption", {
+          text "Whenever you attach a [W] Energy card from your hand to this Pokemon during your turn, heal 30 damage from it."
+          delayedA {
+            before ATTACH_ENERGY, {
+              if (ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W) && bg.currentTurn == self.owner && ef.resolvedTarget == self) {
+                wcu "Cold Absorption"
+                heal 30, ef.resolvedTarget
+              }
+            }
           }
         }
-        move "Pika Volt", {
-          text "50 damage."
-          energyCost L, C, C
+        move "Blizzard", {
+          text "120 damage. This attack also does 10 damage to each of your opponent's Benched Pokemon. (Don't apply Weakness and Resistance for Benched Pokemon.)"
+          energyCost W, W
           attackRequirement {}
           onAttack {
-            damage 50
+            damage 120
+            opp.bench.each {
+              damage 10
+            }
           }
         }
       };
