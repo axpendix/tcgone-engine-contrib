@@ -457,19 +457,19 @@ public enum RebelClash implements LogicCardInfo {
       case LOMBRE_8:
       return evolution (this, from:"Lotad", hp:HP090, type:G, retreatCost:1) {
         weakness R
-        bwAbility "Top Entry", {
-          text "If you draw this card from your deck at the beginning of your turn and there is room on your Bench, instead of putting it into your hand, you may play it directly onto your Bench."
-          globalAbility {Card thisCard->
-            delayed {
-              after DRAW_CARD, {
-                if (ef.card.is(thisCard) && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.bench.notFull && checkGlobalAbility(thisCard) && confirm("Activate Lombre's Top Entry?", thisCard.player)) {
-                  bc "Lombre's Top Entry activated"
-                  thisCard.player.pbg.hand.remove(thisCard)
-                  benchPCS(thisCard)
-                }
+        globalAbility {Card thisCard->
+          delayed {
+            after DRAW_CARD, {
+              if (ef.card.is(thisCard) && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.bench.notFull && checkGlobalAbility(thisCard) && confirm("Activate Lombre's Top Entry to put Lombre on the Bench?", thisCard.player)) {
+                bc "Lombre's Top Entry activated"
+                thisCard.player.pbg.hand.remove(thisCard)
+                benchPCS(thisCard)
               }
             }
           }
+        }
+        bwAbility "Top Entry", {
+          text "If you draw this card from your deck at the beginning of your turn and there is room on your Bench, instead of putting it into your hand, you may play it directly onto your Bench."
         }
         move "Fury Swipes", {
           text "40x damage. Flip 3 coins. This attack does 40 damage times the number of heads."
