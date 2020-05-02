@@ -1591,9 +1591,9 @@ public enum RebelClash implements LogicCardInfo {
           energyCost L, L, C
           attackRequirement {}
           onAttack {
-              damage 90
-              if (self.cards.filterByType(SPECIAL_ENERGY)) damage 90
-            }
+            damage 90
+            if (self.cards.filterByType(SPECIAL_ENERGY)) damage 90
+          }
         }
       };
       case SHINX_60:
@@ -3364,7 +3364,8 @@ public enum RebelClash implements LogicCardInfo {
           energyCost M, C
           attackRequirement {}
           onAttack {
-            reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
+            damage 30
+            reduceDamageNextTurn(hp(20),thisMove)
           }
         }
         move "Power Rush", {
