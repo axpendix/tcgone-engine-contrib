@@ -1679,8 +1679,7 @@ public enum RebelClash implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            attachEnergyFrom(type:L, my.deck, self)
-            attachEnergyFrom(type:L, my.deck, self)
+            attachEnergyFrom(basic: true, max: 2, type: L, my.deck, self)
             shuffleDeck()
           }
         }
