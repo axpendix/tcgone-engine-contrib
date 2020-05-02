@@ -1979,7 +1979,7 @@ public enum RebelClash implements LogicCardInfo {
           delayedA {
             before (KNOCKOUT, self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active.inPlay) {
-                flip 1, "Perish Body" {
+                flip "Perish Body", {
                   new Knockout(self.owner.opposite.pbg.active).run(bg)
                 }
               }
