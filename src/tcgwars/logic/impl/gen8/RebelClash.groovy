@@ -3111,7 +3111,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Gyro Ball", {
-          text "70 damage. Switch this Pokemon with 1 of your Benched Pokemon. Then, your opponent switches their Active Pokemon with 1 of their Benched Pokemon."
+          text "70 damage. Switch this Pokemon with 1 of your Benched Pokemon. If you do, your opponent switches their Active Pokemon with 1 of their Benched Pokemon."
           energyCost M, C, C
           attackRequirement {}
           onAttack {
@@ -3119,10 +3119,9 @@ public enum RebelClash implements LogicCardInfo {
 
             if (my.bench) {
               sw self, my.bench.select("Choose the new active.")
-            }
-
-            if (opp.bench) {
+              if (opp.bench) {
               whirlwind()
+              }
             }
           }
         }
