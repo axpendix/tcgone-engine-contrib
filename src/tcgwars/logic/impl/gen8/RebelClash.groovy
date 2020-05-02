@@ -2433,7 +2433,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-            noWrDamage 40
+            noWrDamage 40, defending
           }
         }
         move "Psychic", {
