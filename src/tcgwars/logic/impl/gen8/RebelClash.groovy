@@ -1425,11 +1425,11 @@ public enum RebelClash implements LogicCardInfo {
           text "130 damage. Discard 2 [W] Energy from your hand or this attack does nothing."
           energyCost W
           attackRequirement {
-            assert my.hand.filterByEnergyType(W).size() >= 2 : "Less than 2 [W] Energies in your hand"
+            assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W).size() >= 2 : "Less than 2 [W] Energies in your hand"
           }
           onAttack {
             damage 130
-            my.hand.filterByEnergyType(W).select(count:2, "Discard").discard()
+            my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W).select(count:2, "Discard").discard()
           }
         }
       };
