@@ -1720,11 +1720,11 @@ public enum RebelClash implements LogicCardInfo {
         move "Electrify", {
           text "Search your deck for up to 2 [L] Energy and attach them to your Benched Pokemon in any way you like. Then, shuffle your deck."
           energyCost L
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench : "No Benched Pokemon to attach to"
+          }
           onAttack {
-            attachEnergyFrom(type:L, my.deck, my.bench.select())
-            attachEnergyFrom(type:L, my.deck, my.bench.select())
-            shuffleDeck()
+            attachEnergyFrom(type:L, max: 2, my.deck, my.bench.select())
           }
         }
         move "Bolt Storm", {
