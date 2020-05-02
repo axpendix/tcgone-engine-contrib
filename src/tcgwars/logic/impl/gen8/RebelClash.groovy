@@ -1926,17 +1926,16 @@ public enum RebelClash implements LogicCardInfo {
           text "Move an Energy from 1 of your opponent’s Benched Pokemon to their Active Pokemon."
           energyCost C
           attackRequirement {
-            assert opp.all.findAll { it.cards.filterByType(ENERGY) } : "Opponent has no available Energies"
             assert opp.bench : "Opponent has no Benched Pokemon"
+            assert opp.bench.findAll { it.cards.filterByType(ENERGY) } : "Opponent's Benched Pokemon has no Energies"
           }
           onAttack {
-            def bothAll = new PcsList();
-            opp.all.each{
-              bothAll.add(it)
+            def validSources = new PcsList();
+            opp.bench.each {
+              validSources.add(it)
             }
-            def pcs = bothAll.findAll{it.cards.filterByType(ENERGY)}.select("Choose the Pokémon to move the Energy from")
-            def tar = bothAll.findAll{it != pcs}.select("Select the Pokémon to receive the Energy")
-            energySwitch(pcs,tar, pcs.cards.filterByType(ENERGY).select("Choose the Energy to move").first())
+            def pcs = validSources.findAll{it.cards.filterByType(ENERGY)}.select("Choose the Pokémon to move the Energy from")
+            energySwitch(pcs, opp.active, pcs.cards.filterByType(ENERGY).select("Choose the Energy to move").first())
           }
         }
         move "Psychic", {
