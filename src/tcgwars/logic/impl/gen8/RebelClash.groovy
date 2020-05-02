@@ -1484,7 +1484,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             damage 120
             opp.bench.each {
-              damage 10
+              damage 10, it
             }
           }
         }
