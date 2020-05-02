@@ -1556,7 +1556,7 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 90
-            if (self.findAll(cardTypeFilter(SPECIAL))) {
+            if (self.findAll(cardTypeFilter(SPECIAL_ENERGY))) {
               damage 90
             }
           }
