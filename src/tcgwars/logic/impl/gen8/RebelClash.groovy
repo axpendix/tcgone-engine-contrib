@@ -1591,11 +1591,9 @@ public enum RebelClash implements LogicCardInfo {
           energyCost L, L, C
           attackRequirement {}
           onAttack {
-            damage 90
-            if (self.findAll(cardTypeFilter(SPECIAL_ENERGY))) {
               damage 90
+              if (self.cards.filterByType(SPECIAL_ENERGY)) damage 90
             }
-          }
         }
       };
       case SHINX_60:
