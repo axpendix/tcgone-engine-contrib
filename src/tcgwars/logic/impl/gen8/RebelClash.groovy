@@ -3329,7 +3329,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost M, C
           attackRequirement {}
           onAttack {
-
+            reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
           }
         }
         move "Power Rush", {
