@@ -1758,8 +1758,9 @@ public enum RebelClash implements LogicCardInfo {
             assert my.bench : "No Benched Pokemon to attach to"
           }
           onAttack {
-            attachEnergyFrom(type:L, max: 1, my.deck, my.bench.select())
-            attachEnergyFrom(type:L, max: 1, my.deck, my.bench.select())
+            attachEnergyFrom(basic: true, type:L, max: 1, my.deck, my.bench.select())
+            attachEnergyFrom(basic: true, type:L, max: 1, my.deck, my.bench.select())
+            shuffleDeck()
           }
         }
         move "Bolt Storm", {
