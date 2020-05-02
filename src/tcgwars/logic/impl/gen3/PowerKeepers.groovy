@@ -859,7 +859,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost P, C, C
           attackRequirement {}
           onAttack {
-            noWrDamage 50
+            noWrDamage 50, defending
             damage 10, self
           }
         }
