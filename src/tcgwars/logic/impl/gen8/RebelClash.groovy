@@ -3964,8 +3964,7 @@ public enum RebelClash implements LogicCardInfo {
         }
         getEnergyTypesOverride {
           if (self && self.topPokemonCard && self.topPokemonCard.cardTypes.is(POKEMON_V) || self.topPokemonCard.cardTypes.is(VMAX) || self.topPokemonCard.cardTypes.is(POKEMON_GX)) {
-              return [[C] as Set]
-            }
+            return [[C] as Set]
           } else {
             return [[C] as Set, [C] as Set]
           }
