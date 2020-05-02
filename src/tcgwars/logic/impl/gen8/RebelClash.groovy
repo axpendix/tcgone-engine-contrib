@@ -3120,7 +3120,7 @@ public enum RebelClash implements LogicCardInfo {
             if (my.bench) {
               sw self, my.bench.select("Choose the new active.")
               if (opp.bench) {
-              whirlwind()
+                whirlwind()
               }
             }
           }
