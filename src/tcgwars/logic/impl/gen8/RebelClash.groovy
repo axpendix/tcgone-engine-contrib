@@ -2355,7 +2355,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            swiftDamage(60, defending)
+            shredDamage(60, defending)
           }
         }
         move "Max Phantom", {
@@ -2411,7 +2411,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             damage 180
             cantUseAttack(thisMove, self, 10000)
-            //TODO Maybe find a more elegant solution 
+            //TODO Maybe find a more elegant solution
             //@Lithogen got most of the way there but we wanted to release quickly.
             //Look in PR#130 for the old code
           }
