@@ -1366,7 +1366,7 @@ public enum TeamUp implements LogicCardInfo {
               assert self.benched : "$self is not benched."
               assert my.discard.filterByType(ENERGY).filterByEnergyType(L) : "There is no [L] energy in the discard"
               powerUsed()
-              def maxAttach = Math.min(Math.min(my.bench.size(),2),my.discard.filterByType(ENERGY).filterByEnergyType(L).size())
+              def maxAttach = Math.min(Math.min(my.bench.size(),2),my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(L).size())
               multiSelect(my.bench,maxAttach,"Select Pokémon that will receive a [L] energy").each{
                 attachEnergyFrom(type:L,my.discard,it)
               }
