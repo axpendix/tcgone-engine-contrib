@@ -2410,21 +2410,10 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 180
-
-            afterDamage {
-              bc "Meteor Assault cannot be used until this Pokemon leaves the Active Spot"
-              delayed (priority: BEFORE_LAST) {
-                before CHECK_ATTACK_REQUIREMENTS, {
-                  if (ef.attacker.owner == self && ef.move.name == "Meteor Assault") {
-                    wcu "Meteor Assault prevent this attack from being used as long as $self is Active"
-                    prevent()
-                  }
-                }
-
-                after SWITCH, self, { unregister() }
-                after EVOLVE, self, { unregister() }
-              }
-            }
+            cantUseAttack(thisMove, self, 10000)
+            //TODO Maybe find a more elegant solution 
+            //@Lithogen got most of the way there but we wanted to release quickly.
+            //Look in PR#130 for the old code
           }
         }
       };
