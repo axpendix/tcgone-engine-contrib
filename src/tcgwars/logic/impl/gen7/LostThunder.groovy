@@ -4432,6 +4432,7 @@ public enum LostThunder implements LogicCardInfo {
           }
           playRequirement{
             assert bg.turnCount == 2 : "This card is now useless"
+            assert opp.all.findAll {it.cards.energyCount(C)} : "There are no energy cards attached to your opponent's pokémon"
           }
         };
       case WHITNEY_193:
