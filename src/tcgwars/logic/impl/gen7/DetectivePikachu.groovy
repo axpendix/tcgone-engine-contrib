@@ -295,10 +295,9 @@ public enum DetectivePikachu implements LogicCardInfo {
             onActivate{
               if(it==PLAY_FROM_HAND && my.prizeCardSet.faceDownCards && my.deck && confirm("Use Pantomime?")){
                 powerUsed()
-                def c1 = my.prizeCardSet.faceDownCards.select(hidden:true).first()
-                def c2 = my.deck.remove(0)
-                my.deck.add(0,c1)
-                my.prizeCardSet.add(c2)
+                def c1 = my.deck.remove(0)
+                my.prizeCardSet.faceDownCards.select(hidden:true).first().moveTo(addToTop: true, my.deck)
+                my.prizeCardSet.add(c1)
                 bc "Swapped a face-down prize and top card of the deck"
               }
             }
