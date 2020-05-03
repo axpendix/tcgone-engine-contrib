@@ -839,7 +839,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Once during your turn, when this Pokémon moves from your Bench to become your Active Pokémon, you may move any number of [R] Energy from your other Pokémon to it."
             delayedA{
               after SWITCH, {
-                if(bg.em().retrieveObject("Burning_Road") != bg.turnCount && self.active && bg.currentTurn == self.owner && confirm("Use Burning Road?")){
+                if(bg.em().retrieveObject("Burning_Road") != bg.turnCount && self.active && bg.currentTurn == self.owner && ef.pcs==self && confirm("Use Burning Road?")){
                   bg.em().storeObject("Burning_Road", bg.turnCount)
                   while(1){
                     def pl=(my.all.findAll {it.cards.filterByEnergyType(R) && it!=self})
