@@ -134,7 +134,7 @@ public enum RebelClash implements LogicCardInfo {
   DRAGAPULT_V_92 ("Dragapult V", 92, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _PSYCHIC_]),
   DRAGAPULT_VMAX_93 ("Dragapult VMAX", 93, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _PSYCHIC_]),
   GALARIAN_FARFETCH_D_94 ("Galarian Farfetch’d", 94, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
-  GALARIAN_SIRFETCH_D_95 ("Galarian Sirfetch’d", 95, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_, NOT_IMPLEMENTED]),
+  GALARIAN_SIRFETCH_D_95 ("Galarian Sirfetch’d", 95, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   NOSEPASS_96 ("Nosepass", 96, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
   MEDITITE_97 ("Meditite", 97, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
   MEDICHAM_98 ("Medicham", 98, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
@@ -209,7 +209,7 @@ public enum RebelClash implements LogicCardInfo {
   SONIA_167 ("Sonia", 167, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   TOOL_SCRAPPER_168 ("Tool Scrapper", 168, Rarity.HOLORARE, [TRAINER, ITEM]),
   TRAINING_COURT_169 ("Training Court", 169, Rarity.HOLORARE, [TRAINER, STADIUM]),
-  TURRFIELD_170 ("Turrfield", 170, Rarity.HOLORARE, [TRAINER, STADIUM]),
+  TURFFIELD_STADIUM_170 ("Turffield Stadium", 170, Rarity.HOLORARE, [TRAINER, STADIUM]),
   CAPTURE_ENERGY_171 ("Capture Energy", 171, Rarity.HOLORARE, [ENERGY, SPECIAL_ENERGY]),
   HORROR_PSYCHIC_ENERGY_172 ("Horror Psychic Energy", 172, Rarity.HOLORARE, [ENERGY, SPECIAL_ENERGY]),
   SPEED_LIGHTNING_ENERGY_173 ("Speed Lightning Energy", 173, Rarity.HOLORARE, [ENERGY, SPECIAL_ENERGY]),
@@ -3912,16 +3912,16 @@ public enum RebelClash implements LogicCardInfo {
           actions.each { bg().gm().unregisterAction(it) }
         }
       };
-      case TURRFIELD_170:
+      case TURFFIELD_STADIUM_170:
       return stadium (this) {
         text "Once during each player’s turn, that player may search their deck for a [G] Evolution Pokemon, reveal it, and put it into their hand. Then, that player shuffles their deck. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
         def lastTurn=0
         def actions=[]
         onPlay {
-          actions=action("Stadium: Turrfield") {
+          actions=action("Stadium: Turffield Stadium") {
             assert my.deck : "Deck is empty"
             assert lastTurn != bg().turnCount : "Already used"
-            bc "Used Turrfield effect"
+            bc "Used Turffield Stadium effect"
             lastTurn = bg().turnCount
             my.deck.search("Choose a [G] Evolution Pokemon", {
               it.cardTypes.is(EVOLUTION) && it.types.contains(G)
