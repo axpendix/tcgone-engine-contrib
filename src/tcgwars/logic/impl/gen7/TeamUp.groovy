@@ -1729,7 +1729,7 @@ public enum TeamUp implements LogicCardInfo {
                 //}
               //}
 
-              def flag = false
+              def scoopUpBlock = false
               before PLAY_TRAINER, {
                 scoopUpBlock = false
                 if (ef.cardToPlay.name == "Scoop Up Net" && bg.currentTurn != self.owner) {
