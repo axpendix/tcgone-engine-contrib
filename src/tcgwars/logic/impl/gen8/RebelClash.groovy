@@ -3838,13 +3838,15 @@ public enum RebelClash implements LogicCardInfo {
         text "Put 1 of your Pokemon (excluding Pokemon V/GX) into your hand. (Discard all cards attached to that Pokemon.) You may play as many Item cards during your turn as you like (before your attack). (Note -  The term “Pokemon V” includes both Pokemon V and Pokemon VMAX.)"
         onPlay {
           def validTargets = my.all.findAll { !it.topPokemonCard.cardTypes.is(VMAX) && !it.topPokemonCard.cardTypes.is(POKEMON_V) && !it.topPokemonCard.cardTypes.is(POKEMON_GX) }
+
           def tar = validTargets.select("Which Pokemon to put back into your hand?")
+          targeted(tar, Source.TRAINER_CARD) {
+            tar.cards.filterByType(TRAINER).discard()
+            tar.cards.filterByType(ENERGY).discard()
 
-          tar.cards.filterByType(TRAINER).discard()
-          tar.cards.filterByType(ENERGY).discard()
-
-          tar.cards.moveTo(my.hand)
-          removePCS(tar)
+            tar.cards.moveTo(my.hand)
+            removePCS(tar)
+          }
         }
         playRequirement {
           assert my.all.findAll { !it.topPokemonCard.cardTypes.is(VMAX) && !it.topPokemonCard.cardTypes.is(POKEMON_V) && !it.topPokemonCard.cardTypes.is(POKEMON_GX) } : "No eligible Pokemon on Bench"
