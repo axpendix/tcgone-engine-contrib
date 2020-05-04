@@ -1710,10 +1710,9 @@ public enum TeamUp implements LogicCardInfo {
                 }
               }
               before null, null, Source.TRAINER_CARD, {
-                bc "Test Test"
                 def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
                 if (scoopUpBlock && pcs.numberOfDamageCounters){
-                  wcu "Scoop-Up Block prevents this."
+                  bc "Scoop-Up Block prevents this."
                   prevent()
                 }
               }
