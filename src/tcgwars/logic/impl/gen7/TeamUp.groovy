@@ -1728,11 +1728,11 @@ public enum TeamUp implements LogicCardInfo {
                   //prevent()
                 //}
               //}
-
+              
               def flag = false
               before PLAY_TRAINER, {
                 scoopUpBlock = false
-                if (ef.cardToPlay.name == "Scoop Up Net" && bg.currentTurn != self.owner) {
+                if(ef.cardToPlay.name == "Scoop Up Net" && bg.currentTurn != self.owner){
                   scoopUpBlock = true
                   bc "Scoop up net detected"
                 }
@@ -1742,7 +1742,6 @@ public enum TeamUp implements LogicCardInfo {
                 def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
                 if (scoopUpBlock && pcs.numberOfDamageCounters){
                   bc "Scoop-Up Block prevents this."
-                  wcu "Scoop-Up Block prevents this."
                   prevent()
                 }
               }
