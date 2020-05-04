@@ -2357,7 +2357,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            shredDamage(60, defending)
+            shredDamage 60
           }
         }
         move "Max Phantom", {
