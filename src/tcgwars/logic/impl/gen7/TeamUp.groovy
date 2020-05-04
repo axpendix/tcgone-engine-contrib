@@ -1716,7 +1716,14 @@ public enum TeamUp implements LogicCardInfo {
               }
               before null, null, Source.TRAINER_CARD, {
                 def target=e.getTarget(bg)
-                if (power && target.numberOfDamageCounters && target.owner==self.owner.opposite) {
+                if (power) {
+                  bc "Power"
+                }
+
+                if (target.numberOfDamageCounters) {
+                  bc "damage counters"
+                }
+                if (power && target.numberOfDamageCounters) {
                   bc "Scoop-Up Block prevents playing this card on this target"
                   prevent()
                 }
