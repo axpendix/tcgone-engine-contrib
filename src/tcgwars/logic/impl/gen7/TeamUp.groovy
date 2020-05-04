@@ -1703,36 +1703,10 @@ public enum TeamUp implements LogicCardInfo {
             text "Your opponent's Pokémon that have any damage counters on them, and any cards attached to those Pokémon, can't be put into your opponent's hand."
             //TODO: find a way to block scoop up effects
             delayedA {
-              //def power=false
-              //before PLAY_TRAINER, {
-                //if (ef.cardToPlay.name == "Scoop Up Net" && bg.currentTurn==self.owner.opposite) {
-                  //bc "Scoop Up net detected"
-                  //power=true
-                //}
-              //}
-              //after PLAY_TRAINER, {
-                //bc "After play trainer"
-                //power=false
-              //}
-              //before null, null, Source.TRAINER_CARD, {
-                //def target=e.getTarget(bg)
-                //if (power) {
-                  //bc "Power"
-                //}
-
-                //if (target.numberOfDamageCounters) {
-                  //bc "damage counters"
-                //}
-                //if (power && target.numberOfDamageCounters) {
-                  //bc "Scoop-Up Block prevents playing this card on this target"
-                  //prevent()
-                //}
-              //}
-
               def scoopUpBlock = false
               before PLAY_TRAINER, {
                 scoopUpBlock = false
-                if (ef.cardToPlay.name == "Scoop Up Net" && bg.currentTurn != self.owner) {
+                if ((ef.cardToPlay.name == "Scoop Up Net" || ef.cardToPlay.name == "Super Scoop Up" || ef.cardToPlay.name == "Acerola" || ef.cardToPlay.name == "Scoop Up Cyclone" || ef.cardToPlay.name == "Scoop Up") && bg.currentTurn != self.owner) {
                   scoopUpBlock = true
                   bc "Scoop up net detected"
                 }
