@@ -3839,11 +3839,8 @@ public enum RebelClash implements LogicCardInfo {
         onPlay {
           def validTargets = my.all.findAll { !it.topPokemonCard.cardTypes.is(VMAX) && !it.topPokemonCard.cardTypes.is(POKEMON_V) && !it.topPokemonCard.cardTypes.is(POKEMON_GX) }
           def tar = validTargets.select("Which Pokemon to put back into your hand?")
-
-          tar.cards.filterByType(TRAINER).discard()
-          tar.cards.filterByType(ENERGY).discard()
-
-          tar.cards.moveTo(my.hand)
+          tar.cards.filterbyType(POKEMON).moveTo(my.hand)
+          tar.cards.discard()
           removePCS(tar)
         }
         playRequirement {
