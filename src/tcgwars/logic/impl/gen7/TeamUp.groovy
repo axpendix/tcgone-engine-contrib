@@ -1705,7 +1705,7 @@ public enum TeamUp implements LogicCardInfo {
               def scoopUpBlock = false
               before PLAY_TRAINER, {
                 scoopUpBlock = false
-                if ((ef.cardToPlay.name == "Scoop Up Net" || ef.cardToPlay.name == "Super Scoop Up" || ef.cardToPlay.name == "Acerola" || ef.cardToPlay.name == "Scoop Up Cyclone" || ef.cardToPlay.name == "Scoop Up") && bg.currentTurn != self.owner) {
+                if ((ef.cardToPlay.name == "Scoop Up Net" || ef.cardToPlay.name == "Super Scoop Up" || ef.cardToPlay.name == "Acerola" || ef.cardToPlay.name == "AZ" || ef.cardToPlay.name == "Scoop Up Cyclone" || ef.cardToPlay.name == "Scoop Up") && bg.currentTurn != self.owner) {
                   scoopUpBlock = true
                 }
               }
