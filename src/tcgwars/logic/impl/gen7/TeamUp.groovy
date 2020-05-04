@@ -1701,21 +1701,18 @@ public enum TeamUp implements LogicCardInfo {
           weakness PSYCHIC
           bwAbility "Scoop-Up Block" , {
             text "Your opponent's Pokémon that have any damage counters on them, and any cards attached to those Pokémon, can't be put into your opponent's hand."
-            //TODO: find a way to block scoop up effects
             delayedA {
               def scoopUpBlock = false
               before PLAY_TRAINER, {
                 scoopUpBlock = false
                 if ((ef.cardToPlay.name == "Scoop Up Net" || ef.cardToPlay.name == "Super Scoop Up" || ef.cardToPlay.name == "Acerola" || ef.cardToPlay.name == "Scoop Up Cyclone" || ef.cardToPlay.name == "Scoop Up") && bg.currentTurn != self.owner) {
                   scoopUpBlock = true
-                  bc "Scoop up net detected"
                 }
               }
               before null, null, Source.TRAINER_CARD, {
                 bc "Test Test"
                 def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
                 if (scoopUpBlock && pcs.numberOfDamageCounters){
-                  bc "Scoop-Up Block prevents this."
                   wcu "Scoop-Up Block prevents this."
                   prevent()
                 }
