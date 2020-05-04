@@ -1778,7 +1778,7 @@ public enum Unleashed implements LogicCardInfo {
           }
           move "Dragon Steam", {
             text "60 damage. If your opponent has any [R] Pokémon in play, this attack’s base damage is 20 instead of 60."
-            energyCost W, R
+            energyCost W
             onAttack {
               if(opp.all.findAll {it.types.contains(R)}) {
                 damage 20
