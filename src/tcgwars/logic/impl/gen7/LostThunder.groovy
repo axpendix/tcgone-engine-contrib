@@ -3461,7 +3461,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Once during your turn, when this Pokémon moves from your Bench to become your Active Pokémon, you may move any number of Energy from your other Pokémon to it."
             delayedA{
               after SWITCH, {
-                if(bg.em().retrieveObject("Path_of_Life") != bg.turnCount && self.active && bg.currentTurn == self.owner){
+                if(bg.em().retrieveObject("Path_of_Life") != bg.turnCount && self.active && bg.currentTurn == self.owner && ef.switchedOut==self){
                   bg.em().storeObject("Path_of_Life", bg.turnCount)
                   while(1){
                     def pl=(my.all.findAll {it.cards.filterByType(ENERGY) && it!=self})

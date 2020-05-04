@@ -914,7 +914,7 @@ public enum SwordShield implements LogicCardInfo {
           text "Once during your turn, when this Pokémon moves from your Bench to the Active Spot, you may attach up to 2 [R] Energy cards from your discard pile to it."
           delayedA{
             after SWITCH, {
-              if (bg.em().retrieveObject("Libero") != bg.turnCount && self.active && bg.currentTurn == self.owner && confirm("Use Libero?")) {
+              if (bg.em().retrieveObject("Libero") != bg.turnCount && self.active && bg.currentTurn == self.owner && ef.switchedOut==self && confirm("Use Libero?")) {
                 bg.em().storeObject("Libero", bg.turnCount)
                 attachEnergyFrom(max: 2, type: FIRE, my.discard, self)
               }
