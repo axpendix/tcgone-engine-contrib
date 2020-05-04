@@ -1110,7 +1110,9 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            damage lastDamage.value
+            if (turnCount+1==bg.turnCount && lastDamage > hp(0)) {
+              damage lastDamage.value
+            }
           }
         }
         move "Max Pyro Ball", {
