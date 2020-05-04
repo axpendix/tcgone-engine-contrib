@@ -1705,11 +1705,13 @@ public enum TeamUp implements LogicCardInfo {
             delayedA {
               def power=false
               before PLAY_TRAINER, {
-                if (ef.supporter && ef.cardToPlay.name == "Scoop Up Net" && bg.currentTurn==self.owner.opposite) {
+                if (ef.cardToPlay.name == "Scoop Up Net" && bg.currentTurn==self.owner.opposite) {
+                  bc "Scoop Up net detected"
                   power=true
                 }
               }
               after PLAY_TRAINER, {
+                bc "After play trainer"
                 power=false
               }
               before null, null, Source.TRAINER_CARD, {
