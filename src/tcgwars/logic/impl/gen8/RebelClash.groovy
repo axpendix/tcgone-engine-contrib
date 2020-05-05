@@ -471,7 +471,7 @@ public enum RebelClash implements LogicCardInfo {
                       if(bg.currentTurn == thisCard.player){
                         bc"It is your turn"
                         thisCard.player.pbg.deck.remove(0)
-                        benchPCS(thisCard, OTHER, thisCard.player)
+                        benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
                         prevent()// Top Entry activates instead of drawing the card
                       } else {
                         bc"It is not your turn"
