@@ -2721,7 +2721,7 @@ public enum RebelClash implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to.name.contains("Falinks")&& it.dmg.value && it.notNoEffect) {
+                if (it.to.owner == self.owner && it.to.name.contains("Falinks") && it.dmg.value && it.notNoEffect) {
                   bc "Iron Defense Formation -20"
                   it.dmg -= hp(20)
                 }
