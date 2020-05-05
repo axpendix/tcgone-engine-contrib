@@ -706,16 +706,14 @@ public enum Unleashed implements LogicCardInfo {
             text "When you attach a [G] Energy card or [P] Energy card from your hand to Roserade during your turn, you may use this power. If you attach a [G] Energy card, the Defending Pokémon is now Confused. If you attach a [P] Energy card, the Defending Pokémon is now Poisoned. This power can’t be used if Roserade is affected by a Special Condition."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner && checkNoSPC() && confirm("Use Energy Signal?")) {
-                  if (ef.card.asEnergyCard().containsType(G) || ef.card.asEnergyCard().containsType(P)) {
-                    if (ef.card.asEnergyCard().containsType(G)) {
-                      bc "Energy Signal inflicts Confusion"
-                      apply CONFUSED, defending
-                    }
-                    if (ef.card.asEnergyCard().containsType(P)) {
-                      bc "Energy Signal inflicts Poison"
-                      apply POISONED, defending
-                    }
+                if (ef.reason == PLAY_FROM_HAND && checkNoSPC() && (ef.card.asEnergyCard().containsType(G) || ef.card.asEnergyCard().containsType(P)) && confirm("Use Energy Signal?")) {
+                  if (ef.card.asEnergyCard().containsType(G)) {
+                    bc "Energy Signal inflicts Confusion"
+                    apply CONFUSED, defending
+                  }
+                  if (ef.card.asEnergyCard().containsType(P)) {
+                    bc "Energy Signal inflicts Poison"
+                    apply POISONED, defending
                   }
                 }
               }
