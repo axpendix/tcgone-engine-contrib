@@ -485,7 +485,7 @@ public enum RebelClash implements LogicCardInfo {
                 } else {
                   bc"Bench full"
                 }
-              } else{ 
+              } else{
                 bc"Not start of turn"
               }
             }
@@ -2619,6 +2619,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Once during your turn, you may search your discard pile for up to 1 [R] Energy and 1 [F] Energy and attach them to your Pokemon in any way you like."
           actionA {
             checkLastTurn()
+            assert (my.discard.filterByEnergyType(R) || my.discard.filterByEnergyType(F)) : "No [R] or [F] Energy cards in your discard pile"
             powerUsed()
             if (my.discard.filterByEnergyType(R)) {
               my.discard.filterByEnergyType(R).select(min:0, max:1).each {
