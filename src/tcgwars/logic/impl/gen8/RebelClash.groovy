@@ -3798,6 +3798,7 @@ public enum RebelClash implements LogicCardInfo {
                 thisCard.player.pbg.deck.subList(0,1).discard()
                 bc"Played Nugget"
                 draw 3 , thisCard.player.toTargetPlayer()
+                prevent()
               }
             }
           }
