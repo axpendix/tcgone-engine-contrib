@@ -466,7 +466,7 @@ public enum RebelClash implements LogicCardInfo {
                   bc"Top Entry - Bench not full"
                   if (confirm("Use Top Entry?")){
                     bc"Top Entry confirmed"
-                    if(thisCard == my.deck.get(0)){
+                    if(thisCard.player.pbg.deck.get(0) == thisCard){
                       bc"Top Entry - Card is on top of deck"
                       bc"Top Entry Activates"
                       thisCard.player.pbg.deck.remove(0)
