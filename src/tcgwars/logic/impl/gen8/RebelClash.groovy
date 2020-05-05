@@ -468,14 +468,25 @@ public enum RebelClash implements LogicCardInfo {
                     bc"Top Entry confirmed"
                     if(thisCard.player.pbg.deck.get(0) == thisCard){
                       bc"Top Entry - Card is on top of deck"
-                      bc"Top Entry Activates"
-                      thisCard.player.pbg.deck.remove(0)
-                      benchPCS(thisCard)
-                      prevent()// Top Entry activates instead of drawing the card
+                      if(bg.currentTurn == thisCard.player.pbg){
+                        bc"It is your turn"
+                        thisCard.player.pbg.deck.remove(0)
+                        benchPCS(thisCard)
+                        prevent()// Top Entry activates instead of drawing the card
+                      } else{
+                        bc"It is not your turn"
+                      }
+                    } else {
+                      bc"Card is not on top of your deck"
                     }
+                  } else {
+                    bc"Top Entry was not confirmed"
                   }
+                } else {
+                  bc"Your bench is full"
                 }
-              }
+              } else {
+                bc"This wasn't the first card you drew"
             }
           
                     
