@@ -1451,7 +1451,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 40
             if (defending.EX) {
-              damge 30
+              damage 30
             }
           }
         }
@@ -2035,9 +2035,7 @@ public enum UnseenForces implements LogicCardInfo {
         move "Call for Family", {
           text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
           energyCost C
-          onAttack {
-            callForFamily(basic: true, 1, delegate)
-          }
+          callForFamily(basic: true, 1, delegate)
         }
         move "Splash", {
           text "10 damage."

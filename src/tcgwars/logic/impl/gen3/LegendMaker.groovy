@@ -299,6 +299,19 @@ public enum LegendMaker implements LogicCardInfo {
           text "Once during your turn (before your attack), you may move a React Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Delcatty is affected by a Special Condition."
           actionA {
             // TODO
+            if (confirm("Use Reactive Shift?")) {
+              while(1){
+                def pl=(my.all.findAll {it.cards.energyCount(C)})
+                if(!pl) break;
+                def src =pl.select("source for energy (cancel to stop)", false)
+                if(!src) break;
+                def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
+
+                def tar=my.all.select("Target for energy (cancel to stop)", false)
+                if(!tar) break;
+                energySwitch(src, tar, card)
+              }
+            }
           }
         }
         move "Energy Link", {
@@ -1407,7 +1420,23 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Deep Sleep", {
           text "As long as Misdreavus is your Active Pokémon, each player flips 2 coins for his or her Pokémon that is Asleep between turns. If either coin is tails, that Pokémon is still Asleep."
           delayedA {
-            // TODO
+            after CLEAR_SPECIAL_CONDITION, defending, {
+              if(ef.types.contains(ASLEEP)){
+                unregister()
+              }
+            }
+            before ASLEEP_SPC, null, null, BEGIN_TURN, {
+              if(ef.target == defending){ //MARK parentEvent
+                flip "Asleep (Deep Sleep)", 2, {}, {}, [2:{
+                  ef.unregisterItself(bg.em());
+                },1:{
+                  bc "$self is still asleep."
+                },0:{
+                  bc "$self is still asleep."
+                }]
+                prevent()
+              }
+            }
           }
         }
         move "Return Trance", {
@@ -1495,8 +1524,11 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Power Circulation", {
           text "Once during your turn (before your attack), you may search your discard pile for a basic Energy card, show it to your opponent, and put it on top of your deck. If you do, put 1 damage counter on Sealeo. This power can't be used if Sealeo is affected by a Special Condition."
           actionA {
-            // TODO
             checkNoSPC()
+            checkLastTurn()
+            powerUsed()
+            assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energy in Discard"
+            my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 1, "Move one to the top of your deck").moveTo(addToTop: true, my.deck)
             damage 10, self
           }
         }
@@ -2177,10 +2209,19 @@ public enum LegendMaker implements LogicCardInfo {
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each player can't have more than 3 Benched Pokémon. When Giant Stump comes into play, each player discards Benched Pokémon and any cards attached to them until he or she has 3 Benched Pokémon. (You discard your Pokémon first.)"
+        def eff
         onPlay {
-          // TODO
+          eff = delayed {
+            getter (GET_BENCH_SIZE) {h->
+              h.object = 3
+            }
+          }
+          self.owner.opposite.pbg.triggerBenchSizeCheck()
+          self.owner.pbg.triggerBenchSizeCheck()
         }
         onRemoveFromPlay{
+          self.owner.opposite.pbg.triggerBenchSizeCheck()
+          self.owner.pbg.triggerBenchSizeCheck()
         }
       };
       case POWER_TREE_76:
@@ -2363,7 +2404,16 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Fire Remedy", {
           text "Whenever you attach a [R] Energy from your hand to Arcanine ex, remove 1 damage counter and all Special Conditions from Arcanine ex."
           delayedA {
-            // TODO
+            after ATTACH_ENERGY, self, {
+              if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(R) && confirm("Use Fire Remedy?")) {
+                bc "Fire Remedy heals 10 and removes all Special Conditions from Arcanine ex"
+                heal 10, self
+                if (self.specialConditions) {
+                  clearSpecialCondition(self, SRC_ABILITY)
+                }
+                powerUsed()
+              }
+            }
           }
         }
         move "Overrun", {
@@ -2457,7 +2507,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
-            // TODO
+            doMoreDamageNextTurn(thisMove, 30, self)
           }
         }
       };
