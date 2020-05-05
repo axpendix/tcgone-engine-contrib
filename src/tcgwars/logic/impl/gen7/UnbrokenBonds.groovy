@@ -711,7 +711,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               damage 90
-              if(self.cardTypes.energyCount(G) >= 2){
+              if(self.cards.energyCount(G) >= 2){
                 healAfterDamage 60, self
               }
             }
