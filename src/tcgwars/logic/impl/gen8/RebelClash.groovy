@@ -978,11 +978,20 @@ public enum RebelClash implements LogicCardInfo {
       case LAMPENT_32:
       return evolution (this, from:"Litwick", hp:HP080, type:R, retreatCost:1) {
         weakness W
+        globalAbility {Card thisCard->
+          delayed {
+            before DRAW_CARD, {
+              if (bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Use Top Entry?")) {
+                thisCard.player.pbg.deck.remove(0)
+                benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
+                bc"Top Entry activates"
+                prevent()
+              }
+            }
+          }
+        }
         bwAbility "Top Entry", {
           text "If you draw this card from your deck at the beginning of your turn and there is room on your Bench, instead of putting it into your hand, you may play it directly onto your Bench."
-          actionA {
-            // TODO
-          }
         }
         move "Reignite", {
           text "20 damage. Attach a [R] Energy card from your discard pile to this Pokemon."
@@ -1587,21 +1596,20 @@ public enum RebelClash implements LogicCardInfo {
       case LUXIO_61:
       return evolution (this, from:"Shinx", hp:HP090, type:L, retreatCost:1) {
         weakness F
+        globalAbility {Card thisCard->
+          delayed {
+            before DRAW_CARD, {
+              if (bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Use Top Entry?")) {
+                thisCard.player.pbg.deck.remove(0)
+                benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
+                bc"Top Entry activates"
+                prevent()// Top Entry activates instead of drawing the card
+              }
+            }
+          }
+        }
         bwAbility "Top Entry", {
           text "If you draw this card from your deck at the beginning of your turn and there is room on your Bench, instead of putting it into your hand, you may play it directly onto your Bench."
-          actionA {
-            // TODO
-            // def text="Once during your turn (before your attack), if this Pokémon is the last card in your hand, you may play it onto your Bench. If you do, draw 3 cards."
-            // assert thisCard.player.pbg.hand.size() == 1 : "Hand size is not 1"
-            // assert thisCard.player.pbg.hand.contains(thisCard) : "Not in hand"
-            // assert thisCard.player.pbg.bench.notFull : "Bench full"
-            // assert bg.turnCount!=lastTurn : "Already used ability"
-            // assert checkGlobalAbility(thisCard) : "Blocked ability"
-            // bc "$thisCard used Elusive Master"
-            // my.hand.remove(thisCard)
-            // def pcs = benchPCS(thisCard)
-            // draw 3
-          }
         }
         move "Zap Kick", {
           text "30 damage."
@@ -3782,8 +3790,19 @@ public enum RebelClash implements LogicCardInfo {
       case NUGGET_162:
       return itemCard (this) {
         text "Play this card when you draw it from your deck at the start of your turn (before putting it into your hand). Draw 3 cards. You may play as many Item cards as you like during your turn (before your attack)."
+        globalAbility {Card thisCard->
+          delayed {
+            before DRAW_CARD, {
+              if (bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Play Nugget?")) {
+                thisCard.player.pbg.deck.discard(0)
+                bc"Played Nugget"
+                draw 3
+                prevent()
+              }
+            }
+          }
+        }
         onPlay {
-          // TODO
         }
         playRequirement {
         }
