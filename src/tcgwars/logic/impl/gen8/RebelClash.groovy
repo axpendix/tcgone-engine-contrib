@@ -3793,7 +3793,8 @@ public enum RebelClash implements LogicCardInfo {
         globalAbility {Card thisCard->
           delayed {
             before DRAW_CARD, {
-              if (bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Play Nugget?")) {
+              if (bg.em().retrieveObject("Nugget") != bg.turnCount && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Play Nugget?")) {
+                bg.em().storeObject("Nugget", bg.turnCount)
                 thisCard.player.pbg.deck.discard(0)
                 bc"Played Nugget"
                 draw 3
