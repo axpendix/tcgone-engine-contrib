@@ -459,43 +459,65 @@ public enum RebelClash implements LogicCardInfo {
         weakness R
         globalAbility {Card thisCard->
           delayed {
-            after DRAW_CARD, {
-              if (ef.card.is(thisCard) ) {
-                bc "Top Entry - Lombre Drawn"
-
-                if (bg.em().currentEffectStack.find{it instanceof BeginTurn}) {
-                  bc "Top Entry - Instance of Begin Turn"
-
-                  if (thisCard.player.pbg.bench.notFull) {
-                    bc "Top Entry - Bench not full"
-                    if (checkGlobalAbility(thisCard)) {
-                      bc "Top Entry - global Ability"
-
-                      if (confirm("Activate Lombre's Top Entry to put Lombre on the Bench?", thisCard.player)) {
-                        bc "Top Entry - Confirm success"
-                      } else {
-                        bc "Top Entry - Confirm No"
-                      }
-                    } else {
-                      bc "Top Entry - Not global entry"
+            before DRAW_CARD, {
+              if (bg.em().currentEffectStack.find{it instanceof BeginTurn}) {
+                bc "Top Entry - Instance of Begin Turn"
+                if (thisCard.player.pbg.bench.notFull){
+                  bc"Top Entry - Bench not full"
+                  if (confirm("Use Top Entry?")){
+                    bc"Top Entry confirmed"
+                    if(thisCard == thisCard.player.deck.get(0)){
+                      bc"Top Entry - Card is on top of deck"
+                      bc"Top Entry Activates"
+                      thisCard.player.pbg.deck.remove(0)
+                      benchPCS(thisCard)
+                      prevent()// Top Entry activates instead of drawing the card
                     }
-                  } else {
-                    bc "Top Entry - Bench open"
                   }
-                } else {
-                  bc "Top Entry - Not instance of begin turn"
                 }
               }
-
-              if (ef.card.is(thisCard) && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.bench.notFull && checkGlobalAbility(thisCard) && confirm("Activate Lombre's Top Entry to put Lombre on the Bench?", thisCard.player)) {
-
-
-
-                bc "Lombre's Top Entry activated"
-                thisCard.player.pbg.hand.remove(thisCard)
-                benchPCS(thisCard)
-              }
             }
+          
+                    
+              
+              
+            //after DRAW_CARD, {
+              //if (ef.card.is(thisCard) ) {
+                //bc "Top Entry - Lombre Drawn"
+
+                //if (bg.em().currentEffectStack.find{it instanceof BeginTurn}) {
+                  //bc "Top Entry - Instance of Begin Turn"
+
+                  //if (thisCard.player.pbg.bench.notFull) {
+                    //bc "Top Entry - Bench not full"
+                    //if (checkGlobalAbility(thisCard)) {
+                      //bc "Top Entry - global Ability"
+
+                      //if (confirm("Activate Lombre's Top Entry to put Lombre on the Bench?", thisCard.player)) {
+                        //bc "Top Entry - Confirm success"
+                      //} else {
+                        //bc "Top Entry - Confirm No"
+                      //}
+                    //} else {
+                      //bc "Top Entry - Not global entry"
+                    //}
+                  //} else {
+                    //bc "Top Entry - Bench open"
+                  //}
+                //} else {
+                  //bc "Top Entry - Not instance of begin turn"
+                //}
+              //}
+
+              //if (ef.card.is(thisCard) && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.bench.notFull && checkGlobalAbility(thisCard) && confirm("Activate Lombre's Top Entry to put Lombre on the Bench?", thisCard.player)) {
+
+
+
+                //bc "Lombre's Top Entry activated"
+                //thisCard.player.pbg.hand.remove(thisCard)
+                //benchPCS(thisCard)
+              //}
+            //}
           }
         }
         bwAbility "Top Entry", {
