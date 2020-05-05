@@ -709,11 +709,11 @@ public enum Unleashed implements LogicCardInfo {
                 if (ef.reason == PLAY_FROM_HAND && (ef.card.asEnergyCard().containsType(G) || ef.card.asEnergyCard().containsType(P)) && !self.specialConditions && confirm("Use Energy Signal?")) {
                   if (ef.card.asEnergyCard().containsType(G)) {
                     bc "Energy Signal inflicts Confusion"
-                    apply CONFUSED, defending
+                    apply CONFUSED, opp.active
                   }
                   if (ef.card.asEnergyCard().containsType(P)) {
                     bc "Energy Signal inflicts Poison"
-                    apply POISONED, defending
+                    apply POISONED, opp.active
                   }
                 }
               }
