@@ -460,33 +460,11 @@ public enum RebelClash implements LogicCardInfo {
         globalAbility {Card thisCard->
           delayed {
             before DRAW_CARD, {
-              if (bg.em().currentEffectStack.find{it instanceof BeginTurn}) {
-                bc"Instanceof BeginTurn"
-                if (thisCard.player.pbg.bench.notFull){
-                  bc"Bench not full"
-                  if (confirm("Use Top Entry?")){
-                    bc"confirm successfull"
-                    if(thisCard.player.pbg.deck.get(0) == thisCard){
-                      bc"On top of deck"
-                      if(bg.currentTurn == thisCard.player){
-                        bc"It is your turn"
-                        thisCard.player.pbg.deck.remove(0)
-                        benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
-                        prevent()// Top Entry activates instead of drawing the card
-                      } else {
-                        bc"It is not your turn"
-                      }
-                    } else {
-                      bc"Not on top of deck"
-                    }
-                  } else {
-                    bc"Confirm unsuccessfull"
-                  }
-                } else {
-                  bc"Bench full"
-                }
-              } else{
-                bc"Not start of turn"
+              if (bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Use Top Entry?")) {
+                thisCard.player.pbg.deck.remove(0)
+                benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
+                bc"Top Entry activates"
+                prevent()// Top Entry activates instead of drawing the card
               }
             }
           }
