@@ -468,7 +468,7 @@ public enum RebelClash implements LogicCardInfo {
                     bc"confirm successfull"
                     if(thisCard.player.pbg.deck.get(0) == thisCard){
                       bc"On top of deck"
-                      if(bg.currentTurn == thisCard.player.pbg){
+                      if(bg.currentTurn == thisCard.player){
                         bc"It is your turn"
                         thisCard.player.pbg.deck.remove(0)
                         benchPCS(thisCard)
