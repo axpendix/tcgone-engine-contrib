@@ -856,7 +856,7 @@ public enum RebelClash implements LogicCardInfo {
                 def list = []
                 for (move in h.object) {
                   def copy = move.shallowCopy()
-                  copy.energyCost = (R, C, C)
+                  copy.energyCost = [[R] as Set, [C] as Set, [C] as Set]
                   list.add(copy)
                 }
               }
