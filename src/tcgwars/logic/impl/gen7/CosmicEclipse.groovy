@@ -771,8 +771,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  def plusDmg = damage 20*my.prizeCardSet.takenCount
                   if (it.from == self && plusDmg && it.dmg.value && it.notNoEffect) {
+                    def plusDmg = 20*my.prizeCardSet.takenCount
                     bc "Beast Boost +$plusDmg"
                     it.dmg += hp(plusDmg)
                   }
