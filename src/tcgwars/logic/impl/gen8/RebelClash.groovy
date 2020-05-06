@@ -201,7 +201,7 @@ public enum RebelClash implements LogicCardInfo {
   FULL_HEAL_159 ("Full Heal", 159, Rarity.HOLORARE, [TRAINER, ITEM]),
   GALAR_MINE_160 ("Galar Mine", 160, Rarity.HOLORARE, [TRAINER, STADIUM]),
   MILO_161 ("Milo", 161, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
-  NUGGET_162 ("Nugget", 162, Rarity.HOLORARE, [TRAINER, ITEM, NOT_IMPLEMENTED]),
+  NUGGET_162 ("Nugget", 162, Rarity.HOLORARE, [TRAINER, ITEM]),
   OLEANA_163 ("Oleana", 163, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   POKEBALL_164 ("PokeBall", 164, Rarity.HOLORARE, [TRAINER, ITEM]),
   SCOOP_UP_NET_165 ("Scoop Up Net", 165, Rarity.HOLORARE, [TRAINER, ITEM]),
