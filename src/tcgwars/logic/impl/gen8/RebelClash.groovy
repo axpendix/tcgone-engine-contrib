@@ -844,7 +844,8 @@ public enum RebelClash implements LogicCardInfo {
       case NINETALES_V_26:
       return basic (this, hp:HP200, type:R, retreatCost:2) {
         weakness W
-        customAbility {
+        bwAbility "Dark Oath", {
+          text "As long as this Pokemon is your Active Pokemon, your opponent’s Active Pokemon pays [C] more to use its attacks."
           getterA GET_MOVE_LIST, { h ->
             if (self.active && h.effect.target.active && h.effect.target.owner == self.owner.opposite && bg.currentTurn == self.owner) {
               def list = []
