@@ -955,10 +955,12 @@ public enum UnifiedMinds implements LogicCardInfo {
               topFiveCards.discard()
 
               def firePokemon = pokemonInTopFive.findAll{it.types.contains(R)}
-              if (firePokemon && my.bench.freeBenchCount) {
-                firePokemon.select(max: my.bench.freeBenchCount, min: 0).each {
-                  my.discard.remove(it);
-                  benchPCS(it);
+              afterDamage{
+                if (firePokemon && my.bench.freeBenchCount) {
+                  firePokemon.select(max: my.bench.freeBenchCount, min: 0).each {
+                    my.discard.remove(it);
+                    benchPCS(it);
+                  }
                 }
               }
             }
