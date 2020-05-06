@@ -844,19 +844,16 @@ public enum RebelClash implements LogicCardInfo {
       case NINETALES_V_26:
       return basic (this, hp:HP200, type:R, retreatCost:2) {
         weakness W
-        def list = []
         customAbility {
-          delayedA {
-            before CHECK_ATTACK_REQUIREMENTS, {
-              getterA GET_MOVE_LIST, { h ->
-                if (self.active && h.effect.target.active && h.effect.target.owner == self.owner.opposite) {
-                  list = []
-                  for (move in h.object) {
-                    def copy = move.shallowCopy()
-                    list.add(copy)
-                  }
-                }
+          getterA GET_MOVE_LIST, { h ->
+            if (self.active && h.effect.target.active && h.effect.target.owner == self.owner.opposite && bg.currentTurn == self.owner) {
+              def list = []
+              for (move in h.object) {
+                def copy = move.shallowCopy()
+                copy.energyCost.add(C)
+                list.add(copy)
               }
+              h.object=list
             }
           }
         }
