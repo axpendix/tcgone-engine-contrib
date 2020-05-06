@@ -844,6 +844,23 @@ public enum RebelClash implements LogicCardInfo {
       case NINETALES_V_26:
       return basic (this, hp:HP200, type:R, retreatCost:2) {
         weakness W
+        def list = []
+        customAbility {
+          delayedA {
+            before CHECK_ATTACK_REQUIREMENTS, {
+              getterA GET_MOVE_LIST, { h ->
+                if (self.active && h.effect.target.active && h.effect.target.owner == self.owner.opposite) {
+                  list = []
+                  for (move in h.object) {
+                    def copy = move.shallowCopy()
+                    copy.energyCost = [[R] as Set, [C] as Set, [C] as Set]
+                    list.add(copy)
+                  }
+                }
+              }
+            }
+          }
+        }
         move "Nine-Tailed Shapeshifter", {
           text "Choose 1 of your opponent’s Active Pokemon’s attacks and use it as this attack."
           energyCost R, C, C
@@ -851,14 +868,6 @@ public enum RebelClash implements LogicCardInfo {
             assert opp.active.topPokemonCard.moves : "No moves to perform"
           }
           onAttack {
-            def list = []
-            getter GET_MOVE_LIST, { h ->
-              for (move in h.object) {
-                def copy = move.shallowCopy()
-                copy.energyCost = [[R] as Set, [C] as Set, [C] as Set]
-                list.add(copy)
-              }
-            }
             def selected = choose(list, "Choose an attack to use.")
             bc "$selected was chosen"
             def bef = blockingEffect(BETWEEN_TURNS)
