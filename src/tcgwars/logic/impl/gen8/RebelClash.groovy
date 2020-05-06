@@ -3789,7 +3789,7 @@ public enum RebelClash implements LogicCardInfo {
       };
       case NUGGET_162:
       return itemCard (this) {
-        text "Play this card when you draw it from your deck at the start of your turn (before putting it into your hand). Draw 3 cards. You may play as many Item cards as you like during your turn (before your attack)."
+        text "Play this card only when you draw it from your deck at the start of your turn (before putting it into your hand). Draw 3 cards. You may play as many Item cards as you like during your turn (before your attack)."
         globalAbility {Card thisCard->
           delayed {
             before DRAW_CARD, {
@@ -3806,6 +3806,7 @@ public enum RebelClash implements LogicCardInfo {
         onPlay {
         }
         playRequirement {
+          assert false : "Play this card only when you draw it from your deck at the start of your turn"
         }
       };
       case OLEANA_163:
