@@ -851,7 +851,7 @@ public enum RebelClash implements LogicCardInfo {
             assert opp.active.topPokemonCard.moves : "No moves to perform"
           }
           onAttack {
-            getterA GET_MOVE_LIST, { h ->
+            getter GET_MOVE_LIST, { h ->
               if (self.active && h.effect.target.active && h.effect.target.owner == self.owner.opposite) {
                 def list = []
                 for (move in h.object) {
