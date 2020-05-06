@@ -852,13 +852,11 @@ public enum RebelClash implements LogicCardInfo {
           }
           onAttack {
             getter GET_MOVE_LIST, { h ->
-              if (self.active && h.effect.target.active && h.effect.target.owner == self.owner.opposite) {
-                def list = []
-                for (move in h.object) {
-                  def copy = move.shallowCopy()
-                  copy.energyCost = [[R] as Set, [C] as Set, [C] as Set]
-                  list.add(copy)
-                }
+              def list = []
+              for (move in h.object) {
+                def copy = move.shallowCopy()
+                copy.energyCost = [[R] as Set, [C] as Set, [C] as Set]
+                list.add(copy)
               }
             }
             def selected = choose(list, "Choose an attack to use.")
