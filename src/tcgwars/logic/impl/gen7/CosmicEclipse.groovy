@@ -2370,7 +2370,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 def eff
                 register {
                   eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                    h.object = 2
+                    h.object = h.object + 1
                   }
                 }
                 unregister {
