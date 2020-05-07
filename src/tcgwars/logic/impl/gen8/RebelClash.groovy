@@ -854,7 +854,7 @@ public enum RebelClash implements LogicCardInfo {
             def list = []
             defending.topPokemonCard.moves.each{
               def copy = it.shallowCopy()
-              copy.energyCost.add(C)
+              copy.energyCost = [[R] as Set, [C] as Set, [C] as Set]
               list.add(copy)
             }
             def selected = choose(list, "Choose an attack to use.")
