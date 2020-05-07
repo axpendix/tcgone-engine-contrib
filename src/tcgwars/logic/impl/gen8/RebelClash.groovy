@@ -851,7 +851,12 @@ public enum RebelClash implements LogicCardInfo {
             assert opp.active.topPokemonCard.moves : "No moves to perform"
           }
           onAttack {
-            def list = defending.topPokemonCard.moves
+            def list []
+            defending.topPokemonCard.moves.each{
+              def copy = move.shallowCopy()
+              copy.energyCost.add(C)
+              list.add(copy)
+            }
             def selected = choose(list, "Choose an attack to use.")
             bc "$selected was chosen"
             def bef = blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
