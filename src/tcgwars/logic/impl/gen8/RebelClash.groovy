@@ -859,7 +859,7 @@ public enum RebelClash implements LogicCardInfo {
             }
             def selected = choose(list, "Choose an attack to use.")
             bc "$selected was chosen"
-            def bef = blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+            def bef = blockingEffect(BETWEEN_TURNS)
             attack (selected as Move)
             bef.unregisterItself(bg().em())
           }
