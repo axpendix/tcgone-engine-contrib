@@ -2802,13 +2802,9 @@ public enum SwordShield implements LogicCardInfo {
                   if (it.to == self && self.active && it.dmg.value) {
                     targeted (pcs, SRC_ABILITY) {
                       if(pcs.cards.filterByType(ENERGY{
-                        bc "Galarian Stunfisk's Snap Trap triggered, attempting to discard an Energy from $pcs"
+                        bc "Galarian Stunfisk's Snap Trap triggered"
                         pcs.cards.filterByType(ENERGY).select("Discard").discard()
                       }
-                      //def list = pcs.cards.filterByType(ENERGY) as CardList
-                      //if (list) list.select("Snap Trap: Discard an energy card from $pcs", {1}, self.owner).discard()
-                      // below only works with attacks unfortunately, to be refactored later on
-//                    discardDefendingEnergy(Target.OPP_ACTIVE) // This will discard stunfisk's energy but I don't know the other values for Target
                     }
                   }
                 }
