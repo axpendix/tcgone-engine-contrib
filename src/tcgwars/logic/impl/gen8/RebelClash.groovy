@@ -460,7 +460,7 @@ public enum RebelClash implements LogicCardInfo {
         globalAbility {Card thisCard->
           delayed {
             before DRAW_CARD, {
-              if (thisCard.player.pbg.deck && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && oppConfirm("Lombre - Use Top Entry?")) {
+              if (thisCard.player.pbg.deck && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && ((bg.turnCount == 1 && confirm("Lombre - Use Top Entry")) || oppConfirm("Lombre - Use Top Entry?"))) {
                 thisCard.player.pbg.deck.remove(0)
                 benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
                 bc"Top Entry activates"
