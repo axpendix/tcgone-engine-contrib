@@ -853,7 +853,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             def list = []
             defending.topPokemonCard.moves.each{
-              def copy = move.shallowCopy()
+              def copy = it.shallowCopy()
               copy.energyCost.add(C)
               list.add(copy)
             }
