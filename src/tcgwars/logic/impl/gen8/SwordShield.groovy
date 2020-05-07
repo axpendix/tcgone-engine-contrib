@@ -2801,7 +2801,7 @@ public enum SwordShield implements LogicCardInfo {
                 bg.dm().each{
                   if (it.to == self && self.active && it.dmg.value) {
                     targeted (pcs, SRC_ABILITY) {
-                      if(pcs.cards.filterByType(ENERGY{
+                      if(pcs.cards.filterByType(ENERGY)){
                         bc "Galarian Stunfisk's Snap Trap triggered"
                         pcs.cards.filterByType(ENERGY).select("Discard").discard()
                       }
