@@ -851,7 +851,7 @@ public enum RebelClash implements LogicCardInfo {
             assert opp.active.topPokemonCard.moves : "No moves to perform"
           }
           onAttack {
-            def list []
+            def list = []
             defending.topPokemonCard.moves.each{
               def copy = move.shallowCopy()
               copy.energyCost.add(C)
