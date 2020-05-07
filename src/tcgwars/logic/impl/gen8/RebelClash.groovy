@@ -460,7 +460,7 @@ public enum RebelClash implements LogicCardInfo {
         globalAbility {Card thisCard->
           delayed {
             before DRAW_CARD, {
-              if (bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Use Top Entry?")) {
+              if (bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && oppConfirm("Lombre - Use Top Entry?")) {
                 thisCard.player.pbg.deck.remove(0)
                 benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
                 bc"Top Entry activates"
@@ -989,7 +989,7 @@ public enum RebelClash implements LogicCardInfo {
         globalAbility {Card thisCard->
           delayed {
             before DRAW_CARD, {
-              if (bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Use Top Entry?")) {
+              if (bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && oppConfirm("Lampent - Use Top Entry?")) {
                 thisCard.player.pbg.deck.remove(0)
                 benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
                 bc"Top Entry activates"
@@ -1607,7 +1607,7 @@ public enum RebelClash implements LogicCardInfo {
         globalAbility {Card thisCard->
           delayed {
             before DRAW_CARD, {
-              if (bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Use Top Entry?")) {
+              if (bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && oppConfirm("Luxio - Use Top Entry?")) {
                 thisCard.player.pbg.deck.remove(0)
                 benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
                 bc"Top Entry activates"
@@ -3801,7 +3801,7 @@ public enum RebelClash implements LogicCardInfo {
         globalAbility {Card thisCard->
           delayed {
             before DRAW_CARD, {
-              if (bg.em().retrieveObject("Nugget") != bg.turnCount && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Play Nugget?")) {
+              if (bg.em().retrieveObject("Nugget") != bg.turnCount && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && oppConfirm("Play Nugget?")) {
                 bg.em().storeObject("Nugget", bg.turnCount)
                 thisCard.player.pbg.deck.subList(0,1).discard()
                 bc"Played Nugget"
