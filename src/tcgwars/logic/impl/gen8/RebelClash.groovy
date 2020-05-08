@@ -1984,7 +1984,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             (1..3).each {
               if (opp.all) {
-                directDamage(10, opp.all.select("Place a damage counter to? ($it/3)"))
+                directDamage(10, opp.all.select("Place a damage counter on? ($it/3)"))
               }
             }
           }
@@ -2306,7 +2306,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 120
             (1..3).each {
               if (opp.bench) {
-                directDamage(10, opp.bench.select("Place a damage counter to? ($it/3)"))
+                directDamage(10, opp.bench.select("Place a damage counter on? ($it/3)"))
               }
             }
           }
@@ -2356,7 +2356,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 130
             (1..5).each {
               if (opp.bench) {
-                directDamage(10, opp.bench.select("Place a damage counter to? ($it/5)"))
+                directDamage(10, opp.bench.select("Place a damage counter on? ($it/5)"))
               }
             }
           }
