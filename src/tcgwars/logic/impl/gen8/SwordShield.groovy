@@ -325,7 +325,7 @@ public enum SwordShield implements LogicCardInfo {
             assert deck.notEmpty
           }
           onAttack {
-            my.deck.search(max: 2, cardTypeFilter(POKEMON)).showToOpponent("Selected Pokémon").moveTo(my.hand)
+            my.deck.search(max: 2, cardTypeFilter(POKEMON)).showToOpponent("Opponent's selected Pokémon.").moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -552,7 +552,7 @@ public enum SwordShield implements LogicCardInfo {
           text "Once during your turn, you may search your deck for up to 2 [G] Energy cards and attach them to 1 of your Pokémon. Then, shuffle your deck."
           actionA {
             checkLastTurn()
-            assert my.deck : "There are no more cards in your deck"
+            assert my.deck : "Your deck is empty."
             powerUsed()
             def list = my.deck.search (max: 2, basicEnergyFilter(G))
             def pcs = my.all.select("Attach to?")
@@ -633,7 +633,7 @@ public enum SwordShield implements LogicCardInfo {
           text "Once during your turn, you may look at the top 3 cards of your opponent’s deck and put them back in any order."
           actionA {
             checkLastTurn()
-            assert opp.deck : "Opponent's deck is empty"
+            assert opp.deck : "The opponent's deck is empty."
             powerUsed()
 
             def rearrangedCards = rearrange(opp.deck.subList(0, 3))
@@ -753,12 +753,12 @@ public enum SwordShield implements LogicCardInfo {
           text "Attach up to 3 [R] Energy cards from your discard pile to your Pokémon in any way you like."
           energyCost C
           attackRequirement {
-            assert my.discard.filterByEnergyType(R) : "No [R] in discard"
+            assert my.discard.filterByEnergyType(R) : "No [R] Energy in the discard pile."
           }
           onAttack {
             def list=my.discard.filterByEnergyType(R)
             list.select(max:3).each {
-              attachEnergy(my.all.select("Attach $it to"),it)
+              attachEnergy(my.all.select("Attach $it to?"),it)
             }
           }
         }
@@ -1178,7 +1178,7 @@ public enum SwordShield implements LogicCardInfo {
           onAttack {
             attachEnergyFrom(type:W, my.hand, self)
             if (bench) {
-              def tar = my.bench.select("Select the Pokémon to switch with Lapras V")
+              def tar = my.bench.select("Select the Pokémon to switch with Lapras V.")
               sw self, tar
             }
           }
@@ -1240,7 +1240,7 @@ public enum SwordShield implements LogicCardInfo {
             assert my.deck
           }
           onAttack {
-            my.deck.search(max:3, "Select up to 3 [W] Energy cards", basicEnergyFilter(W)).moveTo(my.hand)
+            my.deck.search(max:3, "Select up to 3 [W] Energy cards.", basicEnergyFilter(W)).moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -1307,7 +1307,7 @@ public enum SwordShield implements LogicCardInfo {
           onActivate {r->
             if (r==PLAY_FROM_HAND && my.deck && confirm("Use Shady Dealings?")) {
               powerUsed()
-              my.deck.search(max:1, "Choose a Trainer card", cardTypeFilter(TRAINER)).showToOpponent("Chosen card").moveTo(my.hand)
+              my.deck.search(max:1, "Choose a Trainer card.", cardTypeFilter(TRAINER)).showToOpponent("Opponent's chosen Trainer card.").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -1346,7 +1346,7 @@ public enum SwordShield implements LogicCardInfo {
           onActivate {r->
             if (r==PLAY_FROM_HAND && my.deck && confirm("Use Shady Dealings?")) {
               powerUsed()
-              my.deck.search(max:2, "Choose a Trainer card", cardTypeFilter(TRAINER)).showToOpponent("Chosen card").moveTo(my.hand)
+              my.deck.search(max:2, "Choose a Trainer card.", cardTypeFilter(TRAINER)).showToOpponent("Opponent's chosen Trainer card.").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -1368,7 +1368,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 40
-            opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("this card will be discarded").discard()
+            opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToMe("Selected card.").showToOpponent("This card will be discarded.").discard()
           }
         }
         move "Hydro Snipe", {
@@ -1376,8 +1376,8 @@ public enum SwordShield implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 100
-            if (opp.active.cards.filterByType(ENERGY) && confirm("Remove energy from opponent's Active?")) {
-              opp.active.cards.filterByType(ENERGY).select("Choose the energy to discard").moveTo(opp.hand)
+            if (opp.active.cards.filterByType(ENERGY) && confirm("Put an Energy attached to their active back to their hand?")) {
+              opp.active.cards.filterByType(ENERGY).select("Choose the Energy to put back in the opponent's hand.").moveTo(opp.hand)
             }
           }
         }
@@ -1554,7 +1554,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost L, C, C
           onAttack {
             damage 90
-            opp.hand.showToMe("Your opponent's hand")
+            opp.hand.showToMe("Your opponent's hand.")
             if (opp.hand.filterByType(ENERGY)) apply PARALYZED
           }
         }
@@ -1777,7 +1777,7 @@ public enum SwordShield implements LogicCardInfo {
           def pastelVeil = {
             for(pcs in all) {
               if (pcs.specialConditions && pcs.owner == self.owner) {
-                bc "Pastel Veil clears special conditions"
+                bc "Pastel Veil clears Special Conditions."
                 clearSpecialCondition(pcs, SRC_ABILITY)
               }
             }
@@ -1786,7 +1786,7 @@ public enum SwordShield implements LogicCardInfo {
             before APPLY_SPECIAL_CONDITION, {
               def pcs = e.getTarget(bg)
               if (pcs.owner == self.owner) {
-                bc "Pastel Veil prevents special conditions"
+                bc "Pastel Veil prevents Special Conditions."
                 prevent()
               }
             }
@@ -1847,13 +1847,13 @@ public enum SwordShield implements LogicCardInfo {
           text "As often as you like during your turn, you may move 1 damage counter from 1 of your [P] Pokémon to another of your [P] Pokémon."
           actionA {
             assert my.all.find({ it.numberOfDamageCounters > 0 && it.types.contains(P) })
-            def source = my.all.findAll { it.numberOfDamageCounters > 0 && it.types.contains(P) }.select("Source for damage counter")
+            def source = my.all.findAll { it.numberOfDamageCounters > 0 && it.types.contains(P) }.select("Source for the damage counter?")
             def target = my.all.findAll { it.types.contains(P) }
             target.remove(source)
-            target = target.select("Target for damage counter")
+            target = target.select("Target for the damage counter?")
             source.damage-=hp(10)
             target.damage+=hp(10)
-            bc "Swapped a damage counter from $source to $target"
+            bc "Swapped a damage counter from $source to $target."
             checkFaint()
           }
         }
@@ -1930,9 +1930,9 @@ public enum SwordShield implements LogicCardInfo {
                   flip "Asleep (Sleepy Pulse)", 2, {}, {}, [2:{
                     ef.unregisterItself(bg.em());
                   },1:{
-                    bc "$self is still asleep."
+                    bc "$ef.target is still asleep."
                   },0:{
-                    bc "$self is still asleep."
+                    bc "$ef.target is still asleep."
                   }]
                   prevent()
                 }
@@ -1986,7 +1986,7 @@ public enum SwordShield implements LogicCardInfo {
           text "50x damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there."
           energyCost P, C
           onAttack {
-            opp.hand.showToMe("Your opponent's hand")
+            opp.hand.showToMe("Your opponent's hand.")
             damage 50*opp.hand.filterByType(TRAINER).size()
           }
         }
@@ -1999,7 +1999,7 @@ public enum SwordShield implements LogicCardInfo {
           text "Once during your turn, you may heal 20 damage from your Active Pokémon."
           actionA {
             checkLastTurn()
-            assert my.active.numberOfDamageCounters: "Your Active is not damaged"
+            assert my.active.numberOfDamageCounters: "Your Active Active Pokémon has no damage counters."
             heal(20, my.active, SRC_ABILITY)
             powerUsed()
           }
@@ -2384,7 +2384,7 @@ public enum SwordShield implements LogicCardInfo {
               after SWITCH, self, {unregister()}
               before RETREAT, {
                 if (ef.retreater.owner==self.owner.opposite && self.active) {
-                  wcu "Octolock prevents retreating"
+                  wcu "Octolock prevents you from retreating."
                   prevent()
                 }
               }
@@ -2406,7 +2406,7 @@ public enum SwordShield implements LogicCardInfo {
                       }
                       h.object=list
                     }
-                    bc "Attacks of $pcs will cost $energies more during next turn"
+                    bc "Attacks of $pcs will cost $energies more during next turn."
                   bg.em().storeObject("Octolock", True)
                 }
               }
@@ -2469,7 +2469,7 @@ public enum SwordShield implements LogicCardInfo {
             assert my.hand.filterByEnergyType(F)
           }
           onAttack {
-            def tar = my.all.select("Which Pokémon to attach [F] and to heal 120 damage?")
+            def tar = my.all.select("Which Pokémon to attach [F] to and heal 120 damage?")
             attachEnergyFrom(may: true, type: F, my.hand, tar)
             heal 120, tar
           }
@@ -2733,11 +2733,12 @@ public enum SwordShield implements LogicCardInfo {
         move "Find a Friend", {
           text "Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
-          attackRequirement{
-            assert my.deck : "There are no more cards in your deck"
+          attackRequirement {
+            assert my.deck : "Your deck is empty."
           }
-          onAttack{
-            my.deck.search(count:1, "Choose a Pokémon", cardTypeFilter(POKEMON)).showToOpponent("Selected Pokémon").moveTo(my.hand)
+          onAttack {
+            my.deck.search(max: 1, cardTypeFilter(POKEMON)).moveTo(my.hand)
+            shuffleDeck()
           }
         }
         move "Crunch", {
@@ -2802,7 +2803,7 @@ public enum SwordShield implements LogicCardInfo {
                   if (it.to == self && self.active && it.dmg.value) {
                     targeted (pcs, SRC_ABILITY) {
                       if(pcs.cards.filterByType(ENERGY)){
-                        bc "Galarian Stunfisk's Snap Trap triggered"
+                        bc "Galarian Stunfisk's Snap Trap activates."
                         pcs.cards.filterByType(ENERGY).select("Discard").discard()
                       }
                     }
@@ -2939,11 +2940,11 @@ public enum SwordShield implements LogicCardInfo {
           text "Once during your turn, you may look at the top 3 cards of your deck and attach any number of [M] Energy cards you find there to this Pokémon. Put the other cards into your hand. If you use this Ability, your turn ends."
           actionA {
             if (my.deck && confirm("Use Intrepid Sword?")) {
-              def topCards = my.deck.subList(0, 3).showToMe("Top 3 cards of your deck")
+              def topCards = my.deck.subList(0, 3).showToMe("Top 3 cards of your deck.")
               def metalEnergies = topCards.filterByBasicEnergyType(M)
 
               if (metalEnergies) {
-                def selectedEnergies = metalEnergies.select(min:0, max:metalEnergies.size(), "Attach any of them to $self")
+                def selectedEnergies = metalEnergies.select(min:0, max:metalEnergies.size(), "Attach any [M] Energy to $self?")
                 selectedEnergies.each {
                   attachEnergy(self, it)
                 }
@@ -2977,7 +2978,7 @@ public enum SwordShield implements LogicCardInfo {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
                 if(it.to == self && it.from.topPokemonCard.cardTypes.is(VMAX) && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
-                  bc "Dauntless Shield prevents damage from Pokémon VMAX"
+                  bc "Dauntless Shield prevents damage from Pokémon VMAX."
                   it.dmg = hp(0)
                 }
               }
@@ -3082,7 +3083,7 @@ public enum SwordShield implements LogicCardInfo {
             assert opp.bench
           }
           onAttack {
-            def tar = opp.bench.select("Choose a Benched Pokémon to shuffle back into the deck")
+            def tar = opp.bench.select("Choose a Benched Pokémon to shuffle back into the deck.")
             tar.cards.moveTo(opp.deck)
             removePCS(tar)
             shuffleDeck(null, TargetPlayer.OPPONENT)
@@ -3278,10 +3279,10 @@ public enum SwordShield implements LogicCardInfo {
           text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "There are no cards in your deck"
+            assert my.deck : "Your deck is empty."
           }
           onAttack {
-            my.deck.search(max:2,"Choose 2 card to put in your hand",{true}).moveTo(hidden: true, my.hand)
+            my.deck.search(max:2,"Choose 2 cards to put in your hand.",{true}).moveTo(hidden: true, my.hand)
           }
         }
         move "Spit Shot", {
@@ -3356,9 +3357,9 @@ public enum SwordShield implements LogicCardInfo {
       return itemCard (this) {
         text "Heal 120 damage from 1 of your Pokémon that has at least 2 Energy attached. If you healed any damage in this way, discard 2 Energy from it."
         onPlay {
-          def pcs = my.all.findAll{it.numberOfDamageCounters && it.cards.energyCount() >= 2}.select("Choose the pokémon to heal")
+          def pcs = my.all.findAll{it.numberOfDamageCounters && it.cards.energyCount() >= 2}.select("Choose the Pokémon to heal.")
           heal 120, pcs
-          pcs.cards.filterByType(ENERGY).select(count: 2, "Discard which Energy?").discard()
+          pcs.cards.filterByType(ENERGY).select(count: 2, "Discard which Energy card(s)?").discard()
         }
         playRequirement{
           assert my.all.findAll{it.numberOfDamageCounters && it.cards.energyCount() >= 2}
@@ -3429,10 +3430,10 @@ public enum SwordShield implements LogicCardInfo {
             }
           }
           if (energies) {
-            energies.showToOpponent("Selected cards").moveTo(my.deck)
+            energies.showToOpponent("Opponent's selected Basic Energy to shuffle back.").moveTo(my.deck)
           }
           if (pokemon) {
-            pokemon.showToOpponent("Selected cards").moveTo(my.deck)
+            pokemon.showToOpponent("Opponent's selected Pokémon to shuffle back.").moveTo(my.deck)
           }
           shuffleDeck()
         }
@@ -3446,7 +3447,7 @@ public enum SwordShield implements LogicCardInfo {
       return supporter (this) {
         text "Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
         onPlay {
-          my.deck.search(count: 1, cardTypeFilter(POKEMON)).showToOpponent("Selected Pokémon").moveTo(my.hand)
+          my.deck.search(count: 1, cardTypeFilter(POKEMON)).showToOpponent("Opponent's selected Pokémon.").moveTo(my.hand)
           shuffleDeck()
         }
         playRequirement{
@@ -3468,8 +3469,8 @@ public enum SwordShield implements LogicCardInfo {
         text "You can play this card only if you discard another card from your hand." +
           "Search your deck for a Basic Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
         onPlay {
-          my.hand.getExcludedList(thisCard).select("Select a card to discard").discard()
-          my.deck.search ("Search your deck for a Basic Pokémon and put it in your hand", cardTypeFilter(BASIC)).moveTo(my.hand)
+          my.hand.getExcludedList(thisCard).select("Select a card to discard.").discard()
+          my.deck.search ("Search your deck for a Basic Pokémon and put it in your hand.", cardTypeFilter(BASIC)).moveTo(my.hand)
           shuffleDeck()
         }
         playRequirement{
@@ -3499,7 +3500,7 @@ public enum SwordShield implements LogicCardInfo {
           eff=delayed(anytime:true){
             before BEGIN_TURN,{
               if(self.numberOfDamageCounters >= 3) {
-                bc "Sitrus Berry activates"
+                bc "Sitrus Berry activates."
                 heal 30, self
                 discard thisCard
               }
@@ -3517,9 +3518,9 @@ public enum SwordShield implements LogicCardInfo {
         text "Put an Energy attached to 1 of your opponent’s Pokémon into their hand."
         onPlay {
           def tar = opp.all.findAll {it.cards.energyCount(C)}
-          def pcs = tar.select("Discard energy from")
+          def pcs = tar.select("Put Energy back from which Pokémon?")
           targeted (pcs, TRAINER_CARD) {
-            pcs.cards.filterByType(ENERGY).select("Discard").moveTo(opp.hand)
+            pcs.cards.filterByType(ENERGY).select("Choose an Energy to put back in the opponent's hand.").moveTo(opp.hand)
           }
         }
         playRequirement {
@@ -3536,7 +3537,7 @@ public enum SwordShield implements LogicCardInfo {
               if(ef.attacker==self) bg.dm().each {
                 if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value) {
                   it.dmg += hp(10)
-                  bc "Vitality Band +10 HP"
+                  bc "Vitality Band +10"
                 }
               }
             }
@@ -3552,7 +3553,7 @@ public enum SwordShield implements LogicCardInfo {
           "As long as this card is attached to a Pokémon, it provides every type of Energy but provides only 1 Energy at a time."
         onPlay {reason->
           if (reason == PLAY_FROM_HAND) {
-            my.hand.getExcludedList(thisCard).select("Discard").discard()
+            my.hand.getExcludedList(thisCard).select("Select a card to discard.").discard()
           }
         }
         getEnergyTypesOverride {
