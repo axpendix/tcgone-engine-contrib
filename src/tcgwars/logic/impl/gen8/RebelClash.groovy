@@ -392,7 +392,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Shuffle 5 basic Energy cards from your discard pile into your deck."
           energyCost C
           attackRequirement {
-            assert my.discard.filterByType(BASIC_ENERGY) : "Your discard pile has no Basic Energy cards in it."
+            assert my.discard.filterByType(BASIC_ENERGY) : "Your discard pile has no Basic Energy."
           }
           onAttack {
             def energies = my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 5, "Select up to 5 Basic Energy cards to shuffle into your deck.")
