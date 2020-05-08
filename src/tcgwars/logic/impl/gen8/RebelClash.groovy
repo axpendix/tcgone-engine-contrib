@@ -392,7 +392,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Shuffle 5 basic Energy cards from your discard pile into your deck."
           energyCost C
           attackRequirement {
-            assert my.discard.filterByType(BASIC_ENERGY) : "Discard has no Basic Energies"
+            assert my.discard.filterByType(BASIC_ENERGY) : "Your discard pile has no Basic Energy."
           }
           onAttack {
             def energies = my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 5, "Select up to 5 Basic Energy cards to shuffle into your deck.")
@@ -528,7 +528,7 @@ public enum RebelClash implements LogicCardInfo {
             delayed{
               before ATTACH_ENERGY, self.owner.opposite.pbg.active, {
                 if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.active) {
-                  wcu "Pattern Menace prevents attaching energy"
+                  wcu "Pattern Menace prevents you from attaching Energy."
                   prevent()
                 }
               }
@@ -599,11 +599,11 @@ public enum RebelClash implements LogicCardInfo {
           text "Choose a Basic Pokemon from your discard pile and play it onto your Bench."
           energyCost C
           attackRequirement {
-            assert bench.notFull : "Bench full"
-            assert my.discard.filterByType(BASIC) : "Discard has no Basics"
+            assert bench.notFull : "Your Bench is full."
+            assert my.discard.filterByType(BASIC) : "Your discard pile has no Basic Pokémon."
           }
           onAttack {
-            def card = my.discard.filterByType(BASIC).select("Choose a Basic Pokémon to put onto your Bench").first()
+            def card = my.discard.filterByType(BASIC).select("Choose a Basic Pokémon to put onto your Bench.").first()
             my.discard.remove(card)
             benchPCS(card)
           }
@@ -684,7 +684,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost G, G, G, C
           attackRequirement {}
           onAttack {
-            def grassEnergies = self.cards.filterByEnergyType(G).select(min: 0, max: 3, "Discard [G]")
+            def grassEnergies = self.cards.filterByEnergyType(G).select(min: 0, max: 3, "Discard up to 3 [G] Energy.")
             damage 130+grassEnergies.size()*50
             grassEnergies.discard()
           }
@@ -709,7 +709,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             damage 50
             afterDamage {
-              if (confirm("Shuffle this Pokemon and all cards back into deck?")) {
+              if (confirm("Shuffle this Pokémon and all cards attached back into your deck?")) {
                 self.cards.moveTo(my.deck)
                 shuffleDeck()
                 removePCS(self)
@@ -779,10 +779,10 @@ public enum RebelClash implements LogicCardInfo {
           text "Once during your turn, you may flip a coin. If heads, choose 1 of your opponent’s Benched Basic Pokemon and switch it with their Active Pokemon."
           actionA {
             checkLastTurn()
-            assert opp.bench.findAll { it.basic } : "Opponent's Bench has no Basic Pokemon"
+            assert opp.bench.findAll { it.basic } : "Opponent's Bench has no Basic Pokémon."
             powerUsed()
             flip{
-              def pcs = opp.bench.findAll { it.basic}.select("New active")
+              def pcs = opp.bench.findAll { it.basic}.select("Choose a Basic Pokémon to switch into the Active Spot.")
               targeted (pcs, SRC_ABILITY) {
               sw(opp.active, pcs, SRC_ABILITY)
               }
@@ -849,7 +849,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Choose 1 of your opponent’s Active Pokemon’s attacks and use it as this attack."
           energyCost R, C, C
           attackRequirement {
-            assert opp.active.topPokemonCard.moves : "No moves to perform"
+            assert opp.active.topPokemonCard.moves : "No moves to use."
           }
           onAttack {
             def list = []
@@ -862,7 +862,7 @@ public enum RebelClash implements LogicCardInfo {
               list.add(copy)
             }
             def selected = choose(list, "Choose an attack to use.")
-            bc "$selected was chosen"
+            bc "$selected was chosen."
             def bef = blockingEffect(BETWEEN_TURNS)
             attack (selected as Move)
             bef.unregisterItself(bg().em())
@@ -885,7 +885,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Flip a coin. If heads, put a card from your discard pile into your hand."
           energyCost C
           attackRequirement {
-            assert my.discard : "Discard is empty"
+            assert my.discard : "Your discard pile is empty."
           }
           onAttack {
             flip {
@@ -1144,7 +1144,7 @@ public enum RebelClash implements LogicCardInfo {
             before null, null, Source.ATTACK, {
               def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
               if (pcs && pcs.cards.energyCount(C) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
-                bc "Galarian Mr Rime's Screen Cleaner prevents effect"
+                bc "Galarian Mr. Rime's Screen Cleaner prevents effect."
                 prevent()
               }
             }
@@ -1166,7 +1166,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Switch This Pokemon with 1 of your Benched Pokemon."
           energyCost C
           attackRequirement {
-            assert my.bench : "No Benched Pokemon"
+            assert my.bench : "You have no Benched Pokémon."
           }
           onAttack {
             sw self, my.bench.select()
@@ -1364,7 +1364,7 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 130
-            opp.hand.showToMe("Opponent's hand")
+            opp.hand.showToMe("Opponent's hand.")
           }
         }
       };
@@ -1379,7 +1379,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 60
 
             afterDamage {
-              if (defending.cards.energyCount(C) && confirm("Return an Energy from your Opponent's Active Pokemon to their hand?")) {
+              if (defending.cards.energyCount(C) && confirm("Return an Energy from your opponent's Active Pokémon to their hand?")) {
                 defending.cards.filterByType(ENERGY).select(count:1).moveTo(opp.hand)
               }
             }
@@ -1446,11 +1446,11 @@ public enum RebelClash implements LogicCardInfo {
           text "130 damage. Discard 2 [W] Energy from your hand or this attack does nothing."
           energyCost W
           attackRequirement {
-            assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W).size() >= 2 : "Less than 2 [W] Energies in your hand"
+            assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W).size() >= 2 : "Less than 2 [W] Energies in your hand."
           }
           onAttack {
             damage 130
-            my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W).select(count:2, "Discard").discard()
+            my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W).select(count:2, "Discard 2 [W] Energies.").discard()
           }
         }
       };
@@ -1529,7 +1529,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Search your deck for up to 3 Energy cards, reveal them, and put them in your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Deck is empty"
+            assert my.deck : "Your deck is empty."
           }
           onAttack {
             deck.search(min: 0, max: 3, cardTypeFilter(ENERGY)).moveTo(hand)
@@ -1673,13 +1673,13 @@ public enum RebelClash implements LogicCardInfo {
           text "Flip a coin. If heads, discard an Energy from 1 of your opponent’s Pokemon."
           energyCost L
           attackRequirement {
-            assert opp.all.findAll { it.cards.energyCount(C) } : "Opponent has no Energies to Discard"
+            assert opp.all.findAll { it.cards.energyCount(C) } : "Opponent has no Energy to discard."
           }
           onAttack {
             flip {
               def validSources = opp.all.findAll { it.cards.energyCount(C) }
               def tar = validSources.select("Choose the Pokémon to discard an Energy from.")
-              tar.cards.filterByType(ENERGY).select("Choose an energy to discard").discard()
+              tar.cards.filterByType(ENERGY).select("Choose an Energy to discard.").discard()
             }
           }
         }
@@ -1700,7 +1700,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Search your deck for up to 2 [L] Energy cards and attach them to this Pokemon. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Deck is empty"
+            assert my.deck : "Your deck is empty."
           }
           onAttack {
             attachEnergyFrom(basic: true, max: 2, type: L, my.deck, self)
@@ -1745,7 +1745,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Search your deck for up to 2 [L] Energy and attach them to your Benched Pokemon in any way you like. Then, shuffle your deck."
           energyCost L
           attackRequirement {
-            assert my.bench : "No Benched Pokemon to attach to"
+            assert my.bench : "No Benched Pokémon to attach to."
           }
           onAttack {
             attachEnergyFrom(type: L, max: 1, my.deck, my.bench.select())
@@ -1844,7 +1844,7 @@ public enum RebelClash implements LogicCardInfo {
               if (ef.attacker.owner != self.owner) {
                 bg.dm().each {
                   if (it.to == self && self.active && it.notNoEffect && it.dmg.value) {
-                    bc "Counterattack Kerzap Activates"
+                    bc "Counterattack Kerzap activates."
                     flip 3, {
                       directDamage 30, ef.attacker
                     }
@@ -1952,16 +1952,16 @@ public enum RebelClash implements LogicCardInfo {
           text "Move an Energy from 1 of your opponent’s Benched Pokemon to their Active Pokemon."
           energyCost C
           attackRequirement {
-            assert opp.bench : "Opponent has no Benched Pokemon"
-            assert opp.bench.findAll { it.cards.filterByType(ENERGY) } : "Opponent's Benched Pokemon has no Energies"
+            assert opp.bench : "Opponent has no Benched Pokémon."
+            assert opp.bench.findAll { it.cards.filterByType(ENERGY) } : "Opponent's Benched Pokémon has no Energy."
           }
           onAttack {
             def validSources = new PcsList();
             opp.bench.each {
               validSources.add(it)
             }
-            def pcs = validSources.findAll{it.cards.filterByType(ENERGY)}.select("Choose the Pokémon to move the Energy from")
-            energySwitch(pcs, opp.active, pcs.cards.filterByType(ENERGY).select("Choose the Energy to move").first())
+            def pcs = validSources.findAll{it.cards.filterByType(ENERGY)}.select("Choose the Pokémon to move the Energy from.")
+            energySwitch(pcs, opp.active, pcs.cards.filterByType(ENERGY).select("Choose the Energy to move to the Active Pokémon.").first())
           }
         }
         move "Psychic", {
@@ -1984,7 +1984,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             (1..3).each {
               if (opp.all) {
-                directDamage(10, opp.all.select("Place a Damage Counter ($it/3)"))
+                directDamage(10, opp.all.select("Place a damage counter on? ($it/3)"))
               }
             }
           }
@@ -2060,7 +2060,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Discard a card from the top of your opponent’s deck. If this Pokemon has Cursed Shovel attached to it, discard 2 more cards."
           energyCost C, C
           attackRequirement {
-            assert opp.deck : "Opponent's deck is empty"
+            assert opp.deck : "Opponent's deck is empty."
           }
           onAttack {
             opp.deck.subList(0,1).discard()
@@ -2087,7 +2087,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Search your deck for a Pokemon, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Deck is empty"
+            assert my.deck : "Your deck is empty."
           }
           onAttack {
             my.deck.search(max: 1, cardTypeFilter(POKEMON)).moveTo(my.hand)
@@ -2132,10 +2132,10 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Mind Hat", {
           text "Once during your turn, you may have each player discard 1 card from their hand. (Your opponent discards first. If either player has no cards in their hand, that player does not discard.)"
           actionA {
-            assert (my.hand || opp.hand): "Neither player have any cards in their hand."
+            assert (my.hand || opp.hand): "Both players have no cards in their hand."
             checkLastTurn()
 
-            if (confirm("Use Mind Hat")) {
+            if (confirm("Use Mind Hat?")) {
               powerUsed()
               if (opp.hand) {
                 if (opp.hand.size() > 1) {
@@ -2159,7 +2159,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Put damage counters on your opponent’s Active Pokemon equal to the number of Pokemon in your discard pile."
           energyCost P
           attackRequirement {
-            assert my.discard.filterByType(POKEMON) : "No Pokemon in Discard"
+            assert my.discard.filterByType(POKEMON) : "There are no Pokémon in your discard pile."
           }
           onAttack {
             directDamage my.discard.filterByType(POKEMON).size()*10, opp.active
@@ -2195,12 +2195,12 @@ public enum RebelClash implements LogicCardInfo {
           text "Attach any number of Basic Energy from your hand to your Pokemon in any way you like."
           energyCost C
           attackRequirement {
-            assert my.hand.filterByType(BASIC_ENERGY) : "No Basic Energies in Hand"
+            assert my.hand.filterByType(BASIC_ENERGY) : "There is no basic Energy in your hand."
           }
           onAttack {
             def tar = my.hand.filterByType(BASIC_ENERGY)
             if (tar) {
-              tar.select(min:0, max:tar.size(), "Select the ones you want to attach").each {
+              tar.select(min:0, max:tar.size(), "Select as much basic Energy as you'd like to attach.").each {
                 attachEnergy(my.all.select("Attach $it to?"), it)
               }
             }
@@ -2262,7 +2262,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Search your deck for a Dreepy and put it on your Bench. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Deck is empty"
+            assert my.deck : "Your deck is empty."
           }
           onAttack {
             deck.search (count: 1, {it.name == "Dreepy"}).each {
@@ -2306,7 +2306,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 120
             (1..3).each {
               if (opp.bench) {
-                directDamage(10, opp.bench.select("Place a Damage Counter ($it/3)"))
+                directDamage(10, opp.bench.select("Place a damage counter on? ($it/3)"))
               }
             }
           }
@@ -2356,7 +2356,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 130
             (1..5).each {
               if (opp.bench) {
-                directDamage(10, opp.bench.select("Place a Damage Counter ($it/5)"))
+                directDamage(10, opp.bench.select("Place a damage counter on? ($it/5)"))
               }
             }
           }
@@ -2524,7 +2524,7 @@ public enum RebelClash implements LogicCardInfo {
             def num = self.numberOfDamageCounters
             if (num > 0) {
               (1..num).each {
-                directDamage 20, opp.all.select("Put 2 damage counter to which Pokémon? ($it/$num")
+                directDamage 20, opp.all.select("Put 2 damage counters to which Pokémon? ($it/$num")
               }
             }
           }
@@ -2614,7 +2614,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Once during your turn, you may search your discard pile for up to 1 [R] Energy and 1 [F] Energy and attach them to your Pokemon in any way you like."
           actionA {
             checkLastTurn()
-            assert (my.discard.filterByEnergyType(R) || my.discard.filterByEnergyType(F)) : "No [R] or [F] Energy cards in your discard pile"
+            assert (my.discard.filterByEnergyType(R) || my.discard.filterByEnergyType(F)) : "No [R] or [F] Energy cards in your discard pile."
             powerUsed()
             if (my.discard.filterByEnergyType(R)) {
               my.discard.filterByEnergyType(R).select(min:0, max:1).each {
@@ -2823,7 +2823,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Put damage counters on your opponent’s Active Pokemon equal to the number of Pokemon in your discard pile."
           energyCost D, C
           attackRequirement {
-            assert my.discard.filterByType(POKEMON) : "No Pokemon in Discard"
+            assert my.discard.filterByType(POKEMON) : "There are no Pokémon in your discard pile."
           }
           onAttack {
             directDamage my.discard.filterByType(POKEMON).size()*10, opp.active
@@ -2849,7 +2849,7 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Poisonous Puddle", {
           text "Once during your turn, if there is a Stadium in play, you may leave your opponents Active Pokemon Poisoned."
           actionA {
-            assert bg.stadiumInfoStruct : "There is no Stadium in play"
+            assert bg.stadiumInfoStruct : "There is no Stadium in play."
             checkLastTurn()
             powerUsed()
 
@@ -2909,11 +2909,11 @@ public enum RebelClash implements LogicCardInfo {
           text "Choose 1 of your opponent’s Benched Pokemon and switch it with their Active Pokemon. This attack does 30 damage to the new Active Pokemon."
           energyCost D, C
           attackRequirement {
-            assert opp.bench : "Opponent has no Benched Pokemon"
+            assert opp.bench : "Opponent has no Benched Pokémon."
           }
           onAttack {
             def target = defending
-            target = opp.bench.select("Select the new active")
+            target = opp.bench.select("Select the new Active Pokémon.")
             sw defending, target
             damage 30, target
           }
@@ -2940,7 +2940,7 @@ public enum RebelClash implements LogicCardInfo {
 
             afterDamage {
               if (opp.hand) {
-                opp.hand.select("Choose 1 card to put on the bottom of their Deck").moveTo(opp.deck)
+                opp.hand.select("Choose 1 card to put on the bottom of your opponent's deck.").moveTo(opp.deck)
               }
             }
           }
@@ -3021,10 +3021,10 @@ public enum RebelClash implements LogicCardInfo {
           actionA {
             checkLastTurn()
             powerUsed()
-            assert my.deck : "Deck is empty"
-            assert my.hand.size() >= 2 : "Requires 2 or more Cards in hand"
+            assert my.deck : "Your deck is empty."
+            assert my.hand.size() >= 2 : "You need 2 or more cards in your hand."
 
-            my.hand.select(count: 2, "Select 2 cards to discard").discard()
+            my.hand.select(count: 2, "Choose 2 cards to discard.").discard()
             my.deck.search {
               it.name.contains("Galarian Perrserker")
             }.moveTo(my.hand)
@@ -3128,7 +3128,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 70
 
             if (my.bench) {
-              sw self, my.bench.select("Choose the new active.")
+              sw self, my.bench.select("Choose the new Active Pokémon.")
               if (opp.bench) {
                 whirlwind()
               }
@@ -3167,7 +3167,7 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             def energyCount = self.cards.energyCount(C)
-            my.deck.search(max:energyCount, "Choose up to $energyCount Trainer card(s)", cardTypeFilter(TRAINER)).moveTo(my.hand)
+            my.deck.search(max:energyCount, "Choose up to $energyCount Trainer card(s).", cardTypeFilter(TRAINER)).moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -3414,12 +3414,12 @@ public enum RebelClash implements LogicCardInfo {
           text "Search your deck for up to 2 Pokemon with a [F] Resistance, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "There are no more cards in your deck."
+            assert my.deck : "Your deck is empty."
           }
           onAttack {
             my.deck.search (max: 2, {
               it.cardTypes.is(POKEMON) && it.asPokemonCard().resistances.find{res-> res.type==F}
-            }).showToOpponent("Chosen Pokémon cards.").moveTo(my.hand)
+            }).showToOpponent("Opponent's chosen Pokémon.").moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -3483,7 +3483,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Discard 1 card from the top of your opponent’s deck."
           energyCost C
           attackRequirement {
-            assert opp.deck : "Opponent's Deck is empty"
+            assert opp.deck : "Opponent's deck is empty."
           }
           onAttack {
             opp.deck.subList(0, 1).discard()
@@ -3505,7 +3505,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Discard up to 6 cards from the top of your deck. This attack does 30 damage for each card discarded in this way."
           energyCost C, C, C
           attackRequirement {
-            assert my.deck : "Deck is empty"
+            assert my.deck : "Your deck is empty."
           }
           onAttack {
             def num =  choose([0,1,2,3,4,5,6], ["0","1","2","3","4","5","6"], "Discard how many from the top of your deck?", 6)
@@ -3622,9 +3622,9 @@ public enum RebelClash implements LogicCardInfo {
           text "Once during your turn, you may search your deck for a Pokemon Tool card, reveal it, and put it into your hand. Then, shuffle your deck."
           actionA {
             checkLastTurn()
-            assert my.deck : "Deck is empty"
+            assert my.deck : "Your deck is empty."
             powerUsed()
-            my.deck.search(count:1, "Choose a Pokemon Tool card", cardTypeFilter(POKEMON_TOOL)).moveTo(my.hand)
+            my.deck.search(count:1, "Choose a Pokémon Tool card.", cardTypeFilter(POKEMON_TOOL)).moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -3666,10 +3666,10 @@ public enum RebelClash implements LogicCardInfo {
       return supporter (this) {
         text "Choose 1 of your opponent’s Benched Pokemon and switch it with their Active Pokemon. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          sw opp.active, opp.bench.select("New Active")
+          sw opp.active, opp.bench.select("Choose a new Active Pokémon.")
         }
         playRequirement {
-          assert opp.bench : "Opponent's Bench is empty"
+          assert opp.bench : "Opponent has no Benched Pokémon."
         }
       };
       case BURNING_SCARF_155:
@@ -3681,7 +3681,7 @@ public enum RebelClash implements LogicCardInfo {
             before APPLY_ATTACK_DAMAGES, {
               bg().dm().each {
                 if (it.to == self && self.active && self.types.contains(R) && it.dmg.value && bg.currentTurn==self.owner.opposite) {
-                  bc "Burning Scarf activates"
+                  bc "Burning Scarf activates."
                   apply BURNED, it.from, SRC_ABILITY
                 }
               }
@@ -3700,7 +3700,7 @@ public enum RebelClash implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          assert my.deck : "Deck is empty"
+          assert my.deck : "Your deck is empty."
         }
       };
       case CURSED_SHOVEL_157:
@@ -3711,7 +3711,7 @@ public enum RebelClash implements LogicCardInfo {
           eff = delayed {
             before (KNOCKOUT,self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
-                bc "Cursed Shovel activates"
+                bc "Cursed Shovel activates."
                 if (my.deck) { // from perspective of opponent's turn
                   my.deck.subList(0, 2).discard()
                 }
@@ -3761,12 +3761,12 @@ public enum RebelClash implements LogicCardInfo {
           }
 
           if (myWin) {
-            bc "Dan: Current Turn's player won Rock Paper Scissors and can draw 2 extra cards"
+            bc "Dan: Current turn's player won Rock-Paper-Scissors and draws 2 extra cards."
             draw 2
           }
         }
         playRequirement {
-          assert my.deck : "Deck is empty"
+          assert my.deck : "Your deck is empty."
         }
       };
       case FULL_HEAL_159:
@@ -3793,7 +3793,7 @@ public enum RebelClash implements LogicCardInfo {
         }
         playRequirement {
           def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert (hand || my.deck) : "Not enough cards in Hand or Deck is empty."
+          assert (hand || my.deck) : "Not enough cards in your hand or your deck is empty."
         }
       };
       case NUGGET_162:
@@ -3822,15 +3822,15 @@ public enum RebelClash implements LogicCardInfo {
       return supporter (this) {
         text "Discard 2 cards from your hand in order to play this card. Your opponent reveals their hand. Choose a Trainer you find there and put it at the bottom of your opponent’s deck. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          my.hand.getExcludedList(thisCard).select(count:2, "Discard two cards to discard.").discard()
-          opp.hand.showToMe("Opponent's hand")
+          my.hand.getExcludedList(thisCard).select(count:2, "Discard two cards.").discard()
+          opp.hand.showToMe("Opponent's hand.")
           if (opp.hand.filterByType(TRAINER)) {
             opp.hand.filterByType(TRAINER).select(count:1).moveTo(opp.deck)
           }
         }
         playRequirement {
-          assert my.hand.getExcludedList(thisCard).size() >= 2 : "Not enough cards in your hand"
-          assert opp.hand : "Opponent's hand is empty"
+          assert my.hand.getExcludedList(thisCard).size() >= 2 : "You need 2 or more cards in your hand."
+          assert opp.hand : "Opponent's hand is empty."
         }
       };
       case POKEBALL_164:
@@ -3841,7 +3841,7 @@ public enum RebelClash implements LogicCardInfo {
         onPlay {
           def validTargets = my.all.findAll { !it.topPokemonCard.cardTypes.is(VMAX) && !it.topPokemonCard.cardTypes.is(POKEMON_V) && !it.topPokemonCard.cardTypes.is(POKEMON_GX) }
 
-          def tar = validTargets.select("Which Pokemon to put back into your hand?")
+          def tar = validTargets.select("Which Pokémon to put back into your hand?")
           targeted(tar, Source.TRAINER_CARD) {
             tar.cards.filterByType(TRAINER).discard()
             tar.cards.filterByType(ENERGY).discard()
@@ -3858,18 +3858,18 @@ public enum RebelClash implements LogicCardInfo {
       return supporter (this) {
         text "Search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          my.deck.search(max: 1, "Choose a Trainer card", cardTypeFilter(TRAINER)).moveTo(my.hand)
+          my.deck.search(max: 1, "Choose a Trainer card.", cardTypeFilter(TRAINER)).moveTo(my.hand)
           shuffleDeck()
         }
         playRequirement {
-          assert my.deck : "Deck is empty"
+          assert my.deck : "Your deck is empty."
         }
       };
       case SONIA_167:
       return supporter (this) {
         text "Search your deck for up to 2 Basic Pokemon or up to 2 Basic Energy, reveal them, and put them into your hand. Then, shuffle your deck. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          def choice = choose([0,1],["Search deck for up to 2 Basic Pokemon","Search deck for up to 2 Basic Energy"],"What do you want to do?")
+          def choice = choose([0,1],["Search deck for up to 2 Basic Pokémon","Search deck for up to 2 Basic Energy"],"What do you want to do?")
           if (choice == 0) {
             deck.search(max:2, cardTypeFilter(BASIC)).moveTo(hand)
           } else {
@@ -3878,7 +3878,7 @@ public enum RebelClash implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement {
-          assert my.deck : "Deck is empty"
+          assert my.deck : "Your deck is empty."
         }
       };
       case TOOL_SCRAPPER_168:
@@ -3889,9 +3889,9 @@ public enum RebelClash implements LogicCardInfo {
           while (i-- > 0) {
             def tar = all.findAll {it.cards.hasType(POKEMON_TOOL)}
             if (tar) {
-              def sel = tar.select("Select Pokemon to discard a Pokemon Tool from (cancel to stop)", i == 1)
+              def sel = tar.select("Select a Pokémon to discard a Pokemon Tool from (cancel to stop).", i == 1)
               if (sel) {
-                def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokemon Tool from $sel")
+                def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokémon Tool from $sel.")
                 targeted (sel, TRAINER_CARD) {
                   list.discard()
                 }
@@ -3900,7 +3900,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         playRequirement{
-          assert all.findAll {it.cards.hasType(POKEMON_TOOL)} : "No Pokemon Tools in play"
+          assert all.findAll {it.cards.hasType(POKEMON_TOOL)} : "No Pokémon Tools in play."
         }
       };
       case TRAINING_COURT_169:
@@ -3910,11 +3910,11 @@ public enum RebelClash implements LogicCardInfo {
         def actions=[]
         onPlay {
           actions=action("Stadium: Training Court") {
-            assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "No Basic Energies in Discard"
-            assert lastTurn != bg().turnCount : "Already used"
-            bc "Used Training Court effect"
+            assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "No Basic Energies in your discard pile."
+            assert lastTurn != bg().turnCount : "Already used this turn."
+            bc "Used Training Court effect."
             lastTurn = bg().turnCount
-            my.discard.findAll(cardTypeFilter(BASIC_ENERGY)).select("Which to move to hand?").moveTo(my.hand)
+            my.discard.findAll(cardTypeFilter(BASIC_ENERGY)).select("Which Basic Energy to move to your hand?").moveTo(my.hand)
           }
         }
         onRemoveFromPlay {
@@ -3928,11 +3928,11 @@ public enum RebelClash implements LogicCardInfo {
         def actions=[]
         onPlay {
           actions=action("Stadium: Turffield Stadium") {
-            assert my.deck : "Deck is empty"
-            assert lastTurn != bg().turnCount : "Already used"
-            bc "Used Turffield Stadium effect"
+            assert my.deck : "Your deck is empty."
+            assert lastTurn != bg().turnCount : "Already used this turn."
+            bc "Used Turffield Stadium effect."
             lastTurn = bg().turnCount
-            my.deck.search("Choose a [G] Evolution Pokemon", {
+            my.deck.search("Choose a [G] Evolution Pokémon.", {
               it.cardTypes.is(EVOLUTION) && it.types.contains(G)
             }).moveTo(my.hand)
             shuffleDeck()
@@ -3965,7 +3965,7 @@ public enum RebelClash implements LogicCardInfo {
               bg().dm().each {
                 if (it.to == self && self.types.contains(P) && it.dmg.value && bg.currentTurn==self.owner.opposite
                   && self.active) {
-                  bc "Horror Psychic Energy activates"
+                  bc "Horror Psychic Energy activates."
                   directDamage(20, ef.attacker as PokemonCardSet)
                 }
               }
