@@ -2366,6 +2366,18 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert my.hand.hasType(SUPPORTER) : "No Supporter cards in your hand."
             }
             onAttack {
+              delayed {
+                def eff
+                register {
+                  eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
+                    h.object = h.object + 1
+                  }
+                }
+                unregister {
+                  eff.unregister()
+                }
+                unregisterAfter 1
+              }
               if (my.hand.hasType(SUPPORTER)) {
                 def card = my.hand.findAll(cardTypeFilter(SUPPORTER)).select("Select a supporter to copy it's effect as this attack.").first()
                 bg.deterministicCurrentThreadPlayerType=self.owner
