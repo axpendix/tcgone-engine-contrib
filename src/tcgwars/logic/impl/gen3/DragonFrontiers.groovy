@@ -1062,7 +1062,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         }
       };
       case NIDORINA_DELTA_34:
-      return evolution (this, from:"Nidoran?", hp:HP070, type:M, retreatCost:1) {
+      return evolution (this, from:"Nidoran♀", hp:HP070, type:M, retreatCost:1) {
         weakness P
         move "Poison Sting", {
           text "10 damage. The Defending Pokémon is now Poisoned."
@@ -1083,7 +1083,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         }
       };
       case NIDORINO_DELTA_35:
-      return evolution (this, from:"Nidoran?", hp:HP070, type:D, retreatCost:1) {
+      return evolution (this, from:"Nidorino♂", hp:HP070, type:D, retreatCost:1) {
         weakness P
         move "Rage", {
           text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Nidorino."
