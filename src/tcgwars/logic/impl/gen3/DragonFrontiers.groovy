@@ -214,7 +214,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 20 + 10*my.all.findAll { it.name.contains("δ") }.size()
+            damage 20 + 10*my.all.findAll { it.cardTypes.is(DELTA) }.size()
           }
         }
       };
@@ -465,7 +465,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             assert my.deck : "Deck is Empty"
           }
           onAttack {
-            deck.search("Search your deck for a δ Pokemon", {it.cardTypes.pokemon && it.name.contains("δ") }).moveTo(my.hand)
+            deck.search("Search your deck for a δ Pokemon", {
+              it.cardTypes.pokemon && it.cardTypes.is(DELTA)
+            }).moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -501,10 +503,10 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Choose an attack on 1 of your opponent's Pokémon in play that has δ on its card. Delta Copy copies that attack except for its Energy cost. (You must still do anything else required for that attack.) Togetic performs that attack."
           energyCost C, C
           attackRequirement {
-            assert opp.all.findAll { it.name.contains("δ") } : "Opponent has no Delta Pokemon"
+            assert opp.all.findAll { it.cardTypes.is(DELTA) } : "Opponent has no Delta Pokemon"
           }
           onAttack {
-            def tmp = opp.all.findAll { it.name.contains("δ") }.select("Source of move")
+            def tmp = opp.all.findAll { it.cardTypes.is(DELTA) }.select("Source of move")
             if (tmp) {
               def card = tmp.first()
               bc "$card was chosen"
@@ -580,7 +582,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            if (defending.name.contains("δ")) {
+            if (defending.topPokemonCard.cardTypes.is(DELTA)) {
               damage 30
             }
           }
@@ -594,14 +596,14 @@ public enum DragonFrontiers implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to.owner==self.owner && it.to.benched && it.dmg.value && it.to.name.contains("δ")) {
+                if (it.to.owner==self.owner && it.to.benched && it.dmg.value && it.to.topPokemonCard.cardTypes.is(DELTA)) {
                   bc "Solid Shell prevents damage"
                   it.dmg=hp(0)
                 }
               }
             }
             before null, null, Source.ATTACK, {
-              if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && ef.target == self.owner && ef.target.benched && ef.target.name.contains("δ")) {
+              if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && ef.target == self.owner && ef.target.benched && ef.target.topPokemonCard.cardTypes.is(DELTA)) {
                 bc "Solid Shell prevents effect"
                 prevent()
               }
@@ -625,7 +627,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.from.name.contains("δ") && it.to == self && it.dmg.value && it.notNoEffect) {
+                if (it.from.topPokemonCard.cardTypes.is(DELTA) && it.to == self && it.dmg.value && it.notNoEffect) {
                   bc "Delta Protection -40"
                   it.dmg -= hp(40)
                 }
@@ -746,7 +748,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             def tar = opp.all.select()
-            if (tar.name.contains("δ")) {
+            if (tar.topPokemonCard.cardTypes.is(DELTA)) {
               directDamage 30, tar
             } else {
               directDamage 10, tar
@@ -1777,12 +1779,12 @@ public enum DragonFrontiers implements LogicCardInfo {
         def eff2
         onPlay {
           eff = getter (GET_WEAKNESSES, self) { h->
-            if (h.effect.target.name.contains("δ")) {
+            if (h.effect.target.topPokemonCard.cardTypes.is(DELTA)) {
               h.object.clear()
             }
           }
           eff2 = getter (IS_ABILITY_BLOCKED) { Holder h ->
-            if (h.effect.target.name.contains("δ")) {
+            if (h.effect.target.topPokemonCard.cardTypes.is(DELTA)) {
               if (h.effect.ability instanceof PokePower) {
                 h.object=true
               }
