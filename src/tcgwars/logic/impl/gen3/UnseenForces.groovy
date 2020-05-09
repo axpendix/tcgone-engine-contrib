@@ -283,6 +283,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "As often as you like during your turn (before your attack), you may move a basic Energy card attached to 1 of your Benched Pokémon to your Active Pokémon. This power can't be used if Ampharos is affected by a Special Condition."
           actionA {
             checkNoSPC()
+            // TODO
           }
         }
         move "Miraculous Thunder", {
@@ -314,7 +315,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def pcs = defending
             if (opp.bench && confirm("Switch the defending Pokémon with 1 of your opponent's benched pokémon?")) {
-              pcs = opp.bench.select("Switch")
+              pcs = opp.bench.oppSelect("Switch to who? New Active will be Asleep and Poisoned")
               sw opp.active, pcs
             }
             targeted(pcs) {
@@ -826,7 +827,7 @@ public enum UnseenForces implements LogicCardInfo {
         move "Drag Off", {
           text "20 damage. Before doing damage, you may switch 1 of your opponent's Benched Pokémon with the Defending Pokémon. If you do, this attack does 20 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost C, C
-          onAttack{
+          onAttack {
             def target = defending
             if (opp.bench) {
               target = opp.bench.select("Select the new active")
@@ -2860,6 +2861,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost L, L, L
           onAttack {
             damage 70
+            // TODO
           }
         }
       };
@@ -2882,6 +2884,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost W, W, W
           onAttack {
             damage 70
+            // TODO
           }
         }
       };
