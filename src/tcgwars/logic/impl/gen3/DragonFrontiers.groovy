@@ -963,10 +963,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkLastTurn()
             powerUsed()
             assert my.deck : "Deck is empty"
+            assert self.evolution : "This Electabuzz is not an Evolved Pokemon"
 
-            if (self.evolution) {
-              my.deck.subList(my.deck.size() - 1, my.deck.size()).moveTo(my.hand)
-            }
+            my.deck.subList(my.deck.size() - 1, my.deck.size()).moveTo(my.hand)
           }
         }
         move "Swift", {
