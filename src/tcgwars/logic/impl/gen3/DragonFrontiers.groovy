@@ -2174,6 +2174,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           actionA {
             checkLastTurn()
             powerUsed()
+            bc "$self's type is now Fire until the end of the turn."
             delayed {
               def eff
               register {
@@ -2202,9 +2203,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost W, W, C, C
           attackRequirement {}
           onAttack {
-            if (opp.bench && confirm("Deal 40 instead of 80 to Defending??")) {
+            if (opp.bench && confirm("Deal 40 instead of 80 to Defending in order to do 40 damage to a Pokemon on the Opponent's bench?")) {
               damage 40
-              damage 40, opp.bench.select()
+              damage 40, opp.bench.select("Select a benched Pokemon to deal 40 damage to")
             } else {
               damage 80
             }
