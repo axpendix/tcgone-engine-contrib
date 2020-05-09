@@ -1824,14 +1824,14 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward. Or, search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand."
         onPlay {
-          def choice = choose([1,2],['Search Deck', 'Search Discard'], "Choose 1")
+          def choice = choose([1,2],['Search Deck for up to 2 basic Energy cards', 'Search Discard for up to 2 basic Energy cards'], "Where to search for up to 2 basic Energy cards")
 
           if (choice == 1) {
-            my.deck.search(max:2, "Choose up to 2 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
+            my.deck.search(max:2, "Choose up to 2 basic Energy cards to move to your hand.",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
             shuffleDeck()
           } else {
             if (my.discard.filterByType(BASIC_ENERGY)) {
-              my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 2).moveTo(my.hand)
+              my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 2, "Select up to 2 basic Energy cards to move to your hand.").moveTo(my.hand)
             }
           }
         }
