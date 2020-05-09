@@ -1816,6 +1816,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           draw 2
         }
         playRequirement{
+          assert my.prizeCardSet.faceDownCards : "No faced-down prize cards"
         }
       };
       case MR_STONE_S_PROJECT_77:
