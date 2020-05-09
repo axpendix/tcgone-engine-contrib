@@ -2148,11 +2148,11 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost L, C
           attackRequirement {}
           onAttack {
-            def tar = opp.all.select()
+            def tar = opp.all.select("Special Circuit - deal 30 damage to? (If has Poke-Powers or Poke-Bodies, it does 50 instead.")
             if (tar.abilities.keySet().find {it instanceof PokePower || it instanceof PokeBody}) {
-              damage 50
+              damage 50, tar
             } else {
-              damage 30
+              damage 30, tar
             }
           }
         }
