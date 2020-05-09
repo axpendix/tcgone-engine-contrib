@@ -712,9 +712,9 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Prowl", {
           text "Once during your turn, when you play Ledian from your hand to evolve 1 of your Pokémon, you may search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && my.deck && confirm("Use Prowl?")) {
+            if (r==PLAY_FROM_HAND && my.deck && confirm("Use Prowl to move any card from your deck to your hand?")) {
               powerUsed()
-              my.deck.select(count:1).moveTo(hidden: true, my.hand)
+              my.deck.select(count:1, "Choose any card to put into your deck").moveTo(hidden: true, my.hand)
               shuffleDeck()
             }
           }
