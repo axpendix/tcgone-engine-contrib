@@ -1778,7 +1778,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         def eff
         def eff2
         onPlay {
-          eff = getter (GET_WEAKNESSES, self) { h->
+          eff = getter (GET_WEAKNESSES) { h->
             if (h.effect.target.topPokemonCard.cardTypes.is(DELTA)) {
               h.object.clear()
             }
