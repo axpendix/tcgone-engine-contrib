@@ -2108,7 +2108,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            preventAllEffectsFromCustomPokemonNextTurn("Ice Barrier", self, {it.EX})
+            preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.EX})
           }
         }
         move "Hydro Splash", {
