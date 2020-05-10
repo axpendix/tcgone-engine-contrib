@@ -2346,7 +2346,14 @@ public enum SunMoonPromos implements LogicCardInfo {
             onAttack{
               gxPerform()
               damage 110
-              preventAllEffectsNextTurn()
+              delayed {
+                before null, null, Source.ATTACK, {
+                  if (bg.currentTurn==self.owner.opposite && (ef as TargetedEffect).getResolvedTarget(bg, e)==self) {
+                    bc "Swift Run GX prevents this effect"
+                    prevent()
+                  }
+                }
+              }
             }
           }
         };
