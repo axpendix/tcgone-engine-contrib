@@ -724,7 +724,10 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             opp.hand.showToMe("Opponent’s hand")
-            damage 30+10*opp.hand.findAll { it.cardTypes.is(TRAINER) }.size()
+            def trainerSize = opp.hand.findAll { it.cardTypes.is(TRAINER) }.size()
+
+            damage 30+10*trainerSize
+            bc "Found $trainerSize Trainer cards"
           }
         }
       };
