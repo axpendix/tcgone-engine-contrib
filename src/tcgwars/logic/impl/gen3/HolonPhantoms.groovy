@@ -651,7 +651,7 @@ public enum HolonPhantoms implements LogicCardInfo {
                 if (ability instanceof PokeBody) hasPokeBody = true;
                 if (ability instanceof PokePower) hasPokePower = true;
               }
-              if (hasPokeBody || hasPokePower) noWrDamage 10, it
+              if (hasPokeBody || hasPokePower) noWrDamage 20, it
             }
           }
         }
