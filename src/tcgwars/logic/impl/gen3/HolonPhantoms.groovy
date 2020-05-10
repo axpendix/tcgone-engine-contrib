@@ -2473,7 +2473,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             def target = opp.all.select()
             def count = target.cards.energyCount(C)
-            directDamage count, target
+            directDamage count*10, target
           }
         }
       };
