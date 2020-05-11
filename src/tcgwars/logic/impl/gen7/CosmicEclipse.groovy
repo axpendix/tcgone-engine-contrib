@@ -511,8 +511,10 @@ public enum CosmicEclipse implements LogicCardInfo {
                   eff = getter GET_MOVE_LIST, { h->
                     PokemonCardSet pcs = h.effect.target
                     if (pcs.owner == self.owner && h.object.find { it.types.contains(G) || it.types.contains(R) }) {
+                      bc "$pcs was recognized."
                       def list = []
                       for (move in h.object){
+                        bc"$move was copied"
                         def copy = move.shallowCopy()
                         copy.energyCost.retainAll()
                         list.add(copy)
@@ -525,7 +527,6 @@ public enum CosmicEclipse implements LogicCardInfo {
                   eff.unregister()
                 }
                 unregisterAfter 3
-                after SWITCH, self, {unregister()}
               }
             }
           }
