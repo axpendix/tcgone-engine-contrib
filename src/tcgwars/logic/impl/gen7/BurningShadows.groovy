@@ -2621,8 +2621,10 @@ public enum BurningShadows implements LogicCardInfo {
           text "Put 1 of your Pokémon that has any damage counters on it and all cards attached to it into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             def pcs = my.all.findAll {it.numberOfDamageCounters}.select()
-            pcs.cards.moveTo(hand)
-            removePCS(pcs)
+            targeted (pcs, TRAINER_CARD) {
+              pcs.cards.moveTo(hand)
+              removePCS(pcs)
+            }
           }
           playRequirement{
             assert my.all.findAll {it.numberOfDamageCounters} : "No damaged pokemon in play"
