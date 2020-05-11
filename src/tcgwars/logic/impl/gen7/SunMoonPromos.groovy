@@ -4,8 +4,6 @@ import tcgwars.logic.impl.gen7.*;
 
 import tcgwars.logic.impl.gen5.BlackWhitePromos;
 
-import tcgwars.logic.*;
-
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -18,7 +16,9 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
+import tcgwars.logic.*;
 import tcgwars.logic.card.*
+import tcgwars.logic.effect.*;
 import tcgwars.logic.card.pokemon.*
 import tcgwars.logic.effect.basic.*
 import tcgwars.logic.util.*;
@@ -2157,7 +2157,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           weakness FIGHTING
           resistance METAL, MINUS20
           move "Nuzzle" , {
-            text "Flip a coin. If heads, your opponent&#8217;s Active Pokémon is now Paralyzed.\n"
+            text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.\n"
             energyCost C
             onAttack{
               flip{apply PARALYZED}
@@ -2321,7 +2321,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           weakness FIGHTING
           resistance METAL, MINUS20
           move "Electrobullet" , {
-            text "30 damage. This attack does 30 damage to 1 of your opponent's Benched Pokémon. (Don&#8217;t apply Weakness and Resistance for Benched Pokémon.)\n"
+            text "30 damage. This attack does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)\n"
             energyCost L
             onAttack{
               damage 30
@@ -2338,7 +2338,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
           move "Swift Run GX" , {
-            text "110 damage. Prevent all effects of attacks, including damage, done to this Pokémon during your opponent&#8217;s next turn. (You can&#8217;t use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "110 damage. Prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
             energyCost L,C
             attackRequirement{
               gxCheck()
