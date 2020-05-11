@@ -2,7 +2,6 @@ package tcgwars.logic.impl.gen7
 
 import tcgwars.logic.impl.gen7.*;
 
-import tcgwars.logic.effect.Source
 import tcgwars.logic.impl.gen5.BlackWhitePromos;
 
 import tcgwars.logic.*;
@@ -14,6 +13,7 @@ import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
