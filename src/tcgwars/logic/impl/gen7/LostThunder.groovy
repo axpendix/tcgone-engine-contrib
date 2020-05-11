@@ -502,9 +502,7 @@ public enum LostThunder implements LogicCardInfo {
                     prevent()
                   }
                 }
-                after SWITCH, self, {unregister()}
                 after SWITCH, defending, {unregister()}
-                after EVOLVE, self, {unregister()}
                 after EVOLVE, defending, {unregister()}
                 unregisterAfter 2
               }
