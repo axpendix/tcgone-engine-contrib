@@ -4419,12 +4419,21 @@ public enum UnifiedMinds implements LogicCardInfo {
         return supporter (this) {
           text "Move up to 3 damage counters from 1 of your opponent’s Pokémon to another of their Pokémon."
           onPlay {
-            def pcs = opp.all.findAll {it.numberOfDamageCounters}.select("Move damage counters from")
-            def tar = opp.all.findAll {it != pcs}.select("To?")
-            def num = Math.min(3, pcs.numberOfDamageCounters)
-            pcs.damage -= hp(10*num)
-            tar.damage += hp(10*num)
-            bc "Moved $num damage counters from $pcs to $tar"
+            def src = opp.all.findAll {it.numberOfDamageCounters}.select("Move damage counters from?")
+            def dest = opp.all.findAll {it != src}.select("To?")
+            src.damage -= hp(10)
+            dest.damage += hp(10)
+            bc "moved one damage counter"
+            2.times {
+              if (!src.numberOfDamageCounters) break
+              if (confirm("Move 1 more damage counter? (Cancel to stop)") {
+                src.damage -= hp(10)
+                dest.damage += hp(10)
+                bc "moved one damage counter"
+              } else {
+                break
+              }
+            }
           }
           playRequirement{
             assert opp.all.size() >= 2 : "Opponent only has one Pokemon in play"
