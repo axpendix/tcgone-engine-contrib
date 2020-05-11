@@ -3312,6 +3312,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Thumping Fall", {
             text "50x damage. Discard any number of Pokémon with a Retreat Cost of exactly 4 from your hand. This attack does 50 damage for each card you discarded in this way."
             energyCost C, C
+            attackRequirement{
+              assert my.hand.findAll(cardTypeFilter(POKEMON)).findAll({ it.retreatCost == 4 }) : "You have no pokemon with retreat cost 4 in your hand"
+            }
             onAttack {
               def heavyPokemon = my.hand.findAll(cardTypeFilter(POKEMON)).findAll({ it.retreatCost == 4 })
               def selected = heavyPokemon.select(max: heavyPokemon.size(), "Discard any number of Pokemon with a Retreat Cost of 4 to do 50 damage more.")
