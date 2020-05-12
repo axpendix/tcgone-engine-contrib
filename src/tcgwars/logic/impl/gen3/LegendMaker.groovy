@@ -2128,7 +2128,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Wobbuffet from your hand onto Wynaut (this counts as evolving Wynaut) and remove all damage counters from Wynaut."
           actionA {
-            assert my.hand.findAll{it.name == "Wobbuffett"} : "There is no Pokémon in your hand to evolve ${self}."
+            assert my.hand.findAll{it.name == "Wobbuffet"} : "There is no Pokémon in your hand to evolve ${self}."
             checkLastTurn()
             powerUsed()
             def tar = my.hand.findAll { it.name == "Wobbuffet" }.select()
