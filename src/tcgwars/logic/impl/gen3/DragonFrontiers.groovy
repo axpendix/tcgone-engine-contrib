@@ -767,7 +767,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             powerUsed()
             assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energy in Discard"
             my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 1, "Move one to the top of your deck").moveTo(addToTop: true, my.deck)
-            damage 10, self
+            directDamage 10, self
           }
         }
         move "Spiral Drain", {
