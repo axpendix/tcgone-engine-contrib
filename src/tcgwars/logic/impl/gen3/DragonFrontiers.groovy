@@ -300,7 +300,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         resistance W, MINUS30
         pokePower "Evolutionary Call", {
           text "Once during your turn, when you play Meganium from your hand to evolve 1 of your Pokémon, you may search your deck for up to 3 in any combination of Basic Pokémon or Evolution cards. Show them to your opponent and put them into your hand. Shuffle your deck afterward."
-          actionA {
+          delayedA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             if (it==PLAY_FROM_HAND && confirm("Use Evolutionary Call?")) {
