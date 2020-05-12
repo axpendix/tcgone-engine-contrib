@@ -321,10 +321,7 @@ class TcgStatics {
     new ResolvedDamage(hp(dmg), my.active, opp.active, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT).run(bg)
   }
 
-  static directDamage (int dmg, PokemonCardSet to){
-    new DirectDamage(hp(dmg), to).run(bg())
-  }
-  static directDamage (int dmg, PokemonCardSet to, Source src){
+  static directDamage (int dmg, PokemonCardSet to, Source src=Source.ATTACK){
     new DirectDamage(hp(dmg), to).setSource(src).run(bg())
   }
   static attachEnergy (PokemonCardSet to, Card card, ActivationReason reason=ActivationReason.OTHER){
