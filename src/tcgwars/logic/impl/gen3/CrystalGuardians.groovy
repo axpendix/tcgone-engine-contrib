@@ -1365,7 +1365,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            attachEnergyFrom(type:D, my.hand, self)
+            attachEnergyFrom(type:G, my.hand, self)
           }
         }
         move "Vine Whip", {
