@@ -786,7 +786,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
-            extraEnergyDamage(4, hp(20), W, thisMove)
+            extraEnergyDamage(2, hp(20), W, thisMove)
           }
         }
       };
