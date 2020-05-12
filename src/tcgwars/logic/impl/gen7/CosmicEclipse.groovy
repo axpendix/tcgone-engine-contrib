@@ -518,6 +518,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                     prevent()
                   }
                 }
+                unregisterAfter 3
               }
             }
           }
