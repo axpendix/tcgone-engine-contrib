@@ -214,7 +214,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "Once during your turn (before your attack), you may Knock Out Beedrill. If you do, choose 1 of your opponent's Defending Pokémon. That Pokémon is now Paralyzed and Poisoned. Put 2 damage counters instead of 1 on that Pokémon between turns. This power can't be used if Beedrill is affected by a Special Condition."
           actionA {
             checkNoSPC()
-            def tar = opp.all.select()
+            def tar = opp.active
             apply PARALYZED, tar
             apply POISONED, tar
             extraPoison 1
