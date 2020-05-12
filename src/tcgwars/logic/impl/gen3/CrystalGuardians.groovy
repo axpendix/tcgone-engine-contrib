@@ -2143,9 +2143,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to.name == "Groudon ex" && it.dmg.value && it.notNoEffect && bg.em().retrieveObject("Hard Rock") != (pcs.id+bg.turnCount)) {
+                if (it.to.name == "Groudon ex" && it.dmg.value && it.notNoEffect && bg.em().retrieveObject("Hard Rock") != bg.turnCount) {
                   if (self.cards.energyCount(C) < 2) {
-                    bg.em().storeObject("Hard Rock", pcs.id+bg.turnCount)
+                    bg.em().storeObject("Hard Rock", bg.turnCount)
                     bc "Hard Rock -20"
                     it.dmg -= hp(20)
                   }
