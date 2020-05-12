@@ -1983,7 +1983,7 @@ public enum UnseenForces implements LogicCardInfo {
         }
         move "Wave Splash", {
           text "10 damage."
-          energyCost
+          energyCost W
           onAttack {
             damage 10
           }
