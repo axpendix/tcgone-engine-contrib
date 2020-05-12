@@ -801,7 +801,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost P, P, C
           attackRequirement {}
           onAttack {
-            damage 10*all.size() - 1
+            damage 10*(all.size() - 1)
           }
         }
       };
