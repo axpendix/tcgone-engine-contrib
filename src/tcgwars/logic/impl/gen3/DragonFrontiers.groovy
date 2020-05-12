@@ -879,7 +879,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
-                if (it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value && it.from.EX && it.from.STAGE2) {
+                if (it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value && it.from.EX && it.from.topPokemonCard.cardTypes.is.(STAGE2) {
                   bc "Extra Feather +10"
                   it.dmg += hp(10)
                 }
