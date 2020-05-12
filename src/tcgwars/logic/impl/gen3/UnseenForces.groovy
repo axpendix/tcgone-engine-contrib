@@ -1634,7 +1634,7 @@ public enum UnseenForces implements LogicCardInfo {
             powerUsed()
 
             def pcs = my.all.findAll{
-              it.cards.filterByType(BASIC_ENERGY) && !it.cardTypes.is(EX)
+              it.cards.filterByType(BASIC_ENERGY) && !it.topPokemonCard.cardTypes.is(EX)
             }.select("Select a source to remove a Basic Energy card from")
 
             def tar = pcs.cards.filterByType(BASIC_ENERGY).select("Choose the Basic Energy card to Discard").discard()
