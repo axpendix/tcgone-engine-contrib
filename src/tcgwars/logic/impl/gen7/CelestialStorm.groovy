@@ -3214,13 +3214,11 @@ public enum CelestialStorm implements LogicCardInfo {
                     prevent()
                   }
                 }
-                if (ef.effectType == DAMAGE) {
-                  bc "debug: effect type damage"
-                  def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                  if (pcs != null && pcs.benched) {
-                    bc "Sky Pillar prevents direct damage to Benched Pokémon"
-                    prevent()
-                  }
+              }
+              before DIRECT_DAMAGE, {
+                if (bg.currentTurn == self.owner.opposite && (ef as TargetedEffect).getResolvedTarget(bg, e).benched) {
+                  bc "Sky Pillar prevents placing damage counter to Pokemon on the Bench"
+                  (ef as DirectDamage).hp = 0
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
