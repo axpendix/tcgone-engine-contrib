@@ -1521,6 +1521,9 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            if (opp.bench) {
+              damage 10, opp.bench.select("Deal 10 damage to?")
+            }
           }
         }
       };
