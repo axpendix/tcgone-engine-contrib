@@ -711,7 +711,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "This attack does 10 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost G
             onAttack {
-              damage 10, opp.all.select("Choose the Pokémon to deal 10 damage to.")
+              damage 10, opp.all.select("Deal 10 damage to which Pokémon?")
             }
           }
         };
@@ -1181,7 +1181,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
                   if(!self.active && it.to == self) {
-                    bc "Snowed In prevents damage."
+                    bc "Snowed In prevents damage done to $self."
                     it.dmg=hp(0)
                   }
                 }
@@ -2657,7 +2657,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               before null, null, Source.TRAINER_CARD, {
                 def target=e.getTarget(bg)
                 if (power && target && target.owner==self.owner){
-                  bc "Obnoxious Whirring prevents effects from Supporter cards."
+                  bc "Obnoxious Whirring prevents effects from Supporter cards done to $self."
                   prevent()
                 }
               }
@@ -3516,7 +3516,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert my.hand : "Your hand is empty."
             }
             onAttack {
-              def card = my.hand.select("Choose a card to send to the Lost Zone and draw 3 cards.")
+              def card = my.hand.select("Choose a card to send to the Lost Zone to draw 3 cards.")
 
               if (card) {
                 card.moveTo(my.lostZone)
@@ -3949,7 +3949,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               gxPerform()
               apply ASLEEP
               if (opp.bench && self.cards.energySufficient(thisMove.energyCost + C + C + C + C)) {
-                damage 200, opp.bench.select("Which Pokémon to do 200 damage to?")
+                damage 200, opp.bench.select("Deal 200 damage to which Pokémon?")
               }
             }
           }
