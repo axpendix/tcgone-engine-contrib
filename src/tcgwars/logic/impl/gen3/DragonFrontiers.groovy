@@ -615,7 +615,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-            damage 10+10*self.energyCount(C)
+            damage 10+10*self.cards.energyCount(C)
           }
         }
       };
