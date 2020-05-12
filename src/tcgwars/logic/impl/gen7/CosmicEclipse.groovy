@@ -2316,9 +2316,16 @@ public enum CosmicEclipse implements LogicCardInfo {
           resistance F, MINUS20
           bwAbility "Dance of Tribute", {
             text "Once during your turn (before your attack), if any of your Pokémon were Knocked Out during your opponent's last turn, you may draw 3 cards. You can't use more than 1 Dance of Tribute Ability each turn."
+            delayedA{
+              before KNOCKOUT, {
+                if(ef.pokemonToBeKnockedOut.owner == self.owner){
+                  bg.em().storeObject("Dance_of_Tribute", bg.turnCount)
+                }
+              }
+            }
             actionA {
               checkLastTurn()
-              assert my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1 : "None of your Pokémon were Knocked Out during your opponent's last turn."
+              assert bg.em().retrieveObject("Dance_of_Tribute") == bg.turnCount-1 : "None of your Pokémon were Knocked Out during your opponent's last turn."
               powerUsed()
 
               draw 3
