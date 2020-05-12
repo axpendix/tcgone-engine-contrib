@@ -506,25 +506,16 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost C, C
             onAttack {
               delayed {
-                def eff
-                register {
-                  eff = getter GET_MOVE_LIST, { h->
-                    PokemonCardSet pcs = h.effect.target
-                    if (pcs.owner == self.owner && h.object.find { it.types.contains(G) || it.types.contains(R) }) {
-                      def list = []
-                      for (move in h.object){
-                        def copy = move.shallowCopy()
-                        copy.energyCost.retainAll()
-                        list.add(copy)
-                      }
-                      h.object=list
-                    }
+                before CHECK_ATTACK_REQUIREMENTS, {
+                  if(ef.attacker.owner == self.owner && (ef.attacker.types.contains(G) || ef.attacker.types.contains(R)) && bg.currentTurn == self.owner) {
+                    def list = ef.attacker.topPokemonCard.moves
+                    def selected = choose(list, "Choose a non-GX attack to use.")
+                    def bef = blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+                    attack (selected as Move)
+                    bef.unregisterItself(bg().em())
+                    prevent()
                   }
                 }
-                unregister {
-                  eff.unregister()
-                }
-                unregisterAfter 3
               }
             }
           }
