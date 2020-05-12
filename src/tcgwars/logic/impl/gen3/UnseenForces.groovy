@@ -2474,7 +2474,7 @@ public enum UnseenForces implements LogicCardInfo {
         pokeBody "Overpowering Fang", {
           text "As long as Feraligatr ex is your Active Pokémon, each player's Pokémon (excluding Pokémon-ex) can't use any Poké-Powers or Poké-Bodies."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (self.active && !h.effect.target.cardTypes.is(EX)) {
+            if (self.active && !h.effect.target.topPokemonCard.cardTypes.is(EX)) {
               if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
                 h.object=true
               }
