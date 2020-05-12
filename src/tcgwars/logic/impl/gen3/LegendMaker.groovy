@@ -1939,7 +1939,6 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            damage 10
             flipUntilTails { damage 10 }
           }
         }
