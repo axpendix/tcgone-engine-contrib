@@ -2769,7 +2769,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             def energies = my.discard.filterByType(ENERGY).size()
             if (takenPrizes && energies) {
               def count = Math.min(takenPrizes, energies)
-              (1..count) {
+              (1..count).each {
                 attachEnergyFrom(type:F, my.discard, self)
               }
             }
@@ -2798,7 +2798,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             def energies = my.discard.filterByType(ENERGY).size()
             if (takenPrizes && energies) {
               def count = Math.min(takenPrizes, energies)
-              (1..count) {
+              (1..count).each {
                 attachEnergyFrom(type:W, my.discard, self)
               }
             }
