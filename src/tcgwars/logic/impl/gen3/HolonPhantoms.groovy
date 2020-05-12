@@ -1621,17 +1621,14 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Call for Friends", {
           text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily(basic:true, 2, delegate)
         }
         move "Retaliate", {
           text "10x damage. Does 10 damage times the number of damage counters on Wobbuffet."
           energyCost P, C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*self.numberOfDamageCounters
           }
         }
       };
