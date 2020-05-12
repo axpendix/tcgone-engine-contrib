@@ -2252,10 +2252,12 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            if (confirm("Rotating Claws - Discard an Energy?")) {
-              def energy = my.discard.filterByType(ENERGY).select()
-              discardSelfEnergy(C)
-              attachEnergy(self, energy)
+            if (confirm("Rotating Claws - Discard an Energy to attach an Energy from your Discard Pile?")) {
+              if (my.discard.filterByType(ENERGY)) {
+                def energy = my.discard.filterByType(ENERGY).select()
+                discardSelfEnergy(C)
+                attachEnergy(self, energy)
+              }
             }
           }
         }
