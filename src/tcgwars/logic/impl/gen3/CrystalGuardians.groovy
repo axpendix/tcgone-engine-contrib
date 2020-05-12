@@ -627,7 +627,7 @@ public enum CrystalGuardians implements LogicCardInfo {
               bg.dm().each {
                 if (it.from == self && self.getRemainingHP().value <= 40 && it.dmg.value && it.notNoEffect) {
                   bc "Water Pressure +40"
-                  it.dmg -= hp(40)
+                  it.dmg += hp(40)
                 }
               }
             }
@@ -639,7 +639,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            extraEnergyDamage(4, hp(20), W, thisMove)
+            extraEnergyDamage(2, hp(20), W, thisMove)
           }
         }
       };
