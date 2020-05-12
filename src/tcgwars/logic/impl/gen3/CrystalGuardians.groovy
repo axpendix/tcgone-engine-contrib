@@ -2315,7 +2315,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             assert my.discard.filterByType(ENERGY) : "No Energies in discard"
             powerUsed()
             def energies = my.discard.filterByType(ENERGY).size()
-            (1..energies) {
+            (1..energies).each {
               attachEnergy(my.all.select("Target"), my.discard.filterByType(ENERGY).select("Energy").first())
             }
           }
