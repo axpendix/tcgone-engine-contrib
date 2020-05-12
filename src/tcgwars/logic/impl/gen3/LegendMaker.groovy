@@ -650,7 +650,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "As long as Absol is the only Pokémon you have in play, your opponent's Basic Pokémon can't attack."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if (my.all.size() == 1 && ef.attacker.owner != self.owner && ef.attacker.basic) {
+              if (self.owner.pbg.all.size() == 1 && ef.attacker.owner != self.owner && ef.attacker.basic) {
                 wcu "Shining Horn prevents attack"
                 prevent()
               }
@@ -673,7 +673,8 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost D, C
           attackRequirement {}
           onAttack {
-            swiftDamage(30, opp.all.select())
+            def tar = opp.all.select("To?")
+            tar.damage += hp(20)
           }
         }
       };
