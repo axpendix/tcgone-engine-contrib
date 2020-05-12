@@ -839,10 +839,10 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Marill from your hand onto Azurill (this counts as evolving Azurill) and remove all damage counters from Azurill."
           actionA {
-            assert my.hand.findAll{it.name.contains("Marill") && !it.EX } : "There is no pokémon in your hand to evolve ${self}."
+            assert my.hand.findAll{it.name.contains("Marill") && !it.cardTypes.is(EX) } : "There is no pokémon in your hand to evolve ${self}."
             checkLastTurn()
             powerUsed()
-            def tar = my.hand.findAll { it.name.contains("Marill") && !it.EX }.select()
+            def tar = my.hand.findAll { it.name.contains("Marill") && !it.cardTypes.is(EX) }.select()
             if (tar) {
               evolve(self, tar.first(), OTHER)
               heal self.numberOfDamageCounters*10, self
