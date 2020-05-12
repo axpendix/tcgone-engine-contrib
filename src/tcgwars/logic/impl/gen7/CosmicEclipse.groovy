@@ -3315,10 +3315,14 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost C, C
             attackRequirement{
 <<<<<<< HEAD
+<<<<<<< HEAD
               assert my.hand.findAll(cardTypeFilter(POKEMON)).findAll({ it.retreatCost == 4 }) : "You have no pokemon with retreat cost 4 in your hand"
 =======
               assert my.hand.findAll(cardTypeFilter(POKEMON)).findAll({ it.retreatCost == 4 }) : "You have no Pokémon with Retreat Cost of 4 in your hand."
 >>>>>>> 7a212b6... Fetch latest changes
+=======
+              assert my.hand.findAll(cardTypeFilter(POKEMON)).findAll({ it.retreatCost == 4 }) : "You have no Pokémon with Retreat Cost of 4 in your hand."
+>>>>>>> 7a212b61bf2620e642818bd264e2cb9a4090075a
             }
             onAttack {
               def heavyPokemon = my.hand.findAll(cardTypeFilter(POKEMON)).findAll({ it.retreatCost == 4 })
