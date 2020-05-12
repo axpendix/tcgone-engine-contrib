@@ -3465,6 +3465,12 @@ public enum TeamUp implements LogicCardInfo {
                   }
                 }
               }
+              before DIRECT_DAMAGE {
+                if((ef as TargetedEffect).getResolvedTarget(bg, e) == self && (ef as TargetedEffect).source != TRAINER_EFFECT && self.topPokemonCard.types.contains(M)) {
+                  bc "Metal Goggles prevents damage counters from being placed on $self.name"
+                  prevent()
+                }
+              }
             }
           }
           onRemoveFromPlay {
