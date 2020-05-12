@@ -4422,7 +4422,8 @@ public enum UnifiedMinds implements LogicCardInfo {
             def src = opp.all.findAll {it.numberOfDamageCounters}.select("Move damage counters from?")
             def dest = opp.all.findAll {it != src}.select("To?")
             src.damage -= hp(10)
-            dest.damage += hp(10)
+            directDamage 10, dest
+            //dest.damage += hp(10)
             bc "moved one damage counter"
             2.times {
               if (!src.numberOfDamageCounters) break
