@@ -609,7 +609,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost R, M
           attackRequirement {}
           onAttack {
-            damage 10*(self.cards.energyCount(C) + opp.cards.energyCount(C))
+            damage 10*(self.cards.energyCount(C) + opp.active.cards.energyCount(C))
           }
         }
       };
