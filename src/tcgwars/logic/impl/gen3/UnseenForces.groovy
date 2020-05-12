@@ -933,7 +933,7 @@ public enum UnseenForces implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if(it.to == self && self.evolution && it.notNoEffect && it.dmg.value && it.from.filterByType(SPECIAL_ENERGY)) {
+                if(it.to == self && self.evolution && it.notNoEffect && it.dmg.value && it.from.cards.filterByType(SPECIAL_ENERGY)) {
                   bc "Stages of Evolution -20"
                   it.dmg -= hp(40)
                 }
