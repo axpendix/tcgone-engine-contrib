@@ -213,6 +213,8 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Terraforming", {
           text "Once during your turn (before your attack), you may look at the top 5 cards from your deck and put them back on top of your deck in any order. This power can't be used if Aggron is affected by a Special Condition."
           actionA {
+            assert my.deck : “Your deck is empty.”
+            checkLastTurn()
             checkNoSPC()
             powerUsed()
             def list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards in your deck")
