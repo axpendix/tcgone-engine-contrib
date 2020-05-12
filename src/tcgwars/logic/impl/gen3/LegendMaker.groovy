@@ -1131,15 +1131,18 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Emerge", {
           text "Once during your turn (before your attack), if Cascoon is your Active Pokémon, you may flip a coin. If heads, search your deck for a card that evolves from Cascoon and put it onto Cascoon. (This counts as evolving Cascoon.) Shuffle your deck afterward. This power can't be used if Cascoon is affected by a Special Condition."
           actionA {
+            checkLastTurn()
             checkNoSPC()
             assert my.deck : "Deck is empty"
             assert self.active : "This Pokemon is not an Active Pokemon"
             powerUsed()
 
-            def nam=self.name
-            def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-            if(tar) evolve(self, tar.first(), OTHER)
-            shuffleDeck()
+            flip {
+              def nam=self.name
+              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
+              if(tar) evolve(self, tar.first(), OTHER)
+              shuffleDeck()
+            }
           }
         }
         move "Tackle", {
