@@ -4427,10 +4427,9 @@ public enum UnifiedMinds implements LogicCardInfo {
             bc "moved one damage counter"
             2.times {
               if (!src.numberOfDamageCounters) break
-              if (confirm("Move 1 more damage counter? (Cancel to stop)") {
+              if (confirm("Move 1 more damage counter? (Cancel to stop)")) {
                 src.damage -= hp(10)
                 directDamage 10, dest
-                //dest.damage += hp(10)
                 bc "moved one damage counter"
               } else {
                 break
