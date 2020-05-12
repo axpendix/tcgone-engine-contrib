@@ -1730,6 +1730,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip 1, {}, {
+              damage 10, self
+            }
           }
         }
       };
