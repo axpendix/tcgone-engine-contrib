@@ -2440,29 +2440,17 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
       };
       case GRASS_ENERGY_105:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, G);
       case FIRE_ENERGY_106:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, R);
       case WATER_ENERGY_107:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, W);
       case LIGHTNING_ENERGY_108:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, L);
       case PSYCHIC_ENERGY_109:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, P);
       case FIGHTING_ENERGY_110:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, F);
       case MEW_111:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P

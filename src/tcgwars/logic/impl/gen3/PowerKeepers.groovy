@@ -2282,29 +2282,17 @@ public enum PowerKeepers implements LogicCardInfo {
         }
       };
       case GRASS_ENERGY_103:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, G);
       case FIRE_ENERGY_104:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, R);
       case WATER_ENERGY_105:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, W);
       case LIGHTNING_ENERGY_106:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, L);
       case PSYCHIC_ENERGY_107:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, P);
       case FIGHTING_ENERGY_108:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, F);
       default:
       return null;
     }
