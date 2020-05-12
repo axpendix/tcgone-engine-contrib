@@ -530,14 +530,6 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
           }
         };
-          move "Solar Beam", {
-            text "80 damage."
-            energyCost G, C, C
-            onAttack {
-              damage 80
-            }
-          }
-        };
       case HERACROSS_9:
         return basic (this, hp:HP130, type:G, retreatCost:3) {
           weakness R
@@ -3314,15 +3306,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "50x damage. Discard any number of Pokémon with a Retreat Cost of exactly 4 from your hand. This attack does 50 damage for each card you discarded in this way."
             energyCost C, C
             attackRequirement{
-<<<<<<< HEAD
-<<<<<<< HEAD
-              assert my.hand.findAll(cardTypeFilter(POKEMON)).findAll({ it.retreatCost == 4 }) : "You have no pokemon with retreat cost 4 in your hand"
-=======
               assert my.hand.findAll(cardTypeFilter(POKEMON)).findAll({ it.retreatCost == 4 }) : "You have no Pokémon with Retreat Cost of 4 in your hand."
->>>>>>> 7a212b6... Fetch latest changes
-=======
-              assert my.hand.findAll(cardTypeFilter(POKEMON)).findAll({ it.retreatCost == 4 }) : "You have no Pokémon with Retreat Cost of 4 in your hand."
->>>>>>> 7a212b61bf2620e642818bd264e2cb9a4090075a
             }
             onAttack {
               def heavyPokemon = my.hand.findAll(cardTypeFilter(POKEMON)).findAll({ it.retreatCost == 4 })
