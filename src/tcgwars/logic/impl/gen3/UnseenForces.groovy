@@ -1234,10 +1234,10 @@ public enum UnseenForces implements LogicCardInfo {
         pokeBody "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Hitmonlee, Hitmonchan, or Hitmontop from your hand onto Tyrogue (this counts as evolving Tyrogue) and remove all damage counters from Tyrogue."
           actionA {
-            assert my.hand.findAll{it.predecessor == "Tyrogue"} : "There are no Pokémon in your hand to evolve ${self}."
+            assert my.hand.findAll{ it.cardTypes.is(POKEMON) && it.predecessor == "Tyrogue"} : "There are no Pokémon in your hand to evolve ${self}."
             checkLastTurn()
             powerUsed()
-            def tar = my.hand.findAll{it.predecessor == "Tyrogue"}.select()
+            def tar = my.hand.findAll{it.cardTypes.is(POKEMON) && it.predecessor == "Tyrogue"}.select()
             if (tar) {
               evolve(self, tar.first(), OTHER)
               heal self.numberOfDamageCounters*10,self
