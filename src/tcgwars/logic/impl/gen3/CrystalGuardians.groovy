@@ -651,8 +651,8 @@ public enum CrystalGuardians implements LogicCardInfo {
           actionA {
             checkNoSPC()
             checkLastTurn()
-            powerUsed()
             assert self.active : "Cacturne is not an Active Pokemon"
+            powerUsed()
             directDamage 10, opp.all.findAll { it.numberOfDamageCounters }.select()
           }
         }
