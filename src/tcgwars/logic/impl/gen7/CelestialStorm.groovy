@@ -3205,7 +3205,7 @@ public enum CelestialStorm implements LogicCardInfo {
           text "Prevent all effects of the opponents attacks, including damage, done to Benched Pokémon (both yours and your opponents).\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you cant play this card.\n"
           def eff
           onPlay {
-            eff = delayed {
+            eff = delayed (priority: BEFORE_LAST) {
               before null, null, Source.ATTACK, {
                 if (ef.effectType != DAMAGE){
                   def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
