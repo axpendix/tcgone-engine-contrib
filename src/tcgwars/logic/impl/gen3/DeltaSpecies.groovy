@@ -314,7 +314,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             powerUsed()
             bg.em().storeObject("Delta_Heal", bg.turnCount)
             my.all.each {
-              if (it.name.contains("δ")) {
+              if (it.topPokemonCard.cardTypes.is(DELTA)) {
                 heal 10, it
               }
             }

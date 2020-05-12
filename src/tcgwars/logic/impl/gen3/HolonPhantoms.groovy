@@ -430,7 +430,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.owner == self.owner && self.benched) {
                 bg.dm().each {
-                  if (it.from.name.contains("δ") && it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
+                  if (it.from.topPokemonCard.cardTypes.is(DELTA) && it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
                     if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name.contains("Holon")) {
                       bc "Delta Reactor +10"
                       it.dmg += hp(10)
@@ -495,9 +495,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert opp.all.findAll { it.name.contains("δ") } : "No valid targets"
+            assert opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) } : "No valid targets"
             powerUsed()
-            directDamage 20, opp.all.findAll { it.name.contains("δ") }.select()
+            directDamage 20, opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select()
           }
         }
         move "Extra Flame", {
@@ -613,7 +613,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Delta Reserve", {
           text "As long as Pidgeot has any Holon Energy cards attached to it, each player's Pokémon (excluding Pokémon that has δ on its card) can't use any Poké-Powers."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (self.cards.findAll{it.name.contains("Holon Energy")} && !h.effect.target.name.contains("δ")) {
+            if (self.cards.findAll{it.name.contains("Holon Energy")} && !h.effect.target.topPokemonCard.cardTypes.is(DELTA)) {
               if (h.effect.ability instanceof PokePower) {
                 h.object=true
               }
@@ -1306,7 +1306,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 10+10*my.all.findAll {it.name.contains("δ")}.size()
+            damage 10+10*my.all.findAll {it.topPokemonCard.cardTypes.is(DELTA)}.size()
           }
         }
         move "Split Bomb", {
@@ -1369,7 +1369,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            my.all.findAll { it.name.contains("δ") }.each{
+            my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.each{
               draw 1
             }
           }
@@ -2256,7 +2256,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         getEnergyTypesOverride {
           if (!self || !self.topPokemonCard)
             return [[C] as Set]
-          boolean cond1 = self.topPokemonCard.name.contains("δ")
+          boolean cond1 = self.topPokemonCard.cardTypes.is(DELTA)
           if (cond1)
             return [[R, D, F, G, W, Y, L, M, P, N] as Set]
           else

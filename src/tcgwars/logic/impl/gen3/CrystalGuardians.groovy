@@ -743,7 +743,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             checkNoSPC()
             checkLastTurn()
             powerUsed()
-            deck.search("Search your deck for a δ Pokemon", {it.cardTypes.pokemon && it.name.contains("δ") }).moveTo(my.hand)
+            deck.search("Search your deck for a δ Pokemon", {it.cardTypes.pokemon && it.topPokemonCard.cardTypes.is(DELTA) }).moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -918,7 +918,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Delta Transport", {
           text "Once during your turn (before your attack), if Pelipper is on your Bench, you may switch 1 of your Active Pokémon that has δ on its card with 1 of your Benched Pokémon."
           actionA {
-            assert my.active.topPokemonCard.name.contains("δ") : "Active is not Delta Pokemon"
+            assert my.active.topPokemonCard.cardTypes.is(DELTA) : "Active is not Delta Pokemon"
             checkLastTurn()
             assert self.benched : "Pelipper not on Bench"
             powerUsed()
