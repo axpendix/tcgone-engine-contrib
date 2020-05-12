@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen3;
 
 import tcgwars.logic.impl.gen3.TeamRocketReturns;
 import tcgwars.logic.impl.gen3.LegendMaker;
+import tcgwars.logic.impl.gen3.DragonFrontiers;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 
 import static tcgwars.logic.card.HP.*;
@@ -2210,15 +2211,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
       };
       case MR_STONE_S_PROJECT_88:
-      return supporter (this) {
-        text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
-          "Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward. Or, search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand."
-        onPlay {
-          // TODO
-        }
-        playRequirement{
-        }
-      };
+      return copy(DragonFrontiers.MR_STONE_S_PROJECT_77, this);
       case PROFESSOR_COZMO_S_DISCOVERY_89:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
