@@ -511,10 +511,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                     bg.em().storeObject("Solar_Power", bg.turnCount)
                     def copy = ef.move.shallowCopy()
                     copy.energyCost.clear()
-                    def bef = blockingEffect(BETWEEN_TURNS)
                     attack (copy as Move)
-                    bef.unregisterItself(bg().em())
-                    bg.gm().betweenTurns()
                     prevent()
                   }
                 }
@@ -1819,10 +1816,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                   if (copy.energyCost.contains(C)) {
                     copy.energyCost.remove(C)
                   }
-                  def bef = blockingEffect(BETWEEN_TURNS)
                   attack (copy as Move)
-                  bef.unregisterItself(bg().em())
-                  bg.gm().betweenTurns()
                   prevent()
                 }
               }
