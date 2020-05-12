@@ -2024,7 +2024,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            attachEnergyFrom(my.discard, my.all.findAll {it.name.contains("δ")}.select("Attach to?"))
+            attachEnergyFrom(my.discard, my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Attach an Energy to?"))
           }
         }
       };
