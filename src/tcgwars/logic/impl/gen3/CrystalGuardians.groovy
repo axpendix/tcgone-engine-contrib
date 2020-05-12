@@ -267,7 +267,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           delayedA{
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if(it.to == self && it.from.topPokemonCard.name.contains("δ") && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
+                if(it.to == self && it.from.topPokemonCard.cardTypes.is(DELTA) && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
                   bc "Delta Protection reduces damage from δ Pokemon by 40"
                   it.dmg -= hp(40)
                 }
