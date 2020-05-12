@@ -352,7 +352,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
         move "Return Burn", {
           text "50 damage. You may return an Energy card attached to Flareon to your hand. If you do, the Defending Pokémon is now Burned."
-          energyCost
+          energyCost M, R, C
           attackRequirement {}
           onAttack {
             damage 50
