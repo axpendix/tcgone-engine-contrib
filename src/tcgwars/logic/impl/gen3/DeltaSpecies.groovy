@@ -2729,7 +2729,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness L
         pokePower "Evolutionary Swirl", {
           text "Once during your turn, when you play Vaporeon ex from your hand to evolve 1 of your Pokémon, you may have your opponent shuffle his or her hand into his or her deck. Then, your opponent draws up to 4 cards."
-          actionA {
+          delayedA {
             if (r==PLAY_FROM_HAND && checkLastTurn() && opp.hand && confirm("Use Evolutionary Swirl?")) {
               powerUsed()
               opp.hand.moveTo(hidden:true, opp.deck)
