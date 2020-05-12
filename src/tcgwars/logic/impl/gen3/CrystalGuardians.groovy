@@ -1907,6 +1907,7 @@ public enum CrystalGuardians implements LogicCardInfo {
                 }
               }
             }
+            unregisterAfter 1
           }
         }
         onRemoveFromPlay {
