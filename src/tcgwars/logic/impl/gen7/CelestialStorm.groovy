@@ -3215,13 +3215,6 @@ public enum CelestialStorm implements LogicCardInfo {
                   }
                 }
               }
-              before DIRECT_DAMAGE {
-                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                if (pcs != null && pcs.benched && pcs.owner != bg.currentTurn) {
-                  bc "Sky Pillar prevented a damage counters from being placed on $pcs.name"
-                  prevent()
-                }
-              }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if(it.notNoEffect && it.to.benched && it.to.owner != bg.currentTurn && it.dmg.value){
