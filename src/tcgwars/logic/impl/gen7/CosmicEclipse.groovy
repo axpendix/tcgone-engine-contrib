@@ -2454,7 +2454,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
             onAttack {
               def nam=self.name
-              def tar = my.deck.search("Choose a card the evolves from $nam.", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
+              def tar = my.deck.search("Choose a card that evolves from $nam.", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
               if(tar) evolve(self, tar.first(), OTHER)
               shuffleDeck()
             }
