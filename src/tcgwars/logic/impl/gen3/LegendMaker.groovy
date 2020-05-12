@@ -220,6 +220,14 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            delayed {
+              before null, self, Source.ATTACK, {
+                if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  bc "Speed Stroke prevents effect"
+                  prevent()
+                }
+              }
+            }
             afterDamage{
               preventAllDamageFromCustomPokemonNextTurn(thisMove, self, {it.EX})
             }
