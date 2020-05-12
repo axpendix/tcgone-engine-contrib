@@ -211,7 +211,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 10+10*opp.active.energyCount()
+            damage 10+10*self.cards.energyCount(C)
           }
         }
         move "Speed Stroke", {
@@ -220,7 +220,9 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
-            preventAllDamageFromCustomPokemonNextTurn(thisMove, self, {it.EX})
+            afterDamage{
+              preventAllDamageFromCustomPokemonNextTurn(thisMove, self, {it.EX})
+            }
           }
         }
       };
