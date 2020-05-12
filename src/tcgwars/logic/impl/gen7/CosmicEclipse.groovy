@@ -507,7 +507,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               delayed {
                 before CHECK_ATTACK_REQUIREMENTS, {
-                  if(ef.attacker.owner == self.owner && (ef.attacker.types.contains(G) || ef.attacker.types.contains(R)) && bg.currentTurn == self.owner) {
+                  if(ef.attacker.owner == self.owner && (ef.attacker.types.contains(G) || ef.attacker.types.contains(R)) && bg.currentTurn == self.owner && bg.em().retrieveObject("Solar_Power") != bg.turnCount) {
+                    bg.em().storeObject("Solar_Power", bg.turnCount)
                     def list = ef.attacker.topPokemonCard.moves
                     def selected = choose(list, "Choose a non-GX attack to use.")
                     def bef = blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
