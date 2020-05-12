@@ -2271,8 +2271,8 @@ public enum UnseenForces implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Draw a card. If you don't have any Stage 2 Evolved Pokémon in play, draw 2 more cards."
         onPlay {
-          draw 2
-          if (my.bench.find{it.topPokemonCard.cardTypes.is(STAGE2)}) draw 2
+          draw 1
+          if (!my.bench.find{it.topPokemonCard.cardTypes.is(STAGE2)}) draw 2
         }
         playRequirement{
           assert my.deck : "Deck is empty"
