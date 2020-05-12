@@ -2461,12 +2461,10 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Prevent all effects of your opponent's attacks, except damage, done to this Pokémon."
             delayedA {
               before null, null, ATTACK, {
-                if (ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
-                  def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                  if (pcs != null && pcs.owner == self.owner) {
-                    bc "Unaware prevents all effects done to $self."
-                    prevent()
-                  }
+                if (ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && (ef as TargetedEffect).getResolvedTarget(bg, e) == self) {
+                  bc "Unaware prevents all effects done to $self."
+                  prevent()
+                  
                 }
               }
             }
