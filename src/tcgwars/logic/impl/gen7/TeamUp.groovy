@@ -3465,6 +3465,12 @@ public enum TeamUp implements LogicCardInfo {
                   }
                 }
               }
+              before DIRECT_DAMAGE {
+                if((ef as TargetedEffect).getResolvedTarget(bg, e) == self && self.topPokemonCard.types.contains(M)) {
+                  bc "Sky Pillar prevents damage counters from being placed on $self.name"
+                  prevent()
+                }
+              }
             }
           }
           onRemoveFromPlay {
