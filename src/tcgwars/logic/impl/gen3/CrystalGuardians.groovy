@@ -728,7 +728,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            preventAllEffectsFromCustomPokemonNextTurn("Psychic Shield", self, {it.EX})
+            preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.EX})
           }
         }
       };
