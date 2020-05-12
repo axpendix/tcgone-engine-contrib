@@ -506,29 +506,30 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost C, C
             onAttack {
               delayed {
-                def eff
-                register {
-                  eff = getter GET_MOVE_LIST, { h->
-                    PokemonCardSet pcs = h.effect.target
-                    if (pcs.owner == self.owner && h.object.find { it.types.contains(G) || it.types.contains(R) }) {
-                      def list = []
-                      for (move in h.object){
-                        def copy = move.shallowCopy()
-                        copy.energyCost.retainAll()
-                        list.add(copy)
-                      }
-                      h.object=list
-                    }
+                before CHECK_ATTACK_REQUIREMENTS, {
+                  if(ef.attacker.owner == self.owner && (ef.attacker.types.contains(G) || ef.attacker.types.contains(R)) && bg.currentTurn == self.owner && bg.em().retrieveObject("Solar_Power") != bg.turnCount) {
+                    bg.em().storeObject("Solar_Power", bg.turnCount)
+                    def copy = ef.move.shallowCopy()
+                    copy.energyCost.clear()
+                    def bef = blockingEffect(BETWEEN_TURNS)
+                    attack (copy as Move)
+                    bef.unregisterItself(bg().em())
+                    bg.gm().betweenTurns()
+                    prevent()
                   }
                 }
-                unregister {
-                  eff.unregister()
-                }
                 unregisterAfter 3
-                after SWITCH, self, {unregister()}
               }
             }
           }
+          move "Solar Beam", {
+            text "80 damage."
+            energyCost G, C, C
+            onAttack {
+              damage 80
+            }
+          }
+        };
           move "Solar Beam", {
             text "80 damage."
             energyCost G, C, C
@@ -3312,9 +3313,12 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Thumping Fall", {
             text "50x damage. Discard any number of Pokémon with a Retreat Cost of exactly 4 from your hand. This attack does 50 damage for each card you discarded in this way."
             energyCost C, C
+            attackRequirement{
+              assert my.hand.findAll(cardTypeFilter(POKEMON)).findAll({ it.retreatCost == 4 }) : "You have no Pokémon with Retreat Cost of 4 in your hand."
+            }
             onAttack {
               def heavyPokemon = my.hand.findAll(cardTypeFilter(POKEMON)).findAll({ it.retreatCost == 4 })
-              def selected = heavyPokemon.select(max: heavyPokemon.size(), "Discard any number of Pokémon with a Retreat Cost of 4 to do 50 damage each.")
+              def selected = heavyPokemon.select(max: heavyPokemon.size(), "Discard any number of Pokémon with a Retreat Cost of 4 to deal 50 damage each.")
 
               damage 50*selected.size()
               selected.discard()
