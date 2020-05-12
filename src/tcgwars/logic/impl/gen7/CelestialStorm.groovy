@@ -3217,7 +3217,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
               before DIRECT_DAMAGE, {
                 if ((ef as TargetedEffect).getResolvedTarget(bg, e).benched) {
-                  bc "Sky Pillar prevented a damage counters from being placed on $ef.name"
+                  bc "Sky Pillar prevented a damage counters from being placed on $ef.target"
                   prevent()
                 }
               }
