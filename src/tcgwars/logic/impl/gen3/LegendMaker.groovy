@@ -1763,7 +1763,10 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            all.each {
+            my.bench.each {
+              damage 10, it
+            }
+            opp.bench.each {
               damage 10, it
             }
             damage 50, self
