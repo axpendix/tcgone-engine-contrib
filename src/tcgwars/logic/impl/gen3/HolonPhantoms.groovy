@@ -406,11 +406,14 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Once during your turn (before your attack), you may attach a basic Energy card or a δ Rainbow Energy card from your hand to 1 of your Pokémon that has δ on its card. This power can't be used if Flygon is affected by a Special Condition."
           actionA {
             checkLastTurn()
-            assert my.hand.filterByType(BASIC_ENERGY) || my.hand.findAll{it.name.contains "δ Rainbow Energy"}: "No Basic Energy or δ Rainbow Energy in Hand"
-            assert my.all.findAll { it.ex && it.STAGE2 } : "No Stage 2 Pokemon-ex in play"
+            assert my.hand.filterByType(BASIC_ENERGY) || my.hand.findAll{it.name.contains("δ Rainbow Energy")}: "No Basic Energy or δ Rainbow Energy in Hand"
+            assert my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) } : "No Delta Pokemon in play"
             powerUsed()
-            def tar = my.all.findAll { it.ex && it.STAGE2 }.select()
-            attachEnergyFrom(basic: true, my.hand, tar)
+            def energy = my.all.findAll {
+              it.name.contains("δ Rainbow Energy") || it.cardTypes.is(BASIC_ENERGY)
+            }.select("Which Energy to attach?")
+            def tar = my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Select a Delta Pokemon to attach the Energy to.")
+            attachEnergy(tar, energy)
           }
         }
         move "Swift", {
