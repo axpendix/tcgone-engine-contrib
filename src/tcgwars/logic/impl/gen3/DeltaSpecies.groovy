@@ -2246,7 +2246,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
         move "Rising Lunge", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
-          energyCost
+          energyCost R, C
           attackRequirement {}
           onAttack {
             damage 20
