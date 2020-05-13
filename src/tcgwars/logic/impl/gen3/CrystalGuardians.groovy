@@ -1999,12 +1999,12 @@ public enum CrystalGuardians implements LogicCardInfo {
               }
             }
             eff2 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (self.active && h.effect.target.basic) {
+              if (self.active && h.effect.target.basic && h.effect.target.owner == self.owner.opposite) {
                 h.object=true
               }
             }
             eff3 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-              if (self.active && (h.effect.target as Card).cardTypes.is(BASIC)) {
+              if (self.active && (h.effect.target as Card).cardTypes.is(BASIC) && h.effect.target.owner == self.owner.opposite) {
                 h.object=true
               }
             }
