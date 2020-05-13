@@ -1988,15 +1988,33 @@ public enum CrystalGuardians implements LogicCardInfo {
         resistance G, MINUS30
         pokeBody "Intimidating Armor", {
           text "As long as Aggron ex is your Active Pokémon, your opponent's Basic Pokémon can't attack or use any Poké-Powers or Poké-Bodies."
-          getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (h.effect.target == self) {
-              if (h.effect.ability instanceof PokePower) {
-                h.object=true
+          def eff1,eff2,eff3
+          onActivate {
+            eff1 = delayed{
+              before CHECK_ATTACK_REQUIREMENTS, {
+                if(self.active && ef.attacker.basic) {
+                  wcu "Intimidating Armor prevents attack"
+                  prevent()
+                }
               }
-              else if (h.effect.ability instanceof PokeBody) {
+            }
+            eff2 = getter IS_ABILITY_BLOCKED, { Holder h->
+              if (self.active && h.effect.target.basic && (h.effect.ability instanceof Pokebody || h.effect.ability instanceof Pokepower)) {
                 h.object=true
               }
             }
+            eff3 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+              if (self.active && (h.effect.target as Card).cardTypes.is(BASIC)) {
+                h.object=true
+              }
+            }
+            new CheckAbilities().run(bg)
+          }
+          onDeactivate {
+            eff1.unregister()
+            eff2.unregister()
+            eff3.unregister()
+            new CheckAbilities().run(bg)
           }
         }
         move "Split Bomb", {
