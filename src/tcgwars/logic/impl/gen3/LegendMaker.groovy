@@ -1121,7 +1121,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {
             assert my.deck : "You have no cards in your deck"
-            assert my.bench.notFull "Your bench is full"
+            assert my.bench.notFull : "Your bench is full"
           }
           onAttack {
             def maxSpace = Math.min(my.bench.freeBenchCount, 2)
