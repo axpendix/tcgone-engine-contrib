@@ -3035,7 +3035,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               damage 80
-              reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
+              reduceDamageNextTurn(hp(20),thisMove)
             }
           }
           move "Earthquake", {
@@ -3616,7 +3616,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost Y
             onAttack {
               damage 10
-              reduceDamageFromDefendingNextTurn(hp(10), thisMove, defending)
+              reduceDamageNextTurn(hp(10),thisMove)
             }
           }
         };
