@@ -1901,6 +1901,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Once during your turn (before your attack), you may attach a basic Energy card from your hand to 1 of your Stage 2 Pokémon-ex. This power can't be used if Altaria ex is affected by a Special Condition."
           actionA {
             checkLastTurn()
+            checkNoSPC()
             assert my.hand.filterByType(BASIC_ENERGY) : "No Basic Energy in Hand"
             assert my.all.findAll { it.EX && it.topPokemonCard.cardTypes.is(STAGE2) } : "No Stage 2 Pokemon-ex in play"
             powerUsed()
