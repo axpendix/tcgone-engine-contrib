@@ -1262,8 +1262,10 @@ public enum UnseenForces implements LogicCardInfo {
           text "Once during your turn (before your attack), if Aipom is on your Bench, you may draw a card. Then, discard all cards attached to Aipom and put Aipom on the bottom of your deck. You can't use more than 1 Snappy Move Poké-Power each turn."
           actionA {
             checkLastTurn()
+            assert bg.em().retrieveObject("Snappy_Move") != bg.turnCount : "You can't use more than 1 Snappy Move Poké-Power each turn."
             assert self.benched : "This Pokemon is not on your Bench"
             powerUsed()
+            bg.em().storeObject("Snappy_Move", bg.turnCount)
 
             draw 1
             self.cards.getExcludedList(self.topPokemonCard).discard()
