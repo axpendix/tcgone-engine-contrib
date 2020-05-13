@@ -2494,7 +2494,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "During your opponent's next turn, this Pokémon takes 40 less damage from attacks (after applying Weakness and Resistance)."
             energyCost C
             onAttack {
-              reduceDamageFromDefendingNextTurn(hp(40), thisMove, defending)
+              reduceDamageNextTurn(hp(40),thisMove)
             }
           }
         };
