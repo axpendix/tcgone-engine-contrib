@@ -1914,6 +1914,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            my.all.each{
+              it.damage-=hp(10)
+            }
           }
         }
       };
