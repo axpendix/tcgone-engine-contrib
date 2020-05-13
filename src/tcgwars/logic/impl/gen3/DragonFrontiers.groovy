@@ -1902,9 +1902,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert my.hand.filterByType(BASIC_ENERGY) : "No Basic Energy in Hand"
-            assert my.all.findAll { it.EX && it.is(STAGE2) } : "No Stage 2 Pokemon-ex in play"
+            assert my.all.findAll { it.EX && it.topPokemonCard.cardTypes.is(STAGE2) } : "No Stage 2 Pokemon-ex in play"
             powerUsed()
-            def tar = my.all.findAll { it.EX && it.is(STAGE2) }.select()
+            def tar = my.all.findAll { it.EX && it.topPokemonCard.cardTypes.is(STAGE2) }.select()
             attachEnergyFrom(basic: true, my.hand, tar)
           }
         }
