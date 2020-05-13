@@ -2328,7 +2328,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           globalAbility {Card thisCard->
             delayed {
               before KNOCKOUT, {
-                if(ef.pokemonToBeKnockedOut.owner == thisCard.player){
+                if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
                   bg.em().storeObject("Dance_of_Tribute", bg.turnCount)
                 }
               }
