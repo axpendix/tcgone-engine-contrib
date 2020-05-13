@@ -3249,7 +3249,7 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 90
-            reduceDamageFromDefendingNextTurn(hp(30), thisMove, defending)
+            reduceDamageNextTurn(hp(30),thisMove)
           }
         }
         move "Wrack Down", {
