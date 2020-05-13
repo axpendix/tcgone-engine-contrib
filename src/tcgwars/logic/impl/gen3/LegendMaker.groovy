@@ -1119,9 +1119,17 @@ public enum LegendMaker implements LogicCardInfo {
         move "Influence", {
           text "Search your deck for Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith and put up to 2 of them onto your Bench. Shuffle your deck afterward. Treat the new Benched Pokémon as Basic Pokémon."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "You have no cards in your deck"
+            assert my.bench.notFull : "Your bench is full"
+          }
           onAttack {
-            // TODO
+            def maxSpace = Math.min(my.bench.freeBenchCount, 2)
+            my.deck.search(min:0, max:maxSpace, "Search your deck for up to 2 cards named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Lileep" || it.name == "Anorith"}).each {
+              my.deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
           }
         }
         move "Stretch Claws", {
