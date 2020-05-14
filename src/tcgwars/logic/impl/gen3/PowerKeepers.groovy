@@ -1905,10 +1905,22 @@ public enum PowerKeepers implements LogicCardInfo {
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each player's [D] Pokémon can't be Asleep, Confused, or Paralyzed."
+        def eff
         onPlay {
-          // TODO
+          eff = delayed {
+            before APPLY_SPECIAL_CONDITION, {
+              def pcs=e.getTarget(bg)
+              if (pcs.types.contains(D)) {
+                if (ef.type == POISONED || ef.type == CONFUSED || ef.type == PARALYZED) {
+                  bc "Sidney's Stadium - [D] Pokemon can't be Asleep, Confused or Paralyzed."
+                  prevent()
+                }
+              }
+            }
+          }
         }
-        onRemoveFromPlay{
+        onRemoveFromPlay {
+          eff.unregister()
         }
       };
       case STEVEN_S_ADVICE_83:
