@@ -2311,6 +2311,16 @@ public enum LegendMaker implements LogicCardInfo {
                 }
               }
             }
+            pokeBody{
+              delayedA{
+                before BEGIN_TURN, {
+                  if (self.numberOfDamageCounters) {
+                    bc "Spongey Stone activates"
+                    heal 10, self
+                  }
+                }
+              }
+            }
             customAbility {
               def eff, acl
               onActivate{
@@ -2399,12 +2409,6 @@ public enum LegendMaker implements LogicCardInfo {
                         bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
                         unregister()
                         eff = null
-                      }
-                    }
-                    before BEGIN_TURN, {
-                      if (self.numberOfDamageCounters) {
-                        bc "Spongey Stone activates"
-                        heal 10, self
                       }
                     }
                   }
