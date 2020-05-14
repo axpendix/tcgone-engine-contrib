@@ -1686,6 +1686,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance G, MINUS30
         move "Mud Slap", {
           text "10 damage."
+          energyCost C
           attackRequirement {}
           onAttack {
             damage 10
