@@ -2918,7 +2918,8 @@ public enum UnseenForces implements LogicCardInfo {
             assert self.benched : "This Pokemon is not benched"
             powerUsed()
             def card = my.deck.search("Select a Pokemon with Dark or Rocket's in its name to put into your hand", {
-              it.name.contains("Rocket") || !it.name.contains("Dark")
+              it.cardTypes.is(POKEMON) &&
+              (it.name.contains("Rocket") || it.name.contains("Dark"))
             })
             card.moveTo(my.hand)
             shuffleDeck()
