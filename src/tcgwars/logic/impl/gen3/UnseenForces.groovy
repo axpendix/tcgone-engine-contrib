@@ -2240,10 +2240,12 @@ public enum UnseenForces implements LogicCardInfo {
               }
             }
           }
+          new CheckAbilities().run(bg)
         }
         onRemoveFromPlay {
           eff.unregister()
           eff2.unregister()
+          new CheckAbilities().run(bg)
         }
         allowAttach { to->
           to.topPokemonCard.cardTypes.isNot(EX) && !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON)
