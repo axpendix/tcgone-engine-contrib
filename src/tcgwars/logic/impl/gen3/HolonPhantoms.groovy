@@ -1473,7 +1473,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 30
 
-            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name.contains("Holon") {
+            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name.contains("Holon")) {
               draw 3
             }
           }
