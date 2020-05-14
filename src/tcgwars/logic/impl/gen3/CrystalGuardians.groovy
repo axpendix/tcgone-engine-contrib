@@ -2113,7 +2113,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "As long as Exploud ex is your Active Pokémon, put 1 damage counter on each of your opponent's Pokémon-ex between turns."
           delayedA {
             before BEGIN_TURN, {
-              if (self.active) {
+              if (self.active && bg.currentTurn == self.owner) {
                 def once = true
                 opp.all.each {
                   if (it.EX) {
