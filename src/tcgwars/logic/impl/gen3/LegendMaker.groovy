@@ -647,7 +647,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost W, W, C, C
           attackRequirement {}
           onAttack {
-            def friends = my.bench.findAll { it.cardTypes.is(STAGE1) }.size()
+            def friends = my.bench.findAll { it.topPokemonCard.cardTypes.is(STAGE1) }.size()
             damage 40+10*friends
           }
         }
