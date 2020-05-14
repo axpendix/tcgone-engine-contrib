@@ -342,7 +342,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           move "Super Growth", {
             text "Search your deck for a card that evolves from 1 of your [G] Pokémon and put it onto that Pokémon to evolve it. If that Pokémon is now a Stage 1 Pokémon, search your deck for a Stage 2 Pokémon that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
             attackRequirement {
-              assert deck.notEmpty
+              assert my.deck : "Your deck is empty."
               assert my.all.findAll { it.types.contains(G) } : "You have no [G] Pokémon in play."
             }
             onAttack {
@@ -439,7 +439,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               def pcs = list.select("Devolve one of your opponent's evolved Pokémon.")
               assert pcs
               def top=pcs.topPokemonCard
-              bc "$top Devolved"
+              bc "$top devolved."
               pcs.cards.remove(top)
               opp.deck.add(top)
               shuffleDeck(null, TargetPlayer.OPPONENT)
@@ -657,7 +657,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Heal 30 damage from 1 of your Pokémon."
             energyCost C
             attackRequirement {
-              assert my.all.findAll {it.numberOfDamageCounters}
+              assert my.all.findAll {it.numberOfDamageCounters} : "None of your Pokémon have any damage."
             }
             onAttack {
               heal 30, my.all.findAll { it.numberOfDamageCounters }.select()
@@ -1062,7 +1062,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             actionA {
               checkLastTurn()
               def cards = my.discard.findAll{ it.name == "Misty's Favor" }
-              assert cards
+              assert cards : "Your discard pile has no Misty's Favor cards."
               powerUsed()
 
               cards.select("Select a Misty's Favor card to return to your hand.").moveTo(my.hand)
@@ -1507,7 +1507,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Discard any amount of [L] Energy from this Pokémon. Then, for each Energy you discarded in this way, choose 1 of your opponent's Pokémon and do 30 damage to it. (You can choose the same Pokémon more than once.) This damage isn't affected by Weakness or Resistance."
             energyCost L
             attackRequirement {
-              assert self.cards.filterByEnergyType(L)
+              assert self.cards.filterByEnergyType(L) : "There is no [L] Energy attached to Alolan Raichu."
             }
             onAttack {
               def numL = self.cards.filterByEnergyType(L).size()
@@ -3587,9 +3587,9 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Once during your turn (before your attack), you may discard any Stadium card in play. If you do, attach up to 3 in any combination of [R] and [M] Energy cards from your hand to this Pokémon."
             actionA {
               checkLastTurn()
-              assert bg.stadiumInfoStruct : "No stadium is in play."
+              assert bg.stadiumInfoStruct : "No Stadium is in play."
               powerUsed()
-              if (confirm("Would you like to discard the stadium in play (${bg.stadiumInfoStruct.stadiumCard})?")) {
+              if (confirm("Would you like to discard the Stadium in play? (${bg.stadiumInfoStruct.stadiumCard})")) {
                 discard bg.stadiumInfoStruct.stadiumCard
 
                 my.hand.findAll{
@@ -4137,7 +4137,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text " Put a Pokémon from your hand face down in front of you. Your opponent guesses the type of that Pokémon, and then you reveal it. If your opponent guessed right, they draw 4 cards. If they guessed wrong, you draw 4 cards. Return the Pokémon to your hand."
             energyCost C
             attackRequirement {
-              assert my.hand.hasType(POKEMON)
+              assert my.hand.hasType(POKEMON) : "There are no Pokémon in your hand."
             }
             onAttack {
               def card = my.hand.filterByType(POKEMON).select()
@@ -4535,7 +4535,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           def actions=[]
           onPlay {
             actions=action("Stadium: Pokemon Research Lab") {
-              assert my.deck.notEmpty
+              assert my.deck : "Your deck is empty."
               assert lastTurn != bg().turnCount : "You've already used Pokémon Research Lab this turn."
               bc "Player is using Pokémon Research Lab."
               lastTurn = bg().turnCount
