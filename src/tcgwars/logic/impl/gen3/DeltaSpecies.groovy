@@ -1631,7 +1631,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
         move "Slap Push", {
           text "30 damage."
-          energyCost
+          energyCost C, C
           attackRequirement {}
           onAttack {
             damage 30
