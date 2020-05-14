@@ -2733,7 +2733,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 80
             afterDamage {
               discardSelfEnergy C
-              discardDefendingEnergy C
+              discardDefendingEnergy()
             }
           }
         }
