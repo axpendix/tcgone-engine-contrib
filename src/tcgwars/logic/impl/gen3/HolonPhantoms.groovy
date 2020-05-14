@@ -289,7 +289,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             def newDeoxys = my.deck.search(min:0, max: 1, {
               it.name == "Deoxys"
             })
-            shuffleDeck()
 
             if (newDeoxys) {
               newDeoxys.moveTo(self.cards)
@@ -297,6 +296,8 @@ public enum HolonPhantoms implements LogicCardInfo {
               self.cards.remove(oldDeoxys)
               checkFaint()
             }
+
+            shuffleDeck()
           }
         }
         move "Energy Loop", {
@@ -324,7 +325,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             def newDeoxys = my.deck.search(min:0, max: 1, {
               it.name == "Deoxys"
             })
-            shuffleDeck()
 
             if (newDeoxys) {
               newDeoxys.moveTo(self.cards)
@@ -332,6 +332,8 @@ public enum HolonPhantoms implements LogicCardInfo {
               self.cards.remove(oldDeoxys)
               checkFaint()
             }
+
+            shuffleDeck()
           }
         }
         move "Delta Reduction", {
@@ -360,7 +362,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             def newDeoxys = my.deck.search(min:0, max: 1, {
               it.name == "Deoxys"
             })
-            shuffleDeck()
 
             if (newDeoxys) {
               newDeoxys.moveTo(self.cards)
@@ -368,6 +369,8 @@ public enum HolonPhantoms implements LogicCardInfo {
               self.cards.remove(oldDeoxys)
               checkFaint()
             }
+
+            shuffleDeck()
           }
         }
         move "Crystal Laser", {
@@ -395,7 +398,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             def newDeoxys = my.deck.search(min:0, max: 1, {
               it.name == "Deoxys"
             })
-            shuffleDeck()
 
             if (newDeoxys) {
               newDeoxys.moveTo(self.cards)
@@ -403,6 +405,8 @@ public enum HolonPhantoms implements LogicCardInfo {
               self.cards.remove(oldDeoxys)
               checkFaint()
             }
+
+            shuffleDeck()
           }
         }
         move "Teleportation Burst", {
