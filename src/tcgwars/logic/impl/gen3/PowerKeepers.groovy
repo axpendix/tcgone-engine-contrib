@@ -765,10 +765,11 @@ public enum PowerKeepers implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            deck.search ({
+            def selected = deck.search (max: 1, "Search for a [L] Pokemon (excluding Pokemon-ex) to put into your hand.", {
               (it.asPokemonCard().types.contains(L)) && !it.asPokemonCard().cardTypes.is(EX)
-            }).each {
-              it.moveTo(my.hand)
+            })
+            if (selected) {
+              selected.first().moveTo(my.hand)
             }
             shuffleDeck()
           }
