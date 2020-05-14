@@ -2578,7 +2578,7 @@ public enum LegendMaker implements LogicCardInfo {
           onActivate {r->
             if (r==PLAY_FROM_HAND && my.discard.findAll(cardTypeFilter(ENERGY)) && confirm("Use Emerge Charge?")) {
               powerUsed()
-              attachEnergyFrom(my.discard, self)
+              attachEnergyFrom(max: 2, my.discard, self)
             }
           }
         }
