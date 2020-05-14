@@ -507,10 +507,10 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Choose an attack on 1 of your opponent's Pokémon in play that has δ on its card. Delta Copy copies that attack except for its Energy cost. (You must still do anything else required for that attack.) Togetic performs that attack."
           energyCost C, C
           attackRequirement {
-            assert opp.all.findAll { it.cardTypes.is(DELTA) } : "Opponent has no Delta Pokemon"
+            assert opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) } : "Opponent has no Delta Pokemon"
           }
           onAttack {
-            def tmp = opp.all.findAll { it.cardTypes.is(DELTA) }.select("Source of move")
+            def tmp = opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Source of move")
             if (tmp) {
               def card = tmp.first()
               bc "$card was chosen"
