@@ -265,8 +265,8 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "As long as Heracross is the only Pokémon you have in play, your opponent's Basic Pokémon can't attack."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if (self.owner.all.size() == 1 && ef.attacker.owner != self.owner && ef.attacker.basic) {
-                wcu "Shining Horn prevents attack"
+              if (self.owner.pbg.all.size() == 1 && ef.attacker.owner != self.owner && ef.attacker.basic) {
+                wcu "Shining Horn prevents Basic Pokemon from attacking."
                 prevent()
               }
             }
