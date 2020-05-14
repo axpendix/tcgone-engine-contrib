@@ -445,7 +445,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Delta Aura", {
           text "If you have Latios or Latios ex in play, the attack cost of Latias's Extra Crush is now [L][M][C]."
-          getterA GET_MOVE_LIST, NORMAL, self, {h->
+          getterA GET_MOVE_LIST, self, {h->
             if (my.all.find{it.name == "Latios" || it.name == "Latios ex"}) {
               def list=[]
               for (move in h.object) {
@@ -487,7 +487,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Delta Aura", {
           text "If you have Latias or Latias ex in play, the attack cost of Latios's Psychic Force is now [L][M][C]."
-          getterA GET_MOVE_LIST, NORMAL, self, {h->
+          getterA GET_MOVE_LIST, self, {h->
             if (my.all.find{it.name == "Latias" || it.name == "Latias ex"}) {
               def list=[]
               for (move in h.object) {
@@ -622,7 +622,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "As long as Rayquaza has any Holon Energy cards attached to it, ignore the effect of Rayquaza's Lightning Storm attack."
           delayedA {
             if (self.cards.findAll { it.name.contains("Holon Energy") }) {
-              getterA GET_MOVE_LIST, NORMAL, self, {h->
+              getterA GET_MOVE_LIST, self, {h->
                 def list=[]
                 for (move in h.object) {
                   def copy=move.shallowCopy()
