@@ -733,11 +733,9 @@ public enum UnseenForces implements LogicCardInfo {
             assert defending.topPokemonCard.moves : "No moves to perform"
           }
           onAttack {
-            def move = choose(defending.topPokemonCard.moves+["End Turn (Skip)"], "Choose 1 of the Defending Pokémon's attacks. (Do not select a move if you don't have necessary energy or it will fail) ")
+            def move = choose(defending.topPokemonCard.moves+["End Turn (Skip)"], "Choose 1 of the Defending Pokémon's attacks.")
             if (move instanceof String) return
-            def bef = blockingEffect(BETWEEN_TURNS)
             attack (move as Move)
-            bef.unregisterItself(bg().em())
           }
         }
         move "Karate Chop", {
