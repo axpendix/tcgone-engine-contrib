@@ -1980,7 +1980,7 @@ public enum TeamUp implements LogicCardInfo {
             text "30 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
             energyCost C,C
             onAttack{
-              shredDamage 30,defending
+              shredDamage 30
             }
           }
         };
