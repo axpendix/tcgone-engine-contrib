@@ -2651,8 +2651,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            // TODO Curious to see if this works the way I expect it to
-            preventAllEffectsFromCustomPokemonNextTurn("Ice Barrier", self, {it.EX})
+            preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.EX})
           }
         }
         move "Final Blizzard", {
