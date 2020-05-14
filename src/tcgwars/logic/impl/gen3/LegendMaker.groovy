@@ -2302,8 +2302,8 @@ public enum LegendMaker implements LogicCardInfo {
         onPlay {
           Card pokemonCard, trainerCard = thisCard
           pokemonCard = basic (new CustomCardInfo(CLAW_FOSSIL_78).setCardTypes(BASIC, POKEMON), hp:HP040, type:COLORLESS, retreatCost:0) {
-            customAbility {
-              def ef2, ability
+            customAbility{
+              def ef2, acl
               onActivate{
                 delayed {
                   before RETREAT, self, {
@@ -2312,24 +2312,34 @@ public enum LegendMaker implements LogicCardInfo {
                       prevent()
                     }
                   }
-                  before APPLY_SPECIAL_CONDITION, {
-                    def pcs=e.getTarget(bg)
-                    if(pcs==self){
-                      bc "Claw Fossil is unaffected by Special Conditions"
-                      prevent()
-                    }
+                }
+                before APPLY_SPECIAL_CONDITION, {
+                  def pcs=e.getTarget(bg)
+                  if(pcs==self){
+                    bc "Claw Fossil is unaffected by Special Conditions"
+                    prevent()
                   }
                 }
-                if (!ef2) {
+                if(!ef2){
                   ef2 = delayed {
                     after REMOVE_FROM_PLAY, {
-                      if(ef.removedCards.contains(pokemonCard)) {
+                      if(ef.removedCards.contains(pokemonCard)){
                         bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
                         unregister()
                         ef2 = null
                       }
                     }
                   }
+                }
+                acl = action("Discard unidentified fossil", [TargetPlayer.SELF]){
+                  delayed{
+                    before TAKE_PRIZE, {
+                      if(ef.pcs==self){
+                        prevent()
+                      }
+                    }
+                  }
+                  new Knockout(self).run(bg)
                 }
                 ability=delayed(anytime:true) {
                   before APPLY_ATTACK_DAMAGES, {
@@ -2340,7 +2350,8 @@ public enum LegendMaker implements LogicCardInfo {
                 }
               }
               onDeactivate{
-                ability.each{bg.gm().unregisterAction(it)}
+                acl.each{bg.gm().unregisterAction(it)}
+                ability.each{bg.gm().unregisterDelayed(it)}
               }
             }
           }
