@@ -1660,7 +1660,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            heal 30, self
           }
         }
         move "Psychic Boom", {
@@ -1668,7 +1668,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-            damage 20+10*opp.active.energyCount()
+            damage 20+10*opp.active.cards.energyCount()
           }
         }
       };
