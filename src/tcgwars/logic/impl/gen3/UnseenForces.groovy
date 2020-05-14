@@ -127,7 +127,7 @@ public enum UnseenForces implements LogicCardInfo {
   TEDDIURSA_77 ("Teddiursa", 77, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   TOTODILE_78 ("Totodile", 78, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
   WOOPER_79 ("Wooper", 79, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
-  CURSE_POWDER_80 ("Curse Powder", 80, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  CURSE_POWDER_80 ("Curse Powder", 80, Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
   ENERGY_RECYCLE_SYSTEM_81 ("Energy Recycle System", 81, Rarity.UNCOMMON, [TRAINER, ITEM]),
   ENERGY_REMOVAL_2_82 ("Energy Removal 2", 82, Rarity.UNCOMMON, [TRAINER, ITEM]),
   ENERGY_ROOT_83 ("Energy Root", 83, Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
