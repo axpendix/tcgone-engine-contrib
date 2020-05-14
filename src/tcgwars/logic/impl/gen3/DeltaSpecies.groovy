@@ -1271,20 +1271,26 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "Once during your turn (before your attack), you may search your deck for Sunny Castform, Rain Castform, or Snow-cloud Castform and switch it with Castform. (Any cards attached to Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
           actionA {
             checkLastTurn()
-            assert bg.em().retrieveObject("Temperamental_Weather") != bg.turnCount : "You cannot use Temperamental Weather more than once per turn!"
+            assert bg.em().retrieveObject("Temperamental_Weather") != bg.turnCount : "You cannot use Temperamental Weather more than once per turn."
             assert my.deck : "Deck is empty"
             powerUsed()
             bg.em().storeObject("Temperamental_Weather", bg.turnCount)
-            def castform = self.topPokemonCard
-            if(my.deck.findAll{it.name.contains("Castform")}) {
-              my.deck.search{
-                it.name.contains("Castform") && !it.name == "Castform"
-              }.moveTo(self.cards)
-              my.deck.add(castform)
-              self.cards.remove(castform)
-              shuffleDeck()
+
+            def oldCastform = self.topPokemonCard
+            def newCastform = my.deck.search(min:0, max: 1, {
+              it.name == "Sunny Castform" ||
+              it.name == "Rain Castform" ||
+              it.name == "Snow-cloud Castform"
+            })
+
+            if (newCastform) {
+              newCastform.moveTo(self.cards)
+              my.deck.add(oldCastform)
+              self.cards.remove(oldCastform)
               checkFaint()
             }
+
+            shuffleDeck()
           }
         }
         move "Holon Draw", {
