@@ -980,7 +980,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
         move "Machine Burst", {
           text "30 damage. If Porygon2 has a Technical Machine card attached to it, the Defending Pokémon is now Asleep and Burned."
-          energyCost
+          energyCost C, C
           attackRequirement {}
           onAttack {
             damage 30
