@@ -2497,6 +2497,18 @@ public enum LegendMaker implements LogicCardInfo {
             heal 20, self
           }
         }
+        move "Vortex Chop", {
+          text "70 damage. If the Defending Pokemon has any Resistance, this attack's base damage is 100 instead of 70."
+          energyCost F, C
+          attackRequirement {}
+          onAttack {
+            if (defending.resistances) {
+              damage 100
+            } else {
+              damage 70
+            }
+          }
+        }
       };
       case BANETTE_EX_85:
       return evolution (this, from:"Shuppet", hp:HP090, type:P, retreatCost:1) {
