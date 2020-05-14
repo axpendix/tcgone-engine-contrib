@@ -2010,7 +2010,7 @@ public enum PowerKeepers implements LogicCardInfo {
 
             if (confirm("Discard a [P] attached to Claydol ex?")) {
               discardSelfEnergy(P)
-              discardDefendingEnergy(C)
+              discardDefendingEnergy()
             }
           }
         }
