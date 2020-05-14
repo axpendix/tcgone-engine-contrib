@@ -2359,7 +2359,7 @@ public enum LegendMaker implements LogicCardInfo {
           Card pokemonCard, trainerCard = thisCard
           pokemonCard = basic (new CustomCardInfo(ROOT_FOSSIL_80).setCardTypes(BASIC, POKEMON), hp:HP040, type:COLORLESS, retreatCost:0) {
             customAbility {
-              def ef2, ability
+              def eff
               onActivate{
                 delayed {
                   before RETREAT, self, {
@@ -2376,29 +2376,25 @@ public enum LegendMaker implements LogicCardInfo {
                     }
                   }
                 }
-                if (!ef2) {
-                  ef2 = delayed {
+                if (!eff) {
+                  eff = delayed {
                     after REMOVE_FROM_PLAY, {
                       if(ef.removedCards.contains(pokemonCard)) {
                         bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
                         unregister()
-                        ef2 = null
+                        eff = null
+                      }
+                    }
+                    before BEGIN_TURN, {
+                      if (self.numberOfDamageCounters) {
+                        bc "Spongey Stone activates"
+                        heal 10, self
                       }
                     }
                   }
                 }
-                ability=delayed(anytime:true) {
-                  before BEGIN_TURN, {
-                    if (self.numberOfDamageCounters) {
-                      bc "Spongey Stone activates"
-                      heal 10, self
-                    }
-                  }
-                }
               }
-              onDeactivate{
-                ability.each{bg.gm().unregisterAction(it)}
-              }
+              onDeactivate {}
             }
           }
           pokemonCard.player = trainerCard.player
