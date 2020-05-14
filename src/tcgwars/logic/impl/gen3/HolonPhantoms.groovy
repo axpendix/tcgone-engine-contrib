@@ -790,19 +790,21 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Bellossom can use the attacks of all Oddish, Gloom, Vileplume, Vileplume ex, or other Bellossom you have in play as its own. (You still need the necessary Energy to use each attack.)"
           actionA {
             assert self.active: "$self is not an Active Pokemon"
-            def perfectionMoves = []
-            self.owner.pbg.bench.findAll {it.pokemonGX || it.pokemonEX}.each {
-              if (it.topPokemonCard.name != "Mewtwo & Mew-GX")
-              perfectionMoves.addAll(it.topPokemonCard.moves)
-            }
-            self.owner.pbg.discard.each {
-              if (it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) && it.name != "Miraculous Duo GX") {
-                perfectionMoves.addAll(it.moves)
+            def fellowshipMoves = []
+            self.owner.pbg.bench.findAll {
+              it.topPokemonCard.name == "Oddish" ||
+              it.topPokemonCard.name == "Gloom" ||
+              it.topPokemonCard.name == "Vileplume" ||
+              it.topPokemonCard.name == "Vileplume ex" ||
+              it.topPokemonCard.name == "Bellossom"
+            }.each {
+              if (it != self) {
+                fellowshipMoves.addAll(it.topPokemonCard.moves)
               }
             }
-            assert !perfectionMoves.isEmpty(): "There are no moves to copy"
+            assert !fellowshipMoves.isEmpty(): "There are no moves to copy"
 
-            def chosenMove = choose(perfectionMoves+["Cancel"], perfectionMoves.collect({it.name})+["Cancel"], "Choose a move to perform")
+            def chosenMove = choose(fellowshipMoves+["Cancel"], fellowshipMoves.collect({it.name})+["Cancel"], "Choose a move to perform")
 
             if (chosenMove && chosenMove != "Cancel") {
               attack (chosenMove as Move)
