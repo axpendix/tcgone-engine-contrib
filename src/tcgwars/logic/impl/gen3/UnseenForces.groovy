@@ -2394,7 +2394,7 @@ public enum UnseenForces implements LogicCardInfo {
       case WARP_ENERGY_100:
       return copy (Aquapolis.WARP_ENERGY_147, this)
       case BLISSEY_EX_101:
-      return evolution (this, from:"Chansey ex", hp:HP160, type:C, retreatCost:1) {
+      return evolution (this, from:"Chansey", hp:HP160, type:C, retreatCost:1) {
         weakness F
         pokePower "Blissful Support", {
           text "Once during your turn, when you play Blissey ex from your hand to evolve 1 of your Pokémon, you may discard all Energy cards attached to any number of your Pokémon and remove all damage counters from those Pokémon."
