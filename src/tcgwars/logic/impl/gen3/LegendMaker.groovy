@@ -1388,6 +1388,7 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             heal 50, self
             clearSpecialCondition(self)
+            apply ASLEEP, self
           }
         }
         move "Body Slam", {
