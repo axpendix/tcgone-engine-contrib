@@ -335,7 +335,14 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            discardSelfEnergy(R)
+            if (opp.bench) {
+              opp.bench.each {
+                damage 10, it
+              }
+            }
+            afterDamage {
+              discardSelfEnergy(R)
+            }
           }
         }
       };
