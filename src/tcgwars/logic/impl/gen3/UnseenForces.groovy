@@ -2203,7 +2203,7 @@ public enum UnseenForces implements LogicCardInfo {
         onPlay {
           eff = delayed {
             before (KNOCKOUT, self) {
-              if(self.types.contains(P) && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                 bc "Curse Powder activates"
                 if (self.owner.opposite.pbg.all) {
                   directDamage 30, self.owner.opposite.pbg.active
