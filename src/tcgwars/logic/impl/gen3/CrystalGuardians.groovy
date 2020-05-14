@@ -2259,14 +2259,14 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Extra Liquid", {
           text "Each player's Pokémon-ex can't use any Poké-Powers and pays [C] more Energy to use its attacks. Each Pokémon can't be affected by more than 1 Extra Liquid Poké-Body."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (self.active && !h.effect.target.cardTypes.is(EX)) {
+            if (self.active && !h.effect.target.topPokemonCard.cardTypes.is(EX)) {
               if (h.effect.ability instanceof PokePower) {
                 h.object=true
               }
             }
           }
           getterA GET_MOVE_LIST, { h ->
-            if (h.effect.target.cardTypes.is(EX) && bg.em().retrieveObject("Extra_Liquid") != (h.effect.target.id+bg.turnCount)) {
+            if (h.effect.target.topPokemonCard.cardTypes.is(EX) && bg.em().retrieveObject("Extra_Liquid") != (h.effect.target.id+bg.turnCount)) {
               def list = []
               for (move in h.object) {
                 def copy = move.shallowCopy()
