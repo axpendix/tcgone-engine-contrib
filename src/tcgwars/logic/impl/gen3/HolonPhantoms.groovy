@@ -289,12 +289,12 @@ public enum HolonPhantoms implements LogicCardInfo {
             def newDeoxys = my.deck.search(min:0, max: 1, {
               it.name == "Deoxys"
             })
+            shuffleDeck()
 
             if (newDeoxys) {
               newDeoxys.moveTo(self.cards)
               my.deck.add(oldDeoxys)
               self.cards.remove(oldDeoxys)
-              shuffleDeck()
               checkFaint()
             }
           }
