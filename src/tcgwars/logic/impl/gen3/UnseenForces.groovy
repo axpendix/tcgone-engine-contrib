@@ -2405,6 +2405,10 @@ public enum UnseenForces implements LogicCardInfo {
             if (it==PLAY_FROM_HAND && confirm("Use Blissful Support?")) {
               powerUsed()
 
+              my.all.findAll { it.numberOfDamageCounters && !it.cards.filterByType(ENERGY) }.each {
+                healAll it, Source.SRC_ABILITY
+              }
+
               def tar = true
               while (tar) {
                 tar = my.all.findAll { it.cards.filterByType(ENERGY) && it.numberOfDamageCounters }
