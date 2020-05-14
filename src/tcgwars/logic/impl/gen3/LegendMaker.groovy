@@ -2245,6 +2245,7 @@ public enum LegendMaker implements LogicCardInfo {
         onRemoveFromPlay{
           thisCard.player.opposite.pbg.triggerBenchSizeCheck()
           thisCard.player.pbg.triggerBenchSizeCheck()
+          eff.unregister()
         }
       };
       case POWER_TREE_76:
