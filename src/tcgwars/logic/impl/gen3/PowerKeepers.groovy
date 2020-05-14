@@ -1844,10 +1844,21 @@ public enum PowerKeepers implements LogicCardInfo {
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Any damage done to [C] Active Pokémon (both yours and your opponent's) by an opponent's attack is reduced by 10 (after applying Weakness and Resistance)."
+        def eff
         onPlay {
-          // TODO
+          eff = delayed {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to.active && it.to.topPokemonCard.types.contains(C) && it.dmg.value && it.notNoEffect) {
+                  bc "Drake's Stadium reduces damage by 10"
+                  it.dmg -= hp(10)
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case ENERGY_RECYCLE_SYSTEM_73:
