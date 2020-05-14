@@ -2115,7 +2115,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             before BEGIN_TURN, {
               if (self.active) {
                 def once = true
-                opp.each {
+                opp.all.each {
                   if (it.EX) {
                     if (once) {
                       bc "Extra Noise"
