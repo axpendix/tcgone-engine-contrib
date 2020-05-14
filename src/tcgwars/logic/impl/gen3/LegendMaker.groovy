@@ -2239,12 +2239,12 @@ public enum LegendMaker implements LogicCardInfo {
               h.object = 3
             }
           }
-          self.owner.opposite.pbg.triggerBenchSizeCheck()
-          self.owner.pbg.triggerBenchSizeCheck()
+          thisCard.player.opposite.pbg.triggerBenchSizeCheck()
+          thisCard.player.pbg.triggerBenchSizeCheck()
         }
         onRemoveFromPlay{
-          self.owner.opposite.pbg.triggerBenchSizeCheck()
-          self.owner.pbg.triggerBenchSizeCheck()
+          thisCard.player.opposite.pbg.triggerBenchSizeCheck()
+          thisCard.player.pbg.triggerBenchSizeCheck()
         }
       };
       case POWER_TREE_76:
