@@ -1635,9 +1635,12 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Fast Evolution", {
           text "Search your deck for an Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           energyCost G
-          attackRequirement {}
-          onAttack {
-
+          attackRequirement{
+            assert my.deck : "Deck is empty"
+          }
+          onAttack{
+            my.deck.search(min: 0, max:1,"Choose an Evolution cards",cardTypeFilter(EVOLUTION)).moveTo(my.hand)
+            shuffleDeck()
           }
         }
         move "Rollout", {
