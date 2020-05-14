@@ -2944,7 +2944,7 @@ public enum UnseenForces implements LogicCardInfo {
               }
             }, {
               my.all.each {
-                directDamage 10, it
+                heal 10, it
               }
             }
           }
