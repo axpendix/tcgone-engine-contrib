@@ -2627,14 +2627,14 @@ public enum DeltaSpecies implements LogicCardInfo {
         def eff2
         onPlay {reason->
           eff = getter (GET_WEAKNESSES, self) { h->
-            if (!self.topPokemon.cardTypes.is(EX) && self.cards.filterByEnergyType(R)) {
+            if (self != null && !self.topPokemonCard.cardTypes.is(EX) && self.cards.filterByEnergyType(R)) {
               h.object.clear()
             }
           }
           eff2 = delayed {
             before APPLY_RESISTANCE, {
               bg.dm().each {
-                if (!self.topPokemon.cardTypes.is(EX) && self.cards.filterByEnergyType(F) && it.from==self) {
+                if (self != null && !self.topPokemonCard.cardTypes.is(EX) && self.cards.filterByEnergyType(F) && it.from==self) {
                   prevent()
                 }
               }
