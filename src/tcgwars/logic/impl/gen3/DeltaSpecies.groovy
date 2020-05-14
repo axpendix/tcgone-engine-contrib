@@ -2623,16 +2623,29 @@ public enum DeltaSpecies implements LogicCardInfo {
       case HOLON_ENERGY_FF_104:
       return specialEnergy (this, [[C]]) {
         text "Holon Energy FF provides [C] Energy. If the Pokémon that Holon Energy FF is attached to also has a basic [R] Energy card attached to it, that Pokémon has no Weakness. If the Pokémon that Holon Energy FF is attached to also has a basic [F] Energy card attached to it, damage done by that Pokémon's attack isn't affected by Resistance. Ignore these effects if Holon Energy FF is attached to Pokémon-ex."
+        def eff
+        def eff2
         onPlay {reason->
+          eff = getter (GET_WEAKNESSES, self) { h->
+            if (!self.topPokemon.cardTypes.is(EX) && self.cards.filterByEnergyType(R)) {
+              h.object.clear()
+            }
+          }
+          eff2 = delayed {
+            before APPLY_RESISTANCE, {
+              bg.dm().each {
+                if (!self.topPokemon.cardTypes.is(EX) && self.cards.filterByEnergyType(F) && it.from==self) {
+                  prevent()
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
+          eff.unregister()
+          eff2.unregister()
         }
         onMove {to->
-        }
-        allowAttach {to->
-          if (defending.topPokemonCard.cardTypes.is(EX)) {
-            cantAttackNextTurn(defending)
-          }
         }
       };
       case HOLON_ENERGY_GL_105:
