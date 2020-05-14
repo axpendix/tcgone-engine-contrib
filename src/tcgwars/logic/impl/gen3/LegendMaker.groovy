@@ -1448,7 +1448,7 @@ public enum LegendMaker implements LogicCardInfo {
               }
             }
             before ASLEEP_SPC, null, null, BEGIN_TURN, {
-              if(ef.target == defending){ //MARK parentEvent
+              if (self.active) {
                 flip "Asleep (Deep Sleep)", 2, {}, {}, [2:{
                   ef.unregisterItself(bg.em());
                 },1:{
