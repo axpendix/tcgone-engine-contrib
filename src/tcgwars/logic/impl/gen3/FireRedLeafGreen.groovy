@@ -2523,11 +2523,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               new Knockout(self).run(bg)
-              attachEnergyFrom(may : true ,my.discard, my.all.findAll{!(it.pokemonEX)})
-              attachEnergyFrom(may : true,my.discard, my.all.findAll{!(it.pokemonEX)})
-              attachEnergyFrom(may : true,my.discard, my.all.findAll{!(it.pokemonEX)})
-              attachEnergyFrom(may : true,my.discard, my.all.findAll{!(it.pokemonEX)})
-              attachEnergyFrom(may : true,my.discard, my.all.findAll{!(it.pokemonEX)})
+              attachEnergyFrom(may : true,my.discard, my.all.findAll{!it.name.contains("_EX_")})
+              attachEnergyFrom(may : true,my.discard, my.all.findAll{!it.name.contains("_EX_")})
+              attachEnergyFrom(may : true,my.discard, my.all.findAll{!it.name.contains("_EX_")})
+              attachEnergyFrom(may : true,my.discard, my.all.findAll{!it.name.contains("_EX_")})
+              attachEnergyFrom(may : true,my.discard, my.all.findAll{!it.name.contains("_EX_")})
             }
           }
           move "Crush and Burn", {
