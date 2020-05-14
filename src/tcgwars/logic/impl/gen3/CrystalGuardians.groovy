@@ -1999,7 +1999,7 @@ public enum CrystalGuardians implements LogicCardInfo {
               }
             }
             eff2 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (self.active && h.effect.target.basic && h.effect.target.owner == self.owner.opposite) {
+              if (self.active && h.effect.target.basic && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
                 h.object=true
               }
             }
