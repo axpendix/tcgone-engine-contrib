@@ -423,7 +423,7 @@ public enum CrystalGuardians implements LogicCardInfo {
                 }
               } else {
                 opp.all.each {
-                  heal 10, it
+                  damage 10, it
                 }
               }
             }
