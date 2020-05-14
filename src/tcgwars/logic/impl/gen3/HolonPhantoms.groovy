@@ -1636,6 +1636,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            my.bench.each {
+              damage 10, it
+            }
           }
         }
       };
