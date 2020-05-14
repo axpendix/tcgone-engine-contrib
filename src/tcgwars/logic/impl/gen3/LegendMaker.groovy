@@ -2255,7 +2255,7 @@ public enum LegendMaker implements LogicCardInfo {
           actions=action("Stadium: Power Tree") {
             assert my.discard : "Discard pile is empty"
             assert lastTurn != bg().turnCount : "Power Tree already used"
-            assert my.discard.filterByType(SPECIAL_ENERGY) : "Special Energy in discard"
+            assert !my.discard.filterByType(SPECIAL_ENERGY) : "Cannot activate because there are Special Energies in discard"
             bc "Used Power Tree effect"
             lastTurn = bg().turnCount
 
