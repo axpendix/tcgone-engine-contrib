@@ -343,16 +343,16 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Search your deck for a card that evolves from 1 of your [G] Pokémon and put it onto that Pokémon to evolve it. If that Pokémon is now a Stage 1 Pokémon, search your deck for a Stage 2 Pokémon that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
             attackRequirement {
               assert deck.notEmpty
-              assert my.all.findAll { it.types.contains(G) } : "No [G] Pokemon found"
+              assert my.all.findAll { it.types.contains(G) } : "You have no [G] Pokémon in play."
             }
             onAttack {
               def names = my.all.findAll { it.types.contains(G) }.collect{ it.name }
-              def sel_1 = deck.search ("Select a Pokémon that evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)}).first()
+              def sel_1 = deck.search ("Select a Pokémon that evolves from $names.", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)}).first()
               if (sel_1) {
-                def pcs = my.all.findAll { it.name==sel_1.predecessor }.select("Evolve which one?")
+                def pcs = my.all.findAll { it.name==sel_1.predecessor }.select("Evolve which Pokémon?")
                 evolve(pcs, sel_1, OTHER)
                 if (sel_1.cardTypes.is(STAGE1)) {
-                  def sel_2 = deck.search ("Select a Pokémon that evolves from ${sel_1.name}", {it.cardTypes.is(EVOLUTION) && it.predecessor == sel_1.name}).first()
+                  def sel_2 = deck.search ("Select a Pokémon that evolves from ${sel_1.name}.", {it.cardTypes.is(EVOLUTION) && it.predecessor == sel_1.name}).first()
                   if(sel_2){
                     evolve(pcs, sel_2, OTHER)
                   }
@@ -431,12 +431,12 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Devolve 1 of your opponent's evolved Pokémon by removing the highest Stage Evolution card from it. Your opponent shuffles that card into their deck."
             energyCost G
             attackRequirement {
-              assert opp.all.findAll { it.evolution } : "The opponent does not have an evolved Pokémon in play"
+              assert opp.all.findAll { it.evolution } : "The opponent does not have any evolved Pokémon in play."
             }
             onAttack {
               def list = opp.all.findAll { it.evolution }
               assert list
-              def pcs = list.select("Devolve one of your opponent's evolved Pokémon")
+              def pcs = list.select("Devolve one of your opponent's evolved Pokémon.")
               assert pcs
               def top=pcs.topPokemonCard
               bc "$top Devolved"
@@ -474,7 +474,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost C
             onAttack {
               def maxSpace = Math.min(my.bench.freeBenchCount, 2)
-              my.deck.search(max:maxSpace, "Select $maxSpace Sewaddle Pokémon to put onto your Bench", { it.name == "Sewaddle" }).each{
+              my.deck.search(max:maxSpace, "Select $maxSpace Sewaddle to put onto your Bench.", { it.name == "Sewaddle" }).each{
                 my.deck.remove(it);
                 benchPCS(it)
               }
@@ -733,7 +733,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Once during your turn (before your attack), you may attach a [G] Energy card from your discard pile to your Active Pokémon."
             actionA {
               checkLastTurn()
-              assert my.discard.filterByEnergyType(GRASS) : "There is no [G] Energy card in your discard pile."
+              assert my.discard.filterByEnergyType(GRASS) : "There is no [G] Energy in your discard pile."
               attachEnergyFrom(type:G, my.discard, my.active)
               powerUsed()
             }
@@ -750,7 +750,7 @@ public enum UnifiedMinds implements LogicCardInfo {
         return basic (this, hp:HP100, type:G, retreatCost:1) {
           weakness R
           move "Sea Creeper Net", {
-            text " Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
+            text "Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
             energyCost C
             callForFamily(basic:true, 1, delegate)
           }
@@ -798,7 +798,7 @@ public enum UnifiedMinds implements LogicCardInfo {
         return basic (this, hp:HP090, type:R, retreatCost:4) {
           weakness W
           move "Tackle", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             onAttack {
               damage 10
@@ -844,9 +844,9 @@ public enum UnifiedMinds implements LogicCardInfo {
                   while(1){
                     def pl=(my.all.findAll {it.cards.filterByEnergyType(R) && it!=self})
                     if(!pl) break;
-                    def src=pl.select("Source for energy (cancel to stop moving)", false)
+                    def src=pl.select("Source for [R] Energy (cancel to stop moving).", false)
                     if(!src) break;
-                    def card=src.cards.filterByEnergyType(R).select("Card to move").first()
+                    def card=src.cards.filterByEnergyType(R).select("Choose a [R] Energy to move to Heatran-GX.").first()
                     energySwitch(src, self, card)
                   }
                 }
@@ -879,10 +879,10 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Search your deck for up to 2 basic Energy cards of different types and attach them to your Pokémon in any way you like. Then, shuffle your deck."
             energyCost R
             attackRequirement {
-              assert my.deck : "There are no more cards in your deck"
+              assert my.deck : "Your deck is empty."
             }
             onAttack {
-              my.deck.select(min:0, max:2, "Select up to 2 different types of basic Energy cards", cardTypeFilter(BASIC_ENERGY), self.owner,
+              my.deck.select(min:0, max:2, "Select up to 2 different types of basic Energy cards.", cardTypeFilter(BASIC_ENERGY), self.owner,
                 {
                   CardList list->
                     for(Type t1:Type.values()) {
@@ -913,10 +913,10 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Search your deck for a [R] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
             energyCost R
             attackRequirement{
-              assert my.deck : "There is no more cards in your deck."
+              assert my.deck : "Your deck is empty."
             }
             onAttack{
-              my.deck.search("Select a [R] Pokémon to put into your hand", pokemonTypeFilter(R)).moveTo(my.hand)
+              my.deck.search("Select a [R] Pokémon to put into your hand.", pokemonTypeFilter(R)).moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -943,7 +943,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "10+ damage. Discard the top 5 cards of your deck. This attack does 60 more damage for each Pokémon you discarded in this way. Then, put any number of [R] Pokémon you discarded in this way onto your Bench."
             energyCost R
             attackRequirement {
-              assert deck.notEmpty
+              assert my.deck : "Your deck is empty."
             }
             onAttack {
               damage 10
@@ -1001,7 +1001,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                 discardSelfEnergy(C)
               }
               if (opp.bench) {
-                damage 50, opp.bench.select("Do 50 damage to which of your opponent's Pokémon?")
+                damage 50, opp.bench.select("Deal 50 damage to which Pokémon?")
               }
             }
           }
@@ -1065,7 +1065,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               assert cards
               powerUsed()
 
-              cards.select("Choose the card to put in your hand").moveTo(my.hand)
+              cards.select("Select a Misty's Favor card to return to your hand.").moveTo(my.hand)
             }
           }
           move "Surf", {
@@ -1080,7 +1080,7 @@ public enum UnifiedMinds implements LogicCardInfo {
         return basic (this, hp:HP050, type:W, retreatCost:1) {
           weakness M
           move "Icicle", {
-            text "20 damage. "
+            text "20 damage."
             energyCost W
             onAttack {
               damage 20
@@ -1114,7 +1114,7 @@ public enum UnifiedMinds implements LogicCardInfo {
         return basic (this, hp:HP050, type:W, retreatCost:1) {
           weakness G
           move "Gust", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             onAttack {
               damage 10
@@ -1130,7 +1130,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             onAttack {
               damage 50
               afterDamage {
-                assert opp.bench
+                assert opp.bench : "Your opponent has no Pokémon on their bench."
                 moveEnergy(opp.active, opp.bench)
               }
             }
@@ -1175,7 +1175,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "This attack does 20 damage for each Basculin you have in play to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
             attackRequirement {
-              assert bench.notEmpty
+              assert my.bench.findAll({ it.name == "Basculin" }) : "You have no Basculin on your bench."
             }
             onAttack {
               def count = my.bench.findAll({ it.name == "Basculin" }).size()
@@ -1183,7 +1183,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
           move "Tackle", {
-            text "20 damage. "
+            text "20 damage."
             energyCost C
             onAttack {
               damage 20
@@ -1194,14 +1194,14 @@ public enum UnifiedMinds implements LogicCardInfo {
         return evolution (this, from:"Unidentified Fossil", hp:HP100, type:W, retreatCost:3) {
           weakness G
           move "Shell Attack", {
-            text "20 damage. "
+            text "20 damage."
             energyCost F
             onAttack {
               damage 20
             }
           }
           move "Boulder Crush", {
-            text "60 damage. "
+            text "60 damage."
             energyCost F, C, C
             onAttack {
               damage 60
@@ -1282,7 +1282,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               delayed {
                 before PLAY_TRAINER, {
                   if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
-                    wcu "Cryogonal's Frozen Lock prevents playing this Item card."
+                    wcu "Frozen Lock prevents you from playing Item cards."
                     prevent()
                   }
                 }
@@ -1340,10 +1340,10 @@ public enum UnifiedMinds implements LogicCardInfo {
             text " Switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
             energyCost C
             attackRequirement{
-              assert opp.bench
+              assert opp.bench : "Your opponent's Bench is empty."
             }
             onAttack{
-              sw defending, opp.bench.select("Choose your opponent's new active Pokémon.")
+              sw defending, opp.bench.select("Choose your opponent's new Active Pokémon.")
             }
           }
           move "Sticky Web", {
@@ -1425,7 +1425,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost C
             attackRequirement {
               def ultraBeasts = opp.all.findAll { it.topPokemonCard.cardTypes.is(ULTRA_BEAST) }
-              if (!ultraBeasts) assert self.cards.energySufficient(W, W, C) : "Not enough energy. Opponent does not have any Ultra Beasts in play so full energy requirement must be satisfied."
+              if (!ultraBeasts) assert self.cards.energySufficient(W, W, C) : "Not enough Energy. Opponent does not have any Ultra Beasts in play."
             }
             onAttack {
               damage 100
