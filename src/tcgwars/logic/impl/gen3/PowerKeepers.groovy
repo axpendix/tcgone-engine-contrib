@@ -249,8 +249,10 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Synergy Effect", {
           text "If Drake's Stadium is in play, remove 1 damage counter from Altaria between turns."
           delayedA {
-            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Drake's Stadium") {
-              heal 10, self
+            before BETWEEN_TURNS, {
+              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Drake's Stadium") {
+                heal 10, self
+              }
             }
           }
         }
