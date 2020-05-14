@@ -2130,7 +2130,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return basic (this, hp:HP110, type:L, retreatCost:2) {
         pokeBody "Rage Aura", {
           text "If you have more Prize cards left than your opponent, the attack cost of Rayquaza ex's Special Circuit is now [L] and Rayquaza ex's Sky-high Claws is now [L][L]."
-          getterA GET_MOVE_LIST, self, {h->
+          getterA GET_MOVE_LIST, BEFORE_LAST, self, {h->
             if (my.prizeCardSet.size() > opp.prizeCardSet.size()) {
               def list=[]
               for (move in h.object) {
