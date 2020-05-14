@@ -1404,7 +1404,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*self.numberOfDamageCounters
           }
         }
         move "Flame Tail", {
