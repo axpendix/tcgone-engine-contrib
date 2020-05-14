@@ -2302,6 +2302,15 @@ public enum LegendMaker implements LogicCardInfo {
         onPlay {
           Card pokemonCard, trainerCard = thisCard
           pokemonCard = basic (new CustomCardInfo(CLAW_FOSSIL_78).setCardTypes(BASIC, POKEMON), hp:HP040, type:COLORLESS, retreatCost:0) {
+            pokeBody "Jagged Stone", {
+              delayedA{
+                before APPLY_ATTACK_DAMAGES, {
+                  if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
+                    directDamage(10, ef.attacker, Source.SRC_ABILITY)
+                  }
+                }
+              }
+            }
             customAbility {
               def eff, acl
               onActivate{
@@ -2327,11 +2336,6 @@ public enum LegendMaker implements LogicCardInfo {
                         bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
                         unregister()
                         eff = null
-                      }
-                    }
-                    before APPLY_ATTACK_DAMAGES, {
-                      if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
-                        directDamage(10, ef.attacker, Source.SRC_ABILITY)
                       }
                     }
                   }
