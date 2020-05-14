@@ -994,20 +994,24 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "Once during your turn (before your attack), you may search your deck for Castform, Sunny Castform, or Snow-cloud Castform and switch it with Rain Castform. (Any cards attached to Rain Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Rain Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
           actionA {
             checkLastTurn()
-            assert bg.em().retrieveObject("Temperamental_Weather") != bg.turnCount : "You cannot use Temperamental Weather more than once per turn!"
             assert my.deck : "Deck is empty"
             powerUsed()
-            bg.em().storeObject("Temperamental_Weather", bg.turnCount)
-            def castform = self.topPokemonCard
-            if(my.deck.findAll{it.name.contains("Castform")}) {
-              my.deck.search{
-                it.name.contains("Castform") && !it.name.contains("Rain")
-              }.moveTo(self.cards)
-              my.deck.add(castform)
-              self.cards.remove(castform)
-              shuffleDeck()
+
+            def oldCastform = self.topPokemonCard
+            def newCastform = my.deck.search(min:0, max: 1, {
+              it.name == "Sunny Castform" ||
+              it.name == "Castform" ||
+              it.name == "Snow-cloud Castform"
+            })
+
+            if (newCastform) {
+              newCastform.moveTo(self.cards)
+              my.deck.add(oldCastform)
+              self.cards.remove(oldCastform)
               checkFaint()
             }
+
+            shuffleDeck()
           }
         }
         move "Holon Splash", {
@@ -1106,20 +1110,24 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "Once during your turn (before your attack), you may search your deck for Castform, Rain Castform, or Sunny Castform and switch it with Snow-cloud Castform. (Any cards attached to Snow-cloud Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Snow-cloud Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
           actionA {
             checkLastTurn()
-            assert bg.em().retrieveObject("Temperamental_Weather") != bg.turnCount : "You cannot use Temperamental Weather more than once per turn!"
             assert my.deck : "Deck is empty"
             powerUsed()
-            bg.em().storeObject("Temperamental_Weather", bg.turnCount)
-            def castform = self.topPokemonCard
-            if(my.deck.findAll{it.name.contains("Castform")}) {
-              my.deck.search{
-                it.name.contains("Castform") && !it.name.contains("Snow-cloud")
-              }.moveTo(self.cards)
-              my.deck.add(castform)
-              self.cards.remove(castform)
-              shuffleDeck()
+
+            def oldCastform = self.topPokemonCard
+            def newCastform = my.deck.search(min:0, max: 1, {
+              it.name == "Sunny Castform" ||
+              it.name == "Rain Castform" ||
+              it.name == "Castform"
+            })
+
+            if (newCastform) {
+              newCastform.moveTo(self.cards)
+              my.deck.add(oldCastform)
+              self.cards.remove(oldCastform)
               checkFaint()
             }
+
+            shuffleDeck()
           }
         }
         move "Holon Blizzard", {
@@ -1164,20 +1172,24 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "Once during your turn (before your attack), you may search your deck for Castform, Rain Castform, or Snow-cloud Castform and switch it with Sunny Castform. (Any cards attached to Sunny Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Sunny Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
           actionA {
             checkLastTurn()
-            assert bg.em().retrieveObject("Temperamental_Weather") != bg.turnCount : "You cannot use Temperamental Weather more than once per turn!"
             assert my.deck : "Deck is empty"
             powerUsed()
-            bg.em().storeObject("Temperamental_Weather", bg.turnCount)
-            def castform = self.topPokemonCard
-            if(my.deck.findAll{it.name.contains("Castform")}) {
-              my.deck.search{
-                it.name.contains("Castform") && !it.name.contains("Sunny")
-              }.moveTo(self.cards)
-              my.deck.add(castform)
-              self.cards.remove(castform)
-              shuffleDeck()
+
+            def oldCastform = self.topPokemonCard
+            def newCastform = my.deck.search(min:0, max: 1, {
+              it.name == "Castform" ||
+              it.name == "Rain Castform" ||
+              it.name == "Snow-cloud Castform"
+            })
+
+            if (newCastform) {
+              newCastform.moveTo(self.cards)
+              my.deck.add(oldCastform)
+              self.cards.remove(oldCastform)
               checkFaint()
             }
+
+            shuffleDeck()
           }
         }
         move "Holon Search", {
@@ -1271,10 +1283,8 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "Once during your turn (before your attack), you may search your deck for Sunny Castform, Rain Castform, or Snow-cloud Castform and switch it with Castform. (Any cards attached to Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
           actionA {
             checkLastTurn()
-            assert bg.em().retrieveObject("Temperamental_Weather") != bg.turnCount : "You cannot use Temperamental Weather more than once per turn."
             assert my.deck : "Deck is empty"
             powerUsed()
-            bg.em().storeObject("Temperamental_Weather", bg.turnCount)
 
             def oldCastform = self.topPokemonCard
             def newCastform = my.deck.search(min:0, max: 1, {
