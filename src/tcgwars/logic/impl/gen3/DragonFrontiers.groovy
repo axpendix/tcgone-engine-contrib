@@ -2029,7 +2029,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to.owner == self.owner && it.to.topPokemonCard.is(EX) && it.to.EX && it.dmg.value && it.notNoEffect) {
+                if (it.to.owner == self.owner && it.to.topPokemonCard.is(EX) && it.to.topPokemonCard.is(STAGE2) && it.dmg.value && it.notNoEffect) {
                   bc "Extra Smoke -10"
                   it.dmg -= hp(10)
                 }
