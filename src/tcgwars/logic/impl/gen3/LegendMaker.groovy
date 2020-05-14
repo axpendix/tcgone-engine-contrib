@@ -2589,10 +2589,12 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             damage 40
             def reactEnergies = self.cards.findAll {it.name.contains("React Energy")}
-            def toDiscard = reactEnergies.select(min:0, max:reactEnergies.size())
-            damage 30*toDiscard.size()
-            afterDamage {
-              toDiscard.discard()
+            if (reactEnergies) {
+              def toDiscard = reactEnergies.select(min:0, max:reactEnergies.size())
+              damage 30*toDiscard.size()
+              afterDamage {
+                toDiscard.discard()
+              }
             }
           }
         }
