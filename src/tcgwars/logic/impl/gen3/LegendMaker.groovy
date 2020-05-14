@@ -1099,7 +1099,7 @@ public enum LegendMaker implements LogicCardInfo {
             delayed {
               before BETWEEN_TURNS, {
                 if (bg.currentTurn == self.owner.opposite) {
-                  directDamage 30, self.owner.opposite.pbg.active
+                  directDamage 70, self.owner.opposite.pbg.active
                   bc "Shadow Tag activates"
                 }
               }
