@@ -1442,11 +1442,9 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost C
             onAttack {
               afterDamage {
-                if(my.bench.notEmpty){
-                  def list = my.discard.filterByEnergyType(W).select(count:2)
-                  def pcs = my.bench.select("Attach [W] Energy to which Pokémon?")
-                  list.each {attachEnergy(pcs, it)}
-                }
+                def list = my.discard.filterByEnergyType(W).select(count:2)
+                def pcs = my.all.select("Attach [W] Energy to which Pokémon?")
+                list.each {attachEnergy(pcs, it)}
               }
             }
           }
