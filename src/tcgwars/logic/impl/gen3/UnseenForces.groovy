@@ -1221,8 +1221,10 @@ public enum UnseenForces implements LogicCardInfo {
             afterDamage {
               if (opp.hand) {
                 opp.hand.showToMe("Opponent's hand")
-                def card = opp.hand.select("Select a Trainer card to discard.", cardTypeFilter(TRAINER)).first()
-                card.discard()
+                def card = opp.hand.select(min:0, max:1, "Select a Trainer card to discard.", cardTypeFilter(TRAINER))
+                if (card) {
+                  card.discard()
+                }
               }
             }
           }
