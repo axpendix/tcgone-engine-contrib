@@ -1884,10 +1884,17 @@ public enum PowerKeepers implements LogicCardInfo {
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each player pays [C] [C] less to retreat his or her [P] Pokémon."
+        def eff
         onPlay {
-          // TODO
+          eff = getter (GET_RETREAT_COST) { Holder h->
+            def pcs = h.effect.target
+            if (pcs.types.contains(P)) {
+              h.object -= 2
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case PROFESSOR_BIRCH_80:
