@@ -1953,11 +1953,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             def remainingHp = defending.getRemainingHP().value
             def excessDamageCounters = (80 - remainingHp) / 10
 
-            directDamage 80, defending
-
             delayed {
               def pcs = defending
-              after KNOCKOUT, pcs, {
+              before KNOCKOUT, pcs, {
                 if (excessDamageCounters && opp.bench) {
                   (1..excessDamageCounters).each {
                     directDamage 10, opp.bench.select("Put damage counter on?")
@@ -1966,6 +1964,7 @@ public enum DragonFrontiers implements LogicCardInfo {
               }
               unregisterAfter 1
             }
+            directDamage 80, defending
           }
         }
       };
