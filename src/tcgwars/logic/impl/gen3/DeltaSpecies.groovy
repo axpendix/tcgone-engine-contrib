@@ -1227,7 +1227,7 @@ public enum DeltaSpecies implements LogicCardInfo {
               if (self.active) {
                 def once = true
                 def hasPokeBody = false
-                all.each {
+                opp.all.each {
                   for (Ability ability : it.getAbilities().keySet()) {
                     if (ability instanceof PokeBody) hasPokeBody = true;
                   }
