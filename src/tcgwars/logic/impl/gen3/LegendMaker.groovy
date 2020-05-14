@@ -2578,7 +2578,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Emerge Charge", {
           text "Once during your turn, when you play Flygon ex from your hand to evolve 1 of your Pokémon, you may search your discard pile for up to 2 Energy cards and attach them to Flygon ex."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && checkLastTurn() && my.discard.findAll(cardTypeFilter(ENERGY)) && confirm("Use Emerge Charge?")) {
+            if (r==PLAY_FROM_HAND && my.discard.findAll(cardTypeFilter(ENERGY)) && confirm("Use Emerge Charge?")) {
               powerUsed()
               attachEnergyFrom(my.discard, self)
             }
