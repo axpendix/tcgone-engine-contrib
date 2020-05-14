@@ -673,18 +673,22 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
               checkLastTurn()
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
-              assert my.deck : "There is no card in your deck"
+              assert my.deck : "Deck is empty"
               powerUsed()
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              def deoxys = self.topPokemonCard
-              if(my.deck.findAll{it.name.contains("Deoxys")}){
-                my.deck.search{it.name.contains("Deoxys")}.moveTo(self.cards)
-                my.deck.add(deoxys)
-                self.cards.remove(deoxys)
-                shuffleDeck()
+
+              def oldDeoxys = self.topPokemonCard
+              def newDeoxys = my.deck.search(min:0, max: 1, {
+                it.name == "Deoxys"
+              })
+
+              if (newDeoxys) {
+                newDeoxys.moveTo(self.cards)
+                my.deck.add(oldDeoxys)
+                self.cards.remove(oldDeoxys)
                 checkFaint()
               }
+
+              shuffleDeck()
             }
           }
           move "Link Blast", {
@@ -709,18 +713,22 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
               checkLastTurn()
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
-              assert my.deck : "There is no card in your deck"
+              assert my.deck : "Deck is empty"
               powerUsed()
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              def deoxys = self.topPokemonCard
-              if(my.deck.findAll{it.name.contains("Deoxys")}){
-                my.deck.search{it.name.contains("Deoxys")}.moveTo(self.cards)
-                my.deck.add(deoxys)
-                self.cards.remove(deoxys)
-                shuffleDeck()
+
+              def oldDeoxys = self.topPokemonCard
+              def newDeoxys = my.deck.search(min:0, max: 1, {
+                it.name == "Deoxys"
+              })
+
+              if (newDeoxys) {
+                newDeoxys.moveTo(self.cards)
+                my.deck.add(oldDeoxys)
+                self.cards.remove(oldDeoxys)
                 checkFaint()
               }
+
+              shuffleDeck()
             }
           }
           move "Energy Crush", {
@@ -744,18 +752,22 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
               checkLastTurn()
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
-              assert my.deck : "There is no card in your deck"
+              assert my.deck : "Deck is empty"
               powerUsed()
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              def deoxys = self.topPokemonCard
-              if(my.deck.findAll{it.name.contains("Deoxys")}){
-                my.deck.search{it.name.contains("Deoxys")}.moveTo(self.cards)
-                my.deck.add(deoxys)
-                self.cards.remove(deoxys)
-                shuffleDeck()
+
+              def oldDeoxys = self.topPokemonCard
+              def newDeoxys = my.deck.search(min:0, max: 1, {
+                it.name == "Deoxys"
+              })
+
+              if (newDeoxys) {
+                newDeoxys.moveTo(self.cards)
+                my.deck.add(oldDeoxys)
+                self.cards.remove(oldDeoxys)
                 checkFaint()
               }
+
+              shuffleDeck()
             }
           }
           move "Barrier Attack", {
@@ -2697,18 +2709,22 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys ex and switch it with Deoxys ex. (Any cards attached to Deoxys ex, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys ex on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
               checkLastTurn()
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
-              assert my.deck : "There is no card in your deck"
+              assert my.deck : "Deck is empty"
               powerUsed()
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              def deoxys = self.topPokemonCard
-              if(my.deck.findAll{it.name.contains("Deoxys ex")}){
-                my.deck.search{it.name.contains("Deoxys ex")}.moveTo(self.cards)
-                my.deck.add(deoxys)
-                self.cards.remove(deoxys)
-                shuffleDeck()
+
+              def oldDeoxys = self.topPokemonCard
+              def newDeoxys = my.deck.search(min:0, max: 1, {
+                it.name == "Deoxys ex"
+              })
+
+              if (newDeoxys) {
+                newDeoxys.moveTo(self.cards)
+                my.deck.add(oldDeoxys)
+                self.cards.remove(oldDeoxys)
                 checkFaint()
               }
+
+              shuffleDeck()
             }
           }
           move "Energy Burst", {
@@ -2728,18 +2744,22 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys ex and switch it with Deoxys ex. (Any cards attached to Deoxys ex, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys ex on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
               checkLastTurn()
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
-              assert my.deck : "There is no card in your deck"
+              assert my.deck : "Deck is empty"
               powerUsed()
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              def deoxys = self.topPokemonCard
-              if(my.deck.findAll{it.name.contains("Deoxys ex")}){
-                my.deck.search{it.name.contains("Deoxys ex")}.moveTo(self.cards)
-                my.deck.add(deoxys)
-                self.cards.remove(deoxys)
-                shuffleDeck()
+
+              def oldDeoxys = self.topPokemonCard
+              def newDeoxys = my.deck.search(min:0, max: 1, {
+                it.name == "Deoxys ex"
+              })
+
+              if (newDeoxys) {
+                newDeoxys.moveTo(self.cards)
+                my.deck.add(oldDeoxys)
+                self.cards.remove(oldDeoxys)
                 checkFaint()
               }
+
+              shuffleDeck()
             }
           }
           move "Psyburst", {
@@ -2763,18 +2783,22 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys ex and switch it with Deoxys ex. (Any cards attached to Deoxys ex, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys ex on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
               checkLastTurn()
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
-              assert my.deck : "There is no card in your deck"
+              assert my.deck : "Deck is empty"
               powerUsed()
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              def deoxys = self.topPokemonCard
-              if(my.deck.findAll{it.name.contains("Deoxys ex")}){
-                my.deck.search{it.name.contains("Deoxys ex")}.moveTo(self.cards)
-                my.deck.add(deoxys)
-                self.cards.remove(deoxys)
-                shuffleDeck()
+
+              def oldDeoxys = self.topPokemonCard
+              def newDeoxys = my.deck.search(min:0, max: 1, {
+                it.name == "Deoxys ex"
+              })
+
+              if (newDeoxys) {
+                newDeoxys.moveTo(self.cards)
+                my.deck.add(oldDeoxys)
+                self.cards.remove(oldDeoxys)
                 checkFaint()
               }
+
+              shuffleDeck()
             }
           }
           move "Psychic Shield", {
