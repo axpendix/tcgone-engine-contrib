@@ -510,7 +510,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             assert my.deck : "Deck is empty"
             powerUsed()
             my.deck.subList(0,1).showToMe("Top card")
-            if (choose("Discard the top card of your deck?")) {
+            if (confirm("Discard the top card of your deck?")) {
               discard my.deck.first()
             }
           }
