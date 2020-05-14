@@ -980,7 +980,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Luna Shade", {
           text "As long as you have Lunatone in play, each player's [C] Pokémon (excluding Pokémon-ex) can't use any Poké-Powers."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (!h.effect.target.topPokemonCard.cardTypes.is(EX)) {
+            if (!h.effect.target.topPokemonCard.cardTypes.is(EX) && h.effect.target.types.contains(C)) {
               if (h.effect.ability instanceof PokePower) {
                 if (self.owner.pbg.all.find{it.name.contains("Lunatone")}) {
                   h.object=true
