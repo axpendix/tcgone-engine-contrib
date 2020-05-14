@@ -1337,11 +1337,9 @@ public enum UnseenForces implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            deck.search ({
-              (it.asPokemonCard().types.contains(W) || it.asPokemonCard().types.contains(F)) && !it.asPokemonCard().cardTypes.is(EX)
-            }).each {
-              it.moveTo(my.hand)
-            }
+            def selected = deck.search (max: 1, "Search for a [W] or [F] Pokemon (excluding Pokemon-ex) to put into your hand.", {
+              (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W) && it.asPokemonCard().types.contains(F) && !it.asPokemonCard().cardTypes.is(EX))
+            }).moveTo(my.hand)
             shuffleDeck()
           }
         }

@@ -958,11 +958,9 @@ public enum LegendMaker implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            deck.search ({
-              it.asPokemonCard().types.contains(G) && !it.asPokemonCard().cardTypes.is(EX)
-            }).each {
-              it.moveTo(my.hand)
-            }
+            def selected = deck.search (max: 1, "Search for a [G] Pokemon (excluding Pokemon-ex) to put into your hand.", {
+              (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(G) && !it.asPokemonCard().cardTypes.is(EX))
+            }).moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -1058,11 +1056,9 @@ public enum LegendMaker implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            deck.search ({
-              it.asPokemonCard().types.contains(R) && !it.asPokemonCard().cardTypes.is(EX)
-            }).each {
-              it.moveTo(my.hand)
-            }
+            def selected = deck.search (max: 1, "Search for a [R] Pokemon (excluding Pokemon-ex) to put into your hand.", {
+              (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(R) && !it.asPokemonCard().cardTypes.is(EX))
+            }).moveTo(my.hand)
             shuffleDeck()
           }
         }
