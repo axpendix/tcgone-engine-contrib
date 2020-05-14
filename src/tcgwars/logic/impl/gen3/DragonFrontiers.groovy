@@ -1952,7 +1952,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             def remainingHp = defending.getRemainingHP().value
             def excessDamageCounters = (80 - remainingHp) / 10
 
-            directDamage 80
+            directDamage 80-remainingHp, defending
 
             delayed {
               def pcs = defending
