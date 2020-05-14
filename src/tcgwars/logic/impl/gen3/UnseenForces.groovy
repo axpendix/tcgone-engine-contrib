@@ -2412,7 +2412,7 @@ public enum UnseenForces implements LogicCardInfo {
                 def pcs = tar.select("Select a Pokémon to discard all Energy Cards from to heal off all damage. Cancel to stop", false)
                 if (!pcs) break
                 pcs.cards.filterByType(ENERGY).discard()
-                healAll tar, Source.SRC_ABILITY
+                healAll pcs, Source.SRC_ABILITY
               }
             }
           }
