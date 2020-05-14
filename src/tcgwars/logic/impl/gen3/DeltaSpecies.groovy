@@ -2393,7 +2393,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
         move "Quick Blow", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
-          energyCost
+          energyCost C, C
           attackRequirement {}
           onAttack {
             damage 10
