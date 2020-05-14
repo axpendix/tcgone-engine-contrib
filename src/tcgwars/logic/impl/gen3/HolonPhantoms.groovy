@@ -2236,15 +2236,7 @@ public enum HolonPhantoms implements LogicCardInfo {
       case MR_STONE_S_PROJECT_88:
       return copy(DragonFrontiers.MR_STONE_S_PROJECT_77, this);
       case PROFESSOR_COZMO_S_DISCOVERY_89:
-      return supporter (this) {
-        text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
-          "Flip a coin. If heads, draw the bottom 3 cards of your deck. If tails, draw the top 2 cards of your deck."
-        onPlay {
-          // TODO
-        }
-        playRequirement{
-        }
-      };
+      return copy(Deoxys.PROFESSOR_COZMO_S_DISCOVERY_90, this);
       case RARE_CANDY_90:
       return copy (Sandstorm.RARE_CANDY_88, this);
       case CLAW_FOSSIL_91:
