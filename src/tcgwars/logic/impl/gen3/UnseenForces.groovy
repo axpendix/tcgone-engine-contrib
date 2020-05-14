@@ -2276,7 +2276,7 @@ public enum UnseenForces implements LogicCardInfo {
           "Draw a card. If you don't have any Stage 2 Evolved Pokémon in play, draw 2 more cards."
         onPlay {
           draw 1
-          if (!my.bench.find{it.topPokemonCard.cardTypes.is(STAGE2)}) draw 2
+          if (!my.all.find{it.topPokemonCard.cardTypes.is(STAGE2)}) draw 2
         }
         playRequirement{
           assert my.deck : "Deck is empty"
