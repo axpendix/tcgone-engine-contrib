@@ -397,7 +397,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkNoSPC()
             checkLastTurn()
             powerUsed()
-            my.deck.search(count: 1, cardTypeFilter(BASIC, EVOLUTION)).moveTo(my.hand)
+            my.deck.search(max: 1, "Select a Basic or Evolution Pokemon to put into your hand", {
+              it.cardTypes.is(POKEMON)
+            }).moveTo(my.hand)
             shuffleDeck()
           }
         }
