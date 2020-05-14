@@ -1409,7 +1409,7 @@ public enum LegendMaker implements LogicCardInfo {
             before APPLY_ATTACK_DAMAGES, {
               if (self.isSPC(CONFUSED)) {
                 bg.dm().each {
-                  if (it.from == self) {
+                  if (it.from == self && it.to != self) {
                     bc "Paranoid +50"
                     it.dmg += hp(50)
                   }
