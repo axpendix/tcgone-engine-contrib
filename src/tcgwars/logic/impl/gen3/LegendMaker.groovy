@@ -2303,7 +2303,7 @@ public enum LegendMaker implements LogicCardInfo {
           Card pokemonCard, trainerCard = thisCard
           pokemonCard = basic (new CustomCardInfo(CLAW_FOSSIL_78).setCardTypes(BASIC, POKEMON), hp:HP040, type:COLORLESS, retreatCost:0) {
             customAbility {
-              def eff
+              def eff, acl
               onActivate{
                 delayed {
                   before RETREAT, self, {
@@ -2336,8 +2336,20 @@ public enum LegendMaker implements LogicCardInfo {
                     }
                   }
                 }
+                acl = action("Discard Claw Fossil", [TargetPlayer.SELF]) {
+                  delayed {
+                    before TAKE_PRIZE, {
+                      if (ef.pcs==self) {
+                        prevent()
+                      }
+                    }
+                  }
+                  new Knockout(self).run(bg)
+                }
               }
-              onDeactivate {}
+              onDeactivate {
+                acl.each{bg.gm().unregisterAction(it)}
+              }
             }
           }
           pokemonCard.player = trainerCard.player
