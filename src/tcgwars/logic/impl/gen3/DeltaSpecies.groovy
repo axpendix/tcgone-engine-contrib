@@ -429,10 +429,11 @@ public enum DeltaSpecies implements LogicCardInfo {
           onAttack {
             damage 50
 
-            afterDamage {
-              if (opp.bench && confirm("Return an Energy card from $self to your hand?")) {
-                self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)
-                damage 20, opp.bench.select("Deal damage to")
+            if (confirm("Return an Energy card from $self to your hand?")) {
+              self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)
+
+              if (opp.bench) {
+                damage 20, opp.bench.select("Deal 20 damage to which Benched Pokemon?")
               }
             }
           }
