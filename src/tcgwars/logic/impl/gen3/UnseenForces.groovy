@@ -1667,7 +1667,7 @@ public enum UnseenForces implements LogicCardInfo {
         }
         move "Psyshock", {
           text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-          energyCost
+          energyCost P, C, C
           onAttack {
             damage 40
             flip { apply PARALYZED }
