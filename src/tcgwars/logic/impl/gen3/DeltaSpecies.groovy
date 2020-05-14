@@ -2045,7 +2045,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            flip { discardSelfEnergy R }
+            flip 1, {}, { discardSelfEnergy R }
           }
         }
       };
