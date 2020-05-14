@@ -2398,7 +2398,7 @@ public enum UnseenForces implements LogicCardInfo {
         weakness F
         pokePower "Blissful Support", {
           text "Once during your turn, when you play Blissey ex from your hand to evolve 1 of your Pokémon, you may discard all Energy cards attached to any number of your Pokémon and remove all damage counters from those Pokémon."
-          delayedA {
+          onActivate {
             checkLastTurn()
             if (it==PLAY_FROM_HAND && confirm("Use Blissful Support?")) {
               powerUsed()
