@@ -396,8 +396,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             assert my.deck : "Deck is empty"
             checkNoSPC()
             checkLastTurn()
-            my.deck.search(cardTypeFilter(BASIC, EVOLUTION)).moveTo(my.hand)
             powerUsed()
+            my.deck.search(count: 1, cardTypeFilter(BASIC, EVOLUTION)).moveTo(my.hand)
+            shuffleDeck()
           }
         }
         move "Vengeance", {
