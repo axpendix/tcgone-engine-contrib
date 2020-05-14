@@ -1975,10 +1975,12 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         pokeBody "Conductive Body", {
-          text "You pay [C] less to retreat Beldum for each Beldum on your Bench."
+          text "As long as Beldum is your active Pokemon, you pay [C] less to retreat Beldum for each Beldum on your Bench."
           getterA GET_RETREAT_COST, self, {h ->
-            my.bench.findAll { it.name == "Beldum" }.size().each {
-              h.object -= 1
+            if (self.active) {
+              my.bench.findAll { it.name == "Beldum" }.each {
+                h.object -= 1
+              }
             }
           }
         }
