@@ -1240,13 +1240,23 @@ public enum HolonPhantoms implements LogicCardInfo {
       case CHIMECHO_DELTA_37:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness P
+        globalAbility {Card thisCard->
+          before PLAY_TRAINER, {
+            if(ef.cardToPlay.cardTypes.is(SUPPORTER) && ef.cardToPlay.name.contains("Holon")){
+              bg.em().storeObject("Holon_Supporter", bg.turnCount)
+            }
+          }
+        }
         pokePower "Delta Support", {
           text "Once during your turn (before your attack), if you have a Supporter card with Holon in its name in play, you may search your discard pile for a basic Energy card or a δ Rainbow Energy card, show it to your opponent, and put it into your hand. This power can't be used if Chimecho is affected by a Special Condition."
           actionA {
-            // TODO
-            // if(bg.em().retrieveObject("Cynthia_"+bg.turnCount)){
-            //   damage 100
-            // }
+            checkLastTurn()
+            checkNoSPC()
+            assert my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"})
+            if(bg.em().retrieveObject("Holon_Supporter") == bg.turnCount){
+              my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Choose an energy to put into your hand").showToOpponent("Energy card to be put to hand").moveTo(my.hand)
+              powerUsed()
+            }
           }
         }
         move "Hook", {
