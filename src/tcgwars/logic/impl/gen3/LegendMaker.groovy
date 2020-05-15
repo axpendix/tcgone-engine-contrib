@@ -2475,6 +2475,27 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
+        move "Flame Swirl", {
+          text "100 damage. Discard 2 [R] Energies or 1 React Energy card attached to Arcanine ex."
+          energyCost R, R, C
+          attackRequirement {}
+          onAttack {
+            damage 100
+
+            afterDamage {
+              def paidCost = false
+              if (self.cards.findAll {it.name.contains("React Energy")}) {
+                if (confirm("Discard a React Energy attached to Arcanine ex? Otherwise two [R] Energies will be discarded")) {
+                  self.cards.findAll {it.name.contains("React Energy")}.select(count:1, "Select the React Energy to discard").discard()
+                  paidCost = true
+                }
+              }
+              if (!paidCost) {
+                discardSelfEnergy R,R
+              }
+            }
+          }
+        }
       };
       case ARMALDO_EX_84:
       return evolution (this, from:"Anorith", hp:HP160, type:F, retreatCost:3) {
