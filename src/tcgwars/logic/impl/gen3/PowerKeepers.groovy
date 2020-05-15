@@ -2135,7 +2135,7 @@ public enum PowerKeepers implements LogicCardInfo {
             opp.bench.each {
               damage 30, it
             }
-            discardAllSelfEnergy(null)
+            discardAllSelfEnergy(W)
           }
         }
       };
