@@ -494,7 +494,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
-            swiftDamage(40, defending)
+            shredDamage 40
           }
         }
         move "Cross Chop", {
