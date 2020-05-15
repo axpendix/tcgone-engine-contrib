@@ -282,7 +282,12 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-            // TODO
+            def selected = self.topPokemonCard.cards.filterByEnergyType(F).select(min:0, max:5, "Select up to 5 [F] Energies to discard, does 20 damage to one Pokemon")
+
+            if (selected) {
+              damage 20*selected.size(), opp.all.select("Deal damage to which Pokemon?")
+              selected.discard()
+            }
           }
         }
         move "Mach Claw", {
