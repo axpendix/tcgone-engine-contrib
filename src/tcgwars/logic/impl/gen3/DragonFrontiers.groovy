@@ -487,17 +487,6 @@ public enum DragonFrontiers implements LogicCardInfo {
       case SNORLAX_DELTA_10:
       return basic (this, hp:HP080, type:G, retreatCost:3) {
         weakness F
-        pokeBody "Bedhead", {
-          text "As long as Snorlax remains Asleep between turns, put 2 damage counters on 1 of the Defending Pokémon."
-          delayedA {
-            before BEGIN_TURN, {
-              if (self.isSPC(ASLEEP)) {
-                bc "Bedhead activates"
-                directDamage 20, self.owner.opposite.pbg.active
-              }
-            }
-          }
-        }
         pokePower "Dozing", {
           text "Once during your turn (before your attack), if Snorlax is your Active Pokemon, you may remove 2 damage counters from Snorlax and Snorlax is now Asleep. This power can't be used if Snorlax is affected by a Special Condition"
           actionA {
@@ -508,6 +497,17 @@ public enum DragonFrontiers implements LogicCardInfo {
               heal 20, self
               apply ASLEEP, self
               powerUsed()
+            }
+          }
+        }
+        pokeBody "Bedhead", {
+          text "As long as Snorlax remains Asleep between turns, put 2 damage counters on 1 of the Defending Pokémon."
+          delayedA {
+            before BEGIN_TURN, {
+              if (self.isSPC(ASLEEP)) {
+                bc "Bedhead activates"
+                directDamage 20, self.owner.opposite.pbg.active
+              }
             }
           }
         }
