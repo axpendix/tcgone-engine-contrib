@@ -298,9 +298,8 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Peal of Thunder", {
           text "Once during your turn, when you play Charizard from your hand to evolve 1 of your Pokémon, you may look at the top 5 cards of your deck, choose as many Energy cards as you like, and attach them to 1 of your Pokémon. Discard the other cards."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && bg.em().retrieveObject("Peal_Of_Thunder") != bg.turnCount && my.deck && confirm("Use Peal of Thunder?")) {
+            if (r==PLAY_FROM_HAND && my.deck && confirm("Use Peal of Thunder?")) {
               powerUsed()
-              bg.em().storeObject("Peal_Of_Thunder", bg.turnCount)
               my.deck.subList(0,5).showToMe("Top 5 cards of your deck.")
               if (my.deck.subList(0,5).filterByType(ENERGY)) {
                 def tar = my.all.select("Attach Energies to?")
