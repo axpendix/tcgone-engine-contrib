@@ -2754,12 +2754,10 @@ public enum LegendMaker implements LogicCardInfo {
           }
         }
         move "Final Laser", {
-          text "10 damage. Put 3 damage counters on your opponent's Pokémon in any way you like. If your opponent has only 1 Prize card left and Registeel Star is the only Pokémon you have in play, put 6 damage counters instead."
+          text "Put 3 damage counters on your opponent's Pokémon in any way you like. If your opponent has only 1 Prize card left and Registeel Star is the only Pokémon you have in play, put 6 damage counters instead."
           energyCost M, M, C
           attackRequirement {}
           onAttack {
-            damage 10
-
             def counters = 3
             if (opp.prizeCardSet.size() == 1 && my.all.size() == 1) {
               counters = 6
