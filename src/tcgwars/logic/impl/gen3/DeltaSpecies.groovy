@@ -622,8 +622,10 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokeBody "Delta Guard", {
           text "As long as Rayquaza has any Holon Energy cards attached to it, ignore the effect of Rayquaza's Lightning Storm attack."
           delayedA {
-            if (self.cards.findAll { it.name.contains("Holon Energy") }) {
-              before ATTACK_MAIN, {
+            before ATTACK_MAIN, {
+              bc "Before attack main"
+              if (self.cards.findAll { it.name.contains("Holon Energy") }) {
+                bc "contains holon energy"
                 if (ef.move.name == "Lightning Storm") {
                   bc "Storing Lightning_Storm object"
                   bg.em().storeObject("Lightning_Storm", bg.turnCount)
