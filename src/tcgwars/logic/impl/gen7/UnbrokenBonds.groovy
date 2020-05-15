@@ -3954,7 +3954,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               }
               before null, null, Source.ATTACK, {
                 def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                if (flag && self.active && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner){
+                if (flag && self.active && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner==self.owner){
                   bc "$name prevents effect"
                   prevent()
                 }
