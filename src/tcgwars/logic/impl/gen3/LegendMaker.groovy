@@ -1021,6 +1021,7 @@ public enum LegendMaker implements LogicCardInfo {
                 flip 1, {}, {
                   wcu "Pattern Distraction prevents this Pokémon from attacking"
                   prevent()
+                  bg.gm().betweenTurns()
                 }
               }
             }
