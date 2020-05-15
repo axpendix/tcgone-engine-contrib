@@ -1861,8 +1861,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         def eff
         onPlay {
           eff = getter GET_ENERGY_TYPES, { holder->
-            if (holder.effect.card.containsTypePlain(G) && holder.object.size() >= 2
-              && holder.effect.card.cardTypes.is(SPECIAL_ENERGY)) {
+            if (holder.object.size() >= 2 && holder.effect.card.cardTypes.is(SPECIAL_ENERGY)) {
               holder.object = [[C] as Set]
             }
           }
