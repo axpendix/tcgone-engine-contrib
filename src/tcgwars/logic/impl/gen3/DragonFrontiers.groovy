@@ -2264,7 +2264,9 @@ public enum DragonFrontiers implements LogicCardInfo {
               if (my.discard.filterByType(ENERGY)) {
                 def energy = my.discard.filterByType(ENERGY).select()
                 discardSelfEnergy(C)
-                attachEnergy(self, energy)
+                energy.each{
+                  attachEnergy(self, it)
+                }
               }
             }
           }
