@@ -1569,10 +1569,23 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost L, C
           attackRequirement {}
           onAttack {
-            damage 20
-            flip 2, {
-              discardDefendingEnergy()
-            }
+            flip 2, {}, {}, [
+              2:{ damage 20;
+                afterDamage{
+                  discardDefendingEnergy()
+                  discardDefendingEnergy()
+                }
+              },
+              1:{
+                damage 20
+                afterDamage{
+                  discardDefendingEnergy()
+                }
+              },
+              0:{
+                bc "$thisMove failed due to 2 TAILS."
+              }
+            ]
           }
         }
       };
