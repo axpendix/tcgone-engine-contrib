@@ -1666,14 +1666,14 @@ public enum DeltaSpecies implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (self.owner.pbg.all.find{it.name == "Volbeat"} && it.to == self && it.from.topPokemonCard.cardTypes.is(EX)) {
+                if (self.owner.pbg.all.find{it.name == "Volbeat"} && it.to == self && it.from.topPokemonCard.name.contains("Dark ")) {
                   bc "Beacon Protection prevents all damage"
                   it.dmg=hp(0)
                 }
               }
             }
             before null, self, Source.ATTACK, {
-              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+              if (self.owner.opposite.pbg.active.name.contains("Dark ") && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
                 bc "Beacon Protection prevents effect"
                 prevent()
               }
