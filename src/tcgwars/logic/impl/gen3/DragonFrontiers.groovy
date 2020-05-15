@@ -498,6 +498,19 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
+        pokePower "Dozing", {
+          text "Once during your turn (before your attack), if Snorlax is your Active Pokemon, you may remove 2 damage counters from Snorlax and Snorlax is now Asleep. This power can't be used if Snorlax is affected by a Special Condition"
+          actionA {
+            checkNoSPC()
+            checkLastTurn()
+
+            if (confirm("Activate Dozing to remove 2 damage counters from Snorlax Delta and fall asleep?")) {
+              heal 20, self
+              apply ASLEEP, self
+              powerUsed()
+            }
+          }
+        }
       };
       case TOGETIC_DELTA_11:
       return evolution (this, from:"Togepi", hp:HP060, type:W, retreatCost:0) {
