@@ -3953,7 +3953,8 @@ public enum UnbrokenBonds implements LogicCardInfo {
                 flag = ef.move.name.contains('GX')
               }
               before null, null, Source.ATTACK, {
-                if (flag && self.active && self.owner.opposite.pbg.active.pokemonGX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && ef.target == self.owner){
+                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                if (flag && self.active && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner){
                   bc "$name prevents effect"
                   prevent()
                 }
