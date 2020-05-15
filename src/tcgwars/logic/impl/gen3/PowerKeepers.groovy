@@ -379,13 +379,12 @@ public enum PowerKeepers implements LogicCardInfo {
         weakness R
         pokePower "Evolutionary Call", {
           text "Once during your turn, when you play Cradily from your hand to evolve 1 of your Pokémon, you may search your deck for up to 3 in any combination of Basic Pokémon or Evolution cards. Show them to your opponent and put them into your hand. Shuffle your deck afterward."
-          actionA {
+          onActivate {
             checkLastTurn()
-            assert my.deck : "Deck is empty"
-            if (it==PLAY_FROM_HAND && confirm("Use Evolutionary Call?")) {
+            if (it==PLAY_FROM_HAND && my.deck && confirm("Use Evolutionary Call?")) {
               powerUsed()
 
-              deck.search(max: 3, "Search your deck for up to 3 Basic/Evolutions", {it.cardTypes.pokemon && it.cardTypes.isIn(BASIC, EVOLUTION)}).moveTo(hand)
+              deck.search(max: 3, "Search your deck for up to 3 Basic/Evolutions", {it.cardTypes.pokemon}).moveTo(my.hand)
 
               shuffleDeck()
             }
