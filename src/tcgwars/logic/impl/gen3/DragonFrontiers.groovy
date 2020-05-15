@@ -510,9 +510,8 @@ public enum DragonFrontiers implements LogicCardInfo {
             assert opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) } : "Opponent has no Delta Pokemon"
           }
           onAttack {
-            def tmp = opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Source of move")
-            if (tmp) {
-              def card = tmp.first()
+            def card = opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Source of move")
+            if (card) {
               bc "$card was chosen"
               def moves = card.asPokemonCard().moves
               if (moves) {
