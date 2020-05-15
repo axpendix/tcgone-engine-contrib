@@ -2242,11 +2242,27 @@ public enum HolonPhantoms implements LogicCardInfo {
       case HOLON_LAKE_87:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
-          "Each player's Pokémon that has δ on its card can use attacks on this card instead of its own."
+          "Each player's Pokémon that has δ on its card can use attacks on this card instead of its own." +
+          "[C] Delta Call - Search your deck for a Pokemon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
         onPlay {
-          // TODO
+          def moveBody = {
+            text "Search your deck for a Pokemon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+            energyCost C
+            attackRequirement { assert my.deck : "Deck is empty" }
+            onAttack {
+              my.deck.search("Search your deck for a δ Pokemon", {it.cardTypes.pokemon && it.topPokemonCard.cardTypes.is(DELTA) }).moveTo(my.hand)
+              shuffleDeck()
+            }
+          }
+          Move move=new Move("Delta Call")
+          moveBody.delegate=new MoveBuilder(thisMove:move)
+          moveBody.call()
+          eff = getter GET_MOVE_LIST, {h->
+            if (h.effect.target.cardTypes.is(DELTA)) { h.object.add(move) }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case MR_STONE_S_PROJECT_88:
