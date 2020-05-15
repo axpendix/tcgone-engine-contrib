@@ -2265,10 +2265,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
         onRemoveFromPlay {
         }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
         getEnergyTypesOverride {
           if (!self || !self.topPokemonCard)
             return [[C] as Set]
