@@ -1747,7 +1747,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         weakness L
         move "Bite", {
           text "10 damage."
-          energyCost
+          energyCost C
           attackRequirement {}
           onAttack {
             damage 10
