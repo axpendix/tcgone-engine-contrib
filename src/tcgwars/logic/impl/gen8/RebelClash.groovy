@@ -1003,13 +1003,13 @@ public enum RebelClash implements LogicCardInfo {
           text "If you draw this card from your deck at the beginning of your turn and there is room on your Bench, instead of putting it into your hand, you may play it directly onto your Bench."
         }
         move "Reignite", {
-          text "20 damage. Attach a [R] Energy card from your discard pile to this Pokemon."
+          text "20 damage. Attach a [R] Energy card from your discard pile to one of your Pokemon."
           energyCost R
           attackRequirement {}
           onAttack {
             damage 20
             afterDamage {
-              attachEnergyFrom(type: R, my.discard, self)
+              attachEnergyFrom(type: R, my.discard, my.all.select())
             }
           }
         }
