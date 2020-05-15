@@ -745,11 +745,12 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "80 damage. This attack does 80 damage to 1 of your opponent’s Benched Pokémon that has any damage counters on it. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C
             attackRequirement{
-              assert opp.bench.findAll{ it.numberOfDamageCounters } : "Your opponent's benched Pokémon are all heathy."
             }
             onAttack {
               damage 80
-              damage 80, opp.bench.findAll{ it.numberOfDamageCounters }.select()
+              if(opp.bench.findAll{ it.numberOfDamageCounters }){
+                damage 80, opp.bench.findAll{ it.numberOfDamageCounters }.select()
+              }
             }
           }
         };
