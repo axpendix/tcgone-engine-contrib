@@ -1254,11 +1254,10 @@ public enum HolonPhantoms implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"})
-            if(bg.em().retrieveObject("Holon_Supporter") == bg.turnCount){
-              my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Choose an energy to put into your hand").showToOpponent("Energy card to be put to hand").moveTo(my.hand)
-              powerUsed()
-            }
+            assert my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}) : "You dont't have the required energy in your discard"
+            assert bg.em().retrieveObject("Holon_Supporter") == bg.turnCount : "You haven't played a Supporter with Holon in its name this turn"
+            my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Choose an energy to put into your hand").showToOpponent("Energy card to be put to hand").moveTo(my.hand)
+            powerUsed()
           }
         }
         move "Hook", {
