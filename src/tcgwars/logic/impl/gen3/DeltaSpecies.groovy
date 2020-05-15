@@ -1664,6 +1664,20 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokeBody "Beacon Protection", {
           text "As long as you have Volbeat in play, prevent all effects, including damage, done to Illumise by attacks from your opponent's Pokémon that has Dark in its name."
           delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (self.owner.pbg.all.find{it.name == "Volbeat"} && it.to == self && it.from.topPokemonCard.cardTypes.is(EX)) {
+                  bc "Beacon Protection prevents all damage"
+                  it.dmg=hp(0)
+                }
+              }
+            }
+            before null, self, Source.ATTACK, {
+              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+                bc "Beacon Protection prevents effect"
+                prevent()
+              }
+            }
           }
         }
         move "Call for Family", {
