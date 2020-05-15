@@ -710,8 +710,11 @@ public enum HolonPhantoms implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def energy = my.deck.search(max: 1, "Select a Holon Energy card.", {it.name.contains("Holon Energy")})
-            attachEnergy(self, energy)
+            def energy = my.deck.search(max: 1, "Select a Holon Energy card.", {it.name.contains("Holon Energy")}).first()
+            if (energy) {
+              attachEnergy(self, energy)
+            }
+
             shuffleDeck()
           }
         }
