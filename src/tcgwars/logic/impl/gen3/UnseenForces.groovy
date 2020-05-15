@@ -283,7 +283,16 @@ public enum UnseenForces implements LogicCardInfo {
           text "As often as you like during your turn (before your attack), you may move a basic Energy card attached to 1 of your Benched Pokémon to your Active Pokémon. This power can't be used if Ampharos is affected by a Special Condition."
           actionA {
             checkNoSPC()
-            // TODO
+            while(1){
+              def pl=(my.all.findAll {
+                it.benched && it.cards.filterByType(BASIC_ENERGY)
+              })
+              if(!pl) break;
+              def src =pl.select("source for energy (cancel to stop)", false)
+              if(!src) break;
+              def card=src.cards.select("Card to move",cardTypeFilter(BASIC_ENERGY)).first()
+              energySwitch(src, my.active, card)
+            }
           }
         }
         move "Miraculous Thunder", {
@@ -291,10 +300,12 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost L, C, C
           onAttack {
             damage 50
-            if (confirm("You may discard all [L] Energy from this Pokémon. If you do, the Defending Pokémon is now Burned and Confused.")) {
-              discardAllSelfEnergy(L)
-              apply BURNED
-              apply CONFUSED
+            afterDamage {
+              if (confirm("You may discard all [L] Energy from this Pokémon. If you do, the Defending Pokémon is now Burned and Confused.")) {
+                discardAllSelfEnergy(L)
+                apply BURNED
+                apply CONFUSED
+              }
             }
           }
         }
