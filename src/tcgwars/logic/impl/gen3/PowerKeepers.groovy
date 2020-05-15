@@ -985,8 +985,8 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Natural Cure", {
           text "When you attach a [R] Energy card from your hand to Combusken, remove all Special Conditions from Combusken."
           delayedA {
-            before ATTACH_ENERGY, self {
-              if (ef.reason == PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == R) {
+            after ATTACH_ENERGY, self, {
+              if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == R){
                 clearSpecialCondition(self, SRC_ABILITY)
               }
             }
