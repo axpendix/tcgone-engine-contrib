@@ -563,7 +563,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 
             my.deck.subList(0,4).select("Choose the card to put in your hand").moveTo(my.hand)
 
-            def rearrangedCards = rearrange(opp.deck.subList(0, 3))
+            def rearrangedCards = rearrange(my.deck.subList(0, 3))
             rearrangedCards.moveTo(my.deck)
           }
         }
