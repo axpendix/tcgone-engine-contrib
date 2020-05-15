@@ -1241,9 +1241,11 @@ public enum HolonPhantoms implements LogicCardInfo {
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness P
         globalAbility {Card thisCard->
-          before PLAY_TRAINER, {
-            if(ef.cardToPlay.cardTypes.is(SUPPORTER) && ef.cardToPlay.name.contains("Holon")){
-              bg.em().storeObject("Holon_Supporter", bg.turnCount)
+          delayed {
+            before PLAY_TRAINER, {
+              if(ef.cardToPlay.cardTypes.is(SUPPORTER) && ef.cardToPlay.name.contains("Holon") && bg.currentTurn == thisCard.player){
+                bg.em().storeObject("Holon_Supporter", bg.turnCount)
+              }
             }
           }
         }
