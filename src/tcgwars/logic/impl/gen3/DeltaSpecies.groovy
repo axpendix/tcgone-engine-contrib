@@ -625,6 +625,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             if (self.cards.findAll { it.name.contains("Holon Energy") }) {
               before ATTACK_MAIN, {
                 if (ef.move.name == "Lightning Storm") {
+                  bc "Storing Lightning_Storm object as $bg.turnCount"
                   bg.em().storeObject("Lightning_Storm", bg.turnCount)
                 }
               }
@@ -647,6 +648,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 70
 
             if (bg.em().retrieveObject("Lightning_Storm") != bg.turnCount) {
+              bc "Lightning_Storm Object's value is not equal to turnCount.  Actual = $bg.turnCount"
               damage 70, self
             }
           }
