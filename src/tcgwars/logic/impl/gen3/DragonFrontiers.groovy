@@ -526,7 +526,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             def card = opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Source of move")
             if (card) {
               bc "$card was chosen"
-              def moves = card.moves
+              def moves = card.topPokemonCard.moves
               if (moves) {
                 def move = choose(moves, "Choose attack")
                 bc "$move was chosen"
