@@ -2244,6 +2244,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each player's Pokémon that has δ on its card can use attacks on this card instead of its own." +
           "[C] Delta Call - Search your deck for a Pokemon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+        def eff
         onPlay {
           def moveBody = {
             text "Search your deck for a Pokemon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
