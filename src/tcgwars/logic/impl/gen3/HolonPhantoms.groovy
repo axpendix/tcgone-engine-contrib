@@ -2259,7 +2259,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           moveBody.delegate=new MoveBuilder(thisMove:move)
           moveBody.call()
           eff = getter GET_MOVE_LIST, {h->
-            if (h.effect.target.cardTypes.is(DELTA)) { h.object.add(move) }
+            if (h.effect.target.topPokemonCard.cardTypes.is(DELTA)) { h.object.add(move) }
           }
         }
         onRemoveFromPlay{
