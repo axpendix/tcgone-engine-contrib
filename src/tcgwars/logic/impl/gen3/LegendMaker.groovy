@@ -268,16 +268,12 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C, C
           attackRequirement {
             assert self.cards.findAll {it.name.contains("React Energy")} : "No React Energies attached to this Pokemon"
+            assert opp.all.findAll{ it.evolution } : "Your opponent has no evolved pokemon"
           }
           onAttack {
-            // TODO
             def max = Math.min(self.cards.findAll {it.name.contains("React Energy")}.size(), opp.all.findAll{it.evolution}.size())
 
-            while (max-- > 0) {
-              def tar = opp.all.findAll{ it.evolution }
-              if(!tar) break
-              def pcs = tar.select("Choose which Pokemon to devolve", false)
-              if(!pcs) break
+            opp.all.findAll{ it.evolution }.select(min:0, max:max, "Devolve which pokemon?").each{
               def top=pcs.topPokemonCard
               bc "$top Devolved"
               moveCard(top, opp.hand)
@@ -394,7 +390,7 @@ public enum LegendMaker implements LogicCardInfo {
           }
           onAttack {
             attachEnergyFrom(type : F, my.discard, self)
-            heal 20, self
+            heal 10, self
           }
         }
         move "Enraged Linear Attack", {
