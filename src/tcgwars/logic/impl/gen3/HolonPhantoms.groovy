@@ -2065,7 +2065,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Paste", {
           text "Search your discard pile for an Energy card and attach it to 1 of your Pokémon that has δ on its card."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard.filterByType(ENERGY) : "Discard pile does not have any Energy cards"
+          }
           onAttack {
             attachEnergyFrom(my.discard, my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Attach an Energy to?"))
           }
