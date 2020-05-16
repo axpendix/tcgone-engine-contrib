@@ -448,7 +448,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "As long as any Stadium card with Holon in its name is in play, each of your Pokémon that has δ on its card does 10 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              if (ef.attacker.owner == self.owner && self.benched) {
+              if (ef.attacker.owner == self.owner) {
                 bg.dm().each {
                   if (it.from.topPokemonCard.cardTypes.is(DELTA) && it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
                     if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name.contains("Holon")) {
