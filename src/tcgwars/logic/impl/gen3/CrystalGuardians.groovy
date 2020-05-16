@@ -1922,14 +1922,14 @@ public enum CrystalGuardians implements LogicCardInfo {
           eff1=delayed {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if (it.to == self && it.from.owner != self.owner && it.from.cardTypes.is(EX) && it.notZero && it.notNoEffect) {
+                if (it.to == self && it.from.owner != self.owner && it.from.topPokemonCard.cardTypes.is(EX) && it.notZero && it.notNoEffect) {
                   it.dmg=hp(0)
                   bc "$name prevents damage"
                 }
               }
             }
             before null, null, Source.ATTACK, {
-              if (self.owner.opposite.pbg.active.cardTypes.is(EX) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && ef.target == self.owner) {
+              if (self.owner.opposite.pbg.active.topPokemonCard.cardTypes.is(EX) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && ef.target == self.owner) {
                 bc "$name prevents effect"
                 prevent()
               }
