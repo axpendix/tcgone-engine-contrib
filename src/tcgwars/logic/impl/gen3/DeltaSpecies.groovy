@@ -729,6 +729,8 @@ public enum DeltaSpecies implements LogicCardInfo {
 
             if (my.deck.subList(0,1).filterByType(BASIC_ENERGY)) {
               attachEnergyFrom(my.deck.subList(0,1), my.all)
+            } else {
+              bc "Top card was not a Basic Energy card"
             }
           }
         }
