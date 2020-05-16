@@ -1887,7 +1887,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
         move "Heat Blast", {
           text "30 damage."
-          energyCost
+          energyCost R, C
           attackRequirement {}
           onAttack {
             damage 30
