@@ -1897,6 +1897,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       return pokemonTool (this) {
         text "The Pokémon this card is attached to can use any attack from its Basic Pokémon or its Stage 1 Evolution card. (You still have to pay for that attack's Energy cost.) If that Pokémon attacks, discard this card at the end of the turn."
         def eff
+        def eff2
         onPlay { reason ->
           eff = getter (GET_MOVE_LIST) { holder->
             if(holder.effect.target.active && holder.effect.target.evolution) {
@@ -1906,7 +1907,12 @@ public enum CrystalGuardians implements LogicCardInfo {
                 }
               }
             }
-            unregisterAfter 1
+          }
+          eff2 = delayed {
+            after BETWEEN_TURNS, {
+              discard thisCard
+              unregisterAfter 2
+            }
           }
         }
         onRemoveFromPlay {
