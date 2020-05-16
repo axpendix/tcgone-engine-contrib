@@ -2560,8 +2560,10 @@ public enum UnseenForces implements LogicCardInfo {
           delayedA (priority: LAST) {
             before APPLY_ATTACK_DAMAGES, {
               if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value })) {
-                bc "Silver Sparkle Activates"
-                ef.attacker.cards.filterByType(ENERGY).oppSelect("Select an Energy to move to the Opponent's hand").first().moveTo(ef.attacker.owner.pbg.hand)
+                if (ef.attacker.cards.filterByType(ENERGY)) {
+                  bc "Silver Sparkle Activates"
+                  ef.attacker.cards.filterByType(ENERGY).oppSelect("Select an Energy to move to the Opponent's hand").moveTo(ef.attacker.owner.pbg.hand)
+                }
               }
             }
           }
