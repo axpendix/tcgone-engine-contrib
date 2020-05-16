@@ -2468,7 +2468,7 @@ public enum UnseenForces implements LogicCardInfo {
               powerUsed()
 
               def list = opp.bench.findAll { it.evolution }
-              def pcs = list.select(count: 1, "Devolve one of your opponent's evolved Pokémon")
+              def pcs = list.select("Devolve one of your opponent's evolved Pokémon")
               def top = pcs.topPokemonCard
               bc "$top Devolved"
               pcs.cards.remove(top)
