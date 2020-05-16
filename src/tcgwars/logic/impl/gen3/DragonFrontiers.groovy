@@ -530,7 +530,7 @@ public enum DragonFrontiers implements LogicCardInfo {
               if (moves) {
                 def move = choose(moves, "Choose attack")
                 bc "$move was chosen"
-                def bef=blockingEffect(BETWEEN_TURNS)
+                def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
                 attack (move as Move)
                 bef.unregisterItself(bg().em())
               }
