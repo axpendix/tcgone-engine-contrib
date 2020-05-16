@@ -2309,7 +2309,10 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Splash Back", {
           text "Once during your turn (before your attack), if your opponent has 4 or more Benched Pokémon, you may choose 1 of them and return that Pokémon and all cards attached to it to his or her hand. This power can't be used if Crawdaunt ex is affected by a Special Condition."
           actionA {
-            // TODO
+            assert opp.bench.size() >= 4 : "Opponent needs to have 4 or more Benched Pokémon"
+            def tar = opp.bench.select("Choose a pokemon to return to your opponent's hand.")
+            tar.cards.moveTo(opp.hand)
+            removePCS(tar)
           }
         }
         move "Power Blow", {
