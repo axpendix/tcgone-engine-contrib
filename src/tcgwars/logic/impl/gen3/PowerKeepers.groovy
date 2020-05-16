@@ -534,7 +534,7 @@ public enum PowerKeepers implements LogicCardInfo {
         weakness F
         pokeBody "Lazy", {
           text "As long as Slaking is your Active Pokémon, your opponent's Pokémon can't use any Poké-Powers."
-          def eff1,eff2,eff3
+          def eff1,eff2
           onActivate {
             eff1 = getter IS_ABILITY_BLOCKED, { Holder h->
               if (self.active && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
