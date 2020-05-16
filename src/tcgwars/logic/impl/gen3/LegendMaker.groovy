@@ -394,7 +394,7 @@ public enum LegendMaker implements LogicCardInfo {
           }
           onAttack {
             attachEnergyFrom(type : F, my.discard, self)
-            heal 10, self
+            heal 20, self
           }
         }
         move "Enraged Linear Attack", {
