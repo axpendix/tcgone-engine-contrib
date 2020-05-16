@@ -1988,7 +1988,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           delayedA {
             before BEGIN_TURN, {
               if (self.active) {
-                self.owner.pbg.bench.each {
+                self.owner.opposite.pbg.bench.each {
                   if (it.basic) {
                     directDamage 10, it
                   }
