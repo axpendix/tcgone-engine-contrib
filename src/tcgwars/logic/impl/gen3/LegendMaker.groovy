@@ -307,7 +307,7 @@ public enum LegendMaker implements LogicCardInfo {
             assert my.all.findAll{it.cards.findAll { it.name == "React Energy" }}
             checkLastTurn()
             checkNoSPC()
-            def src = my.all.findAll{it.cards.findAll { it.name == "React Energy" }}.select(min:0, "Source for energy")
+            def src = my.all.findAll{it.cards.findAll { it.name == "React Energy" }}.select("Source for energy")
             if(src){
               powerUsed()
               def card = src.cards.findAll{ it.name == "React Energy"}.select("Energy to move").first()
