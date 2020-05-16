@@ -965,16 +965,15 @@ public enum TeamUp implements LogicCardInfo {
           move "Full Blitz" , {
             text "150 damage. Search your deck for up to 3 [L] Energy cards and attach them to 1 of your Pokémon. Then, shuffle your deck."
             energyCost L,L,L
-            attackRequirement{
-              assert my.deck : "There is no more cards into your deck"
-            }
             onAttack{
               damage 150
               afterDamage{
-                def list = my.deck.search (max: 3, basicEnergyFilter(L))
-                def pcs = my.all.select("To?")
-                list.each {attachEnergy(pcs, it)}
-                shuffleDeck()
+                if (my.deck) {
+                  def list = my.deck.search (max: 3, basicEnergyFilter(L))
+                  def pcs = my.all.select("To?")
+                  list.each {attachEnergy(pcs, it)}
+                  shuffleDeck()
+                }
               }
             }
           }
