@@ -272,12 +272,21 @@ public enum LegendMaker implements LogicCardInfo {
           }
           onAttack {
             def max = Math.min(self.cards.findAll {it.name.contains("React Energy")}.size(), opp.all.findAll{it.evolution}.size())
-            def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.all.findAll{ it.evolution }, "Devolve which pokemon?", min:0, max:max)
-            opp.all.findAll{list.contains(it)}.each{
-              def top=it.topPokemonCard
-              bc "$top Devolved"
-              moveCard(top, opp.hand)
-              devolve(pcs, top)
+            def count = []
+            def selection = []
+            for(int i =0; i<=max; i++){
+              count += [i]
+              selection += [i.toString()]
+            }
+            def dev = choose(count, selection, "Devolve how many of your opponent's pokémon?", max)
+            if(dev !=0){
+              def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.all.findAll{ it.evolution }, "Devolve which pokemon?", dev)
+              opp.all.findAll{list.contains(it)}.each{
+                def top=it.topPokemonCard
+                bc "$top Devolved"
+                moveCard(top, opp.hand)
+                devolve(pcs, top)
+              }
             }
           }
         }
