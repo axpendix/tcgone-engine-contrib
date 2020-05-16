@@ -2605,6 +2605,8 @@ public enum LegendMaker implements LogicCardInfo {
                     }
                   }
                 }
+                after SWITCH, defending, {unregister()}
+                after EVOLVE, defending, {unregister()}
                 unregisterAfter 3
               }  
             }
