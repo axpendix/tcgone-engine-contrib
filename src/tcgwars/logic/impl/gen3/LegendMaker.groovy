@@ -2587,7 +2587,28 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
-            doMoreDamageNextTurn(thisMove, 30, self)
+            afterDamage{
+              delayed {
+                before APPLY_ATTACK_DAMAGES, {
+                  bg.dm().each{
+                    if(it.to == opp.active && it.notNoEffect && it.dmg.value && bg.currentTurn == self.owner) {
+                      bc "Silver Wind +30"
+                      it.dmg += hp(30)
+                    }
+                  }
+                }
+                after SWITCH, defending, {unregister()}
+                after EVOLVE, defending, {unregister()}
+                unregisterAfter 3
+              }  
+            }
+          }
+        }
+        move "Cutting Wind", {
+          text "70 damage."
+          energyCost G, C, C
+          onAttack{
+            damage 70
           }
         }
       };
