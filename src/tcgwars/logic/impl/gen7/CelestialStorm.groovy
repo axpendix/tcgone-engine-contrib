@@ -3048,38 +3048,35 @@ public enum CelestialStorm implements LogicCardInfo {
           text "Look at the top 5 cards of either players deck and choose 1 of them. That player shuffles the other cards back into their deck. Then, put the card you chose on top of that deck.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
           onPlay {
             if(!my.deck){
-              def tar = opp.deck.subList(0,5).select("Choose the card to put at the top of the deck")
-              opp.deck.remove(tar)
+              def card = opp.deck.subList(0,5).select("Choose a card to put on top of your opponent's deck.").first()
+              opp.deck.remove(card)
               shuffleDeck(null, TargetPlayer.OPPONENT)
-              opp.deck.addAll(0, tar)
+              opp.deck.add(0, card)
             }
             else if(!opp.deck){
-              def tar = my.deck.subList(0,5).select("Choose the card to put at the top of the deck")
-              my.deck.remove(tar)
+              def card = my.deck.subList(0,5).select("Choose a card to put on top of your deck.").first()
+              my.deck.remove(card)
               shuffleDeck()
-              my.deck.addAll(0, tar)
+              my.deck.add(0, card)
             }
             else{
-              my.deck.subList(0,5).showToMe("The 5 top cards of your deck")
-              opp.deck.subList(0,5).showToMe("The 5 top cards of your opponent's deck")
-              def cl=[1,2]
-              def c=choose(cl,["Your deck", "Your opponent's deck"], "Choose 1 card from which deck?")
+              def c=choose([1,2],["Your deck", "Your opponent's deck"], "Look at the top 5 cards of which player's deck?")
               if(c==1){
-                def tar = my.deck.subList(0,5).select("Choose the card to put at the top of the deck")
-                my.deck.remove(tar)
+                def card = my.deck.subList(0,5).select("Choose a card to put on top of your deck").first()
+                my.deck.remove(card)
                 shuffleDeck()
-                my.deck.addAll(0, tar)
+                my.deck.add(0, card)
               }
-              else {
-                def tar = opp.deck.subList(0,5).select("Choose the card to put at the top of the deck")
-                opp.deck.remove(tar)
+              if(c==2){
+                def card = opp.deck.subList(0,5).select("Choose a card to put on top of your opponent's deck").first()
+                opp.deck.remove(card)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
-                opp.deck.addAll(0, tar)
+                opp.deck.add(0, card)
               }
             }
           }
           playRequirement{
-            assert my.deck.notEmpty && opp.deck.notEmpty
+            assert my.deck.notEmpty || opp.deck.notEmpty
           }
         };
       case HUSTLE_BELT_134:
