@@ -516,6 +516,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) } : "No valid targets"
+            assert self.active : "Kingdra δ is not active."
             powerUsed()
             directDamage 20, opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select()
           }
