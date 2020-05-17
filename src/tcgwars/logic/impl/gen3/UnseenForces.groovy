@@ -2327,7 +2327,7 @@ public enum UnseenForces implements LogicCardInfo {
           eff.unregister()
         }
         allowAttach { to ->
-          to.topPokemonCard.cardTypes.isNot(EX) && to.topPokemonCard.cardTypes.isNot(BASIC)
+          to.topPokemonCard.cardTypes.isNot(EX) && to.evolution
         }
       };
       case SITRUS_BERRY_91:
