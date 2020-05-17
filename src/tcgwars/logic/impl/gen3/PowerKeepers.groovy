@@ -429,7 +429,19 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Psy Shadow", {
           text "Once during your turn (before your attack), you may search your deck for a [P] Energy card and attach it to 1 of your Pokémon. Put 2 damage counters on that Pokémon. Shuffle your deck afterward. This power can't be used if Gardevoir is affected by a Special Condition."
           actionA {
-            // TODO
+            checkLastTurn()
+            checkNoSPC()
+            assert my.deck : "Deck is empty"
+            powerUsed()
+
+            my.deck.search(max: 1, "Search for a [P] Energy card to attach to one of your Pokemon.", {
+              Card card->card.cardTypes.contains(BASIC_ENERGY) && card.asEnergyCard().containsTypePlain(P)
+              }).each {
+                def tar = my.all.select("Attach $it to? That Pokemon will receive 2 damage counters.")
+                attachEnergy(tar, it)
+                directDamage 20, tar
+              }
+            shuffleDeck()
           }
         }
         move "Energy Burst", {
