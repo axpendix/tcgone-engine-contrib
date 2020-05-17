@@ -1877,7 +1877,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokeBody "Exoskeleton", {
           text "Any damage done to Shelgon by attacks is reduced by 10 (after applying Weakness and Resistance)."
           delayedA {
-            before APPLY_ATTACK_DAMAGES, {
+            after APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
                 if (it.to == self && it.dmg.value && it.notNoEffect) {
                   bc "Exoskeleton -10"
