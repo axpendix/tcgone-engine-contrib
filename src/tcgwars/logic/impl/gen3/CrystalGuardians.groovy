@@ -1911,12 +1911,12 @@ public enum CrystalGuardians implements LogicCardInfo {
           eff2 = delayed {
             after BETWEEN_TURNS, {
               discard thisCard
-              unregisterAfter 2
             }
           }
         }
         onRemoveFromPlay {
           eff.unregister()
+          eff2.unregister()
         }
       };
       case MYSTERIOUS_SHARD_81:
