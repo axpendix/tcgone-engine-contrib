@@ -751,7 +751,6 @@ public enum LegendMaker implements LogicCardInfo {
               && (holder.effect.target.name.contains("Huntail") || holder.effect.target.name.contains("Gorebyss"))
               && holder.effect.card.name == "React Energy) {
               holder.object = [[R, D, F, G, W, Y, L, M, P] as Set,[R, D, F, G, W, Y, L, M, P] as Set]
-              //TODO how to prevent effects of react energty that are converted to double rainbow energy?
             }
           }
         }
