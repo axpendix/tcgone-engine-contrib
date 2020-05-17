@@ -1943,8 +1943,10 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
           eff2 = delayed {
             after BETWEEN_TURNS, {
-              discard thisCard
-              unregisterAfter 2
+              if (bg.currentTurn == self.owner.opposite) {
+                discard thisCard
+                eff1.unregister()
+              }
             }
           }
         }
