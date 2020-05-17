@@ -2254,7 +2254,9 @@ public enum HolonPhantoms implements LogicCardInfo {
             energyCost C
             attackRequirement { assert my.deck : "Deck is empty" }
             onAttack {
-              my.deck.search("Search your deck for a δ Pokemon", {it.cardTypes.pokemon && it.topPokemonCard.cardTypes.is(DELTA) }).moveTo(my.hand)
+              deck.search("Search your deck for a δ Pokemon", {
+              it.cardTypes.pokemon && it.cardTypes.is(DELTA)
+            }).moveTo(my.hand)
               shuffleDeck()
             }
           }
