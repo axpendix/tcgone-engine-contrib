@@ -1898,9 +1898,14 @@ public enum PowerKeepers implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each player's [W] Pokémon (excluding Pokémon-ex) has no Weakness."
         onPlay {
-          // TODO
+          eff = getter (GET_WEAKNESSES) {h->
+            if(h.effect.target.types.contains(W)){
+              h.object = []
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case GREAT_BALL_77:
