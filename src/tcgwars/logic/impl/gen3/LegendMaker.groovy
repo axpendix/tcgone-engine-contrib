@@ -285,7 +285,7 @@ public enum LegendMaker implements LogicCardInfo {
                 def top=it.topPokemonCard
                 bc "$top Devolved"
                 moveCard(top, opp.hand)
-                devolve(pcs, top)
+                devolve(it, top)
               }
             }
           }
