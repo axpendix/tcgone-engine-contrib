@@ -2529,11 +2529,11 @@ public enum UnseenForces implements LogicCardInfo {
         weakness W
         pokePower "Golden Wing", {
           text "If Ho-Oh ex would be Knocked Out by damage from an opponent's attack, you may move up to 2 Energy attached to Ho-Oh ex to your Pokémon in any way you like."
-          delayedA (priority: LAST) {
-            before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value })) {
-                bc "Golden Wing Activates"
-                ef.attacker.cards.filterByType(ENERGY).oppSelect("Select an Energy to move to the Opponent's hand").first().moveTo(ef.attacker.owner.hand)
+          delayedA {
+            before (KNOCKOUT,self) {
+              if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.cards.filterByType(ENERGY)) {
+                bc "Golden Wing activates"
+                moveEnergy(basic: true, playerType: self.owner, may: true, count: 2, info: "Golden Wing", self, self.owner.pbg.bench)
               }
             }
           }
@@ -2545,7 +2545,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 10
             for (Type t1:Type.values()) {
               if (self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(t1)) {
-                damage 30
+                damage 20
               }
             }
           }
