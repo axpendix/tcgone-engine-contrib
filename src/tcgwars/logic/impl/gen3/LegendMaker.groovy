@@ -1613,15 +1613,16 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Reactive Shield", {
           text "As long as Tentacruel has any React Energy cards attached to it, prevent all effects, including damage, done to any of your Tentacruel in play by attacks from your opponent's Pokémon-ex."
           delayedA {
-            before null, self, Source.ATTACK, {
-              if (!self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && self.owner.pbg.active.name == "Tentacruel") {
+            before null, null, Source.ATTACK, {
+              def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+              if (pcs && self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.topPokemonCard.name.contains("Tentacruel") && self.cards.findAll{it.name.contains("React Energy")}) {
                 bc "Fast Protection prevents effect"
                 prevent()
               }
             }
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to.name == "Tentacruel" && it.notNoEffect && !it.from.EX && self.cards.findAll{it.name.contains("React Energy")}) {
+                if (it.to.name.contains("Tentacruel") && it.notNoEffect && it.from.EX && self.cards.findAll{it.name.contains("React Energy")}) {
                   it.dmg = hp(0)
                   bc "Fast Protection prevents damage"
                 }
