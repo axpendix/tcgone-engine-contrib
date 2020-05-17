@@ -2234,7 +2234,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         onPlay {
         my.hand.getExcludedList(thisCard).select("Choose a card to discard.").discard().each {
             draw 3
-            if(it.cardTypes.is(POKEMON) && it.is(DELTA)){
+            if(it.cardTypes.is(POKEMON) && it.cardTypes.is(DELTA)){
               draw 1
             }
           }
