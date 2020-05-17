@@ -2744,13 +2744,28 @@ public enum DeltaSpecies implements LogicCardInfo {
       case HOLON_ENERGY_WP_106:
       return specialEnergy (this, [[C]]) {
         text "Holon Energy WP provides [C] Energy. If the Pokémon that Holon Energy WP is attached to also has a basic [W] Energy card attached to it, prevent all effects, excluding damage, done to that Pokémon by your opponent's Pokémon. If the Pokémon that Holon Energy WP is attached to also has a basic [P] Energy card attached to it, that Pokémon's Retreat Cost is 0. Ignore these effects if Holon Energy WP is attached to Pokémon-ex."
+        def eff
+        def eff2
         onPlay {reason->
+          eff = getter (GET_RETREAT_COST, self) {h->
+            if (self != null && !self.topPokemonCard.cardTypes.is(EX) && self.cards.filterByEnergyType(P)) {
+              h.object = 0
+            }
+          }
+          eff2 = delayed {
+            before null, self, Source.ATTACK, {
+              if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.energyCount(W)) {
+                bc "Holon Energy [W][P] prevented effect"
+                prevent()
+              }
+            }
+          }
         }
         onRemoveFromPlay {
+          eff.unregister()
+          eff2.unregister()
         }
         onMove {to->
-        }
-        allowAttach {to->
         }
       };
       case METAL_ENERGY_107:
