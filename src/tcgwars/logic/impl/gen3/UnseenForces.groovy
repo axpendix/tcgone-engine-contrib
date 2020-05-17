@@ -2887,7 +2887,12 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost L, L, L
           onAttack {
             damage 70
-            // TODO
+
+            if (my.prizeCardSet.size() < opp.prizeCardSet.size()) {
+              my.all.each {
+                damage 40, it
+              }
+            }
           }
         }
       };
