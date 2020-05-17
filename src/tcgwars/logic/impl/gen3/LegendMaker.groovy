@@ -1304,12 +1304,13 @@ public enum LegendMaker implements LogicCardInfo {
           }
           onAttack {
             flip {
-              def list = opp.bench.findAll { it.evolution }
-              def pcs = list.select(count: 1, "Devolve one of your opponent's evolved Pokémon")
+              def list = opp.all.findAll { it.evolution }
+              def pcs = list.select("Devolve one of your opponent's evolved Pokémon")
               def top = pcs.topPokemonCard
               bc "$top Devolved"
               pcs.cards.remove(top)
-              opp.hand.add(top)
+              opp.deck.add(top)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
               devolve(pcs, top)
             }
           }
@@ -2609,7 +2610,7 @@ public enum LegendMaker implements LogicCardInfo {
                 after SWITCH, defending, {unregister()}
                 after EVOLVE, defending, {unregister()}
                 unregisterAfter 3
-              }  
+              }
             }
           }
         }
