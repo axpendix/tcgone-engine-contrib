@@ -746,8 +746,13 @@ public enum LegendMaker implements LogicCardInfo {
         weakness L
         pokeBody "Reactive Booster", {
           text "Each React Energy card attached to all of your Huntail and Gorebyss provides 2 Energy of every type but has no effect other than providing Energy."
-          delayedA {
-            // TODO
+          getterA GET_ENERGY_TYPES, { holder->
+            if(holder.effect.target.owner == self.owner
+              && (holder.effect.target.name.contains("Huntail") || holder.effect.target.name.contains("Gorebyss"))
+              && holder.effect.card.name == "React Energy) {
+              holder.object = [[R, D, F, G, W, Y, L, M, P] as Set,[R, D, F, G, W, Y, L, M, P] as Set]
+              //TODO how to prevent effects of react energty that are converted to double rainbow energy?
+            }
           }
         }
         move "Hydro Pump", {
