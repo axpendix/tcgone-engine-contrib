@@ -2228,14 +2228,28 @@ public enum LegendMaker implements LogicCardInfo {
           "Put 4 damage counters instead of 2 on each Burned Pokémon between turns. The Special Condition Burned can't be removed by evolving or devolving the Burned Pokémon."
         def eff
         onPlay {
-          eff = getter (GET_BURN_DAMAGE) {h->
+          eff1 = getter (GET_BURN_DAMAGE) {h->
             bc "Full Flame increases burn damage to 40"
             h.object = hp(40)
           }
-          // TODO disable burn removal
+          eff2 = delayed {
+            boolean flag = false
+            before EVOLVE, {
+              flag = ef.pokemonToBeEvolved.active && ef.pokemonToBeEvolved.isSPC(BURNED)
+            }
+            after EVOLVE, { 
+              if(flag) {
+                bc "Full Flame prevents removing burned when evolved"
+                if(flag) {
+                  apply(BURNED, ef.pokemonToBeEvolved, TRAINER_CARD)
+                }
+              } 
+            }
+          }
         }
         onRemoveFromPlay{
-          eff.unregister()
+          eff1.unregister()
+          eff2.unregister()
         }
       };
       case GIANT_STUMP_75:
