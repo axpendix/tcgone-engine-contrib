@@ -2242,7 +2242,8 @@ public enum LegendMaker implements LogicCardInfo {
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Put 4 damage counters instead of 2 on each Burned Pokémon between turns. The Special Condition Burned can't be removed by evolving or devolving the Burned Pokémon."
-        def eff
+        def eff1
+        def eff2
         onPlay {
           eff1 = getter (GET_BURN_DAMAGE) {h->
             bc "Full Flame increases burn damage to 40"
