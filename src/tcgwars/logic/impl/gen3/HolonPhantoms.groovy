@@ -425,10 +425,8 @@ public enum HolonPhantoms implements LogicCardInfo {
             assert my.hand.filterByType(BASIC_ENERGY) || my.hand.findAll{it.name.contains("δ Rainbow Energy")}: "No Basic Energy or δ Rainbow Energy in Hand"
             assert my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) } : "No Delta Pokemon in play"
             powerUsed()
-            def energy = my.all.findAll {
-              it.name.contains("δ Rainbow Energy") || it.cardTypes.is(BASIC_ENERGY)
-            }.select("Which Energy to attach?")
-            def tar = my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Select a Delta Pokemon to attach the Energy to.")
+            def energy = my.hand.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Select an energy to attach to one of your δ Pokemon").first()
+            def tar = my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Select a δ Pokemon to attach the Energy to.")
             attachEnergy(tar, energy)
           }
         }

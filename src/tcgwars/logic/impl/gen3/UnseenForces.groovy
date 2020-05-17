@@ -556,13 +556,13 @@ public enum UnseenForces implements LogicCardInfo {
             before BETWEEN_TURNS, {
               if (self.active) {
                 self.owner.pbg.all.each {
-                  if (!it.cardTypes.is(EX) && it.numberOfDamageCounters) {
+                  if (!it.EX && it.numberOfDamageCounters) {
                     heal 10, it
                   }
                 }
 
                 self.owner.opposite.pbg.all.each {
-                  if (!it.cardTypes.is(EX) && it.numberOfDamageCounters) {
+                  if (!it.EX && it.numberOfDamageCounters) {
                     heal 10, it
                   }
                 }
