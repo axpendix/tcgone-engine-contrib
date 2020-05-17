@@ -3666,6 +3666,7 @@ public enum RebelClash implements LogicCardInfo {
       return supporter (this) {
         text "Choose 1 of your opponent’s Benched Pokemon and switch it with their Active Pokemon. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
+          def pcs = opp.bench.select("New active")
           targeted (pcs, TRAINER_CARD) {
             sw opp.active, pcs, TRAINER_CARD
           }
