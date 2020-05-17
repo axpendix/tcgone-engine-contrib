@@ -2250,17 +2250,8 @@ public enum LegendMaker implements LogicCardInfo {
             h.object = hp(40)
           }
           eff2 = delayed {
-            boolean flag = false
-            before EVOLVE, {
-              flag = ef.pokemonToBeEvolved.active && ef.pokemonToBeEvolved.isSPC(BURNED)
-            }
-            after EVOLVE, { 
-              if(flag) {
-                bc "Full Flame prevents removing burned when evolved"
-                if(flag) {
-                  apply(BURNED, ef.pokemonToBeEvolved, TRAINER_CARD)
-                }
-              } 
+            before BURNED_SPC, null, null, EVOLVE, {
+              prevent()
             }
           }
         }
