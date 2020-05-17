@@ -1899,7 +1899,7 @@ public enum PowerKeepers implements LogicCardInfo {
           "Each player's [W] Pokémon (excluding Pokémon-ex) has no Weakness."
         onPlay {
           eff = getter (GET_WEAKNESSES) {h->
-            if(h.effect.target.types.contains(W)){
+            if(h.effect.target.types.contains(W) && !h.effect.target.EX){
               h.object = []
             }
           }

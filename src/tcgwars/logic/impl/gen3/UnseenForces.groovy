@@ -2533,7 +2533,7 @@ public enum UnseenForces implements LogicCardInfo {
             before (KNOCKOUT,self) {
               if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.cards.filterByType(ENERGY)) {
                 bc "Golden Wing activates"
-                moveEnergy(basic: true, playerType: self.owner, may: true, count: 2, info: "Golden Wing", self, self.owner.pbg.bench)
+                moveEnergy(playerType: self.owner, may: true, count: 2, info: "Golden Wing", self, self.owner.pbg.bench)
               }
             }
           }
