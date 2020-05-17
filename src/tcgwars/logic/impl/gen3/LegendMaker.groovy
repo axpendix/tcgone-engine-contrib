@@ -695,7 +695,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Rear Sensor", {
           text "Each player's Active Basic Pokémon (excluding Pokémon-ex) can't use any Poké-Powers."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (h.effect.target.basic && h.effect.target.active && !h.effect.target.cardTypes.is(EX)) {
+            if (h.effect.target.basic && h.effect.target.active && !h.effect.target.EX) {
               if (h.effect.ability instanceof PokePower) {
                 h.object=true
               }
@@ -708,12 +708,24 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             def list
-            if (my.deck && confirm("Rearrange the top 5 cards in your deck?")) {
-              list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards in your deck")
-              my.deck.setSubList(0, list)
-            } else if (opp.deck && confirm ("Rearrange the top 5 cards in your opponent's deck?")) {
+            if(!my.deck){
               list=rearrange(opp.deck.subList(0,5), "Rearrange top 5 cards in your opponent's deck")
               opp.deck.setSubList(0, list)
+            }
+            else if(!opp.deck){
+              list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards in your deck")
+              my.deck.setSubList(0, list)
+            }
+            else{
+              def c=choose([1,2],["Your deck", "Your opponent's deck"], "Rearrange the top 5 cards of which player's deck?")
+              if(c==1){
+                list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards in your deck")
+                my.deck.setSubList(0, list)
+              }
+              if(c==2){
+                list=rearrange(opp.deck.subList(0,5), "Rearrange top 5 cards in your opponent's deck")
+                opp.deck.setSubList(0, list)
+              }
             }
           }
         }
