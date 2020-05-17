@@ -622,9 +622,9 @@ public enum UnseenForces implements LogicCardInfo {
           text "If Poliwrath is your Active Pokémon and is Knocked Out by damage from an opponent's attack, the Attacking Pokémon is now Confused."
           delayedA {
             before (KNOCKOUT,self) {
-              if (self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active != null && self.owner.opposite.pbg.active.inPlay) {
                 bc "Spiral Swirl activates"
-                apply CONFUSED, ef.attacker
+                apply CONFUSED, self.owner.opposite.pbg.active
               }
             }
           }
