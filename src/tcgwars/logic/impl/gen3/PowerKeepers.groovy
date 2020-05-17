@@ -2285,7 +2285,7 @@ public enum PowerKeepers implements LogicCardInfo {
               powerUsed()
 
               apply BURNED, opp.active, SRC_ABILITY
-              apply BURNED, self, SRC_ABILITY
+              apply BURNED, my.active, SRC_ABILITY
             }
           }
         }
