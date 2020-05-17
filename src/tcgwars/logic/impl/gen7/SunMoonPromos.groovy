@@ -2358,7 +2358,7 @@ public enum SunMoonPromos implements LogicCardInfo {
                 }
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
-                    if(it.notNoEffect && it.to.self && it.dmg.value){
+                    if(it.notNoEffect && it.to == self && it.dmg.value){
                       it.dmg = hp(0)
                       bc "Swift run GX prevents damage"
                     }
