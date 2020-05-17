@@ -2232,9 +2232,14 @@ public enum HolonPhantoms implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Draw 3 cards. If you discarded a Pokémon that has δ on its card, draw 4 cards instead."
         onPlay {
-          // TODO
+        my.hand.getExcludedList(thisCard).select("Choose a card to discard.").discard().each {
+            draw 3
+          if(it.cardTypes.is(POKEMON) && it.is(DELTA)){
+            draw 1
+          }
         }
         playRequirement{
+          assert my.hand.getExcludedList(thisCard)
         }
       };
       case HOLON_FOSSIL_86:
