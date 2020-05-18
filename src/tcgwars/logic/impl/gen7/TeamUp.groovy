@@ -3286,7 +3286,7 @@ public enum TeamUp implements LogicCardInfo {
             if(choice == 1){
               def tar = opp.all.findAll{it.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)}.select("Choose the pokémon from which discard a Pokémon Tool or Special Energy")
               targeted(tar, Source.TRAINER_CARD) {
-                tar.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY).select("Choose the card to dicard").discard()
+                tar.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY).select("Choose the card to discard").discard()
               }
             }
             else{
