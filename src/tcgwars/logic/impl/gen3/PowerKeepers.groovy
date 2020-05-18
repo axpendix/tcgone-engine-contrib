@@ -692,7 +692,6 @@ public enum PowerKeepers implements LogicCardInfo {
             if (defending.cards.filterByType(TRAINER)) {
               defending.cards.filterByType(TRAINER).discard()
             }
-            damage 20
           }
         }
         move "Dark Burst", {
