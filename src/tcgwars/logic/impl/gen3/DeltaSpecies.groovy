@@ -2706,10 +2706,10 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
           if (choice == 1) {
             if (my.deck) {
-              def tar = my.deck.search { max: 1, {
+              def tar = my.deck.search(max: 1, {
                 it.cardTypes.is(SUPPORTER) &&
                 it.name.contains("Holon")
-              }}.select("Select a Holon Supporter to move to your hand.").moveTo(my.hand)
+              }).select("Select a Holon Supporter to move to your hand.").moveTo(my.hand)
               shuffleDeck()
             } else {
               wcu "Your deck is empty and cannot search for a Holon Supporter."
