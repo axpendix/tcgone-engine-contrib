@@ -363,7 +363,7 @@ public enum ShinyVault implements LogicCardInfo {
       case FISHERMAN_SV83:
       return copy(Breakthrough.FISHERMAN_136, this);
       case GUZMA_SV84:
-      return copy(BurningShadaows.GUZMA_115, this);
+      return copy(BurningShadows.GUZMA_115, this);
       case HIKER_SV85:
       return copy(CelestialStorm.HIKER_133, this);
       case LADY_SV86:
