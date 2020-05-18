@@ -2678,8 +2678,17 @@ public enum DeltaSpecies implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card.If you have less cards in your hand than your opponent, draw cards until you have the same number of cards as your opponent."
         onPlay {
+          toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card to discard.")
+          toDiscard.discard()
+
+          if (opp.hand.size() < my.hand.size()) {
+            def numToDraw = opp.hand.size() - my.hand.size()
+            draw numToDraw
+          }
         }
         playRequirement{
+          def hand = my.hand.getExcludedList(thisCard).size() >= 1
+          assert (hand || my.discard.filterByType(SUPPORTER)) : "One other card in hand is required to play this card."
         }
       };
       case HOLON_TRANSCEIVER_98:
