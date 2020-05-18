@@ -443,7 +443,7 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             damage 30
             afterDamage {
-              attachEnergyFrom(my.discard, self)
+              attachEnergyFrom(basic: true, my.discard, self)
             }
           }
         }
