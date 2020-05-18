@@ -808,6 +808,19 @@ public enum CrystalGuardians implements LogicCardInfo {
       case IGGLYBUFF_21:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
+        pokePower "Baby Evolution", {
+          text "Once during your turn (before your attack), you may put Jigglypuff from your hand onto Igglybuff (this counts as evolving Igglybuff) and remove all damage counters from Igglybuff."
+          actionA {
+            assert my.hand.findAll{it.name.contains("Jigglypuff")} : "There are no Pokémon in your hand to evolve ${self}."
+            checkLastTurn()
+            powerUsed()
+            def tar = my.hand.findAll { it.name.contains("Jigglypuff") }.select()
+            if (tar) {
+              evolve(self, tar.first(), OTHER)
+              heal self.numberOfDamageCounters*10, self
+            }
+          }
+        }
         pokeBody "Hover Lift", {
           text "You pay [C] less to retreat your Jigglypuff, Wigglytuff, Wigglytuff ex, and Igglybuff."
           getterA GET_RETREAT_COST ,{ h->
