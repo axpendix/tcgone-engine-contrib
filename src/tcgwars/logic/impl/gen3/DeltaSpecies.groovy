@@ -2755,7 +2755,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           eff2 = delayed {
             before null, self, Source.ATTACK, {
               if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.energyCount(W)) {
-                bc "Holon Energy [W][P] prevented effect"
+                bc "Holon Energy WP prevented effect"
                 prevent()
               }
             }
