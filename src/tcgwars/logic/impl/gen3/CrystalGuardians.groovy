@@ -2266,10 +2266,8 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost W, W, C
           attackRequirement {}
           onAttack {
-            if (confirm("Hydro Shot - Discard 2 Energies?")) {
-              discardSelfEnergy C,C
-              damage 70, opp.all.select()
-            }
+            discardSelfEnergy C,C
+            damage 70, opp.all.select("Deal 70 damage to which Pokemon?")
           }
         }
       };
