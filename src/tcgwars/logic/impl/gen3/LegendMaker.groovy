@@ -773,7 +773,7 @@ public enum LegendMaker implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert my.deck : "Deck is empty"
-            assert self.cards.findAll { it.name.contains("React Energy") } : "Huntail has React Energy cards attached"
+            assert self.cards.findAll { !it.name.contains("React Energy") } : "Huntail has React Energy cards attached"
             powerUsed()
             def energy = my.deck.search(max: 1, "Select a React Energy card.", {it.name.contains("React Energy")})
             attachEnergy(self, energy)
@@ -2250,8 +2250,17 @@ public enum LegendMaker implements LogicCardInfo {
             h.object = hp(40)
           }
           eff2 = delayed {
-            before BURNED_SPC, null, null, EVOLVE, {
-              prevent()
+            boolean flag = false
+            before EVOLVE, {
+              flag = ef.pokemonToBeEvolved.active && ef.pokemonToBeEvolved.isSPC(BURNED)
+            }
+            after EVOLVE, {
+              if(flag) {
+                bc "Full Flame prevents removing burned when evolved"
+                if(flag) {
+                  apply(BURNED, ef.pokemonToBeEvolved, TRAINER_CARD)
+                }
+              }
             }
           }
         }
