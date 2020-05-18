@@ -1934,8 +1934,9 @@ public enum CrystalGuardians implements LogicCardInfo {
                 }
               }
             }
-            before null, null, Source.ATTACK, {
-              if (self.owner.opposite.pbg.active.topPokemonCard.cardTypes.is(EX) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && ef.target == self.owner) {
+            before null, self, Source.ATTACK, {
+              def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+              if (self.owner.opposite.pbg.active.topPokemonCard.cardTypes.is(EX) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs == self) {
                 bc "$name prevents effect"
                 prevent()
               }
