@@ -1238,6 +1238,7 @@ public enum CosmicEclipse implements LogicCardInfo {
         return evolution (this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
           weakness G
           bwAbility "Vitality Cheer", {
+            def testlist = []
             def target = []
             def source = []
             bg.em().storeObject("Vitality Cheer target", target)
@@ -1247,6 +1248,14 @@ public enum CosmicEclipse implements LogicCardInfo {
               def pcs = h.effect.target
               bc pcs.name
               bc "in getter"
+              testlist.add(pcs)
+              if(testlist.contains(pcs)){
+                bc "listing pokemon works"
+                bg.em().storeObject("teststore", testlist)
+                if(bg.em().retrieveObject("teststore").contains(pcs){
+                  bc"storing lists as objects works"
+                }
+              }
               if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.cardTypes.is(EVOLUTION) && pcs.topPokemonCard.predecessor == "Eevee"){
                 bc pcs.name
                 bc "is eevelution"
