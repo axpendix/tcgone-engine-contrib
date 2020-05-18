@@ -2692,13 +2692,37 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
       };
       case HOLON_TRANSCEIVER_98:
-      return pokemonTool (this) {
+      return itemCard (this) {
         text "Search your deck for a Supporter card that has Holon in its name, show it to your opponent, and put it into your hand. Shuffle your deck afterward. Or, search your discard pile for a Supporter card that has Holon in its name, show it to your opponent, and put it into your hand."
-        onPlay {reason->
+        onPlay {
+          // Choice 1 = Search deck
+          // Choice 2 = Search discard
+          def choice = 1
+          if (!my.discard || !my.discard.findAll {it.cardTypes.is(SUPPORTER) && it.name.contains("Holon")}) {
+            choice = 2
+          }
+          else {
+            choice = choose([1,2],["Search the deck", "Search the Discard pile"], "Where to search for a Supporter card that has Holon in its name?")
+          }
+          if (choice == 1) {
+            if (my.deck) {
+              def tar = my.deck.search { max: 1, {
+                it.cardTypes.is(SUPPORTER) &&
+                it.name.contains("Holon")
+              }}.select("Select a Holon Supporter to move to your hand.").moveTo(my.hand)
+              shuffleDeck()
+            } else {
+              wcu "Your deck is empty and cannot search for a Holon Supporter."
+            }
+          }
+          else {
+            my.discard.findAll {
+              it.cardTypes.is(SUPPORTER) &&
+              it.name.contains("Holon")
+            }.select("Which card to move to hand?").moveTo(my.hand)
+          }
         }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
+        playRequirement {
         }
       };
       case MASTER_BALL_99:
