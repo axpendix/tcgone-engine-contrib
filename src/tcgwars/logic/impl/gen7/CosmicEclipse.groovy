@@ -1238,16 +1238,31 @@ public enum CosmicEclipse implements LogicCardInfo {
         return evolution (this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
           weakness G
           bwAbility "Vitality Cheer", {
-            def list = []
-            bg.em().storeObject("Vitality Cheer", list)
+            def target = []
+            def source = []
+            bg.em().storeObject("Vitality Cheer target", target)
+            bg.em().storeObject("Vitality Cheer source", source)
             text "Your Pokémon-GX in play that evolve from Eevee get +60 HP. You can't apply more than 1 Vitality Cheer Ability at a time."
             getterA (GET_FULL_HP) {h->
               def pcs = h.effect.target
-              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.cardTypes.is(EVOLUTION) && pcs.topPokemonCard.predecessor == "Eevee" && !bg.em().retrieveObject("Vitality Cheer").contains(pcs)) {
-                h.object += hp(60)
-                list = bg.em().retrieveObject("Vitality Cheer")
-                list.add(pcs)
-                bg.em().storeObject("Vitality Cheer", list)
+              bc pcs.name
+              bc "in getter"
+              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.cardTypes.is(EVOLUTION) && pcs.topPokemonCard.predecessor == "Eevee"){
+                if(!bg.em.retrieveObject("Vitality Cheer target").contains(pcs)){
+                  bc pcs.name
+                  bc"Added to target list"
+                  h.object += hp(60)
+                  target = bg.em().retrieveObject("Vitality Cheer target")
+                  target.add(pcs)
+                  bg.em().storeObject("Vitality Cheer target", target)
+                  source = bg.em().retrieveObject("Vitality Cheer source")
+                  source.add(self)
+                  bg.em().storeObject("Vitality Cheer source", source)
+                } else if(bg.em().retrieveObject("Vitality Cheer source").get(bg.em().retrieveObject("Vitality Cheer source").indexOf(pcs)) == self){
+                  h.object += hp(60)
+                  bc pcs.name
+                  bc "Has only one source"
+                }
               }
             }
           }
