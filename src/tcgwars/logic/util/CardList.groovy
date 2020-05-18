@@ -62,6 +62,10 @@ public class CardList extends ArrayList<Card> {
     return new CardList(this);
   }
 
+  List<String> getFullNames(){
+    this.collect {it.fullName}
+  }
+
   String getPersistentName() {
     return persistentName
   }

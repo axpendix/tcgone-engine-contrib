@@ -1,5 +1,6 @@
 package tcgwars.logic.util;
 
+import com.google.common.collect.ImmutableList;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import tcgwars.common.TWCommon;
@@ -127,48 +128,27 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return set;
   }
 
-  private List<Type> lastAggregatedTypeImages = new ArrayList<>();
-  private LUtils.ChangeDetector lastAggregatedTypeImagesChangeDetector = new LUtils.ChangeDetector();
+  private List<Type> energyTypeImages = Collections.emptyList();
 
-  public List<Type> getAggregatedTypeImages(){
-    if(Battleground.getInstance() == null) return lastAggregatedTypeImages;
-    boolean hadError = false;
-    List<EnergyCard> energyCards = new ArrayList<>();
-    for (Iterator<Card> iterator = cards().iterator(); iterator.hasNext();) {
-      try {
-        Card card = iterator.next();
-        if (card.getCardTypes().isEnergy()) {
-          energyCards.add(card.asEnergyCard());
-        }
-      } catch (java.util.ConcurrentModificationException e) { // a race condition with backend, just ignore it and it'll catch up
-        hadError = true;
-      } catch (Exception e){
-        LUtils.logger.error("error while getting cards", e);
-        hadError = true;
+  // can be called from UI
+  public List<Type> getEnergyTypeImages(){
+    return energyTypeImages;
+  }
+
+  // can be ONLY called inside Future thus no concurrent modification can occur
+  public void generateEnergyTypeImages() {
+    List<EnergyCard> energyCards = getEnergyCards();
+    ImmutableList.Builder<Type> listBuilder = ImmutableList.builder();
+    for (EnergyCard card : energyCards) {
+      List<Type> typeImagesOverride = card.getTypeImagesOverride();
+      if(typeImagesOverride != null){
+        listBuilder.addAll(typeImagesOverride);
+        continue;
       }
+      List<Set<Type>> energyTypes = card.getEffectiveEnergyTypes();
+      listBuilder.addAll(TWCommon.generateTypeImages(energyTypes));
     }
-    if(!hadError && lastAggregatedTypeImagesChangeDetector.isChanged(energyCards)){
-      List<Type> list = new ArrayList<>();
-      for (EnergyCard card : energyCards) {
-        try {
-          List<Type> typeImagesOverride = card.getTypeImagesOverride();
-          if(typeImagesOverride != null){
-            list.addAll(typeImagesOverride);
-            continue;
-          }
-          List<Set<Type>> energyTypes = TcgStatics.bg().em().activateGetter(new GetEnergyTypes(card, this));
-          list.addAll(TWCommon.generateTypeImages(energyTypes));
-        } catch (Exception e) {
-          try {
-            list.addAll(TWCommon.generateTypeImages(card.asEnergyCard().getEnergyTypes()));
-          } catch (Exception e2) {
-            LUtils.logger.error("error while generating type images", e2);
-          }
-        }
-      }
-      lastAggregatedTypeImages = list;
-    }
-    return lastAggregatedTypeImages;
+    energyTypeImages = listBuilder.build();
   }
 
   public List<EnergyCard> getEnergyCards(){
