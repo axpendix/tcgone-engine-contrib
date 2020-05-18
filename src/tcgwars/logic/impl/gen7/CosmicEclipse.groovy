@@ -1248,17 +1248,20 @@ public enum CosmicEclipse implements LogicCardInfo {
               bc pcs.name
               bc "in getter"
               if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.cardTypes.is(EVOLUTION) && pcs.topPokemonCard.predecessor == "Eevee"){
-                if(!bg.em.retrieveObject("Vitality Cheer target").contains(pcs)){
+                bc pcs.name
+                bc "is eevelution"
+                target = bg.em().retrieveObject("Vitality Cheer target")
+                source = bg.em().retrieveObject("Vitality Cheer source")
+                bc target.contains(pcs).toString
+                if(!target.contains(pcs)){
                   bc pcs.name
                   bc"Added to target list"
                   h.object += hp(60)
-                  target = bg.em().retrieveObject("Vitality Cheer target")
                   target.add(pcs)
                   bg.em().storeObject("Vitality Cheer target", target)
-                  source = bg.em().retrieveObject("Vitality Cheer source")
                   source.add(self)
                   bg.em().storeObject("Vitality Cheer source", source)
-                } else if(bg.em().retrieveObject("Vitality Cheer source").get(bg.em().retrieveObject("Vitality Cheer source").indexOf(pcs)) == self){
+                } else if(source.get(target.indexOf(pcs)) == self){
                   h.object += hp(60)
                   bc pcs.name
                   bc "Has only one source"
