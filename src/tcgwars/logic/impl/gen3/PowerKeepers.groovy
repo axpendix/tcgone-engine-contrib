@@ -2082,7 +2082,7 @@ public enum PowerKeepers implements LogicCardInfo {
                     def maxDiscard = Math.min(4, my.hand.size())
                     def toDiscard = self.owner.pbg.hand.oppSelect(min: 0, max: maxDiscard, "For each card discarded, the damage Flygon ex takes will reduced by 10.")
                     def reductionAmount = toDiscard.size() * 10
-
+                    toDiscard.discard()
                     bc "Psychic Protector -$reductionAmount"
                     it.dmg -= hp(reductionAmount)
                   }
