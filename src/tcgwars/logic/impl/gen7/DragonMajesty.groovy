@@ -239,8 +239,8 @@ public enum DragonMajesty implements LogicCardInfo {
           bwAbility "Natural Cure" , {
             text "Whenever you attach an Energy card from your hand to this Pokémon, remove all Special Conditions from it."
             delayedA {
-              before ATTACH_ENERGY, self {
-                if (ef.reason == PLAY_FROM_HAND) {
+              after ATTACH_ENERGY, self, {
+                if(ef.reason==PLAY_FROM_HAND && ef.card.cardTypes.is(ENERGY)){
                   clearSpecialCondition(self, SRC_ABILITY)
                 }
               }
