@@ -2316,7 +2316,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "After your opponent's Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
           delayedA {
             after USE_POKEPOWER, {
-              if (ef.pcs.owner == self.owner.opposite)
+              if (ef.pcs.owner != self.owner)
                 directDamage 20, ef.pcs
             }
           }
