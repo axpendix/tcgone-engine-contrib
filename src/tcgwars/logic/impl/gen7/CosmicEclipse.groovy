@@ -1238,12 +1238,16 @@ public enum CosmicEclipse implements LogicCardInfo {
         return evolution (this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
           weakness G
           bwAbility "Vitality Cheer", {
+            def list []
+            bg.em().storeObject("Vitality Cheer", list)
             text "Your Pokémon-GX in play that evolve from Eevee get +60 HP. You can't apply more than 1 Vitality Cheer Ability at a time."
             getterA (GET_FULL_HP) {h->
               def pcs = h.effect.target
-              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.cardTypes.is(EVOLUTION) && pcs.topPokemonCard.predecessor == "Eevee" && bg.em().retrieveObject("Vitality Cheer") != bg.turnCount) {
+              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.cardTypes.is(EVOLUTION) && pcs.topPokemonCard.predecessor == "Eevee" && bg.em().retrieveObject("Vitality Cheer").contains(pcs)) {
                 h.object += hp(60)
-                bg.em().storeObject("Vitality Cheer", bg.turnCount)
+                list = bg.em().retrieveObject("Vitality Cheer")
+                list.add(pcs)
+                bg.em().storeObject("Vitality Cheer", list)
               }
             }
           }
