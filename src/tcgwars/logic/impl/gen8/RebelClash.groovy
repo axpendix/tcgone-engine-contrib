@@ -3243,6 +3243,7 @@ public enum RebelClash implements LogicCardInfo {
       case COPPERAJAH_V_136:
       return basic (this, hp:HP220, type:M, retreatCost:4) {
         weakness R
+        resistance G, MINUS30
         move "Adamantine Press", {
           text "90 damage. During your opponent’s next turn, this Pokemon takes 30 less damage from attacks."
           energyCost M, M, C
