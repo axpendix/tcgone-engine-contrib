@@ -1238,42 +1238,49 @@ public enum CosmicEclipse implements LogicCardInfo {
         return evolution (this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
           weakness G
           bwAbility "Vitality Cheer", {
-            def testlist = []
             def target = []
             def source = []
-            bg.em().storeObject("Vitality Cheer target", target)
-            bg.em().storeObject("Vitality Cheer source", source)
+            def iterator = 0
             text "Your Pokémon-GX in play that evolve from Eevee get +60 HP. You can't apply more than 1 Vitality Cheer Ability at a time."
             getterA (GET_FULL_HP) {h->
               def pcs = h.effect.target
               bc pcs.name
               bc "in getter"
-              testlist.add(pcs)
-              if(testlist.contains(pcs)){
-                bc "listing pokemon works"
-                bg.em().storeObject("teststore", testlist)
-                if(bg.em().retrieveObject("teststore").contains(pcs){
-                  bc"storing lists as objects works"
-                }
-              }
               if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.cardTypes.is(EVOLUTION) && pcs.topPokemonCard.predecessor == "Eevee"){
                 bc pcs.name
                 bc "is eevelution"
-                target = bg.em().retrieveObject("Vitality Cheer target")
-                source = bg.em().retrieveObject("Vitality Cheer source")
-                bc target.contains(pcs).toString
-                if(!target.contains(pcs)){
+                target = []
+                iterator = 0
+                while(bg.em().retrieveObject("Vitality_Cheer_target_${iterator}") != null){
+                  target.add(bg.em().retrieveObject("Vitality_Cheer_target_${iterator}"))
+                  iterator +=1
+                }
+                source = []
+                iterator = 0
+                while(bg.em().retrieveObject("Vitality_Cheer_source_${iterator}") != null){
+                  source.add(bg.em().retrieveObject("Vitality_Cheer_source_${iterator}"))
+                  iterator +=1
+                }
+                if(!target.contains("${pcs.hashCode()}")){
                   bc pcs.name
                   bc"Added to target list"
                   h.object += hp(60)
-                  target.add(pcs)
-                  bg.em().storeObject("Vitality Cheer target", target)
-                  source.add(self)
-                  bg.em().storeObject("Vitality Cheer source", source)
-                } else if(source.get(target.indexOf(pcs)) == self){
-                  h.object += hp(60)
-                  bc pcs.name
-                  bc "Has only one source"
+                  iterator = 0
+                  while(bg.em().retrieveObject("Vitality_Cheer_target_${iterator}") != null){
+                    iterator +=1
+                  }
+                  bg.em().storeObject("Vitality_Cheer_target_${iterator}", "${pcs.hashCode()}")
+                  bg.em().storeObject("Vitality_Cheer_source_${iterator}", "${self.hashCode()}")
+                } else{
+                  iterator = 0
+                  while(bg.em().retrieveObject("Vitality_Cheer_target_${iterator}") != "${pcs.hashCode()}"){
+                    iterator +=1
+                  }
+                  if(bg.em().retrieveObject("Vitality_Cheer_source_${iterator}") == "${self.hashCode()}"){
+                    h.object += hp(60)
+                    bc pcs.name
+                    bc "Has only one source"
+                  }
                 }
               }
             }
