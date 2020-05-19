@@ -69,7 +69,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
   RAYQUAZA_SWSH29 ("Rayquaza", 29, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
   COPPERAJAH_V_SWSH30 ("Copperajah V", 30, Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
   MORPEKO_SWSH31 ("Morpeko", 31, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  SNORLAX_SWSH32 ("Snorlax", 32, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  SNORLAX_SWSH32 ("Snorlax", 32, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]);
 ;
     
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
