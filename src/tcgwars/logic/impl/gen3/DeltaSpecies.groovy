@@ -1080,13 +1080,14 @@ public enum DeltaSpecies implements LogicCardInfo {
             checkLastTurn()
             powerUsed()
 
-            def toPrize = my.hand.select(hidden: false, "Card to put into Prizes")
-            my.prizeCardSet.set(my.prizeCardSet.indexOf(toPrize.first()), thisCard)
-            my.hand.remove(toPrize)
-            my.prizeCardSet.shuffle()
+            def newPrize = my.hand.select(hidden: false, "Card to put into Prizes")
 
-            def toHand = my.prizeCardSet.select(hidden: true, "Prize to move to Hand")
-            my.hand.add(toHand.first())
+            def tar = my.prizeCardSet.faceDownCards.select(hidden: true, "Choose a Prize card to replace with one in your hand.").first()
+            my.hand.add(tar)
+
+            def indexOfOldPrize = my.prizeCardSet.indexOf(tar)
+            my.prizeCardSet.set(indexOfOldPrize, newPrize)
+            my.hand.remove(newPrize)
           }
         }
         move "Psychic Option", {
