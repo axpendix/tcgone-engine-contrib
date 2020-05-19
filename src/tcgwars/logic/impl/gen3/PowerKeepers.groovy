@@ -2173,9 +2173,8 @@ public enum PowerKeepers implements LogicCardInfo {
             assert opp.hand : "Opponent's hand is empty"
           }
           onAttack {
-            // TODO
             opp.hand.showToMe("Opponent's hand")
-            def tmp = opp.hand.filterByType(BASIC,STAGE1,STAGE2).select(min:0, max:1, "Select a Pokémon and use one of that Pokémon’s attacks as this attack.")
+            def tmp = opp.hand.filterByType(POKEMON).select(max:1, "Select a Pokémon and use one of that Pokémon’s attacks as this attack.")
             if (tmp) {
               def card = tmp.first()
               bc "$card was chosen"
@@ -2183,7 +2182,7 @@ public enum PowerKeepers implements LogicCardInfo {
               if (moves) {
                 def move = choose(moves, "Choose attack")
                 bc "$move was chosen"
-                def bef=blockingEffect(BETWEEN_TURNS)
+                def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
                 attack (move as Move)
                 bef.unregisterItself(bg().em())
               }
