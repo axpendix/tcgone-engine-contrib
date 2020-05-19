@@ -2586,6 +2586,7 @@ public enum SunMoonPromos implements LogicCardInfo {
                   bc "Cursed Body activates."
                   apply CONFUSED, it.from, SRC_ABILITY
                 }
+              }
             }
           }
           move "Fiery Bone", {
