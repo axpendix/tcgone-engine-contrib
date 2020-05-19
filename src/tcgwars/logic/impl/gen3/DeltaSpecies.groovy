@@ -2713,7 +2713,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           toDiscard.discard()
 
           if (opp.hand.size() > my.hand.size()) {
-            def numToDraw = opp.hand.size() - my.hand.size()
+            def numToDraw = opp.hand.size() - my.hand.size() + 1
             draw numToDraw
           }
         }
