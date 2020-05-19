@@ -743,7 +743,7 @@ public enum SunMoonPromos implements LogicCardInfo {
         return copy (SunMoon.INCINEROAR_GX_27, this)
       case PRIMARINA_GX_SM39:
         return copy (SunMoon.PRIMARINA_GX_42, this)
-      case JANMGO_O_SM40:
+      case JANGMO_O_SM40:
         return basic (this, hp:HP060, type:DRAGON, retreatCost:2) {
           weakness FAIRY
           move "Iron Defense", {
