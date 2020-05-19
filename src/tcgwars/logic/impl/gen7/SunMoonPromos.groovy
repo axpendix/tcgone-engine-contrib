@@ -2677,22 +2677,22 @@ public enum SunMoonPromos implements LogicCardInfo {
         return copy(UnifiedMinds.GARCHOMP_GIRATINA_GX_146, this);
       case DETECTIVE_PIKACHU_SM194:
         return basic (this, hp:HP090, type:L, retreatCost:2) {
-				weakness F
-				resistance M, MINUS20
-				move "Brilliant Deduction", {
-					text "Look at the top 4 cards of your deck and put 1 of them into your hand. Shuffle the other cards back into your deck."
-					energyCost L
-					attackRequirement {
+        weakness F
+        resistance M, MINUS20
+        move "Brilliant Deduction", {
+          text "Look at the top 4 cards of your deck and put 1 of them into your hand. Shuffle the other cards back into your deck."
+          energyCost L
+          attackRequirement {
             assert my.deck : "Your deck is empty."
           }
-					onAttack {
+          onAttack {
             def top4 = my.deck.subList(0,4)
-						top4.showToMe("The top 4 cards of your deck.")
+            top4.showToMe("The top 4 cards of your deck.")
             top4.select(max:1,"Choose a card to put in your hand.").moveTo(my.hand)
             shuffleDeck()
-					  }
-				  }
-			  };
+            }
+          }
+        };
       case CHARIZARD_GX_SM195:
         return evolution (this, from:"Charmeleon", hp:HP250, type:R, retreatCost:4) {
           weakness W
@@ -2738,39 +2738,39 @@ public enum SunMoonPromos implements LogicCardInfo {
           }
         };
       case MEWTWO_GX_SM196:
-			  return basic (this, hp:HP190, type:P, retreatCost:2) {
-				weakness P
-				move "Telekinesis", {
-					text "This attack does 50 damage to 1 of your opponent's Pokémon. This damage isn't affected by Weakness or Resistance."
-					energyCost P, C
-					onAttack {
-						noWrDamage 50, opp.all.select()
-					}
-				}
-				move "Reigning Pulse", {
-					text "120 damage. Your opponent’s Active Pokémon is now Confused."
-					energyCost P, P, C, C
-					onAttack {
-						damage 120
+        return basic (this, hp:HP190, type:P, retreatCost:2) {
+        weakness P
+        move "Telekinesis", {
+          text "This attack does 50 damage to 1 of your opponent's Pokémon. This damage isn't affected by Weakness or Resistance."
+          energyCost P, C
+          onAttack {
+            noWrDamage 50, opp.all.select()
+          }
+        }
+        move "Reigning Pulse", {
+          text "120 damage. Your opponent’s Active Pokémon is now Confused."
+          energyCost P, P, C, C
+          onAttack {
+            damage 120
             apply CONFUSED
-					}
-				}
+          }
+        }
         move "Psychic Nova GX", {
-					text "180 damage. Prevent all damage done to this Pokémon by attacks during your opponent's next turn. (You can't use more than 1 GX attack in a game.)"
-					energyCost P, P, C, C
-					attackRequirement {
+          text "180 damage. Prevent all damage done to this Pokémon by attacks during your opponent's next turn. (You can't use more than 1 GX attack in a game.)"
+          energyCost P, P, C, C
+          attackRequirement {
             gxCheck()
           }
-					onAttack {
+          onAttack {
             gxPerform()
-						damage 180
+            damage 180
             preventAllEffectsNextTurn()
-					  }
-				  }
-			  };
+            }
+          }
+        };
       case GRENINJA_GX_SM197:
-			  return evolution (this, from:"Frogadier", hp:HP230, type:W, retreatCost:1) {
-				weakness G
+        return evolution (this, from:"Frogadier", hp:HP230, type:W, retreatCost:1) {
+        weakness G
         globalAbility {Card thisCard->
           def lastTurn=0
           action("Elusive Master", [TargetPlayer.fromPlayerType(thisCard.player)]) {
@@ -2786,29 +2786,29 @@ public enum SunMoonPromos implements LogicCardInfo {
             draw 3
           }
         }
-				move "Mist Slash", {
-					text "130 damage. This attack's damage isn't affected by Weakness, Resistance, or any other effects on your opponent's Active Pokémon."
-					energyCost W, C
-					attackRequirement {}
-					onAttack {
+        move "Mist Slash", {
+          text "130 damage. This attack's damage isn't affected by Weakness, Resistance, or any other effects on your opponent's Active Pokémon."
+          energyCost W, C
+          attackRequirement {}
+          onAttack {
             swiftDamage(130, defending)
-					}
-				}
-				move "Dark Mist GX", {
-					text "Put 1 of your opponent's Benched Pokémon and all cards attached to it into your opponent’s hand. (You can’t use more than 1 GX attack in a game.)"
-					energyCost W
-					attackRequirement {
+          }
+        }
+        move "Dark Mist GX", {
+          text "Put 1 of your opponent's Benched Pokémon and all cards attached to it into your opponent’s hand. (You can’t use more than 1 GX attack in a game.)"
+          energyCost W
+          attackRequirement {
             gxCheck()
             assert opp.bench.notEmpty
           }
-					onAttack {
+          onAttack {
             gxPerform()
             def pcs = opp.bench.select()
             pcs.cards.moveTo(opp.hand)
             removePCS(pcs)
-				  	}
-				  }
-			  };
+            }
+          }
+        };
       case BULBASAUR_SM198:
         return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -3010,48 +3010,48 @@ public enum SunMoonPromos implements LogicCardInfo {
         return copy(CosmicEclipse.BLACEPHALON_104, this);
       case MISMAGIUS_SM222:
       return evolution (this, from:"Misdreavus", hp:HP110, type:P, retreatCost:1) {
-				weakness D
-				resistance F, MINUS20
-				move "Psywave", {
-					text "20x damage. This attack does 20 damage times the amount of Energy attached to your opponent's Active Pokémon."
-					energyCost P
-					onAttack {
-						damage 20*opp.active.cards.energyCount(C)
-					}
-				}
-				move "Astonish", {
-					text "40 damage. Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck."
-					energyCost C, C
-					onAttack {
-						damage 40
+        weakness D
+        resistance F, MINUS20
+        move "Psywave", {
+          text "20x damage. This attack does 20 damage times the amount of Energy attached to your opponent's Active Pokémon."
+          energyCost P
+          onAttack {
+            damage 20*opp.active.cards.energyCount(C)
+          }
+        }
+        move "Astonish", {
+          text "40 damage. Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck."
+          energyCost C, C
+          onAttack {
+            damage 40
             astonish()
-					}
-				}
-			};
+          }
+        }
+      };
       case TERRAKION_SM223:
         return copy(UnifiedMinds.TERRAKION_122, this);
       case CELEBI_SM224:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
-				weakness P
-				move "Call for Greatness", {
-					text "Search your deck for up to 3 Pokémon-GX with different names, reveal them, and put them into your hand. Then, shuffle your deck."
-					energyCost C
-					attackRequirement {
+        weakness P
+        move "Call for Greatness", {
+          text "Search your deck for up to 3 Pokémon-GX with different names, reveal them, and put them into your hand. Then, shuffle your deck."
+          energyCost C
+          attackRequirement {
             assert my.deck : "Your deck is empty."
           }
-					onAttack {
-						// TODO
-					}
-				}
-				move "Psy Bolt", {
-					text "40 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
-					energyCost P, C, C
-					onAttack {
-						damage 40
+          onAttack {
+            // TODO
+          }
+        }
+        move "Psy Bolt", {
+          text "40 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
+          energyCost P, C, C
+          onAttack {
+            damage 40
             flip { apply PARALYZED }
-					}
-				}
-			};
+          }
+        }
+      };
       case VICTINI_SM225:
         return copy(UnifiedMinds.VICTINI_26, this);
       case CHARIZARD_SM226:
