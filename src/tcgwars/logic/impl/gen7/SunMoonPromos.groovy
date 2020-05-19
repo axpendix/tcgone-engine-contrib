@@ -2582,7 +2582,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if (it.to == self && self.active && self.types.contains(R) && it.dmg.value && bg.currentTurn == self.owner.opposite) {
                   bc "Cursed Body activates."
-                  apply CONFUSED
+                  apply CONFUSED, it.from, SRC_ABILITY
                 }
             }
           }
