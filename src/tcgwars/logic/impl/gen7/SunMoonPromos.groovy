@@ -1562,7 +1562,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
-      case ASHS_PIKACHU_SM108:
+      case ASH_S_PIKACHU_SM108:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
           resistance METAL, MINUS20
@@ -1587,7 +1587,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
-      case ASHS_PIKACHU_SM109:
+      case ASH_S_PIKACHU_SM109:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
           resistance METAL, MINUS20
@@ -1607,7 +1607,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
-      case ASHS_PIKACHU_SM110:
+      case ASH_S_PIKACHU_SM110:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
           resistance METAL, MINUS20
@@ -1627,7 +1627,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
-      case ASHS_PIKACHU_SM111:
+      case ASH_S_PIKACHU_SM111:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
           resistance METAL, MINUS20
@@ -1648,7 +1648,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
-      case ASHS_PIKACHU_SM112:
+      case ASH_S_PIKACHU_SM112:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
           resistance METAL, MINUS20
@@ -1668,7 +1668,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
-      case ASHS_PIKACHU_SM113:
+      case ASH_S_PIKACHU_SM113:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
           resistance METAL, MINUS20
@@ -1687,7 +1687,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
-      case ASHS_PIKACHU_SM114:
+      case ASH_S_PIKACHU_SM114:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
           resistance METAL, MINUS20
