@@ -773,7 +773,7 @@ public enum LegendMaker implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert my.deck : "Deck is empty"
-            assert self.cards.findAll { !it.name.contains("React Energy") } : "Huntail has React Energy cards attached"
+            assert self.cards.findAll { it.name.contains("React Energy") }.size() == 0 : "Huntail has React Energy cards attached"
             powerUsed()
 
             def energy = my.deck.search(max: 1, "Select a React Energy card.", {it.name.contains("React Energy")}).first()
