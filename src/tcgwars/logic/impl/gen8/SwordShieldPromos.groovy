@@ -126,70 +126,70 @@ public enum SwordShieldPromos implements LogicCardInfo {
     switch (this) {
       case GROOKEY_SWSH01:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
-				weakness R
-				move "Branch Poke", {
-					text "30 damage."
-					energyCost G, C
-					onAttack {
-						damage 30
-					}
-				}
-			};
+        weakness R
+        move "Branch Poke", {
+          text "30 damage."
+          energyCost G, C
+          onAttack {
+            damage 30
+          }
+        }
+      };
       case SCORBUNNY_SWSH02:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
-				weakness W
-				move "Super Singe", {
-					text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Burned."
-					energyCost R
-					onAttack {
-						damage 30
+        weakness W
+        move "Super Singe", {
+          text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Burned."
+          energyCost R
+          onAttack {
+            damage 30
             flip { apply BURNED }
-					}
-				}
-			};
+          }
+        }
+      };
       case SOBBLE_SWSH03:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
-				weakness L
-				move "Bind", {
-					text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
-					energyCost W, C
-					onAttack {
-						damage 20
+        weakness L
+        move "Bind", {
+          text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+          energyCost W, C
+          onAttack {
+            damage 20
             flip { apply PARALYZED }
-					}
-				}
-			};
+          }
+        }
+      };
       case MEOWTH_V_SWSH04:
       return basic (this, hp:HP180, type:C, retreatCost:2) {
-				weakness F
-				move "Pay Day", {
-					text "30 damage. Draw a card."
-					energyCost C
-					onAttack {
-						damage 30
+        weakness F
+        move "Pay Day", {
+          text "30 damage. Draw a card."
+          energyCost C
+          onAttack {
+            damage 30
             draw 1
-					}
-				}
-				move "Slashing Claw", {
-					text "130 damage."
-					energyCost C, C, C
-					onAttack {
-						damage 130
-					}
-				}
-			};
+          }
+        }
+        move "Slashing Claw", {
+          text "130 damage."
+          energyCost C, C, C
+          onAttack {
+            damage 130
+          }
+        }
+      };
       case MEOWTH_VMAX_SWSH05:
       return evolution (this, from:"Meowth V", hp:HP300, type:C, retreatCost:2) {
-				weakness F
-				move "G-Max Gold Rush", {
-					text "200 damage. Draw 3 cards."
-					energyCost C, C, C, C
-					onAttack {
-						damage 200
+        weakness F
+        move "G-Max Gold Rush", {
+          text "200 damage. Draw 3 cards."
+          energyCost C, C, C, C
+          onAttack {
+            damage 200
             draw 3
-					}
-				}
-			};
+          }
+        }
+      };
       case RILLABOOM_SWSH06:
       return copy (SwordShield.RILLABOOM_14, this);
       case FROSMOTH_SWSH07:
@@ -200,63 +200,63 @@ public enum SwordShieldPromos implements LogicCardInfo {
      return copy (SwordShield.CINCCINO_147, this);
       case GOSSIFLEUR_SWSH10:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
-				weakness R
-				move "Sing", {
-					text "Your opponent's Active Pokémon is now Asleep."
-					energyCost C
-					onAttack {
-						apply SLEEP
-					}
-				}
-			};
+        weakness R
+        move "Sing", {
+          text "Your opponent's Active Pokémon is now Asleep."
+          energyCost C
+          onAttack {
+            apply SLEEP
+          }
+        }
+      };
       case WOOLOO_SWSH11:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
-				weakness F
-				move "Defense Curl", {
-					text "Flip a coin. If heads, prevent all damage done to this Pokémon by attacks during your opponent's next turn."
-					energyCost C
-					onAttack {
-						flip { preventAllDamageNextTurn() }
-					}
-				}
-				move "Headbutt", {
-					text "20 damage."
-					onAttack {
-						damage 20
-					}
-				}
-			};
+        weakness F
+        move "Defense Curl", {
+          text "Flip a coin. If heads, prevent all damage done to this Pokémon by attacks during your opponent's next turn."
+          energyCost C
+          onAttack {
+            flip { preventAllDamageNextTurn() }
+          }
+        }
+        move "Headbutt", {
+          text "20 damage."
+          onAttack {
+            damage 20
+          }
+        }
+      };
       case MORPEKO_SWSH12:
       return basic (this, hp:HP080, type:L, retreatCost:1) {
-				weakness F
-				move "Thunder Shock", {
-					text "60 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
-					energyCost L, C, C
-					onAttack {
-						damage 60
+        weakness F
+        move "Thunder Shock", {
+          text "60 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+          energyCost L, C, C
+          onAttack {
+            damage 60
             flip { apply PARALYZED }
-					}
-				}
-			};
+          }
+        }
+      };
       case GALARIAN_PONYTA_SWSH13:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
-				weakness D
-				resistance F, MINUS30
-				move "Heal Pulse", {
-					text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
-					energyCost C
-					onAttack {
-						flip { apply PARALYZED }
-					}
-				}
-				move "Flop", {
-					text "20 damage."
-					energyCost P, C
-					onAttack {
-						damage 20
-					}
-				}
-			};
+        weakness D
+        resistance F, MINUS30
+        move "Heal Pulse", {
+          text "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+          energyCost C
+          onAttack {
+            flip { apply PARALYZED }
+          }
+        }
+        move "Flop", {
+          text "20 damage."
+          energyCost P, C
+          onAttack {
+            damage 20
+          }
+        }
+      };
       case RILLABOOM_V_SWSH14:
       return copy (RebelClash.RILLABOOM_V_17, this);
       case CINDERACE_V_SWSH15:
@@ -265,67 +265,67 @@ public enum SwordShieldPromos implements LogicCardInfo {
       return copy (RebelClash.INTELEON_V_49, this);
       case TOXTRICITY_V_SWSH17:
       return basic (this, hp:HP210, type:L, retreatCost:2) {
-				weakness F
-				move "Energize", {
-					text "Attach a [L] Energy card from your discard pile to this Pokémon."
-					energyCost C
-					attackRequirement {
-          	assert my.discard.filterByEnergyType(L) : "There is no [L] Energy in the discard pile."
+        weakness F
+        move "Energize", {
+          text "Attach a [L] Energy card from your discard pile to this Pokémon."
+          energyCost C
+          attackRequirement {
+            assert my.discard.filterByEnergyType(L) : "There is no [L] Energy in the discard pile."
           }
-					onAttack {
-						attachEnergyFrom(basic: true, type: L, my.discard, self)
-					}
-				}
-				move "Venom Slap", {
-					text "120 damage. Your opponent's Active Pokémon is now Poisoned."
-					energyCost L, L, C
-					onAttack {
-						damage 120
+          onAttack {
+            attachEnergyFrom(basic: true, type: L, my.discard, self)
+          }
+        }
+        move "Venom Slap", {
+          text "120 damage. Your opponent's Active Pokémon is now Poisoned."
+          energyCost L, L, C
+          onAttack {
+            damage 120
             apply POISONED
-					}
-				}
-			};
+          }
+        }
+      };
       case ZACIAN_V_SWSH18:
       return copy (SwordShield.ZACIAN_V_138, this);
       case ZAMAZENTA_V_SWSH19:
       return copy (SwordShield.ZAMAZENTA_V_139, this);
       case PIKACHU_SWSH20:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
-				weakness F
-				move "Iron Tail", {
-					text "30x damage. Flip a coin until you get tails. This attack does 30 damage for each heads."
-					energyCost C, C
-					onAttack {
-						flipUntilTails { damage 30 }
-					}
-				}
-				move "Electro Ball", {
-					text "60 damage. "
-					energyCost L, L, C
-					onAttack {
-						damage 60
-					}
-				}
-			};
+        weakness F
+        move "Iron Tail", {
+          text "30x damage. Flip a coin until you get tails. This attack does 30 damage for each heads."
+          energyCost C, C
+          onAttack {
+            flipUntilTails { damage 30 }
+          }
+        }
+        move "Electro Ball", {
+          text "60 damage. "
+          energyCost L, L, C
+          onAttack {
+            damage 60
+          }
+        }
+      };
       case POLTEAGEIST_V_SWSH21:
       return basic (this, hp:HP170, type:P, retreatCost:1) {
-				weakness D
-				resistance F, MINUS30
-				bwAbility "Teapot of Surprises", {
-					text "If this Pokémon is in the Active Spot and is damaged by an opponent's attack (even if it is Knocked Out), choose a random card from your opponent's hand. Your opponent reveals that card and puts it on the bottom of their deck."
-					actionA {
+        weakness D
+        resistance F, MINUS30
+        bwAbility "Teapot of Surprises", {
+          text "If this Pokémon is in the Active Spot and is damaged by an opponent's attack (even if it is Knocked Out), choose a random card from your opponent's hand. Your opponent reveals that card and puts it on the bottom of their deck."
+          actionA {
             // TODO
-					}
-				}
-				move "Mind Bend", {
-					text "100 damage. Your opponent's Active Pokémon is now Confused."
-					energyCost P, C, C
-					onAttack {
-						damage 100
+          }
+        }
+        move "Mind Bend", {
+          text "100 damage. Your opponent's Active Pokémon is now Confused."
+          energyCost P, C, C
+          onAttack {
+            damage 100
             apply CONFUSED
-					}
-				}
-			};
+          }
+        }
+      };
       case FLAPPLE_SWSH22:
       return copy (RebelClash.FLAPPLE_22, this);
       case LUXRAY_SWSH23:
@@ -340,66 +340,66 @@ public enum SwordShieldPromos implements LogicCardInfo {
       return copy (SwordShield.NOCTOWL_144, this);
       case DURALUDON_SWSH28:
       return basic (this, hp:HP130, type:M, retreatCost:2) {
-				weakness R
-				resistance G, MINUS30
-				move "Metal Claw", {
-					text "70 damage."
-					energyCost M, C, C
-					onAttack {
-						damage 70
-					}
-				}
-				move "Steel Beam", {
-					text "150 damage. This Pokémon also does 40 damage to itself."
-					energyCost M, C, C, C
-					onAttack {
+        weakness R
+        resistance G, MINUS30
+        move "Metal Claw", {
+          text "70 damage."
+          energyCost M, C, C
+          onAttack {
+            damage 70
+          }
+        }
+        move "Steel Beam", {
+          text "150 damage. This Pokémon also does 40 damage to itself."
+          energyCost M, C, C, C
+          onAttack {
             damage 150
             damage 40, self
-					}
-				}
-			};
+          }
+        }
+      };
       case RAYQUAZA_SWSH29:
       return basic (this, hp:HP130, type:C, retreatCost:2) {
-				weakness L
-				resistance F, MINUS30
-				move "Jaw Lock", {
-					text "30 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
-					energyCost C, C
-					onAttack {
-						damage 30
+        weakness L
+        resistance F, MINUS30
+        move "Jaw Lock", {
+          text "30 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
+          energyCost C, C
+          onAttack {
+            damage 30
             cantRetreat defending
-					}
-				}
-				move "Power Blast", {
-					text "120 damage. Discard an Energy from this Pokémon."
-					energyCost C, C, C
-					onAttack {
-						damage 120
+          }
+        }
+        move "Power Blast", {
+          text "120 damage. Discard an Energy from this Pokémon."
+          energyCost C, C, C
+          onAttack {
+            damage 120
             discardSelfEnergy C
-					}
-				}
-			};
+          }
+        }
+      };
       case COPPERAJAH_V_SWSH30:
       return copy (RebelClash.COPPERAJAH_V_136, this);
       case MORPEKO_SWSH31:
       return basic (this, hp:HP080, type:L, retreatCost:1) {
-				weakness F
-				move "Famished", {
-					text "Draw a card."
-					energyCost C
-					onAttack {
-						draw 1
-					}
-				}
-				move "Thunder Shock", {
-					text "40 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
-					energyCost L, C
-					onAttack {
-						damage 40
+        weakness F
+        move "Famished", {
+          text "Draw a card."
+          energyCost C
+          onAttack {
+            draw 1
+          }
+        }
+        move "Thunder Shock", {
+          text "40 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+          energyCost L, C
+          onAttack {
+            damage 40
             flip { apply PARALYZED }
-					}
-				}
-			};
+          }
+        }
+      };
       case SNORLAX_SWSH32:
       return copy(SwordShield.SNORLAX_140, this);
         default:
