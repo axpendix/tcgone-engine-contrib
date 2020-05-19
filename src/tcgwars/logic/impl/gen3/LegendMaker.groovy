@@ -2754,6 +2754,18 @@ public enum LegendMaker implements LogicCardInfo {
             damage 40, opp.all.select()
           }
         }
+        move "Ice Throw", {
+          text "80 damage. If the Defending Pokemon is a [F] Pokemon, this attack's base damage is 120 instead of 80"
+          energyCost W, W, C, C
+          attackRequirement {}
+          onAttack {
+            if (defending.types.contains(F)) {
+              damage 120
+            } else {
+              damage 80
+            }
+          }
+        }
       };
       case REGICE_STAR_90:
       return basic (this, hp:HP090, type:W, retreatCost:3) {
