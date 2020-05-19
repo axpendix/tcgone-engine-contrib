@@ -2689,7 +2689,6 @@ public enum SunMoonPromos implements LogicCardInfo {
           }
           onAttack {
             def top4 = my.deck.subList(0,4)
-            top4.showToMe("The top 4 cards of your deck.")
             top4.select(max:1,"Choose a card to put in your hand.").moveTo(my.hand)
             shuffleDeck()
             }
@@ -2709,8 +2708,8 @@ public enum SunMoonPromos implements LogicCardInfo {
               def list = top8.filterByType(BASIC_ENERGY).filterByEnergyType(R)
               def num = list.size()
               top8.showToMe("The top 8 cards of your deck.")
-              list.showToMe("These [R] Energies will be attached.")
               if (num){
+                list.showToMe("These [R] Energies will be attached.")
                 list.each{attachEnergy(self, it)}
                 }
               }
@@ -2736,6 +2735,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               opp.all.each{
                 if (it.cards.filterByType(ENERGY)) {
                   it.cards.filterByType(ENERGY).select("Discard an Energy.").discard()
+              }
             }
           }
         };
@@ -3215,7 +3215,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               def benchToHeal = my.bench.findAll { it.numberOfDamageCounters }.select("Select a Benched Pokémon to heal all damage from.")
                 if (benchToHeal) {
                 healAll benchToHeal
-}
+                }
             }
           }
           move "Leaf Blade", {
@@ -3236,7 +3236,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip { peventAllEffectsNextTurn }
+              flip { preventAllEffectsNextTurn() }
             }
           }
           move "Hypnotic Blizzard", {
@@ -3273,7 +3273,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             energyCost F, C, C, C
             onAttack {
               damage 160
-              cantRetreat, defending
+              cantRetreat defending
             }
           }
           move "Stone Age GX", {
@@ -3288,6 +3288,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               def maxSpace = my.bench.freeBenchCount
                 discard.search(max: maxSpace, "Bench up to $maxSpace card(s) from the discard that evolve from Unidentified Fossil.", {
                   it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil"
+              }
             }
           }
         };
@@ -3314,8 +3315,9 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 180
               if (opp.deck) {
                 opp.deck.subList(0,1).discard()
+              }
             }
-          }
+          } 
         };
       default:
         return null;
