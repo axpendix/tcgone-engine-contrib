@@ -896,7 +896,7 @@ public enum LegendMaker implements LogicCardInfo {
           delayedA {
             before KNOCKOUT, {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut==self  && ef.pokemonToBeKnockedOut.cards.findAll {it.name.contains("React Energy")}) {
-                if (oppConfirm("Move an energy from ${ef.pokemonToBeKnockedOut} to $self ?")) {
+                if (oppConfirm("Move an energy from Magneton to your other Pokemon?")) {
                   while(ef.pokemonToBeKnockedOut.cards.findAll{it.name.contains("React Energy")}) {
                     def card=ef.pokemonToBeKnockedOut.cards.findAll {
                       it.name.contains("React Energy")
