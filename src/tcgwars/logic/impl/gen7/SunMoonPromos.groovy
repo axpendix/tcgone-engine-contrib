@@ -2598,23 +2598,22 @@ public enum SunMoonPromos implements LogicCardInfo {
           }
           move "Lost Boomerang GX", {
             text "This attack does 50 damage to 2 of your opponent's Pokémon. This damage isn't affected by Weakness or Resistance. If a Pokémon is Knocked Out by this damage, put that Pokémon and all cards attached to it in the Lost Zone instead of the discard pile. (You can't use more than 1 GX attack in a game.)"
-            energyCost
             attackRequirement {
               gxCheck()
             }
             onAttack {
               gxPerform()
               def pcs = opp.all.select(max:2,"Choose 2 Pokémon to deal 50 damage to.")
-                pcs.each {
-                  noWrDamage 50, it
-                }
-                delayed {
+              pcs.each {
+                noWrDamage 50, it
+              }
+              delayed {
                 before KNOCKOUT, pcs, {
-                    bc "Lost Boomerang GX sends Knocked Out Pokémon to the Lost Zone."
-                    ef.pokemonToBeKnockedOut.cards.moveTo(self.owner.opposite.pbg.lostZone)
-                  }
-                  unregisterAfter 1
+                  bc "Lost Boomerang GX sends Knocked Out Pokémon to the Lost Zone."
+                  ef.pokemonToBeKnockedOut.cards.moveTo(self.owner.opposite.pbg.lostZone)
                 }
+                unregisterAfter 1
+              }
             }
           }
         };
