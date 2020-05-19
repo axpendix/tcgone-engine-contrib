@@ -1411,7 +1411,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             def count = []
             def selection = []
-            def max = my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.size
+            def max = my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.size()
             for(int i=0; i<=max; i++){
               count += [i]
               selection += [i.toString()]
