@@ -1437,7 +1437,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 30
+            flipUntilTails { damage 30 }
           }
         }
       };
