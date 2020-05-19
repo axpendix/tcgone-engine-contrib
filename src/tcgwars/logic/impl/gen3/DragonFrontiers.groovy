@@ -2304,13 +2304,13 @@ public enum DragonFrontiers implements LogicCardInfo {
           onAttack {
             def tar = opp.all.select("Choose Pokemon to copy moves from")
             if (tar.topPokemonCard.moves) {
-              def move = choose(tar.moves+["End Turn (Skip)"], "Choose 1 of the Pokémon's attacks.")
+              def move = choose(tar.topPokemonCard.moves+["End Turn (Skip)"], "Choose 1 of the Pokémon's attacks.")
               if (move instanceof String) return
               def bef = blockingEffect(BETWEEN_TURNS)
               attack (move as Move)
               bef.unregisterItself(bg().em())
             } else {
-              bc "Mimicry did not detect any moves on target"
+              bc "Mimicry did not detect any moves $tar.name"
             }
           }
         }
@@ -2322,7 +2322,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             def energy = self.cards.filterByType(BASIC_ENERGY).select()
             def type = energy.basicType
             opp.all.each {
-              if (it.types.contains(type)) {
+              if (it.topPokemonCard.types.contains(type)) {
                 damage 20, it
               }
             }
