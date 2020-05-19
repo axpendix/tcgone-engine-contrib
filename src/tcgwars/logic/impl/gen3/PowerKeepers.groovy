@@ -1134,7 +1134,7 @@ public enum PowerKeepers implements LogicCardInfo {
           text "As long as Medicham is your Active Pokémon, attacks by each player's Active Pokémon do 10 more damage to any Active Pokémon (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              if (ef.attacker.owner == self.owner && self.active) {
+              if (self.active) {
                 bg.dm().each {
                   if (it.to.active && it.notNoEffect && it.dmg.value) {
                     bc "Vigorous Aura +10"
