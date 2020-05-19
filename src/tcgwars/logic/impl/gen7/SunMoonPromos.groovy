@@ -2443,7 +2443,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
-      case MELMETAL_SM178:
+      case MELMETAL_GX_SM178:
         return evolution (this,from : "Meltan", hp:HP220, type:METAL, retreatCost:4) {
           weakness FIRE
           resistance PSYCHIC, MINUS20
