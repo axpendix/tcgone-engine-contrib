@@ -137,7 +137,7 @@ public enum DeltaSpecies implements LogicCardInfo {
   HOLON_RESEARCHER_95 ("Holon Researcher", 95, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   HOLON_RUINS_96 ("Holon Ruins", 96, Rarity.UNCOMMON, [TRAINER, STADIUM]),
   HOLON_SCIENTIST_97 ("Holon Scientist", 97, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  HOLON_TRANSCEIVER_98 ("Holon Transceiver", 98, Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
+  HOLON_TRANSCEIVER_98 ("Holon Transceiver", 98, Rarity.UNCOMMON, [TRAINER, ITEM]),
   MASTER_BALL_99 ("Master Ball", 99, Rarity.UNCOMMON, [TRAINER, ITEM]),
   SUPER_SCOOP_UP_100 ("Super Scoop Up", 100, Rarity.UNCOMMON, [TRAINER, ITEM]),
   POTION_101 ("Potion", 101, Rarity.COMMON, [TRAINER, ITEM]),
