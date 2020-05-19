@@ -2639,7 +2639,8 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
         playRequirement{
           def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert (hand && (my.discard.filterByType(BASIC_ENERGY) || my.discard.filterByType(POKEMON))) : "One other card in hand is required to play this card."
+          assert hand : "One other card in hand is required to play this card."
+          assert my.discard.filterByType(BASIC_ENERGY) || my.discard.filterByType(POKEMON) : "No Basic Energy cards or Pokemon in discard pile."
         }
       };
       case HOLON_LASS_92:
