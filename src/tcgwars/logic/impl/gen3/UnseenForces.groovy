@@ -2588,8 +2588,10 @@ public enum UnseenForces implements LogicCardInfo {
           text "Once during your turn (before your attack), you may attach a [G] Energy card from your hand to 1 of your Pokémon. If you do, remove 1 damage counter from that Pokémon. This power can't be used if Meganium ex is affected by a Special Condition."
           actionA {
             checkNoSPC()
+            checkLastTurn()
             assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(G) : "You have no [G] Energy cards in your hand"
 
+            powerUsed()
             def pcs = my.all.select()
             attachEnergyFrom(type:G, my.hand, pcs)
             pcs.damage += hp(10)
