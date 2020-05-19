@@ -2713,9 +2713,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         onPlay {
           // Choice 1 = Search deck
           // Choice 2 = Search discard
-          def choice = 1
+          def choice = 2
           if (!my.discard || !my.discard.findAll {it.cardTypes.is(SUPPORTER) && it.name.contains("Holon")}) {
-            choice = 2
+            choice = 1
           }
           else {
             choice = choose([1,2],["Search the deck", "Search the Discard pile"], "Where to search for a Supporter card that has Holon in its name?")
