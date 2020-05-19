@@ -531,7 +531,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             def maximum = Math.min(self.cards.energyCount(C), opp.all.size())
-            opp.all.select(min:0, max: maximum).each {
+            opp.all.select(min:0, max: maximum, "Choose up to $maximum Pokemon to deal 20 damage to.").each {
               damage 20, it
             }
           }
