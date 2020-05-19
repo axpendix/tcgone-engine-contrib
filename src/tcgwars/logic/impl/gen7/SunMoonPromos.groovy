@@ -2741,9 +2741,10 @@ public enum SunMoonPromos implements LogicCardInfo {
             onAttack {
               gxPerform()
               damage 250
-              opp.all.each{
+              opp.all.each {
                 if (it.cards.filterByType(ENERGY)) {
                   it.cards.filterByType(ENERGY).select("Discard an Energy.").discard()
+                }
               }
             }
           }
