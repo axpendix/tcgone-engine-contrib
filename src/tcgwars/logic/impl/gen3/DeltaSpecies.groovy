@@ -2790,7 +2790,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
           eff = delayed {
             before APPLY_SPECIAL_CONDITION, {
-              if(e.getTarget(bg)==self && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)){
+              if(e.getTarget(bg)==self && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)){
                 bc "Holon Energy GL prevents special conditions"
                 prevent()
               }
@@ -2799,7 +2799,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           eff2=delayed {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if(it.to==self && it.from.owner!=self.owner && it.from.EX && it.dmg.value && it.notNoEffect && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L)){
+                if(it.to==self && !self.EX && it.from.owner!=self.owner && it.from.EX && it.dmg.value && it.notNoEffect && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L)){
                   it.dmg -= hp(10)
                   bc "Holon Energy GL -10"
                 }
