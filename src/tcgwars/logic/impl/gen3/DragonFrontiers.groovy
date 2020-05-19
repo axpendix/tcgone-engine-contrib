@@ -424,16 +424,16 @@ public enum DragonFrontiers implements LogicCardInfo {
             powerUsed()
             heal 40, self
 
-            if (!self.slatedToKO) {
-              def top=self.topPokemonCard
-              bc "$top Devolved"
-              top.discard()
-              devolve(defending, top)
-            }
+            def top=self.topPokemonCard
+            bc "$top Devolved"
+            moveCard(top, my.discard)
+            devolve(self, top)
 
-            def tar = my.deck.search("Evolves from $self", {it.cardTypes.is(EVOLUTION) && self.name == it.predecessor})
-            if (tar) evolve(self, tar.first(), OTHER)
-            shuffleDeck()
+            if (my.deck) {
+              def tar = my.deck.search("Evolves from Vulpix", {it.cardTypes.is(EVOLUTION) && (self.name == "Ninetales" || self.name == "Ninetales ex")})
+              if (tar) evolve(self, tar.first(), OTHER)
+              shuffleDeck()
+            }
           }
         }
         move "Trick Tail", {
