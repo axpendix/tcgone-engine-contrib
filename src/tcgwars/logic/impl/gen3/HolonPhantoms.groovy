@@ -1409,9 +1409,14 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.each{
-              draw 1
+            def count = []
+            def selection = []
+            def max = my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.size()
+            for(int i=0; i<=max; i++){
+              count += [i]
+              selection += [i.toString()]
             }
+            draw choose(count, selection, "Draw how many cards?", max)
           }
         }
       };
