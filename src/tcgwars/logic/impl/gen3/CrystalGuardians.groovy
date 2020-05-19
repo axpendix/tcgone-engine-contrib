@@ -1895,7 +1895,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         onPlay {
           boolean flag = false
           eff = delayed {
-            before null, null, Source.ATTACK, {
+            before CHECK_ATTACK_REQUIREMENTS, {
               bc "Holon Circle prevents the attack"
               prevent()
               flag = true
