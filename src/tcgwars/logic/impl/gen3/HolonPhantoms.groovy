@@ -622,6 +622,16 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            def bonusDamage = 30 * my.discard.findAll {
+              it.cardTypes.is(POKEMON) && (
+                it.name == "Omanyte" ||
+                it.name == "Omastar" ||
+                it.name == "Kabuto" ||
+                it.name == "Kabutops" ||
+                it.name == "Kabutops ex"
+              ).size()
+            }
+            damage Math.min(bonusDamage, 60)
           }
         }
       };
