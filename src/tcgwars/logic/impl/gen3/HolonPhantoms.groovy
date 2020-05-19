@@ -1461,6 +1461,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            afterDamage {
+              attachEnergyFrom(type: L, my.discard, self)
+            }
           }
         }
         move "Quick Blow", {
