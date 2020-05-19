@@ -2697,7 +2697,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card to discard.")
           toDiscard.discard()
 
-          if (opp.hand.size() < my.hand.size()) {
+          if (opp.hand.size() > my.hand.size()) {
             def numToDraw = opp.hand.size() - my.hand.size()
             draw numToDraw
           }
