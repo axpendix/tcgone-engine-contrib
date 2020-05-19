@@ -1899,6 +1899,7 @@ public enum CrystalGuardians implements LogicCardInfo {
               bc "Holon Circle prevents the attack"
               prevent()
               flag = true
+              bg.gm().betweenTurns()
             }
             before BETWEEN_TURNS, {
               if(flag){
