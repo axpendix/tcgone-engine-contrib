@@ -430,7 +430,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             devolve(self, top)
 
             if (my.deck) {
-              def tar = my.deck.search("Evolves from Vulpix", {it.cardTypes.is(EVOLUTION) && (self.name == "Ninetales" || self.name == "Ninetales ex")})
+              def tar = my.deck.search("Evolves from Vulpix", {it.cardTypes.is(EVOLUTION) && (it.name == "Ninetales" || it.name == "Ninetales ex")})
               if (tar) evolve(self, tar.first(), OTHER)
               shuffleDeck()
             }
