@@ -2609,9 +2609,18 @@ public enum SunMoonPromos implements LogicCardInfo {
                 noWrDamage 50, it
               }
               delayed {
-                before KNOCKOUT, pcs, {
-                  bc "Lost Boomerang GX sends Knocked Out Pokémon to the Lost Zone."
-                  ef.pokemonToBeKnockedOut.cards.moveTo(self.owner.opposite.pbg.lostZone)
+                def knockedOut = null
+                before KNOCKOUT, {
+                  if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner && self.active && ef.pokemonToBeKnockedOut.owner != self.owner ) {
+                    knockedOut = ef.pokemonToBeKnockedOut.cards.copy()
+                  }
+                }
+                after KNOCKOUT, {
+                  if (knockedOut) {
+                    bc "Lost Boomerang GX sends Knocked Out Pokémon to the Lost Zone."
+                    knockedOut.moveTo(self.owner.opposite.pbg.lostZone)
+                    knockedOut = null
+                  }
                 }
                 unregisterAfter 1
               }
