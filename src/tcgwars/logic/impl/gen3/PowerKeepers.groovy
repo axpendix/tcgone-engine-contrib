@@ -752,18 +752,15 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Pull Down", {
           text "If your opponent has any Evolved Pokémon in play, remove the highest Stage Evolution card from each of them and put those cards back into his or her hand."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.all.findAll { it.evolution } : "Opponent does not have any Evolved Pokemon in play."
+          }
           onAttack {
-            int max = self.cards.energyCount(C)
-            while (max-- > 0) {
-              def tar = opp.all.findAll{ it.evolution }
-              if(!tar) break
-              def pcs = tar.select("Choose which Pokemon to devolve", false)
-              if(!pcs) break
-              def top=pcs.topPokemonCard
+            opp.all.findAll { it.evolution }.each {
+              def top = it.topPokemonCard
               bc "$top Devolved"
               moveCard(top, opp.hand)
-              devolve(pcs, top)
+              devolve(it, top)
             }
           }
         }
