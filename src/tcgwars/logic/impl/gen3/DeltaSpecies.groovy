@@ -2645,28 +2645,65 @@ public enum DeltaSpecies implements LogicCardInfo {
       case HOLON_LASS_92:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
-          "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card.Count the total number of Prize cards left (both yours and your opponent's). Look at that many cards from the top of your deck, choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward."
+          "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Count the total number of Prize cards left (both yours and your opponent's). Look at that many cards from the top of your deck, choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward."
         onPlay {
+          def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card to discard.")
+          toDiscard.discard()
+
+          def prizeCardCount = my.prizeCardSet.size() + opp.prizeCardSet.size()
+
+          def list = my.deck.subList(0, prizeCardCount)
+          list.showToMe("Top $amount cards of your deck.")
+
+          def energies = list.filterByType(ENERGY).select("Select Energies to move to your hand.")
+          energies.moveTo(my.hand)
+          def energySize = energies.size()
+          my.deck.subList(0,prizeCardCount-energySize).discard()
+          shuffleDeck()
         }
         playRequirement{
+          def hand = my.hand.getExcludedList(thisCard).size() >= 1
+          assert hand : "One other card in hand is required to play this card."
+          assert my.deck : "Deck is empty"
         }
       };
       case HOLON_MENTOR_93:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
-          "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card.Search your deck for up to 3 Basic Pokémon that each has 100 HP or less, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
+          "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Search your deck for up to 3 Basic Pokémon that each has 100 HP or less, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
         onPlay {
+          def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card to discard.")
+          toDiscard.discard()
+
+          deck.search(max: 3, "Search your deck for up to 3 Basic Pokemon with 100 HP or less", {
+            it.cardTypes.pokemon && it.cardTypes.is(BASIC) && it.asPokemonCard().hp.value <= 100
+          }).showToOpponent("Chosen Pokemon to move to the Opponent's hand.").moveTo(my.hand)
+
+          shuffleDeck()
         }
         playRequirement{
+          def hand = my.hand.getExcludedList(thisCard).size() >= 1
+          assert hand : "One other card in hand is required to play this card."
+          assert my.deck : "Deck is empty"
         }
       };
       case HOLON_RESEARCH_TOWER_94:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each player's basic Energy cards attached to Pokémon that has δ on its card are both their usual Energy type and Metal type but provide only 1 Energy at a time. (Has no effect other than providing Energy.)"
+        def eff
         onPlay {
+          eff = delayed {
+            getter GET_ENERGY_TYPES, { holder->
+              if (holder.effect.target.topPokemonCard.cardTypes.is(DELTA) &&
+                holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
+                holder.object.addAll([M] as Set)
+              }
+            }
+          }
         }
-        onRemoveFromPlay{
+        onRemoveFromPlay {
+          eff.unregister()
         }
       };
       case HOLON_RESEARCHER_95:
@@ -2674,8 +2711,23 @@ public enum DeltaSpecies implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Search your deck for a [M] Energy card or a Basic Pokémon (or Evolution card) that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
         onPlay {
+          def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card to discard.")
+          toDiscard.discard()
+
+          my.deck.search(max: 1, "Select a [M] and a Pokemon card with δ in its card.", {
+            (it.cardTypes.is(ENERGY) && it.asEnergyCard().containsTypePlain(M)) ||
+            (it.cardTypes.is(POKEMON) && it.cardTypes.is(DELTA))
+          }, { CardList list ->
+            list.filterByType(ENERGY).size() <= 1 &&
+            list.filterByType(POKEMON).size() <= 1
+          }).showToOpponent("Opponent's chosen cards to move to their hand.").moveTo(my.hand)
+
+          shuffleDeck()
         }
         playRequirement{
+          def hand = my.hand.getExcludedList(thisCard).size() >= 1
+          assert hand : "One other card in hand is required to play this card."
+          assert my.deck : "Deck is empty."
         }
       };
       case HOLON_RUINS_96:
