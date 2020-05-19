@@ -41,7 +41,7 @@ public enum SunMoonPromos implements LogicCardInfo {
   BRUXISH_SM11 ("Bruxish", 11, Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
   PASSIMIAN_SM12 ("Passimian", 12, Rarity.PROMO, [POKEMON, BASIC, _FIGHTING_]),
   ORANGURU_SM13 ("Oranguru", 13, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  LYCANROC_GX_SM14 ("Lycanroc-GX", 14, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, POKEMON_GX, _FIGHTING_]), 
+  LYCANROC_GX_SM14 ("Lycanroc-GX", 14, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, POKEMON_GX, _FIGHTING_]),
   ZYGARDE_SM15 ("Zygarde", 15, Rarity.PROMO, [POKEMON, BASIC, _FIGHTING_]),
   SOLGALEO_GX_SM16 ("Solgaleo-GX", 16, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, POKEMON_GX, _METAL_]),
   LUNALA_GX_SM17 ("Lunala-GX", 17, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, POKEMON_GX, _PSYCHIC_]),
@@ -98,7 +98,7 @@ public enum SunMoonPromos implements LogicCardInfo {
   XURKITREE_GX_SM68 ("Xurkitree-GX", 68, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, ULTRA_BEAST, _LIGHTNING_]),
   BUZZWOLE_GX_SM69 ("Buzzwole-GX", 69, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, ULTRA_BEAST, _FIGHTING_]),
   SHINING_HO_OH_SM70 ("Shining Ho-Oh", 70, Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
-  KOMMO_O_GX_SM71 ("Kommo-o-GX", 71, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, POKEMON_GX, _DRAGON_),
+  KOMMO_O_GX_SM71 ("Kommo-o-GX", 71, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, POKEMON_GX, _DRAGON_]),
   ALOLAN_RAICHU_SM72 ("Alolan Raichu", 72, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   SALAZZLE_SM73 ("Salazzle", 73, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   REGIROCK_SM74 ("Regirock", 74, Rarity.PROMO, [POKEMON, BASIC, _FIGHTING_]),
@@ -2360,7 +2360,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
             onAttack{
               gxPerform()
-              damage 110              
+              damage 110
               delayed {
                 before null, null, Source.ATTACK, {
                   if (ef instanceof TargetedEffect) {
@@ -2598,7 +2598,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           }
           move "Lost Boomerang GX", {
             text "This attack does 50 damage to 2 of your opponent's Pokémon. This damage isn't affected by Weakness or Resistance. If a Pokémon is Knocked Out by this damage, put that Pokémon and all cards attached to it in the Lost Zone instead of the discard pile. (You can't use more than 1 GX attack in a game.)"
-            energyCost 
+            energyCost
             attackRequirement {
               gxCheck()
             }
@@ -3317,7 +3317,7 @@ public enum SunMoonPromos implements LogicCardInfo {
                 opp.deck.subList(0,1).discard()
               }
             }
-          } 
+          }
         };
       default:
         return null;
