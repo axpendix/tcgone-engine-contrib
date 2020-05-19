@@ -930,7 +930,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
           onAttack {
             whirlwind()
-            apply ASLEEP
+            applyAfterDamage(ASLEEP)
           }
         }
         move "Psyshot", {
