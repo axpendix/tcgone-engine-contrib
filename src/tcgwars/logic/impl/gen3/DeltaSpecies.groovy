@@ -2623,9 +2623,22 @@ public enum DeltaSpecies implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Search your discard pile for 3 basic Energy cards and any combination of 3 Basic Pokémon or Evolution cards, show them to your opponent, and put them on top of your deck. Shuffle your deck afterward."
         onPlay {
+          def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card to discard.")
+          toDiscard.discard()
+
+          if (my.discard.filterByType(BASIC_ENERGY)) {
+            my.discard.filterByType(BASIC_ENERGY).select(max: 3, "Select 3 Basic Energies to shuffle into your deck").moveTo(my.deck)
+          }
+
+          if (my.discard.filterByType(POKEMON)) {
+            my.discard.filterByType(POKEMON).select(max: 3, "Select up to 3 Basic or Evolution Pokemon cards and shuffle them into your deck.").moveTo(my.deck)
+          }
+
+          shuffleDeck()
         }
         playRequirement{
-          assert my.hand : "Hand is empty"
+          def hand = my.hand.getExcludedList(thisCard).size() >= 1
+          assert (hand && (my.discard.filterByType(BASIC_ENERGY) || my.discard.filterByType(POKEMON))) : "One other card in hand is required to play this card."
         }
       };
       case HOLON_LASS_92:
