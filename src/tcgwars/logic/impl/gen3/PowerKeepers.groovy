@@ -964,8 +964,7 @@ public enum PowerKeepers implements LogicCardInfo {
             checkNoSPC()
             checkLastTurn()
             if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Sidney's Stadium") {
-              def tar = opp.all.select("Select who to Poison")
-              apply POISONED, tar
+              apply POISONED, opp.active
             }
             powerUsed()
           }
