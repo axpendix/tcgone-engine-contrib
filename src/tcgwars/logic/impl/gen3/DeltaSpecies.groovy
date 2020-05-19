@@ -2799,7 +2799,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         def eff
         def eff2
         onPlay {reason->
-          if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G))) {
+          if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
             self.specialConditions.clear()
           }
           eff = delayed {
