@@ -1893,12 +1893,18 @@ public enum CrystalGuardians implements LogicCardInfo {
         text "Prevent all effects of an attack, including damage, done by either player's Active Pokémon. If an Active Pokémon uses an attack, that attack ends, and discard this card."
         def eff
         onPlay {
+          boolean flag = false
           eff = delayed {
             before null, null, Source.ATTACK, {
               bc "Holon Circle prevents the attack"
               prevent()
-              discard ef.cardToPlay
-              unregister()
+              flag = true
+            }
+            before BETWEEN_TURNS, {
+              if(flag){
+                eff.unregister()
+                discard bg.stadiumInfoStruct.stadiumCard
+              }
             }
           }
         }
