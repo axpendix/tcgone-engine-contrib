@@ -2717,10 +2717,9 @@ public enum SunMoonPromos implements LogicCardInfo {
               def list = top8.filterByType(BASIC_ENERGY).filterByEnergyType(R)
               def num = list.size()
               top8.showToMe("The top 8 cards of your deck.")
-              if (num){
+              if (num) {
                 list.showToMe("These [R] Energies will be attached.")
                 list.each{attachEnergy(self, it)}
-                }
               }
               my.deck.subList(0,8-num).discard()
             }
