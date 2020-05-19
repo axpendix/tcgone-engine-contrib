@@ -2667,10 +2667,26 @@ public enum DeltaSpecies implements LogicCardInfo {
       case HOLON_RUINS_96:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
-          "Each player that has any Pokémon in play that has ݎ on its card may draw a card once during his or her turn. If the player does, he or she discards a card from his or her hand."
+          "Each player that has any Pokémon in play that has DELTA on its card may draw a card once during his or her turn. If the player does, he or she discards a card from his or her hand."
+        def lastTurn=0
+        def actions=[]
         onPlay {
+          actions=action("Stadium: Holon Ruins") {
+            assert my.deck : "Deck is empty."
+            assert my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) } : "No Delta Pokemon in play."
+            assert my.hand : "You don't have cards in your hand"
+            assert lastTurn != bg().turnCount : "Already used Holon Ruins"
+
+            bc "Used Holon Ruins effect"
+            lastTurn = bg().turnCount
+            def deltaPokemon = my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }
+            draw deltaPokemon.size()
+            shuffleDeck()
+            my.hand.select("Choose the card to discard").discard()
+          }
         }
         onRemoveFromPlay{
+          actions.each { bg().gm().unregisterAction(it) }
         }
       };
       case HOLON_SCIENTIST_97:
