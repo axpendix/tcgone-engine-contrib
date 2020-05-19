@@ -896,13 +896,13 @@ public enum LegendMaker implements LogicCardInfo {
           delayedA {
             before KNOCKOUT, {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut==self  && ef.pokemonToBeKnockedOut.cards.findAll {it.name.contains("React Energy")}) {
-                if (confirm("Move an energy from ${ef.pokemonToBeKnockedOut} to $self ?")) {
+                if (oppConfirm("Move an energy from ${ef.pokemonToBeKnockedOut} to $self ?")) {
                   while(ef.pokemonToBeKnockedOut.cards.findAll{it.name.contains("React Energy")}) {
                     def card=ef.pokemonToBeKnockedOut.cards.findAll {
                       it.name.contains("React Energy")
-                    }.select("Card to move").first()
-                    def tar = my.all.getExcludedList(ef.pokemonToBeKnockedOut).select("Select Pokemon to move React Energy to")
-                    energySwitch(ef.pokemonToBeKnockedOut, tar, card)
+                    }.oppSelect("Card to move").first()
+                    def tar = my.all.findAll{ it != self }.oppSelect("Select Pokemon to move React Energy to")
+                    energySwitch(self, tar, card)
                   }
                 }
               }
