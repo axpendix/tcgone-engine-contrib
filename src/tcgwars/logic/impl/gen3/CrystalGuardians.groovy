@@ -986,8 +986,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "All Energy cards that provide only [C] Energy attached to your [G] Pokémon provide [G] Energy instead."
           getterA GET_ENERGY_TYPES, { holder ->
             if(holder.effect.target.owner == self.owner
-              && holder.effect.card.containsTypePlain(C)
-              && holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
+              && holder.effect.card.containsTypePlain(C)) {
               holder.object = [[G] as Set]
             }
           }
