@@ -2782,14 +2782,36 @@ public enum DeltaSpecies implements LogicCardInfo {
       case HOLON_ENERGY_GL_105:
       return specialEnergy (this, [[C]]) {
         text "Holon Energy GL provides [C] Energy. If the Pokémon that Holon Energy GL is attached to also has a basic [G] Energy card attached to it, that Pokémon can't be affected by any Special Conditions. If the Pokémon that Holon Energy GL is attached to also has a basic [L] Energy card attached to it, damage done by your opponent's Pokémon-ex is reduced by 10. Ignore these effects if Holon Energy GL is attached to Pokémon-ex."
+        def eff
+        def eff2
         onPlay {reason->
+          if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G))) {
+            self.specialConditions.clear()
+          }
+          eff = delayed {
+            before APPLY_SPECIAL_CONDITION, {
+              if(e.getTarget(bg)==self && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)){
+                bc "Holon Energy GL prevents special conditions"
+                prevent()
+              }
+            }
+          }
+          eff2=delayed {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if(it.to==self && !self.EX && it.from.owner!=self.owner && it.from.EX && it.dmg.value && it.notNoEffect && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L)){
+                  it.dmg -= hp(10)
+                  bc "Holon Energy GL -10"
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
+          eff.unregister()
+          eff2.unregister()
         }
         onMove {to->
-        }
-        allowAttach {to->
-
         }
       };
       case HOLON_ENERGY_WP_106:
