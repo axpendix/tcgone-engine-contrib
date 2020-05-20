@@ -2300,10 +2300,12 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           },{
             def eligible = my.hand.findAll { it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Aerodactyl ex" || it.name == "Lileep" || it.name == "Anorith"}
-            eligible.select("Select which Pokemon to bench").each {
-              hand.remove(it)
-              // TODO How to mark it as a Basic Pokemon?
-              benchPCS(it)
+            if(eligible){
+              eligible.select("Select which Pokemon to bench").each {
+                hand.remove(it)
+                // TODO How to mark it as a Basic Pokemon?
+                benchPCS(it)
+              }
             }
           }
         }
