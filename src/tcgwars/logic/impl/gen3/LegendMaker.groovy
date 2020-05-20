@@ -622,7 +622,7 @@ public enum LegendMaker implements LogicCardInfo {
             powerUsed()
 
             def pcs = opp.bench.findAll { it.topPokemonCard.cardTypes.is(STAGE2) }.select("Select a Stage 2 Pokemon to become the new Active.")
-            sw defending, pcs
+            sw opp.active, pcs
           }
         }
         move "Sleep Poison", {
