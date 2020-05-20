@@ -2325,7 +2325,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             def type = energy.basicType
             bc "Rainbow Wave - Chosen type is $type"
             opp.all.each {
-              if (it.types.contains(type)) {
+              if (it.types.contains(F)) {
                 damage 20, it
               }
             }
