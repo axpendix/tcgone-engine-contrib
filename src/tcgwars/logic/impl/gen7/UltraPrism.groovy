@@ -2809,7 +2809,9 @@ public enum UltraPrism implements LogicCardInfo {
               assert my.discard.notEmpty
             }
             onAttack {
-              my.discard.select(count : 3).moveTo(my.deck)
+              def list = my.discard.select(count:3)
+              def rearrangedCards = rearrange(list)
+              rearrangedCards.moveTo(my.deck)
             }
           }
           move "Profound Knowledge", {
