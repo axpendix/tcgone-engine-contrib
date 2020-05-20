@@ -2317,9 +2317,11 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Rainbow Wave", {
           text "Choose 1 basic Energy card attached to Mew Star. This attack does 20 damage to each of your opponent's Pokémon that is the same type as the basic Energy card that you chose. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W
-          attackRequirement {}
+          attackRequirement {
+            assert self.cards.filterByType(BASIC_ENERGY) : "This Pokemon has no Basic Energies."
+          }
           onAttack {
-            def energy = self.cards.filterByType(BASIC_ENERGY).select()
+            def energy = self.cards.filterByType(BASIC_ENERGY).select("Deal 20 damage to your opponent's Pokemon of the same type of the chosen Energy.")
             def type = energy.basicType
             opp.all.each {
               if (it.topPokemonCard.types.contains(type)) {
