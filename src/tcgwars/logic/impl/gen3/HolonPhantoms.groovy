@@ -2289,8 +2289,27 @@ public enum HolonPhantoms implements LogicCardInfo {
       return itemCard (this) {
         text "Flip a coin. If heads, search your deck for an Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep, or Anorith and put it onto your Bench. Shuffle your deck afterward. If tails, put an Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep, or Anorith from your hand onto your Bench. Treat the new Benched Pokémon as a Basic Pokémon."
         onPlay {
+          flip 1, {
+            if(my.deck){
+              my.deck.search(min:0, max:1, "Search your deck for up to 2 cards named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Aerodactyl ex" || it.name == "Lileep" || it.name == "Anorith"}).each {
+                my.deck.remove(it)
+                benchPCS(it)
+                //TODO Mark as basic
+              }
+              shuffleDeck()
+            }
+          },{
+            def eligible = my.hand.findAll { it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Aerodactyl ex" || it.name == "Lileep" || it.name == "Anorith"}
+            eligible.select("Select which Pokemon to bench").each {
+              hand.remove(it)
+              // TODO How to mark it as a Basic Pokemon?
+              benchPCS(it)
+            }
+          }
         }
         playRequirement{
+          assert my.bench.notFull : "Your bench is full"
+          assert my.deck || my.hand.getExcludedList(thisCard)
         }
       };
       case HOLON_LAKE_87:
