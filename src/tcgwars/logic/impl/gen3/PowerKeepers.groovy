@@ -460,7 +460,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Primal Stare", {
           text "As long as Kabutops is your Active Pokémon, your opponent can't play any Basic Pokémon or Evolution cards from his or her hand to evolve his or her Active Pokémon."
           delayedA {
-            before EVOLVE_STANDARD, {
+            before EVOLVE_STANDARD, self.owner.opposite.pbg.active,{
               if (bg.currentTurn==self.owner.opposite) {
                 if ((ef.evolutionCard as Card).player.pbg.active) {
                   wcu "Primal Stare prevents Evolving the Active Pokemon"
