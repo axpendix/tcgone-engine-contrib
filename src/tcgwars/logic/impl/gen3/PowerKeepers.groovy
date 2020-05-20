@@ -558,7 +558,7 @@ public enum PowerKeepers implements LogicCardInfo {
           def eff1,eff2
           onActivate {
             eff1 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (self.active && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
+              if (self.active && h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
                 h.object=true
               }
             }
@@ -580,8 +580,10 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C, C, C, C
           attackRequirement {}
           onAttack {
-            damage 100
-            discardSelfEnergy(C)
+            if(self.cards.filterByType(BASIC_ENERGY)){
+              self.cards.filterByType(BASIC_ENERGY).select("Discard a basic energy from $self.").discard()
+              damage 100
+            }
             cantAttackNextTurn(self)
           }
         }
