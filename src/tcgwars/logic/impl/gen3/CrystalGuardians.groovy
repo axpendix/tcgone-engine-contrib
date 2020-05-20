@@ -2089,7 +2089,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           onAttack {
             def target = defending
             if (opp.bench) {
-              target = opp.bench.oppSelect("Select the new active")
+              target = opp.bench.select("Select the new active")
               sw defending, target
             }
             damage 30, target
