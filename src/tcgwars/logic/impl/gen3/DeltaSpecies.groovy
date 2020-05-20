@@ -2789,7 +2789,7 @@ public enum DeltaSpecies implements LogicCardInfo {
               def tar = my.deck.search(max: 1, "Search for a Holon Supporter", {
                 it.cardTypes.is(SUPPORTER) &&
                 it.name.contains("Holon")
-              }).first()
+              })
               if (tar) {
                 tar.moveTo(my.hand)
               }
@@ -2806,6 +2806,10 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
         }
         playRequirement {
+          assert my.discard.findAll {
+            it.cardTypes.is(SUPPORTER) &&
+            it.name.contains("Holon")
+          } && my.deck.notEmpty : "Deck is empty and your discard pile does not have any Holon Supporters"
         }
       };
       case MASTER_BALL_99:
