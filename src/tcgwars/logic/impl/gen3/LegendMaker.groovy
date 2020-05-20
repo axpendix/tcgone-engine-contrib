@@ -1520,19 +1520,14 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Deep Sleep", {
           text "As long as Misdreavus is your Active Pokémon, each player flips 2 coins for his or her Pokémon that is Asleep between turns. If either coin is tails, that Pokémon is still Asleep."
           delayedA {
-            after CLEAR_SPECIAL_CONDITION, {
-              if(ef.types.contains(ASLEEP)){
-                unregister()
-              }
-            }
             before ASLEEP_SPC, null, null, BEGIN_TURN, {
-              if (self.active && ef.target.owner == self.owner.opposite) {
-                flip "Asleep (Deep Sleep)", 2, {}, {}, [2:{
+              if(self.active && ef.target == opp.active){
+                flip "Asleep (Misdreavus)", 2, {}, {}, [2:{
                   ef.unregisterItself(bg.em());
                 },1:{
-                  bc "$self is still asleep."
+                  bc "$ef.target is still asleep."
                 },0:{
-                  bc "$self is still asleep."
+                  bc "$ef.target is still asleep."
                 }]
                 prevent()
               }
