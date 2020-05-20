@@ -3916,7 +3916,7 @@ public enum RebelClash implements LogicCardInfo {
                 break
               }
               if (tar) {
-                def sel = tar.select("Select a Pokémon to discard a Pokemon Tool from (cancel to stop).", true)
+                def sel = tar.select("Select a Pokémon to discard a Pokemon Tool from (cancel to stop).", false)
                 if (sel) {
                   def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokémon Tool from $sel.")
                   targeted (sel, TRAINER_CARD) {
