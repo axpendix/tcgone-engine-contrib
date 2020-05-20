@@ -658,7 +658,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             def amount = 0
-            def pokemon = my.all.getExcludedList(self.topPokemonCard)
+            def pokemon = my.all.findAll { it != self }
             pokemon.each {
               amount += 10 * it.cards.filterByType(ENERGY).size()
             }
