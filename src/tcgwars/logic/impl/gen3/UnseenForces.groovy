@@ -3398,7 +3398,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_129:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
