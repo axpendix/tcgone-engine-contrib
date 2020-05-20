@@ -2651,7 +2651,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           def prizeCardCount = my.prizeCardSet.size() + opp.prizeCardSet.size()
 
           def list = my.deck.subList(0, prizeCardCount)
-          list.showToMe("Top $amount cards of your deck.")
+          list.showToMe("Top $prizeCardCount cards of your deck.")
 
           def energies = list.filterByType(ENERGY).select("Select Energies to move to your hand.")
           energies.moveTo(my.hand)
