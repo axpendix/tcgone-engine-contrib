@@ -2005,7 +2005,24 @@ public enum LegendMaker implements LogicCardInfo {
         weakness L
         pokeBody "Ancient Tentacles", {
           text "Damage done to your opponent's Pokémon by your Omanyte, Omastar, Kabuto, Kabutops, or Kabutops ex isn't affected by Resistance."
-          // TODO
+          delayedA {
+            before APPLY_RESISTANCE, {
+              bg.dm().each {
+                if (
+                  it.from.name == "Omanyte" ||
+                  it.from.name == "Omastar" ||
+                  it.from.name == "Kabuto" ||
+                  it.from.name == "Kabutops" ||
+                  it.from.name == "Kabutops ex"
+                ) {
+                  if (it.from.owner == self.owner) {
+                    bc "Ancient Tentacles prevents the attack from being affected by Resistance."
+                    prevent()
+                  }
+                }
+              }
+            }
+          }
         }
         move "Rising Lunge", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
