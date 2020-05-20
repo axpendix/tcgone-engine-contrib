@@ -460,7 +460,14 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Primal Stare", {
           text "As long as Kabutops is your Active Pokémon, your opponent can't play any Basic Pokémon or Evolution cards from his or her hand to evolve his or her Active Pokémon."
           delayedA {
-            // TODO
+            before EVOLVE_STANDARD, {
+              if (bg.currentTurn==self.owner.opposite) {
+                if ((ef.evolutionCard as Card).player.pbg.active) {
+                  wcu "Primal Stare prevents Evolving the Active Pokemon"
+                  prevent()
+                }
+              }
+            }
           }
         }
         move "Luring Antenna", {
@@ -468,10 +475,12 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
-            // TODO
-            // wtf, who chooses
-
-            damage 20
+            def target = defending
+            if (opp.bench) {
+              target = opp.bench.select("Select the new Active Pokémon.")
+              sw defending, target
+              damage 20, target
+            }
           }
         }
         move "Blinding Scythe", {
