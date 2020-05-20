@@ -3890,25 +3890,43 @@ public enum RebelClash implements LogicCardInfo {
         text "Discard up to 2 Pokemon Tools from either player’s Pokemon. You may play as many Item cards during your turn as you like (before your attack)."
         onPlay {
           def i = 2
-          while (i-- > 0) {
+          while (true) {
             def tar
-            if(my.all.findAll {it.cards.hasType(POKEMON_TOOL)} && opp.all.findAll{it.cards.hasType(POKEMON_TOOL)}){
-              if(choose([1,2],["Your Pokémon", "Your opponent's Pokémon"], "Remove a tool from...?") == 1){
-                tar = my.all.findAll {it.cards.hasType(POKEMON_TOOL)}
-              } else{
-                tar = opp.all.findAll{it.cards.hasType(POKEMON_TOOL)}
+            if(i > 0 && (my.all.findAll {it.cards.hasType(POKEMON_TOOL)} || opp.all.findAll {it.cards.hasType(POKEMON_TOOL)})){
+              def options
+              def text
+              if(my.all.findAll {it.cards.hasType(POKEMON_TOOL)}){
+                options += [1]
+                text += ["Your opponent's Pokémon"]
               }
-            } else {
-              tar = all.findAll {it.cards.hasType(POKEMON_TOOL)}
-            }
-            if (tar) {
-              def sel = tar.select("Select a Pokémon to discard a Pokemon Tool from (cancel to stop).", i == 1)
-              if (sel) {
-                def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokémon Tool from $sel.")
-                targeted (sel, TRAINER_CARD) {
-                  list.discard()
+              if(my.all.findAll {it.cards.hasType(POKEMON_TOOL)}){
+                options += [2]
+                text += ["Your Pokémon"]
+              }
+              if(i==1){
+                options += [3]
+                text += ["Stop"]
+              }
+              def choice = choose(options,text, "Remove a tool from...?",options.get(0))
+              if(choice == 1){
+                tar = opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}
+              } else if(choice == 2){
+                tar = my.all.findAll{it.cards.hasType(POKEMON_TOOL)}
+              } else{
+                break
+              }
+              if (tar) {
+                def sel = tar.select("Select a Pokémon to discard a Pokemon Tool from (cancel to stop).", true)
+                if (sel) {
+                  def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokémon Tool from $sel.")
+                  targeted (sel, TRAINER_CARD) {
+                    list.discard()
+                    i -=1
+                  }
                 }
               }
+            }else{
+              break
             }
           }
         }
