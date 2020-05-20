@@ -3891,7 +3891,15 @@ public enum RebelClash implements LogicCardInfo {
         onPlay {
           def i = 2
           while (i-- > 0) {
-            def tar = all.findAll {it.cards.hasType(POKEMON_TOOL)}
+            if(my.all.findAll {it.cards.hasType(POKEMON_TOOL)} && opp.all.findAll{it.cards.hasType(POKEMON_TOOL)}){
+              if(choose([1,2],["Your Pokémon", "Your opponent's Pokémon"], "Remove a tool from...?") == 1){
+                def tar = my.all.findAll {it.cards.hasType(POKEMON_TOOL)}
+              } else{
+                def tar = opp.all.findAll{it.cards.hasType(POKEMON_TOOL)}
+              }
+            } else {
+              def tar = all.findAll {it.cards.hasType(POKEMON_TOOL)}
+            }
             if (tar) {
               def sel = tar.select("Select a Pokémon to discard a Pokemon Tool from (cancel to stop).", i == 1)
               if (sel) {
