@@ -759,7 +759,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "When your opponent attaches a Special Energy card from his or her hand to 1 of his or her Pokémon, put 1 damage counter on that Pokémon. You can't use more than 1 Delta Moon Poké-Body each turn."
           delayedA {
             after ATTACH_ENERGY, {
-              if (ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite && bg.em().retrieveObject("Delta_Moon") != bg.turnCount) {
+              if (ef.reason == PLAY_FROM_HAND && ef.card.cardTypes.is(SPECIAL_ENERGY) && ef.resolvedTarget.owner == self.owner.opposite && bg.em().retrieveObject("Delta_Moon") != bg.turnCount) {
                 directDamage 10, ef.resolvedTarget
                 bc "Delta Moon activates"
                 bg.em().storeObject("Delta_Moon", bg.turnCount)
