@@ -2291,7 +2291,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         onPlay {
           flip 1, {
             if(my.deck){
-              my.deck.search(min:0, max:1, "Search your deck for up to 2 cards named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Aerodactyl ex" || it.name == "Lileep" || it.name == "Anorith"}).each {
+              my.deck.search(min:0, max:1, "Search your deck for a card named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Aerodactyl ex" || it.name == "Lileep" || it.name == "Anorith"}).each {
                 my.deck.remove(it)
                 benchPCS(it)
                 //TODO Mark as basic
