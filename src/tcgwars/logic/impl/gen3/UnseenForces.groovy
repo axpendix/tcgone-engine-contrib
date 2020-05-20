@@ -47,7 +47,6 @@ import tcgwars.logic.util.*;
  */
 public enum UnseenForces implements LogicCardInfo {
 
-  UNOWN_0 ("Unown", 0, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
   AMPHAROS_1 ("Ampharos", 1, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
   ARIADOS_2 ("Ariados", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   BELLOSSOM_3 ("Bellossom", 3, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
@@ -166,32 +165,33 @@ public enum UnseenForces implements LogicCardInfo {
   ROCKET_S_PERSIAN_EX_116 ("Rocket's Persian ex", 116, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   CELEBI_EX_117 ("Celebi ex", 117, Rarity.ULTRARARE, [POKEMON, BASIC, _GRASS_]),
   UNOWN_118 ("Unown", 118, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_A ("Unown", 119, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_B ("Unown", 120, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_C ("Unown", 121, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_D ("Unown", 122, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_E ("Unown", 123, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_F ("Unown", 124, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_G ("Unown", 125, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_H ("Unown", 126, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_I ("Unown", 127, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_J ("Unown", 128, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_K ("Unown", 129, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_L ("Unown", 130, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_M ("Unown", 131, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_N ("Unown", 132, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_O ("Unown", 133, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_P ("Unown", 134, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_Q ("Unown", 135, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_R ("Unown", 136, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_S ("Unown", 137, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_T ("Unown", 138, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_U ("Unown", 139, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_V ("Unown", 140, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_W ("Unown", 141, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_X ("Unown", 142, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_Y ("Unown", 143, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UNOWN_Z ("Unown", 144, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
+  UNOWN_119 ("Unown", 119, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_120 ("Unown", 120, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_121 ("Unown", 121, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_122 ("Unown", 122, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_123 ("Unown", 123, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_124 ("Unown", 124, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_125 ("Unown", 125, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_126 ("Unown", 126, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_127 ("Unown", 127, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_128 ("Unown", 128, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_129 ("Unown", 129, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_130 ("Unown", 130, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_131 ("Unown", 131, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_132 ("Unown", 132, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_133 ("Unown", 133, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_134 ("Unown", 134, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_135 ("Unown", 135, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_136 ("Unown", 136, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_137 ("Unown", 137, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_138 ("Unown", 138, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_139 ("Unown", 139, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_140 ("Unown", 140, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_141 ("Unown", 141, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_142 ("Unown", 142, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_143 ("Unown", 143, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_144 ("Unown", 144, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  UNOWN_145 ("Unown", 145, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
 
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -246,35 +246,6 @@ public enum UnseenForces implements LogicCardInfo {
   @Override
   public Card getImplementation() {
     switch (this) {
-      case UNOWN_0:
-      return basic (this, hp:HP060, type:P, retreatCost:1) {
-        weakness P
-        pokePower "Shuffle", {
-          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
-            assert my.deck : "There are no cards in your deck"
-            powerUsed()
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            def unown = self.topPokemonCard
-            if (my.deck.findAll { it.name.contains("Unown") }) {
-              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
-              my.deck.add(unown)
-              self.cards.remove(unown)
-              shuffleDeck()
-              checkFaint()
-            }
-          }
-        }
-        move "Hidden Power", {
-          text "Flip a coin. If heads, put 2 damage counters on 1 of your opponent's Pokémon. If tails, put 2 damage counters on 1 of your Pokémon."
-          energyCost C
-          onAttack {
-            // TODO
-          }
-        }
-      };
       case AMPHAROS_1:
       return evolution (this, from:"Flaaffy", hp:HP120, type:L, retreatCost:2) {
         weakness F
@@ -3030,7 +3001,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_A:
+      case UNOWN_119:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3063,7 +3034,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_B:
+      case UNOWN_120:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3092,7 +3063,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_C:
+      case UNOWN_121:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3127,7 +3098,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_D:
+      case UNOWN_122:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3166,7 +3137,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_E:
+      case UNOWN_123:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3206,7 +3177,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_F:
+      case UNOWN_124:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3236,7 +3207,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_G:
+      case UNOWN_125:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3265,7 +3236,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_H:
+      case UNOWN_126:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3294,7 +3265,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_I:
+      case UNOWN_127:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3323,7 +3294,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_J:
+      case UNOWN_128:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3352,7 +3323,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_K:
+      case UNOWN_129:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3381,7 +3352,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_L:
+      case UNOWN_130:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3410,7 +3381,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_M:
+      case UNOWN_131:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3439,7 +3410,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_N:
+      case UNOWN_132:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3468,7 +3439,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_O:
+      case UNOWN_133:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3501,7 +3472,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_P:
+      case UNOWN_134:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3532,7 +3503,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_Q:
+      case UNOWN_135:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3570,7 +3541,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_R:
+      case UNOWN_136:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3603,7 +3574,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_S:
+      case UNOWN_137:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3635,7 +3606,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_T:
+      case UNOWN_138:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3664,7 +3635,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_U:
+      case UNOWN_139:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3694,7 +3665,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_V:
+      case UNOWN_140:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3725,7 +3696,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_W:
+      case UNOWN_141:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3760,7 +3731,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_X:
+      case UNOWN_142:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3789,7 +3760,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_Y:
+      case UNOWN_143:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3819,7 +3790,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-      case UNOWN_Z:
+      case UNOWN_144:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
         pokePower "Shuffle", {
@@ -3851,9 +3822,37 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
       };
-        default:
+      case UNOWN_145:
+      return basic (this, hp:HP060, type:P, retreatCost:1) {
+        weakness P
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
+            checkLastTurn()
+            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You cannot use Shuffle more than once per turn!"
+            assert my.deck : "There are no cards in your deck"
+            powerUsed()
+            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
+            def unown = self.topPokemonCard
+            if (my.deck.findAll { it.name.contains("Unown") }) {
+              my.deck.search{it.name.contains("Unown")}.moveTo(self.cards)
+              my.deck.add(unown)
+              self.cards.remove(unown)
+              shuffleDeck()
+              checkFaint()
+            }
+          }
+        }
+        move "Hidden Power", {
+          text "Flip a coin. If heads, put 2 damage counters on 1 of your opponent's Pokémon. If tails, put 2 damage counters on 1 of your Pokémon."
+          energyCost C
+          onAttack {
+            // TODO
+          }
+        }
+      };
+      default:
       return null;
     }
   }
-
 }
