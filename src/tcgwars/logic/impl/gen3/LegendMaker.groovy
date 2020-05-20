@@ -581,8 +581,15 @@ public enum LegendMaker implements LogicCardInfo {
         resistance P, MINUS30
         pokePower "Evolutionary Fan", {
           text "Once during your turn, when you play Shiftry from your hand to evolve 1 of your Pokémon, you may choose 1 of your Evolved Pokémon in play (excluding any Shiftry). Return that Pokémon and all cards attached to it to your hand."
-          actionA {
-            // TODO
+          onActivate { r->
+            if (r==PLAY_FROM_HAND) {
+              if (opp.all.findAll { it.evolution } && confirm("Evolutionary Fan - Return an opponent's evolved Pokemon back to their hand?")){
+                def pcs = opp.all.findAll { it.evolution }.select("Which Pokemon to bring back to their owner's hand?")
+
+                pcs.cards.moveTo(opp.hand)
+                removePCS(pcs)
+              }
+            }
           }
         }
         move "Reactive Beating", {
