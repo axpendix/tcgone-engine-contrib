@@ -546,7 +546,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Dual Aura", {
           text "As long as you have Latios or Latios ex in play, each player's Evolved Pokémon (excluding Pokémon-ex) can't use any Poké-Bodies."
-          getterA (IS_ABILITY_BLOCKED) { Holder h ->
+          getterA (IS_ABILITY_BLOCKED, BEFORE_LAST) { Holder h ->
             if (my.all.findAll{it.name == "Latios" || it.name == "Latios ex"} && !h.effect.target.EX && h.effect.target.evolution) {
               if (h.effect.ability instanceof PokeBody) {
                 h.object = true
@@ -578,7 +578,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Dual Aura", {
           text "As long as you have Latias or Latias ex in play, each player's Evolved Pokémon (excluding Pokémon-ex) can't use any Poké-Bodies."
-          getterA (IS_ABILITY_BLOCKED) { Holder h ->
+          getterA (IS_ABILITY_BLOCKED, BEFORE_LAST) { Holder h ->
             if (my.all.findAll{it.name == "Latias" || it.name == "Latias ex"} && !h.effect.target.EX && h.effect.target.evolution) {
               if (h.effect.ability instanceof PokeBody) {
                 h.object = true
@@ -641,7 +641,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Delta Reserve", {
           text "As long as Pidgeot has any Holon Energy cards attached to it, each player's Pokémon (excluding Pokémon that has δ on its card) can't use any Poké-Powers."
-          getterA (IS_ABILITY_BLOCKED) { Holder h ->
+          getterA (IS_ABILITY_BLOCKED, BEFORE_LAST) { Holder h ->
             if (self.cards.findAll{it.name.contains("Holon Energy")} && !h.effect.target.topPokemonCard.cardTypes.is(DELTA)) {
               if (h.effect.ability instanceof PokePower) {
                 h.object=true
