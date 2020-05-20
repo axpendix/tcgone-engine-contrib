@@ -250,7 +250,7 @@ public enum HolonPhantoms implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 if (turnCount + 1 <= bg.turnCount) {
                   if (all.contains(pcs)) {
-                    bc "<font color=ff0000>Harsh Fluid activates</font>"
+                    bc "Harsh Fluid activates"
                     directDamage 50, pcs
                   }
                 }
