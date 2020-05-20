@@ -799,7 +799,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
           getterA (IS_ABILITY_BLOCKED) { Holder h->
-            if (self.active && h.effect.target.owner != self.owner && !h.effect.target.basic && h.effect.ability instanceof PokePower) {
+            if (self.active && h.effect.target.owner != self.owner && h.effect.target.basic && h.effect.ability instanceof PokePower) {
               h.object=true
             }
           }
