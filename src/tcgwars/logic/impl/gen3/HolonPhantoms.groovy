@@ -629,9 +629,10 @@ public enum HolonPhantoms implements LogicCardInfo {
                 it.name == "Kabuto" ||
                 it.name == "Kabutops" ||
                 it.name == "Kabutops ex"
-              ).size()
-            }
-            damage Math.min(bonusDamage, 60)
+              )
+            }.size()
+            def amount = Math.min(bonusDamage, 60)
+            damage amount
           }
         }
       };
