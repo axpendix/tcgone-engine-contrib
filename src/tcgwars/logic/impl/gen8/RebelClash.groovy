@@ -3893,8 +3893,8 @@ public enum RebelClash implements LogicCardInfo {
           while (true) {
             def tar
             if(i > 0 && (my.all.findAll {it.cards.hasType(POKEMON_TOOL)} || opp.all.findAll {it.cards.hasType(POKEMON_TOOL)})){
-              def options
-              def text
+              def options = []
+              def text = []
               if(my.all.findAll {it.cards.hasType(POKEMON_TOOL)}){
                 options += [1]
                 text += ["Your opponent's Pokémon"]
