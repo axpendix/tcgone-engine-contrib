@@ -363,10 +363,12 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "If your opponent has any Pokémon-ex in play, each of Ludicolo's attacks does 30 more damage to the Defending Pokémon."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              if (ef.attacker.owner == self.owner && ef.attacker == self && it.dmg.value && it.to.active) {
-                if (opp.all.findAll { it.EX }) {
-                  bc "Overzealous +30"
-                  it.dmg += hp(30)
+              bg.dm().each {
+                if (it.from.owner==self.owner && it.to.active && it.to.owner!=self.owner && it.dmg.value) {
+                  if (opp.all.findAll { it.EX }) {
+                    bc "Overzealous +30"
+                    it.dmg += hp(30)
+                  }
                 }
               }
             }
@@ -378,7 +380,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            discardRandomCardFromOpponentsHand()
+            afterDamage {
+              discardRandomCardFromOpponentsHand()
+            }
           }
         }
         move "Fire Punch", {
