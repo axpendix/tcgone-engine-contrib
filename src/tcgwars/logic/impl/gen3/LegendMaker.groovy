@@ -513,7 +513,7 @@ public enum LegendMaker implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             powerUsed()
-            def chosenTypes = opp.all.select("Choose the Pokemon that Mew should change it's type to. Mew will stay this type until the end of your turn.").topPokemonCard.types
+            def chosenTypes = opp.active.topPokemonCard.types
             bc "Mew is now the following type(s): $chosenTypes"
             delayed {
               def eff
