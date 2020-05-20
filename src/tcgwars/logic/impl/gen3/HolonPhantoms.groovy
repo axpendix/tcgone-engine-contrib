@@ -1414,6 +1414,21 @@ public enum HolonPhantoms implements LogicCardInfo {
       case HOLON_S_CASTFORM_44:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
+        globalAbility {Card thisCard->
+          delayed {
+            before PLAY_CARD, {
+              if(ef.cardToPlay == thisCard){
+                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
+                  //TODO find a way to check if an energy has been played this turn.  Also when this card is played as an energy tell the engine to not allow more energy to be played
+                  //I think I can accomplish this with PLAY_ENERGY however im not sure how it will work with cards that allow you to play multiple energys from your hand. I think all of them use attachEnergy so it shouldn't be too big of an issue.
+                  //TODO Attach as an energy using code or magic, this was going to be charjabug code but then I found out charjabug doesn't work either...
+                  wcu "Congratz Ufo! You hooked into playing a card and put a check in the middle! Now comes the hard part"
+                  prevent()
+                }
+              } //If the user chooses Pokémon, play the card normally
+            }
+          }
+        }
         move "Delta Draw", {
           text "Count the number of Pokémon you have in play that has δ on its card. Draw up to that many cards."
           energyCost C
