@@ -3319,8 +3319,20 @@ public enum UnseenForces implements LogicCardInfo {
         move "Hidden Power", {
           text "Search your deck for up to 2 Pokémon Tool cards and attach them to any of your Pokémon (excluding Pokémon that already have a Pokémon Tool attached to them). Shuffle your deck afterward."
           energyCost C
+          attackRequirement {
+            assert my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))}) : "Your Pokemon already have tools attached to them."
+            assert my.deck : "Deck is empty."
+          }
           onAttack {
-            // TODO
+            def tar = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))})
+            if(tar){
+              my.deck.search(max : Math.min(2,tar.size()),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{
+                def pcs = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))}).select()
+                my.deck.remove(it)
+                attachPokemonTool(it,pcs)
+              }
+            }
+            shuffleDeck()
           }
         }
       };
@@ -3694,7 +3706,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_137:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -4006,7 +4020,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
-}
+        }
         move "Hidden Power", {
           text "Flip a coin. If heads, put 2 damage counters on 1 of your opponent's Pokémon. If tails, put 2 damage counters on 1 of your Pokémon."
           energyCost C
