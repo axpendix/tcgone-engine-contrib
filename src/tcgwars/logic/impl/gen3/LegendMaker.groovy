@@ -513,15 +513,14 @@ public enum LegendMaker implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             powerUsed()
-
+            def chosenTypes = opp.all.select("Choose the Pokemon that Mew should change it's type to. Mew will stay this type until the end of your turn.").topPokemonCard.types
+            bc "Mew is now the following type(s): $chosenTypes"
             delayed {
               def eff
-              def chosenTypes = opp.all.select("Choose the Pokemon that Mew should change it's type to. Mew will stay this type until the end of your turn.").topPokemonCard.types
               register {
                 eff = getter GET_POKEMON_TYPE, self, { h->
                   h.object.clear()
-                  h.object.add(types)
-                  bc "Mew is now the following type(s): $chosenTypes"
+                  h.object.add(chosenTypes)
                 }
               }
               unregister {
@@ -536,7 +535,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-            if (self.cards.energyCount(C) == defending.cards.energyCount(C)) {
+            if (self.cards.energyCount(C) != defending.cards.energyCount(C)) {
               damage 20
             } else {
               damage 50
