@@ -3059,7 +3059,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_120:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3078,6 +3080,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Count the number of cards in your opponent's hand. Put that many damage counters on the Defending Pokémon."
           energyCost C, C, C
@@ -3089,7 +3092,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_121:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3108,6 +3113,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Search your opponent's discard pile for a Supporter card and use the effect of that card as the effect of this attack. (The Supporter card remains in your opponent's discard pile.)"
           energyCost C
@@ -3125,7 +3131,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_122:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3144,6 +3152,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Flip a coin. If heads, choose 1 of either player's Evolved Pokémon, remove the highest Stage Evolution card from that Pokémon, and put it into that player's hand."
           energyCost C
@@ -3165,7 +3174,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_123:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3184,6 +3195,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "If your opponent's Bench isn't full, look at his or her hand. Choose 1 Basic Pokémon you find there and put it onto your opponent's Bench. Then, switch it with the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost C
@@ -3206,7 +3218,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_124:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3225,6 +3239,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "10 damage. Flip 3 coins. If 1 of them is heads, the Defending Pokémon is now Asleep. If 2 of them are heads, the Defending Pokémon is now Confused. If all of them are heads, the Defending Pokémon is now Paralyzed."
           energyCost P, C
@@ -3246,7 +3261,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_125:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3265,6 +3282,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Count the number of your Pokémon that have any damage counters on them. Put that many damage counters on the Defending Pokémon."
           energyCost C, C
@@ -3276,7 +3294,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_126:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3295,18 +3315,21 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Search your deck for up to 2 Pokémon Tool cards and attach them to any of your Pokémon (excluding Pokémon that already have a Pokémon Tool attached to them). Shuffle your deck afterward."
           energyCost C
           onAttack {
-
+            // TODO
           }
         }
       };
       case UNOWN_127:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3325,6 +3348,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. The new Defending Pokémon is now Burned and Confused."
           energyCost P, C
@@ -3341,7 +3365,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_128:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3360,11 +3386,12 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Flip a coin. If heads, switch all damage counters on Unown with those on the Defending Pokémon. (If an effect of this attack is prevented, this attack does nothing.)"
           energyCost C
           onAttack {
-
+            // TODO
           }
         }
       };
@@ -3390,6 +3417,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "20 damage. You may discard any Stadium card in play."
           energyCost P, C
@@ -3401,7 +3429,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_130:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3420,6 +3450,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Flip a coin. If heads, put damage counters on the Defending Pokémon until it is 10 HP away from being Knocked Out."
           energyCost P, C
@@ -3433,7 +3464,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_131:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3452,6 +3485,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Search your deck for a card that evolves from 1 of your Pokémon and put it on that Pokémon. (This counts as evolving that Pokémon.) If you do, put 1 damage counter on Unown. Shuffle your deck afterward."
           energyCost P
@@ -3474,7 +3508,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_132:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3493,6 +3529,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Remove 5 damage counters from Unown. (All if there are less than 5.)"
           energyCost C
@@ -3504,7 +3541,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_133:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3523,6 +3562,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "20 damage. Return Unown and all Energy cards attached to it to your hand."
           energyCost P, C
@@ -3538,7 +3578,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_134:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3557,6 +3599,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Put 1 damage counter on each of your opponent's Pokémon that already has damage counters on it."
           energyCost C, C
@@ -3570,7 +3613,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_135:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3589,6 +3634,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Search your deck for up to 3 different types of basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           energyCost C
@@ -3609,7 +3655,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_136:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3628,6 +3676,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Flip a coin. If heads, your opponent returns the Defending Pokémon and all cards attached to it to his or her hand. (If your opponent doesn't have any Benched Pokémon or other Active Pokémon, this attack does nothing.)"
           energyCost C, C
@@ -3662,6 +3711,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "If the Defending Pokémon has a Poké-Power or a Poké-Body, choose up to 2 basic Energy cards attached to 1 of your opponent's Pokémon and attach them to the Defending Pokémon."
           energyCost P, P
@@ -3689,7 +3739,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_138:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3708,6 +3760,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. This attack's damage isn't affected by Weakness or Resistance."
           energyCost C, C
@@ -3719,7 +3772,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_139:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3738,6 +3793,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "10 damage. Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
           energyCost P, C
@@ -3750,7 +3806,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_140:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3769,6 +3827,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "20+ damage. Does 20 damage plus 10 more damage for each Basic Pokémon and each Evolution card in your discard pile. You can't add more than 60 damage in this way."
           energyCost P, C, C
@@ -3782,7 +3841,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_141:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3801,6 +3862,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "20 damage. Flip a coin. If heads, search your discard pile for a card, show it to your opponent, and put it on top of your deck."
           energyCost P, C
@@ -3818,7 +3880,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_142:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3837,6 +3901,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "20x damage. Flip a coin until you get tails. This attack does 20 damage times the number of heads."
           energyCost P, C
@@ -3848,7 +3913,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_143:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3867,6 +3934,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "10 damage. The Defending Pokémon is now Asleep."
           energyCost C
@@ -3879,7 +3947,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_144:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3898,6 +3968,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+        }
         move "Hidden Power", {
           text "Does 20 damage to each Pokémon that has any Poké-Powers or Poké-Bodies (both yours and your opponent's). Don't apply Weakness or Resistance."
           energyCost P
@@ -3912,7 +3983,9 @@ public enum UnseenForces implements LogicCardInfo {
       case UNOWN_145:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
-        actionA {
+        pokePower "Shuffle", {
+          text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
+          actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
             powerUsed()
@@ -3931,6 +4004,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             shuffleDeck()
           }
+}
         move "Hidden Power", {
           text "Flip a coin. If heads, put 2 damage counters on 1 of your opponent's Pokémon. If tails, put 2 damage counters on 1 of your Pokémon."
           energyCost C
