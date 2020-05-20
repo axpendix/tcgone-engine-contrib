@@ -2322,7 +2322,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
           onAttack {
             def energy = self.cards.filterByType(BASIC_ENERGY).select("Deal 20 damage to your opponent's Pokemon of the same type of the chosen Energy.")
-            def type = energy.asEnergyCard().basicType
+            def type = energy.basicType
             bc "Rainbow Wave - Chosen type is $type"
             opp.all.each {
               if (it.topPokemonCard.types.contains(type)) {
