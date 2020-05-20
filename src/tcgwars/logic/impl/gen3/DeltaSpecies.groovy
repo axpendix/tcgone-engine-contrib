@@ -2712,7 +2712,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card to discard.")
           toDiscard.discard()
 
-          my.deck.search(max: 1, "Select a [M] and a Pokemon card with δ in its card.", {
+          my.deck.search(max: 1, "Select a [M] or a Pokemon card with δ in its card.", {
             (it.cardTypes.is(ENERGY) && it.asEnergyCard().containsTypePlain(M)) ||
             (it.cardTypes.is(POKEMON) && it.cardTypes.is(DELTA))
           }, { CardList list ->
