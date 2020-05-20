@@ -250,7 +250,7 @@ public enum HolonPhantoms implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 if (turnCount + 1 <= bg.turnCount) {
                   if (all.contains(pcs)) {
-                    bc "Harsh Fluid activates"
+                    bc "<font color=ff0000>Harsh Fluid activates</font>"
                     directDamage 50, pcs
                   }
                 }
@@ -1418,14 +1418,22 @@ public enum HolonPhantoms implements LogicCardInfo {
           delayed {
             before PLAY_CARD, {
               if(ef.cardToPlay == thisCard){
-                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
-                  //TODO find a way to check if an energy has been played this turn.  Also when this card is played as an energy tell the engine to not allow more energy to be played
-                  //I think I can accomplish this with PLAY_ENERGY however im not sure how it will work with cards that allow you to play multiple energys from your hand. I think all of them use attachEnergy so it shouldn't be too big of an issue.
+                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2 && bg.em().retrieveObject("Castform_Energy") != bg.turnCount){
+                  bg.em().storeObject("Castform_Energy", bg.turnCount)
                   //TODO Attach as an energy using code or magic, this was going to be charjabug code but then I found out charjabug doesn't work either...
                   wcu "Congratz Ufo! You hooked into playing a card and put a check in the middle! Now comes the hard part"
                   prevent()
                 }
               } //If the user chooses Pokémon, play the card normally
+            }
+            before PLAY_ENERGY, {
+              if(bg.em().retrieveObject("Castform_Energy") == bg.turnCount){
+                wcu "Cannot play any more energy this turn."
+                prevent()
+              }
+            }
+            after PLAY_ENERGY, {
+              bg.em().storeObject("Castform_Energy", bg.turnCount)
             }
           }
         }
