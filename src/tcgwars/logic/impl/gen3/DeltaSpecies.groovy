@@ -1079,7 +1079,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             checkLastTurn()
             powerUsed()
 
-            def newPrize = my.hand.select(hidden: false, "Card to put into Prizes")
+            def newPrize = my.hand.select(hidden: false, "Card to put into Prizes").first()
 
             def tar = my.prizeCardSet.faceDownCards.select(hidden: true, "Choose a Prize card to replace with one in your hand.").first()
             my.hand.add(tar)
