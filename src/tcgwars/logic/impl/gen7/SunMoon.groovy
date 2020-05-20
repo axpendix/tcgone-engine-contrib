@@ -468,7 +468,7 @@ public enum SunMoon implements LogicCardInfo {
             actionA {
               checkLastTurn()
               powerUsed()
-              directDamage(20, opp.all.select())
+              directDamage 20, opp.all.select(), SRC_ABILITY
             }
           }
           move "Razor Leaf", {
