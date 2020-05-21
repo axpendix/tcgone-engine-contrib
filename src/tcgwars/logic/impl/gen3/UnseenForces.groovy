@@ -3085,7 +3085,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "Count the number of cards in your opponent's hand. Put that many damage counters on the Defending Pokémon."
           energyCost C, C, C
           onAttack {
-            directDamage 10*opp.hand.size()
+            directDamage 10*opp.hand.size(), opp.active
           }
         }
       };
