@@ -2693,7 +2693,10 @@ public enum DeltaSpecies implements LogicCardInfo {
             getter GET_ENERGY_TYPES, { holder->
               if (holder.effect.target.topPokemonCard.cardTypes.is(DELTA) &&
                 holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
-                holder.object.addAll([M] as Set)
+                def type = holder.effect.card.basicType
+                bc "$type"
+                type += [M]
+                holder.object = [[type] as Set]
               }
             }
           }
