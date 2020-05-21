@@ -3204,7 +3204,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
           onAttack {
             opp.hand.showToMe("Opponent's hand.")
-            if (opp.hand.findAll { it.cardTypes.is(BASIC) } && opp.bench.notFull) {
+            if (opp.hand.findAll { it.cardTypes.is(BASIC) }) {
               def basicPokemon = opp.hand.findAll { it.cardTypes.is(BASIC) }
               def tar
               basicPokemon.select("Choose a pokemon to bench").each {
