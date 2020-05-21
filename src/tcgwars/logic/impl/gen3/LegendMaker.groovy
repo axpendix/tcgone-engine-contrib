@@ -1063,7 +1063,7 @@ public enum LegendMaker implements LogicCardInfo {
           }
           delayedA{
             after PLAY_CARD, {
-              CheckAbilities().run(bg)
+              new CheckAbilities().run(bg)
             }
           }
         }
