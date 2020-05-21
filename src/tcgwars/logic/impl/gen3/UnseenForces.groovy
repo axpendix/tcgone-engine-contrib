@@ -3203,14 +3203,15 @@ public enum UnseenForces implements LogicCardInfo {
             assert opp.bench.notFull : "Opponent's Bench is full"
           }
           onAttack {
+            opp.hand.showToMe("Opponent's hand.")
             if (opp.hand.findAll { it.cardTypes.is(BASIC) }) {
               def basicPokemon = opp.hand.findAll { it.cardTypes.is(BASIC) }
-              def maximumAllowed = Math.min(basicPokemon.size(), opp.bench.freeBenchCount)
-              basicPokemon.select(min: 0, max: maximumAllowed).each {
+              def tar
+              basicPokemon.select("Choose a pokemon to bench").each {
                 opp.hand.remove(it)
-                benchPCS(it, OTHER, TargetPlayer.OPPONENT)
+                tar = benchPCS(it, OTHER, TargetPlayer.OPPONENT)
               }
-              whirlwind()
+              sw opp.active, tar
             }
           }
         }
