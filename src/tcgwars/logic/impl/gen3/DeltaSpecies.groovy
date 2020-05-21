@@ -2689,14 +2689,12 @@ public enum DeltaSpecies implements LogicCardInfo {
           "Each player's basic Energy cards attached to Pokémon that has δ on its card are both their usual Energy type and Metal type but provide only 1 Energy at a time. (Has no effect other than providing Energy.)"
         def eff
         onPlay {
-          eff = delayed {
-            getter GET_ENERGY_TYPES, { holder->
-              if (holder.effect.target.topPokemonCard.cardTypes.is(DELTA) &&
-                holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
-                def type = holder.effect.card.basicType
-                bc "$type"
-                holder.object = [[type,M] as Set]
-              }
+          eff = getter GET_ENERGY_TYPES, { holder->
+            if (holder.effect.target.topPokemonCard.cardTypes.is(DELTA) &&
+              holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
+              def type = holder.effect.card.basicType
+              bc "$type"
+              holder.object = [[type,M] as Set]
             }
           }
         }
