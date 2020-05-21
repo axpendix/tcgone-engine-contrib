@@ -2295,6 +2295,10 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness G
         resistance W, MINUS30
         pokeBody "Extra Liquid", {
+          def target = []
+          def source = []
+          bg.em().storeObject("Extra_Liquid_target", target)
+          bg.em().storeObject("Extra_Liquid_source", source)
           text "Each player's Pokémon-ex can't use any Poké-Powers and pays [C] more Energy to use its attacks. Each Pokémon can't be affected by more than 1 Extra Liquid Poké-Body."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
             if (h.effect.target.topPokemonCard.cardTypes.is(EX)) {
@@ -2304,15 +2308,24 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
           getterA GET_MOVE_LIST, { h ->
-            if (h.effect.target.topPokemonCard.cardTypes.is(EX) && bg.em().retrieveObject("Extra_Liquid") != (h.effect.target.id+bg.turnCount)) {
+            if (h.effect.target.topPokemonCard.cardTypes.is(EX)) {
               def list = []
               for (move in h.object) {
                 def copy = move.shallowCopy()
-                copy.energyCost.add(C)
+                target = bg.em().retrieveObject("Extra_Liquid_target")
+                source = bg.em().retrieveObject("Extra_Liquid_source")
+                if(!target.contains(h.effect.target)){
+                  copy.energyCost.add(C)
+                  target.add(h.effect.target)
+                  bg.em().storeObject("Extra_Liquid_target", target)
+                  source.add(self)
+                  bg.em().storeObject("Extra_Liquid_source", source)
+                } else if(source.get(target.indexOf(h.effect.target)) == self){
+                  copy.energyCost.add(C)
+                }
                 list.add(copy)
               }
               h.object=list
-              bg.em().storeObject("Extra_Liquid", h.effect.target.id+bg.turnCount)
             }
           }
         }
