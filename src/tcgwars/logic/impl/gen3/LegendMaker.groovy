@@ -1061,6 +1061,11 @@ public enum LegendMaker implements LogicCardInfo {
               }
             }
           }
+          delayedA{
+            after PLAY_CARD, {
+              CheckAbilities().run(bg)
+            }
+          }
         }
         move "Call for Family", {
           text "Search your deck for a Lunatone and put it onto your Bench. Shuffle your deck afterward."
