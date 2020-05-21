@@ -461,7 +461,7 @@ public enum PowerKeepers implements LogicCardInfo {
           text "As long as Kabutops is your Active Pokémon, your opponent can't play any Basic Pokémon or Evolution cards from his or her hand to evolve his or her Active Pokémon."
           delayedA {
             before EVOLVE_STANDARD, self.owner.opposite.pbg.active,{
-              if (ef.reason == PLAY_FROM_HAND && bg.currentTurn==self.owner.opposite) {
+              if (bg.currentTurn==self.owner.opposite) {
                 prevent()
               }
             }
