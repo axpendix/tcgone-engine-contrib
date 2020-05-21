@@ -1143,7 +1143,9 @@ public enum Unleashed implements LogicCardInfo {
             energyCost W
             onAttack {
               damage 10
-              damage 10, opp.bench.select()
+              if (opp.bench) {
+                damage 10, opp.bench.select("Which Benched Pokemon to deal damage to?")
+              }
             }
           }
 
