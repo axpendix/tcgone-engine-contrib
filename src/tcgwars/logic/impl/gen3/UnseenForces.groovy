@@ -3051,7 +3051,7 @@ public enum UnseenForces implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            deck.search(max:2, cardTypeFilter(SUPPORTER)).moveTo(hand)
+            deck.search(max:2, "Select 2 Supporter cards to move to your hand.", cardTypeFilter(SUPPORTER)).moveTo(hand)
             shuffleDeck()
           }
         }
