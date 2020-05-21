@@ -3007,14 +3007,14 @@ public enum UnseenForces implements LogicCardInfo {
 
             myCard.showToOpponent("Your Opponent's chosen card.")
             if (
-              (opponentChoice == 1 && !myCard.cardTypes.is(POKEMON)) ||
-              (opponentChoice == 2 && !myCard.cardTypes.is(TRAINER)) ||
-              (opponentChoice == 3 && !myCard.cardTypes.is(ENERGY))
+              (opponentChoice == 1 && myCard.cardTypes.is(POKEMON)) ||
+              (opponentChoice == 2 && myCard.cardTypes.is(TRAINER)) ||
+              (opponentChoice == 3 && myCard.cardTypes.is(ENERGY))
             ) {
+              bc "Hidden Power - The correct card type was guessed."
+            } else {
               bc "Hidden Power - The wrong card type was guessed"
               draw 2
-            } else {
-              bc "Hidden Power - The correct card type was guessed."
             }
           }
         }
