@@ -3170,7 +3170,7 @@ public enum UnseenForces implements LogicCardInfo {
             flip {
               if (all.findAll { it.evolution }) {
                 def list = all.findAll { it.evolution }
-                def pcs = list.select(count: 1, "Devolve one Evolved Pokémon")
+                def pcs = list.select("Devolve one Evolved Pokémon")
                 def top = pcs.topPokemonCard
                 bc "$top Devolved"
                 pcs.cards.remove(top)
