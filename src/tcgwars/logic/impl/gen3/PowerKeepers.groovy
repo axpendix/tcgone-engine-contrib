@@ -496,9 +496,9 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If your opponent has any Pokémon-ex in play, each of Machamp's attacks does 30 more damage to the Defending Pokémon."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              if(ef.attacker == self){
+              if(ef.attacker == self && opp.all.findAll{it.EX}){
                 bg.dm().each {
-                  if (it.to.active && it.to.owner != self.owner && it.dmg.value && opp.all.findAll{it.EX}) {
+                  if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
                     bc "Overzealous +30"
                     it.dmg += hp(30)
                   }
