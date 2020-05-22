@@ -68,7 +68,7 @@ public enum DragonMajesty implements LogicCardInfo {
   BAGON_42("Bagon", 42, Rarity.COMMON, [POKEMON,_DRAGON_,BASIC]),
   SHELGON_43("Shelgon", 43, Rarity.UNCOMMON, [POKEMON,_DRAGON_,STAGE1,EVOLUTION]),
   SALAMENCE_GX_44("Salamence-GX", 44, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_DRAGON_,STAGE2,EVOLUTION]),
-  DRUGGIDON_45("Druddigon", 45, Rarity.UNCOMMON, [POKEMON,_DRAGON_,BASIC]),
+  DRUDDIGON_45("Druddigon", 45, Rarity.UNCOMMON, [POKEMON,_DRAGON_,BASIC]),
   ZEKROM_46("Zekrom", 46, Rarity.HOLORARE, [POKEMON,_DRAGON_,BASIC]),
   KYUREM_47("Kyurem", 47, Rarity.HOLORARE, [POKEMON,_DRAGON_,BASIC]),
   WHITE_KYUREM_GX_48("White Kyurem-GX", 48, Rarity.ULTRARARE, [POKEMON_GX,POKEMON,_DRAGON_,BASIC]),
@@ -1065,7 +1065,7 @@ public enum DragonMajesty implements LogicCardInfo {
             }
           }
         };
-      case DRUGGIDON_45:
+      case DRUDDIGON_45:
         return basic (this, hp:HP110, type:DRAGON, retreatCost:1) {
           weakness FAIRY
           bwAbility "Rough Skin" , {
