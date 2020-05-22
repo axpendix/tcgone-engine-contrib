@@ -3469,6 +3469,11 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost P, C
           onAttack {
             damage 20
+            afterDamage{
+              if(bg.stadiumInfoStruct && confirm("Discard the stadium in play?"){
+                discard bg.stadiumInfoStruct.stadiumCard
+              }
+            }
           }
         }
       };
@@ -3780,19 +3785,19 @@ public enum UnseenForces implements LogicCardInfo {
           text "If the Defending Pokémon has a Poké-Power or a Poké-Body, choose up to 2 basic Energy cards attached to 1 of your opponent's Pokémon and attach them to the Defending Pokémon."
           energyCost P, P
           onAttack {
-            if (defending.abilities.keySet().find{it instanceof PokePower}) {
-              noWrDamage 20, it
-
-              afterDamage {
-                if (opp.bench.findAll { it.cards.filterByType(ENERGY) }) {
-                  def validSources = new PcsList();
-                  opp.bench.each {
-                    validSources.add(it)
-                  }
-                  def pcs = validSources.findAll{it.cards.filterByType(ENERGY)}.select("Choose the Pokémon to move the Energy from.")
-                  def energies = pcs.cards.filterByType(ENERGY).select(max: 2, "Choose up to 2 Energy cards to move to the Active Pokémon.")
-                  energies.each {
-                    energySwitch(pcs, opp.active, it)
+            if (defending.abilities.keySet().find{it instanceof PokePower || it instanceof PokeBody}) {
+              if (opp.bench.findAll { it.cards.filterByType(BASIC_ENERGY) }) {
+                def tar = opp.bench.findAll{ it.cards.filterByType(BASIC_ENERGY) }.select("Choose a Pokémon to move energy from", false)
+                if(tar){
+                  def i = 2
+                  while(i>0){
+                    def card = tar.cards.filterByType(BASIC_ENERGY).select("Move which energy?",false)
+                    if(card){
+                      energySwitch(tar, opp.active, card)
+                      i-=1
+                    } else{
+                      break
+                    }
                   }
                 }
               }
