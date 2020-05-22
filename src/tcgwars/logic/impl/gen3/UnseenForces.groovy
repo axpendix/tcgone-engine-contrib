@@ -3427,7 +3427,13 @@ public enum UnseenForces implements LogicCardInfo {
           text "Flip a coin. If heads, switch all damage counters on Unown with those on the Defending Pokémon. (If an effect of this attack is prevented, this attack does nothing.)"
           energyCost C
           onAttack {
-            // TODO
+            flip{
+              targeted (defending) {
+                def oldDamage = defending.damage
+                defending.damage = self.damage
+                self.damage = oldDamage
+              }
+            }
           }
         }
       };
