@@ -3469,6 +3469,11 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost P, C
           onAttack {
             damage 20
+            afterDamage{
+              if(bg.stadiumInfoStruct && confirm("Discard the stadium in play?"){
+                discard bg.stadiumInfoStruct.stadiumCard
+              }
+            }
           }
         }
       };
