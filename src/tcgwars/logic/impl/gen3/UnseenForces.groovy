@@ -3390,9 +3390,9 @@ public enum UnseenForces implements LogicCardInfo {
             if (opp.bench) {
               target = opp.bench.select("Select the new active")
               sw defending, target
+              apply BURNED
+              apply CONFUSED
             }
-            apply BURNED
-            apply CONFUSED
           }
         }
       };
