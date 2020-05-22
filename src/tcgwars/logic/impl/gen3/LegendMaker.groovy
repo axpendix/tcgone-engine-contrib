@@ -513,14 +513,18 @@ public enum LegendMaker implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             powerUsed()
-            def chosenTypes = opp.active.types.first()
-            bc "Mew is now the following type(s): $chosenTypes"
+            def chosenTypes = opp.active.types
+            chosenTypes.each{
+              bc "Mew is now the following type: $it"
+            }
             delayed {
               def eff
               register {
                 eff = getter GET_POKEMON_TYPE, self, { h->
                   h.object.clear()
-                  h.object.add(chosenTypes)
+                  chosenTypes.each{
+                    h.object.add(it)
+                  }
                 }
               }
               unregister {
