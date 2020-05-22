@@ -3458,20 +3458,20 @@ public enum TeamUp implements LogicCardInfo {
             eff = delayed{
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(it.to == self && it.from.owner == self.owner.opposite && self.topPokemonCard.types.contains(M)){
+                  if(it.to == self && it.from.owner == self.owner.opposite && self.types.contains(M)){
                     bc "Metal Goggles -30"
                     it.dmg-=hp(30)
                   }
                 }
               }
               before DIRECT_DAMAGE, self, Source.SRC_ABILITY, {
-                if(self.topPokemonCard.types.contains(M)) {
+                if(self.types.contains(M)) {
                   bc "Metal Goggles prevents damage counters from being placed on $self.name"
                   prevent()
                 }
               }
               before DIRECT_DAMAGE, self, Source.ATTACK, {
-                if(self.topPokemonCard.types.contains(M)) {
+                if(self.types.contains(M)) {
                   bc "Metal Goggles prevents damage counters from being placed on $self.name"
                   prevent()
                 }

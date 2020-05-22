@@ -2303,7 +2303,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "Once during your turn (before your attack), you may heal 30 damage from your Active [W] Pokémon."
             actionA{
               checkLastTurn()
-              assert my.active.topPokemonCard.types.contains(W)
+              assert my.active.types.contains(W)
               powerUsed()
               heal 30, my.active
             }
@@ -2324,7 +2324,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             onAttack{
               gxPerform()
               my.all.each{
-                if(it.topPokemonCard.types.contains(W)){
+                if(it.types.contains(W)){
                   heal 10*it.numberOfDamageCounters, it
                 }
               }
