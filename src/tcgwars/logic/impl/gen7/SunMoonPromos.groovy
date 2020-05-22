@@ -2064,7 +2064,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
-      case ZAPDOS_SM145:
+      case ZAPDOS_SM146:
         return basic (this, hp:HP120, type:LIGHTNING, retreatCost:1) {
           weakness LIGHTNING
           resistance FIGHTING, MINUS20
@@ -2084,7 +2084,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
-      case LEAFEON_GX_SM146:
+      case LEAFEON_GX_SM145:
         return copy (UltraPrism.LEAFEON_GX_13, this);
       case GLACEON_GX_SM147:
         return copy (UltraPrism.GLACEON_GX_39, this);
@@ -2443,7 +2443,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
-      case MELMETAL_GX_SM178:
+      case MELMETAL_SM178:
         return evolution (this,from : "Meltan", hp:HP220, type:METAL, retreatCost:4) {
           weakness FIRE
           resistance PSYCHIC, MINUS20
