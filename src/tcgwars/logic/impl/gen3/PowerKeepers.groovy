@@ -1888,7 +1888,7 @@ public enum PowerKeepers implements LogicCardInfo {
           eff = delayed {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to.active && it.to.topPokemonCard.types.contains(C) && it.dmg.value && it.notNoEffect) {
+                if (it.to.active && it.to.types.contains(C) && it.dmg.value && it.notNoEffect) {
                   bc "Drake's Stadium reduces damage by 10"
                   it.dmg -= hp(10)
                 }
