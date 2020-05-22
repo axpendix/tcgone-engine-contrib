@@ -3785,11 +3785,13 @@ public enum UnseenForces implements LogicCardInfo {
           text "If the Defending Pokémon has a Poké-Power or a Poké-Body, choose up to 2 basic Energy cards attached to 1 of your opponent's Pokémon and attach them to the Defending Pokémon."
           energyCost P, P
           onAttack {
-            if (defending.abilities.keySet().find{it instanceof PokePower}) {
-              noWrDamage 20, it
-
-              afterDamage {
-                if (opp.bench.findAll { it.cards.filterByType(ENERGY) }) {
+            if (defending.abilities.keySet().find{it instanceof PokePower || it instanceof PokeBody}) {
+              if (opp.bench.findAll { it.cards.filterByType(BASIC_ENERGY) }) {
+                def tar = opp.bench.findAll{ it.cards.filterByType(BASIC_ENERGY) }.select("Choose a Pokémon to move energy from", false)
+                if(tar){
+                  tar.cards.filterByType(BASIC_ENERGY).select("Move which energy?",false)
+                }
+                
                   def validSources = new PcsList();
                   opp.bench.each {
                     validSources.add(it)
