@@ -2295,9 +2295,12 @@ public enum HolonPhantoms implements LogicCardInfo {
                 my.deck.remove(it)
                 it.cardTypes.add(BASIC)
                 it.cardTypes.remove(EVOLUTION)
-                it.onRemoveFromPlay {
-                  it.cardTypes.remove(BASIC)
-                  it.cardTypes.add(EVOLUTION)
+                delayed {
+                  after REMOVE_FROM_PLAY, it {
+                    it.cardTypes.remove(BASIC)
+                    it.cardTypes.add(EVOLUTION)
+                    unregister()
+                  }
                 }
                 benchPCS(it)
               }
