@@ -208,21 +208,21 @@ public enum DragonFrontiers implements LogicCardInfo {
           bg.em().storeObject("Holon_Veil",players)
           getter IS_ABILITY_BLOCKED, { Holder h->
             if (h.effect.target == self) {
-              if(!h.object && !bg.em().retrieveObject("Holon_Veil").contains(self.owner)){
-                bg.em().storeObject("Holon_Veil",bg.em().retrieveObject("Holon_Veil").add(self.owner))
+              if(!h.object && !bg.em().retrieveObject("Holon_Veil").contains(self)){
+                bg.em().storeObject("Holon_Veil",bg.em().retrieveObject("Holon_Veil").add(self))
               }
-              if(h.object && bg.em().retrieveObject("Holon_Veil").contains(self.owner)){
-                bg.em().storeObject("Holon_Veil",bg.em().retrieveObject("Holon_Veil").remove(self.owner))
+              if(h.object && bg.em().retrieveObject("Holon_Veil").contains(self)){
+                bg.em().storeObject("Holon_Veil",bg.em().retrieveObject("Holon_Veil").remove(self))
               }
-              bc"Holon veil is active ${bg.em().retrieveObject("Holon_Veil").contains(self.owner)}"
-              bc"${self.owner}"
+              bc"Holon veil is active ${bg.em().retrieveObject("Holon_Veil").contains(self)}"
+              bc"${self}"
             }
           }
           onDeactivate {
-            if(!my.all.findAll{ it.topPokemonCard == self.topPokemonCard } && bg.em().retrieveObject("Holon_Veil").contains(self.owner)){
-              bg.em().storeObject("Holon_Veil",bg.em().retrieveObject("Holon_Veil").remove(self.owner))
+            if(bg.em().retrieveObject("Holon_Veil").contains(self)){
+              bg.em().storeObject("Holon_Veil",bg.em().retrieveObject("Holon_Veil").remove(self))
             }
-            bc"Holon veil is active ${bg.em().retrieveObject("Holon_Veil").contains(self.owner)}"
+            bc"Holon veil is active ${bg.em().retrieveObject("Holon_Veil").contains(self)}"
           }
         }
         pokeBody "Holon Veil", {
