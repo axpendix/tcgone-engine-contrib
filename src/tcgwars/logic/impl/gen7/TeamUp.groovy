@@ -2069,6 +2069,7 @@ public enum TeamUp implements LogicCardInfo {
                 if(tar){
                   tar.select(max:tar.size(),"Choose the item to discard").discard()
                 }
+                shuffleDeck()
               }
             }
           }
