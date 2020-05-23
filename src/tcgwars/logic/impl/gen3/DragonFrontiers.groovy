@@ -224,10 +224,12 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
           onDeactivate {
             players = bg.em().retrieveObject("Holon_Veil")
-            if(players.contains(self.owner) && !my.all.findAll{ it.abilities.findAll{ it.name="Holon Veil" }}){
+            if(players.contains(self.owner)){
               players.remove(self.owner)
-                bg.em().storeObject("Holon_Veil",players)  
+              bg.em().storeObject("Holon_Veil",players)
+              new CheckAbilities().run(bg)
             }
+            bc"onDeactivate was triggered?"
             bc"Holon veil is active ${players.contains(self.owner)}"
           }
         }
