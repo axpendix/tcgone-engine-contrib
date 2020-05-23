@@ -1212,6 +1212,8 @@ public enum LegendMaker implements LogicCardInfo {
             def maxSpace = Math.min(my.bench.freeBenchCount, 2)
             my.deck.search(min:0, max:maxSpace, "Search your deck for up to 2 cards named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Lileep" || it.name == "Anorith"}).each {
               my.deck.remove(it)
+              it.cardTypes.add(BASIC)
+              it.cardTypes.remove(EVOLUTION)
               benchPCS(it)
             }
             shuffleDeck()
@@ -2403,7 +2405,6 @@ public enum LegendMaker implements LogicCardInfo {
             def eligible = my.hand.findAll { it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Aerodactyl ex" || it.name == "Lileep" || it.name == "Anorith"}
             eligible.select("Select which Pokemon to bench").each {
               hand.remove(it)
-              // TODO How to mark it as a Basic Pokemon?
               it.cardTypes.add(BASIC)
               it.cardTypes.remove(EVOLUTION)
               benchPCS(it)
