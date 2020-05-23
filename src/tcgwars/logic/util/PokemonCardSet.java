@@ -16,10 +16,11 @@ import tcgwars.logic.card.energy.EnergyCard;
 import tcgwars.logic.card.pokemon.PokemonCard;
 import tcgwars.logic.effect.ability.*;
 import tcgwars.logic.effect.ability.Ability.*;
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.*;
 import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.SpecialConditionType;
 import tcgwars.logic.groovy.TcgStatics;
+
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*;
 
 import java.io.Serializable;
 import java.util.*;
