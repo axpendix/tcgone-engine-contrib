@@ -1613,6 +1613,13 @@ public enum PowerKeepers implements LogicCardInfo {
                 my.deck.remove(it)
                 it.cardTypes.add(BASIC)
                 it.cardTypes.remove(EVOLUTION)
+                delayed {
+                  after REMOVE_FROM_PLAY, it {
+                    it.cardTypes.remove(BASIC)
+                    it.cardTypes.add(EVOLUTION)
+                    unregister()
+                  }
+                }
                 benchPCS(it)
               }
               shuffleDeck()
