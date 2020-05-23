@@ -3791,7 +3791,7 @@ public enum UnseenForces implements LogicCardInfo {
                 if(tar){
                   def i = 2
                   while(i>0){
-                    def cards = tar.cards.filterByType(BASIC_ENERGY)
+                    def cards = tar.cards.findAll{it.cardTypes.is(BASIC_ENERGY)}
                     sel = cards.select("Choose an energy to move", false)
                     if(sel){
                       energySwitch(tar, opp.active, card)
