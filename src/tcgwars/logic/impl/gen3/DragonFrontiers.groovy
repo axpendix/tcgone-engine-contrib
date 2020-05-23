@@ -203,6 +203,21 @@ public enum DragonFrontiers implements LogicCardInfo {
       case AMPHAROS_DELTA_1:
       return evolution (this, from:"Flaaffy", hp:HP120, type:C, retreatCost:2) {
         weakness F
+        customAbility {
+          getter IS_ABILITY_BLOCKED, { Holder h->
+            if (h.effect.target == self && h.object) {
+              bg.em().storeObject("Holon_Veil",[self.owner,false])
+              bc"Holon Veil not is active"
+            } else{
+              bg.em().storeObject("Holon_Veil",[self.owner,true])
+              bc"Holon Veil is active"
+            }
+          }
+          onDeactivate {
+            bg.em().storeObject("Holon_Veil",[self.owner,false])
+            bc"Holon veil is not active"
+          }
+        }
         pokeBody "Holon Veil", {
           text "Treat each Basic Pokémon and Evolution card in your deck, in your discard pile, in your hand, and in play as a Pokémon that has δ on its card."
           delayedA {
