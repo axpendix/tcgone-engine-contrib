@@ -3786,7 +3786,14 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost P, P
           onAttack {
             if (defending.hasPokePower() || defending.hasPokeBody()) {
-              moveEnergy(basic: true, playerType: self.owner, may: true, count: 2, self.owner.opposite.pbg.bench, self.owner.opposite.active)
+              if (opp.bench.findAll { it.cards.filterByType(BASIC_ENERGY) }) {
+                def tar = opp.bench.findAll{ it.cards.filterByType(BASIC_ENERGY) }.select("Choose a Pokémon to move energy from")
+                if(tar){
+                  tar.cards.filterByType(BASIC_ENERGY).select(min:0,max:2,"Move which energy?").each{
+                    energySwitch(tar,self.owner.opposite.pbg.active,it)
+                  }
+                }
+              }
             }
           }
         }
