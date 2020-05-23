@@ -1,8 +1,8 @@
 package tcgwars.logic.util;
 
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
+
+
+
 
 import com.google.common.collect.ImmutableList;
 import gnu.trove.map.hash.THashMap;
@@ -14,8 +14,9 @@ import tcgwars.logic.PlayerType;
 import tcgwars.logic.card.*;
 import tcgwars.logic.card.energy.EnergyCard;
 import tcgwars.logic.card.pokemon.PokemonCard;
-import tcgwars.logic.effect.ability.Ability;
-import tcgwars.logic.effect.ability.BwAbility;
+import tcgwars.logic.effect.ability.*;
+import tcgwars.logic.effect.ability.Ability.*;
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*;
 import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.SpecialConditionType;
 import tcgwars.logic.groovy.TcgStatics;
