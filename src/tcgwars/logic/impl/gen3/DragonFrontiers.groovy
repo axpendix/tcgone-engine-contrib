@@ -205,12 +205,9 @@ public enum DragonFrontiers implements LogicCardInfo {
         weakness F
         customAbility {
           getter IS_ABILITY_BLOCKED, { Holder h->
-            if (h.effect.target == self && h.object) {
-              bg.em().storeObject("Holon_Veil",[self.owner,false])
-              bc"Holon Veil not is active"
-            } else{
-              bg.em().storeObject("Holon_Veil",[self.owner,true])
-              bc"Holon Veil is active"
+            if (h.effect.target == self) {
+              bg.em().storeObject("Holon_Veil",[self.owner,!h.object])
+              bc"Holon Veil is active ${!h.object}"
             }
           }
           onDeactivate {
