@@ -2293,8 +2293,9 @@ public enum HolonPhantoms implements LogicCardInfo {
             if(my.deck){
               my.deck.search(min:0, max:1, "Search your deck for a card named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Aerodactyl ex" || it.name == "Lileep" || it.name == "Anorith"}).each {
                 my.deck.remove(it)
+                it.cardTypes.add(BASIC)
+                it.cardTypes.remove(EVOLUTION)
                 benchPCS(it)
-                //TODO Mark as basic
               }
               shuffleDeck()
             }
@@ -2303,7 +2304,8 @@ public enum HolonPhantoms implements LogicCardInfo {
             if(eligible){
               eligible.select("Select which Pokemon to bench").each {
                 hand.remove(it)
-                // TODO How to mark it as a Basic Pokemon?
+                it.cardTypes.add(BASIC)
+                it.cardTypes.remove(EVOLUTION)
                 benchPCS(it)
               }
             }
