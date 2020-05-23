@@ -1,6 +1,6 @@
 package tcgwars.logic.util;
 
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*;
 import tcgwars.logic.effect.ability.*;
 import tcgwars.logic.effect.ability.Ability.*;
 
