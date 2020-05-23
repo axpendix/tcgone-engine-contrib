@@ -204,15 +204,15 @@ public enum DragonFrontiers implements LogicCardInfo {
       return evolution (this, from:"Flaaffy", hp:HP120, type:C, retreatCost:2) {
         weakness F
         customAbility {
+          onDeactivate {
+            bg.em().storeObject("Holon_Veil",[self.owner,false])
+            bc"Holon veil is active ${bg.em().retrieveObject("Holon_Veil").get(1)}"
+          }
           getter IS_ABILITY_BLOCKED, { Holder h->
             if (h.effect.target == self) {
               bg.em().storeObject("Holon_Veil",[self.owner,!h.object])
-              bc"Holon Veil is active ${!h.object}"
+              bc"Holon veil is active ${bg.em().retrieveObject("Holon_Veil").get(1)}"
             }
-          }
-          onDeactivate {
-            bg.em().storeObject("Holon_Veil",[self.owner,false])
-            bc"Holon veil is not active"
           }
         }
         pokeBody "Holon Veil", {
