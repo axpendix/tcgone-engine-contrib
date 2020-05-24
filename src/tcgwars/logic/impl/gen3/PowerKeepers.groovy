@@ -1606,17 +1606,16 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Influence", {
           text "Search your deck for Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith and put up to 2 of them onto your Bench. Shuffle your deck afterward. Treat the new Benched Pokémon as Basic Pokémon."
           energyCost W
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.notFull : "Bench is full"
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-            if(my.deck){
-              my.deck.search(min:0, max:2, "Search your deck for a card named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Lileep" || it.name == "Anorith"}).each {
-                my.deck.remove(it)
-                it.cardTypes.add(BASIC)
-                it.cardTypes.remove(EVOLUTION)
-                benchPCS(it)
-              }
-              shuffleDeck()
+            my.deck.search(min:0, max:2, "Search your deck for a card named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Lileep" || it.name == "Anorith"}).each {
+              my.deck.remove(it)
+              benchPCS(it)
             }
+            shuffleDeck()
           }
         }
         move "Mud Shot", {
