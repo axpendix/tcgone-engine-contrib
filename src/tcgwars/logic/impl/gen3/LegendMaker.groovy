@@ -2640,7 +2640,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
-            if (defending.resistances.find{it != null}) {
+            if (defending.resistances) {
               damage 100
             } else {
               damage 70
