@@ -287,7 +287,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   }
   
   public boolean isPokemonDelta() {
-    List<PlayerType> Holon_Veil = TcgStatics.bg().em().retrieveObject("Holon_Veil")
+    List<PlayerType> Holon_Veil = TcgStatics.bg().em().retrieveObject("Holon_Veil");
     return getCardTypes().is(CardType.DELTA) || (getCardTypes().is(CardType.POKEMON) && Holon_Veil.contains(this.player));
   }
 
