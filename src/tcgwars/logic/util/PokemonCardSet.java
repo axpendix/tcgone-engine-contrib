@@ -285,6 +285,11 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   public boolean isEX() {
     return getTopPokemonCard().getCardTypes().is(CardType.EX);
   }
+  
+  public boolean isPokemonDelta() {
+    List<PlayerType> Holon_Veil = TcgStatics.bg().em().retrieveObject("Holon_Veil")
+    return getCardTypes().is(CardType.DELTA) || (getCardTypes().is(CardType.POKEMON) && Holon_Veil.contains(this.player));
+  }
 
   public boolean isPokemonEX(){
     return getTopPokemonCard().getCardTypes().is(CardType.POKEMON_EX);
