@@ -205,7 +205,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         weakness F
         customAbility {
           def players = []
-          def card = self.topPokemonCard
           bg.em().storeObject("Holon_Veil",players)
           getter IS_ABILITY_BLOCKED, { Holder h->
             if (h.effect.target == self) {
