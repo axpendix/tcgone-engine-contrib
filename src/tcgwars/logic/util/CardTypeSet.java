@@ -34,7 +34,7 @@ public class CardTypeSet extends TreeSet<CardType>{
   }
   public boolean is(CardType o){
     List<PlayerType> Holon_Veil = TcgStatics.bg().em().retrieveObject("Holon_Veil");
-    return (contains(o) || (contains(CardType.POKEMON) && Holon_Veil.contains(player)));
+    return (contains(o) || (o == CardType.DELTA && contains(CardType.POKEMON) && Holon_Veil.contains(player)));
   }
   public boolean isNot(CardType o){
     return !contains(o);
