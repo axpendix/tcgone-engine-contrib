@@ -4803,6 +4803,15 @@ public enum CosmicEclipse implements LogicCardInfo {
         return supporter (this) {
           text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn." +
             "Search your deck for a Pokémon, a Trainer card, and a basic Energy card, reveal them, and put them into your hand. Then, shuffle your deck."
+          globalAbility {Card thisCard->
+            delayed {
+              before KNOCKOUT, {
+                if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
+                  bg.em().storeObject("Rosa_KO", bg.turnCount)
+                }
+              }
+            }
+          }
           onPlay {
             my.deck.search(max: 3, "Select a Pokémon, a Trainer card and a basic Energy card.", {it.cardTypes.is(POKEMON) || it.cardTypes.is(TRAINER) || it.cardTypes.is(BASIC_ENERGY)}, { CardList list ->
               list.filterByType(POKEMON).size() <= 1 && list.filterByType(TRAINER).size() <= 1 && list.filterByType(BASIC_ENERGY).size() <= 1
@@ -4811,7 +4820,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           }
           playRequirement{
             assert bg.turnCount
-            assert my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn."
+            assert bg.em().retrieveObject("Rosa_KO") == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn."
           }
         };
       case ROXIE_205:
