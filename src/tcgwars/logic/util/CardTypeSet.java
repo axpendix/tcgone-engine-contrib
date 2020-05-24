@@ -9,6 +9,8 @@ import gnu.trove.set.hash.THashSet;
 import tcgwars.logic.card.CardType;
 import tcgwars.logic.card.CardType.CardTypeComparator;
 import tcgwars.logic.card.Type;
+import tcgwars.logic.Battleground;
+import tcgwars.logic.PlayerType;
 
 /**
  * @author axpendix@hotmail.com
@@ -31,7 +33,8 @@ public class CardTypeSet extends TreeSet<CardType>{
     }
   }
   public boolean is(CardType o){
-    return contains(o);
+    List<PlayerType> Holon_Veil = TcgStatics.bg().em().retrieveObject("Holon_Veil");
+    return (contains(o) || (contains(CardType.POKEMON) && Holon_Veil.contains(player)));
   }
   public boolean isNot(CardType o){
     return !contains(o);
