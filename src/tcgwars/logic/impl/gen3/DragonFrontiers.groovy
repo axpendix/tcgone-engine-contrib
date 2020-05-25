@@ -209,7 +209,7 @@ public enum DragonFrontiers implements LogicCardInfo {
               if(it) {
                 it+1
               } else {
-                def list = []
+                def list = new CardList()
                 list += my.deck.filterByType(POKEMON)
                 list += my.discard.filterByType(POKEMON)
                 list += my.hand.filterByType(POKEMON)
