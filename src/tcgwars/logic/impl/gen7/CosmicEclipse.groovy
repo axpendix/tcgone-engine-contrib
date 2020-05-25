@@ -1987,8 +1987,10 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 90
-              self.cards.discard()
-              removePCS self
+              afterDamage{
+                self.cards.discard()
+                removePCS(self)
+              }
             }
           }
         };
