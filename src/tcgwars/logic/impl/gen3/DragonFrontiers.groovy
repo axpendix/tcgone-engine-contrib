@@ -226,16 +226,17 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
           onDeactivate {
             bg.em().retrieveAndStore("holon_veil_counter_${self.owner}", {
-              if(it == 1) {
-                bg.em().retrieveAndStore("holon_veil_pokemon_${self.owner}", {CardList list->
-                  list.each {it.cardTypes.remove(DELTA)}
+              if (it == 1) {
+                bg.em().retrieveAndStore("holon_veil_pokemon_${self.owner}", { CardList list ->
+                  list.each { it.cardTypes.remove(DELTA) }
                   null
                 })
                 null
               } else {
-                it-1
+                it - 1
               }
             })
+          }
         }
         move "Delta Circle", {
           text "20+ damage. Does 20 damage plus 10 more damage for each Pokémon you have in play that has δ on its card."
