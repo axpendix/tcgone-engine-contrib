@@ -203,40 +203,39 @@ public enum DragonFrontiers implements LogicCardInfo {
       case AMPHAROS_DELTA_1:
       return evolution (this, from:"Flaaffy", hp:HP120, type:C, retreatCost:2) {
         weakness F
-        customAbility {
-          def players = []
-          bg.em().storeObject("Holon_Veil",players)
-          getter IS_ABILITY_BLOCKED, { Holder h->
-            if (h.effect.target == self) {
-              players = bg.em().retrieveObject("Holon_Veil")
-              if(!h.object && !players.contains(self.owner)){
-                players.add(self.owner)
-                bg.em().storeObject("Holon_Veil",players)
-              }
-              if(h.object && players.contains(self.owner)){
-                players.remove(self.owner)
-                bg.em().storeObject("Holon_Veil",players)
-              }
-              bc"Holon veil is active ${bg.em().retrieveObject("Holon_Veil").contains(self.owner)}"
-              bc"${self.owner}"
-            }
-          }
-          onDeactivate {
-            players = bg.em().retrieveObject("Holon_Veil")
-            if(players.contains(self.owner)){
-              players.remove(self.owner)
-              bg.em().storeObject("Holon_Veil",players)
-              new CheckAbilities().run(bg)
-            }
-            bc"onDeactivate was triggered?"
-            bc"Holon veil is active ${players.contains(self.owner)}"
-          }
-        }
         pokeBody "Holon Veil", {
           text "Treat each Basic Pokémon and Evolution card in your deck, in your discard pile, in your hand, and in play as a Pokémon that has δ on its card."
-          delayedA {
-            // TODO›
+          onActivate {
+            bg.em().retrieveAndStore("holon_veil_counter_${self.owner}", {
+              if(it) {
+                it+1
+              } else {
+                def list = []
+                list += my.deck.filterByType(POKEMON)
+                list += my.discard.filterByType(POKEMON)
+                list += my.hand.filterByType(POKEMON)
+                list += my.prizeCardSet.filterByType(POKEMON)
+                list += my.lostZone.filterByType(POKEMON)
+                my.all.each {list += it.cards.filterByType(POKEMON)}
+                list = list.findAll{it.cardTypes.isNot(DELTA)}
+                list.each {it.cardTypes.add(DELTA)}
+                bg.em().storeObject("holon_veil_pokemon_${self.owner}", list)
+                1
+              }
+            })
           }
+          onDeactivate {
+            bg.em().retrieveAndStore("holon_veil_counter_${self.owner}", {
+              if(it == 1) {
+                bg.em().retrieveAndStore("holon_veil_pokemon_${self.owner}", {CardList list->
+                  list.each {it.cardTypes.remove(DELTA)}
+                  null
+                })
+                null
+              } else {
+                it-1
+              }
+            })
         }
         move "Delta Circle", {
           text "20+ damage. Does 20 damage plus 10 more damage for each Pokémon you have in play that has δ on its card."
