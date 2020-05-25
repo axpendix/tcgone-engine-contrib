@@ -861,7 +861,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
-                  if(it.from.owner == self.owner && it.from.pokemonGX && it.from.topPokemonCard.predecessor == "Eevee" && it.to.active && it.to.owner != self.owner && it.dmg.value && bg.em().retrieveObject("Power Cheer") != bg.turnCount) {
+                  if(it.from.owner == self.owner && it.from.pokemonGX && it.from.topPokemonCard.cardTypes.isEvolution() && it.from.topPokemonCard.predecessor == "Eevee" && it.to.active && it.to.owner != self.owner && it.dmg.value && bg.em().retrieveObject("Power Cheer") != bg.turnCount) {
                     it.dmg += hp(30)
                     bc "Power Cheer +30"
                     bg.em().storeObject("Power Cheer", bg.turnCount)
@@ -2486,7 +2486,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 if (ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && (ef as TargetedEffect).getResolvedTarget(bg, e) == self) {
                   bc "Unaware prevents all effects done to $self."
                   prevent()
-                  
+
                 }
               }
             }
