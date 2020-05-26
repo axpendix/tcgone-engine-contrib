@@ -1778,21 +1778,12 @@ public enum UnifiedMinds implements LogicCardInfo {
             getterA (GET_MOVE_LIST, self) {holder->
               def perfectionMoves = []
               self.owner.pbg.bench.findAll {it.pokemonGX || it.pokemonEX}.each {
-                if (it.topPokemonCard.name != "Mewtwo & Mew-GX"){
-                  it.topPokemonCard.moves.each{
-                    if(!perfectionMoves.contains(it)){
-                      perfectionMoves.add(it)
-                    }
-                  }
-                }
+                if (it.topPokemonCard.name != "Mewtwo & Mew-GX")
+                perfectionMoves.addAll(it.topPokemonCard.moves)
               }
               self.owner.pbg.discard.each {
-                if (it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) && it.name != "Mewtwo & Mew-GX") {
-                  it.moves.each{
-                    if(!perfectionMoves.contains(it)){
-                      perfectionMoves.add(it)
-                    }
-                  }
+                if (it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) && it.name != "Miraculous Duo GX") {
+                  perfectionMoves.addAll(it.moves)
                 }
               }
               holder.object.addAll(perfectionMoves)
