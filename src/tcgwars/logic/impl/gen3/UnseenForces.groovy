@@ -4050,7 +4050,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost P
           onAttack {
             all.each {
-              if (it.abilities.keySet().find{it instanceof PokePower})
+              if (it.abilities.keySet().find{it instanceof PokePower || it instanceof PokeBody})
                 noWrDamage 20, it
             }
           }
