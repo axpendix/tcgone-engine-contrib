@@ -1775,8 +1775,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           weakness P
           bwAbility "Perfection", {
             text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
-            actionA {
-              assert self.active: "Mewtwo & Mew-GX is not the Active Pokémon."
+            getterA (GET_MOVE_LIST, self) {holder->
               def perfectionMoves = []
               self.owner.pbg.bench.findAll {it.pokemonGX || it.pokemonEX}.each {
                 if (it.topPokemonCard.name != "Mewtwo & Mew-GX")
@@ -1787,13 +1786,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                   perfectionMoves.addAll(it.moves)
                 }
               }
-              assert !perfectionMoves.isEmpty(): "There are no moves to copy."
-
-              def chosenMove = choose(perfectionMoves+["Cancel"], perfectionMoves.collect({it.name})+["Cancel"], "Choose a move to use.")
-
-              if (chosenMove && chosenMove != "Cancel") {
-                attack (chosenMove as Move)
-              }
+              holder.object.addAll(perfectionMoves)
             }
           }
           move "Miraculous Duo GX", {
