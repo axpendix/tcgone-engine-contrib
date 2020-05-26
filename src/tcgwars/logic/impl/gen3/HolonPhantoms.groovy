@@ -1418,13 +1418,13 @@ public enum HolonPhantoms implements LogicCardInfo {
         globalAbility {Card thisCard->
           delayed {
             before PLAY_CARD, {
-              if(ef.cardToPlay == thisCard){
-                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2 && bg.em().retrieveObject("Castform_Energy") != bg.turnCount){
+              if(ef.cardToPlay == thisCard && bg.em().retrieveObject("Castform_Energy") != bg.turnCount){
+                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
                   bg.em().storeObject("Castform_Energy", bg.turnCount)
                   def pcs = thisCard.player.pbg.all.select("Attach to?")
                   def pkmnCard = thisCard
                   def energyCard
-                  energyCard = specialEnergy(new CustomCardInfo(CHARJABUG_58).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
+                  energyCard = specialEnergy(new CustomCardInfo(HOLON_S_CASTRORM_44).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
                     onPlay {}
                     onRemoveFromPlay {
                       bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
