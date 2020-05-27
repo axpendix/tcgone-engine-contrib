@@ -1783,6 +1783,10 @@ public enum UnifiedMinds implements LogicCardInfo {
                   perfectionMoves.addAll(it.topPokemonCard.moves)
                 }
                 it.topPokemonCard.moves.each{
+                  if(testList.contains(it)){
+                    bc "$it was already in test list"
+                    bc "$testList"
+                  }
                   testList.add(it)
                   bc "$it was added to test list"
                   if(testList.contains(it)){
