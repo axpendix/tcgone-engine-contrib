@@ -1776,24 +1776,20 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Perfection", {
             text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
             getterA (GET_MOVE_LIST, self) {holder->
-              def testList = []
+              def cardList = []
               def perfectionMoves = []
               self.owner.pbg.bench.findAll {it.pokemonGX || it.pokemonEX}.each {
-                if(testList.contains("${it.topPokemonCard}")){
-                  bc "${it.topPokemonCard} was already in test list"
-                }
-                testList.add("${it.topPokemonCard}")
-                bc "${it.topPokemonCard} was added to test list"
-                if(testList.contains("${it.topPokemonCard}")){
-                  bc "${it.topPokemonCard} is contained in the test list"
-                }
-                if (it.topPokemonCard.name != "Mewtwo & Mew-GX"){
+                if(!cardList.contains("${it.topPokemonCard}") && it.topPokemonCard.name != "Mewtwo & Mew-GX"){
+                  cardList.add("${it.topPokemonCard}")
                   perfectionMoves.addAll(it.topPokemonCard.moves)
                 }
               }
               self.owner.pbg.discard.each {
-                if (it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) && it.name != "Miraculous Duo GX") {
-                  perfectionMoves.addAll(it.moves)
+                if (it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) && it.name != "Mewtwo & Mew-GX") {
+                  if(!cardList.contains("${it.topPokemonCard}")){
+                    cardList.add("${it.topPokemonCard}")
+                    perfectionMoves.addAll(it.moves)
+                  }
                 }
               }
               holder.object.addAll(perfectionMoves)
