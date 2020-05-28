@@ -1785,7 +1785,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                 }
               }
               self.owner.pbg.discard.each {
-                if (it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) && it.name != "Miraculous Duo GX") {
+                if (it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) && it.name != "Mewtwo & Mew-GX") {
                   if(!cardList.contains("${it.topPokemonCard}")){
                     cardList.add("${it.topPokemonCard}")
                     perfectionMoves.addAll(it.moves)
