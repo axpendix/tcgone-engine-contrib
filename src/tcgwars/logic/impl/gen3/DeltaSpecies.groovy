@@ -2276,28 +2276,28 @@ public enum DeltaSpecies implements LogicCardInfo {
         resistance G, MINUS30
         customAbility {
           // You may attach this as an Energy card from your hand to 1 of your Pokemon. While attached, this card is a Special Energy card and provides 1 Colorless Energy.
-          delayed {
-            before PLAY_CARD, {
-              if(ef.cardToPlay == thisCard && bg.em().retrieveObject("Holon_Energy") != bg.turnCount) {
-                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2) {
-                  bg.em().storeObject("Holon_Energy", bg.turnCount)
-                  def pcs = thisCard.player.pbg.all.select("Attach to?")
-                  def pkmnCard = thisCard
-                  def energyCard
-                  energyCard = specialEnergy(new CustomCardInfo(HOLON_S_MAGNEMITE_70).setCardTypes(ENERGY, SPECIAL_ENERGY), [[C]]) {
-                    onPlay {}
-                    onRemoveFromPlay {
-                      bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
-                    }
+          onActivate { r->
+            if (r==PLAY_FROM_HAND && bg.em().retrieveObject("Holon_Energy") != bg.turnCount) {
+              if (choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2) {
+                bg.em().storeObject("Holon_Energy", bg.turnCount)
+                def pcs = thisCard.player.pbg.all.select("Attach to?")
+                def pkmnCard = thisCard
+                def energyCard
+                energyCard = specialEnergy(new CustomCardInfo(HOLON_S_MAGNEMITE_70).setCardTypes(ENERGY, SPECIAL_ENERGY), [[C]]) {
+                  onPlay {}
+                  onRemoveFromPlay {
+                    bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
                   }
-                  energyCard.player = thisCard.player
-                  bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                  attachEnergy(pcs, energyCard)
-                  bc "$energyCard is now a Special Energy Card"
-                  prevent()
                 }
-              } //If the user chooses Pokémon, play the card normally
-            }
+                energyCard.player = thisCard.player
+                bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
+                attachEnergy(pcs, energyCard)
+                bc "$energyCard is now a Special Energy Card"
+                prevent()
+              }
+            } //If the user chooses Pokémon, play the card normally
+          }
+          delayed {
             before PLAY_ENERGY, {
               if (bg.em().retrieveObject("Holon_Energy") == bg.turnCount) {
                 wcu "Cannot play any more energy this turn."
