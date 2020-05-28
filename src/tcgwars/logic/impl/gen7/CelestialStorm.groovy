@@ -3206,7 +3206,7 @@ public enum CelestialStorm implements LogicCardInfo {
               before null, null, Source.ATTACK, {
                 if (ef.effectType != DAMAGE){
                   def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                  if(pcs != null && pcs.benched){
+                  if(pcs != null && pcs.benched && bg.currentTurn == pcs.owner.opposite){
                     bc "Sky Pillar prevents effect to Benched Pokémon"
                     prevent()
                   }
@@ -3214,7 +3214,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.notNoEffect && it.to.benched && it.dmg.value){
+                  if(it.notNoEffect && it.to.benched && it.dmg.value && bg.currentTurn == it.to.owner.opposite){
                     it.dmg = hp(0)
                     bc "Sky Pillar prevents damage to ${it.to}"
                   }
