@@ -1775,8 +1775,8 @@ public enum UnifiedMinds implements LogicCardInfo {
           weakness P
           bwAbility "Perfection", {
             text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
+            def testList = []
             getterA (GET_MOVE_LIST, self) {holder->
-              def testList = []
               def perfectionMoves = []
               self.owner.pbg.bench.findAll {it.pokemonGX || it.pokemonEX}.each {
                 if(testList.contains("${it.topPokemonCard}")){
