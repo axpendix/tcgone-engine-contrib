@@ -1779,12 +1779,12 @@ public enum UnifiedMinds implements LogicCardInfo {
               def testList = []
               def perfectionMoves = []
               self.owner.pbg.bench.findAll {it.pokemonGX || it.pokemonEX}.each {
-                if(testList.contains(it.topPokemonCard)){
+                if(testList.contains("${it.topPokemonCard}")){
                   bc "${it.topPokemonCard} was already in test list"
                 }
-                testList.add(it.topPokemonCard)
+                testList.add("${it.topPokemonCard}")
                 bc "${it.topPokemonCard} was added to test list"
-                if(testList.contains(it.topPokemonCard)){
+                if(testList.contains("${it.topPokemonCard}")){
                   bc "${it.topPokemonCard} is contained in the test list"
                 }
                 if (it.topPokemonCard.name != "Mewtwo & Mew-GX"){
