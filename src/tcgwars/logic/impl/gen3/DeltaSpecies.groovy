@@ -2276,8 +2276,8 @@ public enum DeltaSpecies implements LogicCardInfo {
         resistance G, MINUS30
         customAbility {
           // You may attach this as an Energy card from your hand to 1 of your Pokemon. While attached, this card is a Special Energy card and provides 1 Colorless Energy.
-          onActivate { r->
-            if (r==PLAY_FROM_HAND && bg.em().retrieveObject("Holon_Energy") != bg.turnCount) {
+          onPlay {
+            if (bg.em().retrieveObject("Holon_Energy") != bg.turnCount) {
               if (choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2) {
                 bg.em().storeObject("Holon_Energy", bg.turnCount)
                 def pcs = thisCard.player.pbg.all.select("Attach to?")
