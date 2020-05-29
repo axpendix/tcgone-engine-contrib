@@ -928,49 +928,11 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case BULBASAUR_67:
-      return basic (this, hp:HP040, type:G, retreatCost:1) {
-				weakness R
-				move "Leech Seed", {
-					text "10 damage. Unless all damage from this attack is prevented, you may remove 1 damage counter from Bulbasaur."
-					energyCost G
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.BULBASAUR_44, this);
       case CATERPIE_68:
-      return basic (this, hp:HP040, type:G, retreatCost:1) {
-				weakness R
-				move "String Shot", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost G
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.CATERPIE_45, this);
       case CHARMANDER_69:
-      return basic (this, hp:HP050, type:R, retreatCost:1) {
-				weakness W
-				move "Scratch", {
-					text "10 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Ember", {
-					text "30 damage. Discard 1 [R] Energy card attached to Charmander in order to use this attack."
-					energyCost R, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.CHARMANDER_46, this);
       case CUBONE_70:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
 				weakness G
@@ -980,7 +942,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            reduceDamageNextTurn(hp(20), thisMove)
 					}
 				}
 				move "Rage", {
@@ -988,7 +950,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10+10*self.numberOfDamageCounters
 					}
 				}
 			};
