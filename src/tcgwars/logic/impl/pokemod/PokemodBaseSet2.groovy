@@ -262,106 +262,15 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
       case CLEFAIRY_6:
       return copy (PokemodBaseSet.CLEFAIRY_5, this);
       case GYARADOS_7:
-      return evolution (this, from:"Magikarp", hp:HP100, type:W, retreatCost:3) {
-				weakness L
-				resistance F, MINUS30
-				move "Dragon Rage", {
-					text "50 damage. "
-					energyCost W, W, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-				move "Bubblebeam", {
-					text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost W, W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.GYARADOS_6, this);
       case HITMONCHAN_8:
-      return basic (this, hp:HP070, type:F, retreatCost:2) {
-				weakness P
-				move "Jab", {
-					text "20 damage. "
-					energyCost F
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Special Punch", {
-					text "40 damage. "
-					energyCost F, F, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.HITMONCHAN_7, this);
       case MAGNETON_9:
-      return evolution (this, from:"Magnemite", hp:HP060, type:L, retreatCost:1) {
-				weakness F
-				move "Thunder Wave", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost L, L, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Selfdestruct", {
-					text "80 damage. Does 20 damage to each Pokémon on each player's Bench. (Don't apply Weakness and Resistance for Benched Pokémon.) Magneton does 80 damage to itself."
-					energyCost L, L, C, C
-					attackRequirement {}
-					onAttack {
-						damage 80
-					}
-				}
-			};
+      return copy (PokemodBaseSet.MAGNETON_9, this);
       case MEWTWO_10:
-      return basic (this, hp:HP070, type:P, retreatCost:2) {
-				weakness P
-				move "Psychic", {
-					text "10+ damage. Does 10 damage plus 10 more damage for each Energy card attached to the Defending Pokémon."
-					energyCost P, C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Barrier", {
-					text "Discard 1 [P] Energy card attached to Mewtwo in order to use this attack. During your opponent's next turn, prevent all effects of attacks, including damage, done to Mewtwo."
-					energyCost P, P
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.MEWTWO_10, this);
       case NIDOKING_11:
-      return evolution (this, from:"Nidorino", hp:HP100, type:G, retreatCost:3) {
-				weakness P
-				move "Thrash", {
-					text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 10 more damage; if tails, this attack does 30 damage and Nidoking does 10 damage to itself."
-					energyCost G, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Toxic", {
-					text "40 damage. The Defending Pokémon is now Poisoned. It now takes 20 Poison damage instead of 10 after each player's turn (even if it was already Poisoned)."
-					energyCost G, G, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.NIDOKING_11, this);
       case NIDOQUEEN_12:
       return evolution (this, from:"Nidorina", hp:HP100, type:G, retreatCost:3) {
 				weakness P
@@ -370,7 +279,12 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+            damage 20
+            my.bench.each{
+              if(it.name.contains("Nidoking")){
+                damage 20
+              }
+            }
 					}
 				}
 				move "Mega Punch", {
