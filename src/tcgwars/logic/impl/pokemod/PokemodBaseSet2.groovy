@@ -955,59 +955,11 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case DIGLETT_71:
-      return basic (this, hp:HP030, type:F, retreatCost:0) {
-				weakness G
-				resistance L, MINUS30
-				move "Dig", {
-					text "10 damage. "
-					energyCost F
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Mud Slap", {
-					text "30 damage. "
-					energyCost F, F
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.DIGLETT_47, this);
       case DODUO_72:
-      return basic (this, hp:HP050, type:C, retreatCost:0) {
-				weakness L
-				resistance F, MINUS30
-				move "Fury Attack", {
-					text "10x damage. Flip 3 coins. This attack does 10 damage times the number of heads."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.DODUO_48, this);
       case DROWZEE_73:
-      return basic (this, hp:HP050, type:P, retreatCost:1) {
-				weakness P
-				move "Pound", {
-					text "10 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Confuse Ray", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
-					energyCost P, P
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.DROWZEE_49, this);
       case EXEGGCUTE_74:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
 				weakness R
@@ -1016,7 +968,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-
+            apply ASLEEP
 					}
 				}
 				move "Leech Seed", {
@@ -1025,6 +977,16 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            delayed {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each{
+                  if(it.to == opp.active && it.notNoEffect && it.dmg.value > 0) {
+                    heal 10, self
+                  }
+                }
+              }
+              unregisterAfter 1
+            }
 					}
 				}
 			};
