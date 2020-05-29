@@ -641,26 +641,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case FARFETCH_D_40:
-      return basic (this, hp:HP060, type:C, retreatCost:0) {
-				weakness L
-				resistance F, MINUS30
-				move "Leek Slap", {
-					text "Flip a coin. If tails, this attack does nothing. Either way, you can't use this attack again as long as Farfetch'd stays in play (even putting Farfetch'd on the Bench won't let you use it again)."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Pot Smash", {
-					text "30 damage. "
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.FARFETCH_D_27, this);
       case FEAROW_41:
       return evolution (this, from:"Spearow", hp:HP080, type:C, retreatCost:0) {
 				weakness L
