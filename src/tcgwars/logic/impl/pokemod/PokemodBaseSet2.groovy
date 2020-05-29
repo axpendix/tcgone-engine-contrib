@@ -1080,37 +1080,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case NIDORAN_MALE_83:
-      return basic (this, hp:HP040, type:G, retreatCost:1) {
-				weakness P
-				move "Horn Hazard", {
-					text "Flip a coin. If tails, this attack does nothing."
-					energyCost G
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.NIDORAN_MALE_55, this);
       case ONIX_84:
-      return basic (this, hp:HP090, type:F, retreatCost:3) {
-				weakness G
-				move "Rock Throw", {
-					text "10 damage. "
-					energyCost F
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Harden", {
-					text "During your opponent's next turn, whenever 30 or less damage is done to Onix (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.)"
-					energyCost F, F
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.ONIX_56, this);
       case PARAS_85:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
 				weakness R
@@ -1127,7 +1099,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-
+            apply ASLEEP
 					}
 				}
 			};
