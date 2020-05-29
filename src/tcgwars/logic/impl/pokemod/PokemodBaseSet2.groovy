@@ -720,7 +720,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             assert my.bench.notFull "Your bench is full"
           }
 					onAttack {
-            my.deck.search("Choose Basic [f] Pokémon",{(it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(G))}).each{
+            my.deck.search("Choose Basic [f] Pokémon",{(it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(F))}).each{
               my.deck.remove(it)
               benchPCS(it)
             }
@@ -902,20 +902,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case ABRA_65:
-      return basic (this, hp:HP030, type:P, retreatCost:0) {
-				weakness P
-				move "Psyshock", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost P
-					attackRequirement {}
-					onAttack {
-						damage 10
-            flip{
-              applyAfterDamage PARALYZED
-            }
-					}
-				}
-			};
+      return copy (PokemodBaseSet.ABRA_43, this);
       case BELLSPROUT_66:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
 				weakness R
@@ -932,7 +919,11 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-
+            my.deck.search("Choose Basic Pokémon named Bellsprout",{(it.cardTypes.is(BASIC) && it.name.contains("Bellsprout"))}).each{
+              my.deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
 					}
 				}
 			};
