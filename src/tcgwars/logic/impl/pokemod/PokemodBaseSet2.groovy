@@ -706,65 +706,11 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case MACHOKE_49:
-      return evolution (this, from:"Machop", hp:HP080, type:F, retreatCost:3) {
-				weakness P
-				move "Karate Chop", {
-					text "Does 50 damage minus 10 damage for each Damage Counter on Machoke."
-					energyCost F, F, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Submission", {
-					text "60 damage. Machoke does 20 damage to itself."
-					energyCost F, F, C, C
-					attackRequirement {}
-					onAttack {
-						damage 60
-					}
-				}
-			};
+      return copy (PokemodBaseSet.MACHOKE_34, this);
       case MAGIKARP_50:
-      return basic (this, hp:HP030, type:W, retreatCost:0) {
-				weakness L
-				move "Tackle", {
-					text "10 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Flail", {
-					text "10x damage. Does 10 damage times the number of damage counters on Magikarp."
-					energyCost W
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.MAGIKARP_35, this);
       case MAGMAR_51:
-      return basic (this, hp:HP070, type:R, retreatCost:2) {
-				weakness W
-				move "Fire Punch", {
-					text "30 damage. "
-					energyCost R, R
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Flamethrower", {
-					text "50 damage. Discard 1 [R] Energy card attached to Magmar in order to use this attack."
-					energyCost R, R, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-			};
+      return copy (PokemodBaseSet.MAGMAR_36, this);
       case MAROWAK_52:
       return evolution (this, from:"Cubone", hp:HP070, type:F, retreatCost:1) {
 				weakness G
@@ -774,15 +720,24 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 30
+            flip 2, {
+						  damage 30
+            }
 					}
 				}
 				move "Call for Friend", {
 					text "Search your deck for a [F] Basic Pokémon card and put it onto your Bench. Shuffle your deck afterward. (You can't use this attack if your Bench is full.)"
 					energyCost F
-					attackRequirement {}
+					attackRequirement {
+            assert my.deck : "Your deck is empty"
+            assert my.bench.notFull "Your bench is full"
+          }
 					onAttack {
-
+            my.deck.search("Choose Basic [f] Pokémon",{(it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(G))}).each{
+              my.deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
 					}
 				}
 			};
