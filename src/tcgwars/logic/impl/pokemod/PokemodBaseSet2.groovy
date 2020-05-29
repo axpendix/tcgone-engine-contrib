@@ -452,26 +452,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case PIDGEOTTO_28:
-      return evolution (this, from:"Pidgey", hp:HP060, type:C, retreatCost:0) {
-				weakness L
-				resistance F, MINUS30
-				move "Whirlwind", {
-					text "20 damage. If your opponent has any Benched Pokémon, he or she chooses 1 of them and switches it with the Defending Pokémon. (Do the damage before switching the Pokémon.)"
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Mirror Move", {
-					text "If Pidgeotto was attacked last turn, do the final result of that attack on Pidgeotto to the Defending Pokémon."
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.PIGEOTTO_22, this);
       case PINSIR_29:
       return basic (this, hp:HP080, type:G, retreatCost:1) {
 				weakness R
@@ -481,6 +462,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip{
+              applyAfterDamage(PARALYZED)
+            }
 					}
 				}
 				move "Guillotine", {
