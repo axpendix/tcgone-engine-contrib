@@ -258,6 +258,13 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				pokemonPower "Rain Dance", {
 					text "As often as you like during your turn (before your attack), you may attach 1 [W] Energy Card to 1 of your [W] Pokémon (excluding Pokémon-ex). (This doesn't use up your 1 Energy card attachment for the turn.) This power can't be used if Blastoise is affected by a Special Condition."
 					actionA {
+            checkNoSPC()
+            assert my.hand.filterByBasicEnergyType(W) : "No [W] in hand"
+            assert my.all.find{it.types.contains(W) && !it.EX} : "No [W] pokemon"
+
+            powerUsed()
+            def card = my.hand.filterByBasicEnergyType(W).first()
+            attachEnergy(my.all.findAll{it.types.contains(W) && !it.EX}.select("To?"), card)
 					}
 				}
 				move "Hydro Pump", {
@@ -265,7 +272,8 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost W, W, W
 					attackRequirement {}
 					onAttack {
-						damage 40
+            damage 40
+            extraEnergyDamage(2,hp(10),W,thisMove)
 					}
 				}
 			};
