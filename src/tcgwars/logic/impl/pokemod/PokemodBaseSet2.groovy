@@ -12,6 +12,8 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
+import tcgwars.logic.impl.pokemod.PokemodBaseSet;
+
 import java.util.*;
 import org.apache.commons.lang.WordUtils;
 import tcgwars.entity.*;
@@ -220,78 +222,13 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case ALAKAZAM_1:
-      return evolution (this, from:"Kadabra", hp:HP080, type:P, retreatCost:3) {
-				weakness P
-				pokemonPower "Damage Swap", {
-					text "As often as you like during your turn (before your attack), you may move 1 damage counter from 1 of your Pokémon to another as long as you don't Knock Out that Pokémon. This power can't be used if Alakazam is Asleep, Confused, or Paralyzed."
-					actionA {
-					}
-				}
-				move "Confuse Ray", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
-					energyCost P, P, P
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.ALAKAZAM_1, this);
       case BLASTOISE_2:
-      return evolution (this, from:"Wartortle", hp:HP100, type:W, retreatCost:3) {
-				weakness L
-				pokemonPower "Rain Dance", {
-					text "As often as you like during your turn (before your attack), you may attach 1 [W] Energy Card to 1 of your [W] Pokémon (excluding Pokémon-ex). (This doesn't use up your 1 Energy card attachment for the turn.) This power can't be used if Blastoise is affected by a Special Condition."
-					actionA {
-					}
-				}
-				move "Hydro Pump", {
-					text "40+ damage. Does 40 damage plus 10 more damage for each [W] Energy attached to Blastoise but not used to pay for this attack's Energy cost. Extra [W] Energy after the 2nd doesn't count."
-					energyCost W, W, W
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.BLASTOISE_2, this);
       case CHANSEY_3:
-      return basic (this, hp:HP100, type:C, retreatCost:1) {
-				weakness F
-				resistance P, MINUS30
-				move "Scrunch", {
-					text "Flip a coin. If heads, prevent all damage done to Chansey during your opponent's next turn. (Any other effects of attacks still happen.)"
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Double-edge", {
-					text "80 damage. Chansey does 80 damage to itself."
-					energyCost C, C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 80
-					}
-				}
-			};
+      return copy (PokemodBaseSet.CHANSEY_3, this);
       case CHARIZARD_4:
-      return evolution (this, from:"Charmeleon", hp:HP120, type:R, retreatCost:3) {
-				weakness W
-				resistance F, MINUS30
-				pokemonPower "Energy Burn", {
-					text "As often as you like during your turn (before your attack), you may turn all Basic Energy attached to Charizard into [R] Energy for the rest of the turn. This power can't be used if Charizard is affected by a Special Condition."
-					actionA {
-					}
-				}
-				move "Fire Spin", {
-					text "100 damage. Discard 2 [R] Energy attached to Charizard in order to use this attack."
-					energyCost R, R, R, R
-					attackRequirement {}
-					onAttack {
-						damage 100
-					}
-				}
-			};
+      return copy (PokemodBaseSet.CHARIZARD_4, this);
       case CLEFABLE_5:
       return evolution (this, from:"Clefairy", hp:HP070, type:C, retreatCost:2) {
 				weakness F
@@ -301,7 +238,16 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
+            def moveList = []
+            def labelList = []
 
+            moveList.addAll(defending.topPokemonCard.moves);
+            labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
+
+            def move=choose(moveList, labelList)
+            def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+            attack (move as Move)
+            bef.unregisterItself(bg().em())
 					}
 				}
 				move "Minimize", {
@@ -309,31 +255,12 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-
+            reduceDamageNextTurn(hp(20), thisMove)
 					}
 				}
 			};
       case CLEFAIRY_6:
-      return basic (this, hp:HP040, type:C, retreatCost:1) {
-				weakness F
-				resistance P, MINUS30
-				move "Sing", {
-					text "Flip a coin. If heads, Defending Pokémon is now Asleep."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Metronome", {
-					text "Choose 1 of Defending Pokémon's attacks. Metronome copies that attack except for its Energy costs and anything else required in order to use that attack, such as discarding energy cards. (No matter what type the defender is, Clefairy's type is still [C].)"
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.CLEFAIRY_5, this);
       case GYARADOS_7:
       return evolution (this, from:"Magikarp", hp:HP100, type:W, retreatCost:3) {
 				weakness L
@@ -480,7 +407,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				weakness L
 				resistance F, MINUS30
 				pokemonPower "Quick Search", {
-					text "Once during your turn (before your attack), you may choose 1 card from your deck and put it into your hand. If you do, put 2 damage counters on Pidgeot. Shuffle your deck afterward. You can't use more than 1 Quick Search Pokémon Power each turn. This Power can't be used if Pidgeot is affected by a Special Condition."
+					text "Once during your turn (before your attack), you may choose 1 card from your deck and put it into your hand. If you do, put 2 damage counters on Pidgeot. Shuffle your deck afterward. You can't use more than 1 Quick Search Pokémon Power each turn. This Power can't be used if Pidgeot is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -558,7 +485,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
       return evolution (this, from:"Ivysaur", hp:HP100, type:G, retreatCost:2) {
 				weakness R
 				pokemonPower "Energy Trans", {
-					text "As often as you like during your turn (before your attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one (excluding Pokémon-ex). This power can't be used if Venusaur is affected by a Special Condition."
+					text "As often as you like during your turn (before your attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one (excluding Pokémon-ex). This power can't be used if Venusaur is affected by a Special Condition."
 					actionA {
 					}
 				}
