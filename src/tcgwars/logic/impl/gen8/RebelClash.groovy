@@ -1910,14 +1910,12 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case CLEFABLE_75:
-      return evolution (this, from:"Clefairy", hp:HP110, type:P, retreatCost:1) {
+      return evolution (this, from:"Clefairy", hp:HP110, type:P, retreatCost:2) {
         weakness M
         bwAbility "Prankish", {
-          text "Once during your turn, when you play this card from your hand to evolve a Pokemon, you may choose an Energy attached to your opponent’s Active Pokemon and return it to the top of your opponent’s deck."
+          text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put an Energy attached to your opponent’s Active Pokémon on top of their deck."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && opp.active.cards.energyCount(C) && bg.em().retrieveObject("Prankish")!=bg.turnCount && confirm("Use Prankish?")) {
-              powerUsed()
-              bg.em().storeObject("Prankish", bg.turnCount)
+            if (r==PLAY_FROM_HAND && opp.active.cards.energyCount(C) && confirm("Use Prankish?")) {
               opp.active.cards.filterByType(ENERGY).select(count:1).moveTo(addToTop: true, opp.deck)
             }
           }
