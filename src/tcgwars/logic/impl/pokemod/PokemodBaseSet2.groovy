@@ -1184,78 +1184,13 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case SQUIRTLE_93:
-      return basic (this, hp:HP040, type:W, retreatCost:1) {
-				weakness L
-				move "Bubble", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost W
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Withdraw", {
-					text "Flip a coin. If heads, prevent all damage done to Squirtle during your opponent's next turn. (Any other effects of attacks still happen.)"
-					energyCost W, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.SQUIRTLE_63, this);
       case STARMIE_94:
-      return evolution (this, from:"Staryu", hp:HP060, type:W, retreatCost:1) {
-				weakness L
-				move "Recover", {
-					text "Discard 1 [W] Energy card attached to Starmie in order to use this attack. Remove all damage counters from Starmie."
-					energyCost W, W
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Star Freeze", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.STARMIE_64, this);
       case STARYU_95:
-      return basic (this, hp:HP040, type:W, retreatCost:1) {
-				weakness L
-				move "Slap", {
-					text "20 damage. "
-					energyCost W
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.STARYU_65, this);
       case TANGELA_96:
-      return basic (this, hp:HP060, type:G, retreatCost:2) {
-				weakness R
-				resistance W, MINUS30
-				move "Bind", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost G, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Poisonpowder", {
-					text "30 damage. The Defending Pokémon is now Poisoned."
-					energyCost G, C, G
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.TANGELA_66, this);
       case VENONAT_97:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
 				weakness R
@@ -1265,6 +1200,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip{
+              applyAfterDamage PARALYZED
+            }
 					}
 				}
 				move "Leech Life", {
@@ -1273,6 +1211,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            removeDamageCounterEqualToDamageDone()
 					}
 				}
 			};
