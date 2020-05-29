@@ -669,106 +669,15 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
       case GROWLITHE_42:
       return copy (PokemodBaseSet.GROWLITHE_28, this);
       case HAUNTER_43:
-      return evolution (this, from:"Gastly", hp:HP060, type:P, retreatCost:0) {
-				weakness D
-				resistance F, MINUS30
-				move "Hypnosis", {
-					text "The Defending Pokémon is now Asleep."
-					energyCost P
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Dream Eater", {
-					text "You can't use this attack unless the Defending Pokémon is Asleep."
-					energyCost P, P
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.HAUNTER_29, this);
       case IVYSAUR_44:
-      return evolution (this, from:"Bulbasaur", hp:HP070, type:G, retreatCost:1) {
-				weakness R
-				move "Vine Whip", {
-					text "30 damage. "
-					energyCost G, C, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Poisonpowder", {
-					text "30 damage. The Defending Pokémon is now Poisoned."
-					energyCost G, G, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.IVYSAUR_30, this);
       case JYNX_45:
-      return basic (this, hp:HP070, type:P, retreatCost:2) {
-				weakness P
-				move "Doubleslap", {
-					text "10x damage. Flip 2 coins. This attack does 10 damage times the number of heads."
-					energyCost P
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Meditate", {
-					text "20+ damage. Does 20 damage plus 10 more damage for each damage counter on the Defending Pokémon."
-					energyCost P, P, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.JYNX_31, this);
       case KADABRA_46:
-      return evolution (this, from:"Abra", hp:HP060, type:P, retreatCost:3) {
-				weakness P
-				move "Recover", {
-					text "Discard 1 [P] Energy card attached to Kadabra in order to use this attack. Remove all damage counters from Kadabra."
-					energyCost P, P
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Super Psy", {
-					text "50 damage. "
-					energyCost P, P, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-			};
+      return copy (PokemodBaseSet.KADABRA_32, this);
       case KAKUNA_47:
-      return evolution (this, from:"Weedle", hp:HP080, type:G, retreatCost:2) {
-				weakness R
-				move "Stiffen", {
-					text "Flip a coin. If heads, prevent all damage done to Kakuna during your opponent's next turn. (Any other effects of attacks still happen.)"
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Poisonpowder", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
-					energyCost G, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.KAKUNA_33, this);
       case LICKITUNG_48:
       return basic (this, hp:HP080, type:C, retreatCost:3) {
 				weakness F
@@ -779,6 +688,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip{
+              applyAfterDamage PARALYZED
+            }
 					}
 				}
 				move "Supersonic", {
@@ -787,6 +699,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip{
+              applyAfterDamage CONFUSED
+            }
 					}
 				}
 			};
