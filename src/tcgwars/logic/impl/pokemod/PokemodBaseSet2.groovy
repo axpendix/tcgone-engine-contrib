@@ -797,46 +797,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case POLIWHIRL_57:
-      return evolution (this, from:"Poliwag", hp:HP070, type:W, retreatCost:1) {
-				weakness G
-				move "Amnesia", {
-					text "Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
-					energyCost W, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Doubleslap", {
-					text "30x damage. Flip 2 coins. This attack does 30 damage times the number of heads."
-					energyCost W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.POLIWHIRL_38, this);
       case RATICATE_58:
-      return evolution (this, from:"Rattata", hp:HP060, type:C, retreatCost:1) {
-				weakness F
-				resistance P, MINUS30
-				move "Bite", {
-					text "20 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Super Fang", {
-					text "Does damage to the Defending Pokémon equal to half the Defending Pokémon's remaining HP (rounded up to the nearest 10)."
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.RATICATE_401, this);
       case RHYDON_59:
       return evolution (this, from:"Rhyhorn", hp:HP100, type:F, retreatCost:3) {
 				weakness G
@@ -855,6 +818,10 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            damage 20, self
+            afterDamage{
+              whirlwind()
+            }
 					}
 				}
 			};
