@@ -667,17 +667,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case GROWLITHE_42:
-      return basic (this, hp:HP060, type:R, retreatCost:1) {
-				weakness W
-				move "Flare", {
-					text "20 damage. "
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.GROWLITHE_28, this);
       case HAUNTER_43:
       return evolution (this, from:"Gastly", hp:HP060, type:P, retreatCost:0) {
 				weakness D
