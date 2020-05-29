@@ -592,75 +592,32 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case CHARMELEON_35:
-      return evolution (this, from:"Charmander", hp:HP080, type:R, retreatCost:1) {
-				weakness W
-				move "Slash", {
-					text "20 damage. "
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Flamethrower", {
-					text "50 damage. Discard 1 [R] Energy card attached to Charmander in order to use this attack."
-					energyCost R, R, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-			};
+      return copy (PokemodBaseSet.CHARMELEON_24, this);
       case DEWGONG_36:
-      return evolution (this, from:"Seel", hp:HP080, type:W, retreatCost:1) {
-				weakness L
-				move "Aurora Beam", {
-					text "50 damage. "
-					energyCost W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-				move "Ice Beam", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost W, W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.DEWGONG_25, this);
       case DODRIO_37:
       return evolution (this, from:"Doduo", hp:HP070, type:C, retreatCost:0) {
 				weakness L
 				resistance F, MINUS30
 				pokemonPower "Retreat Aid", {
 					text "As long as Dodrio is Benched, pay 1 [C] less to retreat your Active Pokémon."
-					actionA {
-					}
+					getterA (GET_RETREAT_COST) {h->
+            if (h.effect.target.owner == self.owner && h.effect.target.active && self.benched) {
+              h.object -= 1
+            }
+          }
 				}
 				move "Rage", {
 					text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Dodrio."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10+10*self.numberOfDamageCounters
 					}
 				}
 			};
       case DRATINI_38:
-      return basic (this, hp:HP040, type:C, retreatCost:1) {
-				resistance P, MINUS30
-				move "Pound", {
-					text "10 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.DRATINI_26, this);
       case EXEGGUTOR_39:
       return evolution (this, from:"Exeggcute", hp:HP080, type:G, retreatCost:3) {
 				weakness R
