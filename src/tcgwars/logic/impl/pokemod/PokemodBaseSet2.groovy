@@ -1104,63 +1104,13 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case PIDGEY_86:
-      return basic (this, hp:HP040, type:C, retreatCost:1) {
-				weakness L
-				resistance F, MINUS30
-				move "Whirlwind", {
-					text "10 damage. If your opponent has any Benched Pokémon, he or she chooses 1 of them and switches it with the Defending Pokémon. (Do the damage before switching the Pokémon.)"
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.PIDGEY_57, this);
       case PIKACHU_87:
-      return basic (this, hp:HP040, type:L, retreatCost:1) {
-				weakness F
-				move "Gnaw", {
-					text "20 damage. "
-					energyCost L
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Thunder Jolt", {
-					text "30 damage. Flip a coin. If tails, Pikachu does 10 damage to itself."
-					energyCost L, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.PIKACHU_58, this);
       case POLIWAG_88:
-      return basic (this, hp:HP040, type:W, retreatCost:1) {
-				weakness G
-				move "Water Gun", {
-					text "10+ damage. Does 10 damage plus 10 more damage for each [W] Energy attached to Poliwag but not used to pay for this attack's Energy cost. Extra [W] Energy after the 2nd don't count."
-					energyCost W
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.POLIWAG_59, this);
       case RATTATA_89:
-      return basic (this, hp:HP040, type:C, retreatCost:0) {
-				weakness F
-				resistance P, MINUS30
-				move "Bite", {
-					text "20 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.RATTATA_61, this);
       case RHYHORN_90:
       return basic (this, hp:HP070, type:F, retreatCost:3) {
 				weakness G
@@ -1170,7 +1120,21 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            flip{
+              delayed {
+                before CHECK_ATTACK_REQUIREMENTS, {
+                  if(self.active && ef.attacker.owner != self.owner) {
+                    wcu "Disgusting Pollen prevents attack"
+                    prevent()
+                  }
+                }
+                unregisterAfter 2
+                after SWITCH, defending, {unregister()}
+                after EVOLVE, defending, {unregister()}
+                after EVOLVE,self, {unregister()}
+                after SWITCH,self, {unregister()}
+              }
+            }
 					}
 				}
 				move "Horn Attack", {
