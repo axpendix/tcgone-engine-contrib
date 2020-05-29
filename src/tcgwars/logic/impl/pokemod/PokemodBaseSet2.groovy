@@ -1026,37 +1026,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case MACHOP_78:
-      return basic (this, hp:HP050, type:F, retreatCost:1) {
-				weakness P
-				move "Low Kick", {
-					text "20 damage. "
-					energyCost F
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.MACHOP_52, this);
       case MAGNEMITE_79:
-      return basic (this, hp:HP040, type:L, retreatCost:1) {
-				weakness F
-				move "Thunder Wave", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost L
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Selfdestruct", {
-					text "40 damage. Does 10 damage to each Pokémon on each player's Bench. (Don't apply Weakness and Resistance for Benched Pokémon.) Magnemite does 40 damage to itself."
-					energyCost L, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.MAGNEMITE_53, this);
       case MEOWTH_80:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
 				weakness F
@@ -1067,6 +1039,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip{
+              draw 1
+            }
 					}
 				}
 			};
