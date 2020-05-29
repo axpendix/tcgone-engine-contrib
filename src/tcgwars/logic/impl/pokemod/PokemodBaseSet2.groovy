@@ -565,25 +565,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case ARCANINE_33:
-      return evolution (this, from:"Growlithe", hp:HP100, type:R, retreatCost:3) {
-				weakness W
-				move "Flamethrower", {
-					text "50 damage. Discard 1 [R] Energy card attached to Arcanine in order to use this attack."
-					energyCost R, R, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-				move "Take Down", {
-					text "80 damage. Arcanine does 30 damage to itself."
-					energyCost R, R, C, C
-					attackRequirement {}
-					onAttack {
-						damage 80
-					}
-				}
-			};
+      return copy (PokemodBaseSet.ARCANINE_23, this);
       case BUTTERFREE_34:
       return evolution (this, from:"Metapod", hp:HP090, type:G, retreatCost:0) {
 				weakness R
@@ -594,6 +576,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            afterDamage{
+              whirlwind()
+            }
 					}
 				}
 				move "Mega Drain", {
@@ -602,6 +587,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            removeDamageCounterEqualToHalfDamageDone()
 					}
 				}
 			};
