@@ -339,45 +339,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case POLIWRATH_15:
-      return evolution (this, from:"Poliwhirl", hp:HP100, type:W, retreatCost:3) {
-				weakness G
-				move "Water Gun", {
-					text "30+ damage. Does 30 damage plus 10 more damage for each [W] Energy attached to Poliwrath but not used to pay for this attack's Energy cost. Extra [W] Energy after the 2nd doesn't count."
-					energyCost W, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Whirlpool", {
-					text "40 damage. If the Defending Pokémon has any Energy cards attached to it, choose 1 of them and discard it."
-					energyCost W, W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.POLIWRATH_13, this);
       case RAICHU_16:
-      return evolution (this, from:"Pikachu", hp:HP080, type:L, retreatCost:1) {
-				weakness F
-				move "Agility", {
-					text "20 damage. Flip a coin. If heads, during your opponent's next turn, prevent all effects of attacks, including damage, done to Raichu."
-					energyCost L, C, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Thunder", {
-					text "60 damage. Flip a coin. If tails, Raichu does 30 damage to itself."
-					energyCost L, L, C, C
-					attackRequirement {}
-					onAttack {
-						damage 60
-					}
-				}
-			};
+      return copy (PokemodBaseSet.RAICHU_14, this);
       case SCYTHER_17:
       return basic (this, hp:HP070, type:G, retreatCost:0) {
 				weakness R
@@ -387,7 +351,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-
+            increasedBaseDamageNextTurn("Slash",hp(30))
 					}
 				}
 				move "Slash", {
