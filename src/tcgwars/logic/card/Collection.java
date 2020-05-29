@@ -150,9 +150,10 @@ public enum Collection {
   REBEL_CLASH(431, "RCL", "gen8.RebelClash"),
 
 	//POKEMOD
-	POKEMOD_BASE_SET(911, "MODBS", "pokemod.PokemodBaseSet"),
-	POKEMOD_JUNGLE(912, "MODJU", "pokemod.PokemodJungle"),
-	POKEMOD_FOSSIL(913, "MODFO", "pokemod.PokemodFossil"),
+  POKEMOD_BASE_SET(910, "MODBS", "pokemod.PokemodBaseSet"),
+	POKEMOD_JUNGLE(911, "MODJU", "pokemod.PokemodJungle"),
+	POKEMOD_FOSSIL(912, "MODFO", "pokemod.PokemodFossil"),
+  POKEMOD_BASE_SET_2(913, "MODBS", "pokemod.PokemodBaseSet2"),
 	POKEMOD_TEAM_ROCKET(914, "MODTR", "pokemod.PokemodTeamRocket"),
 	POKEMOD_GYM_HEROES(915, "MODG1", "pokemod.PokemodGymHeroes"),
 	POKEMOD_GYM_CHALLENGE(916, "MODG2", "pokemod.PokemodGymChallenge"),
