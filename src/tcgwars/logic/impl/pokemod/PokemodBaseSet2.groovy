@@ -792,6 +792,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            reduceDamageFromDefendingNextTurn(hp(10),thisMove,defending)
 					}
 				}
 			};
