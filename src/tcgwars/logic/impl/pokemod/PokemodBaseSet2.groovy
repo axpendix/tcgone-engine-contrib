@@ -652,6 +652,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip{
+              preventAllEffectsNextTurn()
+            }
 					}
 				}
 				move "Drill Peck", {
