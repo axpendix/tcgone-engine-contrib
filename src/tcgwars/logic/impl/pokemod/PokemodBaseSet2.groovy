@@ -286,7 +286,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-
+            flip{
+              preventAllDamageNextTurn()
+            }
 					}
 				}
 				move "Double-edge", {
@@ -295,6 +297,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 80
+            damage 80, self
 					}
 				}
 			};
