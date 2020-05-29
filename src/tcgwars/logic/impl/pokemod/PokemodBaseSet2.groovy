@@ -917,7 +917,10 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				move "Call for Family", {
 					text "Search your deck for a Basic Pokémon named Bellsprout and put it onto your Bench. Shuffle your deck afterward. (You can't use this attack if your Bench is full.)"
 					energyCost G
-					attackRequirement {}
+					attackRequirement {
+            assert my.bench.notFull : "Your bench is full"
+            assert my.deck : "Your deck is empty"
+          }
 					onAttack {
             my.deck.search("Choose Basic Pokémon named Bellsprout",{(it.cardTypes.is(BASIC) && it.name.contains("Bellsprout"))}).each{
               my.deck.remove(it)
@@ -1063,9 +1066,16 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				move "Call for Family", {
 					text "Search your deck for a Basic Pokémon named Nidoran M or Nidoran F and put it onto your Bench. Shuffle your deck afterward. (You can't use this attack if your Bench is full.)"
 					energyCost G
-					attackRequirement {}
+					attackRequirement {
+            assert my.bench.notFull : "Your bench is full"
+            assert my.deck : "Your deck is empty"
+          }
 					onAttack {
-
+            my.deck.search("Choose Basic Pokémon named Nidoran M or Nidoran F",{(it.cardTypes.is(BASIC) && it.name.contains("Nidoran"))}).each{
+              my.deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
 					}
 				}
 			};
