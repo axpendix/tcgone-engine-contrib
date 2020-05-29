@@ -753,25 +753,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case NIDORINO_54:
-      return evolution (this, from:"Nidoran♂", hp:HP070, type:G, retreatCost:1) {
-				weakness P
-				move "Double Kick", {
-					text "30x damage. Flip 2 coins. This attack does 30 damage times the number of heads."
-					energyCost G, C, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Horn Drill", {
-					text "50 damage. "
-					energyCost G, G, C, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-			};
+      return copy (PokemodBaseSet.NIDORINO_37, this);
       case PARASECT_55:
       return evolution (this, from:"Paras", hp:HP060, type:G, retreatCost:1) {
 				weakness R
@@ -780,7 +762,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            apply ASLEEP
 					}
 				}
 				move "Slash", {
