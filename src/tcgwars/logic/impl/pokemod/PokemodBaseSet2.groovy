@@ -317,25 +317,11 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					}
 				}
 				move "Hurricane", {
-					text "30 damage. Unless this attack Knocks Out the Defending Pokémon, return the Defending Pokémon and all cards attached to it to your opponent's hand."
+					text "30 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-            delayed {
-              before APPLY_ATTACK_DAMAGES, {
-                if(ef.attacker.owner == self){
-                  bg.dm().each{
-                    if(it.to == opp.active && it.dmg.value < opp.active.fullHP.value - opp.active.damage.value){
-                      opp.active.cards.moveTo(opp.hand)
-                      removePCS(opp.active)
-                    } else {
-                      damage 30
-                    }
-                  }
-                }
-              }
-              unregisterAfter 1
-            }
+            damage 30
 					}
 				}
 			};
