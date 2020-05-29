@@ -66,7 +66,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
   CHARMELEON_24 ("Charmeleon", 24, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   DEWGONG_25 ("Dewgong", 25, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   DRATINI_26 ("Dratini", 26, Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
-  FARFETCHD_27 ("Farfetch'd", 27, Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
+  FARFETCH_D_27 ("Farfetch'd", 27, Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
   GROWLITHE_28 ("Growlithe", 28, Rarity.UNCOMMON, [POKEMON, BASIC, _FIRE_]),
   HAUNTER_29 ("Haunter", 29, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   IVYSAUR_30 ("Ivysaur", 30, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
@@ -245,7 +245,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return evolution (this, from:"Wartortle", hp:HP100, type:W, retreatCost:3) {
         weakness L
         pokemonPower "Rain Dance", {
-          text "As often as you like during your turn (before your attack), you may attach 1 [W] Energy Card to 1 of your [W] Pokémon (excluding Pokémon-ex). (This doesn't use up your 1 Energy card attachment for the turn.) This power can't be used if Blastoise is affected by a Special Condition."
+          text "As often as you like during your turn (before your attack), you may attach 1 [W] Energy Card to 1 of your [W] Pokémon (excluding Pokémon-ex). (This doesn't use up your 1 Energy card attachment for the turn.) This power can't be used if Blastoise is affected by a Special Condition."
           actionA {
             checkNoSPC()
             assert my.hand.filterByBasicEnergyType(W) : "No [W] in hand"
@@ -559,7 +559,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return evolution (this, from:"Ivysaur", hp:HP100, type:G, retreatCost:2) {
         weakness R
         pokemonPower "Energy Trans", {
-          text "As often as you like during your turn (before your attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one (excluding Pokémon-ex). This power can't be used if Venusaur is affected by a Special Condition."
+          text "As often as you like during your turn (before your attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one (excluding Pokémon-ex). This power can't be used if Venusaur is affected by a Special Condition."
           actionA {
             checkNoSPC()
             assert my.all.findAll {it.cards.energyCount(G)>0}
@@ -808,7 +808,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           }
         }
       };
-      case FARFETCHD_27:
+      case FARFETCH_D_27:
       return basic (this, hp:HP060, type:C, retreatCost:0) {
         weakness L
         resistance F, MINUS30
@@ -1815,7 +1815,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       };
       case REVIVE_89:
       return basicTrainer (this) {
-        text "Put 1 Basic Pokémon card (excluding Pokémon-ex) from your discard pile onto your Bench. Put damage counters on that Pokémon equal to half its HP (rounded down to the nearest 10). (You can't play Revive if your Bench is full.)"
+        text "Put 1 Basic Pokémon card (excluding Pokémon-ex) from your discard pile onto your Bench. Put damage counters on that Pokémon equal to half its HP (rounded down to the nearest 10). (You can't play Revive if your Bench is full.)"
         onPlay {
           // TODO: Exclude ex
           def tar = TargetPlayer.SELF
@@ -1831,7 +1831,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       };
       case SUPER_POTION_90:
       return basicTrainer (this) {
-        text "Discard 1 Energy card attached to 1 of your own Pokémon (excluding Pokémon-ex) in order to remove up to 4 damage counters from that Pokémon."
+        text "Discard 1 Energy card attached to 1 of your own Pokémon (excluding Pokémon-ex) in order to remove up to 4 damage counters from that Pokémon."
         onPlay {
           def tar = my.all.findAll { it.cards.energyCount(C) && it.numberOfDamageCounters && !it.pokemonEX }
           if(tar) {
