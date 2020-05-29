@@ -877,25 +877,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case WARTORTLE_63:
-      return evolution (this, from:"Squirtle", hp:HP070, type:W, retreatCost:1) {
-				weakness L
-				move "Withdraw", {
-					text "Flip a coin. If heads, prevent all damage done to Wartortle during your opponent's next turn. (Any other effects of attacks still happen.)"
-					energyCost W, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Bite", {
-					text "40 damage. "
-					energyCost W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.WARTORTLE_42, this);
       case WEEPINBELL_64:
       return evolution (this, from:"Bellsprout", hp:HP070, type:G, retreatCost:1) {
 				weakness R
@@ -905,6 +887,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip{
+              applyAfterDamage POISONED
+            }
 					}
 				}
 				move "Razor Leaf", {
