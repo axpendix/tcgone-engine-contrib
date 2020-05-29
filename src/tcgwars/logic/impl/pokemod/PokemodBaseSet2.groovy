@@ -364,22 +364,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case VENUSAUR_18:
-      return evolution (this, from:"Ivysaur", hp:HP100, type:G, retreatCost:2) {
-				weakness R
-				pokemonPower "Energy Trans", {
-					text "As often as you like during your turn (before your attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one (excluding Pokémon-ex). This power can't be used if Venusaur is affected by a Special Condition."
-					actionA {
-					}
-				}
-				move "Solarbeam", {
-					text "60 damage. "
-					energyCost G, G, G, C
-					attackRequirement {}
-					onAttack {
-						damage 60
-					}
-				}
-			};
+      return copy (PokemodBaseSet.VENUSAUR_15, this);
       case WIGGLYTUFF_19:
       return evolution (this, from:"Jigglypuff", hp:HP080, type:C, retreatCost:2) {
 				weakness F
@@ -389,7 +374,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            apply ASLEEP
 					}
 				}
 				move "Do the Wave", {
@@ -398,6 +383,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            my.bench.each{
+              damage 10
+            }
 					}
 				}
 			};
