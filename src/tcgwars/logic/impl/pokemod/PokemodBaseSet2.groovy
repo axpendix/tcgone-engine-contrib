@@ -482,8 +482,14 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				resistance P, MINUS30
 				pokemonPower "Thick Skinned", {
 					text "Snorlax can't become Asleep, Confused, Paralyzed, or Poisoned. This power can't be used if Snorlax is already Asleep, Confused, or Paralyzed."
-					actionA {
-					}
+					delayedA {
+            before APPLY_SPECIAL_CONDITION,self, {
+              if(!(self.specialConditions)){
+                bc (self+"is thick Skinned!")
+                prevent()
+              }
+            }
+          }
 				}
 				move "Body Slam", {
 					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
@@ -491,6 +497,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            flip{
+              applyAfterDamage(PARALYZED)
+            }
 					}
 				}
 			};
