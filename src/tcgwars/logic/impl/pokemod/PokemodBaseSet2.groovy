@@ -799,7 +799,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
       case POLIWHIRL_57:
       return copy (PokemodBaseSet.POLIWHIRL_38, this);
       case RATICATE_58:
-      return copy (PokemodBaseSet.RATICATE_401, this);
+      return copy (PokemodBaseSet.RATICATE_40, this);
       case RHYDON_59:
       return evolution (this, from:"Rhyhorn", hp:HP100, type:F, retreatCost:3) {
 				weakness G
@@ -846,17 +846,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case SEEL_61:
-      return basic (this, hp:HP060, type:W, retreatCost:1) {
-				weakness L
-				move "Headbutt", {
-					text "10 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.SEEL_41, this);
       case TAUROS_62:
       return basic (this, hp:HP060, type:C, retreatCost:2) {
 				weakness F
@@ -867,6 +857,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip{
+              damage 10
+            }
 					}
 				}
 				move "Rampage", {
@@ -874,7 +867,12 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+						damage 20+10*self.numberOfDamageCounters
+            flip{
+              afterDamage{
+                apply CONFUSED, self
+              }
+            }
 					}
 				}
 			};
