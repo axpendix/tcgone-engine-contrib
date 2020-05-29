@@ -991,26 +991,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case GASTLY_75:
-      return basic (this, hp:HP040, type:P, retreatCost:0) {
-				weakness D
-				resistance F, MINUS30
-				move "Sleeping Gas", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Asleep."
-					energyCost P
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Destiny Bond", {
-					text "Discard 1 [P] Energy card attached to Gastly in order to use this attack. If a Pokémon Knocks Out Gastly during your opponent's next turn, Knock Out that Pokémon."
-					energyCost P, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.GASTLY_50, this);
       case GOLDEEN_76:
       return basic (this, hp:HP040, type:W, retreatCost:0) {
 				weakness L
