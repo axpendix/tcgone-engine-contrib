@@ -508,8 +508,24 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				weakness R
 				resistance F, MINUS30
 				pokemonPower "Shift", {
-					text "Once during your turn (before your attack), you may change the type of Venomoth to the type of any other Pokémon in play other than [C]. This power can't be used if Venomoth is affected by a Special Condition."
-					actionA {
+			    text "Once during your turn (before your attack), you may change the type of Venomoth to the type of any other Pokémon in play other than [C]. This power can't be used if Venomoth is affected by a Special Condition."
+				  actionA {
+            checkNoSPC()
+            checkLastTurn()
+            def typeList = []
+            all.each{
+              for (Type t1:it.types) {
+                if(t1 != C && !typeList.contains(t1)){
+                  typeList.add(t1)
+                }
+              }
+            }
+            assert typeList : "There is no pokemon in play with a type different than [C]"
+            powerUsed()
+            def newType = choose(typeList,"Select the new type of Venomoth")
+            getter GET_POKEMON_TYPE, self, {h->
+              h.object = newType
+            }
 					}
 				}
 				move "Venom Powder", {
@@ -518,6 +534,10 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip{
+              applyAfterDamage POISONED
+              applyAfterDamage CONFUSED
+            }
 					}
 				}
 			};
