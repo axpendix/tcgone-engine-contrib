@@ -297,25 +297,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case NINETALES_13:
-      return evolution (this, from:"Vulpix", hp:HP080, type:R, retreatCost:1) {
-				weakness W
-				move "Lure", {
-					text "If your opponent has any Benched Pokémon, choose 1 of them and switch it with the Defending Pokémon."
-					energyCost R
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Fire Blast", {
-					text "80 damage. Discard 2 [R] Energy cards attached to Ninetales in order to use this attack."
-					energyCost R, R, C, C
-					attackRequirement {}
-					onAttack {
-						damage 80
-					}
-				}
-			};
+      return copy (PokemodBaseSet.NINETALES_12, this);
       case PIDGEOT_14:
       return evolution (this, from:"Pidgeotto", hp:HP080, type:C, retreatCost:0) {
 				weakness L
@@ -323,6 +305,14 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				pokemonPower "Quick Search", {
 					text "Once during your turn (before your attack), you may choose 1 card from your deck and put it into your hand. If you do, put 2 damage counters on Pidgeot. Shuffle your deck afterward. You can't use more than 1 Quick Search Pokémon Power each turn. This Power can't be used if Pidgeot is affected by a Special Condition."
 					actionA {
+            checkNoSPC()
+            checkLastTurn()
+            assert my.deck : "You have no cards in your deck"
+            assert bg.em().retrieveObject("Quick_Search") != bg.turnCount : "You can't use more than one Quick Search Pokémon Power each turn"
+            directDamage 20, self, SRC_ABILITY
+            my.deck.select(count:1).moveTo(my.hand)
+            shuffleDeck()
+            powerUsed()
 					}
 				}
 				move "Hurricane", {
@@ -330,7 +320,21 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 30
+            delayed {
+              before APPLY_ATTACK_DAMAGES, {
+                if(ef.attacker.owner == self){
+                  bg.dm().each{
+                    if(it.to == opp.active && it.dmg.value < opp.active.fullHP.value - opp.active.damage.value){
+                      opp.active.cards.moveTo(opp.hand)
+                      removePCS(opp.active)
+                    } else {
+                      damage 30
+                    }
+                  }
+                }
+              }
+              unregisterAfter 1
+            }
 					}
 				}
 			};
