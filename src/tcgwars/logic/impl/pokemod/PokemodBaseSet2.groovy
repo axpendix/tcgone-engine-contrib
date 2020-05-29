@@ -736,7 +736,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-
+            flip{
+              applyAfterDamage CONFUSED
+            }
 					}
 				}
 				move "Double Kick", {
@@ -744,7 +746,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 30
+            flip 2, {
+						  damage 30
+            }
 					}
 				}
 			};
