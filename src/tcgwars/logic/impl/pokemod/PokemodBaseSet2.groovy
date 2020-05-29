@@ -626,7 +626,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-
+            sw self, my.bench.select("Choose new active pokemon"), ATTACK
 					}
 				}
 				move "Big Eggsplosion", {
@@ -634,7 +634,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 20
+            flip self.cards.energyCount(C), {
+						  damage 20
+            }
 					}
 				}
 			};
