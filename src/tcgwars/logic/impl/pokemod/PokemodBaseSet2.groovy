@@ -1013,7 +1013,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            apply ASLEEP
 					}
 				}
 				move "Pound", {
