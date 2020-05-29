@@ -663,15 +663,25 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				weakness P
 				pokemonPower "Invisible Wall", {
 					text "Whenever an attack (including your own) does 30 or more damage to Mr. Mime (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.) This power can't be used if Mr. Mime is Asleep, Confused, or Paralyzed."
-					actionA {
-					}
+					delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              if(ef.attacker.owner != self.owner) {
+                bg.dm().each{
+                  if(it.to == self && it.notNoEffect && it.dmg.value >= 30) {
+                    bc "Invisiblw Wall prevents damage"
+                    it.dmg = hp(0)
+                  }
+                }
+              }
+            }
+          }
 				}
 				move "Meditate", {
 					text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on the Defending Pokémon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10+10*defending.numberOfDamageCounters
 					}
 				}
 			};
