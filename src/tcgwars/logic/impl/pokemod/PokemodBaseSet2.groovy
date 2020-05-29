@@ -1,4 +1,4 @@
-epackage tcgwars.logic.impl.pokemod;
+package tcgwars.logic.impl.pokemod;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
