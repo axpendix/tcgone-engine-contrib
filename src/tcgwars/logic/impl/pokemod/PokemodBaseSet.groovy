@@ -832,10 +832,10 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
         move "Flare", {
-          text "10 damage. "
-          energyCost R
+          text "20 damage. "
+          energyCost C, C
           onAttack {
-            damage 10
+            damage 20
           }
         }
       };
