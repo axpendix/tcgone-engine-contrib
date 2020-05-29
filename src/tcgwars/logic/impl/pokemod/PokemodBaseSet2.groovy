@@ -1147,22 +1147,23 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case SANDSHREW_91:
-      return basic (this, hp:HP040, type:F, retreatCost:1) {
-				weakness G
-				resistance L, MINUS30
-				move "Sand-attack", {
-					text "10 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
-					energyCost F
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.SANDSHREW_62, this);
       case SPEAROW_92:
       return basic (this, hp:HP050, type:C, retreatCost:0) {
 				weakness L
 				resistance F, MINUS30
+        def turnCount=-1
+        HP lastDamage=null
+        customAbility {
+          delayed (priority: LAST) {
+            before APPLY_ATTACK_DAMAGES, {
+              if(bg().currentTurn==self.owner.opposite) {
+                turnCount=bg.turnCount
+                lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
+              }
+            }
+          }
+        }
 				move "Peck", {
 					text "10 damage. "
 					energyCost C
@@ -1174,10 +1175,12 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				move "Mirror Move", {
 					text "If Spearow was attacked last turn, do the final result of that attack on Spearow to the Defending Pokémon."
 					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-
-					}
+					attackRequirement {
+            assert lastDamage && turnCount+1==bg.turnCount
+          }
+          onAttack {
+            damage lastDamage.value
+          }
 				}
 			};
       case SQUIRTLE_93:
