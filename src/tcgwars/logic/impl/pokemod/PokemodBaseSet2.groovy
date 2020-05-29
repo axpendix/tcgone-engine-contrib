@@ -60,7 +60,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
   ZAPDOS_20 ("Zapdos", 20, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
   BEEDRILL_21 ("Beedrill", 21, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   DRAGONAIR_22 ("Dragonair", 22, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  DUGTRIO_19 ("Dugtrio", 23, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  DUGTRIO_23 ("Dugtrio", 23, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   ELECTABUZZ_24 ("Electabuzz", 24, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
   ELECTRODE_25 ("Electrode", 25, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   KANGASKHAN_26 ("Kangaskhan", 26, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
@@ -390,123 +390,17 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case ZAPDOS_20:
-      return basic (this, hp:HP090, type:L, retreatCost:3) {
-				move "Thunder", {
-					text "60 damage. Flip a coin. If tails, Zapdos does 30 damage to itself."
-					energyCost L, L, C, C
-					attackRequirement {}
-					onAttack {
-						damage 60
-					}
-				}
-				move "Thunderbolt", {
-					text "100 damage. Discard 3 [L] Energy cards attached to Zapdos in order to use this attack."
-					energyCost L, L, L, L
-					attackRequirement {}
-					onAttack {
-						damage 100
-					}
-				}
-			};
+      return copy (PokemodBaseSet.ZAPDOS_16, this);
       case BEEDRILL_21:
-      return evolution (this, from:"Kakuna", hp:HP090, type:G, retreatCost:0) {
-				weakness R
-				resistance F, MINUS30
-				move "Twineedle", {
-					text "30x damage. Flip 2 coins. This attack does 30 damage times the number of heads."
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Poison Sting", {
-					text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
-					energyCost G, C, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.BEEDRILL_17, this);
       case DRAGONAIR_22:
-      return evolution (this, from:"Dratini", hp:HP080, type:C, retreatCost:2) {
-				resistance P, MINUS30
-				move "Slam", {
-					text "Flip 2 coins. This attack does 30 damage times the number of heads."
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Hyper Beam", {
-					text "20 damage. If the Defending Pokémon has any energy cards attached to it, choose 1 of them and discard it."
-					energyCost C, C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
-      case DUGTRIO_19:
-      return evolution (this, from:"Diglett", hp:HP080, type:F, retreatCost:2) {
-				weakness G
-				resistance L, MINUS30
-				move "Slash", {
-					text "40 damage. "
-					energyCost F, F, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-				move "Earthquake", {
-					text "70 damage. Does 10 damage to each of your own Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
-					energyCost F, F, F, F
-					attackRequirement {}
-					onAttack {
-						damage 70
-					}
-				}
-			};
+      return copy (PokemodBaseSet.DRAGONAIR_18, this);
+      case DUGTRIO_23:
+      return copy (PokemodBaseSet.DUGTRIO_19, this);
       case ELECTABUZZ_24:
-      return basic (this, hp:HP070, type:L, retreatCost:2) {
-				weakness F
-				move "Thundershock", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost L
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Thunderpunch", {
-					text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 10 more damage; if tails, this attack does 30 damage and Electabuzz does 10 damage to itself."
-					energyCost L, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.ELECTABUZZ_20, this);
       case ELECTRODE_25:
-      return evolution (this, from:"Voltorb", hp:HP080, type:L, retreatCost:1) {
-				weakness F
-				pokemonPower "Buzzap", {
-					text "At any time during your turn (before your attack) you may Knock Out Electrode and attach it to 1 of your other Pokémon. If you do, chose a type of Energy. is now an Energy card (instead of a Pokémon) that provides 2 energy of that type. This power can't be used if Electrode is Asleep, Confused, or Paralyzed."
-					actionA {
-					}
-				}
-				move "Electric Shock", {
-					text "50 damage. Flip a coin. If tails, Electrode does 10 damage to itself."
-					energyCost L, L, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-			};
+      return copy (PokemodBaseSet.ELECTRODE_21, this);
       case KANGASKHAN_26:
       return basic (this, hp:HP090, type:C, retreatCost:3) {
 				weakness F
@@ -516,7 +410,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            draw 1
 					}
 				}
 				move "Comet Punch", {
@@ -524,7 +418,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+						flip 4,{
+              damage 20
+            }
 					}
 				}
 			};
