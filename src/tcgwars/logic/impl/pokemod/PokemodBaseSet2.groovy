@@ -910,6 +910,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip{
+              applyAfterDamage PARALYZED
+            }
 					}
 				}
 			};
