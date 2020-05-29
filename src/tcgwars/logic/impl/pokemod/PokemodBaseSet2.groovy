@@ -1,4 +1,4 @@
-package tcgwars.logic.impl.pokemod;
+epackage tcgwars.logic.impl.pokemod;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -549,7 +549,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-
+            sw opp.active, opp.bench.select("Choose new active pokemon"), ATTACK
 					}
 				}
 				move "Acid", {
@@ -558,6 +558,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            flip{
+              cantRetreat(defending)
+            }
 					}
 				}
 			};
