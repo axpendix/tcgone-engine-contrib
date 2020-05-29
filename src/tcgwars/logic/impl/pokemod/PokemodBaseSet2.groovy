@@ -1046,25 +1046,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case METAPOD_81:
-      return evolution (this, from:"Caterpie", hp:HP070, type:G, retreatCost:2) {
-				weakness R
-				move "Stiffen", {
-					text "Flip a coin. If heads, prevent all damage done to Metapod during your opponent's next turn. (Any other effects of attacks still happen.)"
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Stun Spore", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost G, G
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.METAPOD_54, this);
       case NIDORAN_FEMALE_82:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
 				weakness P
@@ -1073,7 +1055,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 10
+            flip 3,{
+              damage 10
+            }
 					}
 				}
 				move "Call for Family", {
