@@ -12,6 +12,8 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
+import tcgwars.logic.impl.pokemod.PokemodBaseSet;
+
 import java.util.*;
 import org.apache.commons.lang.WordUtils;
 import tcgwars.entity.*;
@@ -220,27 +222,12 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case ALAKAZAM_1:
-      return evolution (this, from:"Kadabra", hp:HP080, type:P, retreatCost:3) {
-				weakness P
-				pokemonPower "Damage Swap", {
-					text "As often as you like during your turn (before your attack), you may move 1 damage counter from 1 of your Pokémon to another as long as you don't Knock Out that Pokémon. This power can't be used if Alakazam is Asleep, Confused, or Paralyzed."
-					actionA {
-					}
-				}
-				move "Confuse Ray", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
-					energyCost P, P, P
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.ALAKAZAM_1, this);
       case BLASTOISE_2:
       return evolution (this, from:"Wartortle", hp:HP100, type:W, retreatCost:3) {
 				weakness L
 				pokemonPower "Rain Dance", {
-					text "As often as you like during your turn (before your attack), you may attach 1 [W] Energy Card to 1 of your [W] Pokémon (excluding Pokémon-ex). (This doesn't use up your 1 Energy card attachment for the turn.) This power can't be used if Blastoise is affected by a Special Condition."
+					text "As often as you like during your turn (before your attack), you may attach 1 [W] Energy Card to 1 of your [W] Pokémon (excluding Pokémon-ex). (This doesn't use up your 1 Energy card attachment for the turn.) This power can't be used if Blastoise is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -480,7 +467,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				weakness L
 				resistance F, MINUS30
 				pokemonPower "Quick Search", {
-					text "Once during your turn (before your attack), you may choose 1 card from your deck and put it into your hand. If you do, put 2 damage counters on Pidgeot. Shuffle your deck afterward. You can't use more than 1 Quick Search Pokémon Power each turn. This Power can't be used if Pidgeot is affected by a Special Condition."
+					text "Once during your turn (before your attack), you may choose 1 card from your deck and put it into your hand. If you do, put 2 damage counters on Pidgeot. Shuffle your deck afterward. You can't use more than 1 Quick Search Pokémon Power each turn. This Power can't be used if Pidgeot is affected by a Special Condition."
 					actionA {
 					}
 				}
@@ -558,7 +545,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
       return evolution (this, from:"Ivysaur", hp:HP100, type:G, retreatCost:2) {
 				weakness R
 				pokemonPower "Energy Trans", {
-					text "As often as you like during your turn (before your attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one (excluding Pokémon-ex). This power can't be used if Venusaur is affected by a Special Condition."
+					text "As often as you like during your turn (before your attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one (excluding Pokémon-ex). This power can't be used if Venusaur is affected by a Special Condition."
 					actionA {
 					}
 				}
