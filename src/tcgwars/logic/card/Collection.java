@@ -22,7 +22,8 @@ public enum Collection {
 	GYM_HEROES(121, "G1", "gen1.GymHeroes"),
 	GYM_CHALLENGE(122, "G2", "gen1.GymChallenge"),
 
-	WIZARDS_BLACK_STAR_PROMOS(110, "WBSP", "gen1.WizardsBlackStarPromos"),
+  WIZARDS_BLACK_STAR_PROMOS(110, "WBSP", "gen1.WizardsBlackStarPromos"),
+  WIZARDS_BLACK_STAR_PROMOS_NG(111, "WBSP", "gen1.WizardsBlackStarPromosNG"),
 	VENDING_MACHINE(131, "VM", "gen1.VendingMachine"),
 	SOUTHERN_ISLANDS(132, "SI", "gen2.SouthernIslands"),
 	LEGENDARY_COLLECTION(133, "LC", "gen1.LegendaryCollection"),
