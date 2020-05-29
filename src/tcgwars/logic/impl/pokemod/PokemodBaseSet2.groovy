@@ -64,7 +64,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
   ELECTABUZZ_24 ("Electabuzz", 24, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
   ELECTRODE_25 ("Electrode", 25, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   KANGASKHAN_26 ("Kangaskhan", 26, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  MR__MIME_27 ("Mr. Mime", 27, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
+  MR_MIME_27 ("Mr. Mime", 27, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
   PIDGEOTTO_28 ("Pidgeotto", 28, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   PINSIR_29 ("Pinsir", 29, Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
   SNORLAX_30 ("Snorlax", 30, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
@@ -424,20 +424,30 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					}
 				}
 			};
-      case MR__MIME_27:
+      case MR_MIME_27:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
 				weakness P
 				pokemonPower "Invisible Wall", {
 					text "Whenever an attack (including your own) does 30 or more damage to Mr. Mime (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.) This power can't be used if Mr. Mime is Asleep, Confused, or Paralyzed."
-					actionA {
-					}
+					delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              if(ef.attacker.owner != self.owner) {
+                bg.dm().each{
+                  if(it.to == self && it.notNoEffect && it.dmg.value >= 30) {
+                    bc "Invisiblw Wall prevents damage"
+                    it.dmg = hp(0)
+                  }
+                }
+              }
+            }
+          }
 				}
 				move "Meditate", {
 					text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on the Defending Pokémon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10+10*defending.numberOfDamageCounters
 					}
 				}
 			};
