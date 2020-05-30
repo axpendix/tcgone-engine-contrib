@@ -427,6 +427,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
                 it.active.cards.filterByType(ENERGY).each{
                   attachEnergyFrom(type:R,my.discard,my.all)
                 }
+              }
             }
           }
           move "Burning Bonemerang", {
