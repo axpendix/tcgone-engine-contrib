@@ -309,6 +309,7 @@ public enum RebelClash implements LogicCardInfo {
           text "This Pokemon can evolve during your first turn or the turn you play it."
           delayedA {
             before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              powerUsed()
               prevent()
             }
           }
@@ -329,6 +330,7 @@ public enum RebelClash implements LogicCardInfo {
           text "This Pokemon can evolve during your first turn or the turn you play it."
           delayedA {
             before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              powerUsed()
               prevent()
             }
           }
@@ -838,7 +840,7 @@ public enum RebelClash implements LogicCardInfo {
         }
         move "Flickering Flames", {
           text "90 damage. Your opponent’s Active Pokemon is now Asleep."
-          energyCost R
+          energyCost R, C, C
           attackRequirement {}
           onAttack {
             damage 90
@@ -1496,7 +1498,7 @@ public enum RebelClash implements LogicCardInfo {
           delayedA {
             before ATTACH_ENERGY, {
               if (ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W) && bg.currentTurn == self.owner && ef.resolvedTarget == self) {
-                wcu "Cold Absorption"
+                powerUsed()
                 heal 30, ef.resolvedTarget
               }
             }
@@ -1504,7 +1506,7 @@ public enum RebelClash implements LogicCardInfo {
         }
         move "Blizzard", {
           text "120 damage. This attack also does 10 damage to each of your opponent's Benched Pokemon. (Don't apply Weakness and Resistance for Benched Pokemon.)"
-          energyCost W, W
+          energyCost W, W, C
           attackRequirement {}
           onAttack {
             damage 120
@@ -1643,7 +1645,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             damage 60
 
-            if (self.lastEvolved == bg.turnCount) {
+            if (self.lastEvolved == bg.turnCount && self.cards.findAll {it.name.contains("Luxio")}) {
               damage 100
             }
           }
