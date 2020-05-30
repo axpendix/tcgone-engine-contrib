@@ -585,11 +585,13 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness F, PLUS20
           resistance P, MINUS20
           move "Frustration", {
-            text "Choose 1 of your opponent’s Pokémon that doesn’t have any damage counters on it. This attack does 30 damage to that Pokémon."
+            text "Choose 1 of your opponent’s Pokémon that doesn’t have any damage counters on it. This attack does 30 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost D, D
-            attackRequirement {}
+            attackRequirement {
+              assert opp.all.findAll{!it.numberOfDamageCounters}
+            }
             onAttack {
-              damage 0
+              damage 30, opp.all.findAll{!it.numberOfDamageCounters}.select()
             }
           }
           move "Toxic Cloud", {
@@ -597,7 +599,11 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost D, D, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip {
+                apply POISONED
+                extraPoison 1
+               }
             }
           }
 
@@ -607,11 +613,14 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness L, PLUS30
           resistance F, MINUS20
           move "Accelerative Dive", {
-            text "30 damage. until the end of your next turn."
+            text "30 damage. Flip a coin. If tails, this attack does nothing. If heads, prevent all damage done to Staraptor by attacks (both yours and your opponent’s) until the end of your next turn."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip {
+                //TODO: preventAllDamageNextTurn() won't cut it here sadly.
+              }
             }
           }
           move "Brave Heart", {
@@ -619,7 +628,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 100
+              flip 1, {}, {damage 100, self}
             }
           }
 
@@ -632,15 +642,17 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip { apply PARALYZED }
             }
           }
           move "Leaf Storm", {
-            text "60 damage. Pokémon."
-            energyCost G, G, C, C, G
+            text "60 damage. Remove 2 damage counters from each of your [G] Pokémon."
+            energyCost G, G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              my.all.findAll{it.types.contains(G)}.each{heal 20, it}
             }
           }
 
@@ -653,7 +665,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip{preventAllDamageNextTurn()}
             }
           }
           move "Bubble Pump", {
@@ -661,7 +673,11 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost W, W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(self.cards.energyCount(W) >= 3){
+                damage 20
+              }
+              //TODO: Find out how to check for Azurill specifically (See Electivire).
             }
           }
 
