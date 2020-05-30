@@ -724,6 +724,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             onAttack {
               def tar = opp.bench.findAll {it.numberOfDamageCounters}.select()
               tar.cards.moveTo(opp.deck)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
               removePCS(tar)
             }
           }
