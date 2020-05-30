@@ -346,7 +346,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Metapod", hp:HP140, type:G, retreatCost:1) {
         weakness R
         move "Panic Poison", {
-          text "30 damage. Your opponent’s Active Pokemon is now Poisoned, Burned, and Confused."
+          text "30 damage. Your opponent’s Active Pokemon is now Burned, Confused, and Poisoned."
           energyCost G
           attackRequirement {}
           onAttack {
