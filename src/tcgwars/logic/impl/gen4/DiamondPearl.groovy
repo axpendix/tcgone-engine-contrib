@@ -541,7 +541,10 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              //TODO: Find out how to check for Budew specifically (See Electivire).
+              //TODO: Find out how to check for Budew specifically.
+              if (self.cards.findAll {it.name.contains("Budew")}){
+                damage 30, opp.bench.select()
+              }
             }
           }
 
@@ -677,7 +680,7 @@ public enum DiamondPearl implements LogicCardInfo {
               if(self.cards.energyCount(W) >= 3){
                 damage 20
               }
-              //TODO: Find out how to check for Azurill specifically (See Electivire).
+              //TODO: Find out how to check for Azurill specifically (See Electivire/Roserade).
             }
           }
 
@@ -1178,7 +1181,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              //TODO: Baby Evolution check
+              //TODO: Baby Evolution check (see Electivire/Roserade)
               //if(isEvolvedFrom("munchlax")) damage 30
               apply ASLEEP, self
             }
