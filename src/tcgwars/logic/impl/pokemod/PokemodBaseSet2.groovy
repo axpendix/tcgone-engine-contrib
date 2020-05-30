@@ -60,11 +60,11 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
   ZAPDOS_20 ("Zapdos", 20, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
   BEEDRILL_21 ("Beedrill", 21, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   DRAGONAIR_22 ("Dragonair", 22, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  DUGTRIO_19 ("Dugtrio", 23, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  DUGTRIO_23 ("Dugtrio", 23, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   ELECTABUZZ_24 ("Electabuzz", 24, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
   ELECTRODE_25 ("Electrode", 25, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   KANGASKHAN_26 ("Kangaskhan", 26, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  MR__MIME_27 ("Mr. Mime", 27, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
+  MR_MIME_27 ("Mr. Mime", 27, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
   PIDGEOTTO_28 ("Pidgeotto", 28, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   PINSIR_29 ("Pinsir", 29, Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
   SNORLAX_30 ("Snorlax", 30, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
@@ -262,106 +262,15 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
       case CLEFAIRY_6:
       return copy (PokemodBaseSet.CLEFAIRY_5, this);
       case GYARADOS_7:
-      return evolution (this, from:"Magikarp", hp:HP100, type:W, retreatCost:3) {
-				weakness L
-				resistance F, MINUS30
-				move "Dragon Rage", {
-					text "50 damage. "
-					energyCost W, W, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-				move "Bubblebeam", {
-					text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost W, W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.GYARADOS_6, this);
       case HITMONCHAN_8:
-      return basic (this, hp:HP070, type:F, retreatCost:2) {
-				weakness P
-				move "Jab", {
-					text "20 damage. "
-					energyCost F
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Special Punch", {
-					text "40 damage. "
-					energyCost F, F, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.HITMONCHAN_7, this);
       case MAGNETON_9:
-      return evolution (this, from:"Magnemite", hp:HP060, type:L, retreatCost:1) {
-				weakness F
-				move "Thunder Wave", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost L, L, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Selfdestruct", {
-					text "80 damage. Does 20 damage to each Pokémon on each player's Bench. (Don't apply Weakness and Resistance for Benched Pokémon.) Magneton does 80 damage to itself."
-					energyCost L, L, C, C
-					attackRequirement {}
-					onAttack {
-						damage 80
-					}
-				}
-			};
+      return copy (PokemodBaseSet.MAGNETON_9, this);
       case MEWTWO_10:
-      return basic (this, hp:HP070, type:P, retreatCost:2) {
-				weakness P
-				move "Psychic", {
-					text "10+ damage. Does 10 damage plus 10 more damage for each Energy card attached to the Defending Pokémon."
-					energyCost P, C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Barrier", {
-					text "Discard 1 [P] Energy card attached to Mewtwo in order to use this attack. During your opponent's next turn, prevent all effects of attacks, including damage, done to Mewtwo."
-					energyCost P, P
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.MEWTWO_10, this);
       case NIDOKING_11:
-      return evolution (this, from:"Nidorino", hp:HP100, type:G, retreatCost:3) {
-				weakness P
-				move "Thrash", {
-					text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 10 more damage; if tails, this attack does 30 damage and Nidoking does 10 damage to itself."
-					energyCost G, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Toxic", {
-					text "40 damage. The Defending Pokémon is now Poisoned. It now takes 20 Poison damage instead of 10 after each player's turn (even if it was already Poisoned)."
-					energyCost G, G, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.NIDOKING_11, this);
       case NIDOQUEEN_12:
       return evolution (this, from:"Nidorina", hp:HP100, type:G, retreatCost:3) {
 				weakness P
@@ -370,7 +279,12 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+            damage 20
+            my.bench.each{
+              if(it.name.contains("Nidoking")){
+                damage 20
+              }
+            }
 					}
 				}
 				move "Mega Punch", {
@@ -383,25 +297,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case NINETALES_13:
-      return evolution (this, from:"Vulpix", hp:HP080, type:R, retreatCost:1) {
-				weakness W
-				move "Lure", {
-					text "If your opponent has any Benched Pokémon, choose 1 of them and switch it with the Defending Pokémon."
-					energyCost R
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Fire Blast", {
-					text "80 damage. Discard 2 [R] Energy cards attached to Ninetales in order to use this attack."
-					energyCost R, R, C, C
-					attackRequirement {}
-					onAttack {
-						damage 80
-					}
-				}
-			};
+      return copy (PokemodBaseSet.NINETALES_12, this);
       case PIDGEOT_14:
       return evolution (this, from:"Pidgeotto", hp:HP080, type:C, retreatCost:0) {
 				weakness L
@@ -409,57 +305,30 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				pokemonPower "Quick Search", {
 					text "Once during your turn (before your attack), you may choose 1 card from your deck and put it into your hand. If you do, put 2 damage counters on Pidgeot. Shuffle your deck afterward. You can't use more than 1 Quick Search Pokémon Power each turn. This Power can't be used if Pidgeot is affected by a Special Condition."
 					actionA {
+            checkNoSPC()
+            checkLastTurn()
+            assert my.deck : "You have no cards in your deck"
+            assert bg.em().retrieveObject("Quick_Search") != bg.turnCount : "You can't use more than one Quick Search Pokémon Power each turn"
+            directDamage 20, self, SRC_ABILITY
+            bg.em().storeObject("Quick_Search", bg.turnCount)
+            my.deck.select(count:1).moveTo(my.hand)
+            shuffleDeck()
+            powerUsed()
 					}
 				}
 				move "Hurricane", {
-					text "30 damage. Unless this attack Knocks Out the Defending Pokémon, return the Defending Pokémon and all cards attached to it to your opponent's hand."
+					text "30 damage."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 30
+            damage 30
 					}
 				}
 			};
       case POLIWRATH_15:
-      return evolution (this, from:"Poliwhirl", hp:HP100, type:W, retreatCost:3) {
-				weakness G
-				move "Water Gun", {
-					text "30+ damage. Does 30 damage plus 10 more damage for each [W] Energy attached to Poliwrath but not used to pay for this attack's Energy cost. Extra [W] Energy after the 2nd doesn't count."
-					energyCost W, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Whirlpool", {
-					text "40 damage. If the Defending Pokémon has any Energy cards attached to it, choose 1 of them and discard it."
-					energyCost W, W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.POLIWRATH_13, this);
       case RAICHU_16:
-      return evolution (this, from:"Pikachu", hp:HP080, type:L, retreatCost:1) {
-				weakness F
-				move "Agility", {
-					text "20 damage. Flip a coin. If heads, during your opponent's next turn, prevent all effects of attacks, including damage, done to Raichu."
-					energyCost L, C, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Thunder", {
-					text "60 damage. Flip a coin. If tails, Raichu does 30 damage to itself."
-					energyCost L, L, C, C
-					attackRequirement {}
-					onAttack {
-						damage 60
-					}
-				}
-			};
+      return copy (PokemodBaseSet.RAICHU_14, this);
       case SCYTHER_17:
       return basic (this, hp:HP070, type:G, retreatCost:0) {
 				weakness R
@@ -469,7 +338,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-
+            increasedBaseDamageNextTurn("Slash",hp(30))
 					}
 				}
 				move "Slash", {
@@ -482,22 +351,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case VENUSAUR_18:
-      return evolution (this, from:"Ivysaur", hp:HP100, type:G, retreatCost:2) {
-				weakness R
-				pokemonPower "Energy Trans", {
-					text "As often as you like during your turn (before your attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one (excluding Pokémon-ex). This power can't be used if Venusaur is affected by a Special Condition."
-					actionA {
-					}
-				}
-				move "Solarbeam", {
-					text "60 damage. "
-					energyCost G, G, G, C
-					attackRequirement {}
-					onAttack {
-						damage 60
-					}
-				}
-			};
+      return copy (PokemodBaseSet.VENUSAUR_15, this);
       case WIGGLYTUFF_19:
       return evolution (this, from:"Jigglypuff", hp:HP080, type:C, retreatCost:2) {
 				weakness F
@@ -507,7 +361,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            apply ASLEEP
 					}
 				}
 				move "Do the Wave", {
@@ -516,127 +370,24 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            my.bench.each{
+              damage 10
+            }
 					}
 				}
 			};
       case ZAPDOS_20:
-      return basic (this, hp:HP090, type:L, retreatCost:3) {
-				move "Thunder", {
-					text "60 damage. Flip a coin. If tails, Zapdos does 30 damage to itself."
-					energyCost L, L, C, C
-					attackRequirement {}
-					onAttack {
-						damage 60
-					}
-				}
-				move "Thunderbolt", {
-					text "100 damage. Discard 3 [L] Energy cards attached to Zapdos in order to use this attack."
-					energyCost L, L, L, L
-					attackRequirement {}
-					onAttack {
-						damage 100
-					}
-				}
-			};
+      return copy (PokemodBaseSet.ZAPDOS_16, this);
       case BEEDRILL_21:
-      return evolution (this, from:"Kakuna", hp:HP090, type:G, retreatCost:0) {
-				weakness R
-				resistance F, MINUS30
-				move "Twineedle", {
-					text "30x damage. Flip 2 coins. This attack does 30 damage times the number of heads."
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Poison Sting", {
-					text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
-					energyCost G, C, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.BEEDRILL_17, this);
       case DRAGONAIR_22:
-      return evolution (this, from:"Dratini", hp:HP080, type:C, retreatCost:2) {
-				resistance P, MINUS30
-				move "Slam", {
-					text "Flip 2 coins. This attack does 30 damage times the number of heads."
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Hyper Beam", {
-					text "20 damage. If the Defending Pokémon has any energy cards attached to it, choose 1 of them and discard it."
-					energyCost C, C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
-      case DUGTRIO_19:
-      return evolution (this, from:"Diglett", hp:HP080, type:F, retreatCost:2) {
-				weakness G
-				resistance L, MINUS30
-				move "Slash", {
-					text "40 damage. "
-					energyCost F, F, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-				move "Earthquake", {
-					text "70 damage. Does 10 damage to each of your own Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
-					energyCost F, F, F, F
-					attackRequirement {}
-					onAttack {
-						damage 70
-					}
-				}
-			};
+      return copy (PokemodBaseSet.DRAGONAIR_18, this);
+      case DUGTRIO_23:
+      return copy (PokemodBaseSet.DUGTRIO_19, this);
       case ELECTABUZZ_24:
-      return basic (this, hp:HP070, type:L, retreatCost:2) {
-				weakness F
-				move "Thundershock", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost L
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Thunderpunch", {
-					text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 10 more damage; if tails, this attack does 30 damage and Electabuzz does 10 damage to itself."
-					energyCost L, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.ELECTABUZZ_20, this);
       case ELECTRODE_25:
-      return evolution (this, from:"Voltorb", hp:HP080, type:L, retreatCost:1) {
-				weakness F
-				pokemonPower "Buzzap", {
-					text "At any time during your turn (before your attack) you may Knock Out Electrode and attach it to 1 of your other Pokémon. If you do, chose a type of Energy. is now an Energy card (instead of a Pokémon) that provides 2 energy of that type. This power can't be used if Electrode is Asleep, Confused, or Paralyzed."
-					actionA {
-					}
-				}
-				move "Electric Shock", {
-					text "50 damage. Flip a coin. If tails, Electrode does 10 damage to itself."
-					energyCost L, L, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-			};
+      return copy (PokemodBaseSet.ELECTRODE_21, this);
       case KANGASKHAN_26:
       return basic (this, hp:HP090, type:C, retreatCost:3) {
 				weakness F
@@ -646,7 +397,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            draw 1
 					}
 				}
 				move "Comet Punch", {
@@ -654,48 +405,41 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C, C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+						flip 4,{
+              damage 20
+            }
 					}
 				}
 			};
-      case MR__MIME_27:
+      case MR_MIME_27:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
 				weakness P
 				pokemonPower "Invisible Wall", {
 					text "Whenever an attack (including your own) does 30 or more damage to Mr. Mime (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.) This power can't be used if Mr. Mime is Asleep, Confused, or Paralyzed."
-					actionA {
-					}
+					delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              if(ef.attacker.owner != self.owner) {
+                bg.dm().each{
+                  if(it.to == self && it.notNoEffect && it.dmg.value >= 30) {
+                    bc "Invisiblw Wall prevents damage"
+                    it.dmg = hp(0)
+                  }
+                }
+              }
+            }
+          }
 				}
 				move "Meditate", {
 					text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on the Defending Pokémon."
 					energyCost P, C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10+10*defending.numberOfDamageCounters
 					}
 				}
 			};
       case PIDGEOTTO_28:
-      return evolution (this, from:"Pidgey", hp:HP060, type:C, retreatCost:0) {
-				weakness L
-				resistance F, MINUS30
-				move "Whirlwind", {
-					text "20 damage. If your opponent has any Benched Pokémon, he or she chooses 1 of them and switches it with the Defending Pokémon. (Do the damage before switching the Pokémon.)"
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Mirror Move", {
-					text "If Pidgeotto was attacked last turn, do the final result of that attack on Pidgeotto to the Defending Pokémon."
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.PIGEOTTO_22, this);
       case PINSIR_29:
       return basic (this, hp:HP080, type:G, retreatCost:1) {
 				weakness R
@@ -705,6 +449,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip{
+              applyAfterDamage(PARALYZED)
+            }
 					}
 				}
 				move "Guillotine", {
@@ -722,8 +469,14 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				resistance P, MINUS30
 				pokemonPower "Thick Skinned", {
 					text "Snorlax can't become Asleep, Confused, Paralyzed, or Poisoned. This power can't be used if Snorlax is already Asleep, Confused, or Paralyzed."
-					actionA {
-					}
+					delayedA {
+            before APPLY_SPECIAL_CONDITION,self, {
+              if(!(self.specialConditions)){
+                bc (self+"is thick Skinned!")
+                prevent()
+              }
+            }
+          }
 				}
 				move "Body Slam", {
 					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
@@ -731,6 +484,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            flip{
+              applyAfterDamage(PARALYZED)
+            }
 					}
 				}
 			};
@@ -739,8 +495,24 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				weakness R
 				resistance F, MINUS30
 				pokemonPower "Shift", {
-					text "Once during your turn (before your attack), you may change the type of Venomoth to the type of any other Pokémon in play other than [C]. This power can't be used if Venomoth is affected by a Special Condition."
-					actionA {
+			    text "Once during your turn (before your attack), you may change the type of Venomoth to the type of any other Pokémon in play other than [C]. This power can't be used if Venomoth is affected by a Special Condition."
+				  actionA {
+            checkNoSPC()
+            checkLastTurn()
+            def typeList = []
+            all.each{
+              for (Type t1:it.types) {
+                if(t1 != C && !typeList.contains(t1)){
+                  typeList.add(t1)
+                }
+              }
+            }
+            assert typeList : "There is no pokemon in play with a type different than [C]"
+            powerUsed()
+            def newType = choose(typeList,"Select the new type of Venomoth")
+            getter GET_POKEMON_TYPE, self, {h->
+              h.object = newType
+            }
 					}
 				}
 				move "Venom Powder", {
@@ -749,6 +521,10 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip{
+              applyAfterDamage POISONED
+              applyAfterDamage CONFUSED
+            }
 					}
 				}
 			};
@@ -760,7 +536,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-
+            sw opp.active, opp.bench.select("Choose new active pokemon"), ATTACK
 					}
 				}
 				move "Acid", {
@@ -769,29 +545,14 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            flip{
+              cantRetreat(defending)
+            }
 					}
 				}
 			};
       case ARCANINE_33:
-      return evolution (this, from:"Growlithe", hp:HP100, type:R, retreatCost:3) {
-				weakness W
-				move "Flamethrower", {
-					text "50 damage. Discard 1 [R] Energy card attached to Arcanine in order to use this attack."
-					energyCost R, R, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-				move "Take Down", {
-					text "80 damage. Arcanine does 30 damage to itself."
-					energyCost R, R, C, C
-					attackRequirement {}
-					onAttack {
-						damage 80
-					}
-				}
-			};
+      return copy (PokemodBaseSet.ARCANINE_23, this);
       case BUTTERFREE_34:
       return evolution (this, from:"Metapod", hp:HP090, type:G, retreatCost:0) {
 				weakness R
@@ -802,6 +563,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            afterDamage{
+              whirlwind()
+            }
 					}
 				}
 				move "Mega Drain", {
@@ -810,79 +574,37 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 40
+            removeDamageCounterEqualToHalfDamageDone()
 					}
 				}
 			};
       case CHARMELEON_35:
-      return evolution (this, from:"Charmander", hp:HP080, type:R, retreatCost:1) {
-				weakness W
-				move "Slash", {
-					text "20 damage. "
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Flamethrower", {
-					text "50 damage. Discard 1 [R] Energy card attached to Charmander in order to use this attack."
-					energyCost R, R, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-			};
+      return copy (PokemodBaseSet.CHARMELEON_24, this);
       case DEWGONG_36:
-      return evolution (this, from:"Seel", hp:HP080, type:W, retreatCost:1) {
-				weakness L
-				move "Aurora Beam", {
-					text "50 damage. "
-					energyCost W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-				move "Ice Beam", {
-					text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost W, W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.DEWGONG_25, this);
       case DODRIO_37:
       return evolution (this, from:"Doduo", hp:HP070, type:C, retreatCost:0) {
 				weakness L
 				resistance F, MINUS30
 				pokemonPower "Retreat Aid", {
 					text "As long as Dodrio is Benched, pay 1 [C] less to retreat your Active Pokémon."
-					actionA {
-					}
+					getterA (GET_RETREAT_COST) {h->
+            if (h.effect.target.owner == self.owner && h.effect.target.active && self.benched) {
+              h.object -= 1
+            }
+          }
 				}
 				move "Rage", {
 					text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Dodrio."
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10+10*self.numberOfDamageCounters
 					}
 				}
 			};
       case DRATINI_38:
-      return basic (this, hp:HP040, type:C, retreatCost:1) {
-				resistance P, MINUS30
-				move "Pound", {
-					text "10 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.DRATINI_26, this);
       case EXEGGUTOR_39:
       return evolution (this, from:"Exeggcute", hp:HP080, type:G, retreatCost:3) {
 				weakness R
@@ -891,7 +613,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-
+            sw self, my.bench.select("Choose new active pokemon"), ATTACK
 					}
 				}
 				move "Big Eggsplosion", {
@@ -899,31 +621,14 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						damage 20
+            flip self.cards.energyCount(C), {
+						  damage 20
+            }
 					}
 				}
 			};
       case FARFETCH_D_40:
-      return basic (this, hp:HP060, type:C, retreatCost:0) {
-				weakness L
-				resistance F, MINUS30
-				move "Leek Slap", {
-					text "Flip a coin. If tails, this attack does nothing. Either way, you can't use this attack again as long as Farfetch'd stays in play (even putting Farfetch'd on the Bench won't let you use it again)."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Pot Smash", {
-					text "30 damage. "
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.FARFETCH_D_27, this);
       case FEAROW_41:
       return evolution (this, from:"Spearow", hp:HP080, type:C, retreatCost:0) {
 				weakness L
@@ -934,6 +639,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip{
+              preventAllEffectsNextTurn()
+            }
 					}
 				}
 				move "Drill Peck", {
@@ -946,118 +654,17 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case GROWLITHE_42:
-      return basic (this, hp:HP060, type:R, retreatCost:1) {
-				weakness W
-				move "Flare", {
-					text "20 damage. "
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.GROWLITHE_28, this);
       case HAUNTER_43:
-      return evolution (this, from:"Gastly", hp:HP060, type:P, retreatCost:0) {
-				weakness D
-				resistance F, MINUS30
-				move "Hypnosis", {
-					text "The Defending Pokémon is now Asleep."
-					energyCost P
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Dream Eater", {
-					text "You can't use this attack unless the Defending Pokémon is Asleep."
-					energyCost P, P
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.HAUNTER_29, this);
       case IVYSAUR_44:
-      return evolution (this, from:"Bulbasaur", hp:HP070, type:G, retreatCost:1) {
-				weakness R
-				move "Vine Whip", {
-					text "30 damage. "
-					energyCost G, C, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Poisonpowder", {
-					text "30 damage. The Defending Pokémon is now Poisoned."
-					energyCost G, G, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.IVYSAUR_30, this);
       case JYNX_45:
-      return basic (this, hp:HP070, type:P, retreatCost:2) {
-				weakness P
-				move "Doubleslap", {
-					text "10x damage. Flip 2 coins. This attack does 10 damage times the number of heads."
-					energyCost P
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Meditate", {
-					text "20+ damage. Does 20 damage plus 10 more damage for each damage counter on the Defending Pokémon."
-					energyCost P, P, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.JYNX_31, this);
       case KADABRA_46:
-      return evolution (this, from:"Abra", hp:HP060, type:P, retreatCost:3) {
-				weakness P
-				move "Recover", {
-					text "Discard 1 [P] Energy card attached to Kadabra in order to use this attack. Remove all damage counters from Kadabra."
-					energyCost P, P
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Super Psy", {
-					text "50 damage. "
-					energyCost P, P, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-			};
+      return copy (PokemodBaseSet.KADABRA_32, this);
       case KAKUNA_47:
-      return evolution (this, from:"Weedle", hp:HP080, type:G, retreatCost:2) {
-				weakness R
-				move "Stiffen", {
-					text "Flip a coin. If heads, prevent all damage done to Kakuna during your opponent's next turn. (Any other effects of attacks still happen.)"
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Poisonpowder", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
-					energyCost G, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.KAKUNA_33, this);
       case LICKITUNG_48:
       return basic (this, hp:HP080, type:C, retreatCost:3) {
 				weakness F
@@ -1068,6 +675,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip{
+              applyAfterDamage PARALYZED
+            }
 					}
 				}
 				move "Supersonic", {
@@ -1076,69 +686,18 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip{
+              applyAfterDamage CONFUSED
+            }
 					}
 				}
 			};
       case MACHOKE_49:
-      return evolution (this, from:"Machop", hp:HP080, type:F, retreatCost:3) {
-				weakness P
-				move "Karate Chop", {
-					text "Does 50 damage minus 10 damage for each Damage Counter on Machoke."
-					energyCost F, F, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Submission", {
-					text "60 damage. Machoke does 20 damage to itself."
-					energyCost F, F, C, C
-					attackRequirement {}
-					onAttack {
-						damage 60
-					}
-				}
-			};
+      return copy (PokemodBaseSet.MACHOKE_34, this);
       case MAGIKARP_50:
-      return basic (this, hp:HP030, type:W, retreatCost:0) {
-				weakness L
-				move "Tackle", {
-					text "10 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Flail", {
-					text "10x damage. Does 10 damage times the number of damage counters on Magikarp."
-					energyCost W
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.MAGIKARP_35, this);
       case MAGMAR_51:
-      return basic (this, hp:HP070, type:R, retreatCost:2) {
-				weakness W
-				move "Fire Punch", {
-					text "30 damage. "
-					energyCost R, R
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Flamethrower", {
-					text "50 damage. Discard 1 [R] Energy card attached to Magmar in order to use this attack."
-					energyCost R, R, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-			};
+      return copy (PokemodBaseSet.MAGMAR_36, this);
       case MAROWAK_52:
       return evolution (this, from:"Cubone", hp:HP070, type:F, retreatCost:1) {
 				weakness G
@@ -1148,15 +707,24 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost F, C
 					attackRequirement {}
 					onAttack {
-						damage 30
+            flip 2, {
+						  damage 30
+            }
 					}
 				}
 				move "Call for Friend", {
 					text "Search your deck for a [F] Basic Pokémon card and put it onto your Bench. Shuffle your deck afterward. (You can't use this attack if your Bench is full.)"
 					energyCost F
-					attackRequirement {}
+					attackRequirement {
+            assert my.deck : "Your deck is empty"
+            assert my.bench.notFull "Your bench is full"
+          }
 					onAttack {
-
+            my.deck.search("Choose Basic [f] Pokémon",{(it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(F))}).each{
+              my.deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
 					}
 				}
 			};
@@ -1168,7 +736,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-
+            flip{
+              applyAfterDamage CONFUSED
+            }
 					}
 				}
 				move "Double Kick", {
@@ -1176,30 +746,14 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G, C, C
 					attackRequirement {}
 					onAttack {
-						damage 30
+            flip 2, {
+						  damage 30
+            }
 					}
 				}
 			};
       case NIDORINO_54:
-      return evolution (this, from:"Nidoran♂", hp:HP070, type:G, retreatCost:1) {
-				weakness P
-				move "Double Kick", {
-					text "30x damage. Flip 2 coins. This attack does 30 damage times the number of heads."
-					energyCost G, C, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Horn Drill", {
-					text "50 damage. "
-					energyCost G, G, C, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-			};
+      return copy (PokemodBaseSet.NIDORINO_37, this);
       case PARASECT_55:
       return evolution (this, from:"Paras", hp:HP060, type:G, retreatCost:1) {
 				weakness R
@@ -1208,7 +762,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            apply ASLEEP
 					}
 				}
 				move "Slash", {
@@ -1238,50 +792,14 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 30
+            reduceDamageFromDefendingNextTurn(hp(10),thisMove,defending)
 					}
 				}
 			};
       case POLIWHIRL_57:
-      return evolution (this, from:"Poliwag", hp:HP070, type:W, retreatCost:1) {
-				weakness G
-				move "Amnesia", {
-					text "Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
-					energyCost W, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Doubleslap", {
-					text "30x damage. Flip 2 coins. This attack does 30 damage times the number of heads."
-					energyCost W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.POLIWHIRL_38, this);
       case RATICATE_58:
-      return evolution (this, from:"Rattata", hp:HP060, type:C, retreatCost:1) {
-				weakness F
-				resistance P, MINUS30
-				move "Bite", {
-					text "20 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Super Fang", {
-					text "Does damage to the Defending Pokémon equal to half the Defending Pokémon's remaining HP (rounded up to the nearest 10)."
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.RATICATE_40, this);
       case RHYDON_59:
       return evolution (this, from:"Rhyhorn", hp:HP100, type:F, retreatCost:3) {
 				weakness G
@@ -1300,6 +818,10 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 50
+            damage 20, self
+            afterDamage{
+              whirlwind()
+            }
 					}
 				}
 			};
@@ -1324,17 +846,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case SEEL_61:
-      return basic (this, hp:HP060, type:W, retreatCost:1) {
-				weakness L
-				move "Headbutt", {
-					text "10 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.SEEL_41, this);
       case TAUROS_62:
       return basic (this, hp:HP060, type:C, retreatCost:2) {
 				weakness F
@@ -1345,6 +857,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            flip{
+              damage 10
+            }
 					}
 				}
 				move "Rampage", {
@@ -1352,30 +867,17 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						damage 20
+						damage 20+10*self.numberOfDamageCounters
+            flip{
+              afterDamage{
+                apply CONFUSED, self
+              }
+            }
 					}
 				}
 			};
       case WARTORTLE_63:
-      return evolution (this, from:"Squirtle", hp:HP070, type:W, retreatCost:1) {
-				weakness L
-				move "Withdraw", {
-					text "Flip a coin. If heads, prevent all damage done to Wartortle during your opponent's next turn. (Any other effects of attacks still happen.)"
-					energyCost W, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Bite", {
-					text "40 damage. "
-					energyCost W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.WARTORTLE_42, this);
       case WEEPINBELL_64:
       return evolution (this, from:"Bellsprout", hp:HP070, type:G, retreatCost:1) {
 				weakness R
@@ -1385,6 +887,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip{
+              applyAfterDamage POISONED
+            }
 					}
 				}
 				move "Razor Leaf", {
@@ -1397,17 +902,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case ABRA_65:
-      return basic (this, hp:HP030, type:P, retreatCost:0) {
-				weakness P
-				move "Psyshock", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost P
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.ABRA_43, this);
       case BELLSPROUT_66:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
 				weakness R
@@ -1422,56 +917,25 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				move "Call for Family", {
 					text "Search your deck for a Basic Pokémon named Bellsprout and put it onto your Bench. Shuffle your deck afterward. (You can't use this attack if your Bench is full.)"
 					energyCost G
-					attackRequirement {}
+					attackRequirement {
+            assert my.bench.notFull : "Your bench is full"
+            assert my.deck : "Your deck is empty"
+          }
 					onAttack {
-
+            my.deck.search("Choose Basic Pokémon named Bellsprout",{(it.cardTypes.is(BASIC) && it.name.contains("Bellsprout"))}).each{
+              my.deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
 					}
 				}
 			};
       case BULBASAUR_67:
-      return basic (this, hp:HP040, type:G, retreatCost:1) {
-				weakness R
-				move "Leech Seed", {
-					text "10 damage. Unless all damage from this attack is prevented, you may remove 1 damage counter from Bulbasaur."
-					energyCost G
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.BULBASAUR_44, this);
       case CATERPIE_68:
-      return basic (this, hp:HP040, type:G, retreatCost:1) {
-				weakness R
-				move "String Shot", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost G
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.CATERPIE_45, this);
       case CHARMANDER_69:
-      return basic (this, hp:HP050, type:R, retreatCost:1) {
-				weakness W
-				move "Scratch", {
-					text "10 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Ember", {
-					text "30 damage. Discard 1 [R] Energy card attached to Charmander in order to use this attack."
-					energyCost R, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.CHARMANDER_46, this);
       case CUBONE_70:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
 				weakness G
@@ -1481,7 +945,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            reduceDamageNextTurn(hp(20), thisMove)
 					}
 				}
 				move "Rage", {
@@ -1489,64 +953,16 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost F
 					attackRequirement {}
 					onAttack {
-						damage 10
+						damage 10+10*self.numberOfDamageCounters
 					}
 				}
 			};
       case DIGLETT_71:
-      return basic (this, hp:HP030, type:F, retreatCost:0) {
-				weakness G
-				resistance L, MINUS30
-				move "Dig", {
-					text "10 damage. "
-					energyCost F
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Mud Slap", {
-					text "30 damage. "
-					energyCost F, F
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.DIGLETT_47, this);
       case DODUO_72:
-      return basic (this, hp:HP050, type:C, retreatCost:0) {
-				weakness L
-				resistance F, MINUS30
-				move "Fury Attack", {
-					text "10x damage. Flip 3 coins. This attack does 10 damage times the number of heads."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.DODUO_48, this);
       case DROWZEE_73:
-      return basic (this, hp:HP050, type:P, retreatCost:1) {
-				weakness P
-				move "Pound", {
-					text "10 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Confuse Ray", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
-					energyCost P, P
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.DROWZEE_49, this);
       case EXEGGCUTE_74:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
 				weakness R
@@ -1555,7 +971,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-
+            apply ASLEEP
 					}
 				}
 				move "Leech Seed", {
@@ -1564,30 +980,21 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 20
+            delayed {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each{
+                  if(it.to == opp.active && it.notNoEffect && it.dmg.value > 0) {
+                    heal 10, self
+                  }
+                }
+              }
+              unregisterAfter 1
+            }
 					}
 				}
 			};
       case GASTLY_75:
-      return basic (this, hp:HP040, type:P, retreatCost:0) {
-				weakness D
-				resistance F, MINUS30
-				move "Sleeping Gas", {
-					text "Flip a coin. If heads, the Defending Pokémon is now Asleep."
-					energyCost P
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Destiny Bond", {
-					text "Discard 1 [P] Energy card attached to Gastly in order to use this attack. If a Pokémon Knocks Out Gastly during your opponent's next turn, Knock Out that Pokémon."
-					energyCost P, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.GASTLY_50, this);
       case GOLDEEN_76:
       return basic (this, hp:HP040, type:W, retreatCost:0) {
 				weakness L
@@ -1609,7 +1016,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            apply ASLEEP
 					}
 				}
 				move "Pound", {
@@ -1622,37 +1029,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case MACHOP_78:
-      return basic (this, hp:HP050, type:F, retreatCost:1) {
-				weakness P
-				move "Low Kick", {
-					text "20 damage. "
-					energyCost F
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.MACHOP_52, this);
       case MAGNEMITE_79:
-      return basic (this, hp:HP040, type:L, retreatCost:1) {
-				weakness F
-				move "Thunder Wave", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost L
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Selfdestruct", {
-					text "40 damage. Does 10 damage to each Pokémon on each player's Bench. (Don't apply Weakness and Resistance for Benched Pokémon.) Magnemite does 40 damage to itself."
-					energyCost L, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+      return copy (PokemodBaseSet.MAGNEMITE_53, this);
       case MEOWTH_80:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
 				weakness F
@@ -1663,29 +1042,14 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip{
+              draw 1
+            }
 					}
 				}
 			};
       case METAPOD_81:
-      return evolution (this, from:"Caterpie", hp:HP070, type:G, retreatCost:2) {
-				weakness R
-				move "Stiffen", {
-					text "Flip a coin. If heads, prevent all damage done to Metapod during your opponent's next turn. (Any other effects of attacks still happen.)"
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Stun Spore", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost G, G
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.METAPOD_54, this);
       case NIDORAN_FEMALE_82:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
 				weakness P
@@ -1694,50 +1058,31 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						damage 10
+            flip 3,{
+              damage 10
+            }
 					}
 				}
 				move "Call for Family", {
 					text "Search your deck for a Basic Pokémon named Nidoran M or Nidoran F and put it onto your Bench. Shuffle your deck afterward. (You can't use this attack if your Bench is full.)"
 					energyCost G
-					attackRequirement {}
+					attackRequirement {
+            assert my.bench.notFull : "Your bench is full"
+            assert my.deck : "Your deck is empty"
+          }
 					onAttack {
-
+            my.deck.search("Choose Basic Pokémon named Nidoran M or Nidoran F",{(it.cardTypes.is(BASIC) && it.name.contains("Nidoran"))}).each{
+              my.deck.remove(it)
+              benchPCS(it)
+            }
+            shuffleDeck()
 					}
 				}
 			};
       case NIDORAN_MALE_83:
-      return basic (this, hp:HP040, type:G, retreatCost:1) {
-				weakness P
-				move "Horn Hazard", {
-					text "Flip a coin. If tails, this attack does nothing."
-					energyCost G
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.NIDORAN_MALE_55, this);
       case ONIX_84:
-      return basic (this, hp:HP090, type:F, retreatCost:3) {
-				weakness G
-				move "Rock Throw", {
-					text "10 damage. "
-					energyCost F
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Harden", {
-					text "During your opponent's next turn, whenever 30 or less damage is done to Onix (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.)"
-					energyCost F, F
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.ONIX_56, this);
       case PARAS_85:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
 				weakness R
@@ -1754,68 +1099,18 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-
+            apply ASLEEP
 					}
 				}
 			};
       case PIDGEY_86:
-      return basic (this, hp:HP040, type:C, retreatCost:1) {
-				weakness L
-				resistance F, MINUS30
-				move "Whirlwind", {
-					text "10 damage. If your opponent has any Benched Pokémon, he or she chooses 1 of them and switches it with the Defending Pokémon. (Do the damage before switching the Pokémon.)"
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.PIDGEY_57, this);
       case PIKACHU_87:
-      return basic (this, hp:HP040, type:L, retreatCost:1) {
-				weakness F
-				move "Gnaw", {
-					text "20 damage. "
-					energyCost L
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Thunder Jolt", {
-					text "30 damage. Flip a coin. If tails, Pikachu does 10 damage to itself."
-					energyCost L, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.PIKACHU_58, this);
       case POLIWAG_88:
-      return basic (this, hp:HP040, type:W, retreatCost:1) {
-				weakness G
-				move "Water Gun", {
-					text "10+ damage. Does 10 damage plus 10 more damage for each [W] Energy attached to Poliwag but not used to pay for this attack's Energy cost. Extra [W] Energy after the 2nd don't count."
-					energyCost W
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.POLIWAG_59, this);
       case RATTATA_89:
-      return basic (this, hp:HP040, type:C, retreatCost:0) {
-				weakness F
-				resistance P, MINUS30
-				move "Bite", {
-					text "20 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.RATTATA_61, this);
       case RHYHORN_90:
       return basic (this, hp:HP070, type:F, retreatCost:3) {
 				weakness G
@@ -1825,7 +1120,21 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-
+            flip{
+              delayed {
+                before CHECK_ATTACK_REQUIREMENTS, {
+                  if(self.active && ef.attacker.owner != self.owner) {
+                    wcu "Disgusting Pollen prevents attack"
+                    prevent()
+                  }
+                }
+                unregisterAfter 2
+                after SWITCH, defending, {unregister()}
+                after EVOLVE, defending, {unregister()}
+                after EVOLVE,self, {unregister()}
+                after SWITCH,self, {unregister()}
+              }
+            }
 					}
 				}
 				move "Horn Attack", {
@@ -1838,22 +1147,23 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case SANDSHREW_91:
-      return basic (this, hp:HP040, type:F, retreatCost:1) {
-				weakness G
-				resistance L, MINUS30
-				move "Sand-attack", {
-					text "10 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
-					energyCost F
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.SANDSHREW_62, this);
       case SPEAROW_92:
       return basic (this, hp:HP050, type:C, retreatCost:0) {
 				weakness L
 				resistance F, MINUS30
+        def turnCount=-1
+        HP lastDamage=null
+        customAbility {
+          delayed (priority: LAST) {
+            before APPLY_ATTACK_DAMAGES, {
+              if(bg().currentTurn==self.owner.opposite) {
+                turnCount=bg.turnCount
+                lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
+              }
+            }
+          }
+        }
 				move "Peck", {
 					text "10 damage. "
 					energyCost C
@@ -1865,85 +1175,22 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				move "Mirror Move", {
 					text "If Spearow was attacked last turn, do the final result of that attack on Spearow to the Defending Pokémon."
 					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-
-					}
+					attackRequirement {
+            assert lastDamage && turnCount+1==bg.turnCount
+          }
+          onAttack {
+            damage lastDamage.value
+          }
 				}
 			};
       case SQUIRTLE_93:
-      return basic (this, hp:HP040, type:W, retreatCost:1) {
-				weakness L
-				move "Bubble", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost W
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Withdraw", {
-					text "Flip a coin. If heads, prevent all damage done to Squirtle during your opponent's next turn. (Any other effects of attacks still happen.)"
-					energyCost W, C
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-			};
+      return copy (PokemodBaseSet.SQUIRTLE_63, this);
       case STARMIE_94:
-      return evolution (this, from:"Staryu", hp:HP060, type:W, retreatCost:1) {
-				weakness L
-				move "Recover", {
-					text "Discard 1 [W] Energy card attached to Starmie in order to use this attack. Remove all damage counters from Starmie."
-					energyCost W, W
-					attackRequirement {}
-					onAttack {
-
-					}
-				}
-				move "Star Freeze", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost W, C, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.STARMIE_64, this);
       case STARYU_95:
-      return basic (this, hp:HP040, type:W, retreatCost:1) {
-				weakness L
-				move "Slap", {
-					text "20 damage. "
-					energyCost W
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+      return copy (PokemodBaseSet.STARYU_65, this);
       case TANGELA_96:
-      return basic (this, hp:HP060, type:G, retreatCost:2) {
-				weakness R
-				resistance W, MINUS30
-				move "Bind", {
-					text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-					energyCost G, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Poisonpowder", {
-					text "30 damage. The Defending Pokémon is now Poisoned."
-					energyCost G, C, G
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+      return copy (PokemodBaseSet.TANGELA_66, this);
       case VENONAT_97:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
 				weakness R
@@ -1953,6 +1200,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            flip{
+              applyAfterDamage PARALYZED
+            }
 					}
 				}
 				move "Leech Life", {
@@ -1961,242 +1211,73 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 					attackRequirement {}
 					onAttack {
 						damage 10
+            removeDamageCounterEqualToDamageDone()
 					}
 				}
 			};
       case VOLTORB_98:
-      return basic (this, hp:HP050, type:L, retreatCost:1) {
-				weakness F
-				move "Tackle", {
-					text "10 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.VOLTORB_67, this);
       case VULPIX_99:
-      return basic (this, hp:HP040, type:R, retreatCost:1) {
-				weakness W
-				move "Confuse Ray", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
-					energyCost R
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.VULPIX_68, this);
       case WEEDLE_100:
-      return basic (this, hp:HP040, type:G, retreatCost:1) {
-				weakness R
-				move "Poison Sting", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
-					energyCost G
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.WEEDLE_69, this);
       case COMPUTER_SEARCH_101:
-      return basicTrainer (this) {
-				text "Discard 2 of the other cards from your hand in order to search your deck for any card and put it into your hand. Shuffle your deck afterward."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.COMPUTER_SEARCH_71, this);
       case IMPOSTER_PROFESSOR_OAK_102:
-      return basicTrainer (this) {
-				text "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.IMPOSTER_PROFESSOR_OAK_73, this);
       case ITEM_FINDER_103:
-      return basicTrainer (this) {
-				text "You may choose to Discard 1 card from your hand in order to search your discard pile for a Supporter card. Show it to your opponent and put it into your hand. Or" +
-					"you may choose to Discard 2 cards from your hand in order to search your discard pile for a Trainer card (excluding Supporter cards). Show it to your opponent and put it into your hand."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.ITEM_FINDER_74, this);
       case LASS_104:
-      return supporter (this) {
-				text "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.LASS_75, this);
       case POKEMON_BREEDER_105:
-      return basicTrainer (this) {
-				text "Put a Stage 2 Evolution card from your hand on the matching Basic Pokémon. You can only play this card when you would be allowed to evolve that Pokémon anyway."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.POKEMON_BREEDER_76, this);
       case POKEMON_TRADER_106:
-      return basicTrainer (this) {
-				text "Trade 1 of the Basic Pokémon or Evolution cards in your hand for 1 of the Basic Pokémon or Evolution cards from your deck. Show both cards to your opponent. Shuffle your deck afterward."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.POKEMON_TRADER_77, this);
       case SCOOP_UP_107:
-      return basicTrainer (this) {
-				text "Choose 1 of your own Pokémon in play and return its Basic Pokémon card to your hand. (Discard all cards attached to that card.)"
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.SCOOP_UP_78, this);
       case SUPER_ENERGY_REMOVAL_108:
-      return basicTrainer (this) {
-				text "Discard 1 Special Energy attached to 1 of your opponent's Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.SUPER_ENERGY_REMOVAL_79, this);
       case DEFENDER_109:
-      return basicTrainer (this) {
-				text "Attach Defender to 1 of your Pokémon (excluding [M] Pokémon). At the end of your opponent's next turn, discard Defender. Damage done to that Pokémon by attacks is reduced by 20 (after applying Weakness and Resistance)."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.DEFENDER_80, this);
       case ENERGY_RETRIEVAL_110:
-      return basicTrainer (this) {
-				text "Put 2 basic Energy cards from your discard pile into your hand."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.ENERGY_RETRIEVAL_81, this);
       case FULL_HEAL_111:
-      return basicTrainer (this) {
-				text "Your Active Pokémon is no longer Asleep, Confused, Paralyzed, or Poisoned."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.FULL_HEAL_82, this);
       case MAINTENANCE_112:
-      return basicTrainer (this) {
-				text "Shuffle 2 of the other cards from your hand into your deck in order to draw a card."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.MAINTENANCE_83, this);
       case PLUSPOWER_113:
-      return basicTrainer (this) {
-				text "Attach PlusPower to your Active Pokémon (excluding [D] Pokémon). At the end of your turn, discard PlusPower. If this Pokémon's attack does damage to the defending Pokémon (after applying Weakness and Resistance), the attack does 10 more damage to the Defending Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.PLUSPOWER_84, this);
       case POKEMON_CENTER_114:
-      return basicTrainer (this) {
-				text "Remove all damage counters from 1 of your own Pokémon, then discard all Energy cards attached to those Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.POKEMON_CENTER_85, this);
       case POKEDEX_115:
-      return basicTrainer (this) {
-				text "Look at up to 5 cards from the top of your deck and rearrange them as you like."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.POKEDEX_87, this);
       case PROFESSOR_OAK_116:
-      return supporter (this) {
-				text "Discard your hand, then draw 7 cards."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.PROFESSOR_OAK_88, this);
       case SUPER_POTION_117:
-      return basicTrainer (this) {
-				text "Discard 1 Energy card attached to 1 of your own Pokémon in order to remove up to 4 damage counters from that Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.SUPER_POTION_90, this);
       case BILL_118:
-      return basicTrainer (this) {
-				text "Draw 2 cards."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.BILL_91, this);
       case ENERGY_REMOVAL_119:
-      return basicTrainer (this) {
-				text "Discard 1 Energy card attached to your opponent's Active Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.ENERGY_REMOVAL_92, this);
       case GUST_OF_WIND_120:
-      return basicTrainer (this) {
-				text "Choose 1 of your opponent's Benched Pokémon and switch it with his or her Active Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.GUST_OF_WIND_93, this);
       case POKE_BALL_121:
       return basicTrainer (this) {
 				text "Flip a coin. If heads, you may search your deck for any Basic Pokémon or Evolution card. Show that card to your opponent, then put it into your hand. Shuffle your deck afterward."
 				onPlay {
+          my.deck.search(cardTypeFilter(POKEMON)).moveTo(my.hand)
+          shuffleDeck()
 				}
 				playRequirement{
+          assert my.deck : "Your deck is empty"
 				}
 			};
       case POTION_122:
-      return basicTrainer (this) {
-				text "Remove up to 2 damage counters from 1 of your Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.POTION_94, this);
       case SWITCH_123:
-      return basicTrainer (this) {
-				text "Switch 1 of your Benched Pokémon with your Active Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.SWITCH_95, this);
       case DOUBLE_COLORLESS_ENERGY_124:
-      return specialEnergy (this, [[C]]) {
-				text "Provides energy. Doesn't count as a basic energy card."
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
-			};
+      return copy (PokemodBaseSet.DOUBLE_COLORLESS_ENERGY_96, this);
       case FIGHTING_ENERGY_125:
       return basicEnergy (this, F);
       case FIRE_ENERGY_126:
