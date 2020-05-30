@@ -814,7 +814,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           text "30 damage. Flip a coin. If tails, this attack does nothing. Either way, you can't use this attack again as long as Farfetch'd stays in play (even putting Farfetch'd on the Bench won't let you use it again)."
           energyCost C
           attackRequirement {
-            assert bg.em().retrieveObject("Leek_Slap_"+self.hashCode()) != null : "You have already used Leek Slap"
+            assert bg.em().retrieveObject("Leek_Slap_"+self.hashCode()) != 1 : "You have already used Leek Slap"
           }
           onAttack {
             flip { damage 30 }
@@ -1798,9 +1798,11 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Look at up to 5 cards from the top of your deck and rearrange them as you like."
         onPlay {
-          // TODO:
+          def list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards in your deck")
+          my.deck.setSubList(0, list)
         }
         playRequirement{
+          assert my.deck : "Your deck is empty"
         }
       };
       case PROFESSOR_OAK_88:
