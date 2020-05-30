@@ -1132,7 +1132,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
             onAttack {
               //TODO: Convert this attack effect into a method, used in multiple gen 3/4 cards
-              my.deck.search(max : 1, "Select a basic Energy card.",cardTypeFilter(BASIC_ENERGY)).showToOpponent("Selected card.").moveTo(my.hand)
+              my.deck.search(max : 1, "Select a basic Energy card.", cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -1332,8 +1332,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              def tar = my.deck.search("Trainer Card (excluding Supporter cards)", {it.cardTypes.is(ITEM)})
-              tar.moveTo(my.hand)
+              my.deck.search("Search your deck for a Trainer card (excluding Supporter and Stadium cards)", {it.cardTypes.is(ITEM)}).moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -1346,16 +1345,27 @@ public enum DiamondPearl implements LogicCardInfo {
             text "During your opponent’s next turn, if Cascoon would be damaged by an attack, prevent that attack’s damage done to Cascoon if that damage is 30 or less."
             energyCost G
             attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            delayed{
+                before APPLY_ATTACK_DAMAGES, {
+                  bg.dm().each {
+                    if(it.to == self && it.dmg.value <= 30 && it.notNoEffect) {
+                      bc "Harden prevents that damage"
+                      it.dmg = hp(0)
+                    }
+                  }
+                }
+                unregisterAfter 2
+                after EVOLVE,self, {unregister()}
+                after SWITCH,self, {unregister()}
+              }
           }
           move "Gooey Thread", {
             text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              cantRetreat defending
             }
           }
 
@@ -1394,9 +1404,16 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Blowing Wind", {
             text "Flip a coin. If heads, put 1 of your Benched Pokémon and all cards attached to on top of your deck. Shuffle your deck afterward."
             energyCost P
-            attackRequirement {}
+            attackRequirement {
+              assert my.bench.notEmpty
+            }
             onAttack {
-              damage 0
+              flip {
+                def pcs = my.bench.select()
+                pcs.cards.moveTo(my.deck)
+                shuffleDeck()
+                removePCS(pcs)
+              }
             }
           }
           move "Ominous Wind", {
@@ -1404,7 +1421,11 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip {
+                apply CONFUSED
+                cantRetreat defending
+              }
             }
           }
 
@@ -1418,15 +1439,20 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 1,{
+                opp.all.each{ directDamage 20, it }
+              },{
+                directDamage 20, my.all.select("Select a Pokémon to put 2 damage counters on.")
+              }
             }
           }
           move "Gravity Wave", {
-            text "30 damage. Does 10 damage to each of your opponent’s Benched Pokémon that doesn’t have a Retreat Cost."
+            text "30 damage. Does 10 damage to each of your opponent’s Benched Pokémon that doesn’t have a Retreat Cost. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost P, P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              opp.bench.findAll{ it.retreatCost == 0 }.each{damage 10, it}
             }
           }
 
@@ -1449,11 +1475,14 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
           move "Outlet", {
-            text "Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-            energyCost L
-            attackRequirement {}
+            text "Search your deck for a [L] Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+            energyCost ()
+            attackRequirement {
+              assert my.deck
+            }
             onAttack {
-              damage 0
+              my.deck.search(max : 1, "Select a [L] Energy card.", basicEnergyFilter(L)).moveTo(my.hand)
+              shuffleDeck()
             }
           }
 
@@ -1464,18 +1493,21 @@ public enum DiamondPearl implements LogicCardInfo {
           resistance W, MINUS20
           move "Synthesis", {
             text "Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
-            energyCost G, G
-            attackRequirement {}
+            energyCost G
+            attackRequirement {
+              assert my.deck
+            }
             onAttack {
-              damage 0
+              attachEnergyFrom(basic:1, type:G, my.deck, my.all)
+              shuffleDeck()
             }
           }
           move "Cut", {
-            text "50 damage. "
+            text "50 damage."
             energyCost G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
             }
           }
 
@@ -1489,15 +1521,16 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              apply ASLEEP
             }
           }
           move "Dream Eater", {
-            text "60 damage. If the Defending Pokémon is now Asleep, this attack does nothing."
+            text "60 damage. If the Defending Pokémon is not Asleep, this attack does nothing."
             energyCost P, P
             attackRequirement {}
             onAttack {
-              damage 0
+              if (defending.isSPC(ASLEEP))
+                damage 60
             }
           }
 
