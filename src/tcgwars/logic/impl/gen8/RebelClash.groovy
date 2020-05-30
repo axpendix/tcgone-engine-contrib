@@ -389,7 +389,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP080, type:G, retreatCost:1) {
         weakness R
         move "Berry Picking", {
-          text "Shuffle 5 basic Energy cards from your discard pile into your deck."
+          text "Shuffle up to 5 basic Energy cards from your discard pile into your deck."
           energyCost C
           attackRequirement {
             assert my.discard.filterByType(BASIC_ENERGY) : "Your discard pile has no Basic Energy."
