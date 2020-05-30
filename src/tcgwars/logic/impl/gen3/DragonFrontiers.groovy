@@ -2272,10 +2272,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
             }
-            def tar = opp.all.select("Choose a pokemon to put a Shock-Wave marker on")
-            if(!Shock_Wave.contains(tar)){
-              Shock_Wave.add(tar)
-            }
+            def tar = opp.all.findAll{!Shock_Wave.contains(it)}.select("Choose a pokemon to put a Shock-Wave marker on")
+            Shock_Wave.add(tar)
+            bc"$tar received a Shock-Wave marker"
             bg.em().storeObject("Shock_Wave",Shock_Wave)
           }
         }
