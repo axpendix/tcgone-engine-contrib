@@ -776,7 +776,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Applin", hp:HP090, type:G, retreatCost:3) {
         weakness R
         bwAbility "Delicious Aroma", {
-          text "Once during your turn, you may flip a coin. If heads, choose 1 of your opponent’s Benched Basic Pokemon and switch it with their Active Pokemon."
+          text "Once during your turn, you may flip a coin. If heads, switch 1 of your opponent's Benched Basic Pokémon with their Active Pokémon."
           actionA {
             checkLastTurn()
             assert opp.bench.findAll { it.basic } : "Opponent's Bench has no Basic Pokémon."
