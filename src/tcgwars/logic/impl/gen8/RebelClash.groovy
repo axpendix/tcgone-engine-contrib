@@ -680,7 +680,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Max Beating", {
-          text "130+ damage. You may discard up to 3 [G] Energy from this Pokemon. This attack does 50 more damage for each Energy you discarded in this way."
+          text "130+ damage. You may discard up to 3 [G] Energy from this Pokemon. If you do, this attack does 50 more damage for each Energy you discarded in this way."
           energyCost G, G, G, C
           attackRequirement {}
           onAttack {
