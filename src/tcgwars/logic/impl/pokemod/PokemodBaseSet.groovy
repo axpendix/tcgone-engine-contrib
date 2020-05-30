@@ -813,9 +813,12 @@ public enum PokemodBaseSet implements LogicCardInfo {
         move "Leek Slap", {
           text "30 damage. Flip a coin. If tails, this attack does nothing. Either way, you can't use this attack again as long as Farfetch'd stays in play (even putting Farfetch'd on the Bench won't let you use it again)."
           energyCost C
+          attackRequirement {
+            assert bg.em().retrieveObject("Leek_Slap_"+self.hashCode()) != null : "You have already used Leek Slap"
+          }
           onAttack {
             flip { damage 30 }
-            // TODO
+            bg.em().storeObject("Leek_Slap_"+self.hashCode(), 1)
           }
         }
         move "Pot Smash", {
