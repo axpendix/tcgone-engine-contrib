@@ -1920,6 +1920,7 @@ public enum RebelClash implements LogicCardInfo {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put an Energy attached to your opponent’s Active Pokémon on top of their deck."
           onActivate {r->
             if (r==PLAY_FROM_HAND && opp.active.cards.energyCount(C) && confirm("Use Prankish?")) {
+              powerUsed()
               opp.active.cards.filterByType(ENERGY).select(count:1).moveTo(addToTop: true, opp.deck)
             }
           }
