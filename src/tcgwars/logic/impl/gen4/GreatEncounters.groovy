@@ -1029,13 +1029,15 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Threaten and Drop", {
-            text "30+ damage. Energy attached to it, this attack does 30 damage plus 20 more damage and discard a Special Energy card, if any, attached to the Defending Pokémon."
-            energyCost W, C, D
+            text "30+ damage. If Huntail has any [D] Energy attached to it, this attack does 30 damage plus 20 more damage and discard a Special Energy card, if any, attached to the Defending Pokémon."
+            energyCost W, C
             attackRequirement {}
             onAttack {
               damage 30
-              // TODO
-              discardDefendingSpecialEnergy(delegate)
+              if (self.cards.energyCount(D)){
+                damage 20
+                discardDefendingSpecialEnergy(delegate)
+              }
             }
           }
 
