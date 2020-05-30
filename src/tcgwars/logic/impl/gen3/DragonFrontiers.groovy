@@ -2272,7 +2272,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
             }
-            tar = opp.all.select("Choose a pokemon to put a Shock-Wave marker on")
+            def tar = opp.all.select("Choose a pokemon to put a Shock-Wave marker on")
             if(!Shock_Wave.contains(tar)){
               Shock_Wave.add(tar)
             }
@@ -2298,14 +2298,14 @@ public enum DragonFrontiers implements LogicCardInfo {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
             }
-            koList = []
+            def koList = []
             opp.all.each{
               if(Shock_Wave.contains(it)){
                 koList.add(it)
               }
             }
             if(!koList.isEmpty()){
-              ko = koList.select("Choose a Pokémon to knock out")
+              def ko = koList.select("Choose a Pokémon to knock out")
               new Knockout(ko).run(bg)
             }
           }
