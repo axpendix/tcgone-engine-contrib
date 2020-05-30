@@ -223,7 +223,7 @@ public enum DiamondPearl implements LogicCardInfo {
               damage 40
               afterDamage {
                 if(confirm ("You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent’s deck.")) {
-                  self.cards.filterByType(ENERGY).each({it.moveTo(my.hand)})
+                  self.cards.filterByType(ENERGY).moveTo(my.hand)
                   def top=defending.topPokemonCard
                   bc "$top Devolved"
                   moveCard(top, opp.hand)
@@ -239,16 +239,26 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness D, PLUS30
           resistance C, MINUS20
           pokePower "Dark Palm", {
-            text "Once during your turn , if your opponent has 4 or more Benched Pokémon, you may choose 1 of them and shuffle that Pokémon and all cards attached to it into his or her deck. This power can’t be used if Dusknoir if affected by a Special Condition."
+            text "Once during your turn (before your attack), if your opponent has 4 or more Benched Pokémon, you may choose 1 of them and shuffle that Pokémon and all cards attached to it into his or her deck. This power can’t be used if Dusknoir is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              assert opp.bench.size() >= 4 : "Opponent needs to have 4 or more Benched Pokémon"
+              def tar = opp.bench.select("Choose a Pokémon to return to your opponent's deck.")
+              tar.cards.moveTo(opp.deck)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
+              removePCS(tar)
             }
           }
           move "Hard Feelings", {
-            text "Put 5 damage counters on the Defending Pokémon. Then, count the number of Prize cards your opponents has taken and put that many damage counters on the Defending Pokémon."
+            text "Put 5 damage counters on the Defending Pokémon. Then, count the number of Prize cards your opponent has taken and put that many damage counters on the Defending Pokémon."
             energyCost P, P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              directDamage 50, opp.active
+              def takenPrizes = opp.prizeCardSet.takenCount
+              if (takenPrizes)
+                directDamage 10 * takenPrizes, opp.active
             }
           }
 
@@ -258,16 +268,23 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness F, PLUS20
           resistance M, MINUS20
           pokePower "Intense Voltage", {
-            text "As often as you like during your turn (before your attack, if Elekid is anywhere under Electivire, you may move a Energy attached to your Pokémon to Electivire. This power can’t be used if Electivire is affected by a Special Condition."
+            text "As often as you like during your turn (before your attack), if Elekid is anywhere under Electivire, you may move a [L] Energy attached to your Pokémon to Electivire. This power can’t be used if Electivire is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              //TODO: How to check for Elekid specifically? Can't reuse gen 3's "Stages of Evolution" implementation, since that's used on Electabuzz as a basic.
             }
           }
           move "Giga Impact", {
-            text "60 damage. Energy attached to Electivire. If you do. This attack’s base damage is 120 instead of 60."
-            energyCost L, L, L, C, L
+            text "60 damage. You may discard all [L] Energy attached to Electivire. If you do, this attack’s base damage is 120 instead of 60."
+            energyCost L, L, L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              if(confirm("You may discard all [L] Energy attached to Electivire. If you do, this attack’s base damage is 120 instead of 60.")){
+                discardAllSelfEnergy(L)
+                damage 120
+              } else {
+                damage 60
+              }
             }
           }
 
@@ -276,19 +293,20 @@ public enum DiamondPearl implements LogicCardInfo {
         return evolution (this, from:"Prinplup", hp:HP130, type:WATER, retreatCost:2) {
           weakness L, PLUS30
           move "Ice Blade", {
-            text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
+            text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40, opp.all.select()
             }
           }
           move "Aqua Jet", {
-            text "70 damage. Flip a coin. If heads, this attack does 20 damage to 1 of your opponent’s Benched Pokémon."
+            text "70 damage. Flip a coin. If heads, this attack does 20 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W, W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              if (opp.bench) flip{damage 20, opp.bench.select()}
             }
           }
 
@@ -301,15 +319,18 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flipUntilTails {damage 30}
             }
           }
           move "Flare Blitz", {
-            text "90 damage. Energy attached to Infernape."
-            energyCost R, R, R
+            text "90 damage. Discard all [R] Energy attached to Infernape."
+            energyCost R, R
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 90
+              afterDamage{
+                discardAllSelfEnergy(R)
+              }
             }
           }
 
@@ -322,16 +343,18 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 30
               dontApplyResistance()
+              damage 30
             }
           }
           move "Aura Sphere", {
-            text "40 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
+            text "40 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F, F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if (opp.bench)
+                damage 20, opp.bench.select()
             }
           }
 
@@ -341,35 +364,54 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness F, PLUS30
           resistance M, MINUS20
           pokePower "Gleam Eyes", {
-            text "Once during your turn, when you play Luxray from your hand to evolve 1 of your Pokémon, you may look at your opponent’s hand. If your opponent’s Bench isn’t full, choose 1 Basic Pokémon from your opponent’s hand, and put it onto his or her Bench. Then, swithc it with the Defending Pokémon."
-            actionA {
+            text "Once during your turn, when you play Luxray from your hand to evolve 1 of your Pokémon, you may look at your opponent’s hand. If your opponent’s Bench isn’t full, choose 1 Basic Pokémon from your opponent’s hand, and put it onto his or her Bench. Then, switch it with the Defending Pokémon."
+            onActivate {reason ->
+              if(reason==PLAY_FROM_HAND && opp.hand && opp.bench.notFull && confirm('Use Gleam Eyes?')){
+                powerUsed()
+                opp.hand.showToMe("Opponent's hand")
+                def list = opp.hand.filterByType(BASIC)
+                if(list){
+                  def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
+                  opp.hand.remove(card)
+                  def pcs = benchPCS(card, OTHER, TargetPlayer.OPPONENT)
+                  sw opp.active, pcs, SRC_ABILITY
+                }
+              }
             }
           }
           move "Lightning Star", {
-            text "80 damage. Energy attached to Luxray to 1 of your Benched Pokémon. (Ignore this effect if you don’t have any Benched Pokémon.)"
-            energyCost L, L, L, L, L
+            text "80 damage. Move all [L] Energy attached to Luxray to 1 of your Benched Pokémon. (Ignore this effect if you don’t have any Benched Pokémon.)"
+            energyCost L, L, L, L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              if (my.bench.notEmpty) {
+                def pcs = my.bench.select()
+                self.cards.filterByEnergyType(L).each{energySwitch(self,pcs,it)}
+              }
             }
           }
 
         };
       case MAGNEZONE_8:
-        return evolution (this, from:"Magnetone", hp:HP120, type:METAL, retreatCost:4) {
+        return evolution (this, from:"Magneton", hp:HP120, type:METAL, retreatCost:4) {
           weakness R, PLUS30
           resistance P, MINUS20
           pokeBody "Magnetize", {
-            text "If you have any Energy attached to your Active Pokémon, the Retreat Cost for that Pokémon is 0."
-            delayedA {
+            text "If you have any [M] Energy attached to your Active Pokémon, the Retreat Cost for that Pokémon is 0."
+            getterA (GET_RETREAT_COST,BEFORE_LAST) {h->
+              def rec = h.effect.target
+              if(rec.owner == self.owner && rec.active && rec.cards.energyCount(M)) {
+                h.object = 0
+              }
             }
           }
-          move "", {
-            text "Metal damage. Energy attached to Magnezone."
-            energyCost M, C, C, M
+          move "Metal Blast", {
+            text "50+ damage. Does 50 damage plus 10 more damage for each [M] Energy attached to Magnezone."
+            energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50+10*self.cards.energyCount(M)
             }
           }
 
