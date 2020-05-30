@@ -424,7 +424,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             text "For each Energy attached to your opponent's Pokémon, attach a [R] Energy card from your discard pile to your Pokémon in any way you like."
             onAttack {
               opp.all.each{
-                it.active.cards.filterByType(ENERGY).each{
+                it.cards.filterByType(ENERGY).each{
                   attachEnergyFrom(type:R,my.discard,my.all)
                 }
               }
