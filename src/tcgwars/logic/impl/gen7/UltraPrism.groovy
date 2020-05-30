@@ -1806,8 +1806,7 @@ public enum UltraPrism implements LogicCardInfo {
             text "You can use this attack only if you go second, and only on your first turn. Discard an Energy from 1 of your opponent’s Pokémon."
             energyCost C
             attackRequirement {
-              //TODO : is second turn 1 or 2?
-              assert bg.turnCount==2
+              assert bg.turnCount == 2 : "You can use this attack only on your first turn"
             }
             onAttack {
               def tar = opp.all.findAll {it.cards.energyCount(C)}
