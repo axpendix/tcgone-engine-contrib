@@ -486,7 +486,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Lombre", hp:HP160, type:G, retreatCost:2) {
         weakness R
         move "Spirited Rushdown", {
-          text "60x damage. This attack does 60 damage for each Prize card you’ve taken."
+          text "60x damage. This attack does 60 damage for each Prize card you have taken."
           energyCost C, C
           attackRequirement {}
           onAttack {
