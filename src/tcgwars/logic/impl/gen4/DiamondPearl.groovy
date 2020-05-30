@@ -1006,11 +1006,8 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              //TODO: This could definitely be generalized into a method, there's a couple dozens of cards with this optional effect across the DPPt era.
               afterDamage {
-                if (my.bench && confirm("Switch $self with 1 of your Benched Pokémon?")) {
-                  sw self, my.bench.select("New active")
-                }
+                switchYourActive(may: true)
               }
             }
           }
@@ -1098,10 +1095,18 @@ public enum DiamondPearl implements LogicCardInfo {
           move "See Beyond", {
             text "Choose a card from your hand and put it as a Prize card face up. Then, choose 1 of your face-down Prize cards without looking and put it into your hand. This attack does nothing if all of your Prize cards are face up."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert !my.prizeCardSet.allVisible : "All prizes are face up"
+            }
             onAttack {
-              damage 0
-              //TODO
+              def newPrize = my.hand.select(hidden: false, "Card to put into Prizes").first()
+
+              def tar = my.prizeCardSet.faceDownCards.select(hidden: true, "Choose a Prize card to replace with one in your hand.").first()
+              my.hand.add(tar)
+
+              def indexOfOldPrize = my.prizeCardSet.indexOf(tar)
+              my.prizeCardSet.set(indexOfOldPrize, newPrize)
+              my.hand.remove(newPrize)
             }
           }
           move "Extrasensory", {
