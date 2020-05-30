@@ -735,7 +735,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
         move "Withdraw", {
-          text "Flip a coin. If heads, prevent all damage from attacks done to this Pokemon during your opponent’s next turn."
+          text "Flip a coin. If heads, during your opponent's next turn, prevent all damage done to this Pokémon by attacks."
           energyCost C
           attackRequirement {}
           onAttack {
