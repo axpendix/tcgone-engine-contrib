@@ -429,7 +429,12 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost W, W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              afterDamage{
+                if (my.bench) {
+                  sw self, my.bench.select("Select the new active")
+                }
+              }
             }
           }
 
@@ -443,7 +448,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              directDamage 10 * my.all.findAll{it.numberOfDamageCounters}.size(), defending
             }
           }
           move "Psywave", {
@@ -451,7 +456,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost P, P, C
             attackRequirement {}
             onAttack {
-              damage 30+20*defending.cards.energyCount(C)
+              damage 30 + 20 * defending.cards.energyCount(C)
             }
           }
 
@@ -464,7 +469,14 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              afterDamage{
+                my.deck.search(cardTypeFilter(STADIUM)).moveTo(hand)
+                shuffleDeck()
+                if(bg.stadiumInfoStruct) {
+                  discard bg.stadiumInfoStruct.stadiumCard
+                }
+              }
             }
           }
           move "Transback", {
@@ -472,7 +484,17 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost W, W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              afterDamage {
+                if(confirm ("You may flip a coin. If heads, discard all Energy attached to Palkia and put the Defending Pokémon and all cards attached to it on top of your opponent’s deck. Your opponent shuffles his or her deck afterward.")) {
+                  flip {
+                    discardAllSelfEnergy()
+                    defending.cards.moveTo(opp.deck)
+                    removePCS(defending)
+                    shuffleDeck(null, TargetPlayer.OPPONENT)
+                  }
+                }
+              }
             }
           }
 
@@ -483,7 +505,11 @@ public enum DiamondPearl implements LogicCardInfo {
           resistance L, MINUS20
           pokePower "Earth Fissure", {
             text "Once during your turn, when you play Rhyperior from your hand to evolve 1 of your Pokémon, you may discard the top 3 cards from your opponent’s deck."
-            actionA {
+            onActivate {reason->
+              if(reason==PLAY_FROM_HAND && opp.deck && confirm("Use Earth Fissure?")){
+                powerUsed()
+                opp.deck.subList(0, 3).discard()
+              }
             }
           }
           move "Rock Wrecker", {
@@ -491,7 +517,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F, F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              noWrDamage(80, defending)
+              cantAttackNextTurn self
             }
           }
 
@@ -504,7 +531,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G, G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              apply POISONED
             }
           }
           move "Spike Whip", {
@@ -512,7 +540,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G, G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              //TODO: Find out how to check for Budew specifically (See Electivire).
             }
           }
 
@@ -522,8 +551,22 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness F, PLUS30
           resistance P, MINUS20
           pokePower "Darkness Fan", {
-            text "Once during your turn , if Shiftry is your Active Pokémon, you may flip a coin. If heads, choose 1 Evolved Pokémon on your opponent’s Bench, remove the highest Stage Evolution card from that Pokémon, and put it back into his or her hand. This power can’t be used if Shiftry is affected by a Special Condition."
+            text "Once during your turn (before your attack), if Shiftry is your Active Pokémon, you may flip a coin. If heads, choose 1 Evolved Pokémon on your opponent’s Bench, remove the highest Stage Evolution card from that Pokémon, and put it back into his or her hand. This power can’t be used if Shiftry is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              assert self.active : "$self is not your active Pokémon."
+              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              def list = opp.bench.findAll { it.evolution }
+              assert list : "Your opponent has no evolved Pokémon."
+              powerUsed()
+              flip {
+                def pcs = list.select("Devolve one of your opponent's evolved Benched Pokémon.")
+                assert pcs
+                def top=pcs.topPokemonCard
+                bc "$top devolved."
+                moveCard(top, opp.hand)
+                devolve(pcs, top)
+              }
             }
           }
           move "Spirit Dance", {
@@ -531,7 +574,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost D, D, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip 2,{damage 20}
             }
           }
 
