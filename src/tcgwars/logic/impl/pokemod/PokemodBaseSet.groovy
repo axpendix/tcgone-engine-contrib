@@ -810,15 +810,16 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basic (this, hp:HP060, type:C, retreatCost:0) {
         weakness L
         resistance F, MINUS30
+        def Leek_Slap = 0
         move "Leek Slap", {
           text "30 damage. Flip a coin. If tails, this attack does nothing. Either way, you can't use this attack again as long as Farfetch'd stays in play (even putting Farfetch'd on the Bench won't let you use it again)."
           energyCost C
           attackRequirement {
-            assert bg.em().retrieveObject("Leek_Slap_"+self.hashCode()) != 1 : "You have already used Leek Slap"
+            assert Leek_Slap != 1 : "You have already used Leek Slap"
           }
           onAttack {
             flip { damage 30 }
-            bg.em().storeObject("Leek_Slap_"+self.hashCode(), 1)
+            Leek_Slap = 1
           }
         }
         move "Pot Smash", {
@@ -1698,7 +1699,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Choose 1 of your own Pokémon in play and return its Basic Pokémon card to your hand. (Discard all cards attached to that card.)"
         onPlay {
-          def pcs = my.all.select().first()
+          def pcs = my.all.select()
           targeted(pcs, Source.TRAINER_CARD) {
             def tar = pcs.cards.get(0) //This will always get the first card of a pcs right? It should either be "The" basic pokemon or the evolution that got cheated into play?
             tar.moveTo(my.hand)
