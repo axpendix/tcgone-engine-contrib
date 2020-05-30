@@ -596,7 +596,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
         move "Dark Guidance", {
-          text "Choose a Basic Pokemon from your discard pile and play it onto your Bench."
+          text "Put a Basic Pokémon from your discard pile onto your Bench."
           energyCost C
           attackRequirement {
             assert bench.notFull : "Your Bench is full."
