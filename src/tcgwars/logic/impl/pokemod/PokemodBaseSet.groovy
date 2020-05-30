@@ -1698,9 +1698,13 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Choose 1 of your own Pokémon in play and return its Basic Pokémon card to your hand. (Discard all cards attached to that card.)"
         onPlay {
-          // TODO:
-        }
-        playRequirement{
+          def pcs = my.all.select().first()
+          targeted(pcs, Source.TRAINER_CARD) {
+            def tar = pcs.cards.get(0) //This will always get the first card of a pcs right? It should either be "The" basic pokemon or the evolution that got cheated into play?
+            tar.moveTo(my.hand)
+            pcs.cards.discard()
+            removePCS pcs
+          }
         }
       };
       case SUPER_ENERGY_REMOVAL_79:
