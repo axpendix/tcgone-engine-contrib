@@ -520,7 +520,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Surskit", hp:HP090, type:G, retreatCost:1) {
         weakness R
         move "Threatening Pattern", {
-          text "30 damage. Your opponent can’t attach Energy from their hand to the Defending Pokemon during their next turn."
+          text "30 damage. During your opponent’s next turn, Energy can’t be attached from your opponent's hand to the Defending Pokémon."
           energyCost C
           attackRequirement {}
           onAttack {
