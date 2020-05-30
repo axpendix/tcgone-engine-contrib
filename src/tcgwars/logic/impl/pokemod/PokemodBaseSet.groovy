@@ -1945,18 +1945,26 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Flip 2 coins. For each heads, search your deck for a basic Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
         onPlay {
-          // TODO:
+          flip 2, {
+            my.deck.search ("Search your deck for a Basic Pokémon and put it in your hand.", cardTypeFilter(BASIC)).moveTo(my.hand)
+          }
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck : "Your deck is empty"
         }
       };
       case ENERGY_SWITCH_104:
       return basicTrainer (this) {
         text "Move a basic Energy card from 1 of your Pokémon to another of your Pokémon"
         onPlay {
-          // TODO:
+          def src = assert my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}.select("Move Energy from which pokemon?")
+          def tar = my.all.findAll {it != src}.select("Move Energy to which Pokémon?")
+          pcs.cards.filterByType(BASIC_ENERGY).select("Select a Basic Energy card to move to the target.").each{energySwitch(src,tar,it)}
         }
         playRequirement{
+          assert my.all.findAll{it.cards.filterByType(BASIC_ENERGY)} : "You have no basic Energy attached to your pokemon"
+          assert my.all.size() >= 2 : "You only have one Pokémon in play."
         }
       };
       case SUPER_ENERGY_RETRIEVAL_105:
