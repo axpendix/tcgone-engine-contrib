@@ -840,7 +840,7 @@ public enum RebelClash implements LogicCardInfo {
         }
         move "Flickering Flames", {
           text "90 damage. Your opponent’s Active Pokemon is now Asleep."
-          energyCost R
+          energyCost R, C, C
           attackRequirement {}
           onAttack {
             damage 90
