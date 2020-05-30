@@ -312,8 +312,19 @@ public enum SwordShieldPromos implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Teapot of Surprises", {
           text "If this Pokémon is in the Active Spot and is damaged by an opponent's attack (even if it is Knocked Out), choose a random card from your opponent's hand. Your opponent reveals that card and puts it on the bottom of their deck."
-          actionA {
-            // TODO
+          delayedA (priority: LAST) {
+            before APPLY_ATTACK_DAMAGES, {
+              PokemonCardSet pcs = ef.attacker
+              if (pcs.owner != self.owner) {
+                bg.dm().each{
+                  if (it.to == self && self.active && it.dmg.value) {
+                    if (opp.hand.size() > 0) {
+                      opp.hand.select(hidden: true, count:1).showToMe("Chosen card").showToOpponent("Teapot of Surprises: this card will be put on the bottom of your deck").moveTo(opp.deck)
+                    }
+                  }
+                }
+              }
+            }
           }
         }
         move "Mind Bend", {
