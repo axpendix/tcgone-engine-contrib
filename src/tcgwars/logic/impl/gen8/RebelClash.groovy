@@ -471,10 +471,10 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         bwAbility "Top Entry", {
-          text "If you draw this card from your deck at the beginning of your turn and there is room on your Bench, instead of putting it into your hand, you may play it directly onto your Bench."
+          text "Once during your turn, if you drew this Pokémon from your deck at the beginning of your turn and your Bench isn't full, before you put it into your hand, you may put it onto your Bench."
         }
         move "Fury Swipes", {
-          text "40x damage. Flip 3 coins. This attack does 40 damage times the number of heads."
+          text "40x damage. Flip 3 coins. This attack does 40 damage for each heads."
           energyCost G, C, C
           attackRequirement {}
           onAttack {
