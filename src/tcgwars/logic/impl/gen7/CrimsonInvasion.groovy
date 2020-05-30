@@ -423,10 +423,10 @@ public enum CrimsonInvasion implements LogicCardInfo {
           move "Dance of Flames", {
             text "For each Energy attached to your opponent's Pokémon, attach a [R] Energy card from your discard pile to your Pokémon in any way you like."
             onAttack {
-              //TODO : more efecient way?
-              opp.active.cards.filterByType(ENERGY).each{
-                attachEnergyFrom(type:R,my.discard,my.all)
-              }
+              opp.all.each{
+                it.active.cards.filterByType(ENERGY).each{
+                  attachEnergyFrom(type:R,my.discard,my.all)
+                }
             }
           }
           move "Burning Bonemerang", {
@@ -570,7 +570,6 @@ public enum CrimsonInvasion implements LogicCardInfo {
             onAttack {
               gxPerform()
               opp.all.each{
-                //TODO : check if the pokemon has energy attached?
                 if(it.cards.filterByType(ENERGY))
                   it.cards.filterByType(ENERGY).select("Discard").discard()
               }

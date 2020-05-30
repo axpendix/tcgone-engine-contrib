@@ -1093,7 +1093,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               assert my.deck : "There is no more cards in your deck"
             }
             onAttack{
-              my.deck.search(count:1,"Choose an Item card",cardTypeFilter(ITEM)).showToOpponent("The choosen Item card.").moveTo(my.hand)
+              my.deck.search(count:1,"Choose an Item card",cardTypeFilter(ITEM)).showToOpponent("The chosen Item card.").moveTo(my.hand)
             }
           }
           move "X-Scissor" , {
@@ -2979,7 +2979,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               afterDamage {
                 def number = Math.min(2, opp.hand.size())
                 if (number > 0) {
-                  opp.hand.select(hidden: true, count:number).showToMe("Choosen cards").moveTo(opp.deck)
+                  opp.hand.select(hidden: true, count:number).showToMe("Chosen cards").moveTo(opp.deck)
                   shuffleDeck(null, TargetPlayer.OPPONENT)
                 }
               }
