@@ -12,8 +12,6 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.impl.gen6.Xy;
-
 import java.util.*;
 import org.apache.commons.lang.WordUtils;
 import tcgwars.entity.*;
@@ -1912,7 +1910,10 @@ public enum PokemodBaseSet implements LogicCardInfo {
         };
       };
       case DOUBLE_COLORLESS_ENERGY_96:
-      return copy(Xy.DOUBLE_COLORLESS_ENERGY_130, this)
+      return specialEnergy (this, [[C],[C]]) {
+        text "Double Colorless Energy provides [C][C] Energy."
+        onPlay {}
+      };
       case FIGHTING_ENERGY:
       return basicEnergy (this, F);
       case FIRE_ENERGY_98:
