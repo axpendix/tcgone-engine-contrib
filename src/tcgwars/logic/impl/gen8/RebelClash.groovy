@@ -722,7 +722,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
         move "Continuous Tumble", {
-          text "10+ damage. Flip a coin until you get tails. This attack does 30 more damage times the number of heads."
+          text "10+ damage. Flip a coin until you get tails. This attack does 30 more damage for each heads."
           energyCost G, C
           attackRequirement {}
           onAttack {
