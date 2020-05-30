@@ -629,7 +629,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Shadow Cage", {
-          text "120 damage. The Defending Pokemon can’t retreat during your opponent’s next turn."
+          text "120 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
           energyCost G, G, C
           attackRequirement {}
           onAttack {
