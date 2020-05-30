@@ -2293,21 +2293,18 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Shock-wave", {
           text "Choose 1 of your opponent's Pokémon that has any Shock-wave markers on it. That Pokémon is Knocked Out."
           energyCost L, L, C
-          attackRequirement {}
+          attackRequirement {
+            if(bg.em().retrieveObject("Shock_Wave") != null){
+              Shock_Wave = bg.em().retrieveObject("Shock_Wave")
+            }
+            assert opp.all.findAll{Shock_Wave.contains(it)} : "None of your opponent's Pokémon have Shock-Wave markers on them"
+            }
           onAttack {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
             }
-            def koList = []
-            opp.all.each{
-              if(Shock_Wave.contains(it)){
-                koList.add(it)
-              }
-            }
-            if(!koList.isEmpty()){
-              def ko = koList.select("Choose a Pokémon to knock out")
-              new Knockout(ko).run(bg)
-            }
+            def ko = opp.all.findAll{Shock_Wave.contains(it)}.select("Choose a Pokémon to knock out")
+            new Knockout(ko).run(bg)
           }
         }
       };
