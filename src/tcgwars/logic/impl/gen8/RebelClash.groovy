@@ -346,7 +346,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Metapod", hp:HP140, type:G, retreatCost:1) {
         weakness R
         move "Panic Poison", {
-          text "30 damage. Your opponent’s Active Pokemon is now Poisoned, Burned, and Confused."
+          text "30 damage. Your opponent’s Active Pokemon is now Burned, Confused, and Poisoned."
           energyCost G
           attackRequirement {}
           onAttack {
@@ -369,7 +369,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP080, type:G, retreatCost:1) {
         weakness R
         move "Swords Dance", {
-          text "During your next turn, the base damage of this Pokemon’s Blinding Scythe is increased by 70."
+          text "During your next turn, this Pokemon’s Blinding Scythe attack does 70 more damage (before applying Weakness and Resistance)."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -389,7 +389,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP080, type:G, retreatCost:1) {
         weakness R
         move "Berry Picking", {
-          text "Shuffle 5 basic Energy cards from your discard pile into your deck."
+          text "Shuffle up to 5 basic Energy cards from your discard pile into your deck."
           energyCost C
           attackRequirement {
             assert my.discard.filterByType(BASIC_ENERGY) : "Your discard pile has no Basic Energy."
@@ -471,10 +471,10 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         bwAbility "Top Entry", {
-          text "If you draw this card from your deck at the beginning of your turn and there is room on your Bench, instead of putting it into your hand, you may play it directly onto your Bench."
+          text "Once during your turn, if you drew this Pokémon from your deck at the beginning of your turn and your Bench isn't full, before you put it into your hand, you may put it onto your Bench."
         }
         move "Fury Swipes", {
-          text "40x damage. Flip 3 coins. This attack does 40 damage times the number of heads."
+          text "40x damage. Flip 3 coins. This attack does 40 damage for each heads."
           energyCost G, C, C
           attackRequirement {}
           onAttack {
@@ -486,7 +486,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Lombre", hp:HP160, type:G, retreatCost:2) {
         weakness R
         move "Spirited Rushdown", {
-          text "60x damage. This attack does 60 damage for each Prize card you’ve taken."
+          text "60x damage. This attack does 60 damage for each Prize card you have taken."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -507,7 +507,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
         move "Agility", {
-          text "10 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokemon during your opponent’s next turn."
+          text "10 damage. Flip a coin. If heads, during your opponent's next turn, prevent all effects of attacks, including damage, done to this Pokémon."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -520,7 +520,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Surskit", hp:HP090, type:G, retreatCost:1) {
         weakness R
         move "Threatening Pattern", {
-          text "30 damage. Your opponent can’t attach Energy from their hand to the Defending Pokemon during their next turn."
+          text "30 damage. During your opponent’s next turn, Energy can’t be attached from your opponent's hand to the Defending Pokémon."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -596,7 +596,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
         move "Dark Guidance", {
-          text "Choose a Basic Pokemon from your discard pile and play it onto your Bench."
+          text "Put a Basic Pokémon from your discard pile onto your Bench."
           energyCost C
           attackRequirement {
             assert bench.notFull : "Your Bench is full."
@@ -629,7 +629,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Shadow Cage", {
-          text "120 damage. The Defending Pokemon can’t retreat during your opponent’s next turn."
+          text "120 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
           energyCost G, G, C
           attackRequirement {}
           onAttack {
@@ -680,7 +680,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Max Beating", {
-          text "130+ damage. You may discard up to 3 [G] Energy from this Pokemon. This attack does 50 more damage for each Energy you discarded in this way."
+          text "130+ damage. You may discard up to 3 [G] Energy from this Pokemon. If you do, this attack does 50 more damage for each Energy you discarded in this way."
           energyCost G, G, G, C
           attackRequirement {}
           onAttack {
@@ -693,10 +693,10 @@ public enum RebelClash implements LogicCardInfo {
       case ELDEGOSS_V_19:
       return basic (this, hp:HP180, type:G, retreatCost:1) {
         weakness R
-        bwAbility "Happy March", {
-          text "Once during your turn, when you play this card from your hand to your Bench, you may put a Supporter card from your discard pile into your hand."
+        bwAbility "Happy Match", {
+          text "When you play this Pokémon from your hand onto your Bench during your turn, you may put a Supporter card from your discard pile into your hand."
           onActivate {
-            if (it==PLAY_FROM_HAND && my.discard.filterByType(SUPPORTER) && confirm("Use Happy March?")) {
+            if (it==PLAY_FROM_HAND && my.discard.filterByType(SUPPORTER) && confirm("Use Happy Match?")) {
               powerUsed()
               my.discard.filterByType(SUPPORTER).select().moveTo(my.hand)
             }
@@ -722,7 +722,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
         move "Continuous Tumble", {
-          text "10+ damage. Flip a coin until you get tails. This attack does 30 more damage times the number of heads."
+          text "10+ damage. Flip a coin until you get tails. This attack does 30 more damage for each heads."
           energyCost G, C
           attackRequirement {}
           onAttack {
@@ -735,7 +735,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
         move "Withdraw", {
-          text "Flip a coin. If heads, prevent all damage from attacks done to this Pokemon during your opponent’s next turn."
+          text "Flip a coin. If heads, during your opponent's next turn, prevent all damage done to this Pokémon by attacks."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -747,15 +747,19 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Applin", hp:HP080, type:G, retreatCost:1) {
         weakness R
         bwAbility "Apple Drop", {
-          text "Once during your turn, you may put 2 damage counters on 1 of your opponent’s Pokemon. Then, shuffle this Pokemon and all cards attached to it into your deck."
+          text "Once during your turn, you may put 2 damage counters on 1 of your opponent’s Pokemon. If you placed any damage counters in this way, shuffle this Pokemon and all attached cards into your deck."
           actionA {
             if(confirm("Use Apple Drop?")){
               checkLastTurn()
               powerUsed()
-              directDamage 20, opp.all.select(), SRC_ABILITY
-              self.cards.moveTo(my.deck)
-              removePCS(self)
-              shuffleDeck()
+              def pcs = opp.all.select()
+              def oldDmgCounters = pcs.numberOfDamageCounters
+              directDamage 20, pcs, SRC_ABILITY
+              if (oldDmgCounters != pcs.numberOfDamageCounters) {
+                self.cards.moveTo(my.deck)
+                removePCS(self)
+                shuffleDeck()
+              }
             }
           }
         }
@@ -776,7 +780,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Applin", hp:HP090, type:G, retreatCost:3) {
         weakness R
         bwAbility "Delicious Aroma", {
-          text "Once during your turn, you may flip a coin. If heads, choose 1 of your opponent’s Benched Basic Pokemon and switch it with their Active Pokemon."
+          text "Once during your turn, you may flip a coin. If heads, switch 1 of your opponent's Benched Basic Pokémon with their Active Pokémon."
           actionA {
             checkLastTurn()
             assert opp.bench.findAll { it.basic } : "Opponent's Bench has no Basic Pokémon."
