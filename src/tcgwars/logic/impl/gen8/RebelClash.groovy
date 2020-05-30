@@ -369,7 +369,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP080, type:G, retreatCost:1) {
         weakness R
         move "Swords Dance", {
-          text "During your next turn, the base damage of this Pokemon’s Blinding Scythe is increased by 70."
+          text "During your next turn, this Pokemon’s Blinding Scythe attack does 70 more damage (before applying Weakness and Resistance)."
           energyCost C
           attackRequirement {}
           onAttack {
