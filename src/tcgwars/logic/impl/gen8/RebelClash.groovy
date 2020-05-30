@@ -752,10 +752,14 @@ public enum RebelClash implements LogicCardInfo {
             if(confirm("Use Apple Drop?")){
               checkLastTurn()
               powerUsed()
-              directDamage 20, opp.all.select(), SRC_ABILITY
-              self.cards.moveTo(my.deck)
-              removePCS(self)
-              shuffleDeck()
+              def pcs = opp.all.select()
+              def oldDmgCounters = pcs.numberOfDamageCounters
+              directDamage 20, pcs, SRC_ABILITY
+              if (oldDmgCounters != pcs.numberOfDamageCounters) {
+                self.cards.moveTo(my.deck)
+                removePCS(self)
+                shuffleDeck()
+              }
             }
           }
         }
