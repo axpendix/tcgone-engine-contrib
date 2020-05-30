@@ -1498,7 +1498,7 @@ public enum RebelClash implements LogicCardInfo {
           delayedA {
             before ATTACH_ENERGY, {
               if (ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W) && bg.currentTurn == self.owner && ef.resolvedTarget == self) {
-                wcu "Cold Absorption"
+                powerUsed()
                 heal 30, ef.resolvedTarget
               }
             }
@@ -1506,7 +1506,7 @@ public enum RebelClash implements LogicCardInfo {
         }
         move "Blizzard", {
           text "120 damage. This attack also does 10 damage to each of your opponent's Benched Pokemon. (Don't apply Weakness and Resistance for Benched Pokemon.)"
-          energyCost W, W
+          energyCost W, W, C
           attackRequirement {}
           onAttack {
             damage 120
