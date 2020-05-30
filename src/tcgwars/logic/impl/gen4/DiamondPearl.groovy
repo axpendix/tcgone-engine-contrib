@@ -244,6 +244,7 @@ public enum DiamondPearl implements LogicCardInfo {
               checkNoSPC()
               checkLastTurn()
               assert opp.bench.size() >= 4 : "Opponent needs to have 4 or more Benched Pokémon"
+              powerUsed()
               def tar = opp.bench.select("Choose a Pokémon to return to your opponent's deck.")
               tar.cards.moveTo(opp.deck)
               shuffleDeck(null, TargetPlayer.OPPONENT)
@@ -541,7 +542,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              //TODO: Find out how to check for Budew specifically.
+              //TODO: See if this solves checking for Budew specifically.
               if (self.cards.findAll {it.name.contains("Budew")}){
                 damage 30, opp.bench.select()
               }
@@ -558,13 +559,12 @@ public enum DiamondPearl implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert self.active : "$self is not your active Pokémon."
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
               def list = opp.bench.findAll { it.evolution }
               assert list : "Your opponent has no evolved Pokémon."
               powerUsed()
               flip {
                 def pcs = list.select("Devolve one of your opponent's evolved Benched Pokémon.")
-                assert pcs
                 def top=pcs.topPokemonCard
                 bc "$top devolved."
                 moveCard(top, opp.hand)
@@ -1270,7 +1270,12 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                targeted (defending) {
+                  defending.damage += self.damage
+                  self.damage = hp(0)
+                }
+              }
             }
           }
 
@@ -1296,7 +1301,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              astonish()
             }
           }
 
@@ -1322,7 +1327,9 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              def tar = my.deck.search("Trainer Card (excluding Supporter cards)", {it.cardTypes.is(ITEM)})
+              tar.moveTo(my.hand)
+              shuffleDeck()
             }
           }
 
