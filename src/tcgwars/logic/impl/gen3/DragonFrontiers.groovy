@@ -2263,12 +2263,20 @@ public enum DragonFrontiers implements LogicCardInfo {
       case TYRANITAR_EX_DELTA_99:
       return evolution (this, from:"Pupitar", hp:HP150, type:L, retreatCost:3) {
         weakness G
+        def Shock_Wave = []
         move "Electromark", {
           text "Put a Shock-wave marker on 1 of your opponent's Pokémon."
           energyCost L, C
           attackRequirement {}
           onAttack {
-            // TODO
+            if(bg.em().retrieveObject("Shock_Wave") != null){
+              Shock_Wave = bg.em().retrieveObject("Shock_Wave")
+            }
+            tar = opp.all.select("Choose a pokemon to put a Shock-Wave marker on")
+            if(!Shock_Wave.contains(tar)){
+              Shock_Wave.add(tar)
+            }
+            bg.em().storeObject("Shock_Wave",Shock_Wave)
           }
         }
         move "Hyper Claws", {
@@ -2287,7 +2295,19 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost L, L, C
           attackRequirement {}
           onAttack {
-            // TODO
+            if(bg.em().retrieveObject("Shock_Wave") != null){
+              Shock_Wave = bg.em().retrieveObject("Shock_Wave")
+            }
+            koList = []
+            opp.all.each{
+              if Shock_Wave.contains(it){
+                koList.add(it)
+              }
+            }
+            if(!koList.isEmpty()){
+              ko = koList.select("Choose a Pokémon to knock out")
+              new Knockout(ko).run(bg)
+            }
           }
         }
       };
