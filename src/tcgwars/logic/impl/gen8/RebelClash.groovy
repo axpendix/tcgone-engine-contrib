@@ -693,10 +693,10 @@ public enum RebelClash implements LogicCardInfo {
       case ELDEGOSS_V_19:
       return basic (this, hp:HP180, type:G, retreatCost:1) {
         weakness R
-        bwAbility "Happy March", {
-          text "Once during your turn, when you play this card from your hand to your Bench, you may put a Supporter card from your discard pile into your hand."
+        bwAbility "Happy Match", {
+          text "When you play this Pokémon from your hand onto your Bench during your turn, you may put a Supporter card from your discard pile into your hand."
           onActivate {
-            if (it==PLAY_FROM_HAND && my.discard.filterByType(SUPPORTER) && confirm("Use Happy March?")) {
+            if (it==PLAY_FROM_HAND && my.discard.filterByType(SUPPORTER) && confirm("Use Happy Match?")) {
               powerUsed()
               my.discard.filterByType(SUPPORTER).select().moveTo(my.hand)
             }
