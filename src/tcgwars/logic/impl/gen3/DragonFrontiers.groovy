@@ -2300,7 +2300,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
             koList = []
             opp.all.each{
-              if Shock_Wave.contains(it){
+              if(Shock_Wave.contains(it)){
                 koList.add(it)
               }
             }
