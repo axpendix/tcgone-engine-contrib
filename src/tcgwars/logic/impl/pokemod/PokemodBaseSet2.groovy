@@ -717,7 +717,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           energyCost F
           attackRequirement {
             assert my.deck : "Your deck is empty"
-            assert my.bench.notFull "Your bench is full"
+            assert my.bench.notFull : "Your bench is full"
           }
           onAttack {
             my.deck.search("Choose Basic [f] Pokémon",{(it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(F))}).each{
