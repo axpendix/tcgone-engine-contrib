@@ -1216,238 +1216,68 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 				}
 			};
       case VOLTORB_98:
-      return basic (this, hp:HP050, type:L, retreatCost:1) {
-				weakness F
-				move "Tackle", {
-					text "10 damage. "
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.VOLTORB_67, this);
       case VULPIX_99:
-      return basic (this, hp:HP040, type:R, retreatCost:1) {
-				weakness W
-				move "Confuse Ray", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
-					energyCost R
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.VULPIX_68, this);
       case WEEDLE_100:
-      return basic (this, hp:HP040, type:G, retreatCost:1) {
-				weakness R
-				move "Poison Sting", {
-					text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
-					energyCost G
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+      return copy (PokemodBaseSet.WEEDLE_69, this);
       case COMPUTER_SEARCH_101:
-      return basicTrainer (this) {
-				text "Discard 2 of the other cards from your hand in order to search your deck for any card and put it into your hand. Shuffle your deck afterward."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.COMPUTER_SEARCH_71, this);
       case IMPOSTER_PROFESSOR_OAK_102:
-      return basicTrainer (this) {
-				text "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.IMPOSTER_PROFESSOR_OAK_73, this);
       case ITEM_FINDER_103:
-      return basicTrainer (this) {
-				text "You may choose to Discard 1 card from your hand in order to search your discard pile for a Supporter card. Show it to your opponent and put it into your hand. Or" +
-					"you may choose to Discard 2 cards from your hand in order to search your discard pile for a Trainer card (excluding Supporter cards). Show it to your opponent and put it into your hand."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.ITEM_FINDER_74, this);
       case LASS_104:
-      return supporter (this) {
-				text "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.LASS_75, this);
       case POKEMON_BREEDER_105:
-      return basicTrainer (this) {
-				text "Put a Stage 2 Evolution card from your hand on the matching Basic Pokémon. You can only play this card when you would be allowed to evolve that Pokémon anyway."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.POKEMON_BREEDER_76, this);
       case POKEMON_TRADER_106:
-      return basicTrainer (this) {
-				text "Trade 1 of the Basic Pokémon or Evolution cards in your hand for 1 of the Basic Pokémon or Evolution cards from your deck. Show both cards to your opponent. Shuffle your deck afterward."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.POKEMON_TRADER_77, this);
       case SCOOP_UP_107:
-      return basicTrainer (this) {
-				text "Choose 1 of your own Pokémon in play and return its Basic Pokémon card to your hand. (Discard all cards attached to that card.)"
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.SCOOP_UP_78, this);
       case SUPER_ENERGY_REMOVAL_108:
-      return basicTrainer (this) {
-				text "Discard 1 Special Energy attached to 1 of your opponent's Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.SUPER_ENERGY_REMOVAL_79, this);
       case DEFENDER_109:
-      return basicTrainer (this) {
-				text "Attach Defender to 1 of your Pokémon (excluding [M] Pokémon). At the end of your opponent's next turn, discard Defender. Damage done to that Pokémon by attacks is reduced by 20 (after applying Weakness and Resistance)."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.DEFENDER_80, this);
       case ENERGY_RETRIEVAL_110:
-      return basicTrainer (this) {
-				text "Put 2 basic Energy cards from your discard pile into your hand."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.ENERGY_RETRIEVAL_81, this);
       case FULL_HEAL_111:
-      return basicTrainer (this) {
-				text "Your Active Pokémon is no longer Asleep, Confused, Paralyzed, or Poisoned."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.FULL_HEAL_82, this);
       case MAINTENANCE_112:
-      return basicTrainer (this) {
-				text "Shuffle 2 of the other cards from your hand into your deck in order to draw a card."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.MAINTENANCE_83, this);
       case PLUSPOWER_113:
-      return basicTrainer (this) {
-				text "Attach PlusPower to your Active Pokémon (excluding [D] Pokémon). At the end of your turn, discard PlusPower. If this Pokémon's attack does damage to the defending Pokémon (after applying Weakness and Resistance), the attack does 10 more damage to the Defending Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.PLUSPOWER_84, this);
       case POKEMON_CENTER_114:
-      return basicTrainer (this) {
-				text "Remove all damage counters from 1 of your own Pokémon, then discard all Energy cards attached to those Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.POKEMON_CENTER_85, this);
       case POKEDEX_115:
-      return basicTrainer (this) {
-				text "Look at up to 5 cards from the top of your deck and rearrange them as you like."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.POKEDEX_87, this);
       case PROFESSOR_OAK_116:
-      return supporter (this) {
-				text "Discard your hand, then draw 7 cards."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.PROFESSOR_OAK_88, this);
       case SUPER_POTION_117:
-      return basicTrainer (this) {
-				text "Discard 1 Energy card attached to 1 of your own Pokémon in order to remove up to 4 damage counters from that Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.SUPER_POTION_90, this);
       case BILL_118:
-      return basicTrainer (this) {
-				text "Draw 2 cards."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.BILL_91, this);
       case ENERGY_REMOVAL_119:
-      return basicTrainer (this) {
-				text "Discard 1 Energy card attached to your opponent's Active Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.ENERGY_REMOVAL_92, this);
       case GUST_OF_WIND_120:
-      return basicTrainer (this) {
-				text "Choose 1 of your opponent's Benched Pokémon and switch it with his or her Active Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.GUST_OF_WIND_93, this);
       case POKE_BALL_121:
       return basicTrainer (this) {
 				text "Flip a coin. If heads, you may search your deck for any Basic Pokémon or Evolution card. Show that card to your opponent, then put it into your hand. Shuffle your deck afterward."
 				onPlay {
+          my.deck.search(cardTypeFilter(POKEMON)).moveTo(my.hand)
+          shuffleDeck()
 				}
 				playRequirement{
+          assert my.deck : "Your deck is empty"
 				}
 			};
       case POTION_122:
-      return basicTrainer (this) {
-				text "Remove up to 2 damage counters from 1 of your Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.POTION_94, this);
       case SWITCH_123:
-      return basicTrainer (this) {
-				text "Switch 1 of your Benched Pokémon with your Active Pokémon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+      return copy (PokemodBaseSet.SWITCH_95, this);
       case DOUBLE_COLORLESS_ENERGY_124:
-      return specialEnergy (this, [[C]]) {
-				text "Provides energy. Doesn't count as a basic energy card."
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				onMove {to->
-				}
-				allowAttach {to->
-				}
-			};
+      return copy (PokemodBaseSet.DOUBLE_COLORLESS_ENERGY_96, this);
       case FIGHTING_ENERGY_125:
       return basicEnergy (this, F);
       case FIRE_ENERGY_126:
