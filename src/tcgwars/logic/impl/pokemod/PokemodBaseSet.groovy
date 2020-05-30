@@ -1701,7 +1701,12 @@ public enum PokemodBaseSet implements LogicCardInfo {
         onPlay {
           def pcs = my.all.select()
           targeted(pcs, Source.TRAINER_CARD) {
-            def tar = pcs.cards.get(0) //This will always get the first card of a pcs right? It should either be "The" basic pokemon or the evolution that got cheated into play?
+            def temp = pcs.cards
+            def tar = temp.get(0)
+            while(temp.getExcludedList(tar).findAll{it.cardTypes.is(POKEMON)}){
+              temp = temp.getExcludedList(tar)
+              tar = temp.get(0)
+            }
             pcs.cards.findAll{it==tar}.moveTo(my.hand)
             pcs.cards.discard()
             removePCS pcs
