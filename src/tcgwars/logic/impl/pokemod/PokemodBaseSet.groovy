@@ -252,7 +252,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             powerUsed()
             def card = my.hand.filterByBasicEnergyType(W).first()
             attachEnergy(my.all.findAll {
-              it.types.contains(W) && !it.pokemonEX
+              it.types.contains(W) && !it.EX
             }.select("To?"), card)
           }
         }
@@ -1830,7 +1830,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Discard 1 Energy card attached to 1 of your own Pokémon (excluding Pokémon-ex) in order to remove up to 4 damage counters from that Pokémon."
         onPlay {
-          def tar = my.all.findAll { it.cards.energyCount(C) && it.numberOfDamageCounters && !it.pokemonEX }
+          def tar = my.all.findAll { it.cards.energyCount(C) && it.numberOfDamageCounters && !it.EX }
           if(tar) {
             def pcs = tar.select("Heal which Pokemon?")
             targeted (pcs, TRAINER_CARD) {
@@ -1840,7 +1840,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           }
         }
         playRequirement{
-          assert my.all.findAll { it.cards.energyCount(C) && it.numberOfDamageCounters && !it.pokemonEX }
+          assert my.all.findAll { it.cards.energyCount(C) && it.numberOfDamageCounters && !it.EX }
         }
       };
       case BILL_91:
