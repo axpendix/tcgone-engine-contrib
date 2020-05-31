@@ -2094,10 +2094,9 @@ public enum PokemodBaseSet implements LogicCardInfo {
           actionA {
             checkNoSPC()
             assert my.hand.filterByBasicEnergyType(W) : "No [W] in hand"
-            assert my.all.find{it.types.contains(W)} : "No [W] pokemon"
             powerUsed()
             def card = my.hand.filterByBasicEnergyType(W).first()
-            def tar = my.all.findAll {it.types.contains(W)}.select("To?")
+            def tar = my.all.select("To?")
             attachEnergy(tar, card)
             directDamage 10, tar, SRC_ABILITY
           }
