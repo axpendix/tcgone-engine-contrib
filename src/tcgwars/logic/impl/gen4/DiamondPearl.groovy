@@ -1133,7 +1133,7 @@ public enum DiamondPearl implements LogicCardInfo {
 
               def indexOfOldPrize = my.prizeCardSet.indexOf(tar)
               my.prizeCardSet.set(indexOfOldPrize, newPrize)
-              my.prizeCardSet.setVisible(indexOfOldPrize, true)
+              my.prizeCardSet.setVisible(newPrize, true) //TODO: If this doesn't work, maybe use tar?
               my.hand.remove(newPrize)
             }
           }
@@ -1304,11 +1304,10 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               flip {
                 targeted (defending) {
-                  //defending.damage += self.damage
-                  directDamage self.damage, defending
-                  def dc = self.damage / 10
+                  //TODO: Solve this not being blocked by stuff like Metal Goggles (blockers of "putting damage counters"). Problem also affects Xerneas-GX.
+                  defending.damage += self.damage
+                  self.damage -= self.damage
                   bc "Moved $dc damage counters from $self to $defending."
-                  self.damage = hp(0)
                 }
               }
             }
