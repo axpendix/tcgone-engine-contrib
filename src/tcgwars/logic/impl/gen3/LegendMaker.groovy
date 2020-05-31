@@ -874,7 +874,6 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement { assert my.deck : "Deck is empty" }
           onAttack {
-            def nam=self.name
             def tar = my.deck.search("Trainer Card (excluding Supporter cards)", {it.cardTypes.is(TRAINER) && !it.cardTypes.is(SUPPORTER)})
             tar.moveTo(my.hand)
             shuffleDeck()
