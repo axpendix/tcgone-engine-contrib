@@ -1956,7 +1956,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Move a basic Energy card from 1 of your Pokémon to another of your Pokémon"
         onPlay {
-          def src = assert my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}.select("Move Energy from which pokemon?")
+          def src = my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}.select("Move Energy from which pokemon?")
           def tar = my.all.findAll {it != src}.select("Move Energy to which Pokémon?")
           pcs.cards.filterByType(BASIC_ENERGY).select("Select a Basic Energy card to move to the target.").each{energySwitch(src,tar,it)}
         }
