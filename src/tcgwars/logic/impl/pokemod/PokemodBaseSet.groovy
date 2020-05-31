@@ -293,33 +293,19 @@ public enum PokemodBaseSet implements LogicCardInfo {
         resistance F, MINUS30
         pokemonPower "Energy Burn", {
           text "As often as you like during your turn (before your attack), you may turn all Basic Energy attached to Charizard into [R] Energy for the rest of the turn. This power can't be used if Charizard is affected by a Special Condition."
-          def set = [] as Set
-          def eff1, eff2
-          onActivate {
-            if(eff1) eff1.unregister()
-            if(eff2) eff2.unregister()
-            eff1 = delayed {
-              before BETWEEN_TURNS, {
-                set.clear()
-              }
-            }
-            eff2 = getter GET_ENERGY_TYPES, { holder->
-              if(set.contains(holder.effect.card)) {
-                int count = holder.object.size()
-                holder.object = [(1..count).collect{[FIRE] as Set}]
-              }
-            }
-          }
-          actionA {
+          actionA{
             checkNoSPC()
-            def newSet = [] as Set
-            newSet.addAll(self.cards.filterByType(BASIC_ENERGY))
-            if(newSet != set){
-              powerUsed()
-              set.clear()
-              set.addAll(newSet)
-            } else {
-              wcu "Nothing more to burn"
+            powerUsed()
+            def eff = getter GET_ENERGY_TYPES, { holder->
+              if(holder.effect.target == self && holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
+                holder.object = [[R] as Set]
+              }
+            }
+            delayed {
+              before BETWEEN_TURNS, {
+                eff.unregister()
+              }
+              unregisterAfter 1
             }
           }
         }
@@ -1943,10 +1929,14 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Flip 2 coins. For each heads, search your deck for a basic Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
         onPlay {
+          def i=0
           flip 2, {
-            my.deck.search ("Search your deck for a Basic Pokémon and put it in your hand.", cardTypeFilter(BASIC)).moveTo(my.hand)
+            i++
           }
-          shuffleDeck()
+          if(i>0){
+            my.deck.search (min:0,max:i,"Search your deck for $i Basic Pokémon and put them in your hand.", cardTypeFilter(BASIC)).moveTo(my.hand)
+            shuffleDeck()
+          }
         }
         playRequirement{
           assert my.deck : "Your deck is empty"
@@ -1958,7 +1948,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         onPlay {
           def src = my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}.select("Move Energy from which pokemon?")
           def tar = my.all.findAll {it != src}.select("Move Energy to which Pokémon?")
-          pcs.cards.filterByType(BASIC_ENERGY).select("Select a Basic Energy card to move to the target.").each{energySwitch(src,tar,it)}
+          src.cards.filterByType(BASIC_ENERGY).select("Select a Basic Energy card to move to the target.").each{energySwitch(src,tar,it)}
         }
         playRequirement{
           assert my.all.findAll{it.cards.filterByType(BASIC_ENERGY)} : "You have no basic Energy attached to your pokemon"
@@ -2012,27 +2002,34 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Search your discard pile for a Trainer card, show it to your opponent, and put it into your hand."
         onPlay {
-          // TODO:
+          my.discard.filterByType(TRAINER).select().moveTo(my.hand)
         }
         playRequirement{
+          assert my.discard.filterByType(TRAINER) : "You have no trainers in your discard pile.
         }
       };
       case Elixir_109:
       return basicTrainer (this) {
         text "Remove up to 6 damage counters from 1 of your Pokémon."
         onPlay {
-          // TODO:
+          def pcs = my.all.findAll{it.numberOfDamageCounters}.select()
+          targeted (pcs, TRAINER_CARD) {
+            heal 60, pcs
+          }
         }
         playRequirement{
+          assert my.all.findAll{it.numberOfDamageCounters}
         }
       };
       case Hacker_110:
       return basicTrainer (this) {
         text "Search your deck for a card and put it into your hand. Shuffle your deck afterward."
         onPlay {
-          // TODO:
+          my.deck.select(count:1).moveTo(my.hand)
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck
         }
       };
       case MEWTWO_114:
@@ -2042,7 +2039,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           text "Choose up to 2 Energy cards from your discard pile and attach them to Mewtwo."
           energyCost P
           onAttack {
-            // TODO:
+            attachEnergyFrom(min:0,max:2, my.discard, self)
           }
         }
         move "Psyburn", {
@@ -2065,8 +2062,11 @@ public enum PokemodBaseSet implements LogicCardInfo {
         weakness L
         pokeBody "Energy Flame", {
           text "All Energy attached to Charizard ex are [R] Energy instead of its usual type."
-          delayedA {
-            // TODO:
+          getterA GET_ENERGY_TYPES, { holder->
+            if(holder.effect.target == self) {
+              int count = holder.object.size()
+              holder.object = (1..count).collect{[FIRE] as Set}
+            }
           }
         }
         move "Slash", {
