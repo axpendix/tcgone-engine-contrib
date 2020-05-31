@@ -3240,14 +3240,15 @@ public enum RebelClash implements LogicCardInfo {
           text "As long as this Pokemon is in play, any damage done to your Pokemon by opponent’s attacks is reduced by 30. You can’t use more than 1 Big Shield Ability."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              assert bg.em().retrieveObject("Big_Shield") != bg.turnCount
-              bg.dm().each {
-                if (it.to.owner == self.owner && it.notNoEffect && it.dmg.value) {
-                  bc "Big Shield -30"
-                  it.dmg -= hp(30)
+              if(bg.em().retrieveObject("Big_Shield") != bg.turnCount) {
+                bg.dm().each {
+                  if (it.to.owner == self.owner && it.notNoEffect && it.dmg.value) {
+                    bc "Big Shield -30"
+                    it.dmg -= hp(30)
+                  }
                 }
+                bg.em().storeObject("Big_Shield", bg.turnCount)
               }
-              bg.em().storeObject("Big_Shield", bg.turnCount)
             }
           }
         }
