@@ -2781,11 +2781,11 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness L, PLUS10
           resistance F, MINUS20
           move "Gust", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Quick Attack", {
@@ -2804,11 +2804,11 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness F, PLUS10
           resistance P, MINUS20
           move "Scratch", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Severe Gas", {
@@ -2816,7 +2816,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost D, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              apply POISONED
             }
           }
 
@@ -2826,19 +2827,19 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness R, PLUS10
           resistance W, MINUS20
           move "Tackle", {
-            text "10 damage. "
+            text "10 damage."
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Razor Leaf", {
-            text "20 damage. "
+            text "20 damage."
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -2860,7 +2861,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip {apply PARALYZED}
             }
           }
 
