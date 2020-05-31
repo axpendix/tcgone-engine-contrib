@@ -1520,8 +1520,10 @@ public enum Unleashed implements LogicCardInfo {
             text "Flip 2 coins. For each heads, search your deck for a [G] Pokémon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
             energyCost G
             onAttack {
-              flip 2, {
-                my.deck.search(max:2,"Choose up to 2 [G] pokemon to put in your hand.",{it.cardTypes.is(POKEMON) && it.types.contains(G)}).showToOpponent("Selected cards").moveTo(my.hand)
+              def cardsNum = 0
+              flip 2 { cardsNum += 1 }
+              if (cardsNum) {
+                my.deck.search(max:cardsNum,"Choose up to 2 [G] pokemon to put in your hand.",{it.cardTypes.is(POKEMON) && it.types.contains(G)}).moveTo(my.hand)
                 shuffleDeck()
               }
             }
