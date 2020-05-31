@@ -1644,7 +1644,7 @@ public enum SunMoon implements LogicCardInfo {
             }
           }
           move "Moongeist Beam", {
-            text "120 damage. The Defending Pokémon can't be healed during your next turn."
+            text "120 damage. The Defending Pokémon can’t be healed during your opponent’s next turn."
             energyCost P, P, P, P
             onAttack {
               damage 120
@@ -1653,7 +1653,9 @@ public enum SunMoon implements LogicCardInfo {
                   bc "Moongeist Beam prevents healing"
                   prevent()
                 }
-                unregisterAfter 3
+                after EVOLVE, defending, {unregister()}
+                after SWITCH, defending, {unregister()}
+                unregisterAfter 2
               }
             }
           }
@@ -2520,22 +2522,7 @@ public enum SunMoon implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               damage 50
-              targeted (defending) {
-                delayed {
-                  after PROCESS_ATTACK_EFFECTS, defending, {
-                    bg.dm().each {
-                      if(it.from==defending && it.notNoEffect && it.dmg.value){
-                        bc "Ferocious Bellow -50"
-                        it.dmg -= hp(50)
-                      }
-                    }
-                  }
-                  after EVOLVE, defending, {unregister()}
-                  after SWITCH, defending, {unregister()}
-                  after SWITCH, self, {unregister()}
-                  unregisterAfter 2
-                }
-              }
+              reduceDamageFromDefendingNextTurn(hp(50), thisMove, defending)
             }
           }
           move "Hammer In", {

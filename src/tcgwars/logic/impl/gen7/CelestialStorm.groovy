@@ -2462,8 +2462,6 @@ public enum CelestialStorm implements LogicCardInfo {
                     new Knockout(defending).run(bg)
                   }
                 }
-                after SWITCH, self, {unregister()}
-                after EVOLVE, self, {unregister()}
                 after SWITCH, defending, {unregister()}
                 after EVOLVE, defending, {unregister()}
                 unregisterAfter 2
