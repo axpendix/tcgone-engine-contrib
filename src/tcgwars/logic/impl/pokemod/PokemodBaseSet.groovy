@@ -305,6 +305,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 eff.unregister()
               }
+              unregisterAfter 1
             }
           }
         }
