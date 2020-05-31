@@ -1067,7 +1067,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 10 * self.numberOfDamageCounters, opp.all.select()
+              directDamage 10 * self.numberOfDamageCounters, opp.all.select()
             }
           }
           move "Spinning Kick", {
