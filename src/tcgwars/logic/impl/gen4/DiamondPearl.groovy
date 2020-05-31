@@ -1101,9 +1101,10 @@ public enum DiamondPearl implements LogicCardInfo {
             text "30× damage. Discard 2 cards from your hand. (If you can’t discard 2 cards, this attack does nothing.) Flip 2 coins. This attack does 30 damage times the number of heads."
             energyCost C
             attackRequirement {
-              assert my.hand.size() >= 2
+              assert my.hand.size() >= 2 : "You can’t discard 2 cards from your hand, so you can't use this attack."
             }
             onAttack {
+              my.hand.select(count:2,"Discard 2 cards from your hand.").discard()
               flip 2, { damage 30 }
             }
           }
