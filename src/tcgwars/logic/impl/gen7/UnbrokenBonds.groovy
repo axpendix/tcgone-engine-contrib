@@ -1468,6 +1468,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                     }
                   }
                 }
+                after EVOLVE, self, {unregister()}
                 after SWITCH, self, {unregister()}
                 unregisterAfter 2
               }
