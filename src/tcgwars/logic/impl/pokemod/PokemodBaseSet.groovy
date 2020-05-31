@@ -2053,7 +2053,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           text "Choose up to 2 Energy cards from your discard pile and attach them to Mewtwo."
           energyCost P
           onAttack {
-            // TODO:
+            attachEnergyFrom(min:0,max:2, my.discard, self)
           }
         }
         move "Psyburn", {
