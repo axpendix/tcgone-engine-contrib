@@ -1011,7 +1011,7 @@ public enum DiamondPearl implements LogicCardInfo {
               assert my.all.findAll { it.numberOfDamageCounters }: "No damaged Pokemon"
             }
             onAttack {
-              healAmount = 0
+              def healAmount = 0
               flipUntilTails { healAmount += 10 }
               if (healAmount && my.all.findAll { it.numberOfDamageCounters }) {
                 def pcs = my.all.findAll { it.numberOfDamageCounters }.select()
@@ -1020,11 +1020,13 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
           move "Flop", {
-            text "30 damage. You may switch Lopunny with 1 of your Benched Pokémon."
+            text "30 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) You may switch Lopunny with 1 of your Benched Pokémon."
             energyCost C, C, C
             attackRequirement {}
             onAttack {
               damage 30
+              if (opp.bench)
+                damage 20, opp.bench.select()
               afterDamage {
                 switchYourActive(may: true)
               }
