@@ -3362,7 +3362,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Guard Press", {
-          text "During your opponent's next turn, this Pokemon takes 20 less damage from attacks (after applying Weakness and Resistance)."
+          text "30 Damage. During your opponent's next turn, this Pokemon takes 20 less damage from attacks (after applying Weakness and Resistance)."
           energyCost M, C
           attackRequirement {}
           onAttack {
