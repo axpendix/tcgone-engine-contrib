@@ -1701,7 +1701,12 @@ public enum PokemodBaseSet implements LogicCardInfo {
         onPlay {
           def pcs = my.all.select()
           targeted(pcs, Source.TRAINER_CARD) {
-            def tar = pcs.cards.get(0) //This will always get the first card of a pcs right? It should either be "The" basic pokemon or the evolution that got cheated into play?
+            def temp = pcs.cards
+            def tar = temp.get(0)
+            while(temp.getExcludedList(tar).findAll{it.cardTypes.is(POKEMON)}){
+              temp = temp.getExcludedList(tar)
+              tar = temp.get(0)
+            }
             pcs.cards.findAll{it==tar}.moveTo(my.hand)
             pcs.cards.discard()
             removePCS pcs
@@ -1825,16 +1830,14 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Put 1 Basic Pokémon card (excluding Pokémon-ex) from your discard pile onto your Bench. Put damage counters on that Pokémon equal to half its HP (rounded down to the nearest 10). (You can't play Revive if your Bench is full.)"
         onPlay {
-          // TODO: Exclude ex
-          def tar = TargetPlayer.SELF
-          my.discard.findAll(cardTypeFilter(BASIC)).select().each {
-            tar.pbg.discard.remove(it)
-            def pcs = benchPCS(it, OTHER, tar)
+          my.discard.findAll(cardTypeFilter(BASIC) && !it.asPokemonCard().types.contains(EX)).select().each {
+            my.discard.remove(it)
+            def pcs = benchPCS(it)
             pcs.hp = ceil((pcs.fullHp/10)/2)*10
           }
         }
         playRequirement{
-          assert my.discard.find(cardTypeFilter(BASIC)) && my.bench.notFull
+          assert my.discard.find(cardTypeFilter(BASIC) && !it.asPokemonCard().types.contains(EX)) && my.bench.notFull
         }
       };
       case SUPER_POTION_90:
@@ -1940,34 +1943,53 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Flip 2 coins. For each heads, search your deck for a basic Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
         onPlay {
-          // TODO:
+          flip 2, {
+            my.deck.search ("Search your deck for a Basic Pokémon and put it in your hand.", cardTypeFilter(BASIC)).moveTo(my.hand)
+          }
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck : "Your deck is empty"
         }
       };
       case ENERGY_SWITCH_104:
       return basicTrainer (this) {
         text "Move a basic Energy card from 1 of your Pokémon to another of your Pokémon"
         onPlay {
-          // TODO:
+          def src = assert my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}.select("Move Energy from which pokemon?")
+          def tar = my.all.findAll {it != src}.select("Move Energy to which Pokémon?")
+          pcs.cards.filterByType(BASIC_ENERGY).select("Select a Basic Energy card to move to the target.").each{energySwitch(src,tar,it)}
         }
         playRequirement{
+          assert my.all.findAll{it.cards.filterByType(BASIC_ENERGY)} : "You have no basic Energy attached to your pokemon"
+          assert my.all.size() >= 2 : "You only have one Pokémon in play."
         }
       };
       case SUPER_ENERGY_RETRIEVAL_105:
       return basicTrainer (this) {
         text "Trade 2 of the other cards in your hand for up to 4 basic Energy cards from your discard pile."
         onPlay {
-          // TODO:
+          def disc = my.hand.getExcludedList(thisCard).select(count:2, "Discard")
+          def tar = my.discard.filterByType(BASIC_ENERGY).select(min:0, max:4, "Return to hand")
+          disc.discard()
+          tar.moveTo(my.hand)
         }
         playRequirement{
+          assert my.hand.getExcludedList(thisCard).size() >= 2 : "You don't have 2 other cards to discard"
+          assert my.discard.filterByType(BASIC_ENERGY) : "You don't have any basic Energy in your discard"
         }
       };
       case SUPER_SCOOP_UP_106:
       return basicTrainer (this) {
         text "Flip a coin. If heads, return 1 of your Pokémon in play and all cards attached to it to your hand."
         onPlay {
-          // TODO:
+          flip{
+            def pcs = my.all.select("Choose a Pokémon to return to your hand")
+            targeted(pcs, Source.TRAINER_CARD) {
+              pcs.cards.moveTo(my.hand)
+              removePCS pcs
+            }
+          }
         }
         playRequirement{
         }
@@ -1976,9 +1998,14 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Discard 1 Energy card attached to 1 of your Pokémon in order to choose 1 of your opponent's Pokémon and up to 2 Energy cards attached to it. Discard those Energy cards."
         onPlay {
-          // TODO:
+          def src = my.all.findAll{it.cards.filterByType(ENERGY)}.select("Discard an energy from")
+          src.cards.filterByType(ENERGY).select("Discard which energy").discard()
+          def tar = opp.all.findAll{it.cards.filterByType(ENERGY)}.select("Discard up to 2 energy from")
+          tar.cards.filterByType(ENERGY).select(min:0,max:2,"Discard which energies?").discard()
         }
         playRequirement{
+          my.all.findAll{it.cards.filterByType(ENERGY)} : "You have no energy attached to your pokemon"
+          opp.all.findAll{it.cards.filterByType(ENERGY)} : "Your opponent has no energy attached to their pokemon"
         }
       };
       case DOWSING_MACHINE_108:
