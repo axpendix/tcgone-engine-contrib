@@ -1983,7 +1983,13 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Flip a coin. If heads, return 1 of your Pokémon in play and all cards attached to it to your hand."
         onPlay {
-          // TODO:
+          flip{
+            def pcs = my.all.select("Choose a Pokémon to return to your hand")
+            targeted(pcs, Source.TRAINER_CARD) {
+              pcs.cards.moveTo(my.hand)
+              removePCS pcs
+            }
+          }
         }
         playRequirement{
         }
@@ -1992,9 +1998,14 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Discard 1 Energy card attached to 1 of your Pokémon in order to choose 1 of your opponent's Pokémon and up to 2 Energy cards attached to it. Discard those Energy cards."
         onPlay {
-          // TODO:
+          def src = my.all.findAll{it.cards.filterByType(ENERGY)}.select("Discard an energy from")
+          src.cards.filterByType(ENERGY).select("Discard which energy").discard()
+          def tar = opp.all.findAll{it.cards.filterByType(ENERGY)}.select("Discard up to 2 energy from")
+          tar.cards.filterByType(ENERGY).select(min:0,max:2,"Discard which energies?").discard()
         }
         playRequirement{
+          my.all.findAll{it.cards.filterByType(ENERGY)} : "You have no energy attached to your pokemon"
+          opp.all.findAll{it.cards.filterByType(ENERGY)} : "Your opponent has no energy attached to their pokemon"
         }
       };
       case DOWSING_MACHINE_108:
