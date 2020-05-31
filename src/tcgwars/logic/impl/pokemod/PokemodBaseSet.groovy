@@ -1943,10 +1943,14 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Flip 2 coins. For each heads, search your deck for a basic Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
         onPlay {
+          def i=0
           flip 2, {
-            my.deck.search ("Search your deck for a Basic Pokémon and put it in your hand.", cardTypeFilter(BASIC)).moveTo(my.hand)
+            i++
           }
-          shuffleDeck()
+          if(i>0){
+            my.deck.search (min:0,max:i,"Search your deck for $i Basic Pokémon and put them in your hand.", cardTypeFilter(BASIC)).moveTo(my.hand)
+            shuffleDeck()
+          }
         }
         playRequirement{
           assert my.deck : "Your deck is empty"
@@ -1958,7 +1962,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         onPlay {
           def src = my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}.select("Move Energy from which pokemon?")
           def tar = my.all.findAll {it != src}.select("Move Energy to which Pokémon?")
-          pcs.cards.filterByType(BASIC_ENERGY).select("Select a Basic Energy card to move to the target.").each{energySwitch(src,tar,it)}
+          src.cards.filterByType(BASIC_ENERGY).select("Select a Basic Energy card to move to the target.").each{energySwitch(src,tar,it)}
         }
         playRequirement{
           assert my.all.findAll{it.cards.filterByType(BASIC_ENERGY)} : "You have no basic Energy attached to your pokemon"
@@ -2012,27 +2016,32 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Search your discard pile for a Trainer card, show it to your opponent, and put it into your hand."
         onPlay {
-          // TODO:
+          my.discard.filterByType(TRAINER).select().moveTo(my.hand)
         }
         playRequirement{
+          assert my.discard.filterByType(TRAINER) : "You have no trainers in your discard pile.
         }
       };
       case Elixir_109:
       return basicTrainer (this) {
         text "Remove up to 6 damage counters from 1 of your Pokémon."
         onPlay {
-          // TODO:
+          def pcs = my.all.findAll{it.numberOfDamageCounters}.select()
+          heal 20, pcs
         }
         playRequirement{
+          assert my.all.findAll{it.numberOfDamageCounters}
         }
       };
       case Hacker_110:
       return basicTrainer (this) {
         text "Search your deck for a card and put it into your hand. Shuffle your deck afterward."
         onPlay {
-          // TODO:
+          my.deck.select(count:1).moveTo(my.hand)
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck
         }
       };
       case MEWTWO_114:
