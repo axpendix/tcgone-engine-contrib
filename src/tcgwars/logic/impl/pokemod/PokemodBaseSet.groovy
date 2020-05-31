@@ -1830,16 +1830,14 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Put 1 Basic Pokémon card (excluding Pokémon-ex) from your discard pile onto your Bench. Put damage counters on that Pokémon equal to half its HP (rounded down to the nearest 10). (You can't play Revive if your Bench is full.)"
         onPlay {
-          // TODO: Exclude ex
-          def tar = TargetPlayer.SELF
-          my.discard.findAll(cardTypeFilter(BASIC)).select().each {
-            tar.pbg.discard.remove(it)
-            def pcs = benchPCS(it, OTHER, tar)
+          my.discard.findAll(cardTypeFilter(BASIC) && !it.asPokemonCard().types.contains(EX)).select().each {
+            my.discard.remove(it)
+            def pcs = benchPCS(it)
             pcs.hp = ceil((pcs.fullHp/10)/2)*10
           }
         }
         playRequirement{
-          assert my.discard.find(cardTypeFilter(BASIC)) && my.bench.notFull
+          assert my.discard.find(cardTypeFilter(BASIC) && !it.asPokemonCard().types.contains(EX)) && my.bench.notFull
         }
       };
       case SUPER_POTION_90:
@@ -1971,9 +1969,14 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Trade 2 of the other cards in your hand for up to 4 basic Energy cards from your discard pile."
         onPlay {
-          // TODO:
+          def disc = my.hand.getExcludedList(thisCard).select(count:2, "Discard")
+          def tar = my.discard.filterByType(BASIC_ENERGY).select(min:0, max:4, "Return to hand")
+          disc.discard()
+          tar.moveTo(my.hand)
         }
         playRequirement{
+          assert my.hand.getExcludedList(thisCard).size() >= 2 : "You don't have 2 other cards to discard"
+          assert my.discard.filterByType(BASIC_ENERGY) : "You don't have any basic Energy in your discard"
         }
       };
       case SUPER_SCOOP_UP_106:
