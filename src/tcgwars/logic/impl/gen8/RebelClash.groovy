@@ -3247,7 +3247,7 @@ public enum RebelClash implements LogicCardInfo {
                   it.dmg -= hp(30)
                 }
               }
-              bg.em.storeObject("Big_Shield", bg.turnCount)
+              bg.em().storeObject("Big_Shield", bg.turnCount)
             }
           }
         }
