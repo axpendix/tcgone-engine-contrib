@@ -2027,7 +2027,9 @@ public enum PokemodBaseSet implements LogicCardInfo {
         text "Remove up to 6 damage counters from 1 of your Pokémon."
         onPlay {
           def pcs = my.all.findAll{it.numberOfDamageCounters}.select()
-          heal 20, pcs
+          targeted (pcs, TRAINER_CARD) {
+            heal 60, pcs
+          }
         }
         playRequirement{
           assert my.all.findAll{it.numberOfDamageCounters}
