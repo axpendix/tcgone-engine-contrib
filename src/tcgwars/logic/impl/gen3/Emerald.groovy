@@ -486,7 +486,7 @@ public enum Emerald implements LogicCardInfo {
           pokePower "Water Cyclone", {
             text "As often as you like during your turn (before your attack), you may move a [W] Energy attached to 1 of your Active Pokémon to 1 of your Benched Pokémon. This power can’t be used if Swampert is affected by a Special Condition."
             actionA {
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
               assert my.active.cards.energyCount(W)>0 : "No [W] Energy is attached to ${my.active}"
               assert my.bench : "There is no Benched Pokémon"
               powerUsed()

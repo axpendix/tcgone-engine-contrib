@@ -1090,7 +1090,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck.\n"
             energyCost C
             attackRequirement{
-              assert my.deck : "There is no more cards in your deck"
+              assert my.deck : "There are no more cards in your deck"
             }
             onAttack{
               my.deck.search(count:1,"Choose an Item card",cardTypeFilter(ITEM)).showToOpponent("The chosen Item card.").moveTo(my.hand)

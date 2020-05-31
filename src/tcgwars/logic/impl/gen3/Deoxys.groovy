@@ -313,7 +313,7 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before you attack), if Claydol is your Active Pokémon, you may shuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent’s hand. This power can’t be used if Claydol is affected by a Special Condition."
             actionA {
               checkLastTurn()
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
               assert self.active : "$self is not your Active Pokémon"
               powerUsed()
               my.hand.moveTo(my.deck)
@@ -814,7 +814,7 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before your attack), you may search your deck for a card. Shuffle your deck, then put that card on top of your deck. This power can’t be used if Magcargo is affected by a Special Condition."
             actionA {
               checkLastTurn()
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
               assert my.deck : "There is no card in your deck"
               powerUsed()
               def tar = my.deck.search(max:1,"Select 1 card",{true}).each{my.deck.remove(it)}
@@ -911,7 +911,8 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before you attack), if Sableye is your Active Pokémon, you may look at your opponent’s hand. This power can’t be used if Sableye is affected by a Special Condition."
             actionA {
               checkLastTurn()
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
+              assert self.active : "$self is not your active Pokémon."
               assert opp.hand : "There is no card in your opponent hand"
               powerUsed()
               opp.hand.showToMe("Opponent's hand")
@@ -977,7 +978,7 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before your attack), you may switch 1 of the Defending Pokémon with 1 of your opponent’s Benched Pokémon. You opponent chooses the Benched Pokémon to switch. This power can’t be used if Shiftry is affected by a Special Condition."
             actionA {
               checkLastTurn()
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
               assert opp.bench : "There is no benched Pokemon"
               powerUsed()
 
@@ -1438,9 +1439,9 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before your attack), if Nosepass is your Active Pokémon, you may flip a coin. If heads, switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. This power can’t be used if Nosepass is affected by a Special Condition."
             actionA {
               checkLastTurn()
+              checkNoSPC()
               assert self.active : "$self is not your active Pokémon."
               assert opp.bench : "There is no Pokémon to switch"
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
               powerUsed()
               flip {
                 sw opp.active, opp.bench.select("Select the new active Pokémon.")
@@ -2672,7 +2673,7 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before you attack), if Crobat ex is your active pokemon, you may put 1 damage counter on 1 of your opponent’s Pokémon. This power can’t be used if Crobat ex is affected by a Special Condition."
             actionA {
               checkLastTurn()
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
               assert self.active : "$self is not your Active Pokémon"
               powerUsed()
               directDamage 10, opp.all.select()

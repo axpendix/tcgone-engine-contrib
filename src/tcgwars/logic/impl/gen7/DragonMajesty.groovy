@@ -1404,8 +1404,10 @@ public enum DragonMajesty implements LogicCardInfo {
         return itemCard (this) {
           text "Switch your Active [W] Pokémon with 1 of your Benched Pokémon. If you do, heal 30 damage from the Pokémon you moved to your Bench.\nYou may play as many Item cards as you like during your turn (before your attack).\n"
           onPlay {
-            heal 30, my.active
+            switchedPCS = my.active
             sw my.active, my.bench.select("Select the new active")
+            if (!switchedPCS.active)
+              heal 30, switchedPCS
           }
           playRequirement{
             assert my.active.types.contains(W)

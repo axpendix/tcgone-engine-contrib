@@ -437,7 +437,6 @@ public enum UnifiedMinds implements LogicCardInfo {
               def list = opp.all.findAll { it.evolution }
               assert list
               def pcs = list.select("Devolve one of your opponent's evolved Pokémon.")
-              assert pcs
               def top=pcs.topPokemonCard
               bc "$top devolved."
               pcs.cards.remove(top)

@@ -713,7 +713,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Search your deck for a [G] Pokémon and put it into your hand. Shuffle your deck"
             energyCost G
             attackRequirement{
-              assert my.deck : "There is no more cards in your deck."
+              assert my.deck : "There are no more cards in your deck."
             }
             onAttack{
               my.deck.search("Select a [G] Pokémon to put on your hand",pokemonTypeFilter(G)).moveTo(my.hand)
@@ -1208,7 +1208,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Once during your turn (before your attack), you may discard the top card of your deck. If it's a basic Energy card, attach it to 1 of your Pokémon."
             actionA{
               checkLastTurn()
-              assert my.deck : "There is no more cards in your deck."
+              assert my.deck : "There are no more cards in your deck."
               powerUsed()
               if(my.deck.subList(0,1).filterByType(BASIC_ENERGY)) {
                 attachEnergyFrom(my.deck.subList(0,1),my.all)
@@ -1267,7 +1267,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Search your deck for a card and put it into your hand. Then, shuffle your deck.\n"
             energyCost C
             attackRequirement{
-              assert my.deck : "There is no more cards in your deck."
+              assert my.deck : "There are no more cards in your deck."
             }
             onAttack{
               my.deck.select(max: 1).moveTo(hidden: true, my.hand)
@@ -3094,7 +3094,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Discard the top 2 cards of your opponent's deck."
             energyCost C,C
             attackRequirement{
-              assert opp.deck : "There is no more cards in your opponent's deck"
+              assert opp.deck : "There are no more cards in your opponent's deck"
             }
             onAttack{
               opp.deck.subList(0,2).discard()
@@ -3277,7 +3277,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Look at the top 8 cards of your deck and attach any number of Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck.\n"
             energyCost Y
             attackRequirement{
-              assert my.deck : "There is no more cards in your deck"
+              assert my.deck : "There are no more cards in your deck"
             }
             onAttack{
               my.deck.subList(0,8).showToMe("Top 8 cards of your deck")
@@ -3384,7 +3384,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Search your deck for up to 3 cards and put them into your hand. Then, shuffle your deck.\n"
             energyCost Y
             attackRequirement {
-              assert my.deck : "There is no more cards in your deck"
+              assert my.deck : "There are no more cards in your deck"
             }
             onAttack {
               my.deck.select(max: 3).moveTo(hidden: true, my.hand)
@@ -4289,7 +4289,7 @@ public enum LostThunder implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert my.deck : "There is no more cards in your deck"
+            assert my.deck : "There are no more cards in your deck"
           }
         };
       case MIXED_HERBS_184:
@@ -4351,7 +4351,7 @@ public enum LostThunder implements LogicCardInfo {
             my.deck.search("Choose Basic [G] Pokémon or a [G] Energy card",{(it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(G)) || (it.cardTypes.is(BASIC_ENERGY) && it.asEnergyCard().containsTypePlain(G) )}).moveTo(my.hand)
           }
           playRequirement{
-            assert my.deck : "There is no more cards in your deck"
+            assert my.deck : "There are no more cards in your deck"
           }
         };
       case PROFESSOR_ELM_S_LECTURE_188:
@@ -4361,7 +4361,7 @@ public enum LostThunder implements LogicCardInfo {
             my.deck.search(max : 3, "Choose up to 3 Pokémon with 60 HP or less",{it.cardTypes.is(POKEMON) && it.asPokemonCard().hp.value <= 60}).showToOpponent("Chosen Pokémon cards.").moveTo(my.hand)
           }
           playRequirement{
-            assert my.deck : "There is no more cards in your deck"
+            assert my.deck : "There are no more cards in your deck"
           }
         };
       case SIGHTSEER_189:

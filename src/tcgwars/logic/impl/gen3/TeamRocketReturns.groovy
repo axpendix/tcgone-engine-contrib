@@ -288,7 +288,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           pokePower "Darkness Navigation", {
             text "Once during your turn (before your attack), if Dark Electrode has no Energy attached to it, you may search your deck for a [D] or Dark Metal Energy and attach it to Dark Electrode. Shuffle your deck afterward. This power can’t be used if Dark Electrode is affected by a Special Condition."
             actionA {
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
               assert !(self.cards.energyCount(C)) : "$self has Energies attached to it"
               checkLastTurn()
               powerUsed()
@@ -431,7 +431,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           pokePower "Cunning", {
             text "Once during your turn (before your attack), you may look at the top card of your opponent’s deck. Then, you may shuffle his or her deck. This power can’t be used if Dark Slowking is affected by a Special Condition."
             actionA {
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
               assert opp.deck
               checkLastTurn()
               powerUsed()
@@ -632,7 +632,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           pokePower "Dark Trance", {
             text "As often as you like during your turn (before your attack), you may move a [D] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Dark Dragonite is affected by a Special Condition."
             actionA {
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
               assert my.all.findAll {it.cards.energyCount(D)>0}
               assert my.all.size()>=2
 
@@ -817,7 +817,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           pokePower "Gift Exchange", {
             text "Once during your turn (before your attack), if Delibird is your Active Pokémon, you may shuffle 1 card from your hand into your deck. Then, draw a card. This power can’t be used if Delibird is affected by a Special Condition."
             actionA {
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
               assert my.hand
               assert self.active : "$self is not your active Pokémon."
               checkLastTurn()
@@ -934,7 +934,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           pokePower "Dark Spell", {
             text "Once during your turn (before your attack), if Misdreavus is your Active Pokémon, you may flip a coin. If heads, put 1 damage counter on 1 of your opponent’s Pokémon. This power can’t be used if Misdreavus is affected by a Special Condition or if your other Active Pokémon is not Misdreavus."
             actionA {
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
               assert self.active : "$self is not your active Pokémon."
               checkLastTurn()
               powerUsed()
@@ -1102,7 +1102,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Once during your turn (before your attack), if Dark Dragonair is your Active Pokémon, you may search your deck for an Evolution card. Show it to your opponent and put it into your hand. Shuffle your deck afterward. This power can’t be used if Dark Dragonair is affected by a Special Condition."
             actionA {
               checkLastTurn()
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
               assert self.active : "$self is not your active"
               powerUsed()
               my.deck.search(max : 1,"Search for an evolution",cardTypeFilter(EVOLUTION)).showToOpponent("Selected card.").moveTo(my.hand)
@@ -1247,7 +1247,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Once during your turn (before your attack), if Dark Houndoom is your Active Pokémon, you may flip a coin. If heads, the Defending Pokémon (choose 1 if there are 2) is now Burned. This power can’t be used if Dark Houndoom is affected by a Special Condition."
             actionA {
               checkLastTurn()
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
               powerUsed()
               flip{apply BURNED}
             }
@@ -1451,7 +1451,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Once during your turn (before your attack), you may remove 1 damage counter from 1 of your Pokémon (excluding Mantine). This power can’t be used if Mantine is affected by a Special Condition."
             actionA {
               checkLastTurn()
-              assert !(self.specialConditions) : "$self is affected by a Special Condition"
+              checkNoSPC()
               assert my.all.findAll{it.numberOfDamageCounters && it != self} : "There is no Pokémon with damage counter outside from ${self}."
               powerUsed()
               heal 10, my.all.findAll{it.numberOfDamageCounters && it != self}.select("Select the pokemon to heal.")

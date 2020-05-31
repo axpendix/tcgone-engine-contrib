@@ -552,7 +552,7 @@ public enum TeamUp implements LogicCardInfo {
             text "Once during your turn (before your attack), you may put 2 damage counters on this Pokémon. If you do, search your deck for up to 2 [R] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
             actionA {
               checkLastTurn()
-              assert my.deck : "There is no more cards in your deck"
+              assert my.deck : "There are no more cards in your deck"
               powerUsed()
               directDamage 20, self
               attachEnergyFrom(type: FIRE, my.deck, self)
@@ -767,7 +767,7 @@ public enum TeamUp implements LogicCardInfo {
             text "Once during your turn (before your attack), you may look at the top 6 cards of your deck and attach any number of [W] Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck."
             actionA{
               checkLastTurn()
-              assert my.deck : "There is no more cards in your deck"
+              assert my.deck : "There are no more cards in your deck"
               powerUsed()
               my.deck.subList(0,6).showToMe("Top 6 cards of your deck")
               def tar = my.deck.subList(0,6).filterByBasicEnergyType(W)
@@ -1214,7 +1214,7 @@ public enum TeamUp implements LogicCardInfo {
             text "Search your deck for up to 2 Electropower cards, reveal them, and put them into your hand. Then, shuffle your deck."
             energyCost L
             attackRequirement{
-              assert my.deck : "there is no more cards in your deck"
+              assert my.deck : "There are no more cards in your deck"
             }
             onAttack{
               my.deck.search(max:2,"Choose up to 2 Electropower cards",{it.name.contains("Electropower")}).showToOpponent("Chosen cards").moveTo(my.hand)
@@ -1258,7 +1258,7 @@ public enum TeamUp implements LogicCardInfo {
             text "Once during your turn (before your attack), you may search your deck for a Pokémon that has the Nuzzle attack, reveal it, and put it into your hand. Then, shuffle your deck."
             actionA{
               checkLastTurn()
-              assert my.deck : "There is no more cards in your deck"
+              assert my.deck : "There are no more cards in your deck"
               powerUsed()
               my.deck.search("Find Pokemon with Nuzzle attack",{it.cardTypes.pokemon && it.moves.findAll{it.name=="Nuzzle"}}).moveTo(my.hand)
               shuffleDeck()
@@ -2361,7 +2361,7 @@ public enum TeamUp implements LogicCardInfo {
             text "Once during your turn (before your attack), you may put 3 damage counters on this Pokémon. If you do, search your deck for up to 3 [D] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
             actionA {
               checkLastTurn()
-              assert my.deck : "There is no more cards in your deck"
+              assert my.deck : "There are no more cards in your deck"
               powerUsed()
               directDamage(30,self)
               my.deck.search(max:3,"Choose up to 3 [D] Energy cards", basicEnergyFilter(D)).each {
@@ -2983,7 +2983,7 @@ public enum TeamUp implements LogicCardInfo {
             text "Once during your turn (before your attack), you may look at the top 2 cards of your deck and put 1 of them into your hand. Put the other card on the bottom of your deck."
             actionA{
               checkLastTurn()
-              assert my.deck : "There is no more cards in your deck"
+              assert my.deck : "There are no more cards in your deck"
               powerUsed()
               def sel = my.deck.subList(0,2).select("Choose 1 card to put into your hand")
               my.deck.subList(0,2).getExcludedList(sel).moveTo(suppressLog: true, my.deck)
@@ -3267,7 +3267,7 @@ public enum TeamUp implements LogicCardInfo {
           }
           playRequirement{
             assert opp.active.topPokemonCard.cardTypes.contains(STAGE2) : "There is no more card in your deck"
-            assert my.deck : "There is no more cards in your deck"
+            assert my.deck : "There are no more cards in your deck"
           }
         };
       case DANGEROUS_DRILL_138:
@@ -3332,7 +3332,7 @@ public enum TeamUp implements LogicCardInfo {
           }
           playRequirement{
             assert opp.active.topPokemonCard.cardTypes.contains(STAGE1) : "There is no more card in your deck"
-            assert my.deck : "There is no more cards in your deck"
+            assert my.deck : "There are no more cards in your deck"
           }
         };
       case FAIRY_CHARM_UB_142:
@@ -3396,7 +3396,7 @@ public enum TeamUp implements LogicCardInfo {
             }
           }
           playRequirement{
-            assert my.deck : "There is no more cards in your deck"
+            assert my.deck : "There are no more cards in your deck"
           }
         };
       case JASMINE_145:
@@ -3407,7 +3407,7 @@ public enum TeamUp implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert my.deck : "There is no more cards in your deck"
+            assert my.deck : "There are no more cards in your deck"
           }
         };
       case JUDGE_WHISTLE_146:
@@ -3504,7 +3504,7 @@ public enum TeamUp implements LogicCardInfo {
             assert my.hand.find{it.name == "Dana"} : "You don't have Dana in your hand"
             assert my.hand.find{it.name == "Evelyn"} : "You don't have Evelyn in your hand"
             assert my.hand.find{it.name == "Nita"} : "You don't have Nita in your hand"
-            assert my.deck : "There is no more cards in your deck"
+            assert my.deck : "There are no more cards in your deck"
           }
         };
       case NANU_150:
@@ -3518,7 +3518,7 @@ public enum TeamUp implements LogicCardInfo {
             list.discard()
           }
           playRequirement{
-            assert my.discard.filterByType(BASIC).findAll{it.asPokemonCard().types.contains(D)} : "There is no more cards in your deck"
+            assert my.discard.filterByType(BASIC).findAll{it.asPokemonCard().types.contains(D)} : "There are no more cards in your deck"
           }
         };
       case NITA_151:
@@ -3580,7 +3580,7 @@ public enum TeamUp implements LogicCardInfo {
           def actions=[]
           onPlay {
             actions=action("Stadium: Viridian Forest") {
-              assert my.deck : "There is no more cards in your deck"
+              assert my.deck : "There are no more cards in your deck"
               assert my.hand : "You don't have cards in your hand"
               assert lastTurn != bg().turnCount : "Already used"
               bc "Used Viridian Forest effect"
