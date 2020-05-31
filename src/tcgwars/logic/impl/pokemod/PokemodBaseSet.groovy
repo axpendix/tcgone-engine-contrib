@@ -247,7 +247,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           actionA {
             checkNoSPC()
             assert my.hand.filterByBasicEnergyType(W) : "No [W] in hand"
-            assert my.all.find{it.types.contains(W)} : "No [W] pokemon"
+            assert my.all.find{it.types.contains(W) && !it.EX} : "No [W] pokemon"
 
             powerUsed()
             def card = my.hand.filterByBasicEnergyType(W).first()
@@ -2092,7 +2092,14 @@ public enum PokemodBaseSet implements LogicCardInfo {
         pokePower "Energy Rain", {
           text "As often as you like during your turn (before your attack), you may attach a [W] Energy card from your hand to 1 of your Pokémon. Put 1 damage counter on that Pokémon. This power can't be used if Blastoise ex is affected by a Special Condition."
           actionA {
-            // TODO
+            checkNoSPC()
+            assert my.hand.filterByBasicEnergyType(W) : "No [W] in hand"
+            assert my.all.find{it.types.contains(W)} : "No [W] pokemon"
+            powerUsed()
+            def card = my.hand.filterByBasicEnergyType(W).first()
+            def tar = my.all.findAll {it.types.contains(W)}.select("To?")
+            attachEnergy(tar, card)
+            directDamage 10, tar, SRC_ABILITY
           }
         }
         move "Hyper Whirlpool", {
