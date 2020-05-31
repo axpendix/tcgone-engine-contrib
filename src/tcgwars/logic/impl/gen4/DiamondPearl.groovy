@@ -291,7 +291,13 @@ public enum DiamondPearl implements LogicCardInfo {
             text "As often as you like during your turn (before your attack), if Elekid is anywhere under Electivire, you may move a [L] Energy attached to your Pokémon to Electivire. This power can’t be used if Electivire is affected by a Special Condition."
             actionA {
               checkNoSPC()
-              //TODO: How to check for Elekid specifically? Can't reuse gen 3's "Stages of Evolution" implementation, since that's used on Electabuzz as a basic.
+              assert self.cards.findAll {it.name.contains("Elekid")} : "Elekid is not found under $self, you can't use this Poké-Power"
+              def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=self})
+              assert pl : "There are no Pokémon other than $self with [L] energy attached."
+              powerUsed()
+              def src=pl.select("Source for [L] energy")
+              def card=src.cards.filterByEnergyType(L).select("Card to move").first()
+              energySwitch(src, self, card)
             }
           }
           move "Giga Impact", {
@@ -561,7 +567,6 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              //TODO: See if this solves checking for Budew specifically.
               if (self.cards.findAll {it.name.contains("Budew")}){
                 damage 30, opp.bench.select()
               }
@@ -699,10 +704,10 @@ public enum DiamondPearl implements LogicCardInfo {
               if(self.cards.energyCount(W) >= 3){
                 damage 20
               }
-              //TODO: Find out how to check for Azurill specifically (See Electivire/Roserade).
+              if (self.cards.findAll {it.name.contains("Azurill")})
+                flip { apply PARALYZED }
             }
           }
-
         };
       case BEAUTIFLY_19:
         return evolution (this, from:"Silcoon", hp:HP100, type:GRASS, retreatCost:1) {
@@ -1011,7 +1016,7 @@ public enum DiamondPearl implements LogicCardInfo {
               assert my.all.findAll { it.numberOfDamageCounters }: "No damaged Pokemon"
             }
             onAttack {
-              healAmount = 0
+              def healAmount = 0
               flipUntilTails { healAmount += 10 }
               if (healAmount && my.all.findAll { it.numberOfDamageCounters }) {
                 def pcs = my.all.findAll { it.numberOfDamageCounters }.select()
@@ -1020,11 +1025,13 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
           move "Flop", {
-            text "30 damage. You may switch Lopunny with 1 of your Benched Pokémon."
+            text "30 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) You may switch Lopunny with 1 of your Benched Pokémon."
             energyCost C, C, C
             attackRequirement {}
             onAttack {
               damage 30
+              if (opp.bench)
+                damage 20, opp.bench.select()
               afterDamage {
                 switchYourActive(may: true)
               }
@@ -1065,7 +1072,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 10 * self.numberOfDamageCounters, opp.all.select()
+              directDamage 10 * self.numberOfDamageCounters, opp.all.select()
             }
           }
           move "Spinning Kick", {
@@ -1099,9 +1106,10 @@ public enum DiamondPearl implements LogicCardInfo {
             text "30× damage. Discard 2 cards from your hand. (If you can’t discard 2 cards, this attack does nothing.) Flip 2 coins. This attack does 30 damage times the number of heads."
             energyCost C
             attackRequirement {
-              assert my.hand.size() >= 2
+              assert my.hand.size() >= 2 : "You can’t discard 2 cards from your hand, so you can't use this attack."
             }
             onAttack {
+              my.hand.select(count:2,"Discard 2 cards from your hand.").discard()
               flip 2, { damage 30 }
             }
           }
@@ -1125,6 +1133,7 @@ public enum DiamondPearl implements LogicCardInfo {
 
               def indexOfOldPrize = my.prizeCardSet.indexOf(tar)
               my.prizeCardSet.set(indexOfOldPrize, newPrize)
+              my.prizeCardSet.setVisible(indexOfOldPrize, true)
               my.hand.remove(newPrize)
             }
           }
@@ -1205,8 +1214,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              //TODO: Baby Evolution check (see Electivire/Roserade)
-              //if(isEvolvedFrom("munchlax")) damage 30
+              if (self.cards.findAll {it.name.contains("Munchlax")}) damage 30
               apply ASLEEP, self
             }
           }
@@ -1296,7 +1304,10 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               flip {
                 targeted (defending) {
-                  defending.damage += self.damage
+                  //defending.damage += self.damage
+                  directDamage self.damage, defending
+                  def dc = self.damage / 10
+                  bc "Moved $dc damage counters from $self to $defending."
                   self.damage = hp(0)
                 }
               }
@@ -1364,7 +1375,8 @@ public enum DiamondPearl implements LogicCardInfo {
             text "During your opponent’s next turn, if Cascoon would be damaged by an attack, prevent that attack’s damage done to Cascoon if that damage is 30 or less."
             energyCost G
             attackRequirement {}
-            delayed{
+            onAttack {
+              delayed {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.to == self && it.dmg.value <= 30 && it.notNoEffect) {
@@ -1377,6 +1389,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 after EVOLVE,self, {unregister()}
                 after SWITCH,self, {unregister()}
               }
+            }
           }
           move "Gooey Thread", {
             text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
@@ -1511,7 +1524,7 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness R, PLUS20
           resistance W, MINUS20
           move "Synthesis", {
-            text "Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
+            text "Search your deck for a [G] Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
             energyCost G
             attackRequirement {
               assert my.deck
@@ -1546,10 +1559,9 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Dream Eater", {
             text "60 damage. If the Defending Pokémon is not Asleep, this attack does nothing."
             energyCost P, P
-            attackRequirement {}
+            attackRequirement {defending.isSPC(ASLEEP) : "The Defending Pokémon is not Asleep."}
             onAttack {
-              if (defending.isSPC(ASLEEP))
-                damage 60
+              damage 60
             }
           }
 
