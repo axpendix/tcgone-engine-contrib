@@ -2080,8 +2080,8 @@ public enum PokemodBaseSet implements LogicCardInfo {
           text "200 damage. Discard 5 [R] Energy attached to Charizard ex. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, and any other effects on the Defending Pokémon."
           energyCost R, R, R, R, R
           onAttack {
-            damage 200
-            // TODO:
+            discardSelfEnergy(R,R,R,R,R)
+            new ResolvedDamage(hp(200), my.active, opp.active, Source.ATTACK, DamageManager.DamageFlag.NO_RESISTANCE, DamageManager.DamageFlag.NO_WEAKNESS, DamageManager.DamageFlag.NO_DEFENDING_EFFECT).run(bg)
           }
         }
       };
