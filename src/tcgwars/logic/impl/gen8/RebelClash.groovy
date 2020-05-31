@@ -2912,7 +2912,9 @@ public enum RebelClash implements LogicCardInfo {
         move "Blindside", {
           text "This attack does 100 damage to 1 of your opponent’s Pokemon that already has damage counters on it. (Don’t apply Weakness and Resistance for Benched Pokemon.)"
           energyCost D, D
-          attackRequirement {}
+          attackRequirement {
+            assert opp.all.findAll {it.numberOfDamageCounters} : "Opponent has no Pokémon with damage counters on them"
+          }
           onAttack {
             damage 100, opp.all.findAll { it.numberOfDamageCounters }.select()
           }
