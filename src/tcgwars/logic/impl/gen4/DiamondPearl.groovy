@@ -1520,7 +1520,7 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness R, PLUS20
           resistance W, MINUS20
           move "Synthesis", {
-            text "Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
+            text "Search your deck for a [G] Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
             energyCost G
             attackRequirement {
               assert my.deck
