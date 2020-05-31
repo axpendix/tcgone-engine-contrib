@@ -1574,7 +1574,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              apply ASLEEP
             }
           }
           move "Sand Attack", {
@@ -1582,7 +1582,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              sandAttack(thisMove)
             }
           }
 
@@ -1605,7 +1606,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost L, L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip {apply PARALYZED}
             }
           }
 
@@ -1618,15 +1620,15 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40 - 10 * self.numberOfDamageCounters
             }
           }
           move "Seismic Toss", {
-            text "60 damage. "
+            text "60 damage."
             energyCost F, F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
             }
           }
 
@@ -1640,7 +1642,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 3, {damage 20}
             }
           }
           move "Magnetic Ray", {
@@ -1648,7 +1650,14 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              //TODO: Generalize on Statics, with "may" and "filter" params. See "Drag Off" (BLAZIKEN_EX_90 in CG) as a similar attack for base.
+              def target = defending
+              tar = opp.bench.filterAll{ it.cards.energyCount() }
+              if (tar && select("Before doing damage, you may choose 1 of your opponent’s Benched Pokémon that has any Energy attached to it and switch that Pokémon with 1 of the Defending Pokémon.")) {
+                target = tar.select("Select the new active")
+                sw defending, target
+              }
+              damage 40, target
             }
           }
 
