@@ -1648,15 +1648,7 @@ public enum SunMoon implements LogicCardInfo {
             energyCost P, P, P, P
             onAttack {
               damage 120
-              delayed {
-                before REMOVE_DAMAGE_COUNTER, defending, {
-                  bc "Moongeist Beam prevents healing"
-                  prevent()
-                }
-                after EVOLVE, defending, {unregister()}
-                after SWITCH, defending, {unregister()}
-                unregisterAfter 2
-              }
+              cantBeHealed(defending)
             }
           }
           move "Lunar Fall GX", {

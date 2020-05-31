@@ -1104,11 +1104,14 @@ class TcgStatics {
   }
   static void cantBeHealed(PokemonCardSet defending){
     delayed {
+      after EVOLVE, defending, {unregister()}
+      after SWITCH, defending, {unregister()}
+
       before REMOVE_DAMAGE_COUNTER, defending, {
         bc "Healing was prevented due to an effect"
         prevent()
       }
-      unregisterAfter 3
+      unregisterAfter 2
     }
   }
   static void opponentCantPlaySupporterNextTurn(def _delegate){
