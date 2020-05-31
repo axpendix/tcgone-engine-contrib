@@ -2868,135 +2868,160 @@ public enum DiamondPearl implements LogicCardInfo {
 
         };
       case DOUBLE_FULL_HEAL_105:
-        return basicTrainer (this) {
-          text "Remove all Special Conditions from each of your Active Pokémon."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (Sandstorm.DOUBLE_FULL_HEAL_86, this);
       case ENERGY_RESTORE_106:
-        return basicTrainer (this) {
-          text "Flip 3 coins. For each heads, put a basic Energy card from your discard pile into your hand. If you don’t have that many basic Energy cards in your discard pile, put all of them into your hand."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (Expedition.ENERGY_RESTORE_141, this);
       case ENERGY_SWITCH_107:
-      return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
       case NIGHT_POKEMON_CENTER_108:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Choose 1 of your Pokémon. Flip 2 coins. If both are heads, remove all damage counters from that Pokémon. If both are tails, discard all Energy cards attached to that Pokémon."
           onPlay {
+            def pcs = my.all.filterAll{it.numberOfDamageCounter || it.cards.energyCount()}.select("Select 1 of you Pokémon with either damage counters, energy attached, or both.")
+            flip 1, {
+              if (pcs.numberOfDamageCounters) healAll pcs
+            }, {
+              pcs.cards.filterByType(ENERGY).discard()
+            }
           }
-          playRequirement{
+          playRequirement {
+            assert my.all.filterAll{it.numberOfDamageCounter || it.cards.energyCount()} : "You have no Pokémon with either damage counters, energy attached, or both."
           }
         };
       case PLUSPOWER_109:
         return basicTrainer (this) {
           text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
           onPlay {
+            //TODO
           }
           playRequirement{
           }
         };
       case POKE_BALL_110:
-        return basicTrainer (this) {
+      return itemCard (this) {
           text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
+            flip{
+              my.deck.search(count: 1, "Select a Pokémon card", {it.cardTypes.is(POKEMON)}).moveTo(my.hand)
+              shuffleDeck()
+            }
           }
           playRequirement{
+            assert my.deck: "There are no more cards in your deck."
           }
         };
       case POKEDEX_HANDY910IS_111:
         return basicTrainer (this) {
           text "Look at the top 2 cards of your deck, choose 1 of them, and put it into your hand. Put the other card on the bottom of your deck."
           onPlay {
+              def sel = my.deck.subList(0,2).select("Choose 1 card to put into your hand")
+              my.deck.subList(0,2).getExcludedList(sel).moveTo(suppressLog: true, my.deck)
+              sel.moveTo(hidden: true, my.hand)
           }
           playRequirement{
+            assert my.deck : "There are no more cards in your deck."
           }
         };
       case PROFESSOR_ROWAN_112:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose 1 card in your hand and shuffle the rest of your cards into your deck. Then, draw 4 cards. (If this is the only card in your hand, you can’t play this card.)"
           onPlay {
+            def availCards = my.hand.getExcludedList(thisCard)
+            def chosenCard = availCards.select("Choose a card to keep in your hand.")
+            availCards.getExcludedList(chosenCard).moveTo(hidden:true, my.deck)
+            shuffleDeck()
+            draw 4
           }
           playRequirement{
+            assert my.hand.getExcludedList(thisCard) : "This is the only card in your hand."
           }
         };
       case RIVAL_113:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nReveal the top 5 cards of your deck. Your opponent choose 3 of those cards. Put those cards into your hand and put other 2 cards on top of your deck. Shuffle your deck afterward."
           onPlay {
+            def cards = my.deck.subList(0,5)
+            cards.showToMe("The top 5 cards of your deck.")
+            cards.oppSelect(count:3,"The top 7 cards of your opponent's deck. Choose 3 of them to put in your opponent's hand. The rest will be put back on top of their deck.").moveTo(my.hand)
+            shuffleDeck()
           }
           playRequirement{
+            assert my.deck : "There are no more cards in your deck."
           }
         };
       case SPEED_STADIUM_114:
-        return basicTrainer (this) {
+        return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, the player may flip a coin until he or she gets tails. For each heads, that player draws a card."
+          def currentTurnCount=0
+          def actions=[]
           onPlay {
+            actions=action("Stadium: Lucky Stadium") {
+              assert my.deck : "Deck is empty"
+              assert currentTurnCount != bg().turnCount : "Already used Stadium"
+              bc "Used Speed Stadium"
+              currentTurnCount = bg().turnCount
+              flipUntilTails { draw 1 }
+            }
+          }
+          onRemoveFromPlay {
+            actions.each {
+              bg().gm().unregisterAction(it)
+            }
           }
           playRequirement{
+            assert my.deck : "There are no more cards in your deck."
           }
         };
       case SUPER_SCOOP_UP_115:
-        return basicTrainer (this) {
-          text "Flip a coin. If heads, return 1 of your Pokémon and all cards attached to it to your hand."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (BlackWhite.SUPER_SCOOP_UP_103, this);
       case WARP_POINT_116:
-      return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
+        return copy(PlasmaStorm.ESCAPE_ROPE_120, this);
       case ENERGY_SEARCH_117:
-        return basicTrainer (this) {
-          text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(BlackWhite.ENERGY_SEARCH_93, this);
       case POTION_118:
-        return basicTrainer (this) {
-          text "Remove 2 damage counters from 1 of your Pokémon (remove 1 damage counter if that Pokémon has only 1)."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(FireRedLeafGreen.POTION_101, this);
       case SWITCH_119:
-        return basicTrainer (this) {
-          text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(FireRedLeafGreen.SWITCH_102, this);
       case EMPOLEON_LV_X_120:
+        //TODO: Find how to mark these cards as "LEVEL_UP" cards instead of evolutions.
         return evolution (this, from:"Empoleon", hp:HP140, type:WATER, retreatCost:2) {
           weakness L, PLUS30
           pokePower "Supreme Command", {
-            text "Once during your turn , you may choose up to 2 cards from your opponent’s hand without looking and put them face down next to the Defending Pokémon. (These cards are not in play or in your opponent’s hand.) At the end of your opponent’s next turn, return those cards to your opponent’s hand. This power can’t be used if Empoleon is affected by a Special Condition."
+            text "Once during your turn (before your attack), you may choose up to 2 cards from your opponent’s hand without looking and put them face down next to the Defending Pokémon. (These cards are not in play or in your opponent’s hand.) At the end of your opponent’s next turn, return those cards to your opponent’s hand. This power can’t be used if Empoleon is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              assert opp.hand : "Your Opponent has no cards in their hand."
+              powerUsed()
+              def supremeCommandBundles = [ : ]
+              def supremeCommandCards = new CardList()
+              def chosenCards = opp.hand.select(hidden: true, count:2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.").moveTo(hidden:true, supremeCommandCards)
+
+              if(bg.em().retrieveObject("supremeCommandBundles") != null){
+                supremeCommandBundles = bg.em().retrieveObject("supremeCommandCards")
+              }
+              supremeCommandCards.put(self, supremeCommandCards)
+              bg.em().storeObject("supremeCommandBundles",supremeCommandBundles)
+
+              delayed{
+                before BETWEEN_TURNS, {
+                  if(bg.currentTurn == self.owner.opposite && bg.em().retrieveObject("supremeCommandBundles") != null){
+                    def supComBundles = bg.em().retrieveObject("supremeCommandCards")
+                  }
+                  def toBeReturnedCards = supComBundles.get(self)
+                  if (toBeReturnedCards != null)
+                    toBeReturnedCards.moveTo(hidden:true, opp.hand)
+                }
+                unregisterAfter 2
+              }
             }
           }
           move "Hydro Impact", {
-            text "Empoleon can’t attack during your next turn."
+            text "Choose 1 of your opponent’s Pokémon. This attack does 80 damage to that Pokémon (Don’t apply Weakness and Resistance for Benched Pokémon.) Empoleon can’t attack during your next turn."
             energyCost W, W, W
             attackRequirement {}
             onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "Put this card onto your Active Empoleon. Empoleon LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+              damage 80, opp.all.findAll{it.numberOfDamageCounters}.select()
             }
           }
 
