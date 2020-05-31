@@ -293,33 +293,18 @@ public enum PokemodBaseSet implements LogicCardInfo {
         resistance F, MINUS30
         pokemonPower "Energy Burn", {
           text "As often as you like during your turn (before your attack), you may turn all Basic Energy attached to Charizard into [R] Energy for the rest of the turn. This power can't be used if Charizard is affected by a Special Condition."
-          def set = [] as Set
-          def eff1, eff2
-          onActivate {
-            if(eff1) eff1.unregister()
-            if(eff2) eff2.unregister()
-            eff1 = delayed {
-              before BETWEEN_TURNS, {
-                set.clear()
-              }
-            }
-            eff2 = getter GET_ENERGY_TYPES, { holder->
-              if(set.contains(holder.effect.card)) {
-                int count = holder.object.size()
-                holder.object = [(1..count).collect{[FIRE] as Set}]
-              }
-            }
-          }
-          actionA {
+          actionA{
             checkNoSPC()
-            def newSet = [] as Set
-            newSet.addAll(self.cards.filterByType(BASIC_ENERGY))
-            if(newSet != set){
-              powerUsed()
-              set.clear()
-              set.addAll(newSet)
-            } else {
-              wcu "Nothing more to burn"
+            powerUsed()
+            def eff = getter GET_ENERGY_TYPES, { holder->
+              if(holder.effect.target == self && holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
+                holder.object = [[R] as Set]
+              }
+            }
+            delayed {
+              before BETWEEN_TURNS, {
+                eff.unregister()
+              }
             }
           }
         }
@@ -2076,8 +2061,11 @@ public enum PokemodBaseSet implements LogicCardInfo {
         weakness L
         pokeBody "Energy Flame", {
           text "All Energy attached to Charizard ex are [R] Energy instead of its usual type."
-          delayedA {
-            // TODO:
+          getterA GET_ENERGY_TYPES, { holder->
+            if(holder.effect.target == self) {
+              int count = holder.object.size()
+              holder.object = (1..count).collect{[FIRE] as Set}
+            }
           }
         }
         move "Slash", {
