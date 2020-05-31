@@ -2912,7 +2912,9 @@ public enum RebelClash implements LogicCardInfo {
         move "Blindside", {
           text "This attack does 100 damage to 1 of your opponent’s Pokemon that already has damage counters on it. (Don’t apply Weakness and Resistance for Benched Pokemon.)"
           energyCost D, D
-          attackRequirement {}
+          attackRequirement {
+            assert opp.all.findAll {it.numberOfDamageCounters} : "Opponent has no Pokémon with damage counters on them"
+          }
           onAttack {
             damage 100, opp.all.findAll { it.numberOfDamageCounters }.select()
           }
@@ -3088,7 +3090,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             damage 30
 
-            if (self.lastEvolved == bg.turnCount) {
+            if (self.lastEvolved == bg.turnCount && self.cards.findAll {it.name.contains("Scyther")}) {
               damage 90
             }
           }
@@ -3238,12 +3240,14 @@ public enum RebelClash implements LogicCardInfo {
           text "As long as this Pokemon is in play, any damage done to your Pokemon by opponent’s attacks is reduced by 30. You can’t use more than 1 Big Shield Ability."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
+              assert bg.em().retrieveObject("Big_Shield") != bg.turnCount
               bg.dm().each {
                 if (it.to.owner == self.owner && it.notNoEffect && it.dmg.value) {
                   bc "Big Shield -30"
                   it.dmg -= hp(30)
                 }
               }
+              bg.em.storeObject("Big_Shield") = bg.turnCount
             }
           }
         }
@@ -3332,7 +3336,7 @@ public enum RebelClash implements LogicCardInfo {
         resistance G, MINUS30
         move "Energy Stream", {
           text "30 damage. Attach a [M] Energy from your discard pile to this Pokemon."
-          energyCost C
+          energyCost M, C
           attackRequirement {}
           onAttack {
             damage 30
@@ -3358,7 +3362,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Guard Press", {
-          text "During your opponent's next turn, this Pokemon takes 20 less damage from attacks (after applying Weakness and Resistance)."
+          text "30 Damage. During your opponent's next turn, this Pokemon takes 20 less damage from attacks (after applying Weakness and Resistance)."
           energyCost M, C
           attackRequirement {}
           onAttack {
