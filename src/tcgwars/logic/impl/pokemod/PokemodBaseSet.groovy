@@ -2005,7 +2005,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           my.discard.filterByType(TRAINER).select().moveTo(my.hand)
         }
         playRequirement{
-          assert my.discard.filterByType(TRAINER) : "You have no trainers in your discard pile.
+          assert my.discard.filterByType(TRAINER) : "You have no trainers in your discard pile."
         }
       };
       case Elixir_109:
