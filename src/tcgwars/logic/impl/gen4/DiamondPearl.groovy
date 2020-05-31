@@ -1555,10 +1555,9 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Dream Eater", {
             text "60 damage. If the Defending Pokémon is not Asleep, this attack does nothing."
             energyCost P, P
-            attackRequirement {}
+            attackRequirement {defending.isSPC(ASLEEP) : "The Defending Pokémon is not Asleep."}
             onAttack {
-              if (defending.isSPC(ASLEEP))
-                damage 60
+              damage 60
             }
           }
 
