@@ -4664,7 +4664,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             def healingEff = false
             if (my.hand.getExcludedList(thisCard).size() >= 2 && confirm("Discard 2 cards to be able to heal the Pokémon you moved to the bench?")) {
               my.hand.getExcludedList(thisCard).select(count:2, "Choose 2 cards to discard.")discard()
-              switchedPCS = my.active
+              def switchedPCS = my.active
               healingEff = true
             }
 
