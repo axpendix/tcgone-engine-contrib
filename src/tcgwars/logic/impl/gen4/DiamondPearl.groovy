@@ -1371,7 +1371,8 @@ public enum DiamondPearl implements LogicCardInfo {
             text "During your opponent’s next turn, if Cascoon would be damaged by an attack, prevent that attack’s damage done to Cascoon if that damage is 30 or less."
             energyCost G
             attackRequirement {}
-            delayed{
+            onAttack {
+              delayed {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.to == self && it.dmg.value <= 30 && it.notNoEffect) {
@@ -1384,6 +1385,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 after EVOLVE,self, {unregister()}
                 after SWITCH,self, {unregister()}
               }
+            }
           }
           move "Gooey Thread", {
             text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
