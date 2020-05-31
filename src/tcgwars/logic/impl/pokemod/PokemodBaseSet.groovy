@@ -2119,7 +2119,13 @@ public enum PokemodBaseSet implements LogicCardInfo {
         pokePower "Energy Trans", {
           text "As often as you like during your turn (before your attack), move a [G] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Venusaur ex is affected by a Special Condition."
           actionA {
-            // TODO:
+            checkNoSPC()
+            assert my.all.findAll{it.cards.filterByEnergyType(G)} : "You have no [G] Energy attached to your pokemon"
+            assert my.all.size() >= 2 : "You only have one Pokémon in play."
+            powerUsed()
+            def src = my.all.findAll{it.cards.filterByEnergyType(G)}.select("Move Energy from which pokemon?")
+            def tar = my.all.findAll {it != src}.select("Move Energy to which Pokémon?")
+            src.cards.filterByEnergyType(G).select("Select a Basic Energy card to move to the target.").each{energySwitch(src,tar,it)}
           }
         }
         move "Pollen Hazard", {
