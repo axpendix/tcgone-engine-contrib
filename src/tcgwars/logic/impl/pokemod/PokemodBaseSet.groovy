@@ -2004,8 +2004,8 @@ public enum PokemodBaseSet implements LogicCardInfo {
           tar.cards.filterByType(ENERGY).select(min:0,max:2,"Discard which energies?").discard()
         }
         playRequirement{
-          my.all.findAll{it.cards.filterByType(ENERGY)} : "You have no energy attached to your pokemon"
-          opp.all.findAll{it.cards.filterByType(ENERGY)} : "Your opponent has no energy attached to their pokemon"
+          assert my.all.findAll{it.cards.filterByType(ENERGY)} : "You have no energy attached to your pokemon"
+          assert opp.all.findAll{it.cards.filterByType(ENERGY)} : "Your opponent has no energy attached to their pokemon"
         }
       };
       case DOWSING_MACHINE_108:
