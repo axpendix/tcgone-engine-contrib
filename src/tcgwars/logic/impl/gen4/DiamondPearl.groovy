@@ -291,7 +291,13 @@ public enum DiamondPearl implements LogicCardInfo {
             text "As often as you like during your turn (before your attack), if Elekid is anywhere under Electivire, you may move a [L] Energy attached to your Pokémon to Electivire. This power can’t be used if Electivire is affected by a Special Condition."
             actionA {
               checkNoSPC()
-              //TODO: How to check for Elekid specifically? Can't reuse gen 3's "Stages of Evolution" implementation, since that's used on Electabuzz as a basic.
+              assert self.cards.findAll {it.name.contains("Elekid")} : "Elekid is not found under $self, you can't use this Poké-Power"
+              def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=self})
+              assert pl : "There are no Pokémon other than $self with [L] energy attached."
+              powerUsed()
+              def src=pl.select("Source for [L] energy")
+              def card=src.cards.filterByEnergyType(L).select("Card to move").first()
+              energySwitch(src, self, card)
             }
           }
           move "Giga Impact", {
@@ -561,7 +567,6 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              //TODO: See if this solves checking for Budew specifically.
               if (self.cards.findAll {it.name.contains("Budew")}){
                 damage 30, opp.bench.select()
               }
@@ -699,10 +704,10 @@ public enum DiamondPearl implements LogicCardInfo {
               if(self.cards.energyCount(W) >= 3){
                 damage 20
               }
-              //TODO: Find out how to check for Azurill specifically (See Electivire/Roserade).
+              if (self.cards.findAll {it.name.contains("Azurill")})
+                flip { apply PARALYZED }
             }
           }
-
         };
       case BEAUTIFLY_19:
         return evolution (this, from:"Silcoon", hp:HP100, type:GRASS, retreatCost:1) {
@@ -1209,8 +1214,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              //TODO: Baby Evolution check (see Electivire/Roserade)
-              //if(isEvolvedFrom("munchlax")) damage 30
+              if (self.cards.findAll {it.name.contains("Munchlax")}) damage 30
               apply ASLEEP, self
             }
           }
