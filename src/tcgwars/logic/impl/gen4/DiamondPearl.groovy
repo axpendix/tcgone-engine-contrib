@@ -1300,7 +1300,10 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               flip {
                 targeted (defending) {
-                  defending.damage += self.damage
+                  //defending.damage += self.damage
+                  directDamage self.damage, defending
+                  def dc = self.damage / 10
+                  bc "Moved $dc damage counters from $self to $defending."
                   self.damage = hp(0)
                 }
               }
