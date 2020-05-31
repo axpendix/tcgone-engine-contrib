@@ -2030,6 +2030,7 @@ public enum RebelClash implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
+                powerused()
                 directDamage(30, ef.attacker, Source.SRC_ABILITY)
               }
             }
