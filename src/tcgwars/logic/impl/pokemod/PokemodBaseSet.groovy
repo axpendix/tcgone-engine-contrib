@@ -247,12 +247,12 @@ public enum PokemodBaseSet implements LogicCardInfo {
           actionA {
             checkNoSPC()
             assert my.hand.filterByBasicEnergyType(W) : "No [W] in hand"
-            assert my.all.find{it.types.contains(W)} : "No [W] pokemon"
+            assert my.all.find{it.types.contains(W) && !it.EX} : "No [W] pokemon"
 
             powerUsed()
             def card = my.hand.filterByBasicEnergyType(W).first()
             attachEnergy(my.all.findAll {
-              it.types.contains(W) && !it.pokemonEX
+              it.types.contains(W) && !it.EX
             }.select("To?"), card)
           }
         }
@@ -1830,7 +1830,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Discard 1 Energy card attached to 1 of your own Pokémon (excluding Pokémon-ex) in order to remove up to 4 damage counters from that Pokémon."
         onPlay {
-          def tar = my.all.findAll { it.cards.energyCount(C) && it.numberOfDamageCounters && !it.pokemonEX }
+          def tar = my.all.findAll { it.cards.energyCount(C) && it.numberOfDamageCounters && !it.EX }
           if(tar) {
             def pcs = tar.select("Heal which Pokemon?")
             targeted (pcs, TRAINER_CARD) {
@@ -1840,7 +1840,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           }
         }
         playRequirement{
-          assert my.all.findAll { it.cards.energyCount(C) && it.numberOfDamageCounters && !it.pokemonEX }
+          assert my.all.findAll { it.cards.energyCount(C) && it.numberOfDamageCounters && !it.EX }
         }
       };
       case BILL_91:
@@ -2092,7 +2092,13 @@ public enum PokemodBaseSet implements LogicCardInfo {
         pokePower "Energy Rain", {
           text "As often as you like during your turn (before your attack), you may attach a [W] Energy card from your hand to 1 of your Pokémon. Put 1 damage counter on that Pokémon. This power can't be used if Blastoise ex is affected by a Special Condition."
           actionA {
-            // TODO
+            checkNoSPC()
+            assert my.hand.filterByBasicEnergyType(W) : "No [W] in hand"
+            powerUsed()
+            def card = my.hand.filterByBasicEnergyType(W).first()
+            def tar = my.all.select("To?")
+            attachEnergy(tar, card)
+            directDamage 10, tar, SRC_ABILITY
           }
         }
         move "Hyper Whirlpool", {
