@@ -1128,6 +1128,7 @@ public enum DiamondPearl implements LogicCardInfo {
 
               def indexOfOldPrize = my.prizeCardSet.indexOf(tar)
               my.prizeCardSet.set(indexOfOldPrize, newPrize)
+              my.prizeCardSet.setVisible(indexOfOldPrize, true)
               my.hand.remove(newPrize)
             }
           }
