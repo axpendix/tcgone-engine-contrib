@@ -3336,7 +3336,7 @@ public enum RebelClash implements LogicCardInfo {
         resistance G, MINUS30
         move "Energy Stream", {
           text "30 damage. Attach a [M] Energy from your discard pile to this Pokemon."
-          energyCost C
+          energyCost M, C
           attackRequirement {}
           onAttack {
             damage 30
