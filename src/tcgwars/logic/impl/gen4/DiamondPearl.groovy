@@ -2982,7 +2982,7 @@ public enum DiamondPearl implements LogicCardInfo {
                         opp.hand.addAll(toBeReturnedCards)
                     }
                   }
-                  unregisterAfter 2
+                  unregisterAfter 3
                 }
               }
             }
