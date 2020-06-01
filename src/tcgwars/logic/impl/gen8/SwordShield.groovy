@@ -673,7 +673,8 @@ public enum SwordShield implements LogicCardInfo {
           text "Search your deck for up to 3 [G] Energy cards and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck
+            assert my.deck : "Deck is empty"
+            assert my.bench : "You don't have Pokémon on your bench"
           }
           onAttack {
             my.deck.filterByEnergyType(G).select(max: 3).each {
@@ -915,6 +916,7 @@ public enum SwordShield implements LogicCardInfo {
           delayedA{
             after SWITCH, {
               if (bg.em().retrieveObject("Libero") != bg.turnCount && self.active && bg.currentTurn == self.owner && ef.switchedOut==self && confirm("Use Libero?")) {
+                powerUsed()
                 bg.em().storeObject("Libero", bg.turnCount)
                 attachEnergyFrom(max: 2, type: FIRE, my.discard, self)
               }
@@ -1009,6 +1011,9 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R
           onAttack {
             opp.deck.subList(0, self.cards.energyCount(R)).discard()
+          }
+          attackRequirement {
+            assert opp.deck : "Your opponent's deck is empty"
           }
         }
         move "Searing Flame", {
@@ -1160,7 +1165,7 @@ public enum SwordShield implements LogicCardInfo {
             damage 70
             afterDamage {
               if (opp.active.cards.filterByType(ENERGY)) {
-                opp.active.cards.filterByType(ENERGY).select(max: 2, "Choose the energy to discard").moveTo(opp.hand)
+                opp.active.cards.filterByType(ENERGY).select(max: 2, "Choose the energy to return to your opponent's hand").moveTo(opp.hand)
               }
             }
           }
@@ -1455,6 +1460,7 @@ public enum SwordShield implements LogicCardInfo {
           text "As often as you like during your turn, you may attach a [W] Energy card from your hand to 1 of your Benched [W] Pokémon."
           actionA {
             if (confirm("Use Ice Dance?")) {
+              powerUsed()
               attachEnergyFrom(type:W, my.hand, my.bench.findAll { it.types.contains(W) })
             }
           }
@@ -2103,6 +2109,9 @@ public enum SwordShield implements LogicCardInfo {
           onAttack {
             opp.deck.subList(0, 2).discard()
           }
+          attackRequirement {
+            assert opp.deck : "Your opponent's deck is empty"
+          }
         }
         move "Land Crush", {
           text "70 damage."
@@ -2747,7 +2756,7 @@ public enum SwordShield implements LogicCardInfo {
           onAttack {
             damage 40
             afterDamage {
-              flip {discardDefendingEnergy()}
+              discardDefendingEnergy()
             }
           }
         }
@@ -3176,7 +3185,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 80
-            my.deck.subList(0, 2).discard()
+            if(my.deck) my.deck.subList(0, 2).discard()
           }
         }
       };
