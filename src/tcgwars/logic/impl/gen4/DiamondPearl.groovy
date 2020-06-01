@@ -2998,7 +2998,7 @@ public enum DiamondPearl implements LogicCardInfo {
               def chosenCards = opp.hand.select(hidden: true, count:2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.").moveTo(hidden:true, supremeCommandCards)
 
               if(bg.em().retrieveObject("supremeCommandBundles") != null){
-                supremeCommandBundles = bg.em().retrieveObject("supremeCommandCards")
+                supremeCommandBundles = bg.em().retrieveObject("supremeCommandBundles")
               }
               supremeCommandBundles.put(self, supremeCommandCards)
               bg.em().storeObject("supremeCommandBundles",supremeCommandBundles)
@@ -3008,7 +3008,7 @@ public enum DiamondPearl implements LogicCardInfo {
                   if(
                     bg.currentTurn == self.owner.opposite && bg.em().retrieveObject("supremeCommandBundles") != null
                   ){
-                    def supComBundles = bg.em().retrieveObject("supremeCommandCards")
+                    def supComBundles = bg.em().retrieveObject("supremeCommandBundles")
                     def toBeReturnedCards = supComBundles.get(self)
                     if (toBeReturnedCards != null)
                       toBeReturnedCards.moveTo(hidden:true, opp.hand)
