@@ -3000,7 +3000,7 @@ public enum DiamondPearl implements LogicCardInfo {
               if(bg.em().retrieveObject("supremeCommandBundles") != null){
                 supremeCommandBundles = bg.em().retrieveObject("supremeCommandCards")
               }
-              supremeCommandCards.put(self, supremeCommandCards)
+              supremeCommandBundles.put(self, supremeCommandCards)
               bg.em().storeObject("supremeCommandBundles",supremeCommandBundles)
 
               delayed{
