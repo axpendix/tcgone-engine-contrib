@@ -3000,7 +3000,7 @@ public enum DiamondPearl implements LogicCardInfo {
               if(bg.em().retrieveObject("supremeCommandBundles") != null){
                 supremeCommandBundles = bg.em().retrieveObject("supremeCommandBundles")
               }
-              supremeCommandBundles.put(self, supremeCommandCards)
+              supremeCommandBundles.put(self.id, supremeCommandCards.copy())
               bg.em().storeObject("supremeCommandBundles",supremeCommandBundles)
 
               delayed{
@@ -3009,7 +3009,7 @@ public enum DiamondPearl implements LogicCardInfo {
                     bg.currentTurn == self.owner.opposite && bg.em().retrieveObject("supremeCommandBundles") != null
                   ){
                     def supComBundles = bg.em().retrieveObject("supremeCommandBundles")
-                    def toBeReturnedCards = supComBundles.get(self)
+                    def toBeReturnedCards = supComBundles.get(self.id).copy()
                     if (toBeReturnedCards != null)
                       toBeReturnedCards.moveTo(hidden:true, opp.hand)
                   }
