@@ -2756,7 +2756,7 @@ public enum SwordShield implements LogicCardInfo {
           onAttack {
             damage 40
             afterDamage {
-              flip {discardDefendingEnergy()}
+              discardDefendingEnergy()
             }
           }
         }
