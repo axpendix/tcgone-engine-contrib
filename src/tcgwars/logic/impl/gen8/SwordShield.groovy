@@ -673,7 +673,8 @@ public enum SwordShield implements LogicCardInfo {
           text "Search your deck for up to 3 [G] Energy cards and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck
+            assert my.deck : "Deck is empty"
+            assert my.bench : "You don't have Pokémon on your bench"
           }
           onAttack {
             my.deck.filterByEnergyType(G).select(max: 3).each {
