@@ -2994,13 +2994,14 @@ public enum DiamondPearl implements LogicCardInfo {
               assert opp.hand : "Your Opponent has no cards in their hand."
               powerUsed()
               def supremeCommandBundles = [ : ]
-              def supremeCommandCards = new CardList("supComCards_" + self.id)
-              def chosenCards = opp.hand.select(hidden: true, count:2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.").moveTo(hidden:true, supremeCommandCards)
+              def supremeCommandCards
+              def chosenCards = opp.hand.select(hidden: true, count:2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.")
 
               if(bg.em().retrieveObject("supremeCommandBundles") != null){
                 supremeCommandBundles = bg.em().retrieveObject("supremeCommandBundles")
               }
-              supremeCommandBundles.put(self.id, supremeCommandCards.copy())
+              supremeCommandBundles.put(self.id, chosenCards)
+              my.hand.remove(chosenCards)
               bg.em().storeObject("supremeCommandBundles",supremeCommandBundles)
 
               delayed{
@@ -3009,9 +3010,9 @@ public enum DiamondPearl implements LogicCardInfo {
                     bg.currentTurn == self.owner.opposite && bg.em().retrieveObject("supremeCommandBundles") != null
                   ){
                     def supComBundles = bg.em().retrieveObject("supremeCommandBundles")
-                    def toBeReturnedCards = supComBundles.get(self.id).copy()
+                    def toBeReturnedCards = supComBundles.get(self.id)
                     if (toBeReturnedCards != null)
-                      toBeReturnedCards.moveTo(hidden:true, opp.hand)
+                      opp.hand.addAll(toBeReturnedCards)
                   }
                 }
                 unregisterAfter 2
@@ -3032,24 +3033,31 @@ public enum DiamondPearl implements LogicCardInfo {
         return evolution (this, from:"Infernape", hp:HP120, type:FIRE, retreatCost:0) {
           weakness W, PLUS30
           pokePower "Burning Head", {
-            text "Once during your turn , you may look at the top 3 cards of your deck, choose 1 of them, and put it into your hand. Discard the other 2 cards. This power can’t be used if Infernape is affected by a Special Condition."
+            text "Once during your turn (before your attack), you may look at the top 3 cards of your deck, choose 1 of them, and put it into your hand. Discard the other 2 cards. This power can’t be used if Infernape is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              assert my.deck : "Your deck is empty."
+              powerUsed()
+              def cards = my.deck.subList(0,3)
+              def moved = cards.select(count:1,"Choose a card to put in your hand. The rest will be discarded.").moveTo(my.hand)
+              cards.removeAll(moved)
+              cards.discard()
             }
           }
           move "Flare Up", {
-            text "150 damage. Energy cards in your discard pile.)"
-            energyCost R, R, R, R
-            attackRequirement {}
-            onAttack {
-              damage 0
+            text "150 damage. Search your discard pile for 8 [R] Energy cards, show them to your opponent, and shuffle them into your deck. (This attack does nothing if you don’t have 8 [R] Energy cards in your discard pile.)"
+            energyCost R, R
+            attackRequirement {
+              assert my.discard.filterByBasicEnergyType(R).size() >= 8 : "You don't have enough [R] Energy cards in your discard pile to use this attack."
             }
-          }
-          move "", {
-            text "Put this card onto your Active Infernape. Infernape LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 150
+              afterDamage {
+                def fireInDiscard = my.discard.filterByBasicEnergyType(R)
+                fireInDiscard.subList(0,Math.min(fireInDiscard.length(), 8)).moveTo(my.deck)
+                shuffleDeck()
+              }
             }
           }
 
@@ -3058,24 +3066,27 @@ public enum DiamondPearl implements LogicCardInfo {
         return evolution (this, from:"Torterra", hp:HP160, type:GRASS, retreatCost:4) {
           weakness R, PLUS30
           pokePower "Forest Murmurs", {
-            text "Once during your turn , if you have more Prize cards left than your opponent, you may choose 1 of your opponent’s Benched Pokémon and switch it with 1 of the Defending Pokémon. This power can’t be used if Torterra is affected by a Special Condition."
+            text "Once during your turn (before your attack), if you have more Prize cards left than your opponent, you may choose 1 of your opponent’s Benched Pokémon and switch it with 1 of the Defending Pokémon. This power can’t be used if Torterra is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "You need to have more Prize cards left than your opponent in order to use this Poké-Power"
+              assert opp.bench : "Your opponent has no benched Pokémon."
+              powerUsed()
+              def pcs = opp.bench.select('Choose 1 of your opponent’s Benched Pokémon and switch it with the Defending Pokémon.')
+              //TODO: This should switch the benched with the defending, not the other way around. Check against inmune to pokébody cards to see if this properly blocks only when the blocker is benched.
+              sw defending, pcs, SRC_ABILITY
             }
           }
           move "Vigorous Dash", {
-            text "100 damage. Torterra does 30 damage to itself."
+            text "100 damage. Does 30 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) Torterra does 30 damage to itself."
             energyCost G, G, G, C
             attackRequirement {}
             onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "Put this card onto your Active Torterra. Torterra LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+              damage 100
+              if (opp.bench)
+                damage 30, opp.bench.select()
+              damage 30, self
             }
           }
 
