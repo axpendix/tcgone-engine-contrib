@@ -916,6 +916,7 @@ public enum SwordShield implements LogicCardInfo {
           delayedA{
             after SWITCH, {
               if (bg.em().retrieveObject("Libero") != bg.turnCount && self.active && bg.currentTurn == self.owner && ef.switchedOut==self && confirm("Use Libero?")) {
+                powerUsed()
                 bg.em().storeObject("Libero", bg.turnCount)
                 attachEnergyFrom(max: 2, type: FIRE, my.discard, self)
               }
