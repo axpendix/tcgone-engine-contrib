@@ -896,6 +896,9 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             bg().gm().unregisterAction(it)
           }
         }
+        playRequirement{
+          assert my.deck : "There are no more cards in your deck."
+        }
       };
       case POKEMON_TOWER_42:
       return stadium (this) {
