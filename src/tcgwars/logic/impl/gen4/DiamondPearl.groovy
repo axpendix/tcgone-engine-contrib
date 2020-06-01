@@ -1092,10 +1092,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Snorlax from your hand onto Munchlax (this counts as evolving Munchlax) and remove all damage counters from Munchlax."
             actionA {
-              checkBabyEvolve("Snorlax", self)
+              checkCanBabyEvolve("Snorlax", self)
               checkLastTurn()
               powerUsed()
-              babyEvolve("Snorlax", self)
+              babyEvolution("Snorlax", self)
             }
           }
           move "Heave", {
@@ -1316,10 +1316,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Wobbuffet from your hand onto Wynaut (this counts as evolving Wynaut) and remove all damage counters from Wynaut."
             actionA {
-              checkBabyEvolve("Wobbuffet", self)
+              checkCanBabyEvolve("Wobbuffet", self)
               checkLastTurn()
               powerUsed()
-              babyEvolve("Wobbuffet", self)
+              babyEvolution("Wobbuffet", self)
             }
           }
           move "Astonish", {
@@ -1338,10 +1338,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Roselia from your hand onto Budew (this counts as evolving Budew) and remove all damage counters from Budew."
             actionA {
-              checkBabyEvolve("Roselia", self)
+              checkCanBabyEvolve("Roselia", self)
               checkLastTurn()
               powerUsed()
-              babyEvolve("Roselia", self)
+              babyEvolution("Roselia", self)
             }
           }
           move "Errand-Running", {
@@ -1484,10 +1484,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Electabuzz from you hand onto Elekid (this counts as evolving Elekid) and remove all damage counters from Elekid."
             actionA {
-              checkBabyEvolve("Electabuzz", self)
+              checkCanBabyEvolve("Electabuzz", self)
               checkLastTurn()
               powerUsed()
-              babyEvolve("Electabuzz", self)
+              babyEvolution("Electabuzz", self)
             }
           }
           move "Outlet", {
@@ -1654,10 +1654,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Mantine from your hand onto Mantyke (this counts as evolving Mantyke) and remove all damage counters from Mantyke."
             actionA {
-              checkBabyEvolve("Mantine", self)
+              checkCanBabyEvolve("Mantine", self)
               checkLastTurn()
               powerUsed()
-              babyEvolve("Mantine", self)
+              babyEvolution("Mantine", self)
             }
           }
           move "Call for Friends", {
@@ -2015,10 +2015,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Marill from your hand onto Azurill (this counts a evolving Azurill) and remove all damage counters from Azurill."
             actionA {
-              checkBabyEvolve("Marill", self)
+              checkCanBabyEvolve("Marill", self)
               checkLastTurn()
               powerUsed()
-              babyEvolve("Marill", self)
+              babyEvolution("Marill", self)
             }
           }
           move "Delivery", {
@@ -2060,10 +2060,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn (before your attack), you may put Sudowoodo from your hand onto Bonsly (this counts as evolving Bonsly) and remove all damage counters from Bonsly."
             actionA {
-              checkBabyEvolve("Sudowoodo", self)
+              checkCanBabyEvolve("Sudowoodo", self)
               checkLastTurn()
               powerUsed()
-              babyEvolve("Sudowoodo", self)
+              babyEvolution("Sudowoodo", self)
             }
           }
           move "Fake Tears", {
@@ -2228,10 +2228,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Clefairy from your hand onto Cleffa (this counts as evolving Cleffa) and remove all damage counters from Cleffa."
             actionA {
-              checkBabyEvolve("Clefairy", self)
+              checkCanBabyEvolve("Clefairy", self)
               checkLastTurn()
               powerUsed()
-              babyEvolve("Clefairy", self)
+              babyEvolution("Clefairy", self)
             }
           }
           move "Eeek", {
@@ -2489,10 +2489,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Mr. Mime from your hand onto Mime Jr. (this counts as evolving Mime Jr.) and remove all damage counters from Mime Jr."
             actionA {
-              checkBabyEvolve("Mr. Mime", self)
+              checkCanBabyEvolve("Mr. Mime", self)
               checkLastTurn()
               powerUsed()
-              babyEvolve("Mr. Mime", self)
+              babyEvolution("Mr. Mime", self)
             }
           }
           move "Mime", {
