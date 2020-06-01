@@ -1012,6 +1012,9 @@ public enum SwordShield implements LogicCardInfo {
           onAttack {
             opp.deck.subList(0, self.cards.energyCount(R)).discard()
           }
+          attackRequirement {
+            assert opp.deck : "Your opponent's deck is empty"
+          }
         }
         move "Searing Flame", {
           text "110 damage. Your opponent’s Active Pokémon is now Burned."
