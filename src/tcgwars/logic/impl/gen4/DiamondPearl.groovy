@@ -2994,13 +2994,14 @@ public enum DiamondPearl implements LogicCardInfo {
               assert opp.hand : "Your Opponent has no cards in their hand."
               powerUsed()
               def supremeCommandBundles = [ : ]
-              def supremeCommandCards = new CardList("supComCards_" + self.id)
-              def chosenCards = opp.hand.select(hidden: true, count:2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.").moveTo(hidden:true, supremeCommandCards)
+              def supremeCommandCards
+              def chosenCards = opp.hand.select(hidden: true, count:2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.")
 
               if(bg.em().retrieveObject("supremeCommandBundles") != null){
                 supremeCommandBundles = bg.em().retrieveObject("supremeCommandBundles")
               }
-              supremeCommandBundles.put(self.id, supremeCommandCards.copy())
+              supremeCommandBundles.put(self.id, chosenCards)
+              my.hand.remove(chosenCards)
               bg.em().storeObject("supremeCommandBundles",supremeCommandBundles)
 
               delayed{
@@ -3009,9 +3010,9 @@ public enum DiamondPearl implements LogicCardInfo {
                     bg.currentTurn == self.owner.opposite && bg.em().retrieveObject("supremeCommandBundles") != null
                   ){
                     def supComBundles = bg.em().retrieveObject("supremeCommandBundles")
-                    def toBeReturnedCards = supComBundles.get(self.id).copy()
+                    def toBeReturnedCards = supComBundles.get(self.id)
                     if (toBeReturnedCards != null)
-                      toBeReturnedCards.moveTo(hidden:true, opp.hand)
+                      opp.hand.addAll(toBeReturnedCards)
                   }
                 }
                 unregisterAfter 2

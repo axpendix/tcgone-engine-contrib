@@ -126,92 +126,13 @@ public enum DiamondPearlPromos implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case TURTWIG_DP01:
-        return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
-          weakness R, PLUS10
-          resistance W, MINUS20
-          move "Tackle", {
-            text "10 damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Razor Leaf", {
-            text "20 damage. "
-            energyCost G
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.TURTWIG_103, this);
       case CHIMCHAR_DP02:
-        return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
-          weakness W, PLUS10
-          move "Scratch", {
-            text "10 damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Ember", {
-            text "30 damage. Energy attached to Chimchar."
-            energyCost R, C, R
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.CHIMCHAR_76, this);
       case PIPLUP_DP03:
-        return basic (this, hp:HP060, type:WATER, retreatCost:1) {
-          weakness L, PLUS10
-          move "Peck", {
-            text "10 damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Water Splash", {
-            text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
-            energyCost W, C
-            attackRequirement {}
-            onAttack {
-              damage 20
-              flip { damage 10 }
-            }
-          }
-
-        };
+        return copy(DiamondPearl.PIPLUP_93, this);
       case PACHIRISU_DP04:
-        return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
-          weakness F, PLUS20
-          resistance M, MINUS20
-          move "Minor Errand-Running", {
-            text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Thunder Jolt", {
-            text "20 damage. Flip a coin. If tails, Pachirisu does 10 damage to itself."
-            energyCost L
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.PACHIRISU_35, this);
       case TROPICAL_WIND_DP05:
         return basicTrainer (this) {
           text "Flip a coin. If heads, remove 2 damage counters from each Active Pok�mon (remove 1 damage counter if a Pok�mon has only 1). If tails, each Active Pok�mon is now Asleep."
@@ -221,26 +142,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           }
         };
       case BUNEARY_DP06:
-        return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
-          weakness F, PLUS10
-          move "Splash", {
-            text "10 damage. "
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Jump Kick", {
-            text "10 damage. Does 10 damage to 1 of your opponent�s Benched Pok�mon."
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.BUNEARY_73, this);
       case CRANIDOS_DP07:
         return evolution (this, from:"Skull Fossil", hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS20
@@ -286,83 +188,11 @@ public enum DiamondPearlPromos implements LogicCardInfo {
 
         };
       case TORTERRA_LV_X_DP09:
-        return evolution (this, from:"Torterra", hp:HP160, type:GRASS, retreatCost:4) {
-          weakness R, PLUS30
-          pokePower "Forest Murmurs", {
-            text "Once during your turn , if you have more Prize cards left than your opponent, you may choose 1 of your opponent�s Benched Pok�mon and switch it with 1 of the Defending Pok�mon. This power can�t be used if Torterra is affected by a Special Condition."
-            actionA {
-            }
-          }
-          move "Vigorous Dash", {
-            text "100 damage. Torterra does 30 damage to itself."
-            energyCost G, G, G, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "Put this card onto your Active Torterra. Torterra LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.TORTERRA_LV_X_122, this);
       case INFERNAPE_LV_X_DP10:
-        return evolution (this, from:"Infernape", hp:HP120, type:FIRE, retreatCost:0) {
-          weakness W, PLUS30
-          pokePower "Burning Head", {
-            text "Once during your turn , you may look at the top 3 cards of your deck, choose 1 of them, and put it into your hand. Discard the other 2 cards. This power can�t be used if Infernape is affected by a Special Condition."
-            actionA {
-            }
-          }
-          move "Flare Up", {
-            text "150 damage. Energy cards in your discard pile.)"
-            energyCost R, R, R, R
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "Put this card onto your Active Infernape. Infernape LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.INFERNAPE_LV_X_121, this);
       case EMPOLEON_LV_X_DP11:
-        return evolution (this, from:"Empoleon", hp:HP140, type:WATER, retreatCost:2) {
-          weakness L, PLUS30
-          pokePower "Supreme Command", {
-            text "Once during your turn , you may choose up to 2 cards from your opponent�s hand without looking and put them face down next to the Defending Pok�mon. (These cards are not in play or in your opponent�s hand.) At the end of your opponent�s next turn, return those cards to your opponent�s hand. This power can�t be used if Empoleon is affected by a Special Condition."
-            actionA {
-            }
-          }
-          move "Hydro Impact", {
-            text "Empoleon can�t attack during your next turn."
-            energyCost W, W, W
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "Put this card onto your Active Empoleon. Empoleon LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.EMPOLEON_LV_X_120, this);
       case LUCARIO_LV_X_DP12:
         return evolution (this, from:"Lucario", hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness P
@@ -390,54 +220,11 @@ public enum DiamondPearlPromos implements LogicCardInfo {
 
         };
       case BUIZEL_DP13:
-        return basic (this, hp:HP060, type:WATER, retreatCost:1) {
-          weakness L, PLUS10
-          move "Splash About", {
-            text "10+ damage. If Buizel has less Energy attached to it than the Defending Pok�mon, this attack does 10 damage plus 10 more damage."
-            energyCost W
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.BUIZEL_72, this);
       case CHATOT_DP14:
-        return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
-          weakness L, PLUS10
-          resistance F, MINUS20
-          move "Me First", {
-            text "Draw a card."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              draw 1
-            }
-          }
-          move "Tone-Deaf", {
-            text "10 damage. Flip a coin. If heads, the Defending Pok�mon is now Confused."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.CHATOT_74, this);
       case SHINX_DP15:
-        return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
-          weakness F, PLUS10
-          resistance M, MINUS20
-          move "Spark", {
-            text "10 damage. Does 10 damage to 1 of your opponent�s Benched Pok�mon."
-            energyCost L
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.SHINX_98, this);
       case PIKACHU_DP16:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -582,52 +369,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
 
         };
       case MIME_JR__DP22:
-        return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
-          weakness P, PLUS10
-          pokePower "Baby Evolution", {
-            text "Once during your turn , you may put Mr. Mime from your hand onto Mime Jr. (this counts as evolving Mime Jr.) and remove all damage counters from Mime Jr."
-            actionA {
-              assert my.hand.findAll{it.name.contains("Mr. Mime")} : "There is no pokémon in your hand to evolve ${self}."
-              checkLastTurn()
-              powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Mr. Mime") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
-            }
-          }
-          move "Mime", {
-            text "Shuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent�s hand."
-            energyCost P
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.MIME_JR__90, this);
       case GLAMEOW_DP23:
-        return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
-          weakness F, PLUS10
-          move "Charm", {
-            text "."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Pose", {
-            text "30 damage. Flip a coin. If tails, this attack does nothing."
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.GLAMEOW_83, this);
       case DARKRAI_DP24:
         return basic (this, hp:HP080, type:DARKNESS, retreatCost:1) {
           weakness F
@@ -668,48 +412,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
 					}
 				}*/;
       case DIALGA_DP26:
-        return basic (this, hp:HP090, type:METAL, retreatCost:2) {
-          weakness R
-          resistance P, MINUS20
-          move "Time Bellow", {
-            text "10 damage. "
-            energyCost M
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Flash Cannon", {
-            text "40 damage. You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pok�mon and shuffle that card into your opponent�s deck."
-            energyCost M, M, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.DIALGA_1, this);
       case PALKIA_DP27:
-        return basic (this, hp:HP090, type:WATER, retreatCost:2) {
-          weakness L, PLUS20
-          move "Spacial Rend", {
-            text "10 damage. Search your deck for a Stadium card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. If there is any Stadium card in play, discard it."
-            energyCost W
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Transback", {
-            text "40 damage. You may flip a coin. If heads, discard all Energy attached to Palkia and put the Defending Pok�mon and all cards attached to it on top of your opponent�s deck. Your opponent shuffles his or her deck afterward."
-            energyCost W, W, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.PALKIA_11, this);
       case MEWTWO_LV_X_DP28:
         return evolution (this, from:"Mewtwo", hp:HP120, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -857,27 +562,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
 
         };
       case DRIFBLIM_DP34:
-        return evolution (this, from:"Drifloon", hp:HP080, type:PSYCHIC, retreatCost:0) {
-          weakness D
-          resistance C, MINUS20
-          move "Wind Wave", {
-            text "Search your discard pile for up to 5 in any combination of Pok�mon and Supporter cards. Show them to your opponent and shuffle them into your deck."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Explosive Smoke", {
-            text "60 damage. ."
-            energyCost P, P, P
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(DiamondPearl.DRIFBLIM_24, this);
       case PORYGON_Z_DP35:
         return evolution (this, from:"Porygon2", hp:HP120, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS30
