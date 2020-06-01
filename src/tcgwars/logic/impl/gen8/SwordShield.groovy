@@ -3185,7 +3185,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 80
-            my.deck.subList(0, 2).discard()
+            if(my.deck) my.deck.subList(0, 2).discard()
           }
         }
       };
