@@ -2109,6 +2109,9 @@ public enum SwordShield implements LogicCardInfo {
           onAttack {
             opp.deck.subList(0, 2).discard()
           }
+          attackRequirement {
+            assert opp.deck : "Your opponent's deck is empty"
+          }
         }
         move "Land Crush", {
           text "70 damage."
