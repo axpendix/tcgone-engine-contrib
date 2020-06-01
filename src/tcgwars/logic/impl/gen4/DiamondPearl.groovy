@@ -3025,7 +3025,7 @@ public enum DiamondPearl implements LogicCardInfo {
               damage 150
               afterDamage {
                 def fireInDiscard = my.discard.filterByBasicEnergyType(R)
-                fireInDiscard.subList(0,Math.min(fireInDiscard.length(), 8)).moveTo(my.deck)
+                fireInDiscard.subList(0,Math.min(fireInDiscard.size(), 8)).moveTo(my.deck)
                 shuffleDeck()
               }
             }
@@ -3045,7 +3045,7 @@ public enum DiamondPearl implements LogicCardInfo {
               powerUsed()
               def pcs = opp.bench.select('Choose 1 of your opponent’s Benched Pokémon and switch it with the Defending Pokémon.')
               //TODO: This should switch the benched with the defending, not the other way around. Check against inmune to pokébody cards to see if this properly blocks only when the blocker is benched.
-              sw defending, pcs, SRC_ABILITY
+              sw opp.active, pcs, SRC_ABILITY
             }
           }
           move "Vigorous Dash", {
