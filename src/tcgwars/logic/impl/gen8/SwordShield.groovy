@@ -1460,6 +1460,7 @@ public enum SwordShield implements LogicCardInfo {
           text "As often as you like during your turn, you may attach a [W] Energy card from your hand to 1 of your Benched [W] Pokémon."
           actionA {
             if (confirm("Use Ice Dance?")) {
+              powerUsed()
               attachEnergyFrom(type:W, my.hand, my.bench.findAll { it.types.contains(W) })
             }
           }
