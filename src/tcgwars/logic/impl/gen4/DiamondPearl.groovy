@@ -1349,11 +1349,9 @@ public enum DiamondPearl implements LogicCardInfo {
               assert my.hand.findAll{it.name.contains("Roselia")} : "There is no pokémon in your hand to evolve ${self}."
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Roselia") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              def pcs = my.hand.findAll{ it.name.contains("Roselia") }.select("Choose which Roselia to evolve to")
+              healAll self, Source.SRC_ABILITY
+              evolve(self, pcs.first(), PLAY_FROM_HAND)
             }
           }
           move "Errand-Running", {
@@ -1653,7 +1651,7 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               //TODO: Generalize on Statics, with "may" and "filter" params. See "Drag Off" (BLAZIKEN_EX_90 in CG) as a similar attack for base.
               def target = defending
-              tar = opp.bench.filterAll{ it.cards.energyCount() }
+              tar = opp.bench.findAll{ it.cards.energyCount() }
               if (tar && select("Before doing damage, you may choose 1 of your opponent’s Benched Pokémon that has any Energy attached to it and switch that Pokémon with 1 of the Defending Pokémon.")) {
                 target = tar.select("Select the new active")
                 sw defending, target
@@ -1892,7 +1890,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip {cantRetreat defending}
+              flip {cantAttackNextTurn defending}
             }
           }
 
@@ -1981,6 +1979,7 @@ public enum DiamondPearl implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert self.benched : "$self is not on the Bench"
+              assert my.bench.notFull : "Your bench is full"
               powerUsed()
               flip {
                 deck.search (count: 1,{it.name.contains("Unown")}).each {
@@ -2011,9 +2010,9 @@ public enum DiamondPearl implements LogicCardInfo {
               assert self.benched : "$self is not on the Bench"
               powerUsed()
               flip {
-                if (choose("Do you want to draw a card?"))
+                if (select("Do you want to draw a card?"))
                   draw 1
-                if (oppChoose("Your opponent used $self's Poké-Power \"DRAW\". Do you want to draw a card?"))
+                if (oppSelect("Your opponent used $self's Poké-Power \"DRAW\". Do you want to draw a card?"))
                   draw 1, TargetPlayer.OPPONENT
               }
             }
@@ -2068,7 +2067,9 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Scavenge", {
             text "Search your discard pile for a Trainer card, show it to your opponent, and put it into your hand."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.filterByType(ITEM) : "There are no Trainer [Item] cards in your discard pile."
+            }
             onAttack {
               my.discard.filterByType(ITEM).select("Choose a Trainer [Item] card to put into your hand.").moveTo(my.hand)
             }
@@ -2097,6 +2098,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               flip {
+                reduceDamageNextTurn(hp(30),thisMove)
                 //This could be generalized into a Statics method.
                 delayed {
                   before PLAY_TRAINER, {
@@ -2373,7 +2375,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              reduceDamageNextTurn(hp(20), thisMove)
+              reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
             }
           }
           move "Pose", {
@@ -2665,7 +2667,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               apply POISONED
-              if (self.cards.findAll {it.name.contains("Budew")})
+              if (self.getPokemonCards().findAll{it.name.contains("Budew")})
                 damage 10
             }
           }
@@ -2877,7 +2879,7 @@ public enum DiamondPearl implements LogicCardInfo {
         return itemCard (this) {
           text "Choose 1 of your Pokémon. Flip 2 coins. If both are heads, remove all damage counters from that Pokémon. If both are tails, discard all Energy cards attached to that Pokémon."
           onPlay {
-            def pcs = my.all.filterAll{it.numberOfDamageCounter || it.cards.energyCount()}.select("Select 1 of you Pokémon with either damage counters, energy attached, or both.")
+            def pcs = my.all.findAll{it.numberOfDamageCounter || it.cards.energyCount()}.select("Select 1 of you Pokémon with either damage counters, energy attached, or both.")
             flip 1, {
               if (pcs.numberOfDamageCounters) healAll pcs
             }, {
@@ -2885,7 +2887,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
           playRequirement {
-            assert my.all.filterAll{it.numberOfDamageCounter || it.cards.energyCount()} : "You have no Pokémon with either damage counters, energy attached, or both."
+            assert my.all.findAll{it.numberOfDamageCounter || it.cards.energyCount()} : "You have no Pokémon with either damage counters, energy attached, or both."
           }
         };
       case PLUSPOWER_109:
@@ -2942,7 +2944,7 @@ public enum DiamondPearl implements LogicCardInfo {
           onPlay {
             def cards = my.deck.subList(0,5)
             cards.showToMe("The top 5 cards of your deck.")
-            cards.oppSelect(count:3,"The top 7 cards of your opponent's deck. Choose 3 of them to put in your opponent's hand. The rest will be put back on top of their deck.").moveTo(my.hand)
+            cards.oppSelect(count:3,"The top 5 cards of your opponent's deck. Choose 3 of them to put in your opponent's hand. The rest will be shuffled back into their deck.").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -2955,8 +2957,8 @@ public enum DiamondPearl implements LogicCardInfo {
           def currentTurnCount=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Lucky Stadium") {
-              assert my.deck : "Deck is empty"
+            actions=action("Stadium: Speed Stadium") {
+              assert my.deck : "There are no more cards in your deck."
               assert currentTurnCount != bg().turnCount : "Already used Stadium"
               bc "Used Speed Stadium"
               currentTurnCount = bg().turnCount
@@ -2964,12 +2966,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
           onRemoveFromPlay {
-            actions.each {
-              bg().gm().unregisterAction(it)
-            }
-          }
-          playRequirement{
-            assert my.deck : "There are no more cards in your deck."
+            actions.each { bg().gm().unregisterAction(it) }
           }
         };
       case SUPER_SCOOP_UP_115:
@@ -3001,7 +2998,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 supremeCommandBundles = bg.em().retrieveObject("supremeCommandBundles")
               }
               supremeCommandBundles.put(self.id, chosenCards)
-              my.hand.remove(chosenCards)
+              opp.hand.remove(chosenCards)
               bg.em().storeObject("supremeCommandBundles",supremeCommandBundles)
 
               delayed{
@@ -3025,6 +3022,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 80, opp.all.findAll{it.numberOfDamageCounters}.select()
+              cantAttackNextTurn self
             }
           }
 
