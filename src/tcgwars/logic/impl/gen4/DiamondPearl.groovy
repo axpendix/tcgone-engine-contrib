@@ -3005,12 +3005,14 @@ public enum DiamondPearl implements LogicCardInfo {
 
               delayed{
                 before BETWEEN_TURNS, {
-                  if(bg.currentTurn == self.owner.opposite && bg.em().retrieveObject("supremeCommandBundles") != null){
+                  if(
+                    bg.currentTurn == self.owner.opposite && bg.em().retrieveObject("supremeCommandBundles") != null
+                  ){
                     def supComBundles = bg.em().retrieveObject("supremeCommandCards")
+                    def toBeReturnedCards = supComBundles.get(self)
+                    if (toBeReturnedCards != null)
+                      toBeReturnedCards.moveTo(hidden:true, opp.hand)
                   }
-                  def toBeReturnedCards = supComBundles.get(self)
-                  if (toBeReturnedCards != null)
-                    toBeReturnedCards.moveTo(hidden:true, opp.hand)
                 }
                 unregisterAfter 2
               }
