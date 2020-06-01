@@ -1133,7 +1133,7 @@ public enum DiamondPearl implements LogicCardInfo {
 
               def indexOfOldPrize = my.prizeCardSet.indexOf(tar)
               my.prizeCardSet.set(indexOfOldPrize, newPrize)
-              my.prizeCardSet.setVisible(indexOfOldPrize, true)
+              my.prizeCardSet.setVisible(newPrize, true) //TODO: If this doesn't work, maybe use tar?
               my.hand.remove(newPrize)
             }
           }
@@ -1304,11 +1304,10 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               flip {
                 targeted (defending) {
-                  //defending.damage += self.damage
-                  directDamage self.damage, defending
-                  def dc = self.damage / 10
+                  //TODO: Solve this not being blocked by stuff like Metal Goggles (blockers of "putting damage counters"). Problem also affects Xerneas-GX.
+                  defending.damage += self.damage
+                  self.damage -= self.damage
                   bc "Moved $dc damage counters from $self to $defending."
-                  self.damage = hp(0)
                 }
               }
             }
@@ -1376,6 +1375,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
+              //TODO: Check for a harden() method in Statics
               delayed {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
@@ -1575,7 +1575,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              apply ASLEEP
             }
           }
           move "Sand Attack", {
@@ -1583,7 +1583,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              sandAttack(thisMove)
             }
           }
 
@@ -1606,7 +1607,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost L, L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip {apply PARALYZED}
             }
           }
 
@@ -1619,15 +1621,15 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40 - 10 * self.numberOfDamageCounters
             }
           }
           move "Seismic Toss", {
-            text "60 damage. "
+            text "60 damage."
             energyCost F, F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
             }
           }
 
@@ -1641,7 +1643,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 3, {damage 20}
             }
           }
           move "Magnetic Ray", {
@@ -1649,7 +1651,14 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              //TODO: Generalize on Statics, with "may" and "filter" params. See "Drag Off" (BLAZIKEN_EX_90 in CG) as a similar attack for base.
+              def target = defending
+              tar = opp.bench.filterAll{ it.cards.energyCount() }
+              if (tar && select("Before doing damage, you may choose 1 of your opponent’s Benched Pokémon that has any Energy attached to it and switch that Pokémon with 1 of the Defending Pokémon.")) {
+                target = tar.select("Select the new active")
+                sw defending, target
+              }
+              damage 40, target
             }
           }
 
@@ -1672,11 +1681,12 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
           move "Call for Friends", {
-            text "Basic Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-            energyCost W
+            text "Search your deck for a [W] Basic Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+            energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              my.deck.search("Choose a [W] Basic Pokémon to put into your hand.",{it.cardTypes.is(BASIC) && it.types.contains(W)}).showToOpponent("Selected card").moveTo(my.hand)
+              shuffleDeck()
             }
           }
 
@@ -1685,11 +1695,14 @@ public enum DiamondPearl implements LogicCardInfo {
         return evolution (this, from:"Chimchar", hp:HP070, type:FIRE, retreatCost:0) {
           weakness W, PLUS20
           move "Flame Dance", {
-            text "30 damage. Energy card and attach it to Monferno."
-            energyCost R, R
+            text "30 damage. Search your discard pile for a [R] Energy card and attach it to Monferno."
+            energyCost R
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              afterDamage {
+                attachEnergyFrom(type: R, my.discard, self)
+              }
             }
           }
           move "Fury Swipes", {
@@ -1697,7 +1710,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 3, {damage 20}
             }
           }
 
@@ -1711,7 +1724,16 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost D
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                //TODO: Check Statics for a general method to do this, beyond the coinflip.
+                def tar = opp.all.findAll {it.cards.energyCount(C)}
+                if(tar) {
+                  def pcs = tar.select("Discard energy from")
+                  targeted (pcs, ATTACK) {
+                    pcs.cards.filterByType(ENERGY).select("Discard").discard()
+                  }
+                }
+              }
             }
           }
           move "Razor Wind", {
@@ -1719,7 +1741,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost D, D
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {damage 40}
             }
           }
 
@@ -1728,19 +1750,23 @@ public enum DiamondPearl implements LogicCardInfo {
         return evolution (this, from:"Piplup", hp:HP080, type:WATER, retreatCost:1) {
           weakness L, PLUS20
           move "Aqua Shower", {
-            text "Does 10 damage to each of your opponent’s Pokémon."
+            text "Does 10 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              opp.all.each{
+                damage 10, it
+              }
             }
           }
           move "Brine", {
-            text "Choose 1 of your opponent’s Pokémon that has any damage counters on it. This attack does 40 damage to that Pokémon."
+            text "Choose 1 of your opponent’s Pokémon that has any damage counters on it. This attack does 40 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W, W
-            attackRequirement {}
+            attackRequirement {
+              assert opp.all.findAll{it.numberOfDamageCounters}
+            }
             onAttack {
-              damage 0
+              damage 40, opp.all.findAll{it.numberOfDamageCounters}.select()
             }
           }
 
@@ -1749,19 +1775,25 @@ public enum DiamondPearl implements LogicCardInfo {
         return evolution (this, from:"Ponyta", hp:HP080, type:FIRE, retreatCost:0) {
           weakness W, PLUS20
           move "Overrun", {
-            text "20 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+            text "20 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if (opp.bench)
+                damage 10, opp.bench.select()
             }
           }
           move "Blaze Up", {
-            text "50 damage. Energy attached to Rapidash and this attack does 10 damage to each of your opponent’s Benched Pokémon."
-            energyCost R, R, C, R
+            text "50 damage. Flip a coin. If tails, discard a [R] Energy attached to Rapidash and this attack does 10 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost R, R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip 1, {}, {
+                discardSelfEnergy R
+                opp.bench.each{damage 10, it}
+              }
             }
           }
 
@@ -1775,7 +1807,13 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              if (bg.stadiumInfoStruct) {
+                damage 20
+                afterDamage {
+                  discard bg.stadiumInfoStruct.stadiumCard
+                }
+              }
             }
           }
           move "Crash Impact", {
@@ -1783,7 +1821,9 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F, F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              damage 10, self
+              whirlwind()
             }
           }
 
@@ -1796,7 +1836,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {damage 30}
             }
           }
 
@@ -1809,7 +1849,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 10*self.numberOfDamageCounters
+              damage 10 * self.numberOfDamageCounters
             }
           }
           move "Horn Drill", {
@@ -1817,7 +1857,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost W, W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
             }
           }
 
@@ -1830,7 +1870,20 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              //TODO: Check for a harden() method in Statics
+              delayed {
+                before APPLY_ATTACK_DAMAGES, {
+                  bg.dm().each {
+                    if(it.to == self && it.dmg.value <= 30 && it.notNoEffect) {
+                      bc "Harden prevents that damage"
+                      it.dmg = hp(0)
+                    }
+                  }
+                }
+                unregisterAfter 2
+                after EVOLVE,self, {unregister()}
+                after SWITCH,self, {unregister()}
+              }
             }
           }
           move "Entangling String", {
@@ -1838,14 +1891,15 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {cantRetreat defending}
             }
           }
 
         };
       case STARAVIA_64:
         return evolution (this, from:"Starly", hp:HP070, type:COLORLESS, retreatCost:0) {
-          weakness L
+          weakness L, PLUS20
           resistance F, MINUS20
           move "Whirlwind", {
             text "20 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
@@ -1861,7 +1915,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              cantRetreat defending
             }
           }
 
@@ -1870,8 +1925,14 @@ public enum DiamondPearl implements LogicCardInfo {
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
           pokePower "ANALYZE", {
-            text "Once during your turn , if Unown A is on your Bench, you may look at the top 2 cards of your deck and put them back on top of your deck in any order."
+            text "Once during your turn (before your attack), if Unown A is on your Bench, you may look at the top 2 cards of your deck and put them back on top of your deck in any order."
             actionA {
+              checkLastTurn()
+              assert self.benched : "$self is not on the Bench"
+              assert my.deck
+              powerUsed()
+              def list=rearrange(deck.subList(0,2), "Rearrange top 2 cards in your deck")
+              deck.setSubList(0, list)
             }
           }
           move "Hidden Power", {
@@ -1879,7 +1940,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -1888,8 +1949,18 @@ public enum DiamondPearl implements LogicCardInfo {
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
           pokePower "BOUNCE", {
-            text "Once during your turn , if Unown B is on your Bench, you may flip a coin. If heads, discard all cards attached to any 1 of your Unown and shuffle that Pokémon back into your deck."
+            text "Once during your turn (before your attack), if Unown B is on your Bench, you may flip a coin. If heads, discard all cards attached to any 1 of your Unown and shuffle that Pokémon back into your deck."
             actionA {
+              checkLastTurn()
+              assert self.benched : "$self is not on the Bench"
+              powerUsed()
+              flip {
+                def pcs = my.all.findAll{it.name.contains("Unown")}.select("Choose an Unown to shuffle back into your deck. All cards attached to it will be discarded.")
+                pcs.cards.getExcludedList(pcs.topPokemonCard).discard()
+                moveCard(pcs.topPokemonCard, my.deck)
+                shuffleDeck()
+                removePCS(pcs)
+              }
             }
           }
           move "Hidden Power", {
@@ -1897,7 +1968,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -1906,8 +1977,18 @@ public enum DiamondPearl implements LogicCardInfo {
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
           pokePower "CALL", {
-            text "Once during your turn , if Unown C is on your Bench, you may flip coin. If heads, search your deck for any 1 Unown and put it onto your Bench. Shuffle your deck afterward."
+            text "Once during your turn , if Unown C is on your Bench, you may flip a coin. If heads, search your deck for any 1 Unown and put it onto your Bench. Shuffle your deck afterward."
             actionA {
+              checkLastTurn()
+              assert self.benched : "$self is not on the Bench"
+              powerUsed()
+              flip {
+                deck.search (count: 1,{it.name.contains("Unown")}).each {
+                  deck.remove(it)
+                  benchPCS(it)
+                }
+                shuffleDeck()
+              }
             }
           }
           move "Hidden Power", {
@@ -1915,7 +1996,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -1926,6 +2007,15 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "DRAW", {
             text "Once during your turn , if Unown D is on your Bench, you may flip a coin. If heads, each player may draw a card. (You draw your card first.)"
             actionA {
+              checkLastTurn()
+              assert self.benched : "$self is not on the Bench"
+              powerUsed()
+              flip {
+                if (choose("Do you want to draw a card?"))
+                  draw 1
+                if (oppChoose("Your opponent used $self's Poké-Power "DRAW". Do you want to draw a card?"))
+                  draw 1, TargetPlayer.OPPONENT
+              }
             }
           }
           move "Hidden Power", {
@@ -1933,7 +2023,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -1957,9 +2047,9 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Delivery", {
             text "Put any 1 card from your discard pile into your hand."
             energyCost ()
-            attackRequirement {}
+            attackRequirement { assert my.discard : "Discard is empty"}
             onAttack {
-              damage 0
+              my.discard.select().moveTo(my.hand)
             }
           }
 
@@ -1980,7 +2070,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              my.discard.filterByType(ITEM).select("Choose a Trainer [Item] card to put into your hand.").moveTo(my.hand)
             }
           }
 
@@ -1989,7 +2079,7 @@ public enum DiamondPearl implements LogicCardInfo {
         return basic (this, hp:HP040, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS10
           pokePower "Baby Evolution", {
-            text "Once during your turn , you may put Sudowoodo from your hand onto Bonsly (this counts as evolving Bonsly) and remove all damage counters from Bonsly."
+            text "Once during your turn (before your attack), you may put Sudowoodo from your hand onto Bonsly (this counts as evolving Bonsly) and remove all damage counters from Bonsly."
             actionA {
               assert my.hand.findAll{it.name.contains("Sudowoodo")} : "There is no pokémon in your hand to evolve ${self}."
               checkLastTurn()
@@ -2002,11 +2092,22 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
           move "Fake Tears", {
-            text "."
+            text "Flip a coin. If heads, your opponent can’t play any Trainer cards from his or her hand during your opponent’s next turn, and any damage done to Bonsly by attacks is reduced by 30 (after applying Weakness and Resistance)"
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                //This could be generalized into a Statics method.
+                delayed {
+                  before PLAY_TRAINER, {
+                    if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
+                      wcu "Fake Tears prevents you from playing Trainer [Item] cards."
+                      prevent()
+                    }
+                  }
+                  unregisterAfter 2
+                }
+              }
             }
           }
 
@@ -2019,7 +2120,10 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if (self.cards.energyCount(C) < defending.cards.energyCount(C)) {
+                damage 10
+              }
             }
           }
 
@@ -2032,15 +2136,17 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Jump Kick", {
-            text "10 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+            text "10 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if (opp.bench)
+                damage 10, opp.bench.select()
             }
           }
 
@@ -2077,15 +2183,17 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              apply ASLEEP
             }
           }
           move "Leech Seed", {
-            text "20 damage. , remove 1 damage counter from Cherubi."
+            text "20 Damage. If this attack does any damage to the Defending Pokémon (after applying Weakness and Resistance), remove 1 damage counter from Cherubi."
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              //bg.dm().find({it.to==defending && it.dmg.value})
+              //TODO: Think of a way to check for effective damage to the defending pokémon before healing.
             }
           }
 
@@ -2098,15 +2206,18 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Ember", {
-            text "30 damage. Energy attached to Chimchar."
-            energyCost R, C, R
+            text "30 damage. Flip a coin. If tails, discard a [R] Energy attached to Chimchar."
+            energyCost R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              afterDamage{
+                flip 1, {}, {discardSelfEnergy(R)}
+              }
             }
           }
 
@@ -2119,7 +2230,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              apply ASLEEP
             }
           }
           move "Moon Impact", {
@@ -2127,7 +2238,10 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if (self.cards.findAll {it.name.contains("Cleffa")}){
+                damage 20
+              }
             }
           }
 
@@ -2165,17 +2279,20 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Soliciting Nectar", {
             text "Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. The new Defending Pokémon is now Asleep."
             energyCost G
-            attackRequirement {}
+            attackRequirement {
+              assert opp.bench
+            }
             onAttack {
-              damage 0
+              sw opp.active, opp.bench.select()
+              apply ASLEEP, opp.active
             }
           }
           move "Gust", {
-            text "20 damage. "
+            text "20 damage."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -2197,7 +2314,9 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if (opp.bench)
+                damage 10, opp.bench.select()
             }
           }
 
@@ -2211,15 +2330,20 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip 1, {damage 10}, {damage 10, self}
             }
           }
           move "Shock Wave", {
-            text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If Electabuzz is evolved from Elekid, this attack does 20 damage to 1 of your opponent’s Benched Pokémon."
+            text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If Electabuzz is evolved from Elekid, this attack does 20 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost L, L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {apply PARALYZED}
+              if (self.cards.findAll {it.name.contains("Elekid")} && opp.bench){
+                damage 20, opp.bench.select()
+              }
             }
           }
 
@@ -2233,7 +2357,10 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              //TODO. Won't work properly, see Wobbuffet.
+              if (self.damage)
+                  self.damage -= 10
+                  opp.all.select().damage += 10
             }
           }
 
@@ -2242,11 +2369,11 @@ public enum DiamondPearl implements LogicCardInfo {
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
           move "Charm", {
-            text "."
+            text "During your opponent’s next turn, any damage done by attacks from the Defending Pokémon is reduced by 20 (before applying Weakness and Resistance)."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              reduceDamageNextTurn(hp(20), thisMove)
             }
           }
           move "Pose", {
@@ -2254,7 +2381,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {damage 30}
             }
           }
 
@@ -2267,7 +2394,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Take Down", {
@@ -2275,7 +2402,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              damage 10, self
             }
           }
 
@@ -2289,7 +2417,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              apply ASLEEP
             }
           }
           move "Kick Shot", {
@@ -2297,7 +2425,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {damage 30}
             }
           }
 
@@ -2310,7 +2438,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -2332,7 +2460,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(opp.active.isSPC(CONFUSED)) damage 20
             }
           }
 
@@ -2345,7 +2474,9 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if (self.cards.findAll {it.name.contains("Azurill")})
+                damage 20
             }
           }
           move "Splashing Turn", {
@@ -2353,7 +2484,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost W, W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              switchYourActive()
             }
           }
 
@@ -2366,15 +2498,15 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { preventAllEffectsNextTurn() }
             }
           }
           move "Meditate", {
-            text "10+ damage. Does 10 damage plus 1 more damage for each damage counter on the Defending Pokémon."
+            text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on the Defending Pokémon."
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10 + 10 * defending.numberOfDamageCounters
             }
           }
 
@@ -2400,7 +2532,9 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              my.hand.moveTo(hidden:true,my.deck)
+              shuffleDeck()
+              draw opp.hand.size()
             }
           }
 
@@ -2414,7 +2548,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              astonish()
             }
           }
           move "Confuse Ray", {
@@ -2432,11 +2566,18 @@ public enum DiamondPearl implements LogicCardInfo {
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:3) {
           weakness G, PLUS20
           move "Tunneling", {
-            text "Onix can’t attack during your next turn."
+            text "Choose up to 2 of your opponent’s Benched Pokémon. This attack does 10 damage to each of them. (Don’t apply Weakness and Resistance for Benched Pokémon.) Onix can’t attack during your next turn."
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              if (opp.bench) {
+                multiSelect(opp.bench, 2).each{
+                  targeted(it){
+                    damage 10, it
+                  }
+                }
+              }
+              cantAttackNextTurn self
             }
           }
           move "Headbutt", {
@@ -2444,7 +2585,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -2457,7 +2598,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Water Splash", {
@@ -2479,7 +2620,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Flame Tail", {
@@ -2487,7 +2628,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost R, R
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -2501,7 +2642,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Take Down", {
@@ -2509,7 +2650,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              damage 10, self
             }
           }
 
@@ -2522,7 +2664,9 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              apply POISONED
+              if (self.cards.findAll {it.name.contains("Budew")})
+                damage 10
             }
           }
           move "Sweet Spike", {
@@ -2530,7 +2674,9 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G, G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              apply ASLEEP
+              heal 20, my.all.select()
             }
           }
 
@@ -2544,7 +2690,21 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              //This *definitely* can be added to statics, matches multiple attacks in DP and SM eras.
+              flip {
+                delayed {
+                  before KNOCKOUT, self, {
+                    if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
+                      self.damage = self.fullHP - hp(10)
+                      bc "$self endured the hit!"
+                      prevent()
+                    }
+                  }
+                  unregisterAfter 2
+                  after EVOLVE, self, {unregister()}
+                  after SWITCH, self, {unregister()}
+                }
+              }
             }
           }
           move "Rollout", {
@@ -2552,7 +2712,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -2566,7 +2726,9 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if (opp.bench)
+                damage 10, opp.bench.select()
             }
           }
 
@@ -2587,7 +2749,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 4, {damage 10}
             }
           }
 
@@ -2601,7 +2763,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {damage 10}
             }
           }
           move "Feint Attack", {
@@ -2619,11 +2781,11 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness L, PLUS10
           resistance F, MINUS20
           move "Gust", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Quick Attack", {
@@ -2642,11 +2804,11 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness F, PLUS10
           resistance P, MINUS20
           move "Scratch", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Severe Gas", {
@@ -2654,7 +2816,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost D, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              apply POISONED
             }
           }
 
@@ -2664,19 +2827,19 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness R, PLUS10
           resistance W, MINUS20
           move "Tackle", {
-            text "10 damage. "
+            text "10 damage."
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Razor Leaf", {
-            text "20 damage. "
+            text "20 damage."
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -2698,141 +2861,167 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip {apply PARALYZED}
             }
           }
 
         };
       case DOUBLE_FULL_HEAL_105:
-        return basicTrainer (this) {
-          text "Remove all Special Conditions from each of your Active Pokémon."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (Sandstorm.DOUBLE_FULL_HEAL_86, this);
       case ENERGY_RESTORE_106:
-        return basicTrainer (this) {
-          text "Flip 3 coins. For each heads, put a basic Energy card from your discard pile into your hand. If you don’t have that many basic Energy cards in your discard pile, put all of them into your hand."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (Expedition.ENERGY_RESTORE_141, this);
       case ENERGY_SWITCH_107:
-      return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
       case NIGHT_POKEMON_CENTER_108:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Choose 1 of your Pokémon. Flip 2 coins. If both are heads, remove all damage counters from that Pokémon. If both are tails, discard all Energy cards attached to that Pokémon."
           onPlay {
+            def pcs = my.all.filterAll{it.numberOfDamageCounter || it.cards.energyCount()}.select("Select 1 of you Pokémon with either damage counters, energy attached, or both.")
+            flip 1, {
+              if (pcs.numberOfDamageCounters) healAll pcs
+            }, {
+              pcs.cards.filterByType(ENERGY).discard()
+            }
           }
-          playRequirement{
+          playRequirement {
+            assert my.all.filterAll{it.numberOfDamageCounter || it.cards.energyCount()} : "You have no Pokémon with either damage counters, energy attached, or both."
           }
         };
       case PLUSPOWER_109:
         return basicTrainer (this) {
           text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
           onPlay {
+            //TODO
           }
           playRequirement{
           }
         };
       case POKE_BALL_110:
-        return basicTrainer (this) {
+      return itemCard (this) {
           text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
+            flip{
+              my.deck.search(count: 1, "Select a Pokémon card", {it.cardTypes.is(POKEMON)}).moveTo(my.hand)
+              shuffleDeck()
+            }
           }
           playRequirement{
+            assert my.deck: "There are no more cards in your deck."
           }
         };
       case POKEDEX_HANDY910IS_111:
         return basicTrainer (this) {
           text "Look at the top 2 cards of your deck, choose 1 of them, and put it into your hand. Put the other card on the bottom of your deck."
           onPlay {
+              def sel = my.deck.subList(0,2).select("Choose 1 card to put into your hand")
+              my.deck.subList(0,2).getExcludedList(sel).moveTo(suppressLog: true, my.deck)
+              sel.moveTo(hidden: true, my.hand)
           }
           playRequirement{
+            assert my.deck : "There are no more cards in your deck."
           }
         };
       case PROFESSOR_ROWAN_112:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose 1 card in your hand and shuffle the rest of your cards into your deck. Then, draw 4 cards. (If this is the only card in your hand, you can’t play this card.)"
           onPlay {
+            def availCards = my.hand.getExcludedList(thisCard)
+            def chosenCard = availCards.select("Choose a card to keep in your hand.")
+            availCards.getExcludedList(chosenCard).moveTo(hidden:true, my.deck)
+            shuffleDeck()
+            draw 4
           }
           playRequirement{
+            assert my.hand.getExcludedList(thisCard) : "This is the only card in your hand."
           }
         };
       case RIVAL_113:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nReveal the top 5 cards of your deck. Your opponent choose 3 of those cards. Put those cards into your hand and put other 2 cards on top of your deck. Shuffle your deck afterward."
           onPlay {
+            def cards = my.deck.subList(0,5)
+            cards.showToMe("The top 5 cards of your deck.")
+            cards.oppSelect(count:3,"The top 7 cards of your opponent's deck. Choose 3 of them to put in your opponent's hand. The rest will be put back on top of their deck.").moveTo(my.hand)
+            shuffleDeck()
           }
           playRequirement{
+            assert my.deck : "There are no more cards in your deck."
           }
         };
       case SPEED_STADIUM_114:
-        return basicTrainer (this) {
+        return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, the player may flip a coin until he or she gets tails. For each heads, that player draws a card."
+          def currentTurnCount=0
+          def actions=[]
           onPlay {
+            actions=action("Stadium: Lucky Stadium") {
+              assert my.deck : "Deck is empty"
+              assert currentTurnCount != bg().turnCount : "Already used Stadium"
+              bc "Used Speed Stadium"
+              currentTurnCount = bg().turnCount
+              flipUntilTails { draw 1 }
+            }
+          }
+          onRemoveFromPlay {
+            actions.each {
+              bg().gm().unregisterAction(it)
+            }
           }
           playRequirement{
+            assert my.deck : "There are no more cards in your deck."
           }
         };
       case SUPER_SCOOP_UP_115:
-        return basicTrainer (this) {
-          text "Flip a coin. If heads, return 1 of your Pokémon and all cards attached to it to your hand."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (BlackWhite.SUPER_SCOOP_UP_103, this);
       case WARP_POINT_116:
-      return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
+        return copy(PlasmaStorm.ESCAPE_ROPE_120, this);
       case ENERGY_SEARCH_117:
-        return basicTrainer (this) {
-          text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(BlackWhite.ENERGY_SEARCH_93, this);
       case POTION_118:
-        return basicTrainer (this) {
-          text "Remove 2 damage counters from 1 of your Pokémon (remove 1 damage counter if that Pokémon has only 1)."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(FireRedLeafGreen.POTION_101, this);
       case SWITCH_119:
-        return basicTrainer (this) {
-          text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(FireRedLeafGreen.SWITCH_102, this);
       case EMPOLEON_LV_X_120:
+        //TODO: Find how to mark these cards as "LEVEL_UP" cards instead of evolutions.
         return evolution (this, from:"Empoleon", hp:HP140, type:WATER, retreatCost:2) {
           weakness L, PLUS30
           pokePower "Supreme Command", {
-            text "Once during your turn , you may choose up to 2 cards from your opponent’s hand without looking and put them face down next to the Defending Pokémon. (These cards are not in play or in your opponent’s hand.) At the end of your opponent’s next turn, return those cards to your opponent’s hand. This power can’t be used if Empoleon is affected by a Special Condition."
+            text "Once during your turn (before your attack), you may choose up to 2 cards from your opponent’s hand without looking and put them face down next to the Defending Pokémon. (These cards are not in play or in your opponent’s hand.) At the end of your opponent’s next turn, return those cards to your opponent’s hand. This power can’t be used if Empoleon is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              assert opp.hand : "Your Opponent has no cards in their hand."
+              powerUsed()
+              def supremeCommandBundles = [ : ]
+              def supremeCommandCards = new CardList()
+              def chosenCards = opp.hand.select(hidden: true, count:2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.").moveTo(hidden:true, supremeCommandCards)
+
+              if(bg.em().retrieveObject("supremeCommandBundles") != null){
+                supremeCommandBundles = bg.em().retrieveObject("supremeCommandCards")
+              }
+              supremeCommandCards.put(self, supremeCommandCards)
+              bg.em().storeObject("supremeCommandBundles",supremeCommandBundles)
+
+              delayed{
+                before BETWEEN_TURNS, {
+                  if(bg.currentTurn == self.owner.opposite && bg.em().retrieveObject("supremeCommandBundles") != null){
+                    def supComBundles = bg.em().retrieveObject("supremeCommandCards")
+                  }
+                  def toBeReturnedCards = supComBundles.get(self)
+                  if (toBeReturnedCards != null)
+                    toBeReturnedCards.moveTo(hidden:true, opp.hand)
+                }
+                unregisterAfter 2
+              }
             }
           }
           move "Hydro Impact", {
-            text "Empoleon can’t attack during your next turn."
+            text "Choose 1 of your opponent’s Pokémon. This attack does 80 damage to that Pokémon (Don’t apply Weakness and Resistance for Benched Pokémon.) Empoleon can’t attack during your next turn."
             energyCost W, W, W
             attackRequirement {}
             onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "Put this card onto your Active Empoleon. Empoleon LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+              damage 80, opp.all.findAll{it.numberOfDamageCounters}.select()
             }
           }
 
