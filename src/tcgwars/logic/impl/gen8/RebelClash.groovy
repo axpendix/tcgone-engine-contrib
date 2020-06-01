@@ -658,7 +658,7 @@ public enum RebelClash implements LogicCardInfo {
         move "Forest Feast", {
           text "Search your deck for up to 2 Basic [G] Pokemon and put them onto your Bench. Then, shuffle your deck."
           energyCost G
-          callForFamily(basic:true, type:G, 2, delegate)
+          callForFamily([basic:true, type:G], 2, delegate)
         }
         move "Wood Hammer", {
           text "220 damage. This Pokemon also does 30 damage to itself."
