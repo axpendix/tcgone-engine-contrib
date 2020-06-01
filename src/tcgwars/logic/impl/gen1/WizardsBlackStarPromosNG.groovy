@@ -883,7 +883,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
         def actions=[]
         onPlay {
           actions=action("Stadium: Lucky Stadium") {
-            assert my.deck : "Deck is empty"
+            assert my.deck : "There are no more cards in your deck."
             assert currentTurnCount != bg().turnCount : "Already used Stadium"
             bc "Used Lucky Stadium"
             currentTurnCount = bg().turnCount
@@ -895,9 +895,6 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
           actions.each {
             bg().gm().unregisterAction(it)
           }
-        }
-        playRequirement{
-          assert my.deck : "There are no more cards in your deck."
         }
       };
       case POKEMON_TOWER_42:

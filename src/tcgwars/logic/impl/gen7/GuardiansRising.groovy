@@ -1699,10 +1699,11 @@ public enum GuardiansRising implements LogicCardInfo {
             text "Prevent all damage done to your Benched Pokémon by your opponent's attacks. Your opponent's attacks and Abilities can't place damage counters on your Benched Pokémon."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {if(it.from.owner != self.owner && it.to.owner==self.owner && it.to.benched && it.dmg.value){
+                bg.dm().each {if(it.from.owner != self.owner && it.to.owner==self.owner && it.to.benched && it.dmg.value && it.notNoEffect){
                   bc "Daunting Pose reduces damage"
                   it.dmg=hp(0)
                   // TODO needs source refactoring to work correctly
+                  // TODO Fix it not blocking damage counters.
                 }}
               }
             }
