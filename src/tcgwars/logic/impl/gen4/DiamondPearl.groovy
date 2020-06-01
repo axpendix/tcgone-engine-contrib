@@ -2995,6 +2995,7 @@ public enum DiamondPearl implements LogicCardInfo {
               powerUsed()
               def supremeCommandBundles = [ : ]
               def supremeCommandCards = new CardList()
+              supremeCommandCards.setType(CardListType.PERSISTENT)
               def chosenCards = opp.hand.select(hidden: true, count:2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.").moveTo(hidden:true, supremeCommandCards)
 
               if(bg.em().retrieveObject("supremeCommandBundles") != null){
