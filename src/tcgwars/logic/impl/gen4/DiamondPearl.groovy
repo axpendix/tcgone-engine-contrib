@@ -2958,27 +2958,32 @@ public enum DiamondPearl implements LogicCardInfo {
               powerUsed()
               def supremeCommandBundles = [ : ]
               def supremeCommandCards
-              def chosenCards = opp.hand.select(hidden: true, count:2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.")
+              def chosenCards = new CardList()
+              opp.hand.select(hidden: true, max: 2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.").each{chosenCards.add(it)}
 
-              if(bg.em().retrieveObject("supremeCommandBundles") != null){
-                supremeCommandBundles = bg.em().retrieveObject("supremeCommandBundles")
-              }
-              supremeCommandBundles.put(self.id, chosenCards)
-              opp.hand.remove(chosenCards)
-              bg.em().storeObject("supremeCommandBundles",supremeCommandBundles)
-
-              delayed{
-                before BETWEEN_TURNS, {
-                  if(
-                    bg.currentTurn == self.owner.opposite && bg.em().retrieveObject("supremeCommandBundles") != null
-                  ){
-                    def supComBundles = bg.em().retrieveObject("supremeCommandBundles")
-                    def toBeReturnedCards = supComBundles.get(self.id)
-                    if (toBeReturnedCards != null)
-                      opp.hand.addAll(toBeReturnedCards)
-                  }
+              if (chosenCards) {
+                if(bg.em().retrieveObject("supremeCommandBundles") != null){
+                  supremeCommandBundles = bg.em().retrieveObject("supremeCommandBundles")
                 }
-                unregisterAfter 2
+                supremeCommandBundles.put(self.id, chosenCards)
+                chosenCards.each {
+                  opp.hand.remove(it)
+                }
+                bg.em().storeObject("supremeCommandBundles",supremeCommandBundles)
+
+                delayed{
+                  before BETWEEN_TURNS, {
+                    if(
+                      bg.currentTurn == self.owner.opposite && bg.em().retrieveObject("supremeCommandBundles") != null
+                    ){
+                      def supComBundles = bg.em().retrieveObject("supremeCommandBundles")
+                      def toBeReturnedCards = supComBundles.get(self.id)
+                      if (toBeReturnedCards != null)
+                        opp.hand.addAll(toBeReturnedCards)
+                    }
+                  }
+                  unregisterAfter 2
+                }
               }
             }
           }
