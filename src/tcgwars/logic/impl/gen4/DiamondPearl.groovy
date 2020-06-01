@@ -2994,8 +2994,7 @@ public enum DiamondPearl implements LogicCardInfo {
               assert opp.hand : "Your Opponent has no cards in their hand."
               powerUsed()
               def supremeCommandBundles = [ : ]
-              def supremeCommandCards = new CardList()
-              supremeCommandCards.setType(CardListType.PERSISTENT)
+              def supremeCommandCards = new CardList("supComCards_" + self.id)
               def chosenCards = opp.hand.select(hidden: true, count:2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.").moveTo(hidden:true, supremeCommandCards)
 
               if(bg.em().retrieveObject("supremeCommandBundles") != null){
