@@ -291,7 +291,7 @@ public enum DiamondPearl implements LogicCardInfo {
             text "As often as you like during your turn (before your attack), if Elekid is anywhere under Electivire, you may move a [L] Energy attached to your Pokémon to Electivire. This power can’t be used if Electivire is affected by a Special Condition."
             actionA {
               checkNoSPC()
-              assert self.cards.findAll {it.name.contains("Elekid")} : "Elekid is not found under $self, you can't use this Poké-Power"
+              assert self.getPokemonCards().findAll {it.name.contains("Elekid")} : "Elekid is not found under $self, you can't use this Poké-Power"
               def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=self})
               assert pl : "There are no Pokémon other than $self with [L] energy attached."
               powerUsed()
@@ -567,7 +567,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              if (self.cards.findAll {it.name.contains("Budew")}){
+              if (self.getPokemonCards().findAll {it.name.contains("Budew")}){
                 damage 30, opp.bench.select()
               }
             }
@@ -704,7 +704,7 @@ public enum DiamondPearl implements LogicCardInfo {
               if(self.cards.energyCount(W) >= 3){
                 damage 20
               }
-              if (self.cards.findAll {it.name.contains("Azurill")})
+              if (self.getPokemonCards().findAll {it.name.contains("Azurill")})
                 flip { apply PARALYZED }
             }
           }
@@ -1092,14 +1092,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Snorlax from your hand onto Munchlax (this counts as evolving Munchlax) and remove all damage counters from Munchlax."
             actionA {
-              assert my.hand.findAll{it.name.contains("Snorlax")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Snorlax", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Snorlax") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Snorlax", self)
             }
           }
           move "Heave", {
@@ -1214,7 +1210,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              if (self.cards.findAll {it.name.contains("Munchlax")}) damage 30
+              if (self.getPokemonCards().findAll {it.name.contains("Munchlax")}) damage 30
               apply ASLEEP, self
             }
           }
@@ -1320,14 +1316,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Wobbuffet from your hand onto Wynaut (this counts as evolving Wynaut) and remove all damage counters from Wynaut."
             actionA {
-              assert my.hand.findAll{it.name.contains("Wobbuffet")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Wobbuffet", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Wobbuffet") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Wobbuffet", self)
             }
           }
           move "Astonish", {
@@ -1346,12 +1338,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Roselia from your hand onto Budew (this counts as evolving Budew) and remove all damage counters from Budew."
             actionA {
-              assert my.hand.findAll{it.name.contains("Roselia")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Roselia", self)
               checkLastTurn()
               powerUsed()
-              def pcs = my.hand.findAll{ it.name.contains("Roselia") }.select("Choose which Roselia to evolve to")
-              healAll self, Source.SRC_ABILITY
-              evolve(self, pcs.first(), PLAY_FROM_HAND)
+              babyEvolution("Roselia", self)
             }
           }
           move "Errand-Running", {
@@ -1494,14 +1484,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Electabuzz from you hand onto Elekid (this counts as evolving Elekid) and remove all damage counters from Elekid."
             actionA {
-              assert my.hand.findAll{it.name.contains("Electabuzz")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Electabuzz", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Electabuzz") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Electabuzz", self)
             }
           }
           move "Outlet", {
@@ -1668,14 +1654,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Mantine from your hand onto Mantyke (this counts as evolving Mantyke) and remove all damage counters from Mantyke."
             actionA {
-              assert my.hand.findAll{it.name.contains("Mantine")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Mantine", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Mantine") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Mantine", self)
             }
           }
           move "Call for Friends", {
@@ -2033,14 +2015,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Marill from your hand onto Azurill (this counts a evolving Azurill) and remove all damage counters from Azurill."
             actionA {
-              assert my.hand.findAll{it.name.contains("Marill")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Marill", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Marill") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Marill", self)
             }
           }
           move "Delivery", {
@@ -2082,14 +2060,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn (before your attack), you may put Sudowoodo from your hand onto Bonsly (this counts as evolving Bonsly) and remove all damage counters from Bonsly."
             actionA {
-              assert my.hand.findAll{it.name.contains("Sudowoodo")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Sudowoodo", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Sudowoodo") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Sudowoodo", self)
             }
           }
           move "Fake Tears", {
@@ -2241,7 +2215,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              if (self.cards.findAll {it.name.contains("Cleffa")}){
+              if (self.getPokemonCards().findAll {it.name.contains("Cleffa")}){
                 damage 20
               }
             }
@@ -2254,14 +2228,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Clefairy from your hand onto Cleffa (this counts as evolving Cleffa) and remove all damage counters from Cleffa."
             actionA {
-              assert my.hand.findAll{it.name.contains("Clefairy")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Clefairy", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Clefairy") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Clefairy", self)
             }
           }
           move "Eeek", {
@@ -2343,7 +2313,7 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               damage 20
               flip {apply PARALYZED}
-              if (self.cards.findAll {it.name.contains("Elekid")} && opp.bench){
+              if (self.getPokemonCards().findAll {it.name.contains("Elekid")} && opp.bench){
                 damage 20, opp.bench.select()
               }
             }
@@ -2477,7 +2447,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              if (self.cards.findAll {it.name.contains("Azurill")})
+              if (self.getPokemonCards().findAll {it.name.contains("Azurill")})
                 damage 20
             }
           }
@@ -2519,14 +2489,10 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Mr. Mime from your hand onto Mime Jr. (this counts as evolving Mime Jr.) and remove all damage counters from Mime Jr."
             actionA {
-              assert my.hand.findAll{it.name.contains("Mr. Mime")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Mr. Mime", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Mr. Mime") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Mr. Mime", self)
             }
           }
           move "Mime", {
