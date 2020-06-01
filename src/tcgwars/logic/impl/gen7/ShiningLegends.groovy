@@ -1374,7 +1374,7 @@ public enum ShiningLegends implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 if(self.active) {
-                  bg.dm().each {if(it.to.owner==self.owner && it.to.benched && it.dmg.value){
+                  bg.dm().each {if(it.to.owner==self.owner && it.from.owner!=self.owner && it.to.benched && it.dmg.value && it.notNoEffect){
                     bc "Fabled Defense reduces damage"
                     it.dmg=hp(0)
                   }}

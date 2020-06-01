@@ -331,7 +331,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "Prevent all damage done to your Benched Pokémon by your opponent's attacks."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {if(it.to.owner==self.owner && it.to.benched && it.dmg.value){
+              bg.dm().each {if(it.to.owner==self.owner && it.from.owner!=self.owner && it.to.benched && it.dmg.value && it.notNoEffect){
                 bc "Sand Veil reduces damage"
                 it.dmg=hp(0)
               }}
