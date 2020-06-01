@@ -2667,7 +2667,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               apply POISONED
-              if (self.cards.findAll {it.name.contains("Budew")})
+              if (self.getPokemonCards().findAll{it.name.contains("Budew")})
                 damage 10
             }
           }
@@ -2998,7 +2998,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 supremeCommandBundles = bg.em().retrieveObject("supremeCommandBundles")
               }
               supremeCommandBundles.put(self.id, chosenCards)
-              my.hand.remove(chosenCards)
+              opp.hand.remove(chosenCards)
               bg.em().storeObject("supremeCommandBundles",supremeCommandBundles)
 
               delayed{
