@@ -1637,7 +1637,7 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               //TODO: Generalize on Statics, with "may" and "filter" params. See "Drag Off" (BLAZIKEN_EX_90 in CG) as a similar attack for base.
               def target = defending
-              tar = opp.bench.findAll{ it.cards.energyCount() }
+              def tar = opp.bench.findAll{ it.cards.energyCount() }
               if (tar && select("Before doing damage, you may choose 1 of your opponent’s Benched Pokémon that has any Energy attached to it and switch that Pokémon with 1 of the Defending Pokémon.")) {
                 target = tar.select("Select the new active")
                 sw defending, target
@@ -1992,9 +1992,9 @@ public enum DiamondPearl implements LogicCardInfo {
               assert self.benched : "$self is not on the Bench"
               powerUsed()
               flip {
-                if (select("Do you want to draw a card?"))
+                if (confirm("Do you want to draw a card?"))
                   draw 1
-                if (oppSelect("Your opponent used $self's Poké-Power \"DRAW\". Do you want to draw a card?"))
+                if (confirm("Your opponent used $self's Poké-Power \"DRAW\". Do you want to draw a card?"))
                   draw 1, TargetPlayer.OPPONENT
               }
             }
@@ -2845,7 +2845,7 @@ public enum DiamondPearl implements LogicCardInfo {
         return itemCard (this) {
           text "Choose 1 of your Pokémon. Flip 2 coins. If both are heads, remove all damage counters from that Pokémon. If both are tails, discard all Energy cards attached to that Pokémon."
           onPlay {
-            def pcs = my.all.findAll{it.numberOfDamageCounter || it.cards.energyCount()}.select("Select 1 of you Pokémon with either damage counters, energy attached, or both.")
+            def pcs = my.all.findAll{it.numberOfDamageCounters || it.cards.energyCount()}.select("Select 1 of you Pokémon with either damage counters, energy attached, or both.")
             flip 1, {
               if (pcs.numberOfDamageCounters) healAll pcs
             }, {
@@ -2853,7 +2853,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
           playRequirement {
-            assert my.all.findAll{it.numberOfDamageCounter || it.cards.energyCount()} : "You have no Pokémon with either damage counters, energy attached, or both."
+            assert my.all.findAll{it.numberOfDamageCounters || it.cards.energyCount()} : "You have no Pokémon with either damage counters, energy attached, or both."
           }
         };
       case PLUSPOWER_109:
@@ -2918,20 +2918,21 @@ public enum DiamondPearl implements LogicCardInfo {
           }
         };
       case SPEED_STADIUM_114:
-        return stadium (this) {
-          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, the player may flip a coin until he or she gets tails. For each heads, that player draws a card."
-          def currentTurnCount=0
+        return stadium(this) {
+          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player's turn, the player may flip a coin until he or she gets tails. For each heads, that player draws a card."
+          def lastTurn=0
           def actions=[]
           onPlay {
             actions=action("Stadium: Speed Stadium") {
               assert my.deck : "There are no more cards in your deck."
-              assert currentTurnCount != bg().turnCount : "Already used Stadium"
+              assert lastTurn != bg().turnCount : "Already used Stadium"
               bc "Used Speed Stadium"
-              currentTurnCount = bg().turnCount
+              lastTurn = bg().turnCount
+
               flipUntilTails { draw 1 }
             }
           }
-          onRemoveFromPlay {
+          onRemoveFromPlay{
             actions.each { bg().gm().unregisterAction(it) }
           }
         };
