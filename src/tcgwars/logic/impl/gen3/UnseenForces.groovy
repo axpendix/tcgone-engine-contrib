@@ -885,14 +885,10 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Clefairy from your hand onto Cleffa (this counts as evolving Cleffa) and remove all damage counters from Cleffa."
           actionA {
-            assert my.hand.findAll { it.name == "Clefairy" } : "There are no Pokémon in your hand to evolve ${self}."
-            checkLastTurn()
-            powerUsed()
-            def tar = my.hand.findAll { it.name == "Clefairy" }.select()
-            if (tar) {
-              evolve(self, tar.first(), OTHER)
-              heal self.numberOfDamageCounters*10,self
-            }
+              checkCanBabyEvolve("Clefairy", self)
+              checkLastTurn()
+              powerUsed()
+              babyEvolution("Clefairy", self)
           }
         }
         move "Eeeeeeek", {
@@ -946,14 +942,10 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Electabuzz from your hand onto Elekid (this counts as evolving Elekid) and remove all damage counters from Elekid."
           actionA {
-            assert my.hand.findAll { it.name == "Electabuzz" } : "There are no Pokémon in your hand to evolve ${self}."
-            checkLastTurn()
-            powerUsed()
-            def tar = my.hand.findAll { it.name == "Electabuzz" }.select()
-            if (tar) {
-              evolve(self, tar.first(), OTHER)
-              heal self.numberOfDamageCounters*10,self
-            }
+              checkCanBabyEvolve("Electabuzz", self)
+              checkLastTurn()
+              powerUsed()
+              babyEvolution("Electabuzz", self)
           }
         }
         move "Magnetic Trip", {
@@ -1162,14 +1154,10 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Jynx from your hand onto Smoochum (this counts as evolving Smoochum) and remove all damage counters from Smoochum."
           actionA {
-            assert my.hand.findAll{it.name == "Jynx"} : "There are no Pokémon in your hand to evolve ${self}."
-            checkLastTurn()
-            powerUsed()
-            def tar = my.hand.findAll{it.name == "Jynx"}.select()
-            if (tar) {
-              evolve(self, tar.first(), OTHER)
-              heal self.numberOfDamageCounters*10,self
-            }
+              checkCanBabyEvolve("Jynx", self)
+              checkLastTurn()
+              powerUsed()
+              babyEvolution("Jynx", self)
           }
         }
         move "Blown Kiss", {
@@ -1213,6 +1201,7 @@ public enum UnseenForces implements LogicCardInfo {
       case TYROGUE_33:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness P
+        //TODO Convert to Poké-Body, also edit babyEvolution() method for supporting this.
         pokeBody "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Hitmonlee, Hitmonchan, or Hitmontop from your hand onto Tyrogue (this counts as evolving Tyrogue) and remove all damage counters from Tyrogue."
           actionA {

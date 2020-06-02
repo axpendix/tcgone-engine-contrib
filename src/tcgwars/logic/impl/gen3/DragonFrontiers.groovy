@@ -1373,14 +1373,10 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Electabuzz from your hand onto Elekid (this counts as evolving Elekid) and remove all damage counters from Elekid."
           actionA {
-            assert my.hand.findAll{it.name.contains("Electabuzz")} : "There is no pokémon in your hand to evolve ${self}."
+            checkCanBabyEvolve("Electabuzz", self)
             checkLastTurn()
             powerUsed()
-            def tar = my.hand.findAll { it.name.contains("Electabuzz") }.select()
-            if (tar) {
-              evolve(self, tar.first(), OTHER)
-              heal self.numberOfDamageCounters*10, self
-            }
+            babyEvolution("Electabuzz", self)
           }
         }
         move "Thunder Spear", {
@@ -1645,14 +1641,10 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Jynx from your hand onto Smoochum (this counts as evolving Smoochum) and remove all damage counters from Smoochum."
           actionA {
-            assert my.hand.findAll{it.name.contains("Jynx")} : "There is no pokémon in your hand to evolve ${self}."
+            checkCanBabyEvolve("Jynx", self)
             checkLastTurn()
             powerUsed()
-            def tar = my.hand.findAll { it.name.contains("Jynx") }.select()
-            if (tar) {
-              evolve(self, tar.first(), OTHER)
-              heal self.numberOfDamageCounters*10, self
-            }
+            babyEvolution("Jynx", self)
           }
         }
         move "Alluring Kiss", {

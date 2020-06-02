@@ -1972,14 +1972,10 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Magmar from your hand onto Magby (this counts as evolving Magby) and remove all damage counters from Magby."
           actionA {
-            assert my.hand.findAll{it.name.contains("Magmar")} : "There is no pokémon in your hand to evolve ${self}."
+            checkCanBabyEvolve("Magmar", self)
             checkLastTurn()
             powerUsed()
-            def tar = my.hand.findAll { it.name.contains("Magmar") }.select()
-            if (tar) {
-              evolve(self, tar.first(), OTHER)
-              heal self.numberOfDamageCounters*10, self
-            }
+            babyEvolution("Magmar", self)
           }
         }
         move "Ignite", {
@@ -2251,14 +2247,10 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Wobbuffet from your hand onto Wynaut (this counts as evolving Wynaut) and remove all damage counters from Wynaut."
           actionA {
-            assert my.hand.findAll{it.name == "Wobbuffet"} : "There is no Pokémon in your hand to evolve ${self}."
+            checkCanBabyEvolve("Wobbuffet", self)
             checkLastTurn()
             powerUsed()
-            def tar = my.hand.findAll { it.name == "Wobbuffet" }.select()
-            if (tar) {
-              evolve(self, tar.first(), OTHER)
-              heal self.numberOfDamageCounters*10, self
-            }
+            babyEvolution("Wobbuffet", self)
           }
         }
         move "Confusion Wave", {
