@@ -2435,27 +2435,26 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
           onPlay {
-            onPlay {
-              def chosenCard
-              def choice = 1
-              def discardTargets = findValidFossilTargets(my.discard)
+            def chosenCard
+            def choice = 1
+            def discardTargets = findValidFossilTargets(my.discard)
 
-              if(discardTargets){
-                choice = choose([1,2],['Search your deck', 'Search your discard pile'], "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand. Then, shuffle your deck.")
-              }
-              if (choice == 1){
-                chosenCard = findValidFossilTargets(my.deck).search(
-                  count : 1,
-                  "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil."
-                )
-              }
-              if(choice == 2){
-                chosenCard = findValidFossilTargets(my.discard).select().moveTo(my.hand)
-              }
+            if(discardTargets){
+              choice = choose([1,2],['Search your deck', 'Search your discard pile'], "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand. Then, shuffle your deck.")
+            }
+            if (choice == 1){
+              chosenCard = findValidFossilTargets(my.deck).search(
+                count : 1,
+                "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil."
+              )
+            }
+            if(choice == 2){
+              chosenCard = findValidFossilTargets(my.discard).select().moveTo(my.hand)
+            }
 
-              if (chosenCard)
-                chosenCard.showToOpponent("Chosen card").moveTo(my.hand)
-              shuffleDeck()
+            if (chosenCard)
+              chosenCard.showToOpponent("Chosen card").moveTo(my.hand)
+            shuffleDeck()
           }
           playRequirement{
             assert (
@@ -2466,7 +2465,6 @@ public enum MysteriousTreasures implements LogicCardInfo {
               }
             ) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
           }
-        }
       };
       case LAKE_BOUNDARY_112:
         return stadium (this) {
