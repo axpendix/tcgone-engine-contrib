@@ -2419,7 +2419,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           //  * Trainer-Item card with "Fossil" in its name
           //  * Stage 1 Pokémon that evolve from a card with "Fossil" in its name.
           //  * Stage 2 Pokémon that evolve from a card following the above principle.
-          /*def itemIsNamedFossil(card) {
+          def itemIsNamedFossil(card) {
             (card.name.contains("Fossil"))
           }
           def stage1canEvolveFromFossil(card) {
@@ -2434,9 +2434,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
               (it.cardTypes.is(STAGE_1) && stage1canEvolveFromFossil(it)) ||
               (it.cardTypes.is(STAGE_2) && stage2canEvolveFromFossil(it))
             }
-          }*/
+          }
           onPlay {
-            /*def chosenCard
+            def chosenCard
             def choice = 1
             def discardTargets = findValidFossilTargets(my.discard)
 
@@ -2455,16 +2455,16 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
             if (chosenCard)
               chosenCard.showToOpponent("Chosen card").moveTo(my.hand)
-            shuffleDeck()*/
+            shuffleDeck()
           }
           playRequirement{
-            /*assert (
+            assert (
               my.deck.notEmpty || my.discard.any{
                 (it.cardTypes.is(ITEM) && itemIsNamedFossil(it)) ||
                 (it.cardTypes.is(STAGE_1) && stage1canEvolveFromFossil(it)) ||
                 (it.cardTypes.is(STAGE_2) && stage2canEvolveFromFossil(it))
               }
-            ) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."*/
+            ) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
           }
       };
       case LAKE_BOUNDARY_112:
