@@ -741,8 +741,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              heal 40, self
               clearSpecialCondition(self)
+              heal 40, self
               apply ASLEEP, self
             }
           }
