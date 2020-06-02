@@ -146,9 +146,9 @@ class TcgStatics {
     }
 
     if (myWin)
-      winEff
+      winEff.call()
     else
-      lossEff
+      lossEff.call()
   }
 
   static Effect toEffect(Closure c){
