@@ -519,7 +519,7 @@ public enum HiddenFates implements LogicCardInfo {
           delayedA {
             after ATTACH_ENERGY, {
               if(self.active && ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite)
-                directDamage 20, ef.resolvedTarget
+                directDamage 30, ef.resolvedTarget
             }
           }
         }
