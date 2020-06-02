@@ -2529,7 +2529,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck, and you and your opponent play a game of “Rock-Paper-Scissors.” The player who wins draws up to 6 cards. The player who loses draws up to 3 cards. (You draw your cards first.)"
           onPlay {
-            shuffleDeck(hand.getExcludedList(thisCard))
+            /*shuffleDeck(hand.getExcludedList(thisCard))
             hand.removeAll(hand.getExcludedList(thisCard))
 
             shuffleDeck(opp.hand, TargetPlayer.OPPONENT)
@@ -2546,7 +2546,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               oppDrawMax = 6
             }
             draw choose(1..myDrawMax,"How many cards would you like to draw?")
-            draw oppChoose(1..oppDrawMax,"How many cards would you like to draw?"), TargetPlayer.OPPONENT
+            draw oppChoose(1..oppDrawMax,"How many cards would you like to draw?"), TargetPlayer.OPPONENT*/
           }
           playRequirement{}
         };
