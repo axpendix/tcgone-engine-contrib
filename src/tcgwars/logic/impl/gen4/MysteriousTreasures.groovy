@@ -2502,17 +2502,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
             shuffleDeck(opp.hand, TargetPlayer.OPPONENT)
             opp.hand.clear()
 
-            def myDrawMax
-            def oppDrawMax
             rockPaperScissors {
-              myDrawMax = 6
-              oppDrawMax = 3
+              draw choose(1..6,"How many cards would you like to draw?")
+              draw oppChoose(1..3,"How many cards would you like to draw?"), TargetPlayer.OPPONENT
             }, {
-              myDrawMax = 3
-              oppDrawMax = 6
+              draw choose(1..3,"How many cards would you like to draw?")
+              draw oppChoose(1..6,"How many cards would you like to draw?"), TargetPlayer.OPPONENT
             }
-            draw choose(1..myDrawMax,"How many cards would you like to draw?")
-            draw oppChoose(1..oppDrawMax,"How many cards would you like to draw?"), TargetPlayer.OPPONENT
           }
           playRequirement{}
         };
