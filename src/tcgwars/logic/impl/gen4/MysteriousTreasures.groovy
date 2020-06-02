@@ -2466,7 +2466,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
               }
             ) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
           }
-        };
+        }
+      };
       case LAKE_BOUNDARY_112:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nApply Weakness for each Pokémon (both yours and your opponent’s) as ×2 instead."
