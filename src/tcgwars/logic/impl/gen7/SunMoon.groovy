@@ -1465,9 +1465,9 @@ public enum SunMoon implements LogicCardInfo {
             text "Each Basic Pokémon in play, in each player's hand, and in each player's discard pile has no Abilities."
             def effect1, effect2
             onActivate {
-              effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
-                if (h.effect.target.basic && h.effect.ability instanceof BwAbility) {
-                  h.object=true
+              effect1 = getter(GET_ABILITIES, BEFORE_LAST) {h->
+                if (h.effect.target.basic) {
+                  h.object.keySet().removeIf{it instanceof BwAbility}
                 }
               }
               effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
