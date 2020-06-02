@@ -143,22 +143,22 @@ public enum MysteriousTreasures implements LogicCardInfo {
   TOTODILE_106 ("Totodile", 106, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   VULPIX_107 ("Vulpix", 107, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
   ZUBAT_108 ("Zubat", 108, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  BEBE_S_SEARCH_109 ("Bebe's Search", 109, Rarity.UNCOMMON, [TRAINER]),
-  DUSK_BALL_110 ("Dusk Ball", 110, Rarity.UNCOMMON, [TRAINER]),
-  FOSSIL_EXCAVATOR_111 ("Fossil Excavator", 111, Rarity.UNCOMMON, [TRAINER]),
-  LAKE_BOUNDARY_112 ("Lake Boundary", 112, Rarity.UNCOMMON, [TRAINER]),
-  NIGHT_MAINTENANCE_113 ("Night Maintenance", 113, Rarity.UNCOMMON, [TRAINER]),
-  QUICK_BALL_114 ("Quick Ball", 114, Rarity.UNCOMMON, [TRAINER]),
-  TEAM_GALACTIC_S_WAGER_115 ("Team Galactic's Wager", 115, Rarity.UNCOMMON, [TRAINER]),
-  ARMOR_FOSSIL_116 ("Armor Fossil", 116, Rarity.COMMON, [TRAINER]),
-  SKULL_FOSSIL_117 ("Skull Fossil", 117, Rarity.COMMON, [TRAINER]),
+  BEBE_S_SEARCH_109 ("Bebe's Search", 109, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  DUSK_BALL_110 ("Dusk Ball", 110, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  FOSSIL_EXCAVATOR_111 ("Fossil Excavator", 111, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  LAKE_BOUNDARY_112 ("Lake Boundary", 112, Rarity.UNCOMMON, [TRAINER, STADIUM]),
+  NIGHT_MAINTENANCE_113 ("Night Maintenance", 113, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  QUICK_BALL_114 ("Quick Ball", 114, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  TEAM_GALACTIC_S_WAGER_115 ("Team Galactic's Wager", 115, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  ARMOR_FOSSIL_116 ("Armor Fossil", 116, Rarity.COMMON, [TRAINER, ITEM]),
+  SKULL_FOSSIL_117 ("Skull Fossil", 117, Rarity.COMMON, [TRAINER, ITEM]),
   MULTI_ENERGY_118 ("Multi Energy", 118, Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
   DARKNESS_ENERGY_119 ("Darkness Energy", 119, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   METAL_ENERGY_120 ("Metal Energy", 120, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   ELECTIVIRE_LV_X_121 ("Electivire LV.X", 121, Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _LIGHTNING_]),
   LUCARIO_LV_X_122 ("Lucario LV.X", 122, Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _FIGHTING_]),
   MAGMORTAR_LV_X_123 ("Magmortar LV.X", 123, Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _FIRE_]),
-  TIME_SPACE_DISTORTION_124 ("Time-Space Distortion", 124, Rarity.HOLORARE, [TRAINER]);
+  TIME_SPACE_DISTORTION_124 ("Time-Space Distortion", 124, Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -2172,20 +2172,17 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
           resistance M, MINUS20
-          move "", {
-            text "If damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
+          //TODO: Implement Rawst Berry
+          //Rawst Berry: If Shinx is Burned, remove the Special Condition Burned from Shinx at the end of each player’s turn.
           move "Plasma", {
-            text "10 damage. Energy card and attach it to Shinx."
+            text "10 damage. Flip a coin. If heads, search your discard pile for a [L] Energy card and attach it to Shinx."
             energyCost L, L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              afterDamage {
+                flip { attachEnergyFrom(type: L, my.discard, self) }
+              }
             }
           }
 
@@ -2198,7 +2195,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              apply ASLEEP, self
+              apply ASLEEP
             }
           }
 
@@ -2219,7 +2217,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {damage 20}
             }
           }
 
@@ -2230,9 +2228,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Curiosity", {
             text "Look at your opponent’s hand."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert opp.hand : "Opponent has no cards in hand."}
             onAttack {
-              damage 0
+              opp.hand.showToMe("Opponent's hand")
             }
           }
           move "Snowball Fight", {
@@ -2240,7 +2239,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip 1, {}, {damage 10, self}
             }
           }
 
@@ -2249,11 +2249,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP050, type:WATER, retreatCost:2) {
           weakness M, PLUS10
           move "Rollout", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Willpower", {
@@ -2261,7 +2261,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              increasedBaseDamageNextTurn("Rollout",hp(30))
             }
           }
 
@@ -2274,15 +2274,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              cantRetreat defending
             }
           }
           move "Double Scratch", {
-            text "20× damage. "
+            text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads"
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, { damage 20 }
             }
           }
 
@@ -2293,9 +2293,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Sleep Inducer", {
             text "Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. The new Defending Pokémon is now Asleep."
             energyCost G
-            attackRequirement {}
+            attackRequirement {
+              assert opp.bench
+            }
             onAttack {
-              damage 0
+              sw opp.active, opp.bench.select()
+              apply ASLEEP, opp.active
             }
           }
 
@@ -2308,15 +2311,18 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              clearSpecialCondition(self)
+              heal 20, self
+              apply ASLEEP, self
             }
           }
           move "Sweet Palm", {
-            text ":30 damage. Before doing damage, remove 1 damage counter from the Defending Pokémon."
+            text "30 damage. Before doing damage, remove 1 damage counter from the Defending Pokémon."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              heal 10, opp.active
+              damage 30
             }
           }
 
@@ -2329,7 +2335,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Shining Fang", {
@@ -2337,7 +2343,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if (defending.numberOfDamageCounters) damage 10
             }
           }
 
@@ -2350,7 +2357,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost R, R
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if (opp.bench)
+                damage 10, opp.bench.select()
             }
           }
 
@@ -2364,15 +2373,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              flipThenApplySC CONFUSED
             }
           }
           move "Bite", {
-            text "20 damage. "
+            text "20 damage."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -2381,7 +2390,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
           onPlay {
-            my.hand.select(hidden: false, "Card to put back into your deck").first().moveTo(hidden:true, my.deck)
+            my.hand.getExcludedList(thisCard).select(hidden: false, "Choose a card to put back into your deck").moveTo(hidden:true, my.deck)
             my.deck.search(count: 1, cardTypeFilter(POKEMON)).showToOpponent("Opponent's selected Pokémon.").moveTo(my.hand)
             shuffleDeck()
           }
@@ -2404,34 +2413,58 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case FOSSIL_EXCAVATOR_111:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
+          //TODO: Check if everything works well.
+          //Possible targets for the search:
+          //  * Trainer-Item card with "Fossil" in its name
+          //  * Stage 1 Pokémon that evolve from a card with "Fossil" in its name.
+          //  * Stage 2 Pokémon that evolve from a card following the above principle.
+          def itemIsNamedFossil(card) = {
+            (card.name.contains("Fossil"))
+          }
+          def stage1canEvolveFromFossil(card) = {
+            (card.predecessor.contains("Fossil"))
+          }
+          def stage2canEvolveFromFossil(card) = {
+            (bg.gm().getBasicsFromStage2(card.name).findAll{it.name.contains("Fossil")}) ? true : false
+          }
+          def findValidFossilTargets(sourceList){
+            sourceList.findAll{
+              (it.cardTypes.is(ITEM) && itemIsNamedFossil(it)) ||
+              (it.cardTypes.is(STAGE_1) && stage1canEvolveFromFossil(it)) ||
+              (it.cardTypes.is(STAGE_2) && stage2canEvolveFromFossil(it))
+            }
+          }
           onPlay {
-            //TODO: Weird card text and potential mistranslation, rethink later.
+            onPlay {
+              def chosenCard
+              def choice = 1
+              def discardTargets = findValidFossilTargets(my.discard)
 
-            /* def choice = 1
-            if(my.discard.findAll{it.name== "Unidentified Fossil"}){
-              choice = choose([1,2],['Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand. Then, shuffle your deck.', 'Put an Unidentified Fossil card from your discard pile into your hand.'], "Choose 1")
-            }
-            if(choice == 1){
-              my.deck.search(
-                count : 1,
-                "Search for an Unidentified Fossil card",
-                {
-                  (
-                    it.cardTypes.is(ITEM) && it.name.contains("Fossil")
-                  ) || (
-                    (it.cardTypes.is(STAGE_1) || it.cardTypes.is(STAGE_2)) && it.predecessor.contains("Fossil")
-                  )
-                }
-              ).showToOpponent("Unidentified Fossil").moveTo(my.hand)
-              //my.deck.search(count : 1,"Search for an Unidentified Fossil card",{it.name == "Unidentified Fossil"}).showToOpponent("Unidentified Fossil").moveTo(my.hand)
+              if(discardTargets){
+                choice = choose([1,2],['Search your deck', 'Search your discard pile'], "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand. Then, shuffle your deck.")
+              }
+              if (choice == 1){
+                chosenCard = findValidFossilTargets(my.deck).search(
+                  count : 1,
+                  "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil."
+                )
+              }
+              if(choice == 2){
+                chosenCard = findValidFossilTargets(my.discard).select().moveTo(my.hand)
+              }
+
+              if (chosenCard)
+                chosenCard.showToOpponent("Chosen card").moveTo(my.hand)
               shuffleDeck()
-            }
-            if(choice == 2){
-              my.discard.findAll{it.name== "Unidentified Fossil"}.select().moveTo(my.hand)
-            } */
           }
           playRequirement{
-            /* assert my.deck.notEmpty || my.discard.findAll{it.name.contains("Fossil")} */
+            assert (
+              my.deck.notEmpty || my.discard.any{
+                (it.cardTypes.is(ITEM) && itemIsNamedFossil(it)) ||
+                (it.cardTypes.is(STAGE_1) && stage1canEvolveFromFossil(it)) ||
+                (it.cardTypes.is(STAGE_2) && stage2canEvolveFromFossil(it))
+              }
+            ) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
           }
         };
       case LAKE_BOUNDARY_112:
@@ -2496,7 +2529,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck, and you and your opponent play a game of “Rock-Paper-Scissors.” The player who wins draws up to 6 cards. The player who loses draws up to 3 cards. (You draw your cards first.)"
           onPlay {
-            /*shuffleDeck(hand.getExcludedList(thisCard))
+            shuffleDeck(hand.getExcludedList(thisCard))
             hand.removeAll(hand.getExcludedList(thisCard))
 
             shuffleDeck(opp.hand, TargetPlayer.OPPONENT)
@@ -2504,7 +2537,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
             def myDrawMax
             def oppDrawMax
-            rockPaperScissors {
+            //TODO: Implement R-P-S
+            flip {
               myDrawMax = 6
               oppDrawMax = 3
             }, {
@@ -2512,7 +2546,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               oppDrawMax = 6
             }
             draw choose(1..myDrawMax,"How many cards would you like to draw?")
-            draw oppChoose(1..oppDrawMax,"How many cards would you like to draw?"), TargetPlayer.OPPONENT*/
+            draw oppChoose(1..oppDrawMax,"How many cards would you like to draw?"), TargetPlayer.OPPONENT
           }
           playRequirement{}
         };
@@ -2530,7 +2564,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
                       bg.dm().each{
                         if(it.to == self && it.notNoEffect && it.dmg.value) {
                           bc "$self - Armor Stone activated"
-                          flipUntilTails { it.dmg = Math.min(it.dmg - hp(10), 0) }
+                          def reducedDmg = 0
+                          flipUntilTails { reducedDmg += 10 }
+                          if (reducedDmg) bc "Damage reduced by $reducedDmg"
+                          it.dmg -= hp(reducedDmg)
                         }
                       }
                     }
@@ -2690,11 +2727,18 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != self.owner)
+              def cardsDiscarded = 0
+              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != self.owner){
                 discard bg.stadiumInfoStruct.stadiumCard
-              opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
-                it.cards.filterByType(POKEMON_TOOL).each { it.discard() }
+                cardsDiscarded += 1
               }
+              opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
+                it.cards.filterByType(POKEMON_TOOL).each {
+                  it.discard()
+                  somethingWasDiscarded += 1
+                }
+              }
+              if (somethingWasDiscarded) preventAllEffectsNextTurn()
             }
           }
 
@@ -2742,7 +2786,20 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 80
-              reduceDamageNextTurn(hp(30), thisMove)
+              //TODO: Modularize?
+              delayed {
+                before APPLY_ATTACK_DAMAGES, {
+                  bg.dm().each {
+                    if(it.from.owner==self.owner.opposite && it.to==self && it.dmg.value && it.notNoEffect){
+                      bc "Close Combat increases damage"
+                      it.dmg+=hp(30)
+                    }
+                  }
+                }
+                unregisterAfter 2
+                after EVOLVE, self, {unregister()}
+                after SWITCH, self, {unregister()}
+              }
             }
           }
 
@@ -2759,24 +2816,26 @@ public enum MysteriousTreasures implements LogicCardInfo {
               powerUsed()
               def torridWaveRecipient = opp.active
               apply BURNED, torridWaveRecipient, SRC_ABILITY
-              def eff
-              register {
-                eff = getterA (GET_BURN_DAMAGE) {h->
-                    if (h.effect.target == torridWaveRecipient && h.effect.target.active) {
-                        bc "Torrid Wave increases burn damage on $torridWaveRecipient to 30."
-                        h.object += 1
+              delayed {
+                def eff
+                register {
+                  eff = getter (GET_BURN_DAMAGE) {h->
+                      if (h.effect.target == torridWaveRecipient && h.effect.target.active) {
+                          bc "Torrid Wave increases burn damage on $torridWaveRecipient to 30."
+                          h.object += 1
+                      }
                     }
                   }
+                unregister {
+                  eff.unregister()
                 }
-              unregister {
-                eff.unregister()
-              }
-              //TODO: Remove if these are not needed.
-              // after EVOLVE, torridWaveRecipient, {unregister()}
-              // after SWITCH, torridWaveRecipient, {unregister()}
-              after CLEAR_SPECIAL_CONDITION, torridWaveRecipient, {
-                if(ef.types.contains(BURNED)){
-                  unregister()
+                //TODO: Remove if these are not needed.
+                // after EVOLVE, torridWaveRecipient, {unregister()}
+                // after SWITCH, torridWaveRecipient, {unregister()}
+                after CLEAR_SPECIAL_CONDITION, torridWaveRecipient, {
+                  if(ef.types.contains(BURNED)){
+                    unregister()
+                  }
                 }
               }
             }
