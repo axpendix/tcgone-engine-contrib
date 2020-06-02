@@ -2413,34 +2413,58 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case FOSSIL_EXCAVATOR_111:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
+          //TODO: Check if everything works well.
+          //Possible targets for the search:
+          //  * Trainer-Item card with "Fossil" in its name
+          //  * Stage 1 Pokémon that evolve from a card with "Fossil" in its name.
+          //  * Stage 2 Pokémon that evolve from a card following the above principle.
+          def itemIsNamedFossil(card) = {
+            (card.name.contains("Fossil"))
+          }
+          def stage1canEvolveFromFossil(card) = {
+            (card.predecessor.contains("Fossil"))
+          }
+          def stage2canEvolveFromFossil(card) = {
+            (bg.gm().getBasicsFromStage2(card.name).findAll{it.name.contains("Fossil")}) ? true : false
+          }
+          def findValidFossilTargets(sourceList){
+            sourceList.findAll{
+              (it.cardTypes.is(ITEM) && itemIsNamedFossil(it)) ||
+              (it.cardTypes.is(STAGE_1) && stage1canEvolveFromFossil(it)) ||
+              (it.cardTypes.is(STAGE_2) && stage2canEvolveFromFossil(it))
+            }
+          }
           onPlay {
-            //TODO: Weird card text and potential mistranslation, rethink later.
+            onPlay {
+              def chosenCard
+              def choice = 1
+              def discardTargets = findValidFossilTargets(my.discard)
 
-            /* def choice = 1
-            if(my.discard.findAll{it.name== "Unidentified Fossil"}){
-              choice = choose([1,2],['Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand. Then, shuffle your deck.', 'Put an Unidentified Fossil card from your discard pile into your hand.'], "Choose 1")
-            }
-            if(choice == 1){
-              my.deck.search(
-                count : 1,
-                "Search for an Unidentified Fossil card",
-                {
-                  (
-                    it.cardTypes.is(ITEM) && it.name.contains("Fossil")
-                  ) || (
-                    (it.cardTypes.is(STAGE_1) || it.cardTypes.is(STAGE_2)) && it.predecessor.contains("Fossil")
-                  )
-                }
-              ).showToOpponent("Unidentified Fossil").moveTo(my.hand)
-              //my.deck.search(count : 1,"Search for an Unidentified Fossil card",{it.name == "Unidentified Fossil"}).showToOpponent("Unidentified Fossil").moveTo(my.hand)
+              if(discardTargets){
+                choice = choose([1,2],['Search your deck', 'Search your discard pile'], "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand. Then, shuffle your deck.")
+              }
+              if (choice == 1){
+                chosenCard = findValidFossilTargets(my.deck).search(
+                  count : 1,
+                  "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil."
+                )
+              }
+              if(choice == 2){
+                chosenCard = findValidFossilTargets(my.discard).select().moveTo(my.hand)
+              }
+
+              if (chosenCard)
+                chosenCard.showToOpponent("Chosen card").moveTo(my.hand)
               shuffleDeck()
-            }
-            if(choice == 2){
-              my.discard.findAll{it.name== "Unidentified Fossil"}.select().moveTo(my.hand)
-            } */
           }
           playRequirement{
-            /* assert my.deck.notEmpty || my.discard.findAll{it.name.contains("Fossil")} */
+            assert (
+              my.deck.notEmpty || my.discard.any{
+                (it.cardTypes.is(ITEM) && itemIsNamedFossil(it)) ||
+                (it.cardTypes.is(STAGE_1) && stage1canEvolveFromFossil(it)) ||
+                (it.cardTypes.is(STAGE_2) && stage2canEvolveFromFossil(it))
+              }
+            ) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
           }
         };
       case LAKE_BOUNDARY_112:
