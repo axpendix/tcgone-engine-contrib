@@ -108,11 +108,11 @@ class TcgStatics {
   }
 
   static rockPaperScissors(Closure winEff, Closure lossEff = {}) {
-    rockPaperScissors(winnEff, lossEff, false)
+    rockPaperScissors(winEff, lossEff, false)
   }
 
   //For newer formats "may" should not be used, but for older (Wizards era) ones doing a coin flip was the offered alternative if a player didn't know how to play RPS.
-  static rockPaperScissors(Closure winEff, Closure lossEff = {}, boolean may = false) {
+  static rockPaperScissors(Closure winEff, Closure lossEff = {}, boolean may) {
     def winnerDetermined = false
     def myWin = false
     def confirmMsg = "Do you want to play Rock - Paper - Scissors? (Either player saying no will result in a coinflip.)"
