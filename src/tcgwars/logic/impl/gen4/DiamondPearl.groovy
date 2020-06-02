@@ -1638,7 +1638,7 @@ public enum DiamondPearl implements LogicCardInfo {
               //TODO: Generalize on Statics, with "may" and "filter" params. See "Drag Off" (BLAZIKEN_EX_90 in CG) as a similar attack for base.
               def target = defending
               def tar = opp.bench.findAll{ it.cards.energyCount() }
-              if (tar && select("Before doing damage, you may choose 1 of your opponent’s Benched Pokémon that has any Energy attached to it and switch that Pokémon with 1 of the Defending Pokémon.")) {
+              if (tar && confirm("Before doing damage, you may choose 1 of your opponent’s Benched Pokémon that has any Energy attached to it and switch that Pokémon with 1 of the Defending Pokémon.")) {
                 target = tar.select("Select the new active")
                 sw defending, target
               }
@@ -2933,7 +2933,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
           onRemoveFromPlay{
-            actions.each { bg().gm().unregisterAction(it) }
+            actions.each { bg.gm().unregisterAction(it) }
           }
         };
       case SUPER_SCOOP_UP_115:
@@ -2975,15 +2975,17 @@ public enum DiamondPearl implements LogicCardInfo {
                 delayed{
                   before BETWEEN_TURNS, {
                     if(
-                      bg.currentTurn == self.owner.opposite && bg.em().retrieveObject("supremeCommandBundles") != null
+                      bg().currentTurn == self.owner.opposite && bg().em().retrieveObject("supremeCommandBundles") != null
                     ){
+                      bc "Attempting to restore cards"
                       def supComBundles = bg.em().retrieveObject("supremeCommandBundles")
                       def toBeReturnedCards = supComBundles.get(self.id)
-                      if (toBeReturnedCards != null)
-                        opp.hand.addAll(toBeReturnedCards)
+                      toBeReturnedCards.each {
+                        opp.hand.add(it)
+                      }
+                      unregister()
                     }
                   }
-                  unregisterAfter 3
                 }
               }
             }
