@@ -5,10 +5,29 @@ import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
-import tcgwars.logic.card.*
+import java.util.*;
+import tcgwars.entity.*;
+import tcgwars.logic.*;
+import tcgwars.logic.card.*;
+import tcgwars.logic.card.energy.*;
+import tcgwars.logic.card.pokemon.*;
+import tcgwars.logic.card.trainer.*;
+import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.ability.*;
+import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.basic.*;
+import tcgwars.logic.effect.blocking.*;
+import tcgwars.logic.effect.event.*;
+import tcgwars.logic.effect.getter.*;
+import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
@@ -2495,8 +2514,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             draw choose(1..myDrawMax,"How many cards would you like to draw?")
             draw oppChoose(1..oppDrawMax,"How many cards would you like to draw?"), TargetPlayer.OPPONENT
           }
-          playRequirement{
-          }
+          playRequirement{}
         };
       case ARMOR_FOSSIL_116:
         return itemCard (this) {
