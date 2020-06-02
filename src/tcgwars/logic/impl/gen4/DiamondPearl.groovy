@@ -2957,37 +2957,25 @@ public enum DiamondPearl implements LogicCardInfo {
               checkLastTurn()
               assert opp.hand : "Your Opponent has no cards in their hand."
               powerUsed()
-              def supremeCommandBundles = [ : ]
-              def supremeCommandCards
-              def chosenCards = new CardList()
-              opp.hand.select(hidden: true, max: 2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.").each{chosenCards.add(it)}
 
-              if (chosenCards) {
-                if(bg.em().retrieveObject("supremeCommandBundles") != null){
-                  supremeCommandBundles = bg.em().retrieveObject("supremeCommandBundles")
-                }
-                supremeCommandBundles.put(self.id, chosenCards)
-                chosenCards.each {
-                  opp.hand.remove(it)
-                }
-                bg.em().storeObject("supremeCommandBundles",supremeCommandBundles)
+              def chosenCards = opp.hand.select(hidden: true, max: 2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.")
+              def supremeCommandBundles = bg.em().retrieveObject("supremeCommandBundles")
+              if (!supremeCommandBundles)
+                supremeCommandBundles = [ : ]
+              supremeCommandBundles.put(self.id, chosenCards)
+              opp.hand.removeAll(chosenCards)
+              bg.em().storeObject("supremeCommandBundles",supremeCommandBundles)
 
-                delayed{
+              delayed{
                   before BETWEEN_TURNS, {
-                    if(
-                      bg().currentTurn == self.owner.opposite && bg().em().retrieveObject("supremeCommandBundles") != null
-                    ){
-                      bc "Attempting to restore cards"
-                      def supComBundles = bg.em().retrieveObject("supremeCommandBundles")
-                      def toBeReturnedCards = supComBundles.get(self.id)
-                      toBeReturnedCards.each {
-                        opp.hand.add(it)
-                      }
+                    if(bg().currentTurn == self.owner.opposite) {
+                      def bundles = bg().em().retrieveObject("supremeCommandBundles")
+                      if(bundles)
+                        self.owner.opposite.pbg.hand.addAll(bundles.get(self.id))
                       unregister()
                     }
                   }
                 }
-              }
             }
           }
           move "Hydro Impact", {
