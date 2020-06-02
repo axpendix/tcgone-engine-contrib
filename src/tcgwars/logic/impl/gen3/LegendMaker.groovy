@@ -2235,9 +2235,11 @@ public enum LegendMaker implements LogicCardInfo {
         move "String Pull", {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench : "There is no Pokémon on your opponent's bench"
+          }
           onAttack {
-            whirlwind()
+            sw defending, opp.bench.select()
           }
         }
       };
