@@ -2410,62 +2410,182 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck, and you and your opponent play a game of “Rock-Paper-Scissors.” The player who wins draws up to 6 cards. The player who loses draws up to 3 cards. (You draw your cards first.)"
           onPlay {
+            shuffleDeck(hand.getExcludedList(thisCard))
+            hand.removeAll(hand.getExcludedList(thisCard))
+
+            shuffleDeck(opp.hand, TargetPlayer.OPPONENT)
+            opp.hand.clear()
+
+            def myDrawMax
+            def oppDrawMax
+            rockPaperScissors {
+              myDrawMax = 6
+              oppDrawMax = 3
+            }, {
+              myDrawMax = 3
+              oppDrawMax = 6
+            }
+            draw choose(1..myDrawMax,"How many cards would you like to draw?")
+            draw oppChoose(1..oppDrawMax,"How many cards would you like to draw?"), TargetPlayer.OPPONENT
           }
           playRequirement{
           }
         };
       case ARMOR_FOSSIL_116:
-        return basicTrainer (this) {
-          text "Play Armor Fossil as if it were a [C] Basic Pokémon. (Armor Fossil counts as a Trainer card as well, but if Armor Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Armor Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Armor Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Armor Stone Whenever Armor Fossil would be damaged by your opponent’s attack, flip a coin until you get tails. For each heads, reduce that damage by 10."
+        return itemCard (this) {
+          text "Play Armor Fossil as if it were a [C] Basic Pokémon. (Armor Fossil counts as a Trainer card as well, but if Armor Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Armor Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Armor Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\n" +
+            "Whenever Armor Fossil would be damaged by your opponent’s attack, flip a coin until you get tails. For each heads, reduce that damage by 10."
           onPlay {
+            Card pokemonCard, trainerCard = thisCard
+            pokemonCard = basic (new CustomCardInfo(ARMOR_FOSSIL_116).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+              pokeBody "Armor Stone", {
+                delayedA {
+                  before APPLY_ATTACK_DAMAGES, {
+                    if(ef.attacker.owner != self.owner) {
+                      bg.dm().each{
+                        if(it.to == self && it.notNoEffect && it.dmg.value) {
+                          bc "$self - Armor Stone activated"
+                          flipUntilTails { it.dmg = Math.min(it.dmg - hp(10), 0) }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              customAbility {
+                def eff, acl
+                onActivate{
+                  delayed {
+                    before RETREAT, self, {
+                      if(self.topPokemonCard == thisCard){
+                        wcu "Cannot retreat"
+                        prevent()
+                      }
+                    }
+                    before APPLY_SPECIAL_CONDITION, {
+                      def pcs=e.getTarget(bg)
+                      if(pcs==self){
+                        bc "Armor Fossil is unaffected by Special Conditions"
+                        prevent()
+                      }
+                    }
+                  }
+                  if (!eff) {
+                    eff = delayed {
+                      after REMOVE_FROM_PLAY, {
+                        if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          unregister()
+                          eff = null
+                        }
+                      }
+                    }
+                  }
+                  acl = action("Discard Armor Fossil", [TargetPlayer.SELF]) {
+                    delayed {
+                      before TAKE_PRIZE, {
+                        if (ef.pcs==self) {
+                          prevent()
+                        }
+                      }
+                    }
+                    new Knockout(self).run(bg)
+                  }
+                }
+                onDeactivate {
+                  acl.each{bg.gm().unregisterAction(it)}
+                }
+              }
+            }
+            pokemonCard.player = trainerCard.player
+            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+            hand.remove(pokemonCard)
+            benchPCS(pokemonCard)
           }
           playRequirement{
+            assert bench.notFull
           }
         };
       case SKULL_FOSSIL_117:
-        return basicTrainer (this) {
-          text "Play Skull Fossil as if it were a [C] Basic Pokémon. (Skull Fossil counts as a Trainer card as well, but if Skull Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Skull Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Skull Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Skull Stone During your opponent’s turn, if Skull Fossil would be Knocked Out by damage from an opponent’s attack, flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
+        return itemCard (this) {
+          text "Play Skull Fossil as if it were a [C] Basic Pokémon. (Skull Fossil counts as a Trainer card as well, but if Skull Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Skull Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Skull Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\n" +
+            "During your opponent’s turn, if Skull Fossil would be Knocked Out by damage from an opponent’s attack, flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
           onPlay {
+            Card pokemonCard, trainerCard = thisCard
+            pokemonCard = basic (new CustomCardInfo(SKULL_FOSSIL_117).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+              pokeBody "Skull Stone", {
+                delayedA{
+                  before KNOCKOUT, self, {
+                    if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+                      bc "$self - Skull Stone activated"
+                      if (self.owner.opposite.pbg.all) {
+                        flipUntilTails { directDamage(10, self.owner.opposite.pbg.active, Source.SRC_ABILITY) }
+                      }
+                    }
+                  }
+                }
+              }
+              customAbility {
+                def eff, acl
+                onActivate{
+                  delayed {
+                    before RETREAT, self, {
+                      if(self.topPokemonCard == thisCard){
+                        wcu "Cannot retreat"
+                        prevent()
+                      }
+                    }
+                    before APPLY_SPECIAL_CONDITION, {
+                      def pcs=e.getTarget(bg)
+                      if(pcs==self){
+                        bc "Skull Fossil is unaffected by Special Conditions"
+                        prevent()
+                      }
+                    }
+                  }
+                  if (!eff) {
+                    eff = delayed {
+                      after REMOVE_FROM_PLAY, {
+                        if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          unregister()
+                          eff = null
+                        }
+                      }
+                    }
+                  }
+                  acl = action("Discard Skull Fossil", [TargetPlayer.SELF]) {
+                    delayed {
+                      before TAKE_PRIZE, {
+                        if (ef.pcs==self) {
+                          prevent()
+                        }
+                      }
+                    }
+                    new Knockout(self).run(bg)
+                  }
+                }
+                onDeactivate {
+                  acl.each{bg.gm().unregisterAction(it)}
+                }
+              }
+            }
+            pokemonCard.player = trainerCard.player
+            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+            hand.remove(pokemonCard)
+            benchPCS(pokemonCard)
           }
           playRequirement{
+            assert bench.notFull
           }
         };
       case MULTI_ENERGY_118:
-        return specialEnergy (this, [[C]]) {
-          text "Attach Multi Energy to 1 of your Pokémon. While in play, Multi Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) Multi Energy provides [C] Energy when attached to a Pokémon that already has Special Energy cards attached to it."
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        return copy (Sandstorm.MULTI_ENERGY_93, this);
       case DARKNESS_ENERGY_119:
-        return specialEnergy (this, [[C]]) {
-          text "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        //TODO: This version of "Darkness Energy (Special Energy)" shouldn't work on "Dark ____" cards, only on [D] Type Pokémon.
+        return copy (RubySapphire.DARKNESS_ENERGY_93, this);
       case METAL_ENERGY_120:
-        return specialEnergy (this, [[C]]) {
-          text "Damage done by attacks to the Pokémon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that Metal Energy is attached to isn’t [M]. Metal Energy provides [M] Energy. (Doesn’t count as a basic Energy card.)"
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        return copy (RubySapphire.METAL_ENERGY_94, this);
       case ELECTIVIRE_LV_X_121:
         return evolution (this, from:"Electivire", hp:HP120, type:LIGHTNING, retreatCost:3) {
           weakness F
@@ -2473,6 +2593,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokeBody "Shocking Tail", {
             text "As long as Electivire is your Active Pokémon, whenever your opponent attaches an Energy card from his or her hand to 1 of his or her Pokémon, put 2 damage counters on that Pokémon."
             delayedA {
+              after ATTACH_ENERGY, {
+                if(self.active && ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite)
+                  directDamage 20, ef.resolvedTarget
+              }
             }
           }
           move "Pulse Barrier", {
@@ -2480,15 +2604,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "Put this card onto your Active Electivire. Electivire LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+              damage 50
+              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != self.owner)
+                discard bg.stadiumInfoStruct.stadiumCard
+              opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
+                it.cards.filterByType(POKEMON_TOOL).each { it.discard() }
+              }
             }
           }
 
@@ -2497,24 +2618,46 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Lucario", hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness P
           pokePower "Stance", {
-            text "Once during your turn , when you put Lucario LV. from your hand onto your Active Lucario, you may use this power. Prevent all effects of an attack, including damage, done to Lucario during your opponent’s next turn. (If Lucario is no longer your Active Pokémon, this effect ends.)"
-            actionA {
+            text "Once during your turn (before your attack), when you put Lucario LV.X from your hand onto your Active Lucario, you may use this power. Prevent all effects of an attack, including damage, done to Lucario during your opponent’s next turn. (If Lucario is no longer your Active Pokémon, this effect ends.)"
+            //Taken from BUS LUCARIO_71, but with switch & devolve removing the effect.
+            onActivate {r->
+              if(r==PLAY_FROM_HAND && confirm("Use Stance?")){
+                powerUsed()
+                delayed{
+                  before APPLY_ATTACK_DAMAGES, {
+                    bg.dm().each{
+                      if(it.to == self && it.notNoEffect){
+                        bc "Stance prevents all damage"
+                        it.dmg=hp(0)
+                      }
+                    }
+                  }
+                  before null, self, Source.ATTACK, {
+                    if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                      bc "Stance prevents effects"
+                      prevent()
+                    }
+                  }
+                  after ENERGY_SWITCH, {
+                    def efs = (ef as EnergySwitch)
+                    if(efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                      discard efs.card
+                    }
+                  }
+                  unregisterAfter 2
+                  after SWITCH, self, {unregister()}
+                  after EVOLVE, self, {unregister()}
+                }
+              }
             }
           }
           move "Close Combat", {
-            text "80 damage. ."
+            text "80 damage. During your opponent’s next turn, any damage done to Lucario by attacks is increased by 30 (after applying Weakness and Resistance)."
             energyCost F, F, C
             attackRequirement {}
             onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "Put this card onto your Active Lucario. Lucario LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+              damage 80
+              reduceDamageNextTurn(hp(30), thisMove)
             }
           }
 
@@ -2523,34 +2666,42 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Magmortar", hp:HP130, type:FIRE, retreatCost:3) {
           weakness W
           pokePower "Torrid Wave", {
-            text "Once during your turn , if Magmortar is your Active Pokémon, you may choose 1 of the Defending Pokémon. That Pokémon is now Burned. Put 3 damage counters instead of 2 on that Pokémon between turns. This power can’t be used if Magmortar is affected by a Special Condition."
+            text "Once during your turn (before your attack), if Magmortar is your Active Pokémon, you may choose 1 of the Defending Pokémon. That Pokémon is now Burned. Put 3 damage counters instead of 2 on that Pokémon between turns. This power can’t be used if Magmortar is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              assert self.active : "$self is not your active Pokémon."
+              powerUsed()
+              apply BURNED, opp.active, SRC_ABILITY
+              //TODO: extraBurn 1
             }
           }
           move "Flame Buster", {
-            text "During your next turn, Magmortar can’t use Flame Bluster."
-            energyCost R, R, R, R, R
+            text "Discard 2 [R] Energy attached to Magmortar. Choose 1 of your opponent’s Pokémon. This attack does 100 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) During your next turn, Magmortar can’t use Flame Bluster."
+            energyCost R, R, R, R
             attackRequirement {}
             onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "Put this card onto your Active Magmortar. Magmortar LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+              damage 100, opp.all.select()
+              cantUseAttack(thisMove, self)
+              afterDamage {
+                discardSelfEnergy R,R
+              }
             }
           }
 
         };
       case TIME_SPACE_DISTORTION_124:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Flip 3 coins. For each heads, search your discard pile for a Pokémon, show it to your opponent, and put it into your hand."
           onPlay {
+            flip 3, {
+              def tar = my.discard.filterByType(POKEMON)
+              if (tar)
+                tar.select("Put a Pokémon from your discard pile into your hand.").moveTo(my.hand)
+            }
           }
           playRequirement{
+            assert my.discard.filterByType(POKEMON)
           }
         };
       default:
