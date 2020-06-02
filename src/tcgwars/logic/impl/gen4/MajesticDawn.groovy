@@ -1262,7 +1262,11 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              if (my.bench.notEmpty) {
+                damage 20
+                self.cards.moveTo(hand)
+                removePCS(self)
+              }
             }
           }
 
