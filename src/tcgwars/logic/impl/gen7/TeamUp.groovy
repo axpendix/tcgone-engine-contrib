@@ -3240,7 +3240,7 @@ public enum TeamUp implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)} : "There is no more card in your deck"
+            assert my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)} : "There are no basic Pokémon or basic Energy cards in your discard"
           }
         };
       case BUFF_PADDING_136:

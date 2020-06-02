@@ -924,7 +924,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             assert opp.bench : "There is no Pokémon on your opponent's bench"
           }
           onAttack {
-            whirlwind()
+            sw defending, opp.bench.select()
             applyAfterDamage(ASLEEP)
           }
         }
@@ -1072,6 +1072,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           actionA {
             checkNoSPC()
             assert !my.prizeCardSet.allVisible : "All prizes are face up"
+            assert my.hand : "You don't have cards in your hand"
             checkLastTurn()
             powerUsed()
 
