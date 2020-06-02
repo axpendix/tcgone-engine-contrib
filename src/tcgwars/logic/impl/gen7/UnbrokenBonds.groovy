@@ -1489,7 +1489,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost W, C, C
             onAttack {
               damage 60
-              flip {damage 60}
+              rockPaperScissors {damage 60}
             }
           }
 
@@ -3891,7 +3891,8 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 30
-              astonish(self.lastEvolved==bg.turnCount?2:1)
+              def count = (self.lastEvolved==bg.turnCount) ? 2 : 1
+              (1..count).each{ discardRandomCardFromOpponentsHand() }
             }
           }
           move "Lunge Out", {
