@@ -2390,7 +2390,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
           onPlay {
-            my.hand.select(hidden: false, "Card to put back into your deck").first().moveTo(hidden:true, my.deck)
+            my.hand.getExcludedList(thisCard).select(hidden: false, "Choose a card to put back into your deck").moveTo(hidden:true, my.deck)
             my.deck.search(count: 1, cardTypeFilter(POKEMON)).showToOpponent("Opponent's selected Pokémon.").moveTo(my.hand)
             shuffleDeck()
           }
@@ -2505,7 +2505,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck, and you and your opponent play a game of “Rock-Paper-Scissors.” The player who wins draws up to 6 cards. The player who loses draws up to 3 cards. (You draw your cards first.)"
           onPlay {
-            /*shuffleDeck(hand.getExcludedList(thisCard))
+            shuffleDeck(hand.getExcludedList(thisCard))
             hand.removeAll(hand.getExcludedList(thisCard))
 
             shuffleDeck(opp.hand, TargetPlayer.OPPONENT)
@@ -2513,7 +2513,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
             def myDrawMax
             def oppDrawMax
-            rockPaperScissors {
+            //TODO: Implement R-P-S
+            flip {
               myDrawMax = 6
               oppDrawMax = 3
             }, {
@@ -2521,7 +2522,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               oppDrawMax = 6
             }
             draw choose(1..myDrawMax,"How many cards would you like to draw?")
-            draw oppChoose(1..oppDrawMax,"How many cards would you like to draw?"), TargetPlayer.OPPONENT*/
+            draw oppChoose(1..oppDrawMax,"How many cards would you like to draw?"), TargetPlayer.OPPONENT
           }
           playRequirement{}
         };
@@ -2539,7 +2540,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
                       bg.dm().each{
                         if(it.to == self && it.notNoEffect && it.dmg.value) {
                           bc "$self - Armor Stone activated"
-                          flipUntilTails { it.dmg = Math.min(it.dmg - hp(10), 0) }
+                          def reducedDmg = 0
+                          flipUntilTails { reducedDmg += 10 }
+                          if (reducedDmg) bc "Damage reduced by $reducedDmg"
+                          it.dmg -= hp(reducedDmg)
                         }
                       }
                     }
@@ -2699,11 +2703,18 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != self.owner)
+              def cardsDiscarded = 0
+              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != self.owner){
                 discard bg.stadiumInfoStruct.stadiumCard
-              opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
-                it.cards.filterByType(POKEMON_TOOL).each { it.discard() }
+                cardsDiscarded += 1
               }
+              opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
+                it.cards.filterByType(POKEMON_TOOL).each {
+                  it.discard()
+                  somethingWasDiscarded += 1
+                }
+              }
+              if (somethingWasDiscarded) preventAllEffectsNextTurn()
             }
           }
 
@@ -2751,7 +2762,20 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 80
-              reduceDamageNextTurn(hp(30), thisMove)
+              //TODO: Modularize?
+              delayed {
+                before APPLY_ATTACK_DAMAGES, {
+                  bg.dm().each {
+                    if(it.from.owner==self.owner.opposite && it.to==self && it.dmg.value && it.notNoEffect){
+                      bc "Close Combat increases damage"
+                      it.dmg+=hp(30)
+                    }
+                  }
+                }
+                unregisterAfter 2
+                after EVOLVE, self, {unregister()}
+                after SWITCH, self, {unregister()}
+              }
             }
           }
 
@@ -2768,24 +2792,26 @@ public enum MysteriousTreasures implements LogicCardInfo {
               powerUsed()
               def torridWaveRecipient = opp.active
               apply BURNED, torridWaveRecipient, SRC_ABILITY
-              def eff
-              register {
-                eff = getterA (GET_BURN_DAMAGE) {h->
-                    if (h.effect.target == torridWaveRecipient && h.effect.target.active) {
-                        bc "Torrid Wave increases burn damage on $torridWaveRecipient to 30."
-                        h.object += 1
+              delayed {
+                def eff
+                register {
+                  eff = getter (GET_BURN_DAMAGE) {h->
+                      if (h.effect.target == torridWaveRecipient && h.effect.target.active) {
+                          bc "Torrid Wave increases burn damage on $torridWaveRecipient to 30."
+                          h.object += 1
+                      }
                     }
                   }
+                unregister {
+                  eff.unregister()
                 }
-              unregister {
-                eff.unregister()
-              }
-              //TODO: Remove if these are not needed.
-              // after EVOLVE, torridWaveRecipient, {unregister()}
-              // after SWITCH, torridWaveRecipient, {unregister()}
-              after CLEAR_SPECIAL_CONDITION, torridWaveRecipient, {
-                if(ef.types.contains(BURNED)){
-                  unregister()
+                //TODO: Remove if these are not needed.
+                // after EVOLVE, torridWaveRecipient, {unregister()}
+                // after SWITCH, torridWaveRecipient, {unregister()}
+                after CLEAR_SPECIAL_CONDITION, torridWaveRecipient, {
+                  if(ef.types.contains(BURNED)){
+                    unregister()
+                  }
                 }
               }
             }
