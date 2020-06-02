@@ -2672,8 +2672,28 @@ public enum MysteriousTreasures implements LogicCardInfo {
               checkLastTurn()
               assert self.active : "$self is not your active Pokémon."
               powerUsed()
-              apply BURNED, opp.active, SRC_ABILITY
-              //TODO: extraBurn 1
+              def torridWaveRecipient = opp.active
+              apply BURNED, torridWaveRecipient, SRC_ABILITY
+              def eff
+              register {
+                eff = getterA (GET_BURN_DAMAGE) {h->
+                    if (h.effect.target == torridWaveRecipient && h.effect.target.active) {
+                        bc "Torrid Wave increases burn damage on $torridWaveRecipient to 30."
+                        h.object += 1
+                    }
+                  }
+                }
+              unregister {
+                eff.unregister()
+              }
+              //TODO: Remove if these are not needed.
+              // after EVOLVE, torridWaveRecipient, {unregister()}
+              // after SWITCH, torridWaveRecipient, {unregister()}
+              after CLEAR_SPECIAL_CONDITION, torridWaveRecipient, {
+                if(ef.types.contains(BURNED)){
+                  unregister()
+                }
+              }
             }
           }
           move "Flame Buster", {
@@ -2688,7 +2708,6 @@ public enum MysteriousTreasures implements LogicCardInfo {
               }
             }
           }
-
         };
       case TIME_SPACE_DISTORTION_124:
         return itemCard (this) {
