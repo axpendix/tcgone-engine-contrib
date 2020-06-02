@@ -2359,113 +2359,300 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
         };
       case BEBE_S_SEARCH_109:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
           onPlay {
+            my.hand.select(hidden: false, "Card to put back into your deck").first().moveTo(hidden:true, my.deck)
+            my.deck.search(count: 1, cardTypeFilter(POKEMON)).showToOpponent("Opponent's selected Pokémon.").moveTo(my.hand)
+            shuffleDeck()
           }
           playRequirement{
+            assert my.hand.getExcludedList(thisCard) : "You don't have other cards in your hand"
           }
         };
       case DUSK_BALL_110:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Look at the 7 cards from the bottom of your deck. Choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. Put the remaining cards back on top of your deck. Shuffle your deck afterward."
           onPlay {
+            def deckSize = my.deck.size()
+            deck.subList(Math.max(0, deckSize-7),deckSize).select(min:0,"Select a Pokémon card to put to hand",cardTypeFilter(POKEMON)).moveTo(hand)
+            shuffleDeck()
           }
           playRequirement{
+            assert my.deck : "There is no card remaining in your deck."
           }
         };
       case FOSSIL_EXCAVATOR_111:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
           onPlay {
+            //TODO: Weird card text and potential mistranslation, rethink later.
+
+            /* def choice = 1
+            if(my.discard.findAll{it.name== "Unidentified Fossil"}){
+              choice = choose([1,2],['Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand. Then, shuffle your deck.', 'Put an Unidentified Fossil card from your discard pile into your hand.'], "Choose 1")
+            }
+            if(choice == 1){
+              my.deck.search(
+                count : 1,
+                "Search for an Unidentified Fossil card",
+                {
+                  (
+                    it.cardTypes.is(ITEM) && it.name.contains("Fossil")
+                  ) || (
+                    (it.cardTypes.is(STAGE_1) || it.cardTypes.is(STAGE_2)) && it.predecessor.contains("Fossil")
+                  )
+                }
+              ).showToOpponent("Unidentified Fossil").moveTo(my.hand)
+              //my.deck.search(count : 1,"Search for an Unidentified Fossil card",{it.name == "Unidentified Fossil"}).showToOpponent("Unidentified Fossil").moveTo(my.hand)
+              shuffleDeck()
+            }
+            if(choice == 2){
+              my.discard.findAll{it.name== "Unidentified Fossil"}.select().moveTo(my.hand)
+            } */
           }
           playRequirement{
+            /* assert my.deck.notEmpty || my.discard.findAll{it.name.contains("Fossil")} */
           }
         };
       case LAKE_BOUNDARY_112:
-        return basicTrainer (this) {
-          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nApply Weakness for each Pokémon (both yours and your opponent’s) as ×2 instead."
+        return stadium (this) {
+          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nApply Weakness for each Pokémon (both yours and your opponent’s) as ×2 instead."
+          def eff
           onPlay {
+            eff = getter (GET_WEAKNESSES) {h->
+              h.object = h.object?.collect {
+                def weakness = it.copy()
+                weakness.feature = "X2"
+                weakness
+              }
+            }
           }
-          playRequirement{
+          onRemoveFromPlay{
+            eff.unregister()
           }
         };
       case NIGHT_MAINTENANCE_113:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Search your discard pile for up to 3 in any combination of Pokémon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
           onPlay {
+            //TODO: "Shuffle [up to] x basic pokemon/energy from discard" could be modularized.
+            //TODO: Test if min:1 is needed on the select
+            def tar = my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)}
+            def maxSel = Math.min(6,tar.size())
+            tar.select(max: maxSel,"Choose up to $maxSel cards to shuffle into your deck").moveTo(my.deck)
+            shuffleDeck()
           }
           playRequirement{
+            assert my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)} : "There are no basic Pokémon or basic Energy cards in your discard pile"
           }
         };
       case QUICK_BALL_114:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Reveal cards from your deck until you reveal a Pokémon. Show that Pokémon to your opponent and put it into your hand. Shuffle the other revealed cards back into your deck. (If you don’t reveal a Pokémon, shuffle all the revealed cards back into your deck.)"
           onPlay {
+              //TODO: Modularize
+              def revealCard = new CardList();
+              def ind = 0
+              def curCard
+              while(ind < my.deck.size()){
+                curCard = my.deck.get(ind)
+                ind+=1
+                revealCard.add(curCard)
+                if(curCard.cardTypes.is(POKEMON))
+                  break
+              }
+              revealCard.showToMe("Drawn cards")
+              revealCard.showToOpponent("Revealed cards")
+              revealCard.clear()
+              revealCard.add(curCard)
+              revealCard.moveTo(my.hand)
+              shuffleDeck()
           }
           playRequirement{
+            assert my.deck
           }
         };
       case TEAM_GALACTIC_S_WAGER_115:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck, and you and your opponent play a game of “Rock-Paper-Scissors.” The player who wins draws up to 6 cards. The player who loses draws up to 3 cards. (You draw your cards first.)"
           onPlay {
+            shuffleDeck(hand.getExcludedList(thisCard))
+            hand.removeAll(hand.getExcludedList(thisCard))
+
+            shuffleDeck(opp.hand, TargetPlayer.OPPONENT)
+            opp.hand.clear()
+
+            def myDrawMax
+            def oppDrawMax
+            rockPaperScissors {
+              myDrawMax = 6
+              oppDrawMax = 3
+            }, {
+              myDrawMax = 3
+              oppDrawMax = 6
+            }
+            draw choose(1..myDrawMax,"How many cards would you like to draw?")
+            draw oppChoose(1..oppDrawMax,"How many cards would you like to draw?"), TargetPlayer.OPPONENT
           }
           playRequirement{
           }
         };
       case ARMOR_FOSSIL_116:
-        return basicTrainer (this) {
-          text "Play Armor Fossil as if it were a [C] Basic Pokémon. (Armor Fossil counts as a Trainer card as well, but if Armor Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Armor Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Armor Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Armor Stone Whenever Armor Fossil would be damaged by your opponent’s attack, flip a coin until you get tails. For each heads, reduce that damage by 10."
+        return itemCard (this) {
+          text "Play Armor Fossil as if it were a [C] Basic Pokémon. (Armor Fossil counts as a Trainer card as well, but if Armor Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Armor Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Armor Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\n" +
+            "Whenever Armor Fossil would be damaged by your opponent’s attack, flip a coin until you get tails. For each heads, reduce that damage by 10."
           onPlay {
+            Card pokemonCard, trainerCard = thisCard
+            pokemonCard = basic (new CustomCardInfo(ARMOR_FOSSIL_116).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+              pokeBody "Armor Stone", {
+                delayedA {
+                  before APPLY_ATTACK_DAMAGES, {
+                    if(ef.attacker.owner != self.owner) {
+                      bg.dm().each{
+                        if(it.to == self && it.notNoEffect && it.dmg.value) {
+                          bc "$self - Armor Stone activated"
+                          flipUntilTails { it.dmg = Math.min(it.dmg - hp(10), 0) }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              customAbility {
+                def eff, acl
+                onActivate{
+                  delayed {
+                    before RETREAT, self, {
+                      if(self.topPokemonCard == thisCard){
+                        wcu "Cannot retreat"
+                        prevent()
+                      }
+                    }
+                    before APPLY_SPECIAL_CONDITION, {
+                      def pcs=e.getTarget(bg)
+                      if(pcs==self){
+                        bc "Armor Fossil is unaffected by Special Conditions"
+                        prevent()
+                      }
+                    }
+                  }
+                  if (!eff) {
+                    eff = delayed {
+                      after REMOVE_FROM_PLAY, {
+                        if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          unregister()
+                          eff = null
+                        }
+                      }
+                    }
+                  }
+                  acl = action("Discard Armor Fossil", [TargetPlayer.SELF]) {
+                    delayed {
+                      before TAKE_PRIZE, {
+                        if (ef.pcs==self) {
+                          prevent()
+                        }
+                      }
+                    }
+                    new Knockout(self).run(bg)
+                  }
+                }
+                onDeactivate {
+                  acl.each{bg.gm().unregisterAction(it)}
+                }
+              }
+            }
+            pokemonCard.player = trainerCard.player
+            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+            hand.remove(pokemonCard)
+            benchPCS(pokemonCard)
           }
           playRequirement{
+            assert bench.notFull
           }
         };
       case SKULL_FOSSIL_117:
-        return basicTrainer (this) {
-          text "Play Skull Fossil as if it were a [C] Basic Pokémon. (Skull Fossil counts as a Trainer card as well, but if Skull Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Skull Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Skull Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Skull Stone During your opponent’s turn, if Skull Fossil would be Knocked Out by damage from an opponent’s attack, flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
+        return itemCard (this) {
+          text "Play Skull Fossil as if it were a [C] Basic Pokémon. (Skull Fossil counts as a Trainer card as well, but if Skull Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Skull Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Skull Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\n" +
+            "During your opponent’s turn, if Skull Fossil would be Knocked Out by damage from an opponent’s attack, flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
           onPlay {
+            Card pokemonCard, trainerCard = thisCard
+            pokemonCard = basic (new CustomCardInfo(SKULL_FOSSIL_117).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+              pokeBody "Skull Stone", {
+                delayedA{
+                  before KNOCKOUT, self, {
+                    if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+                      bc "$self - Skull Stone activated"
+                      if (self.owner.opposite.pbg.all) {
+                        flipUntilTails { directDamage(10, self.owner.opposite.pbg.active, Source.SRC_ABILITY) }
+                      }
+                    }
+                  }
+                }
+              }
+              customAbility {
+                def eff, acl
+                onActivate{
+                  delayed {
+                    before RETREAT, self, {
+                      if(self.topPokemonCard == thisCard){
+                        wcu "Cannot retreat"
+                        prevent()
+                      }
+                    }
+                    before APPLY_SPECIAL_CONDITION, {
+                      def pcs=e.getTarget(bg)
+                      if(pcs==self){
+                        bc "Skull Fossil is unaffected by Special Conditions"
+                        prevent()
+                      }
+                    }
+                  }
+                  if (!eff) {
+                    eff = delayed {
+                      after REMOVE_FROM_PLAY, {
+                        if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          unregister()
+                          eff = null
+                        }
+                      }
+                    }
+                  }
+                  acl = action("Discard Skull Fossil", [TargetPlayer.SELF]) {
+                    delayed {
+                      before TAKE_PRIZE, {
+                        if (ef.pcs==self) {
+                          prevent()
+                        }
+                      }
+                    }
+                    new Knockout(self).run(bg)
+                  }
+                }
+                onDeactivate {
+                  acl.each{bg.gm().unregisterAction(it)}
+                }
+              }
+            }
+            pokemonCard.player = trainerCard.player
+            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+            hand.remove(pokemonCard)
+            benchPCS(pokemonCard)
           }
           playRequirement{
+            assert bench.notFull
           }
         };
       case MULTI_ENERGY_118:
-        return specialEnergy (this, [[C]]) {
-          text "Attach Multi Energy to 1 of your Pokémon. While in play, Multi Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) Multi Energy provides [C] Energy when attached to a Pokémon that already has Special Energy cards attached to it."
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        return copy (Sandstorm.MULTI_ENERGY_93, this);
       case DARKNESS_ENERGY_119:
-        return specialEnergy (this, [[C]]) {
-          text "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        //TODO: This version of "Darkness Energy (Special Energy)" shouldn't work on "Dark ____" cards, only on [D] Type Pokémon.
+        return copy (RubySapphire.DARKNESS_ENERGY_93, this);
       case METAL_ENERGY_120:
-        return specialEnergy (this, [[C]]) {
-          text "Damage done by attacks to the Pokémon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that Metal Energy is attached to isn’t [M]. Metal Energy provides [M] Energy. (Doesn’t count as a basic Energy card.)"
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        return copy (RubySapphire.METAL_ENERGY_94, this);
       case ELECTIVIRE_LV_X_121:
         return evolution (this, from:"Electivire", hp:HP120, type:LIGHTNING, retreatCost:3) {
           weakness F
@@ -2473,6 +2660,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokeBody "Shocking Tail", {
             text "As long as Electivire is your Active Pokémon, whenever your opponent attaches an Energy card from his or her hand to 1 of his or her Pokémon, put 2 damage counters on that Pokémon."
             delayedA {
+              after ATTACH_ENERGY, {
+                if(self.active && ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite)
+                  directDamage 20, ef.resolvedTarget
+              }
             }
           }
           move "Pulse Barrier", {
@@ -2480,15 +2671,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "Put this card onto your Active Electivire. Electivire LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+              damage 50
+              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != self.owner)
+                discard bg.stadiumInfoStruct.stadiumCard
+              opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
+                it.cards.filterByType(POKEMON_TOOL).each { it.discard() }
+              }
             }
           }
 
@@ -2497,24 +2685,46 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Lucario", hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness P
           pokePower "Stance", {
-            text "Once during your turn , when you put Lucario LV. from your hand onto your Active Lucario, you may use this power. Prevent all effects of an attack, including damage, done to Lucario during your opponent’s next turn. (If Lucario is no longer your Active Pokémon, this effect ends.)"
-            actionA {
+            text "Once during your turn (before your attack), when you put Lucario LV.X from your hand onto your Active Lucario, you may use this power. Prevent all effects of an attack, including damage, done to Lucario during your opponent’s next turn. (If Lucario is no longer your Active Pokémon, this effect ends.)"
+            //Taken from BUS LUCARIO_71, but with switch & devolve removing the effect.
+            onActivate {r->
+              if(r==PLAY_FROM_HAND && confirm("Use Stance?")){
+                powerUsed()
+                delayed{
+                  before APPLY_ATTACK_DAMAGES, {
+                    bg.dm().each{
+                      if(it.to == self && it.notNoEffect){
+                        bc "Stance prevents all damage"
+                        it.dmg=hp(0)
+                      }
+                    }
+                  }
+                  before null, self, Source.ATTACK, {
+                    if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                      bc "Stance prevents effects"
+                      prevent()
+                    }
+                  }
+                  after ENERGY_SWITCH, {
+                    def efs = (ef as EnergySwitch)
+                    if(efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                      discard efs.card
+                    }
+                  }
+                  unregisterAfter 2
+                  after SWITCH, self, {unregister()}
+                  after EVOLVE, self, {unregister()}
+                }
+              }
             }
           }
           move "Close Combat", {
-            text "80 damage. ."
+            text "80 damage. During your opponent’s next turn, any damage done to Lucario by attacks is increased by 30 (after applying Weakness and Resistance)."
             energyCost F, F, C
             attackRequirement {}
             onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "Put this card onto your Active Lucario. Lucario LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+              damage 80
+              reduceDamageNextTurn(hp(30), thisMove)
             }
           }
 
@@ -2523,34 +2733,61 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Magmortar", hp:HP130, type:FIRE, retreatCost:3) {
           weakness W
           pokePower "Torrid Wave", {
-            text "Once during your turn , if Magmortar is your Active Pokémon, you may choose 1 of the Defending Pokémon. That Pokémon is now Burned. Put 3 damage counters instead of 2 on that Pokémon between turns. This power can’t be used if Magmortar is affected by a Special Condition."
+            text "Once during your turn (before your attack), if Magmortar is your Active Pokémon, you may choose 1 of the Defending Pokémon. That Pokémon is now Burned. Put 3 damage counters instead of 2 on that Pokémon between turns. This power can’t be used if Magmortar is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              assert self.active : "$self is not your active Pokémon."
+              powerUsed()
+              def torridWaveRecipient = opp.active
+              apply BURNED, torridWaveRecipient, SRC_ABILITY
+              def eff
+              register {
+                eff = getterA (GET_BURN_DAMAGE) {h->
+                    if (h.effect.target == torridWaveRecipient && h.effect.target.active) {
+                        bc "Torrid Wave increases burn damage on $torridWaveRecipient to 30."
+                        h.object += 1
+                    }
+                  }
+                }
+              unregister {
+                eff.unregister()
+              }
+              //TODO: Remove if these are not needed.
+              // after EVOLVE, torridWaveRecipient, {unregister()}
+              // after SWITCH, torridWaveRecipient, {unregister()}
+              after CLEAR_SPECIAL_CONDITION, torridWaveRecipient, {
+                if(ef.types.contains(BURNED)){
+                  unregister()
+                }
+              }
             }
           }
           move "Flame Buster", {
-            text "During your next turn, Magmortar can’t use Flame Bluster."
-            energyCost R, R, R, R, R
+            text "Discard 2 [R] Energy attached to Magmortar. Choose 1 of your opponent’s Pokémon. This attack does 100 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) During your next turn, Magmortar can’t use Flame Bluster."
+            energyCost R, R, R, R
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 100, opp.all.select()
+              cantUseAttack(thisMove, self)
+              afterDamage {
+                discardSelfEnergy R,R
+              }
             }
           }
-          move "", {
-            text "Put this card onto your Active Magmortar. Magmortar LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case TIME_SPACE_DISTORTION_124:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Flip 3 coins. For each heads, search your discard pile for a Pokémon, show it to your opponent, and put it into your hand."
           onPlay {
+            flip 3, {
+              def tar = my.discard.filterByType(POKEMON)
+              if (tar)
+                tar.select("Put a Pokémon from your discard pile into your hand.").moveTo(my.hand)
+            }
           }
           playRequirement{
+            assert my.discard.filterByType(POKEMON)
           }
         };
       default:
