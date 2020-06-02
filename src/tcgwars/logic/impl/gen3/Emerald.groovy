@@ -1529,14 +1529,10 @@ public enum Emerald implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn (before your attack), you may put Pikachu from your hand onto Pichu (this counts as evolving Pichu) and remove all damage counters from Pichu."
             actionA {
-              assert my.hand.findAll{it.name == "Pikachu"} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Pikachu", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll{it.name == "Pikachu"}.select()
-              if(tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10,self
-              }
+              babyEvolution("Pikachu", self)
             }
           }
           move "Collect", {

@@ -907,14 +907,10 @@ public enum TeamRocketReturns implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn (before your attack), you may put Magmar from your hand onto Magby (this counts as evolving Magby), and remove all damage counters from Magby."
             actionA {
-              assert my.hand.findAll{it.name == "Magmar"} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Magmar", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll{it.name == "Magmar"}.select()
-              if(tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10,self
-              }
+              babyEvolution("Magmar", self)
             }
           }
           move "Detour", {

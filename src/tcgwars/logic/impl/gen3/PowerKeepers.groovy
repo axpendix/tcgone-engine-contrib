@@ -798,14 +798,10 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Pikachu from your hand onto Pichu (this counts as evolving Pichu) and remove all damage counters from Pichu."
           actionA {
-            assert my.hand.findAll{it.name.contains("Pikachu")} : "There are no Pokémon in your hand to evolve ${self}."
+            checkCanBabyEvolve("Pikachu", self)
             checkLastTurn()
             powerUsed()
-            def tar = my.hand.findAll { it.name.contains("Pikachu") }.select()
-            if (tar) {
-              evolve(self, tar.first(), OTHER)
-              heal self.numberOfDamageCounters*10, self
-            }
+            babyEvolution("Pikachu", self)
           }
         }
         move "Cry for Help", {
@@ -1865,14 +1861,10 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Wobbuffet from your hand onto Wynaut (this counts as evolving Wynaut) and remove all damage counters from Wynaut."
           actionA {
-            assert my.hand.findAll{it.name.contains("Wobbuffet")} : "There are no Pokémon in your hand to evolve ${self}."
+            checkCanBabyEvolve("Wobbuffet", self)
             checkLastTurn()
             powerUsed()
-            def tar = my.hand.findAll { it.name.contains("Wobbuffet") }.select()
-            if (tar) {
-              evolve(self, tar.first(), OTHER)
-              heal self.numberOfDamageCounters*10, self
-            }
+            babyEvolution("Wobbuffet", self)
           }
         }
         move "Flail", {
