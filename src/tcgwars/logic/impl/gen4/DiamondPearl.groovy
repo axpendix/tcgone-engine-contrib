@@ -1129,7 +1129,7 @@ public enum DiamondPearl implements LogicCardInfo {
 
               def indexOfOldPrize = my.prizeCardSet.indexOf(tar)
               my.prizeCardSet.set(indexOfOldPrize, newPrize)
-              my.prizeCardSet.setVisible(newPrize, true) //TODO: If this doesn't work, maybe use tar?
+              my.prizeCardSet.setVisible(newPrize, true)
               my.hand.remove(newPrize)
             }
           }
@@ -2168,8 +2168,14 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              //bg.dm().find({it.to==defending && it.dmg.value})
-              //TODO: Think of a way to check for effective damage to the defending pokémon before healing.
+              delayed { //Taken from BS1 BULBASAUR
+                before APPLY_ATTACK_DAMAGES, {
+                  if(bg.dm().find{it.to == defending && it.from == self && it.dmg.value}) {
+                    heal 10, self
+                  }
+                }
+                unregisterAfter 1
+              }
             }
           }
 
@@ -2970,8 +2976,10 @@ public enum DiamondPearl implements LogicCardInfo {
                   before BETWEEN_TURNS, {
                     if(bg().currentTurn == self.owner.opposite) {
                       def bundles = bg().em().retrieveObject("supremeCommandBundles")
-                      if(bundles)
+                      if(bundles) {
                         self.owner.opposite.pbg.hand.addAll(bundles.get(self.id))
+                        bc "Supreme Command's effect has ended, taken cards have been put back to their owner's hand."
+                      }
                       unregister()
                     }
                   }
