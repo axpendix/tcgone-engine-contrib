@@ -2172,20 +2172,17 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
           resistance M, MINUS20
-          move "", {
-            text "If damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
+          //TODO: Implement Rawst Berry
+          //Rawst Berry: If Shinx is Burned, remove the Special Condition Burned from Shinx at the end of each player’s turn.
           move "Plasma", {
-            text "10 damage. Energy card and attach it to Shinx."
+            text "10 damage. Flip a coin. If heads, search your discard pile for a [L] Energy card and attach it to Shinx."
             energyCost L, L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              afterDamage {
+                flip { attachEnergyFrom(type: L, my.discard, self) }
+              }
             }
           }
 
@@ -2198,7 +2195,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              apply ASLEEP, self
+              apply ASLEEP
             }
           }
 
@@ -2219,7 +2217,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {damage 20}
             }
           }
 
@@ -2230,9 +2228,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Curiosity", {
             text "Look at your opponent’s hand."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert opp.hand : "Opponent has no cards in hand."}
             onAttack {
-              damage 0
+              opp.hand.showToMe("Opponent's hand")
             }
           }
           move "Snowball Fight", {
@@ -2240,7 +2239,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip 1, {}, {damage 10, self}
             }
           }
 
@@ -2249,11 +2249,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP050, type:WATER, retreatCost:2) {
           weakness M, PLUS10
           move "Rollout", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Willpower", {
@@ -2261,7 +2261,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              increasedBaseDamageNextTurn("Rollout",hp(30))
             }
           }
 
@@ -2274,15 +2274,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              cantRetreat defending
             }
           }
           move "Double Scratch", {
-            text "20× damage. "
+            text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads"
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, { damage 20 }
             }
           }
 
@@ -2293,9 +2293,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Sleep Inducer", {
             text "Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. The new Defending Pokémon is now Asleep."
             energyCost G
-            attackRequirement {}
+            attackRequirement {
+              assert opp.bench
+            }
             onAttack {
-              damage 0
+              sw opp.active, opp.bench.select()
+              apply ASLEEP, opp.active
             }
           }
 
@@ -2308,15 +2311,18 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              clearSpecialCondition(self)
+              heal 20, self
+              apply ASLEEP, self
             }
           }
           move "Sweet Palm", {
-            text ":30 damage. Before doing damage, remove 1 damage counter from the Defending Pokémon."
+            text "30 damage. Before doing damage, remove 1 damage counter from the Defending Pokémon."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              heal 10, opp.active
+              damage 30
             }
           }
 
@@ -2329,7 +2335,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Shining Fang", {
@@ -2337,7 +2343,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if (defending.numberOfDamageCounters) damage 10
             }
           }
 
@@ -2350,7 +2357,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost R, R
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if (opp.bench)
+                damage 10, opp.bench.select()
             }
           }
 
@@ -2364,15 +2373,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              flipThenApplySC CONFUSED
             }
           }
           move "Bite", {
-            text "20 damage. "
+            text "20 damage."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
