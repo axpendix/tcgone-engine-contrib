@@ -189,7 +189,7 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost W, W, C
             onAttack {
               damage 60
-              flip {my.bench.each {damage 10, it}} {opp.bench.each {damage 10, it}}
+              flip 1, {my.bench.each {damage 10, it}}, {opp.bench.each {damage 10, it}}
             }
           }
 
@@ -250,9 +250,10 @@ public enum MajesticDawn implements LogicCardInfo {
               damage 40
               if (defending.isSPC(ASLEEP)) {
                 heal 40, self
+              }
             }
           }
-        };
+        }
       case DIALGA_4:
         return basic (this, hp:HP100, type:METAL, retreatCost:3) {
           weakness R, PLUS20
@@ -262,8 +263,8 @@ public enum MajesticDawn implements LogicCardInfo {
             text "Draw cards until you have 6 cards in your hand."
             energyCost M
             attackRequirement{
-              assert my.hand.size() < 6
-              assert my.deck
+              assert my.hand.size() < 6 : "You have 6 or more cards in hand."
+              assert my.deck : "Your deck is empty."
             }
             onAttack{
             draw 6-my.hand.size()
@@ -364,7 +365,7 @@ public enum MajesticDawn implements LogicCardInfo {
             text "Flip a coin. If heads, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
             energyCost C
             onAttack {
-              assert my.deck
+              assert my.deck : "Your deck is empty."
               flip {
                 my.deck.search(max:1,"Select 1 card",{true}).moveTo(my.hand)
                 shuffleDeck()
