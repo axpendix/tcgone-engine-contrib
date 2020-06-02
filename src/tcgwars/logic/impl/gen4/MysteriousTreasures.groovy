@@ -2359,55 +2359,122 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
         };
       case BEBE_S_SEARCH_109:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
           onPlay {
+            my.hand.select(hidden: false, "Card to put back into your deck").first().moveTo(hidden:true, my.deck)
+            my.deck.search(count: 1, cardTypeFilter(POKEMON)).showToOpponent("Opponent's selected Pokémon.").moveTo(my.hand)
+            shuffleDeck()
           }
           playRequirement{
+            assert my.hand.getExcludedList(thisCard) : "You don't have other cards in your hand"
           }
         };
       case DUSK_BALL_110:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Look at the 7 cards from the bottom of your deck. Choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. Put the remaining cards back on top of your deck. Shuffle your deck afterward."
           onPlay {
+            def deckSize = my.deck.size()
+            deck.subList(Math.max(0, deckSize-7),deckSize).select(min:0,"Select a Pokémon card to put to hand",cardTypeFilter(POKEMON)).moveTo(hand)
+            shuffleDeck()
           }
           playRequirement{
+            assert my.deck : "There is no card remaining in your deck."
           }
         };
       case FOSSIL_EXCAVATOR_111:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
           onPlay {
+            //TODO: Weird card text and potential mistranslation, rethink later.
+
+            /* def choice = 1
+            if(my.discard.findAll{it.name== "Unidentified Fossil"}){
+              choice = choose([1,2],['Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand. Then, shuffle your deck.', 'Put an Unidentified Fossil card from your discard pile into your hand.'], "Choose 1")
+            }
+            if(choice == 1){
+              my.deck.search(
+                count : 1,
+                "Search for an Unidentified Fossil card",
+                {
+                  (
+                    it.cardTypes.is(ITEM) && it.name.contains("Fossil")
+                  ) || (
+                    (it.cardTypes.is(STAGE_1) || it.cardTypes.is(STAGE_2)) && it.predecessor.contains("Fossil")
+                  )
+                }
+              ).showToOpponent("Unidentified Fossil").moveTo(my.hand)
+              //my.deck.search(count : 1,"Search for an Unidentified Fossil card",{it.name == "Unidentified Fossil"}).showToOpponent("Unidentified Fossil").moveTo(my.hand)
+              shuffleDeck()
+            }
+            if(choice == 2){
+              my.discard.findAll{it.name== "Unidentified Fossil"}.select().moveTo(my.hand)
+            } */
           }
           playRequirement{
+            /* assert my.deck.notEmpty || my.discard.findAll{it.name.contains("Fossil")} */
           }
         };
       case LAKE_BOUNDARY_112:
-        return basicTrainer (this) {
-          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nApply Weakness for each Pokémon (both yours and your opponent’s) as ×2 instead."
+        return stadium (this) {
+          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nApply Weakness for each Pokémon (both yours and your opponent’s) as ×2 instead."
+          def eff
           onPlay {
+            eff = getter (GET_WEAKNESSES) {h->
+              h.object = h.object?.collect {
+                def weakness = it.copy()
+                weakness.feature = "X2"
+                weakness
+              }
+            }
           }
-          playRequirement{
+          onRemoveFromPlay{
+            eff.unregister()
           }
         };
       case NIGHT_MAINTENANCE_113:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Search your discard pile for up to 3 in any combination of Pokémon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
           onPlay {
+            //TODO: "Shuffle [up to] x basic pokemon/energy from discard" could be modularized.
+            //TODO: Test if min:1 is needed on the select
+            def tar = my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)}
+            def maxSel = Math.min(6,tar.size())
+            tar.select(max: maxSel,"Choose up to $maxSel cards to shuffle into your deck").moveTo(my.deck)
+            shuffleDeck()
           }
           playRequirement{
+            assert my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)} : "There are no basic Pokémon or basic Energy cards in your discard pile"
           }
         };
       case QUICK_BALL_114:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Reveal cards from your deck until you reveal a Pokémon. Show that Pokémon to your opponent and put it into your hand. Shuffle the other revealed cards back into your deck. (If you don’t reveal a Pokémon, shuffle all the revealed cards back into your deck.)"
           onPlay {
+              //TODO: Modularize
+              def revealCard = new CardList();
+              def ind = 0
+              def curCard
+              while(ind < my.deck.size()){
+                curCard = my.deck.get(ind)
+                ind+=1
+                revealCard.add(curCard)
+                if(curCard.cardTypes.is(POKEMON))
+                  break
+              }
+              revealCard.showToMe("Drawn cards")
+              revealCard.showToOpponent("Revealed cards")
+              revealCard.clear()
+              revealCard.add(curCard)
+              revealCard.moveTo(my.hand)
+              shuffleDeck()
           }
           playRequirement{
+            assert my.deck
           }
         };
       case TEAM_GALACTIC_S_WAGER_115:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck, and you and your opponent play a game of “Rock-Paper-Scissors.” The player who wins draws up to 6 cards. The player who loses draws up to 3 cards. (You draw your cards first.)"
           onPlay {
             shuffleDeck(hand.getExcludedList(thisCard))
