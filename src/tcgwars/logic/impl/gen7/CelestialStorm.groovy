@@ -3284,7 +3284,14 @@ public enum CelestialStorm implements LogicCardInfo {
       case UNDERGROUND_EXPEDITION_150:
         return copy(Skyridge.UNDERGROUND_EXPEDITION_140, this);
       case RAINBOW_ENERGY_151:
-        return copy(Xy.RAINBOW_ENERGY_131, this);
+        return specialEnergy (this, [[R, D, F, G, W, Y, L, M, P]]) {
+          text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) When you attach this card from your hand to 1 of your Pokémon, put 1 damage counter on that Pokémon. (While not in play, Rainbow Energy counts as Colorless Energy.)"
+          onPlay {reason->
+            if (reason == PLAY_FROM_HAND) {
+              directDamage(10, self, Source.ENERGY)
+            }
+          }
+        };
       case SHIFTRY_GX_152:
         return copy(SHIFTRY_GX_14,this);
       case BLAZIKEN_GX_153:
