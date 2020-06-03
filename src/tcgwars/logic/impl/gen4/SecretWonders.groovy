@@ -351,8 +351,8 @@ public enum SecretWonders implements LogicCardInfo {
               bg.em().run(new PlayTrainer(card).setDontDiscard(true))
               bg.clearDeterministicCurrentThreadPlayerType()
               bg.em().storeObject("Telepass",bg.turnCount)
-              } 
-            } 
+            }
+          }
           move "Psychic Lock", {
             text "60 damage. During your opponent’s next turn, your opponent can’t use any Poké-Powers on his or her Pokémon."
             energyCost P, C, C
@@ -366,8 +366,7 @@ public enum SecretWonders implements LogicCardInfo {
               }
             }
           }
-        }
-     };
+        };
       case GASTRODON_EAST_SEA_8:
         return evolution (this, from:"Shellos East Sea", hp:HP100, type:WATER, retreatCost:4) {
           weakness G, PLUS30
