@@ -1609,9 +1609,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Play Search", {
             text "Look at the top 5 cards of your deck, choose 1 of them, and put it into your hand. Put the other 4 cards back on top of your deck. Shuffle your deck afterward."
             energyCost P
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck
+            }
             onAttack {
-              my.deck.subList(0,5).select(min:0,"Choose a card to put in your hand").moveTo(hidden: true, my.hand)
+              my.deck.subList(1,5).select(min:0,"Choose a card to put in your hand").moveTo(hidden: true, my.hand)
               shuffleDeck()
             }
           }
@@ -1875,7 +1877,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   delayed{
                     before ATTACH_ENERGY, self.owner.opposite.pbg.active, {
                       if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.active) {
-                        wcu "Electromagnetic Jam prevents you from attaching Energy to $ef.resolvedTarget\."
+                        wcu "Electromagnetic Jam prevents you from attaching Energy to ${ef.resolvedTarget}."
                         prevent()
                       }
                     }
