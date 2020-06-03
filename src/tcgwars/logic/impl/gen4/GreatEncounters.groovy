@@ -115,7 +115,7 @@ public enum GreatEncounters implements LogicCardInfo {
   AMULET_COIN_97 ("Amulet Coin", 97, Rarity.UNCOMMON, [TRAINER]),
   FELICITY_S_DRAWING_98 ("Felicity's Drawing", 98, Rarity.UNCOMMON, [TRAINER]),
   LEFTOVERS_99 ("Leftovers", 99, Rarity.UNCOMMON, [TRAINER]),
-  MOONLIGHT_STADIUM_100 ("Moonlight Stadium", 100, Rarity.UNCOMMON, [TRAINER]),
+  MOONLIGHT_STADIUM_100 ("Moonlight Stadium", 100, Rarity.UNCOMMON, [STADIUM]),
   PREMIER_BALL_101 ("Premier Ball", 101, Rarity.UNCOMMON, [TRAINER]),
   RARE_CANDY_102 ("Rare Candy", 102, Rarity.UNCOMMON, [TRAINER]),
   CRESSELIA_LV_X_103 ("Cresselia LV.X", 103, Rarity.ULTRARARE, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
