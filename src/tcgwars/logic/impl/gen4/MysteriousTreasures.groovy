@@ -2445,11 +2445,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
           onPlay {}
           playRequirement {
             if (my.deck.notEmpty) {
-              assert (!keyStore('Fossil_Excavator_Source',self,null)) : "sourceCard is already set"
-              keyStore('Fossil_Excavator_Source',self,my.deck.first())
-              assert (keyStore('Fossil_Excavator_Source',self,null)) : "sourceCard is not set"
+              assert (!keyStore('Fossil_Excavator_Source',thisCard,null)) : "sourceCard is already set"
+              keyStore('Fossil_Excavator_Source',thisCard,my.deck.first())
+              assert (keyStore('Fossil_Excavator_Source',thisCard,null)) : "sourceCard is not set"
             }
-            assert (keyStore('Fossil_Excavator_Source',self,null)) : "sourceCard is no longer set"
+            assert (keyStore('Fossil_Excavator_Source',thisCard,null)) : "sourceCard is no longer set"
             assert false :"DEBUG"
             /*assert (
               my.deck.notEmpty || my.discard.any{
