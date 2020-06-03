@@ -328,6 +328,10 @@ public enum LegendsAwakened implements LogicCardInfo {
               } else {
                 apply POISONED
               }
+              if (confirm("Return Gliscor and all cards attached to it to your hand?")) {
+                self.cards.moveTo(hand)
+                removePCS(self)
+              }
               // TODO
             }
           }

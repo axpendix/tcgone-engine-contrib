@@ -177,15 +177,19 @@ public enum MajesticDawn implements LogicCardInfo {
           resistance F, MINUS20
           pokePower "Freezing Screech", {
             text "Once during your turn, when you put Articuno from your hand onto your Bench, you may flip a coin. If heads, choose 1 of the Defending Pokémon. That Pokémon is now Paralyzed."
-            actionA {
+            onActivate { 
+              if(it==PLAY_FROM_HAND && confirm("Use Freezing Screech?")) {
+                powerUsed()
+                flip {apply PARALYZED}
+              }
             }
           }
           move "Blizzard", {
             text "60 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Benched Pokémon. If tails, this attack does 10 damage to each of your Benched Pokémon."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              flip 1, {my.bench.each {damage 10, it}}, {opp.bench.each {damage 10, it}}
             }
           }
 
@@ -198,15 +202,15 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 0 //todo
             }
           }
           move "Healing Light", {
             text "40 damage. Remove 1 damage counter from each of your Pokémon."
             energyCost P, P, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              my.all.each{heal 10, it}
             }
           }
 
@@ -217,7 +221,11 @@ public enum MajesticDawn implements LogicCardInfo {
           resistance P, MINUS20
           pokePower "Darkness Shade", {
             text "Once during your turn, when you put Darkrai from your hand onto your Bench, you may choose 1 of the Defending Pokémon. That Pokémon is now Asleep."
-            actionA {
+            onActivate {
+              if(it==PLAY_FROM_HAND && my.deck && confirm("Use Darkness Shade?")) {
+                powerUsed()
+                apply ASLEEP
+              }
             }
           }
           move "Dark Slumber", {
@@ -225,37 +233,41 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost D
             attackRequirement {}
             onAttack {
-              damage 0
+              delayed {
+                before BETWEEN_TURNS, {
+                  if(turnCount + 1 <= bg.turnCount){
+                    if(all.contains(pcs)){
+                      bc "Dark Slumber takes effect"
+                      apply ASLEEP
+                    }
+                  }
             }
           }
           move "Dark Resolve", {
             text "40 damage. If the Defending Pokémon is Asleep, remove 4 damage counters from Darkrai."
             energyCost D, D, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if (defending.isSPC(ASLEEP)) {
+                heal 40, self
+              }
             }
           }
-
-        };
+        }
       case DIALGA_4:
         return basic (this, hp:HP100, type:METAL, retreatCost:3) {
           weakness R, PLUS20
           resistance P, MINUS20
-          move "", {
-            text "If damage. "
-            energyCost M
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
+          //TODO: Implement Adamant Orb held item
           move "Time Shift", {
             text "Draw cards until you have 6 cards in your hand."
             energyCost M
-            attackRequirement {}
-            onAttack {
-              damage 0
+            attackRequirement{
+              assert my.hand.size() < 6 : "You have 6 or more cards in hand."
+              assert my.deck : "Your deck is empty."
+            }
+            onAttack{
+            draw 6-my.hand.size()
             }
           }
           move "Diamond Blast", {
@@ -275,17 +287,16 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Snow Cloak", {
             text "30 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Glaceon during your opponent’s next turn."
             energyCost W
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip {preventAllEffectsNextTurn()}
             }
           }
           move "Speed Slide", {
             text "60 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              swiftDamage(60, defending)
             }
           }
 
@@ -294,8 +305,13 @@ public enum MajesticDawn implements LogicCardInfo {
         return evolution (this, from:"Kabuto", hp:HP120, type:FIGHTING, retreatCost:2) {
           weakness G, PLUS30
           pokeBody "Primal Shell", {
-            text "As long as Kabutops is your Active Pokémon, your opponent can’t play any Trainer cards from his or her hand."
-            delayedA {
+            text "As long as Kabutops is your Active Pokémon, your opponent can’t play any Trainer-Item cards from his or her hand."
+            delayed {
+              before PLAY_TRAINER, {
+              if (self.active && ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
+                wcu "Primal Shell prevents you from playing this card."
+                prevent()
+              }
             }
           }
           move "Chop Up", {
@@ -303,7 +319,7 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost F, F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 0 //todo
             }
           }
 
@@ -315,17 +331,18 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Bind Down", {
             text "30 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost G
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              cantRetreat(defending)
             }
           }
           move "Leaf Guard", {
-            text "20 damage. ."
+            text "During your opponent’s next turn, any damage done to Leafeon by attacks is reduced by 20 (after applying Weakness and Resistance)."
             energyCost G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              reduceDamageNextTurn(hp(20),thisMove)
             }
           }
 
@@ -336,14 +353,23 @@ public enum MajesticDawn implements LogicCardInfo {
           pokeBody "Aqua Skin", {
             text "When you attach a Energy card from your hand to Manaphy, remove 2 damage counters from Manaphy."
             delayedA {
+              after ATTACH_ENERGY, self, {
+                if (ef.reason==PLAY_FROM_HAND){
+                  powerUsed()
+                  heal 20, self 
+                }
+              }
             }
           }
           move "Chase Up", {
             text "Flip a coin. If heads, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              assert my.deck : "Your deck is empty."
+              flip {
+                my.deck.search(max:1,"Select 1 card",{true}).moveTo(my.hand)
+                shuffleDeck()
+              }
             }
           }
           move "Fountain", {
@@ -1262,7 +1288,11 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              if (my.bench.notEmpty) {
+                damage 20
+                self.cards.moveTo(hand)
+                removePCS(self)
+              }
             }
           }
 
