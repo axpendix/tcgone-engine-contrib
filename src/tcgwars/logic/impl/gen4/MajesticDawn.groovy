@@ -260,7 +260,21 @@ public enum MajesticDawn implements LogicCardInfo {
         return basic (this, hp:HP100, type:METAL, retreatCost:3) {
           weakness R, PLUS20
           resistance P, MINUS20
-          //TODO: Implement Adamant Orb held item
+          customAbility {
+          //Adamant Orb: If an Active Pokémon has Weakness to [M] type, Dialga’s attacks do 20 more damage to that Pokémon (before applying Weakness and Resistance).
+          delayedA {
+            after PROCESS_ATTACK_EFFECTS, {
+              bg.dm().each {
+                if (it.from.owner==self.owner && it.to.active && it.to.owner!=self.owner && it.dmg.value) {
+                  if (it.to.getWeaknesses().findAll{it.type == M}) {
+                    bc "Adamant Orb +20"
+                    it.dmg += hp(20)
+                  }
+                }
+              }
+            }
+          }
+        }
           move "Time Shift", {
             text "Draw cards until you have 6 cards in your hand."
             energyCost M
