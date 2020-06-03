@@ -2439,7 +2439,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           def stage2canEvolveFromFossil = {
             (bg.gm().getBasicsFromStage2(sourceCard.name).findAll{it.name.contains("Fossil")}) ? true : false
           }
-          def findValidFossilTargets(sourceList){
+          def findValidFossilTargets = {
             sourceList.findAll{
               (it.cardTypes.is(ITEM) && (sourceCard = it) && itemIsNamedFossil) ||
               (it.cardTypes.is(STAGE_1) && (sourceCard = it) && stage1canEvolveFromFossil) ||
