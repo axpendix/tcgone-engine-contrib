@@ -2433,7 +2433,6 @@ public enum MysteriousTreasures implements LogicCardInfo {
             eff = getter (GET_WEAKNESSES) {h->
               h.object = h.object?.collect {
                 def weakness = it.copy()
-                bc weakness.dump() // DEBUG CODE
                 weakness.feature = "X2"
                 weakness
               }
