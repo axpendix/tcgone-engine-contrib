@@ -2423,19 +2423,19 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
           def itemIsNamedFossil = {
-            def sourceCard = keyStore('Fossil_Excavator_Source',self,null)
+            def sourceCard = keyStore('Fossil_Excavator_Source',thisCard,null)
             (sourceCard.name.contains("Fossil"))
           }
           def stage1canEvolveFromFossil = {
-            def sourceCard = keyStore('Fossil_Excavator_Source',self,null)
+            def sourceCard = keyStore('Fossil_Excavator_Source',thisCard,null)
             (sourceCard.predecessor.contains("Fossil"))
           }
           def stage2canEvolveFromFossil = {
-            def sourceCard = keyStore('Fossil_Excavator_Source',self,null)
+            def sourceCard = keyStore('Fossil_Excavator_Source',thisCard,null)
             (bg.gm().getBasicsFromStage2(sourceCard.name).findAll{it.name.contains("Fossil")}) ? true : false
           }
           def findValidFossilTargets = {
-            def sourceList = keyStore('Fossil_Excavator_Source',self,null)
+            def sourceList = keyStore('Fossil_Excavator_Source',thisCard,null)
             sourceList.findAll{
               (it.cardTypes.is(ITEM) && (sourceCard = it) && itemIsNamedFossil) ||
               (it.cardTypes.is(STAGE_1) && (sourceCard = it) && stage1canEvolveFromFossil) ||
@@ -2444,12 +2444,20 @@ public enum MysteriousTreasures implements LogicCardInfo {
           }
           onPlay {}
           playRequirement {
-            if (my.deck.notEmpty) {
-              assert (!keyStore('Fossil_Excavator_Source',thisCard,null)) : "sourceCard is already set"
-              keyStore('Fossil_Excavator_Source',thisCard,my.deck.first())
-              assert (keyStore('Fossil_Excavator_Source',thisCard,null)) : "sourceCard is not set"
+            if (/*!*/my.deck.notEmpty) {
+              def isValidFossilCard(potentialFossil){
+                if (potentialFossil != null) {
+                  keyStore('Fossil_Excavator_Source', thisCard, potentialFossil) //Reminder: thisCard refers to Excavator.
+                  if (card.cardTypes.is(ITEM)) return itemIsNamedFossil
+                  if (card.cardTypes.is(STAGE_1)) return stage1canEvolveFromFossil
+                  if (card.cardTypes.is(STAGE_2)) return stage2canEvolveFromFossil
+                } else {
+                  bg.em().storeObject("Fossil_Excavator_Source"+"_"+self.hashCode(), null)
+                }
+                return false
+              }
+              assert ( my.discard.any{isValidFossilCard(it)}) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
             }
-            assert (keyStore('Fossil_Excavator_Source',thisCard,null)) : "sourceCard is no longer set"
             assert false :"DEBUG"
             /*assert (
               my.deck.notEmpty || my.discard.any{
