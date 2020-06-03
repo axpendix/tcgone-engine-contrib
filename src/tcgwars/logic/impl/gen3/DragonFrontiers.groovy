@@ -304,7 +304,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Search your discard pile for an Energy card, show it to your opponent, and put it into your hand."
           energyCost C
           attackRequirement {
-            assert my.discard.find(cardTypeFilter(ENERGY)) : "There are no Energies in your discard pile."
+            assert my.discard.find(cardTypeFilter(ENERGY)) : "There are no Energy cards in your discard pile."
           }
           onAttack {
             my.discard.findAll(cardTypeFilter(ENERGY)).select().moveTo(my.hand)
