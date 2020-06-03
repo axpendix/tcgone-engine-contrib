@@ -2422,6 +2422,24 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case FOSSIL_EXCAVATOR_111:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
+          def sourceList
+          def sourceCard
+          def itemIsNamedFossil = {
+            (sourceCard.name.contains("Fossil"))
+          }
+          def stage1canEvolveFromFossil = {
+            (sourceCard.predecessor.contains("Fossil"))
+          }
+          def stage2canEvolveFromFossil = {
+            (bg.gm().getBasicsFromStage2(sourceCard.name).findAll{it.name.contains("Fossil")}) ? true : false
+          }
+          def findValidFossilTargets = {
+            sourceList.findAll{
+              (it.cardTypes.is(ITEM) && (sourceCard = it) && itemIsNamedFossil) ||
+              (it.cardTypes.is(STAGE_1) && (sourceCard = it) && stage1canEvolveFromFossil) ||
+              (it.cardTypes.is(STAGE_2) && (sourceCard = it) && stage2canEvolveFromFossil)
+            }
+          }
           onPlay {}
           playRequirement{}
         };
