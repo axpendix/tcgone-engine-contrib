@@ -341,18 +341,33 @@ public enum SecretWonders implements LogicCardInfo {
           pokePower "Telepass", {
             text "Once during your turn , you may search your opponent’s discard pile for a Supporter card and use the effect of that card as the effect of this power. (This Supporter card remains in you opponent’s discard pile.) You can’t use more than 1 Telepass Poké-Power each turn. This power can’t be used if Gardevoir is affected by a Special Condition."
             actionA {
-            }
-          }
+              checkLastTurn()
+              assert bg.em().retrieveObject("Telepass") != bg.turnCount : "You can't use more than 1 Telepass Poke-Power each turn."
+              assert opp.discard.hasType(SUPPORTER) : "Your opponent has no supporters discarded."
+              if(opp.discard.hasType(SUPPORTER)){
+                powerUsed()
+                def card = opp.discard.select("Opponent's discard. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
+                bg.deterministicCurrentThreadPlayerType=bg.currentTurn
+                bg.em().run(new PlayTrainer(card).setDontDiscard(true))
+                bg.clearDeterministicCurrentThreadPlayerType()
+              }  
+            } 
+          } 
           move "Psychic Lock", {
             text "60 damage. During your opponent’s next turn, your opponent can’t use any Poké-Powers on his or her Pokémon."
             energyCost P, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              getterA (IS_ABILITY_BLOCKED) { Holder h ->
+              if (h.effect.ability instanceof PokePower) {
+                h.object=true
+              }
             }
           }
-
-        };
+        }
+      }
+    };
       case GASTRODON_EAST_SEA_8:
         return evolution (this, from:"Shellos East Sea", hp:HP100, type:WATER, retreatCost:4) {
           weakness G, PLUS30
@@ -2769,6 +2784,13 @@ public enum SecretWonders implements LogicCardInfo {
           pokePower "Teleportation", {
             text "Once during your turn , choose 1 of your Active Pokémon or 1 or your Benched Pokémon and switch Gardevoir with that Pokémon. This power can’t be used if Gardevoir is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              if (self.active) {
+                sw self, my.bench.select()
+              } else {
+                sw self, my.active
+              }
+              powerUsed()
             }
           }
           move "Bring Down", {
@@ -2776,7 +2798,13 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost P, P
             attackRequirement {}
             onAttack {
-              damage 0
+              def list = all.findAll{it!=self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value}
+              def tar = new PcsList()
+              int min = list.get(0).remainingHP.value
+              while(list.get(0).remainingHP.value==min){
+                tar.add(list.remove(0))
+              }
+              new Knockout(tar.select("Knock Out")).run(bg)
             }
           }
           move "", {
@@ -2787,7 +2815,6 @@ public enum SecretWonders implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case HONCHKROW_LV_X_132:
         return evolution (this, from:"Honchkrow", hp:HP110, type:DARKNESS, retreatCost:0) {
