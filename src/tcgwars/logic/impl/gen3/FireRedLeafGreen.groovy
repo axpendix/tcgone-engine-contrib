@@ -2437,7 +2437,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           pokePower "Energy Rain", {
             text "As often as you like during your turn (before your attack), you may attach a [W] Energy card from your hand to 1 of your Pokémon. Put 1 damage counter on that Pokémon. This power can’t be used if Blastoise ex is affected by a Special Condition."
             actionA {
-              assert !(self.specialConditions) : "Blastoise ex is affected by a Special Condition."
+              checkNoSPC()
               assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W) : "You have no [W] Energy card in your hand"
 
               def pcs = my.all.select()
@@ -2523,6 +2523,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           pokePower "Extra Energy Bomb", {
             text "Once during your turn (before your attack), you may discard Electrode ex and all the cards attached to it (this counts as Knocking Out Electrode ex). If you do, search your discard pile for 5 Energy cards and attach them to any of your Pokémon (excluding Pokémon-ex) in any way you like. This power can’t be used if Electrode ex is affected by a Special Condition."
             actionA {
+              checkNoSPC()
               checkLastTurn()
               powerUsed()
               new Knockout(self).run(bg)
@@ -2656,7 +2657,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           pokePower "Energy Trans", {
             text "As often as you like during your turn (before your attack), move a [G] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can’t be used if Venusaur ex is affected by a Special Condition."
             actionA {
-              assert !(self.specialConditions)
+              checkNoSPC()
               assert my.all.findAll {it.cards.energyCount(G)>0}
               assert my.all.size()>=2
 
