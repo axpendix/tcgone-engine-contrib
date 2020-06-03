@@ -2172,8 +2172,17 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
           resistance M, MINUS20
-          //TODO: Implement Rawst Berry
           //Rawst Berry: If Shinx is Burned, remove the Special Condition Burned from Shinx at the end of each player’s turn.
+          customAbility {
+            delayedA {
+              before BEGIN_TURN,{
+                if(self.isSPC(BURNED)) {
+                  bc "Rawst Berry activates"
+                  clearSpecialCondition(self, ATTACK, [BURNED])
+                }
+              }
+            }
+          }
           move "Plasma", {
             text "10 damage. Flip a coin. If heads, search your discard pile for a [L] Energy card and attach it to Shinx."
             energyCost L, L
