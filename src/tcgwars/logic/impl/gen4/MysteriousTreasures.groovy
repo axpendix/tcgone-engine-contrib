@@ -2422,62 +2422,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case FOSSIL_EXCAVATOR_111:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
-          //TODO: Check if everything works well.
-          //Possible targets for the search:
-
-          //  * Trainer-Item card with "Fossil" in its name
-          //  * Stage 1 Pokémon that evolve from a card with "Fossil" in its name.
-          //  * Stage 2 Pokémon that evolve from a card following the above principle.
-          /*def sourceList
-          def sourceCard
-          def itemIsNamedFossil = {
-            (sourceCard.name.contains("Fossil"))
-          }
-          def stage1canEvolveFromFossil = {
-            (sourceCard.predecessor.contains("Fossil"))
-          }
-          def stage2canEvolveFromFossil = {
-            (bg.gm().getBasicsFromStage2(sourceCard.name).findAll{it.name.contains("Fossil")}) ? true : false
-          }
-          def findValidFossilTargets = {
-            sourceList.findAll{
-              (it.cardTypes.is(ITEM) && (sourceCard = it) && itemIsNamedFossil) ||
-              (it.cardTypes.is(STAGE_1) && (sourceCard = it) && stage1canEvolveFromFossil) ||
-              (it.cardTypes.is(STAGE_2) && (sourceCard = it) && stage2canEvolveFromFossil)
-            }
-          }*/
-          onPlay {
-            /*def chosenCard
-            def choice = 1
-            def discardTargets = findValidFossilTargets(my.discard)
-
-            if(discardTargets){
-              choice = choose([1,2],['Search your deck', 'Search your discard pile'], "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand. Then, shuffle your deck.")
-            }
-            if (choice == 1){
-              chosenCard = findValidFossilTargets(my.deck).search(
-                count : 1,
-                "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil."
-              )
-            }
-            if(choice == 2){
-              chosenCard = findValidFossilTargets(my.discard).select().moveTo(my.hand)
-            }
-
-            if (chosenCard)
-              chosenCard.showToOpponent("Chosen card").moveTo(my.hand)
-            shuffleDeck()*/
-          }
-          playRequirement{
-            assert (
-              my.deck.notEmpty || my.discard.any{
-                (it.cardTypes.is(ITEM) /*&& (sourceCard = it) && itemIsNamedFossil*/) ||
-                (it.cardTypes.is(STAGE_1) /*&& (sourceCard = it) && stage1canEvolveFromFossil*/) ||
-                (it.cardTypes.is(STAGE_2) /*&& (sourceCard = it) && stage2canEvolveFromFossil*/)
-              }
-            ) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
-          }
-      };
+          onPlay {}
+          playRequirement{}
+        };
       case LAKE_BOUNDARY_112:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nApply Weakness for each Pokémon (both yours and your opponent’s) as ×2 instead."
@@ -2485,6 +2432,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           onPlay {
             eff = getter (GET_WEAKNESSES) {h->
               h.object = h.object?.collect {
+                bc h.dump() // DEBUG CODE
                 def weakness = it.copy()
                 weakness.feature = "X2"
                 weakness
