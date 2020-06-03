@@ -735,7 +735,7 @@ public enum DragonMajesty implements LogicCardInfo {
               for(pcs in all){
                 if(pcs.isSPC(CONFUSED) && pcs.owner==self.owner && pcs.types.contains(W)){
                   bc "Murmurs of the Sea clears confusion"
-                  clearSpecialCondition(pcs, SRC_ABILITY)
+                  clearSpecialCondition(self, SRC_ABILITY, [CONFUSED])
                 }
               }
             }
