@@ -2172,8 +2172,17 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
           resistance M, MINUS20
-          //TODO: Implement Rawst Berry
           //Rawst Berry: If Shinx is Burned, remove the Special Condition Burned from Shinx at the end of each player’s turn.
+          customAbility {
+            delayedA {
+              before BEGIN_TURN,{
+                if(self.isSPC(BURNED)) {
+                  bc "Rawst Berry activates"
+                  clearSpecialCondition(self, ATTACK, [BURNED])
+                }
+              }
+            }
+          }
           move "Plasma", {
             text "10 damage. Flip a coin. If heads, search your discard pile for a [L] Energy card and attach it to Shinx."
             energyCost L, L
@@ -2527,28 +2536,22 @@ public enum MysteriousTreasures implements LogicCardInfo {
         };
       case TEAM_GALACTIC_S_WAGER_115:
         return supporter (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck, and you and your opponent play a game of “Rock-Paper-Scissors.” The player who wins draws up to 6 cards. The player who loses draws up to 3 cards. (You draw your cards first.)"
+          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck, and you and your opponent play a game of \"Rock-Paper-Scissors.\" The player who wins draws up to 6 cards. The player who loses draws up to 3 cards. (You draw your cards first.)"
           onPlay {
-            /*shuffleDeck(hand.getExcludedList(thisCard))
-            hand.removeAll(hand.getExcludedList(thisCard))
+              my.hand.getExcludedList(thisCard).moveTo(hidden:true,my.deck)
+              opp.hand.moveTo(hidden:true,opp.deck)
+              shuffleDeck()
+              shuffleDeck(null, TargetPlayer.OPPONENT)
 
-            shuffleDeck(opp.hand, TargetPlayer.OPPONENT)
-            opp.hand.clear()
+              def myMaxDraw = 3
+              def oppMaxDraw = 3
+              flip 1, {myMaxDraw = 6}, {oppMaxDraw = 6}
 
-            def myDrawMax
-            def oppDrawMax
-            //TODO: Implement R-P-S
-            flip {
-              myDrawMax = 6
-              oppDrawMax = 3
-            }, {
-              myDrawMax = 3
-              oppDrawMax = 6
-            }
-            draw choose(1..myDrawMax,"How many cards would you like to draw?")
-            draw oppChoose(1..oppDrawMax,"How many cards would you like to draw?"), TargetPlayer.OPPONENT*/
+              draw choose(1..myMaxDraw,"How many cards would you like to draw?")
+              draw (oppChoose(1..oppMaxDraw,"How many cards would you like to draw?"),TargetPlayer.OPPONENT)
           }
-          playRequirement{}
+          playRequirement{
+          }
         };
       case ARMOR_FOSSIL_116:
         return itemCard (this) {
@@ -2733,10 +2736,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 cardsDiscarded += 1
               }
               opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
-                it.cards.filterByType(POKEMON_TOOL).each {
-                  it.discard()
-                  somethingWasDiscarded += 1
-                }
+                it.cards.filterByType(POKEMON_TOOL).discard()
+                somethingWasDiscarded += 1
               }
               if (somethingWasDiscarded) preventAllEffectsNextTurn()
             }
