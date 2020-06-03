@@ -342,7 +342,7 @@ public enum SecretWonders implements LogicCardInfo {
             text "Once during your turn , you may search your opponent’s discard pile for a Supporter card and use the effect of that card as the effect of this power. (This Supporter card remains in you opponent’s discard pile.) You can’t use more than 1 Telepass Poké-Power each turn. This power can’t be used if Gardevoir is affected by a Special Condition."
             actionA {
               checkLastTurn()
-              assert !(self.specialConditions) : "Gardevoir is affected by a Special Condition."
+              checkNoSPC()
               assert bg.em().retrieveObject("Telepass") != bg.turnCount : "You can't use more than 1 Telepass Poke-Power each turn."
               assert opp.discard.hasType(SUPPORTER) : "Your opponent has no supporters discarded."
                 powerUsed()
