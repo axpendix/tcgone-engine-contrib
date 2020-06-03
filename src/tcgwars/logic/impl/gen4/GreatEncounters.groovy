@@ -115,7 +115,7 @@ public enum GreatEncounters implements LogicCardInfo {
   AMULET_COIN_97 ("Amulet Coin", 97, Rarity.UNCOMMON, [TRAINER]),
   FELICITY_S_DRAWING_98 ("Felicity's Drawing", 98, Rarity.UNCOMMON, [TRAINER]),
   LEFTOVERS_99 ("Leftovers", 99, Rarity.UNCOMMON, [TRAINER]),
-  MOONLIGHT_STADIUM_100 ("Moonlight Stadium", 100, Rarity.UNCOMMON, [STADIUM]),
+  MOONLIGHT_STADIUM_100 ("Moonlight Stadium", 100, Rarity.UNCOMMON, [TRAINER, STADIUM]),
   PREMIER_BALL_101 ("Premier Ball", 101, Rarity.UNCOMMON, [TRAINER]),
   RARE_CANDY_102 ("Rare Candy", 102, Rarity.UNCOMMON, [TRAINER]),
   CRESSELIA_LV_X_103 ("Cresselia LV.X", 103, Rarity.ULTRARARE, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
@@ -469,6 +469,7 @@ public enum GreatEncounters implements LogicCardInfo {
           pokePower "Cosmic Power", {
             text "Once during your turn , you may choose up to 2 cards from your hand and put them on the bottom of your deck in any order. If you do, draw cards until you have 6 cards in you hand. This power can’t be used if Claydol is affected by a Special Condition."
             actionA {
+              checkLastTurn()
               checkNoSPC()
               assert my.hand.notEmpty : "You have no cards in your hand."
               powerUsed()
