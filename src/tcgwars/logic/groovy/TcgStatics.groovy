@@ -1203,8 +1203,8 @@ class TcgStatics {
   static boolean isValidFossilCard(Card potentialFossil){
     if(
       (potentialFossil.cardTypes.is(ITEM) && potentialFossil.name.contains("Fossil")) ||
-      (potentialFossil.cardTypes.is(STAGE_1) && potentialFossil.predecessor.contains("Fossil")) ||
-      (potentialFossil.cardTypes.is(STAGE_2) && bg.gm().getBasicsFromStage2(potentialFossil.name).findAll{it.name.contains("Fossil")})
+      (potentialFossil.cardTypes.is(STAGE1) && potentialFossil.predecessor.contains("Fossil")) ||
+      (potentialFossil.cardTypes.is(STAGE2) && bg.gm().getBasicsFromStage2(potentialFossil.name).findAll{it.name.contains("Fossil")})
     )
       return true
     else
