@@ -241,6 +241,8 @@ public enum MajesticDawn implements LogicCardInfo {
                       apply ASLEEP
                     }
                   }
+                }
+              }
             }
           }
           move "Dark Resolve", {
