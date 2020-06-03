@@ -449,6 +449,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "Once during your turn (before your attack), you may choose any 1 card from your deck and put it into your hand. Shuffle your deck afterward. You can’t use more than 1 Quick Search Poké-Power each turn. This power can’t be used if Pidgeot is affected by a Special Condition."
             actionA {
               checkNoSPC()
+              assert !(self.specialConditions) : "Pidgeot is affected by a Special Condition."
               assert bg.em().retrieveObject("Quick_Search") != bg.turnCount : "You cannot use Quick Search more than once per turn!"
               assert my.deck
               bg.em().storeObject("Quick_Search",bg.turnCount)
@@ -2523,6 +2524,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           pokePower "Extra Energy Bomb", {
             text "Once during your turn (before your attack), you may discard Electrode ex and all the cards attached to it (this counts as Knocking Out Electrode ex). If you do, search your discard pile for 5 Energy cards and attach them to any of your Pokémon (excluding Pokémon-ex) in any way you like. This power can’t be used if Electrode ex is affected by a Special Condition."
             actionA {
+              assert !(self.specialConditions) : "Electrode ex is affected by a Special Condition."
               checkLastTurn()
               powerUsed()
               new Knockout(self).run(bg)
