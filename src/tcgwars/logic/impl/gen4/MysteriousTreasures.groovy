@@ -2422,10 +2422,29 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case FOSSIL_EXCAVATOR_111:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
-          onPlay {}
+          onPlay {
+            def choice = 1
+
+            if(my.discard.any{isValidFossilCard(it)}){
+              choice = choose([1,2],['Search your deck', 'Search your discard pile'], "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand. Then, shuffle your deck.")
+            }
+
+            if (choice == 1){
+              chosenCard = my.deck.findAll{isValidFossilCard(it)}.search(
+                count : 1,
+                "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil."
+              )
+            } else /*if (choice == 2)*/ {
+              chosenCard = my.discard.findAll{isValidFossilCard(it)}.select().moveTo(my.hand)
+            }
+
+            if (chosenCard)
+              chosenCard.showToOpponent("Chosen card").moveTo(my.hand)
+
+            shuffleDeck()
+          }
           playRequirement {
-            assert ( /*my.deck.notEmpty || */my.discard.any{isValidFossilCard(it)}) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
-            assert false :"DEBUG"
+            assert ( my.deck.notEmpty || my.discard.any{isValidFossilCard(it)}) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
           }
         };
       case LAKE_BOUNDARY_112:
