@@ -2430,7 +2430,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
 
             if (choice == 1){
-              chosenCard = findValidFossilTargets(my.deck).search(
+              chosenCard = my.deck.findAll{isValidFossilCard(it)}.search(
                 count : 1,
                 "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil."
               )
