@@ -681,7 +681,7 @@ class TcgStatics {
   }
 
   static void preventAllDamageFromCustomPokemonNextTurn(Move thisMove, PokemonCardSet self, Predicate<PokemonCardSet> predicate){
-    delayed {
+    delayed (priority: LAST) {
       before APPLY_ATTACK_DAMAGES, {
         bg.dm().each {
           if(it.to == self && it.notNoEffect && it.from != it.to && predicate.test(it.from) && bg.currentTurn==self.owner.opposite ){
