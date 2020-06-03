@@ -3754,38 +3754,7 @@ public enum RebelClash implements LogicCardInfo {
         onPlay {
           draw 2
 
-          def winnerDetermined = false
-          def myWin = false
-
-          while (!winnerDetermined) {
-            def myChoice = choose([1,2,3], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
-            def opponentChoice = oppChoose([4,5,6], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
-
-            if (myChoice == 1) {
-              if (opponentChoice == 5) {
-                winnerDetermined = true
-              } else if (opponentChoice == 6) {
-                winnerDetermined = true
-                myWin = true
-              }
-            } else if (myChoice == 2) {
-              if (opponentChoice == 4) {
-                winnerDetermined = true
-                myWin = true
-              } else if (opponentChoice == 6) {
-                winnerDetermined = true
-              }
-            } else {
-              if (opponentChoice == 4) {
-                winnerDetermined = true
-              } else if (opponentChoice == 5) {
-                winnerDetermined = true
-                myWin = true
-              }
-            }
-          }
-
-          if (myWin) {
+          rockPaperScissors {
             bc "Dan: Current turn's player won Rock-Paper-Scissors and draws 2 extra cards."
             draw 2
           }
