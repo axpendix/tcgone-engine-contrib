@@ -345,12 +345,12 @@ public enum SecretWonders implements LogicCardInfo {
               checkNoSPC()
               assert bg.em().retrieveObject("Telepass") != bg.turnCount : "You can't use more than 1 Telepass Poke-Power each turn."
               assert opp.discard.hasType(SUPPORTER) : "Your opponent has no supporters discarded."
-                powerUsed()
-                def card = opp.discard.select("Opponent's discard. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
-                bg.deterministicCurrentThreadPlayerType=bg.currentTurn
-                bg.em().run(new PlayTrainer(card).setDontDiscard(true))
-                bg.clearDeterministicCurrentThreadPlayerType()
-                bg.em().storeObject("Telepass",bg.turnCount)
+              powerUsed()
+              def card = opp.discard.select("Opponent's discard. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
+              bg.deterministicCurrentThreadPlayerType=bg.currentTurn
+              bg.em().run(new PlayTrainer(card).setDontDiscard(true))
+              bg.clearDeterministicCurrentThreadPlayerType()
+              bg.em().storeObject("Telepass",bg.turnCount)
               } 
             } 
           move "Psychic Lock", {
@@ -360,14 +360,14 @@ public enum SecretWonders implements LogicCardInfo {
             onAttack {
               damage 60
               getterA (IS_ABILITY_BLOCKED) { Holder h ->
-              if (h.effect.ability instanceof PokePower) {
-                h.object=true
+                if (h.effect.ability instanceof PokePower) {
+                  h.object=true
+                }
               }
             }
           }
         }
-      }
-    };
+     };
       case GASTRODON_EAST_SEA_8:
         return evolution (this, from:"Shellos East Sea", hp:HP100, type:WATER, retreatCost:4) {
           weakness G, PLUS30
