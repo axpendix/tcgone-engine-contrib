@@ -1586,15 +1586,19 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              //TODO: Check for the extra damage.
+              if (false) {
+                damage 50
+              }
             }
           }
           move "Fury Swipes", {
-            text "30× damage. "
+            text "30× damage. Flip 3 coins. This attack does 30 damage times the number of heads."
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 3, {damage 30}
             }
           }
 
@@ -1607,15 +1611,20 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              my.deck.subList(0,5).select(min:0,"Choose a card to put in your hand").moveTo(hidden: true, my.hand)
+              shuffleDeck()
             }
           }
           move "Ultra Evolution", {
             text "Search your deck for Alakazam and put it on Abra (this counts as evolving Abra). Shuffle your deck afterward."
             energyCost P, C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck
+            }
             onAttack {
-              damage 0
+              def tar = my.deck.search("Searching for an Alakazam", {it.cardTypes.is(EVOLUTION) && it.name == "Alakazam"})
+              if(tar) evolve(self, tar.first(), OTHER)
+              shuffleDeck()
             }
           }
 
@@ -1624,19 +1633,21 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
           move "Tail Whap", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Throw Off", {
-            text "Before doing damage, discard all Pokémon Tool cards attached to that Pokémon."
+            text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) Before doing damage, discard all Pokémon Tool cards attached to that Pokémon."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              def pcs = opp.all.select("Select the Pokémon to attack.")
+              pcs.cards.filterByType(POKEMON_TOOL).discard()
+              damage 20, pcs
             }
           }
 
@@ -1650,7 +1661,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              damage 10, self
             }
           }
 
@@ -1660,11 +1672,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness G, PLUS10
           resistance L, MINUS20
           move "Mud Spit", {
-            text "Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Pokémon."
+            text "Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              flip{ opp.all.each{ damage 10, it } }
             }
           }
 
@@ -1672,20 +1684,27 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case BIDOOF_73:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS10
-          move "", {
-            text "Any damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+          //Wacan Berry: Any damage done to Bidoof by attacks from [L] Pokémon is reduced by 20 (after applying Weakness and Resistance).
+          customAbility {
+            delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                if(ef.attacker.owner != self.owner && (ef.attacker.types.contains(R) || ef.attacker.types.contains(W))) {
+                  bg.dm().each{
+                    if(it.to == self && it.notNoEffect && it.dmg.value) {
+                      bc "Chesto Berry -20"
+                      it.dmg -= hp(20)
+                    }
+                  }
+                }
+              }
             }
           }
           move "Tackle", {
-            text "30 damage. "
+            text "30 damage."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -1699,7 +1718,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply CONFUSED }
             }
           }
 
@@ -1707,12 +1727,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case BUIZEL_75:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
-          move "", {
-            text "If damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+          //Chesto Berry: If Buizel is Asleep, remove the Special Condition Asleep from Buizel at the end of each player’s turn.
+          customAbility {
+            delayedA {
+              before BEGIN_TURN,{
+                if(self.isSPC(ASLEEP)) {
+                  bc "Chesto Berry activates"
+                  clearSpecialCondition(self, ATTACK, [ASLEEP])
+                }
+              }
             }
           }
           move "Quick Attack", {
@@ -1734,7 +1757,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+            flip { preventAllEffectsNextTurn() }
             }
           }
           move "Double-edge", {
@@ -1757,7 +1780,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply ASLEEP }
             }
           }
           move "Jump On", {
@@ -1779,7 +1802,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { opponentCantPlaySupporterNextTurn(delegate) }
             }
           }
           move "Finger Poké", {
@@ -1797,19 +1820,19 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
           move "Tackle", {
-            text "10 damage. "
+            text "10 damage."
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Live Coal", {
-            text "20 damage. "
+            text "20 damage."
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1823,7 +1846,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {damage 10}
             }
           }
           move "Accelerating Stab", {
@@ -1831,7 +1854,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              cantUseAttack thisMove, self
             }
           }
 
@@ -1845,7 +1869,22 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              afterDamage {
+                flip{
+                  delayed{
+                    before ATTACH_ENERGY, self.owner.opposite.pbg.active, {
+                      if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.active) {
+                        wcu "Electromagnetic Jam prevents you from attaching Energy to $ef.resolvedTarget\."
+                        prevent()
+                      }
+                    }
+                    unregisterAfter 2
+                    after SWITCH, defending, {unregister()}
+                    after EVOLVE, defending, {unregister()}
+                  }
+                }
+              }
             }
           }
 
@@ -1854,11 +1893,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
           move "Direct-hit Bomb", {
-            text "Flip a coin for each Energy attached to Exeggcute. Choose 1 of your opponent’s Pokémon. For each heads, this attack does 10 damage to that Pokémon."
+            text "Flip a coin for each Energy attached to Exeggcute. Choose 1 of your opponent’s Pokémon. For each heads, this attack does 10 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              def totalDmg = 0
+              flip self.cards.energyCount(C), {
+                totalDmg += 10
+              }
+              if (totalDmg) damage totalDmg, opp.all.select()
             }
           }
 
@@ -1871,15 +1914,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { preventAllEffectsNextTurn() }
             }
           }
           move "Tackle", {
-            text "20 damage. "
+            text "20 damage."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1889,11 +1932,17 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness G, PLUS10
           resistance L, MINUS20
           move "Stone Throw", {
-            text "Choose 2 of your opponent’s Benched Pokémon. This attack does 10 damage to each of them."
+            text "Choose 2 of your opponent’s Benched Pokémon. This attack does 10 damage to each of them. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F
-            attackRequirement {}
+            attackRequirement {
+              assert opp.bench
+            }
             onAttack {
-              damage 0
+              multiSelect(opp.bench, 2).each{
+                targeted(it){
+                  damage 10, it
+                }
+              }
             }
           }
 
@@ -1906,7 +1955,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              whirlwind()
             }
           }
 
@@ -1920,11 +1970,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
             callForFamily(basic:true, 1, delegate)
           }
           move "Sling", {
-            text "10 damage. "
+            text "10 damage."
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -1938,15 +1988,20 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if (my.deck && confirm("Discard the top card of your deck? If you do, this attack does 10 damage plus 10 more damage and Larvitar is now Asleep.")){
+                my.deck.subList(0,1).discard()
+                damage 10
+                apply ASLEEP, self
+              }
             }
           }
           move "Hammer In", {
-            text "20 damage. "
+            text "20 damage."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1955,16 +2010,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
           pokePower "Baby Evolution", {
-            text "Once during your turn , you may put Magmar from your hand onto Magby (this counts as evolving Magby) and remove all damage counters from Magby."
+            text "Once during your turn (before your attack), you may put Magmar from your hand onto Magby (this counts as evolving Magby) and remove all damage counters from Magby."
             actionA {
-              assert my.hand.findAll{it.name.contains("Magmar")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Magmar", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Magmar") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Magmar", self)
             }
           }
           move "Scorch", {
@@ -1993,7 +2044,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W, W
             attackRequirement {}
             onAttack {
-              damage 0
+              //TODO: Modularize
+              flip 2,{},{},[2:{damage 120},1:{bc "$thisMove failed"},0:{bc "$thisMove failed"}]
             }
           }
 
@@ -2005,17 +2057,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Swarm", {
             text "Search your deck for Murkrow and put it onto your Bench. Shuffle your deck afterward."
             energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(name:"Murkrow",1,delegate)
           }
           move "Hide Crowd", {
             text "20 damage. Switch Murkrow with 1 of your Benched Pokémon."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              switchYourActive()
             }
           }
 
@@ -2024,11 +2074,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
           move "Call for Family", {
-            text "Search your deck for Nidoran Male or Nidoran Female and put it onto your Bench. Shuffle your deck afterward."
+            text "Search your deck for Nidoran ♂ or Nidoran ♀ and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
 
-            // TODO
-            callForFamily(basic:true, 1, delegate)
+            //TODO: Check this finding all Nidorans, male and female.
+            callForFamily(name:"Nidoran",1,delegate)
           }
           move "Poison Sting", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
@@ -2045,11 +2095,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
           move "Scratch", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Mushroom Tackle", {
@@ -2068,16 +2118,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness F, PLUS10
           resistance M, MINUS20
           pokePower "Baby Evolution", {
-            text "Once during your turn , you may put Pikachu from your hand onto Pichu (this counts as evolving Pichu) and remove all damage counters from Pichu."
+            text "Once during your turn (before your attack), you may put Pikachu from your hand onto Pichu (this counts as evolving Pichu) and remove all damage counters from Pichu."
             actionA {
-              assert my.hand.findAll{it.name.contains("Pikachu")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Pikachu", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Pikachu") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Pikachu", self)
             }
           }
           move "Chupi", {
@@ -2085,7 +2131,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {damage 20}
             }
           }
 
@@ -2095,8 +2141,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness F, PLUS10
           resistance M, MINUS20
           pokePower "Electro Recycle", {
-            text "Once during your turn , if Pichu is anywhere under Pikachu, you may search your discard pile for a Energy card, show it to your opponent, and put it into your hand. This power can’t be used if Pikachu is affected by a Special Condition."
+            text "Once during your turn (before your attack), if Pichu is anywhere under Pikachu, you may search your discard pile for a [L] Energy card, show it to your opponent, and put it into your hand. This power can’t be used if Pikachu is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              assert self.getPokemonCards().findAll {it.name.contains("Pichu")} : "Pichu is not found under $self, you can't use this Poké-Power"
+              assert my.discard.filterByEnergyType(L) : "There are no [L] Energy cards in your discard pile."
+              powerUsed()
+              my.discard.filterByEnergyType(L).select().moveTo(my.hand)
             }
           }
           move "BikaBika", {
@@ -2114,11 +2165,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
           move "Sharpshooting", {
-            text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon."
+            text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10, opp.all.select()
             }
           }
           move "Numbing Water", {
@@ -2141,15 +2192,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              sandAttack(thisMove)
             }
           }
           move "Ram", {
-            text "30 damage. "
+            text "30 damage."
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -2430,12 +2481,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
 
             if (choice == 1){
-              chosenCard = my.deck.findAll{isValidFossilCard(it)}.search(
-                count : 1,
-                "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil."
-              )
+              chosenCard = my.deck.search( {isValidFossilCard(it)} ).select("Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil.")
             } else /*if (choice == 2)*/ {
-              chosenCard = my.discard.findAll{isValidFossilCard(it)}.select().moveTo(my.hand)
+              chosenCard = my.discard.findAll{isValidFossilCard(it)}.select()
             }
 
             if (chosenCard)
