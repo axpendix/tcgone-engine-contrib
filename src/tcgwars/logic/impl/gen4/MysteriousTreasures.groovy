@@ -2422,18 +2422,20 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case FOSSIL_EXCAVATOR_111:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
-          def sourceList
-          def sourceCard
           def itemIsNamedFossil = {
+            def sourceCard = keyStore('Fossil_Excavator_Source',self,null)
             (sourceCard.name.contains("Fossil"))
           }
           def stage1canEvolveFromFossil = {
+            def sourceCard = keyStore('Fossil_Excavator_Source',self,null)
             (sourceCard.predecessor.contains("Fossil"))
           }
           def stage2canEvolveFromFossil = {
+            def sourceCard = keyStore('Fossil_Excavator_Source',self,null)
             (bg.gm().getBasicsFromStage2(sourceCard.name).findAll{it.name.contains("Fossil")}) ? true : false
           }
           def findValidFossilTargets = {
+            def sourceList = keyStore('Fossil_Excavator_Source',self,null)
             sourceList.findAll{
               (it.cardTypes.is(ITEM) && (sourceCard = it) && itemIsNamedFossil) ||
               (it.cardTypes.is(STAGE_1) && (sourceCard = it) && stage1canEvolveFromFossil) ||
@@ -2443,10 +2445,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
           onPlay {}
           playRequirement {
             if (! my.deck.isEmpty) {
-              assert (!sourceCard) : "sourceCard is already set"
-              sourceCard = my.deck.first()
-              assert (sourceCard) : "sourceCard is not set"
+              assert (!keyStore('Fossil_Excavator_Source',self,null)) : "sourceCard is already set"
+              keyStore('Fossil_Excavator_Source',self,my.deck.first())
+              assert (keyStore('Fossil_Excavator_Source',self,null)) : "sourceCard is not set"
             }
+            assert (keyStore('Fossil_Excavator_Source',self,null)) : "sourceCard is no longer set"
             assert false :"DEBUG"
             /*assert (
               my.deck.notEmpty || my.discard.any{
