@@ -2784,6 +2784,7 @@ public enum SecretWonders implements LogicCardInfo {
           pokePower "Teleportation", {
             text "Once during your turn , choose 1 of your Active Pokémon or 1 or your Benched Pokémon and switch Gardevoir with that Pokémon. This power can’t be used if Gardevoir is affected by a Special Condition."
             actionA {
+              checkNoSPC()
               checkLastTurn()
               if (self.active) {
                 sw self, my.bench.select()
