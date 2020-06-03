@@ -107,6 +107,51 @@ class TcgStatics {
     cf.run(bg)
   }
 
+  static rockPaperScissors(Closure winEff, Closure lossEff = {}) {
+    rockPaperScissors(winnEff, lossEff, false)
+  }
+
+  //For newer formats "may" should not be used, but for older (Wizards era) ones doing a coin flip was the offered alternative if a player didn't know how to play RPS.
+  static rockPaperScissors(Closure winEff, Closure lossEff = {}, boolean may = false) {
+    def winnerDetermined = false
+    def myWin = false
+    def confirmMsg = "Do you want to play \"Rock-Paper-Scissors\"? (Either player saying no will result in a coinflip.)"
+    if (!may || confirm(confirmMsg) && oppConfirm(confirmMsg)) {
+      while (!winnerDetermined) {
+        def myChoice = choose([1,2,3], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
+        def opponentChoice = oppChoose([4,5,6], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
+        if (myChoice == 1) {
+          if (opponentChoice == 5) {
+            winnerDetermined = true
+          } else if (opponentChoice == 6) {
+            winnerDetermined = true
+            myWin = true
+          }
+        } else if (myChoice == 2) {
+          if (opponentChoice == 4) {
+            winnerDetermined = true
+            myWin = true
+          } else if (opponentChoice == 6) {
+            winnerDetermined = true
+          }
+        } else {
+          if (opponentChoice == 4) {
+            winnerDetermined = true
+          } else if (opponentChoice == 5) {
+            winnerDetermined = true
+            myWin = true
+          }
+        }
+      }
+    } else {
+      flip {myWin = true}
+    }
+    if (myWin)
+      winEff.call()
+    else
+      lossEff.call()
+  }
+
   static Effect toEffect(Closure c){
     return new DirectEffect(){
       public EffectType getEffectType() {
