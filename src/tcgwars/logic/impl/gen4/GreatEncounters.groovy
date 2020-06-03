@@ -2172,9 +2172,11 @@ public enum GreatEncounters implements LogicCardInfo {
       case FELICITY_S_DRAWING_98:
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDiscard up to 2 cards from your hand. If you discard 1 card, draw 3 cards. If you discard 2 cards, draw 4 cards."
-          onPlay {
+          playRequirement {
             assert my.deck : "Your deck is empty"
             assert my.hand.size() > 1 : "You can't play this card"
+          }
+          onPlay {
             def toDiscard = my.hand.getExcludedList(thisCard).select(min: 1, max: 2, "Discard up to 2 cards")
             if (toDiscard.size() == 1) {
               draw 3
