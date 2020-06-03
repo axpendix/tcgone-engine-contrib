@@ -265,7 +265,7 @@ public enum MajesticDawn implements LogicCardInfo {
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
-                if (it.from.owner==self.owner && it.to.active && it.to.owner!=self.owner && it.dmg.value) {
+                if (it.from.owner==self.owner && it.from == self && self.active && it.to.active && it.to.owner!=self.owner && it.dmg.value) {
                   if (it.to.getWeaknesses().findAll{it.type == M}) {
                     bc "Adamant Orb +20"
                     it.dmg += hp(20)
