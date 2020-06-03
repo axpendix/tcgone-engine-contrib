@@ -2547,7 +2547,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
               def myMaxDraw = 3
               def oppMaxDraw = 3
-              rockPaperScissors {myMaxDraw = 6}, {oppMaxDraw = 6}
+              //rockPaperScissors ({myMaxDraw = 6}, {oppMaxDraw = 6})
+              flip {myMaxDraw = 6}, {oppMaxDraw = 6}
 
               draw choose(1..myMaxDraw,"How many cards would you like to draw?")
               draw (oppChoose(1..oppMaxDraw,"How many cards would you like to draw?"),TargetPlayer.OPPONENT)
