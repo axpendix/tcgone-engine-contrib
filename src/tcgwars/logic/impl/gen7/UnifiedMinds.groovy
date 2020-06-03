@@ -2031,7 +2031,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               checkLastTurn()
               assert my.bench.notEmpty : "Your bench is empty."
               powerUsed()
-              sw my.active, my.bench.select("Select a new Active Pokémon.")
+              sw my.active, my.bench.select("Select a new Active Pokémon."), SRC_ABILITY
             }
           }
           move "Spinning Attack", {
