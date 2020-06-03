@@ -2737,9 +2737,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
               }
               opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
                 it.cards.filterByType(POKEMON_TOOL).discard()
-                somethingWasDiscarded += 1
+                cardsDiscarded += 1
               }
-              if (somethingWasDiscarded) preventAllEffectsNextTurn()
+              if (cardsDiscarded) preventAllEffectsNextTurn()
             }
           }
 
