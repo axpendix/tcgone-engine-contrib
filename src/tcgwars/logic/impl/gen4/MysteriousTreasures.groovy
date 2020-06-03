@@ -2432,7 +2432,6 @@ public enum MysteriousTreasures implements LogicCardInfo {
           onPlay {
             eff = getter (GET_WEAKNESSES) {h->
               h.object = h.object?.collect {
-                bc h.dump() // DEBUG CODE
                 def weakness = it.copy()
                 weakness.feature = "X2"
                 weakness
@@ -2495,8 +2494,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
               def myMaxDraw = 3
               def oppMaxDraw = 3
-              //rockPaperScissors ({myMaxDraw = 6}, {oppMaxDraw = 6})
-              flip 1, {myMaxDraw = 6}, {oppMaxDraw = 6}
+              rockPaperScissors ({myMaxDraw = 6}, {oppMaxDraw = 6})
+              //flip 1, {myMaxDraw = 6}, {oppMaxDraw = 6}
 
               draw choose(1..myMaxDraw,"How many cards would you like to draw?")
               draw (oppChoose(1..oppMaxDraw,"How many cards would you like to draw?"),TargetPlayer.OPPONENT)
