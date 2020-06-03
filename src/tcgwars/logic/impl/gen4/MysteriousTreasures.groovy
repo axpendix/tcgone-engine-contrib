@@ -2444,9 +2444,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
           playRequirement {
             assert (
               my.deck.notEmpty || my.discard.any{
-                (it.cardTypes.is(ITEM) && (sourceCard = it) && itemIsNamedFossil) ||
+                (it.cardTypes.is(ITEM) && (sourceCard = it) && itemIsNamedFossil)/* ||
                 (it.cardTypes.is(STAGE_1) && (sourceCard = it) && stage1canEvolveFromFossil) ||
-                (it.cardTypes.is(STAGE_2) && (sourceCard = it) && stage2canEvolveFromFossil)
+                (it.cardTypes.is(STAGE_2) && (sourceCard = it) && stage2canEvolveFromFossil)*/
               }
             ) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
           }
