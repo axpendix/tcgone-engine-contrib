@@ -1,5 +1,8 @@
 package tcgwars.logic.impl.gen1;
 
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.impl.gen4.Unleashed;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -764,6 +767,10 @@ public enum BaseSetNG implements LogicCardInfo {
           pokemonPower "Buzzap", {
             text "At any time during your turn (before your attack), you may Knock Out Electrode and attach it to 1 of your other Pokémon. If you do, choose a type of Energy. Electrode is now an Energy card (instead of a Pokémon) that provides 2 energy of that type. You can’t use this power if Electrode is Asleep, Confused, or Paralyzed."
             actionA {
+              checkNoSPC()
+              powerUsed()
+
+
             }
           }
           move "Electric Shock", {
@@ -898,7 +905,17 @@ public enum BaseSetNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               flip{damage 30}
-              //TODO
+              afterDamage {
+                bc "Leek Slap cannot be used again"
+                delayed (priority: BEFORE_LAST) {
+                  before CHECK_ATTACK_REQUIREMENTS, {
+                    if (ef.attacker.owner == self.owner && ef.move.name == "Leek Slap") {
+                      wcu "Leek Slap has already been used this game"
+                      prevent()
+                    }
+                  }
+                }
+              }
             }
           }
           move "Pot Smash", {
@@ -1138,7 +1155,9 @@ public enum BaseSetNG implements LogicCardInfo {
           move "Conversion 1", {
             text "If the Defending Pokémon has a Weakness, you may change it to a type of your choice other than Colorless."
             energyCost C
-            attackRequirement {assert opp.active.weakness} //Is this right?
+            attackRequirement {
+              assert opp.active.weakness : "Defending Pokémon does not have a Weakness."
+            }
             onAttack {
               targeted (defending) {
                 delayed {
@@ -1840,15 +1859,24 @@ public enum BaseSetNG implements LogicCardInfo {
           }
           playRequirement{
             assert my.hand.find(cardTypeFilter(POKEMON))
-
           }
         };
       case SCOOP_UP:
         return basicTrainer (this) {
-          text "Choose 1 of your Pokémon in play and return its Basic Pokémon card to your hand. (Discard all cards attached to that card.)"
-          onPlay { //TODO: How does one find the basic of a Pokemon card?  It's possible that Pokemon like Ditto can mess up looking through a stack of cards
-          }
-          playRequirement{
+          text "Choose 1 of your own Pokémon in play and return its Basic Pokémon card to your hand. (Discard all cards attached to that card.)"
+          onPlay {
+            def pcs = my.all.select()
+            targeted(pcs, Source.TRAINER_CARD) {
+              def temp = pcs.cards
+              def tar = temp.get(0)
+              while(temp.getExcludedList(tar).findAll{it.cardTypes.is(POKEMON)}){
+                temp = temp.getExcludedList(tar)
+                tar = temp.get(0)
+              }
+              pcs.cards.findAll{it==tar}.moveTo(my.hand)
+              pcs.cards.discard()
+              removePCS pcs
+            }
           }
         };
       case SUPER_ENERGY_REMOVAL:
@@ -1922,13 +1950,7 @@ public enum BaseSetNG implements LogicCardInfo {
           }
         }
       case PLUSPOWER:
-        return basicTrainer (this) { //TODO
-          text "Attach PlusPower to your Active Pokémon. At the end of your turn, discard PlusPower. If this Pokémon’s attack does damage to the Defending Pokémon (after applying Weakness and Resistance), the attack does 10 more damage to the Defending Pokémon."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(Unleashed.PLUSPOWER_80, this);
       case POKEMON_CENTER:
         return basicTrainer (this) {
           text "Remove all damage counters from all of your own Pokémon with damage counters on them, then discard all Energy cards attached to those Pokémon."
@@ -2011,7 +2033,7 @@ public enum BaseSetNG implements LogicCardInfo {
             draw 2
           }
           playRequirement{
-            assert my.deck
+            assert my.deck : "No cards left in your deck."
           }
         };
       case ENERGY_REMOVAL:
@@ -2044,26 +2066,9 @@ public enum BaseSetNG implements LogicCardInfo {
           }
         };
       case POTION:
-        return basicTrainer (this) {
-          text "Remove up to 2 damage counters from 1 of your Pokémon."
-          onPlay {
-            def pcs = my.all.findAll{it.numberOfDamageCounters}.select()
-            heal 20, pcs
-          }
-          playRequirement{
-            assert my.all.findAll{it.numberOfDamageCounters}
-          }
-        };
+        return copy(FireRedLeafGreen.POTION_101, this);
       case SWITCH:
-        return basicTrainer (this) {
-          text "Switch your Active Pokémon with 1 of your Benched Pokémon."
-          onPlay {
-            sw my.active, my.bench.select()
-          }
-          playRequirement{
-            assert bench.notEmpty
-          }
-        };
+        return copy(FireRedLeafGreen.SWITCH_102, this);
       case DOUBLE_COLORLESS_ENERGY:
         return specialEnergy (this, [[C],[C]]) {
           text "Double Colorless Energy provides [C][C] Energy."
@@ -2085,5 +2090,4 @@ public enum BaseSetNG implements LogicCardInfo {
         return null;
     }
   }
-
 }
