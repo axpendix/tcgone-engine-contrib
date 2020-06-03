@@ -1200,4 +1200,15 @@ class TcgStatics {
     !['Heat Factory Prism Star','Life Forest Prism Star','Thunder Mountain Prism Star','Wondrous Labyrinth Prism Star','Black Market Prism Star'].contains(stadiumCard?.name);
   }
 
+  static boolean isValidFossilCard(Card potentialFossil){
+    if(
+      (potentialFossil.cardTypes.is(ITEM) && potentialFossil.name.contains("Fossil")) ||
+      (potentialFossil.cardTypes.is(STAGE_1) && potentialFossil.predecessor.contains("Fossil")) ||
+      (potentialFossil.cardTypes.is(STAGE_2) && bg.gm().getBasicsFromStage2(potentialFossil.name).findAll{it.name.contains("Fossil")})
+    )
+      return true
+    else
+      return false
+  }
+
 }
