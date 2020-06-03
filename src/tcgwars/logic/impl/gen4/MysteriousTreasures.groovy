@@ -2445,7 +2445,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           onPlay {}
           playRequirement {
             if (/*!*/my.deck.notEmpty) {
-              def isValidFossilCard(potentialFossil){
+              def isValidFossilCard(potentialFossil) = {
                 if (potentialFossil != null) {
                   keyStore('Fossil_Excavator_Source', thisCard, potentialFossil) //Reminder: thisCard refers to Excavator.
                   if (card.cardTypes.is(ITEM)) return itemIsNamedFossil
