@@ -2270,7 +2270,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              increasedBaseDamageNextTurn("Rollout",hp(30))
+              flip { increasedBaseDamageNextTurn("Rollout",hp(30)) }
             }
           }
 
@@ -2428,22 +2428,24 @@ public enum MysteriousTreasures implements LogicCardInfo {
           //  * Trainer-Item card with "Fossil" in its name
           //  * Stage 1 Pokémon that evolve from a card with "Fossil" in its name.
           //  * Stage 2 Pokémon that evolve from a card following the above principle.
-          /*def itemIsNamedFossil(card) {
-            (card.name.contains("Fossil"))
+          def sourceList
+          def sourceCard
+          def itemIsNamedFossil {
+            (sourceCard.name.contains("Fossil"))
           }
-          def stage1canEvolveFromFossil(card) {
-            (card.predecessor.contains("Fossil"))
+          def stage1canEvolveFromFossil {
+            (sourceCard.predecessor.contains("Fossil"))
           }
-          def stage2canEvolveFromFossil(card) {
-            (bg.gm().getBasicsFromStage2(card.name).findAll{it.name.contains("Fossil")}) ? true : false
+          def stage2canEvolveFromFossil {
+            (bg.gm().getBasicsFromStage2(sourceCard.name).findAll{it.name.contains("Fossil")}) ? true : false
           }
           def findValidFossilTargets(sourceList){
             sourceList.findAll{
-              (it.cardTypes.is(ITEM) && itemIsNamedFossil(it)) ||
-              (it.cardTypes.is(STAGE_1) && stage1canEvolveFromFossil(it)) ||
-              (it.cardTypes.is(STAGE_2) && stage2canEvolveFromFossil(it))
+              (it.cardTypes.is(ITEM) && (sourceCard = it) && itemIsNamedFossil) ||
+              (it.cardTypes.is(STAGE_1) && (sourceCard = it) && stage1canEvolveFromFossil) ||
+              (it.cardTypes.is(STAGE_2) && (sourceCard = it) && stage2canEvolveFromFossil)
             }
-          }*/
+          }
           onPlay {
             /*def chosenCard
             def choice = 1
@@ -2467,13 +2469,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
             shuffleDeck()*/
           }
           playRequirement{
-            /*assert (
+            assert (
               my.deck.notEmpty || my.discard.any{
-                (it.cardTypes.is(ITEM) && itemIsNamedFossil(it)) ||
-                (it.cardTypes.is(STAGE_1) && stage1canEvolveFromFossil(it)) ||
-                (it.cardTypes.is(STAGE_2) && stage2canEvolveFromFossil(it))
+                (it.cardTypes.is(ITEM) && (sourceCard = it) && itemIsNamedFossil) ||
+                (it.cardTypes.is(STAGE_1) && (sourceCard = it) && stage1canEvolveFromFossil) ||
+                (it.cardTypes.is(STAGE_2) && (sourceCard = it) && stage2canEvolveFromFossil)
               }
-            ) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."*/
+            ) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
           }
       };
       case LAKE_BOUNDARY_112:
@@ -2545,7 +2547,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
               def myMaxDraw = 3
               def oppMaxDraw = 3
-              flip 1, {myMaxDraw = 6}, {oppMaxDraw = 6}
+              rockPaperScissors {myMaxDraw = 6}, {oppMaxDraw = 6}
 
               draw choose(1..myMaxDraw,"How many cards would you like to draw?")
               draw (oppChoose(1..oppMaxDraw,"How many cards would you like to draw?"),TargetPlayer.OPPONENT)
@@ -2737,9 +2739,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
               }
               opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
                 it.cards.filterByType(POKEMON_TOOL).discard()
-                somethingWasDiscarded += 1
+                cardsDiscarded += 1
               }
-              if (somethingWasDiscarded) preventAllEffectsNextTurn()
+              if (cardsDiscarded) preventAllEffectsNextTurn()
             }
           }
 
