@@ -2430,13 +2430,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
           //  * Stage 2 Pokémon that evolve from a card following the above principle.
           def sourceList
           def sourceCard
-          def itemIsNamedFossil {
+          def itemIsNamedFossil = {
             (sourceCard.name.contains("Fossil"))
           }
-          def stage1canEvolveFromFossil {
+          def stage1canEvolveFromFossil = {
             (sourceCard.predecessor.contains("Fossil"))
           }
-          def stage2canEvolveFromFossil {
+          def stage2canEvolveFromFossil = {
             (bg.gm().getBasicsFromStage2(sourceCard.name).findAll{it.name.contains("Fossil")}) ? true : false
           }
           def findValidFossilTargets(sourceList){
