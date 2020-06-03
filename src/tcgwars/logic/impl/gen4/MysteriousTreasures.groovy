@@ -1586,15 +1586,19 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              //TODO: Check for the extra damage.
+              if (false) {
+                damage 50
+              }
             }
           }
           move "Fury Swipes", {
-            text "30× damage. "
+            text "30× damage. Flip 3 coins. This attack does 30 damage times the number of heads."
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 3, {damage 30}
             }
           }
 
@@ -1607,15 +1611,20 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              my.deck.subList(0,5).select(min:0,"Choose a card to put in your hand").moveTo(hidden: true, my.hand)
+              shuffleDeck()
             }
           }
           move "Ultra Evolution", {
             text "Search your deck for Alakazam and put it on Abra (this counts as evolving Abra). Shuffle your deck afterward."
             energyCost P, C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck
+            }
             onAttack {
-              damage 0
+              def tar = my.deck.search("Searching for an Alakazam", {it.cardTypes.is(EVOLUTION) && it.name == "Alakazam"})
+              if(tar) evolve(self, tar.first(), OTHER)
+              shuffleDeck()
             }
           }
 
@@ -1624,19 +1633,21 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
           move "Tail Whap", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Throw Off", {
-            text "Before doing damage, discard all Pokémon Tool cards attached to that Pokémon."
+            text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) Before doing damage, discard all Pokémon Tool cards attached to that Pokémon."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              def pcs = opp.all.select("Select the Pokémon to attack.")
+              pcs.cards.filterByType(POKEMON_TOOL).discard()
+              damage 20, pcs
             }
           }
 
@@ -1650,7 +1661,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              damage 10, self
             }
           }
 
@@ -1660,11 +1672,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness G, PLUS10
           resistance L, MINUS20
           move "Mud Spit", {
-            text "Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Pokémon."
+            text "Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              flip{ opp.all.each{ damage 10, it } }
             }
           }
 
@@ -1672,20 +1684,27 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case BIDOOF_73:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS10
-          move "", {
-            text "Any damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+          //Wacan Berry: Any damage done to Bidoof by attacks from [L] Pokémon is reduced by 20 (after applying Weakness and Resistance).
+          customAbility {
+            delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                if(ef.attacker.owner != self.owner && (ef.attacker.types.contains(R) || ef.attacker.types.contains(W))) {
+                  bg.dm().each{
+                    if(it.to == self && it.notNoEffect && it.dmg.value) {
+                      bc "Chesto Berry -20"
+                      it.dmg -= hp(20)
+                    }
+                  }
+                }
+              }
             }
           }
           move "Tackle", {
-            text "30 damage. "
+            text "30 damage."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -1699,7 +1718,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { apply CONFUSED }
             }
           }
 
