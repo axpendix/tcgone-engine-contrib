@@ -2389,36 +2389,47 @@ public enum SwordShield implements LogicCardInfo {
           text "Until this Grapploct leaves the Active Spot, the Defending Pokémon's attacks cost [C][C] more, and the Defending Pokémon can't retreat. This effect can't be applied more than once."
           energyCost F, F
           onAttack {
-            def pcs = defending
-            delayed {
-              def eff
-              register {
-                before RETREAT, pcs {
-                  wcu "Octolock prevents you from retreating."
-                  prevent()
-                }
-                eff = getter (GET_MOVE_LIST, NORMAL, pcs) {h->
-                  if (keyStore("Octolock", self)) {
-                    def list=[]
-                    for (move in h.object) {
-                      def copy=move.shallowCopy()
-                      copy.energyCost.addAll([C, C] as List<Type>)
-                      list.add(copy)
+            if (defending.active) {
+              targeted(defending) {
+                def eff1, eff2
+                delayed {
+                  eff1 = delayed {
+                    before RETREAT, defending, {
+                      wcu "${thisMove.name} prevents you from retreating."
+                      prevent()
                     }
-                    h.object=list
-                    bc "Attacks of $pcs will cost [C][C] more while Octolock is active."
                   }
-                }
-                keyStore("Octolock", self, true)
-              }
-              unregister {
-                keyStore("Octolock", self, 0)
-                eff.unregister()
-              }
 
-              after SWITCH, self, {unregister()}
-              after SWITCH, pcs, {unregister()}
-              after EVOLVE, pcs, {unregister()}
+                  eff2 = getter (GET_MOVE_LIST, NORMAL, defending) {h->
+                    if (keyStore("Octolock", self)) {
+                      def list=[]
+                      for (move in h.object) {
+                        def copy=move.shallowCopy()
+                        copy.energyCost.addAll([C, C] as List<Type>)
+                        list.add(copy)
+                      }
+                      h.object=list
+                      bc "Attacks of $defending will cost [C][C] more while Octolock is active."
+                    }
+                  }
+
+                  register {
+                    keyStore("Octolock", self, true)
+                  }
+
+                  unregister {
+                    keyStore("Octolock", self, 0)
+                    eff1.unregister()
+                    eff2.unregister()
+                  }
+
+                  after SWITCH, self, {unregister()}
+                  after EVOLVE, self, {unregister()}
+                  after SWITCH, defending, {unregister()}
+                  after EVOLVE, defending, {unregister()}
+                }
+
+              }
             }
           }
         }
