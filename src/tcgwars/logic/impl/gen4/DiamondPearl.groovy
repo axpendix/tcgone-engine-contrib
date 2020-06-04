@@ -2168,7 +2168,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              delayed { //Taken from BS1 BULBASAUR
+              delayed (priority: LAST){ //Taken from BS1 BULBASAUR
                 before APPLY_ATTACK_DAMAGES, {
                   if(bg.dm().find{it.to == defending && it.from == self && it.dmg.value}) {
                     heal 10, self
