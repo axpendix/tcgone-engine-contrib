@@ -2144,7 +2144,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
         };
       case PIKACHU_94:
-        return basic (this, hp:HP060, type:LIGHTNING, retreatCost:0) {
+        return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
           resistance M, MINUS20
           pokePower "Electro Recycle", {
