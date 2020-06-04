@@ -114,7 +114,7 @@ class TcgStatics {
     def confirmMsg = "Do you want to play \"Rock-Paper-Scissors\"? (Either player saying no will result in a coinflip.)"
     if (!may || confirm(confirmMsg) && oppConfirm(confirmMsg)) {
       while (!winnerDetermined) {
-        def myChoice = choose([1,2,3], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
+        def myChoice = choose([4,5,6], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
         def opponentChoice = oppChoose([1,2,3], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
         if ((myChoice - opponentChoice) % 3 == 1) {
           winnerDetermined = true
