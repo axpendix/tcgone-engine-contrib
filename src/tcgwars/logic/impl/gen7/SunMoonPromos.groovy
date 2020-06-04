@@ -1324,7 +1324,9 @@ public enum SunMoonPromos implements LogicCardInfo {
             energyCost C,C
             onAttack{
               damage 30
-                flip { discardDefendingEnergy() }
+              afterDamage{
+                flip {discardDefendingEnergy()}
+              }
             }
           }
           move "Doom Crush" , {
@@ -1926,9 +1928,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             onAttack{
               gxPerform()
               damage 130
-              targeted (defending) {
-                opp.active.cards.filterByType(ENERGY).discard()
-              }
+              opp.active.cards.filterByType(ENERGY).discard()
             }
           }
         };
@@ -2993,9 +2993,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               gxPerform()
 
               if (self.cards.energySufficient( thisMove.energyCost + P )) {
-                targeted (defending) {
-                  opp.active.cards.filterByType(ENERGY).discard()
-                }
+                opp.active.cards.filterByType(ENERGY).discard()
               }
 
               def pcs = defending

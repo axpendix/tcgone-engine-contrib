@@ -1649,12 +1649,23 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost L, C
           attackRequirement {}
           onAttack {
-            def noEff = true
-            flip 2, {
-              noEff = false
-              discardDefendingEnergy()
-            }
-            if (noEff) bc "$thisMove failed due to 2 TAILS." else damage 20
+            flip 2, {}, {}, [
+              2:{ damage 20;
+                afterDamage{
+                  discardDefendingEnergy()
+                  discardDefendingEnergy()
+                }
+              },
+              1:{
+                damage 20
+                afterDamage{
+                  discardDefendingEnergy()
+                }
+              },
+              0:{
+                bc "$thisMove failed due to 2 TAILS."
+              }
+            ]
           }
         }
       };

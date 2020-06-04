@@ -172,11 +172,11 @@ class TcgStatics {
     new DiscardOpponentEnergyCard(Target.OPP_ACTIVE).run(bg())
   }
   static discardDefendingSpecialEnergy(Object delegate){
-    targeted (delegate.defending) {
+    afterDamage { targeted (delegate.defending) {
       if(delegate.defending.cards.filterByType(CardType.SPECIAL_ENERGY)){
         delegate.defending.cards.filterByType(CardType.SPECIAL_ENERGY).select("Discard").discard()
       }
-    }
+    } }
   }
   static discardAllSelfEnergy(Type type=null){
     def ef=new DiscardAllSelfEnergy(type)

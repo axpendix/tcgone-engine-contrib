@@ -1464,7 +1464,7 @@ public enum UltraPrism implements LogicCardInfo {
             energyCost P
             onAttack {
               damage 10
-              flip{discardDefendingEnergy()}
+              flip{afterDamage{discardDefendingEnergy()}}
             }
           }
 
