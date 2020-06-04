@@ -2406,7 +2406,7 @@ public enum SwordShield implements LogicCardInfo {
                       list.add(copy)
                     }
                     h.object=list
-                    bc "Attacks of $pcs will cost [C][C] while Octolock is active."
+                    bc "Attacks of $pcs will cost [C][C] more while Octolock is active."
                   }
                 }
                 keyStore("Octolock", self, true)
