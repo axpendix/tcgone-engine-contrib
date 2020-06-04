@@ -1423,6 +1423,10 @@ public enum HolonPhantoms implements LogicCardInfo {
                 if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
                   bg.em().storeObject("Castform_Energy", bg.turnCount)
                   def pcs = validPokemon.select("Attach to?")
+
+                  // Return an energy back to the hand
+                  pcs.cards.filterByType(ENERGY).select(count:1).moveTo(thisCard.player.pbg.hand)
+
                   def pkmnCard = thisCard
                   def energyCard
                   energyCard = specialEnergy(new CustomCardInfo(HOLON_S_CASTFORM_44).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
