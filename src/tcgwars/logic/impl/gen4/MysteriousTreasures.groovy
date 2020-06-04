@@ -1613,7 +1613,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert my.deck
             }
             onAttack {
-              my.deck.subList(1,5).select(min:0,"Choose a card to put in your hand").moveTo(hidden: true, my.hand)
+              my.deck.subList(0,5).select(min:0,"Choose a card to put in your hand").moveTo(hidden: true, my.hand)
               shuffleDeck()
             }
           }
