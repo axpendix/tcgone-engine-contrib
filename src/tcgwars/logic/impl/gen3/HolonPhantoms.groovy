@@ -1419,9 +1419,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           delayed {
             before PLAY_CARD, {
               def validPokemon = thisCard.player.pbg.all.findAll {it.cards.energyCount()}
-              if(ef.cardToPlay == thisCard && bg.em().retrieveObject("Castform_Energy") != bg.turnCount && validPokemon ){
+              if(ef.cardToPlay == thisCard && bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount && validPokemon ){
                 if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
-                  bg.em().storeObject("Castform_Energy", bg.turnCount)
+                  bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
                   def pcs = validPokemon.select("Attach to?")
 
                   // Return an energy back to the hand
@@ -1444,13 +1444,13 @@ public enum HolonPhantoms implements LogicCardInfo {
               } //If the user chooses Pokémon, play the card normally
             }
             before PLAY_ENERGY, {
-              if(bg.em().retrieveObject("Castform_Energy") == bg.turnCount){
+              if(bg.em().retrieveObject("Holon_Pokemon_Energy") == bg.turnCount){
                 wcu "Cannot play any more energy this turn."
                 prevent()
               }
             }
             after PLAY_ENERGY, {
-              bg.em().storeObject("Castform_Energy", bg.turnCount)
+              bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
             }
           }
         }
