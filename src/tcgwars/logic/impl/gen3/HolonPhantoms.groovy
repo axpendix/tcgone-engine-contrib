@@ -1418,11 +1418,22 @@ public enum HolonPhantoms implements LogicCardInfo {
         globalAbility {Card thisCard->
           delayed {
             before PLAY_CARD, {
-              if(ef.cardToPlay == thisCard){
-                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2 && bg.em().retrieveObject("Castform_Energy") != bg.turnCount){
+              if(ef.cardToPlay == thisCard && bg.em().retrieveObject("Castform_Energy") != bg.turnCount){
+                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
                   bg.em().storeObject("Castform_Energy", bg.turnCount)
-                  //TODO Attach as an energy using code or magic, this was going to be charjabug code but then I found out charjabug doesn't work either...
-                  wcu "Congratz Ufo! You hooked into playing a card and put a check in the middle! Now comes the hard part"
+                  def pcs = thisCard.player.pbg.all.select("Attach to?")
+                  def pkmnCard = thisCard
+                  def energyCard
+                  energyCard = specialEnergy(new CustomCardInfo(HOLON_S_CASTRORM_44).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
+                    onPlay {}
+                    onRemoveFromPlay {
+                      bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
+                    }
+                  }
+                  energyCard.player = thisCard.player
+                  bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
+                  attachEnergy(pcs, energyCard)
+                  bc "$energyCard is now a Special Energy Card"
                   prevent()
                 }
               } //If the user chooses Pokémon, play the card normally
