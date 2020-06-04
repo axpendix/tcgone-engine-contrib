@@ -2852,9 +2852,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 def eff
                 register {
                   eff = getter (GET_BURN_DAMAGE) {h->
-                      if (h.effect.target == torridWaveRecipient && h.effect.target.active) {
-                          bc "Torrid Wave increases burn damage on $torridWaveRecipient to 30."
-                          h.object += 1
+                      if (h.effect.target == torridWaveRecipient && h.effect.target.active && h.object < hp(30)) {
+                        bc "Torrid Wave increases burn damage on $torridWaveRecipient to 30."
+                        h.object = hp(30)
                       }
                     }
                   }
