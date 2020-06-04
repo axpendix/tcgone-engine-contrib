@@ -2679,17 +2679,27 @@ public enum SecretWonders implements LogicCardInfo {
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
           onPlay {
+            my.hand.getExcludedList(thisCard).select("Choose the card to put back in your deck").showToOpponent("Chosen card").moveTo(addToTop: true, my.deck)
+            my.deck.search(count:1,"Choose the Pokémon to put back in your deck",cardTypeFilter(POKEMON)).showToOpponent("Chosen card").moveTo(my.hand) 
+            shuffleDeck()
           }
           playRequirement{
+            assert my.hand.size() > 1 : "You need one other card in your hand to play this"
           }
         };
       case NIGHT_MAINTENANCE_120:
         return basicTrainer (this) {
           text "Search your discard pile for up to 3 in any combination of Pokémon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
           onPlay {
+            def tar = my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)}
+            def maxSel = Math.min(3,tar.size())
+            tar.select(count:maxSel,"Choose $maxSel cards to put back in your deck").moveTo(my.deck)
+            shuffleDeck()
           }
           playRequirement{
+            assert my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)} : "There are no basic Pokémon or basic Energy cards in your discard"
           }
+
         };
       case PLUSPOWER_121:
         return basicTrainer (this) {
@@ -2727,8 +2737,11 @@ public enum SecretWonders implements LogicCardInfo {
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 2 in any combination of Basic Pokémon and basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
+            my.deck.search(max: 2,"Search your deck for up to 2 in any combination of Basic Pokémon and basic Energy cards",{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(BASIC)}).moveTo(hand)
+            shuffleDeck()
           }
           playRequirement{
+            assert my.deck : "Your deck is empty"
           }
         };
       case TEAM_GALACTIC_S_MARS_126:
@@ -2740,45 +2753,13 @@ public enum SecretWonders implements LogicCardInfo {
           }
         };
       case POTION_127:
-        return basicTrainer (this) {
-          text "Remove 2 damage counter from 1 of your Pokémon (remove 1 damage counter if that Pokémon has only 1)."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (FireRedLeafGreen.POTION_101, this)
       case SWITCH_128:
-        return basicTrainer (this) {
-          text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(FireRedLeafGreen.SWITCH_102, this);
       case DARKNESS_ENERGY_129:
-        return specialEnergy (this, [[C]]) {
-          text "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        return copy (RubySapphire.DARKNESS_ENERGY_93, this);
       case METAL_ENERGY_130:
-        return specialEnergy (this, [[C]]) {
-          text "Damage done by attacks to the Pokémon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that Metal Energy is attached to isn’t [M]. Metal Energy provides [M] Energy. (Doesn’t count as a basic Energy card.)"
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        return copy (RubySapphire.METAL_ENERGY_94, this);
       case GARDEVOIR_LV_X_131:
         return evolution (this, from:"Gardevoir", hp:HP130, type:PSYCHIC, retreatCost:2) {
           weakness P
