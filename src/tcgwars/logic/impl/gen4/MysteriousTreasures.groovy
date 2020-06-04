@@ -1690,10 +1690,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
           customAbility {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                if(ef.attacker.owner != self.owner && (ef.attacker.types.contains(R) || ef.attacker.types.contains(W))) {
+                if(ef.attacker.owner != self.owner && (ef.attacker.types.contains(L))) {
                   bg.dm().each{
                     if(it.to == self && it.notNoEffect && it.dmg.value) {
-                      bc "Chesto Berry -20"
+                      bc "Wacan Berry -20"
                       it.dmg -= hp(20)
                     }
                   }
