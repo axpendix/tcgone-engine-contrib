@@ -2409,8 +2409,12 @@ public enum SwordShield implements LogicCardInfo {
                         list.add(copy)
                       }
                       h.object=list
-                      bc "Attacks of $pcs will cost [C][C] more while Octolock is active."
+                      bc "Attacks of $defending will cost [C][C] more while Octolock is active."
                     }
+                  }
+
+                  register {
+                    keyStore("Octolock", self, true)
                   }
 
                   unregister {
@@ -2420,8 +2424,9 @@ public enum SwordShield implements LogicCardInfo {
                   }
 
                   after SWITCH, self, {unregister()}
-                  after SWITCH, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
+                  after EVOLVE, self, {unregister()}
+                  after SWITCH, defending, {unregister()}
+                  after EVOLVE, defending, {unregister()}
                 }
 
               }
