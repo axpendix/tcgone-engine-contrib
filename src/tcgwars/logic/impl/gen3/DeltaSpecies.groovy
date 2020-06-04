@@ -869,6 +869,40 @@ public enum DeltaSpecies implements LogicCardInfo {
       case HOLON_S_ELECTRODE_21:
       return evolution (this, from:"Holon's Voltorb", hp:HP070, type:L, retreatCost:0) {
         weakness F
+        globalAbility {Card thisCard->
+          delayed {
+            before PLAY_CARD, {
+              if(ef.cardToPlay == thisCard && bg.em().retrieveObject("Castform_Energy") != bg.turnCount){
+                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
+                  bg.em().storeObject("Castform_Energy", bg.turnCount)
+                  def pcs = thisCard.player.pbg.all.select("Attach to?")
+                  def pkmnCard = thisCard
+                  def energyCard
+                  energyCard = specialEnergy(new CustomCardInfo(HOLON_S_CASTFORM_44).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
+                    onPlay {}
+                    onRemoveFromPlay {
+                      bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
+                    }
+                  }
+                  energyCard.player = thisCard.player
+                  bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
+                  attachEnergy(pcs, energyCard)
+                  bc "$energyCard is now a Special Energy Card"
+                  prevent()
+                }
+              } //If the user chooses Pokémon, play the card normally
+            }
+            before PLAY_ENERGY, {
+              if(bg.em().retrieveObject("Castform_Energy") == bg.turnCount){
+                wcu "Cannot play any more energy this turn."
+                prevent()
+              }
+            }
+            after PLAY_ENERGY, {
+              bg.em().storeObject("Castform_Energy", bg.turnCount)
+            }
+          }
+        }
         move "Dazzle Blast", {
           text "30 damage. The Defending Pokémon is now Confused."
           energyCost L, C
