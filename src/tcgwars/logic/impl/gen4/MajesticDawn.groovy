@@ -2021,13 +2021,24 @@ public enum MajesticDawn implements LogicCardInfo {
       case CALL_ENERGY_92:
         return specialEnergy (this, [[C]]) {
           text "Call Energy provides [C] Energy. Once during your turn, if the Pokémon Call Energy is attached to is your Active Pokémon, you may search your deck for up to 2 Basic Pokémon and put them onto your Bench. If you do, shuffle your deck and your turn ends."
-          onPlay {reason->
+          def actions=[]
+          onPlay {
+            actions = action("Call Energy", [TargetPlayer.SELF]) {
+              assert self.active : "Not active"
+              assert my.bench.notFull : "Bench full"
+              assert my.deck : "Your deck is empty"
+              bc "Used Call Energy effect"
+              int count = bench.freeBenchCount>=2?2:1
+              my.deck.search (max: count,"Search your deck for up to 2 Basic Pokemon and put them onto your Bench", cardTypeFilter(BASIC)).each {
+                my.deck.remove(it)
+                benchPCS(it)
+              }
+              shuffleDeck()
+              bg.gm().betweenTurns()
+            } 
           }
           onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
+            actions.each { bg().gm().unregisterAction(it) }
           }
         };
       case DARKNESS_ENERGY_93:
