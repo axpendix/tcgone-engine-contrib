@@ -1733,9 +1733,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
           customAbility {
             delayedA {
               before ASLEEP_SPC, null, null, BEGIN_TURN, {
-                if(self.isSPC(ASLEEP)) {
+                if(ef.target == self){ //MARK parentEvent
                   bc "Chesto Berry activates"
-                  clearSpecialCondition(self, ATTACK, [ASLEEP])
+                  clearSpecialCondition(self, ATTACK, [ASLEEP]) //TODO Source.HELD_ITEM
+                  prevent()
                 }
               }
             }
