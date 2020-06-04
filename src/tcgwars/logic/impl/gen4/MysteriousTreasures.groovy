@@ -1732,7 +1732,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           //Chesto Berry: If Buizel is Asleep, remove the Special Condition Asleep from Buizel at the end of each player’s turn.
           customAbility {
             delayedA {
-              before BEGIN_TURN,{
+              before ASLEEP_SPC, null, null, BEGIN_TURN, {
                 if(self.isSPC(ASLEEP)) {
                   bc "Chesto Berry activates"
                   clearSpecialCondition(self, ATTACK, [ASLEEP])
