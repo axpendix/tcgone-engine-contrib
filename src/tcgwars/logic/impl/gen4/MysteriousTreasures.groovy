@@ -1581,14 +1581,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case VIGOROTH_68:
         return evolution (this, from:"Slakoth", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
+          /*def asleepBeforeEvolve = false*/
           move "Wake-up Punch", {
             text "10 damage. If Vigoroth evolved from Slakoth during this turn and Slakoth was Asleep, this attack’s base damage is 60 instead of 10."
             energyCost C
             attackRequirement {}
             onAttack {
               damage 10
-              //TODO: Check for the extra damage.
-              if (false) {
+              //TODO: Add "Slakoth was asleep" check for the extra damage.
+              if(self.lastEvolved == bg.turnCount/* && asleepBeforeEvolve*/){
                 damage 50
               }
             }
