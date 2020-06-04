@@ -1424,7 +1424,7 @@ public enum HolonPhantoms implements LogicCardInfo {
                   def pcs = thisCard.player.pbg.all.select("Attach to?")
                   def pkmnCard = thisCard
                   def energyCard
-                  energyCard = specialEnergy(new CustomCardInfo(HOLON_S_CASTRORM_44).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
+                  energyCard = specialEnergy(new CustomCardInfo(HOLON_S_CASTFORM_44).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
                     onPlay {}
                     onRemoveFromPlay {
                       bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
