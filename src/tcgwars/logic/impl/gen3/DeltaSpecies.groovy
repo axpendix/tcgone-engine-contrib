@@ -2433,10 +2433,10 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "Search your discard pile for an Energy card, show it to your opponent, and put it into your hand."
           energyCost C
           attackRequirement {
-            assert my.discard.hasType(BASIC_ENERGY) : "No Basic Energy cards in Discard pile"
+            assert my.discard.find(cardTypeFilter(ENERGY)) : "No Energy cards in Discard pile"
           }
           onAttack {
-            my.discard.filterByType(BASIC_ENERGY).select().moveTo(my.hand)
+            my.discard.findAll(cardTypeFilter(ENERGY)).select().moveTo(my.hand)
           }
         }
         move "Bite", {
