@@ -115,7 +115,7 @@ public enum GreatEncounters implements LogicCardInfo {
   AMULET_COIN_97 ("Amulet Coin", 97, Rarity.UNCOMMON, [TRAINER]),
   FELICITY_S_DRAWING_98 ("Felicity's Drawing", 98, Rarity.UNCOMMON, [TRAINER]),
   LEFTOVERS_99 ("Leftovers", 99, Rarity.UNCOMMON, [TRAINER]),
-  MOONLIGHT_STADIUM_100 ("Moonlight Stadium", 100, Rarity.UNCOMMON, [TRAINER]),
+  MOONLIGHT_STADIUM_100 ("Moonlight Stadium", 100, Rarity.UNCOMMON, [TRAINER, STADIUM]),
   PREMIER_BALL_101 ("Premier Ball", 101, Rarity.UNCOMMON, [TRAINER]),
   RARE_CANDY_102 ("Rare Candy", 102, Rarity.UNCOMMON, [TRAINER]),
   CRESSELIA_LV_X_103 ("Cresselia LV.X", 103, Rarity.ULTRARARE, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
@@ -469,8 +469,16 @@ public enum GreatEncounters implements LogicCardInfo {
           pokePower "Cosmic Power", {
             text "Once during your turn , you may choose up to 2 cards from your hand and put them on the bottom of your deck in any order. If you do, draw cards until you have 6 cards in you hand. This power can’t be used if Claydol is affected by a Special Condition."
             actionA {
-            }
-          }
+              checkLastTurn()
+              checkNoSPC()
+              assert my.hand.notEmpty : "You have no cards in your hand."
+              powerUsed()
+              def list = my.hand.select(min: 1, max: 2, "Select up to 2 cards to move to the bottom of your deck")
+              def rearrangedCards = rearrange(list)
+              rearrangedCards.moveTo(my.deck)
+              draw 6 - my.hand.size()
+            } 
+          } 
           move "Spinning Attack", {
             text "40 damage. "
             energyCost F, C
@@ -1393,17 +1401,16 @@ public enum GreatEncounters implements LogicCardInfo {
           move "Psychic Balance", {
             text "If you have less cards in your hand than your opponent, draw cards until you have the same number of cards as your opponent. (If you have more or the same number of cards in your hand as your opponent, this attack does nothing.)"
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              draw opp.hand.size() - my.hand.size()
             }
           }
           move "Spin Turn", {
             text "20 damage. Switch Baltoy with 1 of your Benched Pokémon."
             energyCost F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              switchYourActive()
             }
           }
 
@@ -2165,9 +2172,18 @@ public enum GreatEncounters implements LogicCardInfo {
       case FELICITY_S_DRAWING_98:
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDiscard up to 2 cards from your hand. If you discard 1 card, draw 3 cards. If you discard 2 cards, draw 4 cards."
-          onPlay {
+          playRequirement {
+            assert my.deck : "Your deck is empty"
+            assert my.hand.size() > 1 : "You can't play this card"
           }
-          playRequirement{
+          onPlay {
+            def toDiscard = my.hand.getExcludedList(thisCard).select(min: 1, max: 2, "Discard up to 2 cards")
+            if (toDiscard.size() == 1) {
+              draw 3
+            } else {
+              draw 4
+            }
+            toDiscard.discard()
           }
         };
       case LEFTOVERS_99:
@@ -2179,11 +2195,18 @@ public enum GreatEncounters implements LogicCardInfo {
           }
         };
       case MOONLIGHT_STADIUM_100:
-        return basicTrainer (this) {
+        return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nThe Retreat Cost for each [P] and [D] Pokémon (both yours and your opponent’s) is 0."
+          def eff
           onPlay {
+            eff = getter (GET_RETREAT_COST) {
+              if (it.effect.target.types.contains(P) || it.effect.target.types.contains(D)) {
+                it.object = 0
+              }
+            }
           }
-          playRequirement{
+          onRemoveFromPlay{
+            eff.unregister()
           }
         };
       case PREMIER_BALL_101:
@@ -2195,12 +2218,7 @@ public enum GreatEncounters implements LogicCardInfo {
           }
         };
       case RARE_CANDY_102:
-        return basicTrainer (this) {
-          text "Choose 1 of your Basic Pokémon in play. If you have a Stage 1 or Stage 2 card that evolves from that Pokémon in your hand, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.)"
-          onPlay {
-          }
-          playRequirement{
-          }
+        return copy (Sandstorm.RARE_CANDY_88, this);
         };
       case CRESSELIA_LV_X_103:
         return evolution (this, from:"Cresselia", hp:HP100, type:PSYCHIC, retreatCost:1) {
