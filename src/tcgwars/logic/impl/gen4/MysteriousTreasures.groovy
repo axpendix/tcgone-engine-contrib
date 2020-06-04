@@ -2146,6 +2146,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "Once during your turn (before your attack), if Pichu is anywhere under Pikachu, you may search your discard pile for a [L] Energy card, show it to your opponent, and put it into your hand. This power can’t be used if Pikachu is affected by a Special Condition."
             actionA {
               checkNoSPC()
+              checkLastTurn()
               assert self.getPokemonCards().findAll {it.name.contains("Pichu")} : "Pichu is not found under $self, you can't use this Poké-Power"
               assert my.discard.filterByEnergyType(L) : "There are no [L] Energy cards in your discard pile."
               powerUsed()
