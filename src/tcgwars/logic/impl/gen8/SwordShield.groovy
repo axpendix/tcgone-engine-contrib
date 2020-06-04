@@ -2389,7 +2389,7 @@ public enum SwordShield implements LogicCardInfo {
           text "Until this Grapploct leaves the Active Spot, the Defending Pokémon's attacks cost [C][C] more, and the Defending Pokémon can't retreat. This effect can't be applied more than once."
           energyCost F, F
           onAttack {
-            if (keyStore("Octolock", self))
+            if (keyStore("Octolock", self, null))
               wcu "Can't apply Octolock to a Pokémon more than once."
             else if (defending.active) {
               keyStore("Octolock", self, true)
