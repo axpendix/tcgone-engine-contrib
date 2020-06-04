@@ -2477,13 +2477,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
           onPlay {
             def choice = 1
+            def chosenCard
 
             if(my.discard.any{isValidFossilCard(it)}){
               choice = choose([1,2],['Search your deck', 'Search your discard pile'], "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand. Then, shuffle your deck.")
             }
 
             if (choice == 1){
-              chosenCard = my.deck.search( {isValidFossilCard(it)} ).select("Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil.")
+              chosenCard = my.deck.search(count:1, "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil.", {isValidFossilCard(it)} )
             } else /*if (choice == 2)*/ {
               chosenCard = my.discard.findAll{isValidFossilCard(it)}.select()
             }
