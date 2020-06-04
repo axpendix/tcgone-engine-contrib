@@ -1007,11 +1007,9 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost R
             onAttack {
               damage 10
-              afterDamage {
-                targeted (defending) {
-                  if (defending.cards.energyCount(G)) {
-                    defending.cards.filterByEnergyType(G).select("Discard").discard()
-                  }
+              targeted (defending) {
+                if (defending.cards.energyCount(G)) {
+                  defending.cards.filterByEnergyType(G).select("Discard").discard()
                 }
               }
             }
@@ -3027,7 +3025,9 @@ public enum UnbrokenBonds implements LogicCardInfo {
                 }
               }
               if(self.cards.energySufficient(thisMove.energyCost + C)){
-                opp.active.cards.filterByType(ENERGY).discard()
+                targeted (defending) {
+                  opp.active.cards.filterByType(ENERGY).discard()
+                }
               }
             }
           }
@@ -3578,7 +3578,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 70
-              flip {afterDamage{discardDefendingEnergy();discardDefendingEnergy()}}
+              flip { 2.times{discardDefendingEnergy()} }
             }
           }
 

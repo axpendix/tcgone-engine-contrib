@@ -1574,10 +1574,8 @@ public enum CrimsonInvasion implements LogicCardInfo {
             onAttack {
               damage 120
               if(confirm("You may discard an Energy from this Pokémon. If you do, discard an Energy from your opponent's Active Pokémon.") && self.cards.energyCount(C)){
-                afterDamage {
-                  discardSelfEnergy(C)
-                  discardDefendingEnergy()
-                }
+                discardSelfEnergy(C)
+                discardDefendingEnergy()
               }
             }
           }

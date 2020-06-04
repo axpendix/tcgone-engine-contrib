@@ -618,7 +618,7 @@ public enum BaseSetNG implements LogicCardInfo {
             energyCost W, W, C, C
             onAttack {
               damage 40
-              afterDamage{discardDefendingEnergy()}
+              discardDefendingEnergy()
             }
           }
 

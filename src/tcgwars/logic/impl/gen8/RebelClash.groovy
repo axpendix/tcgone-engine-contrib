@@ -771,10 +771,7 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-
-            afterDamage {
-              flip { discardDefendingEnergy() }
-            }
+            flip { discardDefendingEnergy() }
           }
         }
       };
@@ -1378,14 +1375,13 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Inteleon V", hp:HP320, type:W, retreatCost:2) {
         weakness L
         move "Hydro Snipe", {
-          text "60 damage. You may return an Energy card from your opponent’s Active Pokemon to their hand."
+          text "60 damage. You may put an Energy attached to your opponent’s Active Pokémon into their hand."
           energyCost W
           attackRequirement {}
           onAttack {
             damage 60
-
-            afterDamage {
-              if (defending.cards.energyCount(C) && confirm("Return an Energy from your opponent's Active Pokémon to their hand?")) {
+            if (defending.cards.energyCount(C) && confirm("Return an Energy from your opponent's Active Pokémon to their hand?")) {
+              targeted (defending) {
                 defending.cards.filterByType(ENERGY).select(count:1).moveTo(opp.hand)
               }
             }

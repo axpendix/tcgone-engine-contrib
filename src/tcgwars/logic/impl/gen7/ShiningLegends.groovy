@@ -287,7 +287,7 @@ public enum ShiningLegends implements LogicCardInfo {
             energyCost G, C
             onAttack {
               damage 30
-              afterDamage {discardDefendingEnergy()}
+              discardDefendingEnergy()
             }
           }
 
