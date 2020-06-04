@@ -2341,10 +2341,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Dark Eyes", {
           text "After your opponent's Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
           delayedA {
-            after USE_POKEPOWER, {
+            after POKEPOWER, {
               bc "Dark eyes activate"
-              // if (ef.pcs.owner != self.owner)
-              directDamage 20, ef.pcs
+              if (ef.pcs.owner != self.owner) {
+                directDamage(20, ef.pcs, Source.SRC_ABILITY)
+              }
             }
           }
         }
