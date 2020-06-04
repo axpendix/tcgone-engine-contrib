@@ -1352,7 +1352,7 @@ public enum ForbiddenLight implements LogicCardInfo {
 
               flip 2, {
                 hasEff=true
-                afterDamage{discardDefendingEnergy()}
+                discardDefendingEnergy()
               }
               if(hasEff) damage 60
             }
@@ -1571,7 +1571,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             energyCost F
             onAttack {
               damage 10
-              flip {afterDamage{discardDefendingEnergy()}}
+              flip {discardDefendingEnergy()}
             }
           }
 
@@ -1651,7 +1651,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             energyCost F
             onAttack {
               damage 20
-              flip {afterDamage{discardDefendingEnergy()}}
+              flip {discardDefendingEnergy()}
             }
           }
           move "Hammer In", {

@@ -2877,7 +2877,7 @@ public enum BurningShadows implements LogicCardInfo {
             energyCost F, C
             onAttack {
               damage 30
-              afterDamage{discardDefendingEnergy()}
+              discardDefendingEnergy()
             }
           }
           move "Accelerock", {

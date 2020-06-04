@@ -395,7 +395,7 @@ public enum SunMoon implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 30
-              afterDamage {moveEnergy(defending, opp.bench)}
+              moveEnergy(defending, opp.bench)
             }
           }
 
@@ -1488,7 +1488,7 @@ public enum SunMoon implements LogicCardInfo {
             energyCost P, P, C, C
             onAttack {
               damage 90
-              flip{afterDamage {discardDefendingEnergy()}}
+              flip{ discardDefendingEnergy() }
             }
           }
 
@@ -2022,9 +2022,7 @@ public enum SunMoon implements LogicCardInfo {
             energyCost D, D, C
             onAttack {
               damage 30
-              flip { afterDamage {
-                discardDefendingEnergy()
-              } }
+              flip { discardDefendingEnergy() }
             }
           }
 

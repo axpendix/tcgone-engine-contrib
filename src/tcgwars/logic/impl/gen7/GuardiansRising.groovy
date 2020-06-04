@@ -271,7 +271,7 @@ public enum GuardiansRising implements LogicCardInfo {
             energyCost G, C
             onAttack {
               damage 40
-              flip{afterDamage{discardDefendingEnergy()}}
+              flip{discardDefendingEnergy()}
             }
           }
 
@@ -942,7 +942,7 @@ public enum GuardiansRising implements LogicCardInfo {
             energyCost W, W
             onAttack {
               damage 40
-              flip{afterDamage{discardDefendingEnergy()}}
+              flip{discardDefendingEnergy()}
             }
           }
           move "Raging Floe", {
@@ -1405,7 +1405,7 @@ public enum GuardiansRising implements LogicCardInfo {
             energyCost P, C, C
             onAttack {
               damage 70
-              flip{afterDamage{discardDefendingEnergy()}}
+              flip{discardDefendingEnergy()}
             }
           }
 
@@ -2874,9 +2874,7 @@ public enum GuardiansRising implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 20
-              afterDamage {
-                discardDefendingSpecialEnergy(delegate)
-              }
+              discardDefendingSpecialEnergy(delegate)
             }
           }
           move "Berserk", {

@@ -2250,9 +2250,7 @@ public enum Emerald implements LogicCardInfo {
             onAttack {
               damage 40
               if(my.all.findAll{it.name == "Regirock ex"}){
-                afterDamage{
-                  flip{discardDefendingEnergy()}
-                }
+                flip{ discardDefendingEnergy() }
               }
             }
           }
