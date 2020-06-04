@@ -1000,17 +1000,26 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokeBody "Recover Mechanism", {
             text "When you attach an Energy card from you hand to Regigigas, remove all Special Conditions from Regigigas."
             delayedA {
+              after ATTACH_ENERGY, self, {
+                if(ef.reason==PLAY_FROM_HAND && ef.card.cardTypes.is(ENERGY)){
+                  clearSpecialCondition(self, SRC_ABILITY)
+                }
+              }
             }
           }
           move "Gigaton Punch", {
             text "60+ damage. Flip a coin. If heads, this attack does 60 damage plus 20 more damage and does 20 damage to 1 of your opponent’s Benched Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              flip {
+                20 damage
+                if(opp.bench) {
+                  damage 20, opp.bench.select()
+                }
+              }
             }
           }
-
         };
       case REGIROCK_38:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:3) {
@@ -1109,14 +1118,21 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Set Up", {
             text "Once during your turn, when you put Uxie from your hand onto your Bench, you may draw cards until you have 7 cards in your hand."
             actionA {
+              if(reason == PLAY_FROM_HAND && self.benched && my.deck.notEmpty && my.hand.size() < 7 && confirm("Use Set Up?")){
+                powerUsed()
+                draw 7 - my.hand.size()
+              }
             }
           }
           move "Psychic Restore", {
             text "20 damage. You may put Uxie and all cards attached to it on the bottom of your deck in any order."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if (confirm("Put Uxie on the bottom of your deck?") {
+                def rearrangedCards = rearrange(self.cards)
+                rearrangedCards.moveTo(my.deck)
+              }
             }
           }
 
