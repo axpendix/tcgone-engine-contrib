@@ -2679,11 +2679,12 @@ public enum SecretWonders implements LogicCardInfo {
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
           onPlay {
-            my.hand.getExcludedList(thisCard).select("Choose the card to put back in your deck").showToOpponent("Chosen card")
-            my.deck.search(count:1,"Choose the Pokémon to put back in your deck",cardTypeFilter(POKEMON)).showToOpponent("Chosen card")
+            my.hand.getExcludedList(thisCard).select("Choose the card to put back in your deck").showToOpponent("Chosen card").moveTo(addToTop: true, my.deck)
+            my.deck.search(count:1,"Choose the Pokémon to put back in your deck",cardTypeFilter(POKEMON)).showToOpponent("Chosen card").moveTo(my.hand) 
+            shuffleDeck()
           }
           playRequirement{
-            assert my.hand.size() > 1 : "You can't play this card"
+            assert my.hand.size() > 1 : "You need one other card in your hand to play this"
           }
         };
       case NIGHT_MAINTENANCE_120:
@@ -2740,7 +2741,7 @@ public enum SecretWonders implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert my.deck
+            assert my.deck : "Your deck is empty"
           }
         };
       case TEAM_GALACTIC_S_MARS_126:
