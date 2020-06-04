@@ -1804,7 +1804,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              flip { opponentCantPlaySupporterNextTurn(delegate) }
+              flip {
+                opponentCantPlaySupporterNextTurn(delegate) //TODO: Que el static use ${thisMove.name}
+                bc "${thisMove.name} - Supporters can't be played from the turn player's hand during the next turn" //TODO: Find way to use "Player A/B" as a $variable
+              }
             }
           }
           move "Finger Poké", {
