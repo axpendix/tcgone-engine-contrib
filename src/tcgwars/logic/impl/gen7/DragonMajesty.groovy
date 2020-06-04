@@ -735,7 +735,7 @@ public enum DragonMajesty implements LogicCardInfo {
               for(pcs in all){
                 if(pcs.isSPC(CONFUSED) && pcs.owner==self.owner && pcs.types.contains(W)){
                   bc "Murmurs of the Sea clears confusion"
-                  clearSpecialCondition(pcs, SRC_ABILITY)
+                  clearSpecialCondition(self, SRC_ABILITY, [CONFUSED])
                 }
               }
             }
@@ -1405,9 +1405,9 @@ public enum DragonMajesty implements LogicCardInfo {
           text "Switch your Active [W] Pokémon with 1 of your Benched Pokémon. If you do, heal 30 damage from the Pokémon you moved to your Bench.\nYou may play as many Item cards as you like during your turn (before your attack).\n"
           onPlay {
             def switchedPCS = my.active
-            sw my.active, my.bench.select("Select the new active")
+            sw my.active, my.bench.select("Select the new active"), TRAINER_CARD
             if (!switchedPCS.active)
-              heal 30, switchedPCS
+              heal 30, switchedPCS, TRAINER_CARD
           }
           playRequirement{
             assert my.active.types.contains(W)

@@ -1489,7 +1489,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost W, C, C
             onAttack {
               damage 60
-              flip {damage 60}
+              rockPaperScissors {damage 60}
             }
           }
 

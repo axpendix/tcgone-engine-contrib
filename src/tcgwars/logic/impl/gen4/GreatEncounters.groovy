@@ -2219,7 +2219,6 @@ public enum GreatEncounters implements LogicCardInfo {
         };
       case RARE_CANDY_102:
         return copy (Sandstorm.RARE_CANDY_88, this);
-        };
       case CRESSELIA_LV_X_103:
         return evolution (this, from:"Cresselia", hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness P
