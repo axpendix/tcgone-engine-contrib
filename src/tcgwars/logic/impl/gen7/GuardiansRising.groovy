@@ -2874,9 +2874,7 @@ public enum GuardiansRising implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 20
-              afterDamage {
-                discardDefendingSpecialEnergy(delegate)
-              }
+              discardDefendingSpecialEnergy(delegate)
             }
           }
           move "Berserk", {
