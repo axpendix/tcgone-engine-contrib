@@ -895,7 +895,9 @@ public enum TeamUp implements LogicCardInfo {
             energyCost W,W,W
             onAttack{
               damage 100
-              discardDefendingEnergy()
+              afterDamage{
+                discardDefendingEnergy()
+              }
             }
           }
         };
@@ -2002,12 +2004,8 @@ public enum TeamUp implements LogicCardInfo {
             text "40 damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon. If tails, this attack does nothing."
             energyCost C,C
             onAttack{
-              flip 1, {
-                damage 40
-                discardDefendingEnergy()
-              }, {
-                bc "$thisMove failed "
-              }
+              flip 1,{damage 40;
+                afterDamage{discardDefendingEnergy()}},{bc "$thisMove failed "}
             }
           }
         };
@@ -2870,13 +2868,19 @@ public enum TeamUp implements LogicCardInfo {
             text "30 damage. Flip 2 coins. For each heads, discard an Energy from your opponent's Active Pokémon. If both of them are tails, this attack does nothing."
             energyCost W,L
             onAttack{
-              def failedMove = true
-              flip 2, {
-                failedMove = false
-                discardDefendingEnergy()
-              }
-
-              if (failedMove) { bc "$thisMove failed" } else { damage 30 }
+              flip 2,{},{},[2:{damage 30;
+                afterDamage{
+                  discardDefendingEnergy()
+                  discardDefendingEnergy()
+                }
+              },1:{
+                damage 30;
+                afterDamage{
+                  discardDefendingEnergy()
+                }
+              },0:{
+                bc "$thisMove failed"
+              }]
             }
           }
         };

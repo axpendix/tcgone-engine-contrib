@@ -2778,10 +2778,7 @@ public enum CelestialStorm implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 30
-              targeted (defending) {
-                if(defending.cards.filterByEnergyType(R))
-                  defending.cards.filterByEnergyType(R).select("Choose the energy to discard").discard()
-                }
+              if(defending.cards.filterByType(ENERGY).filterByEnergyType(R)) defending.cards.filterByType(ENERGY).filterByEnergyType(R).select("Choose the energy to discard").discard()
             }
           }
           move "Water Pulse" , {

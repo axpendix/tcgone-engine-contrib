@@ -1382,9 +1382,7 @@ public enum SwordShield implements LogicCardInfo {
           onAttack {
             damage 100
             if (opp.active.cards.filterByType(ENERGY) && confirm("Put an Energy attached to their active back to their hand?")) {
-              targeted (defending) {
-                opp.active.cards.filterByType(ENERGY).select("Choose the Energy to put back in the opponent's hand.").moveTo(opp.hand)
-              }
+              opp.active.cards.filterByType(ENERGY).select("Choose the Energy to put back in the opponent's hand.").moveTo(opp.hand)
             }
           }
         }
@@ -2759,7 +2757,9 @@ public enum SwordShield implements LogicCardInfo {
           energyCost M, C
           onAttack {
             damage 40
-            discardDefendingEnergy()
+            afterDamage {
+              discardDefendingEnergy()
+            }
           }
         }
       };

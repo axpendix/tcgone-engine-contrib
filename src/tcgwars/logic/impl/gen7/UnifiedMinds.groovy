@@ -2791,7 +2791,9 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 80
-              discardDefendingEnergy()
+              afterDamage {
+                discardDefendingEnergy()
+              }
             }
           }
         };
@@ -3414,14 +3416,23 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "30 damage. Flip 2 coins. For each heads, discard an Energy from your opponent's Active Pokémon. If both of them are tails, this attack does nothing."
             energyCost L, W
             onAttack{
-              def failedMove = true
-              flip 2, {
-                failedMove = false
-                discardDefendingEnergy()
-              }
-
-              if (failedMove) { bc "$thisMove failed" } else { damage 30 }
-            }
+              flip 2, {}, {}, [
+                2:{ damage 30;
+                  afterDamage{
+                    discardDefendingEnergy()
+                    discardDefendingEnergy()
+                  }
+                },
+                1:{
+                  damage 30
+                  afterDamage{
+                    discardDefendingEnergy()
+                  }
+                },
+                0:{
+                  bc "$thisMove failed due to 2 TAILS."
+                }
+              ]}
           }
         };
       case DRAGONAIR_150:
