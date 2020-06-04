@@ -537,8 +537,10 @@ public enum GuardiansRising implements LogicCardInfo {
             onAttack {
               damage 30
               afterDamage {
+                def oldEnCnt = self.cards.energyCount(C)
                 discardSelfEnergy(C)
-                discardDefendingEnergy()
+                if (oldEnCnt > self.cards.energyCount(C))
+                  discardDefendingEnergy()
               }
             }
           }
