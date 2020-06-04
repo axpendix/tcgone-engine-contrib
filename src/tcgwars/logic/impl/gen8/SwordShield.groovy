@@ -2389,7 +2389,10 @@ public enum SwordShield implements LogicCardInfo {
           text "Until this Grapploct leaves the Active Spot, the Defending Pokémon's attacks cost [C][C] more, and the Defending Pokémon can't retreat. This effect can't be applied more than once."
           energyCost F, F
           onAttack {
-            if (defending.active) {
+            if (keyStore("Octolock", self))
+              wcu "Can't apply Octolock to a Pokémon more than once."
+            else if (defending.active) {
+              keyStore("Octolock", self, true)
               targeted(defending) {
                 def eff1, eff2
                 delayed {
@@ -2401,21 +2404,15 @@ public enum SwordShield implements LogicCardInfo {
                   }
 
                   eff2 = getter (GET_MOVE_LIST, NORMAL, defending) {h->
-                    if (keyStore("Octolock", self)) {
-                      def list=[]
-                      for (move in h.object) {
-                        def copy=move.shallowCopy()
-                        copy.energyCost.addAll([C, C] as List<Type>)
-                        list.add(copy)
-                      }
-                      h.object=list
-                      bc "Attacks of $defending will cost [C][C] more while Octolock is active."
+                    def list=[]
+                    for (move in h.object) {
+                      def copy=move.shallowCopy()
+                      copy.energyCost.addAll([C, C] as List<Type>)
+                      list.add(copy)
                     }
+                    h.object=list
                   }
-
-                  register {
-                    keyStore("Octolock", self, true)
-                  }
+                  bc "Until this Grapploct leaves the Active Spot, attacks of $defending will now cost [C][C] more."
 
                   unregister {
                     keyStore("Octolock", self, 0)
