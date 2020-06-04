@@ -2047,7 +2047,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               //TODO: Modularize
-              flip 2,{},{},[2:{damage 120},1:{bc "$thisMove failed"},0:{bc "$thisMove failed"}]
+              def doDamage = true
+              flip 2, {}, {doDamage = false}
+              if(doDamage) damage 60 else bc "$thisMove failed"
             }
           }
 
