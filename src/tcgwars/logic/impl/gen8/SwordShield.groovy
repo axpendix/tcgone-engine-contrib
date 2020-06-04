@@ -2389,42 +2389,36 @@ public enum SwordShield implements LogicCardInfo {
           text "Until this Grapploct leaves the Active Spot, the Defending Pokémon's attacks cost [C][C] more, and the Defending Pokémon can't retreat. This effect can't be applied more than once."
           energyCost F, F
           onAttack {
+            def pcs = defending
             delayed {
-              after SWITCH, self, {unregister()}
-              before RETREAT, {
-                if (ef.retreater.owner==self.owner.opposite && self.active) {
+              def eff
+              register {
+                before RETREAT, pcs {
                   wcu "Octolock prevents you from retreating."
                   prevent()
                 }
-              }
-
-              def eff1
-              def eff2
-
-              register {
-                eff1 = delayed {
-                }
-                // Add to Energy cost
-                if (bg.em().retrieveObject("Octolock")) {
-                  eff2 = getter (GET_MOVE_LIST, NORMAL, pcs) {h->
-                      def list=[]
-                      for (move in h.object) {
-                        def copy=move.shallowCopy()
-                        copy.energyCost.addAll([C, C])
-                        list.add(copy)
-                      }
-                      h.object=list
+                eff = getter (GET_MOVE_LIST, NORMAL, pcs) {h->
+                  if (keyStore("Octolock", self)) {
+                    def list=[]
+                    for (move in h.object) {
+                      def copy=move.shallowCopy()
+                      copy.energyCost.addAll([C, C] as List<Type>)
+                      list.add(copy)
                     }
-                    bc "Attacks of $pcs will cost $energies more during next turn."
-                  bg.em().storeObject("Octolock", True)
+                    h.object=list
+                    bc "Attacks of $pcs will cost [C][C] while Octolock is active."
+                  }
                 }
+                keyStore("Octolock", self, true)
               }
               unregister {
-                eff1.unregister()
-                eff2.unregister()
-                bg.em().storeObject("Octolock", False)
+                keyStore("Octolock", self, 0)
+                eff.unregister()
               }
+
               after SWITCH, self, {unregister()}
+              after SWITCH, pcs, {unregister()}
+              after EVOLVE, pcs, {unregister()}
             }
           }
         }
