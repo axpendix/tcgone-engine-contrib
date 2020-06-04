@@ -1613,7 +1613,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert my.deck
             }
             onAttack {
-              my.deck.subList(1,5).select(min:0,"Choose a card to put in your hand").moveTo(hidden: true, my.hand)
+              my.deck.subList(0,5).select(min:0,"Choose a card to put in your hand").moveTo(hidden: true, my.hand)
               shuffleDeck()
             }
           }
@@ -1690,10 +1690,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
           customAbility {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                if(ef.attacker.owner != self.owner && (ef.attacker.types.contains(R) || ef.attacker.types.contains(W))) {
+                if(ef.attacker.owner != self.owner && (ef.attacker.types.contains(L))) {
                   bg.dm().each{
                     if(it.to == self && it.notNoEffect && it.dmg.value) {
-                      bc "Chesto Berry -20"
+                      bc "Wacan Berry -20"
                       it.dmg -= hp(20)
                     }
                   }
@@ -1732,7 +1732,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           //Chesto Berry: If Buizel is Asleep, remove the Special Condition Asleep from Buizel at the end of each player’s turn.
           customAbility {
             delayedA {
-              before BEGIN_TURN,{
+              before ASLEEP_SPC, null, null, BEGIN_TURN, {
                 if(self.isSPC(ASLEEP)) {
                   bc "Chesto Berry activates"
                   clearSpecialCondition(self, ATTACK, [ASLEEP])
@@ -1804,7 +1804,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              flip { opponentCantPlaySupporterNextTurn(delegate) }
+              flip {
+                opponentCantPlaySupporterNextTurn(delegate) //TODO: Que el static use ${thisMove.name}
+                bc "${thisMove.name} - Supporters can't be played from the turn player's hand during the next turn" //TODO: Find way to use "Player A/B" as a $variable
+              }
             }
           }
           move "Finger Poké", {
@@ -2047,7 +2050,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               //TODO: Modularize
-              flip 2,{},{},[2:{damage 120},1:{bc "$thisMove failed"},0:{bc "$thisMove failed"}]
+              def doDamage = true
+              flip 2, {}, {doDamage = false}
+              if(doDamage) damage 60 else bc "$thisMove failed"
             }
           }
 
@@ -2146,6 +2151,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "Once during your turn (before your attack), if Pichu is anywhere under Pikachu, you may search your discard pile for a [L] Energy card, show it to your opponent, and put it into your hand. This power can’t be used if Pikachu is affected by a Special Condition."
             actionA {
               checkNoSPC()
+              checkLastTurn()
               assert self.getPokemonCards().findAll {it.name.contains("Pichu")} : "Pichu is not found under $self, you can't use this Poké-Power"
               assert my.discard.filterByEnergyType(L) : "There are no [L] Energy cards in your discard pile."
               powerUsed()
@@ -2477,13 +2483,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
           onPlay {
             def choice = 1
+            def chosenCard
 
             if(my.discard.any{isValidFossilCard(it)}){
               choice = choose([1,2],['Search your deck', 'Search your discard pile'], "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand. Then, shuffle your deck.")
             }
 
             if (choice == 1){
-              chosenCard = my.deck.search( {isValidFossilCard(it)} ).select("Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil.")
+              chosenCard = my.deck.search(count:1, "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil.", {isValidFossilCard(it)} )
             } else /*if (choice == 2)*/ {
               chosenCard = my.discard.findAll{isValidFossilCard(it)}.select()
             }
