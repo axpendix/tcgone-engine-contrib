@@ -115,28 +115,12 @@ class TcgStatics {
     if (!may || confirm(confirmMsg) && oppConfirm(confirmMsg)) {
       while (!winnerDetermined) {
         def myChoice = choose([1,2,3], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
-        def opponentChoice = oppChoose([4,5,6], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
-        if (myChoice == 1) {
-          if (opponentChoice == 5) {
-            winnerDetermined = true
-          } else if (opponentChoice == 6) {
-            winnerDetermined = true
-            myWin = true
-          }
-        } else if (myChoice == 2) {
-          if (opponentChoice == 4) {
-            winnerDetermined = true
-            myWin = true
-          } else if (opponentChoice == 6) {
-            winnerDetermined = true
-          }
-        } else {
-          if (opponentChoice == 4) {
-            winnerDetermined = true
-          } else if (opponentChoice == 5) {
-            winnerDetermined = true
-            myWin = true
-          }
+        def opponentChoice = oppChoose([1,2,3], ['Rock', 'Paper', 'Scissors'], "Rock-Paper-Scissors")
+        if ((myChoice - opponentChoice) % 3 == 1) {
+          winnerDetermined = true
+          myWin = true
+        } else if((myChoice - opponentChoice) % 3 == 2) {
+          winnerDetermined = true
         }
       }
     } else {
