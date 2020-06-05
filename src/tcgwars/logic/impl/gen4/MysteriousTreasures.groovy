@@ -995,15 +995,20 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20 * self.numberOfDamageCounters
             }
           }
           move "Magnitude", {
-            text "60 damage. ."
+            text "60 damage. Does 20 damage to each Benched Pokémon (both yours and your opponent’s). (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              all.each {
+                if (it.benched) {
+                  damage 20, it
+                }
+              }
             }
           }
 
@@ -1015,9 +1020,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Evolution Impulse", {
             text "Search your deck for an Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
+            attackRequirement{
+              assert my.deck : "Deck is empty"
+            }
+            onAttack{
+              my.deck.search(min: 0, max:1,"Choose an Evolution card",cardTypeFilter(EVOLUTION)).moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Leaf Boomerang", {
@@ -1025,7 +1033,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {damage 30}
             }
           }
 
@@ -1034,24 +1042,23 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
           pokePower "Baby Evolution", {
-            text "Once during your turn , you may put Chimecho from your hand onto Chingling (this counts as evolving Chingling) and remove all damage counters from Chingling."
+            text "Once during your turn (before your attack), you may put Chimecho from your hand onto Chingling (this counts as evolving Chingling) and remove all damage counters from Chingling."
             actionA {
-              assert my.hand.findAll{it.name.contains("Chimecho")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Chimecho", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Chimecho") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Chimecho", self)
             }
           }
           move "Inviting Bell", {
             text "Search your deck for a Supporter card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck
+            }
             onAttack {
-              damage 0
+              my.deck.search("Search your deck for a Supporter card", {it.cardTypes.is(SUPPORTER)}).moveTo(my.hand)
+              shuffleDeck()
             }
           }
 
@@ -1060,11 +1067,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Skull Fossil", hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS20
           move "Headbutt", {
-            text "20 damage. "
+            text "20 damage."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
           move "Steamroll", {
@@ -1072,7 +1079,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              if (opp.bench) damage 20, opp.bench.select()
             }
           }
 
@@ -1082,7 +1090,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness L, PLUS20
           pokePower "Evolutionary Vitality", {
             text "Once during your turn, when you play Croconaw from your hand to evolve 1 of your Pokémon, you may look at the top 5 cards of your deck. Choose all Energy cards you find there, show them to your opponent, and put them into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward."
-            actionA {
+            // Weird wording, but confirmed by a Rules Team member on 2007 that the intent is for it to be a search, you can choose as many as you want or even fail, no need to "choose all".
+            // https://pokegym.net/community/index.php?threads/croconaw-mts-power.62819/#post-982469
+            onActivate{reason ->
+              if(reason == PLAY_FROM_HAND && confirm("Use Evolutionary Vitality?")){
+                my.deck.subList(0, 5).select(min:0, max: 5, "Top cards of your deck. Which Energy cards do you want to put into your hand?", cardTypeFilter(ENERGY)).moveTo(my.hand)
+                shuffleDeck()
+              }
             }
           }
           move "Hover Over", {
@@ -1090,7 +1104,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              cantRetreat defending
             }
           }
 
@@ -2155,7 +2170,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 10*self.numberOfDamageCounters
+              damage 10 * self.numberOfDamageCounters
             }
           }
           move "Dragon Rage", {
