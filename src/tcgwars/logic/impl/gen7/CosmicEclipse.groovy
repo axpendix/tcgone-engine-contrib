@@ -1886,6 +1886,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "As often as you like during your turn (before your attack), you may look at the top card of your opponent's deck."
             actionA {
               assert opp.deck : "Your opponent's deck is empty."
+              powerUsed()
               opp.deck.subList(0, 1).showToMe("Top card of your opponent's deck.")
             }
           }
