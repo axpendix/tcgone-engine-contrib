@@ -1773,7 +1773,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack{
-            my.deck.search(min: 0, max:1,"Choose an Evolution cards",cardTypeFilter(EVOLUTION)).moveTo(my.hand)
+            my.deck.search(min: 0, max:1,"Choose an Evolution card",cardTypeFilter(EVOLUTION)).moveTo(my.hand)
             shuffleDeck()
           }
         }
