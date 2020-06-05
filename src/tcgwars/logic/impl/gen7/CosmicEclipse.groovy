@@ -1955,7 +1955,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                     before null, null, Source.ATTACK, {
                       def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
                       if (pcs && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
-                        bc "$name prevents all effects of attacks."
+                        bc "$move prevents all effects of attacks."
                         prevent()
                       }
                     }
@@ -1963,7 +1963,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                       bg.dm().each {
                         if (it.to.owner == self.owner && it.notNoEffect && bg.currentTurn==self.owner.opposite) {
                           it.dmg = hp(0)
-                          bc "$name prevents all damage."
+                          bc "$move prevents all damage."
                         }
                       }
                     }
