@@ -1326,19 +1326,23 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness R, PLUS20
           resistance F, MINUS20
           move "Centrifugal Force", {
-            text "20× damage. Does 20 damage times the number of Energy in the Defending Pokémon’s Retreat Cost (after applying effects to the Retreat Cost)."
+            text "20× damage. Does 20 damage times the number of [C] Energy in the Defending Pokémon’s Retreat Cost (after applying effects to the Retreat Cost)."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20 * defending.retreatCost
             }
           }
           move "Swirling Ripple", {
-            text "30+ damage. Pokémon in play, this attack does 30 damage plus 30 more damage and the Defending Pokémon is now Confused."
-            energyCost G, G, W
+            text "30+ damage. If your opponent has any [W] Pokémon in play, this attack does 30 damage plus 30 more damage and the Defending Pokémon is now Confused."
+            energyCost G, G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              if(opp.all.findAll{it.types.contains(W)}) {
+                damage 30
+                applyAfterDamage(CONFUSED)
+              }
             }
           }
 
@@ -1349,17 +1353,19 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Rescue", {
             text "Search your discard pile for up to 2 Pokémon, show them to your opponent, and put them into your hand."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.filterByType(POKEMON)
+            }
             onAttack {
-              damage 0
+              my.discard.filterByType(POKEMON).select(max : 2,).showToOpponent("Selected cards").moveTo(my.hand)
             }
           }
           move "Scratch", {
-            text "30 damage. "
+            text "30 damage."
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -1373,16 +1379,20 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              // TODO
-              discardDefendingSpecialEnergy(delegate)
+              if (defending.cards.filterByType(SPECIAL_ENERGY)) {
+                damage 30
+                discardDefendingSpecialEnergy(delegate)
+              }
             }
           }
           move "Aqua Liner", {
             text "Choose 1 of your opponent’s Benched Pokémon. This attack does 40 damage to that Pokémon."
             energyCost W, W
-            attackRequirement {}
+            attackRequirement {
+              assert opp.bench : "Your opponent has no Pokémon in their bench."
+            }
             onAttack {
-              damage 0
+              damage 40, opp.bench.select()
             }
           }
 
@@ -1395,15 +1405,21 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(self.lastEvolved == bg.turnCount){
+                damage 20
+                applyAfterDamage(ASLEEP)
+                applyAfterDamage(POISONED)
+              }
             }
           }
           move "Extend Fungus", {
-            text "60 damage. "
+            text "60 damage. Remove 2 damage counters from Parasect."
             energyCost G, G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              heal 20, self
             }
           }
 
@@ -1417,7 +1433,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              opp.all.each {damage 10,it}
             }
           }
           move "Rocket Tackle", {
@@ -1425,7 +1441,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              damage 10, self
+              flip{preventAllDamageNextTurn()}
             }
           }
 
@@ -1434,11 +1452,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Cydnaquil", hp:HP080, type:FIRE, retreatCost:1) {
           weakness W, PLUS20
           move "Fireworks", {
-            text "40 damage. Energy attached to Quilava."
-            energyCost R, C, R
+            text "40 damage. Flip a coin. If tails, discard a [R] Energy attached to Quilava."
+            energyCost R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip 1, {}, { discardSelfEnergy R }
             }
           }
 
@@ -1452,7 +1471,17 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              delayed (priority: LAST) {
+                before APPLY_ATTACK_DAMAGES, {
+                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
+                    bc "Spike Armor activates"
+                    directDamage(40, ef.attacker as PokemonCardSet)
+                  }
+                }
+                unregisterAfter 2
+                after EVOLVE, self, {unregister()}
+                after SWITCH, self, {unregister()}
+              }
             }
           }
           move "Poison Spike", {
@@ -1460,7 +1489,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost F, F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              if(defending.numberOfDamageCounters) applyAfterDamage(POISONED)
             }
           }
 
@@ -1469,11 +1499,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Spheal", hp:HP080, type:WATER, retreatCost:2) {
           weakness M, PLUS20
           move "Ice Rider", {
-            text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
+            text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W, W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30, opp.all.select()
             }
           }
 
@@ -1483,11 +1513,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness R, PLUS20
           resistance M, MINUS20
           move "Hard Face", {
-            text "."
+            text "20 Damage. During your opponent’s next turn, any damage done to Shieldon by attacks is reduced by 20 (after applying Weakness and Resistance)"
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              reduceDamageNextTurn(hp(20), thisMove)
             }
           }
           move "Shield Attack", {
@@ -1505,12 +1536,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
           resistance F, MINUS20
-          move "", {
-            text "Remove damage. "
-            energyCost G, G
-            attackRequirement {}
+          move "Bonus Leaf", {
+            text "Remove 3 damage counters from each of your Benched Pokémon that has any [G] Energy attached to it."
+            energyCost G
+            attackRequirement {
+              assert my.bench.any{it.numberOfDamageCounters && it.cards().energyCount(G)} : "None of your Benched Pokémon with damage counters has any [G] Energy attached to them."
+            }
             onAttack {
-              damage 0
+              my.bench.findAll{it.numberOfDamageCounters && it.cards().energyCount(G)}.each{heal 20, it}
             }
           }
           move "Whirlwind", {
@@ -1528,8 +1561,31 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
           pokePower "EQUIP", {
-            text "Once during your turn , if Unown E is on your Bench, you may discard all cards attached to Unown E and attach Unown E to 1 of your Pokémon as a Pokémon Tool card. As long as Unown E is attached to a Pokémon, that Pokémon gets +10 HP."
+            text "Once during your turn (before your attack), if Unown E is on your Bench, you may discard all cards attached to Unown E and attach Unown E to 1 of your Pokémon as a Pokémon Tool card. As long as Unown E is attached to a Pokémon, that Pokémon gets +10 HP."
             actionA {
+              checkLastTurn()
+              assert self.benched : "$self is not on the Bench" //No need to check for other Poké, if it's benched there's at least the active.
+              assert my.all.findAll {it != self && it.cards.filterByType(POKEMON_TOOL).empty} : "No place to attach $self as a tool"
+              powerUsed()
+              def top = self.topPokemonCard
+              self.cards.getExcludedList(top).discard()
+              removePCS(self)
+              def trcard
+              trcard = pokemonTool(new CustomCardInfo(top.realInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
+                def eff
+                onPlay {
+                  eff = getter (GET_FULL_HP, self) {h->
+                    h.object += hp(10)
+                  }
+                }
+                onRemoveFromPlay {
+                  eff.unregister()
+                  bg.em().run(new ChangeImplementation(top, trcard))
+                }
+              }
+              trcard.player = top.player
+              def pcs = my.all.findAll {it!=self && it.cards.filterByType(POKEMON_TOOL).empty}.select("Attach to?")
+              attachPokemonTool(trcard,pcs)
             }
           }
           move "Hidden Power", {
@@ -1537,7 +1593,17 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              delayed {
+                def doit = {
+                  if (bg.currentThreadPlayerType != self.owner) {
+                    bc "Hidden Power forced the coinflip to be TAILS."
+                    bg.deterministicCoinFlipQueue.offer(false)
+                  }
+                }
+                before COIN_FLIP, {doit()}
+                before COIN_FLIP_GETTER, {doit()}
+                unregisterAfter 2
+              }
             }
           }
 
@@ -1546,8 +1612,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
           pokePower "MAGNET", {
-            text "Once during your turn , if Unown M is your Active Pokémon, you may flip a coin. If heads, switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. This power can’t be used if Unown M is affected by a Special Condition."
+            text "Once during your turn (before your attack), if Unown M is your Active Pokémon, you may flip a coin. If heads, switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. This power can’t be used if Unown M is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              assert self.active : "$self is not your Active Pokémon"
+              assert opp.bench : "Your opponent has no Pokémon in their bench."
+              powerUsed()
+              flip { sw (defending, opp.bench.select("Select the new active"), Source.POKEMONPOWER) }
             }
           }
           move "Hidden Power", {
@@ -1555,7 +1627,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 1, {noWrDamage(110,defending)}, {noWrDamage(110,my.all.select())}
             }
           }
 
@@ -1564,16 +1636,34 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
           pokePower "THROW", {
-            text "Once during your turn , if Unown T is your Active Pokémon, you may discard a card from your hand. Then, flip a coin. If heads, put 2 damage counters on 1 of your opponent’s Benched Pokémon. This power can’t be used if Unown T is affected by a Special Condition."
+            text "Once during your turn (before your attack), if Unown T is your Active Pokémon, you may discard a card from your hand. Then, flip a coin. If heads, put 2 damage counters on 1 of your opponent’s Benched Pokémon. This power can’t be used if Unown T is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              assert self.active : "$self is not your Active Pokémon"
+              assert my.hand : "You don't have any cards in your hand"
+              powerUsed()
+              my.hand.select("Discard a card in order to use THROW").discard()
+              flip { directDamage 20, opp.all.select() }
             }
           }
           move "Hidden Power", {
             text "Look at your opponent’s hand and choose 1 card, then have your opponent shuffle that card into his or her deck. Then, show your opponent your hand and he or she chooses 1 card. Shuffle that card into your deck."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert (my.hand || opp.hand)
+            }
             onAttack {
-              damage 0
+              if (opp.hand && !checkBodyguard()) {
+                def oppCard = opp.hand.select(hidden: true, count: count, "Choose a random card from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("Hidden Power: this card will be shuffled from your hand to your deck")
+                oppCard.moveTo(opp.deck)
+                shuffleDeck(null, TargetPlayer.OPPONENT)
+              }
+              if (my.hand) {
+                def myCard = my.hand.oppSelect(hidden: true, count: 1, "Choose 1 random card from your opponent's hand to be shuffled into his or her deck").showToOpponent("Selected card(s)").showToMe("Hidden Power: this card will be shuffled from your hand to your deck")
+                myCard.moveTo(my.deck)
+                shuffleDeck()
+              }
             }
           }
 
