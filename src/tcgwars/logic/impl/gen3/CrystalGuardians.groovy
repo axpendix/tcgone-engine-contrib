@@ -2343,7 +2343,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           delayedA {
             after POKEPOWER, {
               bc "Dark eyes activate"
-              if (ef.pcs.owner != self.owner) {
+              if (ef.playerType != self.owner) {
                 directDamage(20, ef.pcs, Source.SRC_ABILITY)
               }
             }
