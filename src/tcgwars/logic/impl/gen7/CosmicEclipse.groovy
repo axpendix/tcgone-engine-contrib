@@ -3267,12 +3267,10 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               damage 120
               delayed (priority: LAST) {
-                before KNOCKOUT, {
-                  def pcs = ef.pokemonToBeKnockedOut
-                  if (pcs.owner == self.owner.opposite && ef.byDamageFromAttack && ef.attacker == self) {
-                    bc "Red Banquet gives the player an additional prize."
-                    bg.em().run(new TakePrize(self.owner, pcs))
-                  }
+                def pcs = defending
+                after KNOCKOUT, pcs, {
+                  bc "Red Banquet gives the player an additional prize."
+                  bg.em().run(new TakePrize(self.owner, pcs))
                 }
                 unregisterAfter 1
               }
