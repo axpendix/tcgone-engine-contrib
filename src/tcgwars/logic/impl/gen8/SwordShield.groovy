@@ -1382,7 +1382,9 @@ public enum SwordShield implements LogicCardInfo {
           onAttack {
             damage 100
             if (opp.active.cards.filterByType(ENERGY) && confirm("Put an Energy attached to their active back to their hand?")) {
-              opp.active.cards.filterByType(ENERGY).select("Choose the Energy to put back in the opponent's hand.").moveTo(opp.hand)
+              targeted (defending) {
+                opp.active.cards.filterByType(ENERGY).select("Choose the Energy to put back in the opponent's hand.").moveTo(opp.hand)
+              }
             }
           }
         }
