@@ -1520,20 +1520,23 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Recall", {
             text "Choose an attack from 1 of this Pokémon's previous Evolutions and use it as this attack."
             energyCost C
-            def eff
-            onAttack {
-              def moves = []
-              for (card in self.cards.filterByType(POKEMON)) {
+            def preevos = []
+            def moves = []
+            attackRequirement {
+              for (card in self.card.filterByType(POKEMON)) {
                 if (card != self.topPokemonCard) {
+                  preevos += card
                   moves += card.moves
                 }
               }
-              if(moves) {
-                def move=choose(moves, moves.collect({it.name}), "Choose a move to use.")
-                def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-                attack (move as Move)
-                bef.unregisterItself(bg().em())
-              }
+              assert preevos : "Empoleon does not have a previous Evolution"
+              assert moves : "Empoleon's previous Evolutions do not have moves"
+            }
+            onAttack {
+              def move=choose(moves, moves.collect({it.name}), "Choose a move to use.")
+              def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+              attack (move as Move)
+              bef.unregisterItself(bg().em())
             }
           }
           move "Aquafall", {
