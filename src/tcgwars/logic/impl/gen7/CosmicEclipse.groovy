@@ -2230,7 +2230,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost P
             onAttack {
               def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.bench, "Opponent used Charming Stamp. Select a Pokémon to have 90 damage dealt to it.", 1)
-              opp.bench.findAll { !list.contains(it) }.each {
+              opp.bench.findAll { list.contains(it) }.each {
                 damage 90 it
               }
             }
