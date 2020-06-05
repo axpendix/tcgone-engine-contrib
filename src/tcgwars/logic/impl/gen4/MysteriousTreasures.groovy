@@ -951,11 +951,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Teddiursa", hp:HP100, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS20
           move "Bad Temper", {
-            text "30 damage. ."
+            text "30 damage. The Defending Pokémon is now Confused. During your opponent’s next turn, that Pokémon’s attacks do 60 more damage to the Active Pokémon (before applying Weakness and Resistance)."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              applyAfterDamage CONFUSED
+              afterDamage{ doMoreDamageNextTurn(thisMove, 60, defending) } //TODO: Maybe hardcode this instead of delegating? There might be some edge case annoyingly affecting on self.owner's next turn somehow...
             }
           }
           move "Defensive Claw", {
@@ -963,7 +965,20 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              def oneInBench = false
+              def oneDamaged = false
+              damage 60
+              my.bench.each {
+                if(it.name.contains("Teddiursa")){
+                  oneInBench = true
+                  if(it.numberOfDamageCounters) {
+                    oneDamaged = true
+                    afterDamage{healAll it}
+                  }
+                }
+              }
+              if(oneInBench){ damage 20 }
+              if(oneDamaged){ damage 20 }
             }
           }
 
@@ -972,8 +987,19 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Sealeo", hp:HP130, type:WATER, retreatCost:3) {
           weakness M, PLUS30
           pokePower "Freeze-up", {
-            text "Once during your turn, when you play Walrein from your hand to evolve 1 of your Pokémon, you may flip 2 coins. If both are heads, discard the Defending Pokémon and all cards attached to it. (This doesn’t count as a Knocked Out Pokémon.)"
-            actionA {
+            text "Once during your turn, when you play Walrein from your hand to evolve 1 of your Pokémon, you may flip 2 coins. If both are heads, discard 1 of the Defending Pokémon and all cards attached to it. (This doesn’t count as a Knocked Out Pokémon.)"
+            onActivate {reason ->
+              if(reason==PLAY_FROM_HAND && confirm('Use Freeze-Up?')){
+                powerUsed()
+                def doEff = true
+                flip 2, {}, {doEff = false}
+                if (doEff){
+                  targeted (defending, Source.POKEMONPOWER) {
+                    defending.cards.reverse().discard()
+                    removePCS(defending)
+                  }
+                }
+              }
             }
           }
           move "Ice Bind", {
@@ -981,7 +1007,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost W, W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              afterDamage{
+                if (opp.hand && oppConfirm("Do you want to discard a card from your hand?\nIf you don't, Ice Bind will paralyze your ${defending}")){
+                  opp.hand.oppSelect(count:1, "Which card to discard?").discard()
+                } else {
+                  if (!opp.hand) bc "The opponent has no cards to discard! Ice Bind will paralyze their ${defending}"
+                  applyAfterDamage PARALYZED
+                }
+              }
             }
           }
 
