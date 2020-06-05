@@ -3002,7 +3002,7 @@ public enum SunMoonPromos implements LogicCardInfo {
 
               def pcs = defending
               delayed {
-                before BETWEEN_TURNS, {
+                before BETWEEN_TURNS, pcs, Source.ATTACK, {
                   if (pcs.topPokemonCard != null && bg.currentTurn == self.owner.opposite) {
                     bc "Pale Moon GX's effect occurs."
                     new Knockout(pcs).run(bg)
