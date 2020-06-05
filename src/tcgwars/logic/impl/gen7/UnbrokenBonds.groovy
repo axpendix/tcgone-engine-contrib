@@ -3027,7 +3027,9 @@ public enum UnbrokenBonds implements LogicCardInfo {
                 }
               }
               if(self.cards.energySufficient(thisMove.energyCost + C)){
-                opp.active.cards.filterByType(ENERGY).discard()
+                targeted (defending) {
+                  opp.active.cards.filterByType(ENERGY).discard()
+                }
               }
             }
           }
