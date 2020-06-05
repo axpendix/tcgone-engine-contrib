@@ -925,24 +925,54 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
           pokePower "ITEM", {
-            text ":"
+            text "Once during your turn (before your attack), if you have Unown I, Unown T, Unown E, and Unown M on your Bench, you may search your deck for a Trainer card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. You can’t use more than 1 ITEM Poké-Power each turn."
             actionA {
-            }
-          }
-          move "", {
-            text "Once during your turn , if you have Unown I, Unown T, Unown E, and Unown M on your Bench, you may search your deck for a Trainer card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. You can’t use more than 1 ITEM Poké-Power each turn."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+              checkLastTurn()
+              assert bg.em().retrieveObject("DP_Unown_ITEM") != bg.turnCount : "You can’t use more than 1 ITEM Poké-Power each turn."
+              //assert self.benched : "$self is not on the Bench"
+              //Checking for any Unown I on the bench, text apparently wouldn't specify this one being the one benched. There's a no-more-than-1-use limit anyways.
+              ["Unown I", "Unown T", "Unown E", "Unown M"].each{
+                def cardName = it
+                assert my.benched.any{it.name == cardName} : "$cardName is not on your bench"
+              }
+              powerUsed()
+              bg.em().storeObject("DP_Unown_ITEM", bg.turnCount)
+              my.deck.search(max:1, "Choose a Trainer-Item card.", cardTypeFilter(ITEM)).showToOpponent("Opponent's chosen Trainer-Item card.").moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Hidden Power", {
-            text "Energy and doesn’t have any effect other than providing Energy. Put that card face up at the end of your opponent’s next turn."
-            energyCost C, C
+            text "Choose an Energy card attached to the Defending Pokémon and put it face down. Treat that card as a Special Energy card that provides [C] Energy and doesn’t have any effect other than providing Energy. Put that card face up at the end of your opponent’s next turn."
+            energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              //  TODO: Implement this oddly unique energy modification.
+              //  Notes (taken from JP Rulings, none in english):
+              //    * The flipped energy cannot use any abilities included in it (see: Call Energy MD 92)
+              //    * Neither does it keep its name while flipped. (See: Gorebyss LM 17)
+              //    * The flipped energy can be moved around (see: Arcanine SW 22). But once moved it's still flipped and only provides [C] with no extra effect.
+              //    * If a Pokémon depends on the chosen energy for an ability/pokémon-body/power and it's flipped, the effect should turn off (see: Wormadam Plant Cloak SW 41, with only Double Rainbow Energy attached and 8 damage counters.)
+              //    * Attacks preventing effects on the defending Pokémon this turn protect their energy from this. See: Venomoth SW 73
+              //    * The energy is flipped back to normal when discarded. Ex: A flipped basic fire can be discarded for retreat and immediately re-attached through Firestarter (Typhlosion MT 16).
+              //    * If Multi Energy (MT 118) is attached to Venusaur (CG 28), and Hidden Power flips it it should convert by Chlorophyll into a grass energy. Only while flipped, if not it depends on multi energy alone.
+              //    * Cards only attachable to a specific Pokémon (See: Scramble Energy DF 89) can be moved to non-valid Pokémon while flipped. But the instant they flip back to normal, they should be discarded.
+              //
+              def chosenEnergy = defending.cards.filterByType(ENERGY).select(count:1)
+              def eff
+              /* delayed {
+                eff = getter GET_ENERGY_TYPES, { holder->
+                  if (holder.effect.card == chosenCard) {
+                    holder.object = [[C] as Set]
+                    ////holder.name := "Flipped Back Energy"
+                    ////holder.setCardTypes := specialEnergy
+                    ////holder.customAbility := disabled
+                  }
+                }
+                unregister {
+                  eff.unregister()
+                }
+                unregisterAfter 2
+              } */
             }
           }
 
