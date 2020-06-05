@@ -898,7 +898,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Discard the top 2 cards of your opponent’s deck."
             energyCost R
             attackRequirement {
-              opp.deck : "Your opponent's deck is empty."
+              assert opp.deck : "Your opponent's deck is empty."
             }
             onAttack {
               opp.deck.subList(0, 2).discard()
@@ -1861,7 +1861,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Your opponent reveals their hand."
             energyCost C
             attackRequirement {
-              opp.hand : "Your opponent has no cards in their hand."
+              assert opp.hand : "Your opponent has no cards in their hand."
             }
             onAttack {
               opp.hand.showToMe("Opponent's hand.")
