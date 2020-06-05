@@ -1520,16 +1520,16 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Recall", {
             text "Choose an attack from 1 of this Pokémon's previous Evolutions and use it as this attack."
             energyCost C
-            def preevos = []
+            def preEvos = []
             def moves = []
             attackRequirement {
               for (card in self.card.filterByType(POKEMON)) {
                 if (card != self.topPokemonCard) {
-                  preevos += card
+                  preEvos += card
                   moves += card.moves
                 }
               }
-              assert preevos : "Empoleon does not have a previous Evolution"
+              assert preEvos : "Empoleon does not have a previous Evolution"
               assert moves : "Empoleon's previous Evolutions do not have moves"
             }
             onAttack {
@@ -1555,8 +1555,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Once during your turn (before your attack), if this Pokémon is on your Bench, you may have your opponent switch their Active Pokémon with 1 of their Benched Pokémon. If you do, discard all cards attached to this Pokémon and put it on the bottom of your deck."
             actionA {
               checkLastTurn()
-              assert self.benched
-              assert opp.bench
+              assert self.benched : "$self is not on the bench."
+              assert opp.bench : "Your opponent has no Benched Pokémon."
               powerUsed()
               sw(opp.active, opp.bench.oppSelect("Choose a new Active Pokémon."))
               self.cards.getExcludedList(self.topPokemonCard).discard()
