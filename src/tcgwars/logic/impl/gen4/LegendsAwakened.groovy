@@ -1132,6 +1132,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (confirm("Put Uxie on the bottom of your deck?") {
                 def rearrangedCards = rearrange(self.cards)
                 rearrangedCards.moveTo(my.deck)
+                removePCS(self)
               }
             }
           }
