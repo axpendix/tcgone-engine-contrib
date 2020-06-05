@@ -897,6 +897,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Stomp Off", {
             text "Discard the top 2 cards of your opponent’s deck."
             energyCost R
+            attackRequirement {
+              opp.deck : "Your opponent's deck is empty."
+            }
             onAttack {
               opp.deck.subList(0, 2).discard()
             }
