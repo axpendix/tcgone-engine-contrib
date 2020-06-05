@@ -339,7 +339,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost F, C
             onAttack {
               damage 40
-              if (!defending.specialConditions) {
+              if (defending.specialConditions) {
                 damage 40
               }
             }
