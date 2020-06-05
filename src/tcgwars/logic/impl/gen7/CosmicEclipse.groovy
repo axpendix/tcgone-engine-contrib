@@ -1813,9 +1813,9 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Once during your turn (before your attack), you may search your deck for up to 3 Supporter cards, reveal them, and put them into your hand. Then, shuffle your deck. If you searched your deck in this way, this Pokémon is Knocked Out."
             actionA {
               checkLastTurn()
-              assert deck
+              assert deck : "Your deck is empty."
               powerUsed()
-              deck.search(max: 3, cardTypeFilter(SUPPORTER)).moveTo(hand)
+              deck.search(max: 3, cardTypeFilter(SUPPORTER)).showToOpponent("Opponent's chosen Supporter cards").moveTo(hand)
               shuffleDeck()
               new Knockout(self).run(bg)
             }
