@@ -3416,23 +3416,15 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "30 damage. Flip 2 coins. For each heads, discard an Energy from your opponent's Active Pokémon. If both of them are tails, this attack does nothing."
             energyCost L, W
             onAttack{
-              flip 2, {}, {}, [
-                2:{ damage 30;
-                  afterDamage{
-                    discardDefendingEnergy()
-                    discardDefendingEnergy()
-                  }
-                },
-                1:{
-                  damage 30
-                  afterDamage{
-                    discardDefendingEnergy()
-                  }
-                },
-                0:{
-                  bc "$thisMove failed due to 2 TAILS."
-                }
-              ]}
+              def discardTimes = 0
+
+              flip 2, { discardTimes += 1}
+              if (discardTimes) damage 30 else bc "$thisMove failed due to 2 TAILS."
+
+              afterDamage {
+                discardTimes.times{ discardDefendingEnergy() }
+              }
+            }
           }
         };
       case DRAGONAIR_150:
