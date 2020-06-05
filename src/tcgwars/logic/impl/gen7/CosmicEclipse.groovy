@@ -1458,9 +1458,12 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "High Water", {
             text "Attach 2 [W] Energy cards from your discard pile to 1 of your Pokémon."
             energyCost C
+            attackRequirement {
+              assert my.discard.filterByEnergyType(W) : "No [W] Energy in your discard pile."
+            }
             onAttack {
               afterDamage {
-                def list = my.discard.filterByEnergyType(W).select(count:2)
+                def list = my.discard.filterByEnergyType(W).select(count:2, "Choose 2 [W] Energy")
                 def pcs = my.all.select("Attach [W] Energy to which Pokémon?")
                 list.each {attachEnergy(pcs, it)}
               }
