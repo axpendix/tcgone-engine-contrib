@@ -939,7 +939,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Put 4 [R] Energy cards from your discard pile into your hand."
             energyCost R
             attackRequirement {
-              assert my.discard.filterByEnergyType(R) : "There is no [R] Energy cards in your discard pile."
+              assert my.discard.filterByEnergyType(R) : "There are no [R] Energy cards in your discard pile."
             }
             onAttack {
               my.discard.filterByEnergyType(R).select(count:4, "Choose 4 [R] Energy to put into your hand.").moveTo(hand)
