@@ -2291,8 +2291,11 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Poison Cultivation", {
             text "If your opponent's Active Pokémon is Poisoned, put 10 damage counters instead of 1 on that Pokémon between turns."
             energyCost P
+            attackRequirement {
+              assert defending.isSPC(POISONED) : "Defending Pokémon is not poisoned."
+            }
             onAttack {
-              if (defending.isSPC(POISONED)) extraPoison 9
+              extraPoison 9
             }
           }
           move "Sharp Fin", {
