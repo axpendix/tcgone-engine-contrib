@@ -512,6 +512,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                     def copy = ef.move.shallowCopy()
                     copy.energyCost.clear()
                     attack (copy as Move)
+                    bc "Solar Power ignores Energy cost for $ef.attacker's $ef.move"
                     prevent()
                   }
                 }
