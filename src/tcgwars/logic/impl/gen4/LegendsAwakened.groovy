@@ -332,25 +332,29 @@ public enum LegendsAwakened implements LogicCardInfo {
                 self.cards.moveTo(hand)
                 removePCS(self)
               }
-              // TODO
             }
           }
           move "Pester", {
             text "40+ damage. If the Defending Pokémon is affected by a Special Condition, this attack does 40 damage plus 40 more damage."
             energyCost F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if (!defending.specialConditions) {
+                damage 40
+              }
             }
           }
-
         };
       case HEATRAN_6:
         return basic (this, hp:HP100, type:FIRE, retreatCost:4) {
           weakness W
           pokePower "Flash Fire", {
-            text "Once during your turn , you may move a Energy attached to 1 of your Pokémon to Heatran. This power can’t be used if Heatran is affected by a Special Condition."
+            text "Once during your turn , you may move an Energy attached to 1 of your Pokémon to Heatran. This power can’t be used if Heatran is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              
+              
             }
           }
           move "Magma Storm", {
