@@ -965,7 +965,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             actionA {
               checkLastTurn()
               def tar = my.bench.findAll { it.numberOfDamageCounters }
-              assert tar
+              assert tar : "There are no Pokémon with damage counters on your bench."
               heal 20, tar.select("Which Pokémon to heal 20 damage?"), SRC_ABILITY
               powerUsed()
             }
