@@ -1863,6 +1863,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Scout", {
             text "Your opponent reveals their hand."
             energyCost C
+            attackRequirement {
+              opp.hand : "Your opponent has no cards in their hand."
+            }
             onAttack {
               opp.hand.showToMe("Opponent's hand.")
             }
