@@ -1348,13 +1348,14 @@ public enum ForbiddenLight implements LogicCardInfo {
             text "60 damage. Flip 2 coins. For each heads, discard an Energy from your opponent’s Active Pokémon. If both of them are tails, this attack does nothing."
             energyCost P, C
             onAttack {
-              def hasEff = false
+              def discardTimes = 0
 
-              flip 2, {
-                hasEff=true
-                afterDamage{discardDefendingEnergy()}
+              flip 2, { discardTimes += 1}
+              if (discardTimes) damage 60 else bc "$thisMove failed due to 2 TAILS."
+
+              afterDamage {
+                discardTimes.times{ discardDefendingEnergy() }
               }
-              if(hasEff) damage 60
             }
           }
         };

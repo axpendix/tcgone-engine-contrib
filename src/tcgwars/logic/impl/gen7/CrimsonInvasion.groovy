@@ -1613,7 +1613,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             onAttack {
               damage 100
               gxPerform()
-              delayed {
+              delayed (priority: LAST) {
                 def pcs = defending
                 after KNOCKOUT, pcs, {
                   bg.em().run(new TakePrize(self.owner, pcs))

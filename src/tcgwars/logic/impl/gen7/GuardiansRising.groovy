@@ -2282,7 +2282,7 @@ public enum GuardiansRising implements LogicCardInfo {
             text "If the Defending Pokémon is Knocked Out during your next turn, take 2 more Prize cards."
             energyCost C
             onAttack {
-              delayed {
+              delayed (priority: LAST) {
                 def pcs = defending
                 after KNOCKOUT, pcs, {
                   if(turnCount + 2 == bg.turnCount) {
@@ -2874,9 +2874,7 @@ public enum GuardiansRising implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 20
-              afterDamage {
-                discardDefendingSpecialEnergy(delegate)
-              }
+              discardDefendingSpecialEnergy(delegate)
             }
           }
           move "Berserk", {

@@ -2585,12 +2585,14 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "40 damage. Flip 2 coins. For each heads, choose 1 Energy attached to the Defending Pokémon, if any, and discard it. If both are tails, this attack does nothing."
             energyCost W, C
             onAttack {
-              def noEff = true
-              flip 2, {
-                noEff = false
-                discardDefendingEnergy()
+              def discardTimes = 0
+
+              flip 2, { discardTimes += 1}
+              if (discardTimes) damage 40 else bc "$thisMove failed due to 2 TAILS."
+
+              afterDamage {
+                discardTimes.times{ discardDefendingEnergy() }
               }
-              if(!noEff) damage 40
             }
           }
           move "Dragon Rage", {
