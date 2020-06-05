@@ -994,7 +994,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 def doEff = true
                 flip 2, {}, {doEff = false}
                 if (doEff){
-                  targeted (defending, Source.POKEMONPOWER) {
+                  targeted (defending, SRC_ABILITY/*, Source.POKEMONPOWER*/) {
                     defending.cards.reverse().discard()
                     removePCS(defending)
                   }
@@ -1690,7 +1690,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert self.active : "$self is not your Active Pokémon"
               assert opp.bench : "Your opponent has no Pokémon in their bench."
               powerUsed()
-              flip { sw (defending, opp.bench.select("Select the new active"), Source.POKEMONPOWER) }
+              flip { sw (defending, opp.bench.select("Select the new active"), SRC_ABILITY/*, Source.POKEMONPOWER*/) }
             }
           }
           move "Hidden Power", {
