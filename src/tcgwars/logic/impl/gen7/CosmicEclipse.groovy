@@ -2185,11 +2185,13 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Energy Assist", {
             text "Attach 2 basic Energy cards from your discard pile to your Benched Pokémon in any way you like."
             energyCost P
+            attackRequirement {
+              assert my.bench : "You have no benched Pokémon."
+              assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "You have no basic Energy cards in your discard pile."
+            }
             onAttack {
-              if (my.bench) {
-                attachEnergyFrom(basic:true, my.discard, my.bench.select())
-                attachEnergyFrom(basic:true, my.discard, my.bench.select())
-              }
+              attachEnergyFrom(basic:true, my.discard, my.bench.select())
+              attachEnergyFrom(basic:true, my.discard, my.bench.select())
             }
           }
         };
