@@ -2546,7 +2546,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Once during your turn (before your attack), if you have Solgaleo in play, you may search your deck for up to 2 Energy cards and attach them to your Solgaleo or Lunala in any way you like. Then, shuffle your deck."
             actionA {
               checkLastTurn()
-              assert my.deck
+              assert my.deck : "Your deck is empty."
               assert my.all.find{it.name == 'Solgaleo'} : "You don't have Solgaleo in play."
               powerUsed()
               my.deck.search (max: 2, cardTypeFilter(BASIC_ENERGY)).each {
