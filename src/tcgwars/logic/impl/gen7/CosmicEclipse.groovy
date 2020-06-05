@@ -1603,10 +1603,11 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Tailwind", {
             text "Attach an Energy card from your hand to 1 of your Pokémon."
             energyCost C
+            attackRequirement {
+              assert my.hand.filterByType(ENERGY) : "You have no Energy in your hand."
+            }
             onAttack {
-              if (my.hand.filterByType(ENERGY)) {
-                attachEnergyFrom(my.hand, my.all)
-              }
+              attachEnergyFrom(my.hand, my.all)
             }
           }
           move "Air Slash", {
