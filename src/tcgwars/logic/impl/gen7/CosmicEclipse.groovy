@@ -2471,6 +2471,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Seaweed Grab", {
             text "Put a Trainer card from your discard pile into your hand."
             energyCost C
+            attackRequirement {
+              assert my.discard.hasType(TRAINER) : "There are no Trainer cards in your discard pile."
+            }
             onAttack {
               my.discard.filterByType(TRAINER).select().moveTo(my.hand)
             }
