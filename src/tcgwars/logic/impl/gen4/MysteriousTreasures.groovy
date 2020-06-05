@@ -1099,27 +1099,27 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Seel", hp:HP090, type:WATER, retreatCost:2) {
           weakness M, PLUS20
           pokeBody "Cold Fat", {
-            text "As long as Dewgong is Asleep, any damage done to Dewgong by attacks is reduced by 40 ."
+            text "As long as Dewgong is Asleep, any damage done to Dewgong by attacks is reduced by 40 (after applying Weakness and Resistance)."
             delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if (it.to == self && self.isSPC(ASLEEP)) {
+                    bc "Cold Fat -40"
+                    it.dmg -= hp(40)
+                  }
+                }
+              }
             }
           }
           move "Collapse", {
-            text "60 damage. "
+            text "60 damage. Dewgong is now Asleep."
             energyCost W, W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              afterDamage { apply ASLEEP, self }
             }
           }
-          move "", {
-            text "Dewgong is now Asleep."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case DODRIO_46:
         return evolution (this, from:"Doduo", hp:HP080, type:COLORLESS, retreatCost:0) {
@@ -1130,17 +1130,17 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 3, {damage 10}
             }
           }
           move "Triple Pick", {
-            text "Choose 3 of your opponent’s Evolved Pokémon. This attack does 30 damage to each of them."
+            text "Choose 3 of your opponent’s Evolved Pokémon. This attack does 30 damage to each of them. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              multiSelect(opp.all, 3).each{
+              multiSelect(opp.all.findAll{it.evolution}, 3).each{
                 targeted(it){
-                  damage 10, it
+                  damage 30, it
                 }
               }
             }
@@ -1162,7 +1162,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              switchYourActive()
             }
           }
 
@@ -1173,9 +1174,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Gather Up", {
             text "Search your discard pile for up to 2 Energy cards, show them to your opponent, and put them into your hand."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.find(cardTypeFilter(ENERGY)) : "No Energy cards in Discard pile"
+            }
             onAttack {
-              damage 0
+              my.discard.findAll(cardTypeFilter(ENERGY)).select(max: 2).moveTo(my.hand)
             }
           }
           move "Marvelous Shine", {
@@ -1183,7 +1186,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 1, {
+                directDamage 40, opp.all.select()
+              }, {
+                def tar = my.all.findAll{it.numberOfDamageCounters}
+                if (tar) heal 40, tar.select()
+              }
             }
           }
 
@@ -1194,9 +1202,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Crane Kick", {
             text "Search your deck for a Trainer card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Deck is empty"
+            }
             onAttack {
-              damage 0
+              def trainer = my.deck.search(count:1, "Select a Trainer-Item card",cardTypeFilter(ITEM))
+              if (trainer)
+                trainer.moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Psybeam", {
@@ -1204,7 +1217,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flipThenApplySC CONFUSED
             }
           }
 
@@ -1218,7 +1232,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              afterDamage{
+                opp.hand.showToMe("Opponent’s hand")
+              }
             }
           }
 
@@ -1232,11 +1249,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flipUntilTails { damage 30 }
             }
           }
           move "Rock Slide", {
-            text "40 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
+            text "40 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F, C, C
             attackRequirement {}
             onAttack {
@@ -1258,22 +1275,20 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Chansey from your hand onto Happiny (this counts as evolving Happiny) and remove all damage counters from Happiny."
             actionA {
-              assert my.hand.findAll{it.name.contains("Chansey")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Chansey", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Chansey") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Chansey", self)
             }
           }
           move "Lively", {
             text "Remove 2 damage counters from 1 of your Pokémon."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.all.findAll{it.numberOfDamageCounters} : "There are no damaged pokemon to heal"
+            }
             onAttack {
-              damage 0
+              heal 20, my.all.findAll{it.numberOfDamageCounters}.select("Heal")
             }
           }
 
@@ -1283,19 +1298,23 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness R, PLUS20
           resistance P, MINUS20
           move "Mend", {
-            text "Energy card and attach it to Lairon. If you do, remove 2 damage counters from Lairon."
-            energyCost M, M
-            attackRequirement {}
+            text "Search your discard pile for a [M] Energy card and attach it to Lairon. If you do, remove 2 damage counters from Lairon."
+            energyCost M
+            attackRequirement {
+              assert my.discard.filterByType(ENERGY).filterByEnergyType(M) : "There is no [M] Energy card in your discard"
+            }
             onAttack {
-              damage 0
+              attachEnergyFrom(type : M, my.discard, self)
+              //TODO: Make this conditional on the attach
+              heal 10, self
             }
           }
           move "Confront", {
-            text "50 damage. "
+            text "50 damage."
             energyCost M, M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
             }
           }
 
@@ -1304,11 +1323,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP070, type:FIRE, retreatCost:2) {
           weakness W, PLUS20
           move "Flare", {
-            text "20 damage. "
+            text "20 damage."
             energyCost R
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
           move "Flamethrower", {
@@ -1316,7 +1335,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost R, R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              afterDamage{
+                discardSelfEnergy(C)
+              }
             }
           }
 
