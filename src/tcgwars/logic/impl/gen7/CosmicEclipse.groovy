@@ -1505,12 +1505,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Direct Dive", {
             text "Discard all Energy from this Pokémon. This attack does 100 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W, W, W
-            attackRequirement {
-              assert opp.bench : "Your opponent has no Benched Pokémon."
-            }
             onAttack {
               discardAllSelfEnergy()
-              damage 100, opp.bench.select()
+              if (opp.bench) damage 100, opp.bench.select()
             }
           }
         };
