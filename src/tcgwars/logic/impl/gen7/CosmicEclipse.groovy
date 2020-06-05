@@ -1682,8 +1682,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost C
             attackRequirement {
               gxCheck()
-              assert my.bench.notFull
-              assert my.deck.notEmpty
+              assert my.bench.notFull : "Your bench is already full."
+              assert my.deck.notEmpty : "Your deck is empty."
             }
             onAttack {
               gxPerform()
@@ -1693,7 +1693,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (basics) {
                 def maxSpace = Math.min(my.bench.freeBenchCount, basics.size())
 
-                  def selected = basics.select(min:0, max:maxSpace, "Select as many Basic Pokémon you'd like to bench as possible.")
+                def selected = basics.select(min:0, max:maxSpace, "Select as many Basic Pokémon you'd like to bench as possible.")
 
                 selected.each {
                   benchPCS(it)
