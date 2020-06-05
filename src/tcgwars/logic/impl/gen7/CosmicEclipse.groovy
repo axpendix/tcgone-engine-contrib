@@ -2494,7 +2494,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
             energyCost P
             attackRequirement {
-              assert my.deck
+              assert my.deck : "Your deck is empty."
             }
             onAttack {
               def nam=self.name
