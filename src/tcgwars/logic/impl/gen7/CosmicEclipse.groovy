@@ -3267,7 +3267,6 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               damage 120
               delayed (priority: LAST) {
-                def pt = self.owner
                 before KNOCKOUT, {
                   def pcs = ef.pokemonToBeKnockedOut
                   if (pcs.owner == self.owner.opposite && ef.byDamageFromAttack && ef.attacker == self) {

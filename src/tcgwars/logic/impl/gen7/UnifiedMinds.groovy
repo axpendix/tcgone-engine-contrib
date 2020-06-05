@@ -2919,7 +2919,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost D, D, D, D, C
             onAttack {
               damage 210
-              delayed {
+              delayed (priority: LAST) {
                 if (defending.pokemonGX || defending.pokemonEX) {
                   def pcs = defending
                   after KNOCKOUT, pcs, {
