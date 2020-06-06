@@ -2229,10 +2229,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Your opponent chooses 1 of their own Pokémon. This attack does 90 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost P
             onAttack {
-              def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.bench, "Opponent used Charming Stamp. Select a Pokémon to have 90 damage dealt to it.", 1)
-              opp.bench.findAll { list.contains(it) }.each {
-                damage 90 it
-              }
+              damage 90, opp.all.oppSelect("Opponent used $move. Select a Pokémon to have 90 damage dealt to it.")
             }
           }
         };
