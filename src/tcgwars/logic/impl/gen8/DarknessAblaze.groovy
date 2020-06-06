@@ -2400,7 +2400,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP120, type:D, retreatCost:2) {
         weakness G
         move "Assault Gate", {
-          text "90 damage. If this Pokémon wasn''t moved from your Bench to the Active Spot during your turn, this attack does nothing. This attack isn’t affected by Weakness."
+          text "90 damage. If this Pokémon wasn’t moved from your Bench to the Active Spot during your turn, this attack does nothing. This attack isn’t affected by Weakness."
           energyCost D
           attackRequirement {}
           onAttack {
