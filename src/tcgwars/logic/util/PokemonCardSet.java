@@ -302,6 +302,14 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return getTopPokemonCard().getCardTypes().is(CardType.TAG_TEAM);
   }
 
+  public boolean isPokemonV(){
+    return getTopPokemonCard().getCardTypes().is(CardType.POKEMON_V);
+  }
+
+  public boolean isPokemonVMAX(){
+    return getTopPokemonCard().getCardTypes().is(CardType.VMAX);
+  }
+
   public List<Weakness> getWeaknesses(Battleground bg){
     return bg.em().activateGetter(new GetWeaknesses(this));
   }
