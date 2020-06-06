@@ -2846,7 +2846,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost F
             onAttack {
               damage 120
-              my.deck.subList(0, 4).discard()
+              if (my.deck) my.deck.subList(0, 4).discard()
             }
           }
         };
