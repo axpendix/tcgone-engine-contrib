@@ -3311,6 +3311,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           resistance P, MINUS20
           move "Run Around", {
             text "Switch this Pokémon with 1 of your Benched Pokémon."
+            attackRequirement {
+              assert my.bench : "Your bench has no Pokémon."
+            }
             onAttack {
               switchYourActive()
             }
