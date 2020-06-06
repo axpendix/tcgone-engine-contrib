@@ -1808,7 +1808,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
-      case GALARIAN_FARFETCH_D_87:
+      case GALARIAN_FARFETCH_D_87: //TODO: Get data on this card.
       return basic (this, hp:HP010, type:C, retreatCost:2) {
         weakness Y
         resistance F, MINUS30
@@ -1908,19 +1908,19 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness G
         move "Sand Impulse", {
-          text "20 damage. This attack does 10 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance.)"
+          text "10+ damage. This attack does 10 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance.)"
           energyCost F
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 10
           }
         }
       };
       case VIBRAVA_93:
       return evolution (this, from:"Trapinch", hp:HP080, type:F, retreatCost:1) {
         weakness G
-        move "Sand Impulse", {
-          text "20 damage. This attack does 10 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance.)"
+        move "Land's Impulse", {
+          text "20 damage. If there is any Stadium card in play, this attack does 10 more damage."
           energyCost F
           attackRequirement {}
           onAttack {
@@ -2054,7 +2054,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Power Blast", {
-          text "130 damage. Discard an Energy attached to this Pokémon."
+          text "130 damage. Discard a [F] Energy attached to this Pokémon."
           energyCost F, F, C, C
           attackRequirement {}
           onAttack {
@@ -2380,7 +2380,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Inkay", hp:HP120, type:D, retreatCost:3) {
         weakness G
         move "Eerie Wave", {
-          text "Your opponent’s Active Pokémon is now Confused."
+          text "50 damage. Your opponent’s Active Pokémon is now Confused."
           energyCost D, C
           attackRequirement {}
           onAttack {
