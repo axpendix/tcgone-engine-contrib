@@ -531,7 +531,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case TSAREENA_16:
-      return evolution (this, from:"Steenee", hp:HP150, type:null, retreatCost:2) {
+      return evolution (this, from:"Steenee", hp:HP150, type:G, retreatCost:2) {
         weakness R
         move "Power Whip", {
           text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon for each Energy attached to this Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
@@ -663,7 +663,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case TORCHIC_23:
-      return basic (this, hp:HP060, type:R, retreatCost:null) {
+      return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
         move "Call for Family", {
           text "Search your deck for a Basic Pokémon and put it on your Bench. Then, shuffle your deck."
@@ -683,7 +683,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case COMBUSKEN_24:
-      return evolution (this, from:"Torchic", hp:HP090, type:R, retreatCost:null) {
+      return evolution (this, from:"Torchic", hp:HP090, type:R, retreatCost:1) {
         weakness W
         move "Smash Kick", {
           text "20 damage. "
@@ -752,7 +752,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case PANSEAR_28:
-      return basic (this, hp:HP060, type:R, retreatCost:null) {
+      return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
         move "Live Coal", {
           text "10 damage. "
@@ -1013,7 +1013,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case PANPOUR_43:
-      return basic (this, hp:HP060, type:W, retreatCost:null) {
+      return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
         move "Water Gun", {
           text "10 damage. "
@@ -2107,7 +2107,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case SPINARAK_104:
-      return basic (this, hp:HP060, type:D, retreatCost:null) {
+      return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness F
         move "Hang Down", {
           text "10 damage. "
@@ -2473,7 +2473,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case GRIMMSNARL_VMAX_126:
-      return evolution (this, from:"Grimmsnarl V", hp:HP330, type:null, retreatCost:3) {
+      return evolution (this, from:"Grimmsnarl V", hp:HP330, type:D, retreatCost:3) {
         weakness G
         move "G-Max Drill", {
           text "170+ damage. This attack does 50 more damage for each extra [D] Energy attached to this Pokémon (in addition to this attack’s cost). You can’t add more than 100 damage in this way."
