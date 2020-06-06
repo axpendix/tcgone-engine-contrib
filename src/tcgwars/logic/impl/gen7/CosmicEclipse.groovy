@@ -2959,7 +2959,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
+                  if (it.to == self && it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
                     bc "Solid Shell -30"
                     it.dmg -= hp(30)
                   }
