@@ -1905,7 +1905,7 @@ public enum UltraPrism implements LogicCardInfo {
           }
 
           move "Abyssal Sleep", {
-            text "120 damage. Your opponentâ€™s Active PokÃ©mon is now Asleep. Your opponent flips 2 coins instead of 1 between turns. If either of them is tails, that PokÃ©mon is still Asleep."
+            text "120 damage. Your opponent's Active Pokémon is now Asleep. Your opponent flips 2 coins instead of 1 between turns. If either of them is tails, that Pokémon is still Asleep."
             energyCost D, D, D, D
             onAttack {
               damage 120
