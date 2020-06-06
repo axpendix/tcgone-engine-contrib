@@ -2686,7 +2686,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             delayedA {
               def power=false
               before PLAY_TRAINER, {
-                if (ef.supporter && bg.currentTurn==self.owner.opposite) {
+                if (ef.supporter && bg.currentTurn==self.owner.opposite && ef.reason==PLAY_FROM_HAND) {
                   power=true
                 }
               }
@@ -2696,7 +2696,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               before null, null, Source.TRAINER_CARD, {
                 def target=e.getTarget(bg)
                 if (power && target && target.owner==self.owner){
-                  bc "Obnoxious Whirring prevents effects from Supporter cards done to $self."
+                  bc "$bwAbility prevents effects from Supporter cards done to $self."
                   prevent()
                 }
               }
