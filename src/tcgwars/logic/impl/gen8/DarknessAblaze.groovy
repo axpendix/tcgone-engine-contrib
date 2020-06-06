@@ -2513,7 +2513,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case ETERNATUS_VMAX_128:
-      return evolution (this, from:"Eternatus V", hp:HP340, type:D, retreatCost:2) {
+      return evolution (this, from:"Eternatus V", hp:HP340, type:D, retreatCost:3) {
         weakness F
         bwAbility "Infinity Zone", {
           text "If all of your Pokémon in play are [D], you may now have up to 8 [D] Pokémon on your Bench and can’t play any other type of Pokémon. (When this Ability no longer works, discard your Benched Pokémon until there are 5 left.)"
