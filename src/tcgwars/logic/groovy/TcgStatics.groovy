@@ -1153,24 +1153,23 @@ class TcgStatics {
   //    - Can be used with no arguments, or with a condition and additional text included.
   //    - If a closure is given, it'll check for any "it" element in bench returning true.
   //    - Optional params:
+  //      + type: if set, restricts to benched Pokémon of a single specific type.
   //      + opp: If true, checks for the opponent's bench instead of "my" bench.
   //      + repText: If true, instead of adding cText at the end of the assert it'll be the only thing printed.
   static void checkAnyBench(params=[:], Closure c, String cText) {
     def checkedBench = params.opp ? opp.bench : my.bench
     assert (
-      if (c != null) { checkedBench.any{c(it)} } else { checkedBench }
+      if (c != null) {
+        checkedBench.any{ (if (params.type) {it.types.contains(params.type)} else {true}) && c(it)}
+      } else { checkedBench }
     ) : (
-      if (params.repText) { cText } else {
-        (
-          if (params.opp) { "Your opponent doesn't" } else { "You don't" } 
-        ) + " have any Benched Pokémon that " + (
-          if (cText) {
-            cText
-          } else {
-            "follow the stated condition(s)."
-          }
-        )
-      }
+      if (params.repText) {
+          cText
+        } else {
+          "You${params.opp ? "r opponent does" : " do"}n't have any ${param.type ? params.type.getShortNotation() + " " : ""}Benched Pokémon" + (if (c != null) {
+            " that ${cText ? cText : "follow the stated condition(s)"}"
+          })
+        }
     )
   }
   static void checkMyBench(params=[:], Closure c, String cText) {
