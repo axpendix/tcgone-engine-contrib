@@ -409,7 +409,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case KARRABLAST_8:
-      return basic (this, hp:HP060, type:G, retreatCost:20) {
+      return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
         move "Continuous Headbutt", {
           text "20x damage. Flip a coin until you get tails. This does 20 damage times the number of heads."
