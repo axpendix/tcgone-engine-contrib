@@ -730,6 +730,14 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 30
           }
         }
+        move "Raging Flare", {
+          text "80+ damage. This attack does an additional 10 damage for each damage counter on this Pokemon."
+          energyCost R, R, C
+          attackRequirement {}
+          onAttack {
+            damage 80
+          }
+        }
       };
       case VICTINI_27:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
