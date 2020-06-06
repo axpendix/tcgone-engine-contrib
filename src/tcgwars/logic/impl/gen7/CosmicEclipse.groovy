@@ -4095,6 +4095,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Nice-Nice Catch", {
             text "Draw 2 cards."
             energyCost C
+            attackRequirement {
+              assert my.deck : "Your deck is empty."
+            }
             onAttack {
               draw 2
             }
