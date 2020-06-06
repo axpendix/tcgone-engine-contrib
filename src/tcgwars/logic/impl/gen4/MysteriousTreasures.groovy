@@ -959,7 +959,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               //  TODO: Implement this oddly unique energy modification.
-              //  Notes (taken from JP Rulings, none in english):
+              //  Notes (taken from JP FAQs, none in english rulings):
               //    * The flipped energy cannot use any abilities included in it (see: Call Energy MD 92)
               //    * Neither does it keep its name while flipped. (See: Gorebyss LM 17)
               //    * The flipped energy can be moved around (see: Arcanine SW 22). But once moved it's still flipped and only provides [C] with no extra effect.
@@ -2695,7 +2695,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
 
             if (choice == 1){
-              chosenCard = my.deck.search(count:1, "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil.", {isValidFossilCard(it)} )
+              chosenCard = my.deck.search(count:1, "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil.", {
+                if (it.cardTypes.is(STAGE2)){
+                  def debug_test = bg.gm().getBasicsFromStage2(it.name)
+                  bc "${debug_test}"
+                }
+                isValidFossilCard(it)
+                } )
             } else /*if (choice == 2)*/ {
               chosenCard = my.discard.findAll{isValidFossilCard(it)}.select()
             }
