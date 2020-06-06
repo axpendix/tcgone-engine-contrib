@@ -1264,11 +1264,11 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
         move "Thunderbolt", {
-          text "60 damage. Discard all Energy from this Pokémon."
+          text "50 damage. Discard all Energy from this Pokémon."
           energyCost L, C
           attackRequirement {}
           onAttack {
-            damage 60
+            damage 50
           }
         }
       };
