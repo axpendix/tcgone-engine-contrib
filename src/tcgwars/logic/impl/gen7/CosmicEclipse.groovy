@@ -2627,7 +2627,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
             energyCost C, C
             attackRequirement {
-              assert opp.bench
+              assert opp.bench : "Your opponent has no benched Pokémon."
             }
             onAttack {
               sw(opp.active, opp.bench.select())
