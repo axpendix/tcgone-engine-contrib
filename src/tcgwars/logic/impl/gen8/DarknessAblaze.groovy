@@ -204,7 +204,7 @@ public enum DarknessAblaze implements LogicCardInfo {
   CORVISQUIRE_163 ("Corvisquire", 163, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   CORVIKNIGHT_164 ("Corviknight", 164, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
   ADVERSITY_GLOVES_165 ("Adversity Gloves", 165, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
-  ADVERSITY_GLOVES_165 ("Adversity Gloves", 165, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
+  BIG_PARASOL_166 ("Big Parasol", 166, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
   BIRD_KEEPER_167 ("Bird Keeper", 167, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   CHEERING_YELL_HORN_168 ("Cheering Yell Horn", 168, Rarity.HOLORARE, [TRAINER, ITEM]),
   GLIMWOOD_TANGLE_169 ("Glimwood Tangle", 169, Rarity.HOLORARE, [TRAINER, STADIUM]),
@@ -3205,16 +3205,16 @@ public enum DarknessAblaze implements LogicCardInfo {
         allowAttach {to->
         }
       };
-      case ADVERSITY_GLOVES_165:
+      case BIG_PARASOL_166:
       return pokemonTool (this) {
-        text "As long as the Pokémon this card is attached to is your Active Pokémon, prevent all effects of your opponent’s attacks, except damage, done to all of your Pokémon (existing effects are not removed)."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
-        }
-      };
+				text "As long as the Pokemon this card is attached to is your Active Pokemon, prevent all effects of your opponent’s attacks, except damage, done to all of your Pokemon (existing effects are not removed)."
+				onPlay {reason->
+				}
+				onRemoveFromPlay {
+				}
+				allowAttach {to->
+				}
+			};
       case BIRD_KEEPER_167:
       return supporter (this) {
         text "Switch your Active Pokémon with 1 of your Benched Pokémon. Then, draw 3 cards."
