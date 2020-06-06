@@ -1170,17 +1170,8 @@ public enum DeltaSpecies implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            if (self.cards.filterByType(ENERGY).findAll {
-              it.asEnergyCard().containsTypePlain(W)
-            }) {
-              damage 20
-            }
-
-            if (self.cards.filterByType(ENERGY).findAll {
-              it.asEnergyCard().containsTypePlain(P)
-            }) {
-              discardDefendingSpecialEnergy(delegate)
-            }
+            if (self.cards.filterByEnergyType(W)) { damage 20 }
+            if (self.cards.filterByEnergyType(P)) { discardDefendingSpecialEnergy(delegate) }
           }
         }
       };
