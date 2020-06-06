@@ -4036,8 +4036,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Search your deck for any number of Eevee and Eevee-GX and put them onto your Bench. Then, shuffle your deck."
             energyCost C
             attackRequirement {
-              assert my.deck.notEmpty
-              assert my.bench.notFull
+              assert my.deck.notEmpty : "Your deck is empty."
+              assert my.bench.notFull : "Your bench is full."
             }
             onAttack {
               deck.search (max: my.bench.freeBenchCount, { it.name == "Eevee" || it.name == "Eevee-GX" }).each {
