@@ -3683,12 +3683,11 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Sweet Panic", {
             text "110 damage. If your opponent's Active Pokémon isn't Confused, this attack does nothing."
             energyCost Y
+            attackRequirement {
+              assert defending.isSPC(CONFUSED) : "The Defending Pokémon is not Confused."
+            }
             onAttack {
-              if (defending.isSPC(CONFUSED)) {
-                damage 110
-              } else {
-                bc "Sweet Panic has no effect."
-              }
+              damage 110
             }
           }
         };
