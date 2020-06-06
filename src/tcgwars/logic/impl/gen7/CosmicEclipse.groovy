@@ -3708,7 +3708,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost Y, C, C
             onAttack {
               damage 80
-              if(bg.em().retrieveObject("last_supporter_play_turn") == bg.turnCount && bg.em().retrieveObject("last_tag_team_supporter_play_turn") == bg.turnCount) {
+              if(bg.em().retrieveObject("last_tag_team_supporter_play_turn") == bg.turnCount) {
                 damage 80
               }
             }
