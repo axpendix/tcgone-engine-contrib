@@ -2652,7 +2652,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert my.deck : "Your deck is empty."
             }
             onAttack {
-              my.deck.search(cardTypeFilter(STADIUM)).moveTo(hand)
+              my.deck.search(cardTypeFilter(STADIUM)).showToOpponent("Opponent's chosen Stadium").moveTo(hand)
               shuffleDeck()
             }
           }
