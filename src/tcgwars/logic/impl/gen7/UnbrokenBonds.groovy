@@ -3580,7 +3580,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 70
-              flip {afterDamage{discardDefendingEnergy();discardDefendingEnergy()}}
+              flip { afterDamage{ 2.times{ discardDefendingEnergy() } } }
             }
           }
 
