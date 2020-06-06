@@ -1925,7 +1925,9 @@ public enum RebelClash implements LogicCardInfo {
           onActivate {r->
             if (r==PLAY_FROM_HAND && opp.active.cards.energyCount(C) && confirm("Use Prankish?")) {
               powerUsed()
-              opp.active.cards.filterByType(ENERGY).select(count:1).moveTo(addToTop: true, opp.deck)
+              targeted (opp.active, SRC_ABILITY){
+                opp.active.cards.filterByType(ENERGY).select(count:1).moveTo(addToTop: true, opp.deck)
+              }
             }
           }
         }
