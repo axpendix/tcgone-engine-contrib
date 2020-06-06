@@ -2959,7 +2959,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (it.to == self && it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
                     bc "Solid Shell -30"
                     it.dmg -= hp(30)
                   }
@@ -3383,7 +3383,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               my.deck : "Your deck is empty."
             }
             onAttack {
-              my.deck.search(max:2, "Search your deck for up to 2 Tag Team cards.", cardTypeFilter(TAG_TEAM))showToOpponent("Your opponent's chosen cards").moveTo(my.hand)
+              my.deck.search(max:2, "Search your deck for up to 2 Tag Team cards.", cardTypeFilter(TAG_TEAM)).showToOpponent("Your opponent's chosen cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
