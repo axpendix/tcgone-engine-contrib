@@ -2113,6 +2113,14 @@ public enum DarknessAblaze implements LogicCardInfo {
 
           }
         }
+        move "Sludge Whirlpool", {
+          text "120 damage. "
+          energyCost D, C, C, C
+          attackRequirement {}
+          onAttack {
+            damage 120
+          }
+        }
       };
       case SPINARAK_104:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
@@ -2353,6 +2361,14 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+          }
+        }
+        move "Bad Brawl", {
+          text "90+ damage. If you played Piers this turn, this attack does 90 more damage."
+          energyCost D, C, C
+          attackRequirement {}
+          onAttack {
+            damage 90
           }
         }
       };
