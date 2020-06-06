@@ -2023,8 +2023,10 @@ public enum TeamUp implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && confirm('Use Twilight Eyes?')){
                 powerUsed()
-                if(opp.active.cards.filterByType(ENERGY)){
-                  opp.active.cards.filterByType(ENERGY).select("Discard").discard()
+                targeted (opp.active, SRC_ABILITY){
+                  if(opp.active.cards.filterByType(ENERGY)){
+                    opp.active.cards.filterByType(ENERGY).select("Discard").discard()
+                  }
                 }
               }
             }
@@ -3526,7 +3528,9 @@ public enum TeamUp implements LogicCardInfo {
         return supporter(this) {
           text "You can play this card only if your opponent's Active Pokémon is a Basic Pokémon.\nPut an Energy from your opponent's Active Pokémon on top of their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            opp.active.cards.filterByType(ENERGY).select("Choose the energy to put on top of their deck").moveTo(addToTop: true, opp.deck)
+            targeted (opp.active, TRAINER_CARD) {
+              opp.active.cards.filterByType(ENERGY).select("Choose the energy to put on top of their deck").moveTo(addToTop: true, opp.deck)
+            }
           }
           playRequirement{
             assert opp.active.basic
