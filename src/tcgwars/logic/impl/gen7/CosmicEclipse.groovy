@@ -3594,7 +3594,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert my.deck : "Your deck is empty."
             }
             onAttack {
-              deck.search(max: 2, pokemonTypeFilter(Y)).moveTo(hand)
+              deck.search(max: 2, pokemonTypeFilter(Y)).showToOpponent("Your opponent's chosen cards").moveTo(hand)
               shuffleDeck()
             }
           }
