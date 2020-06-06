@@ -38,7 +38,7 @@ import tcgwars.logic.util.*;
  */
 
 public enum DarknessAblaze implements LogicCardInfo {
-    
+
   BUTTERFREE_V_1 ("Butterfree V", 1, Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
   BUTTERFREE_VMAX_2 ("Butterfree VMAX", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, VMAX, _GRASS_]),
   PARAS_3 ("Paras", 3, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
@@ -231,9 +231,9 @@ public enum DarknessAblaze implements LogicCardInfo {
   GALARIAN_STUNFISK_V_190 ("Galarian Stunfisk V", 190, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _METAL_]),
   KABU_191 ("Kabu", 191, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
   POKEMON_BREEDER_S_NURTURING_192 ("Pokémon Breeder's Nurturing", 192, Rarity.ULTRARARE, [TRAINER, SUPPORTER]);
-    
+
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
-  
+
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
@@ -292,7 +292,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost G
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Blast Wind", {
@@ -457,7 +457,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 			};
@@ -498,7 +498,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Flop", {
@@ -518,7 +518,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Slap", {
@@ -538,7 +538,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Setback Kick", {
@@ -630,7 +630,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Kindle", {
@@ -670,7 +670,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Live Coal", {
@@ -739,7 +739,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Combustion", {
@@ -819,7 +819,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost R
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 			};
@@ -914,7 +914,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost W
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Icy Snow", {
@@ -971,7 +971,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 			};
@@ -1000,7 +1000,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Surf", {
@@ -1163,7 +1163,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Wave Splash", {
@@ -1183,7 +1183,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Poison Tentacles", {
@@ -1203,7 +1203,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Poison Whip", {
@@ -1312,7 +1312,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Lightning Ball", {
@@ -1352,7 +1352,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Thunder Jolt", {
@@ -1550,7 +1550,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Psychic", {
@@ -1613,7 +1613,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Gentle Slap", {
@@ -1634,7 +1634,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost P
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Double Spin", {
@@ -1687,7 +1687,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Flop", {
@@ -1746,7 +1746,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 			};
@@ -2062,7 +2062,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Rock Hurl", {
@@ -2082,7 +2082,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Sludge Whirlpool", {
@@ -2102,7 +2102,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 			};
@@ -2376,7 +2376,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost D, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Random Peck", {
@@ -2408,7 +2408,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Tail Slap", {
@@ -2428,7 +2428,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 			};
@@ -2440,7 +2440,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost D
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Sharp Fang", {
@@ -2632,7 +2632,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost M
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 			};
@@ -2645,7 +2645,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost M
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Spinning Attack", {
@@ -2767,7 +2767,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Kick Attack", {
@@ -2787,7 +2787,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 			};
@@ -2799,7 +2799,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Tail Smash", {
@@ -2836,7 +2836,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Dig Claws", {
@@ -2897,7 +2897,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Cat Kick", {
@@ -2917,7 +2917,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Moon Impact", {
@@ -2938,7 +2938,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C, C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Heavy Storm", {
@@ -2959,7 +2959,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 				move "Max Wing", {
@@ -2985,7 +2985,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 					energyCost C, C
 					attackRequirement {}
 					onAttack {
-						
+
 					}
 				}
 			};
