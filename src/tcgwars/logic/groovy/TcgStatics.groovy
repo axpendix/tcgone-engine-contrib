@@ -1154,23 +1154,39 @@ class TcgStatics {
   //    - If a closure is given, it'll check for any "it" element in bench returning true.
   //    - Optional params:
   //      + type: if set, restricts to benched Pokémon of a single specific type.
+  //      + isEX/isGX/isV: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
   //      + opp: If true, checks for the opponent's bench instead of "my" bench.
   //      + repText: If true, instead of adding cText at the end of the assert it'll be the only thing printed.
   static void checkAnyBench(params=[:], Closure c, String cText) {
     def checkedBench = params.opp ? opp.bench : my.bench
-    assert (
-      if (c != null) {
-        checkedBench.any{ (if (params.type) {it.types.contains(params.type)} else {true}) && c(it)}
-      } else { checkedBench }
-    ) : (
-      if (params.repText) {
-          cText
-        } else {
-          "You${params.opp ? "r opponent does" : " do"}n't have any ${param.type ? params.type.getShortNotation() + " " : ""}Benched Pokémon" + (if (c != null) {
-            " that ${cText ? cText : "follow the stated condition(s)"}"
-          })
-        }
+
+    def benchFilter = (
+      if (c == null) { true } else {
+        (
+          if (params.type) {it.types.contains(params.type)} else {true}
+        ) && (
+          if (!(params.isEX || params.isEX || params.isV)) {true} else {
+            (params.isEX && it.pokemonEX) ||
+            (params.isGX && it.pokemonGX) ||
+            (params.isV && it.pokemonV)
+          }
+        ) && (
+          c(it)
+        )
+      }
     )
+
+    def failMessage = if (params.repText) { cText } else {
+      "You" + (params.opp ? "r opponent does" : " do") + "n't have any " + (
+        param.type ? params.type.getShortNotation() + " " : ""
+      ) + "Benched Pokémon" + (
+        if (c != null) {
+          " that " + (cText ? cText : "follow the stated condition(s)")
+        }
+      )
+    }
+
+    assert benchFilter : failMessage
   }
   static void checkMyBench(params=[:], Closure c, String cText) {
     params.opp = false
