@@ -3210,13 +3210,14 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Ominous News", {
             text "Discard a Special Energy from 1 of your opponent's Pokémon."
             energyCost C
+            attackRequirement {
+              assert opp.all.findAll({it.cards.filterByType(SPECIAL_ENERGY)}) : "No Special Energy attached to opponent's Pokémon."
+            }
             onAttack {
               def targets = opp.all.findAll ({ it.cards.filterByType(SPECIAL_ENERGY) })
-              if (targets) {
-                def selectedPokemon = targets.select("Choose a Pokémon to discard a Special Energy from.")
-                def selectedEnergy = selectedPokemon.cards.filterByType(SPECIAL_ENERGY).select("Choose a Special Energy to discard.")
-                selectedEnergy.discard()
-              }
+              def selectedPokemon = targets.select("Choose a Pokémon to discard a Special Energy from.")
+              def selectedEnergy = selectedPokemon.cards.filterByType(SPECIAL_ENERGY).select("Choose a Special Energy to discard.")
+              selectedEnergy.discard()
             }
           }
           move "Dirty Throw", {
