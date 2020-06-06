@@ -4802,7 +4802,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
             //assert my.bench.findAll({ it.types.contains(N) }) : "No [N] Pokémon on your bench."
-            checkMyBench(repText: true, {it.types.contains(N)}, "You don't have any [N] Benched Pokémon")
+            checkMyBench(repText: true, type: N)
           }
         };
       case PROFESSOR_OAK_S_SETUP_201:
