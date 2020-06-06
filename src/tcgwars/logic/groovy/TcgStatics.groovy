@@ -1160,12 +1160,15 @@ class TcgStatics {
   static void checkAnyBench(params=[:], Closure c, String cText) {
     def checkedBench = params.opp ? opp.bench : my.bench
 
+    def isPokeCnt = 0
+    [params.isEX, params.isGX, params.isV].each{isPokeCnt += 1}
+
     def benchFilter = (
       if (c == null) { true } else {
         (
           if (params.type) {it.types.contains(params.type)} else {true}
         ) && (
-          if (!(params.isEX || params.isEX || params.isV)) {true} else {
+          if (!isPokeCnt) {true} else {
             (params.isEX && it.pokemonEX) ||
             (params.isGX && it.pokemonGX) ||
             (params.isV && it.pokemonV)
@@ -1176,10 +1179,22 @@ class TcgStatics {
       }
     )
 
+    def pokeString = "Pokémon"
+    if (isPokeCnt) (
+      pokeString = ""
+      i = 1
+      [(params.isEX, "Pokémon-EX"), (params.isGX, "Pokémon-GX"), (params.isV, "Pokémon V")].each{
+        if (it[0]) {
+          pokeString += it[1] + (if (i == isPokeCnt) "" else if (i == isPokeCnt-1) " or " else ", ")
+          i += 1
+        }
+      }
+    )
+
     def failMessage = if (params.repText) { cText } else {
       "You" + (params.opp ? "r opponent does" : " do") + "n't have any " + (
         param.type ? params.type.getShortNotation() + " " : ""
-      ) + "Benched Pokémon" + (
+      ) + "Benched $pokeString" + () + (
         if (c != null) {
           " that " + (cText ? cText : "follow the stated condition(s)")
         }
