@@ -3225,8 +3225,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       };
       case KABU_171:
       return supporter (this) {
-        text "Shuffle your hand into your deck and draw 4 cards. If you only have 1 Pokémon in play" +
-          "draw 8 cards instead."
+        text "Shuffle your hand into your deck and draw 4 cards. If you only have 1 Pokémon in play, draw 8 cards instead."
         onPlay {
         }
         playRequirement{
@@ -3300,8 +3299,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       };
       case SPIKEMUTH_180:
       return stadium (this) {
-        text "Whenever a player’s Pokémon is moved from the Active Spot to the Bench during their turn" +
-          "put 2 damage counters on that Pokémon."
+        text "Whenever a player’s Pokémon is moved from the Active Spot to the Bench during their turn put 2 damage counters on that Pokémon."
         onPlay {
         }
         onRemoveFromPlay{
@@ -3327,8 +3325,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       };
       case TURBO_PATCH_183:
       return itemCard (this) {
-        text "Flip a coin. If heads" +
-          "choose a basic Energy card from your discard pile and attach it to 1 of your Basic Pokémon (excluding Pokémon-GX)."
+        text "Flip a coin. If heads, choose a basic Energy card from your discard pile and attach it to 1 of your Basic Pokémon (excluding Pokémon-GX)."
         onPlay {
         }
         playRequirement{
