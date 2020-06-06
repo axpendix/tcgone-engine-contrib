@@ -2873,10 +2873,11 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Once during your turn (before your attack), you may search your deck for a card, shuffle your deck, then put that card on top of it."
             actionA {
               checkLastTurn()
-              assert my.deck
+              assert my.deck : "Your deck is empty."
               powerUsed()
               def tar = my.deck.select(min: 0, max: 1, "Choose 1 card to put on top of your deck.").first()
               my.deck.remove(tar)
+              shuffleDeck()
               my.deck.add(0, tar)
             }
           }
