@@ -147,6 +147,7 @@ public enum Collection {
   COSMIC_ECLIPSE(427, "CEC", "gen7.CosmicEclipse"),
 
   // Sword & Shield
+  SWORD_SHIELD_PROMOS(429, "SSH", "gen8.SwordShieldPromos"),
   SWORD_SHIELD(430, "SSH", "gen8.SwordShield"),
   REBEL_CLASH(431, "RCL", "gen8.RebelClash"),
   DARKNESS_ABLAZE(432, "DAB", "gen8.DarknessAblaze"),
