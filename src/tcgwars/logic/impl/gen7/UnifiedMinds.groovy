@@ -1129,8 +1129,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             onAttack {
               damage 50
               afterDamage {
-                assert opp.bench : "Your opponent has no Pokémon on their bench."
-                moveEnergy(opp.active, opp.bench)
+                if (opp.bench) { moveEnergy(may: true, opp.active, opp.bench) }
               }
             }
           }
