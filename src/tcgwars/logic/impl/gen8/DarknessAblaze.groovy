@@ -3207,14 +3207,14 @@ public enum DarknessAblaze implements LogicCardInfo {
       };
       case BIG_PARASOL_166:
       return pokemonTool (this) {
-				text "As long as the Pokemon this card is attached to is your Active Pokemon, prevent all effects of your opponent’s attacks, except damage, done to all of your Pokemon (existing effects are not removed)."
-				onPlay {reason->
-				}
-				onRemoveFromPlay {
-				}
-				allowAttach {to->
-				}
-			};
+        text "As long as the Pokémon this card is attached to is your Active Pokémon, prevent all effects of your opponent’s attacks, except damage, done to all of your Pokémon (existing effects are not removed)."
+        onPlay {reason->
+        }
+        onRemoveFromPlay {
+        }
+        allowAttach {to->
+        }
+      };
       case BIRD_KEEPER_167:
       return supporter (this) {
         text "Switch your Active Pokémon with 1 of your Benched Pokémon. Then, draw 3 cards."
