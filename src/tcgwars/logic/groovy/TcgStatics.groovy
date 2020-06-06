@@ -1162,7 +1162,7 @@ class TcgStatics {
     ) : (
       if (params.repText) { cText } else {
         (
-          if (params.opp) { "You don't" } else { "Your opponent doesn't" }
+          if (params.opp) { "Your opponent doesn't" } else { "You don't" } 
         ) + " have any Benched Pokémon that " + (
           if (cText) {
             cText
