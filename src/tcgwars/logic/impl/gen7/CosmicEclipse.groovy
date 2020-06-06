@@ -3268,7 +3268,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 120
               delayed (priority: LAST) {
                 def pcs = defending
-                after KNOCKOUT, pcs, {
+                before KNOCKOUT, pcs, {
                   bc "Red Banquet gives the player an additional prize."
                   bg.em().run(new TakePrize(self.owner, pcs))
                 }

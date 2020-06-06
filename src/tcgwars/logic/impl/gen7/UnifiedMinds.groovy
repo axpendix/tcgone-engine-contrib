@@ -2925,7 +2925,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               delayed (priority: LAST) {
                 if (defending.pokemonGX || defending.pokemonEX) {
                   def pcs = defending
-                  after KNOCKOUT, pcs, {
+                  before KNOCKOUT, pcs, {
                     bc "Knocked Out Pokémon was GX or EX. Player gets to take an additional prize."
                     bg.em().run(new TakePrize(self.owner, pcs))
                   }

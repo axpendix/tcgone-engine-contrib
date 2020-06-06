@@ -1615,7 +1615,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
               gxPerform()
               delayed (priority: LAST) {
                 def pcs = defending
-                after KNOCKOUT, pcs, {
+                before KNOCKOUT, pcs, {
                   bg.em().run(new TakePrize(self.owner, pcs))
                   bg.em().run(new TakePrize(self.owner, pcs))
                 }
