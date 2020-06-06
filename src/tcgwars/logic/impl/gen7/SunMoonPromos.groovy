@@ -3001,18 +3001,18 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
 
               def pcs = defending
-              delayed {
-                before BETWEEN_TURNS, {
-                  if (pcs.topPokemonCard != null && bg.currentTurn == self.owner.opposite) {
-                    targeted (pcs) {
+              targeted(pcs){
+                delayed {
+                  before BETWEEN_TURNS, {
+                    if (pcs.topPokemonCard != null && bg.currentTurn == self.owner.opposite) {
                       bc "Pale Moon GX's effect occurs."
                       new Knockout(pcs).run(bg)
                     }
                   }
+                  unregisterAfter 2
+                  after SWITCH, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
                 }
-                unregisterAfter 2
-                after SWITCH, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
               }
             }
           }
