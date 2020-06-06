@@ -1226,7 +1226,7 @@ public enum LostThunder implements LogicCardInfo {
             }
           }
           move "Burning Magma GX" , {
-            text "Discard the top 5 cards of your opponent's deck. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "Discard the top 5 cards of your opponent's deck. (You can't use more than 1 GX attack in a game.)"
             energyCost R
             attackRequirement{
               gxCheck()
@@ -1415,7 +1415,7 @@ public enum LostThunder implements LogicCardInfo {
             }
           }
           move "Burst GX" , {
-            text "Discard 1 of your Prize cards. If it's an Energy card, attach it to 1 of your Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "Discard 1 of your Prize cards. If it's an Energy card, attach it to 1 of your Pokémon. (You can't use more than 1 GX attack in a game.)"
             energyCost R
             attackRequirement{
               gxCheck()
@@ -1595,7 +1595,7 @@ public enum LostThunder implements LogicCardInfo {
             }
           }
           move "Brinicles GX" , {
-            text "150 damage. Switch this Pokémon with 1 of your Benched Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "150 damage. Switch this Pokémon with 1 of your Benched Pokémon. (You can't use more than 1 GX attack in a game.)"
             energyCost W,W,C
             attackRequirement{
               gxCheck()
@@ -2111,7 +2111,7 @@ public enum LostThunder implements LogicCardInfo {
             }
           }
           move "Full Voltage GX" , {
-            text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "Attach 5 basic Energy cards from your discard pile to your Pokémon in any way you like. (You can't use more than 1 GX attack in a game.)"
             energyCost L
             attackRequirement{
               gxCheck()
@@ -2435,7 +2435,7 @@ public enum LostThunder implements LogicCardInfo {
             }
           }
           move "Intercept GX" , {
-            text "60× damage. This attack does 60 damage times the amount of Energy attached to your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "60× damage. This attack does 60 damage times the amount of Energy attached to your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)"
             energyCost P,C,C
             attackRequirement{
               gxCheck()
@@ -2943,7 +2943,7 @@ public enum LostThunder implements LogicCardInfo {
             }
           }
           move "Lay the Smackdown GX" , {
-            text "220 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "220 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)"
             energyCost D,D,C
             attackRequirement{
               gxCheck()
@@ -3205,7 +3205,7 @@ public enum LostThunder implements LogicCardInfo {
             }
           }
           move "Sublimation GX" , {
-            text "If your opponent's Active Pokémon is an Ultra Beast, it is Knocked Out. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "If your opponent's Active Pokémon is an Ultra Beast, it is Knocked Out. (You can't use more than 1 GX attack in a game.)"
             energyCost Y,C
             attackRequirement{
               gxCheck()
@@ -3587,7 +3587,7 @@ public enum LostThunder implements LogicCardInfo {
             }
           }
           move "Dream Fear GX" , {
-            text "Choose 1 of your opponent's Benched Pokémon. Your opponent shuffles that Pokémon and all cards attached to it into their deck. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "Choose 1 of your opponent's Benched Pokémon. Your opponent shuffles that Pokémon and all cards attached to it into their deck. (You can't use more than 1 GX attack in a game.)"
             energyCost Y
             attackRequirement{
               gxCheck()
@@ -3798,7 +3798,7 @@ public enum LostThunder implements LogicCardInfo {
             }
           }
           move "Lost Purge GX" , {
-            text "Put your opponent's Active Pokémon and all cards attached to it in the Lost Zone. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "Put your opponent's Active Pokémon and all cards attached to it in the Lost Zone. (You can't use more than 1 GX attack in a game.)"
             energyCost C,C,C
             attackRequirement{
               gxCheck()

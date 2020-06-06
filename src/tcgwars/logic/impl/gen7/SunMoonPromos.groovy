@@ -1446,7 +1446,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
           move "Requiem GX" , {
-            text "250 damage. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "250 damage. (You can't use more than 1 GX attack in a game.)"
             energyCost P,P,P,C
             attackRequirement{
               gxCheck()
@@ -1760,7 +1760,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
           move "Thunderous Rain GX" , {
-            text "This attack does 100 damage to each of your opponent's Pokémon that has any Energy attached to it. (Don't apply Weakness and Resistance for Benched Pokémon.) (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "This attack does 100 damage to each of your opponent's Pokémon that has any Energy attached to it. (Don't apply Weakness and Resistance for Benched Pokémon.) (You can't use more than 1 GX attack in a game.)"
             energyCost L,L,L,L
             attackRequirement{
               gxCheck()
@@ -1794,7 +1794,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
           move "Liberation GX" , {
-            text "120× damage. Your opponent reveals their hand. This attack does 120 damage for each Energy card you find there. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "120× damage. Your opponent reveals their hand. This attack does 120 damage for each Energy card you find there. (You can't use more than 1 GX attack in a game.)"
             energyCost F,F,C,C
             attackRequirement{
               gxCheck()
@@ -1889,7 +1889,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
           move "Thundering Hurricane GX" , {
-            text "100× damage. Flip 4 coins. This attack does 100 damage for each heads. (You can't user more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "100× damage. Flip 4 coins. This attack does 100 damage for each heads. (You can't user more than 1 GX attack in a game.)"
             energyCost L,L,L
             attackRequirement{
               gxCheck()
@@ -1920,7 +1920,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
           move "Destructive Cyclone GX" , {
-            text "130 damage. Discard all Energy from your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "130 damage. Discard all Energy from your opponent's Active Pokémon. (You can't use more than 1 GX attack in a game.)"
             energyCost C,C,C
             attackRequirement{
               gxCheck()
@@ -2355,7 +2355,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
           move "Swift Run GX" , {
-            text "110 damage. Prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "110 damage. Prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn. (You can't use more than 1 GX attack in a game.)"
             energyCost L,C
             attackRequirement{
               gxCheck()
@@ -2412,7 +2412,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
           move "Joy Maker GX" , {
-            text "Put 3 cards from your discard pile into your hand. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "Put 3 cards from your discard pile into your hand. (You can't use more than 1 GX attack in a game.)"
             energyCost C
             attackRequirement{
               gxCheck()
