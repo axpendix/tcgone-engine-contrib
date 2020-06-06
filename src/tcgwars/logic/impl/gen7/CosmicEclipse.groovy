@@ -3708,8 +3708,18 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost Y, C, C
             onAttack {
               damage 80
-              // TODO: edit it to include only tag team supporters
-              if(bg.em().retrieveObject("last_supporter_play_turn") == bg.turnCount) damage 80
+              if(bg.em().retrieveObject("last_supporter_play_turn") == bg.turnCount && bg.em().retrieveObject("last_tag_team_supporter_play_turn") == bg.turnCount) {
+                damage 80
+              }
+            }
+          }
+          globalAbility {
+            delayed {
+              after PLAY_SUPPORTER, {
+                if(ef.cardToPlay.cardTypes.is(TAG_TEAM) && bg.currentTurn == self.owner) {
+                  bg.em().storeObject("last_tag_team_supporter_play_turn", bg.turnCount)
+                }
+              }
             }
           }
         };
