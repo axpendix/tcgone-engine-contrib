@@ -2905,7 +2905,10 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
 
               if (self.cards.energySufficient( thisMove.energyCost + [D, D, D, D, D] )) {
-                new Knockout(defending).run(bg)
+                def pcs = defending
+                targeted (pcs) {
+                  new Knockout(pcs).run(bg)
+                }
               }
             }
           }
