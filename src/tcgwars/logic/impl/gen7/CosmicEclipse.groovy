@@ -3642,7 +3642,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onActivate { r->
               if (r == PLAY_FROM_HAND && my.deck && confirm("Use Flower Picking?")) {
                 powerUsed()
-                opp.hand.select(hidden: true, count:2).moveTo(hidden: false, opp.deck)
+                opp.hand.select(hidden: true, count:2).showToMe("Opponent's cards being shuffled into their deck.").moveTo(hidden: false, opp.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }
