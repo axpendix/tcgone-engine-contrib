@@ -2010,15 +2010,16 @@ public enum BurningShadows implements LogicCardInfo {
             text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. The new Active Pokémon is now Burned, Paralyzed, and Poisoned. (You can't use more than 1 GX attack in a game.)"
             attackRequirement {
               gxCheck()
-              assert opp.bench.notEmpty : "Empty bench"
             }
             onAttack {
               gxPerform()
-              def pcs = opp.bench.select("Switch")
-              sw opp.active, pcs
-              apply POISONED
-              apply BURNED
-              apply PARALYZED
+              if opp.bench{
+                def pcs = opp.bench.select("Switch")
+                sw opp.active, pcs
+                apply POISONED, pcs
+                apply BURNED, pcs
+                apply PARALYZED, pcs
+              }
             }
           }
 
