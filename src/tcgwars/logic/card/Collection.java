@@ -149,6 +149,7 @@ public enum Collection {
   // Sword & Shield
   SWORD_SHIELD(430, "SSH", "gen8.SwordShield"),
   REBEL_CLASH(431, "RCL", "gen8.RebelClash"),
+  DARKNESS_ABLAZE(432, "DAB", "gen8.DarknessAblaze"),
 
 	//POKEMOD
   POKEMOD_BASE_SET(910, "MODBS", "pokemod.PokemodBaseSet"),
