@@ -3282,6 +3282,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Mountain Munch", {
             text "Discard the top card of your opponent's deck."
             energyCost D
+            attackRequirement {
+              assert opp.deck : "Your opponent's deck is empty."
+            }
             onAttack {
               opp.deck.subList(0, 1).discard()
             }
@@ -3296,8 +3299,8 @@ public enum CosmicEclipse implements LogicCardInfo {
                 after KNOCKOUT, pcs, {
                   bc "Red Banquet gives the player an additional prize."
                   bg.em().run(new TakePrize(self.owner, pcs))
+                  unregister()
                 }
-                unregisterAfter 1
               }
             }
           }
