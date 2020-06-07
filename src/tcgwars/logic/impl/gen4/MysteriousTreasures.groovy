@@ -288,9 +288,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Tail Influence", {
             text "30 damage. Your opponent flips a coin until he or she gets heads. For each tails, remove an Energy card attached to the Defending Pokémon and put it on the bottom of your opponent’s deck."
             energyCost C, C
-            attackRequirement {
-              assert defending.cards.any{it.cards.filterByType(ENERGY)} : "The defending Pokémon has no Energy cards attached to them"
-            }
+            attackRequirement {}
             onAttack {
               damage 30
               afterDamage{
