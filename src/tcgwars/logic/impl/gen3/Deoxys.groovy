@@ -963,12 +963,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              multiSelect(opp.all, 3).each{
-                targeted(it){
-                  damage 10, it
-                }
-              }
-
+              multiSelect(opp.all, 3).each{ damage 10, it }
             }
           }
           move "Rend", {
