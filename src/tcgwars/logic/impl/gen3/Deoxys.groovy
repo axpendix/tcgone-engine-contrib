@@ -846,7 +846,7 @@ public enum Deoxys implements LogicCardInfo {
               checkNoSPC()
               assert my.deck : "There is no card in your deck"
               powerUsed()
-              def tar = my.deck.search(max:1,"Select 1 card",{true}).each{my.deck.remove(it)}
+              def tar = my.deck.select("Select 1 card").each{my.deck.remove(it)}
               shuffleDeck()
               my.deck.addAll(0, tar)
             }
