@@ -932,7 +932,7 @@ public enum Deoxys implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               assert self.active : "$self is not your active Pokémon."
-              assert opp.hand : "There is no card in your opponent hand"
+              assert opp.hand : "There are no cards in your opponent's hand"
               powerUsed()
               opp.hand.showToMe("Opponent's hand")
             }
@@ -950,15 +950,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost D
             attackRequirement {}
             onAttack {
-              delayed {
-                before PLAY_TRAINER, {
-                  if (ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner.opposite) {
-                    wcu "Limitation prevents playing this card"
-                    prevent()
-                  }
-                }
-                unregisterAfter 2
-              }
+              opponentCantPlaySupporterNextTurn(delegate)
             }
           }
 
