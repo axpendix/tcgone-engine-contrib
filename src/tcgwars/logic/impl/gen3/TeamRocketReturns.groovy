@@ -734,7 +734,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "If Dark Sandslash is your Active Pokémon and is damaged by an opponent’s attack (even if Dark Sandslash is Knocked Out), the Attacking Pokémon is now Poisoned."
             delayedA (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
+                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
                   bc "Poison Payback"
                   apply POISONED, (ef.attacker as PokemonCardSet)
                 }
@@ -982,16 +982,18 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "If Qwilfish is your Active Pokémon and is damaged by an opponent’s attack (even if Qwilfish is Knocked Out), flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
             delayedA (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                def pcs = self.owner.opposite.pbg.active
-                def counterDmg = 0
-                bg.dm().each{
-                  if(it.to == self && it.notNoEffect && it.dmg.value) {
-                    bc "Spiny"
-                    pcs = it.from
-                    flipUntilTails {counterDmg += 10}
+                if (self.active) {
+                  def pcs = self.owner.opposite.pbg.active
+                  def counterDmg = 0
+                  bg.dm().each{
+                    if(it.to == self && it.notNoEffect && it.dmg.value) {
+                      bc "Spiny"
+                      pcs = it.from
+                      flipUntilTails {counterDmg += 10}
+                    }
                   }
+                  directDamage counterDmg, pcs
                 }
-                directDamage counterDmg, pcs
               }
             }
           }
@@ -2626,7 +2628,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "If Rocket’s Hitmonchan ex is your Active Pokémon and is damaged by an opponent’s attack (even if Rocket’s Hitmonchan ex is Knocked Out), put 2 damage counters on the Attacking Pokémon."
             delayedA (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
+                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
                   bc "$self Strikes Back!"
                   directDamage 20, (ef.attacker as PokemonCardSet)
                 }
