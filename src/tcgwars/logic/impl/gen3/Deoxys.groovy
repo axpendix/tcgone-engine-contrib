@@ -193,7 +193,23 @@ public enum Deoxys implements LogicCardInfo {
           resistance FIGHTING, MINUS30
           pokeBody "Safeguard", {
             text "Prevent all effects of attacks, including damage, done to Altaria by your opponent’s Pokémon-ex."
-            safeguard(self,delegate)
+            //TODO: Change static safeguard so it's configurable.
+            delayedA {
+              before null, self, Source.ATTACK, {
+                if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+                  bc "Safeguard prevents effect"
+                  prevent()
+                }
+              }
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if(it.to == self && it.notNoEffect && it.from.EX ) {
+                    it.dmg = hp(0)
+                    bc "Safeguard prevents damage"
+                  }
+                }
+              }
+            }
           }
           move "Double Wing Attack", {
             text "Does 20 Damage to each Defending Pokémon."
