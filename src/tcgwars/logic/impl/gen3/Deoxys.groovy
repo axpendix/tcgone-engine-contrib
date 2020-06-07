@@ -525,11 +525,11 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before you attack), you may search your discard pile for a [P] or [M] Energy card and attach it to your Active Pokémon. Then, put 1 damage counter on that Pokémon. This power can’t be used if Metagross is affected by a Special Condition."
             actionA {
               checkLastTurn()
-              assert !(self.specialConditions) : "$self is affected by a Special Condition."
-              assert my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)} : "There is no [P] or [M] Energy card in your discard."
+              checkNoSPC()
+              assert my.discard.filterByType(BASIC_ENERGY).any{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)} : "There are no [P] or [M] Energy card in your discard."
               powerUsed()
               attachEnergy(my.active,my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)}.select().first())
-              directDamage 10, my.active
+              directDamage 10, my.active, SRC_ABILITY
             }
           }
           move "Link Blast", {
@@ -537,10 +537,9 @@ public enum Deoxys implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              if(self.cards.energyCount(C) == defending.cards.energyCount(C)){
+              if (self.cards.energyCount(C) == defending.cards.energyCount(C)){
                 damage 70
-              }
-              else{
+              } else {
                 damage 40
               }
             }
