@@ -2875,7 +2875,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               checkLastTurn()
               assert my.deck : "Your deck is empty."
               powerUsed()
-              def tar = my.deck.select(min: 0, max: 1, "Choose 1 card to put on top of your deck.").first()
+              def tar = my.deck.select("Choose 1 card to put on top of your deck.").first()
               my.deck.remove(tar)
               shuffleDeck()
               my.deck.add(0, tar)
