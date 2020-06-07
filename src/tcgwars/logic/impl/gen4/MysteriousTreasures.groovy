@@ -601,11 +601,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               if (!self.getPokemonCards().any{it.name.contains("Magby")}) {
                 def tar = my.hand.filterByType(ENERGY).select(count:2, "Discard 2 Energies.")
-                damage 80
                 afterDamage{
                   tar.discard()
                 }
               }
+              damage 80
             }
           }
 
