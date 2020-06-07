@@ -388,13 +388,20 @@ public enum Deoxys implements LogicCardInfo {
       case DUSCLOPS_7:
         return evolution (this, from:"Duskull", hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
+          resistance F, MINUS30
           move "Psychic Removal", {
             text "20 damage. Flip 2 coins. If both of them are heads, discard all Energy attached to the Defending Pokémon."
             energyCost P
             attackRequirement {}
             onAttack {
               damage 20
-              flip 2, {}, {}, [2:{while(defending.cards.energyCount()) discardDefendingEnergy()}]
+              afterDamage{
+                flip 2, {}, {}, [2:{
+                  targeted (defending) {
+                    opp.active.cards.filterByType(ENERGY).discard()
+                  }
+                }]
+              }
             }
           }
           move "Powerful Hand", {
