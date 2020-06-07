@@ -268,7 +268,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
                       if (it.to==self && it.dmg.value && it.notNoEffect && it.from.topPokemonCard.cardTypes.is(STAGE2)) {
-                        bc "-30 to Alakazam (Psychic Guard)"
+                        bc "-30 to $self ($thisMove)"
                         it.dmg-=hp(30)
                       }
                     }
