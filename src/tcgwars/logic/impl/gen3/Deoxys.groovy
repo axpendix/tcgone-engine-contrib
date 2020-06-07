@@ -883,17 +883,7 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               damage 10
               afterDamage{
-                delayed{
-                  before APPLY_ATTACK_DAMAGES, {
-                    bg.dm().each{
-                      if(it.from.owner == self.owner && it.notNoEffect && it.dmg.value) {
-                        bc "Bay Dance +30"
-                        it.dmg += hp(30)
-                      }
-                    }
-                  }
-                  unregisterAfter 3
-                }
+                doMoreDamageNextTurn(thisMove, 30, self)
               }
             }
           }
@@ -2839,6 +2829,7 @@ public enum Deoxys implements LogicCardInfo {
               damage 50
               delayed{
                 before null, self, Source.ATTACK, {
+                  //TODO: Should prevent stuff like Turtonator-GX's Shell Trap
                   if (self.owner.opposite.pbg.active.pokemonEX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                     bc "Psychic Shield effect"
                     prevent()
