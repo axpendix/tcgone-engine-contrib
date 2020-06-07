@@ -3709,7 +3709,7 @@ public enum RebelClash implements LogicCardInfo {
               bg().dm().each {
                 if (it.to == self && self.active && self.types.contains(R) && it.dmg.value && bg.currentTurn==self.owner.opposite) {
                   bc "Burning Scarf activates."
-                  apply BURNED, it.from, SRC_ABILITY
+                  apply BURNED, it.from, Source.TRAINER_CARD
                 }
               }
             }
