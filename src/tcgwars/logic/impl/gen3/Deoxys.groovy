@@ -816,6 +816,7 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before your attack), you may remove 1 damage counter from each of your Pokémon. You can’t use more than 1 Happy Dance Poké-Power each turn. This power can’t be used if Ludicolo is affected by a Special Condition."
             actionA {
               checkLastTurn()
+              checkNoSPC()
               assert bg.em().retrieveObject("Happy_Dance") != bg.turnCount : "You cannot use Happy Dance more than once per turn!"
               powerUsed()
               bg.em().storeObject("Happy_Dance",bg.turnCount)
