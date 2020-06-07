@@ -457,14 +457,14 @@ public enum Deoxys implements LogicCardInfo {
           pokePower "Wishing Star", {
             text "Once during your turn (before your attack), if Jirachi is your Active Pokémon, you may look at the top 5 cards of your deck, choose one of them, and put it into your hand. Shuffle your deck afterward. Jirachi and your other Active Pokémon, if any, are now Asleep. This power can’t be used if Jirachi is affected by a Special Condition."
             actionA {
+              checkNoSPC()
               checkLastTurn()
-              assert !(self.specialConditions) : "$self is affected by a Special Condition."
               assert self.active : "$self is not your Active Pokémon."
               assert my.deck : "There is no cards remaining."
               powerUsed()
               my.deck.subList(0,Math.min(5,my.deck.size())).select("Select one card to put into your hand.").moveTo(hidden:true, my.hand)
               shuffleDeck()
-              apply ASLEEP, self
+              apply ASLEEP, self, SRC_ABILITY
             }
           }
           move "Metallic Blow", {
