@@ -557,7 +557,7 @@ public enum Deoxys implements LogicCardInfo {
               assert my.deck
             }
             onAttack {
-              my.deck.search(max:1,"Select 1 card",{true}).moveTo(my.hand)
+              my.deck.select().moveTo(hidden: true, my.hand)
               shuffleDeck()
             }
           }
@@ -567,8 +567,10 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              if(opp.hand.size() >= 5){
-                opp.hand.oppSelect(max : opp.hand.size() - 4,min : opp.hand.size() - 4,"Select the card to discard").discard()
+              afterDamage {
+                while (opp.hand.size() >= 5){
+                  opp.hand.oppSelect(count: opp.hand.size() - 4, "Select cards to discard").discard()
+                }
               }
             }
           }
