@@ -590,7 +590,7 @@ public enum Deoxys implements LogicCardInfo {
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.from.basic ){
+                  if(it.to == self && it.notNoEffect && it.from.owner != self.owner && it.from.basic ){
                     it.dmg = hp(0)
                     bc "Fast Protection prevents damage"
                   }
@@ -598,7 +598,7 @@ public enum Deoxys implements LogicCardInfo {
               }
               after ENERGY_SWITCH, {
                 def efs = (ef as EnergySwitch)
-                if(efs.from.basic && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                if(efs.from.basic && efs.from.owner != self.owner && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                   discard efs.card
                 }
               }
