@@ -301,7 +301,9 @@ public enum Deoxys implements LogicCardInfo {
           move "Back Burner", {
             text "Search your discard pile for up to 2 basic Energy cards and attach them to your Pokémon in any way you like."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.filterByType(BASIC_ENERGY) : "You don't have any Basic Energy cards in your discard pile"
+            }
             onAttack {
               attachEnergyFrom(basic: true,my.discard,my.all)
               attachEnergyFrom(basic: true,my.discard,my.all)
@@ -313,11 +315,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost R, C, C
             attackRequirement {}
             onAttack {
-              multiSelect(opp.all, 2).each{
-                targeted(it){
-                  damage 30, it
-                }
-              }
+              multiSelect(opp.all, 2).each{ damage 30, it }
             }
           }
 
