@@ -905,7 +905,7 @@ public enum Deoxys implements LogicCardInfo {
             text "As long as Rayquaza has any basic [R] Energy cards and any basic [L] Energy cards attached to it, prevent all effects, except damage, by an opponent’s attack done to Rayquaza."
             delayedA {
               before null, self, Source.ATTACK, {
-                if(bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.energyCount(L) && self.cards.energyCount(R)){
+                if(ef.attacker.owner != self && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.energyCount(L) && self.cards.energyCount(R)){
                   bc "Dragon Aura prevents effect"
                   prevent()
                 }
