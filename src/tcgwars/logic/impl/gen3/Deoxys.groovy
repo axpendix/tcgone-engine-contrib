@@ -488,8 +488,8 @@ public enum Deoxys implements LogicCardInfo {
           pokePower "Swing Dance", {
             text "Once during your turn (before your attack), you may draw a card. This power can’t be used if Ludicolo is affected by a Special Condition."
             actionA {
+              checkNoSPC()
               checkLastTurn()
-              assert !(self.specialConditions) : "$self is affected by a Special Condition."
               assert my.deck : "There is no cards remaining."
               powerUsed()
               draw 1
@@ -501,9 +501,9 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              if(self.numberOfDamageCounters) {
+              if(my.hand) {
                 if(confirm("Discard cards from your hand to remove damage counter on Ludicolo?")){
-                  heal 10*my.hand.select(max : self.numberOfDamageCounters,"For each card discarded you will remove 1 damage counter").discard().size() ,self
+                  heal 10 * my.hand.select(max: my.hand.size(), "For each card discarded you will remove 1 damage counter").discard().size(), self
                 }
               }
             }
