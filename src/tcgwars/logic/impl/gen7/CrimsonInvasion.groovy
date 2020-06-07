@@ -1784,7 +1784,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             energyCost M, C, C
             onAttack {
               damage 70
-              if(bench.notEmpty && confirm("shuffle this Pokémon and all cards attached to it into your deck?")){
+              if(confirm("shuffle this Pokémon and all cards attached to it into your deck?")){
                 afterDamage {
                   shuffleDeck(self.cards)
                   removePCS(self)

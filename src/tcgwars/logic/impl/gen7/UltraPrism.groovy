@@ -671,7 +671,7 @@ public enum UltraPrism implements LogicCardInfo {
             damage 20
             delayedA (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
+                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
                   bc "Incandescent Body burns attacker"
                   bg.dm().each{apply BURNED, it.from}
                 }
