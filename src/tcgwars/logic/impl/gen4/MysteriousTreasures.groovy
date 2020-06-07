@@ -222,7 +222,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              def tar = my.discard.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)
+              def tar = my.discard.filterByType(ENERGY)
               tar.showToOpponent("Energy cards in your opponent's discard pile.")
               def toReturn = tar.findAll{it.cardTypes.is(SPECIAL_ENERGY) && it.name == "Metal Energy"}
               if (toReturn) {
