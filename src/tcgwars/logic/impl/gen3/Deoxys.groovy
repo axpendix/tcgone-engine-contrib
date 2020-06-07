@@ -634,7 +634,7 @@ public enum Deoxys implements LogicCardInfo {
           pokeBody "Lazy Aura", {
             text "As long as Slaking is your Active Pokémon, any damage done by attacks from your opponent’s Pokémon-ex is reduced by 30 (before applying Weakness and Resistance)."
             delayedA {
-              before APPLY_ATTACK_DAMAGES, {
+              before PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
                   if(it.to == self && it.notNoEffect && it.dmg.value && it.from.pokemonEX) {
                     bc "Lazy Aura -30"
@@ -1360,7 +1360,7 @@ public enum Deoxys implements LogicCardInfo {
           pokeBody "Intimidating Pattern", {
             text "As long as Masquerain is your Active Pokémon, any damage done by an opponent’s attack is reduced by 20 (before applying Weakness and Resistance). You can’t use more than 1 Intimidating Pattern Poké-Body each turn."
             delayedA {
-              before APPLY_ATTACK_DAMAGES, {
+              before PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
                   if(it.from.owner == self.owner.opposite && self.active) {
                     bc "Intimidating Pattern -20"

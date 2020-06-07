@@ -346,7 +346,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
-            reduceDamageNextTurn(hp(30), thisMove)
+            reduceDamageFromDefendingNextTurn(hp(30),thisMove,defending)
           }
         }
         move "Mega Impact", {
@@ -1265,7 +1265,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            reduceDamageNextTurn(hp(20), thisMove)
+            reduceDamageFromDefendingNextTurn(hp(20),thisMove,defending)
           }
         }
       };
@@ -2060,7 +2060,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Extra Smoke", {
           text "Any damage done to your Stage 2 Pokémon-ex by your opponent's attacks is reduced by 10 (before applying Weakness and Resistance)."
           delayedA {
-            before APPLY_ATTACK_DAMAGES, {
+            before PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
                 if (it.to.owner == self.owner && it.to.EX && it.to.topPokemonCard.cardTypes.is(STAGE2) && it.dmg.value && it.notNoEffect) {
                   bc "Extra Smoke -10"
