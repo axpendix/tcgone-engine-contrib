@@ -2970,11 +2970,12 @@ public enum Deoxys implements LogicCardInfo {
       case SALAMENCE_EX_103:
         return evolution (this, from:"Shelgon", hp:HP160, type:COLORLESS, retreatCost:2) {
           weakness COLORLESS
-          resistance FIGHTING
+          resistance FIRE, MINUS30
+          resistance FIGHTING, MINUS30
           pokeBody "Dragon Lift", {
             text "The Retreat Cost for each of your Pokémon (excluding Pokémon-ex and Baby Pokémon) is 0."
             getterA (GET_RETREAT_COST, BEFORE_LAST) {h->
-              if(h.effect.target.owner == self.owner && !h.effect.target.topPokemonCard.cardTypes.is(BABY) &&  !h.effect.target.topPokemonCard.cardTypes.is(POKEMON_EX)) {
+              if(h.effect.target.owner == self.owner && !h.effect.target.topPokemonCard.cardTypes.is(BABY) &&  !h.effect.target.EX) {
                 h.object = 0
               }
             }
