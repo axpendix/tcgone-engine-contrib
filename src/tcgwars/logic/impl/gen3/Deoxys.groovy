@@ -2831,14 +2831,14 @@ public enum Deoxys implements LogicCardInfo {
               delayed{
                 before null, self, Source.ATTACK, {
                   //TODO: Should prevent stuff like Turtonator-GX's Shell Trap
-                  if (self.owner.opposite.pbg.active.pokemonEX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                     bc "Psychic Shield effect"
                     prevent()
                   }
                 }
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
-                    if(it.to == self && it.notNoEffect && it.from.pokemonEX ){
+                    if(it.to == self && it.notNoEffect && it.from.EX ){
                       it.dmg = hp(0)
                       bc "Psychic Shield damage"
                     }
@@ -2846,7 +2846,7 @@ public enum Deoxys implements LogicCardInfo {
                 }
                 after ENERGY_SWITCH, {
                   def efs = (ef as EnergySwitch)
-                  if(efs.from.pokemonEX && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                  if(efs.from.EX && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                     discard efs.card
                   }
                 }
