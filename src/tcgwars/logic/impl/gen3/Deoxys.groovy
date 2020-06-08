@@ -2500,13 +2500,15 @@ public enum Deoxys implements LogicCardInfo {
         return basicTrainer (this) {
           text "Flip a coin. If heads, search your discard pile for 2 Energy cards (1 if there is only 1), show them to your opponent, and shuffle them into your deck."
           onPlay {
-            flip{
-              my.discard.filterByType(ENERGY).select(max:2,"Select 2 Energy cards.").showToOpponent("Selected cards.").moveTo(my.deck)
+            flip {
+              def tar = my.discard.filterByType(ENERGY)
+              def enCnt = Math.min(2, tar.size())
+              tar.select(count: enCnt,"Select $enCnt Energy card${enCnt>1 ? "s"}.").showToOpponent("Selected card${enCnt>1 ? "s"}.").moveTo(my.deck)
               shuffleDeck()
             }
           }
           playRequirement{
-            assert my.discard.filterByType(ENERGY) : "There is no Energy cards in your discard"
+            assert my.discard.filterByType(ENERGY) : "There are no Energy cards in your discard"
           }
         };
       case LADY_OUTING_87:
