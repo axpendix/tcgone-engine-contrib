@@ -2566,12 +2566,12 @@ public enum Deoxys implements LogicCardInfo {
           def eff2
           onPlay {
             eff1 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (h.effect.ability instanceof PokeBody && h.effect.target.basic && !h.effect.target.pokemonEX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
+              if (h.effect.ability instanceof PokeBody && h.effect.target.basic && !h.effect.target.EX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
                 h.object=true
               }
             }
             eff2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-              if (h.effect.ability instanceof PokeBody && h.effect.target.basic && !h.effect.target.pokemonEX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
+              if (h.effect.ability instanceof PokeBody && h.effect.target.basic && !h.effect.target.EX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
                 h.object=true
               }
             }
