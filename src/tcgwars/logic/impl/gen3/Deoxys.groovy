@@ -1284,7 +1284,7 @@ public enum Deoxys implements LogicCardInfo {
             text "The Retreat Cost for each Solrock you have in play is 0."
             getterA (GET_RETREAT_COST, BEFORE_LAST) {holder->
               def pcs = holder.effect.target
-              if(pcs.owner == self.owner && pcs.name == "Solrock"){
+              if(pcs.name == "Solrock" && pcs.owner == self.owner){
                 holder.object = 0
               }
             }
@@ -1576,7 +1576,7 @@ public enum Deoxys implements LogicCardInfo {
           pokeBody "Sunbeam", {
             text "The maximum HP for each Lunatone you have in play is now 80."
             getterA GET_FULL_HP ,{h->
-              if(h.effect.target.name == "Lunatone") {
+              if(h.effect.target.name == "Lunatone" && h.effect.target.owner == self.owner) {
                 h.object = hp(80)
               }
             }
