@@ -1093,9 +1093,9 @@ public enum Deoxys implements LogicCardInfo {
             text "If Xatu is Burned or Poisoned by an opponent’s attack (even if Xatu is Knocked Out), the Attacking Pokémon is now affected by the same Special Conditions (1 if there is only 1)."
             delayedA {
               before APPLY_SPECIAL_CONDITION,self, {
-                bc "Mirror Coat : ${ef.type}"
                 if(ef.type == POISONED || ef.type == BURNED){
-                  apply ef.type, self.owner.opposite.pbg.active
+                  bc "Mirror Coat : ${ef.type}"
+                  apply ef.type, self.owner.opposite.pbg.active, SRC_ABILITY
                 }
               }
             }
@@ -1117,13 +1117,20 @@ public enum Deoxys implements LogicCardInfo {
               damage 30
               opp.all.each{
                 if(it.cards.filterByType(POKEMON_TOOL)) addDmg += 1
+                //TODO: Maybe improve this detection... Is the benched fossil/doll/usbsitute still detected as a trainer?
+                it.cards.each{
+                  thatCard -> ["Fossil", "Amber", " Doll", "Robo Substitute"].each{
+                    thatTrainer -> if thatCard.name.contains(thatName) addDmg += 1
+                  }
+                }
+                //TODO: Detect attached non-tools (see: Pluspower, Defender, etc.)
               }
               if(bg.stadiumInfoStruct){
-                if(bg.stadiumInfoStruct.stadiumCard.player){
+                if(bg.stadiumInfoStruct.stadiumCard.player != self.owner){
                   addDmg += 1
                 }
               }
-              damage 30*addDmg
+              damage 30 * addDmg
             }
           }
         };
