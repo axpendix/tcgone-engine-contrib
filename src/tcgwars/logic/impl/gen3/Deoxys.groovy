@@ -2690,7 +2690,7 @@ public enum Deoxys implements LogicCardInfo {
               checkNoSPC()
               assert self.active : "$self is not your Active Pokémon"
               powerUsed()
-              directDamage 10, opp.all.select()
+              directDamage 10, opp.all.select(), SRC_ABILITY
             }
           }
           move "Cross Attack", {
