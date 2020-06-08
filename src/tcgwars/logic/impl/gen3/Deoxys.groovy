@@ -2049,7 +2049,7 @@ public enum Deoxys implements LogicCardInfo {
               before APPLY_SPECIAL_CONDITION,self, {
                 bc "Mirror Coat : ${ef.type}"
                 if(ef.type == POISONED || ef.type == BURNED){
-                  apply ef.type, self.owner.opposite.pbg.active
+                  apply ef.type, self.owner.opposite.pbg.active, SRC_ABILITY
                 }
               }
             }
