@@ -1709,8 +1709,8 @@ public enum Deoxys implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage defending.getRemainingHP().value - 10
-              damage 70,self
+              directDamage defending.remainingHP.value - 10, defending
+              damage 70, self
             }
           }
           move "Smogscreen", {
