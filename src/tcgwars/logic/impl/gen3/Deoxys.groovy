@@ -1658,8 +1658,8 @@ public enum Deoxys implements LogicCardInfo {
               def pcs = opp.all.select("Select the Pokémon to attack.")
               damage 20, pcs
               afterDamage{
-                if(pcs.cards.energyCount(C)){
-                  flip {pcs.cards.filterByType(ENERGY).oppSelect("Select the Energy to discard.").discard()}
+                if (pcs.cards.energyCount(C)) {
+                  flip { targeted (pcs, ATTACK) { pcs.cards.filterByType(ENERGY).oppSelect("Select the Energy to discard.").discard() } }
                 }
               }
             }
