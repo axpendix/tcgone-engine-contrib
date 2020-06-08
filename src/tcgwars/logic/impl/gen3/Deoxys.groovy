@@ -1203,7 +1203,7 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              apply ASLEEP
+              applyAfterDamage ASLEEP
             }
           }
           move "Extra Ball", {
@@ -1212,7 +1212,7 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              if(defending.pokemonEX) damage 30
+              if(defending.EX) damage 30
             }
           }
 
