@@ -2878,7 +2878,7 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               damage 40
               afterDamage{
-                if(opp.hand) opp.hand.select(hidden : true,"Select one card to discard").discard()
+                discardRandomCardFromOpponentsHand()
               }
             }
           }
@@ -2889,7 +2889,7 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               damage 80
               delayed {
-                before APPLY_ATTACK_DAMAGES, {
+                after PROCESS_ATTACK_EFFECTS, {
                   bg.dm().each {
                     if(it.from.owner==self.owner.opposite && it.to==self && it.dmg.value && it.notNoEffect){
                       bc "Pivot Throw increases damage"
