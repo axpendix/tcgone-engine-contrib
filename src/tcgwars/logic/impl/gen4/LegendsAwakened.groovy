@@ -3125,6 +3125,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
+              assert my.bench : "Your bench is empty"
               my.bench.each{
                 heal 30, it
               }
@@ -3136,7 +3137,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {my.all.findAll{it.name == ("Uxie Lv.X")} && my.all.findAll{it.name == ("Uxie Lv.X")}}
             onAttack {
               damage 200
-              discardAllEnergySelf(null)
+              discardAllEnergySelf()
             }
           }
           move "", {
@@ -3213,10 +3214,12 @@ public enum LegendsAwakened implements LogicCardInfo {
             actionA {
               checkNoSPC()
               checkLastTurn()
+              assert bg.em().retrieveObject("Trade_Off") != bg.turnCount : "You cannot use more than one Trade Off per turn"
               assert my.deck : "Your deck is empty"
+              bg.em().storeObject("Trade_Off",bg.turnCount)
               powerUsed()
               def sel = my.deck.subList(0,2).select("Choose 1 card to put into your hand")
-              my.deck.subList(0,2).getExcludedList(sel).moveTo(suppressLog: true, my.deck)
+              my.deck.subList(0,2).getExcludedList(sel).moveTo(hidden: true, my.deck)
               sel.moveTo(hidden: true, my.hand)          
             }
           }
@@ -3226,7 +3229,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              cantAttackNextTurn self
+              cantUseAttack thisMove, self
             }
           }
           move "", {
