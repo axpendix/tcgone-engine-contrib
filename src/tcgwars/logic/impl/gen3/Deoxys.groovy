@@ -568,7 +568,9 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               damage 30
               afterDamage {
-                opp.hand.oppSelect(count: opp.hand.size() - 4, "Select cards to discard until you end up with ${opp.hand.size() - 4} left").discard()
+                if(opp.hand.size() >= 5){
+                  opp.hand.oppSelect(count: opp.hand.size() - 4, "Select cards to discard until you end up with 4 left").discard()
+                }
               }
             }
           }
