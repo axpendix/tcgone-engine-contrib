@@ -3136,8 +3136,11 @@ public enum Deoxys implements LogicCardInfo {
             delayedA {
               after ATTACH_ENERGY, self, {
                 if(!self.specialConditions && ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(D))
-                  if(self.owner.opposite.pbg.bench){
-                    if(confirm("Make your opponent switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon? (Your opponent chooses the Benched Pokémon to switch)")) sw self.owner.opposite.pbg.active, self.owner.opposite.pbg.bench.select("Select the new active Pokémon.", self.owner.opposite)
+                  def oppPlayer = self.owner.opposite
+                  if(oppPlayer){
+                    if (confirm("Make your opponent switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon? (Your opponent chooses the Benched Pokémon to switch)")) {
+                      sw oppPlayer.pbg.active, oppPlayer.pbg.bench.select("Select the new active Pokémon.", oppPlayer)
+                    }
                   }
               }
             }
