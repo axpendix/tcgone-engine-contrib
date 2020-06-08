@@ -2939,21 +2939,20 @@ public enum Deoxys implements LogicCardInfo {
       case RAYQUAZA_EX_102:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:2) {
           weakness COLORLESS
-          resistance FIGHTING
+          resistance WATER, MINUS30
+          resistance FIGHTING, MINUS30
           pokePower "Dragon Boost", {
             text "Once during your turn, when you put Rayquaza ex from your hand onto your Bench, you may move any number of basic Energy cards attached to your Pokémon to Rayquaza ex."
-            actionA {
-              if(self.lastEvolved == bg.turnCount){
-                if(confirm("move any number of basic Energy cards attached to your Pokémon to Rayquaza ex ?"))
-                {
-                  while(1){
-                    def pl=(my.all.findAll {it.cards.filterByType(BASIC_ENERGY) && it != self})
-                    if(!pl) break;
-                    def src =pl.select("source for energy (cancel to stop)", false)
-                    if(!src) break;
-                    def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
-                    energySwitch(src, self, card)
-                  }
+            onActivate {r->
+              if (r==PLAY_FROM_HAND && confirm("Use Dragon Boost to move any number of basic Energy cards attached to your Pokémon to Rayquaza ex?")) {
+                powerUsed()
+                while(1){
+                  def pl=(my.all.findAll {it.cards.filterByType(BASIC_ENERGY) && it != self})
+                  if(!pl) break;
+                  def src =pl.select("source for energy (cancel to stop)", false)
+                  if(!src) break;
+                  def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
+                  energySwitch(src, self, card)
                 }
               }
             }
