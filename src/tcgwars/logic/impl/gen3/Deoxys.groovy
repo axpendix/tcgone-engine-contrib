@@ -2024,7 +2024,7 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               flip {
                 damage 10
-                discardDefendingEnergy()
+                afterDamage { discardDefendingEnergy() }
               }
 
             }
