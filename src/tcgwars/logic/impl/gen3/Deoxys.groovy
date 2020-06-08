@@ -1514,7 +1514,8 @@ public enum Deoxys implements LogicCardInfo {
       case SHELGON_45:
         return evolution (this, from:"Bagon", hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness COLORLESS
-          resistance FIGHTING
+          resistance FIGHTING, MINUS30
+          resistance FIRE, MINUS30
           pokeBody "Hard Protection", {
             text "Prevent all damage done to Shelgon by attacks from your Pokémon."
             delayedA {
