@@ -2356,6 +2356,14 @@ public enum Stormfront implements LogicCardInfo {
           pokePower "Sacrifice", {
             text "Once during your turn , you may choose 1 of your Pokémon and that Pokémon is Knocked Out. Then, search your discard pile for up to 2 basic Energy cards, attach them to Regigigas, and remove 8 damage counters from Regigigas. This power can’t be used if Regigigas is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              powerUsed()
+              def pcs = my.all.select("Choose one of your Pokemon to knock out")
+              new Knockout(pcs).run(bg)
+              attachEnergyFrom(basic:true,my.discard, my.all)
+              attachEnergyFrom(basic:true,my.discard, my.all)
+              heal 80, self
             }
           }
           move "Giga Blaster", {
@@ -2363,7 +2371,11 @@ public enum Stormfront implements LogicCardInfo {
             energyCost W, F, M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 100
+              if (opp.deck) {
+                opp.deck.discard()
+              }
+              opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("This card will be discarded").discard()
             }
           }
           move "", {
