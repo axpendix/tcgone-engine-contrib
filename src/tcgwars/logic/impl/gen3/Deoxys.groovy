@@ -1272,10 +1272,7 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              if(opp.hand){
-                opp.hand.select(hidden:true,"Select one card").showToMe("Selected card.").moveTo(opp.deck)
-                shuffleDeck(null,TargetPlayer.OPPONENT)
-              }
+              afterDamage { astonish() }
             }
           }
 
