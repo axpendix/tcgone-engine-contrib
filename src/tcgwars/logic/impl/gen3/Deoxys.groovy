@@ -2642,7 +2642,7 @@ public enum Deoxys implements LogicCardInfo {
         return specialEnergy (this, [[C]]) {
           text "Heal Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter and all Special Conditions from that Pokémon. If heal Energy is attached to Pokémon-ex, Heal Energy has no effect other than providing Energy."
           onPlay {reason->
-            if(!self.pokemonEX){
+            if(!self.EX){
               heal 10,self
               self.specialConditions.clear()
             }
