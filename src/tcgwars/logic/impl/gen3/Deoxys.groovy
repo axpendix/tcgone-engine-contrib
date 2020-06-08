@@ -1728,7 +1728,8 @@ public enum Deoxys implements LogicCardInfo {
       case BAGON_52:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness COLORLESS
-          resistance FIGHTING
+          resistance FIRE, MINUS30
+          resistance FIGHTING, MINUS30
           move "Singe", {
             text "Flip a coin. If heads, the Defending Pokémon is now Burned."
             energyCost R
