@@ -2060,7 +2060,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Extra Smoke", {
           text "Any damage done to your Stage 2 Pokémon-ex by your opponent's attacks is reduced by 10 (before applying Weakness and Resistance)."
           delayedA {
-            before PROCESS_ATTACK_EFFECTS, {
+            after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
                 if (it.to.owner == self.owner && it.to.EX && it.to.topPokemonCard.cardTypes.is(STAGE2) && it.dmg.value && it.notNoEffect) {
                   bc "Extra Smoke -10"

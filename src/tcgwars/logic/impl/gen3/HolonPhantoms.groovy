@@ -340,7 +340,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 30
             afterDamage{
               delayed{
-                before PROCESS_ATTACK_EFFECTS, {
+                after PROCESS_ATTACK_EFFECTS, {
                   bg.dm().each{
                     if(it.from.owner == self.owner.opposite && it.to == self) {
                       bc "Delta Reduction -30 (before W/R)"
