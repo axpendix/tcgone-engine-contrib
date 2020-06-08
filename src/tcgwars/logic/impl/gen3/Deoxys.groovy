@@ -1684,7 +1684,7 @@ public enum Deoxys implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
                   if(self.active && it.from.active && it.to.active) {
-                    bc "Core Guard -10"
+                    bc "Vigorous Aura +10"
                     it.dmg += hp(10)
                   }
                 }
