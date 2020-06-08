@@ -1284,7 +1284,7 @@ public enum Deoxys implements LogicCardInfo {
             text "The Retreat Cost for each Solrock you have in play is 0."
             getterA (GET_RETREAT_COST, BEFORE_LAST) {holder->
               def pcs = holder.effect.target
-              if(pcs.name == "Solrock"){
+              if(pcs.owner == self.owner && pcs.name == "Solrock"){
                 holder.object = 0
               }
             }
@@ -1293,12 +1293,7 @@ public enum Deoxys implements LogicCardInfo {
             text "Look at the top 5 cards of either player’s deck and put them back on top of that player’s deck in any order."
             energyCost C
             attackRequirement {}
-            onAttack {
-              def list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards in your deck")
-              my.deck.setSubList(0, list)
-              list=rearrange(opp.deck.subList(0,5), "Rearrange top 5 cards in your opponent's deck")
-              opp.deck.setSubList(0, list)
-            }
+            rearrangeEitherPlayersDeck(delegate, 5)
           }
           move "Target Beam", {
             text "20+ damage. Does 20 damage plus 10 more damage for each Solrock you have in play."
