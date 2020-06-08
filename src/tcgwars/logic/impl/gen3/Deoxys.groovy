@@ -2588,8 +2588,11 @@ public enum Deoxys implements LogicCardInfo {
           def attackUsed = false
           onPlay {reason->
             eff1=delayed {
+              before ATTACK_MAIN, {
+                attackUsed = (ef.attacker == self)
+              }
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker==self) bg.dm().each {
+                if(attackUsed) bg.dm().each {
                   if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
                     it.dmg += hp(10)
                     attackUsed=true
