@@ -2655,7 +2655,7 @@ public enum Deoxys implements LogicCardInfo {
           text "Scramble Energy can be attached only to an Evolved Pokémon (excluding Pokémon-ex). Scramble Energy provides [C] Energy. While in play, if you have more prizes left than your opponent, Scramble Energy provides every type of Energy but provides only 3 in any combination at a time. If the Pokémon Scramble Energy is attached to isn’t an Evolved Pokémon (or evolves into Pokémon-ex), discard Scramble Energy."
           def eff
           def check = {
-            if(!it.evolution || it.pokemonEX){discard thisCard}
+            if(!it.evolution || it.EX){discard thisCard}
           }
           onPlay {reason->
             eff = delayed {
@@ -2669,7 +2669,7 @@ public enum Deoxys implements LogicCardInfo {
             check(to)
           }
           allowAttach {to->
-            to.evolution && !to.pokemonEX
+            to.evolution && !to.EX
           }
           getEnergyTypesOverride{
             if(self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size())
