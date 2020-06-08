@@ -2001,7 +2001,7 @@ public enum Deoxys implements LogicCardInfo {
               assert my.bench : "There is no Pokémon on your bench."
             }
             onAttack {
-              sw self, my.bench.select("Select the new active.")
+              switchYourActive()
             }
           }
           move "Rage", {
