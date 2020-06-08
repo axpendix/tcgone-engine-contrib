@@ -1348,6 +1348,7 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
+              //TODO: Could this choice be done regardless of having [L] Energy attached or not? May want the self damage for some reason.
               if(self.cards.energyCount(L)){
                 if(confirm("Do 10 more damage for each [L] Energy attached to Manetric. (Manetric will do 10 damage to itself)")){
                   damage 10*self.cards.energyCount(L)
