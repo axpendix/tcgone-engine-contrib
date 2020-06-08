@@ -638,7 +638,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              if(defending.pokemonEX){
+              if(defending.EX){
                 directDamage 40, defending
               }
               else{
@@ -656,7 +656,7 @@ public enum Deoxys implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(it.to == self && it.notNoEffect && it.dmg.value && it.from.pokemonEX) {
+                  if(it.to == self && it.notNoEffect && it.dmg.value && it.from.EX) {
                     bc "Lazy Aura -30"
                     it.dmg -= hp(30)
                   }
