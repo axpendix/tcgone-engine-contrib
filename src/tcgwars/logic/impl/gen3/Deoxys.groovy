@@ -2949,10 +2949,10 @@ public enum Deoxys implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && confirm("Use Dragon Boost to move any number of basic Energy cards attached to your Pokémon to Rayquaza ex?")) {
                 powerUsed()
                 while(1){
-                  def pl=(my.all.findAll {it.cards.filterByType(BASIC_ENERGY) && it != self})
-                  if(!pl) break;
-                  def src =pl.select("source for energy (cancel to stop)", false)
-                  if(!src) break;
+                  def pl = (my.all.findAll{ it.cards.filterByType(BASIC_ENERGY) && it != self })
+                  if (pl.empty) break;
+                  def src = pl.select("source for energy (cancel to stop)", false)
+                  if (!src) break;
                   def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
                   energySwitch(src, self, card)
                 }
