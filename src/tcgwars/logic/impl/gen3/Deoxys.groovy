@@ -1806,7 +1806,7 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              noWrDamage(10, self)
+              damage 10, self //TODO: Check this not doing W/R
             }
           }
 
