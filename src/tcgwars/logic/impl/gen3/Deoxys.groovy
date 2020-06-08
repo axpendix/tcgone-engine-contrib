@@ -950,6 +950,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost D
             attackRequirement {}
             onAttack {
+              //TODO: Fix the static so it uses this attack's name
               opponentCantPlaySupporterNextTurn(delegate)
             }
           }
