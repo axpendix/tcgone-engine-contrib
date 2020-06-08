@@ -3133,9 +3133,9 @@ public enum Deoxys implements LogicCardInfo {
             text "Whenever you attach a [D] Energy card from your hand to Rocket’s Raikou ex, you may choose 1 of the Defending Pokémon and switch it with 1 of your opponent’s Benched Pokémon. Your opponent chooses the Benched Pokémon to switch. This power can’t be used if Rocket’s Raikou ex is affected by a Special Condition."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if(!self.specialConditions && ef.reason == PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == D)
+                if(!self.specialConditions && ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(D))
                   if(self.owner.opposite.pbg.bench){
-                    if(confirm("Switch the defending pokemon with 1 of your opponent’s Benched Pokémon? (Your opponent chooses the Benched Pokémon to switch)")) sw self.owner.opposite.pbg.active, self.owner.opposite.pbg.bench.oppSelect("Select the new active Pokémon.")
+                    if(confirm("Make your opponent switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon? (Your opponent chooses the Benched Pokémon to switch)")) sw self.owner.opposite.pbg.active, self.owner.opposite.pbg.bench.select("Select the new active Pokémon.", self.owner.opposite)
                   }
               }
             }
