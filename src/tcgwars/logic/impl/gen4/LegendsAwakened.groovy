@@ -3137,7 +3137,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {my.all.findAll{it.name == ("Uxie Lv.X")} && my.all.findAll{it.name == ("Uxie Lv.X")}}
             onAttack {
               damage 200
-              discardAllEnergySelf()
+              discardAllSelfEnergy()
             }
           }
           move "", {
