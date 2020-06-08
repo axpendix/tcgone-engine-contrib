@@ -3010,7 +3010,7 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               def pcs = defending
               if(opp.bench){
-                if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")){
+                if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")){
                   pcs = opp.bench.select()
                   sw defending, pcs
                 }
@@ -3027,7 +3027,10 @@ public enum Deoxys implements LogicCardInfo {
               damage 60
               if(confirm("Discard a [D] Energy attached to Sharpedo ex? You will do 20 more damage and discard 1 Energy card attached to the Defending Pokémon.")){
                 damage 20
-                discardDefendingEnergy()
+                afterDamage{
+                  discardSelfEnergy D
+                  discardDefendingEnergy()
+                }
               }
             }
           }
