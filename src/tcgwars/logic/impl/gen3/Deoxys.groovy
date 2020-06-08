@@ -2476,19 +2476,24 @@ public enum Deoxys implements LogicCardInfo {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAs long as this card is attached to a Pokémon, that Pokémon’s type is [C]. If that Pokémon attacks, discard this card at the end of the turn."
           def eff1
           def eff2
+          def flag = false
           onPlay {reason->
-            eff1=getter GET_POKEMON_TYPE, self, {h ->
+            eff1 = getter GET_POKEMON_TYPE, self, {h ->
               h.object.clear()
               h.object.add(C)
             }
             eff2 = delayed{
-              after BETWEEN_TURNS, {
-                discard thisCard
-                unregister()
+              before ATTACK_MAIN, {
+                flag = (ef.attacker == self)
+              }
+              before BETWEEN_TURNS, {
+                if (flag) { discard thisCard }
               }
             }
           }
           onRemoveFromPlay {
+            eff1.unregister()
+            eff2.unregister()
           }
         };
       case ENERGY_CHARGE_86:
