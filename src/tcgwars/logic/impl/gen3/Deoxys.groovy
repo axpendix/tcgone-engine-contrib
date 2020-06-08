@@ -2295,7 +2295,7 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               damage 10
               if(opp.bench) sw defending, opp.bench.oppSelect("Select new active.")
-              if(my.bench) sw self, my.bench.select("Select new active.")
+              switchYourActive()
             }
           }
 
