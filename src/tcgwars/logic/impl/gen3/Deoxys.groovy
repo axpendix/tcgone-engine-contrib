@@ -2530,9 +2530,10 @@ public enum Deoxys implements LogicCardInfo {
           def eff
           onPlay {
             eff = getter (GET_MOVE_LIST) {holder->
-              if(holder.effect.target.active && holder.effect.target.evolution){
-                for(card in holder.effect.target.cards.filterByType(POKEMON)){
-                  if(card!=holder.effect.target.topPokemonCard){
+              def pcs = holder.effect.target
+              if(!(pcs.EX) && pcs.active && pcs.evolution){
+                for(card in pcs.cards.filterByType(BASIC,STAGE1)){
+                  if(card!=pcs.topPokemonCard){
                     holder.object.addAll(card.moves)
                   }
                 }
