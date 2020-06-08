@@ -3103,7 +3103,8 @@ public enum Deoxys implements LogicCardInfo {
       case RAYQUAZA_STAR_107:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness COLORLESS
-          resistance FIGHTING
+          resistance WATER, MINUS30
+          resistance FIGHTING, MINUS30
           move "Spiral Rush", {
             text "30× damage. Flip a coin until you get tails. This attack does 30 damage times the number of heads."
             energyCost R, L
@@ -3119,7 +3120,7 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               discardAllSelfEnergy(null)
               opp.all.each{
-                if(it.pokemonEX) damage 100, it
+                if(it.EX) damage 100, it
               }
             }
           }
