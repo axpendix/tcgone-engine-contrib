@@ -1294,6 +1294,7 @@ public enum Deoxys implements LogicCardInfo {
             text "Look at the top 5 cards of either player’s deck and put them back on top of that player’s deck in any order."
             energyCost C
             attackRequirement {}
+            //TODO: Fix the static so it can take the attack's name.
             rearrangeEitherPlayersDeck(delegate, 5)
           }
           move "Target Beam", {
