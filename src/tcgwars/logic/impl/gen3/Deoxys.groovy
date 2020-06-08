@@ -3039,15 +3039,18 @@ public enum Deoxys implements LogicCardInfo {
       case LATIAS_STAR_105:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness COLORLESS
-          resistance FIGHTING
+          resistance PSYCHIC, MINUS30
+          resistance FIGHTING, MINUS30
           move "Healing Light", {
             text "10 damage. Remove 1 damage counter from each of your Pokémon (including Latias Star)."
             energyCost C
             attackRequirement {}
             onAttack {
               damage 10
-              my.all.each{
-                heal 10, it
+              afterDamage{
+                my.all.each{
+                  heal 10, it
+                }
               }
             }
           }
@@ -3057,7 +3060,7 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              if(defending.pokemonEX){
+              if(defending.EX){
                 damage 100
                 discardAllSelfEnergy(null)
               }
@@ -3068,14 +3071,18 @@ public enum Deoxys implements LogicCardInfo {
       case LATIOS_STAR_106:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness COLORLESS
-          resistance FIGHTING
+          resistance GRASS, MINUS30
+          resistance FIGHTING, MINUS30
           move "Miraculous Light", {
             text "10 damage. Remove 1 damage counter and all special Conditions from Latios Star."
             energyCost C
             attackRequirement {}
             onAttack {
-              heal 10, self
-              clearSpecialCondition(self, ATTACK)
+              damage 10
+              afterDamage{
+                heal 10, self
+                clearSpecialCondition(self, ATTACK)
+              }
             }
           }
           move "Shining Star", {
