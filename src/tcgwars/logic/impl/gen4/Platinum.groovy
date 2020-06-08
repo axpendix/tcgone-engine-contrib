@@ -354,7 +354,16 @@ public enum Platinum implements LogicCardInfo {
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              delayed {
+                before PLAY_TRAINER, {
+                  if ((ef.cardToPlay.cardTypes.is(ITEM) || ef.cardToPlay.cardTypes.is(STADIUM)) && bg.currentTurn == self.owner.opposite) {
+                    wcu "Deafen prevents playing this card"
+                    prevent()
+                  }
+                }
+                unregisterAfter 2
+              }
             }
           }
           move "Second Strike", {
@@ -362,7 +371,10 @@ public enum Platinum implements LogicCardInfo {
             energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              if (opp.numberOfDamageCounters >=2) {
+                damage 20
+              }
+              damage 50
             }
           }
 
@@ -2694,9 +2706,14 @@ public enum Platinum implements LogicCardInfo {
             energyCost M, M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              int heads = 0;
+              flipUntilTails {c++}
+              if (c && opp.active.cards.filterByType(ENERGY)) {
+              opp.active.cards.filterByType(ENERGY).select(count:c,"Choose the energy cards to put in the Lost Zone").moveTo(opp.lostZone)
             }
           }
+        }
           move "", {
             text "Put this card onto your Active Dialga . Dialga LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
             energyCost ()
