@@ -2517,11 +2517,11 @@ public enum Deoxys implements LogicCardInfo {
         return basicTrainer (this) {
           text "Look at the top 7 cards from your deck. Choose a Basic Pokémon or Evolution card from those cards, show it to your opponent, and put it into your hand. Put the other 6 cards back on top of your deck. Shuffle your deck afterward."
           onPlay {
-            my.deck.subList(0,7).showToMe("Top 7 cards from your deck.").filterByType(BASIC,EVOLUTION).select("Select a Basic Pokémon or Evolution card.").moveTo(my.hand)
+            my.deck.subList(0,7).select(min:0,"Select a Basic Pokémon or Evolution card to put to hand",cardTypeFilter(POKEMON)).moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
-            assert my.deck : "There is no card remaining in your deck."
+            assert my.deck : "There are no cards left in your deck."
           }
         };
       case METEOR_FALLS_89:
