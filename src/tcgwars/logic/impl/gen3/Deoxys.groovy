@@ -1416,7 +1416,7 @@ public enum Deoxys implements LogicCardInfo {
             text "Put any 1 card from your discard pile into your hand."
             energyCost C
             attackRequirement {
-              assert my.discard : "There is no card in your discard pile."
+              assert my.discard : "There are no cards in your discard pile"
             }
             onAttack {
               my.discard.select("Select 1 card to put into your hand.").moveTo(my.hand)
@@ -1427,7 +1427,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              def hasPokeBody = false
+              def hasPokeBody
               opp.all.each{
                 hasPokeBody = false
                 for (Ability ability : it.getAbilities().keySet()) {
