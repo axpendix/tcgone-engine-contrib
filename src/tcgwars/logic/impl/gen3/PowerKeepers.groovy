@@ -1610,6 +1610,7 @@ public enum PowerKeepers implements LogicCardInfo {
             my.deck.search(min:0, max:2, "Search your deck for a card named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Lileep" || it.name == "Anorith"}).each {
               my.deck.remove(it)
               benchPCS(it)
+              // TODO: Mark as basic
             }
             shuffleDeck()
           }
