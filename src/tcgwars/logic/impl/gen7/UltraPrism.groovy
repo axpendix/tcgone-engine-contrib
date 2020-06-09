@@ -1646,7 +1646,7 @@ public enum UltraPrism implements LogicCardInfo {
             energyCost F
             onAttack {
               damage 60
-              if(defending.evolution) damage 60
+              if(defending.realEvolution) damage 60
             }
           }
           move "Wild Crash", {

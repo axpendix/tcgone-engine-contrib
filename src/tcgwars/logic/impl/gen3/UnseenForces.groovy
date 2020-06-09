@@ -792,14 +792,14 @@ public enum UnseenForces implements LogicCardInfo {
           text "As long as Ursaring is your Active Pokémon, your opponent's Basic Pokémon can't attack or use any Poké-Powers."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if (self.active && ef.attacker.owner != self.owner && ef.attacker.basic) {
+              if (self.active && ef.attacker.owner != self.owner && !ef.attacker.evolution) {
                 wcu "Intimidating Ring prevents attack"
                 prevent()
               }
             }
           }
           getterA (IS_ABILITY_BLOCKED) { Holder h->
-            if (self.active && h.effect.target.owner != self.owner && h.effect.target.basic && h.effect.ability instanceof PokePower) {
+            if (self.active && h.effect.target.owner != self.owner && !h.effect.target.evolution && h.effect.ability instanceof PokePower) {
               h.object=true
             }
           }

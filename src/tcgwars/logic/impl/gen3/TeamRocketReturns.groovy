@@ -793,8 +793,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 if(self.active){
                   self.owner.opposite.pbg.bench.each{
-                    bc "$it / ${it.basic}"
-                    if(it.basic) directDamage 10, it
+                    bc "$it / ${!it.evolution}"
+                    if(!it.evolution) directDamage 10, it
                   }
                 }
               }
@@ -1149,7 +1149,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              if(defending.basic) applyAfterDamage PARALYZED
+              if(!defending.evolution) applyAfterDamage PARALYZED
               cantUseAttack thisMove, self
             }
           }
@@ -1397,7 +1397,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(it.to == self && it.from.basic && it.notNoEffect && it.dmg.value) {
+                  if(it.to == self && !it.from.evolution && it.notNoEffect && it.dmg.value) {
                     bc "Crust -20"
                     it.dmg -= hp(20)
                   }

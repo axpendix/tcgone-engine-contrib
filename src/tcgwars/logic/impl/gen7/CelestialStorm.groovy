@@ -2291,7 +2291,7 @@ public enum CelestialStorm implements LogicCardInfo {
             onAttack {
               gxPerform()
               damage 100
-              if(defending.evolution) damage 100
+              if(defending.realEvolution) damage 100
             }
           }
         };

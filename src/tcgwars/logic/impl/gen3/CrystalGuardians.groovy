@@ -224,7 +224,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            if (defending.basic) {
+            if (!defending.evolution) {
               apply CONFUSED
             }
           }
@@ -2028,17 +2028,18 @@ public enum CrystalGuardians implements LogicCardInfo {
           onActivate {
             eff1 = delayed{
               before CHECK_ATTACK_REQUIREMENTS, {
-                if(self.active && ef.attacker.basic) {
+                if(self.active && !ef.attacker.evolution) {
                   wcu "Intimidating Armor prevents attack"
                   prevent()
                 }
               }
             }
             eff2 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (self.active && h.effect.target.basic && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
+              if (self.active && !h.effect.target.evolution && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
                 h.object=true
               }
             }
+            // TODO: Is eff3 needed here?
             eff3 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
               if (self.active && (h.effect.target as Card).cardTypes.is(BASIC) && h.effect.target.owner == self.owner.opposite) {
                 h.object=true

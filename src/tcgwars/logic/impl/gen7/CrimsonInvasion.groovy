@@ -1430,7 +1430,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             energyCost F, C, C
             onAttack {
               damage 60
-              if(defending.evolution) damage 60
+              if(defending.realEvolution) damage 60
             }
           }
 

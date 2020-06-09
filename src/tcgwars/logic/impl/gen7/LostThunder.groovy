@@ -3845,7 +3845,7 @@ public enum LostThunder implements LogicCardInfo {
             energyCost C
             onAttack{
               damage 10
-              if(defending.evolution) damage 50
+              if(defending.realEvolution) damage 50
             }
           }
         };

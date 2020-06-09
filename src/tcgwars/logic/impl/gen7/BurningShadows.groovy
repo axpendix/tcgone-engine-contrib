@@ -1565,7 +1565,7 @@ public enum BurningShadows implements LogicCardInfo {
             energyCost F, F
             onAttack {
               damage 60
-              if(defending.evolution) damage 60
+              if(defending.realEvolution) damage 60
             }
           }
           move "Bedrock Breaker", {
