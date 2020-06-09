@@ -696,7 +696,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "As long as Absol is the only Pokémon you have in play, your opponent's Basic Pokémon can't attack."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if (self.owner.pbg.all.size() == 1 && ef.attacker.owner != self.owner && ef.attacker.basic) {
+              if (self.owner.pbg.all.size() == 1 && ef.attacker.owner != self.owner && !ef.attacker.evolution) {
                 wcu "Shining Horn prevents attack"
                 prevent()
               }
@@ -730,7 +730,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Rear Sensor", {
           text "Each player's Active Basic Pokémon (excluding Pokémon-ex) can't use any Poké-Powers."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (h.effect.target.basic && h.effect.target.active && !h.effect.target.EX) {
+            if (!h.effect.target.evolution && h.effect.target.active && !h.effect.target.EX) {
               if (h.effect.ability instanceof PokePower) {
                 h.object=true
               }
@@ -1020,7 +1020,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "As long as Pinsir is the only Pokémon you have in play, your opponent's Basic Pokémon can't attack."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if (ef.attacker.owner == self.owner.opposite && ef.attacker.basic && self.owner.pbg.all.size() == 1) {
+              if (ef.attacker.owner == self.owner.opposite && !ef.attacker.evolution && self.owner.pbg.all.size() == 1) {
                 wcu "Shining Horn prevents this Pokémon from attacking"
                 prevent()
               }
@@ -1099,7 +1099,7 @@ public enum LegendMaker implements LogicCardInfo {
           def endTurn = false
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if (ef.attacker.owner == self.owner.opposite && self.active && ef.attacker.basic) {
+              if (ef.attacker.owner == self.owner.opposite && self.active && !ef.attacker.evolution) {
                 flip 1, {}, {
                   bc "Pattern Distraction prevented this Pokémon from attacking"
                   endTurn = true
@@ -1668,7 +1668,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            if (defending.basic) {
+            if (!defending.evolution) {
               cantAttackNextTurn(defending)
             }
           }
