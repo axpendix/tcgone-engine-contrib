@@ -512,6 +512,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                     def copy = ef.move.shallowCopy()
                     copy.energyCost.clear()
                     attack (copy as Move)
+                    bc "Solar Power ignores Energy cost for $ef.attacker's $ef.move"
                     prevent()
                   }
                 }
@@ -896,6 +897,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Stomp Off", {
             text "Discard the top 2 cards of your opponent’s deck."
             energyCost R
+            attackRequirement {
+              assert opp.deck : "Your opponent's deck is empty."
+            }
             onAttack {
               opp.deck.subList(0, 2).discard()
             }
@@ -935,7 +939,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Put 4 [R] Energy cards from your discard pile into your hand."
             energyCost R
             attackRequirement {
-              assert my.discard.filterByEnergyType(R)
+              assert my.discard.filterByEnergyType(R) : "There are no [R] Energy cards in your discard pile."
             }
             onAttack {
               my.discard.filterByEnergyType(R).select(count:4, "Choose 4 [R] Energy to put into your hand.").moveTo(hand)
@@ -946,7 +950,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost R, R, R
             onAttack {
               damage 100
-              if(confirm("Would you like to discard an Energy card attached to Torkoal? If you do, you discard an Energy attached to the Defending Pokémon.")) {
+              if(self.energyCount(C)) {
                 discardSelfEnergy C
                 discardDefendingEnergy()
               }
@@ -961,7 +965,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             actionA {
               checkLastTurn()
               def tar = my.bench.findAll { it.numberOfDamageCounters }
-              assert tar
+              assert tar : "There are no Pokémon with damage counters on your bench."
               heal 20, tar.select("Which Pokémon to heal 20 damage?"), SRC_ABILITY
               powerUsed()
             }
@@ -1454,9 +1458,12 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "High Water", {
             text "Attach 2 [W] Energy cards from your discard pile to 1 of your Pokémon."
             energyCost C
+            attackRequirement {
+              assert my.discard.filterByEnergyType(W) : "No [W] Energy in your discard pile."
+            }
             onAttack {
               afterDamage {
-                def list = my.discard.filterByEnergyType(W).select(count:2)
+                def list = my.discard.filterByEnergyType(W).select(count:2, "Choose 2 [W] Energy")
                 def pcs = my.all.select("Attach [W] Energy to which Pokémon?")
                 list.each {attachEnergy(pcs, it)}
               }
@@ -1500,7 +1507,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost W, W, W
             onAttack {
               discardAllSelfEnergy()
-              damage 100, opp.all.select()
+              if (opp.bench) damage 100, opp.bench.select()
             }
           }
         };
@@ -1510,20 +1517,23 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Recall", {
             text "Choose an attack from 1 of this Pokémon's previous Evolutions and use it as this attack."
             energyCost C
-            def eff
-            onAttack {
-              def moves = []
-              for (card in self.cards.filterByType(POKEMON)) {
+            def preEvos = []
+            def moves = []
+            attackRequirement {
+              for (card in self.card.filterByType(POKEMON)) {
                 if (card != self.topPokemonCard) {
+                  preEvos += card
                   moves += card.moves
                 }
               }
-              if(moves) {
-                def move=choose(moves, moves.collect({it.name}), "Choose a move to use.")
-                def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-                attack (move as Move)
-                bef.unregisterItself(bg().em())
-              }
+              assert preEvos : "Empoleon does not have a previous Evolution"
+              assert moves : "Empoleon's previous Evolutions do not have moves"
+            }
+            onAttack {
+              def move=choose(moves, moves.collect({it.name}), "Choose a move to use.")
+              def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+              attack (move as Move)
+              bef.unregisterItself(bg().em())
             }
           }
           move "Aquafall", {
@@ -1542,8 +1552,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Once during your turn (before your attack), if this Pokémon is on your Bench, you may have your opponent switch their Active Pokémon with 1 of their Benched Pokémon. If you do, discard all cards attached to this Pokémon and put it on the bottom of your deck."
             actionA {
               checkLastTurn()
-              assert self.benched
-              assert opp.bench
+              assert self.benched : "$self is not on the bench."
+              assert opp.bench : "Your opponent has no Benched Pokémon."
               powerUsed()
               sw(opp.active, opp.bench.oppSelect("Choose a new Active Pokémon."))
               self.cards.getExcludedList(self.topPokemonCard).discard()
@@ -1590,10 +1600,11 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Tailwind", {
             text "Attach an Energy card from your hand to 1 of your Pokémon."
             energyCost C
+            attackRequirement {
+              assert my.hand.filterByType(ENERGY) : "You have no Energy in your hand."
+            }
             onAttack {
-              if (my.hand.filterByType(ENERGY)) {
-                attachEnergyFrom(my.hand, my.all)
-              }
+              attachEnergyFrom(my.hand, my.all)
             }
           }
           move "Air Slash", {
@@ -1668,8 +1679,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost C
             attackRequirement {
               gxCheck()
-              assert my.bench.notFull
-              assert my.deck.notEmpty
+              assert my.bench.notFull : "Your bench is already full."
+              assert my.deck.notEmpty : "Your deck is empty."
             }
             onAttack {
               gxPerform()
@@ -1679,7 +1690,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (basics) {
                 def maxSpace = Math.min(my.bench.freeBenchCount, basics.size())
 
-                  def selected = basics.select(min:0, max:maxSpace, "Select as many Basic Pokémon you'd like to bench as possible.")
+                def selected = basics.select(min:0, max:maxSpace, "Select as many Basic Pokémon you'd like to bench as possible.")
 
                 selected.each {
                   benchPCS(it)
@@ -1799,9 +1810,9 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Once during your turn (before your attack), you may search your deck for up to 3 Supporter cards, reveal them, and put them into your hand. Then, shuffle your deck. If you searched your deck in this way, this Pokémon is Knocked Out."
             actionA {
               checkLastTurn()
-              assert deck
+              assert deck : "Your deck is empty."
               powerUsed()
-              deck.search(max: 3, cardTypeFilter(SUPPORTER)).moveTo(hand)
+              deck.search(max: 3, cardTypeFilter(SUPPORTER)).showToOpponent("Opponent's chosen Supporter cards").moveTo(hand)
               shuffleDeck()
               new Knockout(self).run(bg)
             }
@@ -1849,6 +1860,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Scout", {
             text "Your opponent reveals their hand."
             energyCost C
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in their hand."
+            }
             onAttack {
               opp.hand.showToMe("Opponent's hand.")
             }
@@ -1869,6 +1883,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "As often as you like during your turn (before your attack), you may look at the top card of your opponent's deck."
             actionA {
               assert opp.deck : "Your opponent's deck is empty."
+              powerUsed()
               opp.deck.subList(0, 1).showToMe("Top card of your opponent's deck.")
             }
           }
@@ -1940,7 +1955,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                     before null, null, Source.ATTACK, {
                       def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
                       if (pcs && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
-                        bc "$name prevents all effects of attacks."
+                        bc "$move prevents all effects of attacks."
                         prevent()
                       }
                     }
@@ -1948,7 +1963,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                       bg.dm().each {
                         if (it.to.owner == self.owner && it.notNoEffect && bg.currentTurn==self.owner.opposite) {
                           it.dmg = hp(0)
-                          bc "$name prevents all damage."
+                          bc "$move prevents all damage."
                         }
                       }
                     }
@@ -2031,6 +2046,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Teleport", {
             text "Switch this Pokémon with 1 of your Benched Pokémon."
             energyCost C
+            attackRequirement {
+              assert my.bench : "There are no Pokémon on your bench."
+            }
             onAttack {
               switchYourActive()
             }
@@ -2167,11 +2185,13 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Energy Assist", {
             text "Attach 2 basic Energy cards from your discard pile to your Benched Pokémon in any way you like."
             energyCost P
+            attackRequirement {
+              assert my.bench : "You have no benched Pokémon."
+              assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "You have no basic Energy cards in your discard pile."
+            }
             onAttack {
-              if (my.bench) {
-                attachEnergyFrom(basic:true, my.discard, my.bench.select())
-                attachEnergyFrom(basic:true, my.discard, my.bench.select())
-              }
+              attachEnergyFrom(basic:true, my.discard, my.bench.select())
+              attachEnergyFrom(basic:true, my.discard, my.bench.select())
             }
           }
         };
@@ -2209,10 +2229,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Your opponent chooses 1 of their own Pokémon. This attack does 90 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost P
             onAttack {
-              def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.bench, "Opponent used Charming Stamp. Select a Pokémon to have 90 damage dealt to it.", 1)
-              opp.bench.findAll { !list.contains(it) }.each {
-                damage 90 it
-              }
+              damage 90, opp.all.oppSelect("Opponent used $move. Select a Pokémon to have 90 damage dealt to it.")
             }
           }
         };
@@ -2271,8 +2288,11 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Poison Cultivation", {
             text "If your opponent's Active Pokémon is Poisoned, put 10 damage counters instead of 1 on that Pokémon between turns."
             energyCost P
+            attackRequirement {
+              assert defending.isSPC(POISONED) : "Defending Pokémon is not poisoned."
+            }
             onAttack {
-              if (defending.isSPC(POISONED)) extraPoison 9
+              extraPoison 9
             }
           }
           move "Sharp Fin", {
@@ -2448,6 +2468,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Seaweed Grab", {
             text "Put a Trainer card from your discard pile into your hand."
             energyCost C
+            attackRequirement {
+              assert my.discard.hasType(TRAINER) : "There are no Trainer cards in your discard pile."
+            }
             onAttack {
               my.discard.filterByType(TRAINER).select().moveTo(my.hand)
             }
@@ -2468,7 +2491,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
             energyCost P
             attackRequirement {
-              assert my.deck
+              assert my.deck : "Your deck is empty."
             }
             onAttack {
               def nam=self.name
@@ -2520,7 +2543,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Once during your turn (before your attack), if you have Solgaleo in play, you may search your deck for up to 2 Energy cards and attach them to your Solgaleo or Lunala in any way you like. Then, shuffle your deck."
             actionA {
               checkLastTurn()
-              assert my.deck
+              assert my.deck : "Your deck is empty."
               assert my.all.find{it.name == 'Solgaleo'} : "You don't have Solgaleo in play."
               powerUsed()
               my.deck.search (max: 2, cardTypeFilter(BASIC_ENERGY)).each {
@@ -2604,7 +2627,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
             energyCost C, C
             attackRequirement {
-              assert opp.bench
+              assert opp.bench : "Your opponent has no benched Pokémon."
             }
             onAttack {
               sw(opp.active, opp.bench.select())
@@ -2629,7 +2652,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert my.deck : "Your deck is empty."
             }
             onAttack {
-              my.deck.search(cardTypeFilter(STADIUM)).moveTo(hand)
+              my.deck.search(cardTypeFilter(STADIUM)).showToOpponent("Opponent's chosen Stadium").moveTo(hand)
               shuffleDeck()
             }
           }
@@ -2663,7 +2686,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             delayedA {
               def power=false
               before PLAY_TRAINER, {
-                if (ef.supporter && bg.currentTurn==self.owner.opposite) {
+                if (ef.supporter && bg.currentTurn==self.owner.opposite && ef.reason==PLAY_FROM_HAND) {
                   power=true
                 }
               }
@@ -2673,7 +2696,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               before null, null, Source.TRAINER_CARD, {
                 def target=e.getTarget(bg)
                 if (power && target && target.owner==self.owner){
-                  bc "Obnoxious Whirring prevents effects from Supporter cards done to $self."
+                  bc "$bwAbility prevents effects from Supporter cards done to $self."
                   prevent()
                 }
               }
@@ -2823,7 +2846,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost F
             onAttack {
               damage 120
-              my.deck.subList(0, 4).discard()
+              if (my.deck) my.deck.subList(0, 4).discard()
             }
           }
         };
@@ -2850,10 +2873,11 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Once during your turn (before your attack), you may search your deck for a card, shuffle your deck, then put that card on top of it."
             actionA {
               checkLastTurn()
-              assert my.deck
+              assert my.deck : "Your deck is empty."
               powerUsed()
-              def tar = my.deck.select(min: 0, max: 1, "Choose 1 card to put on top of your deck.").first()
+              def tar = my.deck.select("Choose 1 card to put on top of your deck.").first()
               my.deck.remove(tar)
+              shuffleDeck()
               my.deck.add(0, tar)
             }
           }
@@ -2935,7 +2959,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
                     bc "Solid Shell -30"
                     it.dmg -= hp(30)
                   }
@@ -3186,13 +3210,14 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Ominous News", {
             text "Discard a Special Energy from 1 of your opponent's Pokémon."
             energyCost C
+            attackRequirement {
+              assert opp.all.findAll({it.cards.filterByType(SPECIAL_ENERGY)}) : "No Special Energy attached to opponent's Pokémon."
+            }
             onAttack {
               def targets = opp.all.findAll ({ it.cards.filterByType(SPECIAL_ENERGY) })
-              if (targets) {
-                def selectedPokemon = targets.select("Choose a Pokémon to discard a Special Energy from.")
-                def selectedEnergy = selectedPokemon.cards.filterByType(SPECIAL_ENERGY).select("Choose a Special Energy to discard.")
-                selectedEnergy.discard()
-              }
+              def selectedPokemon = targets.select("Choose a Pokémon to discard a Special Energy from.")
+              def selectedEnergy = selectedPokemon.cards.filterByType(SPECIAL_ENERGY).select("Choose a Special Energy to discard.")
+              selectedEnergy.discard()
             }
           }
           move "Dirty Throw", {
@@ -3257,6 +3282,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Mountain Munch", {
             text "Discard the top card of your opponent's deck."
             energyCost D
+            attackRequirement {
+              assert opp.deck : "Your opponent's deck is empty."
+            }
             onAttack {
               opp.deck.subList(0, 1).discard()
             }
@@ -3271,8 +3299,8 @@ public enum CosmicEclipse implements LogicCardInfo {
                 after KNOCKOUT, pcs, {
                   bc "Red Banquet gives the player an additional prize."
                   bg.em().run(new TakePrize(self.owner, pcs))
+                  unregister()
                 }
-                unregisterAfter 1
               }
             }
           }
@@ -3283,6 +3311,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           resistance P, MINUS20
           move "Run Around", {
             text "Switch this Pokémon with 1 of your Benched Pokémon."
+            attackRequirement {
+              assert my.bench : "Your bench has no Pokémon."
+            }
             onAttack {
               switchYourActive()
             }
@@ -3348,8 +3379,11 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Dual Calling", {
             text "Search your deck for up to 2 TAG TEAM cards, reveal them, and put them into your hand. Then, shuffle your deck."
             energyCost C
+            attackRequirement {
+              my.deck : "Your deck is empty."
+            }
             onAttack {
-              my.deck.search(max:2, "Search your deck for up to 2 Tag Team cards.", cardTypeFilter(TAG_TEAM)).moveTo(my.hand)
+              my.deck.search(max:2, "Search your deck for up to 2 Tag Team cards.", cardTypeFilter(TAG_TEAM)).showToOpponent("Your opponent's chosen cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -3560,7 +3594,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert my.deck : "Your deck is empty."
             }
             onAttack {
-              deck.search(max: 2, pokemonTypeFilter(Y)).moveTo(hand)
+              deck.search(max: 2, pokemonTypeFilter(Y)).showToOpponent("Your opponent's chosen cards").moveTo(hand)
               shuffleDeck()
             }
           }
@@ -3586,7 +3620,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onActivate {r->
               if (r == PLAY_FROM_HAND && my.deck && confirm("Use Flower Picking?")) {
                 powerUsed()
-                opp.hand.select(hidden: true, count:1).moveTo(hidden: false, opp.deck)
+                opp.hand.select(hidden: true, count:1).showToMe("Opponent's card being shuffled into their deck.").moveTo(hidden: false, opp.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }
@@ -3608,7 +3642,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onActivate { r->
               if (r == PLAY_FROM_HAND && my.deck && confirm("Use Flower Picking?")) {
                 powerUsed()
-                opp.hand.select(hidden: true, count:2).moveTo(hidden: false, opp.deck)
+                opp.hand.select(hidden: true, count:2).showToMe("Opponent's cards being shuffled into their deck.").moveTo(hidden: false, opp.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }
@@ -3649,12 +3683,11 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Sweet Panic", {
             text "110 damage. If your opponent's Active Pokémon isn't Confused, this attack does nothing."
             energyCost Y
+            attackRequirement {
+              assert defending.isSPC(CONFUSED) : "The Defending Pokémon is not Confused."
+            }
             onAttack {
-              if (defending.isSPC(CONFUSED)) {
-                damage 110
-              } else {
-                bc "Sweet Panic has no effect."
-              }
+              damage 110
             }
           }
         };
@@ -3675,8 +3708,18 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost Y, C, C
             onAttack {
               damage 80
-              // TODO: edit it to include only tag team supporters
-              if(bg.em().retrieveObject("last_supporter_play_turn") == bg.turnCount) damage 80
+              if(bg.em().retrieveObject("last_tag_team_supporter_play_turn") == bg.turnCount) {
+                damage 80
+              }
+            }
+          }
+          globalAbility {
+            delayed {
+              after PLAY_SUPPORTER, {
+                if(ef.reason == PLAY_FROM_HAND && ef.cardToPlay.cardTypes.is(TAG_TEAM) && bg.currentTurn == self.owner) {
+                  bg.em().storeObject("last_tag_team_supporter_play_turn", bg.turnCount)
+                }
+              }
             }
           }
         };
@@ -3993,8 +4036,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Search your deck for any number of Eevee and Eevee-GX and put them onto your Bench. Then, shuffle your deck."
             energyCost C
             attackRequirement {
-              assert my.deck.notEmpty
-              assert my.bench.notFull
+              assert my.deck.notEmpty : "Your deck is empty."
+              assert my.bench.notFull : "Your bench is full."
             }
             onAttack {
               deck.search (max: my.bench.freeBenchCount, { it.name == "Eevee" || it.name == "Eevee-GX" }).each {
@@ -4052,6 +4095,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Nice-Nice Catch", {
             text "Draw 2 cards."
             energyCost C
+            attackRequirement {
+              assert my.deck : "Your deck is empty."
+            }
             onAttack {
               draw 2
             }
