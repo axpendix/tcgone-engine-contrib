@@ -1121,7 +1121,7 @@ public enum Deoxys implements LogicCardInfo {
                 //TODO: Maybe improve this detection... Is the benched fossil/doll/usbsitute still detected as a trainer?
                 it.cards.each{
                   thatCard -> ["Fossil", "Amber", " Doll", "Robo Substitute"].each{
-                    thatTrainer -> if thatCard.name.contains(thatName) addDmg += 1
+                    thatTrainer -> if (thatCard.name.contains(thatTrainer)) { addDmg += 1 }
                   }
                 }
                 //TODO: Detect attached non-tools (see: Pluspower, Defender, etc.)
