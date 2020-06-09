@@ -86,8 +86,8 @@ public enum RisingRivals implements LogicCardInfo {
   KOFFING_68 ("Koffing", 68, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
   MUNCHLAX_69 ("Munchlax", 69, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   MUNCHLAX_70 ("Munchlax", 70, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  NIDORAN_FEMALE_71 ("Nidoran Female", 71, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  NIDORAN_MALE_72 ("Nidoran Male", 72, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  NIDORAN_FEMALE_71 ("Nidoran♀", 71, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  NIDORAN_MALE_72 ("Nidoran♂", 72, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
   NIDORINA_73 ("Nidorina", 73, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
   NIDORINO_74 ("Nidorino", 74, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
   NUZLEAF_75 ("Nuzleaf", 75, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
@@ -1836,7 +1836,7 @@ public enum RisingRivals implements LogicCardInfo {
 
         };
       case NIDORINA_73:
-        return evolution (this, from:"Nidoran Female", hp:HP080, type:PSYCHIC, retreatCost:2) {
+        return evolution (this, from:"Nidoran♀", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS20
           move "Jump Tackle", {
             text "30 damage. Nidorina does 10 damage to itself, and don’t apply Weakness and Resistance to this damage."
@@ -1857,7 +1857,7 @@ public enum RisingRivals implements LogicCardInfo {
 
         };
       case NIDORINO_74:
-        return evolution (this, from:"Nidoran Male", hp:HP080, type:PSYCHIC, retreatCost:1) {
+        return evolution (this, from:"Nidoran♂", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
           move "Toxic", {
             text "The Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."

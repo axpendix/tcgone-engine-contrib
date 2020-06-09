@@ -83,8 +83,8 @@ public enum Triumphant implements LogicCardInfo {
   LICKITUNG_66 ("Lickitung", 66, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   MACHOP_67 ("Machop", 67, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
   MAGNEMITE_68 ("Magnemite", 68, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  NIDORAN_FEMALE_69 ("Nidoran Female", 69, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  NIDORAN_MALE_70 ("Nidoran Male", 70, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  NIDORAN_FEMALE_69 ("Nidoran♀", 69, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  NIDORAN_MALE_70 ("Nidoran♂", 70, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
   PIDGEY_71 ("Pidgey", 71, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   PONYTA_72 ("Ponyta", 72, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
   PORYGON_73 ("Porygon", 73, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
@@ -1074,7 +1074,7 @@ public enum Triumphant implements LogicCardInfo {
 
         };
       case NIDORINA_45:
-        return evolution (this, from:"Nidoran Female", hp:HP080, type:PSYCHIC, retreatCost:2) {
+        return evolution (this, from:"Nidoran♀", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness P
           move "Quick Blow", {
             text "20 damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
@@ -1095,7 +1095,7 @@ public enum Triumphant implements LogicCardInfo {
 
         };
       case NIDORINO_46:
-        return evolution (this, from:"Nidoran Male", hp:HP080, type:PSYCHIC, retreatCost:1) {
+        return evolution (this, from:"Nidoran♂", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P
           move "Horn Attack", {
             text "30 damage. "

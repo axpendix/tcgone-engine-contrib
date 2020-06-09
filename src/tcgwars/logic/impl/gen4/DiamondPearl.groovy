@@ -1347,7 +1347,9 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Errand-Running", {
             text "Search your deck for a Trainer card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck
+            }
             onAttack {
               my.deck.search("Search your deck for a Trainer card (excluding Supporter and Stadium cards)", {it.cardTypes.is(ITEM)}).moveTo(my.hand)
               shuffleDeck()
@@ -2168,7 +2170,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              delayed { //Taken from BS1 BULBASAUR
+              delayed (priority: LAST){ //Taken from BS1 BULBASAUR
                 before APPLY_ATTACK_DAMAGES, {
                   if(bg.dm().find{it.to == defending && it.from == self && it.dmg.value}) {
                     heal 10, self

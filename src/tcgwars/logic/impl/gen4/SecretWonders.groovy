@@ -134,7 +134,7 @@ public enum SecretWonders implements LogicCardInfo {
   MAREEP_94 ("Mareep", 94, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
   MURKROW_95 ("Murkrow", 95, Rarity.COMMON, [BASIC, POKEMON, _DARKNESS_]),
   NATU_96 ("Natu", 96, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  NIDORAN_MALE_97 ("Nidoran Male", 97, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  NIDORAN_MALE_97 ("Nidoran♂", 97, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
   PHANPY_98 ("Phanpy", 98, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
   PIDGEY_99 ("Pidgey", 99, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   PSYDUCK_100 ("Psyduck", 100, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
@@ -1373,7 +1373,7 @@ public enum SecretWonders implements LogicCardInfo {
 
         };
       case NIDORINO_57:
-        return evolution (this, from:"Nidoran Male", hp:HP080, type:PSYCHIC, retreatCost:1) {
+        return evolution (this, from:"Nidoran♂", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
           move "Spirited Drill", {
             text "20 damage. ."
