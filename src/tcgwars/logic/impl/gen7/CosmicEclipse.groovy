@@ -3380,7 +3380,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Search your deck for up to 2 TAG TEAM cards, reveal them, and put them into your hand. Then, shuffle your deck."
             energyCost C
             attackRequirement {
-              my.deck : "Your deck is empty."
+              assert my.deck : "Your deck is empty."
             }
             onAttack {
               my.deck.search(max:2, "Search your deck for up to 2 Tag Team cards.", cardTypeFilter(TAG_TEAM)).showToOpponent("Your opponent's chosen cards").moveTo(my.hand)
