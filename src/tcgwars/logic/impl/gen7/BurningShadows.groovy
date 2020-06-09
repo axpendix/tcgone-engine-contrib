@@ -2013,7 +2013,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              if opp.bench{
+              if (opp.bench){
                 def pcs = opp.bench.select("Switch")
                 sw opp.active, pcs
                 apply POISONED, pcs
