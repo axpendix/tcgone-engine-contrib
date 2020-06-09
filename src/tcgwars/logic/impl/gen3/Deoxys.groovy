@@ -193,7 +193,23 @@ public enum Deoxys implements LogicCardInfo {
           resistance FIGHTING, MINUS30
           pokeBody "Safeguard", {
             text "Prevent all effects of attacks, including damage, done to Altaria by your opponent’s Pokémon-ex."
-            safeguard(self,delegate)
+            //TODO: Change static safeguard so it's configurable.
+            delayedA {
+              before null, self, Source.ATTACK, {
+                if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+                  bc "Safeguard prevents effect"
+                  prevent()
+                }
+              }
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if(it.to == self && it.notNoEffect && it.from.EX ) {
+                    it.dmg = hp(0)
+                    bc "Safeguard prevents damage"
+                  }
+                }
+              }
+            }
           }
           move "Double Wing Attack", {
             text "Does 20 Damage to each Defending Pokémon."
@@ -285,7 +301,9 @@ public enum Deoxys implements LogicCardInfo {
           move "Back Burner", {
             text "Search your discard pile for up to 2 basic Energy cards and attach them to your Pokémon in any way you like."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.filterByType(BASIC_ENERGY) : "You don't have any Basic Energy cards in your discard pile"
+            }
             onAttack {
               attachEnergyFrom(basic: true,my.discard,my.all)
               attachEnergyFrom(basic: true,my.discard,my.all)
@@ -297,11 +315,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost R, C, C
             attackRequirement {}
             onAttack {
-              multiSelect(opp.all, 2).each{
-                targeted(it){
-                  damage 30, it
-                }
-              }
+              multiSelect(opp.all, 2).each{ damage 30, it }
             }
           }
 
@@ -374,13 +388,20 @@ public enum Deoxys implements LogicCardInfo {
       case DUSCLOPS_7:
         return evolution (this, from:"Duskull", hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
+          resistance F, MINUS30
           move "Psychic Removal", {
             text "20 damage. Flip 2 coins. If both of them are heads, discard all Energy attached to the Defending Pokémon."
             energyCost P
             attackRequirement {}
             onAttack {
               damage 20
-              flip 2, {}, {}, [2:{while(defending.cards.energyCount()) discardDefendingEnergy()}]
+              afterDamage{
+                flip 2, {}, {}, [2:{
+                  targeted (defending) {
+                    opp.active.cards.filterByType(ENERGY).discard()
+                  }
+                }]
+              }
             }
           }
           move "Powerful Hand", {
@@ -436,14 +457,14 @@ public enum Deoxys implements LogicCardInfo {
           pokePower "Wishing Star", {
             text "Once during your turn (before your attack), if Jirachi is your Active Pokémon, you may look at the top 5 cards of your deck, choose one of them, and put it into your hand. Shuffle your deck afterward. Jirachi and your other Active Pokémon, if any, are now Asleep. This power can’t be used if Jirachi is affected by a Special Condition."
             actionA {
+              checkNoSPC()
               checkLastTurn()
-              assert !(self.specialConditions) : "$self is affected by a Special Condition."
               assert self.active : "$self is not your Active Pokémon."
               assert my.deck : "There is no cards remaining."
               powerUsed()
               my.deck.subList(0,Math.min(5,my.deck.size())).select("Select one card to put into your hand.").moveTo(hidden:true, my.hand)
               shuffleDeck()
-              apply ASLEEP, self
+              apply ASLEEP, self, SRC_ABILITY
             }
           }
           move "Metallic Blow", {
@@ -467,8 +488,8 @@ public enum Deoxys implements LogicCardInfo {
           pokePower "Swing Dance", {
             text "Once during your turn (before your attack), you may draw a card. This power can’t be used if Ludicolo is affected by a Special Condition."
             actionA {
+              checkNoSPC()
               checkLastTurn()
-              assert !(self.specialConditions) : "$self is affected by a Special Condition."
               assert my.deck : "There is no cards remaining."
               powerUsed()
               draw 1
@@ -480,9 +501,9 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              if(self.numberOfDamageCounters) {
+              if(my.hand) {
                 if(confirm("Discard cards from your hand to remove damage counter on Ludicolo?")){
-                  heal 10*my.hand.select(max : self.numberOfDamageCounters,"For each card discarded you will remove 1 damage counter").discard().size() ,self
+                  heal 10 * my.hand.select(max: my.hand.size(), "For each card discarded you will remove 1 damage counter").discard().size(), self
                 }
               }
             }
@@ -504,11 +525,11 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before you attack), you may search your discard pile for a [P] or [M] Energy card and attach it to your Active Pokémon. Then, put 1 damage counter on that Pokémon. This power can’t be used if Metagross is affected by a Special Condition."
             actionA {
               checkLastTurn()
-              assert !(self.specialConditions) : "$self is affected by a Special Condition."
-              assert my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)} : "There is no [P] or [M] Energy card in your discard."
+              checkNoSPC()
+              assert my.discard.filterByType(BASIC_ENERGY).any{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)} : "There are no [P] or [M] Energy card in your discard."
               powerUsed()
               attachEnergy(my.active,my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)}.select().first())
-              directDamage 10, my.active
+              directDamage 10, my.active, SRC_ABILITY
             }
           }
           move "Link Blast", {
@@ -516,10 +537,9 @@ public enum Deoxys implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              if(self.cards.energyCount(C) == defending.cards.energyCount(C)){
+              if (self.cards.energyCount(C) == defending.cards.energyCount(C)){
                 damage 70
-              }
-              else{
+              } else {
                 damage 40
               }
             }
@@ -537,7 +557,7 @@ public enum Deoxys implements LogicCardInfo {
               assert my.deck
             }
             onAttack {
-              my.deck.search(max:1,"Select 1 card",{true}).moveTo(my.hand)
+              my.deck.select().moveTo(hidden: true, my.hand)
               shuffleDeck()
             }
           }
@@ -547,8 +567,10 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              if(opp.hand.size() >= 5){
-                opp.hand.oppSelect(max : opp.hand.size() - 4,min : opp.hand.size() - 4,"Select the card to discard").discard()
+              afterDamage {
+                if(opp.hand.size() >= 5){
+                  opp.hand.oppSelect(count: opp.hand.size() - 4, "Select cards to discard until you end up with 4 left").discard()
+                }
               }
             }
           }
@@ -568,7 +590,7 @@ public enum Deoxys implements LogicCardInfo {
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.from.basic ){
+                  if(it.to == self && it.notNoEffect && it.from.owner != self.owner && it.from.basic ){
                     it.dmg = hp(0)
                     bc "Fast Protection prevents damage"
                   }
@@ -576,7 +598,7 @@ public enum Deoxys implements LogicCardInfo {
               }
               after ENERGY_SWITCH, {
                 def efs = (ef as EnergySwitch)
-                if(efs.from.basic && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                if(efs.from.basic && efs.from.owner != self.owner && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                   discard efs.card
                 }
               }
@@ -618,7 +640,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              if(defending.pokemonEX){
+              if(defending.EX){
                 directDamage 40, defending
               }
               else{
@@ -636,7 +658,7 @@ public enum Deoxys implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(it.to == self && it.notNoEffect && it.dmg.value && it.from.pokemonEX) {
+                  if(it.to == self && it.notNoEffect && it.dmg.value && it.from.EX) {
                     bc "Lazy Aura -30"
                     it.dmg -= hp(30)
                   }
@@ -672,8 +694,10 @@ public enum Deoxys implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
               checkLastTurn()
               assert my.deck : "Deck is empty"
+              bg.em().storeObject("Form_Change",bg.turnCount)
               powerUsed()
 
               def oldDeoxys = self.topPokemonCard
@@ -712,8 +736,10 @@ public enum Deoxys implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
               checkLastTurn()
               assert my.deck : "Deck is empty"
+              bg.em().storeObject("Form_Change",bg.turnCount)
               powerUsed()
 
               def oldDeoxys = self.topPokemonCard
@@ -751,8 +777,10 @@ public enum Deoxys implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
               checkLastTurn()
               assert my.deck : "Deck is empty"
+              bg.em().storeObject("Form_Change",bg.turnCount)
               powerUsed()
 
               def oldDeoxys = self.topPokemonCard
@@ -788,6 +816,7 @@ public enum Deoxys implements LogicCardInfo {
             text "Once during your turn (before your attack), you may remove 1 damage counter from each of your Pokémon. You can’t use more than 1 Happy Dance Poké-Power each turn. This power can’t be used if Ludicolo is affected by a Special Condition."
             actionA {
               checkLastTurn()
+              checkNoSPC()
               assert bg.em().retrieveObject("Happy_Dance") != bg.turnCount : "You cannot use Happy Dance more than once per turn!"
               powerUsed()
               bg.em().storeObject("Happy_Dance",bg.turnCount)
@@ -817,7 +846,7 @@ public enum Deoxys implements LogicCardInfo {
               checkNoSPC()
               assert my.deck : "There is no card in your deck"
               powerUsed()
-              def tar = my.deck.search(max:1,"Select 1 card",{true}).each{my.deck.remove(it)}
+              def tar = my.deck.select("Select 1 card").each{my.deck.remove(it)}
               shuffleDeck()
               my.deck.addAll(0, tar)
             }
@@ -854,17 +883,7 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               damage 10
               afterDamage{
-                delayed{
-                  before APPLY_ATTACK_DAMAGES, {
-                    bg.dm().each{
-                      if(it.from.owner == self.owner && it.notNoEffect && it.dmg.value) {
-                        bc "Bay Dance +30"
-                        it.dmg += hp(30)
-                      }
-                    }
-                  }
-                  unregisterAfter 3
-                }
+                doMoreDamageNextTurn(thisMove, 30, self)
               }
             }
           }
@@ -886,7 +905,7 @@ public enum Deoxys implements LogicCardInfo {
             text "As long as Rayquaza has any basic [R] Energy cards and any basic [L] Energy cards attached to it, prevent all effects, except damage, by an opponent’s attack done to Rayquaza."
             delayedA {
               before null, self, Source.ATTACK, {
-                if(bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.energyCount(L) && self.cards.energyCount(R)){
+                if(ef.attacker.owner != self && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.energyCount(L) && self.cards.energyCount(R)){
                   bc "Dragon Aura prevents effect"
                   prevent()
                 }
@@ -913,7 +932,7 @@ public enum Deoxys implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               assert self.active : "$self is not your active Pokémon."
-              assert opp.hand : "There is no card in your opponent hand"
+              assert opp.hand : "There are no cards in your opponent's hand"
               powerUsed()
               opp.hand.showToMe("Opponent's hand")
             }
@@ -931,15 +950,8 @@ public enum Deoxys implements LogicCardInfo {
             energyCost D
             attackRequirement {}
             onAttack {
-              delayed {
-                before PLAY_TRAINER, {
-                  if (ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner.opposite) {
-                    wcu "Limitation prevents playing this card"
-                    prevent()
-                  }
-                }
-                unregisterAfter 2
-              }
+              //TODO: Fix the static so it uses this attack's name
+              opponentCantPlaySupporterNextTurn(delegate)
             }
           }
 
@@ -952,12 +964,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              multiSelect(opp.all, 3).each{
-                targeted(it){
-                  damage 10, it
-                }
-              }
-
+              multiSelect(opp.all, 3).each{ damage 10, it }
             }
           }
           move "Rend", {
@@ -1087,9 +1094,9 @@ public enum Deoxys implements LogicCardInfo {
             text "If Xatu is Burned or Poisoned by an opponent’s attack (even if Xatu is Knocked Out), the Attacking Pokémon is now affected by the same Special Conditions (1 if there is only 1)."
             delayedA {
               before APPLY_SPECIAL_CONDITION,self, {
-                bc "Mirror Coat : ${ef.type}"
                 if(ef.type == POISONED || ef.type == BURNED){
-                  apply ef.type, self.owner.opposite.pbg.active
+                  bc "Mirror Coat : ${ef.type}"
+                  apply ef.type, self.owner.opposite.pbg.active, SRC_ABILITY
                 }
               }
             }
@@ -1111,13 +1118,20 @@ public enum Deoxys implements LogicCardInfo {
               damage 30
               opp.all.each{
                 if(it.cards.filterByType(POKEMON_TOOL)) addDmg += 1
+                //TODO: Maybe improve this detection... Is the benched fossil/doll/usbsitute still detected as a trainer?
+                it.cards.each{
+                  thatCard -> ["Fossil", "Amber", " Doll", "Robo Substitute"].each{
+                    thatTrainer -> if thatCard.name.contains(thatName) addDmg += 1
+                  }
+                }
+                //TODO: Detect attached non-tools (see: Pluspower, Defender, etc.)
               }
               if(bg.stadiumInfoStruct){
-                if(bg.stadiumInfoStruct.stadiumCard.player){
+                if(bg.stadiumInfoStruct.stadiumCard.player != self.owner){
                   addDmg += 1
                 }
               }
-              damage 30*addDmg
+              damage 30 * addDmg
             }
           }
         };
@@ -1190,7 +1204,7 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              apply ASLEEP
+              applyAfterDamage ASLEEP
             }
           }
           move "Extra Ball", {
@@ -1199,7 +1213,7 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              if(defending.pokemonEX) damage 30
+              if(defending.EX) damage 30
             }
           }
 
@@ -1259,10 +1273,7 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              if(opp.hand){
-                opp.hand.select(hidden:true,"Select one card").showToMe("Selected card.").moveTo(opp.deck)
-                shuffleDeck(null,TargetPlayer.OPPONENT)
-              }
+              afterDamage { astonish() }
             }
           }
 
@@ -1274,7 +1285,7 @@ public enum Deoxys implements LogicCardInfo {
             text "The Retreat Cost for each Solrock you have in play is 0."
             getterA (GET_RETREAT_COST, BEFORE_LAST) {holder->
               def pcs = holder.effect.target
-              if(pcs.name == "Solrock"){
+              if(pcs.name == "Solrock" && pcs.owner == self.owner){
                 holder.object = 0
               }
             }
@@ -1282,13 +1293,7 @@ public enum Deoxys implements LogicCardInfo {
           move "Foresight", {
             text "Look at the top 5 cards of either player’s deck and put them back on top of that player’s deck in any order."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              def list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards in your deck")
-              my.deck.setSubList(0, list)
-              list=rearrange(opp.deck.subList(0,5), "Rearrange top 5 cards in your opponent's deck")
-              opp.deck.setSubList(0, list)
-            }
+            rearrangeEitherPlayersDeck(delegate, 5)
           }
           move "Target Beam", {
             text "20+ damage. Does 20 damage plus 10 more damage for each Solrock you have in play."
@@ -1343,6 +1348,7 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
+              //TODO: Could this choice be done regardless of having [L] Energy attached or not? May want the self damage for some reason.
               if(self.cards.energyCount(L)){
                 if(confirm("Do 10 more damage for each [L] Energy attached to Manetric. (Manetric will do 10 damage to itself)")){
                   damage 10*self.cards.energyCount(L)
@@ -1410,7 +1416,7 @@ public enum Deoxys implements LogicCardInfo {
             text "Put any 1 card from your discard pile into your hand."
             energyCost C
             attackRequirement {
-              assert my.discard : "There is no card in your discard pile."
+              assert my.discard : "There are no cards in your discard pile"
             }
             onAttack {
               my.discard.select("Select 1 card to put into your hand.").moveTo(my.hand)
@@ -1421,7 +1427,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              def hasPokeBody = false
+              def hasPokeBody
               opp.all.each{
                 hasPokeBody = false
                 for (Ability ability : it.getAbilities().keySet()) {
@@ -1508,7 +1514,8 @@ public enum Deoxys implements LogicCardInfo {
       case SHELGON_45:
         return evolution (this, from:"Bagon", hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness COLORLESS
-          resistance FIGHTING
+          resistance FIGHTING, MINUS30
+          resistance FIRE, MINUS30
           pokeBody "Hard Protection", {
             text "Prevent all damage done to Shelgon by attacks from your Pokémon."
             delayedA {
@@ -1569,7 +1576,7 @@ public enum Deoxys implements LogicCardInfo {
           pokeBody "Sunbeam", {
             text "The maximum HP for each Lunatone you have in play is now 80."
             getterA GET_FULL_HP ,{h->
-              if(h.effect.target.name == "Lunatone") {
+              if(h.effect.target.name == "Lunatone" && h.effect.target.owner == self.owner) {
                 h.object = hp(80)
               }
             }
@@ -1651,8 +1658,8 @@ public enum Deoxys implements LogicCardInfo {
               def pcs = opp.all.select("Select the Pokémon to attack.")
               damage 20, pcs
               afterDamage{
-                if(pcs.cards.energyCount(C)){
-                  flip {pcs.cards.filterByType(ENERGY).oppSelect("Select the Energy to discard.").discard()}
+                if (pcs.cards.energyCount(C)) {
+                  flip { targeted (pcs, ATTACK) { pcs.cards.filterByType(ENERGY).oppSelect("Select the Energy to discard.").discard() } }
                 }
               }
             }
@@ -1677,7 +1684,7 @@ public enum Deoxys implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
                   if(self.active && it.from.active && it.to.active) {
-                    bc "Core Guard -10"
+                    bc "Vigorous Aura +10"
                     it.dmg += hp(10)
                   }
                 }
@@ -1702,8 +1709,8 @@ public enum Deoxys implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage defending.getRemainingHP().value - 10
-              damage 70,self
+              directDamage defending.remainingHP.value - 10, defending
+              damage 70, self
             }
           }
           move "Smogscreen", {
@@ -1721,7 +1728,8 @@ public enum Deoxys implements LogicCardInfo {
       case BAGON_52:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness COLORLESS
-          resistance FIGHTING
+          resistance FIRE, MINUS30
+          resistance FIGHTING, MINUS30
           move "Singe", {
             text "Flip a coin. If heads, the Defending Pokémon is now Burned."
             energyCost R
@@ -1993,7 +2001,7 @@ public enum Deoxys implements LogicCardInfo {
               assert my.bench : "There is no Pokémon on your bench."
             }
             onAttack {
-              sw self, my.bench.select("Select the new active.")
+              switchYourActive()
             }
           }
           move "Rage", {
@@ -2016,7 +2024,7 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               flip {
                 damage 10
-                discardDefendingEnergy()
+                afterDamage { discardDefendingEnergy() }
               }
 
             }
@@ -2041,7 +2049,7 @@ public enum Deoxys implements LogicCardInfo {
               before APPLY_SPECIAL_CONDITION,self, {
                 bc "Mirror Coat : ${ef.type}"
                 if(ef.type == POISONED || ef.type == BURNED){
-                  apply ef.type, self.owner.opposite.pbg.active
+                  apply ef.type, self.owner.opposite.pbg.active, SRC_ABILITY
                 }
               }
             }
@@ -2134,10 +2142,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              if(opp.hand){
-                opp.hand.select(hidden:true,"Select one card").showToMe("Selected card.").moveTo(opp.deck)
-                shuffleDeck(null,TargetPlayer.OPPONENT)
-              }
+              astonish()
             }
           }
           move "Sharp Fang", {
@@ -2290,7 +2295,7 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               damage 10
               if(opp.bench) sw defending, opp.bench.oppSelect("Select new active.")
-              if(my.bench) sw self, my.bench.select("Select new active.")
+              switchYourActive()
             }
           }
 
@@ -2473,32 +2478,39 @@ public enum Deoxys implements LogicCardInfo {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAs long as this card is attached to a Pokémon, that Pokémon’s type is [C]. If that Pokémon attacks, discard this card at the end of the turn."
           def eff1
           def eff2
+          def flag = false
           onPlay {reason->
-            eff1=getter GET_POKEMON_TYPE, self, {h ->
+            eff1 = getter GET_POKEMON_TYPE, self, {h ->
               h.object.clear()
               h.object.add(C)
             }
             eff2 = delayed{
-              after BETWEEN_TURNS, {
-                discard thisCard
-                unregister()
+              before ATTACK_MAIN, {
+                flag = (ef.attacker == self)
+              }
+              before BETWEEN_TURNS, {
+                if (flag) { discard thisCard }
               }
             }
           }
           onRemoveFromPlay {
+            eff1.unregister()
+            eff2.unregister()
           }
         };
       case ENERGY_CHARGE_86:
         return basicTrainer (this) {
           text "Flip a coin. If heads, search your discard pile for 2 Energy cards (1 if there is only 1), show them to your opponent, and shuffle them into your deck."
           onPlay {
-            flip{
-              my.discard.filterByType(ENERGY).select(max:2,"Select 2 Energy cards.").showToOpponent("Selected cards.").moveTo(my.deck)
+            flip {
+              def tar = my.discard.filterByType(ENERGY)
+              def enCnt = Math.min(2, tar.size())
+              tar.select(count: enCnt,"Select $enCnt Energy card${enCnt>1 ? "s"}.").showToOpponent("Selected card${enCnt>1 ? "s"}.").moveTo(my.deck)
               shuffleDeck()
             }
           }
           playRequirement{
-            assert my.discard.filterByType(ENERGY) : "There is no Energy cards in your discard"
+            assert my.discard.filterByType(ENERGY) : "There are no Energy cards in your discard"
           }
         };
       case LADY_OUTING_87:
@@ -2507,11 +2519,11 @@ public enum Deoxys implements LogicCardInfo {
         return basicTrainer (this) {
           text "Look at the top 7 cards from your deck. Choose a Basic Pokémon or Evolution card from those cards, show it to your opponent, and put it into your hand. Put the other 6 cards back on top of your deck. Shuffle your deck afterward."
           onPlay {
-            my.deck.subList(0,7).showToMe("Top 7 cards from your deck.").filterByType(BASIC,EVOLUTION).select("Select a Basic Pokémon or Evolution card.").moveTo(my.hand)
+            my.deck.subList(0,7).select(min:0,"Select a Basic Pokémon or Evolution card to put to hand",cardTypeFilter(POKEMON)).moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
-            assert my.deck : "There is no card remaining in your deck."
+            assert my.deck : "There are no cards left in your deck."
           }
         };
       case METEOR_FALLS_89:
@@ -2520,9 +2532,10 @@ public enum Deoxys implements LogicCardInfo {
           def eff
           onPlay {
             eff = getter (GET_MOVE_LIST) {holder->
-              if(holder.effect.target.active && holder.effect.target.evolution){
-                for(card in holder.effect.target.cards.filterByType(POKEMON)){
-                  if(card!=holder.effect.target.topPokemonCard){
+              def pcs = holder.effect.target
+              if(!(pcs.EX) && pcs.active && pcs.evolution){
+                for(card in pcs.cards.filterByType(BASIC,STAGE1)){
+                  if(card!=pcs.topPokemonCard){
                     holder.object.addAll(card.moves)
                   }
                 }
@@ -2555,12 +2568,12 @@ public enum Deoxys implements LogicCardInfo {
           def eff2
           onPlay {
             eff1 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (h.effect.ability instanceof PokeBody && h.effect.target.basic && !h.effect.target.pokemonEX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
+              if (h.effect.ability instanceof PokeBody && h.effect.target.basic && !h.effect.target.EX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
                 h.object=true
               }
             }
             eff2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-              if (h.effect.ability instanceof PokeBody && h.effect.target.basic && !h.effect.target.pokemonEX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
+              if (h.effect.ability instanceof PokeBody && h.effect.target.basic && !h.effect.target.EX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
                 h.object=true
               }
             }
@@ -2577,8 +2590,11 @@ public enum Deoxys implements LogicCardInfo {
           def attackUsed = false
           onPlay {reason->
             eff1=delayed {
+              before ATTACK_MAIN, {
+                attackUsed = (ef.attacker == self)
+              }
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker==self) bg.dm().each {
+                if(attackUsed) bg.dm().each {
                   if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
                     it.dmg += hp(10)
                     attackUsed=true
@@ -2628,7 +2644,7 @@ public enum Deoxys implements LogicCardInfo {
         return specialEnergy (this, [[C]]) {
           text "Heal Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter and all Special Conditions from that Pokémon. If heal Energy is attached to Pokémon-ex, Heal Energy has no effect other than providing Energy."
           onPlay {reason->
-            if(!self.pokemonEX){
+            if(!self.EX){
               heal 10,self
               self.specialConditions.clear()
             }
@@ -2641,7 +2657,7 @@ public enum Deoxys implements LogicCardInfo {
           text "Scramble Energy can be attached only to an Evolved Pokémon (excluding Pokémon-ex). Scramble Energy provides [C] Energy. While in play, if you have more prizes left than your opponent, Scramble Energy provides every type of Energy but provides only 3 in any combination at a time. If the Pokémon Scramble Energy is attached to isn’t an Evolved Pokémon (or evolves into Pokémon-ex), discard Scramble Energy."
           def eff
           def check = {
-            if(!it.evolution || it.pokemonEX){discard thisCard}
+            if(!it.evolution || it.EX){discard thisCard}
           }
           onPlay {reason->
             eff = delayed {
@@ -2655,7 +2671,7 @@ public enum Deoxys implements LogicCardInfo {
             check(to)
           }
           allowAttach {to->
-            to.evolution && !to.pokemonEX
+            to.evolution && !to.EX
           }
           getEnergyTypesOverride{
             if(self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size())
@@ -2676,7 +2692,7 @@ public enum Deoxys implements LogicCardInfo {
               checkNoSPC()
               assert self.active : "$self is not your Active Pokémon"
               powerUsed()
-              directDamage 10, opp.all.select()
+              directDamage 10, opp.all.select(), SRC_ABILITY
             }
           }
           move "Cross Attack", {
@@ -2709,8 +2725,10 @@ public enum Deoxys implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys ex and switch it with Deoxys ex. (Any cards attached to Deoxys ex, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys ex on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
               checkLastTurn()
               assert my.deck : "Deck is empty"
+              bg.em().storeObject("Form_Change",bg.turnCount)
               powerUsed()
 
               def oldDeoxys = self.topPokemonCard
@@ -2744,8 +2762,10 @@ public enum Deoxys implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys ex and switch it with Deoxys ex. (Any cards attached to Deoxys ex, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys ex on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
               checkLastTurn()
               assert my.deck : "Deck is empty"
+              bg.em().storeObject("Form_Change",bg.turnCount)
               powerUsed()
 
               def oldDeoxys = self.topPokemonCard
@@ -2783,8 +2803,10 @@ public enum Deoxys implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys ex and switch it with Deoxys ex. (Any cards attached to Deoxys ex, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys ex on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
               checkLastTurn()
               assert my.deck : "Deck is empty"
+              bg.em().storeObject("Form_Change",bg.turnCount)
               powerUsed()
 
               def oldDeoxys = self.topPokemonCard
@@ -2810,14 +2832,15 @@ public enum Deoxys implements LogicCardInfo {
               damage 50
               delayed{
                 before null, self, Source.ATTACK, {
-                  if (self.owner.opposite.pbg.active.pokemonEX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  //TODO: Should prevent stuff like Turtonator-GX's Shell Trap
+                  if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                     bc "Psychic Shield effect"
                     prevent()
                   }
                 }
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
-                    if(it.to == self && it.notNoEffect && it.from.pokemonEX ){
+                    if(it.to == self && it.notNoEffect && it.from.EX ){
                       it.dmg = hp(0)
                       bc "Psychic Shield damage"
                     }
@@ -2825,7 +2848,7 @@ public enum Deoxys implements LogicCardInfo {
                 }
                 after ENERGY_SWITCH, {
                   def efs = (ef as EnergySwitch)
-                  if(efs.from.pokemonEX && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                  if(efs.from.EX && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                     discard efs.card
                   }
                 }
@@ -2857,7 +2880,7 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               damage 40
               afterDamage{
-                if(opp.hand) opp.hand.select(hidden : true,"Select one card to discard").discard()
+                discardRandomCardFromOpponentsHand()
               }
             }
           }
@@ -2868,7 +2891,7 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               damage 80
               delayed {
-                before APPLY_ATTACK_DAMAGES, {
+                after PROCESS_ATTACK_EFFECTS, {
                   bg.dm().each {
                     if(it.from.owner==self.owner.opposite && it.to==self && it.dmg.value && it.notNoEffect){
                       bc "Pivot Throw increases damage"
@@ -2918,21 +2941,20 @@ public enum Deoxys implements LogicCardInfo {
       case RAYQUAZA_EX_102:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:2) {
           weakness COLORLESS
-          resistance FIGHTING
+          resistance WATER, MINUS30
+          resistance FIGHTING, MINUS30
           pokePower "Dragon Boost", {
             text "Once during your turn, when you put Rayquaza ex from your hand onto your Bench, you may move any number of basic Energy cards attached to your Pokémon to Rayquaza ex."
-            actionA {
-              if(self.lastEvolved == bg.turnCount){
-                if(confirm("move any number of basic Energy cards attached to your Pokémon to Rayquaza ex ?"))
-                {
-                  while(1){
-                    def pl=(my.all.findAll {it.cards.filterByType(BASIC_ENERGY) && it != self})
-                    if(!pl) break;
-                    def src =pl.select("source for energy (cancel to stop)", false)
-                    if(!src) break;
-                    def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
-                    energySwitch(src, self, card)
-                  }
+            onActivate {r->
+              if (r==PLAY_FROM_HAND && confirm("Use Dragon Boost to move any number of basic Energy cards attached to your Pokémon to Rayquaza ex?")) {
+                powerUsed()
+                while(1){
+                  def pl = (my.all.findAll{ it.cards.filterByType(BASIC_ENERGY) && it != self })
+                  if (pl.empty) break;
+                  def src = pl.select("source for energy (cancel to stop)", false)
+                  if (!src) break;
+                  def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
+                  energySwitch(src, self, card)
                 }
               }
             }
@@ -2950,11 +2972,12 @@ public enum Deoxys implements LogicCardInfo {
       case SALAMENCE_EX_103:
         return evolution (this, from:"Shelgon", hp:HP160, type:COLORLESS, retreatCost:2) {
           weakness COLORLESS
-          resistance FIGHTING
+          resistance FIRE, MINUS30
+          resistance FIGHTING, MINUS30
           pokeBody "Dragon Lift", {
             text "The Retreat Cost for each of your Pokémon (excluding Pokémon-ex and Baby Pokémon) is 0."
             getterA (GET_RETREAT_COST, BEFORE_LAST) {h->
-              if(h.effect.target.owner == self.owner && !h.effect.target.topPokemonCard.cardTypes.is(BABY) &&  !h.effect.target.topPokemonCard.cardTypes.is(POKEMON_EX)) {
+              if(h.effect.target.owner == self.owner && !h.effect.target.topPokemonCard.cardTypes.is(BABY) &&  !h.effect.target.EX) {
                 h.object = 0
               }
             }
@@ -2989,7 +3012,7 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               def pcs = defending
               if(opp.bench){
-                if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")){
+                if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")){
                   pcs = opp.bench.select()
                   sw defending, pcs
                 }
@@ -3006,7 +3029,10 @@ public enum Deoxys implements LogicCardInfo {
               damage 60
               if(confirm("Discard a [D] Energy attached to Sharpedo ex? You will do 20 more damage and discard 1 Energy card attached to the Defending Pokémon.")){
                 damage 20
-                discardDefendingEnergy()
+                afterDamage{
+                  discardSelfEnergy D
+                  discardDefendingEnergy()
+                }
               }
             }
           }
@@ -3015,15 +3041,18 @@ public enum Deoxys implements LogicCardInfo {
       case LATIAS_STAR_105:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness COLORLESS
-          resistance FIGHTING
+          resistance PSYCHIC, MINUS30
+          resistance FIGHTING, MINUS30
           move "Healing Light", {
             text "10 damage. Remove 1 damage counter from each of your Pokémon (including Latias Star)."
             energyCost C
             attackRequirement {}
             onAttack {
               damage 10
-              my.all.each{
-                heal 10, it
+              afterDamage{
+                my.all.each{
+                  heal 10, it
+                }
               }
             }
           }
@@ -3033,7 +3062,7 @@ public enum Deoxys implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              if(defending.pokemonEX){
+              if(defending.EX){
                 damage 100
                 discardAllSelfEnergy(null)
               }
@@ -3044,14 +3073,18 @@ public enum Deoxys implements LogicCardInfo {
       case LATIOS_STAR_106:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness COLORLESS
-          resistance FIGHTING
+          resistance GRASS, MINUS30
+          resistance FIGHTING, MINUS30
           move "Miraculous Light", {
             text "10 damage. Remove 1 damage counter and all special Conditions from Latios Star."
             energyCost C
             attackRequirement {}
             onAttack {
-              heal 10, self
-              clearSpecialCondition(self, ATTACK)
+              damage 10
+              afterDamage{
+                heal 10, self
+                clearSpecialCondition(self, ATTACK)
+              }
             }
           }
           move "Shining Star", {
@@ -3072,7 +3105,8 @@ public enum Deoxys implements LogicCardInfo {
       case RAYQUAZA_STAR_107:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness COLORLESS
-          resistance FIGHTING
+          resistance WATER, MINUS30
+          resistance FIGHTING, MINUS30
           move "Spiral Rush", {
             text "30× damage. Flip a coin until you get tails. This attack does 30 damage times the number of heads."
             energyCost R, L
@@ -3088,7 +3122,7 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               discardAllSelfEnergy(null)
               opp.all.each{
-                if(it.pokemonEX) damage 100, it
+                if(it.EX) damage 100, it
               }
             }
           }
@@ -3101,9 +3135,12 @@ public enum Deoxys implements LogicCardInfo {
             text "Whenever you attach a [D] Energy card from your hand to Rocket’s Raikou ex, you may choose 1 of the Defending Pokémon and switch it with 1 of your opponent’s Benched Pokémon. Your opponent chooses the Benched Pokémon to switch. This power can’t be used if Rocket’s Raikou ex is affected by a Special Condition."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if(!self.specialConditions && ef.reason == PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == D)
-                  if(self.owner.opposite.pbg.bench){
-                    if(confirm("Switch the defending pokemon with 1 of your opponent’s Benched Pokémon? (Your opponent chooses the Benched Pokémon to switch)")) sw self.owner.opposite.pbg.active, self.owner.opposite.pbg.bench.oppSelect("Select the new active Pokémon.")
+                if(!self.specialConditions && ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(D))
+                  def oppPlayer = self.owner.opposite
+                  if(oppPlayer){
+                    if (confirm("Make your opponent switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon? (Your opponent chooses the Benched Pokémon to switch)")) {
+                      sw oppPlayer.pbg.active, oppPlayer.pbg.bench.select("Select the new active Pokémon.", oppPlayer)
+                    }
                   }
               }
             }
