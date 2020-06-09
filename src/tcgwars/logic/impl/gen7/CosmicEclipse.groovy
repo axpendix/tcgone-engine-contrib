@@ -1520,7 +1520,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             def preEvos = []
             def moves = []
             attackRequirement {
-              for (card in self.card.filterByType(POKEMON)) {
+              for (card in self.cards.filterByType(POKEMON)) {
                 if (card != self.topPokemonCard) {
                   preEvos += card
                   moves += card.moves
