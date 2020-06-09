@@ -509,10 +509,10 @@ public enum CosmicEclipse implements LogicCardInfo {
                 before CHECK_ATTACK_REQUIREMENTS, {
                   if(ef.attacker.owner == self.owner && (ef.attacker.types.contains(G) || ef.attacker.types.contains(R)) && bg.currentTurn == self.owner && bg.em().retrieveObject("Solar_Power") != bg.turnCount) {
                     bg.em().storeObject("Solar_Power", bg.turnCount)
+                    bc "Solar Power ignores Energy cost for $ef.attacker's $ef.move"
                     def copy = ef.move.shallowCopy()
                     copy.energyCost.clear()
                     attack (copy as Move)
-                    bc "Solar Power ignores Energy cost for $ef.attacker's $ef.move"
                     prevent()
                   }
                 }
