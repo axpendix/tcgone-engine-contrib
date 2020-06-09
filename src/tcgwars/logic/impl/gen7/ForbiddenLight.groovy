@@ -797,7 +797,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               delayed{
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
-                    if(it.to == self && it.from.evolution && it.dmg.value && it.notNoEffect) {
+                    if(it.to == self && it.from.realEvolution && it.dmg.value && it.notNoEffect) {
                       bc "Frost Wall"
                       it.dmg = hp(0)
                     }

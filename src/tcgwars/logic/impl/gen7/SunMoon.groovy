@@ -2381,7 +2381,7 @@ public enum SunMoon implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 30
-              if(defending.evolution) damage 30
+              if(defending.realEvolution) damage 30
             }
           }
           move "Hurricane Punch", {

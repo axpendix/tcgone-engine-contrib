@@ -1497,7 +1497,7 @@ public enum TeamUp implements LogicCardInfo {
             onAttack{
               damage 10
               my.bench.each{
-                if(it.evolution){
+                if(it.realEvolution){
                   damage 50
                 }
               }
