@@ -583,14 +583,14 @@ public enum Deoxys implements LogicCardInfo {
             text "Prevent all effects, including damage, done to Ninjask by your opponent’s attacks from his or her Basic Pokémon."
             delayedA {
               before null, self, Source.ATTACK, {
-                if (self.owner.opposite.pbg.active.basic && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                if (!self.owner.opposite.pbg.active.evolution && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "Fast Protection prevents effect"
                   prevent()
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.from.owner != self.owner && it.from.basic ){
+                  if(it.to == self && it.notNoEffect && it.from.owner != self.owner && !it.from.evolution ){
                     it.dmg = hp(0)
                     bc "Fast Protection prevents damage"
                   }
@@ -598,7 +598,7 @@ public enum Deoxys implements LogicCardInfo {
               }
               after ENERGY_SWITCH, {
                 def efs = (ef as EnergySwitch)
-                if(efs.from.basic && efs.from.owner != self.owner && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                if(!efs.from.evolution && efs.from.owner != self.owner && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                   discard efs.card
                 }
               }
