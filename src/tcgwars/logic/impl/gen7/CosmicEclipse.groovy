@@ -4858,7 +4858,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             delayed {
               before KNOCKOUT, {
                 if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
-                  keyStore("Rosa_KO", self, bg.turnCount)
+                  keyStore("Rosa_KO", thisCard, bg.turnCount)
                 }
               }
             }
