@@ -376,7 +376,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert energyCount : "You have no Energy attached to $self"
               powerUsed()
 
-              def list = my.hand.select(max: energyCount, "Select up to $energyCount card${energyCount>1 ? "s"} to shuffle into your deck.")
+              def list = my.hand.select(max: energyCount, "Select up to $energyCount ${(energyCount>1) ? "cards" : "card"} to shuffle into your deck.")
               def drawCount = list.size()
 
               list.moveTo(my.deck)
