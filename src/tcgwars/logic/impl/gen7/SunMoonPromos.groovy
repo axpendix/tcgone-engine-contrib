@@ -2938,7 +2938,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "Once during your turn (before your attack), you may discard a special energy from this pokemon. If you do, heal 80 damage from this Pokémon."
             actionA {
               checkLastTurn()
-              assert self.findAll(cardTypeFilter(SPECIAL)) : "There are no special energies attached"
+              assert self.findAll(cardTypeFilter(SPECIAL_ENERGY)) : "There are no special energies attached"
               assert self.numberOfDamageCounters : "$self is not damaged"
               powerUsed()
               my.hand.findAll(cardTypeFilter(POKEMON)).select("Discard a Pokemon to heal 80").discard()
