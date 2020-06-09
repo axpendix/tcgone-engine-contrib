@@ -554,7 +554,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "As long as Muk is your Active Pokémon, each player's Pokémon can't use any Poké-Powers."
           delayedA {
             getterA (IS_ABILITY_BLOCKED) { Holder h->
-              if (self.active && h.effect.target.owner != self.owner && !h.effect.target.basic && h.effect.ability instanceof PokePower) {
+              if (self.active && h.effect.target.owner != self.owner && h.effect.ability instanceof PokePower) {
                 h.object=true
               }
             }
