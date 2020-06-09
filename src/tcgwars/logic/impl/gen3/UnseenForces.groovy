@@ -347,9 +347,9 @@ public enum UnseenForces implements LogicCardInfo {
         pokeBody "Intimidating Fang", {
           text "As long as Feraligatr is your Active Pokémon, any damage done to your Pokémon by an opponent's attack is reduced by 10 (before applying Weakness and Resistance)."
           delayedA {
-            before APPLY_ATTACK_DAMAGES, {
+            after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
-                if(it.to.owner==self.owner && it.dmg.value && it.notNoEffect && self.active) {
+                if(self.active && it.to.owner==self.owner && it.dmg.value && it.notNoEffect) {
                   bc "Intimidating Fang: -10"
                   it.dmg-=hp(10)
                 }
@@ -1350,9 +1350,9 @@ public enum UnseenForces implements LogicCardInfo {
         pokeBody "Intimidating Fang", {
           text "As long as Granbull is your Active Pokémon, any damage done to your Pokémon by an opponent's attack is reduced by 10 (before applying Weakness and Resistance)."
           delayedA {
-            before APPLY_ATTACK_DAMAGES, {
+            after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
-                if (it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
+                if (self.active && it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
                   bc "Intimidating Fang -10"
                   it.dmg -= hp(10)
                 }

@@ -1925,7 +1925,9 @@ public enum RebelClash implements LogicCardInfo {
           onActivate {r->
             if (r==PLAY_FROM_HAND && opp.active.cards.energyCount(C) && confirm("Use Prankish?")) {
               powerUsed()
-              opp.active.cards.filterByType(ENERGY).select(count:1).moveTo(addToTop: true, opp.deck)
+              targeted (opp.active, SRC_ABILITY){
+                opp.active.cards.filterByType(ENERGY).select(count:1).moveTo(addToTop: true, opp.deck)
+              }
             }
           }
         }
@@ -2029,10 +2031,10 @@ public enum RebelClash implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Counterattack", {
           text "If this Pokemon is your Active Pokemon and is damaged by an opponent’s attack, place 3 damage counters on the attacking Pokemon."
-          delayedA {
+          delayedA (priority: LAST) {
             before APPLY_ATTACK_DAMAGES, {
               if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
-                powerused()
+                bc "Counterattack activates"
                 directDamage(30, ef.attacker, Source.SRC_ABILITY)
               }
             }

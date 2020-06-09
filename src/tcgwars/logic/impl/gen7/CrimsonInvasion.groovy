@@ -1615,7 +1615,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
               gxPerform()
               delayed (priority: LAST) {
                 def pcs = defending
-                after KNOCKOUT, pcs, {
+                before KNOCKOUT, pcs, {
                   bg.em().run(new TakePrize(self.owner, pcs))
                   bg.em().run(new TakePrize(self.owner, pcs))
                 }
@@ -1784,7 +1784,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             energyCost M, C, C
             onAttack {
               damage 70
-              if(bench.notEmpty && confirm("shuffle this Pokémon and all cards attached to it into your deck?")){
+              if(confirm("shuffle this Pokémon and all cards attached to it into your deck?")){
                 afterDamage {
                   shuffleDeck(self.cards)
                   removePCS(self)

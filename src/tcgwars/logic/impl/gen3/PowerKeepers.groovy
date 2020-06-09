@@ -1469,7 +1469,7 @@ public enum PowerKeepers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            reduceDamageNextTurn(hp(10), thisMove)
+            reduceDamageFromDefendingNextTurn(hp(10),thisMove,defending)
           }
         }
       };

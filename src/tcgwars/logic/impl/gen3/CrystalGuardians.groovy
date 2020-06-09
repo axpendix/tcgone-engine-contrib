@@ -301,6 +301,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             if (r==PLAY_FROM_HAND && my.deck && confirm("Use Peal of Thunder?")) {
               powerUsed()
               my.deck.subList(0,5).showToMe("Top 5 cards of your deck.")
+              //TODO: This should allow to choose which energies to attach. You could choose not to attach any and just discard all 5 cards.
               if (my.deck.subList(0,5).filterByType(ENERGY)) {
                 def tar = my.all.select("Attach Energies to?")
                 my.deck.subList(0,5).filterByType(ENERGY).each {

@@ -2023,8 +2023,10 @@ public enum TeamUp implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && confirm('Use Twilight Eyes?')){
                 powerUsed()
-                if(opp.active.cards.filterByType(ENERGY)){
-                  opp.active.cards.filterByType(ENERGY).select("Discard").discard()
+                targeted (opp.active, SRC_ABILITY){
+                  if(opp.active.cards.filterByType(ENERGY)){
+                    opp.active.cards.filterByType(ENERGY).select("Discard").discard()
+                  }
                 }
               }
             }
@@ -2037,7 +2039,7 @@ public enum TeamUp implements LogicCardInfo {
             }
           }
           move "Splintered Shards GX" , {
-            text "30× damage. This attack does 30 damage for each Energy card in your opponent's discard pile. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "30× damage. This attack does 30 damage for each Energy card in your opponent's discard pile. (You can't use more than 1 GX attack in a game.)"
             energyCost F
             attackRequirement{
               gxCheck()
@@ -2344,7 +2346,7 @@ public enum TeamUp implements LogicCardInfo {
             }
           }
           move "Devilish Hands GX" , {
-            text "Choose 1 of your opponent's Pokémon-GX or Pokémon-EX 6 times. (You can choose the same Pokémon more than once.) For each time you chose a Pokémon, do 30 damage to it. This damage isn't affected by Weakness or Resistance. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "Choose 1 of your opponent's Pokémon-GX or Pokémon-EX 6 times. (You can choose the same Pokémon more than once.) For each time you chose a Pokémon, do 30 damage to it. This damage isn't affected by Weakness or Resistance. (You can't use more than 1 GX attack in a game.)"
             energyCost D,D,D
             attackRequirement{
               gxCheck()
@@ -2385,7 +2387,7 @@ public enum TeamUp implements LogicCardInfo {
             }
           }
           move "Darkest Tornado GX" , {
-            text "10+ damage. This attack does 50 more damage for each damage counter on this Pokémon. (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "10+ damage. This attack does 50 more damage for each damage counter on this Pokémon. (You can't use more than 1 GX attack in a game.)"
             energyCost C,C,C
             attackRequirement{
               gxCheck()
@@ -2611,7 +2613,7 @@ public enum TeamUp implements LogicCardInfo {
             }
           }
           move "Iron Rule GX" , {
-            text "During your opponent's next turn, none of your opponent's Pokémon can attack (including newly played Pokémon). (You can't use more than 1 GX attack in a game.)\nPokémon-GX rule: When your Pokémon-GX is Knocked Out, your opponent takes 2 Prize cards."
+            text "During your opponent's next turn, none of your opponent's Pokémon can attack (including newly played Pokémon). (You can't use more than 1 GX attack in a game.)"
             energyCost C
             attackRequirement{
               gxCheck()
@@ -3526,7 +3528,9 @@ public enum TeamUp implements LogicCardInfo {
         return supporter(this) {
           text "You can play this card only if your opponent's Active Pokémon is a Basic Pokémon.\nPut an Energy from your opponent's Active Pokémon on top of their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            opp.active.cards.filterByType(ENERGY).select("Choose the energy to put on top of their deck").moveTo(addToTop: true, opp.deck)
+            targeted (opp.active, TRAINER_CARD) {
+              opp.active.cards.filterByType(ENERGY).select("Choose the energy to put on top of their deck").moveTo(addToTop: true, opp.deck)
+            }
           }
           playRequirement{
             assert opp.active.basic

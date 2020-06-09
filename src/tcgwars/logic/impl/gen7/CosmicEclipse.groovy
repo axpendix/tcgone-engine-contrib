@@ -1833,7 +1833,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "The attacks of your Pokémon-GX in play that evolve from Eevee cost [C] less. You can't apply more than 1 Speed Cheer Ability at a time."
             delayedA {
               before CHECK_ATTACK_REQUIREMENTS, {
-                if(ef.attacker.owner == self.owner && ef.attacker.pokemonGX && ef.attacker.topPokemonCard.predecessor == "Eevee" && bg.currentTurn == self.owner && bg.em().retrieveObject("Speed_Cheer") != bg.turnCount) {
+                if(ef.attacker.owner == self.owner && ef.attacker.pokemonGX && ef.attacker.topPokemonCard.realEvolution && ef.attacker.topPokemonCard.predecessor == "Eevee" && bg.currentTurn == self.owner && bg.em().retrieveObject("Speed_Cheer") != bg.turnCount) {
                   bg.em().storeObject("Speed_Cheer", bg.turnCount)
                   def copy = ef.move.shallowCopy()
                   if (copy.energyCost.contains(C)) {
@@ -3296,7 +3296,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 120
               delayed (priority: LAST) {
                 def pcs = defending
-                after KNOCKOUT, pcs, {
+                before KNOCKOUT, pcs, {
                   bc "Red Banquet gives the player an additional prize."
                   bg.em().run(new TakePrize(self.owner, pcs))
                   unregister()

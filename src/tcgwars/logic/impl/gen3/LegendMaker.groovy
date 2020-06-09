@@ -973,7 +973,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Ancient Fang", {
           text "As long as you have Kabuto, Kabutops, or Kabutops ex in play, Omastar's attacks do 20 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
-            before PROCESS_ATTACK_EFFECTS, {
+            after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker == self) {
                 bg.dm().each {
                   if (it.to.active && it.to.owner != self.owner && it.notNoEffect && it.dmg.value) {

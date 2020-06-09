@@ -338,7 +338,20 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            reduceDamageNextTurn(hp(30), thisMove)
+            afterDamage{
+              delayed{
+                after PROCESS_ATTACK_EFFECTS, {
+                  bg.dm().each{
+                    if(it.from.owner == self.owner.opposite && it.to == self) {
+                      bc "Delta Reduction -30 (before W/R)"
+                      it.dmg -= hp(30)
+                    }
+                  }
+                }
+                after SWITCH, self, {unregister()}
+                unregisterAfter 2
+              }
+            }
           }
         }
       };

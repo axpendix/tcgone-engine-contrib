@@ -2284,7 +2284,7 @@ public enum GuardiansRising implements LogicCardInfo {
             onAttack {
               delayed (priority: LAST) {
                 def pcs = defending
-                after KNOCKOUT, pcs, {
+                before KNOCKOUT, pcs, {
                   if(turnCount + 2 == bg.turnCount) {
                     bc "The Wages of Fluff kicks in"
                     bg.em().run(new TakePrize(self.owner, pcs))

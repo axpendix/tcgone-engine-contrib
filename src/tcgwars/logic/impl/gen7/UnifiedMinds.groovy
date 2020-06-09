@@ -1129,8 +1129,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             onAttack {
               damage 50
               afterDamage {
-                assert opp.bench : "Your opponent has no Pokémon on their bench."
-                moveEnergy(opp.active, opp.bench)
+                if (opp.bench) { moveEnergy(may: true, opp.active, opp.bench) }
               }
             }
           }
@@ -2925,7 +2924,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               delayed (priority: LAST) {
                 if (defending.pokemonGX || defending.pokemonEX) {
                   def pcs = defending
-                  after KNOCKOUT, pcs, {
+                  before KNOCKOUT, pcs, {
                     bc "Knocked Out Pokémon was GX or EX. Player gets to take an additional prize."
                     bg.em().run(new TakePrize(self.owner, pcs))
                   }

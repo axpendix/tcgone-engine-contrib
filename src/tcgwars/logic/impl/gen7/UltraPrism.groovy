@@ -671,7 +671,7 @@ public enum UltraPrism implements LogicCardInfo {
             damage 20
             delayedA (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
+                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
                   bc "Incandescent Body burns attacker"
                   bg.dm().each{apply BURNED, it.from}
                 }
@@ -1905,7 +1905,7 @@ public enum UltraPrism implements LogicCardInfo {
           }
 
           move "Abyssal Sleep", {
-            text "120 damage. Your opponentâ€™s Active PokÃ©mon is now Asleep. Your opponent flips 2 coins instead of 1 between turns. If either of them is tails, that PokÃ©mon is still Asleep."
+            text "120 damage. Your opponent's Active Pokémon is now Asleep. Your opponent flips 2 coins instead of 1 between turns. If either of them is tails, that Pokémon is still Asleep."
             energyCost D, D, D, D
             onAttack {
               damage 120

@@ -344,7 +344,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               gxPerform()
               delayed (priority: LAST) {
                 def pcs = defending
-                after KNOCKOUT, pcs, {
+                before KNOCKOUT, pcs, {
                   bg.em().run(new TakePrize(self.owner, pcs))
                   if(self.cards.energySufficient(thisMove.energyCost + C + C+ C+ C+ C+ C+ C)){
                     bg.em().run(new TakePrize(self.owner, pcs))
@@ -3580,7 +3580,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 70
-              flip {afterDamage{discardDefendingEnergy();discardDefendingEnergy()}}
+              flip { afterDamage{ 2.times{ discardDefendingEnergy() } } }
             }
           }
 

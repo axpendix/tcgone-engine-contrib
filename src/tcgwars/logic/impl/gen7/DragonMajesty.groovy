@@ -354,7 +354,7 @@ public enum DragonMajesty implements LogicCardInfo {
             text "Search your deck for up to 2 [R] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
             energyCost C
             attackRequirement{
-              assert my.deck : "There is no cards in your deck"
+              assert my.deck : "There are no cards in your deck"
             }
             onAttack{
               my.deck.search(max : 2,"Search your deck for up to 2 [R] Energy cards",basicEnergyFilter(R)).each{

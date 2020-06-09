@@ -2896,7 +2896,7 @@ public enum SwordShield implements LogicCardInfo {
                 delayed {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
-                      if (it.to==self && it.dmg.value) {
+                      if (it.to==self && it.dmg.value && it.notNoEffect) {
                         bc "-100 to Corviknight (Iron Wings)"
                         it.dmg-=hp(100)
                       }

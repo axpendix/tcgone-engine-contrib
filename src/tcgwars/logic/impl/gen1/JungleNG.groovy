@@ -237,23 +237,10 @@ public enum JungleNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              def defType = (defending.types as List<Type>)
-              if(!defending.types.contains(C) || defType.size() != 1){
-                if(defType.size() == 1){
-                  opp.bench.each{
-                    if(it.types.contains(defType.get(0))) damage 10, it
-                  }
-                  my.bench.each{
-                    if(it.types.contains(defType.get(0))) damage 10, it
-                  }
-                }
-                else{
-                  opp.bench.each{
-                    if(it.types.contains(defType.get(0)) || it.types.contains(defType.get(1))) damage 10, it
-                  }
-                  my.bench.each{
-                    if(it.types.contains(defType.get(0))) damage 10, it
-                  }
+              def defendingTypes = (defending.types as List<Type>)
+              if(!defending.types.contains(C)){
+                [opp.bench, my.bench].each{
+                  it.findAll{it.types.any{defendingTypes.contains(it)}}.each{damage 10, it}
                 }
               }
             }
