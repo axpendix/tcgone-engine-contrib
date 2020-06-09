@@ -935,7 +935,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case GALARIAN_MR_RIME_38:
-      return evolution (this, from:"Galarian Mr. Rime", hp:HP120, type:W, retreatCost:2) {
+      return evolution (this, from:"Galarian Mr. Mime", hp:HP120, type:W, retreatCost:2) {
         weakness M
         bwAbility "Shuffle Dance", {
           text "Once during your turn, you may choose 1 of your opponent’s face-down Prize cards and switch it with the top card from their deck. (Both cards remain face-down.)"
