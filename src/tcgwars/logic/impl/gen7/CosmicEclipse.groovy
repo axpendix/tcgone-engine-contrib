@@ -950,7 +950,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost R, R, R
             onAttack {
               damage 100
-              if(self.energyCount(C)) {
+              if(self.cards.energyCount(C)) {
                 discardSelfEnergy C
                 discardDefendingEnergy()
               }
