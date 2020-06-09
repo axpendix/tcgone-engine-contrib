@@ -4812,7 +4812,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             delayed {
               before KNOCKOUT, {
                 if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
-                  bg.em().storeObject("Rosa_KO", bg.turnCount)
+                  keyStore("Rosa_KO", self, bg.turnCount)
                 }
               }
             }
@@ -4825,7 +4825,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           }
           playRequirement{
             assert bg.turnCount
-            assert bg.em().retrieveObject("Rosa_KO") == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn."
+            assert keyStore("Rosa_KO", self) == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn."
           }
         };
       case ROXIE_205:
