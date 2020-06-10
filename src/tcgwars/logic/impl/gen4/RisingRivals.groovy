@@ -1478,6 +1478,7 @@ public enum RisingRivals implements LogicCardInfo {
                 def energy = opp.active.findAll{it.cards.filterByType(ENERGY)}.select("Select energy to move to benched Pokemon").first()
                 def tar = opp.bench.select("Select the Pokémon to move energy to")
                 energySwitch(opp.active, tar, energy)
+              }
             }
           }
           move "Snap Attack", {
@@ -1491,7 +1492,6 @@ public enum RisingRivals implements LogicCardInfo {
               }
             }
           }
-
         };
       case ARON_57:
         return basic (this, hp:HP050, type:METAL, retreatCost:1) {
