@@ -292,7 +292,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-
+            apply POISONED
+            apply CONFUSED
           }
         }
         move "Blast Wind", {
