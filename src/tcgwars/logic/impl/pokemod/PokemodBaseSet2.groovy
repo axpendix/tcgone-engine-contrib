@@ -502,7 +502,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             def typeList = []
             all.each{
               for (Type t1:it.types) {
-                if(t1 != C && !typeList.contains(t1)){
+                if(t1 != C && !typeList.contains(t1) && it != self){
                   typeList.add(t1)
                 }
               }
