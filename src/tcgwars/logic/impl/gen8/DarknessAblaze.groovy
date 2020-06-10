@@ -3340,11 +3340,17 @@ public enum DarknessAblaze implements LogicCardInfo {
       case TOUGHNESS_CAPE_182:
       return pokemonTool (this) {
         text "The maximum HP of the Basic Pokémon this card is attached to is increased by 50 (excluding Pokémon-GX)."
+        def eff
         onPlay {reason->
+          eff = getter (GET_FULL_HP, self) {h->
+            def selfTopCardTypes = self.topPokemonCard.cardTypes
+            if(selfTopCardTypes.is(BASIC) && !(selfTopCardTypes.is(POKEMON_GX))) {
+              h.object += hp(50)
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case TURBO_PATCH_183:
