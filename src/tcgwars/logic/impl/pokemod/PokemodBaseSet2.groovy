@@ -511,7 +511,8 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             powerUsed()
             def newType = choose(typeList,"Select the new type of Venomoth")
             getter GET_POKEMON_TYPE, self, {h->
-              h.object = newType
+              h.object.clear()
+              h.object.add(newType)
             }
           }
         }
