@@ -676,7 +676,24 @@ public enum PokemodBaseSet implements LogicCardInfo {
         pokemonPower "Buzzap", {
           text "At any time during your turn (before your attack) you may Knock Out Electrode and attach it to 1 of your other Pokémon. If you do, choose a type of Energy. Electrode is now an Energy card (instead of a Pokémon) that provides 2 energy of that type. This power can't be used if Electrode is affected by a Special Condition."
           actionA {
-            // TODO:
+            checkLastTurn()
+            checkNoSPC()
+            assert my.bench.notEmpty : "$self is your last pokemon"
+            powerUsed()
+            def type = choose(Type.values(),"What type of energy?")
+            pkmnCard = self.topPokemonCard
+            pcs = my.all.findAll{it != self}.select("Choose a pokemon to attach $self to")
+            energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_21).setCardTypes(ENERGY, SPECIAL_ENERGY), [[type],[type]]) {
+              onPlay {}
+              onRemoveFromPlay {
+                bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
+              }
+            }
+            energyCard.player = thisCard.player
+            bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
+            attachEnergy(pcs, energyCard)
+            new Knockout(self).run(bg)
+            bc "$energyCard is now a Special Energy Card that provides 2 [$type] energy attached to $pcs"
           }
         }
         move "Electric Shock", {
