@@ -3407,6 +3407,9 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
+        getEnergyTypesOverride {
+          return [[C] as Set]
+        }
         onRemoveFromPlay {
           eff.unregister()
         }
