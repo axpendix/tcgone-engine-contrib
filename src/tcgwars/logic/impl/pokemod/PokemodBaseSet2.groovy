@@ -281,7 +281,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           onAttack {
             damage 20
             my.bench.each{
-              if(it.name.contains("Nidoking")){
+              if(it.name. == "Nidoking"){
                 damage 20
               }
             }
@@ -303,15 +303,14 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         pokemonPower "Quick Search", {
-          text "Once during your turn (before your attack), you may choose 1 card from your deck and put it into your hand. If you do, put 2 damage counters on Pidgeot. Shuffle your deck afterward. You can't use more than 1 Quick Search Pokémon Power each turn. This Power can't be used if Pidgeot is affected by a Special Condition."
+          text "Once during your turn (before your attack), you may choose 1 card from your deck and put it into your hand. Shuffle your deck afterward. You can't use more than 1 Quick Search Pokémon Power each turn. This Power can't be used if Pidgeot is affected by a Special Condition."
           actionA {
             checkNoSPC()
             checkLastTurn()
             assert my.deck : "You have no cards in your deck"
             assert bg.em().retrieveObject("Quick_Search") != bg.turnCount : "You can't use more than one Quick Search Pokémon Power each turn"
-            directDamage 20, self, SRC_ABILITY
             bg.em().storeObject("Quick_Search", bg.turnCount)
-            my.deck.select(count:1).moveTo(my.hand)
+            my.deck.select(count:1).moveTo(hidden:true,my.hand)
             shuffleDeck()
             powerUsed()
           }
@@ -421,7 +420,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
               if(ef.attacker.owner != self.owner) {
                 bg.dm().each{
                   if(it.to == self && it.notNoEffect && it.dmg.value >= 30) {
-                    bc "Invisiblw Wall prevents damage"
+                    bc "Invisible Wall prevents damage"
                     it.dmg = hp(0)
                   }
                 }
@@ -472,7 +471,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           delayedA {
             before APPLY_SPECIAL_CONDITION,self, {
               if(!(self.specialConditions)){
-                bc (self+"is thick Skinned!")
+                bc ("$self is thick Skinned!")
                 prevent()
               }
             }
