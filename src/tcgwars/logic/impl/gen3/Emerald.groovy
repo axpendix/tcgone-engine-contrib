@@ -429,14 +429,16 @@ public enum Emerald implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               delayed{
-                before APPLY_ATTACK_DAMAGES, {
+                after PROCESS_ATTACK_EFFECTS, {
                   bg.dm().each{
-                    if(it.from.owner == self.owner && it.notNoEffect && it.dmg.value) {
+                    if(it.from == self && it.to.active && it.notNoEffect && it.dmg.value) {
                       bc "Dragon Dance +30"
                       it.dmg += hp(30)
                     }
                   }
                 }
+                after SWITCH, self, {unregister()}
+                after EVOLVE, self, {unregister()}
                 unregisterAfter 3
               }
             }
