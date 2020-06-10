@@ -1938,8 +1938,11 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
           eff2 = delayed {
+            before ATTACK_MAIN, {
+              flag = (ef.attacker == self)
+            }
             after BETWEEN_TURNS, {
-              discard thisCard
+              if (flag) { discard thisCard }
             }
           }
         }
