@@ -3313,7 +3313,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           my.deck.add(0, card)
         }
         playRequirement{
-          assert my.deck.notEmpty
+          assert my.deck.notEmpty : "Your deck is empty"
         }
       };
       case MOUNTAINOUS_SMOKE_179:
