@@ -420,7 +420,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
               if(ef.attacker.owner != self.owner) {
                 bg.dm().each{
                   if(it.to == self && it.notNoEffect && it.dmg.value >= 30) {
-                    bc "Invisiblw Wall prevents damage"
+                    bc "Invisible Wall prevents damage"
                     it.dmg = hp(0)
                   }
                 }
