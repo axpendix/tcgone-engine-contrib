@@ -509,10 +509,10 @@ public enum CosmicEclipse implements LogicCardInfo {
                 before CHECK_ATTACK_REQUIREMENTS, {
                   if(ef.attacker.owner == self.owner && (ef.attacker.types.contains(G) || ef.attacker.types.contains(R)) && bg.currentTurn == self.owner && bg.em().retrieveObject("Solar_Power") != bg.turnCount) {
                     bg.em().storeObject("Solar_Power", bg.turnCount)
+                    bc "Solar Power ignores Energy cost for $ef.attacker's $ef.move"
                     def copy = ef.move.shallowCopy()
                     copy.energyCost.clear()
                     attack (copy as Move)
-                    bc "Solar Power ignores Energy cost for $ef.attacker's $ef.move"
                     prevent()
                   }
                 }
@@ -950,7 +950,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost R, R, R
             onAttack {
               damage 100
-              if(self.energyCount(C)) {
+              if(self.cards.energyCount(C)) {
                 discardSelfEnergy C
                 discardDefendingEnergy()
               }
@@ -1520,7 +1520,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             def preEvos = []
             def moves = []
             attackRequirement {
-              for (card in self.card.filterByType(POKEMON)) {
+              for (card in self.cards.filterByType(POKEMON)) {
                 if (card != self.topPokemonCard) {
                   preEvos += card
                   moves += card.moves
@@ -1955,7 +1955,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                     before null, null, Source.ATTACK, {
                       def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
                       if (pcs && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
-                        bc "$move prevents all effects of attacks."
+                        bc "$thisMove prevents all effects of attacks."
                         prevent()
                       }
                     }
@@ -1963,7 +1963,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                       bg.dm().each {
                         if (it.to.owner == self.owner && it.notNoEffect && bg.currentTurn==self.owner.opposite) {
                           it.dmg = hp(0)
-                          bc "$move prevents all damage."
+                          bc "$thisMove prevents all damage."
                         }
                       }
                     }
@@ -2229,7 +2229,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Your opponent chooses 1 of their own Pokémon. This attack does 90 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost P
             onAttack {
-              damage 90, opp.all.oppSelect("Opponent used $move. Select a Pokémon to have 90 damage dealt to it.")
+              damage 90, opp.all.oppSelect("Opponent used $thisMove. Select a Pokémon to have 90 damage dealt to it.")
             }
           }
         };
@@ -2686,7 +2686,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             delayedA {
               def power=false
               before PLAY_TRAINER, {
-                if (ef.supporter && bg.currentTurn==self.owner.opposite && ef.reason==PLAY_FROM_HAND) {
+                if (ef.supporter && bg.currentTurn==self.owner.opposite) {
                   power=true
                 }
               }
