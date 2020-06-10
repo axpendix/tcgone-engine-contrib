@@ -680,7 +680,11 @@ public enum PokemodBaseSet implements LogicCardInfo {
             checkNoSPC()
             assert my.bench.notEmpty : "$self is your last pokemon"
             powerUsed()
-            def type = choose(Type.values(),"What type of energy?")
+            def typelist = []
+            for(Type t1:Type.values()){
+              typelist.add(t1)
+            }
+            def type = choose(typelist,"What type of energy?")
             pkmnCard = self.topPokemonCard
             pcs = my.all.findAll{it != self}.select("Choose a pokemon to attach $self to")
             energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_21).setCardTypes(ENERGY, SPECIAL_ENERGY), [[type],[type]]) {
