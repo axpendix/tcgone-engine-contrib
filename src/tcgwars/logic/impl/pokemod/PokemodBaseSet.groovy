@@ -1600,7 +1600,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         text "Discard 2 of the other cards from your hand in order to search your deck for any card and put it into your hand. Shuffle your deck afterward."
         onPlay {
           my.hand.getExcludedList(thisCard).select(count: 2, "Discard").discard()
-          my.deck.select(count:1).moveTo(my.hand)
+          my.deck.select(count:1).moveTo(hidden:true,my.hand)
           shuffleDeck()
         }
         playRequirement{
