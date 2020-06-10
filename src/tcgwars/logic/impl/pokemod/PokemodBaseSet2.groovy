@@ -309,7 +309,6 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             checkLastTurn()
             assert my.deck : "You have no cards in your deck"
             assert bg.em().retrieveObject("Quick_Search") != bg.turnCount : "You can't use more than one Quick Search Pokémon Power each turn"
-            directDamage 20, self, SRC_ABILITY
             bg.em().storeObject("Quick_Search", bg.turnCount)
             my.deck.select(count:1).moveTo(my.hand)
             shuffleDeck()
