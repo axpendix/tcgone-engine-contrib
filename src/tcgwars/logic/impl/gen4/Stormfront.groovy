@@ -5,10 +5,18 @@ import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
+import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
-import static tcgwars.logic.card.Weakness.*
 
+import tcgwars.logic.*;
 import tcgwars.logic.card.*
+import tcgwars.logic.effect.*;
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.util.*;
 
 /**
