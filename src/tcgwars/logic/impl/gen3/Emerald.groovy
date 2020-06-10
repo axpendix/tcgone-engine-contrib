@@ -304,12 +304,13 @@ public enum Emerald implements LogicCardInfo {
           pokePower "Heal Dance", {
             text "Once during your turn (before your attack), you may remove 2 damage counter from 1 of your Pokémon. You can’t use more than 1 Heal Dance Poké-Power each turn. This power can’t be used if Gardevoir is affected by a Special Condition."
             actionA {
+              checkNoSPC()
               checkLastTurn()
-              assert bg.em().retrieveObject("Heal_Dance") != bg.turnCount : "You cannot use Heal Dance more than once per turn!"
-              assert !(self.specialConditions) : "$self is affected by a Special Condition."
-              assert my.all.find{it.numberOfDamageCounters} : "There is no pokémon to heal"
+              assert bg.em().retrieveObject("Heal_Dance") != bg.turnCount : "You cannot use $pokePower more than once per turn!"
+              assert my.all.find{it.numberOfDamageCounters} : "There are no pokémon to heal on your side of the field"
               bg.em().storeObject("Heal_Dance",bg.turnCount)
-              heal 20, my.all.findAll{it.numberOfDamageCounters}.select("Remove 2 damage counter from 1 of those Pokémon")
+              powerUsed()
+              heal 20, my.all.findAll{it.numberOfDamageCounters}.select("Select a Pokémon to remove 2 damage counter from it")
             }
           }
           move "Psypunch", {
