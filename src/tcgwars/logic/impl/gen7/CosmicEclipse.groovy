@@ -4871,7 +4871,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           }
           playRequirement{
             assert bg.turnCount
-            assert keyStore("Rosa_KO", self) == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn."
+            assert keyStore("Rosa_KO", thisCard) == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn."
           }
         };
       case ROXIE_205:
