@@ -798,7 +798,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({it.to==self && it.dmg.value})) {
                   bc "Glacier Snow triggers"
-                  apply ASLEEP, (ef.attacker as PokemonCardSet)
+                  apply ASLEEP, (ef.attacker as PokemonCardSet), SRC_ABILITY
                 }
               }
               after SWITCH, self, {unregister()}
@@ -974,7 +974,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
-                  if(self.active && it.from.owner != self.owner && it.from.topPokemonCard.cardTypes.is(STAGE2)) {
+                  if(self.active && it.from.owner != self.owner && it.from.evolution && it.from.topPokemonCard.cardTypes.is(STAGE2)) {
                     bc "Craggy Face -20"
                     it.dmg -= hp(20)
                   }
