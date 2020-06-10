@@ -3307,8 +3307,13 @@ public enum DarknessAblaze implements LogicCardInfo {
       return itemCard (this) {
         text "Look at the top 5 cards of your deck. Choose a card you find there, shuffle your deck, then put the card you chose on top of your deck."
         onPlay {
+          def card = my.deck.subList(0,5).select("Choose a card to put on top of your deck.").first()
+          my.deck.remove(card)
+          shuffleDeck()
+          my.deck.add(0, card)
         }
         playRequirement{
+          assert my.deck.notEmpty
         }
       };
       case MOUNTAINOUS_SMOKE_179:
