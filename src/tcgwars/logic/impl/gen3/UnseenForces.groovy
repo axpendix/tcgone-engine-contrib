@@ -2423,7 +2423,6 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Devo Flash", {
           text "Once during your turn, when you play Espeon ex from your hand to evolve 1 of your Pokémon, you may choose 1 Evolved Pokémon on your opponent's Bench, remove the highest Stage Evolution card from that Pokémon, and put it back into his or her hand."
           onActivate {
-            checkLastTurn()
             if (it==PLAY_FROM_HAND && opp.bench.findAll { it.evolution } && confirm("Use Devo Flash?")) {
               powerUsed()
 
