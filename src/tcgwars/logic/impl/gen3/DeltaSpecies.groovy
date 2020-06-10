@@ -2934,7 +2934,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           assert my.discard.findAll {
             it.cardTypes.is(SUPPORTER) &&
             it.name.contains("Holon")
-          } && my.deck.notEmpty : "Deck is empty and your discard pile does not have any Holon Supporters"
+          } || my.deck.notEmpty : "Deck is empty and your discard pile does not have any Holon Supporters"
         }
       };
       case MASTER_BALL_99:
