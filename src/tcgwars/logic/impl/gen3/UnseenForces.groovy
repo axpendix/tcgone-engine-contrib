@@ -2766,7 +2766,7 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Darker Ring", {
           text "Once during your turn (before your attack), when you play Umbreon ex from your hand to evolve 1 of your Pokémon, switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           onActivate {r->
-            if (it == PLAY_FROM_HAND && opp.bench && confirm("Use Darker Ring?")) {
+            if (r==PLAY_FROM_HAND && opp.bench && confirm("Use Darker Ring?")) {
               powerUsed()
               sw opp.active, opp.bench.select("Choose your opponent's new active Pokémon.")
             }
