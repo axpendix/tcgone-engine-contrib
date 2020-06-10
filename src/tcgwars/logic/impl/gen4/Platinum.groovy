@@ -119,23 +119,23 @@ public enum Platinum implements LogicCardInfo {
   TURTWIG_101 ("Turtwig", 101, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   VULPIX_102 ("Vulpix", 102, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
   WURMPLE_103 ("Wurmple", 103, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  BROKEN_TIME_SPACE_104 ("Broken Time-Space", 104, Rarity.UNCOMMON, [TRAINER]),
-  CYRUS_S_CONSPIRACY_105 ("Cyrus's Conspiracy", 105, Rarity.UNCOMMON, [TRAINER]),
-  GALACTIC_HQ_106 ("Galactic HQ", 106, Rarity.UNCOMMON, [TRAINER]),
-  LEVEL_MAX_107 ("Level Max", 107, Rarity.UNCOMMON, [TRAINER]),
-  LIFE_HERB_108 ("Life Herb", 108, Rarity.UNCOMMON, [TRAINER]),
-  LOOKER_S_INVESTIGATION_109 ("Looker's Investigation", 109, Rarity.UNCOMMON, [TRAINER]),
-  MEMORY_BERRY_110 ("Memory Berry", 110, Rarity.UNCOMMON, [TRAINER]),
-  MIASMA_VALLEY_111 ("Miasma Valley", 111, Rarity.UNCOMMON, [TRAINER]),
-  PLUSPOWER_112 ("PlusPower", 112, Rarity.UNCOMMON, [TRAINER]),
-  POKE_BALL_113 ("Poké Ball", 113, Rarity.UNCOMMON, [TRAINER]),
-  POKEDEX_HANDY910IS_114 ("Pokédex HANDY910is", 114, Rarity.UNCOMMON, [TRAINER]),
-  POKEMON_RESCUE_115 ("Pokémon Rescue", 115, Rarity.UNCOMMON, [TRAINER]),
-  ENERGY_GAIN_116 ("Energy Gain", 116, Rarity.UNCOMMON, [TRAINER]),
-  POWER_SPRAY_117 ("Power Spray", 117, Rarity.UNCOMMON, [TRAINER]),
-  POKE_TURN_118 ("Poké Turn", 118, Rarity.UNCOMMON, [TRAINER]),
-  ARMOR_FOSSIL_119 ("Armor Fossil", 119, Rarity.COMMON, [TRAINER]),
-  SKULL_FOSSIL_120 ("Skull Fossil", 120, Rarity.COMMON, [TRAINER]),
+  BROKEN_TIME_SPACE_104 ("Broken Time-Space", 104, Rarity.UNCOMMON, [STADIUM, TRAINER]),
+  CYRUS_S_CONSPIRACY_105 ("Cyrus's Conspiracy", 105, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+  GALACTIC_HQ_106 ("Galactic HQ", 106, Rarity.UNCOMMON, [STADIUM, TRAINER]),
+  LEVEL_MAX_107 ("Level Max", 107, Rarity.UNCOMMON, [ITEM, TRAINER]),
+  LIFE_HERB_108 ("Life Herb", 108, Rarity.UNCOMMON, [POKEMON_TOOL, ITEM, TRAINER]),
+  LOOKER_S_INVESTIGATION_109 ("Looker's Investigation", 109, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+  MEMORY_BERRY_110 ("Memory Berry", 110, Rarity.UNCOMMON, [POKEMON_TOOL, ITEM, TRAINER]),
+  MIASMA_VALLEY_111 ("Miasma Valley", 111, Rarity.UNCOMMON, [STADIUM, TRAINER]),
+  PLUSPOWER_112 ("PlusPower", 112, Rarity.UNCOMMON, [ITEM, TRAINER]),
+  POKE_BALL_113 ("Poké Ball", 113, Rarity.UNCOMMON, [ITEM, TRAINER]),
+  POKEDEX_HANDY910IS_114 ("Pokédex HANDY910is", 114, Rarity.UNCOMMON, [ITEM, TRAINER]),
+  POKEMON_RESCUE_115 ("Pokémon Rescue", 115, Rarity.UNCOMMON, [ITEM, TRAINER]),
+  ENERGY_GAIN_116 ("Energy Gain", 116, Rarity.UNCOMMON, [ITEM, TRAINER]),
+  POWER_SPRAY_117 ("Power Spray", 117, Rarity.UNCOMMON, [ITEM, TRAINER]),
+  POKE_TURN_118 ("Poké Turn", 118, Rarity.UNCOMMON, [ITEM, TRAINER]),
+  ARMOR_FOSSIL_119 ("Armor Fossil", 119, Rarity.COMMON, [ITEM, TRAINER]),
+  SKULL_FOSSIL_120 ("Skull Fossil", 120, Rarity.COMMON, [ITEM, TRAINER]),
   RAINBOW_ENERGY_121 ("Rainbow Energy", 121, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   DIALGA_G_LV_X_122 ("Dialga G LV.X", 122, Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _METAL_]),
   DRAPION_LV_X_123 ("Drapion LV.X", 123, Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _DARKNESS_]),
@@ -2545,7 +2545,7 @@ public enum Platinum implements LogicCardInfo {
 
         };
       case BROKEN_TIME_SPACE_104:
-        return basicTrainer (this) {
+        return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nEach player may evolve a Pokémon that he or she just played or evolved during that turn."
           onPlay {
           }
@@ -2553,7 +2553,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case CYRUS_S_CONSPIRACY_105:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for a Supporter card, a basic Energy card, and a Trainer card that has Team Galactic’s Invention in its name, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
           }
@@ -2561,7 +2561,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case GALACTIC_HQ_106:
-        return basicTrainer (this) {
+        return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nWhenever any player plays any Pokémon from his or her hand to evolve his or her Pokémon, put 2 damage counters on that Pokémon."
           onPlay {
           }
@@ -2569,7 +2569,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case LEVEL_MAX_107:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Flip a coin. If heads, search your deck for a Pokémon LV.X that levels up from 1 of your Pokémon, and put it onto that Pokémon (this counts as leveling up that Pokémon). Shuffle your deck afterward."
           onPlay {
           }
@@ -2577,7 +2577,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case LIFE_HERB_108:
-        return basicTrainer (this) {
+        return pokemonTool (this) {
           text "Flip a coin. If heads, choose 1 of your Pokémon, and remove all Special Conditions and 6 damage counters from that Pokémon (all if there are less than 6)."
           onPlay {
           }
@@ -2585,7 +2585,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case LOOKER_S_INVESTIGATION_109:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at your opponent’s hand, then choose you or your opponent. That player shuffles his or her hand into his or her deck and draws up to 5 cards."
           onPlay {
           }
@@ -2593,7 +2593,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case MEMORY_BERRY_110:
-        return basicTrainer (this) {
+        return pokemonTool (this) {
           text "Attach Memory Berry to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nThe Pokémon this card is attached to can use any attack from its Basic Pokémon or its Stage 1 Evolution card. (You still have to pay for that attack’s Energy cost.)"
           onPlay {
           }
@@ -2601,7 +2601,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case MIASMA_VALLEY_111:
-        return basicTrainer (this) {
+        return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nWhenever any player puts a Basic Pokémon (excluding [G] or [P] Pokémon) from his or hand onto his or her Bench, put 2 damage counters on that Pokémon."
           onPlay {
           }
@@ -2609,7 +2609,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case PLUSPOWER_112:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
           onPlay {
           }
@@ -2617,7 +2617,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case POKE_BALL_113:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
           }
@@ -2625,7 +2625,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case POKEDEX_HANDY910IS_114:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Look at the top 2 cards of your deck, choose 1 of them, and put it into your hand. Put the other card on the bottom of your deck."
           onPlay {
           }
@@ -2633,7 +2633,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case POKEMON_RESCUE_115:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Search your discard pile for a Pokémon, show it to your opponent, and put it into your hand."
           onPlay {
           }
@@ -2641,7 +2641,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case ENERGY_GAIN_116:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Attach Energy Gain to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAttach Team Galactic’s Invention G-101 Energy Gain to 1 of your Pokémon SP that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card. When the Pokémon this card is attached to is no longer a Pokémon SP, discard this card.\nAs long as Team Galactic’s Invention G-101 Energy Gain is attached to a Pokémon, the attack cost of that Pokémon’s attacks is [C] less."
           onPlay {
           }
@@ -2649,7 +2649,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case POWER_SPRAY_117:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "You may play this card during your opponent’s turn when your opponent’s Pokémon uses any Poké-Power. Prevent all effects of that Poké-Power. (This counts as that Pokémon using its Poké-Power.) If you have 2 or less Pokémon SP in play, you can’t play this card."
           onPlay {
           }
@@ -2657,7 +2657,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case POKE_TURN_118:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Return 1 of your Pokémon SP and all cards attached to it to your hand."
           onPlay {
           }
@@ -2665,7 +2665,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case ARMOR_FOSSIL_119:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Play Armor Fossil as if it were a [C] Basic Pokémon. (Armor Fossil counts as a Trainer card as well, but if Armor Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Armor Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Armor Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Armor Stone Whenever Armor Fossil would be damaged by your opponent’s attack, flip a coin until you get tails. For each heads, reduce that damage by 10."
           onPlay {
           }
@@ -2673,7 +2673,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case SKULL_FOSSIL_120:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "Play Skull Fossil as if it were a [C] Basic Pokémon. (Skull Fossil counts as a Trainer card as well, but if Skull Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Skull Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Skull Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Skull Stone During your opponent’s turn, if Skull Fossil would be Knocked Out by damage from an opponent’s attack, flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
           onPlay {
           }
