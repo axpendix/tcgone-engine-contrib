@@ -3356,39 +3356,59 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case HEAT_FIRE_ENERGY_184:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[]]) {
         text "This card provides 1 [R] Energy while it’s attached to a Pokémon. If this card is attached to a [R] Pokémon, its maximum HP is increased by 20."
-        onPlay {reason->
+        def eff
+        onPlay { reason->
+          eff = getter (GET_FULL_HP, self) {h->
+            if (self.types.contains(R)) {
+              h.object += hp(20)
+            }
+          }
+        }
+        getEnergyTypesOverride {
+          return [[R] as Set]
         }
         onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case HIDE_DARKNESS_ENERGY_185:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[]]) {
         text "As long as this card is attached to a Pokémon, it provides [D] Energy. The Retreat Cost of the [D] Pokémon this card is attached to is 0."
-        onPlay {reason->
+        def eff
+        onPlay { reason->
+          eff = getter (GET_RETREAT_COST, BEFORE_LAST, self) {h->
+            if (self.types.contains(D)) {
+              h.object = 0
+            }
+          }
+        }
+        getEnergyTypesOverride {
+          return [[D] as Set]
         }
         onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case POWERFUL_COLORLESS_ENERGY_186:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[]]) {
         text "As long as this card is attached to a Pokémon, it provides [C] Energy. The attacks of the [C] Pokémon this card is attached to do 20 more damage to your opponent’s Active Pokémon."
-        onPlay {reason->
+        def eff
+        onPlay { reason->
+          eff = delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              bg.dm().each{
+                if(it.from == self && it.to.active && it.to.owner != self.owner && self.types.contains(C) && it.dmg.value) {
+                  bc "Powerful [C] Energy +20"
+                  it.dmg += hp(20)
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case CENTISKORCH_V_187:
