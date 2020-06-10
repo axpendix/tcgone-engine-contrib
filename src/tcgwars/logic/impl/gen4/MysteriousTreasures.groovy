@@ -1309,7 +1309,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              if (keyStore("EI_Buff_Lazy_Blow", self)) { damage 80 }
+              if (keyStore("EI_Buff_Lazy_Blow", self, null)) { damage 80 }
             }
           }
 
