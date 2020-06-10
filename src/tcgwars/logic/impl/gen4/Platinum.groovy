@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen4;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.effect.EffectType.*;
 import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
