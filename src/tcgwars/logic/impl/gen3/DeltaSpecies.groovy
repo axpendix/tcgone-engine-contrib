@@ -2800,7 +2800,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 
           deck.search(max: 3, "Search your deck for up to 3 Basic Pokemon with 100 HP or less", {
             it.cardTypes.pokemon && it.cardTypes.is(BASIC) && it.asPokemonCard().hp.value <= 100
-          }).showToOpponent("Chosen Pokemon to move to the Opponent's hand.").moveTo(my.hand)
+          }).showToOpponent("Opponent used Holon Mentor").moveTo(my.hand)
 
           shuffleDeck()
         }
