@@ -256,13 +256,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
               //TODO: Yeah this is gonna be a fun one.
               after POKEPOWER, {
                 def conditions = [
-                  (!self.specialConditions)
+                  (!self.specialConditions),
+                  (keyStore("Power_Cancel", self, null) != bg.turnCount), //checkLastTurn() but no assert
                   (bg.currentThreadPlayerType != self.owner),
                   (ef.pcs.owner != self.owner),
                   (self.owner.hand >= 2),
                   (confirm("Activate $pokePower?", self.owner))
                 ]
                 if (conditions.each{it}) {
+                  keyStore("Power_Cancel", self, bg.turnCount) //powerUsed()
                   self.owner.hand.select(count: 2, "Discard 2 hand from your hand", self.owner).discard()
                   bc "$pokePower activates"
                   prevent() //TODO: Confirm that after stopping the Poké-Power it still counted as used.
