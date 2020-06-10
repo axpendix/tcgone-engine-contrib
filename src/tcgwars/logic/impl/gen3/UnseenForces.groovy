@@ -297,7 +297,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def pcs = defending
             if (opp.bench && confirm("Switch the defending Pokémon with 1 of your opponent's benched pokémon?")) {
-              pcs = opp.bench.oppSelect("Switch to who? New Active will be Asleep and Poisoned")
+              pcs = opp.bench.select("Select opponent's new Active Pokemon. New Active will be Asleep and Poisoned")
               sw opp.active, pcs
             }
             targeted(pcs) {
