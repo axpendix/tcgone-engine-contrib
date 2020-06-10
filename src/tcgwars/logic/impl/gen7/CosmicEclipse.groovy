@@ -2686,7 +2686,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             delayedA {
               def power=false
               before PLAY_TRAINER, {
-                if (ef.supporter && bg.currentTurn==self.owner.opposite && ef.reason==PLAY_FROM_HAND) {
+                if (ef.supporter && bg.currentTurn==self.owner.opposite) {
                   power=true
                 }
               }
