@@ -471,7 +471,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           delayedA {
             before APPLY_SPECIAL_CONDITION,self, {
               if(!(self.specialConditions)){
-                bc (self+"is thick Skinned!")
+                bc ("$self is thick Skinned!")
                 prevent()
               }
             }
