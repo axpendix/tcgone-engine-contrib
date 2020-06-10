@@ -2046,7 +2046,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Search your deck for a card and put it into your hand. Shuffle your deck afterward."
         onPlay {
-          my.deck.select(count:1).moveTo(my.hand)
+          my.deck.select(count:1).moveTo(hidden:true,my.hand)
           shuffleDeck()
         }
         playRequirement{
