@@ -2980,10 +2980,16 @@ public enum LegendsAwakened implements LogicCardInfo {
         return basicTrainer (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nEach Pokémon that isn’t an Evolved Pokémon in play (both your and your opponent’s gets +20 HP."
           onPlay {
+            eff = getter GET_FULL_HP, {h->
+              if(!h.effect.target.realEvolution) {
+                h.object += hp(20)
+              }
+            }
+          onRemoveFromPlay{
+            eff.unregister()
           }
-          playRequirement{
-          }
-        };
+        }
+      };
       case STARK_MOUNTAIN_135:
         return basicTrainer (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, that player may choose a [R] or [F] Energy attached to 1 of his or her Pokémon and move that Energy to 1 of his or her Pokémon."
@@ -3029,7 +3035,11 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P
           pokeBody "Psychic Aura", {
             text "Each of your Pokémon has no Weakness."
-            delayedA {
+            getterA (GET_WEAKNESSES) { h->
+              if(h.effect.target.owner == self.owner) {
+                def list = h.object as List<Weakness>
+                list.clear()
+              }
             }
           }
           move "Deep Balance", {
@@ -3037,7 +3047,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              def tar = opp.all.select("Choose a Pokemon to put damage counters on")
+              int count = 0
+              opp.all.each{count += it.cards.energyCount(C)}
+              directDamage 10*count, tar
             }
           }
           move "", {
@@ -3112,15 +3125,19 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              assert my.bench : "Your bench is empty"
+              my.bench.each{
+                heal 30, it
+              }
             }
           }
           move "Supreme Blast", {
-            text "200 damage. in play, this attack does nothing. Discard all Energy attached to Mesprit."
+            text "200 damage. If you don't have Uxie LV.X and Azelf LV.X in play, this attack does nothing. Discard all Energy attached to Mesprit."
             energyCost P, P
-            attackRequirement {}
+            attackRequirement {my.all.findAll{it.name == ("Uxie Lv.X")} && my.all.findAll{it.name == ("Uxie Lv.X")}}
             onAttack {
-              damage 0
+              damage 200
+              discardAllSelfEnergy()
             }
           }
           move "", {
@@ -3195,6 +3212,15 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Trade Off", {
             text "Once during your turn , you may look at the top 2 cards of your deck, choose 1 of them, and put it into your hand. Put the other card on the bottom of your deck. This power can’t be used if Uxie is affected by a Special Condition. You can’t use more than 1 Trade Off Poké-Power each turn."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              assert bg.em().retrieveObject("Trade_Off") != bg.turnCount : "You cannot use more than one Trade Off per turn"
+              assert my.deck : "Your deck is empty"
+              bg.em().storeObject("Trade_Off",bg.turnCount)
+              powerUsed()
+              def sel = my.deck.subList(0,2).select("Choose 1 card to put into your hand")
+              my.deck.subList(0,2).getExcludedList(sel).moveTo(hidden: true, my.deck)
+              sel.moveTo(hidden: true, my.hand)          
             }
           }
           move "Zen Blade", {
@@ -3202,7 +3228,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              cantUseAttack thisMove, self
             }
           }
           move "", {

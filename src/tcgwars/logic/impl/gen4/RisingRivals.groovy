@@ -1471,9 +1471,13 @@ public enum RisingRivals implements LogicCardInfo {
           move "Tail Code", {
             text "Move an Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+            }
             onAttack {
-              damage 0
+              if (opp.active.cards.filterByType(ENERGY) && opp.bench) {
+                def energy = opp.active.findAll{it.cards.filterByType(ENERGY)}.select("Select energy to move to benched Pokemon").first()
+                def tar = opp.bench.select("Select the Pokémon to move energy to")
+                energySwitch(opp.active, tar, energy)
             }
           }
           move "Snap Attack", {
@@ -1481,7 +1485,10 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if (!opp.active.cards.filterByType(ENERGY)) {
+                damage 40
+              }
             }
           }
 
@@ -2203,8 +2210,15 @@ public enum RisingRivals implements LogicCardInfo {
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nMove as many Energy cards attached to 1 of your Pokémon as you like to another of your Pokémon."
           onPlay {
+            def src = my.all.findAll{it.cards.filterByType(ENERGY)}.select("Select Pokemon to move energy from").first()
+            def energyList = src.cards.filterByType(ENERGY).select(min:1, "Choose energy cards to move")
+            tar = my.all.getExcludedList(src).select("Choose Pokemon to move energy cards to").first()
+            energyList.each {
+              energySwitch(src, tar, it)
+            }
           }
           playRequirement{
+            assert my.all.filterByType(ENERGY) : "You don't have any energy in play"
           }
         };
       case POKEMON_CONTEST_HALL_93:
@@ -2470,15 +2484,19 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              if(reason==PLAY_FROM_HAND && opp.bench && confirm("Use Bright Look?")) {
+                powerUsed()
+                sw opp.active, opp.bench.select("Choose your opponent's new active Pokemon"), SRC_ABILITY
             }
           }
+        }
           move "Flash Impact", {
             text "60 damage. Does 30 damage to 1 of your Pokémon, and don’t apply Weakness and Resistance to this damage."
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              damage 30, my.all.choose("Choose Pokemon to do 30 damage to")
             }
           }
           move "", {
