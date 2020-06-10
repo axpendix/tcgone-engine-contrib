@@ -3356,7 +3356,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case HEAT_FIRE_ENERGY_184:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[]]) {
         text "This card provides 1 [R] Energy while it’s attached to a Pokémon. If this card is attached to a [R] Pokémon, its maximum HP is increased by 20."
         def eff
         onPlay { reason->
@@ -3374,7 +3374,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case HIDE_DARKNESS_ENERGY_185:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[]]) {
         text "As long as this card is attached to a Pokémon, it provides [D] Energy. The Retreat Cost of the [D] Pokémon this card is attached to is 0."
         def eff
         onPlay { reason->
@@ -3392,7 +3392,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case POWERFUL_COLORLESS_ENERGY_186:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[]]) {
         text "As long as this card is attached to a Pokémon, it provides [C] Energy. The attacks of the [C] Pokémon this card is attached to do 20 more damage to your opponent’s Active Pokémon."
         def eff
         onPlay { reason->
