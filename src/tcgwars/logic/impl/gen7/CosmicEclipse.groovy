@@ -2229,7 +2229,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Your opponent chooses 1 of their own Pokémon. This attack does 90 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost P
             onAttack {
-              damage 90, opp.all.oppSelect("Opponent used $move. Select a Pokémon to have 90 damage dealt to it.")
+              damage 90, opp.all.oppSelect("Opponent used $thisMove. Select a Pokémon to have 90 damage dealt to it.")
             }
           }
         };
