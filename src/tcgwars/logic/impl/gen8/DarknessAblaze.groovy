@@ -3333,8 +3333,12 @@ public enum DarknessAblaze implements LogicCardInfo {
       return itemCard (this) {
         text "Heal 80 damage from 1 of your Pokémon with a [P] Energy attached to it. Then, discard a [P] Energy from that Pokémon."
         onPlay {
+          def pcs = my.all.findAll{it.cards.energyCount(P) && it.numberOfDamageCounters}.select("Choose which Pokémon to heal 80 damage from")
+          heal 80, pcs
+          pcs.cards.filterByEnergyType(P).choose("Select a [P] Energy to discard from $pcs").discard()
         }
         playRequirement{
+          assert my.all.findAll{it.cards.energyCount(P) && it.numberOfDamageCounters} : "You have no damaged Pokémon with [P] Energy attached to them"
         }
       };
       case TOUGHNESS_CAPE_182:
