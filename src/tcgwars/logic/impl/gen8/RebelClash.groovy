@@ -3981,7 +3981,7 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case HORROR_PSYCHIC_ENERGY_172:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[]]) {
         text "This card provides 1 [P] Energy while it’s attached to a Pokemon. When the [P] Pokemon this card is attached to is your Active Pokemon and is damaged by an opponents attack, put 2 damage counters on the Attacking Pokemon."
         def eff
         onPlay { reason->
@@ -4005,7 +4005,7 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case SPEED_LIGHTNING_ENERGY_173:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[]]) {
         text "This card provides 1 [L] Energy while it’s attached to a Pokemon. When you attach this card from your hand to an [L] Pokemon, draw 2 cards"
         onPlay {reason->
           if (reason == PLAY_FROM_HAND && self.types.contains(L)) {
