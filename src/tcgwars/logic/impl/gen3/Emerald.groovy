@@ -190,7 +190,7 @@ public enum Emerald implements LogicCardInfo {
           pokeBody "Blaze", {
             text "As long as Blaziken’s remaining HP is 40 or less, Blaziken does 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
             delayedA {
-              before APPLY_ATTACK_DAMAGES, {
+              after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
                   if(it.from == self && it.to == self.owner.opposite.pbg.active && self.getRemainingHP().value <= 40) {
                     bc "Blaze +40"
@@ -206,9 +206,7 @@ public enum Emerald implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              afterDamage{
-                apply BURNED
-              }
+              applyAfterDamage BURNED
             }
           }
           move "Damage Burn", {
