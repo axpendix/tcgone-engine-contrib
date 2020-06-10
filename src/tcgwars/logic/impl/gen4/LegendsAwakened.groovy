@@ -1,7 +1,14 @@
 package tcgwars.logic.impl.gen4;
 
 import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.card.Type.*;onPlay {reason->
+            def eff = getter GET_FULL_HP, {h->
+              if(!h.effect.target.realEvolution) {
+                h.object += hp(20)
+              }
+            }
+          onRemoveFromPlay{
+            eff.unregister()
 import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
@@ -2979,8 +2986,8 @@ public enum LegendsAwakened implements LogicCardInfo {
       case SNOWPOINT_TEMPLE_134:
         return basicTrainer (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nEach Pokémon that isn’t an Evolved Pokémon in play (both your and your opponent’s gets +20 HP."
-          onPlay {
-            eff = getter GET_FULL_HP, {h->
+          onPlay {reason->
+            def eff = getter GET_FULL_HP, {h->
               if(!h.effect.target.realEvolution) {
                 h.object += hp(20)
               }
