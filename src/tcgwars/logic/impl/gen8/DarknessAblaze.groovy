@@ -314,6 +314,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 150
+            apply POISONED
+            apply CONFUSED
           }
         }
       };
