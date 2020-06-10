@@ -226,19 +226,25 @@ public enum Emerald implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
               checkLastTurn()
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
-              assert my.deck : "There is no card in your deck"
-              powerUsed()
+              assert my.deck : "Deck is empty"
               bg.em().storeObject("Form_Change",bg.turnCount)
-              def deoxys = self.topPokemonCard
-              if(my.deck.findAll{it.name.contains("Deoxys")}){
-                my.deck.search{it.name.contains("Deoxys")}.moveTo(self.cards)
-                my.deck.add(deoxys)
-                self.cards.remove(deoxys)
-                shuffleDeck()
+              powerUsed()
+
+              def oldDeoxys = self.topPokemonCard
+              def newDeoxys = my.deck.search(min:0, max: 1, {
+                it.name == "Deoxys"
+              })
+
+              if (newDeoxys) {
+                newDeoxys.moveTo(self.cards)
+                my.deck.add(oldDeoxys)
+                self.cards.remove(oldDeoxys)
                 checkFaint()
               }
+
+              shuffleDeck()
             }
           }
           move "Swift", {
