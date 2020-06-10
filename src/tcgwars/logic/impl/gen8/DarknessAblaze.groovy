@@ -3310,8 +3310,13 @@ public enum DarknessAblaze implements LogicCardInfo {
       return itemCard (this) {
         text "Look at the top 5 cards of your deck. Choose a card you find there, shuffle your deck, then put the card you chose on top of your deck."
         onPlay {
+          def card = my.deck.subList(0,5).select("Choose a card to put on top of your deck.").first()
+          my.deck.remove(card)
+          shuffleDeck()
+          my.deck.add(0, card)
         }
         playRequirement{
+          assert my.deck.notEmpty : "Your deck is empty"
         }
       };
       case MOUNTAINOUS_SMOKE_179:
@@ -3336,26 +3341,42 @@ public enum DarknessAblaze implements LogicCardInfo {
       return itemCard (this) {
         text "Heal 80 damage from 1 of your Pokémon with a [P] Energy attached to it. Then, discard a [P] Energy from that Pokémon."
         onPlay {
+          def pcs = my.all.findAll{it.cards.energyCount(P) && it.numberOfDamageCounters}.select("Choose which Pokémon to heal 80 damage from")
+          heal 80, pcs
+          pcs.cards.filterByEnergyType(P).choose("Select a [P] Energy to discard from $pcs").discard()
         }
         playRequirement{
+          assert my.all.findAll{it.cards.energyCount(P) && it.numberOfDamageCounters} : "You have no damaged Pokémon with [P] Energy attached to them"
         }
       };
       case TOUGHNESS_CAPE_182:
       return pokemonTool (this) {
         text "The maximum HP of the Basic Pokémon this card is attached to is increased by 50 (excluding Pokémon-GX)."
+        def eff
         onPlay {reason->
+          eff = getter (GET_FULL_HP, self) {h->
+            def selfTopCardTypes = self.topPokemonCard.cardTypes
+            if(selfTopCardTypes.is(BASIC) && !(selfTopCardTypes.is(POKEMON_GX))) {
+              h.object += hp(50)
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case TURBO_PATCH_183:
       return itemCard (this) {
         text "Flip a coin. If heads, choose a basic Energy card from your discard pile and attach it to 1 of your Basic Pokémon (excluding Pokémon-GX)."
         onPlay {
+          flip {
+            def pcs = my.all.findAll{it.basic && !(it.pokemonGX)}.select("Choose which of your Basic, non-GX Pokémon to attach to")
+            attachEnergyFrom(basic:true, my.discard, pcs)
+          }
         }
         playRequirement{
+          assert my.all.findAll{it.basic && !(it.pokemonGX)} : "You have no Basic Pokémon that aren't Pokémon-GX"
+          assert my.discard.filterByType(BASIC_ENERGY) : "There are no basic Energy cards in your discard pile"
         }
       };
       case HEAT_FIRE_ENERGY_184:
@@ -3409,6 +3430,9 @@ public enum DarknessAblaze implements LogicCardInfo {
               }
             }
           }
+        }
+        getEnergyTypesOverride {
+          return [[C] as Set]
         }
         onRemoveFromPlay {
           eff.unregister()
