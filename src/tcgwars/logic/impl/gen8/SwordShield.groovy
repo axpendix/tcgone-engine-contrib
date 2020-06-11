@@ -3402,8 +3402,8 @@ public enum SwordShield implements LogicCardInfo {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached.\nAt the end of each turn, if the Pokémon this card is attached to is affected by any Special Conditions, it recovers from all of them, and discard this card."
           def eff
           onPlay {reason->
-            eff=delayed(anytime:true){
-              before BETWEEN_TURNS,{
+            eff = delayed (priority: BEFORE_LAST) {
+              before BETWEEN_TURNS, {
                 if(self.specialConditions) {
                   bc "Lum Berry activates"
                   clearSpecialCondition(self,Source.TRAINER_CARD)
