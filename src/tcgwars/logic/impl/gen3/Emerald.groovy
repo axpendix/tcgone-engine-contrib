@@ -2293,7 +2293,7 @@ public enum Emerald implements LogicCardInfo {
             text "Search your discard pile for a [F] Energy card and attach it to Regirock ex. If you do, remove 1 damage counter from Regirock ex."
             energyCost C
             attackRequirement {
-              assert my.discard.filterByType(ENERGY).filterByEnergyType(F) : "There is no [F] Energy card in your discard"
+              assert my.discard.filterByType(ENERGY).filterByEnergyType(F) : "There are no [F] Energy card in your discard"
             }
             onAttack {
               attachEnergyFrom(type : F, my.discard, self)
