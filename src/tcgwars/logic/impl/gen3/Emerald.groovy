@@ -2224,9 +2224,12 @@ public enum Emerald implements LogicCardInfo {
                   }
                 }
               }
-              before BEGIN_TURN, {
-                my.all.each{
-                  keyStore("Rai_Shield", it, 0)
+              before BETWEEN_TURNS, {
+                if(bg.em().retrieveObject("Rai_shield") != bg.turnCount){
+                  bg.em().storeObject("Rai_shield",bg.turnCount)
+                  my.all.each{
+                    keyStore("Rai_Shield", it, 0)
+                  }
                 }
               }
             }
