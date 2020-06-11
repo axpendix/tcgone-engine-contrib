@@ -1925,8 +1925,8 @@ public enum CrystalGuardians implements LogicCardInfo {
       case MEMORY_BERRY_80:
       return pokemonTool (this) {
         text "The Pokémon this card is attached to can use any attack from its Basic Pokémon or its Stage 1 Evolution card. (You still have to pay for that attack's Energy cost.) If that Pokémon attacks, discard this card at the end of the turn."
-        def eff
-        def eff2
+        def eff, eff2
+        def flag = false
         onPlay { reason ->
           eff = getter (GET_MOVE_LIST) { holder->
             if(holder.effect.target.active && holder.effect.target.evolution) {
