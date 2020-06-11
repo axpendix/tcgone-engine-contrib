@@ -253,8 +253,23 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokePower "Power Cancel", {
             text "Once during your opponent’s turn, when your opponent’s Pokémon uses any Poké-Power, you may discard 2 cards from your hand and prevent all effects of that Poké-Power. (This counts as that Pokémon using its Poké-Power.) This power can’t be used if Alakazam is affected by a Special Condition."
             actionA {
-              //TODO: Yeah this is gonna be a fun one to do.
-              //Requires a way to capture "powerUsed", stop the Poké-Power at that point but make it count as used.
+              //TODO: Yeah this is gonna be a fun one.
+              after POKEPOWER, {
+                def conditions = [
+                  (!self.specialConditions),
+                  (keyStore("Power_Cancel", self, null) != bg.turnCount), //checkLastTurn() but no assert
+                  (bg.currentThreadPlayerType != self.owner),
+                  (ef.pcs.owner != self.owner),
+                  (self.owner.hand >= 2),
+                  (confirm("Activate $pokePower?", self.owner))
+                ]
+                if (conditions.each{it}) {
+                  keyStore("Power_Cancel", self, bg.turnCount) //powerUsed()
+                  self.owner.hand.select(count: 2, "Discard 2 hand from your hand", self.owner).discard()
+                  bc "$pokePower activates"
+                  prevent() //TODO: Confirm that after stopping the Poké-Power it still counted as used.
+                }
+              }
             }
           }
           move "Psychic Guard", {
@@ -511,7 +526,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                       ( it.to.active ),
                       ( it.to.getWeaknesses().any{typesOfBasicEn.contains(it)} )
                     ]
-                    if (conditions.each{it}) {
+                    if (!conditions.any{it == false}) {
                       bc "Rainbow Scale +40"
                       it.dmg += hp(40)
                     }
@@ -798,7 +813,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({it.to==self && it.dmg.value})) {
                   bc "Glacier Snow triggers"
-                  apply ASLEEP, (ef.attacker as PokemonCardSet)
+                  apply ASLEEP, (ef.attacker as PokemonCardSet), SRC_ABILITY
                 }
               }
               after SWITCH, self, {unregister()}
@@ -974,7 +989,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
-                  if(self.active && it.from.owner != self.owner && it.from.topPokemonCard.cardTypes.is(STAGE2)) {
+                  if(self.active && it.from.owner != self.owner && it.from.evolution && it.from.topPokemonCard.cardTypes.is(STAGE2)) {
                     bc "Craggy Face -20"
                     it.dmg -= hp(20)
                   }
@@ -1206,8 +1221,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              def chosenTypes = opp.active.types
+              def chosenPCS = opp.all.select("Choose which Pokémon should have its types copied by Ninetales' $pokePower?")
+              def chosenTypes = chosenPCS.types
               chosenTypes.each{
+                bc "$pokePower - $chosenPCS was chosen"
                 bc "$self is now the following type: $it"
               }
               delayed {
@@ -1309,7 +1326,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              if (keyStore("EI_Buff_Lazy_Blow", self)) { damage 80 }
+              if (keyStore("EI_Buff_Lazy_Blow", self, null)) { damage 80 }
             }
           }
 

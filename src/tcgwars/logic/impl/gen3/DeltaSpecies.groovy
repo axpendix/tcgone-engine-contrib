@@ -2384,6 +2384,7 @@ public enum DeltaSpecies implements LogicCardInfo {
               if(ef.cardToPlay == thisCard && bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount){
                 if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
                   def pcs = thisCard.player.pbg.all.select("Attach to?")
+                  assert pcs
                   bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
 
                   def pkmnCard = thisCard
