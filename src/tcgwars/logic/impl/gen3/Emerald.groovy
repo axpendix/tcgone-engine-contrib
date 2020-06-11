@@ -871,10 +871,8 @@ public enum Emerald implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              afterDamage{
-                if(my.bench) {
-                  if(confirm("Switch $self with 1 of your Benched Pokémon?")) sw self, my.bench.select("Select new active.")
-                }
+              afterDamage {
+                switchYourActive(may: true)
               }
             }
           }
