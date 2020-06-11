@@ -981,7 +981,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           onAttack {
             damage 20
             delayed {
-              before APPLY_ATTACK_DAMAGES, {
+              after APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
                   if(it.to == opp.active && it.notNoEffect && it.dmg.value > 0) {
                     heal 10, self
