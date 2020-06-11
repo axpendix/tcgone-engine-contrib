@@ -564,7 +564,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             my.deck.subList(0,4).select("Choose the card to put in your hand").moveTo(my.hand)
 
             def rearrangedCards = rearrange(my.deck.subList(0, 3))
-            rearrangedCards.moveTo(my.deck)
+            rearrangedCards.moveTo(hidden:true, my.deck)
           }
         }
         move "Crush and Burn", {
@@ -2800,7 +2800,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 
           deck.search(max: 3, "Search your deck for up to 3 Basic Pokemon with 100 HP or less", {
             it.cardTypes.pokemon && it.cardTypes.is(BASIC) && it.asPokemonCard().hp.value <= 100
-          }).showToOpponent("Chosen Pokemon to move to the Opponent's hand.").moveTo(my.hand)
+          }).showToOpponent("Opponent used Holon Mentor").moveTo(my.hand)
 
           shuffleDeck()
         }
