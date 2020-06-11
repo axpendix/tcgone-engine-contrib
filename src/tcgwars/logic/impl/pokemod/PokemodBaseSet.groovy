@@ -1751,7 +1751,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       };
       case FULL_HEAL_82:
       return basicTrainer (this) {
-        text "Your Active Pokémon is no longer Asleep, Confused, Paralyzed, or Poisoned."
+        text "Remove all Special Conditions from your Active Pokemon"
         onPlay {
           clearSpecialCondition(my.active, TRAINER_CARD)
         }
