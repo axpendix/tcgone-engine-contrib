@@ -2192,15 +2192,13 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
           onPlay {}
         };
       case RAINBOW_ENERGY_104:
-        return specialEnergy (this, [[Type.RAINBOW]]) {
+        return specialEnergy (this, [[R, D, F, G, W, Y, L, M, P]]) {
           text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) When you attach this card from your hand to 1 of your Pokémon, put 1 damage counter on that Pokémon. (While not in play, Rainbow Energy counts as Colorless Energy.)"
+          typeImagesOverride = [RAINBOW]
           onPlay {reason->
             if(reason == PLAY_FROM_HAND){
               directDamage(10, self)
             }
-          }
-          getEnergyTypesOverride{
-            return [[R, D, F, G, W, Y, L, M, P] as Set]
           }
         };
       case AMPHAROS_105:
