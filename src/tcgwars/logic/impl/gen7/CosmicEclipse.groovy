@@ -2694,9 +2694,8 @@ public enum CosmicEclipse implements LogicCardInfo {
               after PLAY_TRAINER, {
                 power=false
               }
-              before null, null, Source.TRAINER_CARD, {
-                def target=e.getTarget(bg)
-                if (power && target && target.owner==self.owner){
+              before null, self, Source.TRAINER_CARD, {
+                if (power) {
                   bc "Obnoxious Whirring prevents effects from Supporter cards done to $self."
                   prevent()
                 }
