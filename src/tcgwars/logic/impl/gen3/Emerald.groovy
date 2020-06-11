@@ -726,12 +726,12 @@ public enum Emerald implements LogicCardInfo {
             }
           }
           move "Bite Off", {
-            text "30+ damage. If the Defending Pokémon, is Pokémon-ex, this attack does 30 damage plus 30 more damage."
+            text "30+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 30 damage plus 30 more damage."
             energyCost G, C, C
             attackRequirement {}
             onAttack {
               damage 30
-              if (opp.active.topPokemonCard.cardTypes.is(EX)) damage 30
+              if (defending.EX) { damage 30 }
             }
           }
 
@@ -745,9 +745,7 @@ public enum Emerald implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              if (defending.EX) {
-                damage 20
-              }
+              if (defending.EX) { damage 20 }
             }
           }
           move "Quick Attack", {
