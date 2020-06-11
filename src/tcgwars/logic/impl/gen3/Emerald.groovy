@@ -1860,6 +1860,11 @@ public enum Emerald implements LogicCardInfo {
       case LUM_BERRY_78:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAt any time between turns, if the Pokémon this card is attached to is affected by any Special Conditions, remove all of them. Then, discard Lum Berry."
+          //TODO: Edit so it handles interaction with Snorlax (DF 10) and Hypno (FRLG 25) properly.
+          //
+          // Q. Say Snorlax is Asleep and the opponent has a Hypno. Also, Snorlax has a Lum Berry attached and fails to wake up from the coin flip. Can Snorlax heal its 2 damage counters first, then trigger the Lum Berry to avoid Hypno's damage?
+          //
+          // A. You can choose to use the Lum Berry either before or after the coin flip; it's up to player what gets done first. So for Snorlax, you have to either choose to wake him up with Lum Berry, or stay asleep and use the "Rest Up" Poké-BODY; it cannot avoid Hypno's damage if it stays asleep. (Oct 7, 2004 PUI Rules Team)
           def eff
           onPlay {reason->
             eff=delayed(anytime:true){
