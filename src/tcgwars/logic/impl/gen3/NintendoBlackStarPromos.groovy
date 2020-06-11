@@ -75,8 +75,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
   KYOGRE_EX_37 ("Kyogre ex", 37, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
   GROUDON_EX_38 ("Groudon ex", 38, Rarity.RARE, [POKEMON, BASIC, _FIGHTING_]),
   RAYQUAZA_EX_39 ("Rayquaza ex", 39, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  MEW_40 ("Mew", 40, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
-;
+  MEW_40 ("Mew", 40, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
