@@ -345,7 +345,7 @@ public enum UnseenForces implements LogicCardInfo {
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
-                if(self.active && it.to.owner==self.owner && it.dmg.value && it.notNoEffect) {
+                if(self.active && it.to.owner==self.owner && it.from.owner==self.owner.opposite && it.dmg.value && it.notNoEffect) {
                   bc "Intimidating Fang: -10"
                   it.dmg-=hp(10)
                 }
@@ -358,9 +358,10 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 30
-
-            if (opp.hand.size() >= 5) {
-              opp.hand.oppSelect(min: opp.hand.size()-4, max: opp.hand.size()-4, "Discard cards until you have 4 left in your hand").discard()
+            afterDamage{
+              if (opp.hand.size() >= 5) {
+                opp.hand.oppSelect(count: opp.hand.size() - 4, "Select cards to discard until you end up with 4 left").discard()
+              }
             }
           }
         }
