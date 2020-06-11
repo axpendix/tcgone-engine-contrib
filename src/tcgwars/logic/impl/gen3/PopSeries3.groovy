@@ -52,8 +52,7 @@ public enum PopSeries3 implements LogicCardInfo {
   IVYSAUR_14 ("Ivysaur", 14, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   MARSHTOMP_15 ("Marshtomp", 15, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   PICHU_BROS__16 ("Pichu Bros.", 16, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  HO_OH_EX_17 ("Ho-Oh ex", 17, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
-;
+  HO_OH_EX_17 ("Ho-Oh ex", 17, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 

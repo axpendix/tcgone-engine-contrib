@@ -52,8 +52,7 @@ public enum PopSeries5 implements LogicCardInfo {
   PELIPPER_DELTA_SPECIES__14 ("Pelipper (Delta Species)", 14, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   ZANGOOSE_DELTA_SPECIES__15 ("Zangoose (Delta Species)", 15, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
   ESPEON_STAR_16 ("Espeon Star", 16, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  UMBREON_STAR_17 ("Umbreon Star", 17, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-;
+  UMBREON_STAR_17 ("Umbreon Star", 17, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 

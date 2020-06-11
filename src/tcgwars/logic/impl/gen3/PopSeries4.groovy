@@ -52,8 +52,7 @@ public enum PopSeries4 implements LogicCardInfo {
   SQUIRTLE_14 ("Squirtle", 14, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
   TREECKO_DELTA_SPECIES__15 ("Treecko (Delta Species)", 15, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   WOBBUFFET_16 ("Wobbuffet", 16, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
-  DEOXYS_EX_17 ("Deoxys ex", 17, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-;
+  DEOXYS_EX_17 ("Deoxys ex", 17, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
