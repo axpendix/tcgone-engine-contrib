@@ -254,14 +254,12 @@ public enum UnseenForces implements LogicCardInfo {
           text "As often as you like during your turn (before your attack), you may move a basic Energy card attached to 1 of your Benched Pokémon to your Active Pokémon. This power can't be used if Ampharos is affected by a Special Condition."
           actionA {
             checkNoSPC()
-            while(1){
-              def pl=(my.all.findAll {
-                it.benched && it.cards.filterByType(BASIC_ENERGY)
-              })
+            while(true){
+              def pl = my.bench.findAll{ it.cards.filterByType(BASIC_ENERGY) }
               if(!pl) break;
-              def src =pl.select("source for energy (cancel to stop)", false)
+              def src = pl.select("source for energy (cancel to stop)", false)
               if(!src) break;
-              def card=src.cards.select("Card to move",cardTypeFilter(BASIC_ENERGY)).first()
+              def card = src.cards.select("Card to move", cardTypeFilter(BASIC_ENERGY)).first()
               energySwitch(src, my.active, card)
             }
           }
