@@ -2005,12 +2005,14 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Discard 1 Energy card attached to 1 of your Pokémon in order to choose 1 of your opponent's Pokémon and up to 2 Energy cards attached to it. Discard those Energy cards."
         onPlay {
+          bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
           def src = my.all.findAll{it.cards.filterByType(ENERGY)}.select("Discard an energy from")
           src.cards.filterByType(ENERGY).select("Discard which energy").discard()
           def tar = opp.all.findAll{it.cards.filterByType(ENERGY)}.select("Discard up to 2 energy from")
           tar.cards.filterByType(ENERGY).select(min:0,max:2,"Discard which energies?").discard()
         }
         playRequirement{
+          assert !bg.em().retrieveObject("G_SPEC_"+thisCard.player) : "You have already used your G-SPEC card"
           assert my.all.findAll{it.cards.filterByType(ENERGY)} : "You have no energy attached to your pokemon"
           assert opp.all.findAll{it.cards.filterByType(ENERGY)} : "Your opponent has no energy attached to their pokemon"
         }
@@ -2019,16 +2021,19 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Search your discard pile for a Trainer card, show it to your opponent, and put it into your hand."
         onPlay {
+          bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
           my.discard.filterByType(TRAINER).select().moveTo(my.hand)
         }
         playRequirement{
           assert my.discard.filterByType(TRAINER) : "You have no trainers in your discard pile."
+          assert !bg.em().retrieveObject("G_SPEC_"+thisCard.player) : "You have already used your G-SPEC card"
         }
       };
       case Elixir_109:
       return basicTrainer (this) {
         text "Remove up to 6 damage counters from 1 of your Pokémon."
         onPlay {
+          bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
           def pcs = my.all.findAll{it.numberOfDamageCounters}.select()
           targeted (pcs, TRAINER_CARD) {
             heal 60, pcs
@@ -2036,17 +2041,20 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
         playRequirement{
           assert my.all.findAll{it.numberOfDamageCounters}
+          assert !bg.em().retrieveObject("G_SPEC_"+thisCard.player) : "You have already used your G-SPEC card"
         }
       };
       case Hacker_110:
       return basicTrainer (this) {
         text "Search your deck for a card and put it into your hand. Shuffle your deck afterward."
         onPlay {
+          bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
           my.deck.select(count:1).moveTo(hidden:true,my.hand)
           shuffleDeck()
         }
         playRequirement{
           assert my.deck
+          assert !bg.em().retrieveObject("G_SPEC_"+thisCard.player) : "You have already used your G-SPEC card"
         }
       };
       case MEWTWO_114:
