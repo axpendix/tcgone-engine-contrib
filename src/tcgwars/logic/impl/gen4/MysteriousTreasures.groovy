@@ -3171,6 +3171,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement {
+            my.discard.each{
+              if (it.cardTypes.is(STAGE2)){
+                def debug_test = bg.gm().getBasicsFromStage2(it.name)
+                bc "${debug_test}"
+              }
+            }
             assert ( my.deck.notEmpty || my.discard.any{isValidFossilCard(it)}) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
           }
         };
