@@ -513,6 +513,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
               h.object.clear()
               h.object.add(newType)
             }
+            bc"$self's type is now $newType"
           }
         }
         move "Venom Powder", {
