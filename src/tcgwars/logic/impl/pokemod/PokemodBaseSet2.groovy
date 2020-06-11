@@ -281,7 +281,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           onAttack {
             damage 20
             my.bench.each{
-              if(it.name. == "Nidoking"){
+              if(it.name == "Nidoking"){
                 damage 20
               }
             }
