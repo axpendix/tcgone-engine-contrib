@@ -1953,6 +1953,7 @@ public enum Emerald implements LogicCardInfo {
       case DARKNESS_ENERGY_86:
         return copy (RubySapphire.DARKNESS_ENERGY_93, this);
       case DOUBLE_RAINBOW_ENERGY_87:
+        //TODO: Make this its own version, text was changed in this set so damage reduction is made *before* W/R, not after.
         return copy (TeamMagmaVsTeamAqua.DOUBLE_RAINBOW_ENERGY_88, this);
       case METAL_ENERGY_88:
         return copy (RubySapphire.METAL_ENERGY_94, this);
