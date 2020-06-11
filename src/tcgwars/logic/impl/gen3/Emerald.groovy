@@ -190,7 +190,7 @@ public enum Emerald implements LogicCardInfo {
           pokeBody "Blaze", {
             text "As long as Blaziken’s remaining HP is 40 or less, Blaziken does 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
             delayedA {
-              before APPLY_ATTACK_DAMAGES, {
+              after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
                   if(it.from == self && it.to == self.owner.opposite.pbg.active && self.getRemainingHP().value <= 40) {
                     bc "Blaze +40"
@@ -206,9 +206,7 @@ public enum Emerald implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              afterDamage{
-                apply BURNED
-              }
+              applyAfterDamage BURNED
             }
           }
           move "Damage Burn", {
@@ -228,19 +226,25 @@ public enum Emerald implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
               checkLastTurn()
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
-              assert my.deck : "There is no card in your deck"
-              powerUsed()
+              assert my.deck : "Deck is empty"
               bg.em().storeObject("Form_Change",bg.turnCount)
-              def deoxys = self.topPokemonCard
-              if(my.deck.findAll{it.name.contains("Deoxys")}){
-                my.deck.search{it.name.contains("Deoxys")}.moveTo(self.cards)
-                my.deck.add(deoxys)
-                self.cards.remove(deoxys)
-                shuffleDeck()
+              powerUsed()
+
+              def oldDeoxys = self.topPokemonCard
+              def newDeoxys = my.deck.search(min:0, max: 1, {
+                it.name == "Deoxys"
+              })
+
+              if (newDeoxys) {
+                newDeoxys.moveTo(self.cards)
+                my.deck.add(oldDeoxys)
+                self.cards.remove(oldDeoxys)
                 checkFaint()
               }
+
+              shuffleDeck()
             }
           }
           move "Swift", {
@@ -300,12 +304,13 @@ public enum Emerald implements LogicCardInfo {
           pokePower "Heal Dance", {
             text "Once during your turn (before your attack), you may remove 2 damage counter from 1 of your Pokémon. You can’t use more than 1 Heal Dance Poké-Power each turn. This power can’t be used if Gardevoir is affected by a Special Condition."
             actionA {
+              checkNoSPC()
               checkLastTurn()
-              assert bg.em().retrieveObject("Heal_Dance") != bg.turnCount : "You cannot use Heal Dance more than once per turn!"
-              assert !(self.specialConditions) : "$self is affected by a Special Condition."
-              assert my.all.find{it.numberOfDamageCounters} : "There is no pokémon to heal"
+              assert bg.em().retrieveObject("Heal_Dance") != bg.turnCount : "You cannot use $pokePower more than once per turn!"
+              assert my.all.find{it.numberOfDamageCounters} : "There are no pokémon to heal on your side of the field"
               bg.em().storeObject("Heal_Dance",bg.turnCount)
-              heal 20, my.all.findAll{it.numberOfDamageCounters}.select("Remove 2 damage counter from 1 of those Pokémon")
+              powerUsed()
+              heal 20, my.all.findAll{it.numberOfDamageCounters}.select("Select a Pokémon to remove 2 damage counter from it")
             }
           }
           move "Psypunch", {
@@ -424,14 +429,16 @@ public enum Emerald implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               delayed{
-                before APPLY_ATTACK_DAMAGES, {
+                after PROCESS_ATTACK_EFFECTS, {
                   bg.dm().each{
-                    if(it.from.owner == self.owner && it.notNoEffect && it.dmg.value) {
+                    if(it.from == self && it.to.active && it.notNoEffect && it.dmg.value) {
                       bc "Dragon Dance +30"
                       it.dmg += hp(30)
                     }
                   }
                 }
+                after SWITCH, self, {unregister()}
+                after EVOLVE, self, {unregister()}
                 unregisterAfter 3
               }
             }
@@ -455,10 +462,16 @@ public enum Emerald implements LogicCardInfo {
             delayedA {
               before APPLY_SPECIAL_CONDITION, {
                 def pcs=e.getTarget(bg)
-                if(pcs.owner==self.owner && pcs.cards.energyCount(G)) {
+                if (pcs.active && pcs.owner==self.owner && pcs.cards.energyCount(G)) {
                   bc "Green Essence prevents special conditions"
                   prevent()
                 }
+              }
+            }
+            onActivate {
+              if(my.active.cards.energyCount(G) && my.active.specialConditions){
+                bc "Green Essence clears existing Special Conditions in the Active ${my.active}."
+                clearSpecialCondition(my.active, SRC_ABILITY)
               }
             }
           }
@@ -713,12 +726,12 @@ public enum Emerald implements LogicCardInfo {
             }
           }
           move "Bite Off", {
-            text "30+ damage. If the Defending Pokémon, is Pokémon-ex, this attack does 30 damage plus 30 more damage."
+            text "30+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 30 damage plus 30 more damage."
             energyCost G, C, C
             attackRequirement {}
             onAttack {
               damage 30
-              if (opp.active.topPokemonCard.cardTypes.is(EX)) damage 30
+              if (defending.EX) { damage 30 }
             }
           }
 
@@ -732,9 +745,7 @@ public enum Emerald implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              if (defending.EX) {
-                damage 20
-              }
+              if (defending.EX) { damage 20 }
             }
           }
           move "Quick Attack", {
@@ -861,9 +872,7 @@ public enum Emerald implements LogicCardInfo {
             onAttack {
               damage 40
               afterDamage{
-                if(my.bench) {
-                  if(confirm("Switch $self with 1 of your Benched Pokémon?")) sw self, my.bench.select("Select new active.")
-                }
+                switchYourActive(may: true)
               }
             }
           }
@@ -933,9 +942,7 @@ public enum Emerald implements LogicCardInfo {
             onAttack {
               damage 40
               afterDamage{
-                if(my.bench) {
-                  if(confirm("Switch $self with 1 of your Benched Pokémon?")) sw self, my.bench.select("Select new active.")
-                }
+                switchYourActive(may: true)
               }
             }
           }
@@ -1408,17 +1415,7 @@ public enum Emerald implements LogicCardInfo {
           move "Call for Friend", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {
-              assert deck.notEmpty : "Your deck is empty"
-              assert my.bench.notFull : "You cannot put anymore Pokémon on your bench."
-            }
-            onAttack {
-              deck.search (max: 1, cardTypeFilter(BASIC)).each {
-                deck.remove(it)
-                benchPCS(it)
-              }
-              shuffleDeck()
-            }
+            callForFamily(basic: true, 1, delegate)
           }
           move "Strange Scale", {
             text "20 damage. If the Defending Pokémon is an Evolved Pokémon, the Defending Pokémon is now Confused."
@@ -1841,17 +1838,19 @@ public enum Emerald implements LogicCardInfo {
         return supporter (this) {
           text "Search your deck for up to 3 different types of Basic Pokémon cards (excluding Baby Pokémon), show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            my.deck.select(min:0, max:3, "Select up to 3 Basic Pokémon of different types", cardTypeFilter(BASIC), thisCard.player,
-              {CardList list->
-                TypeSet typeSet=new TypeSet()
-                for(card in list){
-                  if(typeSet.containsAny(card.asPokemonCard().types)){
-                    return false
-                  }
-                  typeSet.addAll(card.asPokemonCard().types)
+            my.deck.select(min:0, max:3, "Select up to 3 Basic Pokémon of different types", (
+              cardTypeFilter(BASIC) && !(it.cardTypes.is(BABY))
+            ), thisCard.player, {
+              CardList list->
+              TypeSet typeSet=new TypeSet()
+              for(card in list){
+                if(typeSet.containsAny(card.asPokemonCard().types)){
+                  return false
                 }
-                return true
-              }).moveTo(my.hand)
+                typeSet.addAll(card.asPokemonCard().types)
+              }
+              return true
+            }).moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -1861,6 +1860,11 @@ public enum Emerald implements LogicCardInfo {
       case LUM_BERRY_78:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAt any time between turns, if the Pokémon this card is attached to is affected by any Special Conditions, remove all of them. Then, discard Lum Berry."
+          //TODO: Edit so it handles interaction with Snorlax (DF 10) and Hypno (FRLG 25) properly.
+          //
+          // Q. Say Snorlax is Asleep and the opponent has a Hypno. Also, Snorlax has a Lum Berry attached and fails to wake up from the coin flip. Can Snorlax heal its 2 damage counters first, then trigger the Lum Berry to avoid Hypno's damage?
+          //
+          // A. You can choose to use the Lum Berry either before or after the coin flip; it's up to player what gets done first. So for Snorlax, you have to either choose to wake him up with Lum Berry, or stay asleep and use the "Rest Up" Poké-BODY; it cannot avoid Hypno's damage if it stays asleep. (Oct 7, 2004 PUI Rules Team)
           def eff
           onPlay {reason->
             eff=delayed(anytime:true){
@@ -1883,20 +1887,20 @@ public enum Emerald implements LogicCardInfo {
           onPlay {
             def choice = 1
             if(my.discard.filterByType(BASIC_ENERGY) && my.deck){
-              choice = choose([1,2],['Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand', 'search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand.'], "Choose 1")
+              choice = choose([1,2], ['Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand', 'Search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand.'], "Choose 1")
             }
             else{
               if(!my.deck){choice = 2}
             }
             if(choice == 1){
-              my.deck.search(max:2,"Search for up to 2 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).showToOpponent("Selected cards.").moveTo(my.hand)
+              my.deck.search(max: 2,"Search for up to 2 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).showToOpponent("Selected cards.").moveTo(my.hand)
             }
             else{
-              my.discard.filterByType(BASIC_ENERGY).select(max : 2).showToOpponent("Selected cards.").moveTo(my.hand)
+              my.discard.filterByType(BASIC_ENERGY).select(max: 2).showToOpponent("Selected cards.").moveTo(my.hand)
             }
           }
           playRequirement{
-            assert my.deck || my.discard.filterByType(BASIC_ENERGY) : "There is no energy to be found"
+            assert my.deck || my.discard.filterByType(BASIC_ENERGY) : "You have no cards left in deck, and no basic Energy cards in your discard pile"
           }
         };
       case ORAN_BERRY_80:
@@ -1949,6 +1953,7 @@ public enum Emerald implements LogicCardInfo {
       case DARKNESS_ENERGY_86:
         return copy (RubySapphire.DARKNESS_ENERGY_93, this);
       case DOUBLE_RAINBOW_ENERGY_87:
+        //TODO: Make this its own version, text was changed in this set so damage reduction is made *before* W/R, not after.
         return copy (TeamMagmaVsTeamAqua.DOUBLE_RAINBOW_ENERGY_88, this);
       case METAL_ENERGY_88:
         return copy (RubySapphire.METAL_ENERGY_94, this);
@@ -1961,9 +1966,9 @@ public enum Emerald implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.from.topPokemonCard.cardTypes.is(STAGE2) && it.to==self && it.dmg.value && it.notNoEffect){
+                  if(it.to==self && it.from.evolution && it.from.topPokemonCard.cardTypes.is(STAGE2) && it.dmg.value && it.notNoEffect){
                     bc "Mist : -30"
-                    it.dmg-=hp(30)
+                    it.dmg -= hp(30)
                   }
                 }
               }
@@ -2068,19 +2073,25 @@ public enum Emerald implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for another Deoxys ex and switch it with Deoxys ex. (Any cards attached to Deoxys ex, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys ex on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
             actionA {
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
               checkLastTurn()
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
-              assert my.deck : "There is no card in your deck"
-              powerUsed()
+              assert my.deck : "Deck is empty"
               bg.em().storeObject("Form_Change",bg.turnCount)
-              def deoxys = self.topPokemonCard
-              if(my.deck.findAll{it.name.contains("Deoxys ex")}){
-                my.deck.search{it.name.contains("Deoxys ex")}.moveTo(self.cards)
-                my.deck.add(deoxys)
-                self.cards.remove(deoxys)
-                shuffleDeck()
+              powerUsed()
+
+              def oldDeoxys = self.topPokemonCard
+              def newDeoxys = my.deck.search(min:0, max: 1, {
+                it.name == "Deoxys ex"
+              })
+
+              if (newDeoxys) {
+                newDeoxys.moveTo(self.cards)
+                my.deck.add(oldDeoxys)
+                self.cards.remove(oldDeoxys)
                 checkFaint()
               }
+
+              shuffleDeck()
             }
           }
           move "Fastwave", {
@@ -2096,7 +2107,8 @@ public enum Emerald implements LogicCardInfo {
       case DUSCLOPS_EX_94:
         return evolution (this, from:"Duskull", hp:HP100, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
-          resistance COLORLESS
+          resistance FIGHTING, MINUS30
+          resistance COLORLESS, MINUS30
           pokeBody "Dark Hole", {
             text "As long as Dusclops ex is on your Bench, don’t apply [D] Weakness for all of your Pokémon in play."
             getterA (GET_WEAKNESSES) { h->
@@ -2121,9 +2133,9 @@ public enum Emerald implements LogicCardInfo {
         return evolution (this, from:"Meditite", hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
           pokeBody "Wise Aura", {
-            text "As long as Medicham ex is your Active Pokémon, each Pokémon (excluding Pokémon-ex) (both yours and your opponent’s can’t use any Poké-Powers."
+            text "As long as Medicham ex is your Active Pokémon, each Pokémon (excluding Pokémon-ex) (both yours and your opponent’s) can’t use any Poké-Powers."
             getterA (IS_ABILITY_BLOCKED) { Holder h->
-              if (self.active  && !h.effect.target.pokemonEX && h.effect.ability instanceof PokePower) {
+              if (self.active  && !h.effect.target.EX && h.effect.ability instanceof PokePower) {
                 h.object=true
               }
             }
@@ -2133,9 +2145,7 @@ public enum Emerald implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              for(int i=0;i<3;i++){
-                directDamage 10, opp.all.select("Put 1 damage counter to which pokémon?")
-              }
+              3.times{ directDamage 10, opp.all.select("Put 1 damage counter to which pokémon?") }
             }
           }
           move "Sky Kick", {
@@ -2154,17 +2164,17 @@ public enum Emerald implements LogicCardInfo {
           weakness LIGHTNING
           pokeBody "Mystic Scale", {
             text "As long as Milotic ex is in play, each player can’t play any Technical Machine cards from his or her hand. Discard all Technical Machine cards in play (both yours and your opponent’s)."
+            delayedA {
+              before PLAY_TRAINER, {
+                if (ef.cardToPlay.cardTypes.is(TECHNICAL_MACHINE)){
+                  wcu "Mystic Scale prevents playing this card"
+                  prevent()
+                }
+              }
+            }
             onActivate {
               opp.all.each{it.cards.filterByType(TECHNICAL_MACHINE).discard()}
               my.all.each{it.cards.filterByType(TECHNICAL_MACHINE).discard()}
-              delayed{
-                before PLAY_TRAINER, {
-                  if (ef.cardToPlay.cardTypes.is(TECHNICAL_MACHINE)){
-                    wcu "Mystic Scale prevents playing this card"
-                    prevent()
-                  }
-                }
-              }
             }
           }
           move "Gentle Wrap", {
@@ -2183,7 +2193,7 @@ public enum Emerald implements LogicCardInfo {
             onAttack {
               damage 70
               if(my.bench){
-                moveEnergy(basic: false, self, my.bench.select("Which pokémon will receive the energy?"))
+                moveEnergy(basic: true, self, my.bench.select("Which pokémon will receive the energy?"))
               }
             }
           }
@@ -2196,13 +2206,29 @@ public enum Emerald implements LogicCardInfo {
             text "Damage done to any of your Raichu ex in play by attacks from your opponent’s Pokémon-ex is reduced by 30 (after applying Weakness and Resistance). You can’t use more than 1 Rai-shield Poké-Body each turn."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  def raiShieldsApplied = keyStore("Rai_Shield", it.to, null)
+                  def conditions = [
+                    (it.from.owner == self.owner.opposite),
+                    (it.from.EX),
+                    (it.to.owner == self.owner),
+                    (it.to.name == "Raichu ex"),
+                    (raiShieldsApplied == 0),
+                    (it.dmg.value && it.notNoEffect)
+                  ]
+                  if(!conditions.any{it == false}){
+                    bc "Rai-shield : -30"
+                    it.dmg-=hp(30)
+                    raiShieldsApplied += 1
+                    keyStore("Rai_Shield", it.to, raiShieldsApplied)
+                  }
+                }
+              }
+              before BETWEEN_TURNS, {
                 if(bg.em().retrieveObject("Rai_shield") != bg.turnCount){
                   bg.em().storeObject("Rai_shield",bg.turnCount)
-                  bg.dm().each {
-                    if(it.from.pokemonEX && it.to==self && it.dmg.value && it.notNoEffect){
-                      bc "Rai-shield : -30"
-                      it.dmg-=hp(30)
-                    }
+                  my.all.each{
+                    keyStore("Rai_Shield", it, 0)
                   }
                 }
               }
@@ -2267,7 +2293,7 @@ public enum Emerald implements LogicCardInfo {
             text "Search your discard pile for a [F] Energy card and attach it to Regirock ex. If you do, remove 1 damage counter from Regirock ex."
             energyCost C
             attackRequirement {
-              assert my.discard.filterByType(ENERGY).filterByEnergyType(F) : "There is no [F] Energy card in your discard"
+              assert my.discard.filterByType(ENERGY).filterByEnergyType(F) : "There are no [F] Energy card in your discard"
             }
             onAttack {
               attachEnergyFrom(type : F, my.discard, self)

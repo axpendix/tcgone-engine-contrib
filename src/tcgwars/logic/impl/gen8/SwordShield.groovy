@@ -3398,7 +3398,24 @@ public enum SwordShield implements LogicCardInfo {
         }
       };
       case LUM_BERRY_168:
-      return copy(Emerald.LUM_BERRY_78, this);
+        return pokemonTool (this) {
+          text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached.\nAt the end of each turn, if the Pokémon this card is attached to is affected by any Special Conditions, it recovers from all of them, and discard this card."
+          def eff
+          onPlay {reason->
+            eff = delayed (priority: BEFORE_LAST) {
+              before BETWEEN_TURNS, {
+                if(self.specialConditions) {
+                  bc "Lum Berry activates"
+                  clearSpecialCondition(self,Source.TRAINER_CARD)
+                  discard thisCard
+                }
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
+        };
       case MARNIE_169:
       return supporter (this) {
         text "Each player shuffles their hand and puts it on the bottom of their deck. If either player put any cards on the bottom of their deck in this way, you draw 5 cards, and your opponent draws 4 cards."
@@ -3510,8 +3527,8 @@ public enum SwordShield implements LogicCardInfo {
         text "At the end of each turn, if the Pokémon this card is attached to has 3 or more damage counters on it, heal 30 damage from it and discard this card."
         def eff
         onPlay {reason->
-          eff=delayed(anytime:true){
-            before BEGIN_TURN,{
+          eff = delayed (priority: BEFORE_LAST) {
+              before BETWEEN_TURNS, {
               if(self.numberOfDamageCounters >= 3) {
                 bc "Sitrus Berry activates."
                 heal 30, self
