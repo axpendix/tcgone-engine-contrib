@@ -526,7 +526,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                       ( it.to.active ),
                       ( it.to.getWeaknesses().any{typesOfBasicEn.contains(it)} )
                     ]
-                    if (conditions.each{it}) {
+                    if (!conditions.any{it == false}) {
                       bc "Rainbow Scale +40"
                       it.dmg += hp(40)
                     }
