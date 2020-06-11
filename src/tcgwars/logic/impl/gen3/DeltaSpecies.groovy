@@ -875,8 +875,8 @@ public enum DeltaSpecies implements LogicCardInfo {
               def validPokemon = thisCard.player.pbg.all.findAll {it.cards.energyCount()}
               if(ef.cardToPlay == thisCard && bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount && validPokemon ){
                 if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
-                  bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
                   def pcs = validPokemon.select("Attach to?")
+                  bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
 
                   // Return an energy back to the hand
                   pcs.cards.filterByType(ENERGY).select(count:1).moveTo(thisCard.player.pbg.hand)
@@ -928,8 +928,8 @@ public enum DeltaSpecies implements LogicCardInfo {
               def validPokemon = thisCard.player.pbg.all.findAll {it.cards.energyCount()}
               if(ef.cardToPlay == thisCard && bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount && validPokemon ){
                 if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
-                  bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
                   def pcs = validPokemon.select("Attach to?")
+                  bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
 
                   // Return an energy back to the hand
                   pcs.cards.filterByType(ENERGY).select(count:1).moveTo(thisCard.player.pbg.hand)
@@ -2336,8 +2336,8 @@ public enum DeltaSpecies implements LogicCardInfo {
             before PLAY_CARD, {
               if(ef.cardToPlay == thisCard && bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount){
                 if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
-                  bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
                   def pcs = thisCard.player.pbg.all.select("Attach to?")
+                  bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
 
                   def pkmnCard = thisCard
                   def energyCard
@@ -2383,8 +2383,8 @@ public enum DeltaSpecies implements LogicCardInfo {
             before PLAY_CARD, {
               if(ef.cardToPlay == thisCard && bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount){
                 if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
-                  bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
                   def pcs = thisCard.player.pbg.all.select("Attach to?")
+                  bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
 
                   def pkmnCard = thisCard
                   def energyCard
