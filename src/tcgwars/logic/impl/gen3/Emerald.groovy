@@ -2206,14 +2206,27 @@ public enum Emerald implements LogicCardInfo {
             text "Damage done to any of your Raichu ex in play by attacks from your opponent’s Pokémon-ex is reduced by 30 (after applying Weakness and Resistance). You can’t use more than 1 Rai-shield Poké-Body each turn."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                if(bg.em().retrieveObject("Rai_shield") != bg.turnCount){
-                  bg.em().storeObject("Rai_shield",bg.turnCount)
-                  bg.dm().each {
-                    if(it.from.pokemonEX && it.to==self && it.dmg.value && it.notNoEffect){
-                      bc "Rai-shield : -30"
-                      it.dmg-=hp(30)
-                    }
+                bg.dm().each {
+                  def raiShieldsApplied = keyStore("Rai_Shield", it.to, null)
+                  def conditions = [
+                    (it.from.owner == self.owner.opposite),
+                    (it.from.EX),
+                    (it.to.owner == self.owner),
+                    (it.to.name == "Raichu ex"),
+                    (raiShieldsApplied == 0),
+                    (it.dmg.value && it.notNoEffect)
+                  ]
+                  if(!conditions.any{it == false}){
+                    bc "Rai-shield : -30"
+                    it.dmg-=hp(30)
+                    raiShieldsApplied += 1
+                    keyStore("Rai_Shield", it.to, raiShieldsApplied)
                   }
+                }
+              }
+              before BEGIN_TURN, {
+                my.all.each{
+                  keyStore("Rai_Shield", it, 0)
                 }
               }
             }
