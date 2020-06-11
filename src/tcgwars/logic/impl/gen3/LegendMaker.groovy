@@ -2647,16 +2647,17 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Shady Move", {
           text "Once during your turn (before your attack), if Banette ex is your Active Pokémon, you may move 1 damage counter from either player's Pokémon to another Pokémon (yours or your opponent's). This power can't be used if Banette ex is affected by a Special Condition."
           actionA {
-            assert self.active : "This Pokemon is not an Active Pokemon"
-            assert all.find({it.numberOfDamageCounters>0})
+            checkNoSPC()
             checkLastTurn()
+            assert self.active : "This Pokemon is not the Active Pokemon"
+            assert all.any{it.numberOfDamageCounters}
             powerUsed()
-            def src=all.findAll {it.numberOfDamageCounters>0}.select("Source for damage counter")
+            def src=all.findAll{it.numberOfDamageCounters}.select("Source for damage counter")
             def tar=all
             all.remove(src)
             tar=tar.select("Target for damage counter")
             src.damage-=hp(10)
-            tar.damage+=hp(10)
+            directDamage(10, tar, SRC_ABILITY)
             bc "Swapped a damage counter from $src to $tar"
             checkFaint()
           }
