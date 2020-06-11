@@ -1838,17 +1838,19 @@ public enum Emerald implements LogicCardInfo {
         return supporter (this) {
           text "Search your deck for up to 3 different types of Basic Pokémon cards (excluding Baby Pokémon), show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            my.deck.select(min:0, max:3, "Select up to 3 Basic Pokémon of different types", cardTypeFilter(BASIC), thisCard.player,
-              {CardList list->
-                TypeSet typeSet=new TypeSet()
-                for(card in list){
-                  if(typeSet.containsAny(card.asPokemonCard().types)){
-                    return false
-                  }
-                  typeSet.addAll(card.asPokemonCard().types)
+            my.deck.select(min:0, max:3, "Select up to 3 Basic Pokémon of different types", (
+              cardTypeFilter(BASIC) && !(it.cardTypes.is(BABY))
+            ), thisCard.player, {
+              CardList list->
+              TypeSet typeSet=new TypeSet()
+              for(card in list){
+                if(typeSet.containsAny(card.asPokemonCard().types)){
+                  return false
                 }
-                return true
-              }).moveTo(my.hand)
+                typeSet.addAll(card.asPokemonCard().types)
+              }
+              return true
+            }).moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
