@@ -2411,6 +2411,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
               if (my.hand.hasType(SUPPORTER)) {
                 def card = my.hand.findAll(cardTypeFilter(SUPPORTER)).select("Select a Supporter to copy its effect as this attack.").first()
+                discard card
                 bg.deterministicCurrentThreadPlayerType=self.owner
                 bg.em().run(new PlayTrainer(card))
                 bg.clearDeterministicCurrentThreadPlayerType()
@@ -3714,10 +3715,17 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
           }
           globalAbility {
+            def flag
             delayed {
-              after PLAY_TRAINER, {
+              before PLAY_TRAINER, {
                 if(ef.supporter && ef.cardToPlay.cardTypes.is(TAG_TEAM) && bg.currentTurn == thisCard.player && hand.contains(ef.cardToPlay)) {
+                  flag = true
+                }
+              }
+              after PLAY_TRAINER, {
+                if(flag) {
                   bg.em().storeObject("last_tag_team_supporter_play_turn", bg.turnCount)
+                  flag = false
                 }
               }
             }
