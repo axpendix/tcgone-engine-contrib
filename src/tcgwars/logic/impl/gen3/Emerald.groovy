@@ -1415,17 +1415,7 @@ public enum Emerald implements LogicCardInfo {
           move "Call for Friend", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {
-              assert deck.notEmpty : "Your deck is empty"
-              assert my.bench.notFull : "You cannot put anymore Pokémon on your bench."
-            }
-            onAttack {
-              deck.search (max: 1, cardTypeFilter(BASIC)).each {
-                deck.remove(it)
-                benchPCS(it)
-              }
-              shuffleDeck()
-            }
+            callForFamily(basic: true, 1, delegate)
           }
           move "Strange Scale", {
             text "20 damage. If the Defending Pokémon is an Evolved Pokémon, the Defending Pokémon is now Confused."
