@@ -1887,20 +1887,20 @@ public enum Emerald implements LogicCardInfo {
           onPlay {
             def choice = 1
             if(my.discard.filterByType(BASIC_ENERGY) && my.deck){
-              choice = choose([1,2],['Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand', 'search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand.'], "Choose 1")
+              choice = choose([1,2], ['Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand', 'Search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand.'], "Choose 1")
             }
             else{
               if(!my.deck){choice = 2}
             }
             if(choice == 1){
-              my.deck.search(max:2,"Search for up to 2 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).showToOpponent("Selected cards.").moveTo(my.hand)
+              my.deck.search(max: 2,"Search for up to 2 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).showToOpponent("Selected cards.").moveTo(my.hand)
             }
             else{
-              my.discard.filterByType(BASIC_ENERGY).select(max : 2).showToOpponent("Selected cards.").moveTo(my.hand)
+              my.discard.filterByType(BASIC_ENERGY).select(max: 2).showToOpponent("Selected cards.").moveTo(my.hand)
             }
           }
           playRequirement{
-            assert my.deck || my.discard.filterByType(BASIC_ENERGY) : "There is no energy to be found"
+            assert my.deck || my.discard.filterByType(BASIC_ENERGY) : "You have no cards left in deck, and no basic Energy cards in your discard pile"
           }
         };
       case ORAN_BERRY_80:
