@@ -2133,9 +2133,9 @@ public enum Emerald implements LogicCardInfo {
         return evolution (this, from:"Meditite", hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
           pokeBody "Wise Aura", {
-            text "As long as Medicham ex is your Active Pokémon, each Pokémon (excluding Pokémon-ex) (both yours and your opponent’s can’t use any Poké-Powers."
+            text "As long as Medicham ex is your Active Pokémon, each Pokémon (excluding Pokémon-ex) (both yours and your opponent’s) can’t use any Poké-Powers."
             getterA (IS_ABILITY_BLOCKED) { Holder h->
-              if (self.active  && !h.effect.target.pokemonEX && h.effect.ability instanceof PokePower) {
+              if (self.active  && !h.effect.target.EX && h.effect.ability instanceof PokePower) {
                 h.object=true
               }
             }
@@ -2145,9 +2145,7 @@ public enum Emerald implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              for(int i=0;i<3;i++){
-                directDamage 10, opp.all.select("Put 1 damage counter to which pokémon?")
-              }
+              3.times{ directDamage 10, opp.all.select("Put 1 damage counter to which pokémon?") }
             }
           }
           move "Sky Kick", {
