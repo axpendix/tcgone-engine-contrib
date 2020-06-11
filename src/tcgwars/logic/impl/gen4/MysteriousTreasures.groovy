@@ -3154,13 +3154,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
 
             if (choice == 1){
-              chosenCard = my.deck.search(count:1, "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil.", {
-                if (it.cardTypes.is(STAGE2)){
-                  def debug_test = bg.gm().getBasicsFromStage2(it.name)
-                  bc "${debug_test}"
-                }
-                isValidFossilCard(it)
-                } )
+              def validTargets = my.deck.findAll{isValidFossilCard(it)}
+              chosenCard = my.deck.search(count:1, "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil.", { validTargets.contains(it) } )
             } else /*if (choice == 2)*/ {
               chosenCard = my.discard.findAll{isValidFossilCard(it)}.select()
             }
@@ -3171,12 +3166,6 @@ public enum MysteriousTreasures implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement {
-            my.discard.each{
-              if (it.cardTypes.is(STAGE2)){
-                def debug_test = bg.gm().getBasicsFromStage2(it.name)
-                bc "${debug_test}"
-              }
-            }
             assert ( my.deck.notEmpty || my.discard.any{isValidFossilCard(it)}) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
           }
         };
