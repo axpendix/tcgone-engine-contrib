@@ -526,9 +526,9 @@ public enum Deoxys implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.discard.filterByType(BASIC_ENERGY).any{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)} : "There are no [P] or [M] Energy card in your discard."
+              assert my.discard.filterByType(ENERGY).any{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)} : "There are no [P] or [M] Energy card in your discard."
               powerUsed()
-              attachEnergy(my.active,my.discard.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)}.select().first())
+              attachEnergy(my.active,my.discard.filterByType(ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)}.select().first())
               directDamage 10, my.active, SRC_ABILITY
             }
           }
