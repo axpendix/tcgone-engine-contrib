@@ -2411,6 +2411,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
               if (my.hand.hasType(SUPPORTER)) {
                 def card = my.hand.findAll(cardTypeFilter(SUPPORTER)).select("Select a Supporter to copy its effect as this attack.").first()
+                discard card
                 bg.deterministicCurrentThreadPlayerType=self.owner
                 bg.em().run(new PlayTrainer(card))
                 bg.clearDeterministicCurrentThreadPlayerType()
