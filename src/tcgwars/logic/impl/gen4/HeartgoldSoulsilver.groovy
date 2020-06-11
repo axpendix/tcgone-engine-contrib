@@ -2199,6 +2199,9 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               directDamage(10, self)
             }
           }
+          getEnergyTypesOverride{
+            return [[R, D, F, G, W, Y, L, M, P] as Set]
+          }
         };
       case AMPHAROS_105:
         return evolution (this, from:"Flaaffy", hp:HP140, type:LIGHTNING, retreatCost:2) {
