@@ -459,14 +459,23 @@ public enum Emerald implements LogicCardInfo {
           resistance WATER, MINUS30
           pokeBody "Green Essence", {
             text "As long as Sceptile is in play, each of your Active Pokémon that has [G] Energy attached to it can’t be affected by any Special Conditions."
+            def greenEssence={
+              if(my.active.cards.energyCount(G) && my.active.specialConditions){
+                bc "Green Essence clears existing Special Conditions in the Active ${my.active}."
+                clearSpecialCondition(my.active, SRC_ABILITY)
+              }
+            }
             delayedA {
               before APPLY_SPECIAL_CONDITION, {
                 def pcs=e.getTarget(bg)
-                if(pcs.owner==self.owner && pcs.cards.energyCount(G)) {
+                if (pcs.active && pcs.owner==self.owner && pcs.cards.energyCount(G)) {
                   bc "Green Essence prevents special conditions"
                   prevent()
                 }
               }
+            }
+            onActivate {
+              greenEssence()
             }
           }
           move "Razor Leaf", {
