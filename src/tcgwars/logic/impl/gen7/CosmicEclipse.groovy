@@ -3716,7 +3716,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           globalAbility {
             delayed {
               after PLAY_TRAINER, {
-                if(ef.supporter && ef.cardToPlay.cardTypes.is(TAG_TEAM) && bg.currentTurn == thisCard.player) {
+                if(ef.supporter && ef.cardToPlay.cardTypes.is(TAG_TEAM) && bg.currentTurn == thisCard.player && hand.contains(ef.cardToPlay)) {
                   bg.em().storeObject("last_tag_team_supporter_play_turn", bg.turnCount)
                 }
               }
