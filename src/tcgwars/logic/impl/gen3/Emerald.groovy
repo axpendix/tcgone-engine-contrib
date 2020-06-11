@@ -2107,7 +2107,8 @@ public enum Emerald implements LogicCardInfo {
       case DUSCLOPS_EX_94:
         return evolution (this, from:"Duskull", hp:HP100, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
-          resistance COLORLESS
+          resistance FIGHTING, MINUS30
+          resistance COLORLESS, MINUS30
           pokeBody "Dark Hole", {
             text "As long as Dusclops ex is on your Bench, don’t apply [D] Weakness for all of your Pokémon in play."
             getterA (GET_WEAKNESSES) { h->
