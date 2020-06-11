@@ -211,7 +211,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       case ALAKAZAM_1:
       return evolution (this, from:"Kadabra", hp:HP080, type:P, retreatCost:3) {
         weakness P
-        pokemonPower "Damage Swap", {
+        pokePower "Damage Swap", {
           text "As often as you like during your turn (before your attack), you may move 1 damage counter from 1 of your Pokémon to another as long as you don't Knock Out that Pokémon. This power can't be used if Alakazam is affected by a Special Condition."
           actionA {
             checkNoSPC()
@@ -242,7 +242,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       case BLASTOISE_2:
       return evolution (this, from:"Wartortle", hp:HP100, type:W, retreatCost:3) {
         weakness L
-        pokemonPower "Rain Dance", {
+        pokePower "Rain Dance", {
           text "As often as you like during your turn (before your attack), you may attach 1 [W] Energy Card to 1 of your [W] Pokémon (excluding Pokémon-ex). (This doesn't use up your 1 Energy card attachment for the turn.) This power can't be used if Blastoise is affected by a Special Condition."
           actionA {
             checkNoSPC()
@@ -291,7 +291,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return evolution (this, from:"Charmeleon", hp:HP120, type:R, retreatCost:3) {
         weakness W
         resistance F, MINUS30
-        pokemonPower "Energy Burn", {
+        pokePower "Energy Burn", {
           text "As often as you like during your turn (before your attack), you may turn all Basic Energy attached to Charizard into [R] Energy for the rest of the turn. This power can't be used if Charizard is affected by a Special Condition."
           actionA{
             checkNoSPC()
@@ -390,7 +390,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       case MACHAMP_8:
       return evolution (this, from:"Machoke", hp:HP100, type:F, retreatCost:3) {
         weakness P
-        pokemonPower "Strikes Back", {
+        pokePower "Strikes Back", {
           text "Whenever your opponent's attack damages Machamp (even if Machamp is Knoced Out), this power does 10 damage to the attacking Pokémon. (Don't apply Weakness and Resistance.) This power can't be used if Machamp is already Asleep, Confused, or Paralyzed when your opponent attacks."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
@@ -542,7 +542,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       case VENUSAUR_15:
       return evolution (this, from:"Ivysaur", hp:HP100, type:G, retreatCost:2) {
         weakness R
-        pokemonPower "Energy Trans", {
+        pokePower "Energy Trans", {
           text "As often as you like during your turn (before your attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one (excluding Pokémon-ex). This power can't be used if Venusaur is affected by a Special Condition."
           actionA {
             checkNoSPC()
@@ -673,7 +673,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       case ELECTRODE_21:
       return evolution (this, from:"Voltorb", hp:HP080, type:L, retreatCost:1) {
         weakness F
-        pokemonPower "Buzzap", {
+        pokePower "Buzzap", {
           text "At any time during your turn (before your attack) you may Knock Out Electrode and attach it to 1 of your other Pokémon. If you do, choose a type of Energy. Electrode is now an Energy card (instead of a Pokémon) that provides 2 energy of that type. This power can't be used if Electrode is affected by a Special Condition."
           actionA {
             checkLastTurn()
