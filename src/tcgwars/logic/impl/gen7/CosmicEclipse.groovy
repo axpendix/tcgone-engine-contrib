@@ -1359,7 +1359,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 30
               flip {
                 apply PARALYZED
-                discardDefendingEnergy C
+                discardDefendingEnergy()
               }
             }
           }
