@@ -3714,10 +3714,17 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
           }
           globalAbility {
+            def flag
             delayed {
-              after PLAY_TRAINER, {
+              before PLAY_TRAINER, {
                 if(ef.supporter && ef.cardToPlay.cardTypes.is(TAG_TEAM) && bg.currentTurn == thisCard.player && hand.contains(ef.cardToPlay)) {
+                  flag = true
+                }
+              }
+              after PLAY_TRAINER, {
+                if(flag) {
                   bg.em().storeObject("last_tag_team_supporter_play_turn", bg.turnCount)
+                  flag = false
                 }
               }
             }
