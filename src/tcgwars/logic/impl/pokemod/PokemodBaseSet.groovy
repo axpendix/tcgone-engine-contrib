@@ -680,7 +680,11 @@ public enum PokemodBaseSet implements LogicCardInfo {
             checkNoSPC()
             assert my.bench.notEmpty : "$self is your last pokemon"
             powerUsed()
-            def type = choose(Type.values(),"What type of energy?")
+            def typelist = []
+            for(Type t1:Type.values()){
+              typelist.add(t1)
+            }
+            def type = choose(typelist,"What type of energy?")
             pkmnCard = self.topPokemonCard
             pcs = my.all.findAll{it != self}.select("Choose a pokemon to attach $self to")
             energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_21).setCardTypes(ENERGY, SPECIAL_ENERGY), [[type],[type]]) {
@@ -1596,7 +1600,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         text "Discard 2 of the other cards from your hand in order to search your deck for any card and put it into your hand. Shuffle your deck afterward."
         onPlay {
           my.hand.getExcludedList(thisCard).select(count: 2, "Discard").discard()
-          my.deck.select(count:1).moveTo(my.hand)
+          my.deck.select(count:1).moveTo(hidden:true,my.hand)
           shuffleDeck()
         }
         playRequirement{
@@ -2042,7 +2046,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Search your deck for a card and put it into your hand. Shuffle your deck afterward."
         onPlay {
-          my.deck.select(count:1).moveTo(my.hand)
+          my.deck.select(count:1).moveTo(hidden:true,my.hand)
           shuffleDeck()
         }
         playRequirement{
