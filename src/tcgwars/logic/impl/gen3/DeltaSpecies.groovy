@@ -2941,7 +2941,7 @@ public enum DeltaSpecies implements LogicCardInfo {
       case MASTER_BALL_99:
         return copy(Deoxys.MASTER_BALL_88, this);
       case SUPER_SCOOP_UP_100:
-        return copy(Deoxys.SUPER_SCOOP_UP_99, this);
+        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
       case POTION_101:
         return copy(FireRedLeafGreen.POTION_101, this);
       case SWITCH_102:
