@@ -2164,17 +2164,17 @@ public enum Emerald implements LogicCardInfo {
           weakness LIGHTNING
           pokeBody "Mystic Scale", {
             text "As long as Milotic ex is in play, each player can’t play any Technical Machine cards from his or her hand. Discard all Technical Machine cards in play (both yours and your opponent’s)."
+            delayedA {
+              before PLAY_TRAINER, {
+                if (ef.cardToPlay.cardTypes.is(TECHNICAL_MACHINE)){
+                  wcu "Mystic Scale prevents playing this card"
+                  prevent()
+                }
+              }
+            }
             onActivate {
               opp.all.each{it.cards.filterByType(TECHNICAL_MACHINE).discard()}
               my.all.each{it.cards.filterByType(TECHNICAL_MACHINE).discard()}
-              delayed{
-                before PLAY_TRAINER, {
-                  if (ef.cardToPlay.cardTypes.is(TECHNICAL_MACHINE)){
-                    wcu "Mystic Scale prevents playing this card"
-                    prevent()
-                  }
-                }
-              }
             }
           }
           move "Gentle Wrap", {
