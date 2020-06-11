@@ -2669,7 +2669,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost M, C, C
           onAttack {
             damage 70
-            damage 10, self
+            directDamage 10, self
           }
         }
         move "Mudslide", {

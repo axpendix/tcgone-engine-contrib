@@ -1181,7 +1181,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            damage 10, self
+            directDamage 10, self
           }
         }
       };
