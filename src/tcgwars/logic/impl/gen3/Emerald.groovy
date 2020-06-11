@@ -1966,7 +1966,7 @@ public enum Emerald implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.from.topPokemonCard.cardTypes.is(STAGE2) && it.to==self && it.dmg.value && it.notNoEffect){
+                  if(it.to==self && it.from.evolution && it.from.topPokemonCard.cardTypes.is(STAGE2) && it.dmg.value && it.notNoEffect){
                     bc "Mist : -30"
                     it.dmg-=hp(30)
                   }
