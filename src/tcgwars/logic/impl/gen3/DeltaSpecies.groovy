@@ -2983,7 +2983,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         def eff2
         onPlay {reason->
           if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
-            self.specialConditions.clear()
+            clearSpecialCondition(self)
           }
           eff = delayed {
             before APPLY_SPECIAL_CONDITION, {
@@ -2994,12 +2994,12 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
             after ATTACH_ENERGY, {
               if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
-                self.specialConditions.clear()
+                clearSpecialCondition(self)
               }
             }
             after ENERGY_SWITCH, {
               if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
-                self.specialConditions.clear()
+                clearSpecialCondition(self)
               }
             }
           }
@@ -3020,7 +3020,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
         onMove {to->
           if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
-            self.specialConditions.clear()
+            clearSpecialCondition(self)
           }
         }
       };

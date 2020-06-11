@@ -2646,7 +2646,7 @@ public enum Deoxys implements LogicCardInfo {
           onPlay {reason->
             if(!self.EX){
               heal 10,self
-              self.specialConditions.clear()
+              clearSpecialCondition(self)
             }
           }
           onRemoveFromPlay {

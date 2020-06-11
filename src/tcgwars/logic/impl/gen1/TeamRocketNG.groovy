@@ -1734,7 +1734,7 @@ public enum TeamRocketNG implements LogicCardInfo {
         return specialEnergy (this, [[C]]) {
           text "If you play this card from your hand, the Pokémon you attach it to is no long Asleep, Confused, Paralyzed, or Poisoned.\nFull Heal Energy provides [C] energy. (Doesn’t count as a basic Energy card.)"
           onPlay {reason->
-            self.specialConditions.clear()
+            clearSpecialCondition(self)
           }
           onRemoveFromPlay {
           }
