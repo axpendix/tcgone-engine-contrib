@@ -867,6 +867,7 @@ public enum LegendMaker implements LogicCardInfo {
                 h.object=true
               }
             }
+             new CheckAbilities().run(bg)
           }
         }
         move "Moon Guidance", {
