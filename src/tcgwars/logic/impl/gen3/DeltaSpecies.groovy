@@ -2870,7 +2870,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             bc "Used Holon Ruins effect"
             lastTurn = bg().turnCount
             def deltaPokemon = my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }
-            draw deltaPokemon.size()
+            draw 1
             shuffleDeck()
             my.hand.select("Choose the card to discard").discard()
           }

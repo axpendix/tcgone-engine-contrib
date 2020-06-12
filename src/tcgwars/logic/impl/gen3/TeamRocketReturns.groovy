@@ -2354,22 +2354,17 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your discard pile for Basic Pokémon and Evolution cards. You may either show 1 Basic Pokémon or Evolution card to your opponent and put it into your hand, or show a combination of 3 Basic Pokémon or Evolution cards to your opponent and shuffle them into your deck."
           onPlay {
-            if(my.discard.filterByType(BASIC,STAGE1,STAGE2).size() < 3){
-              my.discard.filterByType(BASIC,STAGE1,STAGE2).select(count : 1,"Select 1 Basic Pokémon or Evolution").showToOpponent("Selected card.").moveTo(my.hand)
+            def choice = choose([0,1],["Select 1 card : put it in your hand","Select 3 cards : shuffle them in your deck"],"What do you want to do?")
+            if(choice){
+              my.discard.filterByType(BASIC, EVOLUTION).select(count : 3,"Select a combination of 3 Basic Pokémon or Evolution cards.").showToOpponent("Selected cards.").moveTo(my.deck)
+              shuffleDeck()
             }
             else{
-              def choice = choose([0,1],["Select 1 card : put it in your hand","Select 3 cards : shuffle them in your deck"],"What do you want to do?")
-              if(choice){
-                my.discard.filterByType(BASIC,STAGE1,STAGE2).select(count : 3,"Select a combination of 3 Basic Pokémon or Evolution cards.").showToOpponent("Selected cards.").moveTo(my.deck)
-                shuffleDeck()
-              }
-              else{
-                my.discard.filterByType(BASIC,STAGE1,STAGE2).select(count : 1,"Select 1 Basic Pokémon or Evolution").showToOpponent("Selected card.").moveTo(my.hand)
-              }
+              my.discard.filterByType(BASIC, EVOLUTION).select(count : 1,"Select 1 Basic Pokémon or Evolution").showToOpponent("Selected card.").moveTo(my.hand)
             }
           }
           playRequirement{
-            assert my.discard.filterByType(BASIC,STAGE1,STAGE2)
+            assert my.discard.filterByType(BASIC, EVOLUTION)
           }
         };
       case POW__HAND_EXTENSION_85:
@@ -2399,8 +2394,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck. Then, each player counts his or her Prize cards left and draws up to that many cards. (You draw your cards first.)"
           onPlay {
-            my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
-            opp.hand.getExcludedList(thisCard).moveTo(hidden:true, opp.deck)
+            my.hand.getExcludedList(thisCard).moveTo(my.deck)
+            opp.hand.getExcludedList(thisCard).moveTo(opp.deck)
             shuffleDeck()
             shuffleDeck(null,TargetPlayer.OPPONENT)
             draw choose(1..my.prizeCardSet.size(),"How many cards would you like to draw?")
@@ -2496,9 +2491,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
             def selected = my.deck.search(max:1,"Select a Basic Pokémon (excluding Pokémon-ex)",{it.cardTypes.is(BASIC) && it.cardTypes.isNot(EX)})
             if (selected) {
               selected.moveTo(pcs.cards)
+              discard tpc
+              new CheckAbilities().run(bg)
             }
-            discard tpc
-            new CheckAbilities().run(bg)
           }
           playRequirement{
             assert my.all.findAll {it.topPokemonCard.cardTypes.is(BASIC) && it.topPokemonCard.cardTypes.isNot(EX)} : "No basic in play"

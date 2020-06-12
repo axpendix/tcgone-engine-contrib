@@ -2386,11 +2386,10 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your discard pile for a Supporter card, show it to your opponent, and put it into your hand."
           onPlay {
-            if(my.discard.filterByType(SUPPORTER)){
-              my.discard.filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
-            }
+            my.discard.filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
           }
           playRequirement{
+            assert my.discard.filterByType(SUPPORTER) : "You have no Supporters in your discard"
           }
         };
       case POTION_101:
