@@ -611,7 +611,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
           onAttack {
             def damageAmount = 20 * self.cards.energyCount C
-            def info = "Select Pokémon to deal ${damageAmount} damage to."
+            def info = "Select Pokémon to deal $damageAmount damage to."
             def selectedPokemon = opp.all.select info
             damage damageAmount, selectedPokemon
           }
@@ -622,6 +622,13 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
+            afterDamage {
+              if (confirm "Return an Energy attached to the Active $opp.active.name to your opponent's hand?") {
+                def info = "Select the Energy to return to the opponent's hand."
+                def selectedEnergy = defending.cards.filterByType ENERGY.select info
+                if (selectedEnergy) selectedEnergy.moveTo opp.hand
+              }
+            }
           }
         }
       };
