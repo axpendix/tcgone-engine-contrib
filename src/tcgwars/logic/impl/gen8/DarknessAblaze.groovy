@@ -476,7 +476,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert opp.bench : "Your opponent has no benched Pokémon"
           }
           onAttack {
-            damage 60, opp.bench.select "Choose the Pokémon to deal 60 damage to."
+            damage 60, opp.bench.select "Select a Pokémon to deal 60 damage to."
           }
         }
         globalAbility {Card thisCard->
