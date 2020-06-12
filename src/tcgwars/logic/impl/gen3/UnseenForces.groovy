@@ -869,7 +869,7 @@ public enum UnseenForces implements LogicCardInfo {
             heal 10, self
             afterDamage {
               if (self.specialConditions) {
-                afterDamage { clearSpecialCondition(self) }
+                clearSpecialCondition(self)
               }
             }
           }
