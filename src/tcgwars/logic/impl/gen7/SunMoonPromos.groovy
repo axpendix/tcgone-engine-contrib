@@ -3067,7 +3067,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
               def cards = my.deck.search(info, filter)
               cards.each {card->
-                selected.add card
+                card.moveTo selected
                 names.add card.name
               }
             }
