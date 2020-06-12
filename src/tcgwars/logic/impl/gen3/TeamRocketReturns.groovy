@@ -796,7 +796,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 if (self.active) {
                   self.owner.opposite.pbg.bench.each{
                     bc "$it / ${!it.evolution}"
-                    if(!it.evolution) directDamage 10, it
+                    if(!it.evolution) directDamage 10, it, SRC_ABILITY
                   }
                 }
               }
