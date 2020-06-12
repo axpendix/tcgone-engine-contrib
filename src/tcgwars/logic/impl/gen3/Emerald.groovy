@@ -1953,8 +1953,39 @@ public enum Emerald implements LogicCardInfo {
       case DARKNESS_ENERGY_86:
         return copy (RubySapphire.DARKNESS_ENERGY_93, this);
       case DOUBLE_RAINBOW_ENERGY_87:
-        //TODO: Make this its own version, text was changed in this set so damage reduction is made *before* W/R, not after.
-        return copy (TeamMagmaVsTeamAqua.DOUBLE_RAINBOW_ENERGY_88, this);
+        return specialEnergy (this, [[]]) {
+          text "Double Rainbow Energy can be attached only to an Evolved Pokémon (excluding Pokémon-ex). While in play, Double Rainbow Energy provides every type of Energy but provides 2 Energy at a time. (Has no effect other than providing Energy.) Damage done to your opponent's Pokémon by the Pokémon Double Rainbow Energy is attached to is reduced by 10 (before applying Weakness and Resistance). When the Pokémon Double Rainbow Energy is attached to is no longer an Evolved Pokémon, discard Double Rainbow Energy. (Major text change in Emerald. Using earlier versions requires reference.)"
+          def eff
+          def check = {
+            if(!it.evolution || it.EX){discard thisCard}
+          }
+          onPlay {reason->
+            eff = delayed {
+              after PROCESS_ATTACK_EFFECTS, {
+                if(ef.attacker==self) bg.dm().each {
+                  if(it.from==self && it.to.owner!=self.owner && it.dmg.value) {
+                    bc "Double Rainbow Energy -10"
+                    it.dmg -= hp(10)
+                  }
+                }
+              }
+              after EVOLVE, self, {check(self)}
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
+          onMove {to->
+            check(to)
+          }
+          allowAttach {to->
+            to.evolution && !to.EX
+          }
+          getEnergyTypesOverride{
+            return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
+          }
+
+        };
       case METAL_ENERGY_88:
         return copy (RubySapphire.METAL_ENERGY_94, this);
       case MULTI_ENERGY_89:

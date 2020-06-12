@@ -2627,7 +2627,7 @@ public enum Deoxys implements LogicCardInfo {
                 discard thisCard
                 unregister()
               }
-              after EVOLVE, {check(self)} //some pokemon evolve into different type
+              after EVOLVE, self, {check(self)} //some pokemon evolve into different type
             }
           }
           onRemoveFromPlay {
@@ -2661,7 +2661,7 @@ public enum Deoxys implements LogicCardInfo {
           }
           onPlay {reason->
             eff = delayed {
-              after EVOLVE, {check(self)}
+              after EVOLVE, self, {check(self)}
             }
           }
           onRemoveFromPlay {
