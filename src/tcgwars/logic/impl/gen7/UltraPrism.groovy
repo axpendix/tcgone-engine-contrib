@@ -2324,7 +2324,7 @@ public enum UltraPrism implements LogicCardInfo {
                 if(!tar) break;
 
                 src.damage-=hp(10)
-                tar.damage+=hp(10)
+                directDamage 10, tar
               }
             }
           }
