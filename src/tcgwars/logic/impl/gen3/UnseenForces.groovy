@@ -1239,8 +1239,9 @@ public enum UnseenForces implements LogicCardInfo {
             checkLastTurn()
             assert bg.em().retrieveObject("Snappy_Move") != bg.turnCount : "You can't use more than 1 Snappy Move Poké-Power each turn."
             assert self.benched : "This Pokemon is not on your Bench"
-            powerUsed()
+            assert my.deck : "You do not have any cards left in your deck"
             bg.em().storeObject("Snappy_Move", bg.turnCount)
+            powerUsed()
 
             draw 1
             self.cards.getExcludedList(self.topPokemonCard).discard()
@@ -1265,9 +1266,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            afterDamage {
-              apply ASLEEP
-            }
+            applyAfterDamage ASLEEP
           }
         }
         move "Razor Leaf", {
