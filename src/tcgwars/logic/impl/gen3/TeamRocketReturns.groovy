@@ -796,7 +796,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 if (self.active) {
                   self.owner.opposite.pbg.bench.each{
                     bc "$it / ${!it.evolution}"
-                    if(!it.evolution) directDamage 10, it
+                    if(!it.evolution) directDamage 10, it, SRC_ABILITY
                   }
                 }
               }
@@ -2410,7 +2410,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           def eff
           onPlay {
             eff = getter GET_FULL_HP, {h->
-              if(h.effect.target.topPokemonCard.name.contains("Dark ") || h.effect.target.topPokemonCard.name.contains("Rocket")) {
+              if(h.effect.target.topPokemonCard.name.contains("Dark ") || h.effect.target.topPokemonCard.name.contains("Rocket's ")) {
                 h.object += hp(20)
               }
             }
@@ -2426,7 +2426,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             def tar = my.hand.getExcludedList(thisCard).select("Select a card to discard (If you discard a Pokémon that has Dark or Rocket’s in its name you will draw 1 more card.)")
             tar.discard()
             bc "${tar.first().name} / ${tar.first().name.contains('Rocket')}"
-            if(tar.first().cardTypes.is(POKEMON) &&  (tar.first().name.contains("Dark") || tar.first().name.contains("Rocket")))
+            if(tar.first().cardTypes.is(POKEMON) &&  (tar.first().name.contains("Dark ") || tar.first().name.contains("Rocket's ")))
             {
               draw 4
             }
@@ -2451,12 +2451,29 @@ public enum TeamRocketReturns implements LogicCardInfo {
         };
       case ROCKET_S_TRICKY_GYM_90:
         return stadium (this) {
-          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play.\nEach Pokémon with Dark or Rocket’s in its name (both yours and your opponent’s) can use attacks on this card instead of its own.\n[C] Feint Attack: Does 20 damage to 1 of your opponent’s Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
-          onPlay {
-            //TODO : get TM example
+          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play." +
+          "Each Pokémon with Dark or Rocket’s in its name (both yours and your opponent’s) can use attacks on this card instead of its own." +
+          "[C] Feint Attack: Does 20 damage to 1 of your opponent’s Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
+        def eff
+        onPlay {
+          def moveBody = {
+            text "Does 20 damage to 1 of your opponent’s Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
+            energyCost C
+            onAttack {
+              swiftDamage(20, opp.all.select())
+            }
           }
-          onRemoveFromPlay{
+          Move move=new Move("Feint Attack")
+          moveBody.delegate=new MoveBuilder(thisMove:move)
+          moveBody.call()
+          eff = getter GET_MOVE_LIST, {h->
+            def pcs = h.effect.target
+            if (pcs.topPokemonCard.name.contains("Dark ") || pcs.topPokemonCard.name.contains("Rocket's ")) { h.object.add(move) }
           }
+        }
+        onRemoveFromPlay{
+          eff.unregister()
+        }
         };
       case SURPRISE__TIME_MACHINE_91:
         return basicTrainer (this) {
@@ -2514,11 +2531,14 @@ public enum TeamRocketReturns implements LogicCardInfo {
           }
         };
       case DARK_METAL_ENERGY_94:
-        return specialEnergy (this, [[D,M]]) {
+        return specialEnergy (this, [[]]) {
           text "Attach Dark Metal Energy to 1 of your Pokémon. While in play, Dark Metal Energy provides [D] Energy and [M] Energy, but provides only 1 Energy at a time. (Doesn’t count as a basic Energy card when not in play and has no effect other than providing Energy.)"
           onPlay {reason->
           }
           onRemoveFromPlay {
+          }
+          getEnergyTypesOverride {
+            return [[D,M] as Set]
           }
         };
       case R_ENERGY_95:
@@ -2526,7 +2546,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           text "R Energy can be attached only to a Pokémon that have Dark or Rocket’s in its name. While in play, R Energy provides 2 [D] Energy. (Doesn’t count as a basic Energy card.) If the Pokémon R Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). When your turn ends, discard R Energy."
           def eff
           def check = {
-            if(!(it.name.contains("Dark") || it.name.contains("Rocket"))){discard thisCard}
+            if(!(it.name.contains("Dark ") || it.name.contains("Rocket's "))){discard thisCard}
           }
           onPlay {reason->
             eff = delayed {
@@ -2551,7 +2571,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             check(to)
           }
           allowAttach {to->
-            to.name.contains("Dark") || to.name.contains("Rocket")
+            to.name.contains("Dark ") || to.name.contains("Rocket's ")
           }
           getEnergyTypesOverride {
             self ? [[D] as Set, [D] as Set] : [[C] as Set]
