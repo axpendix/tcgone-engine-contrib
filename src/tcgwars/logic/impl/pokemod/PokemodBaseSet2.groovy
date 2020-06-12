@@ -558,7 +558,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
       case ARCANINE_33:
       return copy (PokemodBaseSet.ARCANINE_23, this);
       case BUTTERFREE_34:
-      return evolution (this, from:"Metapod", hp:HP090, type:G, retreatCost:0) {
+      return evolution (this, from:"Metapod", hp:HP080, type:G, retreatCost:0) {
         weakness R
         resistance F, MINUS30
         move "Whirlwind", {
