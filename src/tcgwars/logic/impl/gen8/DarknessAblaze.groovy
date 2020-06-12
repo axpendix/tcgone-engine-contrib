@@ -361,6 +361,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            def toDraw = 5 - hand.size()
+            if (toDraw > 0) draw toDraw
           }
         }
         move "Giga Drain", {
@@ -369,6 +371,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            removeDamageCounterEqualToDamageDone
           }
         }
       };
