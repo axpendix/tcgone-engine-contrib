@@ -2451,12 +2451,29 @@ public enum TeamRocketReturns implements LogicCardInfo {
         };
       case ROCKET_S_TRICKY_GYM_90:
         return stadium (this) {
-          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play.\nEach Pokémon with Dark or Rocket’s in its name (both yours and your opponent’s) can use attacks on this card instead of its own.\n[C] Feint Attack: Does 20 damage to 1 of your opponent’s Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
-          onPlay {
-            //TODO : get TM example
+          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play." +
+          "Each Pokémon with Dark or Rocket’s in its name (both yours and your opponent’s) can use attacks on this card instead of its own." +
+          "[C] Feint Attack: Does 20 damage to 1 of your opponent’s Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
+        def eff
+        onPlay {
+          def moveBody = {
+            text "Does 20 damage to 1 of your opponent’s Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
+            energyCost C
+            onAttack {
+              swiftDamage(20, opp.all.select())
+            }
           }
-          onRemoveFromPlay{
+          Move move=new Move("Feint Attack")
+          moveBody.delegate=new MoveBuilder(thisMove:move)
+          moveBody.call()
+          eff = getter GET_MOVE_LIST, {h->
+            def pcs = h.effect.target
+            if (pcs.topPokemonCard.name.contains("Dark ") || pcs.topPokemonCard.name.contains("Rocket's ")) { h.object.add(move) }
           }
+        }
+        onRemoveFromPlay{
+          eff.unregister()
+        }
         };
       case SURPRISE__TIME_MACHINE_91:
         return basicTrainer (this) {
