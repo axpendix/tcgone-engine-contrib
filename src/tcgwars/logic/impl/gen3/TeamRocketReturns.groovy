@@ -2542,7 +2542,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           }
         };
       case R_ENERGY_95:
-        return specialEnergy (this, [[C]]) {
+        return specialEnergy (this, [[]]) {
           text "R Energy can be attached only to a Pokémon that have Dark or Rocket’s in its name. While in play, R Energy provides 2 [D] Energy. (Doesn’t count as a basic Energy card.) If the Pokémon R Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). When your turn ends, discard R Energy."
           def eff
           def check = {
@@ -2550,9 +2550,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
           }
           onPlay {reason->
             eff = delayed {
-              before APPLY_ATTACK_DAMAGES, {
+              after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {
-                  if(it.from == self && it.notNoEffect && it.dmg.value){
+                  if(it.from == self && it.to.active && it.notNoEffect && it.dmg.value){
                     bc "R Energy prevents damage"
                     it.dmg += hp(10)
                   }
@@ -2561,7 +2561,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 discard thisCard
               }
-              after EVOLVE, {check(self)} //some pokemon evolve into different type
+              after EVOLVE, self, {check(self)} //some pokemon evolve into different type
             }
           }
           onRemoveFromPlay {
@@ -2574,7 +2574,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             to.name.contains("Dark ") || to.name.contains("Rocket's ")
           }
           getEnergyTypesOverride {
-            self ? [[D] as Set, [D] as Set] : [[C] as Set]
+            return [[D] as Set, [D] as Set]
           }
         };
       case ROCKET_S_ARTICUNO_EX_96:

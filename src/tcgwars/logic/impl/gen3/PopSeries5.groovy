@@ -167,17 +167,7 @@ public enum PopSeries5 implements LogicCardInfo {
         }
       };
       case DOUBLE_RAINBOW_ENERGY_4:
-      return specialEnergy (this, [[C]]) {
-        text "Double Rainbow Energy can be attached only to an Evolved Pokémon (excluding Pokémon-ex). While in play, Double Rainbow Energy provides every type of Energy but provides 2 Energy at a time. (Has no effect other than providing Energy.) Damage done to your opponent's Pokémon by the Pokémon Double Rainbow Energy is attached to is reduced by 10 (before applying Weakness and Resistance). When the Pokémon Double Rainbow Energy is attached to is no longer an Evolved Pokémon, discard Double Rainbow Energy. (Major text change in Emerald. Using earlier versions requires reference.)"
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+        return copy (Emerald.DOUBLE_RAINBOW_ENERGY_87, this);
       case CHARMELEON_DELTA_SPECIES__5:
       return evolution (this, from:"Charmander", hp:HP070, type:L, retreatCost:1) {
         weakness W
