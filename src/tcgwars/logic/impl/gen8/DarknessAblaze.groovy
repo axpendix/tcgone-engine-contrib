@@ -513,7 +513,18 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness R
         bwAbility "Forest Camouflage", {
           text "Prevent all damage done to this Pokémon by the attacks of your opponent’s Pokémon V and Pokémon-GX."
-          actionA {
+          // TODO: This could be made a static that takes a closure that gets evaluated in the if statement.
+          // Similar to part of Safeguards effect. Safeguard could possibly use it as well.
+          // Ex: abilityPreventsDamage(String info, Object delegate, Closure filter={true}, def target=self)
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, self, {
+              bg.dm().each{
+                if (it.from.owner != self.owner && (it.from.is(POKEMON_GX) || it.from.is(POKEMON_V)) && it.notNoEffect && it.dmg.value) {
+                  bc "Forest Camouflage prevents all damage from Pokémon V and Pokémon-GX"
+                  it.dmg=hp(0)
+                }
+              }
+            }
           }
         }
         move "Split Arrow", {
