@@ -582,9 +582,13 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Captivate", {
           text "Choose 1 of your opponent’s Benched Pokémon and switch it with their Active Pokémon."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench : "Your opponent has no benched Pokémon"
+          }
           onAttack {
-
+            def info = "Select Pokémon to switch with opponent's Active Pokémon."
+            def selectedPokemon = opp.bench.select info
+            sw opp.active selectedPokemon
           }
         }
         move "Slap", {
