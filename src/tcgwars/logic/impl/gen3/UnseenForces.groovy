@@ -777,9 +777,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost R
           onAttack {
             damage 20
-            afterDamage {
-              apply ASLEEP
-            }
+            applyAfterDamage ASLEEP
           }
         }
         move "Rage", {
