@@ -973,7 +973,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "As long as Hitmonchan is an Evolved Pokémon, Hitmonchan gets +30 HP."
           getterA (GET_FULL_HP) { h->
             def pcs = h.effect.target
-            if (pcs == self && self.topPokemonCard.cardTypes.is(EVOLUTION)) {
+            if (pcs == self && self.evolution) {
               h.object += hp(30)
             }
           }
@@ -981,15 +981,18 @@ public enum UnseenForces implements LogicCardInfo {
         move "Heavy Punch", {
           text "10x damage. Does 10 damage times the number of your opponent's Benched Pokémon."
           energyCost F, C
+          attackRequirement{
+            assert opp.bench : "Your opponent has no benched Pokémon"
+          }
           onAttack {
-            damage 10*opp.bench.size()
+            damage 10 * opp.bench.size()
           }
         }
         move "Speedy Uppercut", {
           text "50 damage. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
           energyCost C, C, C
           onAttack {
-            directDamage 50
+            swiftDamage 50, defending
           }
         }
       };
