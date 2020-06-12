@@ -861,15 +861,12 @@ public enum LegendMaker implements LogicCardInfo {
         weakness P
         pokeBody "Sol Shade", {
           text "As long as you have Solrock in play, each player's [R] Pokémon (excluding Pokémon-ex) can't use any Poké-Powers."
-          delayedA {
             getterA (IS_ABILITY_BLOCKED) { Holder h->
-              if (my.all.find{it.name == 'Solrock'} && h.effect.target.types.contains(R) && !h.effect.target.EX && h.effect.ability instanceof PokePower) {
+              if (my.all.find{it.name == 'Solrock'} && h.effect.target.types.contains(R) && !h.effect.target.topPokemonCard.cardTypes.is(EX) && h.effect.ability instanceof PokePower) {
                 h.object=true
               }
             }
-            new CheckAbilities().run(bg)
           }
-        }
         move "Moon Guidance", {
           text "Search your deck for a Trainer card (excluding Supporter cards), show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           energyCost C
