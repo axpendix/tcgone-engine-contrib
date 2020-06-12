@@ -1210,18 +1210,13 @@ public enum UnseenForces implements LogicCardInfo {
       case TYROGUE_33:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness P
-        //TODO Convert to Poké-Body, also edit babyEvolution() method for supporting this.
-        pokeBody "Baby Evolution", {
+        pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Hitmonlee, Hitmonchan, or Hitmontop from your hand onto Tyrogue (this counts as evolving Tyrogue) and remove all damage counters from Tyrogue."
           actionA {
-            assert my.hand.findAll{ it.cardTypes.is(POKEMON) && (it.name == "Hitmonlee" || it.name == "Hitmonchan" || it.name == "Hitmontop")} : "There are no Pokémon in your hand to evolve ${self}."
+            checkCanBabyEvolve(["Hitmonlee", "Hitmonchan", "Hitmontop"], self)
             checkLastTurn()
             powerUsed()
-            def tar = my.hand.findAll{it.cardTypes.is(POKEMON) && (it.name == "Hitmonlee" || it.name == "Hitmonchan" || it.name == "Hitmontop")}.select()
-            if (tar) {
-              evolve(self, tar.first(), OTHER)
-              heal self.numberOfDamageCounters*10,self
-            }
+            babyEvolution(["Hitmonlee", "Hitmonchan", "Hitmontop"], self)
           }
         }
         move "Desperate Punch", {
