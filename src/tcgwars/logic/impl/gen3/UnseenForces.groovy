@@ -564,7 +564,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "As long as Octillery is your Active Pokémon, your opponent's Pokémon can't retreat."
           delayedA {
             before RETREAT, {
-              if (ef.retreater.owner==self.owner.opposite && self.active) {
+              if (self.active && ef.retreater.owner==self.owner.opposite) {
                 wcu "Super Suction Cups prevents retreating"
                 prevent()
               }
