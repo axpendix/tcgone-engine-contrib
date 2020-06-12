@@ -854,7 +854,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
             if (differentTypes >= 3) {
               damage 20
-              apply ASLEEP
+              applyAfterDamage ASLEEP
             }
           }
         }
