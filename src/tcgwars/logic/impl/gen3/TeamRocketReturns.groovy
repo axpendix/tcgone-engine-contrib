@@ -2375,14 +2375,14 @@ public enum TeamRocketReturns implements LogicCardInfo {
               if(opp.active.cards.energyCount(C)){
                 def choice = choose([0,1],["Move 1 Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon","Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon"])
                 if(choice){
-                  sw opp.active, opp.bench.select()
+                  sw opp.active, opp.bench.select(), TRAINER_CARD
                 }
                 else{
-                  moveEnergy(opp.active,opp.bench.select("Select the pokemon getting the Energy"))
+                  moveEnergy(opp.active,opp.bench.select("Select the pokemon getting the Energy"), TRAINER_CARD)
                 }
               }
               else{
-                sw opp.active, opp.bench.select()
+                sw opp.active, opp.bench.select(), TRAINER_CARD
               }
             }
           }
@@ -2542,7 +2542,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           }
         };
       case R_ENERGY_95:
-        return specialEnergy (this, [[]]) {
+        return specialEnergy (this, [[C]]) {
           text "R Energy can be attached only to a Pokémon that have Dark or Rocket’s in its name. While in play, R Energy provides 2 [D] Energy. (Doesn’t count as a basic Energy card.) If the Pokémon R Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). When your turn ends, discard R Energy."
           def eff
           def check = {
@@ -2550,9 +2550,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
           }
           onPlay {reason->
             eff = delayed {
-              after PROCESS_ATTACK_EFFECTS, {
+              before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.from == self && it.to.active && it.notNoEffect && it.dmg.value){
+                  if(it.from == self && it.notNoEffect && it.dmg.value){
                     bc "R Energy prevents damage"
                     it.dmg += hp(10)
                   }
@@ -2561,7 +2561,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 discard thisCard
               }
-              after EVOLVE, self, {check(self)} //some pokemon evolve into different type
+              after EVOLVE, {check(self)} //some pokemon evolve into different type
             }
           }
           onRemoveFromPlay {
@@ -2574,7 +2574,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             to.name.contains("Dark ") || to.name.contains("Rocket's ")
           }
           getEnergyTypesOverride {
-            return [[D] as Set, [D] as Set]
+            self ? [[D] as Set, [D] as Set] : [[C] as Set]
           }
         };
       case ROCKET_S_ARTICUNO_EX_96:
