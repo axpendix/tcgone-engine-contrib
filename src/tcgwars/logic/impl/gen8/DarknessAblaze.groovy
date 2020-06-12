@@ -555,9 +555,16 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Synthesis", {
           text "Search your deck for a [G] Energy card and attach it to 1 of your Pokémon."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            def info = "Select a [G] Energy card."
+            def selectedEnergy = my.deck.search info, {basicEnergyFilter G}
+            if (selectedEnergy) {
+              def selectedPokemon = my.all.select "Select Pokémon to attach [G] Energy card to."
+              attachEnergy selectedPokemon, selectedEnergy.first()
+            }
           }
         }
         move "Flop", {
