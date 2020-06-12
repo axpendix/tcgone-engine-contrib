@@ -458,7 +458,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Sky Circus", {
           text "If you played Bird Keeper from your hand during this turn, ignore all Energy in the attack costs of this Pokémon."
           delayedA {
-            before CHECK_ATTACK_REQUIREMENTS, self, SRC_ABILITY, {
+            before CHECK_ATTACK_REQUIREMENTS, self, {
               if (bg.currentTurn == self.player && keyStore("Rowlet Sky Circus", self, null) == bg.turnCount) {
                 bc "Sky Circus ignores Energy cost for $ef.attacker's $ef.move"
                 def copy = ef.move.shallowCopy()
