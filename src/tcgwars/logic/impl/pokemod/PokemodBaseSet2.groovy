@@ -476,6 +476,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
               }
             }
           }
+          onActivate {
+            clearSpecialCondition(self, SRC_ABILITY)
+          }
         }
         move "Body Slam", {
           text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
