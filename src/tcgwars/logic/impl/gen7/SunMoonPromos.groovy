@@ -3057,7 +3057,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             assert my.deck : "Your deck is empty"
           }
           onAttack {
-            def selected = []
+            def selected = new CardList()
             def names = []
             3.times {n ->
               if(selected.size() < n) return
