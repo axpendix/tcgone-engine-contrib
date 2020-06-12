@@ -888,10 +888,10 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Clefairy from your hand onto Cleffa (this counts as evolving Cleffa) and remove all damage counters from Cleffa."
           actionA {
-              checkCanBabyEvolve("Clefairy", self)
-              checkLastTurn()
-              powerUsed()
-              babyEvolution("Clefairy", self)
+            checkCanBabyEvolve("Clefairy", self)
+            checkLastTurn()
+            powerUsed()
+            babyEvolution("Clefairy", self)
           }
         }
         move "Eeeeeeek", {
