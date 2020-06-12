@@ -1135,18 +1135,16 @@ public enum UnseenForces implements LogicCardInfo {
       case MURKROW_30:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness L
-        resistance R, MINUS30
+        resistance F, MINUS30
         move "Night Song", {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. The new Defending Pokémon is now Asleep."
           energyCost C
+          attackRequirement{
+            assert opp.bench : "Your opponent has no Benched Pokémon"
+          }
           onAttack {
-            def pcs = defending
-            if (opp.bench) {
-              if (confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")) {
-                pcs = opp.bench.oppSelect()
-                sw defending, pcs
-              }
-            }
+            def pcs = opp.bench.oppSelect()
+            sw defending, pcs
             apply ASLEEP, pcs
           }
         }
@@ -1154,9 +1152,8 @@ public enum UnseenForces implements LogicCardInfo {
           text "20 damage. Before doing damage, discard all Trainer cards attached to the Defending Pokémon."
           energyCost C, C
           onAttack {
-            if (defending.cards.filterByType(TRAINER)){
-              defending.cards.filterByType(TRAINER).discard()
-            }
+            def tar = defending.cards.filterByType(TRAINER)
+            if (tar){ tar.discard() }
             damage 20
           }
         }
