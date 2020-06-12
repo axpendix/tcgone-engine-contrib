@@ -3057,23 +3057,22 @@ public enum SunMoonPromos implements LogicCardInfo {
             assert my.deck : "Your deck is empty"
           }
           onAttack {
-            def selected = new CardList()
-            def names = []
-            3.times {n ->
-              if(selected.size() < n) return
-              def info = "Search your deck for a Pokémon-GX. Currently disallowed names: ${selected ? names.join(', ') : 'None'}"
-              def filter = {card ->
-                !selected.any {it.name == card.name} && card.cardTypes.is(POKEMON_GX)
-              }
-              def cards = my.deck.search(info, filter)
-              cards.each {card->
-                card.moveTo selected
+            def info = "Search your deck for up to 3 Pokémon-GX with different names."
+            def filter = {card -> card.cardTypes.is(POKEMON_GX)}
+            def passFilter = {CardList list ->
+              def names = []
+              for (card in list) {
+                if (names.contains(card.name)) {
+                  return false
+                }
                 names.add card.name
               }
+              return true
             }
-            if(selected) {
-              selected.showToOpponent "Your opponent added ${selected.join(', ')} to their hand."
-              selected.moveTo my.hand
+            def cards = my.deck.search max:3, info, filter, passFilter
+            if (cards) {
+              cards.showToOpponent "Your opponent added ${cards.join(', ')} to their hand."
+              cards.moveTo my.hand
             }
             shuffleDeck()
           }
