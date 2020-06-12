@@ -812,7 +812,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             def target = defending
-            if (opp.bench) {
+            if (opp.bench && confirm("Before doing damage, do you want to switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")) {
               target = opp.bench.select("Select the new active")
               sw defending, target
             }
