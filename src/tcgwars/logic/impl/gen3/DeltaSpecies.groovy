@@ -2887,14 +2887,14 @@ public enum DeltaSpecies implements LogicCardInfo {
           def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card to discard.")
           toDiscard.discard()
 
-          if (opp.hand.size() > my.hand.size()) {
+          if (opp.hand.size() > my.hand.size()-1) {
             def numToDraw = opp.hand.size() - my.hand.size() + 1
             draw numToDraw
           }
         }
         playRequirement{
-          def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert (hand || my.discard.filterByType(SUPPORTER)) : "One other card in hand is required to play this card."
+          assert (my.hand.getExcludedList(thisCard))
+          assert (my.hand.size()-2 < opp.hand.size())
         }
       };
       case HOLON_TRANSCEIVER_98:
