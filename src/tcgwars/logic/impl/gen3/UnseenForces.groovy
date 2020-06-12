@@ -2782,7 +2782,7 @@ public enum UnseenForces implements LogicCardInfo {
             cantRetreat(defending)
             delayed {
               getter (IS_ABILITY_BLOCKED) { Holder h->
-                if (h.effect.ability instanceof PokePower) {
+                if (h.effect.target.owner != self.owner && h.effect.target.active && h.effect.ability instanceof PokePower) {
                   h.object = true
                 }
               }
