@@ -2314,7 +2314,13 @@ public enum UltraPrism implements LogicCardInfo {
             attackRequirement {
               assert opp.bench
             }
+            def eff
             onAttack {
+              eff = delayed {
+                before KNOCKOUT, {
+                  prevent()
+                }
+              }
               while(1){
                 def pl=(opp.all.findAll {it.numberOfDamageCounters})
                 if(!pl) break;
@@ -2326,6 +2332,8 @@ public enum UltraPrism implements LogicCardInfo {
                 src.damage-=hp(10)
                 directDamage 10, tar
               }
+              eff.unregister()
+              bg().em().run(new CheckFaint())
             }
           }
 
