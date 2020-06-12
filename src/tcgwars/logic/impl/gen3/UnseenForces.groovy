@@ -418,16 +418,18 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-
-            delayed {
-              before BETWEEN_TURNS, {
-                if (bg.currentTurn == self.owner.opposite) {
-                  directDamage 30, self.owner.opposite.pbg.active
-                  bc "Spiky Shell activates"
+            targeted(defending){
+              delayed {
+                before BETWEEN_TURNS, {
+                  if (bg.currentTurn == self.owner.opposite) {
+                    bc "Spiky Shell activates"
+                    directDamage 30, defending
+                  }
                 }
+                unregisterAfter 2
+                after SWITCH, defending, {unregister()}
+                after EVOLVE, defending, {unregister()}
               }
-              after SWITCH, defending, {unregister()}
-              unregisterAfter 2
             }
           }
         }
@@ -437,11 +439,13 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 100
 
-            self.cards.filterByType(ENERGY).each {
-              energySwitch(self, my.bench.select("Move $it to?"), it)
+            if (my.bench) {
+              self.cards.filterByType(ENERGY).each {
+                energySwitch(self, my.bench.select("Move $it to?"), it)
+              }
             }
 
-            damage 70, self
+            directDamage 70, self
           }
         }
       };
