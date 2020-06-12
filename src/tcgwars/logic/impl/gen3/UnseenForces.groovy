@@ -527,17 +527,13 @@ public enum UnseenForces implements LogicCardInfo {
         pokeBody "Healing Aroma", {
           text "As long as Meganium is your Active Pokémon, remove 1 damage counter from each Pokémon (excluding Pokémon-ex) (both yours and your opponent's) between turns."
           delayedA {
-            before BETWEEN_TURNS, {
+            before BEGIN_TURN, {
               if (self.active) {
-                self.owner.pbg.all.each {
-                  if (!it.EX && it.numberOfDamageCounters) {
-                    heal 10, it
-                  }
-                }
-
-                self.owner.opposite.pbg.all.each {
-                  if (!it.EX && it.numberOfDamageCounters) {
-                    heal 10, it
+                [self.owner, self.owner.opposite].each{
+                  player -> player.pbg.all.each {
+                    if (!it.EX && it.numberOfDamageCounters) {
+                      heal 10, it
+                    }
                   }
                 }
               }
@@ -553,8 +549,10 @@ public enum UnseenForces implements LogicCardInfo {
             if (confirm("Would you like to add damage counters to increase the damage dealt to the defending Pokemon?"))
               {
                 def num = choose([1,2,3,4,5])
-                damage 10*num
-                directDamage 10*num, self
+                damage 10 * num
+                afterDamage{
+                  directDamage 10 * num, self
+                }
               }
           }
         }
