@@ -533,6 +533,13 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 90
+            if (opp.bench) {
+              def info = "Select 2 Pokémon to deal 20 damage to."
+              def selected = multiSelect opp.bench, 2, info
+              selected.each{
+                damage 20, it
+              }
+            }
           }
         }
       };
