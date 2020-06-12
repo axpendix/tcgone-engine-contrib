@@ -457,7 +457,16 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness R
         bwAbility "Sky Circus", {
           text "If you played Bird Keeper from your hand during this turn, ignore all Energy in the attack costs of this Pokémon."
-          actionA {
+          delayedA {
+            before CHECK_ATTACK_REQUIREMENTS, self, SRC_ABILITY, {
+              if (bg.currentTurn == self.player && keyStore("Rowlet Sky Circus", self, null) == bg.turnCount) {
+                bc "Sky Circus ignores Energy cost for $ef.attacker's $ef.move"
+                def copy = ef.move.shallowCopy()
+                copy.energyCost.clear()
+                attack (copy as Move)
+                prevent
+              }
+            }
           }
         }
         move "Wind Pebbles", {
@@ -468,6 +477,22 @@ public enum DarknessAblaze implements LogicCardInfo {
 
           }
         }
+        globalAbility {Card thisCard->
+            def flag
+            delayed {
+              before PLAY_TRAINER, {
+                if (ef.supporter && ef.cardToPlay.name == "Bird Keeper" && bg.currentTurn == thisCard.player && hand.contains(ef.cardToPlay)) {
+                  flag = true
+                }
+              }
+              after PLAY_TRAINER, {
+                if (flag) {
+                  keyStore "Rowlet Sky Circus", thisCard, bg.turnCount
+                  flag = false
+                }
+              }
+            }
+          }
       };
       case DARTRIX_12:
       return evolution (this, from:"Rowlet", hp:HP080, type:G, retreatCost:1) {
