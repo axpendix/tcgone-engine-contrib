@@ -2375,14 +2375,14 @@ public enum TeamRocketReturns implements LogicCardInfo {
               if(opp.active.cards.energyCount(C)){
                 def choice = choose([0,1],["Move 1 Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon","Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon"])
                 if(choice){
-                  sw opp.active, opp.bench.select()
+                  sw opp.active, opp.bench.select(), TRAINER_CARD
                 }
                 else{
-                  moveEnergy(opp.active,opp.bench.select("Select the pokemon getting the Energy"))
+                  moveEnergy(opp.active,opp.bench.select("Select the pokemon getting the Energy"), TRAINER_CARD)
                 }
               }
               else{
-                sw opp.active, opp.bench.select()
+                sw opp.active, opp.bench.select(), TRAINER_CARD
               }
             }
           }
