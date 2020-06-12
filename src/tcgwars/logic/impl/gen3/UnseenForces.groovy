@@ -2897,7 +2897,7 @@ public enum UnseenForces implements LogicCardInfo {
             powerUsed()
             def card = my.deck.search("Select a Pokemon with Dark or Rocket's in its name to put into your hand", {
               it.cardTypes.is(POKEMON) &&
-              (it.name.contains("Rocket") || it.name.contains("Dark"))
+              (it.name.contains("Rocket's ") || it.name.contains("Dark "))
             })
             card.moveTo(my.hand)
             shuffleDeck()

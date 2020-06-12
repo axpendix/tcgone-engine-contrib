@@ -2410,7 +2410,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           def eff
           onPlay {
             eff = getter GET_FULL_HP, {h->
-              if(h.effect.target.topPokemonCard.name.contains("Dark ") || h.effect.target.topPokemonCard.name.contains("Rocket")) {
+              if(h.effect.target.topPokemonCard.name.contains("Dark ") || h.effect.target.topPokemonCard.name.contains("Rocket's ")) {
                 h.object += hp(20)
               }
             }
@@ -2426,7 +2426,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             def tar = my.hand.getExcludedList(thisCard).select("Select a card to discard (If you discard a Pokémon that has Dark or Rocket’s in its name you will draw 1 more card.)")
             tar.discard()
             bc "${tar.first().name} / ${tar.first().name.contains('Rocket')}"
-            if(tar.first().cardTypes.is(POKEMON) &&  (tar.first().name.contains("Dark") || tar.first().name.contains("Rocket")))
+            if(tar.first().cardTypes.is(POKEMON) &&  (tar.first().name.contains("Dark ") || tar.first().name.contains("Rocket's ")))
             {
               draw 4
             }
@@ -2543,7 +2543,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           text "R Energy can be attached only to a Pokémon that have Dark or Rocket’s in its name. While in play, R Energy provides 2 [D] Energy. (Doesn’t count as a basic Energy card.) If the Pokémon R Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). When your turn ends, discard R Energy."
           def eff
           def check = {
-            if(!(it.name.contains("Dark") || it.name.contains("Rocket"))){discard thisCard}
+            if(!(it.name.contains("Dark ") || it.name.contains("Rocket's "))){discard thisCard}
           }
           onPlay {reason->
             eff = delayed {
@@ -2568,7 +2568,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             check(to)
           }
           allowAttach {to->
-            to.name.contains("Dark") || to.name.contains("Rocket")
+            to.name.contains("Dark ") || to.name.contains("Rocket's ")
           }
           getEnergyTypesOverride {
             self ? [[D] as Set, [D] as Set] : [[C] as Set]
