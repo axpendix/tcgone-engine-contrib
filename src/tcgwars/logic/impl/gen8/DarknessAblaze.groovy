@@ -606,9 +606,14 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Power Whip", {
           text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon for each Energy attached to this Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert self.cards.energyCount C : "$self.name has no Energy attached"
+          }
           onAttack {
-
+            def damageAmount = 20 * self.cards.energyCount C
+            def info = "Select Pokémon to deal ${damageAmount} damage to."
+            def selectedPokemon = opp.all.select info
+            damage damageAmount, selectedPokemon
           }
         }
         move "Setback Kick", {
