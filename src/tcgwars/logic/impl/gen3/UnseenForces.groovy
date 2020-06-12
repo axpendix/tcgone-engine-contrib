@@ -911,10 +911,12 @@ public enum UnseenForces implements LogicCardInfo {
           text "As long as Electabuzz is an Evolved Pokémon, damage done by attacks from your opponent's Pokémon that has any Special Energy cards attached to it is reduced by 40 (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each{
-                if(it.to == self && self.evolution && it.notNoEffect && it.dmg.value && it.from.cards.filterByType(SPECIAL_ENERGY)) {
-                  bc "Stages of Evolution -20"
-                  it.dmg -= hp(40)
+              if (self.evolution) {
+                bg.dm().each{
+                  if(it.to == self && it.from.cards.filterByType(SPECIAL_ENERGY) && it.dmg.value && it.notNoEffect) {
+                    bc "Stages of Evolution -20"
+                    it.dmg -= hp(40)
+                  }
                 }
               }
             }
@@ -924,10 +926,12 @@ public enum UnseenForces implements LogicCardInfo {
           text "10x damage. Flip 2 coins. This attack does 10 damage times the number of heads. If either of the coins is heads, the Defending Pokémon is now Paralyzed."
           energyCost L, C
           onAttack {
-            flip 2,{
+            def heads = 0
+            flip 2, {
               damage 10
-              applyAfterDamage PARALYZED
+              heads += 1
             }
+            if (heads) applyAfterDamage PARALYZED
           }
         }
         move "Luster Blast", {
