@@ -302,7 +302,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
       return evolution (this, from:"Pidgeotto", hp:HP080, type:C, retreatCost:0) {
         weakness L
         resistance F, MINUS30
-        pokemonPower "Quick Search", {
+        pokePower "Quick Search", {
           text "Once during your turn (before your attack), you may choose 1 card from your deck and put it into your hand. Shuffle your deck afterward. You can't use more than 1 Quick Search Pokémon Power each turn. This Power can't be used if Pidgeot is affected by a Special Condition."
           actionA {
             checkNoSPC()
@@ -413,7 +413,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
       case MR_MIME_27:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness P
-        pokemonPower "Invisible Wall", {
+        pokeBody "Invisible Wall", {
           text "Whenever an attack (including your own) does 30 or more damage to Mr. Mime (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.) This power can't be used if Mr. Mime is Asleep, Confused, or Paralyzed."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
@@ -466,8 +466,8 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
       return basic (this, hp:HP090, type:C, retreatCost:4) {
         weakness F
         resistance P, MINUS30
-        pokemonPower "Thick Skinned", {
-          text "Snorlax can't become Asleep, Confused, Paralyzed, or Poisoned. This power can't be used if Snorlax is already Asleep, Confused, or Paralyzed."
+        pokeBody "Thick Skinned", {
+          text "Snorlax can't be affected by Special Conditions."
           delayedA {
             before APPLY_SPECIAL_CONDITION,self, {
               if(!(self.specialConditions)){
@@ -475,6 +475,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
                 prevent()
               }
             }
+          }
+          onActivate {
+            clearSpecialCondition(self, SRC_ABILITY)
           }
         }
         move "Body Slam", {
@@ -493,7 +496,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
       return evolution (this, from:"Venonat", hp:HP070, type:G, retreatCost:0) {
         weakness R
         resistance F, MINUS30
-        pokemonPower "Shift", {
+        pokePower "Shift", {
           text "Once during your turn (before your attack), you may change the type of Venomoth to the type of any other Pokémon in play other than [C]. This power can't be used if Venomoth is affected by a Special Condition."
           actionA {
             checkNoSPC()
@@ -513,6 +516,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
               h.object.clear()
               h.object.add(newType)
             }
+            bc"$self's type is now $newType"
           }
         }
         move "Venom Powder", {
@@ -554,7 +558,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
       case ARCANINE_33:
       return copy (PokemodBaseSet.ARCANINE_23, this);
       case BUTTERFREE_34:
-      return evolution (this, from:"Metapod", hp:HP090, type:G, retreatCost:0) {
+      return evolution (this, from:"Metapod", hp:HP080, type:G, retreatCost:0) {
         weakness R
         resistance F, MINUS30
         move "Whirlwind", {
@@ -586,7 +590,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
       return evolution (this, from:"Doduo", hp:HP070, type:C, retreatCost:0) {
         weakness L
         resistance F, MINUS30
-        pokemonPower "Retreat Aid", {
+        pokeBody "Retreat Aid", {
           text "As long as Dodrio is Benched, pay 1 [C] less to retreat your Active Pokémon."
           getterA (GET_RETREAT_COST) {h->
             if (h.effect.target.owner == self.owner && h.effect.target.active && self.benched) {
@@ -981,7 +985,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           onAttack {
             damage 20
             delayed {
-              after APPLY_ATTACK_DAMAGES, {
+              before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
                   if(it.to == opp.active && it.notNoEffect && it.dmg.value > 0) {
                     heal 10, self

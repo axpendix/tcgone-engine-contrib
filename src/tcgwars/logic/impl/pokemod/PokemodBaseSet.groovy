@@ -211,7 +211,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       case ALAKAZAM_1:
       return evolution (this, from:"Kadabra", hp:HP080, type:P, retreatCost:3) {
         weakness P
-        pokemonPower "Damage Swap", {
+        pokePower "Damage Swap", {
           text "As often as you like during your turn (before your attack), you may move 1 damage counter from 1 of your Pokémon to another as long as you don't Knock Out that Pokémon. This power can't be used if Alakazam is affected by a Special Condition."
           actionA {
             checkNoSPC()
@@ -242,7 +242,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       case BLASTOISE_2:
       return evolution (this, from:"Wartortle", hp:HP100, type:W, retreatCost:3) {
         weakness L
-        pokemonPower "Rain Dance", {
+        pokePower "Rain Dance", {
           text "As often as you like during your turn (before your attack), you may attach 1 [W] Energy Card to 1 of your [W] Pokémon (excluding Pokémon-ex). (This doesn't use up your 1 Energy card attachment for the turn.) This power can't be used if Blastoise is affected by a Special Condition."
           actionA {
             checkNoSPC()
@@ -291,7 +291,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return evolution (this, from:"Charmeleon", hp:HP120, type:R, retreatCost:3) {
         weakness W
         resistance F, MINUS30
-        pokemonPower "Energy Burn", {
+        pokePower "Energy Burn", {
           text "As often as you like during your turn (before your attack), you may turn all Basic Energy attached to Charizard into [R] Energy for the rest of the turn. This power can't be used if Charizard is affected by a Special Condition."
           actionA{
             checkNoSPC()
@@ -390,7 +390,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       case MACHAMP_8:
       return evolution (this, from:"Machoke", hp:HP100, type:F, retreatCost:3) {
         weakness P
-        pokemonPower "Strikes Back", {
+        pokePower "Strikes Back", {
           text "Whenever your opponent's attack damages Machamp (even if Machamp is Knoced Out), this power does 10 damage to the attacking Pokémon. (Don't apply Weakness and Resistance.) This power can't be used if Machamp is already Asleep, Confused, or Paralyzed when your opponent attacks."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
@@ -542,7 +542,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       case VENUSAUR_15:
       return evolution (this, from:"Ivysaur", hp:HP100, type:G, retreatCost:2) {
         weakness R
-        pokemonPower "Energy Trans", {
+        pokePower "Energy Trans", {
           text "As often as you like during your turn (before your attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one (excluding Pokémon-ex). This power can't be used if Venusaur is affected by a Special Condition."
           actionA {
             checkNoSPC()
@@ -673,19 +673,15 @@ public enum PokemodBaseSet implements LogicCardInfo {
       case ELECTRODE_21:
       return evolution (this, from:"Voltorb", hp:HP080, type:L, retreatCost:1) {
         weakness F
-        pokemonPower "Buzzap", {
+        pokePower "Buzzap", {
           text "At any time during your turn (before your attack) you may Knock Out Electrode and attach it to 1 of your other Pokémon. If you do, choose a type of Energy. Electrode is now an Energy card (instead of a Pokémon) that provides 2 energy of that type. This power can't be used if Electrode is affected by a Special Condition."
           actionA {
             checkLastTurn()
             checkNoSPC()
             assert my.bench.notEmpty : "$self is your last pokemon"
             powerUsed()
-            def typelist = []
-            for(Type t1:Type.values()){
-              typelist.add(t1)
-            }
-            def type = choose(typelist,"What type of energy?")
-            pkmnCard = self.topPokemonCard
+            def type = choose([R, W, G, L, F, P, M, D, Y],["Fire","Water","Grass","Lightning","Fighting","Psychic","Metal","Darkness","Fairy"],"What type of energy?")
+            def pkmnCard = self.topPokemonCard
             pcs = my.all.findAll{it != self}.select("Choose a pokemon to attach $self to")
             energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_21).setCardTypes(ENERGY, SPECIAL_ENERGY), [[type],[type]]) {
               onPlay {}
@@ -1755,7 +1751,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       };
       case FULL_HEAL_82:
       return basicTrainer (this) {
-        text "Your Active Pokémon is no longer Asleep, Confused, Paralyzed, or Poisoned."
+        text "Remove all Special Conditions from your Active Pokemon"
         onPlay {
           clearSpecialCondition(my.active, TRAINER_CARD)
         }
@@ -2009,12 +2005,14 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Discard 1 Energy card attached to 1 of your Pokémon in order to choose 1 of your opponent's Pokémon and up to 2 Energy cards attached to it. Discard those Energy cards."
         onPlay {
+          bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
           def src = my.all.findAll{it.cards.filterByType(ENERGY)}.select("Discard an energy from")
           src.cards.filterByType(ENERGY).select("Discard which energy").discard()
           def tar = opp.all.findAll{it.cards.filterByType(ENERGY)}.select("Discard up to 2 energy from")
           tar.cards.filterByType(ENERGY).select(min:0,max:2,"Discard which energies?").discard()
         }
         playRequirement{
+          assert !bg.em().retrieveObject("G_SPEC_"+thisCard.player) : "You have already used your G-SPEC card"
           assert my.all.findAll{it.cards.filterByType(ENERGY)} : "You have no energy attached to your pokemon"
           assert opp.all.findAll{it.cards.filterByType(ENERGY)} : "Your opponent has no energy attached to their pokemon"
         }
@@ -2023,16 +2021,19 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Search your discard pile for a Trainer card, show it to your opponent, and put it into your hand."
         onPlay {
+          bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
           my.discard.filterByType(TRAINER).select().moveTo(my.hand)
         }
         playRequirement{
           assert my.discard.filterByType(TRAINER) : "You have no trainers in your discard pile."
+          assert !bg.em().retrieveObject("G_SPEC_"+thisCard.player) : "You have already used your G-SPEC card"
         }
       };
       case Elixir_109:
       return basicTrainer (this) {
         text "Remove up to 6 damage counters from 1 of your Pokémon."
         onPlay {
+          bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
           def pcs = my.all.findAll{it.numberOfDamageCounters}.select()
           targeted (pcs, TRAINER_CARD) {
             heal 60, pcs
@@ -2040,17 +2041,20 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
         playRequirement{
           assert my.all.findAll{it.numberOfDamageCounters}
+          assert !bg.em().retrieveObject("G_SPEC_"+thisCard.player) : "You have already used your G-SPEC card"
         }
       };
       case Hacker_110:
       return basicTrainer (this) {
         text "Search your deck for a card and put it into your hand. Shuffle your deck afterward."
         onPlay {
+          bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
           my.deck.select(count:1).moveTo(hidden:true,my.hand)
           shuffleDeck()
         }
         playRequirement{
           assert my.deck
+          assert !bg.em().retrieveObject("G_SPEC_"+thisCard.player) : "You have already used your G-SPEC card"
         }
       };
       case MEWTWO_114:
