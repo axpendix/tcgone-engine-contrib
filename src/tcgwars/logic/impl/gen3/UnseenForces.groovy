@@ -949,10 +949,10 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Electabuzz from your hand onto Elekid (this counts as evolving Elekid) and remove all damage counters from Elekid."
           actionA {
-              checkCanBabyEvolve("Electabuzz", self)
-              checkLastTurn()
-              powerUsed()
-              babyEvolution("Electabuzz", self)
+            checkCanBabyEvolve("Electabuzz", self)
+            checkLastTurn()
+            powerUsed()
+            babyEvolution("Electabuzz", self)
           }
         }
         move "Magnetic Trip", {
@@ -961,7 +961,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 10
             if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Low Pressure System") {
-              apply CONFUSED
+              applyAfterDamage CONFUSED
             }
           }
         }
