@@ -653,7 +653,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 30
+            def gxAndV = opp.all.findAll {it.pokemonGX || it.pokemonV}
+            damage 30 + 50 * gxAndV.size()
           }
         }
         move "Smash Turn", {
@@ -662,6 +663,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            switchYourActive
           }
         }
       };
