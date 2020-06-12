@@ -655,7 +655,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             delayedA {
               before BEGIN_TURN, {
                 if(self.active){
-                  directDamage 10, self.owner.opposite.pbg.active
+                  directDamage 10, self.owner.opposite.pbg.active, SRC_ABILITY
                 }
               }
             }
