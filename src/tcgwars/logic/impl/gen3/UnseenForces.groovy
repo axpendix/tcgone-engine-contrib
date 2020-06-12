@@ -1164,17 +1164,17 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Jynx from your hand onto Smoochum (this counts as evolving Smoochum) and remove all damage counters from Smoochum."
           actionA {
-              checkCanBabyEvolve("Jynx", self)
-              checkLastTurn()
-              powerUsed()
-              babyEvolution("Jynx", self)
+            checkCanBabyEvolve("Jynx", self)
+            checkLastTurn()
+            powerUsed()
+            babyEvolution("Jynx", self)
           }
         }
         move "Blown Kiss", {
           text "Put 1 damage counter on 1 of your opponent's Pokémon."
           energyCost C
           onAttack {
-            if (opp.all) directDamage(10, opp.all.select("Select a Pokemon to put a damage counter on"))
+            directDamage 10, opp.all.select("Select a Pokemon to put a damage counter on")
           }
         }
       };
