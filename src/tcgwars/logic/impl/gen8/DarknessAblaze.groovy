@@ -424,7 +424,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 20
+            flipUntilTails {damage 20}
           }
         }
       };
