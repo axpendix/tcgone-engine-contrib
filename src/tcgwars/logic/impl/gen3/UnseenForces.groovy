@@ -982,7 +982,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "10x damage. Does 10 damage times the number of your opponent's Benched Pokémon."
           energyCost F, C
           attackRequirement{
-            assert opp.bench : "Your opponent has no benched Pokémon"
+            assert opp.bench : "Your opponent has no Benched Pokémon"
           }
           onAttack {
             damage 10 * opp.bench.size()
@@ -1005,7 +1005,7 @@ public enum UnseenForces implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if(ef.attacker == self && self.evolution) {
                 bg.dm().each {
-                  if (it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
+                  if (it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
                     bc "Stages of Evolution +20"
                     it.dmg += hp(20)
                   }
@@ -1017,8 +1017,11 @@ public enum UnseenForces implements LogicCardInfo {
         move "Stretch Kick", {
           text "Choose 1 of your opponent's Benched Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F
+          attackRequirement{
+            assert opp.bench : "Your opponent has no Benched Pokémon"
+          }
           onAttack {
-            damage 30, opp.bench.select("Deal 10 damage to which Pokémon?")
+            damage 10, opp.bench.select("Deal 10 damage to which Pokémon?")
           }
         }
         move "Mega Kick", {
