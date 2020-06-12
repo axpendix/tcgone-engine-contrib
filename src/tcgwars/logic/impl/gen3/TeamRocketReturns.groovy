@@ -2531,11 +2531,14 @@ public enum TeamRocketReturns implements LogicCardInfo {
           }
         };
       case DARK_METAL_ENERGY_94:
-        return specialEnergy (this, [[D,M]]) {
+        return specialEnergy (this, [[]]) {
           text "Attach Dark Metal Energy to 1 of your Pokémon. While in play, Dark Metal Energy provides [D] Energy and [M] Energy, but provides only 1 Energy at a time. (Doesn’t count as a basic Energy card when not in play and has no effect other than providing Energy.)"
           onPlay {reason->
           }
           onRemoveFromPlay {
+          }
+          getEnergyTypesOverride {
+            return [[D,M] as Set]
           }
         };
       case R_ENERGY_95:
