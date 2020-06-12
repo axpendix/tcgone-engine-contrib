@@ -596,7 +596,7 @@ public enum UnseenForces implements LogicCardInfo {
             before (KNOCKOUT,self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active != null && self.owner.opposite.pbg.active.inPlay) {
                 bc "Spiral Swirl activates"
-                apply CONFUSED, self.owner.opposite.pbg.active
+                apply CONFUSED, self.owner.opposite.pbg.active, SRC_ABILITY
               }
             }
           }
@@ -616,7 +616,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost W, C, C
           onAttack {
             damage 60
-            if (opp.active.topPokemonCard.cardTypes.is(STAGE2)) {
+            if (defending.evolution && defending.topPokemonCard.cardTypes.is(STAGE2)) {
               damage 30
             }
           }
