@@ -467,7 +467,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
         weakness F
         resistance P, MINUS30
         pokeBody "Thick Skinned", {
-          text "Snorlax can't become Asleep, Confused, Paralyzed, or Poisoned. This power can't be used if Snorlax is already Asleep, Confused, or Paralyzed."
+          text "Snorlax can't be affected by Special Conditions."
           delayedA {
             before APPLY_SPECIAL_CONDITION,self, {
               if(!(self.specialConditions)){
