@@ -472,9 +472,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Wind Pebbles", {
           text "This attack does 60 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance.)"
           energyCost C, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench : "Your opponent has no benched Pokémon"
+          }
           onAttack {
-
+            damage 60, opp.bench.select "Choose the Pokémon to deal 60 damage to."
           }
         }
         globalAbility {Card thisCard->
