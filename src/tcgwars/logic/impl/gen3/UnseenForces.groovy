@@ -632,7 +632,11 @@ public enum UnseenForces implements LogicCardInfo {
             def tar = my.all.findAll { it.cards.filterByType(POKEMON_TOOL) }
             assert tar: "None of your Pokemon have a Pokémon Tool card attached to them"
             powerUsed()
-            tar.select().cards.filterByType(POKEMON_TOOL).moveTo(my.hand)
+            def pcs = tar.select()
+            def tools = pcs.cards.filterByType(POKEMON_TOOL)
+            if (tools.size() > 1)
+              tools = tools.select(count: 1, "Which tool attached to $pcs will return to your hand?")
+            tools.moveTo(my.hand)
           }
         }
         move "Data Retrieval", {
@@ -651,7 +655,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 40
             if (self.cards.findAll { it.name=="Scramble Energy" }) {
               damage 20
-              apply CONFUSED
+              applyAfterDamage CONFUSED
             }
           }
         }
