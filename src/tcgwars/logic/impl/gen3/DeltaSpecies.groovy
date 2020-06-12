@@ -934,6 +934,7 @@ public enum DeltaSpecies implements LogicCardInfo {
                   assert bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount : "You have already played an energy"
                   assert validPokemon
                   def pcs = validPokemon.select("Attach to?")
+                  assert pcs
                   bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
 
                   // Return an energy back to the hand
