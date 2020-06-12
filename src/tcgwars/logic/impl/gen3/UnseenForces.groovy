@@ -705,7 +705,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "20+ damage. Does 20 damage plus 10 more damage for each Pokémon Tool card in your discard pile. You can't add more than 60 damage in this way."
           energyCost P, C
           onAttack {
-            def extraDamage = Math.min(40, 10*my.discard.filterByType(POKEMON_TOOL).size())
+            def extraDamage = Math.min(60, 10*my.discard.filterByType(POKEMON_TOOL).size())
             damage 20 + extraDamage
           }
         }
