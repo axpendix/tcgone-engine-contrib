@@ -650,14 +650,15 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           weakness FIRE
           pokeBody "Acid Sampler", {
             text "As long as Victreebel is your Active Pokémon, put 1 damage counter on each Defending Pokémon between turns. Acid Sampler stops working if your other Active Pokémon is not a Victreebel."
-            // does not work by rule
-//            delayedA {
-//              before BEGIN_TURN, {
-//                if(self.active){
-//                  directDamage 10, self.owner.opposite.pbg.active
-//                }
-//              }
-//            }
+            // The "stops working" is only for 2v2 format, works fine in singles.
+            // TODO: Handle same time effects like Butterfree (FRLG 2)
+            delayedA {
+              before BEGIN_TURN, {
+                if(self.active){
+                  directDamage 10, self.owner.opposite.pbg.active, SRC_ABILITY
+                }
+              }
+            }
           }
           move "Acid", {
             text "50 damage. The Defending Pokémon can’t retreat until the end of your opponent’s next turn."
