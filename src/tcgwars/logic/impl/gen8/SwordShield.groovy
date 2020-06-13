@@ -3581,6 +3581,7 @@ public enum SwordShield implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "You can attach this card to 1 of your Pokémon only if you discard another card from your hand." +
           "As long as this card is attached to a Pokémon, it provides every type of Energy but provides only 1 Energy at a time."
+        typeImagesOverride = [RAINBOW]
         onPlay {reason->
           if (reason == PLAY_FROM_HAND) {
             my.hand.getExcludedList(thisCard).select("Select a card to discard.").discard()

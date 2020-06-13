@@ -2426,10 +2426,14 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           onMove {to->
           }
           getEnergyTypesOverride{
-            if(self == null || self.cards.filterByType(SPECIAL_ENERGY).size() > 1)
+            if(self == null || self.cards.filterByType(SPECIAL_ENERGY).size() > 1) {
+              owner.typeImagesOverride = [C]
               return [[C] as Set]
-            else
+            }
+            else {
+              owner.typeImagesOverride = [RAINBOW]
               return [[R, D, F, G, W, Y, L, M, P] as Set]
+            }
           }
         };
       case BLASTOISE_EX_104:

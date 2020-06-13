@@ -2756,15 +2756,20 @@ public enum ForbiddenLight implements LogicCardInfo {
           onMove {to->
           }
           getEnergyTypesOverride{
-            if(self != null && self.topPokemonCard.cardTypes.is(ULTRA_BEAST))
+            if(self != null && self.topPokemonCard.cardTypes.is(ULTRA_BEAST)) {
+              owner.typeImagesOverride = [RAINBOW]
               return [[R, D, F, G, W, Y, L, M, P] as Set]
-            else
+            }
+            else {
+              owner.typeImagesOverride = [C]
               return [[C] as Set]
+            }
           }
         };
       case UNIT_ENERGY_FDY_118:
         return specialEnergy (this, [[C]]) {
           text "This card provides [C] Energy.\nWhile this card is attached to a Pokémon, it provides [F], [D], and [Y] Energy but provides only 1 Energy at a time."
+          // TODO: Request appropriate typeImageOverride be added
           onPlay {reason->
           }
           onRemoveFromPlay {

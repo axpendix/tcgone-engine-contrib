@@ -2674,10 +2674,14 @@ public enum Deoxys implements LogicCardInfo {
             to.evolution && !to.EX
           }
           getEnergyTypesOverride{
-            if(self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size())
+            if(self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
+              owner.typeImagesOverride = [RAINBOW, RAINBOW, RAINBOW]
               return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
-            else
+            }
+            else {
+              owner.typeImagesOverride = [C]
               return [[C] as Set]
+            }
           }
 
         };
