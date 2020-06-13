@@ -684,7 +684,8 @@ public enum PokemodBaseSet implements LogicCardInfo {
             def type = choose([R, W, G, L, F, P, M, D, Y],["Fire","Water","Grass","Lightning","Fighting","Psychic","Metal","Darkness","Fairy"],"What type of energy?")
             def pkmnCard = self.topPokemonCard
             def pcs = my.all.findAll{it != self}.select("Choose a pokemon to attach $self to")
-            def energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_21).setCardTypes(ENERGY, SPECIAL_ENERGY), [[type],[type]]) {
+            def energyCard
+            energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_21).setCardTypes(ENERGY, SPECIAL_ENERGY), [[type],[type]]) {
               onPlay {}
               onRemoveFromPlay {
                 bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
