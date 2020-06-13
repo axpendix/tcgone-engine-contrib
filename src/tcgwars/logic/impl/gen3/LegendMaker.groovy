@@ -2347,11 +2347,10 @@ public enum LegendMaker implements LogicCardInfo {
           "Each player can't have more than 3 Benched Pokémon. When Giant Stump comes into play, each player discards Benched Pokémon and any cards attached to them until he or she has 3 Benched Pokémon. (You discard your Pokémon first.)"
         def eff
         onPlay {
-          eff = delayed {
-            getter (GET_BENCH_SIZE) {h->
-              h.object = 3
-            }
+          eff = getter (GET_BENCH_SIZE) {h->
+            h.object = 3
           }
+        }
           thisCard.player.opposite.pbg.triggerBenchSizeCheck()
           thisCard.player.pbg.triggerBenchSizeCheck()
         }
