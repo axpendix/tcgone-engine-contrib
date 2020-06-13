@@ -603,7 +603,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 100
             afterDamage {
-              if (confirm "Return an Energy attached to the Active $opp.active.name to your opponent's hand?") {
+              if (confirm("Return an Energy attached to the Active $opp.active.name to your opponent's hand?")) {
                 def info = "Select the Energy to return to the opponent's hand."
                 def selectedEnergy = defending.cards.filterByType(ENERGY).select info
                 if (selectedEnergy) selectedEnergy.moveTo opp.hand
