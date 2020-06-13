@@ -1720,7 +1720,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 10
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
       };
@@ -1752,7 +1752,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "Whenever you attach an Energy card from your hand to Eevee, you may search your deck for a card that evolves from Eevee that is the same type as the Energy card you attached to Eevee. Put that card onto Eevee. (This counts as evolving Eevee.) Shuffle your deck afterward. This power can't be used when you attach an Energy card to Eevee as part of an attack's effect."
           delayedA {
             after ATTACH_ENERGY, self, {
-              if (ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && self.owner.pbg.deck) {
+              if (ef.reason==PLAY_FROM_HAND && self.owner.pbg.deck && ef.card.basicType.minus[[C, M, F] as Set]) {
                 if (confirm("Use Energy Evolution?")) {
                   powerUsed()
                   def sel = self.owner.pbg.deck.select(min:0, "Energy Evolution ${ef.card.basicType}",
