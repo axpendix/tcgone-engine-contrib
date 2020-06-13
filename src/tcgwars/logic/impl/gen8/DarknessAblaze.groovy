@@ -625,7 +625,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             afterDamage {
               if (confirm "Return an Energy attached to the Active $opp.active.name to your opponent's hand?") {
                 def info = "Select the Energy to return to the opponent's hand."
-                def selectedEnergy = defending.cards.filterByType ENERGY.select info
+                def selectedEnergy = defending.cards.filterByType(ENERGY).select info
                 if (selectedEnergy) selectedEnergy.moveTo opp.hand
               }
             }
@@ -653,7 +653,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            def gxAndV = opp.all.findAll {it.pokemonGX || it.pokemonV}
+            def filter = {it.pokemonGX || it.topPokemonCard.cardTypes.is(POKEMON_V) || it.topPokemonCard.cardTypes.is(VMAX)}
+            def gxAndV = opp.all.findAll {filter(it)}
             damage 30 + 50 * gxAndV.size()
           }
         }
