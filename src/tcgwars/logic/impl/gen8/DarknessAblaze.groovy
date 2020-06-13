@@ -459,7 +459,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "If you played Bird Keeper from your hand during this turn, ignore all Energy in the attack costs of this Pokémon."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, self, {
-              if (bg.currentTurn == self.owner && keyStore("Rowlet Sky Circus", self, null) == bg.turnCount) {
+              if (bg.currentTurn == self.owner && bg.em().retrieveObject("Rowlet Sky Circus $self.player") == bg.turnCount) {
                 bc "Sky Circus ignores Energy cost for $ef.attacker's $ef.move"
                 def copy = ef.move.shallowCopy()
                 copy.energyCost.clear()
@@ -476,7 +476,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert opp.bench : "Your opponent has no benched Pokémon"
           }
           onAttack {
-            damage 60, opp.bench.select "Select a Pokémon to deal 60 damage to."
+            damage 60, opp.bench.select("Select a Pokémon to deal 60 damage to.")
           }
         }
         globalAbility {Card thisCard->
@@ -489,7 +489,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               }
               after PLAY_TRAINER, {
                 if (flag) {
-                  keyStore "Rowlet Sky Circus", thisCard, bg.turnCount
+                  bg.em().storeObject("Rowlet Sky Circus $thisCard.player", bg.turnCount)
                   flag = false
                 }
               }
@@ -517,10 +517,14 @@ public enum DarknessAblaze implements LogicCardInfo {
           // Similar to part of Safeguards effect. Safeguard could possibly use it as well.
           // Ex: abilityPreventsDamage(String info, Object delegate, Closure filter={true}, def target=self)
           delayedA {
-            before APPLY_ATTACK_DAMAGES, self, {
+            before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if (it.from.owner != self.owner && (it.from.pokemonGX || it.from.topPokemonCard.cardTypes.is(POKEMON_V)) && it.notNoEffect && it.dmg.value) {
-                  bc "Forest Camouflage prevents all damage from Pokémon V and Pokémon-GX"
+                def info = "Forest Camouflage prevents all damage from Pokémon V and Pokémon-GX"
+                def filter = {attacker ->
+                  attacker.pokemonGX || attacker.topPokemonCard.cardTypes.is(POKEMON_V) || attacker.topPokemonCard.cardTypes.is(VMAX)
+                }
+                if (it.to == self && it.from.owner != self.owner && filter(it.from) && it.notNoEffect && it.dmg.value) {
+                  bc info
                   it.dmg=hp(0)
                 }
               }
