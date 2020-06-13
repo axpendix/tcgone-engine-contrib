@@ -1474,7 +1474,7 @@ public enum HolonPhantoms implements LogicCardInfo {
               }
             }
             after ATTACH_ENERGY, {
-              if((ef as AttachEnergy).reason==PLAY_FROM_HAND){
+              if(ef.reason==PLAY_FROM_HAND){
                 bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
               }
             }
