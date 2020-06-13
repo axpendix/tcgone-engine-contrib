@@ -340,6 +340,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip {apply PARALYZED}
           }
         }
         move "Solarbeam", {
@@ -360,6 +361,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            def toDraw = 5 - hand.size()
+            if (toDraw > 0) draw toDraw
           }
         }
         move "Giga Drain", {
@@ -368,6 +371,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            removeDamageCounterEqualToDamageDone
           }
         }
       };
@@ -408,6 +412,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 110
+            cantAttackNextTurn self
           }
         }
       };
@@ -419,7 +424,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 20
+            flipUntilTails {damage 20}
           }
         }
       };
@@ -452,17 +457,44 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness R
         bwAbility "Sky Circus", {
           text "If you played Bird Keeper from your hand during this turn, ignore all Energy in the attack costs of this Pokémon."
-          actionA {
+          delayedA {
+            before CHECK_ATTACK_REQUIREMENTS, self, {
+              if (bg.currentTurn == self.player && keyStore("Rowlet Sky Circus", self, null) == bg.turnCount) {
+                bc "Sky Circus ignores Energy cost for $ef.attacker's $ef.move"
+                def copy = ef.move.shallowCopy()
+                copy.energyCost.clear()
+                attack (copy as Move)
+                prevent
+              }
+            }
           }
         }
         move "Wind Pebbles", {
           text "This attack does 60 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance.)"
           energyCost C, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench : "Your opponent has no benched Pokémon"
+          }
           onAttack {
-
+            damage 60, opp.bench.select "Select a Pokémon to deal 60 damage to."
           }
         }
+        globalAbility {Card thisCard->
+            def flag
+            delayed {
+              before PLAY_TRAINER, {
+                if (ef.supporter && ef.cardToPlay.name == "Bird Keeper" && bg.currentTurn == thisCard.player && hand.contains(ef.cardToPlay)) {
+                  flag = true
+                }
+              }
+              after PLAY_TRAINER, {
+                if (flag) {
+                  keyStore "Rowlet Sky Circus", thisCard, bg.turnCount
+                  flag = false
+                }
+              }
+            }
+          }
       };
       case DARTRIX_12:
       return evolution (this, from:"Rowlet", hp:HP080, type:G, retreatCost:1) {
@@ -481,7 +513,18 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness R
         bwAbility "Forest Camouflage", {
           text "Prevent all damage done to this Pokémon by the attacks of your opponent’s Pokémon V and Pokémon-GX."
-          actionA {
+          // TODO: This could be made a static that takes a closure that gets evaluated in the if statement.
+          // Similar to part of Safeguards effect. Safeguard could possibly use it as well.
+          // Ex: abilityPreventsDamage(String info, Object delegate, Closure filter={true}, def target=self)
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, self, {
+              bg.dm().each{
+                if (it.from.owner != self.owner && (it.from.pokemonGX || it.from.topPokemonCard.cardTypes.is(POKEMON_V) && it.notNoEffect && it.dmg.value) {
+                  bc "Forest Camouflage prevents all damage from Pokémon V and Pokémon-GX"
+                  it.dmg=hp(0)
+                }
+              }
+            }
           }
         }
         move "Split Arrow", {
@@ -490,6 +533,13 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 90
+            if (opp.bench) {
+              def info = "Select 2 Pokémon to deal 20 damage to."
+              def selected = multiSelect opp.bench, 2, info
+              selected.each{
+                damage 20, it
+              }
+            }
           }
         }
       };
