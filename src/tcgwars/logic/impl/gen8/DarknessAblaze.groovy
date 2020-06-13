@@ -822,9 +822,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Quick Draw", {
           text "Draw a card."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            draw 1
           }
         }
         move "Combustion", {
