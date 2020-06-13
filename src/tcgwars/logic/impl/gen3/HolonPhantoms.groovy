@@ -1434,28 +1434,36 @@ public enum HolonPhantoms implements LogicCardInfo {
               def validPokemon = thisCard.player.pbg.all.findAll {it.cards.energyCount()}
               if(ef.cardToPlay == thisCard){
                 if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
-                  assert validPokemon
-                  assert bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount : "You have already played an energy"
-                  def pcs = validPokemon.select("Attach to?")
-                  bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
+                  if(bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount){
+                    if(validPokemon){
+                      def pcs = validPokemon.select("Attach to?")
+                      bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
 
-                  // Return an energy back to the hand
-                  pcs.cards.filterByType(ENERGY).select(count:1).moveTo(thisCard.player.pbg.hand)
+                      // Return an energy back to the hand
+                      pcs.cards.filterByType(ENERGY).select(count:1).moveTo(thisCard.player.pbg.hand)
 
-                  def pkmnCard = thisCard
-                  def energyCard
-                  energyCard = specialEnergy(new CustomCardInfo(HOLON_S_CASTFORM_44).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
-                    typeImagesOverride = [RAINBOW]
-                    onPlay {}
-                    onRemoveFromPlay {
-                      bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
+                      def pkmnCard = thisCard
+                      def energyCard
+                      energyCard = specialEnergy(new CustomCardInfo(HOLON_S_CASTFORM_44).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
+                        typeImagesOverride = [RAINBOW,RAINBOW]
+                        onPlay {}
+                        onRemoveFromPlay {
+                          bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
+                        }
+                      }
+                      energyCard.player = thisCard.player
+                      bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
+                      attachEnergy(pcs, energyCard)
+                      bc "$energyCard is now a Special Energy Card"
+                      prevent()
+                    } else {
+                      prevent()
+                      wcu "You have no energy attached to your Pokemon"
                     }
+                  } else {
+                    prevent()
+                    wcu "You have already played an Energy"
                   }
-                  energyCard.player = thisCard.player
-                  bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                  attachEnergy(pcs, energyCard)
-                  bc "$energyCard is now a Special Energy Card"
-                  prevent()
                 }
               } //If the user chooses Pokémon, play the card normally
             }
