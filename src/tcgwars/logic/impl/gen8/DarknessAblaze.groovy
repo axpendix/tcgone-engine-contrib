@@ -587,10 +587,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon for each Energy attached to this Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
           attackRequirement {
-            assert self.cards.energyCount C : "$self.name has no Energy attached"
+            assert self.cards.energyCount(C) : "$self.name has no Energy attached"
           }
           onAttack {
-            def damageAmount = 20 * self.cards.energyCount C
+            def damageAmount = 20 * self.cards.energyCount(C)
             def info = "Select Pokémon to deal $damageAmount damage to."
             def selectedPokemon = opp.all.select info
             damage damageAmount, selectedPokemon
