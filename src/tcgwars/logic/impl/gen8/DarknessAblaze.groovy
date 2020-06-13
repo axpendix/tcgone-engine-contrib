@@ -621,7 +621,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            switchYourActive
+            switchYourActive()
           }
         }
       };
@@ -644,7 +644,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
-            switchYourActive
+            switchYourActive()
           }
         }
       };
