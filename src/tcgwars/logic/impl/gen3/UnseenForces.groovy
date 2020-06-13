@@ -2850,10 +2850,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost R, C
           onAttack {
             damage 20
-
-            if (my.bench) {
-              sw self, my.bench.select("Switch Entei Star with 1 of your Benched Pokémon")
-            }
+            switchYourActive()
           }
         }
         move "Detonation", {
@@ -2862,9 +2859,9 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 70
             afterDamage {
-              if (my.prizeCardSet.size() < opp.prizeCardSet.size()) {
+              if (my.deck && my.prizeCardSet.size() < opp.prizeCardSet.size()) {
                 def list = my.deck.subList(0, 10).discard()
-                bc "Discarded 10 cards from the top of the deck"
+                bc "Discarded 10 cards from the top of ${self}'s owner's deck"
               }
             }
           }
@@ -2878,10 +2875,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 20
-
-            if (my.bench) {
-              sw self, my.bench.select("Switch Raikou Star with 1 of your Benched Pokémon")
-            }
+            switchYourActive()
           }
         }
         move "Meta Voltage", {
@@ -2906,10 +2900,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 20
-
-            if (my.bench) {
-              sw self, my.bench.select("Switch Suicune Star with 1 of your Benched Pokémon")
-            }
+            switchYourActive()
           }
         }
         move "Cross Wind", {
