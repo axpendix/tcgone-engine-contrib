@@ -2368,16 +2368,7 @@ public enum UnseenForces implements LogicCardInfo {
       case WARP_POINT_93:
       return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case ENERGY_SEARCH_94:
-      return itemCard (this) {
-        text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-        onPlay {
-          deck.search(count: 1, cardTypeFilter(BASIC_ENERGY)).moveTo(hand)
-          shuffleDeck()
-        }
-        playRequirement{
-          assert my.deck: "Deck is empty"
-        }
-      };
+      return copy(BlackWhite.ENERGY_SEARCH_93, this);
       case POTION_95:
       return copy (FireRedLeafGreen.POTION_101, this)
       case DARKNESS_ENERGY_96:
