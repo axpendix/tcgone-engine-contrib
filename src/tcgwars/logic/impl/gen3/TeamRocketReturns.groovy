@@ -304,10 +304,12 @@ public enum TeamRocketReturns implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              if(my.bench){
-                if(confirm("move all Energy cards attached to Dark Electrode to your Benched Pokémon in any way you like?")){
-                  self.cards.filterByType(ENERGY).each{
-                    energySwitch(self, my.bench.select("move $it to?"),it)
+              afterDamage {
+                if(my.bench){
+                  if(confirm("move all Energy cards attached to Dark Electrode to your Benched Pokémon in any way you like?")){
+                    self.cards.filterByType(ENERGY).each{
+                      energySwitch(self, my.bench.select("move $it to?"),it)
+                    }
                   }
                 }
               }
