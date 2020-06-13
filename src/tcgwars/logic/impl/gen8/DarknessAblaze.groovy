@@ -750,10 +750,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Call for Family", {
           text "Search your deck for a Basic Pokémon and put it on your Bench. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily basic:true, 1, delegate
         }
         move "Live Coal", {
           text "10 damage. "
