@@ -2499,7 +2499,7 @@ public enum UnseenForces implements LogicCardInfo {
         pokeBody "Overpowering Fang", {
           text "As long as Feraligatr ex is your Active Pokémon, each player's Pokémon (excluding Pokémon-ex) can't use any Poké-Powers or Poké-Bodies."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (self.active && !h.effect.target.topPokemonCard.cardTypes.is(EX)) {
+            if (self.active && !h.effect.target.EX) {
               if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
                 h.object=true
               }
@@ -2532,9 +2532,9 @@ public enum UnseenForces implements LogicCardInfo {
           text "If Ho-Oh ex would be Knocked Out by damage from an opponent's attack, you may move up to 2 Energy attached to Ho-Oh ex to your Pokémon in any way you like."
           delayedA {
             before (KNOCKOUT,self) {
-              if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.cards.filterByType(ENERGY)) {
+              if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.all.size() > 1 && self.cards.filterByType(ENERGY)) {
                 bc "Golden Wing activates"
-                moveEnergy(playerType: self.owner, may: true, count: 2, info: "Golden Wing", self, self.owner.pbg.bench)
+                moveEnergy(playerType: self.owner, may: true, count: 2, info: "Golden Wing", self, self.owner.pbg.all.getExcludedList(self))
               }
             }
           }
