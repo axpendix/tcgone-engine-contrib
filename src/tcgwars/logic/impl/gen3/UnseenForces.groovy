@@ -2623,7 +2623,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def target = opp.all.select("Put 1 damage counter to which pokémon?")
             def amount = 30
-            if (target.topPokemonCard.cardTypes.contains(STAGE2)) {
+            if (target.evolution && target.topPokemonCard.cardTypes.contains(STAGE2)) {
               amount = 50
             }
             damage amount, target
@@ -2634,9 +2634,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 40
-            if (my.bench) {
-              sw self, my.bench.select("Select a Pokemon to switch Politoed ex with")
-            }
+            switchYourActive()
           }
         }
         move "Swallow Up", {
