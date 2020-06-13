@@ -461,7 +461,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             before ENERGY_COST_CALCULATOR, {
               // TODO: Figure out how to do this right, or if this is already right
               if (self.active && bg.currentTurn == self.owner && bg.em().retrieveObject("Rowlet_Sky_Circus_$self.owner") == bg.turnCount) {
-                bc "Sky Circus ignores Energy cost for $ef.attacker's $ef.move"
+                bc "Sky Circus ignores Energy cost for Rowlet's $ef.move"
                 prevent()
               }
             }
