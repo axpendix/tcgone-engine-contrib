@@ -2290,6 +2290,9 @@ public enum UnseenForces implements LogicCardInfo {
         text "Attach Protective Orb to 1 of your Evolved Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Protective Orb is attached to is a Basic Pokémon or Pokémon-ex, discard Protective Orb." +
           "As long as Protective Orb is attached to a Pokémon, that Pokémon has no Weakness."
         def eff
+        def check = {
+          if(!it.evolution || it.EX){discard thisCard}
+        }
         onPlay {reason->
           eff = getter (GET_WEAKNESSES, self) { h->
             h.object.clear()
@@ -2298,8 +2301,11 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        allowAttach { to ->
-          to.topPokemonCard.cardTypes.isNot(EX) && to.evolution
+        onMove {to->
+          check(to)
+        }
+        allowAttach {to->
+          to.evolution && !to.EX
         }
       };
       case SITRUS_BERRY_91:
@@ -2307,6 +2313,9 @@ public enum UnseenForces implements LogicCardInfo {
         text "Attach Sitrus Berry to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Sitrus Berry is attached to is Pokémon-ex or has Dark or an owner in its name, discard Sitrus Berry." +
           "At any time between turns, if the Pokémon this card is attached to has at least 3 damage counters on it, remove 3 damage counters from it. Then, discard Sitrus Berry."
         def eff
+        def check = {
+          if (it.topPokemonCard.name.contains("Dark") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
+        }
         onPlay {reason->
           eff=delayed(anytime:true){
             before BEGIN_TURN,{
@@ -2321,8 +2330,11 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        allowAttach { to->
-          to.topPokemonCard.cardTypes.isNot(EX) && !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON)
+        onMove {to->
+          check(to)
+        }
+        allowAttach {to->
+          !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
       };
       case SOLID_RAGE_92:
@@ -2330,6 +2342,7 @@ public enum UnseenForces implements LogicCardInfo {
         text "Attach Solid Rage to 1 of your Evolved Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Solid Rage is attached to is a Basic Pokémon or Pokémon-ex, discard Solid Rage." +
           "If you have more Prize cards left than your opponent, the Pokémon that Solid Rage is attached to does 20 more damage to the Active Pokémon (before applying Weakness and Resistance)."
         def eff
+        def check = {
           if(!it.evolution || it.EX){discard thisCard}
         }
         onPlay {reason->
@@ -2345,8 +2358,11 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        allowAttach { to->
-          to.topPokemonCard.cardTypes.isNot(EX) && to.topPokemonCard.cardTypes.isNot(BASIC)
+        onMove {to->
+          check(to)
+        }
+        allowAttach {to->
+          to.evolution && !to.EX
         }
       };
       case WARP_POINT_93:
