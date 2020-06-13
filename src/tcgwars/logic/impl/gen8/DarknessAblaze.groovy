@@ -569,7 +569,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             def info = "Select Pokémon to switch with opponent's Active Pokémon."
             def selectedPokemon = opp.bench.select info
-            sw defending, selectedPokemon.first()
+            sw defending, selectedPokemon
           }
         }
         move "Slap", {
