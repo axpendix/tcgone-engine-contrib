@@ -2203,6 +2203,9 @@ public enum UnseenForces implements LogicCardInfo {
           "As long as Energy Root is attached to a Pokémon, that Pokémon gets +20 HP and can't use any Poké-Powers or Poké-Bodies."
         def eff
         def eff2
+        def check = {
+          if (it.topPokemonCard.name.contains("Dark") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
+        }
         onPlay {reason->
           eff = getter (GET_FULL_HP, self) {h->
             h.object += hp(20)
@@ -2221,8 +2224,11 @@ public enum UnseenForces implements LogicCardInfo {
           eff2.unregister()
           new CheckAbilities().run(bg)
         }
-        allowAttach { to->
-          to.topPokemonCard.cardTypes.isNot(EX) && !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON)
+        onMove {to->
+          check(to)
+        }
+        allowAttach {to->
+          !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
       };
       case ENERGY_SWITCH_84:
