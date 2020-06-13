@@ -2027,14 +2027,12 @@ public enum UnseenForces implements LogicCardInfo {
           text "Search your discard pile for a Basic Pokémon, Evolution card, or basic Energy card, show it to your opponent, and put it into your hand."
           energyCost C
           attackRequirement {
-            assert my.discard: "Discard pile is empty"
+            assert (
+              my.discard.filterByType(POKEMON) || my.discard.filterByType(BASIC_ENERGY)
+            ): "You have neither Pokémon nor Basic Energy cards in your discard pile"
           }
           onAttack {
-            if (my.discard.filterByType(POKEMON) || my.discard.filterByType(TRAINER) || my.discard.filterByType(ENERGY)) {
-              my.discard.findAll {
-                it.cardTypes.is(POKEMON) || it.cardTypes.is(TRAINER) || it.cardTypes.is(BASIC_ENERGY)
-              }.select("Select a card to put into your hand").moveTo(my.hand)
-            }
+            my.discard.findAll{ it.cardTypes.is(POKEMON) || it.cardTypes.is(BASIC_ENERGY) }.select("Select a Pokémon or Basic Energy card to put into your hand").moveTo(my.hand)
           }
         }
         move "Trip Over", {
