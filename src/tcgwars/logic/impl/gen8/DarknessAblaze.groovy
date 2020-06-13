@@ -461,7 +461,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             before ENERGY_COST_CALCULATOR, {
               // TODO: Figure out how to do this right, or if this is already right
               if (self.active && bg.currentTurn == self.owner && bg.em().retrieveObject("Sky_Circus_$self.owner") == bg.turnCount) {
-                bc "Sky Circus ignores Energy cost for $ef.move.owner's $ef.move"
+                bc "Sky Circus ignores Energy cost for Rowlet's $ef.move"
                 prevent()
               }
             }
@@ -540,9 +540,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
           onAttack {
             def info = "Select a [G] Energy card."
-            def selectedEnergy = my.deck.search info, basicEnergyFilter G
+            def selectedEnergy = my.deck.search(info, basicEnergyFilter(G))
             if (selectedEnergy) {
-              def selectedPokemon = my.all.select "Select Pokémon to attach [G] Energy card to."
+              def selectedPokemon = my.all.select("Select Pokémon to attach [G] Energy card to.")
               attachEnergy selectedPokemon, selectedEnergy.first()
             }
           }
@@ -568,7 +568,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             def info = "Select Pokémon to switch with opponent's Active Pokémon."
             def selectedPokemon = opp.bench.select info
-            sw opp.active selectedPokemon.first()
+            sw defending selectedPokemon.first()
           }
         }
         move "Slap", {
@@ -738,7 +738,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
-            def cond = my.all.any {myPokemon -> myPokemon.types.contains R && myPokemon.numberOfDamageCounters}
+            def cond = my.all.any {myPokemon -> myPokemon.types.contains(R) && myPokemon.numberOfDamageCounters}
             if (cond) damage 100
           }
         }
