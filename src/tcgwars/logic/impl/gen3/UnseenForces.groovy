@@ -2070,7 +2070,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -2106,7 +2106,7 @@ public enum UnseenForces implements LogicCardInfo {
             assert my.deck
           }
           onAttack {
-            my.deck.search(min: 0, max: 1, "Select a basic Energy card.", cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
+            my.deck.search(count: 1, "Select a basic Energy card.", cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
             shuffleDeck()
           }
         }
