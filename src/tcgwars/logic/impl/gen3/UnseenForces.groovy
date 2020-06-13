@@ -2444,7 +2444,7 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Devo Flash", {
           text "Once during your turn, when you play Espeon ex from your hand to evolve 1 of your Pokémon, you may choose 1 Evolved Pokémon on your opponent's Bench, remove the highest Stage Evolution card from that Pokémon, and put it back into his or her hand."
           onActivate {
-            if (it==PLAY_FROM_HAND && opp.bench.findAll { it.evolution } && confirm("Use Devo Flash?")) {
+            if (it==PLAY_FROM_HAND && opp.bench.any{ it.evolution } && confirm("Use Devo Flash?")) {
               powerUsed()
 
               def list = opp.bench.findAll { it.evolution }
@@ -2469,6 +2469,27 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost P, C, C
           onAttack {
             damage 60
+            //Taken from Xatu (DX 29)
+            def addDmg = 0
+            opp.all.each{
+              if(it.cards.filterByType(POKEMON_TOOL)) addDmg += 1
+              //TODO: Maybe improve this detection... Is the benched fossil/doll/usbsitute still detected as a trainer?
+              it.cards.each{
+                thatCard -> ["Amber", " Doll", "Robo Substitute"].each{
+                  thatTrainer -> if (thatCard.name.contains(thatTrainer)) { addDmg += 1 }
+                }
+                if (
+                  thatCard.name.contains("Fossil") && thatCard.name != "Buried Fossil"
+                ) { addDmg += 1 }
+              }
+              //TODO: Detect attached non-tools (see: Pluspower, Defender, etc.)
+            }
+            if(bg.stadiumInfoStruct){
+              if(bg.stadiumInfoStruct.stadiumCard.player != self.owner){
+                addDmg += 1
+              }
+            }
+            damage 30 * addDmg
           }
         }
       };

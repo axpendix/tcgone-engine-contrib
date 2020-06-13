@@ -1120,9 +1120,12 @@ public enum Deoxys implements LogicCardInfo {
                 if(it.cards.filterByType(POKEMON_TOOL)) addDmg += 1
                 //TODO: Maybe improve this detection... Is the benched fossil/doll/usbsitute still detected as a trainer?
                 it.cards.each{
-                  thatCard -> ["Fossil", "Amber", " Doll", "Robo Substitute"].each{
+                  thatCard -> ["Amber", " Doll", "Robo Substitute"].each{
                     thatTrainer -> if (thatCard.name.contains(thatTrainer)) { addDmg += 1 }
                   }
+                  if (
+                    thatCard.name.contains("Fossil") && thatCard.name != "Buried Fossil"
+                  ) { addDmg += 1 }
                 }
                 //TODO: Detect attached non-tools (see: Pluspower, Defender, etc.)
               }
