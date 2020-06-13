@@ -787,7 +787,8 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness W
         bwAbility "Double Type", {
           text "This Pokémon is both [R] and [F] type."
-          actionA {
+          getterA GET_POKEMON_TYPE, self, { h->
+            h.object.add(F)
           }
         }
         move "Turbo Drive", {
@@ -796,6 +797,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 130
+            attachEnergyFrom basic:true, my.discard, my.bench
           }
         }
       };
