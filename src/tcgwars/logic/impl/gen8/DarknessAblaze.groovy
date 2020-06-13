@@ -545,6 +545,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               def selectedPokemon = my.all.select("Select Pokémon to attach [G] Energy card to.")
               attachEnergy selectedPokemon, selectedEnergy.first()
             }
+            shuffleDeck()
           }
         }
         move "Flop", {
@@ -568,7 +569,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             def info = "Select Pokémon to switch with opponent's Active Pokémon."
             def selectedPokemon = opp.bench.select info
-            sw defending selectedPokemon.first()
+            sw defending, selectedPokemon.first()
           }
         }
         move "Slap", {
