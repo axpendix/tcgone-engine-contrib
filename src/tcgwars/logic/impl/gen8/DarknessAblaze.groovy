@@ -459,12 +459,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "If you played Bird Keeper from your hand during this turn, ignore all Energy in the attack costs of this Pokémon."
           delayedA {
             before ENERGY_COST_CALCULATOR, {
-              def fields = ef.getClass().getDeclaredFields()
-              fields.each {
-                bc it.toString()
-              }
-              bc fields
-              if (ef.attacker == self && bg.currentTurn == self.owner && bg.em().retrieveObject("Rowlet_Sky_Circus_$self.owner") == bg.turnCount) {
+              // TODO: Figure out how to do this right, or if this is already right
+              if (self.active && bg.currentTurn == self.owner && bg.em().retrieveObject("Rowlet_Sky_Circus_$self.owner") == bg.turnCount) {
                 bc "Sky Circus ignores Energy cost for $ef.attacker's $ef.move"
                 prevent()
               }
