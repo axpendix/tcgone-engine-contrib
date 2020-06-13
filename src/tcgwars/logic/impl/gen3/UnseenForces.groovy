@@ -2238,6 +2238,9 @@ public enum UnseenForces implements LogicCardInfo {
         text "Attach Fluffy Berry to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Fluffy Berry is attached to is Pokémon-ex or has Dark or an owner in its name, discard Fluffy Berry." +
           "As long as Fluffy Berry is attached to a Pokémon, that Pokémon's Retreat Cost is 0."
         def eff
+        def check = {
+          if (it.topPokemonCard.name.contains("Dark") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
+        }
         onPlay {reason->
           eff = getter GET_RETREAT_COST, self, { h ->
             h.object = 0
@@ -2246,8 +2249,11 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        allowAttach { to->
-          to.topPokemonCard.cardTypes.isNot(EX) && !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON)
+        onMove {to->
+          check(to)
+        }
+        allowAttach {to->
+          !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
       };
       case MARY_S_REQUEST_86:
