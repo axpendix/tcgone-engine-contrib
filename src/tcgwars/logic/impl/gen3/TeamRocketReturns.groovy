@@ -305,16 +305,16 @@ public enum TeamRocketReturns implements LogicCardInfo {
             onAttack {
               damage 30
               afterDamage {
-              if(my.bench){
-                if(confirm("move all Energy cards attached to Dark Electrode to your Benched Pokémon in any way you like?")){
-                  self.cards.filterByType(ENERGY).each{
-                    energySwitch(self, my.bench.select("move $it to?"),it)
+                if(my.bench){
+                  if(confirm("move all Energy cards attached to Dark Electrode to your Benched Pokémon in any way you like?")){
+                    self.cards.filterByType(ENERGY).each{
+                      energySwitch(self, my.bench.select("move $it to?"),it)
+                    }
                   }
                 }
               }
             }
           }
-        }
 
         };
       case DARK_HOUNDOOM_5:
