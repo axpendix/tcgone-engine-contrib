@@ -3164,18 +3164,25 @@ public enum UltraPrism implements LogicCardInfo {
               return [[C] as Set]
             boolean cond1 = self.topPokemonCard.cardTypes.is(STAGE2)
             boolean cond2 = self.owner.pbg.all.findAll{it.topPokemonCard.cardTypes.is(STAGE2)}.size() >= 3
-            if(cond1 && cond2)
+            if(cond1 && cond2) {
+              owner.typeImagesOverride = [RAINBOW, RAINBOW, RAINBOW]
               return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
-            else if(cond1)
+            }
+            else if(cond1) {
+              owner.typeImagesOverride = [RAINBOW]
               return [[R, D, F, G, W, Y, L, M, P] as Set]
-            else
+            }
+            else {
+              owner.typeImagesOverride = [C]
               return [[C] as Set]
+            }
           }
 
         };
       case UNIT_ENERGY_GRW_137:
         return specialEnergy (this, [[C]]) {
           text "This card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [G], [W], and [R] Energy but provides only 1 Energy at a time."
+          // TODO: Request appropriate typeImageOverride be added
           onPlay {reason->
           }
           onRemoveFromPlay {
@@ -3187,6 +3194,7 @@ public enum UltraPrism implements LogicCardInfo {
       case UNIT_ENERGY_LPM_138:
         return specialEnergy (this, [[C]]) {
           text "This card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [L], [P], and [M] Energy but provides only 1 Energy at a time."
+          // TODO: Request appropriate typeImageOverride be added
           onPlay {reason->
           }
           onRemoveFromPlay {

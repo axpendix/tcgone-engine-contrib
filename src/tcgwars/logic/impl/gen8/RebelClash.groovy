@@ -3968,7 +3968,7 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case CAPTURE_ENERGY_171:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[]]) {
         text "This card provides [C] Energy only while attached to a Pokemon. When attaching this card from your hand to 1 of your Pokemon, search your deck for a Basic Pokemon and put it on your Bench. Then, shuffle your deck."
         onPlay {reason->
           if (my.deck && my.bench.notFull) {
@@ -3978,6 +3978,9 @@ public enum RebelClash implements LogicCardInfo {
             }
             shuffleDeck()
           }
+        }
+        getEnergyTypesOverride {
+          return [[C] as Set]
         }
       };
       case HORROR_PSYCHIC_ENERGY_172:

@@ -1959,6 +1959,7 @@ public enum Emerald implements LogicCardInfo {
           def check = {
             if(!it.evolution || it.EX){discard thisCard}
           }
+          typeImagesOverride = [RAINBOW, RAINBOW]
           onPlay {reason->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
