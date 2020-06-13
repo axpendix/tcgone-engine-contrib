@@ -2657,9 +2657,9 @@ public enum UnseenForces implements LogicCardInfo {
         pokeBody "Danger Perception", {
           text "As long as Scizor ex's remaining HP is 60 or less, Scizor ex does 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
-            before APPLY_ATTACK_DAMAGES, {
+            after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
-                if (it.from == self && it.to == self.owner.opposite.pbg.active && self.getRemainingHP().value <= 40) {
+                if (it.from == self && it.to == self.owner.opposite.pbg.active && self.getRemainingHP().value <= 60) {
                   bc "Danger Perception +40"
                   it.dmg += hp(40)
                 }
