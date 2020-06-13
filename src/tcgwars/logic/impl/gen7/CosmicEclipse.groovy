@@ -4892,7 +4892,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 if (it.name == "Blow-Away Bomb" && confirm("Use Blow-Away Bomb?")) {
                   bc "Blow-Away Bomb activates."
                   opp.all.each { target ->
-                    directDamage 10, target
+                    directDamage 10, target, SRC_ABILITY
                   }
                 }
               }
