@@ -460,7 +460,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           delayedA {
             before ENERGY_COST_CALCULATOR, {
               // TODO: Figure out how to do this right, or if this is already right
-              if (self.active && bg.currentTurn == self.owner && bg.em().retrieveObject("Rowlet_Sky_Circus_$self.owner") == bg.turnCount) {
+              if (self.active && bg.currentTurn == self.owner && bg.em().retrieveObject("Sky_Circus_$self.owner") == bg.turnCount) {
                 bc "Sky Circus ignores Energy cost for Rowlet's $ef.move"
                 prevent()
               }
@@ -477,22 +477,6 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 60, opp.bench.select("Select a Pokémon to deal 60 damage to.")
           }
         }
-        globalAbility {Card thisCard->
-            def flag
-            delayed {
-              before PLAY_TRAINER, {
-                if (ef.supporter && ef.cardToPlay.name == "Bird Keeper" && bg.currentTurn == thisCard.player && hand.contains(ef.cardToPlay)) {
-                  flag = true
-                }
-              }
-              after PLAY_TRAINER, {
-                if (flag) {
-                  bg.em().storeObject("Rowlet_Sky_Circus_$thisCard.player", bg.turnCount)
-                  flag = false
-                }
-              }
-            }
-          }
       };
       case DARTRIX_12:
       return evolution (this, from:"Rowlet", hp:HP080, type:G, retreatCost:1) {
@@ -3276,6 +3260,22 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay {
         }
         playRequirement{
+        }
+        globalAbility {Card thisCard->
+          def flag
+          delayed {
+            before PLAY_TRAINER, {
+              if (ef.supporter && ef.cardToPlay == thisCard && bg.currentTurn == thisCard.player && hand.contains(ef.cardToPlay)) {
+                flag = true
+              }
+            }
+            after PLAY_TRAINER, {
+              if (flag) {
+                bg.em().storeObject("Sky_Circus_$thisCard.player", bg.turnCount)
+                flag = false
+              }
+            }
+          }
         }
       };
       case CHEERING_YELL_HORN_168:
