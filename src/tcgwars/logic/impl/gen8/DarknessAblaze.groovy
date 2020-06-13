@@ -517,10 +517,14 @@ public enum DarknessAblaze implements LogicCardInfo {
           // Similar to part of Safeguards effect. Safeguard could possibly use it as well.
           // Ex: abilityPreventsDamage(String info, Object delegate, Closure filter={true}, def target=self)
           delayedA {
-            before APPLY_ATTACK_DAMAGES, self, {
+            before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if (it.from.owner != self.owner && (it.from.pokemonGX || it.from.topPokemonCard.cardTypes.is(POKEMON_V)) && it.notNoEffect && it.dmg.value) {
-                  bc "Forest Camouflage prevents all damage from Pokémon V and Pokémon-GX"
+                def info = "Forest Camouflage prevents all damage from Pokémon V and Pokémon-GX"
+                def filter = {attacker ->
+                  attacker.pokemonGX || attacker.topPokemonCard.cardTypes.is(POKEMON_V) || attacker.topPokemonCard.cardTypes.is(VMAX)
+                }
+                if (it.to == self && it.from.owner != self.owner && filter(it.from) && it.notNoEffect && it.dmg.value) {
+                  bc info
                   it.dmg=hp(0)
                 }
               }
