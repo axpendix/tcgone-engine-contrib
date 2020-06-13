@@ -2941,7 +2941,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 20
-            apply POISONED
+            applyAfterDamage POISONED
             extraPoison 1
           }
         }
