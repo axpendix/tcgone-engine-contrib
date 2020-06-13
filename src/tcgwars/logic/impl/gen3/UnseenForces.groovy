@@ -2563,7 +2563,7 @@ public enum UnseenForces implements LogicCardInfo {
               if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value })) {
                 if (ef.attacker.cards.filterByType(ENERGY)) {
                   bc "Silver Sparkle Activates"
-                  ef.attacker.cards.filterByType(ENERGY).oppSelect("Select an Energy to move to the Opponent's hand").moveTo(ef.attacker.owner.pbg.hand)
+                  ef.attacker.cards.filterByType(ENERGY).select("Select an Energy to move to the Opponent's hand", self.owner).moveTo(ef.attacker.owner.pbg.hand)
                 }
               }
             }
@@ -2571,7 +2571,7 @@ public enum UnseenForces implements LogicCardInfo {
         }
         move "Elemental Blast", {
           text "200 damage. Discard a [R] Energy, [W] Energy, and [L] Energy attached to Lugia ex."
-          energyCost G, W, R
+          energyCost R, W, L
           onAttack {
             damage 200
             discardSelfEnergy R
