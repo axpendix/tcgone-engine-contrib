@@ -519,7 +519,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, self, {
               bg.dm().each{
-                if (it.from.owner != self.owner && (it.from.is(POKEMON_GX) || it.from.is(POKEMON_V)) && it.notNoEffect && it.dmg.value) {
+                if (it.from.owner != self.owner && (it.from.pokemonGX || it.from.topPokemonCard.cardTypes.is(POKEMON_V) && it.notNoEffect && it.dmg.value) {
                   bc "Forest Camouflage prevents all damage from Pokémon V and Pokémon-GX"
                   it.dmg=hp(0)
                 }
