@@ -458,12 +458,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Sky Circus", {
           text "If you played Bird Keeper from your hand during this turn, ignore all Energy in the attack costs of this Pokémon."
           delayedA {
-            before CHECK_ATTACK_REQUIREMENTS, {
-              if (ef.attacker == self && bg.currentTurn == self.owner && bg.em().retrieveObject("Rowlet Sky Circus $self.owner") == bg.turnCount) {
+            before ENERGY_COST_CALCULATOR, {
+              if (ef.attacker == self && bg.currentTurn == self.owner && bg.em().retrieveObject("Rowlet_Sky_Circus_$self.owner") == bg.turnCount) {
                 bc "Sky Circus ignores Energy cost for $ef.attacker's $ef.move"
-                def copy = ef.move.shallowCopy()
-                copy.energyCost.clear()
-                attack (copy as Move)
                 prevent()
               }
             }
@@ -489,7 +486,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               }
               after PLAY_TRAINER, {
                 if (flag) {
-                  bg.em().storeObject("Rowlet Sky Circus $thisCard.player", bg.turnCount)
+                  bg.em().storeObject("Rowlet_Sky_Circus_$thisCard.player", bg.turnCount)
                   flag = false
                 }
               }
