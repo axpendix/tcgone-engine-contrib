@@ -2698,8 +2698,19 @@ public enum DarknessAblaze implements LogicCardInfo {
         resistance G, MINUS30
         bwAbility "Sturdy", {
           text "If this Pokémon has full HP and would be Knocked Out by damage from an attack, this Pokémon is not Knocked Out, and its remaining HP becomes 10."
-          actionA {
-          }
+            delayedA {
+              // Taken from Donphan LOT
+              before APPLY_ATTACK_DAMAGES, {
+                if(ef.attacker.owner != self.owner) {
+                  bg.dm().each{
+                    if(it.to == self && it.notNoEffect && self.damage == hp(0) && it.dmg.value >= self.fullHP.value) {
+                      bc "Sturdy saved $self!"
+                      it.dmg = self.fullHP - hp(10)
+                    }
+                  }
+                }
+              }
+            }
         }
         move "Gigaton Stomp", {
           text "160 damage. "
