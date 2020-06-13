@@ -2262,7 +2262,7 @@ public enum UnseenForces implements LogicCardInfo {
           "Draw a card. If you don't have any Stage 2 Evolved Pokémon in play, draw 2 more cards."
         onPlay {
           draw 1
-          if (!my.all.find{it.topPokemonCard.cardTypes.is(STAGE2)}) draw 2
+          if (!my.all.find{it.evolution && it.topPokemonCard.cardTypes.is(STAGE2)}) draw 2
         }
         playRequirement{
           assert my.deck : "Deck is empty"
@@ -2330,6 +2330,8 @@ public enum UnseenForces implements LogicCardInfo {
         text "Attach Solid Rage to 1 of your Evolved Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Solid Rage is attached to is a Basic Pokémon or Pokémon-ex, discard Solid Rage." +
           "If you have more Prize cards left than your opponent, the Pokémon that Solid Rage is attached to does 20 more damage to the Active Pokémon (before applying Weakness and Resistance)."
         def eff
+          if(!it.evolution || it.EX){discard thisCard}
+        }
         onPlay {reason->
           eff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
