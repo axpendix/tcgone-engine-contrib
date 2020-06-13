@@ -887,6 +887,7 @@ public enum DeltaSpecies implements LogicCardInfo {
                   def pkmnCard = thisCard
                   def energyCard
                   energyCard = specialEnergy(new CustomCardInfo(HOLON_S_ELECTRODE_21).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
+                    typeImagesOverride = [RAINBOW]
                     onPlay {}
                     onRemoveFromPlay {
                       bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
@@ -943,6 +944,7 @@ public enum DeltaSpecies implements LogicCardInfo {
                   def pkmnCard = thisCard
                   def energyCard
                   energyCard = specialEnergy(new CustomCardInfo(HOLON_S_MAGNETON_22).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
+                    typeImagesOverride = [RAINBOW]
                     onPlay {}
                     onRemoveFromPlay {
                       bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
