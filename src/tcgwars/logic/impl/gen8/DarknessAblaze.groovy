@@ -2637,6 +2637,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            if(self.cards.filterByType(POKEMON_TOOL)) damage 40
           }
         }
         move "Cutting Wind", {
@@ -2679,6 +2680,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { damage 30 }
           }
         }
         move "Lunge Out", {
