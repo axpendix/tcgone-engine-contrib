@@ -1643,7 +1643,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost P, C, C
           onAttack {
             damage 40
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1655,10 +1655,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C
           onAttack {
             draw 2
-
-            if (my.bench && confirm("Switch Yanma with 1 of your Benched Pokémon?")) {
-              sw self, my.bench.select()
-            }
+            switchYourActive(may: true)
           }
         }
         move "Spinning Tail", {
