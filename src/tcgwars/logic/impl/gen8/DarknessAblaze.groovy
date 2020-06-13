@@ -665,6 +665,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 220
+            afterDamage {
+              discardSelfEnergy C, C
+            }
           }
         }
       };
@@ -685,6 +688,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 300
+            afterDamage {
+              discardSelfEnergy C, C
+            }
           }
         }
       };
@@ -696,7 +702,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-
+            apply BURNED
           }
         }
         move "Kindle", {
@@ -705,6 +711,12 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
+            afterDamage {
+              if (self.cards.energyCount(C)) {
+                discardSelfEnergy C
+                discardDefendingEnergy()
+              }
+            }
           }
         }
       };
@@ -717,6 +729,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            apply BURNED
           }
         }
         move "Compensation Flame", {
@@ -725,6 +738,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
+            def cond = my.all.any {myPokemon -> myPokemon.types.contains R && myPokemon.numberOfDamageCounters}
+            if (cond) damage 100
           }
         }
       };
