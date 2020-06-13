@@ -729,6 +729,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            apply BURNED
           }
         }
         move "Compensation Flame", {
@@ -737,6 +738,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
+            def cond = my.all.any {myPokemon -> myPokemon.types.contains R && myPokemon.numberOfDamageCounters}
+            if (cond) damage 100
           }
         }
       };
