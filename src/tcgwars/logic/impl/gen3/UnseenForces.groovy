@@ -2717,7 +2717,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost F, F, C, C
           onAttack {
             discardSelfEnergy F,F
-            damage 100, opp.all.select("Deal 30 damage to which Pokémon?")
+            damage 100, opp.all.select("Deal 100 damage to which Pokémon?")
           }
         }
       };
@@ -2728,12 +2728,13 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Bursting Up", {
           text "Once during your turn, when you play Typhlosion ex from your hand to evolve 1 of your Pokémon, count the number of your opponent's Benched Pokémon. You may search your deck for up to that number of [R] Energy cards and attach them to 1 of your [R] Pokémon. Shuffle your deck afterward."
           onActivate {
-            checkLastTurn()
-            if (it==PLAY_FROM_HAND && confirm("Use Bursting Up?")) {
+            if (it==PLAY_FROM_HAND && opp.bench && confirm("Use Bursting Up?")) {
               powerUsed()
               def list = my.deck.search (max: opp.bench.size(), basicEnergyFilter(R))
-              def pcs = my.all.findAll { it.types.contains(R) }.select("Which [R] Pokémon to attach these Energies to?")
-              list.each { attachEnergy(pcs, it) }
+              if (list) {
+                def pcs = my.all.findAll { it.types.contains(R) }.select("Which [R] Pokémon to attach these Energies to?")
+                list.each { attachEnergy(pcs, it) }
+              }
               shuffleDeck()
             }
           }
