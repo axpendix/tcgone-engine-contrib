@@ -1748,7 +1748,7 @@ public enum UnseenForces implements LogicCardInfo {
       case EEVEE_55:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
-        pokeBody "Energy Evolution", {
+        pokePower "Energy Evolution", {
           text "Whenever you attach an Energy card from your hand to Eevee, you may search your deck for a card that evolves from Eevee that is the same type as the Energy card you attached to Eevee. Put that card onto Eevee. (This counts as evolving Eevee.) Shuffle your deck afterward. This power can't be used when you attach an Energy card to Eevee as part of an attack's effect."
           delayedA {
             after ATTACH_ENERGY, self, {
