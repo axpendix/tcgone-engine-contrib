@@ -297,7 +297,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Blast Wind", {
-          text "130 damage. "
+          text "130 damage."
           energyCost G, G, C
           attackRequirement {}
           onAttack {
@@ -323,7 +323,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
         move "Scratch", {
-          text "20 damage. "
+          text "20 damage."
           energyCost G
           attackRequirement {}
           onAttack {
@@ -344,7 +344,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Solarbeam", {
-          text "110 damage. "
+          text "110 damage."
           energyCost G, G, C
           attackRequirement {}
           onAttack {
@@ -379,7 +379,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
         move "Seed Bomb", {
-          text "10 damage. "
+          text "10 damage."
           energyCost G
           attackRequirement {}
           onAttack {
@@ -387,7 +387,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Bite", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -399,7 +399,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Pansage", hp:HP100, type:G, retreatCost:1) {
         weakness R
         move "Seed Bomb", {
-          text "30 damage. "
+          text "30 damage."
           energyCost G
           attackRequirement {}
           onAttack {
@@ -432,7 +432,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP070, type:G, retreatCost:3) {
         weakness R
         move "Spray Fluid", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -444,7 +444,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Shelmet", hp:HP090, type:G, retreatCost:0) {
         weakness R
         move "Jet Head", {
-          text "70 damage. "
+          text "70 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -482,7 +482,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Rowlet", hp:HP080, type:G, retreatCost:1) {
         weakness R
         move "Razor Leaf", {
-          text "40 damage. "
+          text "40 damage."
           energyCost G
           attackRequirement {}
           onAttack {
@@ -549,7 +549,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Flop", {
-          text "20 damage. "
+          text "20 damage."
           energyCost G, C
           attackRequirement {}
           onAttack {
@@ -573,7 +573,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Slap", {
-          text "40 damage. "
+          text "40 damage."
           energyCost G, C
           attackRequirement {}
           onAttack {
@@ -653,7 +653,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP220, type:R, retreatCost:3) {
         weakness W
         move "Claw Slash", {
-          text "80 damage. "
+          text "80 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -676,7 +676,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Charizard V", hp:HP330, type:R, retreatCost:3) {
         weakness W
         move "Claw Slash", {
-          text "100 damage. "
+          text "100 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -756,7 +756,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Live Coal", {
-          text "10 damage. "
+          text "10 damage."
           energyCost R
           attackRequirement {}
           onAttack {
@@ -768,7 +768,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Torchic", hp:HP090, type:R, retreatCost:1) {
         weakness W
         move "Smash Kick", {
-          text "20 damage. "
+          text "20 damage."
           energyCost R
           attackRequirement {}
           onAttack {
@@ -833,7 +833,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Combustion", {
-          text "30 damage. "
+          text "30 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
@@ -845,7 +845,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
         move "Live Coal", {
-          text "10 damage. "
+          text "10 damage."
           energyCost R
           attackRequirement {}
           onAttack {
@@ -853,7 +853,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Bite", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -865,7 +865,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Pansear", hp:HP100, type:R, retreatCost:1) {
         weakness W
         move "Flare", {
-          text "30 damage. "
+          text "30 damage."
           energyCost R
           attackRequirement {}
           onAttack {
@@ -885,7 +885,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Galarian Darumaka", hp:HP140, type:R, retreatCost:3) {
         weakness W
         move "Headbutt", {
-          text "40 damage. "
+          text "40 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -925,7 +925,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Fire Wing", {
-          text "110 damage. "
+          text "110 damage."
           energyCost R, R, C
           attackRequirement {}
           onAttack {
@@ -976,7 +976,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Burning Train", {
-          text "180 damage. "
+          text "180 damage."
           energyCost R, R, R, R
           attackRequirement {}
           onAttack {
@@ -1008,7 +1008,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Icy Snow", {
-          text "30 damage. "
+          text "30 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1037,7 +1037,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP120, type:W, retreatCost:1) {
         weakness L
         move "Wave Splash", {
-          text "20 damage. "
+          text "20 damage."
           energyCost W
           attackRequirement {}
           onAttack {
@@ -1074,7 +1074,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Surf", {
-          text "80 damage. "
+          text "80 damage."
           energyCost W, C, C
           attackRequirement {}
           onAttack {
@@ -1094,7 +1094,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Surf", {
-          text "40 damage. "
+          text "40 damage."
           energyCost W, C
           attackRequirement {}
           onAttack {
@@ -1106,7 +1106,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
         move "Water Gun", {
-          text "10 damage. "
+          text "10 damage."
           energyCost W
           attackRequirement {}
           onAttack {
@@ -1114,7 +1114,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Bite", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1126,7 +1126,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Panpour", hp:HP100, type:W, retreatCost:1) {
         weakness L
         move "Water Gun", {
-          text "30 damage. "
+          text "30 damage."
           energyCost W
           attackRequirement {}
           onAttack {
@@ -1146,7 +1146,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness M
         move "Tackle", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1154,7 +1154,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Headbutt", {
-          text "20 damage. "
+          text "20 damage."
           energyCost W, C
           attackRequirement {}
           onAttack {
@@ -1197,7 +1197,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Frost Smash", {
-          text "90 damage. "
+          text "90 damage."
           energyCost W, C
           attackRequirement {}
           onAttack {
@@ -1209,7 +1209,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP070, type:W, retreatCost:2) {
         weakness M
         move "Chop", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1217,7 +1217,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Icicle", {
-          text "30 damage. "
+          text "30 damage."
           energyCost W, C
           attackRequirement {}
           onAttack {
@@ -1229,7 +1229,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Cubchoo", hp:HP140, type:W, retreatCost:3) {
         weakness M
         move "Slash", {
-          text "40 damage. "
+          text "40 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1257,7 +1257,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Wave Splash", {
-          text "20 damage. "
+          text "20 damage."
           energyCost W
           attackRequirement {}
           onAttack {
@@ -1314,7 +1314,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Hammer In", {
-          text "120 damage. "
+          text "120 damage."
           energyCost W, C, C
           attackRequirement {}
           onAttack {
@@ -1406,7 +1406,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Lightning Ball", {
-          text "110 damage. "
+          text "110 damage."
           energyCost L, L, C
           attackRequirement {}
           onAttack {
@@ -1418,7 +1418,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP070, type:L, retreatCost:2) {
         weakness F
         move "Slap", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1426,7 +1426,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Static Shock", {
-          text "20 damage. "
+          text "20 damage."
           energyCost L, C
           attackRequirement {}
           onAttack {
@@ -1483,7 +1483,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Electro Ball", {
-          text "70 damage. "
+          text "70 damage."
           energyCost L, C
           attackRequirement {}
           onAttack {
@@ -1495,7 +1495,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness M
         move "Mumble", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1503,7 +1503,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Moon Kick", {
-          text "20 damage. "
+          text "20 damage."
           energyCost P, C
           attackRequirement {}
           onAttack {
@@ -1571,7 +1571,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP080, type:P, retreatCost:2) {
         weakness M
         move "Sharp Fang", {
-          text "30 damage. "
+          text "30 damage."
           energyCost P, C
           attackRequirement {}
           onAttack {
@@ -1591,7 +1591,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Headbutt Bounce", {
-          text "130 damage. "
+          text "130 damage."
           energyCost P, P, C
           attackRequirement {}
           onAttack {
@@ -1603,7 +1603,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP210, type:P, retreatCost:2) {
         weakness M
         move "Magical Shot", {
-          text "30 damage. "
+          text "30 damage."
           energyCost P
           attackRequirement {}
           onAttack {
@@ -1657,7 +1657,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Rollout", {
-          text "30 damage. "
+          text "30 damage."
           energyCost P, C
           attackRequirement {}
           onAttack {
@@ -1665,7 +1665,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Hammer In", {
-          text "50 damage. "
+          text "50 damage."
           energyCost P, C, C
           attackRequirement {}
           onAttack {
@@ -1678,7 +1678,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Explosive Punch", {
-          text "80 damage. "
+          text "80 damage."
           energyCost P, C, C
           attackRequirement {}
           onAttack {
@@ -1686,7 +1686,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Golurk Hammer", {
-          text "180 damage. "
+          text "180 damage."
           energyCost P, C, C, C, C
           attackRequirement {}
           onAttack {
@@ -1707,7 +1707,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Gentle Slap", {
-          text "30 damage. "
+          text "30 damage."
           energyCost P, C
           attackRequirement {}
           onAttack {
@@ -1781,7 +1781,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Flop", {
-          text "20 damage. "
+          text "20 damage."
           energyCost P, C
           attackRequirement {}
           onAttack {
@@ -1819,7 +1819,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Claw Slash", {
-          text "30 damage. "
+          text "30 damage."
           energyCost P, C
           attackRequirement {}
           onAttack {
@@ -1862,7 +1862,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
         move "Scratch", {
-          text "20 damage. "
+          text "20 damage."
           energyCost F
           attackRequirement {}
           onAttack {
@@ -1882,7 +1882,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Mud Bomb", {
-          text "70 damage. "
+          text "70 damage."
           energyCost F, C
           attackRequirement {}
           onAttack {
@@ -1930,7 +1930,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness G
         move "Sand Spray", {
-          text "10 damage. "
+          text "10 damage."
           energyCost F
           attackRequirement {}
           onAttack {
@@ -1938,7 +1938,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Pierce", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1950,7 +1950,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Larvitar", hp:HP080, type:F, retreatCost:3) {
         weakness G
         move "Sand Spray", {
-          text "20 damage. "
+          text "20 damage."
           energyCost F
           attackRequirement {}
           onAttack {
@@ -2036,7 +2036,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Rock Throw", {
-          text "30 damage. "
+          text "30 damage."
           energyCost F, C
           attackRequirement {}
           onAttack {
@@ -2048,7 +2048,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP100, type:F, retreatCost:4) {
         weakness G
         move "Tackle", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2076,7 +2076,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Land Crush", {
-          text "150 damage. "
+          text "150 damage."
           energyCost F, F, F, C
           attackRequirement {}
           onAttack {
@@ -2108,7 +2108,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Bunnelby", hp:HP130, type:F, retreatCost:3) {
         weakness G
         move "Hammer In", {
-          text "90 damage. "
+          text "90 damage."
           energyCost F, C, C
           attackRequirement {}
           onAttack {
@@ -2116,7 +2116,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Land Crush", {
-          text "140 damage. "
+          text "140 damage."
           energyCost F, F, C, C
           attackRequirement {}
           onAttack {
@@ -2128,7 +2128,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP140, type:F, retreatCost:3) {
         weakness G
         move "Bite", {
-          text "30 damage. "
+          text "30 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2176,7 +2176,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Sludge Whirlpool", {
-          text "50 damage. "
+          text "50 damage."
           energyCost D, C, C
           attackRequirement {}
           onAttack {
@@ -2196,7 +2196,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Sludge Whirlpool", {
-          text "120 damage. "
+          text "120 damage."
           energyCost D, C, C, C
           attackRequirement {}
           onAttack {
@@ -2208,7 +2208,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness F
         move "Hang Down", {
-          text "10 damage. "
+          text "10 damage."
           energyCost D
           attackRequirement {}
           onAttack {
@@ -2216,7 +2216,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Sting", {
-          text "20 damage. "
+          text "20 damage."
           energyCost D, C
           attackRequirement {}
           onAttack {
@@ -2262,7 +2262,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP100, type:D, retreatCost:1) {
         weakness G
         move "Dark Cutter", {
-          text "70 damage. "
+          text "70 damage."
           energyCost D, D
           attackRequirement {}
           onAttack {
@@ -2291,7 +2291,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
         move "Dig Claws", {
-          text "10 damage. "
+          text "10 damage."
           energyCost D
           attackRequirement {}
           onAttack {
@@ -2316,7 +2316,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Slashing Claw", {
-          text "90 damage. "
+          text "90 damage."
           energyCost D, C, C
           attackRequirement {}
           onAttack {
@@ -2328,7 +2328,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness G
         move "Ram", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2340,7 +2340,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Deino", hp:HP100, type:D, retreatCost:2) {
         weakness G
         move "Corkscrew Punch", {
-          text "30 damage. "
+          text "30 damage."
           energyCost D, C
           attackRequirement {}
           onAttack {
@@ -2348,7 +2348,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Darkness Fang", {
-          text "70 damage. "
+          text "70 damage."
           energyCost D, D, C
           attackRequirement {}
           onAttack {
@@ -2365,7 +2365,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Jet Black Fangs", {
-          text "130 damage. "
+          text "130 damage."
           energyCost D, D, C
           attackRequirement {}
           onAttack {
@@ -2418,7 +2418,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
         move "Stampede", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2426,7 +2426,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Ram", {
-          text "20 damage. "
+          text "20 damage."
           energyCost D, C
           attackRequirement {}
           onAttack {
@@ -2458,7 +2458,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness G
         move "Tackle", {
-          text "10 damage. "
+          text "10 damage."
           energyCost D
           attackRequirement {}
           onAttack {
@@ -2518,7 +2518,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Tail Slap", {
-          text "30 damage. "
+          text "30 damage."
           energyCost D, C
           attackRequirement {}
           onAttack {
@@ -2550,7 +2550,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Sharp Fang", {
-          text "70 damage. "
+          text "70 damage."
           energyCost D, D
           attackRequirement {}
           onAttack {
@@ -2562,7 +2562,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP220, type:D, retreatCost:2) {
         weakness G
         move "Bite", {
-          text "40 damage. "
+          text "40 damage."
           energyCost D
           attackRequirement {}
           onAttack {
@@ -2641,7 +2641,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Cutting Wind", {
-          text "80 damage. "
+          text "80 damage."
           energyCost M, C, C
           attackRequirement {}
           onAttack {
@@ -2654,7 +2654,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Ram", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2662,7 +2662,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Headbutt", {
-          text "20 damage. "
+          text "20 damage."
           energyCost M, C
           attackRequirement {}
           onAttack {
@@ -2684,7 +2684,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Lunge Out", {
-          text "50 damage. "
+          text "50 damage."
           energyCost M, C, C
           attackRequirement {}
           onAttack {
@@ -2713,7 +2713,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
         }
         move "Gigaton Stomp", {
-          text "160 damage. "
+          text "160 damage."
           energyCost M, C, C, C
           attackRequirement {}
           onAttack {
@@ -2734,7 +2734,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Shell Attack", {
-          text "60 damage. "
+          text "60 damage."
           energyCost M, C
           attackRequirement {}
           onAttack {
@@ -2768,7 +2768,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Spinning Attack", {
-          text "60 damage. "
+          text "60 damage."
           energyCost M, C, C
           attackRequirement {}
           onAttack {
@@ -2781,7 +2781,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Simple Beam", {
-          text "60 damage. "
+          text "60 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -2820,7 +2820,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Strength", {
-          text "60 damage. "
+          text "60 damage."
           energyCost M, C, C
           attackRequirement {}
           onAttack {
@@ -2858,7 +2858,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Hammer In", {
-          text "100 damage. "
+          text "100 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -2870,7 +2870,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP110, type:C, retreatCost:2) {
         weakness F
         move "Horn Attack", {
-          text "60 damage. "
+          text "60 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -2939,7 +2939,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Ram", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2959,7 +2959,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Dig Claws", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -2979,7 +2979,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Claw Slash", {
-          text "120 damage. "
+          text "120 damage."
           energyCost C, C, C, C
           attackRequirement {}
           onAttack {
@@ -2992,7 +2992,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Gust", {
-          text "30 damage. "
+          text "30 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -3020,7 +3020,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Cat Kick", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -3040,7 +3040,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Moon Impact", {
-          text "90 damage. "
+          text "90 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -3061,7 +3061,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Heavy Storm", {
-          text "160 damage. "
+          text "160 damage."
           energyCost C, C, C, C
           attackRequirement {}
           onAttack {
@@ -3121,7 +3121,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Wing Attack", {
-          text "40 damage. "
+          text "40 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -3155,7 +3155,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Flap", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -3230,7 +3230,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Tackle", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -3256,7 +3256,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Peck", {
-          text "30 damage. "
+          text "30 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -3282,7 +3282,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Blasting Wind", {
-          text "120 damage. "
+          text "120 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
