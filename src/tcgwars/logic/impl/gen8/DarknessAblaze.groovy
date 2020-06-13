@@ -555,9 +555,16 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Synthesis", {
           text "Search your deck for a [G] Energy card and attach it to 1 of your Pokémon."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            def info = "Select a [G] Energy card."
+            def selectedEnergy = my.deck.search info, {basicEnergyFilter G}
+            if (selectedEnergy) {
+              def selectedPokemon = my.all.select "Select Pokémon to attach [G] Energy card to."
+              attachEnergy selectedPokemon, selectedEnergy.first()
+            }
           }
         }
         move "Flop", {
@@ -575,9 +582,13 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Captivate", {
           text "Choose 1 of your opponent’s Benched Pokémon and switch it with their Active Pokémon."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench : "Your opponent has no benched Pokémon"
+          }
           onAttack {
-
+            def info = "Select Pokémon to switch with opponent's Active Pokémon."
+            def selectedPokemon = opp.bench.select info
+            sw opp.active selectedPokemon
           }
         }
         move "Slap", {
@@ -595,9 +606,14 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Power Whip", {
           text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon for each Energy attached to this Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert self.cards.energyCount C : "$self.name has no Energy attached"
+          }
           onAttack {
-
+            def damageAmount = 20 * self.cards.energyCount C
+            def info = "Select Pokémon to deal $damageAmount damage to."
+            def selectedPokemon = opp.all.select info
+            damage damageAmount, selectedPokemon
           }
         }
         move "Setback Kick", {
@@ -606,6 +622,13 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
+            afterDamage {
+              if (confirm "Return an Energy attached to the Active $opp.active.name to your opponent's hand?") {
+                def info = "Select the Energy to return to the opponent's hand."
+                def selectedEnergy = defending.cards.filterByType(ENERGY).select info
+                if (selectedEnergy) selectedEnergy.moveTo opp.hand
+              }
+            }
           }
         }
       };
@@ -618,6 +641,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            switchYourActive
           }
         }
       };
@@ -629,7 +653,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 30
+            def filter = {it.pokemonGX || it.topPokemonCard.cardTypes.is(POKEMON_V) || it.topPokemonCard.cardTypes.is(VMAX)}
+            def gxAndV = opp.all.findAll {filter(it)}
+            damage 30 + 50 * gxAndV.size()
           }
         }
         move "Smash Turn", {
@@ -638,6 +664,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            switchYourActive
           }
         }
       };
