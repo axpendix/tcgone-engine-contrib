@@ -2809,27 +2809,28 @@ public enum UnseenForces implements LogicCardInfo {
           onActivate {r->
             if (r==PLAY_FROM_HAND && opp.bench && confirm("Use Darker Ring?")) {
               powerUsed()
-              sw opp.active, opp.bench.select("Choose your opponent's new active Pokémon.")
+              sw opp.active, opp.bench.select("Choose your opponent's new active Pokémon."), SRC_ABILITY
             }
           }
         }
         move "Black Cry", {
           text "20 damage. The Defending Pokémon can't retreat or use any Poké-Powers during your opponent's next turn."
           energyCost C
-          def pokepowerBlock
           onAttack {
             damage 20
 
             cantRetreat(defending)
-            delayed {
-              getter (IS_ABILITY_BLOCKED) { Holder h->
-                if (h.effect.target.owner != self.owner && h.effect.target.active && h.effect.ability instanceof PokePower) {
-                  h.object = true
+            targeted (defending) {
+              delayed {
+                getter (IS_ABILITY_BLOCKED) { Holder h->
+                  if (h.effect.target == defending && h.effect.ability instanceof PokePower) {
+                    h.object = true
+                  }
                 }
+                unregisterAfter 2
+                after SWITCH, defending, {unregister()}
+                after EVOLVE, defending, {unregister()}
               }
-              unregisterAfter 2
-              after SWITCH, defending, {unregister()}
-              after EVOLVE, defending, {unregister()}
             }
           }
         }
