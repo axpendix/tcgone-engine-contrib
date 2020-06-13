@@ -2396,21 +2396,21 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Blissful Support", {
           text "Once during your turn, when you play Blissey ex from your hand to evolve 1 of your Pokémon, you may discard all Energy cards attached to any number of your Pokémon and remove all damage counters from those Pokémon."
           onActivate {
-            checkLastTurn()
             if (it==PLAY_FROM_HAND && confirm("Use Blissful Support?")) {
               powerUsed()
 
-              my.all.findAll { it.numberOfDamageCounters && !it.cards.filterByType(ENERGY) }.each {
+              my.all.findAll { it.numberOfDamageCounters || !it.cards.filterByType(ENERGY) }.each {
                 healAll it, Source.SRC_ABILITY
               }
 
               def tar = true
               while (tar) {
-                tar = my.all.findAll { it.cards.filterByType(ENERGY) && it.numberOfDamageCounters }
+                tar = my.all.findAll { it.cards.filterByType(ENERGY) || it.numberOfDamageCounters }
                 if (!tar) break
-                def pcs = tar.select("Select a Pokémon to discard all Energy Cards from to heal off all damage. Cancel to stop", false)
+                def pcs = tar.select("Select a Pokémon to discard all Energy Cards from, and then heal off all damage it has. Cancel to stop", false)
                 if (!pcs) break
-                pcs.cards.filterByType(ENERGY).discard()
+                def energiesToDiscard = pcs.cards.filterByType(ENERGY)
+                if (energiesToDiscard) energiesToDiscard.discard()
                 healAll pcs, Source.SRC_ABILITY
               }
             }
@@ -2425,7 +2425,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def count = 0
             while (count < 3 && my.discard.filterByType(ENERGY)) {
-              attachEnergyFrom(my.discard, self)
+              attachEnergyFrom(basic: false, my.discard, self)
               count++
             }
           }
