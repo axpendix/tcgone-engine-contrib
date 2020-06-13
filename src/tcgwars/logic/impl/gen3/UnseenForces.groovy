@@ -2763,7 +2763,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 30
 
             afterDamage {
-              if (bg.stadiumInfoStruct && confirm("Discard the Stadium card?")) {
+              if (bg.stadiumInfoStruct) {
                 discard(bg.stadiumInfoStruct.stadiumCard)
               }
             }
