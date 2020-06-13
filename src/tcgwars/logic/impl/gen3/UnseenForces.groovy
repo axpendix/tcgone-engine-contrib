@@ -1331,7 +1331,7 @@ public enum UnseenForces implements LogicCardInfo {
         weakness L
         move "Bite", {
           text "20 damage."
-          energyCost C
+          energyCost C, C
           onAttack {
             damage 20
           }
@@ -1467,7 +1467,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
