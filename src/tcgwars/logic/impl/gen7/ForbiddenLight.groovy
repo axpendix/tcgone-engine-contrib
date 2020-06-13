@@ -574,9 +574,18 @@ public enum ForbiddenLight implements LogicCardInfo {
           bwAbility "Unnerve", {
             text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
             delayedA {
+              def power=false
+              before PLAY_TRAINER, {
+                if ((ef.item || ef.supporter) && bg.currentTurn==self.owner.opposite && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)) {
+                  power=true
+                }
+              }
+              after PLAY_TRAINER, {
+                power=false
+              }
               before null, self, Source.TRAINER_CARD, {
-                if (bg.currentThreadPlayerType != self.owner){
-                  bc "Unnerve prevent effect of item"
+                if (power) {
+                  bc "Unnerve prevents effects from Supporter or Item cards done to $self."
                   prevent()
                 }
               }
