@@ -371,7 +371,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
-            removeDamageCounterEqualToDamageDone
+            removeDamageCounterEqualToDamageDone()
           }
         }
       };
@@ -459,12 +459,12 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "If you played Bird Keeper from your hand during this turn, ignore all Energy in the attack costs of this Pokémon."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, self, {
-              if (bg.currentTurn == self.player && keyStore("Rowlet Sky Circus", self, null) == bg.turnCount) {
+              if (bg.currentTurn == self.owner && keyStore("Rowlet Sky Circus", self, null) == bg.turnCount) {
                 bc "Sky Circus ignores Energy cost for $ef.attacker's $ef.move"
                 def copy = ef.move.shallowCopy()
                 copy.energyCost.clear()
                 attack (copy as Move)
-                prevent
+                prevent()
               }
             }
           }
@@ -519,7 +519,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, self, {
               bg.dm().each{
-                if (it.from.owner != self.owner && (it.from.pokemonGX || it.from.topPokemonCard.cardTypes.is(POKEMON_V) && it.notNoEffect && it.dmg.value) {
+                if (it.from.owner != self.owner && (it.from.pokemonGX || it.from.topPokemonCard.cardTypes.is(POKEMON_V)) && it.notNoEffect && it.dmg.value) {
                   bc "Forest Camouflage prevents all damage from Pokémon V and Pokémon-GX"
                   it.dmg=hp(0)
                 }
@@ -534,7 +534,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 90
             if (opp.bench) {
-              def info = "Select 2 Pokémon to deal 20 damage to."
+              def info = "Select a Pokémon to deal 20 damage to."
               def selected = multiSelect opp.bench, 2, info
               selected.each{
                 damage 20, it
