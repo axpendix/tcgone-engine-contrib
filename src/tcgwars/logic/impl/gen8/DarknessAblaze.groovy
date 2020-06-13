@@ -698,7 +698,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-
+            apply BURNED
           }
         }
         move "Kindle", {
@@ -707,6 +707,12 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
+            afterDamage {
+              if (self.cards.energyCount(C)) {
+                discardSelfEnergy C
+                discardDefendingEnergy()
+              }
+            }
           }
         }
       };
