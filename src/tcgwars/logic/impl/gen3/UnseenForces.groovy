@@ -1785,7 +1785,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 10
             afterDamage {
-              flip { apply PARALYZED }
+              flip { applyAfterDamage PARALYZED }
             }
           }
         }
@@ -1811,10 +1811,10 @@ public enum UnseenForces implements LogicCardInfo {
         }
         move "Toxic Grip", {
           text "10 damage. The Defending Pokémon is now Poisoned."
-          energyCost L
+          energyCost F
           onAttack {
             damage 10
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
       };
