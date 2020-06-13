@@ -1909,7 +1909,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost G
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1920,10 +1920,10 @@ public enum UnseenForces implements LogicCardInfo {
           text "Search your discard pile for an Energy card, show it to your opponent, and put it into your hand."
           energyCost C
           attackRequirement {
-            assert my.discard.hasType(BASIC_ENERGY) : "No Basic Energy cards in Discard pile"
+            assert my.discard.hasType(ENERGY) : "There are no Energy cards in your discard pile"
           }
           onAttack {
-            my.discard.filterByType(BASIC_ENERGY).select().moveTo(my.hand)
+            my.discard.filterByType(ENERGY).select().moveTo(my.hand)
           }
         }
         move "Mud Slap", {
