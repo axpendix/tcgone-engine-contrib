@@ -539,13 +539,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.deck : "Your deck is empty"
           }
           onAttack {
-            def info = "Select a [G] Energy card."
-            def selectedEnergy = my.deck.search(info, basicEnergyFilter(G))
-            if (selectedEnergy) {
-              def selectedPokemon = my.all.select("Select Pokémon to attach [G] Energy card to.")
-              attachEnergy selectedPokemon, selectedEnergy.first()
-            }
-            shuffleDeck()
+            attachEnergyFrom type:G, my.deck, my.all
           }
         }
         move "Flop", {
