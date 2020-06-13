@@ -804,6 +804,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            apply BURNED
           }
         }
         move "Raging Flare", {
@@ -811,7 +812,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost R, R, C
           attackRequirement {}
           onAttack {
-            damage 80
+            damage 80 + 10 * self.numberOfDamageCounters
           }
         }
       };
