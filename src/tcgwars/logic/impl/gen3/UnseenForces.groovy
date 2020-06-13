@@ -1578,7 +1578,7 @@ public enum UnseenForces implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to == self && it.from.topPokemonCard.cardTypes.is(EX)) {
+                if (it.to == self && it.from.topPokemonCard.cardTypes.is(EX) && it.dmg.value && it.notNoEffect) {
                   bc "Shell Barricade prevents all damage"
                   it.dmg=hp(0)
                 }
@@ -1601,11 +1601,11 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Makeover", {
           text "Once during your turn (before your attack), you may discard a basic Energy card attached to 1 of your Pokémon (excluding Pokémon-ex). If you do, search your discard pile for a basic Energy card (excluding the one you discarded) and attach it to that Pokémon. This power can't be used if Smeargle is affected by a Special Condition."
           actionA {
-            checkLastTurn()
             checkNoSPC()
+            checkLastTurn()
 
             def validTargets = my.all.findAll{
-              it.cards.filterByType(BASIC_ENERGY) && !it.topPokemonCard.cardTypes.is(EX)
+              it.cards.filterByType(BASIC_ENERGY) && !it.EX
             }
             assert validTargets : "Your Non-ex Pokemon do not have Basic Energy cards."
             assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energies in you discard pile."
@@ -1616,7 +1616,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             def tar = pcs.cards.filterByType(BASIC_ENERGY).select("Choose the Basic Energy card to Discard.").discard()
 
-            attachEnergyFrom(my.discard, pcs)
+            attachEnergyFrom(basic: true, my.discard.getExcludedList(tar), pcs)
           }
         }
         move "Split Spiral Punch", {
@@ -1624,7 +1624,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            flip { apply CONFUSED }
+            flip { applyAfterDamage CONFUSED }
           }
         }
       };
