@@ -1492,7 +1492,7 @@ public enum UnseenForces implements LogicCardInfo {
         }
       };
       case QUAGSIRE_44:
-      return evolution (this, from:"Wooper", hp:HP080, type:R, retreatCost:2) {
+      return evolution (this, from:"Wooper", hp:HP080, type:F, retreatCost:2) {
         weakness G
         pokeBody "Dense", {
           text "Any damage done to Quagsire by attacks from your opponent's Evolved Pokémon is reduced by 20 (after applying Weakness and Resistance)."
@@ -1554,7 +1554,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
           onAttack {
             def maxSpace = Math.min(my.bench.freeBenchCount, 2)
-            my.deck.search(max:maxSpace, "Select $maxSpace Scyther or Scyther ex to put onto your Bench", { it.name.contains("Scyther") }).each {
+            my.deck.search(max:maxSpace, "Select $maxSpace Scyther or Scyther ex to put onto your Bench", { it.name == "Scyther" || it.name == "Scyther ex" }).each {
               my.deck.remove(it);
               benchPCS(it)
             }
