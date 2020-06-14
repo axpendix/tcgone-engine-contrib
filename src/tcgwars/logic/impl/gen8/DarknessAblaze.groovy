@@ -3137,6 +3137,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Sky Circus", {
           text "If you played Bird Keeper from your hand during this turn, ignore all Energy in the attack costs of this Pokémon."
           actionA {
+            //TODO: Check ROWLET_11 working, duplicate here
           }
         }
         move "Sharp Eyes", {
@@ -3210,6 +3211,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Sky Circus", {
           text "If you played Bird Keeper from your hand during this turn, ignore all Energy in the attack costs of this Pokémon."
           actionA {
+            //TODO: Check ROWLET_11 working, duplicate here
           }
         }
         move "Feather Slash", {
@@ -3218,6 +3220,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            if (my.hand && confirm("Discard a card from your hand? If you do, $thisMove will do 70 more damage.")) {
+              my.hand.select("Choose which card to discard").discard()
+              damage 70
+            }
           }
         }
       };
