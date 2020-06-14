@@ -1839,24 +1839,16 @@ public enum CosmicEclipse implements LogicCardInfo {
           resistance M, MINUS20
           bwAbility "Speed Cheer", {
             text "The attacks of your Pokémon-GX in play that evolve from Eevee cost [C] less. You can't apply more than 1 Speed Cheer Ability at a time."
-            delayedA {
-				      def eff
-				      register {
-					      eff = getter GET_MOVE_LIST, NORMAL, {h->
-                  PokemonCardSet pcs = h.effect.target
-                  if(pcs.owner==self.owner && pcs.pokemonGX && pcs.topPokemonCard.realEvolution && pcs.topPokemonCard.predecessor == "Eevee" && bg.currentTurn == self.owner && bg.em().retrieveObject("Speed_Cheer") != bg.turnCount){
-                    def list=[]
-                    for(move in h.object){
-                      def copy=move.shallowCopy()
-                      if (copy.energyCost.contains(C)) {
-                        copy.energyCost.remove(C)
-                      }
-                      list.add(copy)
-                    }
-                    h.object=list
-                    bg.em().storeObject("Speed Cheer", bg.turnCount)
-                  }
+            getterA GET_MOVE_LIST, {h->
+              PokemonCardSet pcs = h.effect.target
+              if(pcs.owner==self.owner && h.object.find{it.name=='Caturday'}){
+                def list=[]
+                for(move in h.object){
+                  def copy=move.shallowCopy()
+                  copy.energyCost.retainAll()
+                  list.add(copy)
                 }
+                h.object=list
               }
             }
           }
