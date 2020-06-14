@@ -3235,7 +3235,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 40
+            flip { damage 40 }
           }
         }
       };
@@ -3247,6 +3247,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
+            if(defending.cards.filterByType(POKEMON_TOOL)){
+              defending.cards.filterByType(POKEMON_TOOL).discard()
+            }
             damage 20
           }
         }
@@ -3256,6 +3259,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
+            afterDamage{
+              self.cards.moveTo(hand)
+              removePCS(self)
+            }
           }
         }
       };
