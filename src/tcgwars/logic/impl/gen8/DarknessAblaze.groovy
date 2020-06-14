@@ -2863,8 +2863,14 @@ public enum DarknessAblaze implements LogicCardInfo {
         resistance G, MINUS30
         bwAbility "Antibacterial Skin", {
           text "This Pokémon can’t be affected by Special Conditions."
-          actionA {
-          }
+            delayedA {
+              before APPLY_SPECIAL_CONDITION, {
+                if(e.getTarget(bg) == self){
+                  bc "Antibacterial Skin prevents $self from being ${ef.type}"
+                  prevent()
+                }
+              }
+            }
         }
         move "Revenge Stomp", {
           text "120+ damage. If any of your Benched Pokémon have any damage counters on them, this attack does 120 more damage."
@@ -2872,6 +2878,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
+            if (my.bench.find{ it.numberOfDamageCounters }) damage 120
           }
         }
       };
