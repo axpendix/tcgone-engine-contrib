@@ -2831,17 +2831,17 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-              delayed (priority: LAST) {
-                before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                    bc "Trap Bite activates"
-                    directDamage(120, ef.attacker as PokemonCardSet)
-                  }
+            delayed (priority: LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
+                  bc "Trap Bite activates"
+                  directDamage(120, ef.attacker as PokemonCardSet)
                 }
-                unregisterAfter 2
-                after SWITCH, self, {unregister()}
-                after EVOLVE, self, {unregister()}
               }
+              unregisterAfter 2
+              after SWITCH, self, {unregister()}
+              after EVOLVE, self, {unregister()}
+            }
           }
         }
       };
@@ -2864,14 +2864,14 @@ public enum DarknessAblaze implements LogicCardInfo {
         resistance G, MINUS30
         bwAbility "Antibacterial Skin", {
           text "This Pokémon can’t be affected by Special Conditions."
-            delayedA {
-              before APPLY_SPECIAL_CONDITION, {
-                if(e.getTarget(bg) == self){
-                  bc "Antibacterial Skin prevents $self from being ${ef.type}"
-                  prevent()
-                }
+          delayedA {
+            before APPLY_SPECIAL_CONDITION, {
+              if(e.getTarget(bg) == self){
+                bc "Antibacterial Skin prevents $self from being ${ef.type}"
+                prevent()
               }
             }
+          }
         }
         move "Revenge Stomp", {
           text "120+ damage. If any of your Benched Pokémon have any damage counters on them, this attack does 120 more damage."
