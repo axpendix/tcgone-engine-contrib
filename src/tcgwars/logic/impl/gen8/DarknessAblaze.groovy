@@ -2758,7 +2758,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost M
           attackRequirement {}
           onAttack {
-            deck.search(max: 1, "Choose a [M] Pokémon", pokemonTypeFilter(M)).showToOpponent.moveTo(my.hand)
+            deck.search(max: 1, "Choose a [M] Pokémon", pokemonTypeFilter(M)).showToOpponent("Call for Backup - [M] Pokémon chosen by your opponent").moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -2772,7 +2772,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost M
           attackRequirement {}
           onAttack {
-            deck.search(max: 1, "Choose a [M] Pokémon", pokemonTypeFilter(M)).showToOpponent.moveTo(my.hand)
+            deck.search(max: 1, "Choose a [M] Pokémon", pokemonTypeFilter(M)).showToOpponent("Call for Backup - [M] Pokémon chosen by your opponent").moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -2978,7 +2978,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           delayedA (priority: LAST) {
             before (KNOCKOUT, self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && opp.deck) {
-                  opp.deck.subList(0,2).discard()
+                bc "One Last Dig - 2 cards will be discarded from the top of the opponent's deck"
+                opp.deck.subList(0,2).discard()
               }
             }
           }
