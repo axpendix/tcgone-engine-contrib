@@ -948,6 +948,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            apply BURNED
           }
         }
       };
