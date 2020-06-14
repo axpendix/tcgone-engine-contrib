@@ -221,7 +221,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           pokeBody "Darkest Impulse", {
             text "As long as Dark Ampharos is in play, whenever your opponent plays an Evolution card from his or her hand to evolve 1 of his or her Pokémon, put 2 damage counters on that Pokémon. You can’t use more than 1 Darkest Impulse Poké-Body each turn."
             delayedA {
-              boolean flag = false
+              def flag = false
               before EVOLVE, {
                 flag = (ef.evolutionCard as Card).player.pbg.hand.contains(ef.evolutionCard)
               }
