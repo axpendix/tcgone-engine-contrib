@@ -3054,9 +3054,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Draw Up", {
           text "Search your deck for an Energy card, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "You have no cards left in your deck"
+          }
           onAttack {
-
+            my.deck.search("Put Energy Card into your hand",cardTypeFilter(ENERGY)).showToOpponent().moveTo(my.hand)
           }
         }
         move "Cat Kick", {
@@ -3074,9 +3076,15 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Captivating Tail", {
           text "Switch your opponent’s Active Pokémon with 1 of their Benched Pokémon. The new Active Pokémon is now Confused."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench : "Opponent has no Benched Pokémon."
+          }
           onAttack {
-
+            if (opp.bench) {
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              sw defending, target
+              apply CONFUSED, target
+            }
           }
         }
         move "Moon Impact", {
