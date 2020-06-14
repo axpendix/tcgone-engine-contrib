@@ -3324,7 +3324,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 40
+            flip 3, { damage 40 }
           }
         }
       };
@@ -3334,7 +3334,17 @@ public enum DarknessAblaze implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Flying Taxi", {
           text "Once during your turn when you play this card from your hand to evolve a Pokémon, you may choose 1 of your Pokémon (excluding any Corviknight). Return that Pokémon and all cards attached to it to your hand."
-          actionA {
+          onActivate { r->
+            if (r==PLAY_FROM_HAND) {
+              if (my.all.any{ it.name != "Corviknight" } && confirm("Flying Taxi - Return one of your Pokémon (and all cards attached to it) back to your hand?")){
+                def pcs = opp.all.findAll { it.name != "Corviknight" }.select("Which Pokemon to bring back to your hand?")
+
+                targeted (pcs, SRC_ABILITY) {
+                  pcs.cards.moveTo(my.hand)
+                  removePCS(pcs)
+                }
+              }
+            }
           }
         }
         move "Blasting Wind", {
