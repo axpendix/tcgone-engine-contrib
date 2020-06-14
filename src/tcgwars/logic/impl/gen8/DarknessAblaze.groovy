@@ -912,7 +912,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-
+            apply BURNED
           }
         }
       };
