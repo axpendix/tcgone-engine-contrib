@@ -2552,7 +2552,7 @@ public enum UnseenForces implements LogicCardInfo {
             powerUsed()
             def pcs = my.all.select()
             attachEnergyFrom(type:G, my.hand, pcs)
-            pcs.damage += hp(10)
+            heal 10, pcs
           }
         }
         move "Razor Leaf", {
