@@ -1866,7 +1866,7 @@ public enum UnseenForces implements LogicCardInfo {
         weakness G
         move "Retaliate", {
           text "10x damage. Does 10 damage times the number of damage counters on Larvitar."
-          energyCost R
+          energyCost L
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
