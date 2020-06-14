@@ -1032,7 +1032,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost W, C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 20 * my.discard.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.size()
           }
         }
       };
@@ -1768,7 +1768,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost P, C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 20 * my.discard.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.size()
           }
         }
       };
@@ -1857,7 +1857,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 20 * my.discard.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.size()
           }
         }
       };
@@ -2892,15 +2892,14 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Retaliate", {
           text "30+ damage. If any of your Pokémon were Knocked Out by damage from an opponent’s attack during their last turn, this attack does 90 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
+            if (my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1) damage 90
           }
         }
         move "Hammer In", {
           text "100 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -2924,9 +2923,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Signs of Evolution", {
           text "Search your deck for a Pokémon that evolves from Eevee, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "There are no cards left in your deck"
+          }
           onAttack {
-
+            my.deck.search("Select a Pokémon that evolves from Eevee.", {it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"})showToOpponent().moveTo(my.hand)
           }
         }
         move "Kick Attack", {
@@ -2934,7 +2935,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 30
+            flip { damage 30 }
           }
         }
       };
@@ -2944,10 +2945,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Call for Family", {
           text "Search your deck for a Basic Pokémon and put it on your Bench. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily basic:true, 1, delegate
         }
       };
       case FURRET_144:
@@ -2956,9 +2954,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Feelin’ Fine", {
           text "Draw 3 cards."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "There are no cards left in your deck"
+          }
           onAttack {
-
+            draw 3
           }
         }
         move "Tail Smash", {
@@ -2966,7 +2966,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 90
+            flip { damage 90 }
           }
         }
       };
@@ -2975,7 +2975,12 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness F
         bwAbility "One Last Dig", {
           text "If this Pokémon is Knocked Out by damage from an opponent’s attack, discard the top 2 cards of your opponent’s deck."
-          actionA {
+          delayedA (priority: LAST) {
+            before (KNOCKOUT, self) {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && opp.deck) {
+                  opp.deck.subList(0,2).discard()
+              }
+            }
           }
         }
         move "Ram", {
@@ -2995,7 +3000,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            cantRetreat defending
           }
         }
         move "Dig Claws", {
@@ -3016,6 +3021,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            if (opp.deck) {
+              opp.deck.subList(0,1).discard()
+            }
           }
         }
         move "Claw Slash", {
@@ -3045,6 +3053,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
+            afterDamage{
+              self.cards.filterByType(ENERGY).select("Select an Energy to put back into your hand.").moveTo(my.hand)
+            }
           }
         }
       };
@@ -3054,9 +3065,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Draw Up", {
           text "Search your deck for an Energy card, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "You have no cards left in your deck"
+          }
           onAttack {
-
+            my.deck.search("Put Energy Card into your hand",cardTypeFilter(ENERGY)).showToOpponent().moveTo(my.hand)
           }
         }
         move "Cat Kick", {
@@ -3074,9 +3087,15 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Captivating Tail", {
           text "Switch your opponent’s Active Pokémon with 1 of their Benched Pokémon. The new Active Pokémon is now Confused."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench : "Opponent has no Benched Pokémon."
+          }
           onAttack {
-
+            if (opp.bench) {
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              sw defending, target
+              apply CONFUSED, target
+            }
           }
         }
         move "Moon Impact", {
@@ -3097,7 +3116,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-
+            opp.all.each{ damage 30 }
           }
         }
         move "Heavy Storm", {
@@ -3118,7 +3137,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            multiDamage(opp.all,2,40)
           }
         }
         move "Max Wing", {
@@ -3127,6 +3146,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 240
+            cantUseAttack(thisMove, self)
           }
         }
       };
@@ -3137,14 +3157,18 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Sky Circus", {
           text "If you played Bird Keeper from your hand during this turn, ignore all Energy in the attack costs of this Pokémon."
           actionA {
+            //TODO: Check ROWLET_11 working, duplicate here
           }
         }
         move "Sharp Eyes", {
           text "Search your deck for any 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "There are no cards left in your deck"
+          }
           onAttack {
-
+            deck.select(count: 2).moveTo(hidden: true, hand)
+            shuffleDeck()
           }
         }
       };
@@ -3158,6 +3182,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { damage 20 }
           }
         }
         move "Wing Attack", {
@@ -3179,6 +3204,20 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            afterDamage{
+              if (my.bench && confirm("Do you want to move as many Energy cards attached to your Pokémon as you like to any of your other Pokémon?"))
+              while (true) {
+                def pl = (my.all.findAll {it.cards.filterByType(ENERGY)})
+                if (!pl) break;
+                def src = pl.select("Source for energy (cancel to stop)", false)
+                if (!src) break;
+                def card=src.cards.filterByType(ENERGY).select("Energy to move").first()
+
+                def tar=my.all.getExcludedList(src).select("Target for energy (cancel to stop)", false)
+                if (!tar) break;
+                energySwitch(src, tar, card)
+              }
+            }
           }
         }
         move "Brave Bird", {
@@ -3187,6 +3226,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 170
+            damage 30, self
           }
         }
       };
@@ -3210,6 +3250,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Sky Circus", {
           text "If you played Bird Keeper from your hand during this turn, ignore all Energy in the attack costs of this Pokémon."
           actionA {
+            //TODO: Check ROWLET_11 working, duplicate here
           }
         }
         move "Feather Slash", {
@@ -3218,6 +3259,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            if (my.hand && confirm("Discard a card from your hand? If you do, $thisMove will do 70 more damage.")) {
+              my.hand.select("Choose which card to discard").discard()
+              damage 70
+            }
           }
         }
       };
@@ -3229,7 +3274,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 40
+            flip { damage 40 }
           }
         }
       };
@@ -3241,6 +3286,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
+            targeted(defending) {
+              defending.cards.filterByType(POKEMON_TOOL).discard()
+            }
             damage 20
           }
         }
@@ -3250,6 +3298,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
+            afterDamage{
+              self.cards.moveTo(hand)
+              removePCS(self)
+            }
           }
         }
       };
@@ -3261,7 +3313,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 20 * my.discard.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.size()
           }
         }
       };
@@ -3287,6 +3339,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
+            targeted(defending) {
+              defending.cards.filterByType(POKEMON_TOOL).discard()
+            }
             damage 10
           }
         }
@@ -3308,7 +3363,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 40
+            flip 3, { damage 40 }
           }
         }
       };
@@ -3318,7 +3373,17 @@ public enum DarknessAblaze implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Flying Taxi", {
           text "Once during your turn when you play this card from your hand to evolve a Pokémon, you may choose 1 of your Pokémon (excluding any Corviknight). Return that Pokémon and all cards attached to it to your hand."
-          actionA {
+          onActivate { r->
+            if (r==PLAY_FROM_HAND) {
+              if (my.all.any{ it.name != "Corviknight" } && confirm("Flying Taxi - Return one of your Pokémon (and all cards attached to it) back to your hand?")){
+                def pcs = opp.all.findAll { it.name != "Corviknight" }.select("Which Pokemon to bring back to your hand?")
+
+                targeted (pcs, SRC_ABILITY) {
+                  pcs.cards.moveTo(my.hand)
+                  removePCS(pcs)
+                }
+              }
+            }
           }
         }
         move "Blasting Wind", {
