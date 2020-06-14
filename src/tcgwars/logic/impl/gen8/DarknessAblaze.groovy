@@ -3152,9 +3152,12 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Sharp Eyes", {
           text "Search your deck for any 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "There are no cards left in your deck"
+          }
           onAttack {
-
+            deck.select(count: 2).moveTo(hidden: true, hand)
+            shuffleDeck()
           }
         }
       };
@@ -3168,6 +3171,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { damage 20 }
           }
         }
         move "Wing Attack", {
@@ -3189,6 +3193,20 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            afterDamage{
+              if (my.bench && confirm("Do you want to move as many Energy cards attached to your Pokémon as you like to any of your other Pokémon?"))
+              while (true) {
+                def pl = (my.all.findAll {it.cards.filterByType(ENERGY)})
+                if (!pl) break;
+                def src = pl.select("Source for energy (cancel to stop)", false)
+                if (!src) break;
+                def card=src.cards.filterByType(ENERGY).select("Energy to move").first()
+
+                def tar=my.all.getExcludedList(src).select("Target for energy (cancel to stop)", false)
+                if (!tar) break;
+                energySwitch(src, tar, card)
+              }
+            }
           }
         }
         move "Brave Bird", {
@@ -3197,6 +3215,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 170
+            damage 30, self
           }
         }
       };
