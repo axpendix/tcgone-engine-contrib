@@ -1032,7 +1032,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost W, C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 20 * my.discard.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.size()
           }
         }
       };
@@ -1768,7 +1768,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost P, C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 20 * my.discard.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.size()
           }
         }
       };
@@ -1857,7 +1857,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 20 * my.discard.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.size()
           }
         }
       };
@@ -3274,7 +3274,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 20 * my.discard.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.size()
           }
         }
       };
