@@ -896,7 +896,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 110
-            if (it.cards.energyCount(W)) {
+            def info = "Discard all [W] Energy from this Pokémon to do 60 more damage?"
+            if (self.cards.energyCount(W) && confirm(info)) {
               discardAllSelfEnergy W
               damage 60
             }
