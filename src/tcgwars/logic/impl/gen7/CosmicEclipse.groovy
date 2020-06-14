@@ -507,7 +507,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               delayed {
                 before ENERGY_COST_CALCULATOR, {
-                  if((self.owner.active.types.contains(G) || self.owner.active.types.contains(R)) && bg.currentTurn == self.owner) {
+                  if((self.owner.pbg.active.types.contains(G) || self.owner.pbg.active.types.contains(R)) && bg.currentTurn == self.owner) {
                     bc "Solar Power ignores Energy cost for $ef.attacker's $ef.move"
                     prevent()
                   }
