@@ -505,16 +505,24 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "During your next turn, ignore all Energy in the attack costs of [G] Pokémon and [R] Pokémon. (This includes Pokémon that come into play on that turn.)"
             energyCost C, C
             onAttack {
-              getter GET_MOVE_LIST, NORMAL, {h->
-                PokemonCardSet pcs = h.effect.target
-                if(bg.currentTurn == self.owner && (pcs.types.contains(G)||pcs.types.contains(R)) && pcs.owner == self.owner){
-                  def list=[]
-                  for(move in h.object){
-                    def copy=move.shallowCopy()
-                    copy.energyCost.retainAll()
-                    list.add(copy)
+              delayed {
+				        def eff
+				        register {
+					        eff = getter GET_MOVE_LIST, NORMAL, {h->
+                    PokemonCardSet pcs = h.effect.target
+                    if(bg.currentTurn == self.owner && (pcs.types.contains(G)||pcs.types.contains(R)) && pcs.owner == self.owner){
+                      def list=[]
+                      for(move in h.object){
+                        def copy=move.shallowCopy()
+                        copy.energyCost.retainAll()
+                        list.add(copy)
+                      }
+                      h.object=list
+                    }
                   }
-                  h.object=list
+                }
+                unregister {
+                  eff.unregister()
                 }
                 unregisterAfter 3
               }
@@ -1831,19 +1839,24 @@ public enum CosmicEclipse implements LogicCardInfo {
           resistance M, MINUS20
           bwAbility "Speed Cheer", {
             text "The attacks of your Pokémon-GX in play that evolve from Eevee cost [C] less. You can't apply more than 1 Speed Cheer Ability at a time."
-            getterA GET_MOVE_LIST, NORMAL, {h->
-              PokemonCardSet pcs = h.effect.target
-              if(pcs.owner==self.owner && pcs.pokemonGX && pcs.topPokemonCard.realEvolution && pcs.topPokemonCard.predecessor == "Eevee" && bg.currentTurn == self.owner && bg.em().retrieveObject("Speed_Cheer") != bg.turnCount){
-                def list=[]
-                for(move in h.object){
-                  def copy=move.shallowCopy()
-                  if (copy.energyCost.contains(C)) {
-                    copy.energyCost.remove(C)
+            delayedA {
+				      def eff
+				      register {
+					      eff = getter GET_MOVE_LIST, NORMAL, {h->
+                  PokemonCardSet pcs = h.effect.target
+                  if(pcs.owner==self.owner && pcs.pokemonGX && pcs.topPokemonCard.realEvolution && pcs.topPokemonCard.predecessor == "Eevee" && bg.currentTurn == self.owner && bg.em().retrieveObject("Speed_Cheer") != bg.turnCount){
+                    def list=[]
+                    for(move in h.object){
+                      def copy=move.shallowCopy()
+                      if (copy.energyCost.contains(C)) {
+                        copy.energyCost.remove(C)
+                      }
+                      list.add(copy)
+                    }
+                    h.object=list
+                    bg.em().storeObject("Speed Cheer", bg.turnCount)
                   }
-                  list.add(copy)
                 }
-                h.object=list
-                bg.em().storeObject("Speed Cheer", bg.turnCount)
               }
             }
           }
