@@ -3105,7 +3105,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-
+            opp.all.each{ damage 30 }
           }
         }
         move "Heavy Storm", {
@@ -3126,7 +3126,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            multiDamage(opp.all,2,40)
           }
         }
         move "Max Wing", {
@@ -3135,6 +3135,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 240
+            cantUseAttack(thisMove, self)
           }
         }
       };
