@@ -958,7 +958,13 @@ public enum DarknessAblaze implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Scorching Feather", {
           text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack, the Attacking Pokémon is now Burned."
-          actionA {
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
+                bc "Scorching Feather activates"
+                apply BURNED, ef.attacker
+              }
+            }
           }
         }
         move "Mach Flight", {
