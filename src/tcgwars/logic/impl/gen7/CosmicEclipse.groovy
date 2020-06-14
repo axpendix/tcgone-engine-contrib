@@ -1839,7 +1839,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           resistance M, MINUS20
           bwAbility "Speed Cheer", {
             text "The attacks of your Pokémon-GX in play that evolve from Eevee cost [C] less. You can't apply more than 1 Speed Cheer Ability at a time."
-            getterA GET_MOVE_LIST, {h->
+            getterA GET_MOVE_LIST, BEFORE_LAST, {h->
               PokemonCardSet pcs = h.effect.target
               if(pcs.owner==self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee" && bg.currentTurn == self.owner && bg.em().retrieveObject("Speed_Cheer") != bg.turnCount){
                 def list=[]
