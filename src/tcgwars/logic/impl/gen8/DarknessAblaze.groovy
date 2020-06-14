@@ -986,7 +986,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            if (self.cards.energyCount(C) confirm("Discard an Energy from $self to discard an energy from $defending?")) {
+            if (self.cards.energyCount(C) confirm("Discard an Energy from $self.name to discard an energy from $defending.name?")) {
               discardSelfEnergy C
               discardDefendingEnergy()
             }
