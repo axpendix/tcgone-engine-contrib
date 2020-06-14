@@ -2795,9 +2795,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Clockwork", {
-          text "200 damage. If there are no Klink or Klang on your Bench, this attack does nothing."
+          text "200 damage. If you don't have Klink and Klang on your Bench, this attack does nothing."
           energyCost M, C, C
           attackRequirement {
+            //TODO: This should be a soft requirement.
             assert my.bench.any({ it.name == "Klink" }) : "You have no Klink on your bench."
             assert my.bench.any({ it.name == "Klang" }) : "You have no Klang on your bench."
           }
