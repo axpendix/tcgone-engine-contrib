@@ -507,7 +507,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               getter GET_MOVE_LIST, {h->
                 PokemonCardSet pcs = h.effect.target
-                if(bg.currentTurn == self.owner && (pcs.types.contains(G)||pcs.types.contains(R))){
+                if(bg.currentTurn == self.owner && (pcs.types.contains(G)||pcs.types.contains(R)) && pcs.owner == self.owner){
                   def list=[]
                   for(move in h.object){
                     def copy=move.shallowCopy()
