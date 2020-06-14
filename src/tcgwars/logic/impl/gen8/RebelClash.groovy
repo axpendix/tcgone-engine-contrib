@@ -2007,7 +2007,7 @@ public enum RebelClash implements LogicCardInfo {
           text "If this Pokemon is your Active Pokemon and is Knocked Out by damage from an opponent’s attack, flip a coin. If heads, the Attacking Pokemon is Knocked Out."
           delayedA (priority: LAST) {
             before (KNOCKOUT, self) {
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active != null && self.owner.opposite.pbg.active.inPlay) {
+              if ((ef as Knockout).byDamageFromAttack && self.active && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active != null && self.owner.opposite.pbg.active.inPlay) {
                 flip "Perish Body", {
                   new Knockout(self.owner.opposite.pbg.active).run(bg)
                 }
