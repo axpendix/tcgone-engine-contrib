@@ -2731,6 +2731,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            onAttack {
+              damage 10
+              flip 3,{},{},[1:{damage 20},2:{damage 70},3:{damage 140}]
+            }
           }
         }
         move "Shell Attack", {
