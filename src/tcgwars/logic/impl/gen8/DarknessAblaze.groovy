@@ -2892,15 +2892,14 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Retaliate", {
           text "30+ damage. If any of your Pokémon were Knocked Out by damage from an opponent’s attack during their last turn, this attack does 90 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
+            if (my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1) damage 90
           }
         }
         move "Hammer In", {
           text "100 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -2924,9 +2923,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Signs of Evolution", {
           text "Search your deck for a Pokémon that evolves from Eevee, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "There are no cards left in your deck"
+          }
           onAttack {
-
+            my.deck.search("Select a Pokémon that evolves from Eevee.", {it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"})showToOpponent().moveTo(my.hand)
           }
         }
         move "Kick Attack", {
@@ -2934,7 +2935,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 30
+            flip { damage 30 }
           }
         }
       };
@@ -2944,10 +2945,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Call for Family", {
           text "Search your deck for a Basic Pokémon and put it on your Bench. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily basic:true, 1, delegate
         }
       };
       case FURRET_144:
@@ -2956,9 +2954,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Feelin’ Fine", {
           text "Draw 3 cards."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "There are no cards left in your deck"
+          }
           onAttack {
-
+            draw 3
           }
         }
         move "Tail Smash", {
@@ -2966,7 +2966,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 90
+            flip { damage 90 }
           }
         }
       };
@@ -2975,7 +2975,12 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness F
         bwAbility "One Last Dig", {
           text "If this Pokémon is Knocked Out by damage from an opponent’s attack, discard the top 2 cards of your opponent’s deck."
-          actionA {
+          delayedA (priority: LAST) {
+            before (KNOCKOUT, self) {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && opp.deck) {
+                  opp.deck.subList(0,2).discard()
+              }
+            }
           }
         }
         move "Ram", {
