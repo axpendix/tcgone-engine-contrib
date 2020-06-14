@@ -2269,7 +2269,7 @@ public enum UnseenForces implements LogicCardInfo {
         }
       };
       case POKEMON_REVERSAL_88:
-      return copy (KalosStarterSet.POKEMON_CATCHER_36, this)
+      return copy (FireRedLeafGrean.POKEMON_REVERSAL_97, this)
       case PROFESSOR_ELM_S_TRAINING_METHOD_89:
       return copy(HeartgoldSoulsilver.PROFESSOR_ELM_S_TRAINING_METHOD_100, this)
       case PROTECTIVE_ORB_90:
