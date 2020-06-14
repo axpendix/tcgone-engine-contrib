@@ -2350,7 +2350,7 @@ public enum UnseenForces implements LogicCardInfo {
       case POTION_95:
       return copy (FireRedLeafGreen.POTION_101, this)
       case DARKNESS_ENERGY_96:
-      return copy (RubySapphire.DARKNESS_ENERGY_93, this);
+      return copy (Emerald.DARKNESS_ENERGY_86, this);
       case METAL_ENERGY_97:
       return copy (RubySapphire.METAL_ENERGY_94, this);
       case BOOST_ENERGY_98:
