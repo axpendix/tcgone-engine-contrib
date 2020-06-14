@@ -2995,7 +2995,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            cantRetreat defending
           }
         }
         move "Dig Claws", {
@@ -3016,6 +3016,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            if (opp.deck) {
+              opp.deck.subList(0,1).discard()
+            }
           }
         }
         move "Claw Slash", {
@@ -3045,6 +3048,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
+            afterDamage{
+              self.cards.filterByType(ENERGY).select("Select an Energy to put back into your hand.").moveTo(my.hand)
+            }
           }
         }
       };
