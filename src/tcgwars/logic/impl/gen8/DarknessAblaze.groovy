@@ -539,13 +539,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.deck : "Your deck is empty"
           }
           onAttack {
-            def info = "Select a [G] Energy card."
-            def selectedEnergy = my.deck.search(info, basicEnergyFilter(G))
-            if (selectedEnergy) {
-              def selectedPokemon = my.all.select("Select Pokémon to attach [G] Energy card to.")
-              attachEnergy selectedPokemon, selectedEnergy.first()
-            }
-            shuffleDeck()
+            attachEnergyFrom type:G, my.deck, my.all
           }
         }
         move "Flop", {
@@ -750,10 +744,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Call for Family", {
           text "Search your deck for a Basic Pokémon and put it on your Bench. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily basic:true, 1, delegate
         }
         move "Live Coal", {
           text "10 damage. "
@@ -781,6 +772,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            apply BURNED
           }
         }
       };
@@ -789,7 +781,8 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness W
         bwAbility "Double Type", {
           text "This Pokémon is both [R] and [F] type."
-          actionA {
+          getterA GET_POKEMON_TYPE, self, { h->
+            h.object.add(F)
           }
         }
         move "Turbo Drive", {
@@ -798,6 +791,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 130
+            attachEnergyFrom basic:true, my.discard, my.bench
           }
         }
       };
@@ -810,6 +804,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            apply BURNED
           }
         }
         move "Raging Flare", {
@@ -817,7 +812,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost R, R, C
           attackRequirement {}
           onAttack {
-            damage 80
+            damage 80 + 10 * self.numberOfDamageCounters
           }
         }
       };
@@ -827,9 +822,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Quick Draw", {
           text "Draw a card."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            draw 1
           }
         }
         move "Combustion", {
@@ -878,6 +875,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 110
+            cantAttackNextTurn self
           }
         }
       };
@@ -898,6 +896,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 110
+            if (it.cards.energyCount(W)) {
+              discardAllSelfEnergy W
+              damage 60
+            }
           }
         }
       };
