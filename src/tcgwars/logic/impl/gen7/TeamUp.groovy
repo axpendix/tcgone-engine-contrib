@@ -3087,11 +3087,13 @@ public enum TeamUp implements LogicCardInfo {
             text "20+ damage. Before doing damage, discard all Pokémon Tool cards from your opponent's Active Pokémon. If you discarded a Pokémon Tool card in this way, this attack does 70 more damage."
             energyCost C
             onAttack{
-              damage 20
-              if(defending.cards.filterByType(POKEMON_TOOL)){
-                defending.cards.filterByType(POKEMON_TOOL).discard()
-                damage 70
+              targeted(defending) {
+                if(defending.cards.filterByType(POKEMON_TOOL)){
+                  defending.cards.filterByType(POKEMON_TOOL).discard()
+                  damage 70
+                }
               }
+              damage 20
             }
           }
         };
