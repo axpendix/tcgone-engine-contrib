@@ -922,7 +922,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Scorch Wounds", {
           text "80 damage. If your opponent’s Active Pokémon has no damage counters on it, this attack does nothing."
           energyCost R
-          attackRequirement {}
+          attackRequirement {
+            assert opp.active.numberOfDamageCounters : "The defending Pokémon has no damage counters on it"
+          }
           onAttack {
             damage 80
           }
