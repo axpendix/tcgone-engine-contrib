@@ -2755,7 +2755,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost M
           attackRequirement {}
           onAttack {
-
+            deck.search(max: 1, "Choose a [M] Pokémon", pokemonTypeFilter(M)).moveTo(my.hand)
+            shuffleDeck()
           }
         }
       };
@@ -2768,7 +2769,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost M
           attackRequirement {}
           onAttack {
-
+            deck.search(max: 1, "Choose a [M] Pokémon", pokemonTypeFilter(M)).moveTo(my.hand)
+            shuffleDeck()
           }
         }
         move "Spinning Attack", {
@@ -2795,7 +2797,10 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Clockwork", {
           text "200 damage. If there are no Klink or Klang on your Bench, this attack does nothing."
           energyCost M, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.any({ it.name == "Klink" }) : "You have no Klink on your bench."
+            assert my.bench.any({ it.name == "Klang" }) : "You have no Klang on your bench."
+          }
           onAttack {
             damage 200
           }
