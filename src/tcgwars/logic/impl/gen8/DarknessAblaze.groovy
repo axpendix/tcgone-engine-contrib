@@ -3605,7 +3605,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         getEnergyTypesOverride {
-          return [[R] as Set]
+          if (self) return [[R] as Set]
+          else return [[] as Set]
         }
         onRemoveFromPlay {
           eff.unregister()
@@ -3623,7 +3624,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         getEnergyTypesOverride {
-          return [[D] as Set]
+          if (self) return [[D] as Set]
+          else return [[] as Set]
         }
         onRemoveFromPlay {
           eff.unregister()
@@ -3646,7 +3648,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         getEnergyTypesOverride {
-          return [[C] as Set]
+          if (self) return [[C] as Set]
+          else return [[] as Set]
         }
         onRemoveFromPlay {
           eff.unregister()
