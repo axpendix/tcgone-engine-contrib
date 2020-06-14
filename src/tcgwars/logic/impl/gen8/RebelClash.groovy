@@ -3977,7 +3977,8 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         getEnergyTypesOverride {
-          return [[C] as Set]
+          if (self) return [[C] as Set]
+          else return [[] as Set]
         }
       };
       case HORROR_PSYCHIC_ENERGY_172:
@@ -3998,7 +3999,8 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         getEnergyTypesOverride {
-          return[[P] as Set]
+          if (self) return[[P] as Set]
+          else return [[] as Set]
         }
         onRemoveFromPlay {
           eff.unregister()
@@ -4013,11 +4015,12 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         getEnergyTypesOverride {
-          return[[L] as Set]
+          if (self) return [[L] as Set]
+          else return [[] as Set]
         }
       };
       case TWIN_ENERGY_174:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[C, C]]) {
         text "This card provides 2 [C] Energy. If this card is attached to a Pokemon V or Pokemon GX, this card provides 1 [C] Energy instead."
         onPlay {reason->
         }

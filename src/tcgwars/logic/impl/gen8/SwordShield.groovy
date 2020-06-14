@@ -3578,7 +3578,7 @@ public enum SwordShield implements LogicCardInfo {
         }
       };
       case AURORA_ENERGY_186:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[]]) {
         text "You can attach this card to 1 of your Pokémon only if you discard another card from your hand." +
           "As long as this card is attached to a Pokémon, it provides every type of Energy but provides only 1 Energy at a time."
         typeImagesOverride = [RAINBOW]
@@ -3588,11 +3588,8 @@ public enum SwordShield implements LogicCardInfo {
           }
         }
         getEnergyTypesOverride {
-          if (self != null) {
-            return [[R, D, F, G, W, Y, L, M, P] as Set]
-          } else {
-            return [[C] as Set]
-          }
+          if (self) return [[R, D, F, G, W, Y, L, M, P] as Set]
+          else return [[] as Set]
         }
         allowAttach {to->
           to.owner.pbg.hand.getExcludedList(thisCard).size() >= 1
