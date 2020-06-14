@@ -1009,7 +1009,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 40
+            damage 40 + 40 * self.cards.energyCount(R)
+            afterDamage {
+              attachEnergyFromDiscardPile R
+            }
           }
         }
       };
