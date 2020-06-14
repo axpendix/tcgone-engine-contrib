@@ -2812,7 +2812,16 @@ public enum DarknessAblaze implements LogicCardInfo {
         resistance G, MINUS30
         bwAbility "Metal Skin", {
           text "This Pokémon’s max HP is increased by 20 for each [M] Energy attached to it."
-          actionA {
+          def eff
+          onActivate {
+            eff = getter (GET_FULL_HP, self) {h->
+              h.object += hp(20 * self.cards.energyCount(M))
+            }
+            new CheckAbilities().run(bg)
+          }
+          onDeactivate {
+            eff.unregister()
+            new CheckAbilities().run(bg)
           }
         }
         move "Trap Bite", {
@@ -2821,6 +2830,17 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+              delayed (priority: LAST) {
+                before APPLY_ATTACK_DAMAGES, {
+                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
+                    bc "Trap Bite activates"
+                    directDamage(120, ef.attacker as PokemonCardSet)
+                  }
+                }
+                unregisterAfter 2
+                after SWITCH, self, {unregister()}
+                after EVOLVE, self, {unregister()}
+              }
           }
         }
       };
