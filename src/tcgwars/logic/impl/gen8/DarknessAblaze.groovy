@@ -2755,7 +2755,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost M
           attackRequirement {}
           onAttack {
-            deck.search(max: 1, "Choose a [M] Pokémon", pokemonTypeFilter(M)).moveTo(my.hand)
+            deck.search(max: 1, "Choose a [M] Pokémon", pokemonTypeFilter(M)).showToOpponent.moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -2769,7 +2769,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost M
           attackRequirement {}
           onAttack {
-            deck.search(max: 1, "Choose a [M] Pokémon", pokemonTypeFilter(M)).moveTo(my.hand)
+            deck.search(max: 1, "Choose a [M] Pokémon", pokemonTypeFilter(M)).showToOpponent.moveTo(my.hand)
             shuffleDeck()
           }
         }
