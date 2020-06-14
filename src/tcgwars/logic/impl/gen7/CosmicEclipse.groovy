@@ -505,12 +505,16 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "During your next turn, ignore all Energy in the attack costs of [G] Pokémon and [R] Pokémon. (This includes Pokémon that come into play on that turn.)"
             energyCost C, C
             onAttack {
-              delayed {
-                before ENERGY_COST_CALCULATOR, {
-                  if((self.owner.pbg.active.types.contains(G) || self.owner.pbg.active.types.contains(R)) && bg.currentTurn == self.owner) {
-                    bc "Solar Power ignores Energy cost for $self.owner.pbg.active's $ef.move"
-                    prevent()
+              getter GET_MOVE_LIST, {h->
+                PokemonCardSet pcs = h.effect.target
+                if(bg.currentTurn == self.owner && (pcs.types.contains(G)||pcs.types.contains(R))){
+                  def list=[]
+                  for(move in h.object){
+                    def copy=move.shallowCopy()
+                    copy.energyCost.retainAll()
+                    list.add(copy)
                   }
+                  h.object=list
                 }
                 unregisterAfter 3
               }
