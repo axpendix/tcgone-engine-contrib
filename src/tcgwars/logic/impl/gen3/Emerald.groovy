@@ -1951,7 +1951,25 @@ public enum Emerald implements LogicCardInfo {
       case WALLY_S_TRAINING_85:
         return copy (Sandstorm.WALLY_S_TRAINING_89, this);
       case DARKNESS_ENERGY_86:
-        return copy (RubySapphire.DARKNESS_ENERGY_93, this);
+        return specialEnergy (this, [[D]]) {
+          text: "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect unless the Attacking Pokémon is Darkness or has Dark in its name. Darkness Energy provides Darkness Energy. (Doesn't count as a basic Energy card.)"
+          def eff
+          onPlay {reason->
+            eff = delayed {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm.each(){
+                  if(it.from == self && it.to.active && it.to.owner != self.owner && self.types.contains(D) && it.dmg.value) {
+                    it.dmg += hp(10)
+                  }
+                }
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
+        }
+            
       case DOUBLE_RAINBOW_ENERGY_87:
         return specialEnergy (this, [[]]) {
           text "Double Rainbow Energy can be attached only to an Evolved Pokémon (excluding Pokémon-ex). While in play, Double Rainbow Energy provides every type of Energy but provides 2 Energy at a time. (Has no effect other than providing Energy.) Damage done to your opponent's Pokémon by the Pokémon Double Rainbow Energy is attached to is reduced by 10 (before applying Weakness and Resistance). When the Pokémon Double Rainbow Energy is attached to is no longer an Evolved Pokémon, discard Double Rainbow Energy. (Major text change in Emerald. Using earlier versions requires reference.)"
