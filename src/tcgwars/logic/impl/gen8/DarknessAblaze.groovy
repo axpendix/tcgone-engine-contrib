@@ -912,7 +912,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-
+            apply BURNED
           }
         }
       };
@@ -922,7 +922,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Scorch Wounds", {
           text "80 damage. If your opponent’s Active Pokémon has no damage counters on it, this attack does nothing."
           energyCost R
-          attackRequirement {}
+          attackRequirement {
+            assert opp.active.numberOfDamageCounters : "The defending Pokémon has no damage counters on it"
+          }
           onAttack {
             damage 80
           }
@@ -946,6 +948,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            apply BURNED
           }
         }
       };
@@ -955,7 +958,13 @@ public enum DarknessAblaze implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Scorching Feather", {
           text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack, the Attacking Pokémon is now Burned."
-          actionA {
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              if (self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})) {
+                bc "Scorching Feather activates"
+                apply BURNED, ef.attacker
+              }
+            }
           }
         }
         move "Mach Flight", {
@@ -964,6 +973,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
+            cantRetreat defending
           }
         }
       };
@@ -976,6 +986,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            if (self.cards.energyCount(C) confirm("Discard an Energy from $self.name to discard an energy from $defending.name?")) {
+              discardSelfEnergy C
+              discardDefendingEnergy()
+            }
           }
         }
         move "Burning Train", {
@@ -995,7 +1009,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 40
+            damage 40 + 40 * self.cards.energyCount(R)
+            afterDamage {
+              attachEnergyFromDiscardPile R
+            }
           }
         }
       };
