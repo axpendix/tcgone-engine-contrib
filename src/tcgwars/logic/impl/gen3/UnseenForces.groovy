@@ -2188,9 +2188,9 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        onMove {to->
+        /*onMove {to->
           check(to)
-        }
+        }//TODO: Find alternative */
         allowAttach {to->
           to.evolution && !to.EX
         }
@@ -2225,9 +2225,9 @@ public enum UnseenForces implements LogicCardInfo {
           eff2.unregister()
           new CheckAbilities().run(bg)
         }
-        onMove {to->
+        /*onMove {to->
           check(to)
-        }
+        }//TODO: Find alternative */
         allowAttach {to->
           !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
@@ -2250,9 +2250,9 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        onMove {to->
+        /*onMove {to->
           check(to)
-        }
+        }//TODO: Find alternative */
         allowAttach {to->
           !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
@@ -2302,9 +2302,9 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        onMove {to->
+        /*onMove {to->
           check(to)
-        }
+        }//TODO: Find alternative */
         allowAttach {to->
           to.evolution && !to.EX
         }
@@ -2331,9 +2331,9 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        onMove {to->
+        /*onMove {to->
           check(to)
-        }
+        }//TODO: Find alternative */
         allowAttach {to->
           !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
