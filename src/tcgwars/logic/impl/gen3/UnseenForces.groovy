@@ -2359,9 +2359,9 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        onMove {to->
+        /*onMove {to->
           check(to)
-        }
+        }//TODO: Find alternative */
         allowAttach {to->
           to.evolution && !to.EX
         }
