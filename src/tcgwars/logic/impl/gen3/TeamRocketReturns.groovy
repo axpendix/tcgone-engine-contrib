@@ -2387,7 +2387,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               if(choice){
                 sw opp.active, opp.bench.select(), TRAINER_CARD
               }else{
-                moveEnergy(from = defending, to = opp.bench.select("Select the pokemon getting the Energy"), src = TRAINER_CARD)
+                moveEnergy(from = opp.active, to = opp.bench.select("Select the pokemon getting the Energy"), src = TRAINER_CARD)
               }
             }
           }
