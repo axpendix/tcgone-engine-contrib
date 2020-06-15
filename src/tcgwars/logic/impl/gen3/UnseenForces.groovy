@@ -2199,8 +2199,7 @@ public enum UnseenForces implements LogicCardInfo {
       return copy(FireRedLeafGreen.ENERGY_REMOVAL_2_89, this);
       case ENERGY_ROOT_83:
       return pokemonTool (this) {
-        text "Attach Energy Root to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Energy Root is attached to is Pokémon-ex or has Dark or an owner in its name, discard Energy Root." +
-          "As long as Energy Root is attached to a Pokémon, that Pokémon gets +20 HP and can't use any Poké-Powers or Poké-Bodies."
+        text "Attach Energy Root to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Energy Root is attached to is Pokémon-ex or has Dark or an owner in its name, discard Energy Root.\nAs long as Energy Root is attached to a Pokémon, that Pokémon gets +20 HP and can't use any Poké-Powers or Poké-Bodies."
         def eff
         def eff2
         def check = {
@@ -2282,7 +2281,7 @@ public enum UnseenForces implements LogicCardInfo {
         }
       };
       case POKEMON_REVERSAL_88:
-      return copy (FireRedLeafGrean.POKEMON_REVERSAL_97, this)
+      return copy (FireRedLeafGreen.POKEMON_REVERSAL_97, this)
       case PROFESSOR_ELM_S_TRAINING_METHOD_89:
       return copy(HeartgoldSoulsilver.PROFESSOR_ELM_S_TRAINING_METHOD_100, this)
       case PROTECTIVE_ORB_90:
