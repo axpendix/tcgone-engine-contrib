@@ -2350,11 +2350,12 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           onPlay {
             if(opp.bench){
               flip{
-                sw opp.active, opp.bench.select()
+                sw opp.active, opp.bench.select(), TRAINER_CARD
               }
             }
           }
           playRequirement{
+            assert opp.bench : "Opponent has no benched Pokemon"
           }
         };
       case PROF__OAK_S_RESEARCH_98:
