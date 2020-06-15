@@ -1988,7 +1988,7 @@ public enum PowerKeepers implements LogicCardInfo {
       case ROOT_FOSSIL_86:
       return copy(LegendMaker.ROOT_FOSSIL_80, this);
       case DARKNESS_ENERGY_87:
-      return copy(RubySapphire.DARKNESS_ENERGY_93, this);
+      return copy (Emerald.DARKNESS_ENERGY_86, this);
       case METAL_ENERGY_88:
       return copy(RubySapphire.METAL_ENERGY_94, this);
       case MULTI_ENERGY_89:

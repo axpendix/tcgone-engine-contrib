@@ -2984,7 +2984,7 @@ public enum DeltaSpecies implements LogicCardInfo {
       case SWITCH_102:
         return copy(FireRedLeafGreen.SWITCH_102, this);
       case DARKNESS_ENERGY_103:
-        return copy (RubySapphire.DARKNESS_ENERGY_93, this);
+        return copy (Emerald.DARKNESS_ENERGY_86, this);
       case HOLON_ENERGY_FF_104:
       return specialEnergy (this, [[C]]) {
         text "Holon Energy FF provides [C] Energy. If the Pokémon that Holon Energy FF is attached to also has a basic [R] Energy card attached to it, that Pokémon has no Weakness. If the Pokémon that Holon Energy FF is attached to also has a basic [F] Energy card attached to it, damage done by that Pokémon's attack isn't affected by Resistance. Ignore these effects if Holon Energy FF is attached to Pokémon-ex."
