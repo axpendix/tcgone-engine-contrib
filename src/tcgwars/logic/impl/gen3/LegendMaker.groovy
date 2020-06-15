@@ -2703,7 +2703,6 @@ public enum LegendMaker implements LogicCardInfo {
             increasedDamageDoneToDefending(self, defending, 30, thisMove.name)
           }
         }
-      }
         move "Cutting Wind", {
           text "70 damage."
           energyCost G, C, C
