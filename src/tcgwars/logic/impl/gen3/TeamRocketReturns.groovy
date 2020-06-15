@@ -2380,20 +2380,22 @@ public enum TeamRocketReturns implements LogicCardInfo {
           text "You may use this card only if you have more Prize cards left than your opponent.\nMove 1 Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon. Or, switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           onPlay {
             if(opp.bench){
-              def choice = 1
               if(opp.active.cards.energyCount(C)){
                 def choice = choose([0,1],["Move 1 Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon","Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon"])
+                if(choice){
+                  sw opp.active, opp.bench.select(), TRAINER_CARD
+                }
+                else{
+                  moveEnergy(opp.active,opp.bench.select("Select the pokemon getting the Energy"), TRAINER_CARD)
+                }
               }
-              if(choice){
+              else{
                 sw opp.active, opp.bench.select(), TRAINER_CARD
-              }else{
-                moveEnergy(from = defending, to = opp.bench.select("Select the pokemon getting the Energy"), src = TRAINER_CARD)
               }
             }
           }
           playRequirement{
             assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "You need more Prize cards left than your opponent to use this card"
-            assert opp.bench : "Your opponent has no Benched Pokémon"
           }
         };
       case ROCKET_S_ADMIN__86:
@@ -2496,7 +2498,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 checkFaint()
                 if(pcs) {
                   def tar = my.deck.search(max:1,"Search for an Evolution card that evolves from that Pokémon",{it.cardTypes.is(EVOLUTION) && it.predecessor==pcs.name})
-                  evolve(pcs,tar.first(),OTHER)
+                  if(tar) {
+                    evolve(pcs,tar.first(),OTHER)
+                  }
                 }
               }
             }
