@@ -561,7 +561,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             assert my.deck : "Deck is empty"
             powerUsed()
 
-            my.deck.subList(0,4).select("Choose the card to put in your hand").moveTo(my.hand)
+            my.deck.subList(0,4).select("Choose the card to put in your hand").moveTo(hidden:true, my.hand)
 
             def rearrangedCards = rearrange(my.deck.subList(0, 3))
             rearrangedCards.moveTo(hidden:true, my.deck)
