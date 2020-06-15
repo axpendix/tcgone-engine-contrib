@@ -2700,7 +2700,9 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
-            increasedDamageDoneToDefending(self, defending, 30, thisMove.name)
+            afterDamage {
+              increasedDamageDoneToDefending(self, defending, 30, thisMove.name)
+            }
           }
         }
         move "Cutting Wind", {
