@@ -3174,7 +3174,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost W, C
           attackRequirement {}
           onAttack {
-            swiftDamage(40, defending)
+            new ResolvedDamage(hp(40), my.active, defending, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE).run(bg)
           }
         }
         move "Hydrosplash", {
