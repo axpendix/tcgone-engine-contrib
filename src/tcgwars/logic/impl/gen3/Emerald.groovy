@@ -1936,7 +1936,7 @@ public enum Emerald implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm.each(){
+                bg.dm().each(){
                   if(it.from == self && it.to.active && it.to.owner != self.owner && self.types.contains(D) && it.dmg.value) {
                     it.dmg += hp(10)
                   }
@@ -1948,7 +1948,7 @@ public enum Emerald implements LogicCardInfo {
             eff.unregister()
           }
         }
-            
+
       case DOUBLE_RAINBOW_ENERGY_87:
         return specialEnergy (this, [[]]) {
           text "Double Rainbow Energy can be attached only to an Evolved Pokémon (excluding Pokémon-ex). While in play, Double Rainbow Energy provides every type of Energy but provides 2 Energy at a time. (Has no effect other than providing Energy.) Damage done to your opponent's Pokémon by the Pokémon Double Rainbow Energy is attached to is reduced by 10 (before applying Weakness and Resistance). When the Pokémon Double Rainbow Energy is attached to is no longer an Evolved Pokémon, discard Double Rainbow Energy. (Major text change in Emerald. Using earlier versions requires reference.)"
