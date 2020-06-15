@@ -976,6 +976,15 @@ public enum DarknessAblaze implements LogicCardInfo {
             cantRetreat defending
           }
         }
+        // TODO: Remove, debugging
+        globalAbility {
+          delayed {
+            after CHECK_ATTACH_ENERGY_REQUIREMENT, {
+              bc "After Check Attach Energy Requirement"
+            }
+          }
+        }
+        // END TODO
       };
       case CENTISKORCH_V_35:
       return basic (this, hp:HP210, type:R, retreatCost:3) {
