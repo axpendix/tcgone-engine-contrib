@@ -2562,7 +2562,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {
                   if(it.from == self && it.to.active && it.notNoEffect && it.dmg.value){
-                    bc "R Energy prevents damage"
+                    bc "R Energy +10"
                     it.dmg += hp(10)
                   }
                 }
