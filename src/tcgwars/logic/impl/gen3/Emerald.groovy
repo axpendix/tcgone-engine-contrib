@@ -1835,28 +1835,7 @@ public enum Emerald implements LogicCardInfo {
       case DOUBLE_FULL_HEAL_76:
         return copy (Sandstorm.DOUBLE_FULL_HEAL_86, this);
       case LANETTE_S_NET_SEARCH_77:
-        return supporter (this) {
-          text "Search your deck for up to 3 different types of Basic Pokémon cards (excluding Baby Pokémon), show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
-          onPlay {
-            my.deck.select(min:0, max:3, "Select up to 3 Basic Pokémon of different types", (
-              cardTypeFilter(BASIC) && !(it.cardTypes.is(BABY))
-            ), thisCard.player, {
-              CardList list->
-              TypeSet typeSet=new TypeSet()
-              for(card in list){
-                if(typeSet.containsAny(card.asPokemonCard().types)){
-                  return false
-                }
-                typeSet.addAll(card.asPokemonCard().types)
-              }
-              return true
-            }).moveTo(my.hand)
-            shuffleDeck()
-          }
-          playRequirement{
-            assert my.deck
-          }
-        };
+        return copy (Sandstorm.LANETTE_S_NET_SEARCH_87, this);
       case LUM_BERRY_78:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAt any time between turns, if the Pokémon this card is attached to is affected by any Special Conditions, remove all of them. Then, discard Lum Berry."
