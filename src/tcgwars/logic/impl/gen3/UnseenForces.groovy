@@ -254,14 +254,12 @@ public enum UnseenForces implements LogicCardInfo {
           text "As often as you like during your turn (before your attack), you may move a basic Energy card attached to 1 of your Benched Pokémon to your Active Pokémon. This power can't be used if Ampharos is affected by a Special Condition."
           actionA {
             checkNoSPC()
-            while(1){
-              def pl=(my.all.findAll {
-                it.benched && it.cards.filterByType(BASIC_ENERGY)
-              })
+            while(true){
+              def pl = my.bench.findAll{ it.cards.filterByType(BASIC_ENERGY) }
               if(!pl) break;
-              def src =pl.select("source for energy (cancel to stop)", false)
+              def src = pl.select("source for energy (cancel to stop)", false)
               if(!src) break;
-              def card=src.cards.select("Card to move",cardTypeFilter(BASIC_ENERGY)).first()
+              def card = src.cards.select("Card to move", cardTypeFilter(BASIC_ENERGY)).first()
               energySwitch(src, my.active, card)
             }
           }
@@ -318,15 +316,13 @@ public enum UnseenForces implements LogicCardInfo {
             assert my.deck : "There are no more cards in your deck"
           }
           onAttack {
-            def cards = deck.search(min: 0, max: 2, pokemonTypeFilter(G))
+            def cards = deck.search(count: 2, pokemonTypeFilter(G))
             if (cards) {
               cards.moveTo(hand)
+              shuffleDeck()
 
-              if (my.bench && confirm("Switch Bellossom with 1 of your Benched Pokemon?")) {
-                switchYourActive()
-              }
+              switchYourActive(may: true)
             }
-            shuffleDeck()
           }
         }
         move "Full Bloom", {
@@ -349,7 +345,7 @@ public enum UnseenForces implements LogicCardInfo {
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
-                if(self.active && it.to.owner==self.owner && it.dmg.value && it.notNoEffect) {
+                if(self.active && it.to.owner==self.owner && it.from.owner==self.owner.opposite && it.dmg.value && it.notNoEffect) {
                   bc "Intimidating Fang: -10"
                   it.dmg-=hp(10)
                 }
@@ -362,9 +358,10 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 30
-
-            if (opp.hand.size() >= 5) {
-              opp.hand.oppSelect(min: opp.hand.size()-4, max: opp.hand.size()-4, "Discard cards until you have 4 left in your hand").discard()
+            afterDamage{
+              if (opp.hand.size() >= 5) {
+                opp.hand.oppSelect(count: opp.hand.size() - 4, "Select cards to discard until you end up with 4 left").discard()
+              }
             }
           }
         }
@@ -421,16 +418,18 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-
-            delayed {
-              before BETWEEN_TURNS, {
-                if (bg.currentTurn == self.owner.opposite) {
-                  directDamage 30, self.owner.opposite.pbg.active
-                  bc "Spiky Shell activates"
+            targeted(defending){
+              delayed {
+                before BETWEEN_TURNS, {
+                  if (bg.currentTurn == self.owner.opposite) {
+                    bc "Spiky Shell activates"
+                    directDamage 30, defending
+                  }
                 }
+                unregisterAfter 2
+                after SWITCH, defending, {unregister()}
+                after EVOLVE, defending, {unregister()}
               }
-              after SWITCH, defending, {unregister()}
-              unregisterAfter 2
             }
           }
         }
@@ -440,11 +439,13 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 100
 
-            self.cards.filterByType(ENERGY).each {
-              energySwitch(self, my.bench.select("Move $it to?"), it)
+            if (my.bench) {
+              self.cards.filterByType(ENERGY).each {
+                energySwitch(self, my.bench.select("Move $it to?"), it)
+              }
             }
 
-            damage 70, self
+            directDamage 70, self
           }
         }
       };
@@ -455,6 +456,8 @@ public enum UnseenForces implements LogicCardInfo {
           text "As long as you have less Pokémon in play than your opponent, your opponent can't play any Trainer cards (except for Supporter cards) from his or her hand."
           delayedA {
             before PLAY_TRAINER, {
+              // TODO: Fix bodies like this one to cover Power Spray in the future.
+              //       "bg.currentTurn == self.owner.opposite" won't work for that.
               if (self.owner.pbg.all.size() < self.owner.opposite.pbg.all.size() && !ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner.opposite) {
                 wcu "Lonesome prevents playing this card"
                 prevent()
@@ -492,11 +495,11 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
 
             flip {
-              deck.search (basicEnergyFilter(L)).each {
+              deck.search (basicEnergyFilter(L)).each{
                 attachEnergy(my.all.select("Attach the [L] Energy to?"), it)
               }
+              shuffleDeck()
             }
-            shuffleDeck()
           }
         }
         move "Multi Pulse", {
@@ -512,7 +515,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
             if (differentTypes >= 3) {
               damage 20
-              apply CONFUSED
+              applyAfterDamage CONFUSED
             }
           }
         }
@@ -524,17 +527,13 @@ public enum UnseenForces implements LogicCardInfo {
         pokeBody "Healing Aroma", {
           text "As long as Meganium is your Active Pokémon, remove 1 damage counter from each Pokémon (excluding Pokémon-ex) (both yours and your opponent's) between turns."
           delayedA {
-            before BETWEEN_TURNS, {
+            before BEGIN_TURN, {
               if (self.active) {
-                self.owner.pbg.all.each {
-                  if (!it.EX && it.numberOfDamageCounters) {
-                    heal 10, it
-                  }
-                }
-
-                self.owner.opposite.pbg.all.each {
-                  if (!it.EX && it.numberOfDamageCounters) {
-                    heal 10, it
+                [self.owner, self.owner.opposite].each{
+                  player -> player.pbg.all.each {
+                    if (!it.EX && it.numberOfDamageCounters) {
+                      heal 10, it
+                    }
                   }
                 }
               }
@@ -550,8 +549,10 @@ public enum UnseenForces implements LogicCardInfo {
             if (confirm("Would you like to add damage counters to increase the damage dealt to the defending Pokemon?"))
               {
                 def num = choose([1,2,3,4,5])
-                damage 10*num
-                directDamage 10*num, self
+                damage 10 * num
+                afterDamage{
+                  directDamage 10 * num, self
+                }
               }
           }
         }
@@ -563,7 +564,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "As long as Octillery is your Active Pokémon, your opponent's Pokémon can't retreat."
           delayedA {
             before RETREAT, {
-              if (ef.retreater.owner==self.owner.opposite && self.active) {
+              if (self.active && ef.retreater.owner==self.owner.opposite) {
                 wcu "Super Suction Cups prevents retreating"
                 prevent()
               }
@@ -595,7 +596,7 @@ public enum UnseenForces implements LogicCardInfo {
             before (KNOCKOUT,self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active != null && self.owner.opposite.pbg.active.inPlay) {
                 bc "Spiral Swirl activates"
-                apply CONFUSED, self.owner.opposite.pbg.active
+                apply CONFUSED, self.owner.opposite.pbg.active, SRC_ABILITY
               }
             }
           }
@@ -615,7 +616,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost W, C, C
           onAttack {
             damage 60
-            if (opp.active.topPokemonCard.cardTypes.is(STAGE2)) {
+            if (defending.evolution && defending.topPokemonCard.cardTypes.is(STAGE2)) {
               damage 30
             }
           }
@@ -631,7 +632,11 @@ public enum UnseenForces implements LogicCardInfo {
             def tar = my.all.findAll { it.cards.filterByType(POKEMON_TOOL) }
             assert tar: "None of your Pokemon have a Pokémon Tool card attached to them"
             powerUsed()
-            tar.select().cards.filterByType(POKEMON_TOOL).moveTo(my.hand)
+            def pcs = tar.select()
+            def tools = pcs.cards.filterByType(POKEMON_TOOL)
+            if (tools.size() > 1)
+              tools = tools.select(count: 1, "Which tool attached to $pcs will return to your hand?")
+            tools.moveTo(my.hand)
           }
         }
         move "Data Retrieval", {
@@ -650,7 +655,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 40
             if (self.cards.findAll { it.name=="Scramble Energy" }) {
               damage 20
-              apply CONFUSED
+              applyAfterDamage CONFUSED
             }
           }
         }
@@ -700,7 +705,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "20+ damage. Does 20 damage plus 10 more damage for each Pokémon Tool card in your discard pile. You can't add more than 60 damage in this way."
           energyCost P, C
           onAttack {
-            def extraDamage = Math.min(40, 10*my.discard.filterByType(POKEMON_TOOL).size())
+            def extraDamage = Math.min(60, 10*my.discard.filterByType(POKEMON_TOOL).size())
             damage 20 + extraDamage
           }
         }
@@ -772,9 +777,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost R
           onAttack {
             damage 20
-            afterDamage {
-              apply ASLEEP
-            }
+            applyAfterDamage ASLEEP
           }
         }
         move "Rage", {
@@ -809,7 +812,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             def target = defending
-            if (opp.bench) {
+            if (opp.bench && confirm("Before doing damage, do you want to switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")) {
               target = opp.bench.select("Select the new active")
               sw defending, target
             }
@@ -851,7 +854,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
             if (differentTypes >= 3) {
               damage 20
-              apply ASLEEP
+              applyAfterDamage ASLEEP
             }
           }
         }
@@ -866,7 +869,7 @@ public enum UnseenForces implements LogicCardInfo {
             heal 10, self
             afterDamage {
               if (self.specialConditions) {
-                afterDamage { clearSpecialCondition(self) }
+                clearSpecialCondition(self)
               }
             }
           }
@@ -885,10 +888,10 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Clefairy from your hand onto Cleffa (this counts as evolving Cleffa) and remove all damage counters from Cleffa."
           actionA {
-              checkCanBabyEvolve("Clefairy", self)
-              checkLastTurn()
-              powerUsed()
-              babyEvolution("Clefairy", self)
+            checkCanBabyEvolve("Clefairy", self)
+            checkLastTurn()
+            powerUsed()
+            babyEvolution("Clefairy", self)
           }
         }
         move "Eeeeeeek", {
@@ -908,10 +911,12 @@ public enum UnseenForces implements LogicCardInfo {
           text "As long as Electabuzz is an Evolved Pokémon, damage done by attacks from your opponent's Pokémon that has any Special Energy cards attached to it is reduced by 40 (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each{
-                if(it.to == self && self.evolution && it.notNoEffect && it.dmg.value && it.from.cards.filterByType(SPECIAL_ENERGY)) {
-                  bc "Stages of Evolution -20"
-                  it.dmg -= hp(40)
+              if (self.evolution) {
+                bg.dm().each{
+                  if(it.to == self && it.from.cards.filterByType(SPECIAL_ENERGY) && it.dmg.value && it.notNoEffect) {
+                    bc "Stages of Evolution -20"
+                    it.dmg -= hp(40)
+                  }
                 }
               }
             }
@@ -921,10 +926,12 @@ public enum UnseenForces implements LogicCardInfo {
           text "10x damage. Flip 2 coins. This attack does 10 damage times the number of heads. If either of the coins is heads, the Defending Pokémon is now Paralyzed."
           energyCost L, C
           onAttack {
-            flip 2,{
+            def heads = 0
+            flip 2, {
               damage 10
-              applyAfterDamage PARALYZED
+              heads += 1
             }
+            if (heads) applyAfterDamage PARALYZED
           }
         }
         move "Luster Blast", {
@@ -942,10 +949,10 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Electabuzz from your hand onto Elekid (this counts as evolving Elekid) and remove all damage counters from Elekid."
           actionA {
-              checkCanBabyEvolve("Electabuzz", self)
-              checkLastTurn()
-              powerUsed()
-              babyEvolution("Electabuzz", self)
+            checkCanBabyEvolve("Electabuzz", self)
+            checkLastTurn()
+            powerUsed()
+            babyEvolution("Electabuzz", self)
           }
         }
         move "Magnetic Trip", {
@@ -954,7 +961,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 10
             if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Low Pressure System") {
-              apply CONFUSED
+              applyAfterDamage CONFUSED
             }
           }
         }
@@ -966,7 +973,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "As long as Hitmonchan is an Evolved Pokémon, Hitmonchan gets +30 HP."
           getterA (GET_FULL_HP) { h->
             def pcs = h.effect.target
-            if (pcs == self && self.topPokemonCard.cardTypes.is(EVOLUTION)) {
+            if (pcs == self && self.evolution) {
               h.object += hp(30)
             }
           }
@@ -974,15 +981,18 @@ public enum UnseenForces implements LogicCardInfo {
         move "Heavy Punch", {
           text "10x damage. Does 10 damage times the number of your opponent's Benched Pokémon."
           energyCost F, C
+          attackRequirement{
+            assert opp.bench : "Your opponent has no Benched Pokémon"
+          }
           onAttack {
-            damage 10*opp.bench.size()
+            damage 10 * opp.bench.size()
           }
         }
         move "Speedy Uppercut", {
           text "50 damage. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
           energyCost C, C, C
           onAttack {
-            directDamage 50
+            swiftDamage 50, defending
           }
         }
       };
@@ -995,7 +1005,7 @@ public enum UnseenForces implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if(ef.attacker == self && self.evolution) {
                 bg.dm().each {
-                  if (it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
+                  if (it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
                     bc "Stages of Evolution +20"
                     it.dmg += hp(20)
                   }
@@ -1007,8 +1017,11 @@ public enum UnseenForces implements LogicCardInfo {
         move "Stretch Kick", {
           text "Choose 1 of your opponent's Benched Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F
+          attackRequirement{
+            assert opp.bench : "Your opponent has no Benched Pokémon"
+          }
           onAttack {
-            damage 30, opp.bench.select("Deal 10 damage to which Pokémon?")
+            damage 10, opp.bench.select("Deal 10 damage to which Pokémon?")
           }
         }
         move "Mega Kick", {
@@ -1122,18 +1135,16 @@ public enum UnseenForces implements LogicCardInfo {
       case MURKROW_30:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness L
-        resistance R, MINUS30
+        resistance F, MINUS30
         move "Night Song", {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. The new Defending Pokémon is now Asleep."
           energyCost C
+          attackRequirement{
+            assert opp.bench : "Your opponent has no Benched Pokémon"
+          }
           onAttack {
-            def pcs = defending
-            if (opp.bench) {
-              if (confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")) {
-                pcs = opp.bench.oppSelect()
-                sw defending, pcs
-              }
-            }
+            def pcs = opp.bench.oppSelect()
+            sw defending, pcs
             apply ASLEEP, pcs
           }
         }
@@ -1141,9 +1152,8 @@ public enum UnseenForces implements LogicCardInfo {
           text "20 damage. Before doing damage, discard all Trainer cards attached to the Defending Pokémon."
           energyCost C, C
           onAttack {
-            if (defending.cards.filterByType(TRAINER)){
-              defending.cards.filterByType(TRAINER).discard()
-            }
+            def tar = defending.cards.filterByType(TRAINER)
+            if (tar){ tar.discard() }
             damage 20
           }
         }
@@ -1154,17 +1164,17 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Jynx from your hand onto Smoochum (this counts as evolving Smoochum) and remove all damage counters from Smoochum."
           actionA {
-              checkCanBabyEvolve("Jynx", self)
-              checkLastTurn()
-              powerUsed()
-              babyEvolution("Jynx", self)
+            checkCanBabyEvolve("Jynx", self)
+            checkLastTurn()
+            powerUsed()
+            babyEvolution("Jynx", self)
           }
         }
         move "Blown Kiss", {
           text "Put 1 damage counter on 1 of your opponent's Pokémon."
           energyCost C
           onAttack {
-            if (opp.all) directDamage(10, opp.all.select("Select a Pokemon to put a damage counter on"))
+            directDamage 10, opp.all.select("Select a Pokemon to put a damage counter on")
           }
         }
       };
@@ -1188,9 +1198,9 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
             afterDamage {
               if (opp.hand) {
-                def card = opp.hand.select(min:0, max:1, "Select a Trainer card to discard.", cardTypeFilter(TRAINER))
-                if (card) {
-                  card.discard()
+                opp.hand.showToMe("Opponent's hand")
+                if (opp.hand.filterByType(TRAINER)) {
+                  opp.hand.select(count: 1, "Select a Trainer card to discard.", cardTypeFilter(TRAINER)).discard()
                 }
               }
             }
@@ -1200,18 +1210,13 @@ public enum UnseenForces implements LogicCardInfo {
       case TYROGUE_33:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness P
-        //TODO Convert to Poké-Body, also edit babyEvolution() method for supporting this.
-        pokeBody "Baby Evolution", {
+        pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Hitmonlee, Hitmonchan, or Hitmontop from your hand onto Tyrogue (this counts as evolving Tyrogue) and remove all damage counters from Tyrogue."
           actionA {
-            assert my.hand.findAll{ it.cardTypes.is(POKEMON) && (it.name == "Hitmonlee" || it.name == "Hitmonchan" || it.name == "Hitmontop")} : "There are no Pokémon in your hand to evolve ${self}."
+            checkCanBabyEvolve(["Hitmonlee", "Hitmonchan", "Hitmontop"], self)
             checkLastTurn()
             powerUsed()
-            def tar = my.hand.findAll{it.cardTypes.is(POKEMON) && (it.name == "Hitmonlee" || it.name == "Hitmonchan" || it.name == "Hitmontop")}.select()
-            if (tar) {
-              evolve(self, tar.first(), OTHER)
-              heal self.numberOfDamageCounters*10,self
-            }
+            babyEvolution(["Hitmonlee", "Hitmonchan", "Hitmontop"], self)
           }
         }
         move "Desperate Punch", {
@@ -1234,8 +1239,9 @@ public enum UnseenForces implements LogicCardInfo {
             checkLastTurn()
             assert bg.em().retrieveObject("Snappy_Move") != bg.turnCount : "You can't use more than 1 Snappy Move Poké-Power each turn."
             assert self.benched : "This Pokemon is not on your Bench"
-            powerUsed()
+            assert my.deck : "You do not have any cards left in your deck"
             bg.em().storeObject("Snappy_Move", bg.turnCount)
+            powerUsed()
 
             draw 1
             self.cards.getExcludedList(self.topPokemonCard).discard()
@@ -1260,9 +1266,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            afterDamage {
-              apply ASLEEP
-            }
+            applyAfterDamage ASLEEP
           }
         }
         move "Razor Leaf", {
@@ -1281,9 +1285,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            afterDamage {
-              apply ASLEEP
-            }
+            applyAfterDamage ASLEEP
           }
         }
         move "Extra Comet Punch", {
@@ -1305,7 +1307,7 @@ public enum UnseenForces implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def selected = deck.search (max: 1, "Search for a [W] or [F] Pokemon (excluding Pokemon-ex) to put into your hand.", {
+            my.deck.search (max: 1, "Search for a [W] or [F] Pokemon (excluding Pokemon-ex) to put into your hand.", {
               (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W) && it.asPokemonCard().types.contains(F) && !it.asPokemonCard().cardTypes.is(EX))
             }).moveTo(my.hand)
             shuffleDeck()
@@ -1329,7 +1331,7 @@ public enum UnseenForces implements LogicCardInfo {
         weakness L
         move "Bite", {
           text "20 damage."
-          energyCost C
+          energyCost C, C
           onAttack {
             damage 20
           }
@@ -1465,7 +1467,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1490,7 +1492,7 @@ public enum UnseenForces implements LogicCardInfo {
         }
       };
       case QUAGSIRE_44:
-      return evolution (this, from:"Wooper", hp:HP080, type:R, retreatCost:2) {
+      return evolution (this, from:"Wooper", hp:HP080, type:F, retreatCost:2) {
         weakness G
         pokeBody "Dense", {
           text "Any damage done to Quagsire by attacks from your opponent's Evolved Pokémon is reduced by 20 (after applying Weakness and Resistance)."
@@ -1552,7 +1554,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
           onAttack {
             def maxSpace = Math.min(my.bench.freeBenchCount, 2)
-            my.deck.search(max:maxSpace, "Select $maxSpace Scyther or Scyther ex to put onto your Bench", { it.name.contains("Scyther") }).each {
+            my.deck.search(max:maxSpace, "Select $maxSpace Scyther or Scyther ex to put onto your Bench", { it.name == "Scyther" || it.name == "Scyther ex" }).each {
               my.deck.remove(it);
               benchPCS(it)
             }
@@ -1576,7 +1578,7 @@ public enum UnseenForces implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to == self && it.from.topPokemonCard.cardTypes.is(EX)) {
+                if (it.to == self && it.from.topPokemonCard.cardTypes.is(EX) && it.dmg.value && it.notNoEffect) {
                   bc "Shell Barricade prevents all damage"
                   it.dmg=hp(0)
                 }
@@ -1599,11 +1601,11 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Makeover", {
           text "Once during your turn (before your attack), you may discard a basic Energy card attached to 1 of your Pokémon (excluding Pokémon-ex). If you do, search your discard pile for a basic Energy card (excluding the one you discarded) and attach it to that Pokémon. This power can't be used if Smeargle is affected by a Special Condition."
           actionA {
-            checkLastTurn()
             checkNoSPC()
+            checkLastTurn()
 
             def validTargets = my.all.findAll{
-              it.cards.filterByType(BASIC_ENERGY) && !it.topPokemonCard.cardTypes.is(EX)
+              it.cards.filterByType(BASIC_ENERGY) && !it.EX
             }
             assert validTargets : "Your Non-ex Pokemon do not have Basic Energy cards."
             assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energies in you discard pile."
@@ -1614,7 +1616,7 @@ public enum UnseenForces implements LogicCardInfo {
 
             def tar = pcs.cards.filterByType(BASIC_ENERGY).select("Choose the Basic Energy card to Discard.").discard()
 
-            attachEnergyFrom(my.discard, pcs)
+            attachEnergyFrom(basic: true, my.discard.getExcludedList(tar), pcs)
           }
         }
         move "Split Spiral Punch", {
@@ -1622,7 +1624,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            flip { apply CONFUSED }
+            flip { applyAfterDamage CONFUSED }
           }
         }
       };
@@ -1641,7 +1643,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost P, C, C
           onAttack {
             damage 40
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1653,10 +1655,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C
           onAttack {
             draw 2
-
-            if (my.bench && confirm("Switch Yanma with 1 of your Benched Pokémon?")) {
-              sw self, my.bench.select()
-            }
+            switchYourActive(may: true)
           }
         }
         move "Spinning Tail", {
@@ -1721,7 +1720,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 10
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
       };
@@ -1749,11 +1748,11 @@ public enum UnseenForces implements LogicCardInfo {
       case EEVEE_55:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
-        pokeBody "Energy Evolution", {
+        pokePower "Energy Evolution", {
           text "Whenever you attach an Energy card from your hand to Eevee, you may search your deck for a card that evolves from Eevee that is the same type as the Energy card you attached to Eevee. Put that card onto Eevee. (This counts as evolving Eevee.) Shuffle your deck afterward. This power can't be used when you attach an Energy card to Eevee as part of an attack's effect."
           delayedA {
             after ATTACH_ENERGY, self, {
-              if (ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && self.owner.pbg.deck) {
+              if (ef.reason==PLAY_FROM_HAND && self.owner.pbg.deck && ef.card.basicType.minus[[C, M, F] as Set]) {
                 if (confirm("Use Energy Evolution?")) {
                   powerUsed()
                   def sel = self.owner.pbg.deck.select(min:0, "Energy Evolution ${ef.card.basicType}",
@@ -1786,7 +1785,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 10
             afterDamage {
-              flip { apply PARALYZED }
+              flip { applyAfterDamage PARALYZED }
             }
           }
         }
@@ -1812,10 +1811,10 @@ public enum UnseenForces implements LogicCardInfo {
         }
         move "Toxic Grip", {
           text "10 damage. The Defending Pokémon is now Poisoned."
-          energyCost L
+          energyCost F
           onAttack {
             damage 10
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
       };
@@ -1910,7 +1909,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost G
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1921,10 +1920,10 @@ public enum UnseenForces implements LogicCardInfo {
           text "Search your discard pile for an Energy card, show it to your opponent, and put it into your hand."
           energyCost C
           attackRequirement {
-            assert my.discard.hasType(BASIC_ENERGY) : "No Basic Energy cards in Discard pile"
+            assert my.discard.hasType(ENERGY) : "There are no Energy cards in your discard pile"
           }
           onAttack {
-            my.discard.filterByType(BASIC_ENERGY).select().moveTo(my.hand)
+            my.discard.filterByType(ENERGY).select().moveTo(my.hand)
           }
         }
         move "Mud Slap", {
@@ -2028,14 +2027,12 @@ public enum UnseenForces implements LogicCardInfo {
           text "Search your discard pile for a Basic Pokémon, Evolution card, or basic Energy card, show it to your opponent, and put it into your hand."
           energyCost C
           attackRequirement {
-            assert my.discard: "Discard pile is empty"
+            assert (
+              my.discard.filterByType(POKEMON) || my.discard.filterByType(BASIC_ENERGY)
+            ): "You have neither Pokémon nor Basic Energy cards in your discard pile"
           }
           onAttack {
-            if (my.discard.filterByType(POKEMON) || my.discard.filterByType(TRAINER) || my.discard.filterByType(ENERGY)) {
-              my.discard.findAll {
-                it.cardTypes.is(POKEMON) || it.cardTypes.is(TRAINER) || it.cardTypes.is(BASIC_ENERGY)
-              }.select("Select a card to put into your hand").moveTo(my.hand)
-            }
+            my.discard.findAll{ it.cardTypes.is(POKEMON) || it.cardTypes.is(BASIC_ENERGY) }.select("Select a Pokémon or Basic Energy card to put into your hand").moveTo(my.hand)
           }
         }
         move "Trip Over", {
@@ -2073,7 +2070,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -2109,7 +2106,7 @@ public enum UnseenForces implements LogicCardInfo {
             assert my.deck
           }
           onAttack {
-            my.deck.search(min: 0, max: 1, "Select a basic Energy card.", cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
+            my.deck.search(count: 1, "Select a basic Energy card.", cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -2173,23 +2170,27 @@ public enum UnseenForces implements LogicCardInfo {
         text "Attach Curse Powder to 1 of your Evolved Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Curse Powder is attached to is a Basic Pokémon or Pokémon-ex, discard Curse Powder." +
           "If the Pokémon that Curse Powder is attached to is your Active Pokémon and is Knocked Out by damage from an opponent's attack, put 3 damage counters on the Attacking Pokémon."
         def eff
+        def check = {
+          if(!it.evolution || it.EX){discard thisCard}
+        }
         onPlay {
           eff = delayed {
             before (KNOCKOUT, self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                 bc "Curse Powder activates"
-                if (self.owner.opposite.pbg.all) {
-                  directDamage 30, self.owner.opposite.pbg.active
-                }
+                directDamage 30, self.owner.opposite.pbg.active//, Source.POKEMON_TOOL or something similar
               }
             }
           }
         }
-        allowAttach { to ->
-          to.topPokemonCard.cardTypes.isNot(EX) && to.topPokemonCard.cardTypes.isNot(BASIC)
-        }
         onRemoveFromPlay {
           eff.unregister()
+        }
+        onMove {to->
+          check(to)
+        }
+        allowAttach {to->
+          to.evolution && !to.EX
         }
       };
       case ENERGY_RECYCLE_SYSTEM_81:
@@ -2202,6 +2203,9 @@ public enum UnseenForces implements LogicCardInfo {
           "As long as Energy Root is attached to a Pokémon, that Pokémon gets +20 HP and can't use any Poké-Powers or Poké-Bodies."
         def eff
         def eff2
+        def check = {
+          if (it.topPokemonCard.name.contains("Dark") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
+        }
         onPlay {reason->
           eff = getter (GET_FULL_HP, self) {h->
             h.object += hp(20)
@@ -2220,8 +2224,11 @@ public enum UnseenForces implements LogicCardInfo {
           eff2.unregister()
           new CheckAbilities().run(bg)
         }
-        allowAttach { to->
-          to.topPokemonCard.cardTypes.isNot(EX) && !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON)
+        onMove {to->
+          check(to)
+        }
+        allowAttach {to->
+          !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
       };
       case ENERGY_SWITCH_84:
@@ -2231,6 +2238,9 @@ public enum UnseenForces implements LogicCardInfo {
         text "Attach Fluffy Berry to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Fluffy Berry is attached to is Pokémon-ex or has Dark or an owner in its name, discard Fluffy Berry." +
           "As long as Fluffy Berry is attached to a Pokémon, that Pokémon's Retreat Cost is 0."
         def eff
+        def check = {
+          if (it.topPokemonCard.name.contains("Dark") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
+        }
         onPlay {reason->
           eff = getter GET_RETREAT_COST, self, { h ->
             h.object = 0
@@ -2239,8 +2249,11 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        allowAttach { to->
-          to.topPokemonCard.cardTypes.isNot(EX) && !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON)
+        onMove {to->
+          check(to)
+        }
+        allowAttach {to->
+          !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
       };
       case MARY_S_REQUEST_86:
@@ -2249,7 +2262,7 @@ public enum UnseenForces implements LogicCardInfo {
           "Draw a card. If you don't have any Stage 2 Evolved Pokémon in play, draw 2 more cards."
         onPlay {
           draw 1
-          if (!my.all.find{it.topPokemonCard.cardTypes.is(STAGE2)}) draw 2
+          if (!my.all.find{it.evolution && it.topPokemonCard.cardTypes.is(STAGE2)}) draw 2
         }
         playRequirement{
           assert my.deck : "Deck is empty"
@@ -2277,6 +2290,9 @@ public enum UnseenForces implements LogicCardInfo {
         text "Attach Protective Orb to 1 of your Evolved Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Protective Orb is attached to is a Basic Pokémon or Pokémon-ex, discard Protective Orb." +
           "As long as Protective Orb is attached to a Pokémon, that Pokémon has no Weakness."
         def eff
+        def check = {
+          if(!it.evolution || it.EX){discard thisCard}
+        }
         onPlay {reason->
           eff = getter (GET_WEAKNESSES, self) { h->
             h.object.clear()
@@ -2285,8 +2301,11 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        allowAttach { to ->
-          to.topPokemonCard.cardTypes.isNot(EX) && to.evolution
+        onMove {to->
+          check(to)
+        }
+        allowAttach {to->
+          to.evolution && !to.EX
         }
       };
       case SITRUS_BERRY_91:
@@ -2294,6 +2313,9 @@ public enum UnseenForces implements LogicCardInfo {
         text "Attach Sitrus Berry to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Sitrus Berry is attached to is Pokémon-ex or has Dark or an owner in its name, discard Sitrus Berry." +
           "At any time between turns, if the Pokémon this card is attached to has at least 3 damage counters on it, remove 3 damage counters from it. Then, discard Sitrus Berry."
         def eff
+        def check = {
+          if (it.topPokemonCard.name.contains("Dark") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
+        }
         onPlay {reason->
           eff=delayed(anytime:true){
             before BEGIN_TURN,{
@@ -2308,8 +2330,11 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        allowAttach { to->
-          to.topPokemonCard.cardTypes.isNot(EX) && !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON)
+        onMove {to->
+          check(to)
+        }
+        allowAttach {to->
+          !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
       };
       case SOLID_RAGE_92:
@@ -2317,6 +2342,9 @@ public enum UnseenForces implements LogicCardInfo {
         text "Attach Solid Rage to 1 of your Evolved Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Solid Rage is attached to is a Basic Pokémon or Pokémon-ex, discard Solid Rage." +
           "If you have more Prize cards left than your opponent, the Pokémon that Solid Rage is attached to does 20 more damage to the Active Pokémon (before applying Weakness and Resistance)."
         def eff
+        def check = {
+          if(!it.evolution || it.EX){discard thisCard}
+        }
         onPlay {reason->
           eff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
@@ -2330,23 +2358,17 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        allowAttach { to->
-          to.topPokemonCard.cardTypes.isNot(EX) && to.topPokemonCard.cardTypes.isNot(BASIC)
+        onMove {to->
+          check(to)
+        }
+        allowAttach {to->
+          to.evolution && !to.EX
         }
       };
       case WARP_POINT_93:
       return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case ENERGY_SEARCH_94:
-      return itemCard (this) {
-        text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-        onPlay {
-          deck.search(count: 1, cardTypeFilter(BASIC_ENERGY)).moveTo(hand)
-          shuffleDeck()
-        }
-        playRequirement{
-          assert my.deck: "Deck is empty"
-        }
-      };
+      return copy(BlackWhite.ENERGY_SEARCH_93, this);
       case POTION_95:
       return copy (FireRedLeafGreen.POTION_101, this)
       case DARKNESS_ENERGY_96:
@@ -2374,21 +2396,21 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Blissful Support", {
           text "Once during your turn, when you play Blissey ex from your hand to evolve 1 of your Pokémon, you may discard all Energy cards attached to any number of your Pokémon and remove all damage counters from those Pokémon."
           onActivate {
-            checkLastTurn()
             if (it==PLAY_FROM_HAND && confirm("Use Blissful Support?")) {
               powerUsed()
 
-              my.all.findAll { it.numberOfDamageCounters && !it.cards.filterByType(ENERGY) }.each {
+              my.all.findAll { it.numberOfDamageCounters || !it.cards.filterByType(ENERGY) }.each {
                 healAll it, Source.SRC_ABILITY
               }
 
               def tar = true
               while (tar) {
-                tar = my.all.findAll { it.cards.filterByType(ENERGY) && it.numberOfDamageCounters }
+                tar = my.all.findAll { it.cards.filterByType(ENERGY) || it.numberOfDamageCounters }
                 if (!tar) break
-                def pcs = tar.select("Select a Pokémon to discard all Energy Cards from to heal off all damage. Cancel to stop", false)
+                def pcs = tar.select("Select a Pokémon to discard all Energy Cards from, and then heal off all damage it has. Cancel to stop", false)
                 if (!pcs) break
-                pcs.cards.filterByType(ENERGY).discard()
+                def energiesToDiscard = pcs.cards.filterByType(ENERGY)
+                if (energiesToDiscard) energiesToDiscard.discard()
                 healAll pcs, Source.SRC_ABILITY
               }
             }
@@ -2403,7 +2425,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def count = 0
             while (count < 3 && my.discard.filterByType(ENERGY)) {
-              attachEnergyFrom(my.discard, self)
+              attachEnergyFrom(basic: false, my.discard, self)
               count++
             }
           }
@@ -2422,7 +2444,7 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Devo Flash", {
           text "Once during your turn, when you play Espeon ex from your hand to evolve 1 of your Pokémon, you may choose 1 Evolved Pokémon on your opponent's Bench, remove the highest Stage Evolution card from that Pokémon, and put it back into his or her hand."
           onActivate {
-            if (it==PLAY_FROM_HAND && opp.bench.findAll { it.evolution } && confirm("Use Devo Flash?")) {
+            if (it==PLAY_FROM_HAND && opp.bench.any{ it.evolution } && confirm("Use Devo Flash?")) {
               powerUsed()
 
               def list = opp.bench.findAll { it.evolution }
@@ -2447,6 +2469,27 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost P, C, C
           onAttack {
             damage 60
+            //Taken from Xatu (DX 29)
+            def addDmg = 0
+            opp.all.each{
+              if(it.cards.filterByType(POKEMON_TOOL)) addDmg += 1
+              //TODO: Maybe improve this detection... Is the benched fossil/doll/usbsitute still detected as a trainer?
+              it.cards.each{
+                thatCard -> ["Amber", " Doll", "Robo Substitute"].each{
+                  thatTrainer -> if (thatCard.name.contains(thatTrainer)) { addDmg += 1 }
+                }
+                if (
+                  thatCard.name.contains("Fossil") && thatCard.name != "Buried Fossil"
+                ) { addDmg += 1 }
+              }
+              //TODO: Detect attached non-tools (see: Pluspower, Defender, etc.)
+            }
+            if(bg.stadiumInfoStruct){
+              if(bg.stadiumInfoStruct.stadiumCard.player != self.owner){
+                addDmg += 1
+              }
+            }
+            damage 30 * addDmg
           }
         }
       };
@@ -2456,7 +2499,7 @@ public enum UnseenForces implements LogicCardInfo {
         pokeBody "Overpowering Fang", {
           text "As long as Feraligatr ex is your Active Pokémon, each player's Pokémon (excluding Pokémon-ex) can't use any Poké-Powers or Poké-Bodies."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (self.active && !h.effect.target.topPokemonCard.cardTypes.is(EX)) {
+            if (self.active && !h.effect.target.EX) {
               if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
                 h.object=true
               }
@@ -2489,9 +2532,9 @@ public enum UnseenForces implements LogicCardInfo {
           text "If Ho-Oh ex would be Knocked Out by damage from an opponent's attack, you may move up to 2 Energy attached to Ho-Oh ex to your Pokémon in any way you like."
           delayedA {
             before (KNOCKOUT,self) {
-              if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.cards.filterByType(ENERGY)) {
+              if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.all.size() > 1 && self.cards.filterByType(ENERGY)) {
                 bc "Golden Wing activates"
-                moveEnergy(playerType: self.owner, may: true, count: 2, info: "Golden Wing", self, self.owner.pbg.bench)
+                moveEnergy(playerType: self.owner, may: true, count: 2, info: "Golden Wing", self, self.owner.pbg.all.getExcludedList(self))
               }
             }
           }
@@ -2520,7 +2563,7 @@ public enum UnseenForces implements LogicCardInfo {
               if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value })) {
                 if (ef.attacker.cards.filterByType(ENERGY)) {
                   bc "Silver Sparkle Activates"
-                  ef.attacker.cards.filterByType(ENERGY).oppSelect("Select an Energy to move to the Opponent's hand").moveTo(ef.attacker.owner.pbg.hand)
+                  ef.attacker.cards.filterByType(ENERGY).select("Select an Energy to move to the Opponent's hand", self.owner).moveTo(ef.attacker.owner.pbg.hand)
                 }
               }
             }
@@ -2528,7 +2571,7 @@ public enum UnseenForces implements LogicCardInfo {
         }
         move "Elemental Blast", {
           text "200 damage. Discard a [R] Energy, [W] Energy, and [L] Energy attached to Lugia ex."
-          energyCost G, W, R
+          energyCost R, W, L
           onAttack {
             damage 200
             discardSelfEnergy R
@@ -2580,7 +2623,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def target = opp.all.select("Put 1 damage counter to which pokémon?")
             def amount = 30
-            if (target.topPokemonCard.cardTypes.contains(STAGE2)) {
+            if (target.evolution && target.topPokemonCard.cardTypes.contains(STAGE2)) {
               amount = 50
             }
             damage amount, target
@@ -2591,9 +2634,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 40
-            if (my.bench) {
-              sw self, my.bench.select("Select a Pokemon to switch Politoed ex with")
-            }
+            switchYourActive()
           }
         }
         move "Swallow Up", {
@@ -2616,9 +2657,9 @@ public enum UnseenForces implements LogicCardInfo {
         pokeBody "Danger Perception", {
           text "As long as Scizor ex's remaining HP is 60 or less, Scizor ex does 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
-            before APPLY_ATTACK_DAMAGES, {
+            after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
-                if (it.from == self && it.to == self.owner.opposite.pbg.active && self.getRemainingHP().value <= 40) {
+                if (it.from == self && it.to == self.owner.opposite.pbg.active && self.getRemainingHP().value <= 60) {
                   bc "Danger Perception +40"
                   it.dmg += hp(40)
                 }
@@ -2676,7 +2717,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost F, F, C, C
           onAttack {
             discardSelfEnergy F,F
-            damage 100, opp.all.select("Deal 30 damage to which Pokémon?")
+            damage 100, opp.all.select("Deal 100 damage to which Pokémon?")
           }
         }
       };
@@ -2687,12 +2728,13 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Bursting Up", {
           text "Once during your turn, when you play Typhlosion ex from your hand to evolve 1 of your Pokémon, count the number of your opponent's Benched Pokémon. You may search your deck for up to that number of [R] Energy cards and attach them to 1 of your [R] Pokémon. Shuffle your deck afterward."
           onActivate {
-            checkLastTurn()
-            if (it==PLAY_FROM_HAND && confirm("Use Bursting Up?")) {
+            if (it==PLAY_FROM_HAND && opp.bench && confirm("Use Bursting Up?")) {
               powerUsed()
               def list = my.deck.search (max: opp.bench.size(), basicEnergyFilter(R))
-              def pcs = my.all.findAll { it.types.contains(R) }.select("Which [R] Pokémon to attach these Energies to?")
-              list.each { attachEnergy(pcs, it) }
+              if (list) {
+                def pcs = my.all.findAll { it.types.contains(R) }.select("Which [R] Pokémon to attach these Energies to?")
+                list.each { attachEnergy(pcs, it) }
+              }
               shuffleDeck()
             }
           }
@@ -2721,7 +2763,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 30
 
             afterDamage {
-              if (bg.stadiumInfoStruct && confirm("Discard the Stadium card?")) {
+              if (bg.stadiumInfoStruct) {
                 discard(bg.stadiumInfoStruct.stadiumCard)
               }
             }
@@ -2767,27 +2809,28 @@ public enum UnseenForces implements LogicCardInfo {
           onActivate {r->
             if (r==PLAY_FROM_HAND && opp.bench && confirm("Use Darker Ring?")) {
               powerUsed()
-              sw opp.active, opp.bench.select("Choose your opponent's new active Pokémon.")
+              sw opp.active, opp.bench.select("Choose your opponent's new active Pokémon."), SRC_ABILITY
             }
           }
         }
         move "Black Cry", {
           text "20 damage. The Defending Pokémon can't retreat or use any Poké-Powers during your opponent's next turn."
           energyCost C
-          def pokepowerBlock
           onAttack {
             damage 20
 
             cantRetreat(defending)
-            delayed {
-              getter (IS_ABILITY_BLOCKED) { Holder h->
-                if (h.effect.target.owner != self.owner && h.effect.target.active && h.effect.ability instanceof PokePower) {
-                  h.object = true
+            targeted (defending) {
+              delayed {
+                getter (IS_ABILITY_BLOCKED) { Holder h->
+                  if (h.effect.target == defending && h.effect.ability instanceof PokePower) {
+                    h.object = true
+                  }
                 }
+                unregisterAfter 2
+                after SWITCH, defending, {unregister()}
+                after EVOLVE, defending, {unregister()}
               }
-              unregisterAfter 2
-              after SWITCH, defending, {unregister()}
-              after EVOLVE, defending, {unregister()}
             }
           }
         }
@@ -2807,10 +2850,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost R, C
           onAttack {
             damage 20
-
-            if (my.bench) {
-              sw self, my.bench.select("Switch Entei Star with 1 of your Benched Pokémon")
-            }
+            switchYourActive()
           }
         }
         move "Detonation", {
@@ -2819,9 +2859,9 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 70
             afterDamage {
-              if (my.prizeCardSet.size() < opp.prizeCardSet.size()) {
+              if (my.deck && my.prizeCardSet.size() < opp.prizeCardSet.size()) {
                 def list = my.deck.subList(0, 10).discard()
-                bc "Discarded 10 cards from the top of the deck"
+                bc "Discarded 10 cards from the top of ${self}'s owner's deck"
               }
             }
           }
@@ -2835,10 +2875,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 20
-
-            if (my.bench) {
-              sw self, my.bench.select("Switch Raikou Star with 1 of your Benched Pokémon")
-            }
+            switchYourActive()
           }
         }
         move "Meta Voltage", {
@@ -2863,10 +2900,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 20
-
-            if (my.bench) {
-              sw self, my.bench.select("Switch Suicune Star with 1 of your Benched Pokémon")
-            }
+            switchYourActive()
           }
         }
         move "Cross Wind", {
@@ -2907,7 +2941,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 20
-            apply POISONED
+            applyAfterDamage POISONED
             extraPoison 1
           }
         }

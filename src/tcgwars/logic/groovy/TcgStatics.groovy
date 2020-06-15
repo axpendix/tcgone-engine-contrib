@@ -505,14 +505,23 @@ class TcgStatics {
 //			bg().em().run(new ActivateAbilities(pcs.getTopPokemonCard(), pcs, ActivationReason.OTHER));
     }
   }
-  //TODO: Implementation rework for Tyrogue.
   static babyEvolution(String evolName, PokemonCardSet baby){
-    def pcs = my.hand.findAll{ it.name.contains(evolName) }.select("Choose which $evolName will $baby evolve to:")
+    babyEvolution([evolName], baby)
+  }
+  static babyEvolution(List<String> evolNames, PokemonCardSet baby){
+    def pcs = my.hand.findAll{
+      aCard -> evolNames.any{ aCard.name.contains(it) }
+    }.select("Choose which Pokémon will $baby evolve to:")
     healAll baby, Source.SRC_ABILITY
     evolve(baby, pcs.first(), PLAY_FROM_HAND)
   }
   static checkCanBabyEvolve(String evolName, PokemonCardSet baby){
-    assert my.hand.findAll{it.name.contains(evolName)} : "There is no $evolName in your hand to evolve $baby."
+    checkCanBabyEvolve([evolName], baby)
+  }
+  static checkCanBabyEvolve(List<String> evolNames, PokemonCardSet baby){
+    assert my.hand.any{
+      aCard -> evolNames.any{ aCard.name.contains(it) }
+    } : "There are no $evolNames in your hand $baby can evolve into."
   }
   static extraPoison (int v){
     new ExtraPoisonDamage(v).run(bg())
