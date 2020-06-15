@@ -1865,7 +1865,7 @@ public enum UnseenForces implements LogicCardInfo {
         weakness G
         move "Retaliate", {
           text "10x damage. Does 10 damage times the number of damage counters on Larvitar."
-          energyCost L
+          energyCost F
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -2595,7 +2595,7 @@ public enum UnseenForces implements LogicCardInfo {
             powerUsed()
             def pcs = my.all.select()
             attachEnergyFrom(type:G, my.hand, pcs)
-            heal 10, pcs
+            heal 10, pcs, SRC_ABILITY
           }
         }
         move "Razor Leaf", {
