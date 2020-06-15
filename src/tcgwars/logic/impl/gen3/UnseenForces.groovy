@@ -720,9 +720,11 @@ public enum UnseenForces implements LogicCardInfo {
             assert defending.topPokemonCard.moves : "No moves to perform"
           }
           onAttack {
-            def move = choose(defending.topPokemonCard.moves+["End Turn (Skip)"], "Choose 1 of the Defending Pokémon's attacks.")
+            def move = choose(defending.topPokemonCard.moves+["End Turn (Skip)"], "Choose 1 of the Defending Pokémon's attacks. (Do not select a move if you don't have necessary energy or it will fail) ")
             if (move instanceof String) return
+            def bef = blockingEffect(BETWEEN_TURNS)
             attack (move as Move)
+            bef.unregisterItself(bg().em())
           }
         }
         move "Karate Chop", {
@@ -1865,7 +1867,7 @@ public enum UnseenForces implements LogicCardInfo {
         weakness G
         move "Retaliate", {
           text "10x damage. Does 10 damage times the number of damage counters on Larvitar."
-          energyCost L
+          energyCost F
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -2186,9 +2188,9 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        onMove {to->
+        /*onMove {to->
           check(to)
-        }
+        }//TODO: Find alternative */
         allowAttach {to->
           to.evolution && !to.EX
         }
@@ -2199,8 +2201,7 @@ public enum UnseenForces implements LogicCardInfo {
       return copy(FireRedLeafGreen.ENERGY_REMOVAL_2_89, this);
       case ENERGY_ROOT_83:
       return pokemonTool (this) {
-        text "Attach Energy Root to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Energy Root is attached to is Pokémon-ex or has Dark or an owner in its name, discard Energy Root." +
-          "As long as Energy Root is attached to a Pokémon, that Pokémon gets +20 HP and can't use any Poké-Powers or Poké-Bodies."
+        text "Attach Energy Root to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Energy Root is attached to is Pokémon-ex or has Dark or an owner in its name, discard Energy Root.\nAs long as Energy Root is attached to a Pokémon, that Pokémon gets +20 HP and can't use any Poké-Powers or Poké-Bodies."
         def eff
         def eff2
         def check = {
@@ -2224,9 +2225,9 @@ public enum UnseenForces implements LogicCardInfo {
           eff2.unregister()
           new CheckAbilities().run(bg)
         }
-        onMove {to->
+        /*onMove {to->
           check(to)
-        }
+        }//TODO: Find alternative */
         allowAttach {to->
           !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
@@ -2249,9 +2250,9 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        onMove {to->
+        /*onMove {to->
           check(to)
-        }
+        }//TODO: Find alternative */
         allowAttach {to->
           !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
@@ -2282,7 +2283,7 @@ public enum UnseenForces implements LogicCardInfo {
         }
       };
       case POKEMON_REVERSAL_88:
-      return copy (FireRedLeafGrean.POKEMON_REVERSAL_97, this)
+      return copy (FireRedLeafGreen.POKEMON_REVERSAL_97, this)
       case PROFESSOR_ELM_S_TRAINING_METHOD_89:
       return copy(HeartgoldSoulsilver.PROFESSOR_ELM_S_TRAINING_METHOD_100, this)
       case PROTECTIVE_ORB_90:
@@ -2301,9 +2302,9 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        onMove {to->
+        /*onMove {to->
           check(to)
-        }
+        }//TODO: Find alternative */
         allowAttach {to->
           to.evolution && !to.EX
         }
@@ -2330,9 +2331,9 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        onMove {to->
+        /*onMove {to->
           check(to)
-        }
+        }//TODO: Find alternative */
         allowAttach {to->
           !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
@@ -2358,9 +2359,9 @@ public enum UnseenForces implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        onMove {to->
+        /*onMove {to->
           check(to)
-        }
+        }//TODO: Find alternative */
         allowAttach {to->
           to.evolution && !to.EX
         }
@@ -2595,7 +2596,7 @@ public enum UnseenForces implements LogicCardInfo {
             powerUsed()
             def pcs = my.all.select()
             attachEnergyFrom(type:G, my.hand, pcs)
-            heal 10, pcs
+            heal 10, pcs, SRC_ABILITY
           }
         }
         move "Razor Leaf", {
