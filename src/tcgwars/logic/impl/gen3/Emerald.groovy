@@ -132,7 +132,7 @@ public enum Emerald implements LogicCardInfo {
   FIGHTING_ENERGY_106 ("Fighting Energy", 106, Rarity.RARE, [BASIC_ENERGY, ENERGY]),
   FARFETCH_D_107 ("Farfetch'd", 107, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY;
 
   protected CardTypeSet cardTypes;
   protected String name;
