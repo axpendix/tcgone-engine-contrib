@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.impl.gen1.FossilNG;
 import tcgwars.logic.impl.gen3.TeamRocketReturns;
 import tcgwars.logic.impl.gen3.LegendMaker;
 import tcgwars.logic.impl.gen3.DragonFrontiers;
