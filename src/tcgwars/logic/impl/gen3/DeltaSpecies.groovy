@@ -3109,7 +3109,21 @@ public enum DeltaSpecies implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            reduceDamageNextTurn(hp(20), thisMove)
+            afterDamage{
+              delayed {
+                after PROCESS_ATTACK_EFFECTS, {
+                  bg.dm().each {
+                    if(it.to == self && it.dmg.value){
+                      bc "Flame Screen reduces damage"
+                      it.dmg-=20
+                    }
+                  }
+                }
+                unregisterAfter 2
+                after SWITCH, self, {unregister()}
+                after EVOLVE, self, {unregister()}
+              }
+            }
           }
         }
         move "Heat Tackle", {
