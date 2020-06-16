@@ -962,7 +962,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             before APPLY_ATTACK_DAMAGES, {
               if (self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})) {
                 bc "Scorching Feather activates"
-                apply BURNED, ef.attacker
+                apply BURNED, ef.attacker, SRC_ABILITY
               }
             }
           }
@@ -1147,7 +1147,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.all.any {it.numberOfDamageCounters} : "None of your Pokémon have taken damage"
             powerUsed()
             my.all.findAll {it.numberOfDamageCounters}.each {damagedPokemon ->
-              heal 20, damagedPokemon
+              heal 20, damagedPokemon, SRC_ABILITY
             }
           }
         }
@@ -1284,7 +1284,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             checkLastTurn()
             assert self.active : "$self.name is not your Active Pokémon"
             powerUsed()
-            flip {apply PARALYZED}
+            flip {apply PARALYZED, defending, SRC_ABILITY}
           }
         }
         move "Frost Smash", {
