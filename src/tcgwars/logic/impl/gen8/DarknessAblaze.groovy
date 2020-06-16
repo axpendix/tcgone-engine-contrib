@@ -1086,7 +1086,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               def waterE = self.cards.energyCount W
               if (waterE) {
                 def energies = []
-                def count = min waterE, 2
+                def count = Math.min waterE, 2
                 def finalCount = 0
                 count.times {
                   def info = "Select [W] Energy to return to your hand."
