@@ -253,29 +253,24 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokePower "Power Cancel", {
             text "Once during your opponent’s turn, when your opponent’s Pokémon uses any Poké-Power, you may discard 2 cards from your hand and prevent all effects of that Poké-Power. (This counts as that Pokémon using its Poké-Power.) This power can’t be used if Alakazam is affected by a Special Condition."
             delayedA {
-              //TODO: Yeah this is gonna be a fun one.
-              before USE_POKEPOWER, {
-                def testing = confirm("Power cancel debugging - USE_POKEPOWER", self.owner)
-              }
-              before POKEMONPOWER, {
-                def testing = confirm("Power cancel debugging - POKEMONPOWER", self.owner)
-              }
-              before POKEPOWER, {
-                def testing = confirm("Power cancel debugging - POKEPOWER", self.owner)
-                /*def conditions = [
-                  (!self.specialConditions),
-                  (keyStore("Power_Cancel", self, null) != bg.turnCount), //checkLastTurn() but no assert
-                  (bg.currentThreadPlayerType != self.owner),
-                  (ef.pcs.owner != self.owner),
-                  (self.owner.hand >= 2),
-                  (confirm("Activate $pokePower?", self.owner))
-                ]
-                if (conditions.each{it}) {
-                  keyStore("Power_Cancel", self, bg.turnCount) //powerUsed()
-                  self.owner.hand.select(count: 2, "Discard 2 hand from your hand", self.owner).discard()
-                  bc "$pokePower activates"
-                  prevent() //TODO: Confirm that after stopping the Poké-Power it still counted as used.
-                }*/
+              //Yeah this is gonna be a fun one. axpendix: it was fun, USE_ABILITY is new
+              before USE_ABILITY, {
+                PokemonCardSet pcs = ef.getResolvedTarget(bg, e)
+                Ability ability = ef.ability
+                if(
+                  ability instanceof PokePower &&
+                  (!self.specialConditions) &&
+                  (keyStore("Power_Cancel", self, null) != bg.turnCount) && //checkLastTurn() but no assert
+                  (bg.currentThreadPlayerType != self.owner) &&
+                  (pcs.owner != self.owner) &&
+                  (self.owner.pbg.hand.size() >= 2) &&
+                  confirm("Activate Power Cancel to block ${pcs.name}'s ${ability.name}?", self.owner)
+                ) {
+                  keyStore("Power_Cancel", self, bg.turnCount)
+                  bc "$self activates Power Cancel to block ${ability.name}!"
+                  self.owner.pbg.hand.select(count: 2, "Discard 2 hand from your hand", self.owner).discard()
+                  prevent()
+                }
               }
             }
           }
