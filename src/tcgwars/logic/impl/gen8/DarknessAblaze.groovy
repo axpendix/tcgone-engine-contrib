@@ -1407,7 +1407,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "If this Pokémon is your Active Pokémon, your opponent can’t play any Pokémon from their hand to evolve their Pokémon."
           delayedA {
             before PREVENT_EVOLVE, {
-              if (self.active && bg.currentTurn == self.owner.opposite && ef.evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+              if (self.active && bg.currentTurn == self.owner.opposite) {
                 return true
               }
             }
