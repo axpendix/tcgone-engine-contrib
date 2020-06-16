@@ -962,7 +962,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             before APPLY_ATTACK_DAMAGES, {
               if (self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})) {
                 bc "Scorching Feather activates"
-                apply BURNED, ef.attacker
+                apply BURNED, ef.attacker, SRC_ABILITY
               }
             }
           }
@@ -976,15 +976,6 @@ public enum DarknessAblaze implements LogicCardInfo {
             cantRetreat defending
           }
         }
-        // TODO: Remove, debugging
-        globalAbility {
-          delayed {
-            after CHECK_ATTACH_ENERGY_REQUIREMENT, {
-              bc "After Check Attach Energy Requirement"
-            }
-          }
-        }
-        // END TODO
       };
       case CENTISKORCH_V_35:
       return basic (this, hp:HP210, type:R, retreatCost:3) {
@@ -1033,7 +1024,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-
+            reduceDamageNextTurn(hp(30), thisMove)
           }
         }
         move "Icy Snow", {
@@ -1051,6 +1042,16 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Shuffle Dance", {
           text "Once during your turn, you may choose 1 of your opponent’s face-down Prize cards and switch it with the top card from their deck. (Both cards remain face-down.)"
           actionA {
+            checkLastTurn()
+            assert opp.deck : "Your opponent's deck is empty"
+            powerUsed()
+
+            def info = "Select opponent's Prize card to switch with the top card from their deck."
+            def oppTopDeck = opp.deck.remove(0)
+            def oppPrize = opp.prizeCardSet.faceDownCards.select(hidden: true, info)
+            def oppPrizeIndex = opp.prizeCardSet.faceDownCards.indexOf(oppPrize)
+            opp.prizeCardSet.faceDownCards.set(oppPrizeIndex, oppTopDeck)
+            oppPrize.moveTo(addToTop: true, opp.deck)
           }
         }
         move "Mad Party", {
@@ -1079,6 +1080,34 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 130
+            afterDamage {
+              def waterE = self.cards.energyCount W
+              if (waterE) {
+                def energies = []
+                def count = min waterE, 2
+                def finalCount = 0
+                count.times {
+                  def info = "Select [W] Energy to return to your hand."
+                  def energy = self.cards.findAll {energyFilter W}.select(info)
+                  if (energy instanceof specialEnergy) {
+                    def types = energy.getEnergyTypesOverride()
+                    types.each {
+                      if (it.contains W) {
+                        finalCount += 1
+                      }
+                    }
+                  }
+                  else {
+                    finalCount += 1
+                  }
+                  energies.add(energy)
+                  if (finalCount >= count) return
+                }
+                energies.each {
+                  self.cards[self.cards.indexOf(it)].moveTo(my.hand)
+                }
+              }
+            }
           }
         }
       };
@@ -1088,9 +1117,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Nap", {
           text "Heal 20 damage from this Pokémon."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert self.numberOfDamageCounters : "$self.name has taken no damage"
+          }
           onAttack {
-
+            heal 20, self
           }
         }
       };
@@ -1100,6 +1131,12 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Bright Heal", {
           text "Once during your turn, you may heal 20 damage from each of your Pokémon."
           actionA {
+            checkLastTurn()
+            assert my.all.any {it.numberOfDamageCounters} : "None of your Pokémon have taken damage"
+            powerUsed()
+            my.all.findAll {it.numberOfDamageCounters}.each {damagedPokemon ->
+              heal 20, damagedPokemon, SRC_ABILITY
+            }
           }
         }
         move "Surf", {
@@ -1117,9 +1154,15 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Fossil Search", {
           text "Search your deck for up to 2 Rare Fossil cards and put them on your Bench. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            def info = "Select up to 2 Rare Fossil cards to put on your bench."
+            my.deck.search max:2, info, {it.name == "Rare Fossil"}.each {fossil ->
+              bg.em().run(new PlayTrainer(fossil))
+            }
+            shuffleDeck()
           }
         }
         move "Surf", {
@@ -1168,6 +1211,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 110
+            cantAttackNextTurn self
           }
         }
       };
@@ -1202,6 +1246,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip {apply PARALYZED}
           }
         }
       };
@@ -1214,6 +1259,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip {apply PARALYZED}
           }
         }
       };
@@ -1223,6 +1269,10 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Freezing Cold", {
           text "Once during your turn, if this Pokémon is your Active Pokémon, you may flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
           actionA {
+            checkLastTurn()
+            assert self.active : "$self.name is not your Active Pokémon"
+            powerUsed()
+            flip {apply PARALYZED, defending, SRC_ABILITY}
           }
         }
         move "Frost Smash", {
@@ -1271,6 +1321,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 150
+            damage 50, self
           }
         }
       };
@@ -1280,9 +1331,12 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Deep Sea Swirl", {
           text "Shuffle your hand into your deck, then draw 8 cards."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck || my.hand : "There are no cards in your hand or deck"
+          }
           onAttack {
-
+            my.hand.moveTo my.deck
+            draw 8
           }
         }
         move "Wave Splash", {
@@ -1300,9 +1354,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Recover", {
           text "Heal 30 damage from this Pokémon."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert self.numberOfDamageCounters : "$self.name has not taken any damage"
+          }
           onAttack {
-
+            heal 30, self
           }
         }
         move "Poison Tentacles", {
@@ -1311,6 +1367,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            apply POISONED
           }
         }
       };
@@ -1320,9 +1377,12 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Recover", {
           text "Discard an Energy from this Pokémon. If you do, heal all damage from this Pokémon."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert self.cards.energyCount C : "$self.name has no Energy attached"
+          }
           onAttack {
-
+            self.cards.findAll {energyFilter C}.select("Select Energy to discard from $self.name.").discard()
+            healAll self
           }
         }
         move "Poison Whip", {
@@ -1331,6 +1391,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
+            apply POISONED
           }
         }
       };
@@ -1339,7 +1400,12 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness L
         bwAbility "Primal Law", {
           text "If this Pokémon is your Active Pokémon, your opponent can’t play any Pokémon from their hand to evolve their Pokémon."
-          actionA {
+          delayedA {
+            before EVOLVE, {
+              if (self.active && bg.currentTurn == self.owner.opposite && ef.evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+                prevent()
+              }
+            }
           }
         }
         move "Hammer In", {
@@ -1360,6 +1426,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 90
+            reduceDamageNextTurn(hp(60), thisMove)
           }
         }
         move "Cold Breath", {
@@ -1368,6 +1435,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 130
+            apply ASLEEP
           }
         }
       };
