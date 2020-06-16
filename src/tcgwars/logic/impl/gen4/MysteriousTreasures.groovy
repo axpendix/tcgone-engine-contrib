@@ -256,8 +256,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               //TODO: Yeah this is gonna be a fun one.
               before POKEPOWER, {
                 bc "Power Cancel Debug"
-                bc "tcg_props: ${(ef as TcgBuilders).getProperties().toString()}"
-                bc "tcg_dump: ${(ef as TcgBuilders).dump().toString().replaceAll('<','[').replaceAll('>',']')}"
+                def testing = confirm("Power cancel debugging", self.owner)
                 bc "abi_props: ${(ef as AbilityBuilder).getProperties().toString()}"
                 bc "abi_dump: ${(ef as AbilityBuilder).dump().toString().replaceAll('<','[').replaceAll('>',']')}"
                 /*def conditions = [
@@ -394,7 +393,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert my.hand : "You don't have any cards in your hand"
               def energyCount = self.cards.energyCount(C)
               assert energyCount : "You have no Energy attached to $self"
+              bc "debug for alakazam 1"
               powerUsed()
+              bc "debug for alakazam 2"
 
               def list = my.hand.select(max: energyCount, "Select up to $energyCount ${(energyCount>1) ? "cards" : "card"} to shuffle into your deck.")
               def drawCount = list.size()
