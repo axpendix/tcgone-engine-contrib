@@ -1437,6 +1437,19 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 90
+            delayed {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if (it.to == self && bg.currentTurn==self.owner.opposite && it.notNoEffect && it.dmg.value) {
+                    bc "Reflect -60"
+                    it.dmg -= hp 60
+                  }
+                }
+              }
+              unregisterAfter 2
+              after EVOLVE, self, {unregister()}
+              after SWITCH, self, {unregister()}
+            }
           }
         }
         move "Cold Breath", {
@@ -1445,6 +1458,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 130
+            apply ASLEEP
           }
         }
       };
