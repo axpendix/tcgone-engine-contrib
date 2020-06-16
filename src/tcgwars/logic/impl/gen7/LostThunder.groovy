@@ -2711,7 +2711,7 @@ public enum LostThunder implements LogicCardInfo {
 					 */
             delayedA {
               // @mtgufo
-              before APPLY_ATTACK_DAMAGES, {
+              after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker.owner != self.owner) {
                   bg.dm().each{
                     if(it.to == self && it.notNoEffect && self.damage == hp(0) && it.dmg.value >= self.fullHP.value) {
