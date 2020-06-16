@@ -1088,12 +1088,12 @@ public enum DarknessAblaze implements LogicCardInfo {
             afterDamage {
               def waterE = self.cards.energyCount W
               if (waterE) {
-                def energies = []
+                def energies = new CardList()
                 def count = Math.min waterE, 2
                 def finalCount = 0
                 count.times {
                   def info = "Select [W] Energy to return to your hand."
-                  def energy = self.cards.findAll {energyFilter W}.select(info)
+                  def energy = self.cards.findAll {energyFilter W}.getExcludedList(energies).select(info)
                   if (energy instanceof SpecialEnergyCard) {
                     def types = energy.getEnergyTypesOverride()
                     types.each {
@@ -1108,9 +1108,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                   energies.add(energy)
                   if (finalCount >= count) return
                 }
-                energies.each {
-                  self.cards[self.cards.indexOf(it)].moveTo(my.hand)
-                }
+                energies.moveTo my.hand
               }
             }
           }
