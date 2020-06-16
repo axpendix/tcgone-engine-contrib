@@ -3111,11 +3111,13 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 30
             afterDamage{
               delayed {
-                after PROCESS_ATTACK_EFFECTS, {
-                  bg.dm().each {
-                    if(it.to == self && it.dmg.value){
-                      bc "Flame Screen reduces damage"
-                      it.dmg-=20
+                before APPLY_ATTACK_DAMAGES, {
+                  if(ef.attacker.owner != self.owner) {
+                    bg.dm().each {
+                      if(it.to == self && it.dmg.value){
+                        bc "Flame Screen reduces damage"
+                        it.dmg-=20
+                      }
                     }
                   }
                 }
