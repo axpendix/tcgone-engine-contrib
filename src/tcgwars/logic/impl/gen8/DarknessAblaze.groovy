@@ -1024,7 +1024,19 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-
+            delayed {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if (it.to == self && bg.currentTurn==self.owner.opposite && it.notNoEffect && it.dmg.value) {
+                    bc "Reflect -30"
+                    it.dmg -= hp 30
+                  }
+                }
+              }
+              unregisterAfter 2
+              after EVOLVE, self, {unregister()}
+              after SWITCH, self, {unregister()}
+            }
           }
         }
         move "Icy Snow", {
