@@ -257,9 +257,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
               before POKEPOWER, {
                 bc "Power Cancel Debug"
                 bc "tcg_props: ${(ef as TcgBuilders).getProperties().toString()}"
-                bc "tcg_dump: ${(ef as TcgBuilders).dump().toString().replaceAll('\\<[^>]*>','')}"
+                bc "tcg_dump: ${(ef as TcgBuilders).dump().toString().replaceAll('<','[').replaceAll('>',']')}"
                 bc "abi_props: ${(ef as AbilityBuilder).getProperties().toString()}"
-                bc "abi_dump: ${(ef as AbilityBuilder).dump().toString().replaceAll('\\<[^>]*>','')}"
+                bc "abi_dump: ${(ef as AbilityBuilder).dump().toString().replaceAll('<','[').replaceAll('>',']')}"
                 /*def conditions = [
                   (!self.specialConditions),
                   (keyStore("Power_Cancel", self, null) != bg.turnCount), //checkLastTurn() but no assert
