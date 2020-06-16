@@ -254,9 +254,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "Once during your opponent’s turn, when your opponent’s Pokémon uses any Poké-Power, you may discard 2 cards from your hand and prevent all effects of that Poké-Power. (This counts as that Pokémon using its Poké-Power.) This power can’t be used if Alakazam is affected by a Special Condition."
             delayedA {
               //TODO: Yeah this is gonna be a fun one.
-              before USE_POKEPOWER, {
+              before POKEPOWER, {
+                bc "Power Cancel Debug"
                 bc "${ef}"
-                def conditions = [
+                /*def conditions = [
                   (!self.specialConditions),
                   (keyStore("Power_Cancel", self, null) != bg.turnCount), //checkLastTurn() but no assert
                   (bg.currentThreadPlayerType != self.owner),
@@ -269,7 +270,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   self.owner.hand.select(count: 2, "Discard 2 hand from your hand", self.owner).discard()
                   bc "$pokePower activates"
                   prevent() //TODO: Confirm that after stopping the Poké-Power it still counted as used.
-                }
+                }*/
               }
             }
           }
