@@ -262,8 +262,6 @@ public enum MysteriousTreasures implements LogicCardInfo {
               }
               before POKEPOWER, {
                 def testing = confirm("Power cancel debugging - POKEPOWER", self.owner)
-                bc "props: ${ef.owner.getProperties().toString()}"
-                bc "dump: ${ef.owner.dump().toString().replaceAll('<','[').replaceAll('>',']')}"
                 /*def conditions = [
                   (!self.specialConditions),
                   (keyStore("Power_Cancel", self, null) != bg.turnCount), //checkLastTurn() but no assert

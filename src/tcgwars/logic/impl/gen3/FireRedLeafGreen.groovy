@@ -2313,10 +2313,12 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 h.object=true
               }
             }
+            new CheckAbilities().run(bg)
           }
           onRemoveFromPlay{
             effect1.unregister()
             effect2.unregister()
+            new CheckAbilities().run(bg)
           }
         };
       case POKE_BALL_95:

@@ -795,18 +795,27 @@ public enum UnseenForces implements LogicCardInfo {
         weakness F
         pokeBody "Intimidating Ring", {
           text "As long as Ursaring is your Active Pokémon, your opponent's Basic Pokémon can't attack or use any Poké-Powers."
-          delayedA {
-            before CHECK_ATTACK_REQUIREMENTS, {
-              if (self.active && ef.attacker.owner != self.owner && !ef.attacker.evolution) {
-                wcu "Intimidating Ring prevents attack"
-                prevent()
+          def eff1, eff2
+          onActivate {
+            eff1 = delayed {
+              before CHECK_ATTACK_REQUIREMENTS, {
+                if (self.active && ef.attacker.owner != self.owner && !ef.attacker.evolution) {
+                  wcu "Intimidating Ring prevents attack"
+                  prevent()
+                }
               }
             }
-          }
-          getterA (IS_ABILITY_BLOCKED) { Holder h->
-            if (self.active && h.effect.target.owner != self.owner && !h.effect.target.evolution && h.effect.ability instanceof PokePower) {
-              h.object=true
+            eff2 = getter (IS_ABILITY_BLOCKED) { Holder h->
+              if (self.active && h.effect.target.owner != self.owner && !h.effect.target.evolution && h.effect.ability instanceof PokePower) {
+                h.object=true
+              }
             }
+            new CheckAbilities().run(bg)
+          }
+          onDeactivate {
+            eff1.unregister()
+            eff2.unregister()
+            new CheckAbilities().run(bg)
           }
         }
         move "Drag Off", {
@@ -2499,12 +2508,20 @@ public enum UnseenForces implements LogicCardInfo {
         weakness L
         pokeBody "Overpowering Fang", {
           text "As long as Feraligatr ex is your Active Pokémon, each player's Pokémon (excluding Pokémon-ex) can't use any Poké-Powers or Poké-Bodies."
-          getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (self.active && !h.effect.target.EX) {
-              if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
-                h.object=true
+          def eff
+          onActivate{
+            eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
+              if (self.active && !h.effect.target.EX) {
+                if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
+                  h.object=true
+                }
               }
             }
+            new CheckAbilities().run(bg)
+          }
+          onDeactivate {
+            eff.unregister()
+            new CheckAbilities().run(bg)
           }
         }
         move "Tsunami", {
@@ -2823,10 +2840,18 @@ public enum UnseenForces implements LogicCardInfo {
             cantRetreat(defending)
             targeted (defending) {
               delayed {
-                getter (IS_ABILITY_BLOCKED) { Holder h->
-                  if (h.effect.target == defending && h.effect.ability instanceof PokePower) {
-                    h.object = true
+                def eff
+                register {
+                  eff = getter (IS_ABILITY_BLOCKED) { Holder h->
+                    if (h.effect.target == defending && h.effect.ability instanceof PokePower) {
+                      h.object = true
+                    }
                   }
+                  new CheckAbilities().run(bg)
+                }
+                unregister{
+                  eff.unregister()
+                  new CheckAbilities().run(bg)
                 }
                 unregisterAfter 2
                 after SWITCH, defending, {unregister()}
