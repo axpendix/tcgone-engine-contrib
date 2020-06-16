@@ -1166,9 +1166,15 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Fossil Search", {
           text "Search your deck for up to 2 Rare Fossil cards and put them on your Bench. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            def info = "Select up to 2 Rare Fossil cards to put on your bench."
+            my.deck.search max:2, info, {it.name == "Rare Fossil"}.each {fossil ->
+              bg.em().run(new PlayTrainer(fossil))
+            }
+            shuffleDeck()
           }
         }
         move "Surf", {
