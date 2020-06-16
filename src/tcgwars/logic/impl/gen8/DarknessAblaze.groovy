@@ -1143,6 +1143,12 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Bright Heal", {
           text "Once during your turn, you may heal 20 damage from each of your Pokémon."
           actionA {
+            checkLastTurn()
+            assert my.all.any {it.numberOfDamageCounters} : "None of your Pokémon have taken damage"
+            powerUsed()
+            my.all.findAll {it.numberOfDamageCounters}.each {damagedPokemon ->
+              heal 20, damagedPokemon
+            }
           }
         }
         move "Surf", {
