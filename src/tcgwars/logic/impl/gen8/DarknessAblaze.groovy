@@ -1388,9 +1388,12 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Recover", {
           text "Discard an Energy from this Pokémon. If you do, heal all damage from this Pokémon."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert self.cards.energyCount C : "$self.name has no Energy attached"
+          }
           onAttack {
-
+            self.cards.findAll {energyFilter C}.select("Select Energy to discard from $self.name.").discard()
+            healAll self
           }
         }
         move "Poison Whip", {
@@ -1399,6 +1402,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
+            apply POISONED
           }
         }
       };
