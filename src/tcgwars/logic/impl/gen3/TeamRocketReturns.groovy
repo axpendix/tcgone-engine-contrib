@@ -1105,6 +1105,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
       case DARK_DRAGONAIR_31:
         return evolution (this, from:"Dratini", hp:HP070, type:DARKNESS, retreatCost:1) {
           weakness COLORLESS
+          resistance GRASS
           resistance FIGHTING
           pokePower "Evolutionary Light", {
             text "Once during your turn (before your attack), if Dark Dragonair is your Active Pokémon, you may search your deck for an Evolution card. Show it to your opponent and put it into your hand. Shuffle your deck afterward. This power can’t be used if Dark Dragonair is affected by a Special Condition."
@@ -1130,6 +1131,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
       case DARK_DRAGONAIR_32:
         return evolution (this, from:"Dratini", hp:HP080, type:DARKNESS, retreatCost:1) {
           weakness COLORLESS
+          resistance GRASS
           resistance FIGHTING
           move "Double Tackle", {
             text "Does 20 damage to each Defending Pokémon."
@@ -1677,6 +1679,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
       case DRATINI_53:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness COLORLESS
+          resistance GRASS
           resistance FIGHTING
           move "Dragon Song", {
             text "Each Defending Pokémon is now Asleep."
