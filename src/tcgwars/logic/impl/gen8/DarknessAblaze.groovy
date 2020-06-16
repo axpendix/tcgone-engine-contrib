@@ -1275,7 +1275,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             checkLastTurn()
             assert self.active : "$self.name is not your Active Pokémon"
             powerUsed()
-            flip {apply PARALYZED, defending, SRC_ABILITY}
+            flip {apply PARALYZED, opp.active, SRC_ABILITY}
           }
         }
         move "Frost Smash", {
