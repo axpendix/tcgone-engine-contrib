@@ -1343,9 +1343,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Deep Sea Swirl", {
           text "Shuffle your hand into your deck, then draw 8 cards."
           energyCost C
+          // TODO: Does this need deck to not be empty?
           attackRequirement {}
           onAttack {
-
+            my.hand.moveTo my.deck
+            draw 8
           }
         }
         move "Wave Splash", {
