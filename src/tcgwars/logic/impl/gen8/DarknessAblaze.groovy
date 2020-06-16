@@ -1054,6 +1054,16 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Shuffle Dance", {
           text "Once during your turn, you may choose 1 of your opponent’s face-down Prize cards and switch it with the top card from their deck. (Both cards remain face-down.)"
           actionA {
+            checkLastTurn()
+            assert opp.deck : "Your opponent's deck is empty"
+            powerUsed()
+
+            def info = "Select opponent's Prize card to switch with the top card from their deck."
+            def oppTopDeck = opp.deck.remove(0)
+            def oppPrize = opp.prizeCardSet.faceDownCards.select(hidden: true, info)
+            def oppPrizeIndex = opp.prizeCardSet.faceDownCards.indexOf(oppPrize)
+            opp.prizeCardSet.faceDownCards.set(oppPrizeIndex, oppTopDeck)
+            oppPrize.moveTo(addToTop: true, opp.deck)
           }
         }
         move "Mad Party", {
