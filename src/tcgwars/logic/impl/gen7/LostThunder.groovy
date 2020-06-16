@@ -1990,7 +1990,7 @@ public enum LostThunder implements LogicCardInfo {
           resistance METAL, MINUS20
           move "Flop" , {
             text "10 damage."
-            energyCost C
+            energyCost L
             onAttack{
               damage 10
             }
