@@ -1476,22 +1476,16 @@ public enum HolonPhantoms implements LogicCardInfo {
                 }
               } //If the user chooses Pokémon, play the card normally
             }
-            def eff
             before PLAY_ENERGY, {
-              eff = delayed {
-                after ATTACH_ENERGY, {
-                  if(ef.reason==PLAY_FROM_HAND){
-                    bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
-                  }
-                }
-              }
               if(bg.em().retrieveObject("Holon_Pokemon_Energy") == bg.turnCount){
                 wcu "Cannot play any more energy this turn."
                 prevent()
               }
             }
-            after PLAY_ENERGY, {
-              eff.unregister()
+            after ATTACH_ENERGY, {
+              if(ef.reason==PLAY_FROM_HAND){
+                bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
+              }
             }
           }
         }
