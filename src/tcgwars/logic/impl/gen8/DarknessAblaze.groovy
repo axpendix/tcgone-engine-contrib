@@ -1092,7 +1092,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                   if (energy instanceof specialEnergy) {
                     def types = energy.getEnergyTypesOverride()
                     types.each {
-                      if (it.contains W) {
+                      if (it.contains(W)) {
                         finalCount += 1
                       }
                     }
