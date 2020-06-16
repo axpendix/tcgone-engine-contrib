@@ -254,11 +254,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "Once during your opponent’s turn, when your opponent’s Pokémon uses any Poké-Power, you may discard 2 cards from your hand and prevent all effects of that Poké-Power. (This counts as that Pokémon using its Poké-Power.) This power can’t be used if Alakazam is affected by a Special Condition."
             delayedA {
               //TODO: Yeah this is gonna be a fun one.
+              before USE_POKEPOWER, {
+                def testing = confirm("Power cancel debugging - USE_POKEPOWER", self.owner)
+              }
+              before POKEMONPOWER, {
+                def testing = confirm("Power cancel debugging - POKEMONPOWER", self.owner)
+              }
               before POKEPOWER, {
-                bc "Power Cancel Debug"
-                def testing = confirm("Power cancel debugging", self.owner)
-                bc "abi_props: ${(ef as AbilityBuilder).getProperties().toString()}"
-                bc "abi_dump: ${(ef as AbilityBuilder).dump().toString().replaceAll('<','[').replaceAll('>',']')}"
+                def testing = confirm("Power cancel debugging - POKEPOWER", self.owner)
                 /*def conditions = [
                   (!self.specialConditions),
                   (keyStore("Power_Cancel", self, null) != bg.turnCount), //checkLastTurn() but no assert
@@ -393,9 +396,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert my.hand : "You don't have any cards in your hand"
               def energyCount = self.cards.energyCount(C)
               assert energyCount : "You have no Energy attached to $self"
-              bc "debug for alakazam 1"
               powerUsed()
-              bc "debug for alakazam 2"
 
               def list = my.hand.select(max: energyCount, "Select up to $energyCount ${(energyCount>1) ? "cards" : "card"} to shuffle into your deck.")
               def drawCount = list.size()
@@ -424,16 +425,20 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokePower "Miracle Oracle", {
             text "Once during your turn (before your attack), you may draw a card. Then, discard a card from your hand. If you discard an Energy card, draw 1 more card. This power can’t be used if Bronzong is affected by a Special Condition."
             actionA {
+              bc "debug for alakazam 1 - just started"
               checkNoSPC()
               checkLastTurn()
               assert my.deck : "You have no cards in your deck"
+              bc "debug for alakazam 2 - before powerUsed()"
               powerUsed()
+              bc "debug for alakazam 3 - after powerUsed"
               draw 1
               def selected = my.hand.select("Choose a card to discard")
               if (selected.first().cardTypes.is(ENERGY)) {
                 draw 1
               }
               selected.discard()
+              bc "debug for alakazam 4 - end of the power"
             }
           }
           move "Shady Stamp", {
@@ -1309,7 +1314,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 bc "During this turn, Slaking's Lazy Blow attack's base damage is 130."
               }, {
                 delayed{
-                  before CHECK_ATTACK_REQUIREMENTS {
+                  before CHECK_ATTACK_REQUIREMENTS, {
                     if (ef.attacker == self) {
                       wcu "$pokePower prevents $self from attacking."
                       prevent()
