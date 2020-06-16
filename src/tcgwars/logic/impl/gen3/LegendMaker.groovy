@@ -2452,6 +2452,11 @@ public enum LegendMaker implements LogicCardInfo {
                       prevent()
                     }
                   }
+                  before TAKE_PRIZE, {
+                    if (ef.pcs==self) {
+                      prevent()
+                    }
+                  }
                   before APPLY_SPECIAL_CONDITION, {
                     def pcs=e.getTarget(bg)
                     if(pcs==self){
@@ -2511,6 +2516,11 @@ public enum LegendMaker implements LogicCardInfo {
                   if (self.numberOfDamageCounters) {
                     bc "Spongey Stone activates"
                     heal 10, self
+                  }
+                }
+                before TAKE_PRIZE, {
+                  if (ef.pcs==self) {
+                    prevent()
                   }
                 }
               }
