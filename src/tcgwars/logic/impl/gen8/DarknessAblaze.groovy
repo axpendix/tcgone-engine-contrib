@@ -1378,7 +1378,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Discard an Energy from this Pokémon. If you do, heal all damage from this Pokémon."
           energyCost C
           attackRequirement {
-            assert self.cards.energyCount C : "$self.name has no Energy attached"
+            assert self.cards.energyCount(C) : "$self.name has no Energy attached"
           }
           onAttack {
             self.cards.findAll {energyFilter C}.select("Select Energy to discard from $self.name.").discard()
