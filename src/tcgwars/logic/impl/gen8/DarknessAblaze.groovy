@@ -1281,6 +1281,10 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Freezing Cold", {
           text "Once during your turn, if this Pokémon is your Active Pokémon, you may flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
           actionA {
+            checkLastTurn()
+            assert self.active : "$self.name is not your Active Pokémon"
+            powerUsed()
+            flip {apply PARALYZED}
           }
         }
         move "Frost Smash", {
