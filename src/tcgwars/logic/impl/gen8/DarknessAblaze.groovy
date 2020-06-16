@@ -1402,9 +1402,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Primal Law", {
           text "If this Pokémon is your Active Pokémon, your opponent can’t play any Pokémon from their hand to evolve their Pokémon."
           delayedA {
-            before PREVENT_EVOLVE, {
-              if (self.active && bg.currentTurn == self.owner.opposite) {
-                return true
+            before PLAY_EVOLUTION, {
+              if (self.active && bg.currentTurn == self.owner.opposite && ef.cardToPlay.player.pbg.hand.contains(ef.cardToPlay)) {
+                prevent()
               }
             }
           }
