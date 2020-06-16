@@ -1338,7 +1338,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.deck || my.hand : "There are no cards in your hand or deck"
           }
           onAttack {
-            my.hand.moveTo my.deck
+            my.hand.moveTo hidden:true, my.deck
             draw 8
           }
         }
