@@ -1365,9 +1365,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Recover", {
           text "Heal 30 damage from this Pokémon."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert self.numberOfDamageCounters : "$self.name has not taken any damage"
+          }
           onAttack {
-
+            heal 30, self
           }
         }
         move "Poison Tentacles", {
@@ -1376,6 +1378,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            apply POISONED
           }
         }
       };
