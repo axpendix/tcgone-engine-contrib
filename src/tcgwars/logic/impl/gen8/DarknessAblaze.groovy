@@ -1271,6 +1271,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip {apply PARALYZED}
           }
         }
       };
