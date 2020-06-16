@@ -1046,6 +1046,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert opp.deck : "Your opponent's deck is empty"
+            assert opp.prizeCardSet.faceDownCards : "Your opponent has no face down Prize cards"
             powerUsed()
 
             def info = "Select opponent's Prize card to switch with the top card from their deck."
