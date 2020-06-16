@@ -1340,6 +1340,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
           onAttack {
             my.hand.moveTo hidden:true, my.deck
+            shuffleDeck()
             draw 8
           }
         }
