@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen8;
 
+import tcgwars.logic.effect.gm.PlayTrainer
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -1089,7 +1091,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                 count.times {
                   def info = "Select [W] Energy to return to your hand."
                   def energy = self.cards.findAll {energyFilter W}.select(info)
-                  if (energy instanceof specialEnergy) {
+                  if (energy instanceof SpecialEnergyCard) {
                     def types = energy.getEnergyTypesOverride()
                     types.each {
                       if (it.contains(W)) {
