@@ -664,7 +664,8 @@ public enum HolonPhantoms implements LogicCardInfo {
                   h.object=true
                 }
               }
-            new CheckAbilities().run(bg)}
+            }
+            new CheckAbilities().run(bg)
           }
           onDeactivate{
             eff.unregister()

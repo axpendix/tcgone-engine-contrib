@@ -361,9 +361,22 @@ public enum SecretWonders implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              getterA (IS_ABILITY_BLOCKED) { Holder h ->
-                if (h.effect.ability instanceof PokePower) {
-                  h.object=true
+              afterDamage {
+                delayed {
+                  def eff
+                  register{
+                    eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
+                      if (h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
+                        h.object=true
+                      }
+                    }
+                    new CheckAbilities().run(bg)
+                  }
+                  unregister{
+                    eff.unregister()
+                    new CheckAbilities().run(bg)
+                  }
+                  unregisterAfter 2
                 }
               }
             }

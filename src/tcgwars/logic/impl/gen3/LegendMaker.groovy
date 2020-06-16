@@ -735,12 +735,20 @@ public enum LegendMaker implements LogicCardInfo {
         weakness P
         pokeBody "Rear Sensor", {
           text "Each player's Active Basic Pokémon (excluding Pokémon-ex) can't use any Poké-Powers."
-          getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (!h.effect.target.evolution && h.effect.target.active && !h.effect.target.EX) {
-              if (h.effect.ability instanceof PokePower) {
-                h.object=true
+          def eff
+          onActivate {
+            eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
+              if (!h.effect.target.evolution && h.effect.target.active && !h.effect.target.EX) {
+                if (h.effect.ability instanceof PokePower) {
+                  h.object=true
+                }
               }
             }
+            new CheckAbilities().run(bg)
+          }
+          onDeactivate{
+            eff.unregister()
+            new CheckAbilities().run(bg)
           }
         }
         move "Foresight", {
@@ -867,15 +875,18 @@ public enum LegendMaker implements LogicCardInfo {
         weakness P
         pokeBody "Sol Shade", {
           text "As long as you have Solrock in play, each player's [R] Pokémon (excluding Pokémon-ex) can't use any Poké-Powers."
-          getterA (IS_ABILITY_BLOCKED) { Holder h->
-            if (my.all.find{it.name == 'Solrock'} && h.effect.target.types.contains(R) && !h.effect.target.EX && h.effect.ability instanceof PokePower) {
-              h.object=true
+          def eff
+          onActivate{
+            eff = getter (IS_ABILITY_BLOCKED) { Holder h->
+              if (my.all.find{it.name == 'Solrock'} && h.effect.target.types.contains(R) && !h.effect.target.EX && h.effect.ability instanceof PokePower) {
+                h.object=true
+              }
             }
+            new CheckAbilities().run(bg)
           }
-          delayedA{
-            after PLAY_CARD, {
-              new CheckAbilities().run(bg)
-            }
+          onDeactivate{
+            eff.unregister()
+            new CheckAbilities().run(bg)
           }
         }
         move "Moon Guidance", {
@@ -1064,19 +1075,22 @@ public enum LegendMaker implements LogicCardInfo {
         weakness G
         pokeBody "Luna Shade", {
           text "As long as you have Lunatone in play, each player's [C] Pokémon (excluding Pokémon-ex) can't use any Poké-Powers."
-          getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (!h.effect.target.topPokemonCard.cardTypes.is(EX) && h.effect.target.types.contains(C)) {
-              if (h.effect.ability instanceof PokePower) {
-                if (self.owner.pbg.all.find{it.name.contains("Lunatone")}) {
-                  h.object=true
+          def eff
+          onActivate{
+            eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
+              if (!h.effect.target.topPokemonCard.cardTypes.is(EX) && h.effect.target.types.contains(C)) {
+                if (h.effect.ability instanceof PokePower) {
+                  if (self.owner.pbg.all.find{it.name.contains("Lunatone")}) {
+                    h.object=true
+                  }
                 }
               }
             }
+            new CheckAbilities().run(bg)
           }
-          delayedA{
-            after PLAY_CARD, {
-              new CheckAbilities().run(bg)
-            }
+          onDeactivate{
+            eff.unregister()
+            new CheckAbilities().run(bg)
           }
         }
         move "Call for Family", {
