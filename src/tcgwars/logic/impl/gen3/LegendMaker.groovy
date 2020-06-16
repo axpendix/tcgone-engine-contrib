@@ -552,12 +552,18 @@ public enum LegendMaker implements LogicCardInfo {
         weakness P
         pokeBody "Stench", {
           text "As long as Muk is your Active Pokémon, each player's Pokémon can't use any Poké-Powers."
-          delayedA {
-            getterA (IS_ABILITY_BLOCKED) { Holder h->
+          def eff
+          onActivate {
+            eff = getter (IS_ABILITY_BLOCKED) { Holder h->
               if (self.active && h.effect.target.owner != self.owner && h.effect.ability instanceof PokePower) {
                 h.object=true
               }
             }
+            new CheckAbilities().run(bg)
+          }
+          onDeactivate{
+            eff.unregister()
+            new CheckAbilities().run(bg)
           }
         }
         move "Poison Ring", {

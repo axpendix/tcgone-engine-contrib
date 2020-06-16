@@ -656,12 +656,19 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Delta Reserve", {
           text "As long as Pidgeot has any Holon Energy cards attached to it, each player's Pokémon (excluding Pokémon that has δ on its card) can't use any Poké-Powers."
-          getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (self.cards.findAll{it.name.contains("Holon Energy")} && !h.effect.target.topPokemonCard.cardTypes.is(DELTA)) {
-              if (h.effect.ability instanceof PokePower) {
-                h.object=true
+          def eff
+          onActivate{
+            eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
+              if (self.cards.findAll{it.name.contains("Holon Energy")} && !h.effect.target.topPokemonCard.cardTypes.is(DELTA)) {
+                if (h.effect.ability instanceof PokePower) {
+                  h.object=true
+                }
               }
-            }
+            new CheckAbilities().run(bg)}
+          }
+          onDeactivate{
+            eff.unregister()
+            new CheckAbilities().run(bg)
           }
         }
         move "Rotating Claws", {

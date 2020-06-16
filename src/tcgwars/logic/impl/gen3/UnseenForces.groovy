@@ -2829,8 +2829,8 @@ public enum UnseenForces implements LogicCardInfo {
                     if (h.effect.target == defending && h.effect.ability instanceof PokePower) {
                       h.object = true
                     }
-                    new CheckAbilities().run(bg)
                   }
+                  new CheckAbilities().run(bg)
                 }
                 unregister{
                   eff.unregister()
