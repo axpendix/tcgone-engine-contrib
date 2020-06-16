@@ -1050,13 +1050,9 @@ public enum DarknessAblaze implements LogicCardInfo {
             powerUsed()
 
             def info = "Select opponent's Prize card to switch with the top card from their deck."
-            def oppTopDeck = opp.deck.remove(0)
-            bc "$oppTopDeck removed from top of deck"
-            def oppPrize = opp.prizeCardSet.faceDownCards.select(hidden: true, info)
-            def oppPrizeIndex = opp.prizeCardSet.faceDownCards.indexOf(oppPrize.first())
-            bc "$oppPrize at index $oppPrizeIndex chosen from prize cards"
-            opp.prizeCardSet.faceDownCards.set(oppPrizeIndex, oppTopDeck)
-            oppPrize.moveTo(addToTop: true, opp.deck)
+            def oppPrize = opp.prizeCardSet.faceDownCards.select(hidden: true, info).first()
+            opp.prizeCardSet.set opp.prizeCardSet.indexOf(oppPrize), opp.deck.remove(0)
+            deck.add 0, oppPrize
           }
         }
         move "Mad Party", {
@@ -1093,7 +1089,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                 def finalCount = 0
                 count.times {
                   def info = "Select [W] Energy to return to your hand."
-                  def energy = self.cards.findAll {energyFilter W}.getExcludedList(energies).select(info)
+                  def energy = self.cards.findAll {energyFilter W}.getExcludedList(energies).select(info).first()
                   if (energy instanceof SpecialEnergyCard) {
                     def types = energy.getEnergyTypesOverride()
                     types.each {
@@ -1406,9 +1402,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Primal Law", {
           text "If this Pokémon is your Active Pokémon, your opponent can’t play any Pokémon from their hand to evolve their Pokémon."
           delayedA {
-            before PREVENT_EVOLVE, {
-              if (self.active && bg.currentTurn == self.owner.opposite) {
-                return true
+            before PLAY_EVOLUTION, {
+              if (self.active && bg.currentTurn == self.owner.opposite && ef.cardToPlay.player.pbg.hand.contains(ef.cardToPlay)) {
+                prevent()
               }
             }
           }
