@@ -1162,7 +1162,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
           onAttack {
             def info = "Select up to 2 Rare Fossil cards to put on your bench."
-            my.deck.search max:2, info, {it.name == "Rare Fossil"}.each {fossil ->
+            my.deck.search(max:2, info, {it.name == "Rare Fossil"}).each {fossil ->
               bg.em().run(new PlayTrainer(fossil))
             }
             shuffleDeck()
