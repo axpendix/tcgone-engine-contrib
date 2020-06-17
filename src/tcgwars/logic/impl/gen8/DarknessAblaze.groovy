@@ -1082,26 +1082,13 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 130
             afterDamage {
-              def waterE = self.cards.energyCount W
-              if (waterE) {
-                def energies = new CardList()
-                def count = Math.min waterE, 2
-                def finalCount = 0
-                count.times {
-                  def info = "Select [W] Energy to return to your hand."
-                  def energy = self.cards.findAll {energyFilter W}.getExcludedList(energies).select(info).first()
-                  if (energy instanceof SpecialEnergyCard) {
-                    energy.getEnergyTypesOverride(energy).each {
-                      if (it.contains(W)) finalCount += 1
-                    }
-                  }
-                  else {
-                    finalCount += 1
-                  }
-                  energies.add(energy)
-                  if (finalCount >= count) return
-                }
-                energies.moveTo my.hand
+              def targetCount = Math.min self.cards.energyCount(W), 2
+              def finalCount = 0
+              while (finalCount < targetCount) {
+                def info = "Select [W] Energy to return to your hand."
+                def energy = self.cards.findAll {energyFilter W}.select(info)
+                finalCount += energy.energyCount W
+                energy.moveTo my.hand
               }
             }
           }
