@@ -2578,10 +2578,12 @@ public enum UnseenForces implements LogicCardInfo {
           text "If Lugia ex is your Active Pokémon and is damaged by an opponent's attack (even if Lugia ex is Knocked Out), flip a coin. If heads, choose an Energy card attached to the Attacking Pokémon and return it to your opponent's hand."
           delayedA (priority: LAST) {
             before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value })) {
+              if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value})) {
                 if (ef.attacker.cards.filterByType(ENERGY)) {
                   bc "Silver Sparkle Activates"
-                  ef.attacker.cards.filterByType(ENERGY).select("Select an Energy to move to the Opponent's hand", self.owner).moveTo(ef.attacker.owner.pbg.hand)
+                  flip {
+                    ef.attacker.cards.filterByType(ENERGY).select("Select an Energy to move to the Opponent's hand", {true}, self.owner).moveTo(ef.attacker.owner.pbg.hand)
+                  }
                 }
               }
             }
