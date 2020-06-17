@@ -271,6 +271,7 @@ public enum SunMoonPromos implements LogicCardInfo {
   UMBREON_DARKRAI_GX_SM241 ("Umbreon & Darkrai-GX", 241, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DARKNESS_]),
   EEVEE_GX_SM242 ("Eevee-GX", 242, Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, _COLORLESS_]),
   REGIGIGAS_SM243 ("Regigigas", 243, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]);
+  AIPOM_244 ("Aipom", 244, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -3270,8 +3271,8 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "If this Pokémon has full HP, it takes 90 less damage from your opponent’s attacks (after applying Weakness and Resistance)."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().self {
-                  if (self.damage == 0) {
+                bg.dm().each {
+                  if (self.damage == 0 && it.to.owner == self.owner && it.notNoEffect && it.dmg.value && it.to == self) {
                     bc "High Density Armor -90"
                     it.dmg -= hp(90)
                   }
@@ -3297,9 +3298,12 @@ public enum SunMoonPromos implements LogicCardInfo {
             onAttack {
               gxPerform()
               def maxSpace = my.bench.freeBenchCount
-              discard.search(max: maxSpace, "Bench up to $maxSpace card(s) from the discard that evolve from Unidentified Fossil.", {
+              discardPile.select(min:0, max: maxSpace, "Bench up to $maxSpace card(s) from the discard that evolve from Unidentified Fossil.", {
                   it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil"
-              })
+                }).each{
+                  my.discard.remove(it);
+                  benchPCS(it)
+              }
             }
           }
         };
@@ -3326,6 +3330,28 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 180
               if (opp.deck) {
                 opp.deck.subList(0,1).discard()
+              }
+            }
+          }
+        };
+      case AIPOM_SM244:
+        return basic (this, hp:HP060, type:C, retreatCost:1) {
+          weakness F
+          move "Yank Out", {
+            text "Discard random cards from your opponent's hand until they have 5 cards in their hand."
+            energyCost C
+            attackRequirement {
+              opp.hand.size <= 5 : "Opponent has 5 or less cards in hand."
+            }
+            onAttack {
+              opp.hand.select(hidden: true, count:opp.hand.size() - 5,"Choose the cards to discard.").discard()
+            }
+          }
+          move "Tail Smash", {
+            text "30 damage. Flip a coin. If tails, this attack does nothing."
+            energyCost C, C
+            onAttack {
+              flip { damage 30 }
               }
             }
           }
