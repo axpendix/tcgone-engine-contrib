@@ -1454,6 +1454,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            switchYourActive may:true
           }
         }
         move "Flash Impact", {
@@ -1462,6 +1463,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 150
+            if (my.bench) {
+              damage 30, my.bench.select("Select Pokémon to deal 30 damage to.")
+            }
           }
         }
       };
@@ -1474,6 +1478,17 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            // TODO: Could make a configurable Trainer Lock static out of this
+            delayed {
+              before PLAY_TRAINER, {
+                def fromHand = bg.currentTurn.pbg.hand.contains(ef.cardToPlay)
+                if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.cardTypes.is(ITEM) && fromHand) {
+                  wcu "$thisMove prevents playing Item Cards this turn"
+                  prevent()
+                }
+              }
+              unregisterAfter 2
+            }
           }
         }
         move "Super Zap Cannon", {
