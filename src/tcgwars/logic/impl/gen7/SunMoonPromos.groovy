@@ -3341,7 +3341,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "Discard random cards from your opponent's hand until they have 5 cards in their hand."
             energyCost C
             attackRequirement {
-              opp.hand.size <= 5 : "Opponent has 5 or less cards in hand."
+              assert opp.hand.size <= 5 : "Opponent has 5 or less cards in hand."
             }
             onAttack {
               opp.hand.select(hidden: true, count:opp.hand.size() - 5,"Choose the cards to discard.").discard()
