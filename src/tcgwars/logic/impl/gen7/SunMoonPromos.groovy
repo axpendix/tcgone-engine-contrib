@@ -3272,7 +3272,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (self.damage == 0 && it.to.owner == self.owner && it.notNoEffect && it.dmg.value && it.to == self) {
+                  if (self.damage == hp(0) && it.to.owner == self.owner && it.notNoEffect && it.dmg.value && it.to == self) {
                     bc "High Density Armor -90"
                     it.dmg -= hp(90)
                   }
@@ -3341,7 +3341,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "Discard random cards from your opponent's hand until they have 5 cards in their hand."
             energyCost C
             attackRequirement {
-              assert opp.hand.size <= 5 : "Opponent has 5 or less cards in hand."
+              assert opp.hand.size() <= 5 : "Opponent has 5 or less cards in hand."
             }
             onAttack {
               opp.hand.select(hidden: true, count:opp.hand.size() - 5,"Choose the cards to discard.").discard()
