@@ -1577,6 +1577,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            increasedBaseDamageNextTurn "Rising Charge", hp(90)
           }
         }
         move "Giga Impact", {
@@ -1585,6 +1586,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 200
+            cantAttackNextTurn self
           }
         }
       };
