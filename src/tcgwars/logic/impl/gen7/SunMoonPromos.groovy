@@ -3352,7 +3352,6 @@ public enum SunMoonPromos implements LogicCardInfo {
             energyCost C, C
             onAttack {
               flip { damage 30 }
-              }
             }
           }
         };
