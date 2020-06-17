@@ -1555,7 +1555,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.deck || opp.deck : "Both decks are empty"
           }
           onAttack {
-            flip {opp.deck[0..4].discard()}, {my.deck[0..4].discard()}
+            flip {if (opp.deck) opp.deck[0..4].discard()}, {if (my.deck) my.deck[0..4].discard()}
           }
         }
         move "Thunder Jolt", {
