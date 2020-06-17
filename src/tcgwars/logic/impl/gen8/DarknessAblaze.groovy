@@ -1052,7 +1052,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             def info = "Select opponent's Prize card to switch with the top card from their deck."
             def oppPrize = opp.prizeCardSet.faceDownCards.select(hidden: true, info).first()
             opp.prizeCardSet.set opp.prizeCardSet.indexOf(oppPrize), opp.deck.remove(0)
-            deck.add 0, oppPrize
+            opp.deck.add 0, oppPrize
           }
         }
         move "Mad Party", {
