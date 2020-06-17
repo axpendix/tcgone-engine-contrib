@@ -1027,7 +1027,7 @@ public enum TeamUp implements LogicCardInfo {
         };
       case ALOLAN_GRAVELER_36:
         return evolution (this, from:"Alolan Geodude", hp:HP100, type:LIGHTNING, retreatCost:4) {
-          weakness FIRE
+          weakness FIGHTING
           resistance METAL, MINUS20
           move "Rollout" , {
             text "30 damage"
