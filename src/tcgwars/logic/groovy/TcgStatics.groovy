@@ -421,7 +421,7 @@ class TcgStatics {
       delayed {
         before APPLY_ATTACK_DAMAGES, {
           bg.dm().each {
-            if(it.to == self && it.dmg.value){
+            if(it.to == self && it.dmg.value && it.notNoEffect){
               bc "${thisMove.name} reduces damage"
               it.dmg-=reduce
             }
