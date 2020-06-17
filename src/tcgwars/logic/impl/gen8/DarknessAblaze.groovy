@@ -1551,9 +1551,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Risk Taker", {
           text "Flip a coin, if heads discard 5 cards from the top of your opponent’s deck. If tails, discard 5 cards from the top of your deck."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck || opp.deck : "Both decks are empty"
+          }
           onAttack {
-
+            flip {opp.deck[0..4].discard()}, {my.deck[0..4].discard()}
           }
         }
         move "Thunder Jolt", {
@@ -1562,6 +1564,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 160
+            damage 30, self
           }
         }
       };
