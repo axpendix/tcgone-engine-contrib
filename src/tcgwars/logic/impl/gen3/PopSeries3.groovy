@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen;
+package tcgwars.logic.impl.gen3;
+
+import tcgwars.logic.impl.gen3.UnseenForces;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -32,7 +34,7 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
- * @author axpendix@hotmail.com
+ * @author lithogenn@gmail.com
  */
 public enum PopSeries3 implements LogicCardInfo {
 
@@ -115,6 +117,9 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            afterDamage{
+              switchYourActive(may: true)
+            }
           }
         }
         move "Rocket Tackle", {
@@ -123,6 +128,8 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            directDamage 10, self
+            flip { preventAllDamageNextTurn() }
           }
         }
       };
@@ -135,6 +142,7 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 20 }
           }
         }
         move "Fire Spin", {
@@ -142,7 +150,10 @@ public enum PopSeries3 implements LogicCardInfo {
           energyCost F, F, C
           attackRequirement {}
           onAttack {
-            damage 70
+            if (self.cards.filterByType(BASIC_ENERGY).size() >= 2) {
+              self.cards.filterByType(BASIC_ENERGY).select(count: 2, "Discard 2 Basic energy cards from $self.").discard()
+              damage 70
+            }
           }
         }
       };
@@ -156,6 +167,7 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { applyAfterDamage(PARALYZED) }
           }
         }
         move "Pin Missile", {
@@ -163,7 +175,7 @@ public enum PopSeries3 implements LogicCardInfo {
           energyCost L, C, C
           attackRequirement {}
           onAttack {
-            damage 20
+            flip 4, { damage 20 }
           }
         }
       };
@@ -176,7 +188,12 @@ public enum PopSeries3 implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            if (all.findAll.findAll {it.name == "Plusle"}) {
+              bc "Plusle is in play and Cheer up allows drawing 2 cards."
+              draw 2
+            } else {
+              draw 1
+            }
           }
         }
         move "Negative Ion", {
@@ -185,6 +202,7 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            reduceDamageNextTurn(hp(10), thisMove)
           }
         }
         move "Power Bolt", {
@@ -193,6 +211,16 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+
+            def validTargets = opp.all.findAll {
+              it.abilities.keySet().find { ability ->
+                ability instanceof PokePower
+              }
+            }
+
+            if (validTargets) {
+              validTargets.select("Choose 1 of your opponent's Pokémon that has any Poké-Powers to deal 30 damage to.")
+            }
           }
         }
       };
@@ -205,7 +233,12 @@ public enum PopSeries3 implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            if (all.findAll.findAll {it.name == "Minun"}) {
+              bc "Minun is in play and Cheer up allows drawing 2 cards."
+              draw 2
+            } else {
+              draw 1
+            }
           }
         }
         move "Positive Ion", {
@@ -214,6 +247,7 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { damage 10 }
           }
         }
         move "Body Bolt", {
@@ -222,6 +256,16 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+
+            def validTargets = opp.all.findAll {
+              it.abilities.keySet().find { ability ->
+                ability instanceof PokeBody
+              }
+            }
+
+            if (validTargets) {
+              validTargets.select("Choose 1 of your opponent's Pokémon that has any Poké-bodies to deal 30 damage to.")
+            }
           }
         }
       };
@@ -229,7 +273,7 @@ public enum PopSeries3 implements LogicCardInfo {
       return evolution (this, from:"Diglett", hp:HP070, type:W, retreatCost:1) {
         weakness L
         move "Bite", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -242,14 +286,15 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            extraEnergyDamage(2, hp(20), W, thisMove)
           }
         }
       };
       case COMBUSKEN_7:
-      return evolution (this, from:"null", hp:HP070, type:R, retreatCost:1) {
+      return evolution (this, from:"Torchic", hp:HP070, type:R, retreatCost:1) {
         weakness W
         move "Scratch", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -262,18 +307,19 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            discardSelfEnergy(R)
           }
         }
       };
       case DONPHAN_8:
-      return evolution (this, from:"null", hp:HP080, type:F, retreatCost:1) {
+      return evolution (this, from:"Phanpy", hp:HP080, type:F, retreatCost:1) {
         weakness G
         move "Sniff Out", {
           text "Put any 1 card from your discard pile into your hand."
           energyCost C
-          attackRequirement {}
+          attackRequirement { assert my.discard : "Discard pile is empty"}
           onAttack {
-
+            my.discard.select("Select a card from your discard pile to move to your hand.").moveTo(my.hand)
           }
         }
         move "Fury Attack", {
@@ -281,7 +327,7 @@ public enum PopSeries3 implements LogicCardInfo {
           energyCost F, C, C
           attackRequirement {}
           onAttack {
-            damage 30
+            flip 3, { damage 30 }
           }
         }
       };
@@ -289,7 +335,7 @@ public enum PopSeries3 implements LogicCardInfo {
       return evolution (this, from:"null", hp:HP070, type:G, retreatCost:2) {
         weakness R
         move "Tackle", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -302,23 +348,41 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            afterDamage {
+              apply POISONED
+              extraPoison 1
+            }
           }
         }
       };
       case HIGH_PRESSURE_SYSTEM_10:
-      return basicTrainer (this) {
-        text ""
+      return stadium (this) {
+        text "Each player pays [C] less to retreat his or her [R] and [W] Pokemon)"
+        def eff
         onPlay {
+          eff = getter (GET_RETREAT_COST) { Holder h->
+            if (h.effect.target.types.contains(R) || h.effect.target.types.contains(W)) {
+              h.object -= 1
+            }
+          }
         }
-        playRequirement{
+        onRemoveFromPlay {
+          eff.unregister()
         }
       };
       case LOW_PRESSURE_SYSTEM_11:
-      return basicTrainer (this) {
-        text ""
+      return stadium (this) {
+        text "Each [G] and [L] Pokemon in play (both yours and your opponent's) gets +10 HP."
+        def eff
         onPlay {
+          eff = getter (GET_FULL_HP) { Holder h->
+            if (h.effect.target.types.contains(G) || h.effect.target.types.contains(L)) {
+              h.object += hp(10)
+            }
+          }
         }
-        playRequirement{
+        onRemoveFromPlay {
+          eff.unregister()
         }
       };
       case DITTO_12:
@@ -330,6 +394,7 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { applyAfterDamage(CONFUSED) }
           }
         }
       };
@@ -337,7 +402,7 @@ public enum PopSeries3 implements LogicCardInfo {
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
         move "Tackle", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -350,6 +415,7 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            damage 10, self
           }
         }
       };
@@ -362,6 +428,7 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 10 }
           }
         }
         move "Poisonpowder", {
@@ -370,6 +437,7 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            applyAfterDamage(POISONED)
           }
         }
       };
@@ -377,7 +445,7 @@ public enum PopSeries3 implements LogicCardInfo {
       return evolution (this, from:"Mudkip", hp:HP070, type:F, retreatCost:1) {
         weakness G
         move "Mud Slap", {
-          text "20 damage. "
+          text "20 damage."
           energyCost F
           attackRequirement {}
           onAttack {
@@ -401,29 +469,18 @@ public enum PopSeries3 implements LogicCardInfo {
           energyCost L, L
           attackRequirement {}
           onAttack {
-            damage 20
+            flip "Bustle", 2, {}, {},
+            [ 2:{
+              damage 40
+              applyAfterDamage(CONFUSED)
+            },1:{
+              damage 20
+              applyAfterDamage(CONFUSED)
+            },0:{}]
           }
         }
       };
       case HO_OH_EX_17:
-      return basic (this, hp:HP110, type:R, retreatCost:2) {
-        weakness W
-        pokePower "Golden Wing", {
-          text "If Ho-Oh ex would be Knocked Out by damage from an opponent's attack, you may move up to 2 Energy attached to Ho-Oh ex to your Pokémon in any way you like."
-          actionA {
-          }
-        }
-        move "Rainbow Burn", {
-          text "10+ damage. Does 10 damage plus 20 more damage for each type of basic Energy card attached to Ho-Oh ex."
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 10
-          }
-        }
-      };
-        default:
-      return null;
-    }
+      return copy(UnseenForces.HO_OH_EX_104, this);
   }
 }
