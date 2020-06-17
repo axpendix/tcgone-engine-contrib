@@ -2445,14 +2445,14 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           pokePower "Energy Rain", {
             text "As often as you like during your turn (before your attack), you may attach a [W] Energy card from your hand to 1 of your Pokémon. Put 1 damage counter on that Pokémon. This power can’t be used if Blastoise ex is affected by a Special Condition."
             actionA {
-              checkNoSPC()
-              assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W) : "You have no [W] Energy card in your hand"
-
-              def pcs = my.all.select()
-              attachEnergyFrom(type:W,my.hand,pcs)
-              pcs.damage += hp(10)
-
-            }
+            checkNoSPC()
+            assert my.hand.filterByBasicEnergyType(W) : "No [W] in hand"
+            powerUsed()
+            def card = my.hand.filterByBasicEnergyType(W).first()
+            def tar = my.all.select("To?")
+            attachEnergy(tar, card)
+            directDamage 10, tar, SRC_ABILITY
+          }
           }
           move "Hyper Whirlpool", {
             text "80 damage. Flip a coin until you get tails. For each heads, your opponent discards an Energy card attached to the Defending Pokémon."
