@@ -3114,7 +3114,7 @@ public enum DeltaSpecies implements LogicCardInfo {
                 before APPLY_ATTACK_DAMAGES, {
                   if(ef.attacker.owner != self.owner) {
                     bg.dm().each {
-                      if(it.to == self && it.dmg.value){
+                      if(it.to == self && it.dmg.value && it.notNoEffect){
                         bc "Flame Screen reduces damage"
                         it.dmg-=20
                       }

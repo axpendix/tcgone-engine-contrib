@@ -2714,7 +2714,7 @@ public enum LostThunder implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker.owner != self.owner) {
                   bg.dm().each{
-                    if(it.to == self && it.notNoEffect && self.damage == hp(0) && it.dmg.value >= self.fullHP.value) {
+                    if(it.to == self && self.damage == hp(0) && it.dmg.value >= self.fullHP.value) {
                       bc "Sturdy saved $self!"
                       it.dmg = self.fullHP - hp(10)
                     }
