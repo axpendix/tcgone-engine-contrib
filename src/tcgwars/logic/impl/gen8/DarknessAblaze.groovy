@@ -1092,7 +1092,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                 if (energy.energyCount(W) > 1) {
                   def choices = 1..energy.energyCount(W)
                   def choiceInfo = "How many Energy do you want this card to count as?"
-                  energyCount = choose(choices, choices, choiceInfo)
+                  energyCount = choose(choices, choiceInfo)
                 }
                 finalCount += energyCount
                 energy.moveTo my.hand
