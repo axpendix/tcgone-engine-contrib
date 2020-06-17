@@ -1087,7 +1087,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               def finalCount = 0
               while (self.cards.energyCount(W) > 0 && finalCount < targetCount) {
                 def info = "Select [W] Energy to return to your hand."
-                def energy = self.cards.findAll {energyFilter W}.select(info)
+                def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(W))
                 def energyCount = 1
                 if (energy.energyCount(W) > 1) {
                   def choices = 1..energy.energyCount(W)
