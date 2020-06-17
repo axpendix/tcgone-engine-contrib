@@ -1509,9 +1509,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Allure", {
           text "Draw 2 cards."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            draw 2
           }
         }
         move "Lightning Ball", {
