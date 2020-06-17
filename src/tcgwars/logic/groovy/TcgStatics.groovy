@@ -1149,7 +1149,7 @@ class TcgStatics {
 
   /* General checks for attacks and abilities */
 
-  //  * checkAnyBench
+  //  * assertBench
   //    - Can be used with no arguments, or with a condition and additional text included.
   //    - If a closure is given, it'll check for any "it" element in bench returning true.
   //    - Optional params:
@@ -1157,7 +1157,7 @@ class TcgStatics {
   //      + isEX/isGX/isV: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
   //      + opp: If true, checks for the opponent's bench instead of "my" bench.
   //      + repText: If true, instead of adding cText at the end of the assert it'll be the only thing printed.
-  static void checkAnyBench(params=[:], Closure c, String cText) {
+  static void assertBench(params=[:], Closure c, String cText) {
     def checkedBench = params.opp ? opp.bench : my.bench
 
     def isPokeCnt = 0
@@ -1203,13 +1203,13 @@ class TcgStatics {
 
     assert benchFilter : failMessage
   }
-  static void checkMyBench(params=[:], Closure c, String cText) {
+  static void assertMyBench(params=[:], Closure c, String cText) {
     params.opp = false
-    checkAnyBench(params, c, cText)
+    assertBench(params, c, cText)
   }
-  static void checkOppBench(params=[:], Closure c, String cText) {
+  static void assertOppBench(params=[:], Closure c, String cText) {
     params.opp = true
-    checkAnyBench(params, c, cText)
+    assertBench(params, c, cText)
   }
 
   static void cantBeHealed(PokemonCardSet defending){
