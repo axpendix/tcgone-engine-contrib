@@ -3710,7 +3710,21 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost Y
             onAttack {
               damage 30
-              reduceDamageFromDefendingNextTurn(hp(30), thisMove, defending)
+              afterDamage { targeted (defending) {
+                delayed {
+                  before APPLY_ATTACK_DAMAGES, {
+                    bg.dm().each {
+                      if(it.from==defending && ef.attacker==defending && it.dmg.value){
+                        bc "${thisMove.name} reduces damage"
+                        it.dmg-=hp(30)
+                      }
+                    }
+                  }
+                  unregisterAfter 2
+                  after SWITCH, defending, {unregister()}
+                  after EVOLVE, defending, {unregister()}
+                }
+              } }
             }
           }
           move "Beloved Pulse", {
