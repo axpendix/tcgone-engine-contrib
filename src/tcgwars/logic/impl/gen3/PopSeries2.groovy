@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.impl.gen1.BaseSetNG;
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen7.CelestialStorm;
 
 import static tcgwars.logic.card.HP.*;
@@ -256,25 +258,7 @@ public enum PopSeries2 implements LogicCardInfo {
         }
       };
       case IVYSAUR_7:
-      return evolution (this, from:"Bulbasaur", hp:HP080, type:G, retreatCost:1) {
-        weakness P
-        move "Poison Seed", {
-          text "The Defending Pokémon is now Poisoned."
-          energyCost C
-          attackRequirement {}
-          onAttack {
-            apply POISONED
-          }
-        }
-        move "Razor Leaf", {
-          text "50 damage. "
-          energyCost G, G, C
-          attackRequirement {}
-          onAttack {
-            damage 50
-          }
-        }
-      };
+        return copy(FireRedLeafGreen.IVYSAUR_35, this);
       case MR_BRINEY_S_COMPASSION_8:
       return supporter (this) {
         text "Choose 1 of your Pokémon in play (excluding Pokémon ex). Return that Pokémon and all cards attached to it to your hand."
@@ -321,8 +305,14 @@ public enum PopSeries2 implements LogicCardInfo {
         def eff
         onPlay {
           eff = delayed {
+            def card
+            before ATTACH_ENERGY, {
+              if (my.hand.contains(ef.card) {
+                card = ef.card
+              }
+            }
             after ATTACH_ENERGY, {
-              if (ef.reason == PLAY_FROM_HAND) {
+              if (ef.card == card) {
                 heal 10, ef.resolvedTarget
               }
             }
@@ -411,33 +401,14 @@ public enum PopSeries2 implements LogicCardInfo {
         }
       };
       case PIKACHU_16:
-      return basic (this, hp:HP040, type:L, retreatCost:1) {
-        weakness F
-        move "Gnaw", {
-          text "10 damage. "
-          energyCost C
-          attackRequirement {}
-          onAttack {
-            damage 10
-          }
-        }
-        move "Thunder Jolt", {
-          text "30 damage. Flip a coin. If tails, Pikachu does 10 damage to itself."
-          energyCost L, C
-          attackRequirement {}
-          onAttack {
-            damage 30
-            flip 1, {}, { damage 10, self}
-          }
-        }
-      };
+        return copy(BaseSetNG.PIKACHU, this);
       case CELEBI_EX_17:
       return basic (this, hp:HP080, type:P, retreatCost:1) {
         weakness P
         pokePower "Time Reversal", {
           text "Once during your turn, when you put Celebi ex from your hand onto your Bench, you may search your discard pile for a card, show it to your opponent, and put it on top of your deck."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && my.discard.filterByType(TRAINER) && confirm('Use Time Reversal to search your discard pile for a card to put on top of your deck?')) {
+            if (r==PLAY_FROM_HAND && my.discard && confirm('Use Time Reversal to search your discard pile for a card to put on top of your deck?')) {
               powerUsed()
               my.discard.select("Select a card to put on top of your deck").showToOpponent("Selected card to move to the top of their deck").moveTo(addToTop:true, my.deck)
             }

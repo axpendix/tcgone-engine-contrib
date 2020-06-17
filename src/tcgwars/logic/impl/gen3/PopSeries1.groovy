@@ -213,8 +213,9 @@ public enum PopSeries1 implements LogicCardInfo {
           onAttack {
             damage 50
             if (opp.bench) {
+              def pcs = opp.bench.select("Which Pokémon to deal 20 damage to if flipping heads?")
               flip {
-                damage 20, opp.bench.select("Which Pokemon to deal 20 damage to?")
+                damage 20, pcs
               }
             }
           }
@@ -273,13 +274,15 @@ public enum PopSeries1 implements LogicCardInfo {
         pokeBody "Insomnia", {
           text "Murkrow can't be Asleep."
           delayedA {
-            after APPLY_SPECIAL_CONDITION, {
-              if(self.active){
-                if(self.isSPC(ASLEEP)){
+            before APPLY_SPECIAL_CONDITION, self, {
+                if (ef.type == ASLEEP) {
                   bc "Insomnia prevents $self from being Asleep."
-                  clearSpecialCondition(self, SRC_ABILITY, [ASLEEP])
+                  prevent()
                 }
               }
+            }
+            onActivate {
+              clearSpecialCondition(self, SRC_ABILITY, [ASLEEP])
             }
           }
         }

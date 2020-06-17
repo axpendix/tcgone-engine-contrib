@@ -47,8 +47,8 @@ public enum PopSeries3 implements LogicCardInfo {
   COMBUSKEN_7 ("Combusken", 7, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   DONPHAN_8 ("Donphan", 8, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   FORRETRESS_9 ("Forretress", 9, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  HIGH_PRESSURE_SYSTEM_10 ("High Pressure System", 10, Rarity.UNCOMMON, [TRAINER]),
-  LOW_PRESSURE_SYSTEM_11 ("Low Pressure System", 11, Rarity.UNCOMMON, [TRAINER]),
+  HIGH_PRESSURE_SYSTEM_10 ("High Pressure System", 10, Rarity.UNCOMMON, [TRAINER, STADIUM]),
+  LOW_PRESSURE_SYSTEM_11 ("Low Pressure System", 11, Rarity.UNCOMMON, [TRAINER, STADIUM]),
   DITTO_12 ("Ditto", 12, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   EEVEE_13 ("Eevee", 13, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   IVYSAUR_14 ("Ivysaur", 14, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
@@ -128,7 +128,7 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            directDamage 10, self
+            damage 10, self
             flip { preventAllDamageNextTurn() }
           }
         }
@@ -208,19 +208,18 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Power Bolt", {
           text "30 damage. Choose 1 of your opponent's Pokémon that has any Poké-Powers. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, L
-          attackRequirement {}
+          attackRequirement {
+            assert opp.all.any {
+              it.abilities.keySet().find { ability -> ability instanceof PokePower }
+            } : "Your opponent has no Pokémon with Poké-Powers."
+          }
           onAttack {
-            damage 30
-
             def validTargets = opp.all.findAll {
               it.abilities.keySet().find { ability ->
                 ability instanceof PokePower
               }
             }
-
-            if (validTargets) {
-              validTargets.select("Choose 1 of your opponent's Pokémon that has any Poké-Powers to deal 30 damage to.")
-            }
+            damage 30, validTargets.select("Choose 1 of your opponent's Pokémon that has any Poké-Powers to deal 30 damage to it.")
           }
         }
       };
@@ -253,19 +252,18 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Body Bolt", {
           text "30 damage. Choose 1 of your opponent's Pokémon that has any Poké-bodies. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, L
-          attackRequirement {}
+          attackRequirement {
+            assert opp.all.any {
+              it.abilities.keySet().find { ability -> ability instanceof PokeBody }
+            } : "Your opponent has no Pokémon with Poké-Bodies."
+          }
           onAttack {
-            damage 30
-
             def validTargets = opp.all.findAll {
               it.abilities.keySet().find { ability ->
                 ability instanceof PokeBody
               }
             }
-
-            if (validTargets) {
-              validTargets.select("Choose 1 of your opponent's Pokémon that has any Poké-bodies to deal 30 damage to.")
-            }
+            damage 30, validTargets.select("Choose 1 of your opponent's Pokémon that has any Poké-Bodies to deal 30 damage to it.")
           }
         }
       };
@@ -332,7 +330,7 @@ public enum PopSeries3 implements LogicCardInfo {
         }
       };
       case FORRETRESS_9:
-      return evolution (this, from:"null", hp:HP070, type:G, retreatCost:2) {
+      return evolution (this, from:"Pineco", hp:HP070, type:G, retreatCost:2) {
         weakness R
         move "Tackle", {
           text "20 damage."
@@ -388,6 +386,28 @@ public enum PopSeries3 implements LogicCardInfo {
       case DITTO_12:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
+        pokePower "Duplicate", {
+          text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
+          actionA {
+            checkLastTurn()
+            assert my.deck : "Deck is empty"
+            powerUsed()
+
+            def oldDitto = self.topPokemonCard
+            def newDitto = my.deck.search(min:0, max: 1, {
+              it.name == "Ditto"
+            })
+
+            if (newDitto) {
+              newDitto.moveTo(self.cards)
+              my.deck.add(oldDitto)
+              self.cards.remove(oldDitto)
+              checkFaint()
+            }
+
+            shuffleDeck()
+          }
+        }
         move "Psybeam", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
           energyCost P, C
@@ -420,7 +440,7 @@ public enum PopSeries3 implements LogicCardInfo {
         }
       };
       case IVYSAUR_14:
-      return evolution (this, from:"null", hp:HP070, type:G, retreatCost:1) {
+      return evolution (this, from:"Bulbasaur", hp:HP070, type:G, retreatCost:1) {
         weakness P
         move "Gouge", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
@@ -432,11 +452,11 @@ public enum PopSeries3 implements LogicCardInfo {
           }
         }
         move "Poisonpowder", {
-          text "50 damage. The Defending Pokémon is now Poisoned."
+          text "40 damage. The Defending Pokémon is now Poisoned."
           energyCost G, C, C
           attackRequirement {}
           onAttack {
-            damage 50
+            damage 40
             applyAfterDamage(POISONED)
           }
         }
@@ -458,6 +478,7 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            damage 10, self
           }
         }
       };

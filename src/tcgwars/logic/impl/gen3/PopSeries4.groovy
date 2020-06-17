@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen3;
 
 import tcgwars.logic.impl.gen3.Emerald;
 import tcgwars.logic.impl.gen3.Deoxys;
+import tcgwars.logic.impl.gen3.CrystalGuardians;
 import tcgwars.logic.impl.gen6.Flashfire;
 
 import static tcgwars.logic.card.HP.*;
@@ -48,13 +49,13 @@ public enum PopSeries4 implements LogicCardInfo {
   COMBUSKEN_6 ("Combusken", 6, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   GROVYLE_7 ("Grovyle", 7, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   HEAL_ENERGY_8 ("Heal Energy", 8, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  POKEMON_FAN_CLUB_9 ("Pokémon Fan Club", 9, Rarity.UNCOMMON, [TRAINER]),
+  POKEMON_FAN_CLUB_9 ("Pokémon Fan Club", 9, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   SCRAMBLE_ENERGY_10 ("Scramble Energy", 10, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
   MUDKIP_11 ("Mudkip", 11, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
   PIDGEY_12 ("Pidgey", 12, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   PIKACHU_13 ("Pikachu", 13, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   SQUIRTLE_14 ("Squirtle", 14, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
-  TREECKO_DELTA_SPECIES__15 ("Treecko", 15, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
+  TREECKO_DELTA_15 ("Treecko", 15, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   WOBBUFFET_16 ("Wobbuffet", 16, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   DEOXYS_EX_17 ("Deoxys ex", 17, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
 
@@ -118,7 +119,7 @@ public enum PopSeries4 implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            flip { applyAfterDamage(PARALYZED) }
+            flip { apply PARALYZED }
           }
         }
         move "Sonicboom", {
@@ -193,8 +194,8 @@ public enum PopSeries4 implements LogicCardInfo {
           text "As often as you like during your turn (before your attack), move a [G] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Sceptile is affected by a Special Condition."
           actionA {
             checkNoSPC()
-            assert my.all.findAll {it.cards.energyCount(G)>0}
-            assert my.all.size()>=2
+            assert my.all.findAll {it.cards.energyCount(G)>0} : "There are no Pokémon with [G] Energy cards."
+            assert my.all.size()>=2 : "There is only one Pokémon on the field."
 
             powerUsed()
             def src=my.all.findAll {it.cards.energyCount(G)>0}.select("Source for [G]")
@@ -210,7 +211,7 @@ public enum PopSeries4 implements LogicCardInfo {
           energyCost G, C, C
           attackRequirement {}
           onAttack {
-            flip { damage 50 }
+            flip 2, { damage 50 }
           }
         }
       };
@@ -262,7 +263,21 @@ public enum PopSeries4 implements LogicCardInfo {
       case HEAL_ENERGY_8:
       return copy(Deoxys.HEAL_ENERGY_94, this);
       case POKEMON_FAN_CLUB_9:
-      return copy(Flashfire.POKEMON_FAN_CLUB_94,this);
+      return supporter (this) {
+        text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
+        onPlay {
+          int count = bench.freeBenchCount>=2?2:1
+          deck.search (max: count, cardTypeFilter(BASIC)).each {
+            deck.remove(it)
+            benchPCS(it)
+          }
+          shuffleDeck()
+        }
+        playRequirement{
+          assert bench.notFull : "Bench is full."
+          assert deck.notEmpty : "Deck is empty."
+        }
+      };
       case SCRAMBLE_ENERGY_10:
       return copy(Deoxys.SCRAMBLE_ENERGY_95, this);
       case MUDKIP_11:
@@ -333,27 +348,7 @@ public enum PopSeries4 implements LogicCardInfo {
         }
       };
       case TREECKO_DELTA_15:
-      return basic (this, hp:HP040, type:P, retreatCost:1) {
-        weakness R
-        resistance W, MINUS30
-        move "Pound", {
-          text "10 damage."
-          energyCost C
-          attackRequirement {}
-          onAttack {
-            damage 10
-          }
-        }
-        move "Shining Claws", {
-          text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
-          energyCost P
-          attackRequirement {}
-          onAttack {
-            damage 10
-            flip { applyAfterDamage(CONFUSED) }
-          }
-        }
-      };
+        return copy (CrystalGuardians.TREECKO_DELTA_68, this);
       case WOBBUFFET_16:
       return basic (this, hp:HP080, type:P, retreatCost:2) {
         weakness P

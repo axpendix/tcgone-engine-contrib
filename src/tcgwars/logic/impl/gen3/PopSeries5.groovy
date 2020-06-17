@@ -176,14 +176,16 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Extra Draw", {
           text "If your opponent has any Pokémon-ex in play, search your deck for up to 2 basic Energy cards and attach them to Mew. Shuffle your deck afterward."
           energyCost R
-          attackRequirement { assert my.deck : "Deck is empty." }
+          attackRequirement {
+            assert my.deck : "Deck is empty."
+            assert opp.all.findAll { it.EX } : "Opponent does not have any Pokémon-ex in play."
+          }
           onAttack {
-            if (opp.all.findAll { it.EX }) {
-              my.deck.search(max: 2, "Search your deck for up to 2 Basic Energy cards", cardTypeFilter(BASIC_ENERGY)).each{
-                def pcs = my.all.select("Attach $it to which Pokémon?")
-                attachEnergy(pcs, it)
-              }
+            my.deck.search(max: 2, "Search your deck for up to 2 Basic Energy cards", cardTypeFilter(BASIC_ENERGY)).each{
+              def pcs = my.all.select("Attach $it to which Pokémon?")
+              attachEnergy(pcs, it)
             }
+            shuffleDeck()
           }
         }
       };
@@ -251,8 +253,8 @@ public enum PopSeries5 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            flip  {
-              self.cards.energyCount(C), {damage 20}
+            flip self.cards.energyCount(C), {
+              damage 20
             }
           }
         }
@@ -312,7 +314,7 @@ public enum PopSeries5 implements LogicCardInfo {
         weakness P
         pokePower "Purple Ray", {
           text "Once during your turn, when you put Espeon * from your hand onto your Bench, you may use this power. Each Active Pokémon (both yours and your opponent's) is now Confused."
-          actionA {
+          onActivate {
             if (it==PLAY_FROM_HAND && opp.hand && confirm("Use Purple Ray?")) {
               powerUsed()
               apply CONFUSED
