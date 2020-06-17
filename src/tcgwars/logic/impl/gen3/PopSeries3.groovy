@@ -188,7 +188,7 @@ public enum PopSeries3 implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            if (all.findAll.findAll {it.name == "Plusle"}) {
+            if (all.findAll {it.name == "Plusle"}) {
               bc "Plusle is in play and Cheer up allows drawing 2 cards."
               draw 2
             } else {
@@ -202,7 +202,7 @@ public enum PopSeries3 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            reduceDamageNextTurn(hp(10), thisMove)
+            reduceDamageFromDefendingNextTurn(hp(10), thisMove, defending)
           }
         }
         move "Power Bolt", {
@@ -233,7 +233,7 @@ public enum PopSeries3 implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            if (all.findAll.findAll {it.name == "Minun"}) {
+            if (all.findAll {it.name == "Minun"}) {
               bc "Minun is in play and Cheer up allows drawing 2 cards."
               draw 2
             } else {
@@ -469,14 +469,7 @@ public enum PopSeries3 implements LogicCardInfo {
           energyCost L, L
           attackRequirement {}
           onAttack {
-            flip "Bustle", 2, {}, {},
-            [ 2:{
-              damage 40
-              applyAfterDamage(CONFUSED)
-            },1:{
-              damage 20
-              applyAfterDamage(CONFUSED)
-            },0:{}]
+            flip "Bustle", 2, {damage 20 applyAfterDamage CONFUSED}, {}
           }
         }
       };

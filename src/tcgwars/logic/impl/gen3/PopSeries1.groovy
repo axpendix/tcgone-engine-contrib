@@ -469,7 +469,7 @@ public enum PopSeries1 implements LogicCardInfo {
           }
           onAttack {
             damage 80
-            self.cards.filterByType(BASIC_ENERGY).select(count:2, "Discard 2 Basic Energies to discard.").discard()
+            self.cards.filterByType(BASIC_ENERGY).select(count:2, "Select 2 Basic Energies to discard.").discard()
           }
         }
       };

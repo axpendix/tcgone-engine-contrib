@@ -143,7 +143,7 @@ public enum PopSeries2 implements LogicCardInfo {
             checkNoSPC()
             powerUsed()
 
-            def tar = my.bench.select("Which Pokémon to put back into your hand?")
+            def tar = my.bench.select("Which Pokémon to put back into your deck?")
             targeted(tar, Source.SRC_ABILITY) {
               tar.cards.moveTo(my.deck)
               shuffleDeck()
@@ -223,7 +223,7 @@ public enum PopSeries2 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
-            directDamage 10, self
+            damage 10, self
           }
         }
       };
@@ -373,10 +373,10 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Paralyzing Kiss", {
           text "If there are 2 Defending Pokémon in play, choose 1 of the Defending Pokémon. That Pokémon is now Paralyzed. (If there is only 1 Defending Pokémon, this attack does nothing.)"
           energyCost C
-          attackRequirement {}
-          onAttack {
-            // This also does nothing
+          attackRequirement {
+            assert false : "This attack does nothing"
           }
+          onAttack {}
         }
         move "Fast Stream", {
           text "20 damage. Move 1 Energy card attached to the Defending Pokémon to the other Defending Pokémon. (Ignore this effect if your opponent has only 1 Defending Pokémon.)"
@@ -427,7 +427,7 @@ public enum PopSeries2 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            flip 1, {}, { directDamage 10, self}
+            flip 1, {}, { damage 10, self}
           }
         }
       };
@@ -437,15 +437,14 @@ public enum PopSeries2 implements LogicCardInfo {
         pokePower "Time Reversal", {
           text "Once during your turn, when you put Celebi ex from your hand onto your Bench, you may search your discard pile for a card, show it to your opponent, and put it on top of your deck."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && bg.em().retrieveObject("Time_Reversal")!=bg.turnCount && my.discard.filterByType(TRAINER) && confirm('Use Time Reversal to search your discard pile for a card to put on top of your deck?')) {
-              bg.em().storeObject("Time_Reversal", bg.turnCount)
+            if (r==PLAY_FROM_HAND && my.discard.filterByType(TRAINER) && confirm('Use Time Reversal to search your discard pile for a card to put on top of your deck?')) {
               powerUsed()
               my.discard.select("Select a card to put on top of your deck").showToOpponent("Selected card to move to the top of their deck").moveTo(addToTop:true, my.deck)
             }
           }
         }
         move "Psychic Shield", {
-          text "30 damage. Prevent all effects of attacks, including damage, done to Celebi ex by your opponent's Pokémon"
+          text "30 damage. Prevent all effects of attacks, including damage, done to Celebi ex by your opponent's Pokémon-ex during your opponent's next turn."
           energyCost P, C
           attackRequirement {}
           onAttack {
