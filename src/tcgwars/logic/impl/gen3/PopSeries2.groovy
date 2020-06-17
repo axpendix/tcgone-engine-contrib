@@ -47,7 +47,7 @@ public enum PopSeries2 implements LogicCardInfo {
   TAUROS_5 ("Tauros", 5, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
   VENUSAUR_6 ("Venusaur", 6, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   IVYSAUR_7 ("Ivysaur", 7, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  MR_BRINEY_S_COMPASSION_8 ("Mr. Briney's Compassion", 8, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  MR__BRINEY_S_COMPASSION_8 ("Mr. Briney's Compassion", 8, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   MULTI_TECHNICAL_MACHINE_01_9 ("Multi Technical Machine 01", 9, Rarity.UNCOMMON, [TRAINER, TECHNICAL_MACHINE]),
   POKEMON_PARK_10 ("Pokémon Park", 10, Rarity.UNCOMMON, [TRAINER, STADIUM]),
   TV_REPORTER_11 ("TV Reporter", 11, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
@@ -56,7 +56,7 @@ public enum PopSeries2 implements LogicCardInfo {
   LUVDISC_14 ("Luvdisc", 14, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
   PHANPY_15 ("Phanpy", 15, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   PIKACHU_16 ("Pikachu", 16, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  CELEBI_EX_17 ("Celebi ex", 17, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
+  CELEBI_EX_17 ("Celebi ex", 17, Rarity.HOLORARE, [POKEMON, BASIC, EX, _PSYCHIC_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -261,7 +261,7 @@ public enum PopSeries2 implements LogicCardInfo {
       };
       case IVYSAUR_7:
         return copy(FireRedLeafGreen.IVYSAUR_35, this);
-      case MR_BRINEY_S_COMPASSION_8:
+      case MR__BRINEY_S_COMPASSION_8:
       return supporter (this) {
         text "Choose 1 of your Pokémon in play (excluding Pokémon ex). Return that Pokémon and all cards attached to it to your hand."
         onPlay {
@@ -410,9 +410,9 @@ public enum PopSeries2 implements LogicCardInfo {
         pokePower "Time Reversal", {
           text "Once during your turn, when you put Celebi ex from your hand onto your Bench, you may search your discard pile for a card, show it to your opponent, and put it on top of your deck."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && my.discard && confirm('Use Time Reversal to search your discard pile for a card to put on top of your deck?')) {
+            if (r==PLAY_FROM_HAND && my.discard && confirm('Use Time Reversal?')) {
               powerUsed()
-              my.discard.select("Select a card to put on top of your deck").showToOpponent("Selected card to move to the top of their deck").moveTo(addToTop:true, my.deck)
+              my.discard.select("Select a card to put on top of your deck.").showToOpponent("Time Reversal put this card on top of your opponent's deck.").moveTo(addToTop:true, my.deck)
             }
           }
         }
