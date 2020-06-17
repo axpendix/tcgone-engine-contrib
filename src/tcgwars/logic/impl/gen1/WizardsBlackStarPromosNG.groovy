@@ -152,7 +152,25 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            reduceDamageFromDefendingNextTurn(hp(10), thisMove, defending)
+            afterDamage { targeted (defending) {
+              delayed {
+                after PROCESS_ATTACK_EFFECTS, {
+                  bg.dm().each {
+                    if(it.from==defending && ef.attacker==defending && it.dmg.value){
+                      bc "${thisMove.name} reduces damage"
+                      it.dmg-=reduce
+                    }
+                  }
+                }
+                unregisterAfter 2
+                after SWITCH, defending, {unregister()}
+                after EVOLVE, defending, {unregister()}
+                after DEVOLVE, defending, {unregister()}
+                after SWITCH, self, {unregister()}
+                after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
+              }
+            } }
           }
         }
         move "Thundershock", {
@@ -691,8 +709,25 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
-            // TODO: (Benching either Pokémon ends this effect.)??
+            afterDamage { targeted (defending) {
+              delayed {
+                after PROCESS_ATTACK_EFFECTS, {
+                  bg.dm().each {
+                    if(it.from==defending && ef.attacker==defending && it.dmg.value){
+                      bc "${thisMove.name} reduces damage"
+                      it.dmg-=reduce
+                    }
+                  }
+                }
+                unregisterAfter 2
+                after SWITCH, defending, {unregister()}
+                after EVOLVE, defending, {unregister()}
+                after DEVOLVE, defending, {unregister()}
+                after SWITCH, self, {unregister()}
+                after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
+              }
+            } }
           }
         }
         move "Mini-Metronome", {
