@@ -1441,6 +1441,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            discardAllSelfEnergy()
           }
         }
       };
@@ -1453,6 +1454,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            switchYourActive may:true
           }
         }
         move "Flash Impact", {
@@ -1461,6 +1463,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 150
+            if (my.bench) {
+              damage 30, my.bench.select("Select Pokémon to deal 30 damage to.")
+            }
           }
         }
       };
@@ -1473,6 +1478,17 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            // TODO: Could make a configurable Trainer Lock static out of this
+            delayed {
+              before PLAY_TRAINER, {
+                def fromHand = bg.currentTurn.pbg.hand.contains(ef.cardToPlay)
+                if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.cardTypes.is(ITEM) && fromHand) {
+                  wcu "$thisMove prevents playing Item Cards this turn"
+                  prevent()
+                }
+              }
+              unregisterAfter 2
+            }
           }
         }
         move "Super Zap Cannon", {
@@ -1481,6 +1497,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 190
+            afterDamage {
+              discardSelfEnergy C, C
+            }
           }
         }
       };
@@ -1490,9 +1509,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Allure", {
           text "Draw 2 cards."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            draw 2
           }
         }
         move "Lightning Ball", {
@@ -1530,9 +1551,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Risk Taker", {
           text "Flip a coin, if heads discard 5 cards from the top of your opponent’s deck. If tails, discard 5 cards from the top of your deck."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck || opp.deck : "Both decks are empty"
+          }
           onAttack {
-
+            flip {if (opp.deck) opp.deck[0..4].discard()}, {if (my.deck) my.deck[0..4].discard()}
           }
         }
         move "Thunder Jolt", {
@@ -1541,6 +1564,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 160
+            damage 30, self
           }
         }
       };
@@ -1553,6 +1577,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            increasedBaseDamageNextTurn "Rising Charge", hp(90)
           }
         }
         move "Giga Impact", {
@@ -1561,6 +1586,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 200
+            cantAttackNextTurn self
           }
         }
       };
@@ -1569,7 +1595,17 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness F
         bwAbility "Numbing Vortex", {
           text "Whenever your opponent attaches an Energy from their hand to 1 of their Pokémon, put 2 damage counters on that Pokémon."
-          actionA {
+          delayedA {
+            def flag
+            before PLAY_ENERGY, {
+              flag = bg.currentTurn == self.opposite && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)
+            }
+            after ATTACH_ENERGY, {
+              if (flag) {
+                directDamage 20, ef.resolvedTarget
+                flag = false
+              }
+            }
           }
         }
         move "Electro Ball", {
