@@ -275,15 +275,14 @@ public enum PopSeries1 implements LogicCardInfo {
           text "Murkrow can't be Asleep."
           delayedA {
             before APPLY_SPECIAL_CONDITION, self, {
-                if (ef.type == ASLEEP) {
-                  bc "Insomnia prevents $self from being Asleep."
-                  prevent()
-                }
+              if (ef.type == ASLEEP) {
+                bc "Insomnia prevents $self from being Asleep."
+                prevent()
               }
             }
-            onActivate {
-              clearSpecialCondition(self, SRC_ABILITY, [ASLEEP])
-            }
+          }
+          onActivate {
+            clearSpecialCondition(self, SRC_ABILITY, [ASLEEP])
           }
         }
         move "Feint Attack", {
