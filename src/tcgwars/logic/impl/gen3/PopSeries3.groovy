@@ -496,5 +496,8 @@ public enum PopSeries3 implements LogicCardInfo {
       };
       case HO_OH_EX_17:
       return copy(UnseenForces.HO_OH_EX_104, this);
+      default:
+      return null;
+    }
   }
 }
