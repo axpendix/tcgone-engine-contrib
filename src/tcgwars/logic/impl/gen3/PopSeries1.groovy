@@ -468,7 +468,7 @@ public enum PopSeries1 implements LogicCardInfo {
           text "80 damage. Discard 2 Basic Energy cards attached to Tyranitar ex or this attack does nothing."
           energyCost F, F, C, C
           attackRequirement {
-            assert self.cards.filterByType(BASIC_ENERGY).size() >= 2 : "$self needs 2 or more Basic Energies attached."
+            assert self.cards.filterByType(BASIC_ENERGY).size() >= 2 : "$self needs 2 or more Basic Energies attached"
           }
           onAttack {
             damage 80

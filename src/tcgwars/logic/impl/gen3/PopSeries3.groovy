@@ -148,12 +148,12 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Fire Spin", {
           text "70 damage. Discard 2 Basic energy cards attached to Flareon or this attack does nothing."
           energyCost F, F, C
-          attackRequirement {}
+          attackRequirement {
+            assert self.cards.filterByType(BASIC_ENERGY).size() >= 2 : "Needs at least 2 Basic Energy cards attached"
+          }
           onAttack {
-            if (self.cards.filterByType(BASIC_ENERGY).size() >= 2) {
-              self.cards.filterByType(BASIC_ENERGY).select(count: 2, "Discard 2 Basic energy cards from $self.").discard()
-              damage 70
-            }
+            self.cards.filterByType(BASIC_ENERGY).select(count: 2, "Discard 2 Basic energy cards from $self.").discard()
+            damage 70
           }
         }
       };

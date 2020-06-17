@@ -141,7 +141,7 @@ public enum PopSeries2 implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert self.active : "Pidgeot is not your Active Pokémon"
-            assert my.bench : "There are no Benched Pokémon that can be selected."
+            assert my.bench : "There are no Benched Pokémon that can be selected"
             checkNoSPC()
             powerUsed()
 
@@ -272,7 +272,7 @@ public enum PopSeries2 implements LogicCardInfo {
           }
         }
         playRequirement {
-          assert my.all.findAll { !it.EX } : "No eligible Pokémon to return back to your hand."
+          assert my.all.findAll { !it.EX } : "No eligible Pokémon to return back to your hand"
         }
       };
       case MULTI_TECHNICAL_MACHINE_01_9:
@@ -307,12 +307,12 @@ public enum PopSeries2 implements LogicCardInfo {
           eff = delayed {
             def card
             before ATTACH_ENERGY, {
-              if (my.hand.contains(ef.card) {
+              if (my.hand.contains(ef.card) && bg.em().retrieveObject("Pokemon_Park_" + thisCard.hashCode()) != bg.turnCount) {
                 card = ef.card
               }
             }
             after ATTACH_ENERGY, {
-              if (ef.card == card) {
+              if (ef.card == card && bg.em().storeObject("Pokemon_Park_" + thisCard.hashCode(), bg.turnCount)) {
                 heal 10, ef.resolvedTarget
               }
             }
@@ -328,7 +328,7 @@ public enum PopSeries2 implements LogicCardInfo {
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness P
         move "Bite", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -336,7 +336,7 @@ public enum PopSeries2 implements LogicCardInfo {
           }
         }
         move "Razor Leaf", {
-          text "20 damage. "
+          text "20 damage."
           energyCost G, C
           attackRequirement {}
           onAttack {

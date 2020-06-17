@@ -163,7 +163,7 @@ public enum PopSeries5 implements LogicCardInfo {
           text "Choose 1 of the Defending Pokémon's attacks. Copy copies that attack. This attack does nothing if Mew doesn't have the Energy necessary to use that attack. (You must still do anything else required for that attack.) Mew performs that attack."
           energyCost C
           attackRequirement {
-            assert defending.topPokemonCard.moves : "No moves to perform."
+            assert defending.topPokemonCard.moves : "No moves to perform"
           }
           onAttack {
             def move = choose(defending.topPokemonCard.moves+["End Turn (Skip)"], "Choose 1 of the Defending Pokémon's attacks. (Do not select a move if you don't have necessary energy or it will fail) ")
@@ -177,8 +177,8 @@ public enum PopSeries5 implements LogicCardInfo {
           text "If your opponent has any Pokémon-ex in play, search your deck for up to 2 basic Energy cards and attach them to Mew. Shuffle your deck afterward."
           energyCost R
           attackRequirement {
-            assert my.deck : "Deck is empty."
-            assert opp.all.findAll { it.EX } : "Opponent does not have any Pokémon-ex in play."
+            assert my.deck : "Deck is empty"
+            assert opp.all.findAll { it.EX } : "Opponent does not have any Pokémon-ex in play"
           }
           onAttack {
             my.deck.search(max: 2, "Search your deck for up to 2 Basic Energy cards", cardTypeFilter(BASIC_ENERGY)).each{

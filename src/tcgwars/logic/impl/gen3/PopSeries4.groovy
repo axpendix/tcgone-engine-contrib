@@ -194,8 +194,8 @@ public enum PopSeries4 implements LogicCardInfo {
           text "As often as you like during your turn (before your attack), move a [G] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Sceptile is affected by a Special Condition."
           actionA {
             checkNoSPC()
-            assert my.all.findAll {it.cards.energyCount(G)>0} : "There are no Pokémon with [G] Energy cards."
-            assert my.all.size()>=2 : "There is only one Pokémon on the field."
+            assert my.all.findAll {it.cards.energyCount(G)>0} : "There are no Pokémon with [G] Energy cards"
+            assert my.all.size()>=2 : "There is only one Pokémon on the field"
 
             powerUsed()
             def src=my.all.findAll {it.cards.energyCount(G)>0}.select("Source for [G]")
@@ -274,8 +274,8 @@ public enum PopSeries4 implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          assert bench.notFull : "Bench is full."
-          assert deck.notEmpty : "Deck is empty."
+          assert bench.notFull : "Bench is full"
+          assert deck.notEmpty : "Deck is empty"
         }
       };
       case SCRAMBLE_ENERGY_10:
