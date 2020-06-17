@@ -2502,7 +2502,59 @@ public enum LegendMaker implements LogicCardInfo {
         }
       };
       case MYSTERIOUS_FOSSIL_79:
-      return copy(FossilNG.MYSTERIOUS_FOSSIL, this)
+      return itemCard (this) {
+        text "Play Mysterious Fossil as if it were a Basic Pokemon. While in play, Mysterious Fossil counts as a [C] Pokemon (as well as a Trainer card). Mysterious Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Mysterious Fossil is Knocked out, it doesn't count as a Knocked Out Pokemon. (Discard it anyway.) At any time during your turn before your attack, you may discard Mysterious Fossil from play."
+        onPlay {
+          Card pokemonCard, trainerCard = thisCard
+          pokemonCard = basic (new CustomCardInfo(MYSTERIOUS_FOSSIL_79).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+            customAbility{
+              def ef2, acl
+              onActivate{
+                delayed {
+                  before RETREAT, self, {
+                    wcu "Cannot retreat"
+                    prevent()
+                  }
+                  before TAKE_PRIZE, {
+                    if(ef.pcs==self){
+                      bc "No prize card for Mysterious Fossil"
+                      prevent()
+                    }
+                  }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    wcu "Mysterious Fossil can't have special conditions"
+                    prevent()
+                  }
+                }
+                if(!ef2){
+                  ef2 = delayed {
+                    after REMOVE_FROM_PLAY, {
+                      if(ef.removedCards.contains(pokemonCard)){
+                        bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                        unregister()
+                        ef2 = null
+                      }
+                    }
+                  }
+                }
+                acl = action("Discard Mysterious Fossil", [TargetPlayer.SELF]){
+                  new Knockout(self).run(bg)
+                }
+              }
+              onDeactivate{
+                acl.each{bg.gm().unregisterAction(it)}
+              }
+            }
+          }
+          pokemonCard.player = trainerCard.player
+          bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+          hand.remove(pokemonCard)
+          benchPCS(pokemonCard)
+        }
+        playRequirement{
+          assert bench.notFull : "Bench is full"
+        }
+      };
       case ROOT_FOSSIL_80:
       return itemCard (this) {
         text "Play Root Fossil as if it were a Basic Pokémon. While in play, Root Fossil counts as a [C] Pokémon (as well as a Trainer card). Root Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Root Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Root Fossil from play." +
