@@ -1146,6 +1146,42 @@ class TcgStatics {
   static boolean isGxPerformed(){
     bg.em().retrieveObject("gx_"+my.owner)
   }
+
+  /* General checks for attacks and abilities */
+
+  //  * checkAnyBench
+  //    - Can be used with no arguments, or with a condition and additional text included.
+  //    - If a closure is given, it'll check for any "it" element in bench returning true.
+  //    - Optional params:
+  //      + opp: If true, checks for the opponent's bench instead of "my" bench.
+  //      + repText: If true, instead of adding cText at the end of the assert it'll be the only thing printed.
+  static void checkAnyBench(params=[:], Closure c, String cText) {
+    def checkedBench = params.opp ? opp.bench : my.bench
+    assert (
+      if (c != null) { checkedBench.any{c(it)} } else { checkedBench }
+    ) : (
+      if (params.repText) { cText } else {
+        (
+          if (params.opp) { "You don't" } else { "Your opponent doesn't" }
+        ) + " have any Benched Pokémon that " + (
+          if (cText) {
+            cText
+          } else {
+            "follow the stated condition(s)."
+          }
+        )
+      }
+    )
+  }
+  static void checkMyBench(params=[:], Closure c, String cText) {
+    params.opp = false
+    checkAnyBench(params, c, cText)
+  }
+  static void checkOppBench(params=[:], Closure c, String cText) {
+    params.opp = true
+    checkAnyBench(params, c, cText)
+  }
+
   static void cantBeHealed(PokemonCardSet defending){
     delayed {
       after EVOLVE, defending, {unregister()}
