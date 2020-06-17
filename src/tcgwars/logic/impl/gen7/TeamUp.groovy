@@ -1945,7 +1945,7 @@ public enum TeamUp implements LogicCardInfo {
             energyCost F
             onAttack{
               damage 40
-              reduceDamageNextTurn(hp(20),thisMove)
+              reduceDamageNextTurn(hp(20),thisMove,self)
             }
           }
         };
@@ -2415,7 +2415,7 @@ public enum TeamUp implements LogicCardInfo {
             energyCost M,M,C
             onAttack{
               damage 90
-              reduceDamageNextTurn(hp(30),thisMove)
+              reduceDamageNextTurn(hp(30),thisMove,self)
             }
           }
         };
@@ -2515,7 +2515,7 @@ public enum TeamUp implements LogicCardInfo {
             energyCost M
             onAttack{
               damage 20
-              reduceDamageNextTurn(hp(20),thisMove)
+              reduceDamageNextTurn(hp(20),thisMove,self)
             }
           }
           move "Thorn Pod Throw" , {
@@ -2538,7 +2538,7 @@ public enum TeamUp implements LogicCardInfo {
             text "During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
             energyCost M
             onAttack{
-              reduceDamageNextTurn(hp(30),thisMove)
+              reduceDamageNextTurn(hp(30),thisMove,self)
             }
           }
           move "Scratch" , {

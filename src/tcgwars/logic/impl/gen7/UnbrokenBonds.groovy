@@ -3081,7 +3081,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "During your opponent’s next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
             energyCost M
             onAttack {
-              reduceDamageNextTurn(hp(30),thisMove)
+              reduceDamageNextTurn(hp(30),thisMove,self)
             }
           }
           move "Metal Claw", {
@@ -3101,7 +3101,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "During your opponent’s next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
             energyCost M
             onAttack {
-              reduceDamageNextTurn(hp(30),thisMove)
+              reduceDamageNextTurn(hp(30),thisMove,self)
             }
           }
           move "Headbutt", {
@@ -3424,7 +3424,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost Y
             onAttack {
               damage 10
-              reduceDamageNextTurn(hp(10),thisMove)
+              reduceDamageNextTurn(hp(10),thisMove,self)
             }
           }
 

@@ -2393,7 +2393,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 30
-              reduceDamageNextTurn(hp(30), thisMove)
+              reduceDamageNextTurn(hp(30), thisMove,self)
             }
           }
           move "Special Laser", {
@@ -2434,7 +2434,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost F
             onAttack {
               damage 20
-              reduceDamageNextTurn(hp(20), thisMove)
+              reduceDamageNextTurn(hp(20), thisMove,self)
             }
           }
         };
@@ -2480,7 +2480,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "During your opponent's next turn, the Defending Pokémon's attacks do 20 less damage (before applying Weakness and Resistance)."
             energyCost C
             onAttack {
-              reduceDamageNextTurn(hp(20), thisMove)
+              reduceDamageFromDefendingNextTurn(hp(20),thisMove,defending)
             }
           }
           move "Bonemerang", {
@@ -3560,7 +3560,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 30
-              reduceDamageNextTurn(hp(30), thisMove)
+              reduceDamageNextTurn(hp(30), thisMove, self)
             }
           }
           move "Guillotine", {

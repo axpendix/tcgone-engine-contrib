@@ -2074,7 +2074,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               flip {
-                reduceDamageNextTurn(hp(30),thisMove)
+                reduceDamageNextTurn(hp(30),thisMove, self)
                 //This could be generalized into a Statics method.
                 delayed {
                   before PLAY_TRAINER, {

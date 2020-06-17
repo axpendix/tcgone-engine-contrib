@@ -947,7 +947,7 @@ public enum SunMoon implements LogicCardInfo {
             energyCost W, W, C
             onAttack {
               damage 80
-              reduceDamageNextTurn(hp(20), thisMove)
+              reduceDamageNextTurn(hp(20), thisMove, self)
             }
           }
 

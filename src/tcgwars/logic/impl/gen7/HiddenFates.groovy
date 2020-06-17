@@ -784,7 +784,7 @@ public enum HiddenFates implements LogicCardInfo {
           onAttack {
             gxPerform()
             damage 200
-            reduceDamageNextTurn(hp(100), thisMove)
+            reduceDamageNextTurn(hp(100), thisMove, self)
           }
         }
       };

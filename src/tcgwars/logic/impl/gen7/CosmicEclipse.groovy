@@ -2542,7 +2542,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "During your opponent's next turn, this Pokémon takes 40 less damage from attacks (after applying Weakness and Resistance)."
             energyCost C
             onAttack {
-              reduceDamageNextTurn(hp(40),thisMove)
+              reduceDamageNextTurn(hp(40),thisMove, self)
             }
           }
         };
@@ -3083,7 +3083,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               damage 80
-              reduceDamageNextTurn(hp(20),thisMove)
+              reduceDamageNextTurn(hp(20),thisMove, self)
             }
           }
           move "Earthquake", {
@@ -3675,7 +3675,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost Y
             onAttack {
               damage 10
-              reduceDamageNextTurn(hp(10),thisMove)
+              reduceDamageNextTurn(hp(10),thisMove, self)
             }
           }
         };

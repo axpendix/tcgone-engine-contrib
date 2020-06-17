@@ -3102,7 +3102,7 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 90
-            reduceDamageNextTurn(hp(30), thisMove)
+            reduceDamageNextTurn(hp(30), thisMove, self)
           }
         }
       };
@@ -3272,7 +3272,7 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 90
-            reduceDamageNextTurn(hp(30),thisMove)
+            reduceDamageNextTurn(hp(30),thisMove,self)
           }
         }
         move "Wrack Down", {
@@ -3369,7 +3369,7 @@ public enum RebelClash implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            reduceDamageNextTurn(hp(20),thisMove)
+            reduceDamageNextTurn(hp(20),thisMove,slef)
           }
         }
         move "Power Rush", {

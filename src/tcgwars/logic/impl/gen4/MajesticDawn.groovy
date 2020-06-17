@@ -359,7 +359,7 @@ public enum MajesticDawn implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              reduceDamageNextTurn(hp(20),thisMove)
+              reduceDamageNextTurn(hp(20),thisMove, self)
             }
           }
 

@@ -255,7 +255,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            reduceDamageNextTurn(hp(20), thisMove)
+            reduceDamageNextTurn(hp(20), thisMove,self)
           }
         }
       };
@@ -949,7 +949,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            reduceDamageNextTurn(hp(20), thisMove)
+            reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
           }
         }
         move "Rage", {

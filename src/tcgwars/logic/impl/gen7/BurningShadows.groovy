@@ -573,7 +573,7 @@ public enum BurningShadows implements LogicCardInfo {
             energyCost G, C, C
             onAttack {
               damage 100
-              reduceDamageNextTurn(hp(20),thisMove)
+              reduceDamageNextTurn(hp(20),thisMove, self)
             }
           }
           move "Crossing Cut GX", {
@@ -2565,7 +2565,7 @@ public enum BurningShadows implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 30
-              reduceDamageNextTurn(hp(30),thisMove)
+              reduceDamageNextTurn(hp(30),thisMove, self)
             }
           }
           move "Knock Over", {

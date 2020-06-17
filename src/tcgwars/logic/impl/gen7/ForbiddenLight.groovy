@@ -462,7 +462,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             energyCost R, C
             onAttack {
               damage 30
-              reduceDamageNextTurn(hp(30),thisMove)
+              reduceDamageNextTurn(hp(30),thisMove, self)
             }
           }
           move "Boiling Impact", {

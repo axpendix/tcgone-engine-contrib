@@ -1026,7 +1026,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            reduceDamageNextTurn(hp(30), thisMove)
+            reduceDamageNextTurn(hp(30), thisMove, self)
           }
         }
         move "Icy Snow", {
@@ -1425,7 +1425,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 90
-            reduceDamageNextTurn(hp(60), thisMove)
+            reduceDamageNextTurn(hp(60), thisMove, self)
           }
         }
         move "Cold Breath", {

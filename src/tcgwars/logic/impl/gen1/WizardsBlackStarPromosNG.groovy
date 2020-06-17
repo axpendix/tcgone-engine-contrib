@@ -152,8 +152,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            reduceDamageNextTurn(hp(10), thisMove)
-            // I don't understand the benching condition
+            reduceDamageFromDefendingNextTurn(hp(10), thisMove, defending)
           }
         }
         move "Thundershock", {
@@ -692,7 +691,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            reduceDamageNextTurn(hp(20), thisMove)
+            reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
             // TODO: (Benching either Pokémon ends this effect.)??
           }
         }

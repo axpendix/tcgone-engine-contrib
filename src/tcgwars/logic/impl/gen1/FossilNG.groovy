@@ -1017,7 +1017,7 @@ public enum FossilNG implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              reduceDamageNextTurn(hp(20),thisMove)
+              reduceDamageNextTurn(hp(20),thisMove,self)
             }
           }
 

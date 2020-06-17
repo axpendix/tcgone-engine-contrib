@@ -2529,7 +2529,7 @@ public enum GuardiansRising implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 30
-              reduceDamageNextTurn(hp(30),thisMove)
+              reduceDamageNextTurn(hp(30),thisMove, self)
             }
           }
           move "Shred", {

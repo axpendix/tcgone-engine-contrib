@@ -1507,7 +1507,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 30
-              reduceDamageNextTurn(hp(10),thisMove)
+              reduceDamageNextTurn(hp(10),thisMove, self)
             }
           }
 
@@ -2041,7 +2041,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "During your opponent’s next turn, any damage done to Shellder by attacks in reduced by 20 (after applying Weakness and Resistance)."
             energyCost C
             onAttack {
-              reduceDamageNextTurn(hp(20),thisMove)
+              reduceDamageNextTurn(hp(20),thisMove, self)
             }
           }
           move "Wave Splash", {

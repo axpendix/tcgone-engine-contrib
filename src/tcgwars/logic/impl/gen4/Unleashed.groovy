@@ -737,7 +737,7 @@ public enum Unleashed implements LogicCardInfo {
             energyCost M, C, C
             onAttack {
               damage 40
-              reduceDamageNextTurn(hp(20),thisMove)
+              reduceDamageNextTurn(hp(20),thisMove, self)
             }
           }
           move "Steel Swing", {

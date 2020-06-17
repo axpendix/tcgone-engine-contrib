@@ -1446,7 +1446,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            reduceDamageNextTurn(hp(10), thisMove)
+            reduceDamageNextTurn(hp(10), thisMove, self)
           }
         }
       };
@@ -2913,7 +2913,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            reduceDamageNextTurn(hp(10), thisMove)
+            reduceDamageNextTurn(hp(10), thisMove, self)
           }
         }
         move "Final Laser", {

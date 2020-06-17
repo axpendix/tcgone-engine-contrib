@@ -2136,7 +2136,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "During your opponent's next turn, any damage done to Teddiursa by attacks is reduced by 20 (after applying Weakness and Resistance)."
           energyCost C
           onAttack {
-            reduceDamageNextTurn(hp(20), thisMove)
+            reduceDamageNextTurn(hp(20), thisMove, self)
           }
         }
         move "Scratch", {
@@ -2690,7 +2690,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost M, C
           onAttack {
             damage 40
-            reduceDamageNextTurn(hp(20), thisMove)
+            reduceDamageNextTurn(hp(20), thisMove, self)
           }
         }
         move "Cross-Cut", {

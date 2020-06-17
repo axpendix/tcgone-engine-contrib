@@ -615,7 +615,7 @@ public enum SwordShield implements LogicCardInfo {
           text "During your opponent's next turn, this Pokémon takes 40 less damage from attacks (after applying Weakness and Resistance)."
           energyCost C
           onAttack {
-            reduceDamageNextTurn(hp(40),thisMove)
+            reduceDamageNextTurn(hp(40),thisMove,self)
           }
         }
         move "Ram", {
@@ -2461,7 +2461,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost F
           onAttack {
             damage 40
-            reduceDamageNextTurn(hp(20), thisMove)
+            reduceDamageNextTurn(hp(20), thisMove, self)
           }
         }
         move "Mega Kick", {
@@ -3242,7 +3242,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 30
-            reduceDamageNextTurn(hp(10),thisMove)
+            reduceDamageNextTurn(hp(10),thisMove,self)
           }
         }
       };
@@ -3272,7 +3272,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 30
-            reduceDamageNextTurn(hp(30),thisMove)
+            reduceDamageNextTurn(hp(30),thisMove,self)
           }
         }
         move "Double-Edge", {

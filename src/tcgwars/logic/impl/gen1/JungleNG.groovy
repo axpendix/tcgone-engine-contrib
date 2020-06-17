@@ -215,7 +215,7 @@ public enum JungleNG implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              reduceDamageNextTurn(hp(20), thisMove)
+              reduceDamageNextTurn(hp(20), thisMove,self)
             }
           }
 

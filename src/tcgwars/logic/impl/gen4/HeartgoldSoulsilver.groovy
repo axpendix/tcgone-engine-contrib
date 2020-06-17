@@ -355,7 +355,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost G
             onAttack {
               damage 30
-              reduceDamageNextTurn(hp(30),thisMove)
+              reduceDamageNextTurn(hp(30),thisMove, self)
             }
           }
 
@@ -1488,7 +1488,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               damage 50
-              reduceDamageNextTurn(hp(10),thisMove)
+              reduceDamageNextTurn(hp(10),thisMove, self)
             }
           }
 
@@ -1552,7 +1552,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             text "During your opponent’s next turn, any damage done to Clefairy by attacks is reduced by 20 (after applying Weakness and Resistance)."
             energyCost C
             onAttack {
-              reduceDamageNextTurn(hp(20),thisMove)
+              reduceDamageNextTurn(hp(20),thisMove, self)
             }
           }
           move "Slap", {

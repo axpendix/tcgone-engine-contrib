@@ -1738,7 +1738,7 @@ public enum CelestialStorm implements LogicCardInfo {
             text "During your opponent's next turn, this Pokémon takes 40 less damage from attacks (after applying Weakness and Resistance)."
             energyCost C
             onAttack {
-              reduceDamageNextTurn(hp(40),thisMove)
+              reduceDamageNextTurn(hp(40),thisMove, self)
             }
           }
           move "Psychic Corkscrew" , {
@@ -2279,7 +2279,7 @@ public enum CelestialStorm implements LogicCardInfo {
             energyCost M,C
             onAttack {
               damage 80
-              reduceDamageNextTurn(hp(30),thisMove)
+              reduceDamageNextTurn(hp(30),thisMove, self)
             }
           }
           move "Cross-Cut GX" , {
@@ -2608,7 +2608,7 @@ public enum CelestialStorm implements LogicCardInfo {
             energyCost W
             onAttack {
               damage 10
-              reduceDamageNextTurn(hp(10),thisMove)
+              reduceDamageNextTurn(hp(10),thisMove, self)
             }
           }
         };

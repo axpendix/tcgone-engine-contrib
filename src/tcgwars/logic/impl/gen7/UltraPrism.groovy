@@ -2153,7 +2153,7 @@ public enum UltraPrism implements LogicCardInfo {
             energyCost M, C
             onAttack {
               damage 30
-              reduceDamageNextTurn(hp(30),thisMove)
+              reduceDamageNextTurn(hp(30),thisMove,self)
             }
           }
           move "Boiling Impact", {

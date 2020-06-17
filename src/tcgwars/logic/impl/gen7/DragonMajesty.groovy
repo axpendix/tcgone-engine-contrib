@@ -1230,7 +1230,7 @@ public enum DragonMajesty implements LogicCardInfo {
             text "During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
             energyCost L
             onAttack {
-              reduceDamageNextTurn(hp(20),thisMove)
+              reduceDamageNextTurn(hp(20),thisMove, self)
             }
           }
           move "Dragon Claw" , {
@@ -1249,7 +1249,7 @@ public enum DragonMajesty implements LogicCardInfo {
             energyCost C,C
             onAttack {
               damage 30
-              reduceDamageNextTurn(hp(30),thisMove)
+              reduceDamageNextTurn(hp(30),thisMove, self)
             }
           }
           move "Dragon Claw" , {
@@ -1268,7 +1268,7 @@ public enum DragonMajesty implements LogicCardInfo {
             energyCost L,C
             onAttack{
               damage 60
-              reduceDamageNextTurn(hp(30),thisMove)
+              reduceDamageNextTurn(hp(30),thisMove, self)
             }
           }
           move "Raging Uppercut" , {

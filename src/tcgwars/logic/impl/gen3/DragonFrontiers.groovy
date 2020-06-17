@@ -1299,7 +1299,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            reduceDamageNextTurn(hp(10), thisMove)
+            reduceDamageNextTurn(hp(10), thisMove, self)
           }
         }
       };

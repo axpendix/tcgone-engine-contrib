@@ -2096,7 +2096,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              reduceDamageNextTurn(hp(20), thisMove)
+              reduceDamageNextTurn(hp(20), thisMove, self)
             }
           }
           move "Shield Attack", {

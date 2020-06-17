@@ -1239,7 +1239,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            reduceDamageNextTurn(hp(10),thisMove)
+            reduceDamageNextTurn(hp(10),thisMove, self)
           }
         }
       };

@@ -2862,7 +2862,7 @@ public enum LostThunder implements LogicCardInfo {
             energyCost F,F,C
             onAttack{
               damage 60
-              reduceDamageNextTurn(hp(20),thisMove)
+              reduceDamageNextTurn(hp(20),thisMove, self)
             }
           }
         };
@@ -3110,7 +3110,7 @@ public enum LostThunder implements LogicCardInfo {
             energyCost M,C
             onAttack{
               damage 30
-              reduceDamageNextTurn(hp(30),thisMove)
+              reduceDamageNextTurn(hp(30),thisMove, self)
             }
           }
           move "Metal Arms" , {
@@ -3245,7 +3245,7 @@ public enum LostThunder implements LogicCardInfo {
             energyCost C,C
             onAttack{
               damage 30
-              reduceDamageNextTurn(hp(30),thisMove)
+              reduceDamageNextTurn(hp(30),thisMove, self)
             }
           }
           move "Charmed Slap" , {
