@@ -1052,7 +1052,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             def info = "Select opponent's Prize card to switch with the top card from their deck."
             def oppPrize = opp.prizeCardSet.faceDownCards.select(hidden: true, info).first()
             opp.prizeCardSet.set opp.prizeCardSet.indexOf(oppPrize), opp.deck.remove(0)
-            deck.add 0, oppPrize
+            opp.deck.add 0, oppPrize
           }
         }
         move "Mad Party", {
@@ -1091,11 +1091,8 @@ public enum DarknessAblaze implements LogicCardInfo {
                   def info = "Select [W] Energy to return to your hand."
                   def energy = self.cards.findAll {energyFilter W}.getExcludedList(energies).select(info).first()
                   if (energy instanceof SpecialEnergyCard) {
-                    def types = energy.getEnergyTypesOverride()
-                    types.each {
-                      if (it.contains(W)) {
-                        finalCount += 1
-                      }
+                    energy.types.each {
+                      if (it.contains(W)) finalCount += 1
                     }
                   }
                   else {
@@ -1404,6 +1401,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           delayedA {
             before PLAY_EVOLUTION, {
               if (self.active && bg.currentTurn == self.owner.opposite && ef.cardToPlay.player.pbg.hand.contains(ef.cardToPlay)) {
+                wcu "$self.name's Primal Law prevents playing Pokémon from your hand to evolve your Pokémon"
                 prevent()
               }
             }
