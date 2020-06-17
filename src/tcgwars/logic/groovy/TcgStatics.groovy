@@ -412,8 +412,26 @@ class TcgStatics {
   static healAll(PokemonCardSet target, Source source=Source.ATTACK){
     bg().em().run(new RemoveDamageCounter(target,source,target.damage))
   }
+  //Leaving this in since legacy code probably depends on it.
   static reduceDamageNextTurn (HP reduce, Move thisMove){
     new ReduceDamageNextTurn(reduce, thisMove.name).run(bg())
+  }
+  static reduceDamageNextTurn (HP reduce, Move thisMove, PokemonCardSet self){
+    afterDamage {
+      delayed {
+        before APPLY_ATTACK_DAMAGES, {
+          bg.dm().each {
+            if(it.to == self && it.dmg.value){
+              bc "${thisMove.name} reduces damage"
+              it.dmg-=reduce
+            }
+          }
+        }
+        unregisterAfter 2
+        after SWITCH, self, {unregister()}
+        after EVOLVE, self, {unregister()}
+      }
+    }
   }
   static reduceDamageFromDefendingNextTurn (HP reduce, Move thisMove, PokemonCardSet defending){
     afterDamage { targeted (defending) {
