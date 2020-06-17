@@ -1595,7 +1595,17 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness F
         bwAbility "Numbing Vortex", {
           text "Whenever your opponent attaches an Energy from their hand to 1 of their Pokémon, put 2 damage counters on that Pokémon."
-          actionA {
+          delayedA {
+            def flag
+            before PLAY_ENERGY, {
+              flag = bg.currentTurn == self.opposite && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)
+            }
+            after ATTACH_ENERGY, {
+              if (flag) {
+                directDamage 20, ef.resolvedTarget
+                flag = false
+              }
+            }
           }
         }
         move "Electro Ball", {
