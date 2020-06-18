@@ -1163,7 +1163,8 @@ class TcgStatics {
    * @param message Additional text to be put at the end of the assert fail warning. If repText is set to true in params, message will override the entirety of said warning.
    *
    */
-  static void assertBench(params=[:], Closure c = null, String message = "") {
+  static void assertBench(params=[:], Closure c = null, String info = "") {
+    def failMessage
     def checkedBench = params.opp ? opp.bench : my.bench
 
     def hasPokeCnt = 0
@@ -1185,34 +1186,37 @@ class TcgStatics {
       }
     )
 
-    def typeString = param.isType ? " ${params.isType.getShortNotation()}" : ""
+    if (!params.repText) {
+      failMessage = info
+    } else {
+      def typeString = param.isType ? " ${params.isType.getShortNotation()}" : ""
 
-    def pokeString = "${typeString}Pokémon"
-    if (hasPokeCnt) (
-      pokeString = "${typeString}"
-      i = 1
-      [
-        (params.hasPokemonEX, "Pokémon-EX"),
-        (params.hasPokemonGX, "Pokémon-GX"),
-        (params.hasPokemonV, "Pokémon V")
-      ].each{
-        if (it[0]) {
-          pokeString += it[1] + (if (i == isPokeCnt) "" else if (i == isPokeCnt-1) " or " else ", ")
-          i += 1
+      def pokeString = "${typeString}Pokémon"
+      if (hasPokeCnt) (
+        pokeString = "${typeString}"
+        i = 1
+        [
+          (params.hasPokemonEX, "Pokémon-EX"),
+          (params.hasPokemonGX, "Pokémon-GX"),
+          (params.hasPokemonV, "Pokémon V")
+        ].each{
+          if (it[0]) {
+            pokeString += it[1] + (if (i == isPokeCnt) "" else if (i == isPokeCnt-1) " or " else ", ")
+            i += 1
+          }
         }
-      }
-    )
+      )
 
+      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any Benched $pokeString that ${!info.equals("") ? info : "follow the stated condition(s)"}"
+    }
 
-    if (!params.repText) message = "${params.opp ? "Your opponent doesn't" : "You don't"} have any Benched $pokeString that ${!message.equals("") ? message : "follow the stated condition(s)"}"
-
-    assert checkedBench.any{benchFilter} : message
+    assert checkedBench.any{benchFilter} : failMessage
   }
-  static void assertMyBench(params=[:], Closure c = null, String message = "") {
+  static void assertMyBench(params=[:], Closure c = null, String info = "") {
     params.opp = false
     assertBench(params, c, cText)
   }
-  static void assertOppBench(params=[:], Closure c = null, String message = "") {
+  static void assertOppBench(params=[:], Closure c = null, String info = "") {
     params.opp = true
     assertBench(params, c, cText)
   }
