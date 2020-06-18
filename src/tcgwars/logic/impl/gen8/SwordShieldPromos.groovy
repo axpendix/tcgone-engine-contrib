@@ -24,7 +24,6 @@ import tcgwars.logic.card.pokemon.*;
 import tcgwars.logic.card.trainer.*;
 import tcgwars.logic.effect.*;
 import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
 import tcgwars.logic.effect.advanced.*;
 import tcgwars.logic.effect.basic.*;
 import tcgwars.logic.effect.blocking.*;
@@ -37,7 +36,7 @@ import tcgwars.logic.util.*;
  * @author thezipcompany@gmail.com
  */
 public enum SwordShieldPromos implements LogicCardInfo {
-    
+
   GROOKEY_SWSH01 ("Grookey", 1, Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
   SCORBUNNY_SWSH02 ("Scorbunny", 2, Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
   SOBBLE_SWSH03 ("Sobble", 3, Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
@@ -70,9 +69,9 @@ public enum SwordShieldPromos implements LogicCardInfo {
   COPPERAJAH_V_SWSH30 ("Copperajah V", 30, Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
   MORPEKO_SWSH31 ("Morpeko", 31, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
   SNORLAX_SWSH32 ("Snorlax", 32, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]);
-    
+
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
-  
+
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
@@ -204,7 +203,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           text "Your opponent's Active Pokémon is now Asleep."
           energyCost C
           onAttack {
-            apply SLEEP
+            apply ASLEEP
           }
         }
       };
