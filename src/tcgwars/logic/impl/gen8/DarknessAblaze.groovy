@@ -3627,8 +3627,11 @@ public enum DarknessAblaze implements LogicCardInfo {
       return supporter (this) {
         text "Switch your Active Pokémon with 1 of your Benched Pokémon. Then, draw 3 cards."
         onPlay {
+          switchYourActive
+          draw 3
         }
         playRequirement{
+          assert my.bench : "You have no benched Pokémon"
         }
         globalAbility {Card thisCard->
           def flag
