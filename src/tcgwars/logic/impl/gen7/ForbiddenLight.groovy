@@ -2747,6 +2747,8 @@ public enum ForbiddenLight implements LogicCardInfo {
         return specialEnergy (this, [[C]]) {
           text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nThis card provides [C] Energy.\nWhile this card is attached to an Ultra Beast, it provides every type of Energy but provides only 1 Energy at a time. The attacks of the Ultra Beast this card is attached to do 30 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
           def eff
+          def providesRainbow = {self && self.topPokemonCard.cardTypes.is(ULTRA_BEAST)}
+          typeImagesOverride = providesRainbow() ? [RAINBOW] : [C]
           onPlay {reason->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
@@ -2765,14 +2767,8 @@ public enum ForbiddenLight implements LogicCardInfo {
           onMove {to->
           }
           getEnergyTypesOverride{
-            if(self != null && self.topPokemonCard.cardTypes.is(ULTRA_BEAST)) {
-              owner.typeImagesOverride = [RAINBOW]
-              return [[R, D, F, G, W, Y, L, M, P] as Set]
-            }
-            else {
-              owner.typeImagesOverride = [C]
-              return [[C] as Set]
-            }
+            if(providesRainbow()) return [[R, D, F, G, W, Y, L, M, P] as Set]
+            else return [[C] as Set]
           }
         };
       case UNIT_ENERGY_FDY_118:

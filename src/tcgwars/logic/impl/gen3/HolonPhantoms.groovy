@@ -2413,22 +2413,15 @@ public enum HolonPhantoms implements LogicCardInfo {
       case DELTA_RAINBOW_ENERGY_98:
       return specialEnergy (this, [[C]]) {
         text "δ Rainbow Energy provides [C] Energy. While attached to a Pokémon that has δ on its card, δ Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.)"
+        def providesRainbow = {self && self.topPokemonCard.cardTypes.is(DELTA)}
+        typeImagesOverride = providesRainbow() ? [RAINBOW] : [C]
         onPlay {reason->
         }
         onRemoveFromPlay {
         }
         getEnergyTypesOverride {
-          if (!self || !self.topPokemonCard)
-            return [[C] as Set]
-          boolean cond1 = self.topPokemonCard.cardTypes.is(DELTA)
-          if (cond1) {
-            owner.typeImagesOverride = [RAINBOW]
-            return [[R, D, F, G, W, Y, L, M, P, N] as Set]
-          }
-          else {
-            owner.typeImagesOverride = [C]
-            return [[C] as Set]
-          }
+          if (providesRainbow()) return [[R, D, F, G, W, Y, L, M, P, N] as Set]
+          else return [[C] as Set]
         }
       };
       case CRAWDAUNT_EX_99:
