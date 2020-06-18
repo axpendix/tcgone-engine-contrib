@@ -1153,7 +1153,7 @@ class TcgStatics {
   //    - Can be used with no arguments, or with a condition and additional text included.
   //    - If a closure is given, it'll check for any "it" element in bench returning true.
   //    - Optional params:
-  //      + type: if set, restricts to benched Pokémon of a single specific type.
+  //      + isType: if set, restricts to benched Pokémon of a single specific type.
   //      + hasPokemonEX/hasPokemonGX/hasPokemonV: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
   //      + opp: If true, checks for the opponent's bench instead of "my" bench.
   //      + repText: If true, instead of adding cText at the end of the assert it'll be the only thing printed.
@@ -1166,7 +1166,7 @@ class TcgStatics {
     def benchFilter = (
       if (c == null) { true } else {
         (
-          if (params.type) {it.types.contains(params.type)} else {true}
+          if (params.isType) {it.types.contains(params.isType)} else {true}
         ) && (
           if (!hasPokeCnt) {true} else {
             (params.hasPokemonEX && it.pokemonEX) ||
@@ -1193,7 +1193,7 @@ class TcgStatics {
 
     def failMessage = if (params.repText) { cText } else {
       "You" + (params.opp ? "r opponent does" : " do") + "n't have any " + (
-        param.type ? params.type.getShortNotation() + " " : ""
+        param.isType ? params.isType.getShortNotation() + " " : ""
       ) + "Benched $pokeString" + () + (
         if (c != null) {
           " that " + (cText ? cText : "follow the stated condition(s)")
