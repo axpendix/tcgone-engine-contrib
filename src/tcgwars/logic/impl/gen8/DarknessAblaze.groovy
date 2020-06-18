@@ -3606,9 +3606,19 @@ public enum DarknessAblaze implements LogicCardInfo {
       case BIG_PARASOL_166:
       return pokemonTool (this) {
         text "As long as the Pokémon this card is attached to is your Active Pokémon, prevent all effects of your opponent’s attacks, except damage, done to all of your Pokémon (existing effects are not removed)."
+        def eff
         onPlay {reason->
+          eff = delayed {
+            before null, null, Source.ATTACK, {
+              if(bg.currentTurn == self.owner.opposite && self.active && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)) {
+                bc "Big Parasol prevents effect"
+                prevent()
+              }
+            }
+          }
         }
         onRemoveFromPlay {
+          eff.unregister()
         }
         allowAttach {to->
         }
