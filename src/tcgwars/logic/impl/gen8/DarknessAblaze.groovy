@@ -3654,6 +3654,8 @@ public enum DarknessAblaze implements LogicCardInfo {
       return itemCard (this) {
         text "Each player’s Active Pokémon is now Confused."
         onPlay {
+          apply CONFUSED, opp.active, Source.TRAINER
+          apply CONFUSED, my.active, Sourec.TRAINER
         }
         playRequirement{
         }
