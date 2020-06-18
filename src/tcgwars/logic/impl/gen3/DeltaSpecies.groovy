@@ -3148,7 +3148,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             if (r==PLAY_FROM_HAND && my.deck && confirm("Use Evolutionary Thunder?")) {
               powerUsed()
               opp.all.each {
-                directDamage 10, it
+                directDamage 10, it, SRC_ABILITY
               }
             }
           }
