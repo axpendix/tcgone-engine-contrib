@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen4;
 
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen5.PlasmaStorm;
+import tcgwars.logic.impl.gen5.BlackWhite;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -34,7 +35,10 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
- * @author axpendix@hotmail.com
+ * @author axpendix
+ * @author wertercatt
+ * @author lithogen
+ * @author starg09
  */
 public enum DiamondPearl implements LogicCardInfo {
 
