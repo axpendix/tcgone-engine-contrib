@@ -2474,11 +2474,9 @@ public enum HolonPhantoms implements LogicCardInfo {
             return [[C] as Set]
           boolean cond1 = self.topPokemonCard.cardTypes.is(DELTA)
           if (cond1) {
-            owner.typeImagesOverride = [RAINBOW]
             return [[R, D, F, G, W, Y, L, M, P, N] as Set]
           }
           else {
-            owner.typeImagesOverride = [C]
             return [[C] as Set]
           }
         }
