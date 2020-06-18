@@ -3581,13 +3581,13 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
 
           increasedDmgEff = delayed {
-            before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner) {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (bg.currentTurn == self.owner && ef.attacker = self && self.active) {
                 def flag = opp.active.types.any {type ->
                   activeWeakness.contains(type)
                 }
                 bg.dm().each {
-                  if (it.from == self && self.active && it.dmg.value && flag) {
+                  if (it.to.active && it.dmg.value && flag) {
                     bc "Adversity Gloves +30"
                     it.dmg += hp(30)
                   }
