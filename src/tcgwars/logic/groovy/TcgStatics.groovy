@@ -1151,7 +1151,7 @@ class TcgStatics {
 
   /**
    *
-   * Does a customized assert with a automated fail message.
+   * Does a customized assert with an automated fail warning.
    *
    * @param params Optional settings that can be added:
    *   + isType: if set, restricts to benched Pokémon of a single specific type.
@@ -1160,7 +1160,7 @@ class TcgStatics {
    *
    * @param c Additional condition the filtered benched Pokémon must follow. Defaults to true (so any benched Pokémon).
    *
-   * @param message Additional text to be put at the end of the assert fail warning. If repText is set to true in params, message will override the entirety of said warning.
+   * @param info Additional text to be put at the end of the assert fail warning. If repText is set to true in params, info will override the entirety of said warning.
    *
    */
   static void assertBench(params=[:], Closure c = null, String info = "") {
