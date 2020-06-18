@@ -1157,7 +1157,7 @@ class TcgStatics {
   //      + hasPokemonEX/hasPokemonGX/hasPokemonV: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
   //      + opp: If true, checks for the opponent's bench instead of "my" bench.
   //      + repText: If true, instead of adding cText at the end of the assert it'll be the only thing printed.
-  static void assertBench(params=[:], Closure c, String cText) {
+  static void assertBench(params=[:], Closure c = null, String cText = null) {
     def checkedBench = params.opp ? opp.bench : my.bench
 
     def hasPokeCnt = 0
@@ -1191,7 +1191,7 @@ class TcgStatics {
       }
     )
 
-    def failMessage = if (params.repText) { cText } else {
+    def failMessage = if (cText && params.repText) { cText } else {
       "You" + (params.opp ? "r opponent does" : " do") + "n't have any " + (
         param.isType ? params.isType.getShortNotation() + " " : ""
       ) + "Benched $pokeString" + () + (
@@ -1203,11 +1203,11 @@ class TcgStatics {
 
     assert checkedBench.any{benchFilter} : failMessage
   }
-  static void assertMyBench(params=[:], Closure c, String cText) {
+  static void assertMyBench(params=[:], Closure c = null, String cText = null) {
     params.opp = false
     assertBench(params, c, cText)
   }
-  static void assertOppBench(params=[:], Closure c, String cText) {
+  static void assertOppBench(params=[:], Closure c = null, String cText = null) {
     params.opp = true
     assertBench(params, c, cText)
   }
