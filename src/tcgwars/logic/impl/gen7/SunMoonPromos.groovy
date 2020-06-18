@@ -3291,16 +3291,15 @@ public enum SunMoonPromos implements LogicCardInfo {
           move "Stone Age GX", {
             text "Put any number of Pokémon that evolve from Unidentified Fossil from your discard pile onto your Bench. (You can’t use more than 1 GX attack in a game.)"
             energyCost C
+            def babyFossils = { my.discard.findAll { it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil" } }
             attackRequirement {
               gxCheck()
-              assert my.discard.findAll { it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil" } : "No Pokémon that evolve from Unidentified Fossil in your discard pile."
+              assert babyFossils : "No Pokémon that evolve from Unidentified Fossil in your discard pile."
             }
             onAttack {
               gxPerform()
               def maxSpace = my.bench.freeBenchCount
-              discardPile.select(min:0, max: maxSpace, "Bench up to $maxSpace card(s) from the discard that evolve from Unidentified Fossil.", {
-                  it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil"
-                }).each{
+              babyFossils().select(min:0, max: maxSpace, "Bench up to $maxSpace card(s) from the discard that evolve from Unidentified Fossil.", babyFossils).each{
                   my.discard.remove(it);
                   benchPCS(it)
               }
