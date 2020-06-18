@@ -3155,27 +3155,18 @@ public enum UltraPrism implements LogicCardInfo {
           text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\n" +
             "This card provides [C] Energy.\n" +
             "While this card is attached to a Stage 2 Pokémon, it provides every type of Energy but provides only 1 Energy at a time. If you have 3 or more Stage 2 Pokémon in play, it provides every type of Energy but provides 4 Energy at a time."
+          def cond1 = {self && self.topPokemonCard.cardTypes.is(STAGE2)}
+          def cond2 = {self.owner.pbg.all.findAll{it.topPokemonCard.cardTypes.is(STAGE2)}.size() >= 3}
+          typeImagesOverride = (cond1() && cond2()) ? [RAINBOW, RAINBOW, RAINBOW] : cond1() ? [RAINBOW] : [C]
           onPlay {reason->
           }
           onRemoveFromPlay {
           }
           getEnergyTypesOverride {
-            if(!self || !self.topPokemonCard)
-              return [[C] as Set]
-            boolean cond1 = self.topPokemonCard.cardTypes.is(STAGE2)
-            boolean cond2 = self.owner.pbg.all.findAll{it.topPokemonCard.cardTypes.is(STAGE2)}.size() >= 3
-            if(cond1 && cond2) {
-              owner.typeImagesOverride = [RAINBOW, RAINBOW, RAINBOW]
+            if(cond1() && cond2()) 
               return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
-            }
-            else if(cond1) {
-              owner.typeImagesOverride = [RAINBOW]
-              return [[R, D, F, G, W, Y, L, M, P] as Set]
-            }
-            else {
-              owner.typeImagesOverride = [C]
-              return [[C] as Set]
-            }
+            else if(cond1()) return [[R, D, F, G, W, Y, L, M, P] as Set]
+            else return [[C] as Set]
           }
 
         };
