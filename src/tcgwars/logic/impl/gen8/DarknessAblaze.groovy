@@ -3572,9 +3572,33 @@ public enum DarknessAblaze implements LogicCardInfo {
       case ADVERSITY_GLOVES_165:
       return pokemonTool (this) {
         text "If your opponent’s Active Pokémon is the same type as the Weakness of the Pokémon this card is attached to, the attacks of this Pokémon do 30 more damage to your opponent’s Active Pokémon."
+        def increasedDmgEff
+        def getActiveWeaknessEff
         onPlay {reason->
+          def activeWeakness
+          getActiveWeaknessEff = getter GET_WEAKNESSES, self, {h->
+            activeWeakness = h.object
+          }
+
+          increasedDmgEff = delayed {
+            before APPLY_ATTACK_DAMAGES, {
+              if (bg.currentTurn == self.owner) {
+                def flag = opp.active.types.any {type ->
+                  activeWeakness.contains(type)
+                }
+                bg.dm().each {
+                  if (it.from == self && self.active && it.dmg.value && flag) {
+                    bc "Adversity Gloves +30"
+                    it.dmg += hp(30)
+                  }
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
+          increasedDmgEff.unregister()
+          getActiveWeaknessEff.unregister()
         }
         allowAttach {to->
         }
