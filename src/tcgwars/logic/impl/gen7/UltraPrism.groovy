@@ -3165,15 +3165,12 @@ public enum UltraPrism implements LogicCardInfo {
             boolean cond1 = self.topPokemonCard.cardTypes.is(STAGE2)
             boolean cond2 = self.owner.pbg.all.findAll{it.topPokemonCard.cardTypes.is(STAGE2)}.size() >= 3
             if(cond1 && cond2) {
-              owner.typeImagesOverride = [RAINBOW, RAINBOW, RAINBOW]
               return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
             }
             else if(cond1) {
-              owner.typeImagesOverride = [RAINBOW]
               return [[R, D, F, G, W, Y, L, M, P] as Set]
             }
             else {
-              owner.typeImagesOverride = [C]
               return [[C] as Set]
             }
           }
