@@ -1154,24 +1154,24 @@ class TcgStatics {
   //    - If a closure is given, it'll check for any "it" element in bench returning true.
   //    - Optional params:
   //      + type: if set, restricts to benched Pokémon of a single specific type.
-  //      + isEX/isGX/isV: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
+  //      + hasPokemonEX/hasPokemonGX/hasPokemonV: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
   //      + opp: If true, checks for the opponent's bench instead of "my" bench.
   //      + repText: If true, instead of adding cText at the end of the assert it'll be the only thing printed.
   static void assertBench(params=[:], Closure c, String cText) {
     def checkedBench = params.opp ? opp.bench : my.bench
 
-    def isPokeCnt = 0
-    [params.isEX, params.isGX, params.isV].each{isPokeCnt += 1}
+    def hasPokeCnt = 0
+    [params.hasPokemonEX, params.hasPokemonGX, params.hasPokemonV].each{hasPokeCnt += 1}
 
     def benchFilter = (
       if (c == null) { true } else {
         (
           if (params.type) {it.types.contains(params.type)} else {true}
         ) && (
-          if (!isPokeCnt) {true} else {
-            (params.isEX && it.pokemonEX) ||
-            (params.isGX && it.pokemonGX) ||
-            (params.isV && it.pokemonV)
+          if (!hasPokeCnt) {true} else {
+            (params.hasPokemonEX && it.pokemonEX) ||
+            (params.hasPokemonGX && it.pokemonGX) ||
+            (params.hasPokemonV && it.pokemonV)
           }
         ) && (
           c(it)
@@ -1180,10 +1180,10 @@ class TcgStatics {
     )
 
     def pokeString = "Pokémon"
-    if (isPokeCnt) (
+    if (hasPokeCnt) (
       pokeString = ""
       i = 1
-      [(params.isEX, "Pokémon-EX"), (params.isGX, "Pokémon-GX"), (params.isV, "Pokémon V")].each{
+      [(params.hasPokemonEX, "Pokémon-EX"), (params.hasPokemonGX, "Pokémon-GX"), (params.hasPokemonV, "Pokémon V")].each{
         if (it[0]) {
           pokeString += it[1] + (if (i == isPokeCnt) "" else if (i == isPokeCnt-1) " or " else ", ")
           i += 1
