@@ -1201,7 +1201,7 @@ class TcgStatics {
       )
     }
 
-    assert benchFilter : failMessage
+    assert checkedBench.any{benchFilter} : failMessage
   }
   static void assertMyBench(params=[:], Closure c, String cText) {
     params.opp = false
