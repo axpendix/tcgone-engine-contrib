@@ -1598,7 +1598,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           delayedA {
             def flag
             before PLAY_ENERGY, {
-              flag = bg.currentTurn == self.opposite && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)
+              flag = bg.currentTurn == self.owner.opposite && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)
             }
             after ATTACH_ENERGY, {
               if (flag) {
