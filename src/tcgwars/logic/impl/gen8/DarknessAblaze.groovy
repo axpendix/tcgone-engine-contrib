@@ -1603,7 +1603,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             after ATTACH_ENERGY, {
               if (flag) {
                 bc "Numbing Vortext - $ef.resolvedTarget.name receives 2 damage counters."
-                directDamage 20, ef.resolvedTarget
+                directDamage 20, ef.resolvedTarget, SRC_ABILITY
                 flag = false
               }
             }
