@@ -2126,7 +2126,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 250
             afterDamage{
-              my.deck.subList(0, 5).discard()
+              if(my.deck){
+                my.deck.subList(0, 5).discard()
+              }
             }
           }
         }
@@ -2135,13 +2137,13 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness G
         move "Sand Impulse", {
-          text "10+ damage. This attack does 10 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance.)"
+          text "10+ damage. If there is any Stadium card in play, this attack does 10 more damage."
           energyCost F
           attackRequirement {}
           onAttack {
             damage 10
-            opp.bench.each{
-              damage 10, it
+            if (bg.stadiumInfoStruct) {
+              damage 10
             }
           }
         }
@@ -2326,10 +2328,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Call for Family", {
           text "Search your deck for up to 2 Basic Pokémon and put them on your Bench. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
-          onAttack {
-            callForFamily(basic:true,2,delegate)
-          }
+          callForFamily(basic:true,2,delegate)
         }
         move "Rock Hurl", {
           text "70 damage. This attack’s damage isn’t affected by Resistance."
