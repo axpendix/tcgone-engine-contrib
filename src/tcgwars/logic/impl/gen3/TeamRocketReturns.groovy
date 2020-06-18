@@ -802,6 +802,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             delayedA {
               before BETWEEN_TURNS, {
                 if (self.active) {
+                  bc "Sand Damage activates"
                   self.owner.opposite.pbg.bench.each{
                     if(!it.evolution) directDamage 10, it, SRC_ABILITY
                   }
