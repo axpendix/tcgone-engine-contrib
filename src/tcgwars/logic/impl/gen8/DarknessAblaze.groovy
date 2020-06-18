@@ -2152,13 +2152,13 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Trapinch", hp:HP080, type:F, retreatCost:1) {
         weakness G
         move "Land's Impulse", {
-          text "20 damage. If there is any Stadium card in play, this attack does 10 more damage."
+          text "20 damage. This attack does 10 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance.)"
           energyCost F
           attackRequirement {}
           onAttack {
             damage 20
-            if (bg.stadiumInfoStruct) {
-              damage 10
+            opp.bench.each{
+              damage 10, it
             }
           }
         }
