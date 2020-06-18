@@ -3294,7 +3294,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             def babyFossils = { my.discard.findAll { it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil" } }
             attackRequirement {
               gxCheck()
-              assert babyFossils : "No Pokémon that evolve from Unidentified Fossil in your discard pile."
+              assert babyFossils() : "No Pokémon that evolve from Unidentified Fossil in your discard pile."
             }
             onAttack {
               gxPerform()
