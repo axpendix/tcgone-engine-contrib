@@ -3350,10 +3350,14 @@ public enum UltraPrism implements LogicCardInfo {
         return copy (GLACEON_GX_39, this);
       case XURKITREE_GX_160:
         return copy (XURKITREE_GX_142, this);
+      case DAWN_WINGS_NECROZMA_GX_161:
+        return copy (DAWN_WINGS_NECROZMA_GX_63, this)
       case CELESTEELA_GX_162:
         return copy (CELESTEELA_GX_144, this);
       case DUSK_MANE_NECROZMA_GX_163:
         return copy (DUSK_MANE_NECROZMA_GX_90, this);
+      case DIALGA_GX_164:
+        return copy (DIALGA_GX_100, this);
       case PALKIA_GX_165:
         return copy (PALKIA_GX_101, this);
       case CRUSHING_HAMMER_166:
