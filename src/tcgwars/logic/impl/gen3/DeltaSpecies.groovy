@@ -215,8 +215,8 @@ public enum DeltaSpecies implements LogicCardInfo {
           actionA {
             checkNoSPC()
             def tar = opp.active
-            apply PARALYZED, tar
-            apply POISONED, tar
+            apply PARALYZED, tar, SRC_ABILITY
+            apply POISONED, tar, SRC_ABILITY
             extraPoison 1
             new Knockout(self).run(bg)
           }
@@ -3098,8 +3098,8 @@ public enum DeltaSpecies implements LogicCardInfo {
           onActivate {r->
             if (r==PLAY_FROM_HAND && my.deck && confirm("Use Evolutionary Flame?")) {
               powerUsed()
-              apply BURNED, opp.active
-              apply CONFUSED, opp.active
+              apply BURNED, opp.active, SRC_ABILITY
+              apply CONFUSED, opp.active, SRC_ABILITY
             }
           }
         }
