@@ -2006,6 +2006,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip{
+              preventAllEffectsNextTurn()
+            }
           }
         }
         move "Mud Bomb", {
@@ -2090,6 +2093,13 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            afterDamage{
+              def tar = my.deck.search("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && it.predecessor == self.name})
+              if(tar){
+                evolve(self, tar.first(), OTHER)
+              }
+              shuffleDeck()
+            }
           }
         }
       };
@@ -2102,6 +2112,11 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
+            afterDamage{
+              if (bg.stadiumInfoStruct) {
+                discard bg.stadiumInfoStruct.stadiumCard
+              }
+            }
           }
         }
         move "Mountain Swing", {
@@ -2110,6 +2125,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 250
+            afterDamage{
+              my.deck.subList(0, 5).discard()
+            }
           }
         }
       };
@@ -2122,6 +2140,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            opp.bench.each{
+              damage 10, it
+            }
           }
         }
       };
@@ -2134,6 +2155,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            if (bg.stadiumInfoStruct) {
+              damage 10
+            }
           }
         }
       };
@@ -2142,7 +2166,13 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness G
         bwAbility "Sand Maze", {
           text "If this Pokémon is your Active Pokémon, your opponent’s Active Pokémon can’t Retreat."
-          actionA {
+          delayedA {
+            before RETREAT, {
+              if(ef.retreater.owner==self.owner.opposite && self.active){
+                wcu "Sand Maze prevents retreating"
+                prevent()
+              }
+            }
           }
         }
         move "Desert Geizer", {
@@ -2151,6 +2181,12 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 130
+            afterDamage{
+              if (bg.stadiumInfoStruct.stadiumCard.player != self.owner) {
+                discard bg.stadiumInfoStruct.stadiumCard
+                preventAllEffectsNextTurn()
+              }
+            }
           }
         }
       };
@@ -2159,7 +2195,10 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness G
         bwAbility "Resist Shade", {
           text "If you have Lunatone in play, your opponent’s Pokémon have no Resistance."
-          actionA {
+          getterA (GET_RESISTANCES) {h->
+            if(h.effect.target.owner == self.owner.opposite && my.all.find({it.name == "Lunatone"})) {
+              h.object.clear()
+            }
           }
         }
         move "Rock Throw", {
@@ -2188,6 +2227,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            flip 2, {
+              damage 30
+            }
           }
         }
       };
@@ -2199,7 +2241,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost F, F, C
           attackRequirement {}
           onAttack {
-            damage 80
+            flip 3, {
+              damage 80
+            }
           }
         }
         move "Land Crush", {
@@ -2220,6 +2264,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
+            afterDamage{
+              discardDefendingEnergy()
+            }
           }
         }
         move "Heavy Rock Cannon", {
@@ -2228,6 +2275,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 210
+            cantUseAttack(thisMove, self)
           }
         }
       };
@@ -2268,6 +2316,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 130
+            discardSelfEnergy F
           }
         }
       };
@@ -2279,7 +2328,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            callForFamily(basic:true,2,delegate)
           }
         }
         move "Rock Hurl", {
@@ -2288,6 +2337,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            dontApplyResistance()
           }
         }
       };
