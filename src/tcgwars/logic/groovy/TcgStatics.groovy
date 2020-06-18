@@ -1149,17 +1149,21 @@ class TcgStatics {
 
   /* General checks for attacks and abilities */
 
-  //  * assertBench
-  //    - Can be used with no arguments, or with a condition and additional text included.
-  //    - If a closure is given, it'll check for any "it" element in bench returning true.
-  //    - Optional params:
-  //      + isType: if set, restricts to benched Pokémon of a single specific type.
-  //      + hasPokemonEX/hasPokemonGX/hasPokemonV: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
-  //      + opp: If true, checks for the opponent's bench instead of "my" bench.
-  //      + repText: If true, cText will override the entire fail message instead of being added at the end.
-
-  
-  static void assertBench(params=[:], Closure c = null, String failMessage = "") {
+  /**
+   *
+   * Does a customized assert with a automated fail message.
+   *
+   * @param params Optional settings that can be added:
+   *   + isType: if set, restricts to benched Pokémon of a single specific type.
+   *   + hasPokemonEX/hasPokemonGX/hasPokemonV: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
+   *   + opp: If true, checks for the opponent's bench instead of "my" bench.
+   *
+   * @param c Additional condition the filtered benched Pokémon must follow. Defaults to true (so any benched Pokémon).
+   *
+   * @param message Additional text to be put at the end of the assert fail warning. If repText is set to true in params, message will override the entirety of said warning.
+   *
+   */
+  static void assertBench(params=[:], Closure c = null, String message = "") {
     def checkedBench = params.opp ? opp.bench : my.bench
 
     def hasPokeCnt = 0
@@ -1200,15 +1204,15 @@ class TcgStatics {
     )
 
 
-    if (!params.repText) failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any Benched $pokeString that ${!failMessage.equals("") ? failMessage : "follow the stated condition(s)"}"
+    if (!params.repText) message = "${params.opp ? "Your opponent doesn't" : "You don't"} have any Benched $pokeString that ${!message.equals("") ? message : "follow the stated condition(s)"}"
 
-    assert checkedBench.any{benchFilter} : failMessage
+    assert checkedBench.any{benchFilter} : message
   }
-  static void assertMyBench(params=[:], Closure c = null, String failMessage = "") {
+  static void assertMyBench(params=[:], Closure c = null, String message = "") {
     params.opp = false
     assertBench(params, c, cText)
   }
-  static void assertOppBench(params=[:], Closure c = null, String failMessage = "") {
+  static void assertOppBench(params=[:], Closure c = null, String message = "") {
     params.opp = true
     assertBench(params, c, cText)
   }
