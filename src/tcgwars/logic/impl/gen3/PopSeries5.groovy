@@ -123,12 +123,12 @@ public enum PopSeries5 implements LogicCardInfo {
           }
         }
         move "Fire Blast", {
-          text "60 damage. Discard a Energy attached to Ho-oh."
+          text "60 damage. Discard a [R] Energy attached to Ho-oh."
           energyCost R, R, R, C
           attackRequirement {}
           onAttack {
             damage 60
-            discardSelfEnergy(C)
+            discardSelfEnergy(R)
           }
         }
       };
@@ -248,12 +248,12 @@ public enum PopSeries5 implements LogicCardInfo {
           }
         }
         move "Heavy Metal", {
-          text "10+ damage. Flip a coin for each Energy attached to Pikachu. This attack does 10 damage plus 20 more damage for each heads."
+          text "10+ damage. Flip a coin for each [M] Energy attached to Pikachu. This attack does 10 damage plus 20 more damage for each heads."
           energyCost C, C
           attackRequirement {}
           onAttack {
             damage 10
-            flip self.cards.energyCount(C), {
+            flip self.cards.energyCount(M), {
               damage 20
             }
           }
@@ -313,7 +313,7 @@ public enum PopSeries5 implements LogicCardInfo {
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness P
         pokePower "Purple Ray", {
-          text "Once during your turn, when you put Espeon * from your hand onto your Bench, you may use this power. Each Active Pokémon (both yours and your opponent's) is now Confused."
+          text "Once during your turn, when you put Espeon Star from your hand onto your Bench, you may use this power. Each Active Pokémon (both yours and your opponent's) is now Confused."
           onActivate {
             if (it==PLAY_FROM_HAND && opp.hand && confirm("Use Purple Ray?")) {
               powerUsed()
@@ -337,7 +337,7 @@ public enum PopSeries5 implements LogicCardInfo {
         weakness F
         resistance P, MINUS30
         pokePower "Dark Ray", {
-          text "Once during your turn, when you put Umbreon * from your hand onto your Bench, you may choose 1 card from your opponent's hand without looking and discard it."
+          text "Once during your turn, when you put Umbreon Star from your hand onto your Bench, you may choose 1 card from your opponent's hand without looking and discard it."
           onActivate {
             if (it==PLAY_FROM_HAND && opp.hand && confirm("Use Dark Ray?")) {
               powerUsed()
