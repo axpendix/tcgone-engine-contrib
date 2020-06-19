@@ -1189,7 +1189,7 @@ class TcgStatics {
     if (params.info + !params.repText) {
       failMessage = params.info
     } else {
-      def typeString = param.hasType ? " ${params.hasType.getShortNotation()}" : ""
+      def typeString = param.hasType ? " ${params.hasType}" : ""
 
       def pokeString = "${typeString}Pokémon"
       if (hasPokeCnt) (
