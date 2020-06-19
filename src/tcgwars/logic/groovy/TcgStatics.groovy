@@ -1210,7 +1210,7 @@ class TcgStatics {
       failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any Benched $pokeString that ${params.info ? params.info : "follow the stated condition(s)"}"
     }
 
-    assert checkedBench.any{benchFilter} : failMessage
+    assert checkedBench.any(benchFilter) : failMessage
   }
   static void assertMyBench(params=[:], Closure filter = null) {
     params.opp = false
