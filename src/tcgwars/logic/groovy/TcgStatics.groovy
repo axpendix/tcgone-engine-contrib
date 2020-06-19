@@ -1220,12 +1220,12 @@ class TcgStatics {
     assert checkedArea.any(areaFilter) : failMessage
   }
 
-  static void assertMyPokemon(params=[:], Closure filter = null) {
+  static void assertMyAll(params=[:], Closure filter = null) {
     params.benched = false
     params.opp = false
     assertAnyPokemonInPlay(params, filter)
   }
-  static void assertOppPokemon(params=[:], Closure filter = null) {
+  static void assertOppAll(params=[:], Closure filter = null) {
     params.benched = false
     params.opp = true
     assertAnyPokemonInPlay(params, filter)
