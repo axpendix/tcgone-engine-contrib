@@ -2580,6 +2580,7 @@ public enum Deoxys implements LogicCardInfo {
                 h.object=true
               }
             }
+            new CheckAbilities().run(bg)
           }
           onRemoveFromPlay{
             eff1.unregister()
