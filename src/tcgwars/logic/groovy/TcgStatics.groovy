@@ -1157,13 +1157,13 @@ class TcgStatics {
    *   + hasType: If set, restricts to benched Pokémon of a single specific type.
    *   + hasPokemonEX/hasPokemonGX/hasPokemonV: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
    *   + opp: If true, checks for the opponent's bench instead of "my" bench.
+   *   + info: If set, it'll replace the end of the failed assert warning with a custom text, instead of the default "follow the stated condition(s)".
+   *   + repText: If true, params.info will override the entirety of the failed assert warning.
    *
    * @param c Additional condition the filtered benched Pokémon must follow. Defaults to true (so any benched Pokémon).
    *
-   * @param info Additional text to be put at the end of the assert fail warning. If repText is set to true in params, info will override the entirety of said warning.
-   *
    */
-  static void assertBench(params=[:], Closure c = null, String info = "") {
+  static void assertBench(params=[:], Closure c = null) {
     def failMessage
     def checkedBench = params.opp ? opp.bench : my.bench
 
@@ -1186,8 +1186,8 @@ class TcgStatics {
       }
     )
 
-    if (!params.repText) {
-      failMessage = info
+    if (params.info + !params.repText) {
+      failMessage = params.info
     } else {
       def typeString = param.hasType ? " ${params.hasType.getShortNotation()}" : ""
 
@@ -1207,16 +1207,16 @@ class TcgStatics {
         }
       )
 
-      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any Benched $pokeString that ${!info.equals("") ? info : "follow the stated condition(s)"}"
+      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any Benched $pokeString that ${params.info ? params.info : "follow the stated condition(s)"}"
     }
 
     assert checkedBench.any{benchFilter} : failMessage
   }
-  static void assertMyBench(params=[:], Closure c = null, String info = "") {
+  static void assertMyBench(params=[:], Closure c = null) {
     params.opp = false
     assertBench(params, c, cText)
   }
-  static void assertOppBench(params=[:], Closure c = null, String info = "") {
+  static void assertOppBench(params=[:], Closure c = null) {
     params.opp = true
     assertBench(params, c, cText)
   }
