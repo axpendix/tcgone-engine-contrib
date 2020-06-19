@@ -1193,8 +1193,7 @@ class TcgStatics {
       def benchedString = (param.benched ? "Benched " : "")
       def typeString = (param.hasType ? "${params.hasType} " : "")
 
-      def pokeString = benchedString + typeString
-
+      def pokeString = ""
       if (hasPokeCnt) {
         i = 1
         [
@@ -1212,7 +1211,7 @@ class TcgStatics {
         pokeString += "Pokémon"
       }
 
-      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any $pokeString that ${params.info ? params.info : "follow the stated condition(s)"}"
+      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any ${benchString}${typeString}${pokeString} that ${params.info ? params.info : "follow the stated condition(s)"}"
     }
 
     assert checkedArea.any(areaFilter) : failMessage
