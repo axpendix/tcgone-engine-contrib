@@ -2113,6 +2113,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             powerUsed()
             def eligible = my.all.findAll { it.name == "Latias" || it.name == "Latias ex" || it.name == "Latios" || it.name == "Latios ex"}
             attachEnergyFrom(basic:true, my.hand, eligible.select("Attach to"))
+            bg.gm().betweenTurns()
           }
         }
         move "Power Crush", {
