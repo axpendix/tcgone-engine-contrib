@@ -2570,11 +2570,6 @@ public enum LegendMaker implements LogicCardInfo {
                     heal 10, self
                   }
                 }
-                before TAKE_PRIZE, {
-                  if (ef.pcs==self) {
-                    prevent()
-                  }
-                }
               }
             }
             customAbility {
@@ -2591,6 +2586,11 @@ public enum LegendMaker implements LogicCardInfo {
                     def pcs=e.getTarget(bg)
                     if(pcs==self){
                       bc "Root Fossil is unaffected by Special Conditions"
+                      prevent()
+                    }
+                  }
+                  before TAKE_PRIZE, {
+                    if (ef.pcs==self) {
                       prevent()
                     }
                   }
