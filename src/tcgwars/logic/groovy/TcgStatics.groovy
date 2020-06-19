@@ -1151,21 +1151,23 @@ class TcgStatics {
 
   /**
    *
-   * Does a customized assert with an automated fail warning.
+   * Does a customized assert with an automated fail warning, looking for any Pokémon following the given filters.
    *
    * @param params Optional settings that can be added:
+   *   + benched: If true, checks for only Benched Pokémon; otherwise also includes the Active.
+   *   + opp: If true, checks for the opponent's bench instead of "my" bench.
    *   + hasType: If set, restricts to benched Pokémon of a single specific type.
    *   + hasPokemonEX/hasPokemonGX/hasPokemonV: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
-   *   + opp: If true, checks for the opponent's bench instead of "my" bench.
    *   + info: If set, it'll replace the end of the failed assert warning with a custom text, instead of the default "follow the stated condition(s)".
    *   + repText: If true, params.info will override the entirety of the failed assert warning.
    *
-   * @param c Additional condition the filtered benched Pokémon must follow. Defaults to true (so any benched Pokémon).
+   * @param filter Additional condition the filtered benched Pokémon must follow. Defaults to true (so any Pokémon).
    *
    */
-  static void assertBench(params=[:], Closure filter = null) {
+  static void assertAnyPokemonInPlay(params=[:], Closure filter = null) {
     def failMessage
-    def checkedBench = params.opp ? opp.bench : my.bench
+    def checkedPlayer = params.opp ? opp : my
+    def checkedArea = params.benched ? checkedPlayer.benched : checkedPlayer.all
 
     def hasPokeCnt = 0
     [params.hasPokemonEX, params.hasPokemonGX, params.hasPokemonV].each{hasPokeCnt += 1}
@@ -1189,11 +1191,12 @@ class TcgStatics {
     if (params.info + !params.repText) {
       failMessage = params.info
     } else {
-      def typeString = param.hasType ? " ${params.hasType}" : ""
+      def benchedString = (param.benched ? "Benched " : "")
+      def typeString = (param.hasType ? "${params.hasType} " : "")
 
-      def pokeString = "${typeString}Pokémon"
-      if (hasPokeCnt) (
-        pokeString = "${typeString}"
+      def pokeString = benchedString + typeString
+
+      if (hasPokeCnt) {
         i = 1
         [
           (params.hasPokemonEX, "Pokémon-EX"),
@@ -1205,20 +1208,36 @@ class TcgStatics {
             i += 1
           }
         }
-      )
+      } else {
+        pokeString += "Pokémon"
+      }
 
-      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any Benched $pokeString that ${params.info ? params.info : "follow the stated condition(s)"}"
+      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any $pokeString that ${params.info ? params.info : "follow the stated condition(s)"}"
     }
 
-    assert checkedBench.any(benchFilter) : failMessage
+    assert checkedArea.any(benchFilter) : failMessage
   }
-  static void assertMyBench(params=[:], Closure filter = null) {
+
+  static void assertMyPokemon(params=[:], Closure filter = null) {
+    params.benched = false
     params.opp = false
-    assertBench(params, filter)
+    assertAnyPokemonInPlay(params, filter)
   }
-  static void assertOppBench(params=[:], Closure filter = null) {
+  static void assertOppPokemon(params=[:], Closure filter = null) {
+    params.benched = false
     params.opp = true
-    assertBench(params, filter)
+    assertAnyPokemonInPlay(params, filter)
+  }
+
+  static void assertMyBenched(params=[:], Closure filter = null) {
+    params.benched = true
+    params.opp = false
+    assertAnyPokemonInPlay(params, filter)
+  }
+  static void assertOppBenched(params=[:], Closure filter = null) {
+    params.benched = true
+    params.opp = true
+    assertAnyPokemonInPlay(params, filter)
   }
 
   static void cantBeHealed(PokemonCardSet defending){
