@@ -1163,7 +1163,7 @@ class TcgStatics {
    * @param c Additional condition the filtered benched Pokémon must follow. Defaults to true (so any benched Pokémon).
    *
    */
-  static void assertBench(params=[:], Closure c = null) {
+  static void assertBench(params=[:], Closure filter = null) {
     def failMessage
     def checkedBench = params.opp ? opp.bench : my.bench
 
@@ -1171,7 +1171,7 @@ class TcgStatics {
     [params.hasPokemonEX, params.hasPokemonGX, params.hasPokemonV].each{hasPokeCnt += 1}
 
     def benchFilter = (
-      if (c == null) { true } else {
+      if (filter == null) { true } else {
         (
           if (params.hasType) {it.types.contains(params.hasType)} else {true}
         ) && (
@@ -1181,7 +1181,7 @@ class TcgStatics {
             (params.hasPokemonV && it.pokemonV)
           }
         ) && (
-          c(it)
+          filter.call(it)
         )
       }
     )
@@ -1212,13 +1212,13 @@ class TcgStatics {
 
     assert checkedBench.any{benchFilter} : failMessage
   }
-  static void assertMyBench(params=[:], Closure c = null) {
+  static void assertMyBench(params=[:], Closure filter = null) {
     params.opp = false
-    assertBench(params, c)
+    assertBench(params, filter)
   }
-  static void assertOppBench(params=[:], Closure c = null) {
+  static void assertOppBench(params=[:], Closure filter = null) {
     params.opp = true
-    assertBench(params, c)
+    assertBench(params, filter)
   }
 
   static void cantBeHealed(PokemonCardSet defending){
