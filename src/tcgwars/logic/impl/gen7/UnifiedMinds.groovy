@@ -4406,7 +4406,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             heal 50, my.active
           }
           playRequirement{
-            assert my.active.topPokemonCard.cardTypes.is(POKEMON_GX) : "Your Active Pokémon is not a Pokémon-GX."
+            assert my.active.pokemonGX : "Your Active Pokémon is not a Pokémon-GX."
             assert my.active.numberOfDamageCounters : "Your Active Pokémon-GX has no damage."
           }
         };
