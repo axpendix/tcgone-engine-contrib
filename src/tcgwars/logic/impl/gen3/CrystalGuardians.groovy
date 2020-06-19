@@ -1963,7 +1963,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           eff1=delayed {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if (it.to == self && it.from.owner != self.owner && it.from.topPokemonCard.cardTypes.is(EX) && it.notZero && it.notNoEffect) {
+                if (it.to == self && it.from.owner != self.owner && it.from.EX && it.notZero && it.notNoEffect) {
                   it.dmg=hp(0)
                   bc "$name prevents damage"
                 }
@@ -1971,7 +1971,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
             before null, self, Source.ATTACK, {
               def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-              if (self.owner.opposite.pbg.active.topPokemonCard.cardTypes.is(EX) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs == self) {
+              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs == self) {
                 bc "$name prevents effect"
                 prevent()
               }
@@ -2313,14 +2313,14 @@ public enum CrystalGuardians implements LogicCardInfo {
           def eff1, eff2
           onActivate {
             eff1 = getter (IS_ABILITY_BLOCKED) { Holder h ->
-              if (h.effect.target.topPokemonCard.cardTypes.is(EX)) {
+              if (h.effect.target.EX) {
                 if (h.effect.ability instanceof PokePower) {
                   h.object=true
                 }
               }
             }
             eff2 = getter GET_MOVE_LIST, { h ->
-              if (h.effect.target.topPokemonCard.cardTypes.is(EX)) {
+              if (h.effect.target.EX) {
                 def list = []
                 for (move in h.object) {
                   def copy = move.shallowCopy()

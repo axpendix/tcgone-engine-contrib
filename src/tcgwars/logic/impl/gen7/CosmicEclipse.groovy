@@ -4458,6 +4458,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               eff.unregister()
               thisCard.player.opposite.pbg.triggerBenchSizeCheck()
               thisCard.player.pbg.triggerBenchSizeCheck()
+              new CheckAbilities().run(bg)
 
             }
           }

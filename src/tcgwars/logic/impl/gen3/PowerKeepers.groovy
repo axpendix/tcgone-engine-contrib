@@ -826,7 +826,7 @@ public enum PowerKeepers implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to == self && it.from.topPokemonCard.cardTypes.is(EX)) {
+                if (it.to == self && it.from.EX) {
                   if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Phoebe's Stadium") {
                     bc "Synergy Effect prevents all damage"
                     it.dmg=hp(0)
