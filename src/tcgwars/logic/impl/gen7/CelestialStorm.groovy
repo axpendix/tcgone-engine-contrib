@@ -1571,6 +1571,11 @@ public enum CelestialStorm implements LogicCardInfo {
                 h.object=true
               }
             }
+            delayedA {
+              after PLAY_CARD, {
+                new CheckAbilities().run(bg)
+              }
+            }
             onActivate {
               new CheckAbilities().run(bg)
             }
