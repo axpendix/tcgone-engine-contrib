@@ -2199,7 +2199,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return supporter (this) {
           text "If you have any cards in your hand, shuffle 1 of them into your deck, then draw 3 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            my.hand.getExcludedList(thisCard).select("card to shuffle into your deck").moveTo(my.deck)
+            my.hand.getExcludedList(thisCard).select("card to shuffle into your deck").moveTo(hidden: true, my.deck)
             shuffleDeck()
             draw 3
           }
@@ -2430,11 +2430,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           }
           getEnergyTypesOverride{
             if(self == null || self.cards.filterByType(SPECIAL_ENERGY).size() > 1) {
-              owner.typeImagesOverride = [C]
               return [[C] as Set]
             }
             else {
-              owner.typeImagesOverride = [RAINBOW]
               return [[R, D, F, G, W, Y, L, M, P] as Set]
             }
           }
@@ -2445,14 +2443,14 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           pokePower "Energy Rain", {
             text "As often as you like during your turn (before your attack), you may attach a [W] Energy card from your hand to 1 of your Pokémon. Put 1 damage counter on that Pokémon. This power can’t be used if Blastoise ex is affected by a Special Condition."
             actionA {
-              checkNoSPC()
-              assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W) : "You have no [W] Energy card in your hand"
-
-              def pcs = my.all.select()
-              attachEnergyFrom(type:W,my.hand,pcs)
-              pcs.damage += hp(10)
-
-            }
+            checkNoSPC()
+            assert my.hand.filterByBasicEnergyType(W) : "No [W] in hand"
+            powerUsed()
+            def card = my.hand.filterByBasicEnergyType(W).first()
+            def tar = my.all.select("To?")
+            attachEnergy(tar, card)
+            directDamage 10, tar, SRC_ABILITY
+          }
           }
           move "Hyper Whirlpool", {
             text "80 damage. Flip a coin until you get tails. For each heads, your opponent discards an Energy card attached to the Defending Pokémon."
@@ -2535,11 +2533,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               new Knockout(self).run(bg)
-              attachEnergyFrom(may : true,my.discard, my.all.findAll{!it.topPokemonCard.cardTypes.is(EX)})
-              attachEnergyFrom(may : true,my.discard, my.all.findAll{!it.topPokemonCard.cardTypes.is(EX)})
-              attachEnergyFrom(may : true,my.discard, my.all.findAll{!it.topPokemonCard.cardTypes.is(EX)})
-              attachEnergyFrom(may : true,my.discard, my.all.findAll{!it.topPokemonCard.cardTypes.is(EX)})
-              attachEnergyFrom(may : true,my.discard, my.all.findAll{!it.topPokemonCard.cardTypes.is(EX)})
+              5.times{ attachEnergyFrom(may : true,my.discard, my.all.findAll{!it.EX}) }
             }
           }
           move "Crush and Burn", {

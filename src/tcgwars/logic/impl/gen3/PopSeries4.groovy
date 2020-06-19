@@ -1,4 +1,9 @@
-package tcgwars.logic.impl.gen;
+package tcgwars.logic.impl.gen3;
+
+import tcgwars.logic.impl.gen3.Emerald;
+import tcgwars.logic.impl.gen3.Deoxys;
+import tcgwars.logic.impl.gen3.CrystalGuardians;
+import tcgwars.logic.impl.gen6.Flashfire;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -32,25 +37,25 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
- * @author axpendix@hotmail.com
+ * @author lithogenn@gmail.com
  */
 public enum PopSeries4 implements LogicCardInfo {
 
-  CHIMECHO_DELTA_SPECIES__1 ("Chimecho (Delta Species)", 1, Rarity.RARE, [POKEMON, BASIC, _METAL_]),
-  DEOXYS_Δ_2 ("Deoxys δ", 2, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
+  CHIMECHO_DELTA_1 ("Chimecho", 1, Rarity.RARE, [POKEMON, BASIC, DELTA, _METAL_]),
+  DEOXYS_DELTA_2 ("Deoxys", 2, Rarity.RARE, [POKEMON, BASIC, DELTA, _COLORLESS_]),
   FLYGON_3 ("Flygon", 3, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
   MEW_4 ("Mew", 4, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
   SCEPTILE_5 ("Sceptile", 5, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   COMBUSKEN_6 ("Combusken", 6, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   GROVYLE_7 ("Grovyle", 7, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   HEAL_ENERGY_8 ("Heal Energy", 8, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  POKEMON_FAN_CLUB_9 ("Pokémon Fan Club", 9, Rarity.UNCOMMON, [TRAINER]),
+  POKEMON_FAN_CLUB_9 ("Pokémon Fan Club", 9, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   SCRAMBLE_ENERGY_10 ("Scramble Energy", 10, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
   MUDKIP_11 ("Mudkip", 11, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
   PIDGEY_12 ("Pidgey", 12, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   PIKACHU_13 ("Pikachu", 13, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   SQUIRTLE_14 ("Squirtle", 14, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
-  TREECKO_DELTA_SPECIES__15 ("Treecko (Delta Species)", 15, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
+  TREECKO_DELTA_15 ("Treecko", 15, Rarity.COMMON, [POKEMON, BASIC, DELTA, _PSYCHIC_]),
   WOBBUFFET_16 ("Wobbuffet", 16, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   DEOXYS_EX_17 ("Deoxys ex", 17, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
 
@@ -106,7 +111,7 @@ public enum PopSeries4 implements LogicCardInfo {
   @Override
   public Card getImplementation() {
     switch (this) {
-      case CHIMECHO_DELTA_SPECIES__1:
+      case CHIMECHO_DELTA_1:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness P
         move "Wrap", {
@@ -114,7 +119,7 @@ public enum PopSeries4 implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip { apply PARALYZED }
           }
         }
         move "Sonicboom", {
@@ -122,37 +127,25 @@ public enum PopSeries4 implements LogicCardInfo {
           energyCost M, C
           attackRequirement {}
           onAttack {
-            damage 30
+            noWrDamage(30, defending)
           }
         }
       };
-      case DEOXYS_Δ_2:
-      return basic (this, hp:HP070, type:C, retreatCost:1) {
-        weakness P
-        pokePower "Form Change", {
-          text "Once during your turn (before your attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
-          actionA {
-          }
-        }
-        move "Crystal Laser", {
-          text "20 damage. During your next turn, Deoxys's attacks do 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
-          energyCost C, C
-          attackRequirement {}
-          onAttack {
-            damage 20
-          }
-        }
-      };
+      case DEOXYS_DELTA_2:
+      return copy(HolonPhantoms.DEOXYS_DELTA_5, this);
       case FLYGON_3:
       return evolution (this, from:"Vibrava", hp:HP120, type:F, retreatCost:2) {
         weakness W
         pokeBody "Levitate", {
           text "As long as Flygon has any Energy attached to it, the Retreat Cost for Flygon is 0."
-          delayedA {
+          getterA (GET_RETREAT_COST, BEFORE_LAST,self) {h->
+            if (self.cards.energyCount(C)) {
+              h.object = 0
+            }
           }
         }
         move "Bite", {
-          text "30 damage. "
+          text "30 damage."
           energyCost F, C
           attackRequirement {}
           onAttack {
@@ -165,6 +158,7 @@ public enum PopSeries4 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+            cantRetreat defending
           }
         }
       };
@@ -174,6 +168,12 @@ public enum PopSeries4 implements LogicCardInfo {
         pokeBody "Reactive Barrier", {
           text "As long as Mew has any React Energy cards attached to it, prevent all effects, excluding damage, done to Mew by attacks from your opponent's Pokémon."
           delayedA {
+            before null, self, Source.ATTACK, {
+              if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.findAll { it.name.contains("React Energy") }) {
+                bc "Reactive Barrier prevented effect"
+                prevent()
+              }
+            }
           }
         }
         move "Psyshock", {
@@ -182,6 +182,7 @@ public enum PopSeries4 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { applyAfterDamage(PARALYZED) }
           }
         }
       };
@@ -192,6 +193,17 @@ public enum PopSeries4 implements LogicCardInfo {
         pokePower "Energy Trans", {
           text "As often as you like during your turn (before your attack), move a [G] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Sceptile is affected by a Special Condition."
           actionA {
+            checkNoSPC()
+            assert my.all.findAll {it.cards.energyCount(G)>0} : "There are no Pokémon with [G] Energy cards"
+            assert my.all.size()>=2 : "There is only one Pokémon on the field"
+
+            powerUsed()
+            def src=my.all.findAll {it.cards.energyCount(G)>0}.select("Source for [G]")
+            def card=src.cards.filterByEnergyType(G).select("Card to move").first()
+            def tar=my.all
+            tar.remove(src)
+            tar=tar.select("Target for [G]")
+            energySwitch(src, tar, card)
           }
         }
         move "Tail Rap", {
@@ -199,7 +211,7 @@ public enum PopSeries4 implements LogicCardInfo {
           energyCost G, C, C
           attackRequirement {}
           onAttack {
-            damage 50
+            flip 2, { damage 50 }
           }
         }
       };
@@ -212,6 +224,7 @@ public enum PopSeries4 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            sandAttack(thisMove)
           }
         }
         move "Sky Uppercut", {
@@ -220,6 +233,7 @@ public enum PopSeries4 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            dontApplyResistance()
           }
         }
       };
@@ -233,6 +247,7 @@ public enum PopSeries4 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 10 }
           }
         }
         move "Blot", {
@@ -241,41 +256,30 @@ public enum PopSeries4 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            heal 20, self
           }
         }
       };
       case HEAL_ENERGY_8:
-      return specialEnergy (this, [[C]]) {
-        text "Heal Energy provides Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter and all Special Conditions from that Pokémon. If Heal Energy is attached to Pokémon-ex, Heal Energy has no effect other than providing Energy."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(Deoxys.HEAL_ENERGY_94, this);
       case POKEMON_FAN_CLUB_9:
-      return basicTrainer (this) {
+      return supporter (this) {
         text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
         onPlay {
+          int count = bench.freeBenchCount>=2?2:1
+          deck.search (max: count, cardTypeFilter(BASIC)).each {
+            deck.remove(it)
+            benchPCS(it)
+          }
+          shuffleDeck()
         }
         playRequirement{
+          assert bench.notFull : "Bench is full"
+          assert deck.notEmpty : "Deck is empty"
         }
       };
       case SCRAMBLE_ENERGY_10:
-      return specialEnergy (this, [[C]]) {
-        text "Scramble Energy can be attached only to an Evolved Pokémon (excluding Pokémon-ex). Scramble Energy provides Energy. While in play, if you have more Prize cards left than your opponent, Scramble Energy provides every type of Energy but provides only 3 in any combination at a time. If the Pokémon Scramble Energy is attached to isn't an Evolved Pokémon (or evolves into Pokémon-ex), discard Scramble Energy."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy(Deoxys.SCRAMBLE_ENERGY_95, this);
       case MUDKIP_11:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness G
@@ -285,6 +289,7 @@ public enum PopSeries4 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            applyAfterDamage(ASLEEP)
           }
         }
       };
@@ -298,6 +303,7 @@ public enum PopSeries4 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { damage 10 }
           }
         }
       };
@@ -310,6 +316,9 @@ public enum PopSeries4 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            if (opp.bench) {
+              damage 10, opp.bench.select("Deal 10 damage to?")
+            }
           }
         }
       };
@@ -319,10 +328,18 @@ public enum PopSeries4 implements LogicCardInfo {
         pokeBody "Shell Retreat", {
           text "As long as Squirtle has any Energy cards attached to it, damage done to Squirtle by an opponent's attack is reduced by 10 (after applying Weakness and Resistance)."
           delayedA {
+            after APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to == self && self.cards.energyCount(C) && it.dmg.value && it.notNoEffect) {
+                  bc "Shell Retreat -10"
+                  it.dmg -= hp(10)
+                }
+              }
+            }
           }
         }
         move "Tackle", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -330,27 +347,8 @@ public enum PopSeries4 implements LogicCardInfo {
           }
         }
       };
-      case TREECKO_DELTA_SPECIES__15:
-      return basic (this, hp:HP040, type:P, retreatCost:1) {
-        weakness R
-        resistance W, MINUS30
-        move "Pound", {
-          text "10 damage. "
-          energyCost C
-          attackRequirement {}
-          onAttack {
-            damage 10
-          }
-        }
-        move "Shining Claws", {
-          text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
-          energyCost P
-          attackRequirement {}
-          onAttack {
-            damage 10
-          }
-        }
-      };
+      case TREECKO_DELTA_15:
+        return copy (CrystalGuardians.TREECKO_DELTA_68, this);
       case WOBBUFFET_16:
       return basic (this, hp:HP080, type:P, retreatCost:2) {
         weakness P
@@ -359,7 +357,7 @@ public enum PopSeries4 implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            heal 20, self
           }
         }
         move "Expand", {
@@ -368,26 +366,12 @@ public enum PopSeries4 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            reduceDamageNextTurn(hp(20), thisMove)
           }
         }
       };
       case DEOXYS_EX_17:
-      return basic (this, hp:HP110, type:P, retreatCost:1) {
-        weakness P
-        pokePower "Form Change", {
-          text "Once during your turn (before your attack), you may search your deck for another Deoxys ex and switch it with Deoxys ex. (Any cards attached to Deoxys ex, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys ex on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
-          actionA {
-          }
-        }
-        move "Fastwave", {
-          text "50 damage. This attack's damage isn't affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 50
-          }
-        }
-      };
+      return copy(Emerald.DEOXYS_EX_93, this);
         default:
       return null;
     }

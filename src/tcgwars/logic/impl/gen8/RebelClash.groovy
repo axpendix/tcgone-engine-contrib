@@ -2763,19 +2763,17 @@ public enum RebelClash implements LogicCardInfo {
         weakness F
         bwAbility "Neutralizing Gas", {
           text "As long as this Pokemon is in the Active Spot, your opponent's Pokemon in play have no Abilities, except for Neutralizing Gas."
-          def effect1
-          onActivate {
-            effect1 = getter IS_ABILITY_BLOCKED, { Holder h ->
-              if (self.active && h.effect.ability.name != "Neutralizing Gas" && h.effect.ability instanceof BwAbility && h.effect.target.owner != self.owner) {
-                targeted(h.effect.target, SRC_ABILITY) {
-                  h.object = true
-                }
+          getterA IS_ABILITY_BLOCKED, { Holder h ->
+            if (self.active && h.effect.ability.name != "Neutralizing Gas" && h.effect.ability instanceof BwAbility && h.effect.target.owner != self.owner) {
+              targeted(h.effect.target, SRC_ABILITY) {
+                h.object = true
               }
             }
+          }
+          onActivate {
             new CheckAbilities().run(bg)
           }
           onDeactivate {
-            effect1.unregister()
             new CheckAbilities().run(bg)
           }
         }
@@ -3834,7 +3832,7 @@ public enum RebelClash implements LogicCardInfo {
       return itemCard (this) {
         text "Put 1 of your Pokemon (excluding Pokemon V/GX) into your hand. (Discard all cards attached to that Pokemon.) You may play as many Item cards during your turn as you like (before your attack). (Note -  The term “Pokemon V” includes both Pokemon V and Pokemon VMAX.)"
         onPlay {
-          def validTargets = my.all.findAll { !it.topPokemonCard.cardTypes.is(VMAX) && !it.topPokemonCard.cardTypes.is(POKEMON_V) && !it.topPokemonCard.cardTypes.is(POKEMON_GX) }
+          def validTargets = my.all.findAll { !it.topPokemonCard.cardTypes.is(VMAX) && !it.topPokemonCard.cardTypes.is(POKEMON_V) && !it.pokemonGX }
 
           def tar = validTargets.select("Which Pokémon to put back into your hand?")
           targeted(tar, Source.TRAINER_CARD) {
@@ -3846,7 +3844,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         playRequirement {
-          assert my.all.findAll { !it.topPokemonCard.cardTypes.is(VMAX) && !it.topPokemonCard.cardTypes.is(POKEMON_V) && !it.topPokemonCard.cardTypes.is(POKEMON_GX) } : "No eligible Pokemon on Bench"
+          assert my.all.findAll { !it.topPokemonCard.cardTypes.is(VMAX) && !it.topPokemonCard.cardTypes.is(POKEMON_V) && !it.pokemonGX } : "No eligible Pokemon on Bench"
         }
       };
       case SKYLA_166:
@@ -4025,7 +4023,7 @@ public enum RebelClash implements LogicCardInfo {
         onPlay {reason->
         }
         getEnergyTypesOverride {
-          if (self != null && !(self.topPokemonCard.cardTypes.is(POKEMON_V) || self.topPokemonCard.cardTypes.is(VMAX) || self.topPokemonCard.cardTypes.is(POKEMON_GX))) {
+          if (self != null && !(self.topPokemonCard.cardTypes.is(POKEMON_V) || self.topPokemonCard.cardTypes.is(VMAX) || self.pokemonGX)) {
             return [[C] as Set, [C] as Set]
           } else {
             return [[C] as Set]

@@ -1463,23 +1463,20 @@ public enum SunMoon implements LogicCardInfo {
           weakness PSYCHIC
           bwAbility "Power of Alchemy", {
             text "Each Basic Pokémon in play, in each player's hand, and in each player's discard pile has no Abilities."
-            def effect1, effect2
+            getterA (GET_ABILITIES, BEFORE_LAST) {h->
+              if (h.effect.target.basic) {
+                h.object.keySet().removeIf{it instanceof BwAbility}
+              }
+            }
+            getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+              if ((h.effect.target as Card).cardTypes.is(BASIC)) {
+                h.object=true
+              }
+            }
             onActivate {
-              effect1 = getter(GET_ABILITIES, BEFORE_LAST) {h->
-                if (h.effect.target.basic) {
-                  h.object.keySet().removeIf{it instanceof BwAbility}
-                }
-              }
-              effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-                if ((h.effect.target as Card).cardTypes.is(BASIC)) {
-                  h.object=true
-                }
-              }
               new CheckAbilities().run(bg)
             }
             onDeactivate {
-              effect1.unregister()
-              effect2.unregister()
               new CheckAbilities().run(bg)
             }
           }

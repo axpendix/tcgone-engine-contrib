@@ -449,6 +449,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Once during your turn (before your attack), you may remove 4 damage counters from Ninetales and discard Ninetales from Vulpix. If you do, search your deck for Ninetales or Ninetales ex and put it onto Vulpix (this counts as evolving Vulpix). Shuffle your deck afterward."
           actionA {
             checkLastTurn()
+            assert self.cards.any {it.name == "Vulpix"} : "You must be able to leave a Vulpix in play"
             powerUsed()
             heal 40, self
 
@@ -737,7 +738,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Stages of Evolution", {
           text "As long as Jynx is an Evolved Pokémon, you pay [C] less to retreat your [R] and [P] Pokémon."
           getterA GET_RETREAT_COST ,{ h->
-            if (self.evolution && h.effect.target.owner == self.owner && (h.types.contains(R) || h.effect.target.types.contains(P))) {
+            if (self.evolution && h.effect.target.owner == self.owner && (h.effect.target.types.contains(R) || h.effect.target.types.contains(P))) {
               h.object = Math.max(0,h.object-1)
             }
           }
@@ -1242,7 +1243,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "The Retreat Cost for each of your Stage 2 Pokémon-ex is 0."
           getterA (GET_RETREAT_COST, BEFORE_LAST) {holder->
             def target = holder.effect.target
-            if (target.topPokemonCard.cardTypes.is(STAGE2) && target.topPokemonCard.cardTypes.is(EX)) {
+            if (target.topPokemonCard.cardTypes.is(STAGE2) && target.EX) {
               holder.object = 0
             }
           }
@@ -2112,6 +2113,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             powerUsed()
             def eligible = my.all.findAll { it.name == "Latias" || it.name == "Latias ex" || it.name == "Latios" || it.name == "Latios ex"}
             attachEnergyFrom(basic:true, my.hand, eligible.select("Attach to"))
+            bg.gm().betweenTurns()
           }
         }
         move "Power Crush", {

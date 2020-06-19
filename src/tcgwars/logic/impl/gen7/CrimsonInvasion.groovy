@@ -2424,11 +2424,9 @@ public enum CrimsonInvasion implements LogicCardInfo {
           }
           getEnergyTypesOverride{
             if(self && !self.pokemonGX && !self.pokemonEX && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
-              owner.typeImagesOverride = [RAINBOW, RAINBOW]
               return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
             }
             else {
-              owner.typeImagesOverride = [C]
               return [[C] as Set]
             }
           }

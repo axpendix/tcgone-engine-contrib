@@ -2571,12 +2571,12 @@ public enum Deoxys implements LogicCardInfo {
           def eff2
           onPlay {
             eff1 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (h.effect.ability instanceof PokeBody && h.effect.target.basic && !h.effect.target.EX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
+              if (h.effect.ability instanceof PokeBody && h.effect.target.notEvolution && !h.effect.target.EX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
                 h.object=true
               }
             }
             eff2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-              if (h.effect.ability instanceof PokeBody && h.effect.target.basic && !h.effect.target.EX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
+              if (h.effect.ability instanceof PokeBody && h.effect.target.notEvolution && !h.effect.target.EX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
                 h.object=true
               }
             }
@@ -2678,11 +2678,9 @@ public enum Deoxys implements LogicCardInfo {
           }
           getEnergyTypesOverride{
             if(self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
-              owner.typeImagesOverride = [RAINBOW, RAINBOW, RAINBOW]
               return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
             }
             else {
-              owner.typeImagesOverride = [C]
               return [[C] as Set]
             }
           }

@@ -215,8 +215,8 @@ public enum DeltaSpecies implements LogicCardInfo {
           actionA {
             checkNoSPC()
             def tar = opp.active
-            apply PARALYZED, tar
-            apply POISONED, tar
+            apply PARALYZED, tar, SRC_ABILITY
+            apply POISONED, tar, SRC_ABILITY
             extraPoison 1
             new Knockout(self).run(bg)
           }
@@ -475,7 +475,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost L, M, C, C, C
           attackRequirement {}
           onAttack {
-            if (opp.all.findAll { it.topPokemonCard.cardTypes.is(EX) }) {
+            if (opp.all.any{ it.EX }) {
               damage 80
             }
           }
@@ -2029,7 +2029,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (self.owner.pbg.all.find{it.name == "Illumise"} && it.to == self && it.from.topPokemonCard.cardTypes.is(EX)) {
+                if (self.owner.pbg.all.find{it.name == "Illumise"} && it.to == self && it.from.EX) {
                   bc "Extra Protection prevents all damage"
                   it.dmg=hp(0)
                 }
@@ -3098,8 +3098,8 @@ public enum DeltaSpecies implements LogicCardInfo {
           onActivate {r->
             if (r==PLAY_FROM_HAND && my.deck && confirm("Use Evolutionary Flame?")) {
               powerUsed()
-              apply BURNED, opp.active
-              apply CONFUSED, opp.active
+              apply BURNED, opp.active, SRC_ABILITY
+              apply CONFUSED, opp.active, SRC_ABILITY
             }
           }
         }
@@ -3132,7 +3132,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             if (r==PLAY_FROM_HAND && my.deck && confirm("Use Evolutionary Thunder?")) {
               powerUsed()
               opp.all.each {
-                directDamage 10, it
+                directDamage 10, it, SRC_ABILITY
               }
             }
           }

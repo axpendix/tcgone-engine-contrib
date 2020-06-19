@@ -795,26 +795,23 @@ public enum UnseenForces implements LogicCardInfo {
         weakness F
         pokeBody "Intimidating Ring", {
           text "As long as Ursaring is your Active Pokémon, your opponent's Basic Pokémon can't attack or use any Poké-Powers."
-          def eff1, eff2
+          delayedA {
+            before CHECK_ATTACK_REQUIREMENTS, {
+              if (self.active && ef.attacker.owner != self.owner && !ef.attacker.evolution) {
+                wcu "Intimidating Ring prevents attack"
+                prevent()
+              }
+            }
+          }
+          getterA (IS_ABILITY_BLOCKED) { Holder h->
+            if (self.active && h.effect.target.owner != self.owner && !h.effect.target.evolution && h.effect.ability instanceof PokePower) {
+              h.object=true
+            }
+          }
           onActivate {
-            eff1 = delayed {
-              before CHECK_ATTACK_REQUIREMENTS, {
-                if (self.active && ef.attacker.owner != self.owner && !ef.attacker.evolution) {
-                  wcu "Intimidating Ring prevents attack"
-                  prevent()
-                }
-              }
-            }
-            eff2 = getter (IS_ABILITY_BLOCKED) { Holder h->
-              if (self.active && h.effect.target.owner != self.owner && !h.effect.target.evolution && h.effect.ability instanceof PokePower) {
-                h.object=true
-              }
-            }
             new CheckAbilities().run(bg)
           }
           onDeactivate {
-            eff1.unregister()
-            eff2.unregister()
             new CheckAbilities().run(bg)
           }
         }
@@ -1589,7 +1586,7 @@ public enum UnseenForces implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to == self && it.from.topPokemonCard.cardTypes.is(EX) && it.dmg.value && it.notNoEffect) {
+                if (it.to == self && it.from.EX && it.dmg.value && it.notNoEffect) {
                   bc "Shell Barricade prevents all damage"
                   it.dmg=hp(0)
                 }
@@ -2508,19 +2505,17 @@ public enum UnseenForces implements LogicCardInfo {
         weakness L
         pokeBody "Overpowering Fang", {
           text "As long as Feraligatr ex is your Active Pokémon, each player's Pokémon (excluding Pokémon-ex) can't use any Poké-Powers or Poké-Bodies."
-          def eff
-          onActivate{
-            eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
-              if (self.active && !h.effect.target.EX) {
-                if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
-                  h.object=true
-                }
+          getterA (IS_ABILITY_BLOCKED) { Holder h ->
+            if (self.active && !h.effect.target.EX) {
+              if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
+                h.object=true
               }
             }
+          }
+          onActivate{
             new CheckAbilities().run(bg)
           }
           onDeactivate {
-            eff.unregister()
             new CheckAbilities().run(bg)
           }
         }
@@ -2578,10 +2573,12 @@ public enum UnseenForces implements LogicCardInfo {
           text "If Lugia ex is your Active Pokémon and is damaged by an opponent's attack (even if Lugia ex is Knocked Out), flip a coin. If heads, choose an Energy card attached to the Attacking Pokémon and return it to your opponent's hand."
           delayedA (priority: LAST) {
             before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value })) {
+              if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value})) {
                 if (ef.attacker.cards.filterByType(ENERGY)) {
                   bc "Silver Sparkle Activates"
-                  ef.attacker.cards.filterByType(ENERGY).select("Select an Energy to move to the Opponent's hand", self.owner).moveTo(ef.attacker.owner.pbg.hand)
+                  flip {
+                    ef.attacker.cards.filterByType(ENERGY).select("Select an Energy to move to the Opponent's hand", {true}, self.owner).moveTo(ef.attacker.owner.pbg.hand)
+                  }
                 }
               }
             }

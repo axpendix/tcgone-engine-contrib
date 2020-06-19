@@ -1944,7 +1944,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             before ATTACK_MAIN, {
               flag = (ef.attacker == self)
             }
-            after BETWEEN_TURNS, {
+            before BETWEEN_TURNS, {
               if (flag) { discard thisCard }
             }
           }
@@ -1963,7 +1963,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           eff1=delayed {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if (it.to == self && it.from.owner != self.owner && it.from.topPokemonCard.cardTypes.is(EX) && it.notZero && it.notNoEffect) {
+                if (it.to == self && it.from.owner != self.owner && it.from.EX && it.notZero && it.notNoEffect) {
                   it.dmg=hp(0)
                   bc "$name prevents damage"
                 }
@@ -1971,7 +1971,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
             before null, self, Source.ATTACK, {
               def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-              if (self.owner.opposite.pbg.active.topPokemonCard.cardTypes.is(EX) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs == self) {
+              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs == self) {
                 bc "$name prevents effect"
                 prevent()
               }
@@ -2310,41 +2310,38 @@ public enum CrystalGuardians implements LogicCardInfo {
           bg.em().storeObject("Extra_Liquid_target", target)
           bg.em().storeObject("Extra_Liquid_source", source)
           text "Each player's Pokémon-ex can't use any Poké-Powers and pays [C] more Energy to use its attacks. Each Pokémon can't be affected by more than 1 Extra Liquid Poké-Body."
-          def eff1, eff2
+          getterA (IS_ABILITY_BLOCKED) { Holder h ->
+            if (h.effect.target.EX) {
+              if (h.effect.ability instanceof PokePower) {
+                h.object=true
+              }
+            }
+          }
+          getterA GET_MOVE_LIST, { h ->
+            if (h.effect.target.EX) {
+              def list = []
+              for (move in h.object) {
+                def copy = move.shallowCopy()
+                target = bg.em().retrieveObject("Extra_Liquid_target")
+                source = bg.em().retrieveObject("Extra_Liquid_source")
+                if(!target.contains(h.effect.target)){
+                  copy.energyCost.add(C)
+                  target.add(h.effect.target)
+                  bg.em().storeObject("Extra_Liquid_target", target)
+                  source.add(self)
+                  bg.em().storeObject("Extra_Liquid_source", source)
+                } else if(source.get(target.indexOf(h.effect.target)) == self){
+                  copy.energyCost.add(C)
+                }
+                list.add(copy)
+              }
+              h.object=list
+            }
+          }
           onActivate {
-            eff1 = getter (IS_ABILITY_BLOCKED) { Holder h ->
-              if (h.effect.target.topPokemonCard.cardTypes.is(EX)) {
-                if (h.effect.ability instanceof PokePower) {
-                  h.object=true
-                }
-              }
-            }
-            eff2 = getter GET_MOVE_LIST, { h ->
-              if (h.effect.target.topPokemonCard.cardTypes.is(EX)) {
-                def list = []
-                for (move in h.object) {
-                  def copy = move.shallowCopy()
-                  target = bg.em().retrieveObject("Extra_Liquid_target")
-                  source = bg.em().retrieveObject("Extra_Liquid_source")
-                  if(!target.contains(h.effect.target)){
-                    copy.energyCost.add(C)
-                    target.add(h.effect.target)
-                    bg.em().storeObject("Extra_Liquid_target", target)
-                    source.add(self)
-                    bg.em().storeObject("Extra_Liquid_source", source)
-                  } else if(source.get(target.indexOf(h.effect.target)) == self){
-                    copy.energyCost.add(C)
-                  }
-                  list.add(copy)
-                }
-                h.object=list
-              }
-            }
             new CheckAbilities().run(bg)
           }
           onDeactivate {
-            eff1.unregister()
-            eff2.unregister()
             new CheckAbilities().run(bg)
           }
         }

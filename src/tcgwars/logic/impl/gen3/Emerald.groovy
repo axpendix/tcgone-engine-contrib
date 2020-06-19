@@ -2164,17 +2164,15 @@ public enum Emerald implements LogicCardInfo {
           weakness PSYCHIC
           pokeBody "Wise Aura", {
             text "As long as Medicham ex is your Active Pokémon, each Pokémon (excluding Pokémon-ex) (both yours and your opponent’s) can’t use any Poké-Powers."
-            def eff
-            onActivate{
-              eff = getter (IS_ABILITY_BLOCKED) { Holder h->
-                if (self.active  && !h.effect.target.EX && h.effect.ability instanceof PokePower) {
-                  h.object=true
-                }
+            getterA (IS_ABILITY_BLOCKED) { Holder h->
+              if (self.active  && !h.effect.target.EX && h.effect.ability instanceof PokePower) {
+                h.object=true
               }
+            }
+            onActivate{
               new CheckAbilities().run(bg)
             }
             onDeactivate {
-              eff.unregister()
               new CheckAbilities().run(bg)
             }
 

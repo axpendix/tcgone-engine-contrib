@@ -2442,24 +2442,22 @@ public enum CosmicEclipse implements LogicCardInfo {
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           bwAbility "Shadow Box", {
             text "Pokémon-GX that have any damage counters on them (both yours and your opponent's) have no Abilities."
-            def effect1
             delayedA {
               after REMOVE_DAMAGE_COUNTER, {
                 new CheckAbilities().run(bg)
               }
             }
-            onActivate {
-              effect1 = getter IS_ABILITY_BLOCKED, { Holder h ->
-                if (h.effect.target.numberOfDamageCounters && h.effect.target.pokemonGX && h.effect.ability instanceof BwAbility) {
-                  targeted(h.effect.target, SRC_ABILITY) {
-                    h.object = true
-                  }
+            getterA IS_ABILITY_BLOCKED, { Holder h ->
+              if (h.effect.target.numberOfDamageCounters && h.effect.target.pokemonGX && h.effect.ability instanceof BwAbility) {
+                targeted(h.effect.target, SRC_ABILITY) {
+                  h.object = true
                 }
               }
+            }
+            onActivate {
               new CheckAbilities().run(bg)
             }
             onDeactivate {
-              effect1.unregister()
               new CheckAbilities().run(bg)
             }
           }
@@ -3710,7 +3708,21 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost Y
             onAttack {
               damage 30
-              reduceDamageFromDefendingNextTurn(hp(30), thisMove, defending)
+              afterDamage { targeted (defending) {
+                delayed {
+                  before APPLY_ATTACK_DAMAGES, {
+                    bg.dm().each {
+                      if(it.from==defending && ef.attacker==defending && it.dmg.value){
+                        bc "${thisMove.name} reduces damage"
+                        it.dmg-=hp(30)
+                      }
+                    }
+                  }
+                  unregisterAfter 2
+                  after SWITCH, defending, {unregister()}
+                  after EVOLVE, defending, {unregister()}
+                }
+              } }
             }
           }
           move "Beloved Pulse", {
@@ -4444,6 +4456,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               eff.unregister()
               thisCard.player.opposite.pbg.triggerBenchSizeCheck()
               thisCard.player.pbg.triggerBenchSizeCheck()
+              new CheckAbilities().run(bg)
 
             }
           }

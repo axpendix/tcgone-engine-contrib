@@ -656,19 +656,17 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Delta Reserve", {
           text "As long as Pidgeot has any Holon Energy cards attached to it, each player's Pokémon (excluding Pokémon that has δ on its card) can't use any Poké-Powers."
-          def eff
-          onActivate{
-            eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
-              if (self.cards.findAll{it.name.contains("Holon Energy")} && !h.effect.target.topPokemonCard.cardTypes.is(DELTA)) {
-                if (h.effect.ability instanceof PokePower) {
-                  h.object=true
-                }
+          getterA (IS_ABILITY_BLOCKED) { Holder h ->
+            if (self.cards.findAll{it.name.contains("Holon Energy")} && !h.effect.target.topPokemonCard.cardTypes.is(DELTA)) {
+              if (h.effect.ability instanceof PokePower) {
+                h.object=true
               }
             }
+          }
+          onActivate{
             new CheckAbilities().run(bg)
           }
           onDeactivate{
-            eff.unregister()
             new CheckAbilities().run(bg)
           }
         }
@@ -2399,7 +2397,59 @@ public enum HolonPhantoms implements LogicCardInfo {
       case CLAW_FOSSIL_91:
       return copy(LegendMaker.CLAW_FOSSIL_78, this);
       case MYSTERIOUS_FOSSIL_92:
-      return copy(FossilNG.MYSTERIOUS_FOSSIL, this);
+      return itemCard (this) {
+        text "Play Mysterious Fossil as if it were a Basic Pokemon. While in play, Mysterious Fossil counts as a [C] Pokemon (as well as a Trainer card). Mysterious Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Mysterious Fossil is Knocked out, it doesn't count as a Knocked Out Pokemon. (Discard it anyway.) At any time during your turn before your attack, you may discard Mysterious Fossil from play."
+        onPlay {
+          Card pokemonCard, trainerCard = thisCard
+          pokemonCard = basic (new CustomCardInfo(MYSTERIOUS_FOSSIL_92).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+            customAbility{
+              def ef2, acl
+              onActivate{
+                delayed {
+                  before RETREAT, self, {
+                    wcu "Cannot retreat"
+                    prevent()
+                  }
+                  before TAKE_PRIZE, {
+                    if(ef.pcs==self){
+                      bc "No prize card for Mysterious Fossil"
+                      prevent()
+                    }
+                  }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    wcu "Mysterious Fossil can't have special conditions"
+                    prevent()
+                  }
+                }
+                if(!ef2){
+                  ef2 = delayed {
+                    after REMOVE_FROM_PLAY, {
+                      if(ef.removedCards.contains(pokemonCard)){
+                        bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                        unregister()
+                        ef2 = null
+                      }
+                    }
+                  }
+                }
+                acl = action("Discard Mysterious Fossil", [TargetPlayer.SELF]){
+                  new Knockout(self).run(bg)
+                }
+              }
+              onDeactivate{
+                acl.each{bg.gm().unregisterAction(it)}
+              }
+            }
+          }
+          pokemonCard.player = trainerCard.player
+          bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+          hand.remove(pokemonCard)
+          benchPCS(pokemonCard)
+        }
+        playRequirement{
+          assert bench.notFull : "Bench is full"
+        }
+      };
       case ROOT_FOSSIL_93:
       return copy(LegendMaker.ROOT_FOSSIL_80, this);
       case DARKNESS_ENERGY_94:
@@ -2422,11 +2472,9 @@ public enum HolonPhantoms implements LogicCardInfo {
             return [[C] as Set]
           boolean cond1 = self.topPokemonCard.cardTypes.is(DELTA)
           if (cond1) {
-            owner.typeImagesOverride = [RAINBOW]
             return [[R, D, F, G, W, Y, L, M, P, N] as Set]
           }
           else {
-            owner.typeImagesOverride = [C]
             return [[C] as Set]
           }
         }

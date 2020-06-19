@@ -1,4 +1,8 @@
-package tcgwars.logic.impl.gen;
+package tcgwars.logic.impl.gen3;
+
+import tcgwars.logic.impl.gen1.BaseSetNG;
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.impl.gen7.CelestialStorm;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -32,7 +36,7 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
- * @author axpendix@hotmail.com
+ * @author lithogenn@gmail.com
  */
 public enum PopSeries2 implements LogicCardInfo {
 
@@ -43,7 +47,7 @@ public enum PopSeries2 implements LogicCardInfo {
   TAUROS_5 ("Tauros", 5, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
   VENUSAUR_6 ("Venusaur", 6, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   IVYSAUR_7 ("Ivysaur", 7, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  MR_BRINEY_S_COMPASSION_8 ("Mr. Briney's Compassion", 8, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  MR__BRINEY_S_COMPASSION_8 ("Mr. Briney's Compassion", 8, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   MULTI_TECHNICAL_MACHINE_01_9 ("Multi Technical Machine 01", 9, Rarity.UNCOMMON, [TRAINER, TECHNICAL_MACHINE]),
   POKEMON_PARK_10 ("Pokémon Park", 10, Rarity.UNCOMMON, [TRAINER, STADIUM]),
   TV_REPORTER_11 ("TV Reporter", 11, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
@@ -52,7 +56,7 @@ public enum PopSeries2 implements LogicCardInfo {
   LUVDISC_14 ("Luvdisc", 14, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
   PHANPY_15 ("Phanpy", 15, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   PIKACHU_16 ("Pikachu", 16, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  CELEBI_EX_17 ("Celebi ex", 17, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
+  CELEBI_EX_17 ("Celebi ex", 17, Rarity.HOLORARE, [POKEMON, BASIC, EX, _PSYCHIC_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -115,13 +119,17 @@ public enum PopSeries2 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 20 }
           }
         }
         move "Fire Spin", {
           text "50 damage. Discard 2 basic Energy cards attached to Entei or this attack does nothing."
           energyCost R, R, C
-          attackRequirement {}
+          attackRequirement {
+            assert self.cards.filterByType(BASIC_ENERGY).size() >= 2 : "Needs at least 2 Basic Energy cards attached"
+          }
           onAttack {
+            self.cards.filterByType(BASIC_ENERGY).select(count: 2, "Discard 2 Basic energy cards from $self.").discard()
             damage 50
           }
         }
@@ -133,6 +141,18 @@ public enum PopSeries2 implements LogicCardInfo {
         pokePower "Beating Wings", {
           text "Once during your turn (before your attack), If Pidgeot is your Active Pokémon, you may shuffle 1 of your Benched Pokémon and all cards attached to it in your deck. This power can't be used if Pidgeot is affected by a Special Condition."
           actionA {
+            checkLastTurn()
+            assert self.active : "Pidgeot is not your Active Pokémon"
+            assert my.bench : "There are no Benched Pokémon that can be selected"
+            checkNoSPC()
+            powerUsed()
+
+            def tar = my.bench.select("Which Pokémon to put back into your deck?")
+            targeted(tar, Source.SRC_ABILITY) {
+              tar.cards.moveTo(my.deck)
+              shuffleDeck()
+              removePCS(tar)
+            }
           }
         }
         move "Sharp Beak", {
@@ -141,6 +161,7 @@ public enum PopSeries2 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { damage 30 }
           }
         }
       };
@@ -152,7 +173,7 @@ public enum PopSeries2 implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            whirlwind()
           }
         }
         move "Thunder", {
@@ -161,6 +182,7 @@ public enum PopSeries2 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            flip 1, {}, { damage 20, self }
           }
         }
       };
@@ -170,6 +192,12 @@ public enum PopSeries2 implements LogicCardInfo {
         pokeBody "Mirror Coat", {
           text "If Suicune is Burned or Poisoned by an opponent's attack (even if Suicune is Knocked Out), the Attacking Pokémon is now affected by the same Special Conditions (1 if there is only 1)."
           delayedA {
+            before APPLY_SPECIAL_CONDITION, self, {
+              if (ef.type == POISONED || ef.type == BURNED) {
+                bc "Mirror Coat : ${ef.type}"
+                apply ef.type, self.owner.opposite.pbg.active, SRC_ABILITY
+              }
+            }
           }
         }
         move "Bubblebeam", {
@@ -178,6 +206,7 @@ public enum PopSeries2 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { applyAfterDamage(PARALYZED) }
           }
         }
       };
@@ -189,7 +218,7 @@ public enum PopSeries2 implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            damage 10
+            damage 10+10*self.numberOfDamageCounters
           }
         }
         move "Take Down", {
@@ -198,6 +227,7 @@ public enum PopSeries2 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            damage 10, self
           }
         }
       };
@@ -210,6 +240,13 @@ public enum PopSeries2 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            if (opp.bench) {
+              multiSelect(opp.bench, 2).each {
+                targeted(it) {
+                  damage 20, it
+                }
+              }
+            }
           }
         }
         move "Hard Plant", {
@@ -218,66 +255,97 @@ public enum PopSeries2 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
+            cantUseAttack(thisMove, self)
           }
         }
       };
       case IVYSAUR_7:
-      return evolution (this, from:"Bulbasaur", hp:HP080, type:G, retreatCost:1) {
-        weakness P
-        move "Poison Seed", {
-          text "The Defending Pokémon is now Poisoned."
-          energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
-        }
-        move "Razor Leaf", {
-          text "50 damage. "
-          energyCost G, G, C
-          attackRequirement {}
-          onAttack {
-            damage 50
-          }
-        }
-      };
-      case MR_BRINEY_S_COMPASSION_8:
+        return copy(FireRedLeafGreen.IVYSAUR_35, this);
+      case MR__BRINEY_S_COMPASSION_8:
       return supporter (this) {
         text "Choose 1 of your Pokémon in play (excluding Pokémon ex). Return that Pokémon and all cards attached to it to your hand."
         onPlay {
+          def validTargets = my.all.findAll { !it.EX }
+
+          def tar = validTargets.select("Which Pokémon to put back into your hand?")
+          targeted(tar, Source.TRAINER_CARD) {
+            tar.cards.moveTo(my.hand)
+            removePCS(tar)
+          }
         }
-        playRequirement{
+        playRequirement {
+          assert my.all.findAll { !it.EX } : "No eligible Pokémon to return back to your hand"
         }
       };
       case MULTI_TECHNICAL_MACHINE_01_9:
       return basicTrainer (this) {
-        text "The Defending Pokémon is now Paralyzed."
-        onPlay {
-        }
-        playRequirement{
+        text "Attach this card to 1 of your Pokemon in play. This Pokemon may use this card's attack instead of its own. At the end of your turn, discard Multi Technical Machine 01"
+        def eff1, eff2
+        onPlay {reason->
+          def pcs = my.active
+          if (my.bench) {
+            pcs = my.all.select("Which Pokémon will you attach $thisCard to?")
+          }
+          pcs.cards.add(self)
+          my.hand.remove(self)
+
+          def moveBody = {
+            text "The Defending Pokémon is now Paralyzed."
+            energyCost C
+            attackRequirement {}
+            onAttack {
+              apply PARALYZED
+            }
+          }
+          Move move=new Move("Paralyzing Gaze")
+          moveBody.delegate=new MoveBuilder(thisMove:move)
+          moveBody.call()
+          eff1 = getter GET_MOVE_LIST, pcs, {h->
+            h.object.add(move)
+          }
+          eff2 = delayed {
+            after DISCARD, {
+              if(ef.card == thisCard){
+                eff1.unregister()
+                eff2.unregister()
+              }
+            }
+            before BETWEEN_TURNS, {
+              discard thisCard
+            }
+          }
         }
       };
       case POKEMON_PARK_10:
       return stadium (this) {
         text "Once during each player's turn, when that player attaches an Energy card from his or her hand to 1 of his or her Benched Pokémon, he or she removes 1 damage counter from that Pokémon."
+        def eff
         onPlay {
+          eff = delayed {
+            def card
+            before ATTACH_ENERGY, {
+              if (my.hand.contains(ef.card) && bg.em().retrieveObject("Pokemon_Park_" + thisCard.hashCode()) != bg.turnCount) {
+                card = ef.card
+              }
+            }
+            after ATTACH_ENERGY, {
+              if (ef.card == card && bg.em().storeObject("Pokemon_Park_" + thisCard.hashCode(), bg.turnCount)) {
+                heal 10, ef.resolvedTarget
+              }
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case TV_REPORTER_11:
-      return supporter (this) {
-        text "Draw 3 cards. Then discard any 1 card from your hand."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(CelestialStorm.TV_REPORTER_149, this);
       case BULBASAUR_12:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness P
         move "Bite", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -285,7 +353,7 @@ public enum PopSeries2 implements LogicCardInfo {
           }
         }
         move "Razor Leaf", {
-          text "20 damage. "
+          text "20 damage."
           energyCost G, C
           attackRequirement {}
           onAttack {
@@ -302,6 +370,7 @@ public enum PopSeries2 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            sandAttack(thisMove)
           }
         }
       };
@@ -311,10 +380,10 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Paralyzing Kiss", {
           text "If there are 2 Defending Pokémon in play, choose 1 of the Defending Pokémon. That Pokémon is now Paralyzed. (If there is only 1 Defending Pokémon, this attack does nothing.)"
           energyCost C
-          attackRequirement {}
-          onAttack {
-
+          attackRequirement {
+            assert false : "This attack does nothing"
           }
+          onAttack {}
         }
         move "Fast Stream", {
           text "20 damage. Move 1 Energy card attached to the Defending Pokémon to the other Defending Pokémon. (Ignore this effect if your opponent has only 1 Defending Pokémon.)"
@@ -322,6 +391,7 @@ public enum PopSeries2 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            // Only one defending Pokémon in single battles, so the effect is ignored.
           }
         }
       };
@@ -334,6 +404,7 @@ public enum PopSeries2 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip 2, { damage 10 }
           }
         }
         move "Body Slam", {
@@ -342,43 +413,31 @@ public enum PopSeries2 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { applyAfterDamage(PARALYZED) }
           }
         }
       };
       case PIKACHU_16:
-      return basic (this, hp:HP040, type:L, retreatCost:1) {
-        weakness F
-        move "Gnaw", {
-          text "10 damage. "
-          energyCost C
-          attackRequirement {}
-          onAttack {
-            damage 10
-          }
-        }
-        move "Thunder Jolt", {
-          text "30 damage. Flip a coin. If tails, Pikachu does 10 damage to itself."
-          energyCost L, C
-          attackRequirement {}
-          onAttack {
-            damage 30
-          }
-        }
-      };
+        return copy(BaseSetNG.PIKACHU, this);
       case CELEBI_EX_17:
       return basic (this, hp:HP080, type:P, retreatCost:1) {
         weakness P
         pokePower "Time Reversal", {
           text "Once during your turn, when you put Celebi ex from your hand onto your Bench, you may search your discard pile for a card, show it to your opponent, and put it on top of your deck."
-          actionA {
+          onActivate {r->
+            if (r==PLAY_FROM_HAND && my.discard && confirm('Use Time Reversal?')) {
+              powerUsed()
+              my.discard.select("Select a card to put on top of your deck.").showToOpponent("Time Reversal put this card on top of your opponent's deck.").moveTo(addToTop:true, my.deck)
+            }
           }
         }
         move "Psychic Shield", {
-          text "30 damage. Prevent all effects of attacks, including damage, done to Celebi ex by your opponent's Pokémon"
+          text "30 damage. Prevent all effects of attacks, including damage, done to Celebi ex by your opponent's Pokémon-ex during your opponent's next turn."
           energyCost P, C
           attackRequirement {}
           onAttack {
             damage 30
+            preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.EX})
           }
         }
       };

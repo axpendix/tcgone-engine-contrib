@@ -1,7 +1,9 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.impl.gen1.BaseSet;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen5.PlasmaStorm;
+import tcgwars.logic.impl.gen5.BlackWhite;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -34,7 +36,10 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
- * @author axpendix@hotmail.com
+ * @author axpendix
+ * @author wertercatt
+ * @author lithogen
+ * @author starg09
  */
 public enum DiamondPearl implements LogicCardInfo {
 
@@ -647,6 +652,7 @@ public enum DiamondPearl implements LogicCardInfo {
               damage 30
               flip {
                 //TODO: preventAllDamageNextTurn() won't cut it here sadly.
+                preventAllDamageNextTurn()
               }
             }
           }
@@ -1296,14 +1302,16 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Countercharge", {
             text "Flip a coin. If heads, move all damage counters from Wobbuffet to the Defending Pokémon."
             energyCost P, C
-            attackRequirement {}
+            attackRequirement {
+              assert self.numberOfDamageCounters
+            }
             onAttack {
               flip {
                 targeted (defending) {
                   //TODO: Solve this not being blocked by stuff like Metal Goggles (blockers of "putting damage counters"). Problem also affects Xerneas-GX.
                   defending.damage += self.damage
-                  self.damage -= self.damage
-                  bc "Moved $dc damage counters from $self to $defending."
+                  self.damage = hp(0)
+                  bc "Moved damage counters from $self to $defending."
                 }
               }
             }
@@ -2335,12 +2343,13 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Pain Payback", {
             text "Move 1 damage counter from Gastly to 1 of your opponent’s Pokémon."
             energyCost P
-            attackRequirement {}
+            attackRequirement {
+              assert self.numberOfDamageCounters
+            }
             onAttack {
               //TODO. Won't work properly, see Wobbuffet.
-              if (self.damage)
-                  self.damage -= 10
-                  opp.all.select().damage += 10
+              self.damage -= hp(10)
+              opp.all.select().damage += hp(10)
             }
           }
 
@@ -2865,14 +2874,16 @@ public enum DiamondPearl implements LogicCardInfo {
           }
         };
       case PLUSPOWER_109:
-        return basicTrainer (this) {
-          text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
-          onPlay {
-            //TODO
-          }
-          playRequirement{
-          }
-        };
+        return copy(BaseSet.PLUSPOWER, this)
+      // TODO this has to be implemented here again because base set version has a multiplying bug
+//        return basicTrainer (this) {
+//          text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
+//          onPlay {
+//            //TODO
+//          }
+//          playRequirement{
+//          }
+//        };
       case POKE_BALL_110:
       return itemCard (this) {
           text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."

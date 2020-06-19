@@ -1,4 +1,4 @@
-package tcgwars.logic.impl.gen;
+package tcgwars.logic.impl.gen3;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -32,7 +32,7 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
- * @author axpendix@hotmail.com
+ * @author lithogenn@gmail.com
  */
 public enum PopSeries1 implements LogicCardInfo {
 
@@ -110,7 +110,7 @@ public enum PopSeries1 implements LogicCardInfo {
       return evolution (this, from:"Combusken", hp:HP110, type:R, retreatCost:2) {
         weakness W
         move "Fire Punch", {
-          text "40 damage. "
+          text "40 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
@@ -122,7 +122,7 @@ public enum PopSeries1 implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 50
+            flip 2, { damage 50 }
           }
         }
       };
@@ -131,7 +131,7 @@ public enum PopSeries1 implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Metal Claw", {
-          text "30 damage. "
+          text "30 damage."
           energyCost M, C
           attackRequirement {}
           onAttack {
@@ -144,6 +144,7 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            flip { discardDefendingEnergy() }
           }
         }
       };
@@ -155,11 +156,14 @@ public enum PopSeries1 implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            damage 10
+            flip {
+              damage 10
+              preventAllEffectsNextTurn()
+            }
           }
         }
         move "Dragon Claw", {
-          text "30 damage. "
+          text "30 damage."
           energyCost R, L
           attackRequirement {}
           onAttack {
@@ -177,6 +181,7 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            removeDamageCounterEqualToDamageDone()
           }
         }
         move "Leaf Blade", {
@@ -185,6 +190,7 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            flip { damage 30 }
           }
         }
       };
@@ -197,6 +203,7 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { applyAfterDamage(PARALYZED) }
           }
         }
         move "Mud Splash", {
@@ -205,6 +212,12 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            if (opp.bench) {
+              def pcs = opp.bench.select("Which Pokémon to deal 20 damage to if flipping heads?")
+              flip {
+                damage 20, pcs
+              }
+            }
           }
         }
       };
@@ -217,6 +230,7 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            heal 10, self
           }
         }
         move "Whirlwind", {
@@ -225,6 +239,9 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            afterDamage {
+              whirlwind()
+            }
           }
         }
       };
@@ -238,10 +255,11 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 20 }
           }
         }
         move "Gust", {
-          text "50 damage. "
+          text "50 damage."
           energyCost G, C, C
           attackRequirement {}
           onAttack {
@@ -256,6 +274,15 @@ public enum PopSeries1 implements LogicCardInfo {
         pokeBody "Insomnia", {
           text "Murkrow can't be Asleep."
           delayedA {
+            before APPLY_SPECIAL_CONDITION, self, {
+              if (ef.type == ASLEEP) {
+                bc "Insomnia prevents $self from being Asleep."
+                prevent()
+              }
+            }
+          }
+          onActivate {
+            clearSpecialCondition(self, SRC_ABILITY, [ASLEEP])
           }
         }
         move "Feint Attack", {
@@ -263,7 +290,7 @@ public enum PopSeries1 implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-
+            swiftDamage(20, opp.all.select("Which Pokémon to deal 20 damage to?"))
           }
         }
       };
@@ -276,6 +303,7 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { damage 10 }
           }
         }
       };
@@ -287,7 +315,7 @@ public enum PopSeries1 implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-
+            amnesia delegate
           }
         }
         move "Body Slam", {
@@ -296,6 +324,7 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { applyAfterDamage(PARALYZED) }
           }
         }
       };
@@ -308,6 +337,7 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            sandAttack(thisMove)
           }
         }
       };
@@ -321,6 +351,7 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { applyAfterDamage(PARALYZED) }
           }
         }
         move "Spark", {
@@ -329,6 +360,13 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            if (opp.bench){
+              multiSelect(opp.bench, 2).each {
+                targeted(it) {
+                  damage 10, it
+                }
+              }
+            }
           }
         }
       };
@@ -342,6 +380,7 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 10 }
           }
         }
         move "Agility", {
@@ -350,6 +389,7 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            flip { preventAllEffectsNextTurn() }
           }
         }
       };
@@ -362,6 +402,7 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            flip { applyAfterDamage(PARALYZED) }
           }
         }
       };
@@ -374,7 +415,7 @@ public enum PopSeries1 implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            increasedBaseDamageNextTurn("Agility", hp(40))
           }
         }
         move "Agility", {
@@ -383,6 +424,7 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip { preventAllEffectsNextTurn() }
           }
         }
       };
@@ -395,7 +437,7 @@ public enum PopSeries1 implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
-
+            damage 30
           }
         }
         move "Supersonic Claws", {
@@ -404,6 +446,7 @@ public enum PopSeries1 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
+            dontApplyResistance()
           }
         }
       };
@@ -413,7 +456,7 @@ public enum PopSeries1 implements LogicCardInfo {
         weakness F
         resistance P, MINUS30
         move "Scratch", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -423,9 +466,12 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Critical Crush", {
           text "80 damage. Discard 2 Basic Energy cards attached to Tyranitar ex or this attack does nothing."
           energyCost F, F, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert self.cards.filterByType(BASIC_ENERGY).size() >= 2 : "$self needs 2 or more Basic Energies attached"
+          }
           onAttack {
             damage 80
+            self.cards.filterByType(BASIC_ENERGY).select(count:2, "Select 2 Basic Energies to discard.").discard()
           }
         }
       };

@@ -2254,32 +2254,28 @@ public enum LostThunder implements LogicCardInfo {
           weakness PSYCHIC
           bwAbility "Shady Tail" , {
             text "As long as this Pokémon is on your Bench, Pokémon Prism Star in play (both yours and your opponent's) can't attack and have no Abilities."
-            def eff1,eff2,eff3
+            delayedA{
+              before CHECK_ATTACK_REQUIREMENTS, {
+                if(self.benched && ef.attacker.topPokemonCard.cardTypes.is(PRISM_STAR)) {
+                  wcu "Shady Tail prevents attack"
+                  prevent()
+                }
+              }
+            }
+            getterA IS_ABILITY_BLOCKED, { Holder h->
+              if (self.benched && h.effect.target.topPokemonCard.cardTypes.is(PRISM_STAR) && h.effect.ability instanceof BwAbility) {
+                h.object=true
+              }
+            }
+            getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+              if (self.benched && (h.effect.target as Card).cardTypes.is(PRISM_STAR)) {
+                h.object=true
+              }
+            }
             onActivate {
-              eff1 = delayed{
-                before CHECK_ATTACK_REQUIREMENTS, {
-                  if(self.benched && ef.attacker.topPokemonCard.cardTypes.is(PRISM_STAR)) {
-                    wcu "Shady Tail prevents attack"
-                    prevent()
-                  }
-                }
-              }
-              eff2 = getter IS_ABILITY_BLOCKED, { Holder h->
-                if (self.benched && h.effect.target.topPokemonCard.cardTypes.is(PRISM_STAR) && h.effect.ability instanceof BwAbility) {
-                  h.object=true
-                }
-              }
-              eff3 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-                if (self.benched && (h.effect.target as Card).cardTypes.is(PRISM_STAR)) {
-                  h.object=true
-                }
-              }
               new CheckAbilities().run(bg)
             }
             onDeactivate {
-              eff1.unregister()
-              eff2.unregister()
-              eff3.unregister()
               new CheckAbilities().run(bg)
             }
           }
@@ -2714,7 +2710,7 @@ public enum LostThunder implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker.owner != self.owner) {
                   bg.dm().each{
-                    if(it.to == self && it.notNoEffect && self.damage == hp(0) && it.dmg.value >= self.fullHP.value) {
+                    if(it.to == self && self.damage == hp(0) && it.dmg.value >= self.fullHP.value) {
                       bc "Sturdy saved $self!"
                       it.dmg = self.fullHP - hp(10)
                     }

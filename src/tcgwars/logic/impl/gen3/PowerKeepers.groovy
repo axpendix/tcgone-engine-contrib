@@ -554,23 +554,20 @@ public enum PowerKeepers implements LogicCardInfo {
         weakness F
         pokeBody "Lazy", {
           text "As long as Slaking is your Active Pokémon, your opponent's Pokémon can't use any Poké-Powers."
-          def eff1,eff2
+          getterA IS_ABILITY_BLOCKED, { Holder h->
+            if (self.active && h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
+              h.object=true
+            }
+          }
+          getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+            if (self.active && h.effect.target.owner == self.owner.opposite) {
+              h.object=true
+            }
+          }
           onActivate {
-            eff1 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (self.active && h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
-                h.object=true
-              }
-            }
-            eff2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-              if (self.active && h.effect.target.owner == self.owner.opposite) {
-                h.object=true
-              }
-            }
             new CheckAbilities().run(bg)
           }
           onDeactivate {
-            eff1.unregister()
-            eff2.unregister()
             new CheckAbilities().run(bg)
           }
         }
@@ -826,7 +823,7 @@ public enum PowerKeepers implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to == self && it.from.topPokemonCard.cardTypes.is(EX)) {
+                if (it.to == self && it.from.EX) {
                   if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Phoebe's Stadium") {
                     bc "Synergy Effect prevents all damage"
                     it.dmg=hp(0)
@@ -2005,19 +2002,14 @@ public enum PowerKeepers implements LogicCardInfo {
           text "Once during your turn, when you put Absol ex from your hand onto your Bench, you may move 3 damage counters from 1 of your opponent's Pokémon to another of his or her Pokémon."
           onActivate {r->
             checkLastTurn()
-            if (r==PLAY_FROM_HAND && confirm("Use Cursed Eyes?")) {
+            if (r==PLAY_FROM_HAND && opp.bench && opp.all.any{it.numberOfDamageCounters} && confirm("Use Cursed Eyes?")) {
               powerUsed()
 
-              def numMoved = 0
-              while (numMoved != 3) {
-                def pcs = opp.all.findAll{it.numberOfDamageCounters}.select("Choose the Pokémon to move a damage counter from", false)
-                if (!pcs) break;
-                def tar = opp.all.select("Select Pokémon to recieve the Damage Counter", false)
-                if (!tar) break;
-                pcs.damage-=hp(10)
-                tar.damage+=hp(10)
-                numMoved++
-              }
+              def src = opp.all.findAll{it.numberOfDamageCounters}.select("Choose the Pokémon to move 3 damage counters from")
+              def countersToMove = Math.min(src.numberOfDamageCounters, 3)
+              def tar = opp.all.getExcludedList(src).select("Choose the Pokémon that will receive the $countersToMove Damage Counters")
+              pcs.damage = Math.max(pcs.damage - hp(30), hp(0))
+              directDamage 10 * countersToMove, tar, SRC_ABILITY
             }
           }
         }
