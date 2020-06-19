@@ -1214,11 +1214,11 @@ class TcgStatics {
   }
   static void assertMyBench(params=[:], Closure c = null) {
     params.opp = false
-    assertBench(params, c, cText)
+    assertBench(params, c)
   }
   static void assertOppBench(params=[:], Closure c = null) {
     params.opp = true
-    assertBench(params, c, cText)
+    assertBench(params, c)
   }
 
   static void cantBeHealed(PokemonCardSet defending){
