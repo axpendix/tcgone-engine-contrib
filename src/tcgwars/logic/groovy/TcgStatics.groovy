@@ -1172,7 +1172,7 @@ class TcgStatics {
     def hasPokeCnt = 0
     [params.hasPokemonEX, params.hasPokemonGX, params.hasPokemonV].each{hasPokeCnt += 1}
 
-    def benchFilter = {
+    def areaFilter = {
       if (filter == null) { true } else {
         (
           if (params.hasType) {it.types.contains(params.hasType)} else {true}
@@ -1215,7 +1215,7 @@ class TcgStatics {
       failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any $pokeString that ${params.info ? params.info : "follow the stated condition(s)"}"
     }
 
-    assert checkedArea.any(benchFilter) : failMessage
+    assert checkedArea.any(areaFilter) : failMessage
   }
 
   static void assertMyPokemon(params=[:], Closure filter = null) {
