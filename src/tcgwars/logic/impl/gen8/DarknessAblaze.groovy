@@ -3731,11 +3731,15 @@ public enum DarknessAblaze implements LogicCardInfo {
       };
       case PIERS_173:
       return supporter (this) {
-        text "Search your deck for 1 [D] Pokémon and any 1 Energy, reveal them, and put them into your hand. Then, shuffle your deck."
-        onPlay {
-        }
-        playRequirement{
-        }
+        text "Search your deck for a [D] Pokémon and an Energy card, reveal them, and put them into your hand. Then, shuffle your deck."
+          onPlay {
+            my.deck.search(count: 1, "Search your deck for a [D] Pokémon",pokemonTypeFilter(D)).moveTo(my.hand)
+            my.deck.search("Search your deck for an Energy card",cardTypeFilter(ENERGY)).moveTo(my.hand)
+            shuffleDeck()
+          }
+          playRequirement{
+            assert my.deck.notEmpty
+          }
       };
       case POKEMON_BREEDER_S_NURTURING_174:
       return supporter (this) {
@@ -3758,6 +3762,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         text "Choose up to 2 basic Energy from your discard pile and attach them to 1 of your Pokémon VMAX. Then, discard your hand."
         onPlay {
           attachEnergyFrom(max:2, basic: true, my.discard, my.all.findAll { it.topPokemonCard.cardTypes.is(POKEMON_VMAX) }.select("Attach Energy to which Pokémon VMAX?"))
+          my.hand.discard()
         }
         playRequirement{
           assert my.all.any{it.topPokemonCard.cardTypes.is(POKEMON_VMAX)} : "No Pokémon VMAX in play"
