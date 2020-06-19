@@ -3709,14 +3709,24 @@ public enum DarknessAblaze implements LogicCardInfo {
       return itemCard (this) {
         text "Flip 2 coins. If both are heads, choose 1 card from your discard pile, reveal it, and put it into your hand."
         onPlay {
+          def heads = 2
+          flip 2, {}, {heads -= 1}
+
+          if (heads < 2) {
+            my.discard.select("Which card will you put back into your hand?").move(my.hand)
+          }
         }
         playRequirement{
+          assert my.discard : "You have no cards in your discard pile"
         }
       };
       case KABU_171:
       return supporter (this) {
         text "Shuffle your hand into your deck and draw 4 cards. If you only have 1 Pokémon in play, draw 8 cards instead."
         onPlay {
+          shuffleDeck(my.hand.getExcludedList(thisCard))
+          my.hand.removeAll(my.hand.getExcludedList(thisCard))
+          draw(my.bench ? 4 : 8)
         }
         playRequirement{
         }
@@ -3725,8 +3735,15 @@ public enum DarknessAblaze implements LogicCardInfo {
       return itemCard (this) {
         text "Search your deck for a Pokémon with the same name as a Pokémon in your discard pile, and add it to your hand. Then, shuffle your deck."
         onPlay {
+          def pokeNamesInDiscard = []
+          my.discard.filterByType(POKEMON).each{
+            pokeNamesInDiscard.add(it.name)
+          }
+          my.deck.search("Pokémon with same name as a Pokémon in your discard pile. Possible options: $pokeNamesInDiscard", {it.cardTypes.is(POKEMON) && pokeNamesInDiscard.contains(it.name)}).moveTo(my.hand)
         }
         playRequirement{
+          my.deck : "You have no cards in your deck"
+          my.discard.filterByType(POKEMON) : "You have no Pokémon in your discard pile"
         }
       };
       case PIERS_173:
