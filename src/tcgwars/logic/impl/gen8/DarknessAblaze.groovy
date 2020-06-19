@@ -1647,6 +1647,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            afterDamage{
+              apply ASLEEP
+            }
           }
         }
         move "Double Smash", {
@@ -1654,7 +1657,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 90
+            flip 2, {
+              damage 90
+            }
           }
         }
       };
@@ -1715,6 +1720,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            cantRetreat(defending)
           }
         }
         move "Headbutt Bounce", {
@@ -1743,6 +1749,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
+            if(self.lastHealedTurn == bg.turnCount) damage 80
           }
         }
       };
@@ -1755,6 +1762,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 180
+            heal 50, self
           }
         }
       };
@@ -1765,17 +1773,14 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Future Sight", {
           text "Look at the top 4 cards of either player’s deck, then return them to the top of that deck in any order."
           energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
+          rearrangeEitherPlayersDeck(delegate, 4)
         }
         move "Psychic", {
           text "20+ damage. This attack does an additional 20 damage for each Energy attached to your opponent’s Active Pokémon."
           energyCost P, C
           attackRequirement {}
           onAttack {
-            damage 20
+            damage 20*(1+ defending.cards.energyCount(C))
           }
         }
       };
@@ -1828,9 +1833,14 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Fortune Eye", {
           text "Look at the top 5 cards of your opponent’s deck and put them back on top of their deck in any order."
           energyCost P
-          attackRequirement {}
+          attackRequirement {
+            assert opp.deck
+          }
           onAttack {
-
+            def deck=opp.deck
+            def deck2=rearrange(deck.subList(0,5))
+            deck.setSubList(0, deck2)
+            bc "Rearranged top 5 cards of opponent's deck."
           }
         }
         move "Gentle Slap", {
@@ -1849,9 +1859,12 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Whiny Voice", {
           text "Choose 1 random card from your opponent’s hand. Your opponent reveals that card and shuffles it into their deck."
           energyCost P
-          attackRequirement {}
+          attackRequirement {
+            assert opp.hand : "Your opponent's hand is empty"
+          }
           onAttack {
-
+            opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand").showToMe("Selected card").showToOpponent("this card will be shuffled into your deck").moveTo(opp.deck)
+            shuffleDeck(null, TargetPlayer.OPPONENT)
           }
         }
         move "Double Spin", {
@@ -1859,7 +1872,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-            damage 30
+            flip 2, {
+              damage 30
+            }
           }
         }
       };
@@ -1873,6 +1888,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            afterDamage{
+              apply CONFUSED
+            }
           }
         }
         move "Distort", {
@@ -1881,6 +1899,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 90
+            afterDamage{
+              opp.hand.select(hidden: true, count: 2, "Choose 2 random cards from your opponent's hand").showToMe("Selected cards").showToOpponent("These cards will be shuffled into your deck").moveTo(opp.deck)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
+            }
           }
         }
       };
@@ -1904,7 +1926,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            apply ASLEEP
           }
         }
         move "Flop", {
@@ -1925,6 +1947,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            flip {
+              cantAttackNextTurn(defending)
+            }
           }
         }
         move "Forest Fear", {
@@ -1933,6 +1958,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            if(bg.stadiumInfoStruct.stadiumCard.name == "Glimwood Tangle"){
+              damage 60
+            }
           }
         }
       };
@@ -1942,7 +1970,13 @@ public enum DarknessAblaze implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Heal Stop", {
           text "Your opponent’s Benched Pokémon can’t be healed."
-          actionA {
+          delayedA {
+            before REMOVE_DAMAGE_COUNTER, {
+              if(ef.lastTarget.owner == self.owner.opposite && ef.lastTarget.benched){
+                prevent()
+                bc "Heal Stop prevents healing"
+              }
+            }
           }
         }
         move "Claw Slash", {
@@ -1963,7 +1997,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            directDamage 20, defending
           }
         }
       };
@@ -1974,6 +2008,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Tea Break", {
           text "Once during your turn, you may discard a Pokémon with a Mad Party attack from your hand and draw 2 cards."
           actionA {
+            assert my.hand.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} } : "You have no Pokemon with Mad Party in your hand"
+            my.hand.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.select("Choose a Pokemon with Mad Party to discard").discard()
+            draw 2
           }
         }
         move "Mad Party", {
