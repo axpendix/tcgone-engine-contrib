@@ -3605,10 +3605,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         def increasedDmgEff
         def getActiveWeaknessEff
         onPlay {reason->
-          def activeWeakness
-          getActiveWeaknessEff = getter GET_WEAKNESSES, self, {h->
-            activeWeakness = h.object
-          }
+          def activeWeakness = self.getWeaknesses()
 
           increasedDmgEff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
@@ -3630,8 +3627,6 @@ public enum DarknessAblaze implements LogicCardInfo {
           increasedDmgEff.unregister()
           getActiveWeaknessEff.unregister()
         }
-        allowAttach {to->
-        }
       };
       case BIG_PARASOL_166:
       return pokemonTool (this) {
@@ -3650,14 +3645,12 @@ public enum DarknessAblaze implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-        allowAttach {to->
-        }
       };
       case BIRD_KEEPER_167:
       return supporter (this) {
         text "Switch your Active Pokémon with 1 of your Benched Pokémon. Then, draw 3 cards."
         onPlay {
-          switchYourActive
+          switchYourActive()
           draw 3
         }
         playRequirement{
@@ -3684,8 +3677,8 @@ public enum DarknessAblaze implements LogicCardInfo {
       return itemCard (this) {
         text "Each player’s Active Pokémon is now Confused."
         onPlay {
-          apply CONFUSED, opp.active, Source.TRAINER
-          apply CONFUSED, my.active, Sourec.TRAINER
+          apply CONFUSED, opp.active, Source.TRAINER_CARD
+          apply CONFUSED, my.active, Sourec.TRAINER_CARD
         }
         playRequirement{
         }
