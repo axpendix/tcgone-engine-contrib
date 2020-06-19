@@ -3451,6 +3451,7 @@ public enum SwordShield implements LogicCardInfo {
           def energies
           def pokemon
 
+          //TODO: Should be chosen before selecting.
           while (!energies && !pokemon) {
             if (my.discard.filterByType(BASIC_ENERGY)) {
               energies = my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 2, "Select up to 2 Basic Energy cards to shuffle into your deck.")
