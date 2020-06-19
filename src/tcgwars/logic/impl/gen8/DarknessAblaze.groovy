@@ -2009,6 +2009,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Once during your turn, you may discard a Pokémon with a Mad Party attack from your hand and draw 2 cards."
           actionA {
             assert my.hand.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} } : "You have no Pokemon with Mad Party in your hand"
+            assert my.deck : "Your deck is empty"
             my.hand.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.select("Choose a Pokemon with Mad Party to discard").discard()
             draw 2
           }
