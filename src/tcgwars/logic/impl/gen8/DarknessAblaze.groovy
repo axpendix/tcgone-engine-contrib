@@ -3738,10 +3738,11 @@ public enum DarknessAblaze implements LogicCardInfo {
             pokeNamesInDiscard.add(it.name)
           }
           my.deck.search("Pokémon with same name as a Pokémon in your discard pile. Possible options: $pokeNamesInDiscard", {it.cardTypes.is(POKEMON) && pokeNamesInDiscard.contains(it.name)}).moveTo(my.hand)
+          shuffleDeck()
         }
         playRequirement{
-          my.deck : "You have no cards in your deck"
-          my.discard.filterByType(POKEMON) : "You have no Pokémon in your discard pile"
+          assert my.deck : "You have no cards in your deck"
+          assert my.discard.filterByType(POKEMON) : "You have no Pokémon in your discard pile"
         }
       };
       case PIERS_173:
