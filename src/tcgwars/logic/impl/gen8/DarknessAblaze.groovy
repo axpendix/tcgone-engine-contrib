@@ -3786,8 +3786,57 @@ public enum DarknessAblaze implements LogicCardInfo {
       return itemCard (this) {
         text "Play this card as if it were a 70-HP [C] Basic Pokémon. At any time during your turn (before your attack), you may discard this card from play. This card can’t retreat and isn’t affected by Status Conditions."
         onPlay {
+          Card pokemonCard, trainerCard = thisCard
+          pokemonCard = basic (new CustomCardInfo(RARE_FOSSIL_175).setCardTypes(BASIC, POKEMON), hp:HP070, type:COLORLESS, retreatCost:0) {
+            customAbility{
+              def ef2, acl
+              onActivate{
+                delayed {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "Cannot retreat"
+                      prevent()
+                    }
+                  }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "Rare Fossil can't be affected by special conditions"
+                    prevent()
+                  }
+                }
+                if(!ef2){
+                  ef2 = delayed {
+                    after REMOVE_FROM_PLAY, {
+                      if(ef.removedCards.contains(pokemonCard)){
+                        bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                        unregister()
+                        ef2 = null
+                      }
+                    }
+                  }
+                }
+                acl = action("Discard Rare Fossil", [TargetPlayer.SELF]){
+                  delayed{
+                    before TAKE_PRIZE, {
+                      if(ef.pcs==self){
+                        prevent()
+                      }
+                    }
+                  }
+                  new Knockout(self).run(bg)
+                }
+              }
+              onDeactivate{
+                acl.each{bg.gm().unregisterAction(it)}
+              }
+            }
+          }
+          pokemonCard.player = trainerCard.player
+          bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+          hand.remove(pokemonCard)
+          benchPCS(pokemonCard)
         }
         playRequirement{
+          assert bench.notFull
         }
       };
       case ROSE_176:
