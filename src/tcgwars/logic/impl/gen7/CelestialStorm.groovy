@@ -1561,24 +1561,20 @@ public enum CelestialStorm implements LogicCardInfo {
           weakness PSYCHIC
           bwAbility "Sol Shade" , {
             text "If you have Solrock in play, [R] Pokémon in play (both yours and your opponent's) have no Abilities, except Pokémon-GX and Pokémon-EX."
-            def effect1
-            def effect2
+            getterA IS_ABILITY_BLOCKED, { Holder h->
+              if (h.effect.target.types.contains(R) && !h.effect.target.pokemonEX && !h.effect.target.pokemonGX && h.effect.ability instanceof BwAbility) {
+                h.object=true
+              }
+            }
+            getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+              if (!(h.effect.target as Card).cardTypes.is(POKEMON_GX) && !(h.effect.target as Card).cardTypes.is(POKEMON_EX) && (h.effect.target as Card).cardTypes.is(FIRE)) {
+                h.object=true
+              }
+            }
             onActivate {
-              effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
-                if (h.effect.target.types.contains(R) && !h.effect.target.pokemonEX && !h.effect.target.pokemonGX && h.effect.ability instanceof BwAbility) {
-                  h.object=true
-                }
-              }
-              effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-                if (!(h.effect.target as Card).cardTypes.is(POKEMON_GX) && !(h.effect.target as Card).cardTypes.is(POKEMON_EX) && (h.effect.target as Card).cardTypes.is(FIRE)) {
-                  h.object=true
-                }
-              }
               new CheckAbilities().run(bg)
             }
             onDeactivate {
-              effect1.unregister()
-              effect2.unregister()
               new CheckAbilities().run(bg)
             }
           }
