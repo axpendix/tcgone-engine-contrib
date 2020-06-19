@@ -3620,7 +3620,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 
           increasedDmgEff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
-              if (bg.currentTurn == self.owner && ef.attacker = self && self.active) {
+              if (bg.currentTurn == self.owner && ef.attacker == self && self.active) {
                 def flag = opp.active.types.any {type ->
                   activeWeakness.contains(type)
                 }
