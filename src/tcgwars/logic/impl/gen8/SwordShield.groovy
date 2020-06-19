@@ -1662,7 +1662,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost L, C, C
           onAttack {
             damage 90
-            if (defending.topPokemonCard.cardTypes.is(POKEMON_V) || defending.pokemonGX) {
+            if (defending.pokemonV || defending.pokemonGX) {
               damage 90
             }
           }
@@ -2990,7 +2990,7 @@ public enum SwordShield implements LogicCardInfo {
           delayedA{
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if(it.to == self && it.from.topPokemonCard.cardTypes.is(VMAX) && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
+                if(it.to == self && it.from.pokemonVMAX && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
                   bc "Dauntless Shield prevents damage from Pokémon VMAX."
                   it.dmg = hp(0)
                 }
