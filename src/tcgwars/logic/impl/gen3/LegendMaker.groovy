@@ -1611,7 +1611,7 @@ public enum LegendMaker implements LogicCardInfo {
             before BETWEEN_TURNS, {
               if (self.cards.findAll{it.name.contains("React Energy")}) {
                 self.owner.pbg.all.each {
-                  if (it.numberOfDamageCounters && it.cards.findAll{it.name.contains("React Energy")} && !it.topPokemonCard.cardTypes.is(EX)) {
+                  if (it.numberOfDamageCounters && it.cards.findAll{it.name.contains("React Energy")} && !it.EX) {
                     heal 10, it
                   }
                 }

@@ -1589,7 +1589,7 @@ public enum UnseenForces implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to == self && it.from.topPokemonCard.cardTypes.is(EX) && it.dmg.value && it.notNoEffect) {
+                if (it.to == self && it.from.EX && it.dmg.value && it.notNoEffect) {
                   bc "Shell Barricade prevents all damage"
                   it.dmg=hp(0)
                 }

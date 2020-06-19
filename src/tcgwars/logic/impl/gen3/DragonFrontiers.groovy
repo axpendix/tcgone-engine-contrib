@@ -1243,7 +1243,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "The Retreat Cost for each of your Stage 2 Pokémon-ex is 0."
           getterA (GET_RETREAT_COST, BEFORE_LAST) {holder->
             def target = holder.effect.target
-            if (target.topPokemonCard.cardTypes.is(STAGE2) && target.topPokemonCard.cardTypes.is(EX)) {
+            if (target.topPokemonCard.cardTypes.is(STAGE2) && target.EX) {
               holder.object = 0
             }
           }

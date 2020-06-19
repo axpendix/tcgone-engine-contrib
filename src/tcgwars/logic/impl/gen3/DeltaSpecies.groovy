@@ -475,7 +475,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost L, M, C, C, C
           attackRequirement {}
           onAttack {
-            if (opp.all.findAll { it.topPokemonCard.cardTypes.is(EX) }) {
+            if (opp.all.any{ it.EX }) {
               damage 80
             }
           }
@@ -2029,7 +2029,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (self.owner.pbg.all.find{it.name == "Illumise"} && it.to == self && it.from.topPokemonCard.cardTypes.is(EX)) {
+                if (self.owner.pbg.all.find{it.name == "Illumise"} && it.to == self && it.from.EX) {
                   bc "Extra Protection prevents all damage"
                   it.dmg=hp(0)
                 }
