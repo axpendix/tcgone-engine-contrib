@@ -3027,16 +3027,8 @@ public enum DarknessAblaze implements LogicCardInfo {
         resistance G, MINUS30
         bwAbility "Metal Skin", {
           text "This Pokémon’s max HP is increased by 20 for each [M] Energy attached to it."
-          def eff
-          onActivate {
-            eff = getter (GET_FULL_HP, self) {h->
-              h.object += hp(20 * self.cards.energyCount(M))
-            }
-            new CheckAbilities().run(bg)
-          }
-          onDeactivate {
-            eff.unregister()
-            new CheckAbilities().run(bg)
+          getterA (GET_FULL_HP, self) {h->
+            h.object += hp(20 * self.cards.energyCount(M))
           }
         }
         move "Trap Bite", {

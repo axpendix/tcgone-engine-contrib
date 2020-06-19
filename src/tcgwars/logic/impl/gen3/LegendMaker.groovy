@@ -552,17 +552,15 @@ public enum LegendMaker implements LogicCardInfo {
         weakness P
         pokeBody "Stench", {
           text "As long as Muk is your Active Pokémon, each player's Pokémon can't use any Poké-Powers."
-          def eff
-          onActivate {
-            eff = getter (IS_ABILITY_BLOCKED) { Holder h->
-              if (self.active && h.effect.target.owner != self.owner && h.effect.ability instanceof PokePower) {
-                h.object=true
-              }
+          getterA (IS_ABILITY_BLOCKED) { Holder h->
+            if (self.active && h.effect.target.owner != self.owner && h.effect.ability instanceof PokePower) {
+              h.object=true
             }
+          }
+          onActivate {
             new CheckAbilities().run(bg)
           }
           onDeactivate{
-            eff.unregister()
             new CheckAbilities().run(bg)
           }
         }
@@ -735,19 +733,17 @@ public enum LegendMaker implements LogicCardInfo {
         weakness P
         pokeBody "Rear Sensor", {
           text "Each player's Active Basic Pokémon (excluding Pokémon-ex) can't use any Poké-Powers."
-          def eff
-          onActivate {
-            eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
-              if (!h.effect.target.evolution && h.effect.target.active && !h.effect.target.EX) {
-                if (h.effect.ability instanceof PokePower) {
-                  h.object=true
-                }
+          getterA (IS_ABILITY_BLOCKED) { Holder h ->
+            if (!h.effect.target.evolution && h.effect.target.active && !h.effect.target.EX) {
+              if (h.effect.ability instanceof PokePower) {
+                h.object=true
               }
             }
+          }
+          onActivate {
             new CheckAbilities().run(bg)
           }
           onDeactivate{
-            eff.unregister()
             new CheckAbilities().run(bg)
           }
         }
