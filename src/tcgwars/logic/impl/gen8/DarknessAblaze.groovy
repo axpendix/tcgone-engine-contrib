@@ -3712,7 +3712,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           def bringCardFromDiscard = {
             my.discard.select("Which card will you put back into your hand?").move(my.hand)
           }
-          
+
           flip 2, {}, {}, [2:bringCardFromDiscard]
         }
         playRequirement{
@@ -3749,8 +3749,14 @@ public enum DarknessAblaze implements LogicCardInfo {
       return supporter (this) {
         text "Search your deck for a [D] Pokémon and an Energy card, reveal them, and put them into your hand. Then, shuffle your deck."
           onPlay {
-            my.deck.search(count: 1, "Search your deck for a [D] Pokémon",pokemonTypeFilter(D)).moveTo(my.hand)
-            my.deck.search("Search your deck for an Energy card",cardTypeFilter(ENERGY)).moveTo(my.hand)
+
+            def darkPokeFilter = {card -> card.cardTypes.is(POKEMON) && card.asPokemonCard().types.contains(D)}
+
+            def tar = my.deck.search(max: 2, "Search your deck for a [D] Pokémon and an Energy card.", {darkPokeFilter(it) || it.cardTypes.is(ENERGY)}, { CardList list ->
+              list.filterAll{darkPokeFilter(it)}.size() <= 1 && list.filterByType(ENERGY).size() <= 1
+            })
+
+            if (tar) { tar.showToOpponent("Opponent's selected [D] Pokémon and Energy card.").moveTo(my.hand) }
             shuffleDeck()
           }
           playRequirement{
