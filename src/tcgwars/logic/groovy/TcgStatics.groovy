@@ -1157,7 +1157,7 @@ class TcgStatics {
    *   + benched: If true, checks for only Benched Pokémon; otherwise also includes the Active.
    *   + opp: If true, checks for the opponent's bench instead of "my" bench.
    *   + hasType: If set, restricts to benched Pokémon of a single specific type.
-   *   + hasPokemonEX/hasPokemonGX/hasPokemonV: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
+   *   + hasPokemonEX/hasPokemonGX/hasPokemonV/hasPokemonMAX: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
    *   + info: If set, it'll replace the end of the failed assert warning with a custom text, instead of the default "follow the stated condition(s)".
    *   + repText: If true, params.info will override the entirety of the failed assert warning.
    *
@@ -1180,7 +1180,8 @@ class TcgStatics {
           if (!hasPokeCnt) {true} else {
             (params.hasPokemonEX && it.pokemonEX) ||
             (params.hasPokemonGX && it.pokemonGX) ||
-            (params.hasPokemonV && it.pokemonV)
+            (params.hasPokemonV && it.pokemonV) ||
+            (params.hasPokemonVMAX && it.pokemonVMAX)
           }
         ) && (
           filter.call(it)
@@ -1201,7 +1202,8 @@ class TcgStatics {
         [
           (params.hasPokemonEX, "Pokémon-EX"),
           (params.hasPokemonGX, "Pokémon-GX"),
-          (params.hasPokemonV, "Pokémon V")
+          (params.hasPokemonV, "Pokémon V"),
+          (params.hasPokemonVMAX, "Pokémon VMAX")
         ].each{
           if (it[0]) {
             pokeString += it[1] + (if (i == isPokeCnt) "" else if (i == isPokeCnt-1) " or " else ", ")
