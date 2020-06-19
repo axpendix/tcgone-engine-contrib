@@ -2133,7 +2133,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            def energies = my.discard.filterByType(BASIC_ENERGY)
+            def energies = my.discard.filterByType(ENERGY)
             damage 10*energies.size()
             afterDamage {
               energies.moveTo(my.deck)
