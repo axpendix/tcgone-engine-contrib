@@ -1170,7 +1170,7 @@ class TcgStatics {
     def checkedArea = params.benched ? checkedPlayer.benched : checkedPlayer.all
 
     def hasPokeCnt = 0
-    [params.hasPokemonEX, params.hasPokemonGX, params.hasPokemonV].each{hasPokeCnt += 1}
+    [params.hasPokemonEX, params.hasPokemonGX, params.hasPokemonV, params.hasPokemonVMAX].each{hasPokeCnt += 1}
 
     def areaFilter = {
       if (filter == null) { true } else {
