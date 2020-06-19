@@ -738,7 +738,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Stages of Evolution", {
           text "As long as Jynx is an Evolved Pokémon, you pay [C] less to retreat your [R] and [P] Pokémon."
           getterA GET_RETREAT_COST ,{ h->
-            if (self.evolution && h.effect.target.owner == self.owner && (h.types.contains(R) || h.effect.target.types.contains(P))) {
+            if (self.evolution && h.effect.target.owner == self.owner && (h.effect.target.types.contains(R) || h.effect.target.types.contains(P))) {
               h.object = Math.max(0,h.object-1)
             }
           }
