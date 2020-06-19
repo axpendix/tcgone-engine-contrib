@@ -882,6 +882,11 @@ public enum LegendMaker implements LogicCardInfo {
           onDeactivate{
             new CheckAbilities().run(bg)
           }
+          delayedA{
+            after PLAY_CARD, {
+              new CheckAbilities().run(bg)
+            }
+          }
         }
         move "Moon Guidance", {
           text "Search your deck for a Trainer card (excluding Supporter cards), show it to your opponent, and put it into your hand. Shuffle your deck afterward."
@@ -1080,6 +1085,11 @@ public enum LegendMaker implements LogicCardInfo {
           }
           onDeactivate{
             new CheckAbilities().run(bg)
+          }
+          delayedA{
+            after PLAY_CARD, {
+              new CheckAbilities().run(bg)
+            }
           }
         }
         move "Call for Family", {
