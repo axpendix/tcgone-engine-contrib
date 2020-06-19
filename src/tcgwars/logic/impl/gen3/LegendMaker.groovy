@@ -1073,15 +1073,17 @@ public enum LegendMaker implements LogicCardInfo {
         weakness G
         pokeBody "Luna Shade", {
           text "As long as you have Lunatone in play, each player's [C] Pokémon (excluding Pokémon-ex) can't use any Poké-Powers."
-          getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (my.all.find{it.name == 'Lunatone'} && h.effect.target.types.contains(C) && !h.effect.target.EX && h.effect.ability instanceof PokePower) {
-              h.object=true
-            }
-          }
+          def eff
           onActivate{
+            eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
+              if (my.all.find{it.name == 'Lunatone'} && h.effect.target.types.contains(C) && !h.effect.target.EX && h.effect.ability instanceof PokePower) {
+                h.object=true
+              }
+            }
             new CheckAbilities().run(bg)
           }
           onDeactivate{
+            eff.unregister()
             new CheckAbilities().run(bg)
           }
         }
