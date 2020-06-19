@@ -3610,9 +3610,33 @@ public enum DarknessAblaze implements LogicCardInfo {
       case ADVERSITY_GLOVES_165:
       return pokemonTool (this) {
         text "If your opponent’s Active Pokémon is the same type as the Weakness of the Pokémon this card is attached to, the attacks of this Pokémon do 30 more damage to your opponent’s Active Pokémon."
+        def increasedDmgEff
+        def getActiveWeaknessEff
         onPlay {reason->
+          def activeWeakness
+          getActiveWeaknessEff = getter GET_WEAKNESSES, self, {h->
+            activeWeakness = h.object
+          }
+
+          increasedDmgEff = delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (bg.currentTurn == self.owner && ef.attacker = self && self.active) {
+                def flag = opp.active.types.any {type ->
+                  activeWeakness.contains(type)
+                }
+                bg.dm().each {
+                  if (it.to.active && it.dmg.value && flag) {
+                    bc "Adversity Gloves +30"
+                    it.dmg += hp(30)
+                  }
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
+          increasedDmgEff.unregister()
+          getActiveWeaknessEff.unregister()
         }
         allowAttach {to->
         }
@@ -3620,9 +3644,19 @@ public enum DarknessAblaze implements LogicCardInfo {
       case BIG_PARASOL_166:
       return pokemonTool (this) {
         text "As long as the Pokémon this card is attached to is your Active Pokémon, prevent all effects of your opponent’s attacks, except damage, done to all of your Pokémon (existing effects are not removed)."
+        def eff
         onPlay {reason->
+          eff = delayed {
+            before null, null, Source.ATTACK, {
+              if(bg.currentTurn == self.owner.opposite && self.active && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)) {
+                bc "Big Parasol prevents effect"
+                prevent()
+              }
+            }
+          }
         }
         onRemoveFromPlay {
+          eff.unregister()
         }
         allowAttach {to->
         }
@@ -3631,8 +3665,11 @@ public enum DarknessAblaze implements LogicCardInfo {
       return supporter (this) {
         text "Switch your Active Pokémon with 1 of your Benched Pokémon. Then, draw 3 cards."
         onPlay {
+          switchYourActive
+          draw 3
         }
         playRequirement{
+          assert my.bench : "You have no benched Pokémon"
         }
         globalAbility {Card thisCard->
           def flag
@@ -3655,6 +3692,8 @@ public enum DarknessAblaze implements LogicCardInfo {
       return itemCard (this) {
         text "Each player’s Active Pokémon is now Confused."
         onPlay {
+          apply CONFUSED, opp.active, Source.TRAINER
+          apply CONFUSED, my.active, Sourec.TRAINER
         }
         playRequirement{
         }
@@ -3662,9 +3701,23 @@ public enum DarknessAblaze implements LogicCardInfo {
       case GLIMWOOD_TANGLE_169:
       return stadium (this) {
         text "Once during either player’s turn, after they flip any coins for an attack, that player may ignore all results of those coin flips and begin flipping those coins again."
+        // Heavy reference to Victini's Victory Star
+        def lastTurn = 0
+        def eff
         onPlay {
+          eff = delayed {
+            before COIN_FLIP_BETWEEN_EXECUTION, {
+              if (lastTurn != bg.turnCount && confirm("Glimwood Tangle: Result: $ef.object.lastResultString. Do you want to reflip? ")) {
+                lastTurn = bg.turnCount
+                bc "Used Glimwood Tangle and discarded those flips"
+                ef.object.run(bg) //flip again
+                prevent()
+              }
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case OLD_COMPUTER_170:
