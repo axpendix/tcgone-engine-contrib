@@ -1211,7 +1211,7 @@ class TcgStatics {
         pokeString += "Pokémon"
       }
 
-      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any ${benchString}${typeString}${pokeString} that ${params.info ? params.info : "follow the stated condition(s)"}"
+      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any ${benchString + typeString + pokeString} that ${params.info ? params.info : "follow the stated condition(s)"}"
     }
 
     assert checkedArea.any(areaFilter) : failMessage
