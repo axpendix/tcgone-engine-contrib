@@ -1154,7 +1154,7 @@ class TcgStatics {
    * Does a customized assert with an automated fail warning.
    *
    * @param params Optional settings that can be added:
-   *   + isType: if set, restricts to benched Pokémon of a single specific type.
+   *   + hasType: If set, restricts to benched Pokémon of a single specific type.
    *   + hasPokemonEX/hasPokemonGX/hasPokemonV: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
    *   + opp: If true, checks for the opponent's bench instead of "my" bench.
    *
@@ -1173,7 +1173,7 @@ class TcgStatics {
     def benchFilter = (
       if (c == null) { true } else {
         (
-          if (params.isType) {it.types.contains(params.isType)} else {true}
+          if (params.hasType) {it.types.contains(params.hasType)} else {true}
         ) && (
           if (!hasPokeCnt) {true} else {
             (params.hasPokemonEX && it.pokemonEX) ||
@@ -1189,7 +1189,7 @@ class TcgStatics {
     if (!params.repText) {
       failMessage = info
     } else {
-      def typeString = param.isType ? " ${params.isType.getShortNotation()}" : ""
+      def typeString = param.hasType ? " ${params.hasType.getShortNotation()}" : ""
 
       def pokeString = "${typeString}Pokémon"
       if (hasPokeCnt) (
