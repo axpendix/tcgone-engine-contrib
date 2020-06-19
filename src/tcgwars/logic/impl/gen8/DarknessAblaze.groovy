@@ -3708,14 +3708,23 @@ public enum DarknessAblaze implements LogicCardInfo {
       return itemCard (this) {
         text "Flip 2 coins. If both are heads, choose 1 card from your discard pile, reveal it, and put it into your hand."
         onPlay {
+          def bringCardFromDiscard = {
+            my.discard.select("Which card will you put back into your hand?").move(my.hand)
+          }
+
+          flip 2, {}, {}, [2:bringCardFromDiscard]
         }
         playRequirement{
+          assert my.discard : "You have no cards in your discard pile"
         }
       };
       case KABU_171:
       return supporter (this) {
         text "Shuffle your hand into your deck and draw 4 cards. If you only have 1 Pokémon in play, draw 8 cards instead."
         onPlay {
+          shuffleDeck(my.hand.getExcludedList(thisCard))
+          my.hand.removeAll(my.hand.getExcludedList(thisCard))
+          draw(my.bench ? 4 : 8)
         }
         playRequirement{
         }
@@ -3724,48 +3733,140 @@ public enum DarknessAblaze implements LogicCardInfo {
       return itemCard (this) {
         text "Search your deck for a Pokémon with the same name as a Pokémon in your discard pile, and add it to your hand. Then, shuffle your deck."
         onPlay {
+          def pokeNamesInDiscard = []
+          my.discard.filterByType(POKEMON).each{
+            pokeNamesInDiscard.add(it.name)
+          }
+          my.deck.search("Pokémon with same name as a Pokémon in your discard pile. Possible options: $pokeNamesInDiscard", {it.cardTypes.is(POKEMON) && pokeNamesInDiscard.contains(it.name)}).moveTo(my.hand)
         }
         playRequirement{
+          my.deck : "You have no cards in your deck"
+          my.discard.filterByType(POKEMON) : "You have no Pokémon in your discard pile"
         }
       };
       case PIERS_173:
       return supporter (this) {
-        text "Search your deck for 1 [D] Pokémon and any 1 Energy, reveal them, and put them into your hand. Then, shuffle your deck."
-        onPlay {
-        }
-        playRequirement{
-        }
+        text "Search your deck for a [D] Pokémon and an Energy card, reveal them, and put them into your hand. Then, shuffle your deck."
+          onPlay {
+
+            def darkPokeFilter = {card -> card.cardTypes.is(POKEMON) && card.asPokemonCard().types.contains(D)}
+
+            def tar = my.deck.search(max: 2, "Search your deck for a [D] Pokémon and an Energy card.", {darkPokeFilter(it) || it.cardTypes.is(ENERGY)}, { CardList list ->
+              list.filterAll{darkPokeFilter(it)}.size() <= 1 && list.filterByType(ENERGY).size() <= 1
+            })
+
+            if (tar) { tar.showToOpponent("Opponent's selected [D] Pokémon and Energy card.").moveTo(my.hand) }
+            shuffleDeck()
+          }
+          playRequirement{
+            assert my.deck.notEmpty
+          }
       };
       case POKEMON_BREEDER_S_NURTURING_174:
       return supporter (this) {
         text "Choose up to 2 of your Pokémon in play. Search your deck for a card that evolves from each of those Pokémon and put it on top of the Pokémon to evolve it. Then, shuffle your deck. (You can’t use this card during your first turn or on a Pokémon that just came into play.)"
         onPlay {
+          multiSelect (my.all.findAll {it.turnCount < bg.turnCount}, 2, "Choose up to 2 of your Pokémon in play that can make a regular evolve during this turn.").each { pcs =>
+            def sel = deck.search ("Select a Pokémon that evolves from $pcs.name.", {
+              it.cardTypes.is(EVOLUTION) && it.predecessor == pcs.name
+            })
+            if (sel) { evolve(pcs, sel.first(), OTHER) }
+          }
+
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck : "Your deck is empty."
+          assert bg.turnCount > 2 : "Cannot use this card during your first turn."
+          assert my.all.findAll {it.turnCount < bg.turnCount}
         }
       };
       case RARE_FOSSIL_175:
       return itemCard (this) {
         text "Play this card as if it were a 70-HP [C] Basic Pokémon. At any time during your turn (before your attack), you may discard this card from play. This card can’t retreat and isn’t affected by Status Conditions."
         onPlay {
+          Card pokemonCard, trainerCard = thisCard
+          pokemonCard = basic (new CustomCardInfo(RARE_FOSSIL_175).setCardTypes(BASIC, POKEMON), hp:HP070, type:COLORLESS, retreatCost:0) {
+            customAbility{
+              def ef2, acl
+              onActivate{
+                delayed {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "Cannot retreat"
+                      prevent()
+                    }
+                  }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "Rare Fossil can't be affected by special conditions"
+                    prevent()
+                  }
+                }
+                if(!ef2){
+                  ef2 = delayed {
+                    after REMOVE_FROM_PLAY, {
+                      if(ef.removedCards.contains(pokemonCard)){
+                        bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                        unregister()
+                        ef2 = null
+                      }
+                    }
+                  }
+                }
+                acl = action("Discard Rare Fossil", [TargetPlayer.SELF]){
+                  delayed{
+                    before TAKE_PRIZE, {
+                      if(ef.pcs==self){
+                        prevent()
+                      }
+                    }
+                  }
+                  new Knockout(self).run(bg)
+                }
+              }
+              onDeactivate{
+                acl.each{bg.gm().unregisterAction(it)}
+              }
+            }
+          }
+          pokemonCard.player = trainerCard.player
+          bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+          hand.remove(pokemonCard)
+          benchPCS(pokemonCard)
         }
         playRequirement{
+          assert bench.notFull
         }
       };
       case ROSE_176:
       return supporter (this) {
         text "Choose up to 2 basic Energy from your discard pile and attach them to 1 of your Pokémon VMAX. Then, discard your hand."
         onPlay {
+          attachEnergyFrom(max:2, basic: true, my.discard, my.all.findAll { it.topPokemonCard.cardTypes.is(POKEMON_VMAX) }.select("Attach Energy to which Pokémon VMAX?"))
+          my.hand.discard()
         }
         playRequirement{
+          assert my.all.any{it.topPokemonCard.cardTypes.is(POKEMON_VMAX)} : "No Pokémon VMAX in play"
+          assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energy in your discard pile"
         }
       };
       case ROSE_TOWER_177:
       return stadium (this) {
         text "Once during either player’s turn, that player may draw cards from their deck until they have 3 cards in their hand."
+        def lastTurn=0
+        def actions=[]
         onPlay {
+          actions = action("Stadium: Rose Tower") {
+            assert lastTurn != bg().turnCount : "Already used"
+            assert my.deck : "You don't have any cards left in your deck"
+            assert (my.hand.size() < 3) : "You have 3 or more cards in your hand"
+            bc "Used Rose Tower"
+            lastTurn = bg().turnCount
+            draw (3 - my.hand.size())
+          }
         }
         onRemoveFromPlay{
+          actions.each { bg().gm().unregisterAction(it) }
         }
       };
       case ROTOM_PHONE_178:
@@ -3794,9 +3895,16 @@ public enum DarknessAblaze implements LogicCardInfo {
       case SPIKEMUTH_180:
       return stadium (this) {
         text "Whenever a player’s Pokémon is moved from the Active Spot to the Bench during their turn put 2 damage counters on that Pokémon."
+        def eff
         onPlay {
+          eff = delayed{
+            after FALL_BACK, {
+              directDamage 20, ef.fallenBack, TRAINER_CARD //TODO: Cover Omega Barrier
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case DUBIOUS_CANNED_GOODS_181:
