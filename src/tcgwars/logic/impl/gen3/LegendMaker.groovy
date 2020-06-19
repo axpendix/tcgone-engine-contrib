@@ -877,7 +877,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "As long as you have Solrock in play, each player's [R] Pokémon (excluding Pokémon-ex) can't use any Poké-Powers."
           def eff
           onActivate{
-            eff = getter (IS_ABILITY_BLOCKED) { Holder h->
+            eff = getterA (IS_ABILITY_BLOCKED) { Holder h->
               if (my.all.find{it.name == 'Solrock'} && h.effect.target.types.contains(R) && !h.effect.target.EX && h.effect.ability instanceof PokePower) {
                 h.object=true
               }
@@ -1077,7 +1077,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "As long as you have Lunatone in play, each player's [C] Pokémon (excluding Pokémon-ex) can't use any Poké-Powers."
           def eff
           onActivate{
-            eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
+            eff = getterA (IS_ABILITY_BLOCKED) { Holder h ->
               if (!h.effect.target.topPokemonCard.cardTypes.is(EX) && h.effect.target.types.contains(C)) {
                 if (h.effect.ability instanceof PokePower) {
                   if (self.owner.pbg.all.find{it.name.contains("Lunatone")}) {
