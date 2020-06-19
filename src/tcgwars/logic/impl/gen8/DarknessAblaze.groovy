@@ -3603,20 +3603,20 @@ public enum DarknessAblaze implements LogicCardInfo {
       return pokemonTool (this) {
         text "If your opponent’s Active Pokémon is the same type as the Weakness of the Pokémon this card is attached to, the attacks of this Pokémon do 30 more damage to your opponent’s Active Pokémon."
         def increasedDmgEff
-        def getActiveWeaknessEff
         onPlay {reason->
-          def activeWeakness = self.getWeaknesses()
-
           increasedDmgEff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
               if (bg.currentTurn == self.owner && ef.attacker == self && self.active) {
-                def flag = opp.active.types.any {type ->
-                  activeWeakness.contains(type)
+                def myWeakness = self.getWeaknesses()
+                def oppType = opp.active.types
+                def flag = oppType.any {type ->
+                  myWeakness.contains(type)
                 }
                 bg.dm().each {
-                  if (it.to.active && it.dmg.value && flag) {
+                  if (it.to.active && it.to.owner == self.owner.opposite && it.dmg.value && flag) {
                     bc "Adversity Gloves +30"
                     it.dmg += hp(30)
+                    flag = false
                   }
                 }
               }
@@ -3625,7 +3625,6 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
         onRemoveFromPlay {
           increasedDmgEff.unregister()
-          getActiveWeaknessEff.unregister()
         }
       };
       case BIG_PARASOL_166:
@@ -3650,7 +3649,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return supporter (this) {
         text "Switch your Active Pokémon with 1 of your Benched Pokémon. Then, draw 3 cards."
         onPlay {
-          switchYourActive()
+          switchYourActive now:true
           draw 3
         }
         playRequirement{
@@ -3678,7 +3677,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         text "Each player’s Active Pokémon is now Confused."
         onPlay {
           apply CONFUSED, opp.active, Source.TRAINER_CARD
-          apply CONFUSED, my.active, Sourec.TRAINER_CARD
+          apply CONFUSED, my.active, Source.TRAINER_CARD
         }
         playRequirement{
         }
