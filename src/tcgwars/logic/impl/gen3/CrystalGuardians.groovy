@@ -1944,7 +1944,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             before ATTACK_MAIN, {
               flag = (ef.attacker == self)
             }
-            after BETWEEN_TURNS, {
+            before BETWEEN_TURNS, {
               if (flag) { discard thisCard }
             }
           }
