@@ -279,7 +279,7 @@ public enum PopSeries3 implements LogicCardInfo {
           }
         }
         move "Water Gun", {
-          text "30+ damage. Does 30 damage plus 20 more damage for each Energy attached to Vaporeon but not used to pay for this attack's Energy cost. You can't add more than 40 damage in this way."
+          text "30+ damage. Does 30 damage plus 20 more damage for each [W] Energy attached to Vaporeon but not used to pay for this attack's Energy cost. You can't add more than 40 damage in this way."
           energyCost L, C
           attackRequirement {}
           onAttack {
@@ -300,7 +300,7 @@ public enum PopSeries3 implements LogicCardInfo {
           }
         }
         move "Flamethrower", {
-          text "50 damage. Discard a R Energy attached to Combusken."
+          text "50 damage. Discard a [R] Energy attached to Combusken."
           energyCost R, C, C
           attackRequirement {}
           onAttack {
