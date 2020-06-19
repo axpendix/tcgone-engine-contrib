@@ -2005,19 +2005,14 @@ public enum PowerKeepers implements LogicCardInfo {
           text "Once during your turn, when you put Absol ex from your hand onto your Bench, you may move 3 damage counters from 1 of your opponent's Pokémon to another of his or her Pokémon."
           onActivate {r->
             checkLastTurn()
-            if (r==PLAY_FROM_HAND && confirm("Use Cursed Eyes?")) {
+            if (r==PLAY_FROM_HAND && opp.bench && opp.all.any{it.numberOfDamageCounters} && confirm("Use Cursed Eyes?")) {
               powerUsed()
 
-              def numMoved = 0
-              while (numMoved != 3) {
-                def pcs = opp.all.findAll{it.numberOfDamageCounters}.select("Choose the Pokémon to move a damage counter from", false)
-                if (!pcs) break;
-                def tar = opp.all.select("Select Pokémon to recieve the Damage Counter", false)
-                if (!tar) break;
-                pcs.damage-=hp(10)
-                tar.damage+=hp(10)
-                numMoved++
-              }
+              def src = opp.all.findAll{it.numberOfDamageCounters}.select("Choose the Pokémon to move 3 damage counters from")
+              def countersToMove = Math.min(src.numberOfDamageCounters, 3)
+              def tar = opp.all.getExcludedList(src).select("Choose the Pokémon that will receive the $countersToMove Damage Counters")
+              pcs.damage = Math.max(pcs.damage - hp(30), hp(0))
+              directDamage 10 * countersToMove, tar, SRC_ABILITY
             }
           }
         }
