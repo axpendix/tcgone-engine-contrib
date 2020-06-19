@@ -3767,12 +3767,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return supporter (this) {
         text "Choose up to 2 of your Pokémon in play. Search your deck for a card that evolves from each of those Pokémon and put it on top of the Pokémon to evolve it. Then, shuffle your deck. (You can’t use this card during your first turn or on a Pokémon that just came into play.)"
         onPlay {
-          def pcsList = my.all.findAll {it.turnCount < bg.turnCount}
-          if (pcsList.size() > 1) {
-            pcsList = pcsList.select(max:2, "Choose up to 2 of your Pokémon in play that can make a regular evolve during this turn.")
-          }
-
-          pcsList.each{ pcs =>
+          multiSelect (my.all.findAll {it.turnCount < bg.turnCount}, 2, "Choose up to 2 of your Pokémon in play that can make a regular evolve during this turn.").each { pcs =>
             def sel = deck.search ("Select a Pokémon that evolves from $pcs.name.", {
               it.cardTypes.is(EVOLUTION) && it.predecessor == pcs.name
             })
