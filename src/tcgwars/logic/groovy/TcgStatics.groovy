@@ -1172,7 +1172,7 @@ class TcgStatics {
     def hasPokeCnt = 0
     [params.hasPokemonEX, params.hasPokemonGX, params.hasPokemonV].each{hasPokeCnt += 1}
 
-    def benchFilter = (
+    def benchFilter = {
       if (filter == null) { true } else {
         (
           if (params.hasType) {it.types.contains(params.hasType)} else {true}
@@ -1186,7 +1186,7 @@ class TcgStatics {
           filter.call(it)
         )
       }
-    )
+    }
 
     if (params.info + !params.repText) {
       failMessage = params.info
