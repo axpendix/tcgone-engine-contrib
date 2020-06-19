@@ -3764,9 +3764,20 @@ public enum DarknessAblaze implements LogicCardInfo {
       case ROSE_TOWER_177:
       return stadium (this) {
         text "Once during either player’s turn, that player may draw cards from their deck until they have 3 cards in their hand."
+        def lastTurn=0
+        def actions=[]
         onPlay {
+          actions = action("Stadium: Rose Tower") {
+            assert lastTurn != bg().turnCount : "Already used"
+            assert my.deck : "You don't have any cards left in your deck"
+            assert (my.hand.size() < 3) : "You have 3 or more cards in your hand"
+            bc "Used Rose Tower"
+            lastTurn = bg().turnCount
+            draw (3 - my.hand.size())
+          }
         }
         onRemoveFromPlay{
+          actions.each { bg().gm().unregisterAction(it) }
         }
       };
       case ROTOM_PHONE_178:
