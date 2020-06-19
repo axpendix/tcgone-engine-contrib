@@ -43,19 +43,19 @@ public enum PopSeries5 implements LogicCardInfo {
 
   HO_OH_1 ("Ho-oh", 1, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
   LUGIA_2 ("Lugia", 2, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
-  MEW_DELTA_3 ("Mew", 3, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
+  MEW_DELTA_3 ("Mew", 3, Rarity.RARE, [POKEMON, BASIC, DELTA, _FIRE_]),
   DOUBLE_RAINBOW_ENERGY_4 ("Double Rainbow Energy", 4, Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
-  CHARMELEON_DELTA_5 ("Charmeleon", 5, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  CHARMELEON_DELTA_5 ("Charmeleon", 5, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, DELTA, _LIGHTNING_]),
   BILL_S_MAINTENANCE_6 ("Bill's Maintenance", 6, Rarity.UNCOMMON, [TRAINER]),
   RARE_CANDY_7 ("Rare Candy", 7, Rarity.UNCOMMON, [TRAINER]),
   BOOST_ENERGY_8 ("Boost Energy", 8, Rarity.UNCOMMON, [TRAINER]),
   DELTA_RAINBOW_ENERGY_9 ("Delta Rainbow Energy", 9, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  CHARMANDER_DELTA_10 ("Charmander", 10, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  MEOWTH_DELTA_11 ("Meowth", 11, Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
+  CHARMANDER_DELTA_10 ("Charmander", 10, Rarity.COMMON, [POKEMON, BASIC, DELTA, _LIGHTNING_]),
+  MEOWTH_DELTA_11 ("Meowth", 11, Rarity.COMMON, [POKEMON, BASIC, DELTA, _DARKNESS_]),
   PIKACHU_12 ("Pikachu", 12, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  PIKACHU_DELTA_13 ("Pikachu", 13, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
-  PELIPPER_DELTA_14 ("Pelipper", 14, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  ZANGOOSE_DELTA_15 ("Zangoose", 15, Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
+  PIKACHU_DELTA_13 ("Pikachu", 13, Rarity.COMMON, [POKEMON, BASIC, DELTA, _METAL_]),
+  PELIPPER_DELTA_14 ("Pelipper", 14, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, DELTA, _LIGHTNING_]),
+  ZANGOOSE_DELTA_15 ("Zangoose", 15, Rarity.COMMON, [POKEMON, BASIC, DELTA, _METAL_]),
   ESPEON_STAR_16 ("Espeon Star", 16, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
   UMBREON_STAR_17 ("Umbreon Star", 17, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]);
 
@@ -123,12 +123,12 @@ public enum PopSeries5 implements LogicCardInfo {
           }
         }
         move "Fire Blast", {
-          text "60 damage. Discard a Energy attached to Ho-oh."
+          text "60 damage. Discard a [R] Energy attached to Ho-oh."
           energyCost R, R, R, C
           attackRequirement {}
           onAttack {
             damage 60
-            discardSelfEnergy(C)
+            discardSelfEnergy(R)
           }
         }
       };
@@ -248,12 +248,12 @@ public enum PopSeries5 implements LogicCardInfo {
           }
         }
         move "Heavy Metal", {
-          text "10+ damage. Flip a coin for each Energy attached to Pikachu. This attack does 10 damage plus 20 more damage for each heads."
+          text "10+ damage. Flip a coin for each [M] Energy attached to Pikachu. This attack does 10 damage plus 20 more damage for each heads."
           energyCost C, C
           attackRequirement {}
           onAttack {
             damage 10
-            flip self.cards.energyCount(C), {
+            flip self.cards.energyCount(M), {
               damage 20
             }
           }
@@ -313,7 +313,7 @@ public enum PopSeries5 implements LogicCardInfo {
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness P
         pokePower "Purple Ray", {
-          text "Once during your turn, when you put Espeon * from your hand onto your Bench, you may use this power. Each Active Pokémon (both yours and your opponent's) is now Confused."
+          text "Once during your turn, when you put Espeon Star from your hand onto your Bench, you may use this power. Each Active Pokémon (both yours and your opponent's) is now Confused."
           onActivate {
             if (it==PLAY_FROM_HAND && opp.hand && confirm("Use Purple Ray?")) {
               powerUsed()
@@ -337,7 +337,7 @@ public enum PopSeries5 implements LogicCardInfo {
         weakness F
         resistance P, MINUS30
         pokePower "Dark Ray", {
-          text "Once during your turn, when you put Umbreon * from your hand onto your Bench, you may choose 1 card from your opponent's hand without looking and discard it."
+          text "Once during your turn, when you put Umbreon Star from your hand onto your Bench, you may choose 1 card from your opponent's hand without looking and discard it."
           onActivate {
             if (it==PLAY_FROM_HAND && opp.hand && confirm("Use Dark Ray?")) {
               powerUsed()
