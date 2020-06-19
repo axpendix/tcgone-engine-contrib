@@ -3905,7 +3905,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay {
           eff = delayed{
             after FALL_BACK, {
-              directDamage 20, ef.fallenBack//, STADIUM_CARD ???
+              directDamage 20, ef.fallenBack, TRAINER_CARD //TODO: Cover Omega Barrier
             }
           }
         }
