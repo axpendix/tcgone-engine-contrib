@@ -4583,7 +4583,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           }
           playRequirement{
             //assert opp.bench.findAll { it.pokemonGX || it.pokemonEX } : "Your opponent has no Pokémon-GX or Pokémon-EX in play."
-            assertOppBenched(isGX: true, isEX: true)
+            assertOppBenched(hasPokemonGX: true, hasPokemonEX: true)
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "Not enough cards in your hand."
           }
         };
@@ -4801,7 +4801,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
             //assert my.bench.findAll({ it.types.contains(N) }) : "No [N] Pokémon on your bench."
-            assertMyBenched(type: N)
+            assertMyBenched(hasType: N)
           }
         };
       case PROFESSOR_OAK_S_SETUP_201:
