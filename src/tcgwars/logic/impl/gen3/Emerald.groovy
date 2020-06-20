@@ -1969,6 +1969,7 @@ public enum Emerald implements LogicCardInfo {
               }
               after EVOLVE, self, {check(self)}
               after DEVOLVE, self, {check(self)}
+              after ATTACH_ENERGY, self, {check(self)}
             }
           }
           onRemoveFromPlay {
