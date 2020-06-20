@@ -3221,7 +3221,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Discard a Special Energy from 1 of your opponent's Pokémon."
             energyCost C
             attackRequirement {
-              assert opp.all.findAll({it.cards.filterByType(SPECIAL_ENERGY)}) : "No Special Energy attached to opponent's Pokémon."
+              assertOppAll(info: "There is no special Energy attached to your opponent's Pokémon", repText: true, {it.cards.filterByType(SPECIAL_ENERGY)})
+              //assert opp.all.findAll({it.cards.filterByType(SPECIAL_ENERGY)}) : "No Special Energy attached to opponent's Pokémon."
             }
             onAttack {
               def targets = opp.all.findAll ({ it.cards.filterByType(SPECIAL_ENERGY) })
