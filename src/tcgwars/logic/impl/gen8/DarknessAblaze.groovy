@@ -3753,7 +3753,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             def darkPokeFilter = {card -> card.cardTypes.is(POKEMON) && card.asPokemonCard().types.contains(D)}
 
             def tar = my.deck.search(max: 2, "Search your deck for a [D] Pokémon and an Energy card.", {darkPokeFilter(it) || it.cardTypes.is(ENERGY)}, { CardList list ->
-              list.filterAll{darkPokeFilter(it)}.size() <= 1 && list.filterByType(ENERGY).size() <= 1
+              list.findAll{darkPokeFilter(it)}.size() <= 1 && list.filterByType(ENERGY).size() <= 1
             })
 
             if (tar) { tar.showToOpponent("Opponent's selected [D] Pokémon and Energy card.").moveTo(my.hand) }
