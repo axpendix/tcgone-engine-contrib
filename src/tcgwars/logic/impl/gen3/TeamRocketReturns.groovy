@@ -2516,10 +2516,14 @@ public enum TeamRocketReturns implements LogicCardInfo {
           onPlay {
             def pcs = my.all.findAll{it.notEvolution && it.topPokemonCard.cardTypes.isNot(EX)}.select()
             def tpc = pcs.topPokemonCard
+            def spc = pcs.specialConditions
             def selected = my.deck.search(max:1,"Select a Basic Pokémon (excluding Pokémon-ex)",{it.cardTypes.is(BASIC) && it.cardTypes.isNot(EX)})
             if (selected) {
               selected.moveTo(pcs.cards)
               discard tpc
+              spc.each{
+                apply it, self
+              }
               new CheckAbilities().run(bg)
             }
           }
