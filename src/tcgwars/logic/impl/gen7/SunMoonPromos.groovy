@@ -2588,7 +2588,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              def pcs = opp.all.select(max:2,"Choose 2 Pokémon to deal 50 damage to.")
+              def pcs = multiSelect(opp.all, 2)
               pcs.each {
                 noWrDamage 50, it
               }
