@@ -2666,6 +2666,7 @@ public enum Deoxys implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               after EVOLVE, self, {check(self)}
+              after DEVOLVE, self, {check(self)}
             }
           }
           onRemoveFromPlay {
