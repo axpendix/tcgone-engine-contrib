@@ -3843,7 +3843,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         playRequirement {
-          assert my.all.findAll { !it.topPokemonCard.cardTypes.is(VMAX) && !it.topPokemonCard.cardTypes.is(POKEMON_V) && !it.pokemonGX } : "No eligible Pokemon on Bench"
+          assertMyAll(info: "that isn’t a Pokémon V or a Pokémon-GX", { !it.pokemonV && !it.pokemonGX })
         }
       };
       case SKYLA_166:

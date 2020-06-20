@@ -3981,7 +3981,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           my.hand.discard()
         }
         playRequirement{
-          assert my.all.any{it.topPokemonCard.cardTypes.is(VMAX)} : "No Pokémon VMAX in play"
+          assertMyAll(hasPokemonVMAX: true)
           assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energy in your discard pile"
         }
       };
