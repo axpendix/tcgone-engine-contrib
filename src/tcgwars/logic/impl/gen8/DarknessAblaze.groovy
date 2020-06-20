@@ -2011,8 +2011,8 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.hand.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} } : "You have no Pokemon with Mad Party in your hand"
             assert my.deck : "Your deck is empty"
             checkLastTurn()
-            my.hand.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.select("Choose a Pokemon with Mad Party to discard").discard()
             powerUsed()
+            my.hand.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.select("Choose a Pokemon with Mad Party to discard").discard()
             draw 2
           }
         }
@@ -2387,7 +2387,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Discard 1 card from the top of your opponent’s deck."
           energyCost D
           attackRequirement {
-            assert opp.deck "Your opponent's deck is empty"
+            assert opp.deck : "Your opponent's deck is empty"
           }
           onAttack {
             opp.deck.subList(0,1).discard()
@@ -2452,9 +2452,11 @@ public enum DarknessAblaze implements LogicCardInfo {
             onActivate {r->
               if(r==Ability.ActivationReason.PLAY_FROM_HAND && confirm("Use Spider Net")){
                 powerUsed()
-                def pcs = opp.bench.select("New active")
-                targeted (pcs, SRC_ABILITY) {
-                  sw(opp.active, pcs, SRC_ABILITY)
+                def pcs = opp.bench.findAll{it.realEvolution}.select("New active")
+                if(pcs){
+                  targeted (pcs, SRC_ABILITY) {
+                    sw(opp.active, pcs, SRC_ABILITY)
+                  }
                 }
               }
           }
