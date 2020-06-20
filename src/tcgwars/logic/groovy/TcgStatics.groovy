@@ -1168,7 +1168,7 @@ class TcgStatics {
   static void assertAnyPokemonInPlay(params=[:], Closure filter = null) {
     def failMessage
     def checkedPlayer = params.opp ? opp : my
-    def checkedArea = params.benched ? checkedPlayer.benched : checkedPlayer.all
+    def checkedArea = params.benched ? checkedPlayer.bench : checkedPlayer.all
 
     def hasPokeCnt = 0
     [params.hasPokemonEX, params.hasPokemonGX, params.hasPokemonV, params.hasPokemonVMAX].each{hasPokeCnt += 1}
@@ -1191,20 +1191,20 @@ class TcgStatics {
     if (params.info && params.repText) {
       failMessage = params.info
     } else {
-      def benchedString = (param.benched ? "Benched " : "")
-      def typeString = (param.hasType ? "${params.hasType} " : "")
+      def benchedString = (params.benched ? "Benched " : "")
+      def typeString = (params.hasType ? "${params.hasType} " : "")
 
       def pokeString = ""
       if (hasPokeCnt) {
-        i = 1
+        int i = 1
         [
-          (params.hasPokemonEX, "Pokémon-EX"),
-          (params.hasPokemonGX, "Pokémon-GX"),
-          (params.hasPokemonV, "Pokémon V"),
-          (params.hasPokemonVMAX, "Pokémon VMAX")
+          [params.hasPokemonEX, "Pokémon-EX"],
+          [params.hasPokemonGX, "Pokémon-GX"],
+          [params.hasPokemonV, "Pokémon V"],
+          [params.hasPokemonVMAX, "Pokémon VMAX"]
         ].each{
           if (it[0]) {
-            pokeString += it[1] + (if (i == isPokeCnt) "" else if (i == isPokeCnt-1) " or " else ", ")
+            pokeString += it[1] + ((i == hasPokeCnt) ? "" : (i == hasPokeCnt-1 ? " or " : ", "))
             i += 1
           }
         }
@@ -1212,7 +1212,7 @@ class TcgStatics {
         pokeString += "Pokémon"
       }
 
-      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any ${benchString + typeString + pokeString} that ${params.info ? params.info : "follow the stated condition(s)"}"
+      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any ${benchedString + typeString + pokeString} that ${params.info ?: "follow the stated condition(s)"}"
     }
 
     assert checkedArea.any(areaFilter) : failMessage
