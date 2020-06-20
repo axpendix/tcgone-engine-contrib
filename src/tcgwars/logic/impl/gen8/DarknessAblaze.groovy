@@ -3778,7 +3778,6 @@ public enum DarknessAblaze implements LogicCardInfo {
 
             if (pcs) { pl.add(pcs) } else { tar = null }
           }
-          def tar = my.all.findAll{it.turnCount < bg.turnCount}
           pl.each { preEvo ->
             def sel = deck.search ("Select a Pokémon that evolves from $preEvo.name.", {
               it.cardTypes.is(EVOLUTION) && it.predecessor == preEvo.name
