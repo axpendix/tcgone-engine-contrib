@@ -2360,6 +2360,7 @@ public enum UnseenForces implements LogicCardInfo {
                 it.dmg += hp(20)
               }}
             }
+            after EVOLVE, self, {check(self)}
             after DEVOLVE, self, {check(self)}
           }
         }
