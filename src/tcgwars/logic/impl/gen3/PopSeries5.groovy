@@ -49,7 +49,7 @@ public enum PopSeries5 implements LogicCardInfo {
   BILL_S_MAINTENANCE_6 ("Bill's Maintenance", 6, Rarity.UNCOMMON, [TRAINER]),
   RARE_CANDY_7 ("Rare Candy", 7, Rarity.UNCOMMON, [TRAINER]),
   BOOST_ENERGY_8 ("Boost Energy", 8, Rarity.UNCOMMON, [TRAINER]),
-  DELTA_RAINBOW_ENERGY_9 ("Delta Rainbow Energy", 9, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
+  DELTA_RAINBOW_ENERGY_9 ("δ Rainbow Energy", 9, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
   CHARMANDER_DELTA_10 ("Charmander", 10, Rarity.COMMON, [POKEMON, BASIC, DELTA, _LIGHTNING_]),
   MEOWTH_DELTA_11 ("Meowth", 11, Rarity.COMMON, [POKEMON, BASIC, DELTA, _DARKNESS_]),
   PIKACHU_12 ("Pikachu", 12, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
