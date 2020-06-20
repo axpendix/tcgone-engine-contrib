@@ -2459,6 +2459,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                   }
                 }
               }
+            }
           }
         }
         move "Poison Sting", {
