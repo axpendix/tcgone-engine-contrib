@@ -401,7 +401,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Heal 30 damage from 1 of your Pokémon."
             energyCost C
             attackRequirement {
-              assert my.all.findAll{it.numberOfDamageCounters} : "Your Pokémon have no damage."
+              assertMyAll(info:"have any damage counters on them", {it.numberOfDamageCounters})
+              //assert my.all.findAll{it.numberOfDamageCounters} : "Your Pokémon have no damage."
             }
             onAttack{
               heal 30, my.all.findAll{it.numberOfDamageCounters}.select("Select a Pokémon to heal.")
@@ -2553,7 +2554,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.deck : "Your deck is empty."
-              assert my.all.find{it.name == 'Solgaleo'} : "You don't have Solgaleo in play."
+              assertMyAll(info: "are named Solgaleo", {it.name == 'Solgaleo'})
+              //assert my.all.find{it.name == 'Solgaleo'} : "You don't have Solgaleo in play."
               powerUsed()
               my.deck.search (max: 2, cardTypeFilter(BASIC_ENERGY)).each {
                 def tar = my.all.findAll({ it.name == "Solgaleo" || it.name == "Lunala" })
