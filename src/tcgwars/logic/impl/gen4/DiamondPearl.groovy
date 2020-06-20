@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.impl.gen1.BaseSet;
 import tcgwars.logic.impl.gen2.Expedition;
+import tcgwars.logic.impl.gen3.Sandstorm;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen5.PlasmaStorm;
 import tcgwars.logic.impl.gen5.BlackWhite;
