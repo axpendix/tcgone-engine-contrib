@@ -401,7 +401,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Heal 30 damage from 1 of your Pokémon."
             energyCost C
             attackRequirement {
-              assert my.all.findAll{it.numberOfDamageCounters} : "Your Pokémon have no damage."
+              assertMyAll(info:"have any damage counters on them", {it.numberOfDamageCounters})
+              //assert my.all.findAll{it.numberOfDamageCounters} : "Your Pokémon have no damage."
             }
             onAttack{
               heal 30, my.all.findAll{it.numberOfDamageCounters}.select("Select a Pokémon to heal.")
@@ -1561,7 +1562,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert self.benched
-              assertOppBench()//assert opp.bench
+              assertOppBenched()//assert opp.bench
               powerUsed()
               sw(opp.active, opp.bench.oppSelect("Choose a new Active Pokémon."))
               self.cards.getExcludedList(self.topPokemonCard).discard()
@@ -2553,7 +2554,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.deck : "Your deck is empty."
-              assert my.all.find{it.name == 'Solgaleo'} : "You don't have Solgaleo in play."
+              assertMyAll(info: "are named Solgaleo", {it.name == 'Solgaleo'})
+              //assert my.all.find{it.name == 'Solgaleo'} : "You don't have Solgaleo in play."
               powerUsed()
               my.deck.search (max: 2, cardTypeFilter(BASIC_ENERGY)).each {
                 def tar = my.all.findAll({ it.name == "Solgaleo" || it.name == "Lunala" })
@@ -2636,7 +2638,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
             energyCost C, C
             attackRequirement {
-              assertOppBench()//assert opp.bench
+              assertOppBenched()//assert opp.bench
             }
             onAttack {
               sw(opp.active, opp.bench.select())
@@ -2991,7 +2993,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
             energyCost C
             attackRequirement{
-              assertOppBench()//assert opp.bench : "Your opponent has no Benched Pokémon."
+              assertOppBenched()//assert opp.bench : "Your opponent has no Benched Pokémon."
             }
             onAttack{
               whirlwind()
@@ -3219,7 +3221,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Discard a Special Energy from 1 of your opponent's Pokémon."
             energyCost C
             attackRequirement {
-              assert opp.all.findAll({it.cards.filterByType(SPECIAL_ENERGY)}) : "No Special Energy attached to opponent's Pokémon."
+              assertOppAll(info: "There is no special Energy attached to your opponent's Pokémon", repText: true, {it.cards.filterByType(SPECIAL_ENERGY)})
+              //assert opp.all.findAll({it.cards.filterByType(SPECIAL_ENERGY)}) : "No Special Energy attached to opponent's Pokémon."
             }
             onAttack {
               def targets = opp.all.findAll ({ it.cards.filterByType(SPECIAL_ENERGY) })
@@ -3836,7 +3839,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost R, R, L, L
             attackRequirement {
               gxCheck()
-              assertOppBench()//assert opp.bench : "Opponent does not have any Benched Pokémon."
+              assertOppBenched()//assert opp.bench : "Opponent does not have any Benched Pokémon."
             }
             onAttack {
               gxPerform()
@@ -4583,7 +4586,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           }
           playRequirement{
             //assert opp.bench.findAll { it.pokemonGX || it.pokemonEX } : "Your opponent has no Pokémon-GX or Pokémon-EX in play."
-            assertOppBench(isGX: true, isEX: true)
+            assertOppBenched(isGX: true, isEX: true)
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "Not enough cards in your hand."
           }
         };
@@ -4749,7 +4752,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           }
           playRequirement {
             //assert my.bench
-            assertMyBench()
+            assertMyBenched()
           }
         };
       case MISTY_LORELEI_199:
@@ -4802,7 +4805,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
             //assert my.bench.findAll({ it.types.contains(N) }) : "No [N] Pokémon on your bench."
-            assertMyBench(type: N)
+            assertMyBenched(type: N)
           }
         };
       case PROFESSOR_OAK_S_SETUP_201:
