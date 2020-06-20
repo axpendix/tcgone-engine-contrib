@@ -1172,7 +1172,7 @@ class TcgStatics {
     def hasPokeCnt = 0
     [params.hasPokemonEX, params.hasPokemonGX, params.hasPokemonV, params.hasPokemonVMAX].each{hasPokeCnt += 1}
 
-    def areaFilter = (
+    def areaFilter = {
       (
           !params.hasType || it.types.contains(params.hasType)
       ) && (
@@ -1185,7 +1185,7 @@ class TcgStatics {
       ) && (
           filter == null || filter.call(it)
       )
-    )
+    }
 
     if (params.info && params.repText) {
       failMessage = params.info
