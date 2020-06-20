@@ -2564,9 +2564,11 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Confused."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                if (it.to == self && self.active && it.dmg.value && bg.currentTurn == self.owner.opposite) {
-                  bc "Cursed Body activates."
-                  apply CONFUSED, it.from, SRC_ABILITY
+                bg.dm().each {
+                  if (it.to == self && self.active && it.dmg.value && bg.currentTurn == self.owner.opposite) {
+                    bc "Cursed Body activates."
+                    apply CONFUSED, it.from, SRC_ABILITY
+                  }
                 }
               }
             }
