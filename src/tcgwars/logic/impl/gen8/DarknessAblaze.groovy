@@ -2675,8 +2675,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Bad Ruler", {
           text "Once during your turn, you may have your opponent discard cards from their hand until they have 4 cards left."
           actionA {
-            assert opp.hand.size() >= 5 :"Your opponent has 4 or fewer cards in hand"
+            assert opp.hand.size() > 4 :"Your opponent has 4 or fewer cards in hand"
             checkLastTurn()
+            powerUsed()
             def hand = opp.hand.oppSelect(count: 4, "Bad Ruler - Select 4 cards to KEEP (the rest will be discarded)")
             opp.hand.getExcludedList(hand).discard()
           }
@@ -2845,6 +2846,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
           onAttack {
             my.deck.search(max:2,"Select up to 2 cards",{true}).moveTo(hidden:true,my.hand)
+            shuffleDeck()
           }
         }
         move "Sharp Fang", {
@@ -2875,7 +2877,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 200
             afterDamage {
               // TODO: Make a static method to do this
-              def targetCount = Math.min self.cards.energyCount(W), 2
+              def targetCount = Math.min self.cards.energyCount(D), 2
               def finalCount = 0
               while (self.cards.energyCount(D) > 0 && finalCount < targetCount) {
                 def info = "Select [D] Energy to return to your hand."
