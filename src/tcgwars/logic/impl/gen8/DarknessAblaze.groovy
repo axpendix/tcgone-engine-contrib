@@ -3634,7 +3634,8 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay {reason->
           eff = delayed {
             before null, null, Source.ATTACK, {
-              if(bg.currentTurn == self.owner.opposite && self.active && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)) {
+              def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+              if(pcs && bg.currentTurn == self.owner.opposite && self.active && ef.effectType != DAMAGE) {
                 bc "Big Parasol prevents effect"
                 prevent()
               }
