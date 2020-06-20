@@ -2052,7 +2052,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 80
             if (my.bench) {
               def energy = self.cards.filterByEnergyType(R).select(min:0,"Energy To Move").first()
-              energySwitch(self, my.bench.select(), energy)
+              if(energy){
+                energySwitch(self, my.bench.select(), energy)
+              }
             }
           }
         }
