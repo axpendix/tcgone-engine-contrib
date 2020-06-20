@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.impl.gen1.BaseSet;
 import tcgwars.logic.impl.gen2.Expedition;
+import tcgwars.logic.impl.gen3.Sandstorm;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen5.PlasmaStorm;
 import tcgwars.logic.impl.gen5.BlackWhite;
@@ -2978,7 +2979,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 }
               }*/
               before EVOLVE_STANDARD, {
-                if (bg.currentTurn == self.owner && ef.cardToPlay == thisCard) {
+                if (bg.currentTurn == thisCard.owner && ef.cardToPlay == thisCard) {
                    if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
                      wcu "You can't level up a LV.X Pokémon."
                      prevent()
@@ -3054,7 +3055,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 }
               }*/
               before EVOLVE_STANDARD, {
-                if (bg.currentTurn == self.owner && ef.cardToPlay == thisCard) {
+                if (bg.currentTurn == thisCard.owner && ef.cardToPlay == thisCard) {
                    if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
                      wcu "You can't level up a LV.X Pokémon."
                      prevent()
@@ -3118,7 +3119,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 }
               }*/
               before EVOLVE_STANDARD, {
-                if (bg.currentTurn == self.owner && ef.cardToPlay == thisCard) {
+                if (bg.currentTurn == thisCard.owner && ef.cardToPlay == thisCard) {
                    if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
                      wcu "You can't level up a LV.X Pokémon."
                      prevent()
