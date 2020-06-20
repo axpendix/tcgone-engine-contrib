@@ -504,9 +504,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
                 def info = "Forest Camouflage prevents all damage from Pokémon V and Pokémon-GX"
-                def filter = {attacker ->
-                  attacker.pokemonGX || attacker.topPokemonCard.cardTypes.is(POKEMON_V) || attacker.topPokemonCard.cardTypes.is(VMAX)
-                }
+                def filter = { attacker -> attacker.pokemonGX || attacker.pokemonV }
                 if (it.to == self && it.from.owner != self.owner && filter(it.from) && it.notNoEffect && it.dmg.value) {
                   bc info
                   it.dmg=hp(0)
@@ -630,8 +628,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            def filter = {it.pokemonGX || it.topPokemonCard.cardTypes.is(POKEMON_V) || it.topPokemonCard.cardTypes.is(VMAX)}
-            def gxAndV = opp.all.findAll {filter(it)}
+            def gxAndV = opp.all.findAll{ it.pokemonGX || it.pokemonV }
             damage 30 + 50 * gxAndV.size()
           }
         }
@@ -2932,7 +2929,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
-            if(opp.active.topPokemonCard.cardTypes.is(POKEMON_VMAX)){
+            if(opp.active.pokemonVMAX){
               damage 120
             }
           }
@@ -3980,7 +3977,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return supporter (this) {
         text "Choose up to 2 basic Energy from your discard pile and attach them to 1 of your Pokémon VMAX. Then, discard your hand."
         onPlay {
-          attachEnergyFrom(max:2, basic: true, my.discard, my.all.findAll { it.topPokemonCard.cardTypes.is(VMAX) }.select("Attach Energy to which Pokémon VMAX?"))
+          attachEnergyFrom(max:2, basic: true, my.discard, my.all.findAll{it.pokemonVMAX}.select("Attach Energy to which Pokémon VMAX?"))
           my.hand.discard()
         }
         playRequirement{

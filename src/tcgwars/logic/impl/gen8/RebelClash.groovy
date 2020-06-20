@@ -3829,9 +3829,9 @@ public enum RebelClash implements LogicCardInfo {
       return copy(FireRedLeafGreen.POKE_BALL_95, this);
       case SCOOP_UP_NET_165:
       return itemCard (this) {
-        text "Put 1 of your Pokemon (excluding Pokemon V/GX) into your hand. (Discard all cards attached to that Pokemon.) You may play as many Item cards during your turn as you like (before your attack). (Note -  The term “Pokemon V” includes both Pokemon V and Pokemon VMAX.)"
+        text "Put 1 of your Pokémon that isn’t a Pokémon V or a Pokémon-GX into your hand. (Discard all attached cards.)"
         onPlay {
-          def validTargets = my.all.findAll { !it.topPokemonCard.cardTypes.is(VMAX) && !it.topPokemonCard.cardTypes.is(POKEMON_V) && !it.pokemonGX }
+          def validTargets = my.all.findAll{ !it.pokemonV && !it.pokemonGX }
 
           def tar = validTargets.select("Which Pokémon to put back into your hand?")
           targeted(tar, Source.TRAINER_CARD) {
@@ -4017,15 +4017,19 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case TWIN_ENERGY_174:
-      return specialEnergy (this, [[C, C]]) {
-        text "This card provides 2 [C] Energy. If this card is attached to a Pokemon V or Pokemon GX, this card provides 1 [C] Energy instead."
+      return specialEnergy (this, []) {
+        text "As long as this card is attached to a Pokémon that isn’t a Pokémon V or a Pokémon-GX, it provides [C][C] Energy. If this card is attached to a Pokémon V or a Pokémon-GX, it provides [C] Energy instead."
         onPlay {reason->
         }
         getEnergyTypesOverride {
-          if (self != null && !(self.topPokemonCard.cardTypes.is(POKEMON_V) || self.topPokemonCard.cardTypes.is(VMAX) || self.pokemonGX)) {
-            return [[C] as Set, [C] as Set]
+          if (self) {
+            if (!self.pokemonV || !self.pokemonGX) {
+              return [[C] as Set, [C] as Set]
+            } else {
+              return [[C] as Set]
+            }
           } else {
-            return [[C] as Set]
+            return [[] as Set]
           }
         }
       };
