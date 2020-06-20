@@ -285,7 +285,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   public boolean isEX() {
     return getTopPokemonCard().getCardTypes().is(CardType.EX);
   }
-  
+
   public boolean isPokemonEX(){
     return getTopPokemonCard().getCardTypes().is(CardType.POKEMON_EX);
   }
@@ -300,6 +300,15 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   public boolean isTagTeam(){
     return getTopPokemonCard().getCardTypes().is(CardType.TAG_TEAM);
+  }
+
+  public boolean isPokemonV(){
+    def topCardTypes = getTopPokemonCard().getCardTypes()
+    return topCardTypes.is(CardType.POKEMON_V) || topCardTypes.is(CardType.VMAX);
+  }
+
+  public boolean isPokemonVMAX(){
+    return getTopPokemonCard().getCardTypes().is(CardType.VMAX);
   }
 
   public List<Weakness> getWeaknesses(Battleground bg){

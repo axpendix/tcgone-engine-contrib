@@ -1560,8 +1560,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Once during your turn (before your attack), if this Pokémon is on your Bench, you may have your opponent switch their Active Pokémon with 1 of their Benched Pokémon. If you do, discard all cards attached to this Pokémon and put it on the bottom of your deck."
             actionA {
               checkLastTurn()
-              assert self.benched : "$self is not on the bench."
-              assert opp.bench : "Your opponent has no Benched Pokémon."
+              assert self.benched
+              assertOppBench()//assert opp.bench
               powerUsed()
               sw(opp.active, opp.bench.oppSelect("Choose a new Active Pokémon."))
               self.cards.getExcludedList(self.topPokemonCard).discard()
@@ -2636,7 +2636,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
             energyCost C, C
             attackRequirement {
-              assert opp.bench : "Your opponent has no benched Pokémon."
+              assertOppBench()//assert opp.bench
             }
             onAttack {
               sw(opp.active, opp.bench.select())
@@ -2991,7 +2991,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
             energyCost C
             attackRequirement{
-              assert opp.bench : "Your opponent has no Benched Pokémon."
+              assertOppBench()//assert opp.bench : "Your opponent has no Benched Pokémon."
             }
             onAttack{
               whirlwind()
@@ -3836,7 +3836,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost R, R, L, L
             attackRequirement {
               gxCheck()
-              assert opp.bench : "Opponent does not have any Benched Pokémon."
+              assertOppBench()//assert opp.bench : "Opponent does not have any Benched Pokémon."
             }
             onAttack {
               gxPerform()
@@ -4582,7 +4582,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert opp.bench.findAll { it.pokemonGX || it.pokemonEX } : "Your opponent has no Pokémon-GX or Pokémon-EX in play."
+            //assert opp.bench.findAll { it.pokemonGX || it.pokemonEX } : "Your opponent has no Pokémon-GX or Pokémon-EX in play."
+            assertOppBench(isGX: true, isEX: true)
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "Not enough cards in your hand."
           }
         };
@@ -4747,7 +4748,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
           }
           playRequirement {
-            assert my.bench
+            //assert my.bench
+            assertMyBench()
           }
         };
       case MISTY_LORELEI_199:
@@ -4799,7 +4801,8 @@ public enum CosmicEclipse implements LogicCardInfo {
           }
           playRequirement{
             assert my.deck : "Your deck is empty."
-            assert my.bench.findAll({ it.types.contains(N) }) : "No [N] Pokémon on your bench."
+            //assert my.bench.findAll({ it.types.contains(N) }) : "No [N] Pokémon on your bench."
+            assertMyBench(type: N)
           }
         };
       case PROFESSOR_OAK_S_SETUP_201:
