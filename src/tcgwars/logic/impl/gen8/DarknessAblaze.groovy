@@ -3843,11 +3843,11 @@ public enum DarknessAblaze implements LogicCardInfo {
       return supporter (this) {
         text "Choose up to 2 basic Energy from your discard pile and attach them to 1 of your Pokémon VMAX. Then, discard your hand."
         onPlay {
-          attachEnergyFrom(max:2, basic: true, my.discard, my.all.findAll { it.topPokemonCard.cardTypes.is(POKEMON_VMAX) }.select("Attach Energy to which Pokémon VMAX?"))
+          attachEnergyFrom(max:2, basic: true, my.discard, my.all.findAll { it.topPokemonCard.cardTypes.is(VMAX) }.select("Attach Energy to which Pokémon VMAX?"))
           my.hand.discard()
         }
         playRequirement{
-          assert my.all.any{it.topPokemonCard.cardTypes.is(POKEMON_VMAX)} : "No Pokémon VMAX in play"
+          assert my.all.any{it.topPokemonCard.cardTypes.is(VMAX)} : "No Pokémon VMAX in play"
           assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energy in your discard pile"
         }
       };
