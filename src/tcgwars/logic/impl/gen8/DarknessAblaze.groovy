@@ -3896,13 +3896,14 @@ public enum DarknessAblaze implements LogicCardInfo {
           pcs = null
 
           if (tar){
-            pcs = tar.select("Pokémon Breeder's Nurturing - Choose which Pokémon you want to search an evolution of. (2/2) [You can hit cancel and search for only an evolution of ${pl.first()}]", false) }
+            pcs = tar.select("Pokémon Breeder's Nurturing - Choose which Pokémon you want to search an evolution of. (2/2) [You can hit cancel and search for only an evolution of ${pl.first()}]", false)
 
             if (pcs) {
               pl.add(pcs)
               tar.remove(pcs)
             }
           }
+
           pl.each { preEvo ->
             def sel = deck.search ("Select a Pokémon that evolves from $preEvo.name.", {
               it.cardTypes.is(EVOLUTION) && it.predecessor == preEvo.name
