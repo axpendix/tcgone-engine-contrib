@@ -304,7 +304,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   public boolean isPokemonV(){
     def topCardTypes = getTopPokemonCard().getCardTypes()
-    return topCardTypes.is(CardType.POKEMON_V) || topCardTypes.is(CardType.POKEMON_VMAX);
+    return topCardTypes.is(CardType.POKEMON_V) || topCardTypes.is(CardType.VMAX);
   }
 
   public boolean isPokemonVMAX(){
