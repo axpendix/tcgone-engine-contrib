@@ -2979,7 +2979,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 }
               }*/
               before EVOLVE_STANDARD, {
-                if (bg.currentTurn == self.owner && ef.cardToPlay == thisCard) {
+                if (bg.currentTurn == thisCard.owner && ef.cardToPlay == thisCard) {
                    if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
                      wcu "You can't level up a LV.X Pokémon."
                      prevent()
@@ -3055,7 +3055,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 }
               }*/
               before EVOLVE_STANDARD, {
-                if (bg.currentTurn == self.owner && ef.cardToPlay == thisCard) {
+                if (bg.currentTurn == thisCard.owner && ef.cardToPlay == thisCard) {
                    if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
                      wcu "You can't level up a LV.X Pokémon."
                      prevent()
@@ -3119,7 +3119,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 }
               }*/
               before EVOLVE_STANDARD, {
-                if (bg.currentTurn == self.owner && ef.cardToPlay == thisCard) {
+                if (bg.currentTurn == thisCard.owner && ef.cardToPlay == thisCard) {
                    if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
                      wcu "You can't level up a LV.X Pokémon."
                      prevent()
