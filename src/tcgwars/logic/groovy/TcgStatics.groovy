@@ -1187,7 +1187,7 @@ class TcgStatics {
       )
     )
 
-    if (params.info + !params.repText) {
+    if (params.info && params.repText) {
       failMessage = params.info
     } else {
       def benchedString = (param.benched ? "Benched " : "")
