@@ -2970,21 +2970,33 @@ public enum DiamondPearl implements LogicCardInfo {
         //TODO: Find how to mark these cards as "LEVEL_UP" cards instead of evolutions.
         return evolution (this, from:"Empoleon", hp:HP140, type:WATER, retreatCost:2) {
           weakness L, PLUS30
+          globalAbility {Card thisCard->
+            delayed {
+              /*before PLAY_CARD, {
+                if(ef.cardToPlay == thisCard){
+                  validPokemon = thisCard.player.pbg.all.findAll{it.topPokemonCard.name == thisCard.name && !it.topPokemonCard.cardTypes.is(LEVEL_UP)}
+                }
+              }*/
+              before EVOLVE_STANDARD, {
+                if (bg.currentTurn == self.owner && ef.cardToPlay == thisCard) {
+                   if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
+                     wcu "You can't level up a LV.X Pokémon."
+                     prevent()
+                   } else if (!ef.pokemonToBeEvolved.active) {
+                     wcu "To level-up a Pokémon, it must be your Active Pokémon"
+                     prevent()
+                   }
+                }
+              }
+            }
+          }
           customAbility {
             //Temp workaround for Worlds 2007 format.
             //TODO: Remove this once Lv.X are properly implemented.
             getterA (GET_MOVE_LIST,self) {holder->
               for(card in holder.effect.target.cards.filterByType(POKEMON)){
-                if(card!=holder.effect.target.topPokemonCard && card.name == self.name){
+                if(!card.cardTypes.is(LEVEL_UP) && card.name == self.name){
                   holder.object.addAll(card.moves)
-                }
-              }
-            }
-            delayedA {
-              before PLAY_EVOLUTION, {
-                if(bg.currentTurn == self.owner && ef.cardToPlay.predecessor == self.name && !ef.cardToPlay.player.pbg.all.any{!it.topPokemonCard.cardTypes.is(LEVEL_UP)}) {
-                  wcu "[Temp Workaround] You can't level-up a LV.X into another Lv.X"
-                  prevent()
                 }
               }
             }
@@ -3033,21 +3045,34 @@ public enum DiamondPearl implements LogicCardInfo {
       case INFERNAPE_LV_X_121:
         return evolution (this, from:"Infernape", hp:HP120, type:FIRE, retreatCost:0) {
           weakness W, PLUS30
+          def validPokemon
+          globalAbility {Card thisCard->
+            delayed {
+              /*before PLAY_CARD, {
+                if(ef.cardToPlay == thisCard){
+                  validPokemon = thisCard.player.pbg.all.findAll{it.topPokemonCard.name == thisCard.name && !it.topPokemonCard.cardTypes.is(LEVEL_UP)}
+                }
+              }*/
+              before EVOLVE_STANDARD, {
+                if (bg.currentTurn == self.owner && ef.cardToPlay == thisCard) {
+                   if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
+                     wcu "You can't level up a LV.X Pokémon."
+                     prevent()
+                   } else if (!ef.pokemonToBeEvolved.active) {
+                     wcu "To level-up a Pokémon, it must be your Active Pokémon"
+                     prevent()
+                   }
+                }
+              }
+            }
+          }
           customAbility {
             //Temp workaround for Worlds 2007 format.
             //TODO: Remove this once Lv.X are properly implemented.
             getterA (GET_MOVE_LIST,self) {holder->
               for(card in holder.effect.target.cards.filterByType(POKEMON)){
-                if(card!=holder.effect.target.topPokemonCard && card.name == self.name){
+                if(!card.cardTypes.is(LEVEL_UP) && card.name == self.name){
                   holder.object.addAll(card.moves)
-                }
-              }
-            }
-            delayedA {
-              before PLAY_EVOLUTION, {
-                if(bg.currentTurn == self.owner && ef.cardToPlay.predecessor == self.name && !ef.cardToPlay.player.pbg.all.any{!it.topPokemonCard.cardTypes.is(LEVEL_UP)}) {
-                  wcu "[Temp Workaround] You can't level-up a LV.X into another Lv.X"
-                  prevent()
                 }
               }
             }
@@ -3085,21 +3110,33 @@ public enum DiamondPearl implements LogicCardInfo {
       case TORTERRA_LV_X_122:
         return evolution (this, from:"Torterra", hp:HP160, type:GRASS, retreatCost:4) {
           weakness R, PLUS30
+          globalAbility {Card thisCard->
+            delayed {
+              /*before PLAY_CARD, {
+                if(ef.cardToPlay == thisCard){
+                  validPokemon = thisCard.player.pbg.all.findAll{it.topPokemonCard.name == thisCard.name && !it.topPokemonCard.cardTypes.is(LEVEL_UP)}
+                }
+              }*/
+              before EVOLVE_STANDARD, {
+                if (bg.currentTurn == self.owner && ef.cardToPlay == thisCard) {
+                   if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
+                     wcu "You can't level up a LV.X Pokémon."
+                     prevent()
+                   } else if (!ef.pokemonToBeEvolved.active) {
+                     wcu "To level-up a Pokémon, it must be your Active Pokémon"
+                     prevent()
+                   }
+                }
+              }
+            }
+          }
           customAbility {
             //Temp workaround for Worlds 2007 format.
             //TODO: Remove this once Lv.X are properly implemented.
             getterA (GET_MOVE_LIST,self) {holder->
               for(card in holder.effect.target.cards.filterByType(POKEMON)){
-                if(card!=holder.effect.target.topPokemonCard && card.name == self.name){
+                if(!card.cardTypes.is(LEVEL_UP) && card.name == self.name){
                   holder.object.addAll(card.moves)
-                }
-              }
-            }
-            delayedA {
-              before PLAY_EVOLUTION, {
-                if(bg.currentTurn == self.owner && ef.cardToPlay.predecessor == self.name && !ef.cardToPlay.player.pbg.all.any{!it.topPokemonCard.cardTypes.is(LEVEL_UP)}) {
-                  wcu "[Temp Workaround] You can't level-up a LV.X into another Lv.X"
-                  prevent()
                 }
               }
             }
