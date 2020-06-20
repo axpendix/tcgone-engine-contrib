@@ -2450,7 +2450,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "When you play this card from your hand to evolve 1 of your Pokémon, you may switch 1 of your opponent’s Evolution Pokémon with their Active Pokémon."
           actionA {
             onActivate {r->
-              if(r==Ability.ActivationReason.PLAY_FROM_HAND && confirm("Use Spider Net")){
+              if(r==Ability.ActivationReason.PLAY_FROM_HAND && opp.bench.findAll{it.realEvolution} && confirm("Use Spider Net")){
                 powerUsed()
                 def pcs = opp.bench.findAll{it.realEvolution}.select("New active")
                 if(pcs){
