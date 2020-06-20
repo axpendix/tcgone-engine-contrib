@@ -3709,10 +3709,10 @@ public enum DarknessAblaze implements LogicCardInfo {
         text "Flip 2 coins. If both are heads, choose 1 card from your discard pile, reveal it, and put it into your hand."
         onPlay {
           def bringCardFromDiscard = {
-            my.discard.select("Which card will you put back into your hand?").move(my.hand)
+            my.discard.select("Which card will you put back into your hand?").moveTo(my.hand)
           }
 
-          flip 2, {}, {}, [2:bringCardFromDiscard]
+          flip 2, {}, {}, [2: bringCardFromDiscard]
         }
         playRequirement{
           assert my.discard : "You have no cards in your discard pile"
