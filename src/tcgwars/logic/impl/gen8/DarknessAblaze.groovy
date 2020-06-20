@@ -3889,14 +3889,19 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay {
           def tar = my.all.findAll{it.turnCount < bg.turnCount}
           def pl = new PcsList()
-          def pcs
-          while (pl.size() < 2 && tar){
-            def choosePokemon = { pcs = tar.select("Pokémon Breeder's Nurturing - Choose which Pokémon you want to search an evolution of. (${pl.size()+1}/2)", false) }
 
-            choosePokemon.call()
-            while (pl.size() < 1 && !pcs) { choosePokemon.call() }
+          def pcs = tar.select("Pokémon Breeder's Nurturing - Choose which Pokémon you want to search an evolution of. (1/${Math.min(tar.size(), 2)})")
+          pl.add(pcs)
+          tar.remove(pcs)
+          pcs = null
 
-            if (pcs) { pl.add(pcs) } else { tar = null }
+          if (tar){
+            pcs = tar.select("Pokémon Breeder's Nurturing - Choose which Pokémon you want to search an evolution of. (2/2) [You can hit cancel and search for only an evolution of ${pl.first()}]", false) }
+
+            if (pcs) {
+              pl.add(pcs)
+              tar.remove(pcs)
+            }
           }
           pl.each { preEvo ->
             def sel = deck.search ("Select a Pokémon that evolves from $preEvo.name.", {
