@@ -162,9 +162,9 @@ public enum DiamondPearl implements LogicCardInfo {
   ENERGY_SEARCH_117 ("Energy Search", 117, Rarity.COMMON, [TRAINER, ITEM]),
   POTION_118 ("Potion", 118, Rarity.COMMON, [TRAINER, ITEM]),
   SWITCH_119 ("Switch", 119, Rarity.COMMON, [TRAINER, ITEM]),
-  EMPOLEON_LV_X_120 ("Empoleon LV.X", 120, Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _WATER_]),
-  INFERNAPE_LV_X_121 ("Infernape LV.X", 121, Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _FIRE_]),
-  TORTERRA_LV_X_122 ("Torterra LV.X", 122, Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _GRASS_]),
+  EMPOLEON_LV_X_120 ("Empoleon", 120, Rarity.HOLORARE, [STAGE2, /* <- TODO: Remove that*/LEVEL_UP, EVOLUTION, POKEMON, _WATER_]),
+  INFERNAPE_LV_X_121 ("Infernape", 121, Rarity.HOLORARE, [STAGE2, /* <- TODO: Remove that*/LEVEL_UP, EVOLUTION, POKEMON, _FIRE_]),
+  TORTERRA_LV_X_122 ("Torterra", 122, Rarity.HOLORARE, [STAGE2, /* <- TODO: Remove that*/LEVEL_UP, EVOLUTION, POKEMON, _GRASS_]),
   GRASS_ENERGY_123 ("Grass Energy", 123, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   FIRE_ENERGY_124 ("Fire Energy", 124, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   WATER_ENERGY_125 ("Water Energy", 125, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
@@ -2969,6 +2969,25 @@ public enum DiamondPearl implements LogicCardInfo {
         //TODO: Find how to mark these cards as "LEVEL_UP" cards instead of evolutions.
         return evolution (this, from:"Empoleon", hp:HP140, type:WATER, retreatCost:2) {
           weakness L, PLUS30
+          customAbility {
+            //Temp workaround for Worlds 2007 format.
+            //TODO: Remove this once Lv.X are properly implemented.
+            getterA (GET_MOVE_LIST,self) {holder->
+              for(card in holder.effect.target.cards.filterByType(POKEMON)){
+                if(card!=holder.effect.target.topPokemonCard && card.name == self.name){
+                  holder.object.addAll(card.moves)
+                }
+              }
+            }
+            delayedA {
+              before PLAY_EVOLUTION, {
+                if(bg.currentTurn == self.owner && ef.cardToPlay.predecessor == self.name && !ef.cardToPlay.player.pbg.all.any{!it.topPokemonCard.cardTypes.is(LEVEL_UP)}) {
+                  wcu "[Temp Workaround] You can't level-up a LV.X into another Lv.X"
+                  prevent()
+                }
+              }
+            }
+          }
           pokePower "Supreme Command", {
             text "Once during your turn (before your attack), you may choose up to 2 cards from your opponent’s hand without looking and put them face down next to the Defending Pokémon. (These cards are not in play or in your opponent’s hand.) At the end of your opponent’s next turn, return those cards to your opponent’s hand. This power can’t be used if Empoleon is affected by a Special Condition."
             actionA {
@@ -3013,6 +3032,25 @@ public enum DiamondPearl implements LogicCardInfo {
       case INFERNAPE_LV_X_121:
         return evolution (this, from:"Infernape", hp:HP120, type:FIRE, retreatCost:0) {
           weakness W, PLUS30
+          customAbility {
+            //Temp workaround for Worlds 2007 format.
+            //TODO: Remove this once Lv.X are properly implemented.
+            getterA (GET_MOVE_LIST,self) {holder->
+              for(card in holder.effect.target.cards.filterByType(POKEMON)){
+                if(card!=holder.effect.target.topPokemonCard && card.name == self.name){
+                  holder.object.addAll(card.moves)
+                }
+              }
+            }
+            delayedA {
+              before PLAY_EVOLUTION, {
+                if(bg.currentTurn == self.owner && ef.cardToPlay.predecessor == self.name && !ef.cardToPlay.player.pbg.all.any{!it.topPokemonCard.cardTypes.is(LEVEL_UP)}) {
+                  wcu "[Temp Workaround] You can't level-up a LV.X into another Lv.X"
+                  prevent()
+                }
+              }
+            }
+          }
           pokePower "Burning Head", {
             text "Once during your turn (before your attack), you may look at the top 3 cards of your deck, choose 1 of them, and put it into your hand. Discard the other 2 cards. This power can’t be used if Infernape is affected by a Special Condition."
             actionA {
@@ -3046,6 +3084,25 @@ public enum DiamondPearl implements LogicCardInfo {
       case TORTERRA_LV_X_122:
         return evolution (this, from:"Torterra", hp:HP160, type:GRASS, retreatCost:4) {
           weakness R, PLUS30
+          customAbility {
+            //Temp workaround for Worlds 2007 format.
+            //TODO: Remove this once Lv.X are properly implemented.
+            getterA (GET_MOVE_LIST,self) {holder->
+              for(card in holder.effect.target.cards.filterByType(POKEMON)){
+                if(card!=holder.effect.target.topPokemonCard && card.name == self.name){
+                  holder.object.addAll(card.moves)
+                }
+              }
+            }
+            delayedA {
+              before PLAY_EVOLUTION, {
+                if(bg.currentTurn == self.owner && ef.cardToPlay.predecessor == self.name && !ef.cardToPlay.player.pbg.all.any{!it.topPokemonCard.cardTypes.is(LEVEL_UP)}) {
+                  wcu "[Temp Workaround] You can't level-up a LV.X into another Lv.X"
+                  prevent()
+                }
+              }
+            }
+          }
           pokePower "Forest Murmurs", {
             text "Once during your turn (before your attack), if you have more Prize cards left than your opponent, you may choose 1 of your opponent’s Benched Pokémon and switch it with 1 of the Defending Pokémon. This power can’t be used if Torterra is affected by a Special Condition."
             actionA {
