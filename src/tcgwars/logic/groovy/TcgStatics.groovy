@@ -1216,7 +1216,7 @@ class TcgStatics {
         pokeString += "Pokémon"
       }
 
-      def extraConditionString = (filter == null) ? "" : " in play that ${params.info ?: "follow the stated condition(s)"}"
+      def extraConditionString = (filter == null) ? "" : " in play ${params.info ?: "that follow the stated condition(s)"}"
 
       failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any ${benchedString + typeString + pokeString + extraConditionString}"
     }
