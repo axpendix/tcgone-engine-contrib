@@ -2355,11 +2355,12 @@ public enum UnseenForces implements LogicCardInfo {
         onPlay {reason->
           eff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {if(it.to.active && it.from.owner==thisCard.player && it.to.owner!=it.from.owner && it.dmg.value){
+              bg.dm().each {if(it.from == self && ( self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size() ) && it.to.active && it.to.owner != self.owner && it.dmg.value){
                 bc "Solid Rage +20"
                 it.dmg += hp(20)
               }}
             }
+            after DEVOLVE, self, {check(self)}
           }
         }
         onRemoveFromPlay {
