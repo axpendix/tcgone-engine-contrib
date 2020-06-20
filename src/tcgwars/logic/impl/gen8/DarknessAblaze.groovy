@@ -3709,10 +3709,10 @@ public enum DarknessAblaze implements LogicCardInfo {
         text "Flip 2 coins. If both are heads, choose 1 card from your discard pile, reveal it, and put it into your hand."
         onPlay {
           def bringCardFromDiscard = {
-            my.discard.select("Which card will you put back into your hand?").move(my.hand)
+            my.discard.select("Which card will you put back into your hand?").moveTo(my.hand)
           }
 
-          flip 2, {}, {}, [2:bringCardFromDiscard]
+          flip 2, {}, {}, [2: bringCardFromDiscard]
         }
         playRequirement{
           assert my.discard : "You have no cards in your discard pile"
@@ -3753,7 +3753,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             def darkPokeFilter = {card -> card.cardTypes.is(POKEMON) && card.asPokemonCard().types.contains(D)}
 
             def tar = my.deck.search(max: 2, "Search your deck for a [D] Pokémon and an Energy card.", {darkPokeFilter(it) || it.cardTypes.is(ENERGY)}, { CardList list ->
-              list.filterAll{darkPokeFilter(it)}.size() <= 1 && list.filterByType(ENERGY).size() <= 1
+              list.findAll{darkPokeFilter(it)}.size() <= 1 && list.filterByType(ENERGY).size() <= 1
             })
 
             if (tar) { tar.showToOpponent("Opponent's selected [D] Pokémon and Energy card.").moveTo(my.hand) }
@@ -3767,11 +3767,23 @@ public enum DarknessAblaze implements LogicCardInfo {
       return supporter (this) {
         text "Choose up to 2 of your Pokémon in play. Search your deck for a card that evolves from each of those Pokémon and put it on top of the Pokémon to evolve it. Then, shuffle your deck. (You can’t use this card during your first turn or on a Pokémon that just came into play.)"
         onPlay {
-          multiSelect (my.all.findAll {it.turnCount < bg.turnCount}, 2, "Choose up to 2 of your Pokémon in play that can make a regular evolve during this turn.").each { pcs ->
-            def sel = deck.search ("Select a Pokémon that evolves from $pcs.name.", {
-              it.cardTypes.is(EVOLUTION) && it.predecessor == pcs.name
+          def tar = my.all.findAll{it.turnCount < bg.turnCount}
+          def pl = new PcsList()
+          def pcs
+          while (pl.size() < 2 && tar){
+            def choosePokemon = { pcs = tar.select("Pokémon Breeder's Nurturing - Choose which Pokémon you want to search an evolution of. (${pl.size()+1}/2)", false) }
+
+            choosePokemon.call()
+            while (pl.size() < 1 && !pcs) { choosePokemon.call() }
+
+            if (pcs) { pl.add(pcs) } else { tar = null }
+          }
+          def tar = my.all.findAll{it.turnCount < bg.turnCount}
+          pl.each { preEvo ->
+            def sel = deck.search ("Select a Pokémon that evolves from $preEvo.name.", {
+              it.cardTypes.is(EVOLUTION) && it.predecessor == preEvo.name
             })
-            if (sel) { evolve(pcs, sel.first(), OTHER) }
+            if (sel) { evolve(preEvo, sel.first(), OTHER) }
           }
 
           shuffleDeck()
@@ -3843,11 +3855,11 @@ public enum DarknessAblaze implements LogicCardInfo {
       return supporter (this) {
         text "Choose up to 2 basic Energy from your discard pile and attach them to 1 of your Pokémon VMAX. Then, discard your hand."
         onPlay {
-          attachEnergyFrom(max:2, basic: true, my.discard, my.all.findAll { it.topPokemonCard.cardTypes.is(POKEMON_VMAX) }.select("Attach Energy to which Pokémon VMAX?"))
+          attachEnergyFrom(max:2, basic: true, my.discard, my.all.findAll { it.topPokemonCard.cardTypes.is(VMAX) }.select("Attach Energy to which Pokémon VMAX?"))
           my.hand.discard()
         }
         playRequirement{
-          assert my.all.any{it.topPokemonCard.cardTypes.is(POKEMON_VMAX)} : "No Pokémon VMAX in play"
+          assert my.all.any{it.topPokemonCard.cardTypes.is(VMAX)} : "No Pokémon VMAX in play"
           assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energy in your discard pile"
         }
       };
