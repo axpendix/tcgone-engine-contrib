@@ -2653,7 +2653,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             cardsToSearch++
           }
           if (cardsToSearch){
-            def tar = my.deck.search (count: cardsToSearch, "Search your deck for ${cardsToSearch==1?:"up to " + cardsToSearch} Basic Pokémon", cardTypeFilter(BASIC))
+            def tar = my.deck.search (max: cardsToSearch, "Search your deck for ${cardsToSearch==1?:"up to " + cardsToSearch} Basic Pokémon", cardTypeFilter(BASIC))
             if (tar) tar.showToOpponent("Selected Pokémon").moveTo(my.hand)
             shuffleDeck()
           }
