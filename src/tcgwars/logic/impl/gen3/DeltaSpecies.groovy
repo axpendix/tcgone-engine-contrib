@@ -2648,9 +2648,13 @@ public enum DeltaSpecies implements LogicCardInfo {
       return basicTrainer (this) {
         text "Flip 2 coins. For each heads, search your deck for a Basic Pokémon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
         onPlay {
+          def cardsToSearch = 0
           flip 2, {
-            my.deck.search ("Search your deck for a Basic Pokémon", cardTypeFilter(BASIC)).showToOpponent("Selected Pokémon").moveTo(my.hand)
+            cardsToSearch += 1
           }
+          if (cardsToSearch)
+            def tar = my.deck.search (count: cardsToSearch, "Search your deck for ${cardsToSearch==1?:"up to " + cardsToSearch} Basic Pokémon", cardTypeFilter(BASIC))
+            if (tar) tar.showToOpponent("Selected Pokémon").moveTo(my.hand)
           shuffleDeck()
         }
         playRequirement{

@@ -1171,14 +1171,14 @@ class TcgStatics {
     def checkedArea = params.benched ? checkedPlayer.bench : checkedPlayer.all
 
     //Debug test
-    def filteredVariants = params.filterVariants?:[]
-    def variants = [
-      POKEMON_EX: {bc "EX Filter"},
-      POKEMON_GX: {bc "GX Filter"},
-      POKEMON_V: {bc "V Filter"},
-      VMAX: {bc "VMAX Filter"}
+    def variantsAllowed = params.variantsAllowed?:[]
+    def variantFilters = [
+      (CardType.POKEMON_EX): {bc "EX Filter"},
+      (CardType.POKEMON_GX): {bc "GX Filter"},
+      (CardType.POKEMON_V): {bc "V Filter"},
+      (CardType.VMAX): {bc "VMAX Filter"}
     ]
-    filteredVariants.each{ varFilter -> variants.varFilter.call() }
+    variantsAllowed.each{ varFilter -> variantFilters.get(varFilter).call() }
     //End of debug
 
     def hasPokeCnt = [
