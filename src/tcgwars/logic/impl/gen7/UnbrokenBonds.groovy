@@ -1979,10 +1979,12 @@ public enum UnbrokenBonds implements LogicCardInfo {
             delayedA {
               before BEGIN_TURN, {
                 boolean flag = 1
-                all.each {
-                  if(self.active && it.owner != self.owner && it.basic) {
-                    if(flag) {bc "Detention Gas activates"; flag = 0}
-                    directDamage 10, it, SRC_ABILITY
+                if (self.active) {
+                  self.owner.opposite.pbg.all.each {
+                    if(it.basic) {
+                      if(flag) {bc "Detention Gas activates"; flag = 0}
+                      directDamage 10, it, SRC_ABILITY
+                    }
                   }
                 }
               }
