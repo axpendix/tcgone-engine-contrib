@@ -597,12 +597,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
-            afterDamage {
-              if (confirm("Return an Energy attached to the Active $opp.active.name to your opponent's hand?")) {
-                def info = "Select the Energy to return to the opponent's hand."
-                def selectedEnergy = defending.cards.filterByType(ENERGY).select info
-                if (selectedEnergy) selectedEnergy.moveTo opp.hand
-              }
+            if (confirm("Return an Energy attached to the Active $opp.active.name to your opponent's hand?")) {
+              def info = "Select the Energy to return to the opponent's hand."
+              def selectedEnergy = defending.cards.filterByType(ENERGY).select info
+              if (selectedEnergy) selectedEnergy.moveTo opp.hand
             }
           }
         }
@@ -705,11 +703,11 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
-            afterDamage {
-              if (self.cards.energyCount(C)) {
+            if (self.cards.energyCount(C)) {
+              afterDamage {
                 discardSelfEnergy C
-                discardDefendingEnergy()
               }
+              discardDefendingEnergy()
             }
           }
         }
@@ -790,7 +788,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 130
-            attachEnergyFrom basic:true, my.discard, my.bench
+            afterDamage {
+              attachEnergyFrom basic:true, my.discard, my.bench
+            }
           }
         }
       };
@@ -897,7 +897,9 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 110
             def info = "Discard all [W] Energy from this Pokémon to do 60 more damage?"
             if (self.cards.energyCount(W) && confirm(info)) {
-              discardAllSelfEnergy W
+              afterDamage {
+                discardAllSelfEnergy W
+              }
               damage 60
             }
           }
@@ -986,7 +988,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 20
             if (self.cards.energyCount(C) && confirm("Discard an Energy from $self.name to discard an energy from $defending.name?")) {
-              discardSelfEnergy C
+              afterDamage {
+                discardSelfEnergy C
+              }
               discardDefendingEnergy()
             }
           }
@@ -1438,7 +1442,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            discardAllSelfEnergy()
+            afterDamage {
+              discardAllSelfEnergy()
+            }
           }
         }
       };
@@ -2303,9 +2309,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
-            afterDamage{
-              discardDefendingEnergy()
-            }
+            discardDefendingEnergy()
           }
         }
         move "Heavy Rock Cannon", {
@@ -2355,7 +2359,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 130
-            discardSelfEnergy F
+            afterDamage {
+              discardSelfEnergy F
+            }
           }
         }
       };
