@@ -349,8 +349,7 @@ public enum HiddenFates implements LogicCardInfo {
           onAttack {
             damage 40
             afterDamage{
-              if(my.discard.filterByEnergyType(W)) { attachEnergyFrom(type:W, my.discard, my.all.select()) }
-              if(my.discard.filterByEnergyType(W)) { attachEnergyFrom(type:W, my.discard, my.all.select()) }
+              if(my.discard.filterByEnergyType(W)) { attachEnergyFrom(count:2, type:W, my.discard, my.all.select()) }
             }
           }
         }
