@@ -220,7 +220,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Night Murmurs", {
           text "30 damage. If the Defending Pokémon is a Basic Pokémon, that Pokémon is now Confused."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 30
             if (!defending.evolution) {
@@ -244,7 +243,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Enraged Linear Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage for each damage counter on Blastoise to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 10*self.numberOfDamageCounters, opp.all.select("Deal damage to?")
           }
@@ -252,7 +250,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Skull Bash", {
           text "60 damage."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -277,7 +274,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Linear Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30, opp.all.select()
           }
@@ -285,7 +281,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Combustion", {
           text "50 damage."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -317,7 +312,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Metal Burn", {
           text "120 damage. Discard all [M] Energy attached to Charizard."
           energyCost L, M, M, C
-          attackRequirement {}
           onAttack {
             damage 120
             discardAllSelfEnergy(M)
@@ -341,7 +335,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Dig Under", {
           text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. This attack's damage isn't affected by Weakness or Resistance."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 30, opp.all.select()
           }
@@ -349,7 +342,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Double-edge", {
           text "60 damage. Dugtrio does 10 damage to itself."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             damage 10, self
@@ -377,7 +369,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Knock Off", {
           text "30 damage. Choose 1 card from your opponent's hand without looking and discard it."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage {
@@ -388,7 +379,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Fire Punch", {
           text "60 damage."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -416,7 +406,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Stadium Play", {
           text "10 damage. If you have a Stadium card in play, remove 1 damage counter from each of your Pokémon. If your opponent has a Stadium card in play, this attack does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             if (bg.stadiumInfoStruct) {
@@ -440,7 +429,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Kick Away", {
           text "30 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon, if any."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage {
@@ -451,7 +439,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Strong Current", {
           text "50 damage. If Manectric has a Pokémon Tool card attached to it, this attack does 20 damage to each of your opponent's Benched Pokémon-ex. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 50
             if (self.cards.hasType(POKEMON_TOOL)) {
@@ -493,7 +480,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Bite Off", {
           text "20+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 20 damage plus 30 more damage."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (defending.EX) {
@@ -521,7 +507,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Disable", {
           text "10 damage. Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             amnesia delegate
@@ -534,7 +519,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Pick and Choose", {
           text "Choose either Burned or Poisoned, and either Asleep or Confused. The Defending Pokémon is now affected by both Special Conditions."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             def choice1 = choose([1,2], ['Apply Burn', 'Apply Poison'], "Choose 1")
             def choice2 = choose([3,4], ['Apply Asleep', 'Apply Confusion'], "Choose 1")
@@ -554,7 +538,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Reactive Poison", {
           text "50+ damage. Does 50 damage plus 20 more damage for each Special Condition affecting the Defending Pokémon."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 50+20*defending.specialConditions.size()
           }
@@ -581,7 +564,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Horn Attack", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -613,7 +595,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Pester", {
           text "30+ damage. If the Defending Pokémon is affected by a Special Condition, this attack does 30 damage plus 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             if(defending.specialConditions) damage 20
@@ -639,7 +620,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Hydro Pump", {
           text "50+ damage. Does 50 damage plus 20 more damage for each [W] Energy attached to Blastoise but not used to pay for this attack's Energy cost. You can't add more than 40 damage in this way."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             extraEnergyDamage(2, hp(20), W, thisMove)
@@ -663,7 +643,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Triple Needle", {
           text "Choose 3 of your opponent's Pokémon. This attack does 10 damage to each of those Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F
-          attackRequirement {}
           onAttack {
             multiSelect(opp.all, 3).each {
               targeted(it) {
@@ -675,7 +654,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Light Punch", {
           text "50 damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -687,7 +665,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Focus Energy", {
           text "During your next turn, Combusken's High Jump Kick attack's base damage is 70."
           energyCost F
-          attackRequirement {}
           onAttack {
             increasedBaseDamageNextTurn("High Jump Kick", hp(40))
           }
@@ -695,7 +672,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "High Jump Kick", {
           text "30 damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -721,7 +697,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Will-o'-the-wisp", {
           text "30 damage."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -729,7 +704,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Psychic Shield", {
           text "50 damage. Prevent all effects of attacks, including damage, done to Dusclops by your opponent's Pokémon-ex during your opponent's next turn."
           energyCost P, P, C
-          attackRequirement {}
           onAttack {
             damage 50
             preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.EX})
@@ -754,7 +728,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Pierce", {
           text "30 damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -767,7 +740,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Scratch", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -775,7 +747,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Agility", {
           text "30 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Grovyle during your opponent's next turn."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip { preventAllEffectsNextTurn() }
@@ -803,7 +774,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Circular Steps", {
           text "10x damage. Does 10 damage times the number of Pokémon in play (both yours and your opponent's), excluding Grumpig."
           energyCost P, P, C
-          attackRequirement {}
           onAttack {
             damage 10*(all.size() - 1)
           }
@@ -836,7 +806,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Body Slam", {
           text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip { apply PARALYZED }
@@ -845,7 +814,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Prop-up Pinchers", {
           text "40+ damage. If Kingler has a Pokémon Tool card attached to it, this attack does 40 damage plus 40 more damage."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             if (self.cards.hasType(POKEMON_TOOL)) damage 40
@@ -858,7 +826,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Surprise", {
           text "20 damage. Choose 1 card from your opponent's hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             afterDamage { astonish() }
@@ -867,7 +834,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Bass Control", {
           text "Choose 1 of your opponent's Pokémon. This attack does 40 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40, opp.all.select()
           }
@@ -879,7 +845,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Rain Splash", {
           text "20 damage."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -887,7 +852,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Mud Splash", {
           text "30 damage. Does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 30
             if (opp.bench) {
@@ -908,7 +872,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Psyshock", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { apply PARALYZED }
@@ -917,7 +880,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Sky Uppercut", {
           text "50 damage. This attack's damage isn't affected by Resistance."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             dontApplyResistance()
@@ -941,7 +903,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Supersonic", {
           text "20 damage. The Defending Pokémon is now Confused."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
             apply CONFUSED
@@ -950,7 +911,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Wing Attack", {
           text "40 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -972,7 +932,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Rock Hurl", {
           text "60 damage. This attack's damage isn't affected by Resistance."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             dontApplyResistance()
@@ -994,7 +953,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Green Blast", {
           text "20+ damage. Does 20 damage plus 10 more damage for each [G] Energy attached to all of your Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             my.all.each {
@@ -1005,7 +963,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Toxic Sleep", {
           text "The Defending Pokémon is now Asleep and Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             apply ASLEEP
             apply POISONED
@@ -1019,7 +976,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Rage", {
           text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Charmeleon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10+10*self.numberOfDamageCounters
           }
@@ -1027,7 +983,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Flamethrower", {
           text "60 damage. Discard a [R] Energy attached to Charmeleon."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 60
             discardSelfEnergy R
@@ -1040,7 +995,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Slash", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1048,7 +1002,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Thunder Jolt", {
           text "50 damage. Flip a coin. If tails, Charmeleon does 10 damage to itself."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             flip 1, {}, { damage 10, self }
@@ -1061,7 +1014,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Searing Flame", {
           text "10 damage. The Defending Pokémon is now Burned."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             apply BURNED
@@ -1070,7 +1022,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Firebreathing", {
           text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 20 more damage."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip { damage 20 }
@@ -1084,7 +1035,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Detect", {
           text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Grovyle during your opponent's next turn."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             flip { preventAllEffectsNextTurn() }
           }
@@ -1092,7 +1042,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Smash Kick", {
           text "30 damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1104,7 +1053,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Amnesia", {
           text "Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             amnesia delegate
           }
@@ -1112,7 +1060,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Sludge Toss", {
           text "40 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1124,7 +1071,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Sleep Powder", {
           text "20 damage. The Defending Pokémon is now Asleep."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             apply ASLEEP
@@ -1133,7 +1079,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Vine Whip", {
           text "40 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1145,7 +1090,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Stretch Vine", {
           text "Choose 1 of your opponent's Benched Pokémon. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C
-          attackRequirement {}
           onAttack {
             if (opp.bench) {
               damage 30, opp.bench.select()
@@ -1155,7 +1099,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Sharp Leaf", {
           text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 20 more damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip { damage 20 }
@@ -1169,7 +1112,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Roar", {
           text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon, if any."
           energyCost C
-          attackRequirement {}
           onAttack {
             whirlwind()
           }
@@ -1177,7 +1119,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Metal Charge", {
           text "50 damage. Put 1 damage counter on Lairon."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             directDamage 10, self
@@ -1190,7 +1131,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Plunder", {
           text "20 damage. Before doing damage, discard all Trainer cards attached to the Defending Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             if (defending.cards.filterByType(TRAINER)){
               defending.cards.filterByType(TRAINER).discard()
@@ -1201,7 +1141,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Wave Splash", {
           text "50 damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1213,7 +1152,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Hug", {
           text "20 damage. The Defending Pokémon can't retreat during your opponent's next turn."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             cantRetreat defending
@@ -1222,7 +1160,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Mud Shot", {
           text "50 damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1235,7 +1172,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Self Charge", {
           text "Attach a [D] Energy card from your hand to Nuzleaf."
           energyCost C
-          attackRequirement {}
           onAttack {
             attachEnergyFrom(type:D, my.hand, self)
           }
@@ -1243,7 +1179,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Corkscrew Punch", {
           text "40 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1269,7 +1204,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Tackle", {
           text "20 damage."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1281,7 +1215,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Tail Whap", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1289,7 +1222,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             swiftDamage(20, opp.all.select())
           }
@@ -1301,7 +1233,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Bubble", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { apply PARALYZED }
@@ -1310,7 +1241,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Tackle", {
           text "50 damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1322,7 +1252,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Tail Whip", {
           text "Flip a coin. If heads, the Defending Pokémon can't attack during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { cantAttackNextTurn defending }
           }
@@ -1330,7 +1259,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Bite", {
           text "40 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1343,7 +1271,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Flail", {
           text "10x damage. Does 10 damage times the number of damage counters on Aron."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1355,7 +1282,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Tackle", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1363,7 +1289,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Poisonpowder", {
           text "The Defending Pokémon is now Poisoned."
           energyCost G
-          attackRequirement {}
           onAttack {
             apply POISONED
           }
@@ -1375,7 +1300,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Growth", {
           text "Attach a [G] Energy card from your hand to Bulbasaur."
           energyCost C
-          attackRequirement {}
           onAttack {
             attachEnergyFrom(type:G, my.hand, self)
           }
@@ -1383,7 +1307,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Vine Whip", {
           text "20 damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1400,7 +1323,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Rising Lunge", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 20 }
@@ -1413,7 +1335,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Retaliate", {
           text "10x damage. Does 10 damage times the number of damage counters on Charmander."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1421,7 +1342,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Flame Tail", {
           text "20 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1433,7 +1353,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Scratch", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1441,7 +1360,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Bite", {
           text "20 damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1453,7 +1371,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Mud Slap", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1461,7 +1378,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Sand Pit", {
           text "20 damage. The Defending Pokémon can't retreat during your opponent's next turn."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 20
             cantRetreat defending
@@ -1483,7 +1399,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Super Psy Bolt", {
           text "10 damage."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1504,7 +1419,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Quick Blow", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 10 }
@@ -1517,7 +1431,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Hypnoblast", {
           text "10 damage. The Defending Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             apply ASLEEP
@@ -1530,7 +1443,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Vital Pinchers", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 10 }
@@ -1551,7 +1463,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Rolling Tackle", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1563,7 +1474,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Kick", {
           text "10 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1571,7 +1481,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Pure Power", {
           text "Put 2 damage counters on your opponent's Pokémon in any way you like."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             (1..2).each {
               if (opp.all) directDamage(10, opp.all.select("Put a damage counter on - $it out of 2"))
@@ -1598,7 +1507,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Mud Slap", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1610,7 +1518,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Nap", {
           text "Remove 2 damage counters from Mudkip."
           energyCost C
-          attackRequirement {}
           onAttack {
             heal 20, self
           }
@@ -1618,7 +1525,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Waterfall", {
           text "20 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1630,7 +1536,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Take Down", {
           text "30 damage. Numel does 10 damage to itself."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             damage 10, self
@@ -1643,7 +1548,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Headbutt", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1668,7 +1572,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Psywave", {
           text "10x damage. Does 10 damage times the amount of Energy attached to the Defending Pokémon."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10*defending.cards.energyCount(C)
           }
@@ -1676,7 +1579,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Ram", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1688,7 +1590,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Bite", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1696,7 +1597,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Skull Bash", {
           text "30 damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1721,7 +1621,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Bubblebeam", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply PARALYZED }
@@ -1734,7 +1633,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Claw", {
           text "20 damage. Flip a coin. If tails, this attack does nothing."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { damage 20 }
           }
@@ -1746,7 +1644,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Sand Attack", {
           text "10 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             sandAttack(thisMove)
@@ -1760,7 +1657,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Paralyzing Gaze", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply PARALYZED }
           }
@@ -1768,7 +1664,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Scratch", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1781,7 +1676,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Pound", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1789,7 +1683,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Shining Claws", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply PARALYZED }
@@ -1802,7 +1695,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Supersonic", {
           text "Flip a coin. If heads, the Defending Pokémon is now Confused."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply CONFUSED }
           }
@@ -1810,7 +1702,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Hyper Voice", {
           text "30 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1823,7 +1714,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Wing Attack", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2063,7 +1953,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Split Bomb", {
           text "Choose 2 of your opponent's Pokémon. This attack does 30 damage to each of them. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             multiSelect(opp.all, 2).each {
               targeted(it) {
@@ -2075,7 +1964,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Mega Burn", {
           text "100 damage. During your next turn, Aggron ex can't use Mega Burn."
           energyCost M, M, C, C
-          attackRequirement {}
           onAttack {
             damage 100
             cantUseAttack(thisMove, self)
@@ -2088,7 +1976,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Drag Off", {
           text "30 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             def target = defending
             if (opp.bench) {
@@ -2101,7 +1988,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Burn Away", {
           text "100 damage. Before doing damage, count the remaining HP of the Defending Pokémon. If that Pokémon is Knocked Out by this attack, Blaziken ex does damage to itself equal to this attack's damage minus the remaining HP of the Defending Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost R, F, C, C
-          attackRequirement {}
           onAttack {
             if (defending.getRemainingHP().value <= 100) {
               damage 100-defending.getRemainingHP().value, self
@@ -2130,7 +2016,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Upstream", {
           text "10x damage. Search your discard pile for all Energy cards. This attack does 10 damage times the number of Energy cards you find there. Show them to your opponent, and put them on top of your deck. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
           onAttack {
             def energies = my.discard.filterByType(ENERGY)
             damage 10*energies.size()
@@ -2143,7 +2028,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Tail Slap", {
           text "60 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -2174,7 +2058,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Derail", {
           text "40 damage. Discard a Special Energy card, if any, attached to the Defending Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 40
             discardDefendingSpecialEnergy(delegate)
@@ -2183,7 +2066,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Hyper Tail", {
           text "60+ damage. If the Defending Pokémon has any Poké-Powers or Poké-Bodies, this attack does 60 damage plus 20 more damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             def hasPokeBody = false
@@ -2218,7 +2100,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Power Blast", {
           text "100 damage. Discard 2 Energy attached to Groudon ex."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 100
             discardSelfEnergy C,C
@@ -2244,7 +2125,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Shield Beam", {
           text "30 damage. During your opponent's next turn, your opponent can't use any Poké-Powers on his or her Pokémon."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage {
@@ -2270,7 +2150,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Super Psy Bolt", {
           text "50 damage."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -2292,7 +2171,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Hydro Shot", {
           text "Discard 2 Energy attached to Kyogre ex. Choose 1 of your opponent's Pokémon. This attack does 70 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             discardSelfEnergy C,C
             damage 70, opp.all.select("Deal 70 damage to which Pokemon?")
@@ -2347,7 +2225,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Power Revenge", {
           text "60+ damage. Does 60 damage plus 10 more damage for each Prize card your opponent has taken."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 60+10*opp.prizeCardSet.takenCount
           }
@@ -2371,7 +2248,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Target Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. If that Pokémon already has any damage counters on it, this attack does 50 damage instead. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost D, C
-          attackRequirement {}
           onAttack {
             def target = opp.all.select("Deal damage to?")
             if (target.numberOfDamageCounters) {
@@ -2384,7 +2260,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Blade Arms", {
           text "70 damage."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -2409,7 +2284,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Ultra Pump", {
           text "60+ damage. You may discard 2 cards from your hand. If you do, this attack does 60 damage plus 20 more damage and does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             if (confirm("Ultra Pump - Discard 2 cards from hand?")) {
@@ -2479,7 +2353,6 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Leaf Shade", {
           text "Count the amount of Energy attached to Celebi Star. Put that many damage counters on 1 of your opponent's Pokémon."
           energyCost G
-          attackRequirement {}
           onAttack {
             def count = self.cards.energyCount(C)
             directDamage count*10, opp.all.select()

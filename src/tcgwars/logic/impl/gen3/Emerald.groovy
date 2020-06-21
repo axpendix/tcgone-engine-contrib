@@ -203,7 +203,6 @@ public enum Emerald implements LogicCardInfo {
           move "Searing Flame", {
             text "10 damage. The Defending Pokémon is now Burned."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               applyAfterDamage BURNED
@@ -212,7 +211,6 @@ public enum Emerald implements LogicCardInfo {
           move "Damage Burn", {
             text "50+ damage. If the Defending Pokémon already has any damage counters on it, this attack does 50 damage plus 20 more damage."
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
               damage 50
               if(defending.numberOfDamageCounters) damage 20
@@ -250,7 +248,6 @@ public enum Emerald implements LogicCardInfo {
           move "Swift", {
             text "30 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Power, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               swiftDamage(30, defending)
             }
@@ -263,7 +260,6 @@ public enum Emerald implements LogicCardInfo {
           move "Collect", {
             text "Draw 3 cards."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 3
             }
@@ -271,7 +267,6 @@ public enum Emerald implements LogicCardInfo {
           move "Body Slam", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               flipThenApplySC PARALYZED
@@ -280,7 +275,6 @@ public enum Emerald implements LogicCardInfo {
           move "Hyper Voice", {
             text "50 damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -288,7 +282,6 @@ public enum Emerald implements LogicCardInfo {
           move "Mega Throw", {
             text "60+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 60 damage plus 40 more damage."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               if (defending.EX) {
@@ -316,7 +309,6 @@ public enum Emerald implements LogicCardInfo {
           move "Psypunch", {
             text "30 damage."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -324,7 +316,6 @@ public enum Emerald implements LogicCardInfo {
           move "Mind Shock", {
             text "60 damage. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost P, C, C, C
-            attackRequirement {}
             onAttack {
               noWrDamage 60, defending
             }
@@ -337,7 +328,6 @@ public enum Emerald implements LogicCardInfo {
           move "Slash", {
             text "10 damage."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -345,7 +335,6 @@ public enum Emerald implements LogicCardInfo {
           move "Rock Tumble", {
             text "40 damage. This attack’s damage isn’t affected by Resistance."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               dontApplyResistance()
@@ -359,7 +348,6 @@ public enum Emerald implements LogicCardInfo {
           move "Ram", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -367,7 +355,6 @@ public enum Emerald implements LogicCardInfo {
           move "Aqua Sonic", {
             text "40 damage. This attack’s damage isn’t affected by Resistance."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               dontApplyResistance()
@@ -382,7 +369,6 @@ public enum Emerald implements LogicCardInfo {
           move "Swift", {
             text "20 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               swiftDamage(20,defending)
             }
@@ -390,7 +376,6 @@ public enum Emerald implements LogicCardInfo {
           move "Tail Shock", {
             text "40 damage. Does 10 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               opp.bench.each{damage 10, it}
@@ -404,7 +389,6 @@ public enum Emerald implements LogicCardInfo {
           move "Surf", {
             text "20 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -412,7 +396,6 @@ public enum Emerald implements LogicCardInfo {
           move "Super Hypno Wave", {
             text "50 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               flipThenApplySC ASLEEP
@@ -426,7 +409,6 @@ public enum Emerald implements LogicCardInfo {
           move "Dragon Dance", {
             text "During your next turn, if any of your current Active Pokémon does damage to any Defending Pokémon, the attack does 30 more damage (before applying Weakness and Resistance)."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               delayed{
                 after PROCESS_ATTACK_EFFECTS, {
@@ -446,7 +428,6 @@ public enum Emerald implements LogicCardInfo {
           move "Dragon Claw", {
             text "40 damage."
             energyCost R, L, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -478,7 +459,6 @@ public enum Emerald implements LogicCardInfo {
           move "Razor Leaf", {
             text "30 damage."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -486,7 +466,6 @@ public enum Emerald implements LogicCardInfo {
           move "Swift", {
             text "60 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost G, C, C, C
-            attackRequirement {}
             onAttack {
               swiftDamage(60,defending)
             }
@@ -512,7 +491,6 @@ public enum Emerald implements LogicCardInfo {
           move "Spinning Tail", {
             text "Does 10 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
-            attackRequirement {}
             onAttack {
               opp.all.each{damage 10,it}
             }
@@ -520,7 +498,6 @@ public enum Emerald implements LogicCardInfo {
           move "Aqua Sonic", {
             text "60 damage. This attack’s damage isn’t affected by Resistance."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               damage 60
               dontApplyResistance()
@@ -534,7 +511,6 @@ public enum Emerald implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -542,7 +518,6 @@ public enum Emerald implements LogicCardInfo {
           move "Warp Sounds", {
             text "20 damage. If the Defending Pokémon is an Evolved Pokémon, the Defending Pokémon is now Confused."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 20
               if(defending.evolution) applyAfterDamage CONFUSED
@@ -556,7 +531,6 @@ public enum Emerald implements LogicCardInfo {
           move "Hailstone", {
             text "Does 10 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
-            attackRequirement {}
             onAttack {
               opp.all.each{damage 10,it}
             }
@@ -564,7 +538,6 @@ public enum Emerald implements LogicCardInfo {
           move "Super Slash", {
             text "40+ damage. If the Defending Pokémon is an Evolved Pokémon, this attack does 40 damage plus 20 more damage."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               if(defending.evolution) damage 20
@@ -578,7 +551,6 @@ public enum Emerald implements LogicCardInfo {
           move "Slash", {
             text "20 damage."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -586,7 +558,6 @@ public enum Emerald implements LogicCardInfo {
           move "Eruption", {
             text "40+ damage. Each player discards the top card of his or her deck. This attack does 40 damage plus 10 more damage for each Energy card discarded in this way."
             energyCost F, C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               if(opp.deck){
@@ -607,7 +578,6 @@ public enum Emerald implements LogicCardInfo {
           move "Scary Face", {
             text "Flip a coin. If heads, the Defending Pokémon can’t attack or retreat during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {
                 cantRetreat defending
@@ -618,7 +588,6 @@ public enum Emerald implements LogicCardInfo {
           move "Hydro Pump", {
             text "40+ damage. Does 40 damage plus 10 more damage for each [W] Energy attached to Kyogre but not used to pay for this attack’s Energy cost. You can’t add more than than 20 damage in this way."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               damage 40
               extraEnergyDamage(2,hp(10),W,thisMove)
@@ -633,7 +602,6 @@ public enum Emerald implements LogicCardInfo {
           move "Dazzle Blast", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               flipThenApplySC CONFUSED
@@ -642,7 +610,6 @@ public enum Emerald implements LogicCardInfo {
           move "Zap Kick", {
             text "40 damage."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -655,7 +622,6 @@ public enum Emerald implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -663,7 +629,6 @@ public enum Emerald implements LogicCardInfo {
           move "Wide Laser", {
             text "Does 10 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C
-            attackRequirement {}
             onAttack {
               opp.all.each{damage 10, it}
             }
@@ -676,7 +641,6 @@ public enum Emerald implements LogicCardInfo {
           move "Sharp Fin", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -684,7 +648,6 @@ public enum Emerald implements LogicCardInfo {
           move "Hypno Splash", {
             text "20 damage. The Defending Pokémon is now Asleep."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 20
               applyAfterDamage ASLEEP
@@ -698,7 +661,6 @@ public enum Emerald implements LogicCardInfo {
           move "Horn Attack", {
             text "30 damage."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -706,7 +668,6 @@ public enum Emerald implements LogicCardInfo {
           move "Rock Tumble", {
             text "60 damage. This attack’s damage isn’t affected by Resistance."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               dontApplyResistance()
@@ -720,7 +681,6 @@ public enum Emerald implements LogicCardInfo {
           move "Pierce", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -728,7 +688,6 @@ public enum Emerald implements LogicCardInfo {
           move "Bite Off", {
             text "30+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 30 damage plus 30 more damage."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               if (defending.EX) { damage 30 }
@@ -742,7 +701,6 @@ public enum Emerald implements LogicCardInfo {
           move "Extra Claws", {
             text "10+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 10 damage plus 20 more damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               if (defending.EX) { damage 20 }
@@ -751,7 +709,6 @@ public enum Emerald implements LogicCardInfo {
           move "Quick Attack", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {damage 10}
@@ -765,7 +722,6 @@ public enum Emerald implements LogicCardInfo {
           move "Power Blow", {
             text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Breloom."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10+10*self.cards.energyCount(C)
             }
@@ -773,7 +729,6 @@ public enum Emerald implements LogicCardInfo {
           move "Body Slam", {
             text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost G, G, C
-            attackRequirement {}
             onAttack {
               damage 40
               flipThenApplySC PARALYZED
@@ -787,7 +742,6 @@ public enum Emerald implements LogicCardInfo {
           move "Extra Flame", {
             text "20+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 20 damage plus 30 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               if (defending.EX) {
@@ -798,7 +752,6 @@ public enum Emerald implements LogicCardInfo {
           move "Super Singe", {
             text "40 damage. The Defending Pokémon is now Burned."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               applyAfterDamage BURNED
@@ -820,7 +773,6 @@ public enum Emerald implements LogicCardInfo {
           move "Rock Smash", {
             text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 10 more damage."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip {damage 10}
@@ -834,7 +786,6 @@ public enum Emerald implements LogicCardInfo {
           move "Lava Burn", {
             text "20 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 20
               if(opp.bench){
@@ -845,7 +796,6 @@ public enum Emerald implements LogicCardInfo {
           move "Sharp Claws", {
             text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 10 more damage."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               flip {damage 10}
@@ -860,7 +810,6 @@ public enum Emerald implements LogicCardInfo {
           move "Smash Kick", {
             text "30 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -868,7 +817,6 @@ public enum Emerald implements LogicCardInfo {
           move "Smash Turn", {
             text "40 damage. After your attack, you may switch Dodrio with 1 of your Benched Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               afterDamage{
@@ -884,7 +832,6 @@ public enum Emerald implements LogicCardInfo {
           move "Thundershock", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 20
               flipThenApplySC PARALYZED
@@ -893,7 +840,6 @@ public enum Emerald implements LogicCardInfo {
           move "Speed Ball", {
             text "50 damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -907,7 +853,6 @@ public enum Emerald implements LogicCardInfo {
           move "Tail Shake", {
             text "10 damage. The Defending Pokémon is now Asleep."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
               applyAfterDamage ASLEEP
@@ -916,7 +861,6 @@ public enum Emerald implements LogicCardInfo {
           move "Razor Leaf", {
             text "40 damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -929,7 +873,6 @@ public enum Emerald implements LogicCardInfo {
           move "Psyshock", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 20
               flipThenApplySC PARALYZED
@@ -938,7 +881,6 @@ public enum Emerald implements LogicCardInfo {
           move "Teleport Blast", {
             text "40 damage. After your attack, you may switch Grumpig with 1 of your Benched Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               afterDamage{
@@ -954,7 +896,6 @@ public enum Emerald implements LogicCardInfo {
           move "Snap Tail", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10, opp.all.select()
             }
@@ -962,7 +903,6 @@ public enum Emerald implements LogicCardInfo {
           move "Psypunch", {
             text "40 damage."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -975,7 +915,6 @@ public enum Emerald implements LogicCardInfo {
           move "Cross-Cut", {
             text "20+ damage. If the Defending Pokémon is an Evolved Pokémon, this attack does 20 damage plus 20 more damage."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 20
               if(defending.evolution) damage 20
@@ -984,7 +923,6 @@ public enum Emerald implements LogicCardInfo {
           move "Shove", {
             text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               flipThenApplySC PARALYZED
@@ -998,7 +936,6 @@ public enum Emerald implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -1006,7 +943,6 @@ public enum Emerald implements LogicCardInfo {
           move "Tackle", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1019,7 +955,6 @@ public enum Emerald implements LogicCardInfo {
           move "Psypunch", {
             text "30 damage."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1027,7 +962,6 @@ public enum Emerald implements LogicCardInfo {
           move "Mind Shock", {
             text "40 damage. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               noWrDamage(40,defending)
             }
@@ -1040,7 +974,6 @@ public enum Emerald implements LogicCardInfo {
           move "Body Slam", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               flipThenApplySC PARALYZED
@@ -1049,7 +982,6 @@ public enum Emerald implements LogicCardInfo {
           move "Claw Swipe", {
             text "30 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1062,7 +994,6 @@ public enum Emerald implements LogicCardInfo {
           move "Body Slam", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               flipThenApplySC PARALYZED
@@ -1071,7 +1002,6 @@ public enum Emerald implements LogicCardInfo {
           move "Double-edge", {
             text "50 damage. Loudred does 10 damage to itself."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               damage 10,self
@@ -1085,7 +1015,6 @@ public enum Emerald implements LogicCardInfo {
           move "Super Hypno Wave", {
             text "10 damage. The Defending Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               applyAfterDamage ASLEEP
@@ -1094,7 +1023,6 @@ public enum Emerald implements LogicCardInfo {
           move "Surf", {
             text "50 damage."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -1117,7 +1045,6 @@ public enum Emerald implements LogicCardInfo {
           move "Quick Attack", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip{damage 20}
@@ -1131,7 +1058,6 @@ public enum Emerald implements LogicCardInfo {
           move "Confuse Ray", {
             text "10 damage. The Defending Pokémon is now Confused."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
               applyAfterDamage CONFUSED
@@ -1140,7 +1066,6 @@ public enum Emerald implements LogicCardInfo {
           move "Searing Flame", {
             text "40 damage. The Defending Pokémon is now Burned."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               applyAfterDamage BURNED
@@ -1155,7 +1080,6 @@ public enum Emerald implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -1163,7 +1087,6 @@ public enum Emerald implements LogicCardInfo {
           move "Thundershock", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 20
               flipThenApplySC PARALYZED
@@ -1177,7 +1100,6 @@ public enum Emerald implements LogicCardInfo {
           move "Blot", {
             text "20 damage. Remove 1 damage counter from Swalot."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               heal 10,self
@@ -1186,7 +1108,6 @@ public enum Emerald implements LogicCardInfo {
           move "Poison Breath", {
             text "40 damage. The Defending Pokémon is now Poisoned."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               applyAfterDamage POISONED
@@ -1201,7 +1122,6 @@ public enum Emerald implements LogicCardInfo {
           move "Peck", {
             text "20 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1209,7 +1129,6 @@ public enum Emerald implements LogicCardInfo {
           move "Skill Dive", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40, opp.all.select()
             }
@@ -1222,7 +1141,6 @@ public enum Emerald implements LogicCardInfo {
           move "Confuse Ray", {
             text "Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip{apply CONFUSED}
             }
@@ -1230,7 +1148,6 @@ public enum Emerald implements LogicCardInfo {
           move "Double-edge", {
             text "30 damage. Volbeat does 10 damage to itself."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 30
               damage 10,self
@@ -1244,7 +1161,6 @@ public enum Emerald implements LogicCardInfo {
           move "Slap", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1252,7 +1168,6 @@ public enum Emerald implements LogicCardInfo {
           move "Pierce", {
             text "30 damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1265,7 +1180,6 @@ public enum Emerald implements LogicCardInfo {
           move "Spike Cannon", {
             text "10× damage. Flip 3 coins. This attack does 10 damage times the number of heads."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip 3, {damage 10}
             }
@@ -1279,7 +1193,6 @@ public enum Emerald implements LogicCardInfo {
           move "Paralyzing Gaze", {
             text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {apply PARALYZED}
             }
@@ -1293,7 +1206,6 @@ public enum Emerald implements LogicCardInfo {
           move "Pound", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1307,7 +1219,6 @@ public enum Emerald implements LogicCardInfo {
           move "Double Kick", {
             text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip 2, {damage 10}
             }
@@ -1321,7 +1232,6 @@ public enum Emerald implements LogicCardInfo {
           move "Rear Kick", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1329,7 +1239,6 @@ public enum Emerald implements LogicCardInfo {
           move "Skull Bash", {
             text "30 damage."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1355,7 +1264,6 @@ public enum Emerald implements LogicCardInfo {
           move "Lunge", {
             text "20 damage. Flip a coin. If tails, this attack does nothing."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               flip {damage 20}
             }
@@ -1368,7 +1276,6 @@ public enum Emerald implements LogicCardInfo {
           move "Water Arrow", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10, opp.all.select()
             }
@@ -1381,7 +1288,6 @@ public enum Emerald implements LogicCardInfo {
           move "Headbutt", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1389,7 +1295,6 @@ public enum Emerald implements LogicCardInfo {
           move "Drool", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1402,7 +1307,6 @@ public enum Emerald implements LogicCardInfo {
           move "Dig Under", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               noWrDamage(20,opp.all.select())
             }
@@ -1420,7 +1324,6 @@ public enum Emerald implements LogicCardInfo {
           move "Strange Scale", {
             text "20 damage. If the Defending Pokémon is an Evolved Pokémon, the Defending Pokémon is now Confused."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 20
               if(defending.evolution) applyAfterDamage CONFUSED
@@ -1434,7 +1337,6 @@ public enum Emerald implements LogicCardInfo {
           move "Cross Chop", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 10
               flip {damage 10}
@@ -1448,7 +1350,6 @@ public enum Emerald implements LogicCardInfo {
           move "High Jump Kick", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1456,7 +1357,6 @@ public enum Emerald implements LogicCardInfo {
           move "Fake Out", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 20
               flipThenApplySC PARALYZED
@@ -1470,7 +1370,6 @@ public enum Emerald implements LogicCardInfo {
           move "Tail Strike", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
               flip {damage 10}
@@ -1484,7 +1383,6 @@ public enum Emerald implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -1492,7 +1390,6 @@ public enum Emerald implements LogicCardInfo {
           move "Lunge", {
             text "20 damage. Flip a coin. If tails, this attack does nothing."
             energyCost R
-            attackRequirement {}
             onAttack {
               flip {damage 20}
             }
@@ -1505,7 +1402,6 @@ public enum Emerald implements LogicCardInfo {
           move "Stampede", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1513,7 +1409,6 @@ public enum Emerald implements LogicCardInfo {
           move "Steady Firebreathing", {
             text "20 damage."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1535,7 +1430,6 @@ public enum Emerald implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -1548,7 +1442,6 @@ public enum Emerald implements LogicCardInfo {
           move "Pike Ball", {
             text "10 damage."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1556,7 +1449,6 @@ public enum Emerald implements LogicCardInfo {
           move "Thundershock", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flipThenApplySC PARALYZED
@@ -1570,7 +1462,6 @@ public enum Emerald implements LogicCardInfo {
           move "Hypnotic Ray", {
             text "10 damage. The Defending Pokémon is now Asleep."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 10
               applyAfterDamage ASLEEP
@@ -1584,7 +1475,6 @@ public enum Emerald implements LogicCardInfo {
           move "Horn Attack", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1592,7 +1482,6 @@ public enum Emerald implements LogicCardInfo {
           move "Horn Drill", {
             text "20 damage."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1606,7 +1495,6 @@ public enum Emerald implements LogicCardInfo {
           move "Ram", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1614,7 +1502,6 @@ public enum Emerald implements LogicCardInfo {
           move "Headbutt", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1627,7 +1514,6 @@ public enum Emerald implements LogicCardInfo {
           move "Beat", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1640,7 +1526,6 @@ public enum Emerald implements LogicCardInfo {
           move "Knock Away", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 10
               flip {damage 10}
@@ -1654,7 +1539,6 @@ public enum Emerald implements LogicCardInfo {
           move "Lunge", {
             text "20 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {damage 20}
             }
@@ -1681,7 +1565,6 @@ public enum Emerald implements LogicCardInfo {
           move "Razor Wind", {
             text "20 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {damage 20}
             }
@@ -1695,7 +1578,6 @@ public enum Emerald implements LogicCardInfo {
           move "Razor Wind", {
             text "10 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {damage 10}
             }
@@ -1708,7 +1590,6 @@ public enum Emerald implements LogicCardInfo {
           move "Hypnotic Gaze", {
             text "The Defending Pokémon is now Asleep."
             energyCost R
-            attackRequirement {}
             onAttack {
               apply ASLEEP
             }
@@ -1722,7 +1603,6 @@ public enum Emerald implements LogicCardInfo {
           move "Tail Smash", {
             text "10 damage. Flip a coin. If tails, this attack does nothing."
             energyCost G
-            attackRequirement {}
             onAttack {
               flip {damage 10}
             }
@@ -1735,7 +1615,6 @@ public enum Emerald implements LogicCardInfo {
           move "Ram", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1743,7 +1622,6 @@ public enum Emerald implements LogicCardInfo {
           move "Speed Ball", {
             text "30 damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1756,7 +1634,6 @@ public enum Emerald implements LogicCardInfo {
           move "Bite", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1764,7 +1641,6 @@ public enum Emerald implements LogicCardInfo {
           move "Firebreathing", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {damage 10}
@@ -1778,7 +1654,6 @@ public enum Emerald implements LogicCardInfo {
           move "Tackle", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1786,7 +1661,6 @@ public enum Emerald implements LogicCardInfo {
           move "Rollout", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1799,7 +1673,6 @@ public enum Emerald implements LogicCardInfo {
           move "Gnaw", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1807,7 +1680,6 @@ public enum Emerald implements LogicCardInfo {
           move "Body Slam", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 10
               flipThenApplySC PARALYZED
@@ -2008,7 +1880,6 @@ public enum Emerald implements LogicCardInfo {
           move "Dive", {
             text "20 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2016,7 +1887,6 @@ public enum Emerald implements LogicCardInfo {
           move "Dragon Mist", {
             text "70 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost W, L, C
-            attackRequirement {}
             onAttack {
               new ResolvedDamage(hp(70), my.active, defending, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE).run(bg)
             }
@@ -2040,7 +1910,6 @@ public enum Emerald implements LogicCardInfo {
           move "Psybeam", {
             text "20 damage. The Defending Pokémon is now Confused."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 20
               applyAfterDamage CONFUSED
@@ -2049,7 +1918,6 @@ public enum Emerald implements LogicCardInfo {
           move "Spike Rend", {
             text "50+ damage. If the Defending Pokémon already has any damage counters on it, this attack does 50 damage plus 20 more damage."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               if(defending.numberOfDamageCounters) damage 20
@@ -2074,7 +1942,6 @@ public enum Emerald implements LogicCardInfo {
           move "Searing Flame", {
             text "30 damage. The Defending Pokémon is now Burned."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               applyAfterDamage BURNED
@@ -2083,7 +1950,6 @@ public enum Emerald implements LogicCardInfo {
           move "Eruption", {
             text "60+ damage. Each player discards the top card of his or her deck. This attack does 60 damage plus 20 more damage for each Energy card discarded in this way."
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 60
               if(opp.deck){
@@ -2128,7 +1994,6 @@ public enum Emerald implements LogicCardInfo {
           move "Fastwave", {
             text "50 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               new ResolvedDamage(hp(50), my.active, defending, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE).run(bg)
             }
@@ -2153,7 +2018,6 @@ public enum Emerald implements LogicCardInfo {
           move "Shadow Beam", {
             text "Put 2 damage counters on the Defending Pokémon for each Energy attached to Dusclops ex."
             energyCost P
-            attackRequirement {}
             onAttack {
               directDamage 20*self.cards.energyCount(C), defending
             }
@@ -2181,7 +2045,6 @@ public enum Emerald implements LogicCardInfo {
           move "Pure Power", {
             text "Put 3 damage counters on your opponent’s Pokémon in any way you like."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               3.times{ directDamage 10, opp.all.select("Put 1 damage counter to which pokémon?") }
             }
@@ -2189,7 +2052,6 @@ public enum Emerald implements LogicCardInfo {
           move "Sky Kick", {
             text "60+ damage. If the Defending Pokémon has [F] Resistance, this attack does 60 damage plus 40 more damage."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               if(defending.resistances.find{it.type==F}) damage 40
@@ -2218,7 +2080,6 @@ public enum Emerald implements LogicCardInfo {
           move "Gentle Wrap", {
             text "30 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 30
               cantRetreat defending
@@ -2227,7 +2088,6 @@ public enum Emerald implements LogicCardInfo {
           move "Reflect Energy", {
             text "70 damage. Move 1 basic Energy card attached to Milotic ex to 1 of your Benched Pokémon."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               if(my.bench){
@@ -2275,7 +2135,6 @@ public enum Emerald implements LogicCardInfo {
           move "Power Short", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) If that Pokémon has Poké-Powers, this attack does 30 damage plus 20 more damage."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               def tar = opp.all.select("Select the targeted Pokémon")
               def hasPokePower = false
@@ -2290,7 +2149,6 @@ public enum Emerald implements LogicCardInfo {
           move "Pika Bolt", {
             text "70 damage."
             energyCost L, C, C, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -2303,7 +2161,6 @@ public enum Emerald implements LogicCardInfo {
           move "Ice Beam", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
               flipThenApplySC PARALYZED
@@ -2312,7 +2169,6 @@ public enum Emerald implements LogicCardInfo {
           move "Iceburg Crush", {
             text "40 damage. If Regirock ex is in play, flip a coin. If heads, discard 1 Energy card attached to the Defending Pokémon."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               damage 40
               if(my.all.findAll{it.name == "Regirock ex"}){
@@ -2341,7 +2197,6 @@ public enum Emerald implements LogicCardInfo {
           move "Metal Crush", {
             text "40+ damage. If Registeel ex is in play, this attack does 40 damage plus 20 more damage."
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
               damage 40
               if(my.all.findAll{it.name == "Registeel ex"}){
@@ -2357,7 +2212,6 @@ public enum Emerald implements LogicCardInfo {
           move "Block Signal", {
             text "10 damage. If Regice ex is in play, flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               if(my.all.findAll{it.name == "Regice ex"}){
@@ -2368,7 +2222,6 @@ public enum Emerald implements LogicCardInfo {
           move "Wide Laser", {
             text "Does 20 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost M, M, C
-            attackRequirement {}
             onAttack {
               opp.all.each{damage 20, it}
             }
@@ -2394,7 +2247,6 @@ public enum Emerald implements LogicCardInfo {
           move "Spearhead", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -2402,7 +2254,6 @@ public enum Emerald implements LogicCardInfo {
           move "Nosedive", {
             text "30 damage. Farfetch’d does 10 damage to itself."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               damage 10,self

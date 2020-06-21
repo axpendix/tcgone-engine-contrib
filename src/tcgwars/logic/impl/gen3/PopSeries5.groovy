@@ -116,7 +116,6 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Fire Wing", {
           text "20 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -124,7 +123,6 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Fire Blast", {
           text "60 damage. Discard a [R] Energy attached to Ho-oh."
           energyCost R, R, R, C
-          attackRequirement {}
           onAttack {
             damage 60
             discardSelfEnergy(R)
@@ -137,7 +135,6 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Super Psy Bolt", {
           text "20 damage."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -145,7 +142,6 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Aerowing", {
           text "Before doing damage, you may flip a coin. If tails, this attack does nothing. If heads, this attack does 60 damage instead."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             if (choose("You may flip a coin, if heads, this attack does 60 damage instead, if tails, this attack does nothing.")) {
               flip { damage 60 }
@@ -208,7 +204,6 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost D
-          attackRequirement {}
           onAttack {
             swiftDamage(10, opp.all.select("Select Feint Attack's target."))
           }
@@ -220,7 +215,6 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Lightning Ball", {
           text "10 damage."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -228,7 +222,6 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Thunderbolt", {
           text "50 damage. Discard all Energy cards attached to Pikachu."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             discardAllSelfEnergy(null)
@@ -241,7 +234,6 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Electric Punch", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -249,7 +241,6 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Heavy Metal", {
           text "10+ damage. Flip a coin for each [M] Energy attached to Pikachu. This attack does 10 damage plus 20 more damage for each heads."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip self.cards.energyCount(M), {
@@ -278,7 +269,6 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Lightning Wing", {
           text "50 damage. Does 10 damage to 1 of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 50
 
@@ -294,7 +284,6 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Detect", {
           text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Zangoose during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { preventAllEffectsNextTurn() }
           }
@@ -302,7 +291,6 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Metal Claw", {
           text "40 damage."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -324,7 +312,6 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Psychic Boom", {
           text "30+ damage. Does 30 damage plus 10 more damage for each Energy attached to the Defending Pokémon."
           energyCost P, P, C
-          attackRequirement {}
           onAttack {
             damage 30
             damage 10*defending.cards.energyCount(C)
@@ -347,7 +334,6 @@ public enum PopSeries5 implements LogicCardInfo {
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost D, D
-          attackRequirement {}
           onAttack {
             swiftDamage(30, opp.all.select("Use Feint Attack on which Pokémon?"))
           }

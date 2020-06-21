@@ -240,7 +240,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Delta Circle", {
           text "20+ damage. Does 20 damage plus 10 more damage for each Pokémon you have in play that has δ on its card."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 20 + 10*my.all.findAll { it.cardTypes.is(DELTA) }.size()
           }
@@ -267,7 +266,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Drag Off", {
           text "20 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             def target = defending
             if (opp.bench) {
@@ -280,7 +278,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Sharp Fang", {
           text "60 damage."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -313,7 +310,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Extra Claws", {
           text "30+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 30 damage plus 20 more damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
             if (defending.EX) {
@@ -343,7 +339,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Delta Reduction", {
           text "40 damage. During your opponent's next turn, any damage done by attacks from the Defending Pokémon is reduced by 30 (before applying Weakness and Resistance)."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 40
             reduceDamageFromDefendingNextTurn(hp(30),thisMove,defending)
@@ -352,7 +347,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Mega Impact", {
           text "60 damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -384,7 +378,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Flare", {
           text "60 damage."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -396,7 +389,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Linear Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30, opp.all.select()
           }
@@ -404,7 +396,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Dark Horn", {
           text "60 damage. You may discard a Basic Pokémon or Evolution card from your hand. If you do, choose 1 of your opponent's Benched Pokémon and do 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 60
 
@@ -434,7 +425,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Vengeance", {
           text "30+ damage. Does 30 damage plus 10 more damage for each Basic Pokémon and each Evolution card in your discard pile. You can't add more than 60 damage in this way."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             def bonus = my.discard.findAll{it.cardTypes.is(POKEMON)}.size()
             def bonusDamage = 10 * Math.min(my.discard.findAll{it.cardTypes.is(POKEMON)}.size(), 6)
@@ -468,7 +458,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Trick Tail", {
           text "30 damage. Search your discard pile for an Energy card and attach it to 1 of your Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             attachEnergyFrom(my.discard, my.all.select())
@@ -507,7 +496,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Guillotine", {
           text "40 damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -569,7 +557,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Wave Splash", {
           text "30 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -599,7 +586,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Burning Ball", {
           text "60 damage. If Typhlosion has at least 2 [R] Energy attached to it, the Defending Pokémon is now Burned."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 60
 
@@ -615,7 +601,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Burning Venom", {
           text "The Defending Pokémon is now Burned and Poisoned."
           energyCost C
-          attackRequirement {}
           onAttack {
             apply BURNED
             apply POISONED
@@ -624,7 +609,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Strangle", {
           text "50+ damage. If the Defending Pokémon has δ on its card, this attack does 50 damage plus 30 more damage."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 50
             if (defending.topPokemonCard.cardTypes.is(DELTA)) {
@@ -659,7 +643,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Grind", {
           text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Cloyster."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10+10*self.cards.energyCount(C)
           }
@@ -684,7 +667,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Ice Beam", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { apply PARALYZED }
@@ -693,7 +675,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Surge", {
           text "40+ damage. If Dewgong has at least 2 [W] Energy attached to it, this attack does 40 damage plus 20 more damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             if (self.cards.energyCount(W) >= 2) {
@@ -708,7 +689,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Sting Turn", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed and switch Gligar with 1 of your Benched Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip {
               apply PARALYZED
@@ -722,7 +702,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Tail Sting", {
           text "10+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 10 damage plus 10 more damage and the Defending Pokémon is now Poisoned."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             if (defending.EX) {
@@ -746,7 +725,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Fire Punch", {
           text "30 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -768,7 +746,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Metal Star", {
           text "30 damage. If Ledian has a Pokémon Tool card attached to it, draw 3 cards."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 30
             if (self.cards.filterByType(POKEMON_TOOL)) {
@@ -783,7 +760,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Lap Up", {
           text "Draw 2 cards."
           energyCost C
-          attackRequirement {}
           onAttack {
             draw 2
           }
@@ -791,7 +767,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Delta Mind", {
           text "Put 1 damage counter on 1 of your opponent's Pokémon. If that Pokémon has δ on its card, put 3 damage counters instead."
           energyCost P
-          attackRequirement {}
           onAttack {
             def tar = opp.all.select()
             if (tar.topPokemonCard.cardTypes.is(DELTA)) {
@@ -819,7 +794,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Spiral Drain", {
           text "10 damage. Remove 1 damage counter from Mantine."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 10
             heal 10, self
@@ -843,7 +817,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Pump Out", {
           text "50+ damage. If Quagsire has a Pokémon Tool card attached to it, this attack does 50 damage plus 20 more damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             if (self.cards.hasType(POKEMON_TOOL)) damage 20
@@ -856,7 +829,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Smokescreen", {
           text "20 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             sandAttack(thisMove)
@@ -865,7 +837,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Razor Wing", {
           text "40 damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -888,7 +859,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Grind", {
           text "10x damage. Does 10 damage times the amount of Energy attached to Tropius."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 10*self.cards.energyCount(C)
           }
@@ -910,7 +880,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Quick Blow", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { damage 20 }
@@ -936,7 +905,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Confuse Ray", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is Confused."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { apply CONFUSED }
@@ -950,7 +918,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Poisonpowder", {
           text "20 damage. The Defending Pokémon is now Poisoned."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 20
             apply POISONED
@@ -963,7 +930,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Scary Face", {
           text "Flip a coin. If heads, the Defending Pokémon can't attack or retreat during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip {
               cantRetreat defending
@@ -974,7 +940,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Slash", {
           text "50 damage."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -985,7 +950,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Wrap", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply PARALYZED }
           }
@@ -993,7 +957,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Horn Attack", {
           text "40 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1017,7 +980,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Swift", {
           text "30 damage. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             swiftDamage(30, defending)
           }
@@ -1029,7 +991,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Thundershock", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { apply PARALYZED }
@@ -1042,7 +1003,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Tackle", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1050,7 +1010,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Reverse Thrust", {
           text "20 damage. Switch Horsea with 1 of your Benched Pokémon."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (bench) {
@@ -1066,7 +1025,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Psyshock", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { apply PARALYZED }
@@ -1075,7 +1033,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Link Blast", {
           text "60 damage. If Kirlia and the Defending Pokémon have a different amount of Energy attached to them, this attack's base damage is 30 instead of 60."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             if (self.cards.energyCount(C) != defending.cards.energyCount(C)) {
               damage 30
@@ -1091,7 +1048,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Flickering Flames", {
           text "20 damage. The Defending Pokémon is now Asleep."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 20
             apply ASLEEP
@@ -1100,7 +1056,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Smack", {
           text "40 damage."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1112,7 +1067,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Poison Sting", {
           text "10 damage. The Defending Pokémon is now Poisoned."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             apply POISONED
@@ -1121,7 +1075,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Rear Kick", {
           text "40 damage."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1133,7 +1086,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Rage", {
           text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Nidorino."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 10 + 10 * self.numberOfDamageCounters
           }
@@ -1141,7 +1093,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Horn Drill", {
           text "30 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1153,7 +1104,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Smash Kick", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1161,7 +1111,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Quick Attack", {
           text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 20 more damage."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip { damage 20 }
@@ -1174,7 +1123,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Ram", {
           text "20 damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1182,7 +1130,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Extra Ball", {
           text "30+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 30 damage plus 30 more damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 30
             if (defending.EX) {
@@ -1196,7 +1143,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Headbutt", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1204,7 +1150,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Double-edge", {
           text "50 damage. Shelgon does 10 damage to itself."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             damage 10, self
@@ -1217,7 +1162,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Collect", {
           text "Draw a card."
           energyCost C
-          attackRequirement {}
           onAttack {
             draw 1
           }
@@ -1225,7 +1169,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Flickering Tail", {
           text "10+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 10 damage plus 10 more damage and the Defending Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             if (defending.EX) {
@@ -1251,7 +1194,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Agility", {
           text "30 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Swellow during your opponent's next turn."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip { preventAllEffectsNextTurn() }
@@ -1264,7 +1206,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Charm", {
           text "During your opponent's next turn, any damage done by attacks from the Defending Pokémon is reduced by 20 (before applying Weakness and Resistance)."
           energyCost W
-          attackRequirement {}
           onAttack {
             reduceDamageFromDefendingNextTurn(hp(20),thisMove,defending)
           }
@@ -1275,7 +1216,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Bite", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1283,7 +1223,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Sonic Noise", {
           text "30 damage. If the Defending Pokémon is Pokémon-ex, that Pokémon is now Confused."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 30
             if (defending.EX) {
@@ -1297,7 +1236,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Granite Head", {
           text "10 damage. During your opponent's next turn, any damage done to Bagon by attacks is reduced by 10 (after applying Weakness and Resistance)."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
             reduceDamageNextTurn(hp(10), thisMove)
@@ -1311,7 +1249,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Sleep Powder", {
           text "The Defending Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             apply ASLEEP
           }
@@ -1319,7 +1256,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Tackle", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1331,7 +1267,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Swift", {
           text "30 damage. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             swiftDamage(30, defending)
           }
@@ -1342,7 +1277,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Ram", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1354,7 +1288,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Bite", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1362,7 +1295,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Tail Snap", {
           text "20 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1383,7 +1315,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Thunder Spear", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10, opp.all.select()
           }
@@ -1395,7 +1326,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Flail", {
           text "10x damage. Does 10 damage times the number of damage counters on Feebas."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1407,7 +1337,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Sleepy Ball", {
           text "10 damage. The Defending Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             apply ASLEEP
@@ -1420,7 +1349,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Bite", {
           text "10 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1428,7 +1356,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Mud Slap", {
           text "20 damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1440,7 +1367,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Paralyzing Gaze", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost L
-          attackRequirement {}
           onAttack {
             flip { apply PARALYZED }
           }
@@ -1448,7 +1374,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Horn Attack", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1460,7 +1385,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Tackle", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1468,7 +1392,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Supersonic", {
           text "Flip a coin. If heads, the Defending Pokémon is now Confused."
           energyCost M
-          attackRequirement {}
           onAttack {
             flip { apply CONFUSED }
           }
@@ -1480,7 +1403,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Tail Whap", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1492,7 +1414,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Flop", {
           text "10 damage."
           energyCost D
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1504,7 +1425,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Tail Whip", {
           text "Flip a coin. If heads, the Defending Pokémon can't attack during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { cantAttackNextTurn defending }
           }
@@ -1512,7 +1432,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Scratch", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1524,7 +1443,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Peck", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1532,7 +1450,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Poison Horn", {
           text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
           energyCost D
-          attackRequirement {}
           onAttack {
             flip { apply POISONED }
           }
@@ -1544,7 +1461,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Headbutt", {
           text "20 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1556,7 +1472,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Hyper Beam", {
           text "20 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { discardDefendingEnergy() }
@@ -1569,7 +1484,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Hypnosis", {
           text "The Defending Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             apply ASLEEP
           }
@@ -1577,7 +1491,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Psychic Boom", {
           text "10x damage. Does 10 damage times the amount of Energy attached to the Defending Pokémon."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10*defending.cards.energyCount()
           }
@@ -1589,7 +1502,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Calm Mind", {
           text "Remove 2 damage counters from Ralts."
           energyCost C
-          attackRequirement {}
           onAttack {
             heal 20, self
           }
@@ -1597,7 +1509,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Will-o'-the-wisp", {
           text "20 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1609,7 +1520,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Pound", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1617,7 +1527,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Aurora Beam", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1629,7 +1538,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Shell Grab", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply PARALYZED }
@@ -1651,7 +1559,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Alluring Kiss", {
           text "Search your deck for a Basic Pokémon and a basic Energy card, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
           onAttack {
             def pokemon = my.deck.search ("Search for a Basic Pokemon", cardTypeFilter(BASIC))
             def energy = my.deck.search("Search for Basic Energy", cardTypeFilter(BASIC_ENERGY))
@@ -1668,7 +1575,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Splash About", {
           text "10+ damage. If Swablu has less Energy attached to it than the Defending Pokémon, this attack does 10 damage plus 10 more damage."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
             if (self.cards.energyCount(C) < defending.cards.energyCount(C)) {
@@ -1684,7 +1590,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Quick Attack", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 10 }
@@ -1697,7 +1602,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Scratch", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1705,7 +1609,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Rage", {
           text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Totodile."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 10 + 10 * self.numberOfDamageCounters
           }
@@ -1717,7 +1620,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Gnaw", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1725,7 +1627,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Dig", {
           text "20 damage."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1737,7 +1638,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Quick Bind", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost P
-          attackRequirement {}
           onAttack {
             directDamage 10, opp.all.select()
           }
@@ -1749,7 +1649,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Hypnotic Gaze", {
           text "The Defending Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             apply ASLEEP
           }
@@ -1757,7 +1656,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Will-o'-the-wisp", {
           text "20 damage."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1769,7 +1667,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Amnesia", {
           text "Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             amnesia delegate
           }
@@ -1777,7 +1674,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Tail Slap", {
           text "20 damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1952,7 +1848,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Healing Light", {
           text "60 damage. Remove 1 damage counter from each of your Pokémon."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             my.all.each{
@@ -1966,7 +1861,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Deafen", {
           text "40 damage. Your opponent can't play any Trainer cards (except for Supporter cards) from his or her hand during your opponent's next turn."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 40
 
@@ -1984,7 +1878,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Dragon Roar", {
           text "Put 8 damage counters on the Defending Pokémon. If that Pokémon would be Knocked Out by this attack, you may put any damage counters not necessary to Knocked Out the Defending Pokémon on your opponent's Benched Pokémon in any way you like."
           energyCost G, G, C, C
-          attackRequirement {}
           onAttack {
             def remainingHp = defending.getRemainingHP().value
             def excessDamageCounters = (80 - remainingHp) / 10
@@ -2023,7 +1916,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Psychic Pulse", {
           text "80 damage. Does 10 damage to each of your opponent's Benched Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost P, P, C
-          attackRequirement {}
           onAttack {
             damage 80
 
@@ -2047,7 +1939,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Flame Ball", {
           text "80 damage. You may move a [R] Energy card attached to Gardevoir ex to 1 of your Benched Pokémon."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 80
             if (my.bench) {
@@ -2078,7 +1969,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Energy Link", {
           text "40 damage. Search your discard pile for an Energy card and attach it to Kingdra ex."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 40
             attachEnergyFrom(my.discard, self)
@@ -2087,7 +1977,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Protective Swirl", {
           text "80 damage. Kingdra ex has no Weakness during your opponent's next turn."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 80
 
@@ -2121,7 +2010,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Power Crush", {
           text "90 damage. If the Defending Pokémon is Knocked Out by this attack, discard 2 [R] Energy attached to Latias ex."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 90
 
@@ -2150,7 +2038,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Ice Barrier", {
           text "30 damage. Prevent all effects of an attack, including damage, done to Latios ex by your opponent's Pokémon-ex during your opponent's next turn."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 30
             preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.EX})
@@ -2159,7 +2046,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Hydro Splash", {
           text "60 damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -2191,7 +2077,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Special Circuit", {
           text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. If you choose a Pokémon that has any Poké-Powers or Poké-Bodies, this attack does 50 damage instead. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, C
-          attackRequirement {}
           onAttack {
             def tar = opp.all.select("Special Circuit - deal 30 damage to? (If has Poke-Powers or Poke-Bodies, it does 50 instead.")
             if (tar.abilities.keySet().find {it instanceof PokePower || it instanceof PokeBody}) {
@@ -2204,7 +2089,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Sky-high Claws", {
           text "70 damage."
           energyCost L, L, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -2239,7 +2123,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Claw Swipe", {
           text "60 damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -2247,7 +2130,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Dual Stream", {
           text "80 damage. You may do 40 damage instead of 80 to the Defending Pokémon. If you do, this attack does 40 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, C, C
-          attackRequirement {}
           onAttack {
             if (opp.bench && confirm("Deal 40 instead of 80 to Defending in order to do 40 damage to a Pokemon on the Opponent's bench?")) {
               damage 40
@@ -2265,7 +2147,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Electromark", {
           text "Put a Shock-wave marker on 1 of your opponent's Pokémon."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
@@ -2279,7 +2160,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Hyper Claws", {
           text "70+ damage. If the Defending Pokémon is a Stage 2 Evolved Pokémon, this attack does 70 damage plus 20 more damage."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 70
             if (opp.active.topPokemonCard.cardTypes.is(STAGE2)) {
@@ -2311,7 +2191,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Rotating Claws", {
           text "20 damage. You may discard an Energy card attached to Charizard Star. If you do, search your discard pile for an Energy card (excluding the one you discarded) and attach it to Charizard Star."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (confirm("Rotating Claws - Discard an Energy to attach an Energy from your Discard Pile?")) {
@@ -2328,7 +2207,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Dark Swirl", {
           text "150 damage. Discard all Energy cards attached to Charizard Star and discard the top 3 cards from your opponent's deck."
           energyCost D, D, D, D, C
-          attackRequirement {}
           onAttack {
             damage 150
             discardAllSelfEnergy(null)
@@ -2342,7 +2220,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Mimicry", {
           text "Choose an attack on 1 of your opponent's Pokémon in play. Mimicry copies that attack. This attack does nothing if Mew Star doesn't have the Energy necessary to use that attack. (You must still do anything else required for that attack.) Mew Star performs that attack."
           energyCost C
-          attackRequirement {}
           onAttack {
             def tar = opp.all.select("Choose Pokemon to copy moves from")
             if (tar.topPokemonCard.moves) {

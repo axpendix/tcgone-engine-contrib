@@ -214,7 +214,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Double Wing Attack", {
             text "Does 20 Damage to each Defending Pokémon."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -222,7 +221,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Dive", {
             text "50 damage."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -250,7 +248,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Luring Antenna", {
             text "20 damage. Before doing damage, you may choose 1 of your opponent’s Benched Pokémon and switch it with 1 of the Defending Pokémon. If you do, this attack does 20 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
             energyCost G
-            attackRequirement {}
             onAttack {
               def pcs = defending
               if(opp.bench){
@@ -265,7 +262,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Cutting Wind", {
             text "50 damage."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -278,7 +274,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Leaf Poison", {
             text "20 damage. If Breloom has any [G] Energy attached to it, the Defending Pokémon is now Poisoned."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
               if(self.cards.energyCount(G)) applyAfterDamage POISONED
@@ -287,7 +282,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Hustle Punch", {
             text "70- damage. During your next turn, Hustle Punch attack’s base damage is 50 instead of 70."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               afterDamage{decreasedBaseDamageNextTurn(self,"Hustle Punch",hp(20))}
@@ -313,7 +307,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Split Bomb", {
             text "Choose 2 of your opponent’s Pokémon. This attack does 30 damage to each of them. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               multiSelect(opp.all, 2).each{ damage 30, it }
             }
@@ -338,7 +331,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Ancient Mantra", {
             text "20+ damage. If Claydol has any [P] Energy attached to it, the Defending Pokémon is now Confused. If Claydol has any [F] Energy attached to it, this attack does 20 damage plus 20 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               if(self.cards.energyCount(F)) damage 20
@@ -368,7 +360,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Bubblebeam", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flipThenApplySC PARALYZED
@@ -377,7 +368,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Cross-Cut", {
             text "40+ damage. If the Defending Pokémon is an Evolved Pokémon, this attack does 40 damage plus 20 more damage."
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               if(defending.evolution) damage 20
@@ -392,7 +382,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Psychic Removal", {
             text "20 damage. Flip 2 coins. If both of them are heads, discard all Energy attached to the Defending Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 20
               afterDamage{
@@ -407,7 +396,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Powerful Hand", {
             text "Count the number of cards in your hand. Put that many damage counters on the Defending Pokémon. You can’t put more than 7 damage counters in this way."
             energyCost P, P, C
-            attackRequirement {}
             onAttack {
               directDamage 10*Math.min(7,my.hand.size()), defending
             }
@@ -420,7 +408,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Dragon Spark", {
             text "This attack does 10 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W
-            attackRequirement {}
             onAttack {
               opp.all.each{
                 damage 10, it
@@ -430,7 +417,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Full Retaliation", {
             text "20× damage. Does 20 damage times the number of damage counters on all of your Magikarp."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               def totalDmg = 0
               my.all.each{
@@ -442,7 +428,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Pulverize", {
             text "50+ damage. If the Defending Pokémon already has at least 2 damage counters on it, this attack does 50 damage plus 50 more damage."
             energyCost W, W, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               if(defending.numberOfDamageCounters >= 2) damage 50
@@ -470,7 +455,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Metallic Blow", {
             text "20+ damage. If the Defending Pokémon has any Poké-Bodies, this attack does 20 damage plus 30 more damage."
             energyCost M, C
-            attackRequirement {}
             onAttack {
               damage 20
               def hasPokeBody = false
@@ -498,7 +482,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Healing Steps", {
             text "30 damage. You may discard as many cards as you like from your hand. If you do, remove that many damage counters from Ludicolo."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 30
               if(my.hand) {
@@ -511,7 +494,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Circular Steps", {
             text "10× damage. Does 10× damage times the number of Pokémon in play (both yours and your opponent’s), excluding Ludicolo."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 10*(my.bench.size()+opp.all.size())
             }
@@ -535,7 +517,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Link Blast", {
             text "70 damage. If Metagross and the Defending Pokémon have a different amount of Energy attached to them, this attack’s base damage is 40 instead of 70."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               if (self.cards.energyCount(C) == defending.cards.energyCount(C)){
                 damage 70
@@ -564,7 +545,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Pull Away", {
             text "30 damage. If your opponent has 5 or more cards in his or her hand, your opponent discards a number of cards until your opponent has 4 cards left in his or her hand."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               afterDamage {
@@ -607,7 +587,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Swords Dance", {
             text "During your next turn, Ninjask’s Slash attack’s base damage is 80."
             energyCost C
-            attackRequirement {}
             onAttack {
               increasedBaseDamageNextTurn("Slash",hp(50))
             }
@@ -615,7 +594,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Slash", {
             text "30 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -638,7 +616,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Extra Curse", {
             text "Put 2 damage counters on the Defending Pokémon. If the Defending Pokémon is Pokémon-ex, put 4 damage counters instead."
             energyCost C
-            attackRequirement {}
             onAttack {
               if(defending.EX){
                 directDamage 40, defending
@@ -669,7 +646,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Amnesia", {
             text "20 damage. Choose 1 of the Defending Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               amnesia delegate
@@ -678,7 +654,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Lazy Headbutt", {
             text "70 damage. Slaking is now Asleep."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               afterDamage{
@@ -718,7 +693,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Link Blast", {
             text "40 damage. If Deoxys and the Defending Pokémon have a different amount of Energy attached to them, this attack’s base damage is 20 instead of 40."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               if(self.cards.energyCount(C) == defending.cards.energyCount(C)){
                 damage 40
@@ -760,7 +734,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Energy Crush", {
             text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to all of your opponent’s Pokémon."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               def addDmg = 0
               opp.all.each{
@@ -801,7 +774,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Barrier Attack", {
             text "20 damage. During your opponent’s next turn, any damage done to Deoxys by attacks is reduced by 30 (after applying Weakness and Resistance)."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 20
               reduceDamageNextTurn(hp(30),thisMove)
@@ -828,7 +800,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Water Punch", {
             text "40+ damage. Flip a coin for each [W] Energy attached to Ludicolo. This attack does 40 damage plus 20 more damage for each heads."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               flip self.cards.energyCount(W), {damage 20}
@@ -854,7 +825,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Knock Over", {
             text "10 damage. You may discard any Stadium card in play."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               if(bg.stadiumInfoStruct) afterDamage {
@@ -865,7 +835,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Combustion", {
             text "50 damage."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -879,7 +848,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Bay Dance", {
             text "10 damage. During your next turn, if any of your current Active Pokémon does damage to any Defending Pokémon, the attack does 30 more damage (before applying Weakness and Resistance)."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               afterDamage{
@@ -890,7 +858,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Aqua Sonic", {
             text "50 damage. This attack’s damage is not affected by Resistance."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               dontApplyResistance()
@@ -915,7 +882,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Tumbling Attack", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {damage 20}
@@ -940,7 +906,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Slash", {
             text "10 damage"
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -948,7 +913,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Limitation", {
             text "Your opponent can’t play any Supporter Cards from his or hand during your opponent’s next turn."
             energyCost D
-            attackRequirement {}
             onAttack {
               //TODO: Fix the static so it uses this attack's name
               opponentCantPlaySupporterNextTurn(delegate)
@@ -962,7 +926,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Triple Breach", {
             text "Choose 3 of your opponent’s Pokémon. This attack does 10 damage to each of those Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W
-            attackRequirement {}
             onAttack {
               multiSelect(opp.all, 3).each{ damage 10, it }
             }
@@ -970,7 +933,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Rend", {
             text "30+ damage. If the Defending Pokémon already has any damage counters on it, this attack does 30 damage plus 20 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               if(defending.numberOfDamageCounters) damage 20
@@ -995,7 +957,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Stadium Power", {
             text "50+ damage. If there is any Stadium card in play, this attack does 50 damage plus 20 more damage."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               if(bg.stadiumInfoStruct) damage 20
@@ -1017,7 +978,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Spearhead", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -1025,7 +985,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Heavy Metal", {
             text "10+ damage. Flip a coin for each [M] Energy attached to Skarmory. This attack does 10 damage plus 20 more damage for each heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 10
               flip self.cards.energyCount(M), {damage 20}
@@ -1047,7 +1006,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Miracle Blow", {
             text "Flip a coin. If heads, choose 1 Special Condition. The Defending Pokémon is now affected by that Special Condition."
             energyCost G
-            attackRequirement {}
             onAttack {
               flip {
                 apply choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending pokemon")
@@ -1057,7 +1015,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Stomp", {
             text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 20 more damage."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               flip {damage 20}
@@ -1071,7 +1028,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Raging Tremble", {
             text "Flip a coin. If heads, this attack does 10 damage for each damage counter on Whiscash to each Defending Pokémon. If tails, this attack does 10 damage for each damage counter on Whiscash to the Defending Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10*self.numberOfDamageCounters
             }
@@ -1079,7 +1035,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Dwindling Wave", {
             text "70- damage. Does 70 damage minus 10 damage for each damage counter on Whiscash."
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
               damage 70-10*self.numberOfDamageCounters
             }
@@ -1104,7 +1059,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Dazzle Dance", {
             text "Each Defending Pokémon is now Confused."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply CONFUSED
             }
@@ -1112,7 +1066,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Psyloop", {
             text "30+ damage. Does 30 damage plus 30 more damage for each Trainer card your opponent has in play."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               def addDmg = 0
               damage 30
@@ -1144,7 +1097,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Spinning Horn", {
             text "Does 10 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F
-            attackRequirement {}
             onAttack {
               opp.all.each{
                 damage 10, it
@@ -1154,7 +1106,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Rock Hurl", {
             text "50 damage. This attack’s damage is not affected by Resistance."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               dontApplyResistance()
@@ -1179,7 +1130,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Spiral Drain", {
             text "20 damage. Remove 1 damage counter from Golbat."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 20
               heal 10,self
@@ -1204,7 +1154,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Hypnoblast", {
             text "20 damage. The Defending Pokémon is now Asleep."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 20
               applyAfterDamage ASLEEP
@@ -1213,7 +1162,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Extra Ball", {
             text "50+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 50 damage plus 30 more damage."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               if(defending.EX) damage 30
@@ -1235,7 +1183,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Ambush", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {damage 20}
@@ -1259,7 +1206,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Blot", {
             text "20 damage. Remove 2 damage counters from Lombre."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               heal 20, self
@@ -1273,7 +1219,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Surprise", {
             text "10 damage. Choose 1 card from your opponent’s hand without looking. Look at the card you chose, then have your opponent shuffle that card into his her deck."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
               afterDamage { astonish() }
@@ -1301,7 +1246,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Target Beam", {
             text "20+ damage. Does 20 damage plus 10 more damage for each Solrock you have in play."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 20
               my.all.each{
@@ -1317,7 +1261,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Headbutt", {
             text "20 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1325,7 +1268,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Burning Ball", {
             text "50 damage. If Magcargo has at least 2 [R] Energy attached to it, the Defending Pokémon is now Burned."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               if(self.cards.energyCount(R) >= 2) applyAfterDamage BURNED
@@ -1340,7 +1282,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Thunder Spear", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 20, opp.all.select("20 damage to?")
             }
@@ -1348,7 +1289,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Magnetic Tackle", {
             text "40+ damage. You may do 40 damage plus 10 more damage for each [L] Energy attached to Manetric. If you do, Manetric does 10 damage to itself."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               //TODO: Could this choice be done regardless of having [L] Energy attached or not? May want the self damage for some reason.
@@ -1382,7 +1322,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Stun Spore", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 20
               flipThenApplySC PARALYZED
@@ -1396,7 +1335,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Psychic Boom", {
             text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to the Defending Pokémon."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 10 + 10*defending.cards.energyCount(C)
             }
@@ -1404,7 +1342,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Quick Blow", {
             text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 20 more damage."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               flip {damage 20}
@@ -1428,7 +1365,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Negative Spark", {
             text "Does 20 damage to each of your opponent’s Pokémon that has any Poké-Bodies. Don’t apply Weakness and Resistance."
             energyCost L
-            attackRequirement {}
             onAttack {
               def hasPokeBody
               opp.all.each{
@@ -1460,7 +1396,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Sharpen", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1473,7 +1408,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Eerie Light", {
             text "The Defending Pokémon is now Confused."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply CONFUSED
             }
@@ -1481,7 +1415,6 @@ public enum Deoxys implements LogicCardInfo {
           move "One-Two Strike", {
             text "30+ damage. Flip 2 coins. This attack does 30 damage plus 20 more damage for each heads."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip 2, {damage 20}
@@ -1500,7 +1433,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Positive Spark", {
             text "Does 20 damage to each of your opponent’s Pokémon that has any Poké-Powers. Don’t apply Weakness and Resistance."
             energyCost L
-            attackRequirement {}
             onAttack {
               def hasPokePower = false
               opp.all.each{
@@ -1535,7 +1467,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Rock Smash", {
             text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 10 more damage."
             energyCost R, W
-            attackRequirement {}
             onAttack {
               damage 30
               flip {damage 10}
@@ -1549,7 +1480,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Ram", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1557,7 +1487,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Advanced Armor", {
             text "During your opponent’s next turn, prevent all effects of attacks, including damage, done to Silcoon by your opponent’s Evolved Pokémon."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               delayed{
                 before APPLY_ATTACK_DAMAGES, {
@@ -1587,7 +1516,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Scorching Light", {
             text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If tails, the Defending Pokémon is now Burned."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip 1, {apply PARALYZED}, {apply BURNED}
             }
@@ -1642,7 +1570,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Psychic Boom", {
             text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to the Defending Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 10+10*opp.active.cards.energyCount(C)
             }
@@ -1656,7 +1583,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Mid-air Crush", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) Flip a coin. If heads, your opponent discards 1 Energy card, if any, attached to that Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               def pcs = opp.all.select("Select the Pokémon to attack.")
               damage 20, pcs
@@ -1670,7 +1596,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Nosedive", {
             text "40 damage. Flip a coin. If tails, Swallow does 10 damage to itself."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 40
               flip 1, {}, {damage 10, self}
@@ -1697,7 +1622,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Scratch", {
             text "30 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1710,7 +1634,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Liability", {
             text "Put damage counters on the Defending Pokémon until it is 10 HP away from being Knocked Out. Weezing does 70 damage to itself."
             energyCost C
-            attackRequirement {}
             onAttack {
               directDamage defending.remainingHP.value - 10, defending
               damage 70, self
@@ -1719,7 +1642,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Smogscreen", {
             text "20 damage. The Defending Pokémon is now Poisoned. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 20
               applyAfterDamage POISONED
@@ -1736,7 +1658,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Singe", {
             text "Flip a coin. If heads, the Defending Pokémon is now Burned."
             energyCost R
-            attackRequirement {}
             onAttack {
               flip{apply BURNED}
             }
@@ -1744,7 +1665,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Doubleslap", {
             text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
             energyCost W
-            attackRequirement {}
             onAttack {
               flip 2,{damage 10}
             }
@@ -1757,7 +1677,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Spinning Attack", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1765,7 +1684,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Selfdestruct", {
             text "40 damage. Does 10 damage to each Benched Pokémon (both yours and your opponent’s). (Don’t apply weakness and Resistance for Benched Pokémon.) Baltoy does 50 damage to itself."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 40
               opp.bench.each{
@@ -1785,7 +1703,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Amnesia", {
             text "Choose 1 of the Defending Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               amnesia delegate
             }
@@ -1793,7 +1710,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Tackle", {
             text "10 damage."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1806,7 +1722,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Flip Over", {
             text "30 damage. Beldum does 10 damage to itself, and don’t apply Weakness and Resistance to this damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               noWrDamage(10, self)
@@ -1821,7 +1736,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Sharp Fin", {
             text "10 damage."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1829,7 +1743,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Rage", {
             text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Carvanha."
             energyCost D, C
-            attackRequirement {}
             onAttack {
               damage 10+10*self.numberOfDamageCounters
             }
@@ -1855,7 +1768,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Double Chop", {
             text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip 2,{damage 10}
             }
@@ -1869,7 +1781,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Paralyzing Gaze", {
             text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {apply PARALYZED}
             }
@@ -1877,7 +1788,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Will-o’-the-wisp", {
             text "20 damage."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1891,7 +1801,6 @@ public enum Deoxys implements LogicCardInfo {
           move "High Voltage", {
             text "Flip a coin. If heads, your opponent can’t play Trainer cards from his or her hand during his or her next turn."
             energyCost L
-            attackRequirement {}
             onAttack {
               flip {
                 delayed{
@@ -1909,7 +1818,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Gnaw", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1922,7 +1830,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Recharge", {
             text "Search your deck for a [L] Energy card and attach it to Electrike. Shuffle your deck afterward."
             energyCost L
-            attackRequirement {}
             onAttack {
               attachEnergyFrom(type : L, my.deck, self)
             }
@@ -1930,7 +1837,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Quick Attack", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 10
               flip {damage 20}
@@ -1944,7 +1850,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Supersonic", {
             text "Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {apply CONFUSED}
             }
@@ -1952,7 +1857,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Waterfall", {
             text "10 damage."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1965,7 +1869,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Smog", {
             text "The Defending Pokémon is now Poisoned."
             energyCost G
-            attackRequirement {}
             onAttack {
               apply POISONED
             }
@@ -1978,7 +1881,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Rain Splash", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1986,7 +1888,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Aqua Wave", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {damage 10}
@@ -2010,7 +1911,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Rage", {
             text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Magikarp."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 10+10*self.numberOfDamageCounters
             }
@@ -2023,7 +1923,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Thrust", {
             text "10 damage. Flip a coin. If tails, this attack does nothing. If heads, discard 1 Energy card attached to the Defending Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {
                 damage 10
@@ -2035,7 +1934,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Rising Lunge", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {damage 10}
@@ -2061,7 +1959,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Razor Wind", {
             text "20 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {damage 20}
             }
@@ -2074,7 +1971,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Dig Under", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost G
-            attackRequirement {}
             onAttack {
               noWrDamage 10, opp.all.select()
             }
@@ -2082,7 +1978,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Scratch", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2108,7 +2003,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Ram", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2121,7 +2015,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Corkscrew Punch", {
             text "10 damage"
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2129,7 +2022,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Double Spin", {
             text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flip 2, {damage 20}
             }
@@ -2143,7 +2035,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Surprise", {
             text "Choose 1 card from your opponent’s hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
             energyCost C
-            attackRequirement {}
             onAttack {
               astonish()
             }
@@ -2151,7 +2042,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Sharp Fang", {
             text "20 damage."
             energyCost D, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2164,7 +2054,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -2172,7 +2061,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Quick Attack", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
               flip {damage 10}
@@ -2187,7 +2075,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Stun Spore", {
             text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {apply PARALYZED}
             }
@@ -2195,7 +2082,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Trip Over", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
               flip {damage 10}
@@ -2209,7 +2095,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Yawn", {
             text "The Defending Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply ASLEEP
             }
@@ -2217,7 +2102,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Flail", {
             text "10× damage. Does 10 damage times the number of damage counters on Slakoth."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10*self.numberOfDamageCounters
             }
@@ -2230,7 +2114,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -2238,7 +2121,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Combustion", {
             text "10 damage."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2251,7 +2133,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Magma Ring", {
             text "10 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               cantRetreat defending
@@ -2260,7 +2141,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Flare", {
             text "20 damage."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2273,7 +2153,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Hypnotic Gaze", {
             text "The Defending Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply ASLEEP
             }
@@ -2281,7 +2160,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Flop", {
             text "20 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2294,7 +2172,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Rapid Spin", {
             text "10 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon, if any. You switch Staryu with 1 of your Benched Pokémon, if any."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               if(opp.bench) sw defending, opp.bench.oppSelect("Select new active.")
@@ -2309,7 +2186,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Agility", {
             text "10 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Surskit during your opponent’s next turn."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
               flip{preventAllEffectsNextTurn()}
@@ -2366,7 +2242,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Peck", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2380,7 +2255,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Fly", {
             text "10 damage. Flip a coin. If tails, this attack does nothing. If heads, prevent all effects of an attack, including damage, done to Taillow during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
 
               flip {
@@ -2398,7 +2272,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Quick Attack", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 10
               flip {damage 10}
@@ -2424,7 +2297,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Miracle Essence", {
             text "Flip a coin. If heads, choose 1 Special Condition. Each Defending Pokémon is now affected by that Special Condition."
             energyCost G
-            attackRequirement {}
             onAttack {
               flip {
                 apply choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending pokemon")
@@ -2449,7 +2321,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Bite", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2706,7 +2577,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Cross Attack", {
             text "20× damage. Flip 4 coins. This attack does 20 damage times the number of heads. If you get 2 or more heads, the Defending Pokémon is now Confused."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               def headCnt = 0
               flip 4, {
@@ -2719,7 +2589,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Pester", {
             text "60+ damage. If the Defending Pokémon is affected by a Special Condition, this attack does 60 damage plus 40 more damage."
             energyCost G, G, C
-            attackRequirement {}
             onAttack {
               damage 60
               if(defending.specialConditions) damage 40
@@ -2757,7 +2626,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Energy Burst", {
             text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Deoxys ex and the Defending Pokémon."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 10+10*self.cards.energyCount(C)+10*defending.cards.energyCount(C)
             }
@@ -2794,7 +2662,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Psyburst", {
             text "50+ damage. You may discard 2 Energy attached to Deoxys ex. If you do, this attack does 50 damage plus 20 more damage for each Energy attached to the Defending Pokémon."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               if(confirm("discard 2 Energy attached to Deoxys ex? If you do deal 20 more damage for every energy attached to the Defending Pokémon")){
@@ -2835,7 +2702,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Psychic Shield", {
             text "50 damage. Prevent all effects of attacks, including damage, done to Deoxys ex by your opponent’s Pokémon-ex during your opponent’s next turn."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               delayed{
@@ -2884,7 +2750,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Knock Off", {
             text "40 damage. Choose 1 card from your opponent’s hand without looking and discard it."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 40
               afterDamage{
@@ -2895,7 +2760,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Pivot Throw", {
             text "80 damage. During your opponent’s next turn, any damage done to Hariyama ex by attacks is increased by 10 (before applying Weakness and Resistance)."
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
               damage 80
               delayed {
@@ -2921,7 +2785,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Disconnect", {
             text "40 damage. Your opponent can’t play any Trainer cards (except for Supporter cards) from his or her hand during your opponent’s next turn."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 40
               delayed {
@@ -2938,7 +2801,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Mega Shot", {
             text "Discard all [L] Energy attached to Manetric ex and then choose 1 of your opponent’s Pokémon. This attack does 80 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
               discardAllSelfEnergy(L)
               damage 80, opp.all.select("Select the target of this attack.")
@@ -2970,7 +2832,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Spiral Blast", {
             text "20× damage. Does 20 damage for each basic Energy card attached to Rayquaza ex."
             energyCost R, L
-            attackRequirement {}
             onAttack {
               damage 20*self.cards.filterByType(BASIC_ENERGY).size()
             }
@@ -2993,7 +2854,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Flame Jet", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               noWrDamage 40, opp.all.select()
             }
@@ -3001,7 +2861,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Bright Flame", {
             text "120 damage. Discard 2 Energy attached to Salamence ex."
             energyCost R, W, C, C
-            attackRequirement {}
             onAttack {
               damage 120
               discardSelfEnergy C,C
@@ -3016,7 +2875,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Drag Off", {
             text "20 damage. Before doing damage, you may switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon. If you do, this attack does 20 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               def pcs = defending
               if(opp.bench){
@@ -3032,7 +2890,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Darkness Blast", {
             text "60+ damage. You may discard a [D] Energy attached to Sharpedo ex. If you do, this attack does 60 damage plus 20 more damage and discard 1 Energy card attached to the Defending Pokémon."
             energyCost D, D, C
-            attackRequirement {}
             onAttack {
               damage 60
               if(confirm("Discard a [D] Energy attached to Sharpedo ex? You will do 20 more damage and discard 1 Energy card attached to the Defending Pokémon.")){
@@ -3054,7 +2911,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Healing Light", {
             text "10 damage. Remove 1 damage counter from each of your Pokémon (including Latias Star)."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               afterDamage{
@@ -3067,7 +2923,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Shooting Star", {
             text "50+ damage. If the Defending Pokémon is Pokémon-ex, discard all Energy cards attached to Latias Star and this attack does 50 damage plus 100 more damage."
             energyCost R, W, P
-            attackRequirement {}
             onAttack {
               damage 50
               if(defending.EX){
@@ -3086,7 +2941,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Miraculous Light", {
             text "10 damage. Remove 1 damage counter and all special Conditions from Latios Star."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               afterDamage{
@@ -3098,7 +2952,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Shining Star", {
             text "50+ damage. If the Defending Pokémon is a Stage 2 Evolved Pokémon, discard all Energy cards attached to Latios Star and this attack does 50 damage plus 100 more damage."
             energyCost G, L, P
-            attackRequirement {}
             onAttack {
               damage 50
               bc "${defending.evolution} / ${defending.topPokemonCard} / ${defending.topPokemonCard.is(STAGE2)}"
@@ -3118,7 +2971,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Spiral Rush", {
             text "30× damage. Flip a coin until you get tails. This attack does 30 damage times the number of heads."
             energyCost R, L
-            attackRequirement {}
             onAttack {
               flipUntilTails {damage 30}
             }
@@ -3126,7 +2978,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Holy Star", {
             text "Discard all Energy cards attached to Rayquaza Star. This attack does 100 damage to each of your opponent’s Pokémon-ex. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost R, R, L, L
-            attackRequirement {}
             onAttack {
               discardAllSelfEnergy(null)
               opp.all.each{
@@ -3157,7 +3008,6 @@ public enum Deoxys implements LogicCardInfo {
           move "Thunderous Blow", {
             text "40+ damage. Does 40 damage plus 10 more damage for each [L] Energy attached to Rocket’s Raikou ex."
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
               damage 40+10*self.cards.energyCount(L)
             }

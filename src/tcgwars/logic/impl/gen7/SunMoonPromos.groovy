@@ -2784,7 +2784,6 @@ public enum SunMoonPromos implements LogicCardInfo {
         move "Mist Slash", {
           text "130 damage. This attack's damage isn't affected by Weakness, Resistance, or any other effects on your opponent's Active Pokémon."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             swiftDamage(130, defending)
           }
@@ -3247,7 +3246,6 @@ public enum SunMoonPromos implements LogicCardInfo {
           move "Snow Cloak", {
             text "30 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 30
               flip { preventAllEffectsNextTurn() }
@@ -3256,7 +3254,6 @@ public enum SunMoonPromos implements LogicCardInfo {
           move "Hypnotic Blizzard", {
             text "90 damage. Your opponent's active Pokémon is now Asleep. This attack does 20 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               damage 90
               apply ASLEEP

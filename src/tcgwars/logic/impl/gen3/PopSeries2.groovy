@@ -115,7 +115,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Stomp", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 20 }
@@ -157,7 +156,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Sharp Beak", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 30 more damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { damage 30 }
@@ -170,7 +168,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Roar", {
           text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon, if any."
           energyCost C
-          attackRequirement {}
           onAttack {
             whirlwind()
           }
@@ -178,7 +175,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Thunder", {
           text "50 damage. Flip a coin. If tails, Raikou does 20 damage to itself."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 50
             flip 1, {}, { damage 20, self }
@@ -202,7 +198,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Bubblebeam", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { applyAfterDamage(PARALYZED) }
@@ -215,7 +210,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Rage", {
           text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Tauros."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10+10*self.numberOfDamageCounters
           }
@@ -223,7 +217,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Take Down", {
           text "40 damage. Tauros does 10 damage to itself."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             damage 10, self
@@ -236,7 +229,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Wide Solarbeam", {
           text "20 damage. Does 20 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (opp.bench) {
@@ -251,7 +243,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Hard Plant", {
           text "80 damage. Venusaur can't use Hard Plant during your next turn."
           energyCost G, G, G, C
-          attackRequirement {}
           onAttack {
             damage 80
             cantUseAttack(thisMove, self)
@@ -291,7 +282,6 @@ public enum PopSeries2 implements LogicCardInfo {
           def moveBody = {
             text "The Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply PARALYZED
             }
@@ -346,7 +336,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Bite", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -354,7 +343,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Razor Leaf", {
           text "20 damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -366,7 +354,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Sand Attack", {
           text "10 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             sandAttack(thisMove)
@@ -387,7 +374,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Fast Stream", {
           text "20 damage. Move 1 Energy card attached to the Defending Pokémon to the other Defending Pokémon. (Ignore this effect if your opponent has only 1 Defending Pokémon.)"
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
             // Only one defending Pokémon in single battles, so the effect is ignored.
@@ -400,7 +386,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Double Spin", {
           text "10x damage. Flip 2 coins. This attack does 10 damage times the number of heads."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
             flip 2, { damage 10 }
@@ -409,7 +394,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Body Slam", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { applyAfterDamage(PARALYZED) }
@@ -433,7 +417,6 @@ public enum PopSeries2 implements LogicCardInfo {
         move "Psychic Shield", {
           text "30 damage. Prevent all effects of attacks, including damage, done to Celebi ex by your opponent's Pokémon-ex during your opponent's next turn."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 30
             preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.EX})

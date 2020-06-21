@@ -208,7 +208,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Power Blow", {
           text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Aerodactyl."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10+10*self.cards.energyCount(C)
           }
@@ -216,7 +215,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Speed Stroke", {
           text "40 damage. During your opponent's next turn, prevent all effects, including damage, done to Aerodactyl by attacks from your opponent's Pokémon-ex."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             delayed {
@@ -240,7 +238,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Heavy Blow", {
           text "70- damage. Does 70 damage minus 10 damage for each damage counter on Aggron. If Aggron has any React Energy cards attached to it, this attack does 70 damage instead."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             if (self.cards.findAll { it.name.contains("React Energy") }) {
               damage 70
@@ -252,7 +249,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Bound Crush", {
           text "Choose 1 of your opponent's Pokémon. This attack does 60 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) During your next turn, Aggron can't use Bound Crush."
           energyCost F, M, C, C
-          attackRequirement {}
           onAttack {
             damage 60, opp.all.select()
             cantUseAttack(thisMove, self)
@@ -292,7 +288,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Linear Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 30, opp.all.select()
           }
@@ -300,7 +295,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Mud Shot", {
           text "50 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -327,7 +321,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Energy Link", {
           text "20 damage. Search your discard pile for an Energy card and attach it to Delcatty."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
             afterDamage {
@@ -338,7 +331,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Tail Whap", {
           text "40 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -362,7 +354,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Cursed Reaction", {
           text "Put 2 damage counters on your opponent's Pokémon in any way you like. If Gengar has any React Energy cards attached to it, put 4 damage counters instead."
           energyCost P
-          attackRequirement {}
           onAttack {
             def counters = 2
             if (self.cards.findAll { it.name.contains("React Energy") }) {
@@ -376,7 +367,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Super Psy Bolt", {
           text "60 damage."
           energyCost P, P, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -388,7 +378,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Mend", {
           text "Search your discard pile for a [F] Energy card and attach it to Golem. If you do, remove 2 damage counters from Golem."
           energyCost C
-          attackRequirement {}
           attackRequirement {
             assert my.discard.filterByType(ENERGY).filterByEnergyType(F) : "There is no [F] Energy card in your discard"
           }
@@ -400,7 +389,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Enraged Linear Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage for each damage counter on Golem to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 10*self.numberOfDamageCounters, opp.all.select()
           }
@@ -408,7 +396,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Rock Tumble", {
           text "70 damage. This attack's damage isn't affected by Resistance."
           energyCost F, F, C, C
-          attackRequirement {}
           onAttack {
             damage 70
             dontApplyResistance()
@@ -438,7 +425,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Energy Stream", {
           text "30 damage. Search your discard pile for a basic Energy card and attach it to Kabutops."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage {
@@ -449,7 +435,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Extra Claws", {
           text "50+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 50 damage plus 30 more damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             if (defending.EX) {
@@ -474,7 +459,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Surf", {
           text "30 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -486,7 +470,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Derail", {
           text "40 damage. Discard a Special Energy card, if any, attached to the Defending Pokémon."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 40
             discardDefendingSpecialEnergy(delegate)
@@ -495,7 +478,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Swift Blow", {
           text "60+ damage. Does 60 damage plus 20 damage for each React Energy card attached to Machamp."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             def energies = self.cards.findAll{it.name.contains("React Energy")}.size()
             damage 60+20*energies
@@ -536,7 +518,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Link Blast", {
           text "50 damage. If Mew and the Defending Pokémon have a different amount of Energy attached to them, this attack's base damage is 20 instead of 50."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             if (self.cards.energyCount(C) != defending.cards.energyCount(C)) {
               damage 20
@@ -566,7 +547,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Poison Ring", {
           text "20 damage. The Defending Pokémon is now Poisoned. The Defending Pokémon can't retreat during your opponent's next turn."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 20
             apply POISONED
@@ -576,7 +556,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Sludge Toss", {
           text "50 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -602,7 +581,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Reactive Beating", {
           text "30 damage. If Shiftry has any React Energy cards attached to it, the Defending Pokémon is now Confused."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             if (self.cards.findAll { it.name.contains("React Energy") }) {
@@ -613,7 +591,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Cross-Cut", {
           text "40+ damage. If the Defending Pokémon is an Evolved Pokémon, this attack does 40 damage plus 30 more damage."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             if (defending.evolution) {
@@ -641,7 +618,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Sleep Poison", {
           text "10 damage. The Defending Pokémon is now Asleep and Poisoned."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 10
             apply ASLEEP
@@ -651,7 +627,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Sharp Leaf", {
           text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 30 more damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip { damage 30 }
@@ -675,7 +650,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Hypno Splash", {
           text "40 damage. The Defending Pokémon is now Asleep."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 40
             apply ASLEEP
@@ -684,7 +658,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Rely on Friends", {
           text "40+ damage. Does 40 damage plus 10 more damage for each of your Benched Stage 1 Evolved Pokémon."
           energyCost W, W, C, C
-          attackRequirement {}
           onAttack {
             def friends = my.bench.findAll { it.topPokemonCard.cardTypes.is(STAGE1) }.size()
             damage 40+10*friends
@@ -720,7 +693,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             def tar = opp.all.select("To?")
             tar.damage += hp(20)
@@ -749,7 +721,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Foresight", {
           text "Look at the top 5 cards of either player's deck and put them back on top of that player's deck in any order you like."
           energyCost C
-          attackRequirement {}
           onAttack {
             def list
             if(!my.deck){
@@ -776,7 +747,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Disorder", {
           text "20 damage. If the Defending Pokémon has any Special Energy cards attached to it, the Defending Pokémon is now Confused."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (defending.cards.filterByType(SPECIAL_ENERGY)) {
@@ -801,7 +771,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Hydro Pump", {
           text "30+ damage. Does 30 damage plus 20 more damage for each [W] Energy attached to Gorebyss but not used to pay for this attack's Energy cost. You can't add more than 40 damage in this way."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 30
             extraEnergyDamage(4, hp(20), W, thisMove)
@@ -829,7 +798,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Bite Off", {
           text "40+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 40 damage plus 30 more damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             if (defending.EX) {
@@ -850,7 +818,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Razor Fin", {
           text "30 damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -858,7 +825,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Water Gun", {
           text "40+ damage. Does 40 damage plus 20 more damage for each [W] Energy attached to Lanturn but not used to pay for this attack's Energy cost. You can't add more then 40 damage in this way."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             extraEnergyDamage(2, hp(20), W, thisMove)
@@ -900,7 +866,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Psyshock", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply PARALYZED }
@@ -922,7 +887,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Linear Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10, opp.all.select()
           }
@@ -930,7 +894,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Burning Sensation", {
           text "40 damage. If the Defending Pokémon already has any damage counters on it, the Defending Pokémon is now Burned."
           energyCost R, R, R
-          attackRequirement {}
           onAttack {
             damage 40
             if (defending.numberOfDamageCounters) {
@@ -964,7 +927,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Multiple Force", {
           text "30+ damage. If Magneton has any React Energy cards attached to it, this attack does 30 damage plus 10 more damage for each Magnemite and Magneton (both yours and your opponent's) in play."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
 
@@ -979,7 +941,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Magnetic Blast", {
           text "60 damage."
           energyCost L, C, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -1012,7 +973,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Drag Off", {
           text "10 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost C
-          attackRequirement {}
           onAttack{
             def target = defending
             if (opp.bench && confirm("Switch Defending with a Benched?")) {
@@ -1025,7 +985,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Hydro Splash", {
           text "50 damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1061,7 +1020,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Overhead Toss", {
           text "30 damage. Does 20 damage to 1 of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 30
             damage 20, my.bench.select()
@@ -1094,7 +1052,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Call for Family", {
           text "Search your deck for a Lunatone and put it onto your Bench. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
           onAttack {
             deck.search (count: 1, {it.name == "Lunatone"}).each {
               deck.remove(it)
@@ -1106,7 +1063,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Hyper Beam", {
           text "Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
           energyCost F
-          attackRequirement {}
           onAttack {
             flip { discardDefendingEnergy() }
           }
@@ -1138,7 +1094,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Whimsy Draw", {
           text "Flip a coin until you get tails. For each heads, draw 2 cards."
           energyCost C
-          attackRequirement {}
           onAttack {
             flipUntilTails {
               draw 2
@@ -1148,7 +1103,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Double-edge", {
           text "30 damage. Flip a coin. If tails, Spinda does 10 damage to itself."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip 1, {}, { damage 10, self }
@@ -1174,7 +1128,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Fireworks", {
           text "30 damage. Flip a coin. If tails, discard a [R] Energy attached to Torkoal."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip 1, {}, { discardSelfEnergy R }
@@ -1195,7 +1148,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Grind", {
           text "10x damage. Does 10 damage times the amount of Energy attached to Wobbuffet."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10*self.cards.energyCount(C)
           }
@@ -1203,7 +1155,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Shadow Tag", {
           text "Put 7 damage counters on the Defending Pokémon at the end of your opponent's next turn."
           energyCost P, P, C
-          attackRequirement {}
           onAttack {
             delayed {
               before BETWEEN_TURNS, {
@@ -1241,7 +1192,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Stretch Claws", {
           text "20 damage. If Anorith has any React Energy cards attached to it, this attack does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (self.cards.findAll { it.name.contains("React Energy") } && opp.bench) {
@@ -1273,7 +1223,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Tackle", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1310,7 +1259,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Tripping Turn", {
           text "The Defending Pokémon is now Confused. You may switch Dunsparce with 1 of your Benched Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             apply CONFUSED
             if (confirm("switch Dunsparce with 1 of your Benched Pokémon?")) {
@@ -1325,7 +1273,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Supersonic", {
           text "10 damage. The Defending Pokémon is now Confused."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             apply CONFUSED
@@ -1334,7 +1281,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Tumbling Attack", {
           text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 20 more damage."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip { damage 20 }
@@ -1347,7 +1293,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Body Slam", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { apply PARALYZED }
@@ -1356,7 +1301,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Do the Wave", {
           text "10+ damage. Does 10 damage plus 10 more damage for each of your Benched Pokémon."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 10+10*my.bench.size()
           }
@@ -1381,7 +1325,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Rock Slide", {
           text "20 damage. Does 10 damage to 2 of your opponent's Benched Pokémon (1 if there is only 1). (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (opp.bench) {
@@ -1420,7 +1363,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Haunt", {
           text "Put 2 damage counters on the Defending Pokémon."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             directDamage 20, defending
           }
@@ -1441,7 +1383,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Granite Head", {
           text "20 damage. During your opponent's next turn, any damage done to Kabuto by attacks is reduced by 10 (after applying Weakness and Resistance)."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             reduceDamageNextTurn(hp(10), thisMove)
@@ -1469,7 +1410,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Tongue Whip", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10, opp.all.select()
           }
@@ -1477,7 +1417,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Quick Attack", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 20 }
@@ -1491,7 +1430,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Rest", {
           text "Remove all Special Conditions and 5 damage counters (all if there are less than 5) from Lairon. Lairon is now Asleep."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             heal 50, self
             clearSpecialCondition(self)
@@ -1501,7 +1439,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Body Slam", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { apply PARALYZED }
@@ -1529,7 +1466,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Split Kick", {
           text "Does 20 damage to each Defending Pokémon."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1537,7 +1473,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Magnum Punch", {
           text "40 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1567,7 +1502,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Return Trance", {
           text "Return an Energy card attached to Misdreavus to your hand. The Defending Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             self.cards.filterByType(ENERGY).select(count: 1).moveTo(my.hand)
             apply ASLEEP
@@ -1576,7 +1510,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Dream Eater", {
           text "30 damage. If the Defending Pokémon is not Asleep, this attack does nothing."
           energyCost P
-          attackRequirement {}
           onAttack {
             if (defending.isSPC(ASLEEP)) {
               damage 30
@@ -1591,7 +1524,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Pound", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1599,7 +1531,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Plunder", {
           text "30 damage. Before doing damage, discard all Trainer cards attached to the Defending Pokémon."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             if (defending.cards.filterByType(TRAINER)){
               defending.cards.filterByType(TRAINER).discard()
@@ -1628,7 +1559,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Flick Poison", {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. The new Defending Pokémon is now Poisoned."
           energyCost C
-          attackRequirement {}
           onAttack {
             def pcs = defending
             if (opp.bench) {
@@ -1660,7 +1590,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Lunge Out", {
           text "30 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1684,7 +1613,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Entangling Vines", {
           text "10 damage. If the Defending Pokémon is a Basic Pokémon, that Pokémon can't attack during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             if (!defending.evolution) {
@@ -1695,7 +1623,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Gentle Wrap", {
           text "30 damage. The Defending Pokémon can't retreat during your opponent's next turn."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 30
             cantRetreat(defending)
@@ -1728,7 +1655,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Water Arrow", {
           text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20, opp.all.select()
           }
@@ -1736,7 +1662,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Fury Strikes", {
           text "20x damage. Flip 3 coins. This attack does 20 damage times the number of heads."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             flip 3, { damage 20 }
           }
@@ -1748,7 +1673,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Supersonic", {
           text "Flip a coin. If heads, the Defending Pokémon is now Confused."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply CONFUSED }
           }
@@ -1756,7 +1680,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Bi-Blast", {
           text "20+ damage. If Vibrava has any React Energy cards attached to it, this attack does 20 damage plus 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (self.cards.findAll { it.name.contains("React Energy") }) {
@@ -1771,7 +1694,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Sleep Seed", {
           text "20 damage. The Defending Pokémon is now Asleep."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             apply ASLEEP
@@ -1780,7 +1702,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Vine Whip", {
           text "40 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1793,7 +1714,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Self Charge", {
           text "Attach a [M] Energy card from your hand to Aron."
           energyCost C
-          attackRequirement {}
           onAttack {
             attachEnergyFrom(type:M, my.hand, self)
           }
@@ -1801,7 +1721,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Headbutt", {
           text "20 damage."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1813,7 +1732,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Sleep Powder", {
           text "The Defending Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             apply ASLEEP
           }
@@ -1825,7 +1743,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Random Spark", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 10, opp.all.select()
           }
@@ -1833,7 +1750,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Lightning Ball", {
           text "20 damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1845,7 +1761,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Iron Defense", {
           text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Clamperl during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { preventAllEffectsNextTurn() }
           }
@@ -1853,7 +1768,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Clamp Splash", {
           text "10 damage."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1866,7 +1780,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Lick", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply PARALYZED }
           }
@@ -1874,7 +1787,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Smog", {
           text "The Defending Pokémon is now Poisoned."
           energyCost P
-          attackRequirement {}
           onAttack {
             apply POISONED
           }
@@ -1886,7 +1798,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Selfdestruct", {
           text "50 damage. Does 10 damage to each Benched Pokémon (both yours and your opponent's). (Don't apply Weakness and Resistance for Benched Pokémon.) Geodude does 50 damage to itself."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 50
             my.bench.each {
@@ -1918,7 +1829,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Sludge Toss", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1930,7 +1840,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Body Slam", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply PARALYZED }
@@ -1939,7 +1848,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Firebreathing", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 20 }
@@ -1952,7 +1860,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Tender Tentacles", {
           text "20 damage. If Lileep has any React Energy cards attached to it, remove 2 damage counters from Lileep."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
             if (self.cards.findAll { it.name.contains("React Energy") }) {
@@ -1963,7 +1870,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Confuse Ray", {
           text "20 damage. The Defending Pokémon is now Confused."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 20
             apply CONFUSED
@@ -1976,7 +1882,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Mach Punch", {
           text "10 damage. Does 10 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
             if (opp.bench) {
@@ -2000,7 +1905,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Ignite", {
           text "10 damage. If Full Flame is in play, the Defending Pokémon is now Burned."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Full Flame") {
@@ -2016,7 +1920,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Magnetic Swirl", {
           text "10 damage. Flip a coin. If tails, this attack does nothing. If heads, discard an Energy attached to the Defending Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip 1, {
               damage 10
@@ -2052,7 +1955,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Rising Lunge", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { damage 20 }
@@ -2076,7 +1978,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Continuous Tumble", {
           text "10x damage. Flip a coin until you get tails. This attack does 10 damage times the number of heads."
           energyCost G
-          attackRequirement {}
           onAttack {
             flipUntilTails { damage 10 }
           }
@@ -2088,7 +1989,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Scratch", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2096,7 +1996,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Quick Attack", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 20 }
@@ -2110,7 +2009,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Headbutt", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2118,7 +2016,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Will-o'-the-wisp", {
           text "20 damage."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2141,7 +2038,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Jump On", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 20 }
@@ -2154,7 +2050,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Ram", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2166,7 +2061,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Poison Sting", {
           text "The Defending Pokémon is now Poisoned."
           energyCost W
-          attackRequirement {}
           onAttack {
             apply POISONED
           }
@@ -2186,7 +2080,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Double Pinchers", {
           text "20x damage. Flip 2 coins. This attack does 20 damage times the number of heads."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             flip 2, { damage 20 }
           }
@@ -2198,7 +2091,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Thunder Wave", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply PARALYZED }
           }
@@ -2206,7 +2098,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Bouncing Ball", {
           text "30 damage. Voltorb does 10 damage to itself."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
             damage 10, self
@@ -2219,7 +2110,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Double Tackle", {
           text "Does 20 damage to each Defending Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2227,7 +2117,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Whirlpool", {
           text "30 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip {
@@ -2277,7 +2166,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Confusion Wave", {
           text "Both Wynaut and the Defending Pokémon are now Confused."
           energyCost C
-          attackRequirement {}
           onAttack {
             apply CONFUSED
             apply CONFUSED, self
@@ -2660,7 +2548,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Overrun", {
           text "30 damage. Does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
             if (opp.bench) {
@@ -2671,7 +2558,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Flame Swirl", {
           text "100 damage. Discard 2 [R] Energies or 1 React Energy card attached to Arcanine ex."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 100
 
@@ -2704,7 +2590,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Spiral Drain", {
           text "40 damage. Remove 2 damage counters from Armaldo ex."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 40
             heal 20, self
@@ -2713,7 +2598,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Vortex Chop", {
           text "70 damage. If the Defending Pokemon has any Resistance, this attack's base damage is 100 instead of 70."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             if (defending.resistances) {
               damage 100
@@ -2748,7 +2632,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Shadow Chant", {
           text "30+ damage. Does 30 damage plus 10 more damage for each Supporter card in your discard pile. You can't add more than 60 damage in this way."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             def bonusDamage = Math.min(my.discard.filterByType(SUPPORTER).size()*10, 60)
             damage 30+bonusDamage
@@ -2779,7 +2662,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Silver Wind", {
           text "40 damage. During your next turn, if an attack does damage to the Defending Pokémon (after applying Weakness and Resistance), that attack does 30 more damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 40
             afterDamage {
@@ -2810,7 +2692,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Reactive Blast", {
           text "40+ damage. You may discard any number of React Energy cards attached to Flygon ex. If you do, this attack does 40 damage plus 30 more damage for each React Energy card you discarded."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 40
             def reactEnergies = self.cards.findAll {it.name.contains("React Energy")}
@@ -2826,7 +2707,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Dragon Claw", {
           text "100 damage."
           energyCost G, L, C, C, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -2857,7 +2737,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Power Move", {
           text "Search your deck for an Energy card and attach it to Mew ex. Shuffle your deck afterward. Then, you may switch Mew ex with 1 of your Benched Pokémon."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             attachEnergyFrom(my.deck, self)
             shuffleDeck()
@@ -2885,7 +2764,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Water Arrow", {
           text "Choose 1 of your opponent's Pokémon. This attack does 40 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 40, opp.all.select()
           }
@@ -2893,7 +2771,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Ice Throw", {
           text "80 damage. If the Defending Pokemon is a [F] Pokemon, this attack's base damage is 120 instead of 80"
           energyCost W, W, C, C
-          attackRequirement {}
           onAttack {
             if (defending.types.contains(F)) {
               damage 120
@@ -2909,7 +2786,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Ice Barrier", {
           text "10 damage. Prevent all effects of an attack, including damage, done to Regice Star by your opponent's Pokémon-ex during your opponent's next turn."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
             preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.EX})
@@ -2918,7 +2794,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Final Blizzard", {
           text "30 damage. If your opponent has only 1 Prize card left and Regice Star is the only Pokémon you have in play, this attack does 30 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 30
 
@@ -2936,7 +2811,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Dig Drain", {
           text "10 damage. Remove 1 damage counter from Regirock Star."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
             heal 10, self
@@ -2945,7 +2819,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Final Blast", {
           text "30 damage. If your opponent has only 1 Prize card left and Regirock Star is the only Pokémon you have in play, this attack's base damage is 100 instead of 30."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             def amount = 30
             if (opp.prizeCardSet.size() == 1 && my.all.size() == 1) {
@@ -2962,7 +2835,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Barrier Attack", {
           text "10 damage. During your opponent's next turn, any damage done to Registeel Star by attacks is reduced by 10 (after applying Weakness and Resistance)."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 10
             reduceDamageNextTurn(hp(10), thisMove)
@@ -2971,7 +2843,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Final Laser", {
           text "Put 3 damage counters on your opponent's Pokémon in any way you like. If your opponent has only 1 Prize card left and Registeel Star is the only Pokémon you have in play, put 6 damage counters instead."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             def counters = 3
             if (opp.prizeCardSet.size() == 1 && my.all.size() == 1) {
@@ -2989,7 +2860,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Thunder Wave", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply PARALYZED }
           }
@@ -2997,7 +2867,6 @@ public enum LegendMaker implements LogicCardInfo {
         move "Iron Tail", {
           text "20x damage. Flip a coin until you get tails. This attack does 20 damage times the number of heads."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             flipUntilTails { damage 20 }
           }

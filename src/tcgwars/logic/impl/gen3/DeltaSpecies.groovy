@@ -223,7 +223,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Super Slash", {
           text "50+ damage. If the Defending Pokémon is an Evolved Pokémon, this attack does 50 damage plus 30 more damage."
           energyCost G, M, C
-          attackRequirement {}
           onAttack {
             damage 50
             if (defending.evolution) {
@@ -238,7 +237,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Radar Jam", {
           text "30 damage. Your opponent can't play any Trainer cards (except for Supporter cards) from his or her hand during your opponent's next turn."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
 
@@ -256,7 +254,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Target Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 40 damage to that Pokémon. If that Pokémon already has damage counters on it, this attack does 60 damage instead. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost G, M, C
-          attackRequirement {}
           onAttack {
             def target = opp.all.select("Deal damage to?")
             if (target.numberOfDamageCounters) {
@@ -286,7 +283,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Agility", {
           text "30 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Dragonite during your opponent's next turn."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip { preventAllEffectsNextTurn() }
@@ -295,7 +291,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Heavy Impact", {
           text "70 damage."
           energyCost L, M, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -322,7 +317,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Psyshock", {
           text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost P, M
-          attackRequirement {}
           onAttack {
             damage 30
             flip { apply PARALYZED }
@@ -352,7 +346,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Return Burn", {
           text "50 damage. You may return an Energy card attached to Flareon to your hand. If you do, the Defending Pokémon is now Burned."
           energyCost M, R, C
-          attackRequirement {}
           onAttack {
             damage 50
 
@@ -386,7 +379,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Psychic Rage", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage for each damage counter on Gardevoir to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 10*self.numberOfDamageCounters, opp.all.select("Deal damage to?")
           }
@@ -394,7 +386,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Black Magic", {
           text "10+ damage. Does 10 damage plus 20 more damage times the number of your opponent's Benched Pokémon."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 10+20*opp.bench.size()
           }
@@ -424,7 +415,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Return Spark", {
           text "50 damage. You may return an Energy card attached to Jolteon to your hand. If you do, this attack does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, M, C
-          attackRequirement {}
           onAttack {
             damage 50
 
@@ -463,7 +453,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Spiral Drain", {
           text "20 damage. Remove 2 damage counters from Latias."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 20
             heal 20, self
@@ -472,7 +461,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Extra Crush", {
           text "80 damage. If your opponent has no Pokémon-ex in play, this attack does nothing."
           energyCost L, M, C, C, C
-          attackRequirement {}
           onAttack {
             if (opp.all.any{ it.EX }) {
               damage 80
@@ -505,7 +493,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Dragon Claw", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -513,7 +500,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Psychic Force", {
           text "80 damage. If your opponent has no Stage 2 Evolved Pokémon in play, this attack does nothing."
           energyCost L, M, C, C, C
-          attackRequirement {}
           onAttack {
             if (opp.all.findAll { it.topPokemonCard.cardTypes.is(STAGE2) }) {
               damage 80
@@ -527,7 +513,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Energy Bone", {
           text "Choose a number of your opponent's Pokémon up to the amount of Energy attached to Marowak. This attack does 20 damage to each of them."
           energyCost F, M
-          attackRequirement {}
           onAttack {
             def maximum = Math.min(self.cards.energyCount(C), opp.all.size())
             multiSelect(opp.all, maximum).each {
@@ -538,7 +523,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Metal Crusher", {
           text "50 damage. If the Defending Pokémon is [M] Pokémon, this attack's base damage is 90."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             if (defending.types.contains(M)) {
               damage 90
@@ -569,7 +553,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Crush and Burn", {
           text "30+ damage. You may discard as many Energy cards as you like attached to your Pokémon in play. If you do, this attack does 30 damage plus 20 more damage for each Energy card you discarded."
           energyCost L, M
-          attackRequirement {}
           onAttack {
             def count=0
             while(1) {
@@ -607,7 +590,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Energy Burst", {
           text "10x damage. Does 10 damage times the total amount of Energy attached to Mewtwo and the Defending Pokémon."
           energyCost R, M
-          attackRequirement {}
           onAttack {
             damage 10*(self.cards.energyCount(C) + opp.active.cards.energyCount(C))
           }
@@ -633,7 +615,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Power Blow", {
           text "10x damage. Does 10 damage times the amount of Energy attached to Rayquaza."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 10*self.cards.energyCount(C)
           }
@@ -641,7 +622,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Lightning Storm", {
           text "70 damage. Put 7 damage counters on Rayquaza."
           energyCost L, M, C, C
-          attackRequirement {}
           onAttack {
             damage 70
             if (bg.em().retrieveObject("Lightning_Storm") != bg.turnCount) {
@@ -660,7 +640,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Fire Dance", {
           text "30 damage. Search your discard pile for a [R] Energy card and attach it to 1 of your Pokémon."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage {
@@ -671,7 +650,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Delta Blast", {
           text "100 damage. Discard a [M] Energy card attached to Salamence."
           energyCost R, M, C, C
-          attackRequirement {}
           onAttack {
             damage 100
             afterDamage {
@@ -706,7 +684,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Energy Loop", {
           text "30 damage. Return an Energy card attached to Starmie to your hand."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage {
@@ -736,7 +713,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Delta Crush", {
           text "50+ damage. You may discard an Energy card attached to Tyranitar. If you do, this attack does 50 damage plus 20 more damage."
           energyCost R, M, C
-          attackRequirement {}
           onAttack {
             damage 50
 
@@ -769,7 +745,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost D, M
-          attackRequirement {}
           onAttack {
             swiftDamage(30, opp.all.select())
           }
@@ -798,7 +773,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Return Wave", {
           text "50 damage. You may return an Energy card attached to Vaporeon to your hand. If you do, choose an Energy card attached to the Defending Pokémon and return it to your opponent's hand."
           energyCost W, M, C
-          attackRequirement {}
           onAttack {
             damage 50
 
@@ -818,7 +792,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Bubblebeam", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { apply PARALYZED }
@@ -827,7 +800,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Rolling Tackle", {
           text "50 damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -923,7 +895,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Dazzle Blast", {
           text "30 damage. The Defending Pokémon is now Confused."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
             apply CONFUSED
@@ -989,7 +960,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Extra Ball", {
           text "30+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 30 damage plus 20 more damage."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             if (defending.EX) {
               damage 50
@@ -1034,7 +1004,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Psyshot", {
           text "40 damage."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1047,7 +1016,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Delta Fang", {
           text "20 damage. If the Defending Pokémon is Pokémon-ex, that Pokémon can't attack during your opponent's next turn."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (defending.EX) {
@@ -1058,7 +1026,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Gang Up", {
           text "10x damage. Does 10 damage times the number of [D] Pokémon and [M] Pokémon you have in play."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 10*my.all.findAll { it.types.contains(D) || it.types.contains(M) }.size()
           }
@@ -1081,7 +1048,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Machine Burst", {
           text "30 damage. If Porygon2 has a Technical Machine card attached to it, the Defending Pokémon is now Asleep and Burned."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             if (self.cards.filterByType(TECHNICAL_MACHINE)) {
@@ -1121,7 +1087,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Holon Splash", {
           text "30+ damage. Does 30 damage plus 10 more damage for each Holon Energy card attached to Rain Castform."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 30+10*self.cards.findAll {it.name.contains("Holon Energy")}.size()
           }
@@ -1149,7 +1114,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Rend", {
           text "20+ damage. If the Defending Pokémon already has any damage counters on it, this attack does 20 damage plus 20 more damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             if (defending.numberOfDamageCounters) {
               damage 40
@@ -1161,7 +1125,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Slash", {
           text "50 damage."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1192,7 +1155,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Psychic Option", {
           text "20+ damage. If Slowking has a [W] Energy card attached to it, this attack does 20 damage plus 20 more damage. If Slowking has a [P] Energy card attached to it, discard a Special Energy card attached to the Defending Pokémon, if any."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (self.cards.filterByEnergyType(W)) { damage 20 }
@@ -1230,7 +1192,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Holon Blizzard", {
           text "20 damage. If Snow-cloud Castform has any Holon Energy cards attached to it, this attack does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
 
@@ -1248,7 +1209,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Surf", {
           text "20 damage."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1256,7 +1216,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Swift", {
           text "50 damage. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             swiftDamage(50, defending)
           }
@@ -1292,7 +1251,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Holon Search", {
           text "Search your deck for a Holon Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             def toAttach = my.deck.search(max: 1, "Select a Special Energy card", {
               it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon Energy")
@@ -1308,7 +1266,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Steep Dive", {
           text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Swellow during your opponent's next turn. If tails, during your next turn, Swellow's Glide attack's base damage is 100."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip 1, {
               preventAllEffectsNextTurn()
@@ -1320,7 +1277,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Glide", {
           text "40 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1357,7 +1313,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Mist Attack", {
           text "Does 10 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost G
-          attackRequirement {}
           onAttack {
             opp.all.each {
               damage 10, it
@@ -1367,7 +1322,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Sludge Whirlpool", {
           text "50 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1440,7 +1394,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Energy Link", {
           text "10 damage. Search your discard pile for an Energy card and attach it to Ditto."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
 
@@ -1478,7 +1431,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Toxic", {
           text "The Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             apply POISONED
             extraPoison 1
@@ -1513,7 +1465,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Rage", {
           text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Ditto."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10+10*self.numberOfDamageCounters
           }
@@ -1587,7 +1538,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Thunderbolt", {
           text "40 damage. Discard all Energy cards attached to Ditto."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 40
             discardAllSelfEnergy(null)
@@ -1622,7 +1572,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Smash Turn", {
           text "20 damage. After your attack, you may switch Ditto with 1 of your Benched Pokémon."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
             afterDamage {
@@ -1641,7 +1590,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Slam", {
           text "20x damage. Flip 2 coins. This attack does 20 damage times the number of heads."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             flip 2, {damage 20}
           }
@@ -1649,7 +1597,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Dragon Rage", {
           text "40 damage."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1663,7 +1610,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Twister", {
           text "20 damage. Flip 2 coins. If both are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending Pokémon."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             def discardTimes = 0
 
@@ -1682,7 +1628,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Super Poison Breath", {
           text "Each Defending Pokémon is now Poisoned."
           energyCost G
-          attackRequirement {}
           onAttack {
             apply POISONED
           }
@@ -1690,7 +1635,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Sonic Signal", {
           text "Choose 2 of your opponent's Pokémon. This attack does 10 damage to each of them. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C
-          attackRequirement {}
           onAttack {
             multiSelect(opp.all, 2).each {
               targeted(it) {
@@ -1729,7 +1673,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Slap Push", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1737,7 +1680,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Brick Smash", {
           text "50 damage. This attack's damage isn't affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1773,7 +1715,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Strange Rasping", {
           text "20 damage. If the Defending Pokémon is an Evolved Pokémon, the Defending Pokémon is now Confused."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1796,7 +1737,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Rollout", {
           text "30 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1808,7 +1748,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Calm Mind", {
           text "Remove 3 damage counters from Kirlia."
           energyCost C
-          attackRequirement {}
           onAttack {
             heal 30, self
           }
@@ -1816,7 +1755,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Psychic Boom", {
           text "20+ damage. Does 20 damage plus 10 more damage for each Energy attached to the Defending Pokémon."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20+10*opp.active.cards.energyCount()
           }
@@ -1829,7 +1767,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Supersonic", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { apply CONFUSED }
@@ -1838,7 +1775,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Speed Ball", {
           text "50 damage."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1851,7 +1787,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Sharp Claws", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { damage 10 }
@@ -1860,7 +1795,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Magnetic Blast", {
           text "50 damage."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1882,7 +1816,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Snap Tail", {
           text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30, opp.all.select()
           }
@@ -1894,7 +1827,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Paralyzing Gaze", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply PARALYZED }
           }
@@ -1902,7 +1834,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Double-edge", {
           text "40 damage. Pupitar does 10 damage to itself."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             damage 10, self
@@ -1915,7 +1846,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Super Singe", {
           text "The Defending Pokémon is now Burned."
           energyCost R
-          attackRequirement {}
           onAttack {
             apply BURNED
           }
@@ -1923,7 +1853,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Stomp", {
           text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 10 more damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip { damage 10 }
@@ -1938,7 +1867,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Tight Jaw", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply PARALYZED }
@@ -1947,7 +1875,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Combustion", {
           text "40 damage."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1974,7 +1901,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Heat Blast", {
           text "30 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -2013,7 +1939,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Steel Wing", {
           text "20 damage. During your opponent's next turn, any damage done to Skarmory by attacks is reduced by 20 (after applying Weakness and Resistance)."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 20
             reduceDamageNextTurn(hp(20), thisMove)
@@ -2045,7 +1970,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Swift", {
           text "30 damage. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             swiftDamage(30, defending)
           }
@@ -2059,7 +1983,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Bite", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2073,7 +1996,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Ember", {
           text "30 damage. Discard a [R] Energy card attached to Bagon."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
             discardSelfEnergy R
@@ -2097,7 +2019,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Take Down", {
           text "30 damage. Beldum does 10 damage to itself."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
             damage 10, self
@@ -2110,14 +2031,12 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Beat", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
         }
         move "Rage", {
           text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Cubone."
-          attackRequirement {}
           onAttack {
             damage 10+10*self.numberOfDamageCounters
           }
@@ -2151,7 +2070,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Fireworks", {
           text "30 damage. Flip a coin. If tails, discard a [R] Energy card attached to Ditto."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip 1, {}, { discardSelfEnergy R }
@@ -2186,7 +2104,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Linear Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 20, opp.all.select()
           }
@@ -2220,7 +2137,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Thundershock", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { apply PARALYZED }
@@ -2255,7 +2171,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Spiral Drain", {
           text "20 damage. Remove 3 damage counters from Ditto (all if there are less than 3)."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
             heal 30, self
@@ -2270,7 +2185,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Hook", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2278,7 +2192,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Thunder Jolt", {
           text "30 damage. Flip a coin. If tails, Dratini does 10 damage to itself."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip 1, {}, { damage 10, self }
@@ -2293,7 +2206,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Thunder Wave", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply PARALYZED }
@@ -2306,7 +2218,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Disable", {
           text "Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
           energyCost P
-          attackRequirement {}
           onAttack {
             amnesia delegate
           }
@@ -2314,7 +2225,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Headbutt", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2326,7 +2236,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Metal Scoop", {
           text "10 damage. Search your discard pile for a [M] Energy card and attach it to Eevee."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             afterDamage {
@@ -2346,7 +2255,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Rear Kick", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2400,7 +2308,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Linear Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 10, opp.all.select()
           }
@@ -2453,7 +2360,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Thundershock", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply PARALYZED }
@@ -2466,7 +2372,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Confusion Gas", {
           text "The Defending Pokémon is now Confused."
           energyCost G
-          attackRequirement {}
           onAttack {
             apply CONFUSED
           }
@@ -2474,7 +2379,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Ram", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2486,7 +2390,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Bite", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2494,7 +2397,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Rising Lunge", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { damage 10 }
@@ -2508,7 +2410,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Collect", {
           text "Draw a card."
           energyCost C
-          attackRequirement {}
           onAttack {
             draw 1
           }
@@ -2516,7 +2417,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Magnetic Blast", {
           text "10 damage."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2528,7 +2428,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Sand Attack", {
           text "10 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             sandAttack(thisMove)
@@ -2541,7 +2440,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Rollout", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2549,7 +2447,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Jump On", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 20 }
@@ -2572,7 +2469,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Bite", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2584,7 +2480,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Flare", {
           text "10 damage."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2597,7 +2492,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Roar", {
           text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon, if any."
           energyCost C
-          attackRequirement {}
           onAttack {
             whirlwind()
           }
@@ -2605,7 +2499,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Ambush", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 20 }
@@ -2618,7 +2511,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Sharpen", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -2630,7 +2522,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Collect", {
           text "Draw a card."
           energyCost C
-          attackRequirement {}
           onAttack {
             draw 1
           }
@@ -2638,7 +2529,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Quick Blow", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 20 }
@@ -2651,7 +2541,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Dig Under", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. This attack's damage isn't affected by Weakness or Resistance."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10, opp.all.select()
           }
@@ -2659,7 +2548,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Scratch", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2671,7 +2559,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Yawn", {
           text "The Defending Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             apply ASLEEP
           }
@@ -2679,7 +2566,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Tackle", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2691,7 +2577,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Tackle", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2699,7 +2584,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Spinning Attack", {
           text "20 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2711,7 +2595,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Surprise Attack", {
           text "20 damage. Flip a coin. If tails, this attack does nothing."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { damage 20 }
           }
@@ -2719,7 +2602,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Recover", {
           text "Discard a [W] Energy card attached to Staryu and remove 4 damage counters from Staryu (all if there are less than 4)."
           energyCost W
-          attackRequirement {}
           onAttack {
             discardSelfEnergy(C)
             heal 40, self
@@ -2733,7 +2615,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Skill Dive", {
           text "Does 10 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10, opp.all.select()
           }
@@ -2745,7 +2626,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "String Shot", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply PARALYZED }
@@ -2758,7 +2638,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Poison Fang", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply POISONED }
@@ -3105,7 +2984,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Flame Screen", {
           text "30 damage. During your opponent's next turn, any damage done to Flareon ex by attacks is reduced by 20 (after applying Weakness and Resistance)."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage{
@@ -3130,7 +3008,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Heat Tackle", {
           text "70 damage. Flareon ex does 10 damage to itself."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 70
             damage 10, self
@@ -3155,7 +3032,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Second Bite", {
           text "20+ damage. Does 20 damage plus 10 more damage for each damage counter on the Defending Pokémon."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20+10*opp.active.numberOfDamageCounters
           }
@@ -3163,7 +3039,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Thunder Blast", {
           text "70 damage. Discard a [L] Energy card attached to Jolteon ex."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 70
             discardSelfEnergy L
@@ -3187,7 +3062,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Fastwave", {
           text "40 damage. This attack's damage isn't affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             new ResolvedDamage(hp(40), my.active, defending, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE).run(bg)
           }
@@ -3195,7 +3069,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Hydrosplash", {
           text "60 damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -3207,7 +3080,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Critical Collection", {
           text "10 damage. Count the number of Prize cards your opponent has taken. Search your discard pile for up to that many [F] Energy cards and attach them to Groudon Star."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
 
@@ -3224,7 +3096,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Ground Slash", {
           text "80 damage. Discard a [F] Energy card attached to Groudon Star."
           energyCost F, F, F, C, C
-          attackRequirement {}
           onAttack {
             damage 80
             discardSelfEnergy F
@@ -3237,7 +3108,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Critical Collection", {
           text "10 damage. Count the number of Prize cards your opponent has taken. Search your discard pile for up to that many [W] Energy cards and attach them to Kyogre Star."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
             def takenPrizes = opp.prizeCardSet.takenCount
@@ -3253,7 +3123,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Sheer Cold", {
           text "60 damage. Flip a coin. If heads, each Defending Pokémon can't attack during your opponent's next turn."
           energyCost W, W, W, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             flip { cantAttackNextTurn defending }
@@ -3267,7 +3136,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Critical Collection", {
           text "10 damage. Count the number of Prize cards your opponent has taken. Search your discard pile for up to that many [M] Energy cards and attach them to Metagross Star."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 10
 
@@ -3284,7 +3152,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Hyper Beam", {
           text "50 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
           energyCost M, M, M, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             flip { discardDefendingEnergy() }
@@ -3312,7 +3179,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Bubblebeam", {
           text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip { apply PARALYZED }

@@ -124,7 +124,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Punch and Run", {
             text "70 damage. Switch this Pokémon with 1 of your Benched Pokémon."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               switchYourActive()
@@ -138,7 +137,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Sleep Spore", {
             text "10 damage. Your opponent’s Active Pokémon is now Asleep."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
               applyAfterDamage(ASLEEP)
@@ -152,7 +150,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Reckless Charge", {
             text "20 damage. This Pokémon does 10 damage to itself."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
               damage 10,self
@@ -166,7 +163,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Slash", {
             text "70 damage. "
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -174,7 +170,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Wild Tackle", {
             text "180 damage. This Pokémon does 50 damage to itself."
             energyCost R, C, C, C
-            attackRequirement {}
             onAttack {
               damage 180
               damage 50,self
@@ -201,7 +196,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Sharp Fang", {
             text "90 damage. "
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 90
             }
@@ -214,7 +208,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Panic", {
             text "10 damage. This Pokémon is now Confused."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
               afterDamage {apply(CONFUSED,self)}
@@ -256,7 +249,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Furious Shurikens", {
             text "This attack does 50 damage to 2 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W, W
-            attackRequirement {}
             onAttack {
               multiDamage(opp.all,2,50)
             }
@@ -280,7 +272,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Surprise Attack", {
             text "80 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               flip{damage 80}
             }
@@ -305,7 +296,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Juggling", {
             text "20x damage. Flip 4 coins. This attack does 20 damage for each heads."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               flip 4,{damage 20}
             }
@@ -318,7 +308,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Psyjack", {
             text "30 damage. Choose 1 of your opponent's Active Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 30
               amnesia(delegate)
@@ -327,7 +316,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Break Burn", {
             text "130 damage. Discard 2 [P] Energy from this Pokémon."
             energyCost P, P, C
-            attackRequirement {}
             onAttack {
               damage 130
               discardSelfEnergy(P,P)
@@ -352,7 +340,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Cross Chop", {
             text "80+ damage. Flip a coin. If heads, this attack does 60 more damage."
             energyCost F, F
-            attackRequirement {}
             onAttack {
               damage 80
               flip{damage 60}
@@ -367,7 +354,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Healing Melody", {
             text "Heal 10 damage from each of your Pokémon."
             energyCost Y
-            attackRequirement {}
             onAttack {
               my.all.each{heal 10,it}
             }
@@ -381,7 +367,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Play Rough", {
             text "10+ damage. Flip a coin. If heads, this attack does 30 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 10
               flip{damage 30}
@@ -395,7 +380,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Continuous Lick", {
             text "20x damage. Flip a coin until you get tails. This attack does 20 damage for each heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flipUntilTails {damage 20}
             }
@@ -427,7 +411,6 @@ public enum DetectivePikachu implements LogicCardInfo {
           move "Pitch", {
             text "150 damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 150
               whirlwind()

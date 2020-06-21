@@ -134,7 +134,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Major Flood", {
           text "60 damage. Discard a [W] Energy card attached to Kyogre ex. Does 10 damage to each Benched Pokémon (both yours and your opponent's). (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, W, W
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -146,7 +145,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Major Earthquake", {
           text "80 damage. Discard a [F] Energy card attached to Groudon ex. Does 10 damage to your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, F, F, F
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -159,7 +157,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Tail Slap", {
           text "10 damage. "
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -167,7 +164,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Razor Leaf", {
           text "20 damage. "
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -180,7 +176,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Poison Breath", {
           text "The Defending Pokémon is now Poisoned."
           energyCost C, C
-          attackRequirement {}
           onAttack {
 
           }
@@ -188,7 +183,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Swift", {
           text "30 damage. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -200,7 +194,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Pound", {
           text "10 damage. "
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -208,7 +201,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Fury Swipes", {
           text "10x damage. Flip 3 coins. This attack does 10 damage times the number of heads."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -220,7 +212,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Peck", {
           text "10 damage. "
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -228,7 +219,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Fireworks", {
           text "30 damage. Flip a coin. If tails, discard a [R] Energy card attached to Torchic."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -244,7 +234,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Flare", {
           text "20 damage. "
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -252,7 +241,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Double Kick", {
           text "40x damage. Flip 2 coins. This attack does 40 damage times the number of heads."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -266,7 +254,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Bubble", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -274,7 +261,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Slash", {
           text "40 damage. "
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -286,7 +272,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Agility", {
           text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Pikachu during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
 
           }
@@ -294,7 +279,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Thundershock", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -306,7 +290,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Plunder", {
           text "10 damage. Before doing damage, discard all Trainer cards attached to the Defending Pokémon (before they affect the damage)."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -314,7 +297,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Scratch", {
           text "20 damage. "
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -326,7 +308,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Super Psy", {
           text "10 damage. "
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -334,7 +315,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Searing Flame", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Burned."
           energyCost R, W
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -346,7 +326,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Super Psy", {
           text "10 damage. "
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -354,7 +333,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Freeze Dry", {
           text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost W, P, L
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -367,7 +345,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Pound", {
           text "10 damage. "
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -375,7 +352,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Sporadic Sponging", {
           text "10 damage. Flip a coin. If heads, remove 1 damage counter from Treecko."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -387,7 +363,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Ember", {
           text "30 damage. Discard a [R] Energy card attached to Torchic."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -399,7 +374,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Surf", {
           text "10 damage. "
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -407,7 +381,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Whirlpool", {
           text "10 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -419,7 +392,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Supersonic", {
           text "Flip a coin. If heads, the Defending Pokémon is now Confused."
           energyCost C
-          attackRequirement {}
           onAttack {
 
           }
@@ -427,7 +399,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Pound", {
           text "10 damage. "
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -444,7 +415,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Fury Swipes", {
           text "30x damage. Flip 3 coins. This attack does 30 damage times the number of heads."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -456,7 +426,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "The Third Eye", {
           text "Discard an Energy card attached to Jirachi and draw 3 cards."
           energyCost C
-          attackRequirement {}
           onAttack {
 
           }
@@ -464,7 +433,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Psywave", {
           text "10x damage. Does 10 damage times the amount of Energy attached to the Defending Pokémon."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -482,7 +450,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Metal Charge", {
           text "30 damage. Put 1 damage counter on Beldum."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -495,7 +462,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Metal Load", {
           text "Search your discard pile for a [M] Energy card and attach it to Metang."
           energyCost C
-          attackRequirement {}
           onAttack {
 
           }
@@ -503,7 +469,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Metal Claw", {
           text "30 damage. "
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -515,7 +480,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Resonate", {
           text "Your opponent switches each Defending Pokémon with his or her Benched Pokémon. If your opponent has only 1 Benched Pokémon, you choose the Defending Pokémon to switch."
           energyCost C
-          attackRequirement {}
           onAttack {
 
           }
@@ -523,7 +487,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Healing Sound", {
           text "Remove 3 damage counters from each of your Active Pokémon. Each Defending Pokémon is now Asleep."
           energyCost C, C
-          attackRequirement {}
           onAttack {
 
           }
@@ -537,7 +500,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Sand Pit", {
           text "20 damage. The Defending Pokémon can't retreat until the end of your opponent's next turn."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -545,7 +507,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Dragonbreath", {
           text "80 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If tails, this attack does nothing."
           energyCost G, L, C, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -581,7 +542,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Leaf Slice", {
           text "20x damage. Flip 2 coins. This attack does 20 damage times the number of heads."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -598,7 +558,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Hypno Wave", {
           text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 20 more damage. If tails, this attack does 30 damage and the Defending Pokémon is now Asleep."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -615,7 +574,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Flame Gift", {
           text "10 damage. You may move a [R] Energy card attached to Moltres ex to 1 of your Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -623,7 +581,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Scorching Wing", {
           text "90 damage. Discard all [R] Energy attached to Moltres ex."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 90
           }
@@ -640,7 +597,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Ice Gift", {
           text "10 damage. You may move a [W] Energy card attached to Articuno ex to 1 of your Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -648,7 +604,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Freezing Wing", {
           text "50 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -665,7 +620,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Thunder Gift", {
           text "10 damage. You may move a [L] Energy card attached to Zapdos ex to 1 of your Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -673,7 +627,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Lightning Wing", {
           text "60 damage. Does 10 damage to 1 of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -690,7 +643,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Flickering Flames", {
           text "20 damage. The Defending Pokémon is now Asleep."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -698,7 +650,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Rage", {
           text "50+ damage. Does 50 damage plus 10 more damage for each damage counter on Typhlosion."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -710,7 +661,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Thunder Wave", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
 
           }
@@ -718,7 +668,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Iron Tail", {
           text "20x damage. Flip a coin until you get tails. This attack does 20 damage times the number of heads."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -737,7 +686,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Aqua Supply", {
           text "30 damage. You may attach a basic Energy card from your hand to 1 of your Pokémon."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -745,7 +693,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Tsunami", {
           text "40 damage. Does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -762,7 +709,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Mix-Up", {
           text "30 damage. Flip a coin. If heads, your opponent discards the top card from his or her deck."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -770,7 +716,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Earthquake", {
           text "60 damage. Does 10 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -789,7 +734,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Dragon Bind", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -797,7 +741,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Twister", {
           text "50 damage. Flip 2 coins. If both are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending Pokémon."
           energyCost R, L, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -809,7 +752,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Psywave", {
           text "10x damage. Does 10 damage times the amount of Energy attached to the Defending Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -817,7 +759,6 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         move "Devolution Beam", {
           text "Flip a coin. If heads, choose 1 of either player's Evolved Pokémon, remove the highest Stage Evolution card from that Pokémon, and put it into that player's hand."
           energyCost P
-          attackRequirement {}
           onAttack {
 
           }

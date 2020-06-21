@@ -113,7 +113,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Smash Turn", {
           text "30 damage. After your attack, you may switch Blastoise with 1 of your Benched Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage{
@@ -124,7 +123,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Rocket Tackle", {
           text "60 damage. Blastoise does 10 damage to itself. Flip a coin. If heads, prevent all damage done to Blastoise by attacks during your opponent's next turn."
           energyCost W, W, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             damage 10, self
@@ -138,7 +136,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Quick Attack", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 20 }
@@ -163,7 +160,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Thundershock", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { applyAfterDamage(PARALYZED) }
@@ -172,7 +168,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Pin Missile", {
           text "20x damage. Flip 4 coins. This attack does 20 damage times the number of heads."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             flip 4, { damage 20 }
           }
@@ -185,7 +180,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Cheer Up", {
           text "Draw a card. If Plusle is in play, draw 2 cards instead."
           energyCost C
-          attackRequirement {}
           onAttack {
             if (all.findAll {it.name == "Plusle"}) {
               bc "Plusle is in play and Cheer up allows drawing 2 cards."
@@ -198,7 +192,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Negative Ion", {
           text "20 damage. During your opponent's next turn, any damage done by attacks from the Defending Pokémon is reduced by 10 (before applying Weakness and Resistance)."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
             reduceDamageFromDefendingNextTurn(hp(10), thisMove, defending)
@@ -229,7 +222,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Cheer Up", {
           text "Draw a card. If Minun is in play, draw 2 cards instead."
           energyCost C
-          attackRequirement {}
           onAttack {
             if (all.findAll {it.name == "Minun"}) {
               bc "Minun is in play and Cheer up allows drawing 2 cards."
@@ -242,7 +234,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Positive Ion", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { damage 10 }
@@ -272,7 +263,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Bite", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -280,7 +270,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Water Gun", {
           text "30+ damage. Does 30 damage plus 20 more damage for each [W] Energy attached to Vaporeon but not used to pay for this attack's Energy cost. You can't add more than 40 damage in this way."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
             extraEnergyDamage(2, hp(20), W, thisMove)
@@ -293,7 +282,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Scratch", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -301,7 +289,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Flamethrower", {
           text "50 damage. Discard a [R] Energy attached to Combusken."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             discardSelfEnergy(R)
@@ -322,7 +309,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Fury Attack", {
           text "30x damage. Flip 3 coins. This attack does 30 damage times the number of heads."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             flip 3, { damage 30 }
           }
@@ -334,7 +320,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Tackle", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -342,7 +327,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Toxic", {
           text "40 damage. The Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 40
             afterDamage {
@@ -410,7 +394,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Psybeam", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { applyAfterDamage(CONFUSED) }
@@ -423,7 +406,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Tackle", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -431,7 +413,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Take Down", {
           text "30 damage. Eevee does 10 damage to itself."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             damage 10, self
@@ -444,7 +425,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Gouge", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 10 }
@@ -453,7 +433,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Poisonpowder", {
           text "40 damage. The Defending Pokémon is now Poisoned."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             applyAfterDamage(POISONED)
@@ -466,7 +445,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Mud Slap", {
           text "20 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -474,7 +452,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Double-edge", {
           text "40 damage. Marshtomp does 10 damage to itself."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             damage 10, self
@@ -487,7 +464,6 @@ public enum PopSeries3 implements LogicCardInfo {
         move "Bustle", {
           text "20x damage. Flip 2 coins. This attack does 20 damage times the number of heads. If either coin is heads, the Defending Pokémon is now Confused."
           energyCost L, L
-          attackRequirement {}
           onAttack {
             flip "Bustle", 2, {damage 20 applyAfterDamage CONFUSED}, {}
           }

@@ -207,7 +207,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Water Punch", {
             text "20+ damage. Flip a coin for each [W] Energy attached to Azumarill. This attack does 20 damage plus 20 more damage for each heads."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip self.cards.energyCount(W), {damage 20}
@@ -240,7 +239,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Ram", {
             text "30 damage"
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -248,7 +246,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Shock Bolt", {
             text "70 damage. Discard all [L] Energy attached to Dark Ampharos."
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               discardAllSelfEnergy(L)
@@ -272,7 +269,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Dark Drain", {
             text "Does 10 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) Remove from Dark Crobat a number of damage counters equal to the number of your opponent’s Pokémon in play."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               opp.all.each{
                 damage 10, it
@@ -283,7 +279,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Skill Dive", {
             text "Does 30 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 30, opp.all.select()
             }
@@ -307,7 +302,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Energy Bomb", {
             text "30 damage. You may move all Energy cards attached to Dark Electrode to your Benched Pokémon in any way you like."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 30
               afterDamage {
@@ -330,7 +324,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Shakedown", {
             text "20 damage. Choose a card from your opponent’s hand without looking and discard it."
             energyCost D, C
-            attackRequirement {}
             onAttack {
               damage 20
               if(opp.hand){
@@ -341,7 +334,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Dark Fire", {
             text "40+ damage. You may discard a [R] Energy or [D] Energy attached to Dark Houndoom. If you do, this attack does 40 damage plus 20 more damage."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               if(confirm("discard a [R] Energy or [D] Energy attached to Dark Houndoom for 20 more damage?")){
@@ -381,7 +373,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Black Magic", {
             text "20× damage. Does 20 damage times the number of your opponent’s Benched Pokémon."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 20*opp.bench.size()
             }
@@ -394,7 +385,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Brick Smash", {
             text "30 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               swiftDamage(30, defending)
             }
@@ -418,7 +408,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Black Suction Cups", {
             text "Does 10 damage to each Defending Pokémon. Flip a coin. If heads, each Defending Pokémon is now Paralyzed."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
               flipThenApplySC PARALYZED
@@ -427,7 +416,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Ink Blast", {
             text "30+ damage. Does 30 damage plus 10 more damage for each Energy attached to Dark Octillery but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               extraEnergyDamage(2,hp(10),C,thisMove)
@@ -452,7 +440,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Litter", {
             text "20+ damage. You may discard a combination of up to 2 Pokémon Tool cards and Rocket’s Secret Machine cards from your hand. If you do, this attack does 20 damage plus 30 more damage for each card you discarded."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 20
               //TODO : rocket secret machine
@@ -469,7 +456,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Energy Link", {
             text "20 damage. Search your discard pile for an Energy card and attach it to Dark Steelix."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               attachEnergyFrom(my.discard,self)
@@ -478,7 +464,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Heavy Impact", {
             text "60 damage."
             energyCost F, C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -506,7 +491,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Energy Crush", {
             text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to all of your opponent’s Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               opp.all.each{
@@ -531,7 +515,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Hyper Whirlpool", {
             text "20 damage. Flip a coin until you get tails. For each heads, discard an Energy card attached to the Defending Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flipUntilTails {
@@ -542,7 +525,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Aqua Sonic", {
             text "50 damage. This attack’s damage is not affected by Resistance."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               dontApplyResistance()
@@ -556,7 +538,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Sheer Cold", {
             text "20 damage. Flip a coin. If heads, each Defending Pokémon can’t attack during your opponent’s next turn."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip{cantAttackNextTurn defending}
@@ -565,7 +546,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Tonnage", {
             text "60+ damage. You may do 60 damage plus 40 more damage. If you do, Piloswine does 30 damage to itself."
             energyCost F, F, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               if(confirm("Do 30 damage to Piloswine for 40 more damage")){
@@ -608,7 +588,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Dive", {
             text "30 damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -658,7 +637,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Double Wing Attack", {
             text "Does 30 damage to each Defending Pokémon."
             energyCost W, L
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -666,7 +644,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Claw Swipe", {
             text "50 damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -687,7 +664,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Slimy Water", {
             text "10× damage. Does 10 damage times the number of [C] Energy in the Defending Pokémon’s Retreat Cost (after applying effects to the Retreat Cost)."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 10*defending.retreatCost
             }
@@ -695,7 +671,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Acidic Poison", {
             text "10 damage. The Defending Pokémon is now Burned and Poisoned."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 10
               afterDamage{
@@ -712,7 +687,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Dark Seed", {
             text "The Defending Pokémon can’t retreat during your opponent’s next turn. Put 5 damage counters on the Defending Pokémon at the end of your opponent’s next turn."
             energyCost D
-            attackRequirement {}
             onAttack {
               cantRetreat defending
               delayed{
@@ -728,7 +702,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Spread Poison", {
             text "10 damage. The Defending Pokémon is now Poisoned. This attack does 20 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 10
               if(opp.bench) damage 20, opp.bench.select()
@@ -754,7 +727,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Swift", {
             text "50 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               swiftDamage(50,defending)
             }
@@ -768,7 +740,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Grind", {
             text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Dark Tyranitar."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10+10*self.cards.energyCount(C)
             }
@@ -776,7 +747,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Spinning Tail", {
             text "Does 20 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
               opp.all.each{
                 damage 20, it
@@ -786,7 +756,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Bite Off", {
             text "70+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 70 damage plus 50 more damage."
             energyCost D, D, C, C, C
-            attackRequirement {}
             onAttack {
               damage 70
               if(defending.EX) damage 50
@@ -813,7 +782,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Second Strike", {
             text "50+ damage. If the Defending Pokémon already has at least 2 damage counters on it, this attack does 50 damage plus 20 more damage."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               if(opp.active.numberOfDamageCounters >= 2) damage 20
@@ -840,7 +808,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Souvenir", {
             text "Flip 3 coins. If 1 of them is heads, put 4 damage counters on the Defending Pokémon. If 2 of them are heads, remove 1 damage counter from the Defending Pokémon. If all of them are heads, put 10 damage counters on the Defending Pokémon. If all of them are tails, remove all damage counters from the Defending Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flip 3,{},{},[0:{heal opp.active.damage.value, opp.active},1:{directDamage 40, opp.active},2:{heal 10, opp.active},3:{directDamage 100, opp.active}]
 
@@ -854,7 +821,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Quick Change", {
             text "Choose up to 3 cards in your hand and put them on top of your deck. Then, search your deck for that many cards and put them into your hand. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
             onAttack {
               def drawNb = my.hand.select(max:3,"select 3 card to put at the top of your deck").moveTo(my.deck).size()
               shuffleDeck()
@@ -864,7 +830,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Quick Tail Smash", {
             text "30 damage. Before doing damage, you may flip a coin. If heads, this attack does 80 damage instead. If tails, this attack does nothing."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               if(confirm("flip a coin instead of doing 30 damage. If heads do 80 but if tail this attack does nothing.")){
                 flip {damage 80}
@@ -895,7 +860,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Split Spiral Punch", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flipThenApplySC CONFUSED
@@ -904,7 +868,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Tackle", {
             text "50 damage."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -926,7 +889,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Detour", {
             text "If you have a Supporter card in play, use the effect on that card as the effect of this attack."
             energyCost C
-            attackRequirement {}
             onAttack {
               //TODO : use card effect as move
             }
@@ -952,7 +914,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Hide in Shadows", {
             text "20 damage. Switch Misdreavus with 1 of your Benched Pokémon."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 20
               if(my.bench) sw self, my.bench.select()
@@ -977,7 +938,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Hyper Pump", {
             text "20+ damage. Does 20 damage plus 20 more damage for each basic Energy card attached to Quagsire but not used to pay for this attack’s Energy cost. You can’t add more than 60 damage in this way."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 20
               extraEnergyDamage(3,hp(20),W,thisMove)
@@ -1010,7 +970,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Stun Poison", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and Poisoned."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 10
               afterDamage{
@@ -1030,7 +989,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Quick Charge", {
             text "Search your deck for up to 4 different types of basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
             onAttack {
               my.deck.select(min:0, max:4, "Select up to 4 different types of basic Energy cards", cardTypeFilter(BASIC_ENERGY), self.owner,
                 {
@@ -1047,7 +1005,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Swift", {
             text "20 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               swiftDamage(20,defending)
             }
@@ -1060,7 +1017,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Swallow Up", {
             text "10+ damage. Before doing damage, count the remaining HP of the Defending Pokémon and Dark Arbok. If the Defending Pokémon has fewer remaining HP than Dark Arbok’s, this attack does 10 damage plus 30 more damage."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
               if(defending.getRemainingHP() < self.getRemainingHP()) damage 30
@@ -1069,7 +1025,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Extra Poison", {
             text "30 damage. If the Defending Pokémon is Pokémon-ex, the Defending Pokémon is now Asleep and Poisoned."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               if (defending.EX) {
@@ -1086,7 +1041,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Super Poison Breath", {
             text "Each Defending Pokémon is now Poisoned."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply POISONED
             }
@@ -1094,7 +1048,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Breaking Impact", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage for each [C] Energy in that Pokémon’s Retreat Cost (after applying effects to the Retreat Cost). (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               def pcs = opp.all.select("Select the pokemon to attack.")
               damage 20*pcs.retreatCost, pcs
@@ -1121,7 +1074,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Dragon Rage", {
             text "30 damage."
             energyCost W, L
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1136,7 +1088,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Double Tackle", {
             text "Does 20 damage to each Defending Pokémon."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1144,7 +1095,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Crushing Blow", {
             text "40 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               flip {
@@ -1160,7 +1110,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Thunder Slash", {
             text "10 damage. If the Defending Pokémon is a Basic Pokémon, the Defending Pokémon is now Paralyzed. Dark Flaaffy can’t use Thunder Slash during your next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               if(!defending.evolution) applyAfterDamage PARALYZED
@@ -1170,7 +1119,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Headbutt", {
             text "20 damage."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1183,7 +1131,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Night Ambush", {
             text "Does 30 damage to 1 of your opponent’s Pokémon. Dark Golbat can’t attack during your next turn. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 30, opp.all.select()
               cantAttackNextTurn self
@@ -1197,7 +1144,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Darkness Shield", {
             text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to each of your Active Pokémon during your opponent’s next turn."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip{preventAllEffectsNextTurn()}
@@ -1206,7 +1152,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Cold Crush", {
             text "40 damage. You may discard an Energy card attached to Dark Golduck. If you do, discard an Energy attached to the Defending Pokémon."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               if(confirm("discard an Energy card attached to Dark Golduck. If you do, discard an Energy attached to the Defending Pokémon")){
@@ -1234,7 +1179,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Sharp Fang", {
             text "30 damage."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1242,7 +1186,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Dark Streak", {
             text "40 damage. Flip a coin. If heads, each Defending Pokémon is now Paralyzed."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               flipThenApplySC PARALYZED
@@ -1265,7 +1208,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Fire Payback", {
             text "40+ damage. If you have less Benched Pokémon than your opponent, this attack does 40 damage plus 20 more damage."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               if(my.bench.size() < opp.bench.size()) damage 20
@@ -1279,7 +1221,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Energy Press", {
             text "10+ damage. Does 10 damage plus 10 more damage for each basic Energy card attached to all of your Active Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10+10*self.cards.filterByType(BASIC_ENERGY).size()
             }
@@ -1287,7 +1228,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Linear Attack", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 40, opp.all.select()
             }
@@ -1300,7 +1240,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Magnetic Lines", {
             text "20 damage. If your opponent has at least 2 Pokémon in play, move a basic Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 20
               if(opp.bench) moveEnergy(basic : true, defending, opp.bench)
@@ -1309,7 +1248,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Poison Pulse", {
             text "40 damage. The Defending Pokémon is now Poisoned."
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               applyAfterDamage POISONED
@@ -1323,7 +1261,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Explosive Evolution", {
             text "Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance.) Then, search your deck for a card that evolves from Dark Pupitar and put it on Dark Pupitar. (This counts as evolving Dark Pupitar.) Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip{
                 opp.all.each{
@@ -1340,7 +1277,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Double Tackle", {
             text "Does 20 damage to each Defending Pokémon."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1353,7 +1289,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Dark Streak", {
             text "20 damage. Flip a coin. If heads, each Defending Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flipThenApplySC PARALYZED
@@ -1362,7 +1297,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Rock Tumble", {
             text "40 damage. This attack’s damage is not affected by Resistance."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               dontApplyResistance()
@@ -1387,7 +1321,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Smog", {
             text "The Defending Pokémon is now Poisoned."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply POISONED
             }
@@ -1395,7 +1328,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Darkness Charge", {
             text "50 damage. Put 2 damage counters on Dark Weezing."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               directDamage 20, self
@@ -1422,7 +1354,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Get Even", {
             text "20+ damage. If you have more Prize cards left than your opponent, this attack does 20 damage plus 10 more damage for each Prize card more than your opponent."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 20
               if(my.prizeCardSet.size() > opp.prizeCardSet.size()) damage 10*(my.prizeCardSet.size() - opp.prizeCardSet.size())
@@ -1447,7 +1378,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Flame Tail", {
             text "40 damage."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -1470,7 +1400,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Aqua Slash", {
             text "30 damage. Mantine can’t attack during your next turn."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 30
               cantAttackNextTurn self
@@ -1498,7 +1427,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Miraculous Comeback", {
             text "10× damage. Flip a coin for each Pokémon in play (both yours and your opponent’s). This attack does 10 damage times the number of heads. Rocket’s Meowth does 10 damage times the number of tails to itself."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               def flipCnt = my.all.size() + opp.all.size()
               flip flipCnt, {damage 10}, {damage 10, self}
@@ -1534,7 +1462,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Amnesia", {
             text "10 damage. Choose 1 of the Defending Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 10
               amnesia delegate
@@ -1548,7 +1475,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Confuse Ray", {
             text "10 damage. The Defending Pokémon is now Confused."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 10
               applyAfterDamage CONFUSED
@@ -1557,7 +1483,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Aqua Trick", {
             text "30 damage. Move 1 Energy card attached to the Defending Pokémon to 1 of your opponent’s Benched Pokémon. If your opponent has no Benched Pokémon, this effect does nothing."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               if(opp.bench) moveEnergy(defending,opp.bench.select())
@@ -1586,7 +1511,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Miracle Powder", {
             text "10 damage. Flip a coin. If heads, choose 1 Special Condition. The Defending Pokémon is now affected by that Special Condition."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               flip {
@@ -1602,7 +1526,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Yawn", {
             text "The Defending Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply ASLEEP
             }
@@ -1610,7 +1533,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Mini-Metronome", {
             text "Flip a coin. If heads, choose 1 of the Defending Pokémon’s attacks. Mini-Metronome copies that attack except for its Energy cost. (You must still do anything else required for that attack.) (No matter what type that Pokémon is, Togepi’s type is still [C].) Togepi performs that attack."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               def moveList = []
               def labelList = []
@@ -1657,7 +1579,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Bonemerang", {
             text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
             energyCost F
-            attackRequirement {}
             onAttack {
               flip 2, {damage 10}
             }
@@ -1669,7 +1590,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Pound", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1684,7 +1604,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Dragon Song", {
             text "Each Defending Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply ASLEEP
             }
@@ -1692,7 +1611,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Tail Strike", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
             energyCost W, L
-            attackRequirement {}
             onAttack {
               damage 20
               flip {damage 10}
@@ -1719,7 +1637,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Soothing Wave", {
             text "10 damage. Flip a coin. If heads, each Defending Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               flipThenApplySC ASLEEP
@@ -1733,7 +1650,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Tail Wrap", {
             text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip{apply PARALYZED}
             }
@@ -1756,7 +1672,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Spit Poison", {
             text "10 damage. The Defending Pokémon is now Poisoned."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 10
               apply POISONED
@@ -1785,7 +1700,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Miracle Powder", {
             text "Flip a coin. If heads, choose 1 Special Condition. The Defending Pokémon is now affected by that Special Condition."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {
                 applyAfterDamage choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending pokemon")
@@ -1810,7 +1724,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Swift", {
             text "30 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost W, W
-            attackRequirement {}
             onAttack {
               swiftDamage(30,defending)
             }
@@ -1823,7 +1736,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Rear Kick", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1831,7 +1743,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Smokescreen", {
             text "20 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 20
               sandAttack(thisMove)
@@ -1853,7 +1764,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Firebreathing", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
               flip {damage 10}
@@ -1878,7 +1788,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Gnaw", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1891,7 +1800,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Fury Attack", {
             text "10× damage. Flip 3 coins. This attack does 10 damage times the number of heads."
             energyCost F
-            attackRequirement {}
             onAttack {
               flip 3, {damage 10}
             }
@@ -1904,7 +1812,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Light Punch", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1912,7 +1819,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Dig Drain", {
             text "20 damage. Remove 1 damage counter from Larvitar."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 20
               heal 10, self
@@ -1941,7 +1847,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Beat", {
             text "20 damage."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1974,7 +1879,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Sonicboom", {
             text "10 damage. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost C
-            attackRequirement {}
             onAttack {
               noWrDamage(10,defending)
             }
@@ -1998,7 +1902,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Quick Attack", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 10
               flip {damage 10}
@@ -2028,7 +1931,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Horn Rush", {
             text "10 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {damage 10}
             }
@@ -2036,7 +1938,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Granite Head", {
             text "20 damage. During your opponent’s next turn, any damage done to Onix by attacks is reduced by 10 (after applying Weakness and Resistance)."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 20
               reduceDamageNextTurn(hp(10),thisMove)
@@ -2050,7 +1951,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Gentle Slap", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2058,7 +1958,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Headache", {
             text "Flip a coin. If heads, your opponent can’t play a Trainer card from his or her hand until the end of your opponent’s next turn."
             energyCost W
-            attackRequirement {}
             onAttack {
               flip{
                 delayed{
@@ -2088,7 +1987,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Fury Swipes", {
             text "10× damage. Flip 3 coins. This attack does 10 damage times the number of heads."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip 3, {damage 10}
             }
@@ -2106,7 +2004,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Snarl", {
             text "Flip a coin. If heads, this attack does 10 damage to the Defending Pokémon. If tails, the Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip 1, {damage 10},{apply PARALYZED}
             }
@@ -2129,7 +2026,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Razor Fin", {
             text "10 damage."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2142,7 +2038,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Rear Kick", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2150,7 +2045,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Swift", {
             text "20 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               swiftDamage 20, defending
             }
@@ -2175,7 +2069,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Surprise Attack", {
             text "20 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {damage 20}
             }
@@ -2202,7 +2095,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Bite", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2215,7 +2107,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Singe", {
             text "Flip a coin. If heads, the Defending Pokémon is now Burned."
             energyCost R
-            attackRequirement {}
             onAttack {
               flip {apply BURNED}
             }
@@ -2223,7 +2114,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Heat Tackle", {
             text "30 damage. Slugma does 10 damage to itself."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               damage 10, self
@@ -2237,7 +2127,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
             onAttack {
               draw 1
             }
@@ -2245,7 +2134,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Rising Lunge", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {damage 10}
@@ -2259,7 +2147,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Tackle", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2267,7 +2154,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Rest", {
             text "Remove all Special Conditions and all damage counters from Swinub. Swinub is now Asleep."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               heal self.damage.value, self
               clearSpecialCondition(self,Source.ATTACK)
@@ -2295,7 +2181,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Thunder Wave", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               flipThenApplySC PARALYZED
@@ -2320,7 +2205,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Wave Splash", {
             text "10 damage."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -2333,7 +2217,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Dark Streak", {
             text "Flip a coin. If heads, each Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {apply PARALYZED}
             }
@@ -2341,7 +2224,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Ambush", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {damage 10}
@@ -2610,7 +2492,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Freeze Solid", {
             text "10 damage. Search your discard pile for a [W] Energy card and attach it to Rocket’s Articuno ex."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               if(my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(W)) attachEnergyFrom(type:W,my.discard,self)
@@ -2619,7 +2500,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Ice Wing", {
             text "50 damage."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -2641,7 +2521,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Energy Link", {
             text "10 damage. Search your discard pile for an Energy card and attach it to Rocket’s Entei ex."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               if(my.discard.filterByType(ENERGY)) attachEnergyFrom(my.discard,self)
@@ -2650,7 +2529,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Volcanic Ash", {
             text "Discard 2 Energy attached to Rocket’s Entei ex and then choose 1 of your opponent’s Pokémon. This attack does 60 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               discardSelfEnergy C,C
               damage 60, opp.all.select()
@@ -2675,7 +2553,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Mach Punch", {
             text "10 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 10
               if(opp.bench) damage 10, opp.bench.select()
@@ -2684,7 +2561,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Magnum Punch", {
             text "60 damage."
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -2697,7 +2573,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Darkness Switch", {
             text "Discard an Energy card attached to Rocket’s Mewtwo ex, and then switch all damage counters on Rocket’s Mewtwo ex with those on the Defending Pokémon. (If an effect of this attack is prevented, this attack does nothing.)"
             energyCost P
-            attackRequirement {}
             onAttack {
               discardSelfEnergy(C)
               targeted (defending) {
@@ -2710,7 +2585,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Hypnoblast", {
             text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               flipThenApplySC ASLEEP
@@ -2719,7 +2593,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Psyburn", {
             text "70 damage."
             energyCost P, C, C, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -2740,7 +2613,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Fire Dance", {
             text "30 damage. Search your discard pile for a [R] Energy card and attach it to 1 of your Pokémon."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 30
               attachEnergyFrom(type : R, my.discard,my.all)
@@ -2749,7 +2621,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Combustion", {
             text "50 damage."
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -2769,7 +2640,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Rotating Claws", {
             text "50 damage. You may discard an Energy card attached to Rocket’s Scizor ex. If you do, search your discard pile for an Energy card (excluding the one you just discarded) and attach it to Rocket’s Scizor ex."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               afterDamage{
@@ -2795,7 +2665,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Bounce", {
             text "10 damage. After your attack, you may switch Rocket’s Scyther ex with 1 of your Benched Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               if(my.bench){
@@ -2806,7 +2675,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Slashing Strike", {
             text "40 damage. Rocket’s Scyther ex can’t use Slashing Strike during your next turn."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               cantUseAttack thisMove, self
@@ -2821,7 +2689,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Drag Off", {
             text "10 damage. Before doing damage, you may switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon. If you do, this attack does 10 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
             energyCost D
-            attackRequirement {}
             onAttack {
               def pcs = defending
               if(opp.bench){
@@ -2836,7 +2703,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Dark Ring", {
             text "30+ damage. Does 30 damage plus 10 more damage for each of your [D] Pokémon in play."
             energyCost D, D, C
-            attackRequirement {}
             onAttack {
               damage 30
               my.all.each{
@@ -2862,7 +2728,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Poison Claws", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flipThenApplySC POISONED
@@ -2871,7 +2736,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Collapse", {
             text "60 damage. Rocket’s Snorlax ex is now Asleep."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               apply ASLEEP, self
@@ -2896,7 +2760,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Icy Wind", {
             text "10 damage. The Defending Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               applyAfterDamage ASLEEP
@@ -2905,7 +2768,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Hyper Splash", {
             text "50+ damage. If the Defending Pokémon is a Stage 2 Evolved Pokémon, this attack does 50 damage plus 40 more damage."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               damage 50
               if(opp.active.topPokemonCard.cardTypes.is(STAGE2)) damage 40
@@ -2931,7 +2793,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Plasma", {
             text "10 damage. Search your discard pile for a [L] Energy card and attach it to Rocket’s Zapdos ex."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               attachEnergyFrom(type : L,my.discard,self)
@@ -2940,7 +2801,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Raging Thunder", {
             text "60 damage. This attack does 30 damage to 1 of your Pokémon."
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
               damage 60
               damage 30, my.all.select()
@@ -2954,7 +2814,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Whirlpool", {
             text "Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
             energyCost W
-            attackRequirement {}
             onAttack {
               flip{discardDefendingEnergy()}
             }
@@ -2962,7 +2821,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Spring Back", {
             text "20+ damage. If your opponent has only 1 Prize card left, this attack does 20 damage plus 50 more damage and the Defending Pokémon is now Asleep."
             energyCost W, W
-            attackRequirement {}
             onAttack {
               damage 20
               if(opp.prizeCardSet.size() == 1){
@@ -2979,7 +2837,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Fireworks", {
             text "20 damage. Flip a coin. If tails, discard a [R] Energy card attached to Torchic."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 20
               flip 1, {}, {discardSelfEnergy R}
@@ -2988,7 +2845,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Spring Back", {
             text "20+ damage. If your opponent has only 1 Prize card left, this attack does 20 damage plus 50 more damage and the Defending Pokémon is now Confused."
             energyCost R, R
-            attackRequirement {}
             onAttack {
               damage 20
               if(opp.prizeCardSet.size() == 1){
@@ -3006,7 +2862,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Tackle", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -3014,7 +2869,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Spring Back", {
             text "20+ damage. If your opponent has only 1 Prize card left, this attack does 20 damage plus 50 more damage and the Defending Pokémon is now Poisoned."
             energyCost G, G
-            attackRequirement {}
             onAttack {
               damage 20
               if(opp.prizeCardSet.size() == 1){
@@ -3031,7 +2885,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Smokescreen", {
             text "10 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 10
               sandAttack(thisMove)
@@ -3040,7 +2893,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Fireworks", {
             text "40 damage. Flip a coin. If tails, discard a [R] Energy card attached to Charmeleon."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 40
               flip 1, {}, {discardSelfEnergy R}

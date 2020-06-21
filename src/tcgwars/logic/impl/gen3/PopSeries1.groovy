@@ -111,7 +111,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Fire Punch", {
           text "40 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -119,7 +118,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Double Kick", {
           text "50x damage. Flip 2 coins. This attack does 50 damage times the number of heads."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             flip 2, { damage 50 }
           }
@@ -132,7 +130,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Metal Claw", {
           text "30 damage."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -140,7 +137,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Hyper Beam", {
           text "50 damage. Flip a coin. If heads, discard 1 Energy attached to the Defending Pokémon."
           energyCost C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             flip { discardDefendingEnergy() }
@@ -153,7 +149,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Fly", {
           text "10 damage. Flip a coin. If tails, this attack does nothing. If heads, prevent all effects of an attack, including damage, done to Rayquaza during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip {
               damage 10
@@ -164,7 +159,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Dragon Claw", {
           text "30 damage."
           energyCost R, L
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -177,7 +171,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Cling", {
           text "20 damage. After your attack, remove from Sceptile the number of damage counters equal to the damage you did to the Defending Pokémon. If Sceptile has fewer damage counters than that, remove all of them."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 20
             removeDamageCounterEqualToDamageDone()
@@ -186,7 +179,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Leaf Blade", {
           text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 30 more damage."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip { damage 30 }
@@ -199,7 +191,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Bubble", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
             flip { applyAfterDamage(PARALYZED) }
@@ -208,7 +199,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Mud Splash", {
           text "50 damage. If your opponent has any Benched Pokémon, choose 1 of them and flip a coin. If heads, this attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 50
             if (opp.bench) {
@@ -226,7 +216,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Blot", {
           text "30 damage. Remove 1 damage counter from Beautifly."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 30
             heal 10, self
@@ -235,7 +224,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Whirlwind", {
           text "40 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             afterDamage {
@@ -251,7 +239,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Quick Attack", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 20 }
@@ -260,7 +247,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Gust", {
           text "50 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -287,7 +273,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             swiftDamage(20, opp.all.select("Which Pokémon to deal 20 damage to?"))
           }
@@ -299,7 +284,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Rock Smash", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { damage 10 }
@@ -312,7 +296,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Amnesia", {
           text "Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
           energyCost F
-          attackRequirement {}
           onAttack {
             amnesia delegate
           }
@@ -320,7 +303,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Body Slam", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { applyAfterDamage(PARALYZED) }
@@ -333,7 +315,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Sand Attack", {
           text "10 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
             sandAttack(thisMove)
@@ -347,7 +328,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Thunder Wave", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 10
             flip { applyAfterDamage(PARALYZED) }
@@ -356,7 +336,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Spark", {
           text "10 damage. Choose 2 of your opponent's Benched Pokémon. This attack does 10 damage to each of those Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             if (opp.bench){
@@ -376,7 +355,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Quick Attack", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 10 }
@@ -385,7 +363,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Agility", {
           text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Plusle during your opponent's next turn."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { preventAllEffectsNextTurn() }
@@ -398,7 +375,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Bubble", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
             flip { applyAfterDamage(PARALYZED) }
@@ -412,7 +388,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Focus Energy", {
           text "During your next turn, base damage of Swellow's Agility is 70 instead of 30."
           energyCost C
-          attackRequirement {}
           onAttack {
             increasedBaseDamageNextTurn("Agility", hp(40))
           }
@@ -420,7 +395,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Agility", {
           text "30 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Swellow during your opponent's next turn."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip { preventAllEffectsNextTurn() }
@@ -434,7 +408,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Twin Blade", {
           text "Does 30 damage to each Defending Pokémon."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -442,7 +415,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Supersonic Claws", {
           text "80 damage. This attack's damage is not affected by Resistance."
           energyCost F, F, F, C, C
-          attackRequirement {}
           onAttack {
             damage 80
             dontApplyResistance()
@@ -457,7 +429,6 @@ public enum PopSeries1 implements LogicCardInfo {
         move "Scratch", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }

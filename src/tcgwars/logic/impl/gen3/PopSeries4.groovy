@@ -116,7 +116,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Wrap", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply PARALYZED }
           }
@@ -124,7 +123,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Sonicboom", {
           text "30 damage. This attack's damage isn't affected by Weakness or Resistance."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             noWrDamage(30, defending)
           }
@@ -146,7 +144,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Bite", {
           text "30 damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -154,7 +151,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Sand Pit", {
           text "70 damage. The Defending Pokémon can't retreat during your opponent's next turn."
           energyCost F, C, C, C
-          attackRequirement {}
           onAttack {
             damage 70
             cantRetreat defending
@@ -178,7 +174,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Psyshock", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { applyAfterDamage(PARALYZED) }
@@ -208,7 +203,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Tail Rap", {
           text "50x damage. Flip 2 coins. This attack does 50 damage times the number of heads."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             flip 2, { damage 50 }
           }
@@ -220,7 +214,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Smokescreen", {
           text "10 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 10
             sandAttack(thisMove)
@@ -229,7 +222,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Sky Uppercut", {
           text "40 damage. This attack's damage isn't affected by Resistance."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             dontApplyResistance()
@@ -243,7 +235,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Quick Attack", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 10 }
@@ -252,7 +243,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Blot", {
           text "20 damage. Remove 2 damage counters from Grovyle."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 20
             heal 20, self
@@ -285,7 +275,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Super Hypno Wave", {
           text "20 damage. The Defending Pokémon is now Asleep."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
             applyAfterDamage(ASLEEP)
@@ -299,7 +288,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Quick Attack", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { damage 10 }
@@ -312,7 +300,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Spark", {
           text "20 damage. Does 10 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (opp.bench) {
@@ -340,7 +327,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Tackle", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -354,7 +340,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Nap", {
           text "Remove 2 damage counters from Wobbuffet."
           energyCost C
-          attackRequirement {}
           onAttack {
             heal 20, self
           }
@@ -362,7 +347,6 @@ public enum PopSeries4 implements LogicCardInfo {
         move "Expand", {
           text "20 damage. During your opponent's next turn, any damage done to Wobbuffet is reduced by 20 (after applying Weakness and Resistance)."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20
             reduceDamageNextTurn(hp(20), thisMove)

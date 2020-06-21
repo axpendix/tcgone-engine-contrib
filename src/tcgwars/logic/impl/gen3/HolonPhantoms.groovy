@@ -211,7 +211,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Delta Edge", {
           text "70 damage. If you have any Supporter cards in play, this attack's base damage is 20 instead of 70."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             if (bg.em().retrieveObject("last_supporter_play_turn") == bg.turnCount) {
               damage 20
@@ -223,7 +222,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Fossil Charge", {
           text "50 damage. You may discard a Claw Fossil, Mysterious Fossil, Root Fossil, or Holon Fossil from your hand. If you do, choose 1 of your opponent's Benched Pokémon and do 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 50
 
@@ -241,7 +239,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Harsh Fluid", {
           text "20 damage. Put 5 damage counters on the Defending Pokémon at the end of your opponent's next turn."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 20
 
@@ -266,7 +263,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Poison Tentacles", {
           text "50 damage. The Defending Pokémon is now Poisoned."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             apply POISONED
@@ -301,7 +297,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Energy Loop", {
           text "60 damage. Return 2 Energy attached to Deoxys to your hand."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -335,7 +330,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Delta Reduction", {
           text "30 damage. During your opponent's next turn, any damage done to Deoxys by attacks is reduced by 30 (before applying Weakness and Resistance)."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage{
@@ -383,7 +377,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Crystal Laser", {
           text "20 damage. During your next turn, Deoxys's attacks do 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -417,7 +410,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Teleportation Burst", {
           text "20 damage. Switch Deoxys with 1 of your Benched Pokémon."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 20
             if (my.bench) {
@@ -446,7 +438,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Swift", {
           text "60 damage. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
           energyCost G, M, C
-          attackRequirement {}
           onAttack {
             swiftDamage(60, defending)
           }
@@ -475,7 +466,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Hyper Beam", {
           text "20 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { discardDefendingEnergy() }
@@ -484,7 +474,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Heavy Impact", {
           text "80 damage."
           energyCost L, M, C, C, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -496,7 +485,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Vital Drain", {
           text "30 damage. If the Defending Pokémon is Knocked Out by this attack, remove all Special Conditions and 7 damage counters from Kabutops (all if there are less than 7)."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
             delayed {
@@ -512,7 +500,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Thunderous Blow", {
           text "40+ damage. Does 40 damage plus 10 more damage for each [L] Energy attached to Kabutops."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40+10*self.cards.energyCount(L)
           }
@@ -535,7 +522,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Extra Flame", {
           text "30+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 30 damage plus 30 more damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
             if (defending.EX) {
@@ -546,7 +532,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Heat Blast", {
           text "80 damage."
           energyCost R, M, C, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -570,7 +555,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Spearhead", {
           text "Draw a card."
           energyCost C
-          attackRequirement {}
           onAttack {
             draw 1
           }
@@ -578,7 +562,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Dragon Claw", {
           text "40 damage."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -602,7 +585,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Dive", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -610,7 +592,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Aqua Blast", {
           text "50 damage. Discard a [W] Energy attached to Latios."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             discardSelfEnergy W
@@ -623,7 +604,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Bind", {
           text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip { apply PARALYZED }
@@ -632,7 +612,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Vengeful Spikes", {
           text "30+ damage. Does 30 damage plus 10 more damage for each Omanyte, Omastar, Kabuto, Kabutops, and Kabutops ex in your discard pile. You can't add more than 60 damage in this way."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 30
             def bonusDamage = 30 * my.discard.findAll {
@@ -672,7 +651,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Rotating Claws", {
           text "50 damage. You may discard an Energy card attached to Pidgeot. If you do, search your discard pile for an Energy card (excluding the one you discarded) and attach it to Pidgeot."
           energyCost L, M, C
-          attackRequirement {}
           onAttack {
             damage 50
             afterDamage {
@@ -691,7 +669,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Zzzap", {
           text "Does 20 damage to each Pokémon that has any Poké-Powers or Poké-Bodies (both yours and your opponent's). Don't apply Weakness or Resistance."
           energyCost C
-          attackRequirement {}
           onAttack {
             all.each {
               def hasPokeBody = false
@@ -707,7 +684,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Metallic Thunder", {
           text "50 damage. You may discard 2 [M] Energy attached to Raichu. If you do, this attack's base damage is 90 instead of 50."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             if (confirm("Discard 2 [M]?")) {
               discardSelfEnergy M, M
@@ -750,7 +726,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Ozone Flare", {
           text "60 damage."
           energyCost W, M, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -773,7 +748,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Poltergeist", {
           text "30+ damage. Look at your opponent's hand. This attack does 30 damage plus 10 more damage for each Trainer card in your opponent's hand."
           energyCost P, M
-          attackRequirement {}
           onAttack {
             opp.hand.showToMe("Opponent’s hand")
             def trainerSize = opp.hand.findAll { it.cardTypes.is(TRAINER) }.size()
@@ -790,7 +764,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Foresight", {
           text "Look at the top 5 cards of either player's deck and put them back on top of that player's deck in any order."
           energyCost C
-          attackRequirement {}
           onAttack {
             def list
             if (my.deck && confirm("Rearrange the top 5 cards of your deck?")) {
@@ -805,7 +778,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Overrun", {
           text "10 damage. Choose 1 of your opponent's Benched Pokémon. This attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 10
             if (opp.bench) {
@@ -846,7 +818,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Aqua Flower", {
           text "40 damage. During your opponent's next turn, Bellossom has no Weakness."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 40
 
@@ -868,7 +839,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Combustion", {
           text "30 damage."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -876,7 +846,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Blaze Kick", {
           text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 20 more damage. If tails, the Defending Pokémon is now Burned."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip 1, {
@@ -895,7 +864,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Combustion", {
           text "20 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -903,7 +871,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Super Singe", {
           text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Burned."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip { apply BURNED }
@@ -918,7 +885,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Aqua Wave", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 20 }
@@ -927,7 +893,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Dragonbreath", {
           text "50 damage. Flip a coin. If tails, this attack does nothing. If heads, the Defending Pokémon is now Paralyzed."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             flip {
               damage 50
@@ -943,7 +908,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             swiftDamage(10, opp.all.select())
           }
@@ -951,7 +915,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Surprise", {
           text "20 damage. Choose 1 card from your opponent's hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 20
             afterDamage { astonish() }
@@ -964,7 +927,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Psychic Erase", {
           text "Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             amnesia delegate
           }
@@ -972,7 +934,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Swift", {
           text "40 damage. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             swiftDamage(40, defending)
           }
@@ -984,7 +945,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Supersonic", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply CONFUSED }
@@ -993,7 +953,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Rock Slide", {
           text "20 damage. Does 10 damage to 2 of your opponent's Benched Pokémon (1 if there is only 1). (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (opp.bench) {
@@ -1012,7 +971,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Outrage", {
           text "10+ damage. Flip a coin. If tails, this attack does nothing. If heads, this attack does 10 damage plus 10 more damage for each damage counter on Rayquaza."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             flip {
               damage 10+10*self.numberOfDamageCounters
@@ -1022,7 +980,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Flamethrower", {
           text "40 damage. Discard 1 [R] Energy attached to Rayquaza."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             discardSelfEnergy R
@@ -1047,7 +1004,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Icy Wind", {
           text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip { apply ASLEEP }
@@ -1072,7 +1028,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Rock Slide", {
           text "40 damage. Does 10 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 40
             if (opp.bench) {
@@ -1104,7 +1059,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Hyper Beam", {
           text "30 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip { discardDefendingEnergy() }
@@ -1125,7 +1079,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Knock Away", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { damage 10 }
@@ -1138,7 +1091,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Paralyzing Gaze", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply PARALYZED }
           }
@@ -1146,7 +1098,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Knock Off", {
           text "10 damage. Choose 1 card from your opponent's hand without looking and discard it."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 10
             discardRandomCardFromOpponentsHand()
@@ -1159,7 +1110,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Poison Fang", {
           text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply POISONED }
           }
@@ -1167,7 +1117,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Bite", {
           text "40 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1179,7 +1128,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Grind", {
           text "10x damage. Does 10 damage times the amount of Energy attached to Torkoal."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10*self.cards.energyCount(C)
           }
@@ -1187,7 +1135,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Combustion", {
           text "40 damage."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1199,7 +1146,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Scratch", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1207,7 +1153,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Fury Cutter", {
           text "10+ damage. Flip 3 coins. If 1 of them is heads, this attack does 10 damage plus 10 more damage. If 2 of them are heads, this attack does 10 damage plus 20 more damage. If all of them are heads, this attack does 10 damage plus 40 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip 3,{},{}, [ 1:{damage 10}, 2:{damage 20}, 3:{damage 40} ]
@@ -1233,7 +1178,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Granite Head", {
           text "30 damage. During your opponent's next turn, any damage done to Aerodactyl by attacks is reduced by 10 (after applying Weakness and Resistance)."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
             reduceDamageNextTurn(hp(10),thisMove)
@@ -1246,7 +1190,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Magnitude", {
           text "20 damage. Does 10 damage to each Benched Pokémon (both yours and your opponent's). (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             all.each {
@@ -1259,7 +1202,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Take Down", {
           text "60 damage. Camerupt does 10 damage to itself."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             damage 10, self
@@ -1292,7 +1234,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Hook", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1304,7 +1245,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Wide Laser", {
           text "Does 10 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
-          attackRequirement {}
           onAttack {
             opp.all.each {
               damage 10, it
@@ -1314,7 +1254,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Hyper Beam", {
           text "40 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip { discardDefendingEnergy() }
@@ -1327,7 +1266,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Slash", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1335,7 +1273,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Super Singe", {
           text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Burned."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip { apply BURNED }
@@ -1348,7 +1285,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Rock Hurl", {
           text "20 damage. This attack's damage isn't affected by Resistance."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 20
             dontApplyResistance()
@@ -1357,7 +1293,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Double Spin", {
           text "50x damage. Flip 2 coins. This attack does 50 damage times the number of heads."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             flip 2, { damage 50 }
           }
@@ -1369,7 +1304,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Delta Circle", {
           text "10+ damage. Does 10 damage plus 10 more damage for each Pokémon you have in play that has δ on its card."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10+10*my.all.findAll {it.topPokemonCard.cardTypes.is(DELTA)}.size()
           }
@@ -1377,7 +1311,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Split Bomb", {
           text "Choose 2 of your opponent's Pokémon. This attack does 30 damage to each of them. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             multiSelect(opp.all, 2).each {
               targeted(it) {
@@ -1393,7 +1326,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Drool", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1401,7 +1333,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Acid", {
           text "30 damage. The Defending Pokémon can't retreat during your opponent's next turn."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 30
             cantRetreat defending
@@ -1425,7 +1356,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Mind Play", {
           text "30+ damage. Choose 1 card from your opponent's hand without looking. Look at the card you chose. If that card is a Trainer card, this attack does 30 damage plus 30 more damage, and discard that card. If that card is not a Trainer card, return it to your opponent's hand."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1489,7 +1419,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Delta Draw", {
           text "Count the number of Pokémon you have in play that has δ on its card. Draw up to that many cards."
           energyCost C
-          attackRequirement {}
           onAttack {
             def count = []
             def selection = []
@@ -1509,7 +1438,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Tackle", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1517,7 +1445,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Iron Head", {
           text "30x damage. Flip a coin until you get tails. This attack does 30 damage times the number of heads."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             flipUntilTails { damage 30 }
           }
@@ -1530,7 +1457,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Plasma", {
           text "20 damage. Search your discard pile for a [L] Energy card and attach it to Manectric."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
             afterDamage {
@@ -1541,7 +1467,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Quick Blow", {
           text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 20 more damage."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip { damage 20 }
@@ -1554,7 +1479,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Sweet Scent", {
           text "Remove 2 damage counters from 1 of your Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             heal 20, my.all.select()
           }
@@ -1562,7 +1486,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Quick Attack", {
           text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 10 more damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip { damage 10 }
@@ -1575,7 +1498,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Scratch and Draw", {
           text "30 damage. If any Stadium card with Holon in its name is in play, draw 3 cards."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 30
 
@@ -1587,7 +1509,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Deceive", {
           text "Your opponent chooses 1 of his or her Pokémon. Put 4 damage counters on that Pokémon."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             directDamage 40, opp.all.oppSelect("Put 4 damage counters on which Pokemon?")
           }
@@ -1600,7 +1521,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Whirlwind", {
           text "30 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
             whirlwind()
@@ -1613,7 +1533,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Wreck", {
           text "30+ damage. If there is any Stadium card in play, this attack does 30 damage plus 30 more damage. Discard that Stadium card."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
 
@@ -1628,7 +1547,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Flames of Rage", {
           text "10+ damage. Discard 2 Energy attached to Primeape. This attack does 10 damage plus 20 more damage for each damage counter on Primeape."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 10+20*self.numberOfDamageCounters
             discardSelfEnergy C, C
@@ -1641,7 +1559,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Thundershock", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { apply PARALYZED }
@@ -1650,7 +1567,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Pika Bolt", {
           text "50 damage."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1662,7 +1578,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Searing Flame", {
           text "10 damage. The Defending Pokémon is now Burned."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             apply BURNED
@@ -1671,7 +1586,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Combustion", {
           text "40 damage."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1683,7 +1597,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Brush Aside", {
           text "30 damage. If Sharpedo has any Holon Energy cards attached to it, choose 1 card from your opponent's hand without looking and discard it."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
 
@@ -1695,7 +1608,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Swift Turn", {
           text "50+ damage. If the Defending Pokémon has Fighting Resistance, this attack does 50 damage plus 30 more damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1709,7 +1621,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Knock Away", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { damage 10 }
@@ -1718,7 +1629,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Cutting Wind", {
           text "40 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1730,7 +1640,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Pebble Hurl", {
           text "20 damage. This attack's damage isn't affected by Resistance."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
             dontApplyResistance()
@@ -1739,7 +1648,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Earthquake", {
           text "60 damage. Does 10 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             my.bench.each {
@@ -1759,7 +1667,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Retaliate", {
           text "10x damage. Does 10 damage times the number of damage counters on Wobbuffet."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1771,7 +1678,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Metal Claw", {
           text "20 damage."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1779,7 +1685,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Rising Lunge", {
           text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 20 more damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip { damage 20 }
@@ -1793,7 +1698,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Mud Slap", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1801,7 +1705,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Metal Claw", {
           text "20 damage."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1813,7 +1716,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Ram", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1821,7 +1723,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Doubleslap", {
           text "20x damage. Flip 2 coins. This attack does 20 damage times the number of heads."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1833,7 +1734,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Waterfall", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1841,7 +1741,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Flail", {
           text "10x damage. Does 10 damage times the number of damage counters on Barboach."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1853,7 +1752,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Bite", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1861,7 +1759,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Reckless Charge", {
           text "30 damage. Flip a coin. If tails, Carvanha does 10 damage to itself."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip 1, {}, {
@@ -1876,7 +1773,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Corkscrew Punch", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1884,7 +1780,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Guillotine", {
           text "30 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1896,7 +1791,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Flail", {
           text "10x damage. Does 10 damage times the number of damage counters on Corphish."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1904,7 +1798,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Crabhammer", {
           text "10 damage."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1917,7 +1810,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Thundershock", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply PARALYZED }
@@ -1930,7 +1822,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Rollout", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1938,7 +1829,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Pebble Throw", {
           text "Choose 1 of your opponent's Benched Pokémon. This attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C
-          attackRequirement {}
           onAttack {
             if (opp.bench) {
               damage 20, opp.bench.select()
@@ -1952,7 +1842,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Ram", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1960,7 +1849,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Steady Firebreathing", {
           text "20 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1972,7 +1860,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Eerie Light", {
           text "The Defending Pokémon is now Confused."
           energyCost L
-          attackRequirement {}
           onAttack {
             apply CONFUSED
           }
@@ -1980,7 +1867,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Shell Attack", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1992,7 +1878,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Poison Tentacles", {
           text "The Defending Pokémon is now Poisoned."
           energyCost D
-          attackRequirement {}
           onAttack {
             apply POISONED
           }
@@ -2000,7 +1885,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Mud Shot", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2012,7 +1896,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Splash", {
           text "10 damage."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2024,7 +1907,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Paralyzing Gaze", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply PARALYZED }
           }
@@ -2032,7 +1914,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Low Kick", {
           text "20 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2044,7 +1925,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Slash", {
           text "10 damage."
           energyCost D
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2052,7 +1932,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Pay Day", {
           text "10 damage. Draw a card."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 10
             draw 1
@@ -2065,7 +1944,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Singe", {
           text "Flip a coin. If heads, the Defending Pokémon is now Burned."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply BURNED }
           }
@@ -2073,7 +1951,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Flare", {
           text "20 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2085,7 +1962,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Tackle", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2093,7 +1969,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Blot", {
           text "10 damage. Remove 2 damage counters from Oddish."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
             heal 20, self
@@ -2106,7 +1981,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Collect", {
           text "Draw 3 cards."
           energyCost P
-          attackRequirement {}
           onAttack {
             draw 3
           }
@@ -2114,7 +1988,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Water Arrow", {
           text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20, opp.all.select()
           }
@@ -2126,7 +1999,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Yawn", {
           text "The Defending Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             apply ASLEEP
           }
@@ -2134,7 +2006,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Mud Slup", {
           text "10 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2170,7 +2041,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Wing Attack", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2182,7 +2052,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Thunder Wave", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply PARALYZED }
           }
@@ -2190,7 +2059,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Quick Attack", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { damage 10 }
@@ -2203,7 +2071,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Tail Whap", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2211,7 +2078,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Steel Headbutt", {
           text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 10 more damage."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip { damage 10 }
@@ -2225,7 +2091,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Paralyzing Gaze", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply PARALYZED }
           }
@@ -2233,7 +2098,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Smash Kick", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2245,7 +2109,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Scratch", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2253,7 +2116,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Disable", {
           text "Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
           energyCost L
-          attackRequirement {}
           onAttack {
             amnesia delegate
           }
@@ -2265,7 +2127,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Super Hypno Wave", {
           text "10 damage. The Defending Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             apply ASLEEP
@@ -2278,7 +2139,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Peck", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2286,7 +2146,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Flare", {
           text "20 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2298,7 +2157,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Big Bite", {
           text "10 damage. The Defending Pokémon can't retreat during your opponent's next turn."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
             cantRetreat defending
@@ -2307,7 +2165,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Mud Slap", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2493,7 +2350,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Power Blow", {
           text "20x damage. Does 20 damage times the amount of Energy attached to Crawdaunt ex."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20*self.cards.energyCount(C)
           }
@@ -2515,7 +2371,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Super Psy Bolt", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -2523,7 +2378,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Devo Crush", {
           text "50 damage. You may discard 2 Energy attached to Mew ex. If you do, you may remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent's deck."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 50
 
@@ -2557,7 +2411,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Sharp Fang", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -2565,7 +2418,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Hyper Claws", {
           text "50+ damage. If the Defending Pokémon is a Stage 2 Evolved Pokémon, this attack does 50 damage plus 40 more damage."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             if (opp.active.topPokemonCard.cardTypes.is(STAGE2)) {
@@ -2580,7 +2432,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Spiral Growth", {
           text "20 damage. Flip a coin until you get tails. For each heads, search your discard pile for a basic Energy card and attach it to Gyarados Star."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 20
             afterDamage {
@@ -2593,7 +2444,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "All-out Blast", {
           text "50+ damage. Discard cards from the top of your deck until you have 1 card left. This attack does 50 damage plus 20 more damage for each Energy card you discarded in this way."
           energyCost R, R, R, R
-          attackRequirement {}
           onAttack {
             def list = my.deck.subList(0,my.deck.size() - 1)
             def count = list.filterByType(ENERGY).size()
@@ -2612,7 +2462,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Energy Absorption", {
           text "Search your discard pile for an Energy card and attach it to Mewtwo Star."
           energyCost C
-          attackRequirement {}
           onAttack {
             afterDamage {
               attachEnergyFrom(my.discard, self)
@@ -2622,7 +2471,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Psychic Star", {
           text "50+ damage. If the Defending Pokémon is an Evolved Pokémon, discard all Energy attached to Mewtwo Star and this attack does 50 damage plus 50 more damage."
           energyCost P, R, L
-          attackRequirement {}
           onAttack {
             damage 50
             if (defending.evolution) {
@@ -2638,7 +2486,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Thundershock", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply PARALYZED }
@@ -2647,7 +2494,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Spring Back", {
           text "20+ damage. If your opponent has only 1 Prize card left, this attack does 20 damage plus 50 more damage."
           energyCost L, L
-          attackRequirement {}
           onAttack {
             damage 20
             if (opp.prizeCardSet.size() == 1) {
@@ -2674,7 +2520,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Super Psywave", {
           text "Choose 1 of your opponent's Pokémon. Count the amount of Energy attached to that Pokémon. Put that many damage counters on the Pokémon."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             def target = opp.all.select()
             def count = target.cards.energyCount(C)

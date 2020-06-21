@@ -223,7 +223,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Metal Claw", {
           text "50 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -231,7 +230,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Mix-Up", {
           text "70 damage. Your opponent discards the top card of his or her deck."
           energyCost M, M, C, C
-          attackRequirement {}
           onAttack {
             damage 70
             if (opp.deck) {
@@ -258,7 +256,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Surprise", {
           text "30 damage. Choose 1 card from your opponent's hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage { astonish() }
@@ -267,7 +264,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Gust", {
           text "50 damage."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -279,7 +275,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Rock Blast", {
           text "Discard up to 5 [F] Energy cards attached to Armaldo. For each Energy card you discarded, choose an opponent's Pokémon in play and this attack does 20 damage to those Pokémon. (You may choose the same Pokémon more than once.) This attack's damage isn't affected by Weakness or Resistance."
           energyCost F
-          attackRequirement {}
           onAttack {
             def selected = self.cards.filterByEnergyType(F).select(min:0, max:5, "Select up to 5 [F] Energies to discard, does 20 damage to one Pokemon")
 
@@ -292,7 +287,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Mach Claw", {
           text "60 damage. This attack's damage isn't affected by Resistance."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             dontApplyResistance()
@@ -306,7 +300,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Grudge", {
           text "20+ damage. Does 20 damage plus 10 more damage for each Prize card your opponent has taken."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20+10*opp.prizeCardSet.takenCount
           }
@@ -314,7 +307,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Bench Manipulation", {
           text "40x damage. Your opponent flips a number of coins equal to the number of his or her Benched Pokémon. This attack does 40 damage times the number of tails. This attack's damage isn't affected by Weakness or Resistance."
           energyCost P, P, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip opp.bench.size(), {}, { noWrDamage 40 }
@@ -338,7 +330,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Fire Stream", {
           text "50 damage. Discard a [R] Energy card attached to Blaziken. This attack does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             if (opp.bench) {
@@ -358,7 +349,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Combustion", {
           text "30 damage."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -366,7 +356,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Bursting Inferno", {
           text "50 damage. Each Defending Pokémon is now Burned."
           energyCost R, R, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             apply BURNED
@@ -391,7 +380,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Poison Ring", {
           text "50 damage. The Defending Pokémon is now Poisoned. The Defending Pokémon can't retreat during your opponent's next turn."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 50
             apply POISONED
@@ -416,7 +404,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Max Energy Source", {
           text "10x damage. Does 10 damage times the amount of Energy attached to all of your Active Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10*self.cards.energyCount(C)
           }
@@ -446,7 +433,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Energy Burst", {
           text "10x damage. Does 10 damage times the total amount of Energy attached to Gardevoir and the Defending Pokémon."
           energyCost P
-          attackRequirement {}
           onAttack {
             def energies = self.cards.filterByType(ENERGY).size() + opp.cards.filterByType(ENERGY).size()
             damage 10*energies
@@ -469,7 +455,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Luring Antenna", {
           text "20 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. If you do, this attack does 20 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             def target = defending
             if (opp.bench) {
@@ -482,7 +467,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Blinding Scythe", {
           text "60 damage."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -509,7 +493,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Brick Smash", {
           text "40 damage. This attack's damage isn't affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             shredDamage 40
           }
@@ -517,7 +500,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Cross Chop", {
           text "60+ damage. Flip a coin. If heads, this attack does 60 damage plus 30 more damage."
           energyCost F, C, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             flip { damage 30 }
@@ -530,7 +512,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Plasma", {
           text "10 damage. Search your discard pile for a [L] Energy card and attach it to Raichu."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             afterDamage {
@@ -541,7 +522,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Thunderbolt", {
           text "100 damage. Discard all Energy cards attached to Raichu."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 100
             discardAllSelfEnergy(null)
@@ -573,7 +553,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Critical Move", {
           text "100 damage. Discard a basic Energy card attached to Slaking or this attack does nothing. Slaking can't attack during your next turn."
           energyCost C, C, C, C
-          attackRequirement {}
           onAttack {
             if(self.cards.filterByType(BASIC_ENERGY)){
               self.cards.filterByType(BASIC_ENERGY).select("Discard a basic energy from $self.").discard()
@@ -590,7 +569,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Dark Mind", {
           text "20 damage. Does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (opp.bench) {
@@ -601,7 +579,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Mysterious Light", {
           text "50 damage. If Phoebe's Stadium is in play, the Defending Pokémon is now Confused."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Phoebe's Stadium") {
@@ -628,7 +605,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Lightning Strike", {
           text "50 damage. You may discard all [L] Energy attached to Lanturn. If you do, this attack's base damage is 90 instead of 50."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 50
             if (confirm("Discard all [L] Energy?")) {
@@ -661,7 +637,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Magnetic Force", {
           text "10x damage. Does 10 damage times the amount of Energy attached to all of your Pokémon (including Magneton)."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             def amount = 0
             my.all.each {
@@ -683,7 +658,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Pull Away", {
           text "20 damage. If your opponent has 5 or more cards in his or her hand, your opponent discards a number of cards until your opponent has 4 cards left in his or her hand."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
 
@@ -700,7 +674,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Plunder", {
           text "30 damage. Before doing damage, discard all Trainer cards attached to the Defending Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             if (defending.cards.filterByType(TRAINER)) {
@@ -711,7 +684,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Dark Burst", {
           text "50+ damage. If Sidney's Stadium is in play, this attack does 50 damage plus 20 more damage."
           energyCost D, D, C
-          attackRequirement {}
           onAttack {
             damage 50
             if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Sidney's Stadium") {
@@ -745,7 +717,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Quick Attack", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { damage 20 }
@@ -754,7 +725,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Will-o'-the-wisp", {
           text "50 damage."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -781,7 +751,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Hydrocannon", {
           text "30+ damage. Does 30 damage plus 20 more damage for each [W] Energy attached to Omastar but not used to pay for this attack's Energy cost. You can't add more than 40 damage in this way."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             extraEnergyDamage(2, hp(20), W, thisMove)
@@ -849,7 +818,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             swiftDamage(20, opp.all.select())
           }
@@ -861,7 +829,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Sharp Fang", {
           text "10 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -869,7 +836,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Toxic", {
           text "The Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             apply POISONED
             extraPoison 1
@@ -901,7 +867,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Flip Over", {
           text "50 damage. Wobbuffet does 10 damage to itself, and don't apply Weakness and Resistance to this damage."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             noWrDamage 50, defending
             directDamage 10, self
@@ -928,7 +893,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Sharp Claws", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 20 }
@@ -954,7 +918,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Fury Cutter", {
           text "10+ damage. Flip 3 coins. If 1 of them is heads, this attack does 10 damage plus 10 more damage. If 2 of them are heads, this attack does 10 damage plus 30 more damage. If all of them are heads, this attack does 10 damage plus 50 more damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 10
             flip 3,{},{}, [ 1:{damage 10}, 2:{damage 30}, 3:{damage 50} ]
@@ -979,7 +942,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Pin Missile", {
           text "20x damage. Flip 4 coins. This attack does 20 damage times the number of heads."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             flip 4, { damage 20 }
           }
@@ -991,7 +953,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Scary Face", {
           text "Flip a coin. If heads, the Defending Pokémon can't attack or retreat during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip {
               cantRetreat defending
@@ -1002,7 +963,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Flame Tail", {
           text "50 damage."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1024,7 +984,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Lunge", {
           text "50 damage. Flip a coin. If tails, this attack does nothing."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             flip { damage 50 }
           }
@@ -1051,7 +1010,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Powder Snow", {
           text "20 damage. The Defending Pokémon is now Asleep."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
             apply ASLEEP
@@ -1060,7 +1018,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Double-edge", {
           text "60 damage. Glalie does 10 damage to itself."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             damage 10, self
@@ -1073,7 +1030,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Hypnosis", {
           text "The Defending Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
           onAttack {
             apply ASLEEP
           }
@@ -1081,7 +1037,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Dream Eater", {
           text "50 damage. If the Defending Pokémon is not Asleep, this attack does nothing."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             if (defending.isSPC(ASLEEP)) {
               damage 50
@@ -1096,7 +1051,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Granite Head", {
           text "20 damage. During your opponent's next turn, any damage done to Lairon by attacks is reduced by 10 (after applying Weakness and Resistance)."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 20
             reduceDamageNextTurn(hp(10), thisMove)
@@ -1105,7 +1059,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Stomp", {
           text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 20 more damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 30
             flip { damage 20 }
@@ -1118,7 +1071,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Steady Punch", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 20 }
@@ -1127,7 +1079,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Mega Kick", {
           text "50 damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1154,7 +1105,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Punch", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1162,7 +1112,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Rolling Kick", {
           text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip { apply PARALYZED }
@@ -1188,7 +1137,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Extra Comet Punch", {
           text "30+ damage. During your next turn, Extra Comet Punch does 30 damage plus 30 more damage."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 30
             increasedBaseDamageNextTurn("Extra Comet Punch", hp(30))
@@ -1202,7 +1150,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Fake Out", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply PARALYZED }
@@ -1211,7 +1158,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Gentle Slap", {
           text "40 damage."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1223,7 +1169,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Ice Beam", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { apply PARALYZED }
@@ -1237,7 +1182,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Tight Jaw", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { apply PARALYZED }
@@ -1246,7 +1190,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Darkness Charge", {
           text "50 damage. Put 1 damage counter on Sharpedo."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 50
             damage 10, self
@@ -1261,7 +1204,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Rage", {
           text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Shelgon."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 10+10*self.numberOfDamageCounters
           }
@@ -1269,7 +1211,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Rolling Tackle", {
           text "40 damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1283,7 +1224,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Ram", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1291,7 +1231,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Dragonbreath", {
           text "60 damage. Flip a coin. If tails, this attack does nothing. If heads, the Defending Pokémon is now Paralyzed."
           energyCost G, L, C
-          attackRequirement {}
           onAttack {
             flip {
               damage 60
@@ -1316,7 +1255,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Ambush", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
             flip { damage 20 }
@@ -1340,7 +1278,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Tackle", {
           text "20 damage."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1354,7 +1291,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Retaliate", {
           text "10x damage. Does 10 damage times the number of damage counters on Bagon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10+10*self.numberOfDamageCounters
           }
@@ -1366,7 +1302,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Psybeam", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply CONFUSED }
@@ -1375,7 +1310,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Spinning Attack", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1388,7 +1322,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Magnetic Lines", {
           text "10 damage. Flip a coin. If heads, move a basic Energy card from the Defending Pokémon to another of your opponent's Pokémon. (Ignore this effect if your opponent has only 1 Pokémon.)"
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 10
             if (opp.bench) {
@@ -1405,7 +1338,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             swiftDamage(10, opp.all.select())
           }
@@ -1428,7 +1360,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Gnaw", {
           text "20 damage."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1440,7 +1371,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Smokescreen", {
           text "10 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 10
             sandAttack(thisMove)
@@ -1453,7 +1383,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Positive Ion", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 10 }
@@ -1462,7 +1391,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Negative Ion", {
           text "10 damage. During your opponent's next turn, any damage done by attacks from the Defending Pokémon is reduced by 10 (before applying Weakness and Resistance)."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
             reduceDamageFromDefendingNextTurn(hp(10),thisMove,defending)
@@ -1476,7 +1404,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Surprise Attack", {
           text "30 damage. Flip a coin. If tails, this attack does nothing."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             flip { damage 30 }
           }
@@ -1497,7 +1424,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Double Scratch", {
           text "20x damage. Flip 2 coins. This attack does 20 damage times the number of heads."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             flip 2, { damage 20 }
           }
@@ -1509,7 +1435,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Surprise", {
           text "20 damage. Choose 1 card from your opponent's hand without looking. Look at the card you chose, then have your opponent shuffle that card into his or her deck."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 20
             afterDamage { astonish() }
@@ -1518,7 +1443,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Acid", {
           text "40 damage. The Defending Pokémon can't retreat during your opponent's next turn."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 40
             cantRetreat defending
@@ -1531,7 +1455,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Smash Punch", {
           text "20 damage. Flip a coin. If tails, this attack does nothing."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { damage 20 }
           }
@@ -1539,7 +1462,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Submission", {
           text "30 damage. Machop does 10 damage to itself."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 30
             damage 10, self
@@ -1553,7 +1475,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Ram", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1561,7 +1482,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Spark", {
           text "20 damage. Does 10 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (opp.bench) {
@@ -1576,7 +1496,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Psyshock", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply PARALYZED }
@@ -1585,7 +1504,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Cross Chop", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 10 }
@@ -1614,7 +1532,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Mud Shot", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1626,7 +1543,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Charge", {
           text "Search your discard pile for a [L] Energy card and attach it to Pikachu."
           energyCost L
-          attackRequirement {}
           onAttack {
             attachEnergyFrom(type: L, my.discard, self)
           }
@@ -1634,7 +1550,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Slam", {
           text "20x damage. Flip 2 coins. This attack does 20 damage times the number of heads."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             flip 2, { damage 20 }
           }
@@ -1647,7 +1562,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Double Kick", {
           text "10x damage. Flip 2 coins. This attack does 10 damage times the number of heads."
           energyCost D
-          attackRequirement {}
           onAttack {
             flip 2, { damage 10 }
           }
@@ -1659,7 +1573,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Slap", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1667,7 +1580,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Teleportation Burst", {
           text "20 damage. Switch Ralts with 1 of your Benched Pokémon."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 20
             if (bench) {
@@ -1683,7 +1595,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Nap", {
           text "Remove 2 damage counters from Seedot."
           energyCost C
-          attackRequirement {}
           onAttack {
             heal 20, self
           }
@@ -1691,7 +1602,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Double Spin", {
           text "20x damage. Flip 2 coins. This attack does 20 damage times the number of heads."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             flip 2, { damage 20 }
           }
@@ -1704,7 +1614,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Bad Dream", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep. If tails, the Defending Pokémon is now Confused."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
             flip 1, { apply ASLEEP }, { apply CONFUSED }
@@ -1717,7 +1626,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Tail Whip", {
           text "Flip a coin. If heads, the Defending Pokémon can't attack during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { cantAttackNextTurn defending }
           }
@@ -1725,7 +1633,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Tackle", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1737,7 +1644,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Amnesia", {
           text "Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             amnesia delegate
           }
@@ -1745,7 +1651,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Scratch", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1757,7 +1662,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Pebble Throw", {
           text "Choose 1 of your opponent's Benched Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
-          attackRequirement {}
           onAttack {
             if (opp.bench) {
               damage 10, opp.bench.select()
@@ -1767,7 +1671,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Double Headbutt", {
           text "20x damage. Flip 2 coins. This attack does 20 damage times the number of heads."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             flip 2, { damage 20 }
           }
@@ -1779,7 +1682,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Defense Curl", {
           text "Flip a coin. If heads, prevent all damage done to Spheal during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { preventAllEffectsNextTurn() }
           }
@@ -1787,7 +1689,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Aurora Beam", {
           text "20 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1800,7 +1701,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Fury Attack", {
           text "10x damage. Flip 3 coins. This attack does 10 damage times the number of heads."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip 3, { damage 10 }
           }
@@ -1812,7 +1712,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Super Singe", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Burned."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 10
             flip { apply BURNED }
@@ -1825,7 +1724,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Surprise Attack", {
           text "20 damage. Flip a coin. If tails, this attack does nothing."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { damage 20 }
           }
@@ -1837,7 +1735,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Confuse Ray", {
           text "Flip a coin. If heads, the Defending Pokémon is now Confused."
           energyCost C
-          attackRequirement {}
           onAttack {
             flip { apply CONFUSED }
           }
@@ -1845,7 +1742,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Ember", {
           text "30 damage. Discard a [R] Energy attached to Vulpix."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
             discardSelfEnergy(R)
@@ -1867,7 +1763,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Flail", {
           text "10x damage. Does 10 damage times the number of damage counters on Wynaut."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -2015,7 +1910,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Psychic Pulse", {
           text "30 damage. Does 10 damage to each of your opponent's Benched Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 30
             opp.bench.each {
@@ -2052,7 +1946,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Psychic Boom", {
           text "20+ damage. Does 20 damage plus 10 more damage for each Energy attached to the Defending Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20 + 10 * defending.cards.energyCount(C)
           }
@@ -2060,7 +1953,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Shadow Crush", {
           text "60 damage. You may discard a [P] Energy card attached to Claydol ex. If you do, discard an Energy card attached to the Defending Pokémon."
           energyCost P, P, C
-          attackRequirement {}
           onAttack {
             damage 60
 
@@ -2098,7 +1990,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Slashing Strike", {
           text "70 damage. Flip a coin. If tails, Flygon ex can't use Slashing Strike during your next turn."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 70
             flip { cantUseAttack(thisMove, self) }
@@ -2131,7 +2022,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Scanblast", {
           text "70 damage. Does 70 damage to each of your opponent's Benched Pokémon that has the same name as the Defending Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 70
             opp.bench.each {
@@ -2150,7 +2040,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Volcanic Flame", {
           text "150 damage. Discard the top 5 cards from your deck."
           energyCost R, R, C, C
-          attackRequirement {}
           onAttack {
             damage 150
 
@@ -2162,7 +2051,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Hydro Wave", {
           text "Discard all [W] Energy attached to Salamence ex. This attack does 30 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, C, C
-          attackRequirement {}
           onAttack {
             opp.bench.each {
               damage 30, it
@@ -2201,7 +2089,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Dirge", {
           text "60 damage. Does 60 damage to each of your opponent's Benched Pokémon that has the same name as the Defending Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 60
             opp.bench.each {
@@ -2230,7 +2117,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Whirlwind", {
           text "30 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage {
@@ -2241,7 +2127,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Razor Wing", {
           text "60 damage."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -2270,7 +2155,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Wreck", {
           text "70+ damage. If there is any Stadium card in play, this attack does 70 damage plus 20 more damage. Discard that Stadium card."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 70
             if (bg.stadiumInfoStruct) {
@@ -2301,7 +2185,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Flamethrower", {
           text "50 damage. Discard a [R] Energy attached to Flareon Star."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 50
             discardSelfEnergy(R)
@@ -2326,7 +2209,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Agility", {
           text "40 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Jolteon Star during your opponent's next turn."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip { preventAllEffectsNextTurn() }
@@ -2353,7 +2235,6 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Whirlpool", {
           text "40 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 40
             flip { discardDefendingEnergy() }
