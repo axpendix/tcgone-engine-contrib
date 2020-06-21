@@ -294,7 +294,7 @@ public enum ShinyVault implements LogicCardInfo {
       case TURTONATOR_GX_SV52:
       return copy(GuardiansRising.TURTONATOR_GX_18, this);
       case ALOLAN_NINETALES_GX_SV53:
-      return copy(GuardiansRising.ALOLAN_NINETALESGX_22, this);
+      return copy(GuardiansRising.ALOLAN_NINETALES_GX_22, this);
       case ARTICUNO_GX_SV54:
       return copy(CelestialStorm.ARTICUNO_GX_31, this);
       case GLACEON_GX_SV55:
