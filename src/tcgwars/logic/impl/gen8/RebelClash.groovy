@@ -41,7 +41,7 @@ public enum RebelClash implements LogicCardInfo {
 
   CATERPIE_1 ("Caterpie", 1, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
   METAPOD_2 ("Metapod", 2, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  BUTTERFREE_3 ("Butterfree", 3, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+  BUTTERFREE_3 ("Butterfree", 3, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   SCYTHER_4 ("Scyther", 4, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
   SHUCKLE_5 ("Shuckle", 5, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
   HERACROSS_6 ("Heracross", 6, Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
