@@ -1171,7 +1171,7 @@ class TcgStatics {
     def checkedArea = params.benched ? checkedPlayer.bench : checkedPlayer.all
 
     //Debug test
-    def filteredVariants = params:filterVariants?:[]
+    def filteredVariants = params.filterVariants?:[]
     def variants = [
       POKEMON_EX: {bc "EX Filter"},
       POKEMON_GX: {bc "GX Filter"},
