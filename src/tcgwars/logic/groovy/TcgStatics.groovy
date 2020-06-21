@@ -1159,6 +1159,7 @@ class TcgStatics {
    *   + opp: If true, checks for the opponent's bench instead of "my" bench.
    *   + hasType: If set, restricts to benched Pokémon of a single specific type.
    *   + hasPokemonV/hasPokemonVMAX/hasPokemonGX/hasPokemonEX/hasOldEX: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
+   *   + basic/stage1/stage2/unevolved/evolved/evolution: Stage-based filter. The assert will only accept Pokémon that match __all__ of the conditions set to true amongst these. (Note: When looking for "Basic Pokémon", most of the time pre-DP cards will use params.unevolved, with DP-onwards cards using params.basic)
    *   + info: If set, it'll replace the end of the failed assert warning with a custom text, instead of the default "follow the stated condition(s)".
    *   + repText: If true, params.info will override the entirety of the failed assert warning.
    *
@@ -1190,6 +1191,15 @@ class TcgStatics {
               ( params.hasOldEX && it.EX )
           )
       ) && (
+        ( !params.basic || it.basic) &&
+        //TODO: Remove "([...] && !it.pokemonVMAX)"from below once that's solved
+        ( !params.stage1 || (it.topPokemonCard.cardTypes.is(STAGE1) && !it.pokemonVMAX) ) &&
+        ( !params.stage2 || it.topPokemonCard.cardTypes.is(STAGE2) ) &&
+        //Check PokemonCardSet for why these are used, starting from here
+        ( !params.evolution || it.realEvolution ) &&
+        ( !params.unevolved || it.notEvolution ) &&
+        ( !params.evolved || it.evolution )
+      ) && (
           filter == null || filter.call(it)
       )
     }
@@ -1199,6 +1209,18 @@ class TcgStatics {
     } else {
       def benchedString = (params.benched ? "Benched " : "")
       def typeString = (params.hasType ? "${params.hasType} " : "")
+
+      def stageString = ""
+      [
+        [params.unevolved, "Unevolved"],
+        [params.evolved, "Evolved"],
+        [params.basic, "Basic"],
+        [params.stage1, "Stage 1"],
+        [params.stage2, "Stage 2"],
+        [params.evolution, "Evolution"]
+      ].each{
+        if (it[0]) {stageString += "${it[1]} "}
+      }
 
       def pokeString = ""
       if (hasPokeCnt) {
@@ -1221,7 +1243,7 @@ class TcgStatics {
 
       def extraConditionString = (filter == null) ? "" : " in play ${params.info ?: "that follow the stated condition(s)"}"
 
-      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any ${benchedString + typeString + pokeString + extraConditionString}"
+      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any ${benchedString + typeString + stageString + pokeString + extraConditionString}"
     }
 
     assert checkedArea.any(areaFilter) : failMessage
