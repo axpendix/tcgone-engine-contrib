@@ -3377,7 +3377,7 @@ public enum SwordShield implements LogicCardInfo {
           pcs.cards.filterByType(ENERGY).select(count: 2, "Discard which Energy card(s)?").discard()
         }
         playRequirement{
-          assertMyAll(info: "with damage and at least 2 Energy attached to them", {it.numberOfDamageCounters && it.cards.energyCount() >= 2})
+          assertMyAll(info: "with damage on them and at least 2 Energy attached", {it.numberOfDamageCounters && it.cards.energyCount() >= 2})
         }
       };
       case LUCKY_EGG_167:

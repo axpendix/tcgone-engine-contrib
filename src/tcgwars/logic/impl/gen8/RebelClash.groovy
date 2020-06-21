@@ -752,7 +752,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Once during your turn, you may flip a coin. If heads, switch 1 of your opponent's Benched Basic Pokémon with their Active Pokémon."
           actionA {
             checkLastTurn()
-            assert opp.bench.findAll { it.basic } : "Opponent's Bench has no Basic Pokémon."
+            assertOppBench(basic: true)
             powerUsed()
             flip{
               def pcs = opp.bench.findAll { it.basic}.select("Choose a Basic Pokémon to switch into the Active Spot.")
@@ -1113,7 +1113,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Switch This Pokemon with 1 of your Benched Pokemon."
           energyCost C
           attackRequirement {
-            assert my.bench : "You have no Benched Pokémon."
+            assertMyBench()
           }
           onAttack {
             sw self, my.bench.select()
@@ -1586,7 +1586,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Flip a coin. If heads, discard an Energy from 1 of your opponent’s Pokemon."
           energyCost L
           attackRequirement {
-            assert opp.all.findAll { it.cards.energyCount(C) } : "Opponent has no Energy to discard."
+            assertOppAll(info: "with Energy attached to them", {it.cards.energyCount(C)})
           }
           onAttack {
             flip {
@@ -1654,7 +1654,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Search your deck for up to 2 [L] Energy and attach them to your Benched Pokemon in any way you like. Then, shuffle your deck."
           energyCost L
           attackRequirement {
-            assert my.bench : "No Benched Pokémon to attach to."
+            assertMyBench()
           }
           onAttack {
             attachEnergyFrom(type: L, max: 1, my.deck, my.bench.select())
@@ -1848,8 +1848,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Move an Energy from 1 of your opponent’s Benched Pokemon to their Active Pokemon."
           energyCost C
           attackRequirement {
-            assert opp.bench : "Opponent has no Benched Pokémon."
-            assert opp.bench.findAll { it.cards.filterByType(ENERGY) } : "Opponent's Benched Pokémon has no Energy."
+            assertOppBench(info: "with Energy attached to them", {it.cards.filterByType(ENERGY)})
           }
           onAttack {
             def validSources = new PcsList();
@@ -2744,7 +2743,7 @@ public enum RebelClash implements LogicCardInfo {
           text "This attack does 100 damage to 1 of your opponent’s Pokemon that already has damage counters on it. (Don’t apply Weakness and Resistance for Benched Pokemon.)"
           energyCost D, D
           attackRequirement {
-            assert opp.all.findAll {it.numberOfDamageCounters} : "Opponent has no Pokémon with damage counters on them"
+            assertOppAll(info: "with damage on them", {it.numberOfDamageCounters})
           }
           onAttack {
             damage 100, opp.all.findAll { it.numberOfDamageCounters }.select()
@@ -2758,7 +2757,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Choose 1 of your opponent’s Benched Pokemon and switch it with their Active Pokemon. This attack does 30 damage to the new Active Pokemon."
           energyCost D, C
           attackRequirement {
-            assert opp.bench : "Opponent has no Benched Pokémon."
+            assertOppBench()
           }
           onAttack {
             def target = defending
@@ -3471,7 +3470,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         playRequirement {
-          assert opp.bench : "Opponent has no Benched Pokémon."
+          assertOppBench()
         }
       };
       case BURNING_SCARF_155:
