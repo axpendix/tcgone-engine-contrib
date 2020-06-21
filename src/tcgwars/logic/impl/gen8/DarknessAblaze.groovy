@@ -3908,6 +3908,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             def sel = deck.search ("Select a Pokémon that evolves from $preEvo.name.", {
               it.cardTypes.is(EVOLUTION) && it.predecessor == preEvo.name
             })
+            //Minor TODO: Have this happen after choosing all evolutions? One at a time, then searching for the next is a bit of a weird timing imo.
             if (sel) { evolve(preEvo, sel.first(), OTHER) }
           }
 
