@@ -1158,7 +1158,7 @@ class TcgStatics {
    *   + benched: If true, checks for only Benched Pokémon; otherwise also includes the Active.
    *   + opp: If true, checks for the opponent's bench instead of "my" bench.
    *   + hasType: If set, restricts to benched Pokémon of a single specific type.
-   *   + hasPokemonEX/hasPokemonGX/hasPokemonV/hasPokemonMAX: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
+   *   + hasPokemonV/hasPokemonVMAX/hasPokemonGX/hasPokemonEX: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
    *   + info: If set, it'll replace the end of the failed assert warning with a custom text, instead of the default "follow the stated condition(s)".
    *   + repText: If true, params.info will override the entirety of the failed assert warning.
    *
@@ -1171,10 +1171,10 @@ class TcgStatics {
     def checkedArea = params.benched ? checkedPlayer.bench : checkedPlayer.all
 
     def hasPokeCnt = [
-      params.hasPokemonEX,
-      params.hasPokemonGX,
       params.hasPokemonV,
-      params.hasPokemonVMAX
+      params.hasPokemonVMAX,
+      params.hasPokemonGX,
+      params.hasPokemonEX
     ].count{it}
 
     def areaFilter = {
@@ -1182,10 +1182,10 @@ class TcgStatics {
           !params.hasType || it.types.contains(params.hasType)
       ) && (
           !hasPokeCnt || (
-              (params.hasPokemonEX && it.pokemonEX) ||
-              (params.hasPokemonGX && it.pokemonGX) ||
               (params.hasPokemonV && it.pokemonV) ||
-              (params.hasPokemonVMAX && it.pokemonVMAX)
+              (params.hasPokemonVMAX && it.pokemonVMAX) ||
+              (params.hasPokemonGX && it.pokemonGX) ||
+              (params.hasPokemonEX && it.pokemonEX)
           )
       ) && (
           filter == null || filter.call(it)
@@ -1202,10 +1202,10 @@ class TcgStatics {
       if (hasPokeCnt) {
         int i = 1
         [
-          [params.hasPokemonEX, "Pokémon-EX"],
-          [params.hasPokemonGX, "Pokémon-GX"],
           [params.hasPokemonV, "Pokémon V"],
-          [params.hasPokemonVMAX, "Pokémon VMAX"]
+          [params.hasPokemonVMAX, "Pokémon VMAX"],
+          [params.hasPokemonGX, "Pokémon-GX"],
+          [params.hasPokemonEX, "Pokémon-EX"]
         ].each{
           if (it[0]) {
             pokeString += it[1] + ((i == hasPokeCnt) ? "" : (i == hasPokeCnt-1 ? " or " : ", "))
