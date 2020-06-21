@@ -3717,19 +3717,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay {reason->
           increasedDmgEff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
-              bc "after PROCESS_ATTACK_EFFECTS"
               if (bg.currentTurn == self.owner && ef.attacker == self && self.active) {
-                bc "$self.owner's turn, $self attacking, $self active"
-                def myWeakness = self.getWeaknesses()
-                bc "myWeakness: $myWeakness"
-                def oppType = opp.active.types
-                bc "oppType: $oppType"
-                def flag = oppType.any {type ->
-                  bc "flag set"
-                  myWeakness.contains(type)
+                def flag = self.getWeaknesses().any {weakness ->
+                  opp.active.types.contains(weakness.type)
                 }
                 bg.dm().each {
-                  bc "dm each"
                   if (it.to.active && it.to.owner == self.owner.opposite && it.dmg.value && flag) {
                     bc "Adversity Gloves +30"
                     it.dmg += hp(30)
