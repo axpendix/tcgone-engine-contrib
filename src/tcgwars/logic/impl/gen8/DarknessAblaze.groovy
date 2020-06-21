@@ -3241,7 +3241,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.deck : "There are no cards left in your deck"
           }
           onAttack {
-            my.deck.search("Select a Pokémon that evolves from Eevee.", {it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"})showToOpponent().moveTo(my.hand)
+            my.deck.search("Select a Pokémon that evolves from Eevee.", {it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"}).showToOpponent("Your opponent chose this Pokémon that evolves from Eevee").moveTo(my.hand)
           }
         }
         move "Kick Attack", {
@@ -3384,7 +3384,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.deck : "You have no cards left in your deck"
           }
           onAttack {
-            my.deck.search("Put Energy Card into your hand",cardTypeFilter(ENERGY)).showToOpponent().moveTo(my.hand)
+            my.deck.search("Put Energy Card into your hand",cardTypeFilter(ENERGY)).showToOpponent("Opponent's chosen Energy card").moveTo(my.hand)
           }
         }
         move "Cat Kick", {
