@@ -2648,14 +2648,10 @@ public enum DeltaSpecies implements LogicCardInfo {
       return basicTrainer (this) {
         text "Flip 2 coins. For each heads, search your deck for a Basic Pokémon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
         onPlay {
-          int count = 0
           flip 2, {
-            count++
+            my.deck.search ("Search your deck for a Basic Pokémon", cardTypeFilter(BASIC)).showToOpponent("Selected Pokémon").moveTo(my.hand)
           }
-          if(count!=0){
-            my.deck.search(min:0,max:count,"Search your deck for $count Basic Pokémon", cardTypeFilter(BASIC)).showToOpponent("Selected Pokémon").moveTo(my.hand)
-            shuffleDeck()
-          }
+          shuffleDeck()
         }
         playRequirement{
           assert my.deck.notEmpty
