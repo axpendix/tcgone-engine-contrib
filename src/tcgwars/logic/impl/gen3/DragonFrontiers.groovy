@@ -1943,9 +1943,11 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost R, C, C
           onAttack {
             damage 80
-            if (self.cards.filterByEnergyType(R) && my.bench && confirm("Move a [R] Energy attached to $self to 1 of your Benched Pokémon?")) {
-              def energy = self.cards.filterByEnergyType(R).select("Energy To Move").first()
-              energySwitch(self, my.bench.select(), energy)
+            afterDamage {
+              if (self.cards.filterByEnergyType(R) && my.bench && confirm("Move a [R] Energy attached to $self to 1 of your Benched Pokémon?")) {
+                def energy = self.cards.filterByEnergyType(R).select("Energy To Move").first()
+                energySwitch(self, my.bench.select(), energy)
+              }
             }
           }
         }
