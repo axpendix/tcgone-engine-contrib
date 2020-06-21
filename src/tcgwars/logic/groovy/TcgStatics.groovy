@@ -1158,7 +1158,7 @@ class TcgStatics {
    *   + benched: If true, checks for only Benched Pokémon; otherwise also includes the Active.
    *   + opp: If true, checks for the opponent's bench instead of "my" bench.
    *   + hasType: If set, restricts to benched Pokémon of a single specific type.
-   *   + hasPokemonV/hasPokemonVMAX/hasPokemonGX/hasPokemonEX: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
+   *   + hasPokemonV/hasPokemonVMAX/hasPokemonGX/hasPokemonEX/hasOldEX: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
    *   + info: If set, it'll replace the end of the failed assert warning with a custom text, instead of the default "follow the stated condition(s)".
    *   + repText: If true, params.info will override the entirety of the failed assert warning.
    *
@@ -1174,7 +1174,8 @@ class TcgStatics {
       params.hasPokemonV,
       params.hasPokemonVMAX,
       params.hasPokemonGX,
-      params.hasPokemonEX
+      params.hasPokemonEX,
+      params.hasOldEX
     ].count{it}
 
     def areaFilter = {
@@ -1182,10 +1183,11 @@ class TcgStatics {
           !params.hasType || it.types.contains(params.hasType)
       ) && (
           !hasPokeCnt || (
-              (params.hasPokemonV && it.pokemonV) ||
-              (params.hasPokemonVMAX && it.pokemonVMAX) ||
-              (params.hasPokemonGX && it.pokemonGX) ||
-              (params.hasPokemonEX && it.pokemonEX)
+              ( params.hasPokemonV && it.pokemonV ) ||
+              ( params.hasPokemonVMAX && it.pokemonVMAX ) ||
+              ( params.hasPokemonGX && it.pokemonGX ) ||
+              ( params.hasPokemonEX && it.pokemonEX ) ||
+              ( params.hasOldEX && it.EX )
           )
       ) && (
           filter == null || filter.call(it)
@@ -1205,7 +1207,8 @@ class TcgStatics {
           [params.hasPokemonV, "Pokémon V"],
           [params.hasPokemonVMAX, "Pokémon VMAX"],
           [params.hasPokemonGX, "Pokémon-GX"],
-          [params.hasPokemonEX, "Pokémon-EX"]
+          [params.hasPokemonEX, "Pokémon-EX"],
+          [params.hasOldEX, "Pokémon-ex"]
         ].each{
           if (it[0]) {
             pokeString += it[1] + ((i == hasPokeCnt) ? "" : (i == hasPokeCnt-1 ? " or " : ", "))
