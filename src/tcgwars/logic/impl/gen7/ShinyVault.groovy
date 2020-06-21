@@ -316,7 +316,7 @@ public enum ShinyVault implements LogicCardInfo {
       case NIHILEGO_GX_SV62:
       return copy(CrimsonInvasion.NIHILEGO_GX_49, this);
       case NAGANADEL_GX_SV63:
-      return copy(ForbiddenLight.NAGANDEL_GX_56, this);
+      return copy(ForbiddenLight.NAGANADEL_GX_56, this);
       case LUCARIO_GX_SV64:
       return copy(ForbiddenLight.LUCARIO_GX_122, this);
       case ZYGARDE_GX_SV65:
