@@ -4748,7 +4748,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
           }
           playRequirement {
-            assertMyBenched()
+            assertMyBenched(filterVariants:[POKEMON_V, POKEMON_GX]) //Debug check
           }
         };
       case MISTY_LORELEI_199:
