@@ -1149,6 +1149,7 @@ class TcgStatics {
   }
 
   /* General checks for attacks and abilities */
+  //TODO: assertFullBench, assertDeck, assertMorePrizes
 
   /**
    *
