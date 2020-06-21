@@ -331,7 +331,7 @@ public enum TeamUp implements LogicCardInfo {
             text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
             energyCost G
             attackRequirement{
-              assert opp.bench : "There is no Pokémon on your opponent's bench"
+              assertOppBench()
             }
             onAttack{
               sw opp.active, opp.bench.select("Choose the new active")
@@ -598,10 +598,12 @@ public enum TeamUp implements LogicCardInfo {
               def src = my.hand.filterByBasicEnergyType(R)
               assert src.size() >= 2 : "You don't have enough Fire Energy cards to discard"
               powerUsed()
-              src.select(count:2,"Discard").discard()
-              def pcs = opp.bench.select("New active")
-              targeted (pcs, SRC_ABILITY) {
-                sw(opp.active, pcs, SRC_ABILITY)
+              if (opp.bench){
+                src.select(count:2,"Discard").discard()
+                def pcs = opp.bench.select("New active")
+                targeted (pcs, SRC_ABILITY) {
+                  sw(opp.active, pcs, SRC_ABILITY)
+                }
               }
             }
           }
@@ -696,7 +698,7 @@ public enum TeamUp implements LogicCardInfo {
             text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
             energyCost C
             attackRequirement{
-              assert opp.bench : "There is no Pokémon on your opponent's bench"
+              assertOppBench()
             }
             onAttack{
               whirlwind()
@@ -1055,7 +1057,7 @@ public enum TeamUp implements LogicCardInfo {
           move "Electromagnetic Bomb" , {
             text "20× damages. Move any number of [L] Energy from your Benched Pokémon to this Pokémon. This attack does 20 damage for each Energy card you moved in this way."
             attackRequirement{
-              assert my.all.findAll {it.cards.filterByEnergyType(L) && it!=self} : "There is no Energy to move"
+              assertMyBench(repText: true, info: "None of your Benched Pokémon has any [L] Energy attached", {it.cards.filterByEnergyType(L)})
             }
             onAttack{
               def dmgCount = 0
@@ -1779,7 +1781,7 @@ public enum TeamUp implements LogicCardInfo {
             text "For each of your opponent's Benched Pokémon, put 1 damage counter on your opponent's Pokémon in any way you like."
             energyCost P,C
             attackRequirement{
-              assert opp.bench : "There is no benched pokémon"
+              assertOppBench()
             }
             onAttack{
               opp.bench.each{
@@ -1869,8 +1871,8 @@ public enum TeamUp implements LogicCardInfo {
             text "This attack can be used only if Hitmonchan used Hit and Run during your last turn. This attack does 90 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F
             attackRequirement{
-              assert bg.em().retrieveObject("Hit_And_Run"+self.owner) == bg.turnCount -2 : "Hitmonchan did not used Hit and Run during your last turn"
-              assert opp.bench : "There is no benched Pokémon"
+              assert bg.em().retrieveObject("Hit_And_Run"+self.owner) == bg.turnCount -2 : "Hitmonchan did not used Hit and Run during your last turn" //TODO: Account for it being done by Hitmonchan
+              assertOppBench()
             }
             onAttack{
               damage 90, opp.bench.select()
@@ -2207,10 +2209,10 @@ public enum TeamUp implements LogicCardInfo {
             text "Switch this Pokémon with 1 of your Benched Pokémon."
             energyCost D
             attackRequirement{
-              assert my.bench : "There is no Pokémon on your bench"
+              assertMyBench()
             }
             onAttack{
-              sw self, my.bench.select("Choose the new active.")
+              switchYourActive()
             }
           }
         };
@@ -2222,7 +2224,7 @@ public enum TeamUp implements LogicCardInfo {
             text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
             energyCost D
             attackRequirement{
-              assert opp.bench
+              assertOppBench()
             }
             onAttack{
               sw defending, opp.bench.select("Choose the new active.")
@@ -2355,7 +2357,7 @@ public enum TeamUp implements LogicCardInfo {
             energyCost D,D,D
             attackRequirement{
               gxCheck()
-              assert opp.all.findAll{it.pokemonGX || it.pokemonEX} : "your opponent does not have any Pokémon-GX or Pokémon-EX"
+              assertOppAll(hasPokemonGX: true, hasPokemonEX: true)
             }
             onAttack{
               gxPerform()
