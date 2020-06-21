@@ -770,11 +770,11 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "As long as Dark Tyranitar is your Active Pokémon, put 1 damage counter on each of your opponent’s Benched Basic Pokémon between turns. You can’t use more than 1 Sand Damage Poké-Body between turns."
             delayedA {
               before BEGIN_TURN, {
-                boolean flag = 1
+                boolean flag = true
                 if (self.active) {
                   self.owner.opposite.pbg.bench.each{
                     if(!it.evolution) {
-                      if(flag) {bc "Sand Damage activates"; flag = 0}
+                      if(flag) {bc "Sand Damage activates"; flag = false}
                       directDamage 10, it, SRC_ABILITY
                     }
                   }
