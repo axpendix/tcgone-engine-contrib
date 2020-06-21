@@ -2319,7 +2319,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           onPlay {
             def tar = my.hand.getExcludedList(thisCard).select("Select a card to discard (If you discard a Pokémon that has Dark or Rocket’s in its name you will draw 1 more card.)")
             tar.discard()
-            bc "${tar.first().name} / ${tar.first().name.contains('Rocket')}"
             if(tar.first().cardTypes.is(POKEMON) &&  (tar.first().name.contains("Dark ") || tar.first().name.contains("Rocket's ")))
             {
               draw 4
