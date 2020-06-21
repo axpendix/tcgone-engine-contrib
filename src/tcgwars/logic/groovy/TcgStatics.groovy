@@ -1178,7 +1178,7 @@ class TcgStatics {
       POKEMON_V: {bc "V Filter"},
       VMAX: {bc "VMAX Filter"}
     ]
-    filteredVariants.each{ filter -> variants.filter.call() }
+    filteredVariants.each{ varFilter -> variants.varFilter.call() }
     //End of debug
 
     def hasPokeCnt = [
