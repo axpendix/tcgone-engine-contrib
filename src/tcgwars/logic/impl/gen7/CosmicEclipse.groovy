@@ -401,7 +401,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Heal 30 damage from 1 of your Pokémon."
             energyCost C
             attackRequirement {
-              assertMyAll(info:"with damage counters on them", {it.numberOfDamageCounters})
+              assertMyAll(info:"with damage on them", {it.numberOfDamageCounters})
             }
             onAttack{
               heal 30, my.all.findAll{it.numberOfDamageCounters}.select("Select a Pokémon to heal.")
@@ -4581,7 +4581,6 @@ public enum CosmicEclipse implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            //assert opp.bench.findAll { it.pokemonGX || it.pokemonEX } : "Your opponent has no Pokémon-GX or Pokémon-EX in play."
             assertOppBench(hasPokemonGX: true, hasPokemonEX: true)
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "Not enough cards in your hand."
           }
