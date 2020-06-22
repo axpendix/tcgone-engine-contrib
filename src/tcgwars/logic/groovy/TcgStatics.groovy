@@ -1160,6 +1160,7 @@ class TcgStatics {
    *   + opp: If true, checks for the opponent's bench instead of "my" bench.
    *   + hasType: If set, restricts to benched Pokémon of a single specific type.
    *   + hasVariants: A list of specific CardType values (currently: POKEMON_V | VMAX | TAG_TEAM | POKEMON_GX | POKEMON_EX | DELTA | EX). If set, the area filter will only accept PCS that have at least one of these CardTypes on its top card; otherwise, it'll take any Pokémon.
+   *   + negateVariants: If set to true, hasVariants will be inverted: only PCS that are __not__ any of the variants provided will be accepted.
    *   + isStage: A list of specific CardType values (currently: EVOLVED | UNEVOLVED | BASIC | STAGE1 | STAGE2 | EVOLUTION). If set, the area filter will only accept PCS that return true for every single one of the included values; otherwise, it'll take any Pokémon regardless of stage.
    *   + info: If set, it'll replace the end of the failed assert warning with a custom text, instead of the default "follow the stated condition(s)".
    *   + repText: If true, params.info will override the entirety of the failed assert warning.
@@ -1200,7 +1201,7 @@ class TcgStatics {
       (
         !params.hasType || it.types.contains(params.hasType)
       ) && (
-        variantsAllowed.any{ varFilter -> variantFilters.get(varFilter).call(it) }
+        variantsAllowed.any{ varFilter -> params.negateVariants ^ variantFilters.get(varFilter).call(it) }
       ) && (
         stageRequired.every{ stgFilter -> stageFilters.get(stgFilter).call(it) }
       ) && (
@@ -1224,6 +1225,7 @@ class TcgStatics {
 
       def pokeString = ""
       if (variantsAllowed) {
+        if (params.negateVariants) pokeString += "Pokémon that aren't "
         i = 1
         count = variantsAllowed.size()
         variantsAllowed.each{ varFilter ->

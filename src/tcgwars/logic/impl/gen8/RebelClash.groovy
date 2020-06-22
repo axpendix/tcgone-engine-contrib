@@ -3621,7 +3621,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         playRequirement {
-          assertMyAll(info: "that isn’t a Pokémon V or a Pokémon-GX", { !it.pokemonV && !it.pokemonGX })
+          assertMyAll(negateVariants: true, hasVariants: [POKEMON_V, POKEMON_GX])
         }
       };
       case SKYLA_166:
