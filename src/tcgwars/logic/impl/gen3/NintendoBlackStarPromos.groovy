@@ -1,4 +1,4 @@
-package tcgwars.logic.impl.gen;
+package tcgwars.logic.impl.gen3;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
