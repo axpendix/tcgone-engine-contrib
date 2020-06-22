@@ -1177,8 +1177,8 @@ class TcgStatics {
     def variantFilters = [
       (CardType.POKEMON_V):   { it.pokemonV },
       (CardType.VMAX):        { it.pokemonVMAX },
-      (CardType.POKEMON_GX):  { it.tagTeam },
-      (CardType.TAG_TEAM):    { it.pokemonGX },
+      (CardType.TAG_TEAM):    { it.tagTeam },
+      (CardType.POKEMON_GX):  { it.pokemonGX },
       (CardType.POKEMON_EX):  { it.pokemonEX },
       (CardType.EX):          { it.EX }
     ]
