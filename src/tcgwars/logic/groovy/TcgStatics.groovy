@@ -1235,12 +1235,12 @@ class TcgStatics {
     assertAnyPokemonInPlay(params, filter)
   }
 
-  static void assertMyBenched(params=[:], Closure filter = null) {
+  static void assertMyBench(params=[:], Closure filter = null) {
     params.benched = true
     params.opp = false
     assertAnyPokemonInPlay(params, filter)
   }
-  static void assertOppBenched(params=[:], Closure filter = null) {
+  static void assertOppBench(params=[:], Closure filter = null) {
     params.benched = true
     params.opp = true
     assertAnyPokemonInPlay(params, filter)
