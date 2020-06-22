@@ -4581,7 +4581,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assertOppBench(hasPokemonGX: true, hasPokemonEX: true)
+            assertOppBench(hasVariants: [POKEMON_GX, POKEMON_EX])
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "Not enough cards in your hand."
           }
         };

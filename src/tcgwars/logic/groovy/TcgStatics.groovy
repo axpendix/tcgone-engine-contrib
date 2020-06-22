@@ -1172,27 +1172,22 @@ class TcgStatics {
     def checkedPlayer = params.opp ? opp : my
     def checkedArea = params.benched ? checkedPlayer.bench : checkedPlayer.all
 
-    def hasPokeCnt = [
-      params.hasPokemonV,
-      params.hasPokemonVMAX,
-      params.hasTagTeam,
-      params.hasPokemonGX,
-      params.hasPokemonEX,
-      params.hasOldEX
-    ].count{it}
+
+    def variantsAllowed = params.hasVariants?:[]
+    def variantFilters = [
+      (CardType.POKEMON_V):   { it.pokemonV },
+      (CardType.VMAX):        { it.pokemonVMAX },
+      (CardType.POKEMON_GX):  { it.tagTeam },
+      (CardType.TAG_TEAM):    { it.pokemonGX },
+      (CardType.POKEMON_EX):  { it.pokemonEX },
+      (CardType.EX):          { it.EX }
+    ]
 
     def areaFilter = {
       (
           !params.hasType || it.types.contains(params.hasType)
       ) && (
-          !hasPokeCnt || (
-              ( params.hasPokemonV && it.pokemonV ) ||
-              ( params.hasPokemonVMAX && it.pokemonVMAX ) ||
-              ( params.hasTagTeam && it.tagTeam ) ||
-              ( params.hasPokemonGX && it.pokemonGX ) ||
-              ( params.hasPokemonEX && it.pokemonEX ) ||
-              ( params.hasOldEX && it.EX )
-          )
+          variantsAllowed.any{ varFilter -> variantFilters.get(varFilter).get(0).call(it) }
       ) && (
         ( !params.basic || it.basic) &&
         //TODO: Remove "([...] && !it.pokemonVMAX)"from below once that's solved
@@ -1212,6 +1207,8 @@ class TcgStatics {
     } else {
       def benchedString = (params.benched ? "Benched " : "")
 
+      int i, count
+
       def stageString = ""
       [
         [params.unevolved, "Unevolved"],
@@ -1227,20 +1224,13 @@ class TcgStatics {
       def typeString = (params.hasType ? "${params.hasType} " : "")
 
       def pokeString = ""
-      if (hasPokeCnt) {
-        int i = 1
-        [
-          [params.hasPokemonV, "Pokémon V"],
-          [params.hasPokemonVMAX, "Pokémon VMAX"],
-          [params.hasTagTeam, "TAG TEAM Pokémon"],
-          [params.hasPokemonGX, "Pokémon-GX"],
-          [params.hasPokemonEX, "Pokémon-EX"],
-          [params.hasOldEX, "Pokémon-ex"]
-        ].each{
-          if (it[0]) {
-            pokeString += it[1] + ((i == hasPokeCnt) ? "" : (i == hasPokeCnt-1 ? " or " : ", "))
-            i += 1
-          }
+      if (variantsAllowed) {
+        i = 1
+        count = variantsAllowed.size()
+        variantsAllowed.each{ varFilter ->
+          pokeString += (varFilter as CardType).toString() + (varFilter == TAG_TEAM ? " Pokémon" : "")
+          pokeString += ((i == count) ? "" : (i == count-1 ? " or " : ", "))
+          i ++
         }
       } else {
         pokeString += "Pokémon"

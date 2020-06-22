@@ -3877,7 +3877,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "This attack does 60 damage to 1 of your opponent's Pokémon-GX or Pokémon-EX. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C, C
             attackRequirement {
-              assertOppAll(hasPokemonGX: true, hasPokemonEX: true)
+              assertOppAll(hasVariants: [POKEMON_GX, POKEMON_EX])
             }
             onAttack {
               damage 60,opp.all.findAll{it.pokemonGX||it.pokemonEX}.select("Deal 60 damage")
