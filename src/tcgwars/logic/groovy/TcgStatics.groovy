@@ -1159,8 +1159,8 @@ class TcgStatics {
    *   + benched: If true, checks for only Benched Pokémon; otherwise also includes the Active.
    *   + opp: If true, checks for the opponent's bench instead of "my" bench.
    *   + hasType: If set, restricts to benched Pokémon of a single specific type.
-   *   + hasVariants: A list of specific CardType values (currently: POKEMON_V|VMAX|TAG_TEAM|POKEMON_GX|POKEMON_EX|EX). If set, the area filter will only accept PCS that have at least one of these CardTypes on its top card; otherwise, it'll take any Pokémon.
-   *   + basic/stage1/stage2/unevolved/evolved/evolution: Stage-based filter. The assert will only accept Pokémon that match __all__ of the conditions set to true amongst these. (Note: When looking for "Basic Pokémon", most of the time pre-DP cards will use params.unevolved, with DP-onwards cards using params.basic)
+   *   + hasVariants: A list of specific CardType values (currently: POKEMON_V | VMAX | TAG_TEAM | POKEMON_GX | POKEMON_EX | EX). If set, the area filter will only accept PCS that have at least one of these CardTypes on its top card; otherwise, it'll take any Pokémon.
+   *   + isStage: A list of specific CardType values (currently: EVOLVED | UNEVOLVED | BASIC | STAGE1 | STAGE2 | EVOLUTION). If set, the area filter will only accept PCS that return true for every single one of the included values; otherwise, it'll take any Pokémon regardless of stage.
    *   + info: If set, it'll replace the end of the failed assert warning with a custom text, instead of the default "follow the stated condition(s)".
    *   + repText: If true, params.info will override the entirety of the failed assert warning.
    *
@@ -1172,7 +1172,6 @@ class TcgStatics {
     def checkedPlayer = params.opp ? opp : my
     def checkedArea = params.benched ? checkedPlayer.bench : checkedPlayer.all
 
-
     def variantsAllowed = params.hasVariants?:[]
     def variantFilters = [
       (CardType.POKEMON_V):   { it.pokemonV },
@@ -1183,22 +1182,26 @@ class TcgStatics {
       (CardType.EX):          { it.EX }
     ]
 
+    def stageRequired = params.isStage?:[]
+    def stageFilters = [
+      (CardType.EVOLVED):     { it.evolution },
+      (CardType.UNEVOLVED):   { it.notEvolution },
+      (CardType.BASIC):       { it.basic },
+      //TODO: Remove !it.pokemonVMAX from STAGE1 once solved.
+      (CardType.STAGE1):      { it.topPokemonCard.cardTypes.is(STAGE1) && !it.pokemonVMAX },
+      (CardType.STAGE2):      { it.topPokemonCard.cardTypes.is(STAGE2) },
+      (CardType.EVOLUTION):   { it.realEvolution }
+    ]
+
     def areaFilter = {
       (
-          !params.hasType || it.types.contains(params.hasType)
+        !params.hasType || it.types.contains(params.hasType)
       ) && (
-          variantsAllowed.any{ varFilter -> variantFilters.get(varFilter).call(it) }
+        variantsAllowed.any{ varFilter -> variantFilters.get(varFilter).call(it) }
       ) && (
-        ( !params.basic || it.basic) &&
-        //TODO: Remove "([...] && !it.pokemonVMAX)"from below once that's solved
-        ( !params.stage1 || (it.topPokemonCard.cardTypes.is(STAGE1) && !it.pokemonVMAX) ) &&
-        ( !params.stage2 || it.topPokemonCard.cardTypes.is(STAGE2) ) &&
-        //Check PokemonCardSet for why these are used, starting from here
-        ( !params.evolution || it.realEvolution ) &&
-        ( !params.unevolved || it.notEvolution ) &&
-        ( !params.evolved || it.evolution )
+        stageRequired.every{ stgFilter -> stageFilters.get(stgFilter).call(it) }
       ) && (
-          filter == null || filter.call(it)
+        filter == null || filter.call(it)
       )
     }
 
@@ -1210,15 +1213,8 @@ class TcgStatics {
       int i, count
 
       def stageString = ""
-      [
-        [params.unevolved, "Unevolved"],
-        [params.evolved, "Evolved"],
-        [params.basic, "Basic"],
-        [params.stage1, "Stage 1"],
-        [params.stage2, "Stage 2"],
-        [params.evolution, "Evolution"]
-      ].each{
-        if (it[0]) {stageString += "${it[1]} "}
+      if (stageRequired) {
+        stageRequired.each{ stgFilter -> stageString += "${(stgFilter as CardType).toString()} " }
       }
 
       def typeString = (params.hasType ? "${params.hasType} " : "")

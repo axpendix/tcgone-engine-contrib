@@ -20,8 +20,8 @@ public enum CardType {
 	MEGA_POKEMON(-6),
 	LEVEL_UP(-5),
 	BREAK(-4),
-	STAGE2(-2),
-	STAGE1(-1),
+	STAGE2(-2, "Stage 2"),
+	STAGE1(-1, "Stage 1"),
 	EVOLUTION(0),
 	RESTORED(4),
 	BASIC(7),
@@ -73,6 +73,11 @@ public enum CardType {
 	DELTA(114),
 
 	NOT_IMPLEMENTED(201),
+
+
+	//Note: These next values are not meant for use in set definitions.
+	EVOLVED(401),
+	UNEVOLVED(402),
 
 	;
 
