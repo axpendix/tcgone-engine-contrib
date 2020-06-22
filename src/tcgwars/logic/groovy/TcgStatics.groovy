@@ -1159,7 +1159,7 @@ class TcgStatics {
    *   + benched: If true, checks for only Benched Pokémon; otherwise also includes the Active.
    *   + opp: If true, checks for the opponent's bench instead of "my" bench.
    *   + hasType: If set, restricts to benched Pokémon of a single specific type.
-   *   + hasPokemonV/hasPokemonVMAX/hasTagTeam/hasPokemonGX/hasPokemonEX/hasOldEX: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
+   *   + hasVariants: A list of specific CardType values (currently: POKEMON_V|VMAX|TAG_TEAM|POKEMON_GX|POKEMON_EX|EX). If set, the area filter will only accept PCS that have at least one of these CardTypes on its top card; otherwise, it'll take any Pokémon.
    *   + basic/stage1/stage2/unevolved/evolved/evolution: Stage-based filter. The assert will only accept Pokémon that match __all__ of the conditions set to true amongst these. (Note: When looking for "Basic Pokémon", most of the time pre-DP cards will use params.unevolved, with DP-onwards cards using params.basic)
    *   + info: If set, it'll replace the end of the failed assert warning with a custom text, instead of the default "follow the stated condition(s)".
    *   + repText: If true, params.info will override the entirety of the failed assert warning.
