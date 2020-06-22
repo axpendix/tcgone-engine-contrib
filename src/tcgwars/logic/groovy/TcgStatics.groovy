@@ -1187,7 +1187,7 @@ class TcgStatics {
       (
           !params.hasType || it.types.contains(params.hasType)
       ) && (
-          variantsAllowed.any{ varFilter -> variantFilters.get(varFilter).get(0).call(it) }
+          variantsAllowed.any{ varFilter -> variantFilters.get(varFilter).call(it) }
       ) && (
         ( !params.basic || it.basic) &&
         //TODO: Remove "([...] && !it.pokemonVMAX)"from below once that's solved
