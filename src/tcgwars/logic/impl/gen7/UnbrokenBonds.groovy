@@ -4054,7 +4054,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assertMyAll(evolved: true)
+            assertMyAll(isStage: EVOLVED)
           }
         };
       case DUSK_STONE_167:

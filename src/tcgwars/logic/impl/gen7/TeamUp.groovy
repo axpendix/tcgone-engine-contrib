@@ -2357,7 +2357,7 @@ public enum TeamUp implements LogicCardInfo {
             energyCost D,D,D
             attackRequirement{
               gxCheck()
-              assertOppAll(hasPokemonGX: true, hasPokemonEX: true)
+              assertOppAll(hasVariants: [POKEMON_GX, POKEMON_EX])
             }
             onAttack{
               gxPerform()

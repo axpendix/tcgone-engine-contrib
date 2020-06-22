@@ -437,7 +437,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Devolve 1 of your opponent's evolved Pokémon by removing the highest Stage Evolution card from it. Your opponent shuffles that card into their deck."
             energyCost G
             attackRequirement {
-              assertOppAll(evolved: true)
+              assertOppAll(isStage: EVOLVED)
             }
             onAttack {
               def list = opp.all.findAll { it.evolution }
@@ -4606,7 +4606,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           }
           playRequirement{
             assertMyBench(repText: true, info: "You only have 1 Pokémon in play")
-            assertMyAll(hasTagTeam: true, info: "with Energy attached to them", {it.cards.filterByType(ENERGY)})
+            assertMyAll(hasVariants: TAG_TEAM, info: "with Energy attached to them", {it.cards.filterByType(ENERGY)})
           }
         };
       case UNIDENTIFIED_FOSSIL_210:
