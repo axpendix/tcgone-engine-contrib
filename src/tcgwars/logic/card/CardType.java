@@ -33,7 +33,7 @@ public enum CardType {
 	STADIUM(25),
 	POKEMON_TOOL(26),
 	TECHNICAL_MACHINE(27),
-	FLARE(28),
+	FLARE(28, "Team Flare Hyper Gear"),
 	ROCKETS_SECRET_MACHINE(29),
 
 	_GRASS_(41),
@@ -48,7 +48,7 @@ public enum CardType {
 	_DRAGON_(50),
 	_COLORLESS_(51),
 
-	LEGEND(92),
+	LEGEND(92, "Pokémon LEGEND"),
 	TAG_TEAM(93),
 	ULTRA_BEAST(94),
 	PRISM_STAR(95),
@@ -70,7 +70,7 @@ public enum CardType {
 	POKEMON_V(111),
 	VMAX(112, "Pokémon VMAX"),
 	G_SPEC(113),
-	DELTA(114),
+	DELTA(114, "Delta Pokémon"),
 
 	NOT_IMPLEMENTED(201),
 
