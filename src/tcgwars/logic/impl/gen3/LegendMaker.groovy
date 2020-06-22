@@ -130,7 +130,7 @@ public enum LegendMaker implements LogicCardInfo {
   REGICE_STAR_90 ("Regice Star", 90, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
   REGIROCK_STAR_91 ("Regirock Star", 91, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
   REGISTEEL_STAR_92 ("Registeel Star", 92, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
-  PIKACHU_DELTA_93 ("Pikachu δ", 93, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]);
+  PIKACHU_DELTA_93 ("Pikachu", 93, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
