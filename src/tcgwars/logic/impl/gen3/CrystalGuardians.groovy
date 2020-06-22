@@ -1727,7 +1727,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         onPlay {
           my.deck.search(max: 3, "Select a Supporter card, a Pokémon Tool card and a Basic Energy card", {it.cardTypes.is(SUPPORTER) || it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(BASIC_ENERGY)}, { CardList list ->
             list.filterByType(SUPPORTER).size() <= 1 && list.filterByType(POKEMON_TOOL).size() <= 1 && list.filterByType(BASIC_ENERGY).size() <= 1
-          }).moveTo(my.hand)
+          }).showToOpponent("Opponent used Castaway").moveTo(my.hand)
 
           shuffleDeck()
         }
