@@ -4209,14 +4209,15 @@ public enum LostThunder implements LogicCardInfo {
           onPlay{
             draw 2
             flip {
-              delayed {
+              def eff
+              eff = delayed {
                 after DISCARD, {
                   if(ef.card == thisCard){
                     new CardList(thisCard).moveTo(my.hand)
                     prevent()
+                    eff.unregister()
                   }
                 }
-                unregisterAfter 1
               }
             }
           }
