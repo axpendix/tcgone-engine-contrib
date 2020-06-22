@@ -2702,7 +2702,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           list.showToMe("Top $prizeCardCount cards of your deck.")
 
           def numOfEnergies = list.filterByType(ENERGY).size()
-          list.filterByType(ENERGY).select(max: numOfEnergies, "Select any amount of Energy cards to move to your hand.").moveTo(my.hand)
+          list.filterByType(ENERGY).select(max: numOfEnergies, "Select any amount of Energy cards to move to your hand.").showToOpponent("Opponent used Holon Lass").moveTo(my.hand)
           shuffleDeck()
         }
         playRequirement{
