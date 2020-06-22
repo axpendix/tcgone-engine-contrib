@@ -69,7 +69,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
   ARTICUNO_EX_32 ("Articuno ex", 32, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
   ZAPDOS_EX_33 ("Zapdos ex", 33, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
   TYPHLOSION_34 ("Typhlosion", 34, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
-  PIKACHU_Δ_35 ("Pikachu δ", 35, Rarity.RARE, [POKEMON, BASIC, _METAL_]),
+  PIKACHU_DELTA_35 ("Pikachu", 35, Rarity.RARE, [POKEMON, BASIC, _METAL_]),
   TROPICAL_TIDAL_WAVE_36 ("Tropical Tidal Wave", 36, Rarity.RARE, [TRAINER, ITEM]),
   KYOGRE_EX_37 ("Kyogre ex", 37, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
   GROUDON_EX_38 ("Groudon ex", 38, Rarity.RARE, [POKEMON, BASIC, _FIGHTING_]),
@@ -655,7 +655,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           }
         }
       };
-      case PIKACHU_Δ_35:
+      case PIKACHU_DELTA_35:
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness F
         move "Thunder Wave", {
