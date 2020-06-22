@@ -1,5 +1,9 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.impl.gen1.WizardsBlackStarPromosNG;
+import tcgwars.logic.impl.gen3.UnseenForces;
+import tcgwars.logic.impl.gen3.LegendMaker;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -69,7 +73,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
   ARTICUNO_EX_32 ("Articuno ex", 32, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
   ZAPDOS_EX_33 ("Zapdos ex", 33, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
   TYPHLOSION_34 ("Typhlosion", 34, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
-  PIKACHU_Δ_35 ("Pikachu δ", 35, Rarity.RARE, [POKEMON, BASIC, _METAL_]),
+  PIKACHU_DELTA_35 ("Pikachu", 35, Rarity.RARE, [POKEMON, BASIC, _METAL_]),
   TROPICAL_TIDAL_WAVE_36 ("Tropical Tidal Wave", 36, Rarity.RARE, [TRAINER, ITEM]),
   KYOGRE_EX_37 ("Kyogre ex", 37, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
   GROUDON_EX_38 ("Groudon ex", 38, Rarity.RARE, [POKEMON, BASIC, _FIGHTING_]),
@@ -537,16 +541,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         }
       };
       case CELEBI_29:
-      return basic (this, hp:HP050, type:G, retreatCost:1) {
-        weakness R
-        move "Leaf Slice", {
-          text "20x damage. Flip 2 coins. This attack does 20 damage times the number of heads."
-          energyCost G, C
-          onAttack {
-            damage 20
-          }
-        }
-      };
+      return copy(WizardsBlackStarPromosNG.CELEBI_50, this);
       case SUICUNE_30:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -633,46 +628,9 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         }
       };
       case TYPHLOSION_34:
-      return evolution (this, from:"Quilava", hp:HP110, type:R, retreatCost:1) {
-        weakness W
-        pokeBody "Burning Aura", {
-          text "As long as Typhlosion is your Active Pokémon, put 1 damage counter on each Active Pokémon (both yours and your opponent's) between turns."
-          delayedA {
-          }
-        }
-        move "Flickering Flames", {
-          text "20 damage. The Defending Pokémon is now Asleep."
-          energyCost R
-          onAttack {
-            damage 20
-          }
-        }
-        move "Rage", {
-          text "50+ damage. Does 50 damage plus 10 more damage for each damage counter on Typhlosion."
-          energyCost R, C, C
-          onAttack {
-            damage 50
-          }
-        }
-      };
-      case PIKACHU_Δ_35:
-      return basic (this, hp:HP040, type:M, retreatCost:1) {
-        weakness F
-        move "Thunder Wave", {
-          text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-          energyCost C
-          onAttack {
-
-          }
-        }
-        move "Iron Tail", {
-          text "20x damage. Flip a coin until you get tails. This attack does 20 damage times the number of heads."
-          energyCost M, C
-          onAttack {
-            damage 20
-          }
-        }
-      };
+      return copy(UnseenForces.TYPHLOSION_17, this);
+      case PIKACHU_DELTA_35:
+      return copy(LegendMaker.PIKACHU_DELTA_93, this);
       case TROPICAL_TIDAL_WAVE_36:
       return copy (TROPICAL_TIDAL_WAVE_27, this);
       case KYOGRE_EX_37:
