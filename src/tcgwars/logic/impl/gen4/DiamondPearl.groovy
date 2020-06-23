@@ -2978,8 +2978,8 @@ public enum DiamondPearl implements LogicCardInfo {
                   validPokemon = thisCard.player.pbg.all.findAll{it.topPokemonCard.name == thisCard.name && !it.topPokemonCard.cardTypes.is(LEVEL_UP)}
                 }
               }*/
-              before EVOLVE_STANDARD, {
-                if (ef.cardToPlay == thisCard) {
+              before EVOLVE, {
+                if ((ef.evolutionCard as Card) == thisCard) {
                    if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
                      wcu "You can't level up a LV.X Pokémon."
                      prevent()
@@ -3054,8 +3054,8 @@ public enum DiamondPearl implements LogicCardInfo {
                   validPokemon = thisCard.player.pbg.all.findAll{it.topPokemonCard.name == thisCard.name && !it.topPokemonCard.cardTypes.is(LEVEL_UP)}
                 }
               }*/
-              before EVOLVE_STANDARD, {
-                if (ef.cardToPlay == thisCard) {
+              before EVOLVE, {
+                if ((ef.evolutionCard as Card) == thisCard) {
                    if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
                      wcu "You can't level up a LV.X Pokémon."
                      prevent()
@@ -3118,8 +3118,8 @@ public enum DiamondPearl implements LogicCardInfo {
                   validPokemon = thisCard.player.pbg.all.findAll{it.topPokemonCard.name == thisCard.name && !it.topPokemonCard.cardTypes.is(LEVEL_UP)}
                 }
               }*/
-              before EVOLVE_STANDARD, {
-                if (ef.cardToPlay == thisCard) {
+              before EVOLVE, {
+                if ((ef.evolutionCard as Card) == thisCard) {
                    if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
                      wcu "You can't level up a LV.X Pokémon."
                      prevent()
