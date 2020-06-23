@@ -2191,6 +2191,9 @@ public enum PokemodBaseSet implements LogicCardInfo {
             discard thisCard
           }
           eff = delayed {
+            before PLAY_TRAINER, {
+              bc "before PLAY_TRAINER"
+            }
             before DISCARD, {
               bc "before DISCARD"
               bc "ef.card = ${ef.card}"
@@ -2204,6 +2207,9 @@ public enum PokemodBaseSet implements LogicCardInfo {
             }
             before null, self, Source.TRAINER_CARD,{
               bc "before n,self,ScrTrainerCard"
+            }
+            after PLAY_TRAINER,{
+              bc "after PLAY_TRAINER"
             }
             after DISCARD, {
               bc "after DISCARD"
