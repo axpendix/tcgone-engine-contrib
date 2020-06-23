@@ -3699,7 +3699,7 @@ public enum LostThunder implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.filterByType(STAGE1).select("Evolve To")
               // [Temp Workaround for VMAX]
-              while (tar.first().getCardTypes.is(VMAX)){
+              while (tar.first().cardTypes.is(VMAX)){
                 wcu "You cannot evolve into a Pokémon VMAX"
                 tar = my.hand.filterByType(STAGE1).select("Evolve To")
               }
