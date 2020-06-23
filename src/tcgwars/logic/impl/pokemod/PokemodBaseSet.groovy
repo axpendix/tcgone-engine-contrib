@@ -2212,6 +2212,20 @@ public enum PokemodBaseSet implements LogicCardInfo {
                 prevent()
               }
             }
+            after DISCARD, {
+              bc "before DISCARD"
+              bc "ef.card = ${ef.card}"
+            }
+            after null, null, Source.TRAINER_CARD,{
+              bc "before n,n,ScrTrainerCard"
+            }
+            after DISCARD, self, {
+              bc "before DISCARD self"
+              bc "ef.card = ${ef.card}"
+            }
+            after null, self, Source.TRAINER_CARD,{
+              bc "before n,self,ScrTrainerCard"
+            }
             after EVOLVE, self, {check(self)}
             after DEVOLVE, self, {check(self)}
             after ATTACH_ENERGY, self, {check(self)}
