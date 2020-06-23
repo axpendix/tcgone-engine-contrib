@@ -2637,7 +2637,13 @@ public enum BurningShadows implements LogicCardInfo {
           def eff
           onPlay {reason->
             eff = getter (GET_FULL_HP, self) {h->
-              if(self.topPokemonCard.cardTypes.is(STAGE1)) {
+              if(
+                self.topPokemonCard.cardTypes.is(STAGE1)
+                // [Temp Workaround for VMAX]
+                && !self.topPokemonCard.cardTypes.is(VMAX)
+                // [End of workaround for VMAX]
+                // TODO: Remove this when VMAX are no longer marked as STAGE1.
+              ) {
                 h.object += hp(40)
               }
             }
