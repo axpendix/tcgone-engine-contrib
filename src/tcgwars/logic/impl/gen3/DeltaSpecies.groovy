@@ -503,7 +503,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "80 damage. If your opponent has no Stage 2 Evolved Pokémon in play, this attack does nothing."
           energyCost L, M, C, C, C
           onAttack {
-            if (opp.all.findAll { it.topPokemonCard.cardTypes.is(STAGE2) }) {
+            if (opp.all.any{ it.topPokemonCard.cardTypes.is(STAGE2) }) {
               damage 80
             }
           }
