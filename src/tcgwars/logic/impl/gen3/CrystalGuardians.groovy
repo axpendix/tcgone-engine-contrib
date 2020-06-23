@@ -2242,7 +2242,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           delayedA {
             def pcs
             before USE_ABILITY, {
-              if (ability instanceof PokePower){
+              if (ef.ability instanceof PokePower){
                 pcs = ef.getResolvedTarget(bg, e)
               }
             }
