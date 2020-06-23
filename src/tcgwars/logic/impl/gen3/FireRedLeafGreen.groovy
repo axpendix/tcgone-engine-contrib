@@ -2389,11 +2389,23 @@ public enum FireRedLeafGreen implements LogicCardInfo {
       case VS_SEEKER_100:
         return basicTrainer (this) {
           text "Search your discard pile for a Supporter card, show it to your opponent, and put it into your hand."
+          def thisTurnSupporter
+          globalAbility{
+            before PLAY_TRAINER, {
+              if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
+                thisTurnSupporter = ef.cardToPlay
+                bc "thisTurnSupporter = $thisTurnSupporter"
+              }
+            }
+            after BETWEEN_TURNS, {
+              thisTurnSupporter = null
+            }
+          }
           onPlay {
-            my.discard.filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
+            my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
           }
           playRequirement{
-            assert my.discard.filterByType(SUPPORTER) : "You have no Supporters in your discard"
+            assert my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER) : "You have no Supporters in your discard"
           }
         };
       case POTION_101:
