@@ -351,7 +351,13 @@ public enum UnifiedMinds implements LogicCardInfo {
               if (sel_1) {
                 def pcs = my.all.findAll { it.name==sel_1.predecessor }.select("Evolve which Pokémon?")
                 evolve(pcs, sel_1, OTHER)
-                if (sel_1.cardTypes.is(STAGE1)) {
+                if (
+                  sel_1.cardTypes.is(STAGE1)
+                  // [Temp Workaround for VMAX]
+                  && !sel_1.cardTypes.is(VMAX)
+                  // [End of workaround for VMAX]
+                  // TODO: Remove this when VMAX are no longer marked as STAGE1.
+                ) {
                   def sel_2 = deck.search ("Select a Pokémon that evolves from ${sel_1.name}.", {it.cardTypes.is(EVOLUTION) && it.predecessor == sel_1.name}).first()
                   if(sel_2){
                     evolve(pcs, sel_2, OTHER)
