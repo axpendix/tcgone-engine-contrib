@@ -2709,6 +2709,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           }
           playRequirement{
             assert my.hand.getExcludedList(thisCard)
+            assert my.deck
           }
         };
       case ULTRA_RECON_SQUAD_114:

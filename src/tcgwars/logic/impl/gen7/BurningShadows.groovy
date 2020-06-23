@@ -2734,7 +2734,8 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
           playRequirement{
-            assert my.hand.getExcludedList(thisCard).size() >= 2
+            assert my.hand.getExcludedList(thisCard).size() >= 2 : "You can't play $thisCard if you can't discard 2 cards from your hand"
+            assert opp.all.any{it.cards.energyCount(C)} : "You can't play $thisCard if your Opponent has no Energy attached to any of their Pokémon"
           }
         };
       case PO_TOWN_121:
@@ -2779,7 +2780,8 @@ public enum BurningShadows implements LogicCardInfo {
             draw 4
           }
           playRequirement{
-            assert my.hand.getExcludedList(thisCard).size() >= 2
+            assert my.hand.getExcludedList(thisCard).size() >= 2 : "You cannot play $thisCard if you can't discard 2 cards from your hand"
+            assert my.deck : "You can't play $thisCard if you don't have cards in deck."
           }
         };
       case SUPER_SCOOP_UP_124:
